@@ -142,7 +142,7 @@ def replace(template, dict, file):
     import re
 
     rex = re.compile("@([^@]+)@")
-    rbe = re.compile("\+")
+    rbe = re.compile(r"\+")
     ren = re.compile("-")
     rco = re.compile("= ")
     x = 23  # just a variable to try substitution
@@ -157,7 +157,7 @@ if __name__ == "__main__":
     import re
 
     rex = re.compile("@([^@]+)@")
-    rbe = re.compile("\+")
+    rbe = re.compile(r"\+")
     ren = re.compile("-")
     rco = re.compile("= ")
     x = 23  # just a variable to try substitution

@@ -16,5 +16,6 @@
         <file>panels/TaskAssemblyInsertLink.ui</file>
         <file>preferences/Assembly.ui</file>
         <file>icons/Assembly_CreateJointDistance.svg</file>
+        <file>icons/AssemblyWorkbench.svg</file>
     </qresource>
 </RCC>

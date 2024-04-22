@@ -1,6 +1,6 @@
-<!DOCTYPE RCC><RCC version="1.0">
-    <qresource>
-        <file>icons/StartWorkbench.svg</file>
-        <file>icons/preferences-start.svg</file>
+<RCC>
+    <qresource prefix="/">
+        <file>icons/StartCommandIcon.svg</file>
+        <file>icons/PartDesignWorkbench.svg</file>
     </qresource>
 </RCC>

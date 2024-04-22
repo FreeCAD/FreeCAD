@@ -402,18 +402,6 @@
         </item>
         <item row="0" column="1">
          <widget class="QPushButton" name="buttonUserDefinedMaterial">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>40</width>
-            <height>32767</height>
-           </size>
-          </property>
           <property name="text">
            <string notr="true">...</string>
           </property>

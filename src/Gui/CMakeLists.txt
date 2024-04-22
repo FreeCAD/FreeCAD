@@ -86,10 +86,6 @@ else(MSVC)
     )
 endif(MSVC)
 
-if (QtWebEngineWidgets_FOUND AND BUILD_WITH_CONDA)
-    add_definitions(-DQTWEBENGINE)
-endif()
-
 include_directories(
     ${QtCore_INCLUDE_DIRS}
     ${QtWidgets_INCLUDE_DIRS}

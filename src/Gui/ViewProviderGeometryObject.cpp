@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <random>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -70,10 +71,8 @@ const App::PropertyIntegerConstraint::Constraints intPercent = {0, 100, 5};
 
 ViewProviderGeometryObject::ViewProviderGeometryObject()
 {
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-
-    int initialTransparency = hGrp->GetInt("DefaultShapeTransparency", 0);
+    App::Material mat = getDefaultMaterial();
+    long initialTransparency = toPercent(mat.transparency);
 
     static const char* dogroup = "Display Options";
     static const char* sgroup = "Selection";
@@ -86,28 +85,6 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
                       "Set object transparency");
     Transparency.setConstraints(&intPercent);
 
-    App::Material mat(App::Material::DEFAULT);
-    // This is handled in the material code when using the object appearance
-    bool randomColor = hGrp->GetBool("RandomColor", false);
-    float red {};
-    float green {};
-    float blue {};
-
-    if (randomColor) {
-        auto fMax = (float)RAND_MAX;
-        red = (float)rand() / fMax;
-        green = (float)rand() / fMax;
-        blue = (float)rand() / fMax;
-    }
-    else {
-        // Color = (204, 204, 230)
-        unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor", 3435980543UL);
-        red = ((shcol >> 24) & 0xff) / 255.0F;
-        green = ((shcol >> 16) & 0xff) / 255.0F;
-        blue = ((shcol >> 8) & 0xff) / 255.0F;
-    }
-    mat.diffuseColor = App::Color(red, green, blue);
-
     ADD_PROPERTY_TYPE(ShapeAppearance, (mat), osgroup, App::Prop_None, "Shape appearrance");
     ADD_PROPERTY_TYPE(BoundingBox, (false), dogroup, App::Prop_None, "Display object bounding box");
     ADD_PROPERTY_TYPE(Selectable,
@@ -116,8 +93,7 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
                       App::Prop_None,
                       "Set if the object is selectable in the 3d view");
 
-    bool enableSel = hGrp->GetBool("EnableSelection", true);
-    Selectable.setValue(enableSel);
+    Selectable.setValue(isSelectionEnabled());
 
     pcShapeMaterial = new SoMaterial;
     setSoMaterial(mat);
@@ -137,6 +113,56 @@ ViewProviderGeometryObject::~ViewProviderGeometryObject()
     pcShapeMaterial->unref();
     pcBoundingBox->unref();
     pcBoundColor->unref();
+}
+
+App::Material ViewProviderGeometryObject::getDefaultMaterial() const
+{
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+
+    auto getColor = [hGrp](const char* parameter, App::Color& color) {
+        uint32_t packed = color.getPackedRGB();
+        packed = hGrp->GetUnsigned(parameter, packed);
+        color.setPackedRGB(packed);
+    };
+    auto intRandom = [] (int min, int max) -> int {
+        static std::mt19937 generator;
+        std::uniform_int_distribution<int> distribution(min, max);
+        return distribution(generator);
+    };
+
+    App::Material mat(App::Material::DEFAULT);
+    mat.transparency = fromPercent(hGrp->GetInt("DefaultShapeTransparency", 0));
+    long shininess = toPercent(mat.shininess);
+    mat.shininess = fromPercent(hGrp->GetInt("DefaultShapeShininess", shininess));
+
+    // This is handled in the material code when using the object appearance
+    bool randomColor = hGrp->GetBool("RandomColor", false);
+
+    // diffuse color
+    if (randomColor) {
+        float red = static_cast<float>(intRandom(0, 255)) / 255.0F;
+        float green = static_cast<float>(intRandom(0, 255)) / 255.0F;
+        float blue = static_cast<float>(intRandom(0, 255)) / 255.0F;
+        mat.diffuseColor = App::Color(red, green, blue);
+    }
+    else {
+        // Color = (204, 204, 230) = 3435980543UL
+        getColor("DefaultShapeColor", mat.diffuseColor);
+    }
+
+    getColor("DefaultAmbientColor", mat.ambientColor);
+    getColor("DefaultEmissiveColor", mat.emissiveColor);
+    getColor("DefaultSpecularColor", mat.specularColor);
+
+    return mat;
+}
+
+bool ViewProviderGeometryObject::isSelectionEnabled() const
+{
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    return hGrp->GetBool("EnableSelection", true);
 }
 
 void ViewProviderGeometryObject::onChanged(const App::Property* prop)
@@ -257,8 +283,8 @@ unsigned long ViewProviderGeometryObject::getBoundColor() const
 {
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long bbcol =
-        hGrp->GetUnsigned("BoundingBoxColor", 4294967295UL);  // white (255,255,255)
+    // white (255,255,255)
+    unsigned long bbcol = hGrp->GetUnsigned("BoundingBoxColor", 4294967295UL);
     return bbcol;
 }
 

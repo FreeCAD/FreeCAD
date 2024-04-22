@@ -102,6 +102,60 @@ GeometryCreationMode geometryCreationMode = GeometryCreationMode::Normal;
 
 /* Sketch commands =======================================================*/
 
+// Comp for line tools =============================================
+
+class CmdSketcherCompLine: public Gui::GroupCommand
+{
+public:
+    CmdSketcherCompLine()
+        : GroupCommand("Sketcher_CompLine")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Create polyline");
+        sToolTipText = QT_TR_NOOP("Create a polyline in the sketch. 'M' Key cycles behaviour");
+        sWhatsThis = "Sketcher_CompLine";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+
+        addCommand("Sketcher_CreatePolyline");
+        addCommand("Sketcher_CreateLine");
+    }
+
+    void updateAction(int mode) override
+    {
+        Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+        if (!pcAction) {
+            return;
+        }
+
+        QList<QAction*> al = pcAction->actions();
+        int index = pcAction->property("defaultAction").toInt();
+        switch (static_cast<GeometryCreationMode>(mode)) {
+            case GeometryCreationMode::Normal:
+                al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePolyline"));
+                al[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateLine"));
+                getAction()->setIcon(al[index]->icon());
+                break;
+            case GeometryCreationMode::Construction:
+                al[0]->setIcon(
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePolyline_Constr"));
+                al[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateLine_Constr"));
+                getAction()->setIcon(al[index]->icon());
+                break;
+        }
+    }
+
+    const char* className() const override
+    {
+        return "CmdSketcherCompLine";
+    }
+};
+
+// Line ================================================================
+
 DEF_STD_CMD_AU(CmdSketcherCreateLine)
 
 CmdSketcherCreateLine::CmdSketcherCreateLine()
@@ -127,6 +181,37 @@ void CmdSketcherCreateLine::activated(int iMsg)
 }
 
 bool CmdSketcherCreateLine::isActive()
+{
+    return isCommandActive(getActiveGuiDocument());
+}
+
+// Polyline ================================================================
+
+DEF_STD_CMD_AU(CmdSketcherCreatePolyline)
+
+CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
+    : Command("Sketcher_CreatePolyline")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Create polyline");
+    sToolTipText = QT_TR_NOOP("Create a polyline in the sketch. 'M' Key cycles behaviour");
+    sWhatsThis = "Sketcher_CreatePolyline";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreatePolyline";
+    sAccel = "G, M";
+    eType = ForEdit;
+}
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePolyline, "Sketcher_CreatePolyline")
+
+void CmdSketcherCreatePolyline::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerLineSet());
+}
+
+bool CmdSketcherCreatePolyline::isActive()
 {
     return isCommandActive(getActiveGuiDocument());
 }
@@ -363,38 +448,6 @@ bool CmdSketcherCompCreateRectangles::isActive()
 
 // ======================================================================================
 
-DEF_STD_CMD_AU(CmdSketcherCreatePolyline)
-
-CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
-    : Command("Sketcher_CreatePolyline")
-{
-    sAppModule = "Sketcher";
-    sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create polyline");
-    sToolTipText = QT_TR_NOOP("Create a polyline in the sketch. 'M' Key cycles behaviour");
-    sWhatsThis = "Sketcher_CreatePolyline";
-    sStatusTip = sToolTipText;
-    sPixmap = "Sketcher_CreatePolyline";
-    sAccel = "G, M";
-    eType = ForEdit;
-}
-
-CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePolyline, "Sketcher_CreatePolyline")
-
-void CmdSketcherCreatePolyline::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerLineSet());
-}
-
-bool CmdSketcherCreatePolyline::isActive()
-{
-    return isCommandActive(getActiveGuiDocument());
-}
-
-
-// ======================================================================================
-
 DEF_STD_CMD_AU(CmdSketcherCreateArc)
 
 CmdSketcherCreateArc::CmdSketcherCreateArc()
@@ -434,7 +487,7 @@ CmdSketcherCreate3PointArc::CmdSketcherCreate3PointArc()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create arc by three points");
+    sMenuText = QT_TR_NOOP("Create arc by 3 points");
     sToolTipText = QT_TR_NOOP("Create an arc by its end points and a point along the arc");
     sWhatsThis = "Sketcher_Create3PointArc";
     sStatusTip = sToolTipText;
@@ -582,7 +635,7 @@ CmdSketcherCreateCircle::CmdSketcherCreateCircle()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create circle");
+    sMenuText = QT_TR_NOOP("Create circle by center");
     sToolTipText = QT_TR_NOOP("Create a circle in the sketch");
     sWhatsThis = "Sketcher_CreateCircle";
     sStatusTip = sToolTipText;
@@ -1244,7 +1297,7 @@ CmdSketcherCreate3PointCircle::CmdSketcherCreate3PointCircle()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create circle by three points");
+    sMenuText = QT_TR_NOOP("Create circle by 3 points");
     sToolTipText = QT_TR_NOOP("Create a circle by 3 perimeter points");
     sWhatsThis = "Sketcher_Create3PointCircle";
     sStatusTip = sToolTipText;
@@ -2248,4 +2301,5 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCompCurveEdition());
     rcCmdMgr.addCommand(new CmdSketcherExternal());
     rcCmdMgr.addCommand(new CmdSketcherCarbonCopy());
+    rcCmdMgr.addCommand(new CmdSketcherCompLine());
 }

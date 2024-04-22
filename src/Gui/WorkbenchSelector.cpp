@@ -149,11 +149,11 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
         setCurrentIndex(index);
     });
     connect(this, qOverload<int>(&QTabBar::tabBarClicked), aGroup, [aGroup, moreAction](int index) {
-        if (index < aGroup->getEnabledWbActions().size()) {
-            aGroup->actions()[index]->trigger();
-        }
-        else {
+        if(index == 0) {
             moreAction->trigger();
+        }
+        else if (index <= aGroup->getEnabledWbActions().size()) {
+            aGroup->actions()[index - 1]->trigger();
         }
     });
 
@@ -175,6 +175,14 @@ void WorkbenchTabWidget::refreshList(QList<QAction*> actionList)
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
     int itemStyleIndex = hGrp->GetInt("WorkbenchSelectorItem", 0);
 
+    QIcon icon = Gui::BitmapFactory().iconFromTheme("list-add");
+    if (itemStyleIndex == 2) {
+        addTab(QString::fromLatin1("+"));
+    }
+    else {
+        addTab(icon, QString::fromLatin1(""));
+    }
+
     for (QAction* action : actionList) {
         QIcon icon = action->icon();
         if (icon.isNull() || itemStyleIndex == 2) {
@@ -190,17 +198,6 @@ void WorkbenchTabWidget::refreshList(QList<QAction*> actionList)
         if (action->isChecked()) {
             setCurrentIndex(count() - 1);
         }
-    }
-
-    QIcon icon = Gui::BitmapFactory().iconFromTheme("list-add");
-    if (itemStyleIndex == 2) {
-        addTab(tr("More"));
-    }
-    else if (itemStyleIndex == 1) {
-        addTab(icon, QString::fromLatin1(""));
-    }
-    else {
-        addTab(icon, tr("More"));
     }
 
     buildPrefMenu();

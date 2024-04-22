@@ -83,7 +83,7 @@ def debugMarker(vector, label, color=None, radius=0.5):
             vector, FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0)
         )
         if color:
-            obj.ViewObject.ShapeAppearance.DiffuseColor = color
+            obj.ViewObject.ShapeColor = color
 
 
 def debugCylinder(vector, r, height, label, color=None):
@@ -97,7 +97,7 @@ def debugCylinder(vector, r, height, label, color=None):
         )
         obj.ViewObject.Transparency = 90
         if color:
-            obj.ViewObject.ShapeAppearance.DiffuseColor = color
+            obj.ViewObject.ShapeColor = color
 
 
 def debugCone(vector, r1, r2, height, label, color=None):
@@ -112,7 +112,7 @@ def debugCone(vector, r1, r2, height, label, color=None):
         )
         obj.ViewObject.Transparency = 90
         if color:
-            obj.ViewObject.ShapeAppearance.DiffuseColor = color
+            obj.ViewObject.ShapeColor = color
 
 
 class Tag:

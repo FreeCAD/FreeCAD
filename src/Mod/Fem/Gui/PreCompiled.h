@@ -141,6 +141,7 @@
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoText3.h>
 #include <Inventor/nodes/SoTransform.h>

@@ -286,6 +286,22 @@ template<typename T>
 void SketcherAddWorkbenchGeometries(T& geom);
 
 template<typename T>
+void SketcherAddWorkspaceLines(T& geom);
+
+template<>
+inline void SketcherAddWorkspaceLines<Gui::MenuItem>(Gui::MenuItem& geom)
+{
+    geom << "Sketcher_CreatePolyline"
+         << "Sketcher_CreateLine";
+}
+
+template<>
+inline void SketcherAddWorkspaceLines<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
+{
+    geom << "Sketcher_CompLine";
+}
+
+template<typename T>
 void SketcherAddWorkspaceArcs(T& geom);
 
 template<>
@@ -405,11 +421,10 @@ inline void SketcherAddWorkspaceCurveEdition<Gui::ToolBarItem>(Gui::ToolBarItem&
 template<typename T>
 inline void SketcherAddWorkbenchGeometries(T& geom)
 {
-    geom << "Sketcher_CreatePoint"
-         << "Sketcher_CreateLine";
+    geom << "Sketcher_CreatePoint";
+    SketcherAddWorkspaceLines(geom);
     SketcherAddWorkspaceArcs(geom);
-    geom << "Separator"
-         << "Sketcher_CreatePolyline";
+    geom << "Separator";
     SketcherAddWorkspaceRectangles(geom);
     SketcherAddWorkspaceRegularPolygon(geom);
     SketcherAddWorkspaceslots(geom);

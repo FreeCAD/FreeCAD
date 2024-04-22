@@ -84,6 +84,7 @@ protected:
 
 private:
     void setupConnections();
+    void setupFilters();
     void slotChangedObject(const Gui::ViewProvider&, const App::Property& Prop);
     void setDisplayModes(const std::vector<Gui::ViewProvider*>&);
     void setMaterial(const std::vector<Gui::ViewProvider*>&);

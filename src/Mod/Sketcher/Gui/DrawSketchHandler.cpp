@@ -969,11 +969,10 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
         }
 
         // Iterate through constraints
-        std::vector<AutoConstraint>::const_iterator it = autoConstrs.begin();
-        for (; it != autoConstrs.end(); ++it) {
-            int geoId2 = it->GeoId;
+        for (auto& cstr : autoConstrs) {
+            int geoId2 = cstr.GeoId;
 
-            switch (it->Type) {
+            switch (cstr.Type) {
                 case Sketcher::Coincident: {
                     if (posId1 == Sketcher::PointPos::none) {
                         continue;
@@ -985,11 +984,11 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                         "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
                         geoId1,
                         static_cast<int>(posId1),
-                        it->GeoId,
-                        static_cast<int>(it->PosId));
+                        cstr.GeoId,
+                        static_cast<int>(cstr.PosId));
                 } break;
                 case Sketcher::PointOnObject: {
-                    Sketcher::PointPos posId2 = it->PosId;
+                    Sketcher::PointPos posId2 = cstr.PosId;
                     if (posId1 == Sketcher::PointPos::none) {
                         // Auto constraining an edge so swap parameters
                         std::swap(geoId1, geoId2);
@@ -1002,6 +1001,16 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                         geoId1,
                         static_cast<int>(posId1),
                         geoId2);
+                } break;
+                case Sketcher::Symmetric: {
+                    Sketcher::PointPos posId2 = cstr.PosId;
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "addConstraint(Sketcher.Constraint('Symmetric',%d,1,%d,2,%d,%d)) ",
+                        geoId2,
+                        geoId2,
+                        geoId1,
+                        static_cast<int>(posId1));
                 } break;
                     // In special case of Horizontal/Vertical constraint, geoId2 is normally unused
                     // and should be 'Constraint::GeoUndef' However it can be used as a way to
@@ -1019,11 +1028,10 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                                           geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1);
                 } break;
                 case Sketcher::Tangent: {
-                    Sketcher::SketchObject* Obj =
-                        static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
+                    Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
                     const Part::Geometry* geom1 = Obj->getGeometry(geoId1);
-                    const Part::Geometry* geom2 = Obj->getGeometry(it->GeoId);
+                    const Part::Geometry* geom2 = Obj->getGeometry(cstr.GeoId);
 
                     // ellipse tangency support using construction elements (lines)
                     if (geom1 && geom2
@@ -1080,7 +1088,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                     Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                           "addConstraint(Sketcher.Constraint('Tangent',%d, %d)) ",
                                           geoId1,
-                                          it->GeoId);
+                                          cstr.GeoId);
                 } break;
                 default:
                     break;

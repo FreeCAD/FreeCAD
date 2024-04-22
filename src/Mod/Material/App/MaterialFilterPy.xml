@@ -15,17 +15,11 @@
       <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
       <UserDocu>Material filters.</UserDocu>
     </Documentation>
-    <Attribute Name="IncludeEmptyFolders" ReadOnly="false">
+    <Attribute Name="Name" ReadOnly="false">
       <Documentation>
-        <UserDocu>Include empty folders in the material list.</UserDocu>
+        <UserDocu>Name of the filter used to select a filter in a list</UserDocu>
       </Documentation>
-      <Parameter Name="IncludeEmptyFolders" Type="Boolean"/>
-    </Attribute>
-    <Attribute Name="IncludeLegacy" ReadOnly="false">
-      <Documentation>
-        <UserDocu>Include legacy materials in the material list.</UserDocu>
-      </Documentation>
-      <Parameter Name="IncludeLegacy" Type="Boolean"/>
+      <Parameter Name="Name" Type="String"/>
     </Attribute>
     <Attribute Name="RequiredModels" ReadOnly="false">
       <Documentation>

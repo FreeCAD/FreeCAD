@@ -263,10 +263,6 @@ std::vector< DocumentObject* > GeoFeatureGroupExtension::getScopedObjectsFromLin
     if(link && link->getScope()==scope)
         link->getLinks(result);
 
-    //getLinks() guarantees no nullptrs
-    //
-    //it is important to remove all nullptrs
-    // result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
     return result;
 }
 
@@ -418,13 +414,10 @@ bool GeoFeatureGroupExtension::areLinksValid(const DocumentObject* obj) {
     if(!obj)
         return true;
 
-    //no cross CS link for local links.
-    //Base::Console().Message("Check object links: %s\n", obj->getNameInDocument());
     std::vector<App::Property*> list;
     obj->getPropertyList(list);
     for(App::Property* prop : list) {
         if(!isLinkValid(prop)) {
-            //Base::Console().Message("Invalid link: %s\n", prop->getName());
             return false;
         }
     }
