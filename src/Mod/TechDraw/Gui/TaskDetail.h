@@ -29,13 +29,6 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 
-//TODO: make this a proper enum
-static constexpr int TRACKERPICK(0);
-static constexpr int TRACKEREDIT(1);
-static constexpr int TRACKERCANCEL(2);
-static constexpr int TRACKERCANCELEDIT(3);
-
-
 namespace TechDraw
 {
 class DrawPage;
