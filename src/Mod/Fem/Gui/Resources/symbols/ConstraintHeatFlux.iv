@@ -1,0 +1,48 @@
+#Inventor V2.1 ascii
+
+
+Separator {
+
+  Separator {
+
+    Translation {
+      translation 0 0.225 0
+
+    }
+    Sphere {
+      radius 0.225
+
+    }
+    Translation {
+      translation 0 0.5625 0
+
+    }
+    Cylinder {
+      radius 0.1125
+      height 0.75
+
+    }
+    Translation {
+      translation 0 0.5625 0
+
+    }
+    Material {
+      diffuseColor 1 1 1
+
+    }
+    Cylinder {
+      radius 0.1125
+      height 0.375
+
+    }
+    Translation {
+      translation 0 -0.5625 0
+
+    }
+    Cylinder {
+      radius 0.3
+      height 0.075
+
+    }
+  }
+}

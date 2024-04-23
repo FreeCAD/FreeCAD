@@ -101,7 +101,7 @@ public:
      *  View Provider but it's always 1. It isn't updated when @ref References
      *  changes.
      */
-    App::PropertyInteger Scale;
+    App::PropertyFloatConstraint Scale;
 
     // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyVectorList Points;
@@ -133,7 +133,7 @@ public:
      *  This method does a really crazy calculation that I didn't dare to try
      *  to understand.
      */
-    int calcDrawScaleFactor(double lparam) const;
+    unsigned int calcSizeFactor(double lparam) const;
 
     /**
      * @brief Calculates scale factor based on size of face.
@@ -146,7 +146,7 @@ public:
      *  This method does a really crazy calculation that I didn't dare to try
      *  to understand.
      */
-    int calcDrawScaleFactor(double lvparam, double luparam) const;
+    unsigned int calcSizeFactor(double lvparam, double luparam) const;
 
     /**
      * @brief Returns default scale factor of 1.
@@ -159,12 +159,17 @@ public:
      *
      * @return always the integer 1
      */
-    int calcDrawScaleFactor() const;
+    unsigned int calcSizeFactor() const;
 
     const char* getViewProviderName() const override
     {
         return "FemGui::ViewProviderFemConstraint";
     }
+
+    /**
+     * @brief Returns Scale * sizeFactor.
+     */
+    float getScaleFactor() const;
 
 protected:
     /**
@@ -182,6 +187,9 @@ protected:
     void onDocumentRestored() override;
     void onSettingDocument() override;
     void unsetupObject() override;
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
 
     /**
      * @brief Returns data based on References relevant for rendering widgets.
@@ -252,6 +260,11 @@ protected:
     const Base::Vector3d getDirection(const App::PropertyLinkSub& direction);
 
 private:
+    /**
+     * @brief Symbol size factor determined from the size of the shape.
+     */
+    int sizeFactor;
+
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
     boost::signals2::connection connDocChangedObject;
 };

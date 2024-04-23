@@ -2721,7 +2721,7 @@ public:
     {
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
-        sMenuText = QT_TR_NOOP("Horizontal/Vertical");
+        sMenuText = QT_TR_NOOP("Constrain horizontal/vertical");
         sToolTipText = QT_TR_NOOP("Constrains a single line to either horizontal or vertical.");
         sWhatsThis = "Sketcher_CompHorVer";
         sStatusTip = sToolTipText;
@@ -3031,7 +3031,7 @@ CmdSketcherConstrainHorVer::CmdSketcherConstrainHorVer()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Horizontal/Vertical");
+    sMenuText = QT_TR_NOOP("Constrain horizontal/vertical");
     sToolTipText = QT_TR_NOOP("Constrains a single line to either horizontal or vertical, whichever is closer to current alignment.");
     sWhatsThis = "Sketcher_ConstrainHorVer";
     sStatusTip = sToolTipText;
@@ -3077,7 +3077,7 @@ CmdSketcherConstrainHorizontal::CmdSketcherConstrainHorizontal()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Constrain horizontally");
+    sMenuText = QT_TR_NOOP("Constrain horizontal");
     sToolTipText = QT_TR_NOOP("Create a horizontal constraint on the selected item");
     sWhatsThis = "Sketcher_ConstrainHorizontal";
     sStatusTip = sToolTipText;
@@ -3122,7 +3122,7 @@ CmdSketcherConstrainVertical::CmdSketcherConstrainVertical()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Constrain vertically");
+    sMenuText = QT_TR_NOOP("Constrain vertical");
     sToolTipText = QT_TR_NOOP("Create a vertical constraint on the selected item");
     sWhatsThis = "Sketcher_ConstrainVertical";
     sStatusTip = sToolTipText;
@@ -4220,7 +4220,7 @@ CmdSketcherConstrainPointOnObject::CmdSketcherConstrainPointOnObject()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Constrain point onto object");
+    sMenuText = QT_TR_NOOP("Constrain point on object");
     sToolTipText = QT_TR_NOOP("Fix a point onto an object");
     sWhatsThis = "Sketcher_ConstrainPointOnObject";
     sStatusTip = sToolTipText;
@@ -9230,7 +9230,7 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Constrain symmetrical");
+    sMenuText = QT_TR_NOOP("Constrain symmetric");
     sToolTipText = QT_TR_NOOP("Create a symmetry constraint "
                               "between two points\n"
                               "with respect to a line or a third point");

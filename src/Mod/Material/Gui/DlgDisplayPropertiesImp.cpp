@@ -163,11 +163,7 @@ DlgDisplayPropertiesImp::DlgDisplayPropertiesImp(bool floating, QWidget* parent,
 
     // Create a filter to only include current format materials
     // that contain the basic render model.
-    auto filter = std::make_shared<Materials::MaterialFilter>();
-    filter->setIncludeEmptyFolders(false);
-    filter->setIncludeLegacy(false);
-    filter->addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Rendering_Basic);
-    d->ui.widgetMaterial->setFilter(filter);
+    setupFilters();
 
     std::vector<Gui::ViewProvider*> views = getSelection();
     setDisplayModes(views);
@@ -207,6 +203,32 @@ DlgDisplayPropertiesImp::~DlgDisplayPropertiesImp()
     // no need to delete child widgets, Qt does it all for us
     d->connectChangedObject.disconnect();
     Gui::Selection().Detach(this);
+}
+
+void DlgDisplayPropertiesImp::setupFilters()
+{
+    // Create a filter to only include current format materials
+    // that contain the basic render model.
+    auto filterList = std::make_shared<std::list<std::shared_ptr<Materials::MaterialFilter>>>();
+
+    auto filter = std::make_shared<Materials::MaterialFilter>();
+    filter->setName(tr("Basic Appearance"));
+    filter->addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Rendering_Basic);
+    filterList->push_back(filter);
+
+    filter = std::make_shared<Materials::MaterialFilter>();
+    filter->setName(tr("Texture Appearance"));
+    filter->addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Rendering_Texture);
+    filterList->push_back(filter);
+
+    filter = std::make_shared<Materials::MaterialFilter>();
+    filter->setName(tr("All Materials"));
+    filterList->push_back(filter);
+
+    d->ui.widgetMaterial->setIncludeEmptyFolders(false);
+    d->ui.widgetMaterial->setIncludeLegacy(false);
+
+    d->ui.widgetMaterial->setFilter(filterList);
 }
 
 void DlgDisplayPropertiesImp::setupConnections()
@@ -337,6 +359,7 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
         else if (prop.isDerivedFrom<App::PropertyMaterialList>()) {
             //auto& value = static_cast<const App::PropertyMaterialList&>(prop).getValue();
             if (prop_name == "ShapeAppearance") {
+                // Base::Console().Log("slotChangeObject(ShapeAppearance)\n");
                 // bool blocked = d->ui.buttonColor->blockSignals(true);
                 // auto color = value.diffuseColor;
                 // d->ui.buttonColor->setColor(QColor((int)(255.0f * color.r),
@@ -565,17 +588,21 @@ void DlgDisplayPropertiesImp::setDisplayModes(const std::vector<Gui::ViewProvide
 
 void DlgDisplayPropertiesImp::setMaterial(const std::vector<Gui::ViewProvider*>& views)
 {
-    bool material = false;
-    //App::Material::MaterialType matType = App::Material::DEFAULT;
-    for (auto view : views) {
-        if (auto* prop =
-                dynamic_cast<App::PropertyMaterial*>(view->getPropertyByName("ShapeMaterial"))) {
-            material = true;
-    //        matType = prop->getValue().getType();
-            break;
-        }
-    }
-    d->ui.buttonUserDefinedMaterial->setEnabled(material);
+    Q_UNUSED(views);
+    // bool material = false;
+    // App::Material mat = App::Material(App::Material::DEFAULT);
+    // for (auto view : views) {
+    //     if (auto* prop =
+    //             dynamic_cast<App::PropertyMaterial*>(view->getPropertyByName("ShapeMaterial"))) {
+    //         mat = prop->getValue();
+    //         material = mat.uuid.empty();
+    //         if (!material) {
+    //             d->ui.widgetMaterial->setMaterial(QString::fromStdString(mat.uuid));
+    //         }
+    //         break;
+    //     }
+    // }
+    // d->ui.buttonUserDefinedMaterial->setEnabled(material);
 }
 
 void DlgDisplayPropertiesImp::setColorPlot(const std::vector<Gui::ViewProvider*>& views)
@@ -595,9 +622,21 @@ void DlgDisplayPropertiesImp::setColorPlot(const std::vector<Gui::ViewProvider*>
 
 void DlgDisplayPropertiesImp::setShapeAppearance(const std::vector<Gui::ViewProvider*>& views)
 {
-    Q_UNUSED(views)
-
-    // Private::setElementAppearance(views, "ShapeColor", d->ui.buttonColor);
+    bool material = false;
+    App::Material mat = App::Material(App::Material::DEFAULT);
+    for (auto view : views) {
+        if (auto* prop =
+                dynamic_cast<App::PropertyMaterialList*>(view->getPropertyByName("ShapeAppearance"))) {
+            mat = prop->getValues()[0];
+            material = mat.uuid.empty();
+            if (!material) {
+                d->ui.widgetMaterial->setMaterial(QString::fromStdString(mat.uuid));
+            }
+            break;
+        }
+    }
+    // d->ui.buttonUserDefinedMaterial->setEnabled(material);
+    d->ui.buttonUserDefinedMaterial->setEnabled(true);
 }
 
 void DlgDisplayPropertiesImp::setLineColor(const std::vector<Gui::ViewProvider*>& views)
@@ -668,6 +707,7 @@ void DlgDisplayPropertiesImp::onMaterialSelected(
                 material->getAppearanceProperty(QString::fromLatin1("Shininess"))->getFloat();
             mat.transparency =
                 material->getAppearanceProperty(QString::fromLatin1("Transparency"))->getFloat();
+            mat.uuid = material->getUUID().toStdString();
             prop->setValue(mat);
         }
     }

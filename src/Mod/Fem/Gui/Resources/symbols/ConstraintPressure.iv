@@ -1,0 +1,30 @@
+#Inventor V2.1 ascii
+
+
+Separator {
+
+  Separator {
+
+    Rotation {
+      rotation 1 0 0  3.1415927
+
+    }
+    Translation {
+      translation 0 -0.66666669 0
+    }
+    Cone {
+      bottomRadius 0.66666669
+      height 1.3333334
+
+    }
+    Translation {
+      translation 0 -2 0
+
+    }
+    Cylinder {
+      radius 0.26666668
+      height 2.6666667
+
+    }
+  }
+}

@@ -2344,24 +2344,6 @@ def get_three_non_colinear_nodes(
 
 
 # ************************************************************************************************
-def write_D_network_element_to_inputfile(
-    fileName
-):
-    # replace B32 elements with D elements for fluid section
-    f = open(fileName, "r+")
-    lines = f.readlines()
-    f.seek(0)
-    for line in lines:
-        if line.find("B32") == -1:
-            f.write(line)
-        else:
-            dummy = line.replace("B32", "D")
-            f.write(dummy)
-    f.truncate()
-    f.close()
-
-
-# ************************************************************************************************
 def use_correct_fluidinout_ele_def(
     FluidInletoutlet_ele,
     fileName,
@@ -2504,85 +2486,6 @@ def compact_mesh(
 
     # may be return another value if the mesh was compacted, just check last map entries
     return (new_mesh, node_map, elem_map)
-
-# ************************************************************************************************
-def beam_reduced_integration(
-    fileName
-):
-    # replace B3x elements with B3xR elements
-    f = open(fileName, "r+")
-    lines = f.readlines()
-    f.seek(0)
-    for line in lines:
-        if line.find("B32") != -1:
-            line = line.replace("B32", "B32R")
-        if line.find("B31") != -1:
-            line = line.replace("B31", "B31R")
-        f.write(line)
-    
-    f.truncate()
-    f.close()
-
-def plane_stress(
-    fileName
-):
-    # replace shell elements with plane stress elements
-    f = open(fileName, "r+")
-    lines = f.readlines()
-    f.seek(0)
-    for line in lines:
-        if line.find("S3") != -1:
-            line = line.replace("S3", "CPS3")
-        if line.find("S6") != -1:
-            line = line.replace("S6", "CPS6")
-        if line.find("S4") != -1:
-            line = line.replace("S4", "CPS4")
-        if line.find("S8") != -1:
-            line = line.replace("S8", "CPS8")
-        f.write(line)
-    
-    f.truncate()
-    f.close()
-def plane_strain(
-    fileName
-):
-    # replace shell elements with plane strain elements
-    f = open(fileName, "r+")
-    lines = f.readlines()
-    f.seek(0)
-    for line in lines:
-        if line.find("S3") != -1:
-            line = line.replace("S3", "CPE3")
-        if line.find("S6") != -1:
-            line = line.replace("S6", "CPE6")
-        if line.find("S4") != -1:
-            line = line.replace("S4", "CPE4")
-        if line.find("S8") != -1:
-            line = line.replace("S8", "CPE8")
-        f.write(line)
-    
-    f.truncate()
-    f.close()
-def axisymmetric(
-    fileName
-):
-    # replace shell elements with axisymmetric elements
-    f = open(fileName, "r+")
-    lines = f.readlines()
-    f.seek(0)
-    for line in lines:
-        if line.find("S3") != -1:
-            line = line.replace("S3", "CAX3")
-        if line.find("S6") != -1:
-            line = line.replace("S6", "CAX6")
-        if line.find("S4") != -1:
-            line = line.replace("S4", "CAX4")
-        if line.find("S8") != -1:
-            line = line.replace("S8", "CAX8")
-        f.write(line)
-    
-    f.truncate()
-    f.close()
 
 # ************************************************************************************************
 def sub_shape_at_global_placement(obj, sub_name):

@@ -38,12 +38,14 @@
 
 #include <Mod/Material/App/Exceptions.h>
 #include <Mod/Material/App/MaterialFilter.h>
+#include <Mod/Material/App/MaterialFilterPy.h>
 #include <Mod/Material/App/ModelUuids.h>
 
 #include "MaterialTreeWidget.h"
 #include "MaterialsEditor.h"
 #include "ui_MaterialsEditor.h"
 
+Q_DECLARE_METATYPE(Materials::MaterialFilterPy*)
 
 using Base::Console;
 using namespace MatGui;
@@ -51,7 +53,9 @@ using namespace MatGui;
 /** Constructs a Material tree widget.
  */
 
-MaterialTreeWidget::MaterialTreeWidget(std::shared_ptr<Materials::MaterialFilter> filter,
+TYPESYSTEM_SOURCE(MatGui::MaterialTreeWidget, Base::BaseClass)
+
+MaterialTreeWidget::MaterialTreeWidget(const std::shared_ptr<Materials::MaterialFilter>& filter,
                                        QWidget* parent)
     : QWidget(parent)
     , m_expanded(false)
@@ -60,10 +64,21 @@ MaterialTreeWidget::MaterialTreeWidget(std::shared_ptr<Materials::MaterialFilter
     setup();
 }
 
+MaterialTreeWidget::MaterialTreeWidget(
+    const std::shared_ptr<std::list<std::shared_ptr<Materials::MaterialFilter>>>& filterList,
+    QWidget* parent)
+    : QWidget(parent)
+    , m_expanded(false)
+    , _filter(std::make_shared<Materials::MaterialFilter>())
+    , _filterList(filterList)
+{
+    setup();
+}
+
 MaterialTreeWidget::MaterialTreeWidget(QWidget* parent)
     : QWidget(parent)
     , m_expanded(false)
-    , _filter(nullptr)
+    , _filter(std::make_shared<Materials::MaterialFilter>())
 {
     setup();
 }
@@ -80,7 +95,12 @@ void MaterialTreeWidget::setup()
 /**
  * Destroys the widget and detaches it from its parameter group.
  */
-MaterialTreeWidget::~MaterialTreeWidget() = default;
+MaterialTreeWidget::~MaterialTreeWidget()
+{
+    addRecent(m_uuid);
+    saveWidgetSettings();
+    saveMaterialTree();
+}
 
 void MaterialTreeWidget::createLayout()
 {
@@ -88,9 +108,9 @@ void MaterialTreeWidget::createLayout()
     m_expand = new QPushButton(this);
     m_expand->setIcon(style()->standardIcon(QStyle::SP_TitleBarUnshadeButton));
     m_materialTree = new QTreeView(this);
+    m_filterCombo = new QComboBox(this);
     m_editor = new QPushButton(tr("Launch editor"), this);
 
-    // m_materialTree->setSelectionModel(QAbstractItemView::SingleSelection);
     m_materialTree->setSelectionMode(QAbstractItemView::SingleSelection);
     m_materialTree->setSelectionBehavior(QAbstractItemView::SelectItems);
 
@@ -102,6 +122,7 @@ void MaterialTreeWidget::createLayout()
     treeLayout->addWidget(m_materialTree);
 
     auto buttonLayout = new QHBoxLayout();
+    buttonLayout->addWidget(m_filterCombo);
     buttonLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Preferred));
     buttonLayout->addWidget(m_editor);
 
@@ -112,17 +133,33 @@ void MaterialTreeWidget::createLayout()
     layout->addItem(buttonLayout);
     setLayout(layout);
 
-    // Start in an unexpanded state. Store the state?
-    openWidgetState(false);
+    // Set the filter if using a filter list
+    if (hasMultipleFilters()) {
+        _filter = _filterList->front();
+    }
+
+    fillFilterCombo();
+
+    // Start in the previous expanded state
+    auto param = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/TreeWidget");
+    auto expanded = param->GetBool("WidgetExpanded", false);
+    setExpanded(expanded);
 
     connect(m_expand, &QPushButton::clicked, this, &MaterialTreeWidget::expandClicked);
     connect(m_editor, &QPushButton::clicked, this, &MaterialTreeWidget::editorClicked);
+    connect(m_filterCombo,
+            &QComboBox::currentTextChanged,
+            this,
+            &MaterialTreeWidget::onFilter);
 }
 
-void MaterialTreeWidget::openWidgetState(bool open)
+void MaterialTreeWidget::setExpanded(bool open)
 {
     m_materialTree->setVisible(open);
     m_editor->setVisible(open);
+
+    setFilterVisible(open);
 
     m_expanded = open;
 
@@ -134,12 +171,33 @@ void MaterialTreeWidget::openWidgetState(bool open)
     }
 }
 
+void MaterialTreeWidget::setFilterVisible(bool open)
+{
+    if (open && hasMultipleFilters()) {
+        m_filterCombo->setVisible(true);
+    }
+    else {
+        m_filterCombo->setVisible(false);
+    }
+}
+
+void MaterialTreeWidget::fillFilterCombo()
+{
+    m_filterCombo->clear();
+    if (hasMultipleFilters()) {
+        for (auto const& filter : *_filterList) {
+            m_filterCombo->addItem(filter->name());
+        }
+    }
+}
+
+
 void MaterialTreeWidget::expandClicked(bool checked)
 {
     Q_UNUSED(checked)
 
     // Toggle the open state
-    openWidgetState(!m_expanded);
+    setExpanded(!m_expanded);
 }
 
 void MaterialTreeWidget::editorClicked(bool checked)
@@ -160,7 +218,7 @@ void MaterialTreeWidget::editorClicked(bool checked)
 
     // Gui::Application::Instance->commandManager().runCommandByName("Materials_Edit");
     // Toggle the open state
-    // openWidgetState(!m_expanded);
+    // setExpanded(!m_expanded);
 }
 
 void MaterialTreeWidget::updateMaterial(const QString& uuid)
@@ -212,8 +270,14 @@ QModelIndex MaterialTreeWidget::findInTree(const QString& uuid)
     auto root = model->invisibleRootItem();
 
     QModelIndex index;
-    if (findInTree(*root, &index, uuid)) {
-        return index;
+    // Find the original item, not the reference in favourites or recents
+    for (int i = 0; i < root->rowCount(); i++) {
+        auto child = root->child(i);
+        if (child->text() != tr("Favorites") && child->text() != tr("Recent")) {
+            if (findInTree(*child, &index, uuid)) {
+                return index;
+            }
+        }
     }
 
     return {};
@@ -231,6 +295,7 @@ void MaterialTreeWidget::setMaterial(const QString& uuid)
     if (index.isValid()) {
         QItemSelectionModel* selectionModel = m_materialTree->selectionModel();
         selectionModel->select(index, QItemSelectionModel::SelectCurrent);
+        m_materialTree->scrollTo(index);
     }
 }
 
@@ -239,12 +304,59 @@ QString MaterialTreeWidget::getMaterialUUID() const
     return m_uuid;
 }
 
-void MaterialTreeWidget::setFilter(std::shared_ptr<Materials::MaterialFilter> filter)
+void MaterialTreeWidget::setFilter(const std::shared_ptr<Materials::MaterialFilter>& filter)
 {
-    _filter.reset();
+    if (_filter) {
+        _filter.reset();
+    }
+    if (_filterList) {
+        _filterList.reset();
+    }
+
     _filter = filter;
 
+    fillFilterCombo();
+    setFilterVisible(m_expanded);
+
     updateMaterialTree();
+}
+
+void MaterialTreeWidget::setFilter(
+    const std::shared_ptr<std::list<std::shared_ptr<Materials::MaterialFilter>>>& filterList)
+{
+    _filter.reset();
+    if (_filterList) {
+        _filterList.reset();
+    }
+
+    _filterList = filterList;
+    if (hasMultipleFilters()) {
+        _filter = _filterList->front();
+    }
+
+    fillFilterCombo();
+    setFilterVisible(m_expanded);
+
+    updateMaterialTree();
+}
+
+void MaterialTreeWidget::setActiveFilter(const QString& name)
+{
+    if (_filterList) {
+        for (auto const& filter : *_filterList) {
+            if (filter->name() == name) {
+                _filter.reset();
+
+                _filter = filter;
+
+                // Save the library/folder expansion state
+                saveMaterialTree();
+                
+                updateMaterialTree();
+                return;
+            }
+        }
+    }
 }
 
 void MaterialTreeWidget::updateMaterialTree()
@@ -293,6 +405,70 @@ void MaterialTreeWidget::getRecents()
     }
 }
 
+void MaterialTreeWidget::saveRecents()
+{
+    auto param = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/Recent");
+
+    // Clear out the existing favorites
+    int count = param->GetInt("Recent", 0);
+    for (int i = 0; static_cast<long>(i) < count; i++) {
+        QString key = QString::fromLatin1("MRU%1").arg(i);
+        param->RemoveASCII(key.toStdString().c_str());
+    }
+
+    // Add the current values
+    int size = _recents.size();
+    if (size > _recentMax) {
+        size = _recentMax;
+    }
+    param->SetInt("Recent", size);
+    int j = 0;
+    for (auto& recent : _recents) {
+        QString key = QString::fromLatin1("MRU%1").arg(j);
+        param->SetASCII(key.toStdString().c_str(), recent.toStdString());
+
+        j++;
+        if (j >= size) {
+            break;
+        }
+    }
+}
+
+void MaterialTreeWidget::addRecent(const QString& uuid)
+{
+    // Ensure it is a material. New, unsaved materials will not be
+    try {
+        auto material = _materialManager.getMaterial(uuid);
+        Q_UNUSED(material)
+    }
+    catch (const Materials::MaterialNotFound&) {
+        return;
+    }
+
+    // Ensure no duplicates
+    if (isRecent(uuid)) {
+        _recents.remove(uuid);
+    }
+
+    _recents.push_front(uuid);
+    while (_recents.size() > static_cast<std::size_t>(_recentMax)) {
+        _recents.pop_back();
+    }
+
+    saveRecents();
+}
+
+bool MaterialTreeWidget::isRecent(const QString& uuid) const
+{
+    for (auto& it : _recents) {
+        if (it == uuid) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void MaterialTreeWidget::createMaterialTree()
 {
     auto model = new QStandardItemModel(this);
@@ -312,36 +488,44 @@ void MaterialTreeWidget::createMaterialTree()
 
 void MaterialTreeWidget::fillMaterialTree()
 {
+    auto param = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/TreeWidget/MaterialTree");
+
     auto model = dynamic_cast<QStandardItemModel*>(m_materialTree->model());
 
-    auto lib = new QStandardItem(tr("Favorites"));
-    lib->setFlags(Qt::ItemIsEnabled);
-    addExpanded(model, lib);
-    addFavorites(lib);
+    if (_filterOptions.includeFavorites()) {
+        auto lib = new QStandardItem(tr("Favorites"));
+        lib->setFlags(Qt::ItemIsEnabled);
+        addExpanded(model, lib, param);
+        addFavorites(lib);
+    }
 
-    lib = new QStandardItem(tr("Recent"));
-    lib->setFlags(Qt::ItemIsEnabled);
-    addExpanded(model, lib);
-    addRecents(lib);
-
-    // // Create a filter to only include current format materials
-    // // that contain the basic render model.
-    // Materials::MaterialFilter filter;
-    // filter.setIncludeEmptyFolders(false);
-    // filter.setIncludeLegacy(false);
-    // filter.addRequired(Materials::ModelUUIDs::ModelUUID_Rendering_Basic);
+    if (_filterOptions.includeRecent()) {
+        auto lib = new QStandardItem(tr("Recent"));
+        lib->setFlags(Qt::ItemIsEnabled);
+        addExpanded(model, lib, param);
+        addRecents(lib);
+    }
 
     auto libraries = _materialManager.getMaterialLibraries();
     for (const auto& library : *libraries) {
-        lib = new QStandardItem(library->getName());
-        lib->setFlags(Qt::ItemIsEnabled);
-        addExpanded(model, lib);
+        auto modelTree = _materialManager.getMaterialTree(library, _filter, _filterOptions);
 
-        QIcon icon(library->getIconPath());
-        QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
+        bool showLibraries = _filterOptions.includeEmptyLibraries();
+        if (!_filterOptions.includeEmptyLibraries() && modelTree->size() > 0) {
+            showLibraries = true;
+        }
 
-        auto modelTree = _materialManager.getMaterialTree(library, _filter);
-        addMaterials(*lib, modelTree, folderIcon, icon);
+        if (showLibraries) {
+            auto lib = new QStandardItem(library->getName());
+            lib->setFlags(Qt::ItemIsEnabled);
+            addExpanded(model, lib, param);
+
+            QIcon icon(library->getIconPath());
+            QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
+
+            addMaterials(*lib, modelTree, folderIcon, icon, param);
+        }
     }
 }
 
@@ -351,10 +535,32 @@ void MaterialTreeWidget::addExpanded(QStandardItem* parent, QStandardItem* child
     m_materialTree->setExpanded(child->index(), true);
 }
 
+void MaterialTreeWidget::addExpanded(QStandardItem* parent,
+                                     QStandardItem* child,
+                                     const Base::Reference<ParameterGrp>& param)
+{
+    parent->appendRow(child);
+
+    // Restore to any previous expansion state
+    auto expand = param->GetBool(child->text().toStdString().c_str(), true);
+    m_materialTree->setExpanded(child->index(), expand);
+}
+
 void MaterialTreeWidget::addExpanded(QStandardItemModel* model, QStandardItem* child)
 {
     model->appendRow(child);
     m_materialTree->setExpanded(child->index(), true);
+}
+
+void MaterialTreeWidget::addExpanded(QStandardItemModel* model,
+                                     QStandardItem* child,
+                                     const Base::Reference<ParameterGrp>& param)
+{
+    model->appendRow(child);
+
+    // Restore to any previous expansion state
+    auto expand = param->GetBool(child->text().toStdString().c_str(), true);
+    m_materialTree->setExpanded(child->index(), expand);
 }
 
 void MaterialTreeWidget::addRecents(QStandardItem* parent)
@@ -397,17 +603,16 @@ void MaterialTreeWidget::addMaterials(
     const std::shared_ptr<std::map<QString, std::shared_ptr<Materials::MaterialTreeNode>>>&
         modelTree,
     const QIcon& folderIcon,
-    const QIcon& icon)
+    const QIcon& icon,
+    const Base::Reference<ParameterGrp>& param)
 {
+    auto childParam = param->GetGroup(parent.text().toStdString().c_str());
     for (auto& mat : *modelTree) {
         auto nodePtr = mat.second;
         if (nodePtr->getType() == Materials::MaterialTreeNode::DataNode) {
             auto material = nodePtr->getData();
             QString uuid = material->getUUID();
-            // Base::Console().Log("Material path '%s'\n",
-            //                     material->getDirectory().toStdString().c_str());
 
-            // auto card = new QStandardItem(icon, material->getName());
             auto card = new QStandardItem(icon, mat.first);
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
             card->setData(QVariant(uuid), Qt::UserRole);
@@ -416,10 +621,10 @@ void MaterialTreeWidget::addMaterials(
         }
         else {
             auto node = new QStandardItem(folderIcon, mat.first);
-            addExpanded(&parent, node);
+            addExpanded(&parent, node, childParam);
             node->setFlags(Qt::ItemIsEnabled);
             auto treeMap = nodePtr->getFolder();
-            addMaterials(*node, treeMap, folderIcon, icon);
+            addMaterials(*node, treeMap, folderIcon, icon, childParam);
         }
     }
 }
@@ -446,6 +651,7 @@ void MaterialTreeWidget::onSelectMaterial(const QItemSelection& selected,
     std::string _uuid = uuid.toStdString();
 
     Q_EMIT materialSelected(getMaterialManager().getMaterial(uuid));
+    Q_EMIT onMaterial(uuid);
 }
 
 void MaterialTreeWidget::onDoubleClick(const QModelIndex& index)
@@ -456,5 +662,50 @@ void MaterialTreeWidget::onDoubleClick(const QModelIndex& index)
     if (item) {
         auto uuid = item->data(Qt::UserRole).toString();
         updateMaterial(uuid);
+    }
+}
+
+void MaterialTreeWidget::onFilter(const QString& text)
+{
+    setActiveFilter(text);
+}
+
+void MaterialTreeWidget::saveWidgetSettings()
+{
+    auto param = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/TreeWidget");
+    param->SetBool("WidgetExpanded", m_expanded);
+}
+
+void MaterialTreeWidget::saveMaterialTree()
+{
+    auto param = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/TreeWidget/MaterialTree");
+    param->Clear();
+
+    auto tree = m_materialTree;
+    auto model = dynamic_cast<QStandardItemModel*>(tree->model());
+
+    auto root = model->invisibleRootItem();
+    for (int i = 0; i < root->rowCount(); i++) {
+        auto child = root->child(i);
+        saveMaterialTreeChildren(param, tree, model, child);
+    }
+}
+
+void MaterialTreeWidget::saveMaterialTreeChildren(const Base::Reference<ParameterGrp>& param,
+                                                  QTreeView* tree,
+                                                  QStandardItemModel* model,
+                                                  QStandardItem* item)
+{
+    if (item->hasChildren()) {
+        param->SetBool(item->text().toStdString().c_str(), tree->isExpanded(item->index()));
+
+        auto treeParam = param->GetGroup(item->text().toStdString().c_str());
+        for (int i = 0; i < item->rowCount(); i++) {
+            auto child = item->child(i);
+
+            saveMaterialTreeChildren(treeParam, tree, model, child);
+        }
     }
 }

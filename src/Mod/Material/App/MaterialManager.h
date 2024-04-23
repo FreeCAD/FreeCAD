@@ -24,8 +24,6 @@
 
 #include <memory>
 
-#include <QMutex>
-
 #include <boost/filesystem.hpp>
 
 #include <Mod/Material/MaterialGlobal.h>
@@ -34,8 +32,11 @@
 #include "Materials.h"
 
 #include "MaterialLibrary.h"
+#include "MaterialFilter.h"
 
 namespace fs = boost::filesystem;
+
+class QMutex;
 
 namespace App
 {
@@ -44,8 +45,6 @@ class Material;
 
 namespace Materials
 {
-
-class MaterialFilter;
 
 class MaterialsExport MaterialManager: public Base::BaseClass
 {
@@ -77,13 +76,22 @@ public:
     getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
                     const std::shared_ptr<Materials::MaterialFilter>& filter) const
     {
-        return library->getMaterialTree(filter);
+        MaterialFilterOptions options;
+        return library->getMaterialTree(filter, options);
+    }
+    std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
+    getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
+                    const std::shared_ptr<Materials::MaterialFilter>& filter,
+                    const MaterialFilterOptions& options) const
+    {
+        return library->getMaterialTree(filter, options);
     }
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
     getMaterialTree(const std::shared_ptr<MaterialLibrary>& library) const
     {
         std::shared_ptr<Materials::MaterialFilter> filter;
-        return library->getMaterialTree(filter);
+        MaterialFilterOptions options;
+        return library->getMaterialTree(filter, options);
     }
     std::shared_ptr<std::list<QString>>
     getMaterialFolders(const std::shared_ptr<MaterialLibrary>& library) const;
