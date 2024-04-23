@@ -600,7 +600,7 @@ qsizetype PythonWrapper::toEnum(const Py::Object& pyobject)
     try {
         Py::Int ret;
         if (pyobject.hasAttr(std::string("value"))) {
-            ret = pyobject.getAttr(std::string("value"));
+            ret = Py::Int(pyobject.getAttr(std::string("value")));
         } else {
             ret = Py::Int(pyobject);
         }
