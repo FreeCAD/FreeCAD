@@ -348,7 +348,7 @@ bool normalizeConvertIndex(const std::vector<App::DocumentObject*>& objs, const 
 {
     if (auto ext = objs[idx - 1]->getExtensionByType<App::LinkBaseExtension>(true)) {
         if ((ext->getElementCountValue() != 0) && !ext->getShowElementValue()) {
-            // if the parent is a collapsed link array element, then we
+            // If the parent is a collapsed link array element, then we
             // have to keep the index no matter what, because there is
             // no sub-object corresponding to an array element.
             return true;
@@ -376,7 +376,7 @@ bool SubObjectT::normalize(NormalizeOptions options)
         return false;
     }
     for (unsigned i = 1; i < objs.size(); ++i) {
-        // Keep digit only subname, as it maybe an index to an array, which does
+        // Keep digit-only subname, as it maybe an index to an array, which does
         // not expand its elements as objects.
         const char* end = subname.c_str() + subs[i];
         const char* sub = end - 2;
@@ -391,7 +391,7 @@ bool SubObjectT::normalize(NormalizeOptions options)
             }
         }
         bool _keepSub {};
-        if (std::isdigit(sub[0]) == 0) {
+        if (!std::isdigit(sub[0])) {
             _keepSub = keepSub;
         }
         else if (!convertIndex) {
@@ -454,7 +454,7 @@ bool SubObjectT::hasSubObject() const
 bool SubObjectT::hasSubElement() const
 {
     auto element = getElementName();
-    return (element != nullptr) && (element[0] != 0);
+    return element && (element[0] != '\0');
 }
 
 std::string SubObjectT::getNewElementName() const {

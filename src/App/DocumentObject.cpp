@@ -899,10 +899,10 @@ getSubObjectListFlatten(const std::vector<App::DocumentObject*>& resNotFlatten,
 {
     auto res {resNotFlatten};
     auto linked = sobj->getLinkedObject();
-    if (container) {
+    if (*container) {
         auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(linked);
         if (grp != *container) {
-            container = nullptr;
+            *container = nullptr;
         }
         else {
             if (lastChild && !res.empty()) {
@@ -920,12 +920,12 @@ getSubObjectListFlatten(const std::vector<App::DocumentObject*>& resNotFlatten,
     }
     else if (linked != sobj || sobj->hasChildElement()) {
         // Check for Link or LinkGroup
-        container = nullptr;
+        *container = nullptr;
     }
     else if (auto ext = sobj->getExtensionByType<LinkBaseExtension>(true)) {
         // check for Link array
         if (ext->getElementCountValue() != 0) {
-            container = nullptr;
+            *container = nullptr;
         }
     }
     return res;
@@ -941,7 +941,7 @@ std::vector<DocumentObject*> DocumentObject::getSubObjectList(const char* subnam
     if (subsizes) {
         subsizes->push_back(0);
     }
-    if (!subname || (subname[0] == 0)) {
+    if (!subname || (subname[0] == '\0')) {
         return res;
     }
     auto element = Data::findElementName(subname);
@@ -961,7 +961,7 @@ std::vector<DocumentObject*> DocumentObject::getSubObjectList(const char* subnam
     }
     for (auto pos = sub.find('.'); pos != std::string::npos; pos = sub.find('.', pos + 1)) {
         char subTail = sub[pos + 1];
-        sub[pos + 1] = 0;
+        sub[pos + 1] = '\0';
         auto sobj = getSubObject(sub.c_str());
         if (!sobj || !sobj->isAttachedToDocument()) {
             continue;

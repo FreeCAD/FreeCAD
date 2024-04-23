@@ -62,7 +62,7 @@ TEST_F(DocumentObjectTest, getSubObjectList)
     // A vector of int used as argument for the call of DocumentObject::getSubObjectList() with
     // argument flatten set to true
     auto sizesFlatten {std::vector<int>()};
-    // An helper string used to compose the argument of some calls of
+    // A helper string used to compose the argument of some calls of
     // Base::Interpreter().runString()
     auto cmd {std::string()};
 
@@ -133,17 +133,18 @@ TEST_F(DocumentObjectTest, getSubObjectList)
 
     // If DocumentObject::getSubObjectList() is called with the subsizes argument it returns the
     // same vector of the previous case and the subsizes argument stores the positions in the
-    // subname string corresponding to start of the sub objects names
+    // subname string corresponding to start of the sub objects names.
+    // The position takes into account also the '.' in the subname
     EXPECT_EQ(docSubObjsWithSubSizes.size(), 3);
     EXPECT_EQ(docSubObjsWithSubSizes[0]->getID(), _doc->getObject(partName)->getID());
     EXPECT_EQ(docSubObjsWithSubSizes[1]->getID(), _doc->getObject(fuseName)->getID());
     EXPECT_EQ(docSubObjsWithSubSizes[2]->getID(), _doc->getObject(boxName)->getID());
     EXPECT_EQ(sizesNoFlatten.size(), 3);
     EXPECT_EQ(sizesNoFlatten[0], 0);
-    EXPECT_EQ(sizesNoFlatten[1], 7);
-    EXPECT_EQ(sizesNoFlatten[2], 17);
+    EXPECT_EQ(sizesNoFlatten[1], strlen(fuseName) + 1);
+    EXPECT_EQ(sizesNoFlatten[2], strlen(fuseName) + strlen(boxName) + 2);
 
-    // If DocumentObject::getSubObjectList() is called with the flatten argument set to true it
+    // If DocumentObject::getSubObjectList() is called with the flattened argument set to true, it
     // returns a vector with all the sub objects in the subname that don't belong to the same
     // App::GeoFeatureGroupExtension object, plus one entry with the object that called the method
     EXPECT_EQ(docSubObjsFlatten.size(), 2);
@@ -151,7 +152,7 @@ TEST_F(DocumentObjectTest, getSubObjectList)
     EXPECT_EQ(docSubObjsFlatten[1]->getID(), _doc->getObject(boxName)->getID());
     EXPECT_EQ(sizesFlatten.size(), 2);
     EXPECT_EQ(sizesFlatten[0], 0);
-    EXPECT_EQ(sizesFlatten[1], 17);
+    EXPECT_EQ(sizesFlatten[1], strlen(fuseName) + strlen(boxName) + 2);
 }
 
 // NOLINTEND(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)

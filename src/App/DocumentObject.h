@@ -384,7 +384,7 @@ public:
      * @param flatten: whether to flatten the object hierarchies that belong to
      *                 the same geo feature group, e.g. (Part.Fusion.Box -> Part.Box)
      *
-     * @return Return a list of object along the path.
+     * @return Return a list of objects along the path.
      */
     std::vector<DocumentObject*> getSubObjectList(const char* subname,
                                                   std::vector<int>* subsizes = nullptr,
