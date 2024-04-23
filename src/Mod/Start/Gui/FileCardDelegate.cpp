@@ -32,12 +32,13 @@
 #include <QLabel>
 #include <QModelIndex>
 #include <QVBoxLayout>
-#include <QGuiApplication>
+#include <QApplication>
 #endif
 
 #include "FileCardDelegate.h"
 #include "../App/DisplayedFilesModel.h"
 #include "App/Application.h"
+#include <App/Color.h>
 #include <3rdParty/GSL/include/gsl/pointers>
 
 using namespace Start;
@@ -49,6 +50,32 @@ FileCardDelegate::FileCardDelegate(QObject* parent)
         "User parameter:BaseApp/Preferences/Mod/Start");
 }
 
+QColor FileCardDelegate::getBorderColor() const
+{
+    QColor color(98, 160, 234);  // NOLINT
+    uint32_t packed = App::Color::asPackedRGB<QColor>(color);
+    packed = _parameterGroup->GetUnsigned("FileThumbnailBorderColor", packed);
+    color = App::Color::fromPackedRGB<QColor>(packed);
+    return color;
+}
+
+QColor FileCardDelegate::getBackgroundColor() const
+{
+    QColor color(221, 221, 221);  // NOLINT
+    uint32_t packed = App::Color::asPackedRGB<QColor>(color);
+    packed = _parameterGroup->GetUnsigned("FileThumbnailBackgroundColor", packed);
+    color = App::Color::fromPackedRGB<QColor>(packed);
+    return color;
+}
+
+QColor FileCardDelegate::getSelectionColor() const
+{
+    QColor color(38, 162, 105);  // NOLINT
+    uint32_t packed = App::Color::asPackedRGB<QColor>(color);
+    packed = _parameterGroup->GetUnsigned("FileThumbnailSelectionColor", packed);
+    color = App::Color::fromPackedRGB<QColor>(packed);
+    return color;
+}
 
 void FileCardDelegate::paint(QPainter* painter,
                              const QStyleOptionViewItem& option,
@@ -63,6 +90,7 @@ void FileCardDelegate::paint(QPainter* painter,
     auto path = index.data(static_cast<int>(DisplayedFilesModelRoles::path)).toString();
     painter->save();
     auto widget = gsl::owner<QWidget*>(new QWidget());
+    widget->setObjectName(QLatin1String("thumbnailWidget"));
     auto layout = gsl::owner<QVBoxLayout*>(new QVBoxLayout());
     widget->setLayout(layout);
     auto thumbnail = gsl::owner<QLabel*>(new QLabel());
@@ -81,6 +109,40 @@ void FileCardDelegate::paint(QPainter* painter,
     }
     thumbnail->setFixedSize(thumbnailSize, thumbnailSize);
     thumbnail->setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
+
+    if (option.state & QStyle::State_Selected) {
+        QColor color = getSelectionColor();
+        widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
+                                                  " border: 2px solid rgb(%1, %2, %3);"
+                                                  " border-radius: 4px;"
+                                                  " padding: 2px;"
+                                                  "}")
+                                  .arg(color.red())
+                                  .arg(color.green())
+                                  .arg(color.blue()));
+    }
+    else if (option.state & QStyle::State_MouseOver) {
+        QColor color = getBorderColor();
+        widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
+                                                  " border: 2px solid rgb(%1, %2, %3);"
+                                                  " border-radius: 4px;"
+                                                  " padding: 2px;"
+                                                  "}")
+                                  .arg(color.red())
+                                  .arg(color.green())
+                                  .arg(color.blue()));
+    }
+    else if (qApp->styleSheet().isEmpty()) {
+        QColor color = getBackgroundColor();
+        widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
+                                                  " background-color: rgb(%1, %2, %3);"
+                                                  " border-radius: 8px;"
+                                                  "}")
+                                  .arg(color.red())
+                                  .arg(color.green())
+                                  .arg(color.blue()));
+    }
+
     auto elided =
         painter->fontMetrics().elidedText(baseName, Qt::TextElideMode::ElideRight, cardWidth);
     auto name = gsl::owner<QLabel*>(new QLabel(elided));
@@ -103,7 +165,7 @@ QSize FileCardDelegate::sizeHint(const QStyleOptionViewItem& option, const QMode
     Q_UNUSED(option)
     Q_UNUSED(index)
     auto thumbnailSize = _parameterGroup->GetInt("FileThumbnailIconsSize", 128);  // NOLINT
-    auto cardSpacing = _parameterGroup->GetInt("FileCardSpacing", 20);            // NOLINT
+    auto cardSpacing = _parameterGroup->GetInt("FileCardSpacing", 30);            // NOLINT
     auto cardWidth = thumbnailSize + cardSpacing;
 
     auto font = QGuiApplication::font();

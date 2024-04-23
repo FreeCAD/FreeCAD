@@ -85,6 +85,7 @@ protected:
     void fileCardSelected(const QModelIndex& index);
 
     void showOnStartupChanged(bool checked);
+    QString fileCardStyle() const;
 
 private:
     QScrollArea* _contents = nullptr;

@@ -45,6 +45,11 @@ protected:
     QPixmap generateThumbnail(const QString& path) const;
 
 private:
+    QColor getBorderColor() const;
+    QColor getBackgroundColor() const;
+    QColor getSelectionColor() const;
+
+private:
     Base::Reference<ParameterGrp> _parameterGroup;
 };
 
