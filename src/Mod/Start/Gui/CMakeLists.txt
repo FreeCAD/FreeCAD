@@ -53,6 +53,8 @@ SET(StartGui_SRCS
         FileCardDelegate.h
         FileCardView.cpp
         FileCardView.h
+        FlowLayout.cpp
+        FlowLayout.h
         Manipulator.cpp
         Manipulator.h
         PreCompiled.cpp
