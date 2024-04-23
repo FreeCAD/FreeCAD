@@ -88,9 +88,11 @@ QByteArray loadFCStdThumbnail(const std::string& pathToFCStdFile)
     if (proj.loadDocument()) {
         try {
             std::string thumbnailFile = proj.extractInputFile("thumbnails/Thumbnail.png");
-            auto inputFile = QFile(QString::fromStdString(thumbnailFile));
-            inputFile.open(QIODevice::OpenModeFlag::ReadOnly);
-            return inputFile.readAll();
+            if (!thumbnailFile.empty()) {
+                auto inputFile = QFile(QString::fromStdString(thumbnailFile));
+                inputFile.open(QIODevice::OpenModeFlag::ReadOnly);
+                return inputFile.readAll();
+            }
         }
         catch (...) {
         }
