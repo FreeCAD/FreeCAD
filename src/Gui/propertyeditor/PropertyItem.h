@@ -90,13 +90,10 @@ class GuiExport PropertyItemFactory : public Base::Factory
 {
 public:
     static PropertyItemFactory& instance();
-    static void destruct ();
 
     PropertyItem* createPropertyItem (const char* sName) const;
 
 private:
-    static PropertyItemFactory* _singleton;
-
     PropertyItemFactory() = default;
     ~PropertyItemFactory() override = default;
 };

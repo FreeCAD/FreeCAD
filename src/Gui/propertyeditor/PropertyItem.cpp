@@ -82,20 +82,10 @@ float fromPercent(int value)
 
 }
 
-Gui::PropertyEditor::PropertyItemFactory* Gui::PropertyEditor::PropertyItemFactory::_singleton = nullptr;
-
 PropertyItemFactory& PropertyItemFactory::instance()
 {
-    if (!_singleton) {
-        _singleton = new PropertyItemFactory;
-    }
-    return *_singleton;
-}
-
-void PropertyItemFactory::destruct ()
-{
-    delete _singleton;
-    _singleton = nullptr;
+    static PropertyItemFactory inst;
+    return inst;
 }
 
 PropertyItem* PropertyItemFactory::createPropertyItem (const char* sName) const
