@@ -75,7 +75,7 @@ public:
     };
 
 protected:
-    void configureNewFileButtons(QGridLayout* layout) const;
+    void configureNewFileButtons(QLayout* layout) const;
     static void configureFileCardWidget(QListView* fileCardWidget);
     void configureRecentFilesListWidget(QListView* recentFilesListWidget, QLabel* recentFilesLabel);
     void configureExamplesListWidget(QListView* examplesListWidget);

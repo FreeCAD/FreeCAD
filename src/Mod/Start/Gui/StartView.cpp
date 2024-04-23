@@ -37,6 +37,7 @@
 #include "StartView.h"
 #include "FileCardDelegate.h"
 #include "FileCardView.h"
+#include "FlowLayout.h"
 #include "Gui/Workbench.h"
 #include <Gui/Document.h>
 #include <App/DocumentObject.h>
@@ -64,8 +65,9 @@ gsl::owner<QPushButton*> createNewButton(const NewButton& newButton)
 {
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
-    const auto cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 20));      // NOLINT
-    const auto newFileIconSize = static_cast<int>(hGrp->GetInt("NewFileIconSize", 48));  // NOLINT
+    const auto cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 20));       // NOLINT
+    const auto newFileIconSize = static_cast<int>(hGrp->GetInt("NewFileIconSize", 48));   // NOLINT
+    const auto cardLabelWith = static_cast<int>(hGrp->GetInt("FileCardLabelWith", 180));  // NOLINT
 
     auto button = gsl::owner<QPushButton*>(new QPushButton());
     auto mainLayout = gsl::owner<QHBoxLayout*>(new QHBoxLayout(button));
@@ -88,6 +90,7 @@ gsl::owner<QPushButton*> createNewButton(const NewButton& newButton)
     mainLayout->addStretch();
 
     button->setMinimumHeight(newFileIconSize + cardSpacing);
+    button->setMinimumWidth(newFileIconSize + cardLabelWith);
     return button;
 }
 
@@ -137,9 +140,9 @@ StartView::StartView(Gui::Document* pcDocument, QWidget* parent)
 
     auto newFileLabel = gsl::owner<QLabel*>(new QLabel(h1Start + tr("New File") + h1End));
     layout->addWidget(newFileLabel);
-    auto gridLayout = gsl::owner<QGridLayout*>(new QGridLayout);
-    layout->addLayout(gridLayout);
-    configureNewFileButtons(gridLayout);
+    auto flowLayout = gsl::owner<FlowLayout*>(new FlowLayout);
+    layout->addLayout(flowLayout);
+    configureNewFileButtons(flowLayout);
 
     auto recentFilesLabel = gsl::owner<QLabel*>(new QLabel(h1Start + tr("Recent Files") + h1End));
     layout->addWidget(recentFilesLabel);
@@ -165,7 +168,7 @@ StartView::StartView(Gui::Document* pcDocument, QWidget* parent)
     configureRecentFilesListWidget(recentFilesListWidget, recentFilesLabel);
 }
 
-void StartView::configureNewFileButtons(QGridLayout* layout) const
+void StartView::configureNewFileButtons(QLayout* layout) const
 {
     auto newEmptyFile = createNewButton({tr("Empty file"),
                                          tr("Create a new empty FreeCAD file"),
@@ -200,22 +203,12 @@ void StartView::configureNewFileButtons(QGridLayout* layout) const
 
     // TODO: Ensure all of the required WBs are actually available
     // TODO: Make this layout more flexible (e.g. use a single line if possible)
-    if (!hGrp->GetBool("FileCardSingleLine", true)) {
-        layout->addWidget(partDesign, 0, 0);
-        layout->addWidget(assembly, 0, 1);
-        layout->addWidget(draft, 0, 2);
-        layout->addWidget(arch, 1, 0);
-        layout->addWidget(newEmptyFile, 1, 1);
-        layout->addWidget(openFile, 1, 2);
-    }
-    else {
-        layout->addWidget(partDesign, 0, 0);
-        layout->addWidget(assembly, 0, 1);
-        layout->addWidget(draft, 0, 2);
-        layout->addWidget(arch, 0, 3);
-        layout->addWidget(newEmptyFile, 0, 4);
-        layout->addWidget(openFile, 0, 5);
-    }
+    layout->addWidget(partDesign);
+    layout->addWidget(assembly);
+    layout->addWidget(draft);
+    layout->addWidget(arch);
+    layout->addWidget(newEmptyFile);
+    layout->addWidget(openFile);
 
     connect(newEmptyFile, &QPushButton::clicked, this, &StartView::newEmptyFile);
     connect(openFile, &QPushButton::clicked, this, &StartView::openExistingFile);
