@@ -39,7 +39,7 @@
 #include "../App/DisplayedFilesModel.h"
 #include "App/Application.h"
 #include <App/Color.h>
-#include <3rdParty/GSL/include/gsl/pointers>
+#include <gsl/pointers>
 
 using namespace Start;
 
