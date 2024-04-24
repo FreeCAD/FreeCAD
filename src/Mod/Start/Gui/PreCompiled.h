@@ -43,8 +43,8 @@
 #include <unordered_map>
 
 // Qt
+#include <QApplication>
 #include <QCheckBox>
-#include <QCoreApplication>
 #include <QFile>
 #include <QFileIconProvider>
 #include <QGridLayout>
