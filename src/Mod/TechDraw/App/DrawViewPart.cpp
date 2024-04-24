@@ -1263,6 +1263,129 @@ Base::Vector3d DrawViewPart::getXDirection() const
     return result;
 }
 
+
+void DrawViewPart::rotate(const std::string& rotationdirection)
+{
+    std::pair<Base::Vector3d, Base::Vector3d> newDirs;
+    if (rotationdirection == "Right")
+        newDirs = getDirsFromFront("Left");// Front -> Right -> Rear -> Left -> Front
+    else if (rotationdirection == "Left")
+        newDirs = getDirsFromFront("Right");// Front -> Left -> Rear -> Right -> Front
+    else if (rotationdirection == "Up")
+        newDirs = getDirsFromFront("Bottom");// Front -> Top -> Rear -> Bottom -> Front
+    else if (rotationdirection == "Down")
+        newDirs = getDirsFromFront("Top");// Front -> Bottom -> Rear -> Top -> Front
+
+    Direction.setValue(newDirs.first);
+    XDirection.setValue(newDirs.second);
+    recompute();
+}
+
+void DrawViewPart::spin(const std::string& spindirection)
+{
+    double angle;
+    if (spindirection == "CW")
+        angle = M_PI / 2.0;// Top -> Right -> Bottom -> Left -> Top
+    if (spindirection == "CCW")
+        angle = -M_PI / 2.0;// Top -> Left -> Bottom -> Right -> Top
+
+    spin(angle);
+}
+
+void DrawViewPart::spin(double angle)
+{
+    Base::Vector3d org(0.0, 0.0, 0.0);
+    Base::Vector3d curRot = getXDirection();
+    Base::Vector3d curDir = Direction.getValue();
+    Base::Vector3d newRot = DrawUtil::vecRotate(curRot, angle, curDir, org);
+
+    XDirection.setValue(newRot);
+    recompute();
+}
+
+std::pair<Base::Vector3d, Base::Vector3d> DrawViewPart::getDirsFromFront(std::string viewType)
+{
+    //    Base::Console().Message("DVP::getDirsFromFront(%s)\n", viewType.c_str());
+    std::pair<Base::Vector3d, Base::Vector3d> result;
+
+    Base::Vector3d projDir, rotVec;
+
+    Base::Vector3d org(0.0, 0.0, 0.0);
+    gp_Ax2 anchorCS = getProjectionCS(org);
+    gp_Pnt gOrg(0.0, 0.0, 0.0);
+    gp_Dir gDir = anchorCS.Direction();
+    gp_Dir gXDir = anchorCS.XDirection();
+    gp_Dir gYDir = anchorCS.YDirection();
+    gp_Ax1 gUpAxis(gOrg, gYDir);
+    gp_Ax2 newCS;
+    gp_Dir gNewDir;
+    gp_Dir gNewXDir;
+
+    double angle = M_PI / 2.0;//90*
+
+    if (viewType == "Right") {
+        newCS = anchorCS.Rotated(gUpAxis, angle);
+        projDir = dir2vec(newCS.Direction());
+        rotVec = dir2vec(newCS.XDirection());
+    }
+    else if (viewType == "Left") {
+        newCS = anchorCS.Rotated(gUpAxis, -angle);
+        projDir = dir2vec(newCS.Direction());
+        rotVec = dir2vec(newCS.XDirection());
+    }
+    else if (viewType == "Top") {
+        projDir = dir2vec(gYDir);
+        rotVec = dir2vec(gXDir);
+    }
+    else if (viewType == "Bottom") {
+        projDir = dir2vec(gYDir.Reversed());
+        rotVec = dir2vec(gXDir);
+    }
+    else if (viewType == "Rear") {
+        projDir = dir2vec(gDir.Reversed());
+        rotVec = dir2vec(gXDir.Reversed());
+    }
+    else if (viewType == "FrontTopLeft") {
+        gp_Dir newDir = gp_Dir(gp_Vec(gDir) - gp_Vec(gXDir) + gp_Vec(gYDir));
+        projDir = dir2vec(newDir);
+        gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) + gp_Vec(gDir));
+        rotVec = dir2vec(newXDir);
+    }
+    else if (viewType == "FrontTopRight") {
+        gp_Dir newDir = gp_Dir(gp_Vec(gDir) + gp_Vec(gXDir) + gp_Vec(gYDir));
+        projDir = dir2vec(newDir);
+        gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) - gp_Vec(gDir));
+        rotVec = dir2vec(newXDir);
+    }
+    else if (viewType == "FrontBottomLeft") {
+        gp_Dir newDir = gp_Dir(gp_Vec(gDir) - gp_Vec(gXDir) - gp_Vec(gYDir));
+        projDir = dir2vec(newDir);
+        gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) + gp_Vec(gDir));
+        rotVec = dir2vec(newXDir);
+    }
+    else if (viewType == "FrontBottomRight") {
+        gp_Dir newDir = gp_Dir(gp_Vec(gDir) + gp_Vec(gXDir) - gp_Vec(gYDir));
+        projDir = dir2vec(newDir);
+        gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) - gp_Vec(gDir));
+        rotVec = dir2vec(newXDir);
+    }
+    else {
+        // not one of the standard view directions, so complain and use the values for "Front"
+        Base::Console().Error("DrawViewPart - %s unknown projection: %s\n", getNameInDocument(),
+            viewType.c_str());
+        Base::Vector3d dirAnch = Direction.getValue();
+        Base::Vector3d rotAnch = getXDirection();
+        return std::make_pair(dirAnch, rotAnch);
+    }
+
+    return std::make_pair(projDir, rotVec);
+}
+
+Base::Vector3d DrawViewPart::dir2vec(gp_Dir d)
+{
+    return Base::Vector3d(d.X(), d.Y(), d.Z());
+}
+
 Base::Vector3d DrawViewPart::getLegacyX(const Base::Vector3d& pt, const Base::Vector3d& axis,
                                         const bool flip) const
 {

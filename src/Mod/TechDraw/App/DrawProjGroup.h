@@ -129,6 +129,7 @@ public:
 
     void rotate(const std::string &rotationdirection);
     void spin(const std::string &spindirection);
+    void spin(double angle);
 
     void dumpISO(const char * title);
     std::vector<DrawProjGroupItem*> getViewsAsDPGI();

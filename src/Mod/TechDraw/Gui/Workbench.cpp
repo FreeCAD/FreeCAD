@@ -294,12 +294,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_View";
     *views << "TechDraw_BrokenView";
     *views << "TechDraw_ActiveView";
-    *views << "TechDraw_ProjectionGroup";
     *views << "TechDraw_SectionGroup";
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
-    *views << "TechDraw_ArchView";
-    *views << "TechDraw_SpreadsheetView";
     *views << "TechDraw_ClipGroup";
     *views << "TechDraw_ProjectShape";
 
@@ -364,8 +361,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_Hatch";
     *decor << "TechDraw_GeometricHatch";
-    *decor << "TechDraw_Symbol";
-    *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
 
     Gui::ToolBarItem* anno = new Gui::ToolBarItem(root);
@@ -401,11 +396,9 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     views->setCommand("Views");
     *views << "TechDraw_View";
     *views << "TechDraw_ActiveView";
-    *views << "TechDraw_ProjectionGroup";
     *views << "TechDraw_SectionGroup";
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
-    *views << "TechDraw_SpreadsheetView";
     *views << "TechDraw_ClipGroup";
     *views << "TechDraw_ProjectShape";
 
@@ -470,8 +463,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_Hatch";
     *decor << "TechDraw_GeometricHatch";
-    *decor << "TechDraw_Symbol";
-    *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
 
     Gui::ToolBarItem* anno = new Gui::ToolBarItem(root);
