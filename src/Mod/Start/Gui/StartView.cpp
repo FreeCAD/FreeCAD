@@ -45,7 +45,7 @@
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <3rdParty/GSL/include/gsl/pointers>
+#include <gsl/pointers>
 
 using namespace StartGui;
 

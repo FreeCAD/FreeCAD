@@ -35,7 +35,7 @@
 #include <Gui/MainWindow.h>
 
 
-#include <3rdParty/GSL/include/gsl/pointers>
+#include <gsl/pointers>
 
 #include "Manipulator.h"
 #include "StartView.h"

@@ -36,7 +36,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/MenuManager.h>
 
-#include <3rdParty/GSL/include/gsl/pointers>
+#include <gsl/pointers>
 
 DEF_STD_CMD(CmdStart)
 

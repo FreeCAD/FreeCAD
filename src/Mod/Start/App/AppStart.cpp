@@ -29,7 +29,7 @@
 
 #include <Base/PyObjectBase.h>
 
-#include <3rdParty/GSL/include/gsl/pointers>
+#include <gsl/pointers>
 
 namespace Start
 {
