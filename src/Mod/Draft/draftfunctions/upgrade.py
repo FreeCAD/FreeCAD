@@ -227,7 +227,7 @@ def upgrade(objects, delete=False, force=None):
                 # of downgrade, nor do they have the same hashCode().
                 # Nevertheless, they still keep reference to their original
                 # colors, capture that in facecolors.
-                # Also, cannot use ShapeAppearance here, we need a whole array
+                # Also, cannot use ShapeColor here, we need a whole array
                 # matching the colors of the array of faces per object,
                 # only DiffuseColor has that
                 facecolors[0].extend(obj.ViewObject.DiffuseColor)
