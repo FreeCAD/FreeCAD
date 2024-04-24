@@ -44,6 +44,8 @@ FileCardView::FileCardView(QWidget* parent)
     setFlow(QListView::Flow::LeftToRight);
     setResizeMode(QListView::ResizeMode::Adjust);
     setUniformItemSizes(true);
+    setMouseTracking(true);
+    setSpacing(20);
 }
 
 int FileCardView::heightForWidth(int width) const
@@ -82,6 +84,5 @@ QSize FileCardView::sizeHint() const
     return {(cardSize.width() + cardSpacing) * numCards + cardSpacing,
             cardSize.height() + 2 * cardSpacing};
 }
-
 
 }  // namespace StartGui
