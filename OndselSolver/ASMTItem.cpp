@@ -83,6 +83,12 @@ FRowDsptr MbD::ASMTItem::readRowOfDoubles(std::string& line)
 	return readRowOfDoubles;
 }
 
+FRowDsptr MbD::ASMTItem::readRowOfDoublesOffTop(std::vector<std::string>& lines)
+{
+	auto str = popOffTop(lines);
+	return readRowOfDoubles(str);
+}
+
 FColDsptr MbD::ASMTItem::readColumnOfDoubles(std::string& line)
 {
 	std::istringstream iss(line);
@@ -92,6 +98,12 @@ FColDsptr MbD::ASMTItem::readColumnOfDoubles(std::string& line)
 		readColumnOfDoubles->push_back(d);
 	}
 	return readColumnOfDoubles;
+}
+
+FColDsptr MbD::ASMTItem::readColumnOfDoublesOffTop(std::vector<std::string>& lines)
+{
+	auto str = popOffTop(lines);
+	return readColumnOfDoubles(str);
 }
 
 double MbD::ASMTItem::readDouble(std::string& line)

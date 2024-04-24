@@ -39,3 +39,4 @@ assembly.asmt
 build
 cmake-build-debug
 .idea
+temp/

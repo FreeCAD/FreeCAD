@@ -441,6 +441,12 @@ void MbD::ASMTAssembly::runFile(const char* fileName)
 	}
 }
 
+void MbD::ASMTAssembly::runDraggingLogTest()
+{
+	auto assembly = ASMTAssembly::assemblyFromFile("../testapp/runPreDrag.asmt");
+	assembly->runDraggingLog("../testapp/dragging.log");
+}
+
 void MbD::ASMTAssembly::runDraggingTest()
 {
 	//auto assembly = ASMTAssembly::assemblyFromFile("../testapp/pistonWithLimits.asmt");
@@ -915,7 +921,12 @@ void MbD::ASMTAssembly::readTimes(std::vector<std::string>& lines)
 	assert(pos != std::string::npos);
 	str.erase(0, pos + substr.length());
 	times = readRowOfDoubles(str);
-	times->insert(times->begin(), times->at(0));	//The first element is the input state.
+	if (times->empty()) {
+		times->insert(times->begin(), 0.0);	//The first element is the input state.
+	}
+	else {
+		times->insert(times->begin(), times->at(0));	//The first element is the input state.
+	}
 	lines.erase(lines.begin());
 }
 
@@ -1033,6 +1044,47 @@ void MbD::ASMTAssembly::readMotionSeries(std::vector<std::string>& lines)
 		});
 	auto& motion = *it;
 	motion->readMotionSeries(lines);
+}
+
+void MbD::ASMTAssembly::runDraggingLog(const char* fileName)
+{
+	std::ifstream stream(fileName);
+	if (stream.fail()) {
+		throw std::invalid_argument("File not found.");
+	}
+	std::string line;
+	std::vector<std::string> lines;
+	while (std::getline(stream, line)) {
+		lines.push_back(line);
+	}
+	assert(readStringOffTop(lines) == "runPreDrag");
+	runPreDrag();
+	while (lines[0].find("runDragStep") != std::string::npos)
+	{
+		assert(readStringOffTop(lines) == "runDragStep");
+		auto dragParts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
+		while (lines[0].find("Name") != std::string::npos) {
+			assert(readStringOffTop(lines) == "Name");
+			auto dragPartName = readStringOffTop(lines);
+			std::string longerName = "/" + name + "/" + dragPartName;
+			auto dragPart = partAt(longerName);
+			dragParts->push_back(dragPart);
+			assert(readStringOffTop(lines) == "Position3D");
+			auto dragPartPosition3D = readColumnOfDoublesOffTop(lines);
+			dragPart->updateMbDFromPosition3D(dragPartPosition3D);
+			assert(readStringOffTop(lines) == "RotationMatrix");
+			auto dragPartRotationMatrix = std::make_shared<FullMatrix<double>>(3);
+			for (size_t i = 0; i < 3; i++)
+			{
+				auto row = readRowOfDoublesOffTop(lines);
+				dragPartRotationMatrix->atiput(i, row);
+			}
+			dragPart->updateMbDFromRotationMatrix(dragPartRotationMatrix);
+		}
+		runDragStep(dragParts);
+	}
+	assert(readStringOffTop(lines) == "runPostDrag");
+	runPostDrag();
 }
 
 void MbD::ASMTAssembly::outputFor(AnalysisType)
@@ -1236,15 +1288,10 @@ void MbD::ASMTAssembly::runPreDrag()
 	}
 	mbdSystem = std::make_shared<System>();
 	mbdSystem->externalSystem->asmtAssembly = this;
-	try {
-		mbdSystem->runPreDrag(mbdSystem);
-	}
-	catch (SimulationStoppingError ex) {
-
-	}
+	mbdSystem->runPreDrag(mbdSystem);
 }
 
-void MbD::ASMTAssembly::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> dragParts) const
+void MbD::ASMTAssembly::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> dragParts)
 {
 	if (debug) {
 		std::ofstream os("dragging.log", std::ios_base::app);
@@ -1264,7 +1311,12 @@ void MbD::ASMTAssembly::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<
 		auto dragMbDPart = std::static_pointer_cast<Part>(dragPart->mbdObject);
 		dragMbDParts->push_back(dragMbDPart);
 	}
-	mbdSystem->runDragStep(dragMbDParts);
+	try {
+		mbdSystem->runDragStep(dragMbDParts);
+	}
+	catch (...) {
+		runPreDrag();
+	}
 }
 
 void MbD::ASMTAssembly::runPostDrag()
@@ -1278,12 +1330,7 @@ void MbD::ASMTAssembly::runPostDrag()
 	debug = false;
 	mbdSystem = std::make_shared<System>();
 	mbdSystem->externalSystem->asmtAssembly = this;
-	try {
-		mbdSystem->runPreDrag(mbdSystem);
-	}
-	catch (SimulationStoppingError ex) {
-
-	}
+	mbdSystem->runPreDrag(mbdSystem);
 }
 
 void MbD::ASMTAssembly::runKINEMATIC()
@@ -1316,6 +1363,14 @@ std::shared_ptr<ASMTSpatialContainer> MbD::ASMTAssembly::spatialContainerAt(std:
 		});
 	auto& part = *it;
 	return part;
+}
+
+std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partAt(std::string& longname) const
+{
+	for (auto& part : *parts) {
+		if (part->fullName("") == longname) return part;
+	}
+	return nullptr;
 }
 
 std::shared_ptr<ASMTMarker> MbD::ASMTAssembly::markerAt(std::string& longname) const

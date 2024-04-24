@@ -26,6 +26,7 @@ void sharedptrTest();
 
 int main()
 {
+	ASMTAssembly::runDraggingLogTest();
 	ASMTAssembly::runDraggingTest2();
 	ASMTAssembly::runDraggingTest3();
 	ASMTAssembly::runDraggingTest();
