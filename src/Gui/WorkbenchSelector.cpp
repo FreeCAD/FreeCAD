@@ -117,7 +117,7 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
         std::string activeWbName = WorkbenchManager::instance()->activeName();
         for (int i = 0; i < count(); ++i) {
             if (wbActionGroup->actions()[i]->objectName().toStdString() == activeWbName) {
-                setCurrentIndex(i);
+                setCurrentIndex(i + 1);
                 break;
             }
         }
@@ -145,7 +145,10 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
     refreshList(aGroup->getEnabledWbActions());
     connect(aGroup, &WorkbenchGroup::workbenchListRefreshed, this, &WorkbenchTabWidget::refreshList);
     connect(aGroup->groupAction(), &QActionGroup::triggered, this, [this, aGroup](QAction* action) {
-        int index = std::min<int>(aGroup->actions().indexOf(action), this->count() - 1);
+        int index = aGroup->actions().indexOf(action) + 1;
+        if (index > this->count() - 1) {
+            index = 0;
+        }
         setCurrentIndex(index);
     });
     connect(this, qOverload<int>(&QTabBar::tabBarClicked), aGroup, [aGroup, moreAction](int index) {
