@@ -519,10 +519,14 @@ void SoDatumLabel::computeBBox(SoAction * action, SbBox3f &box, SbVec3f &center)
 SbVec3f SoDatumLabel::getLabelTextCenter()
 {
     // Get the points stored
+    int numPts = this->pnts.getNum();
+    if (numPts < 2) {
+        return {};
+    }
+
     const SbVec3f* points = this->pnts.getValues(0);
     SbVec3f p1 = points[0];
     SbVec3f p2 = points[1];
-    SbVec3f p3 = points[2];
 
     if (datumtype.getValue() == SoDatumLabel::DISTANCE ||
         datumtype.getValue() == SoDatumLabel::DISTANCEX ||
@@ -538,7 +542,10 @@ SbVec3f SoDatumLabel::getLabelTextCenter()
         return getLabelTextCenterAngle(p1);
     }
     else if (datumtype.getValue() == SoDatumLabel::ARCLENGTH) {
-        return getLabelTextCenterArcLength(p1, p2, p3);
+        if (numPts >= 3) {
+            SbVec3f p3 = points[2];
+            return getLabelTextCenterArcLength(p1, p2, p3);
+        }
     }
 
     return p1;
@@ -865,14 +872,19 @@ void SoDatumLabel::generateArcLengthPrimitives(SoAction * action, const SbVec3f&
 void SoDatumLabel::generatePrimitives(SoAction * action)
 {
     // Initialisation check (needs something more sensible) prevents an infinite loop bug
-    if (this->imgHeight <= FLT_EPSILON || this->imgWidth <= FLT_EPSILON)
+    if (this->imgHeight <= FLT_EPSILON || this->imgWidth <= FLT_EPSILON) {
         return;
+    }
+
+    int numPts = this->pnts.getNum();
+    if (numPts < 2) {
+        return;
+    }
 
     // Get the points stored
     const SbVec3f *points = this->pnts.getValues(0);
     SbVec3f p1 = points[0];
     SbVec3f p2 = points[1];
-    SbVec3f p3 = points[2];
 
     // Change the offset and bounding box parameters depending on Datum Type
     if (this->datumtype.getValue() == DISTANCE ||
@@ -896,7 +908,10 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
     }
     else if (this->datumtype.getValue() == ARCLENGTH) {
 
-        generateArcLengthPrimitives(action, p1, p2, p3);
+        if (numPts >= 3) {
+            SbVec3f p3 = points[2];
+            generateArcLengthPrimitives(action, p1, p2, p3);
+        }
     }
 }
 
