@@ -164,6 +164,7 @@ void FileCardDelegate::paint(QPainter* painter,
     widget->render(painter, QPoint(), QRegion(), QWidget::DrawChildren);
     painter->restore();
     delete pixmap;
+    delete widget;
 }
 
 

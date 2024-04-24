@@ -266,7 +266,7 @@ QString StartView::fileCardStyle() const
 
 void StartView::configureFileCardWidget(QListView* fileCardWidget)
 {
-    auto delegate = gsl::owner<FileCardDelegate*>(new FileCardDelegate);
+    auto delegate = gsl::owner<FileCardDelegate*>(new FileCardDelegate(fileCardWidget));
     fileCardWidget->setItemDelegate(delegate);
     fileCardWidget->setMinimumWidth(fileCardWidget->parentWidget()->width());
     //    fileCardWidget->setGridSize(
