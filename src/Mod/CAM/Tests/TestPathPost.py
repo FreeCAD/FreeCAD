@@ -34,12 +34,13 @@ import Path.Post.Utils as PostUtils
 
 from Path.Post.Processor import PostProcessor, PostProcessorFactory
 
-from Path.Post.Command import processFileNameSubstitutions, DlgSelectPostProcessor
+#from Path.Post.Command import processFileNameSubstitutions, DlgSelectPostProcessor
+from Path.Post.Command import DlgSelectPostProcessor
 
 # If KEEP_DEBUG_OUTPUT is False, remove the gcode file after the test succeeds.
 # If KEEP_DEBUG_OUTPUT is True or the test fails leave the gcode file behind
 # so it can be looked at easily.
-KEEP_DEBUG_OUTPUT = False
+KEEP_DEBUG_OUTPUT = True
 
 PathCommand.LOG_MODULE = Path.Log.thisModule()
 Path.Log.setLevel(Path.Log.Level.DEBUG, PathCommand.LOG_MODULE)
@@ -47,33 +48,248 @@ Path.Log.setLevel(Path.Log.Level.DEBUG, PathCommand.LOG_MODULE)
 
 class TestFileNameGenerator(unittest.TestCase):
 
-    def setUp(self):
-        self.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/boxtest.fcstd")
-        self.job = self.doc.getObject("Job")
+    """
+    String substitution allows the following:
+    %D ... directory of the active document
+    %d ... name of the active document (with extension)
+    %M ... user macro directory
+    %j ... name of the active Job object
 
-    def tearDown(self):
-        FreeCAD.closeDocument("boxtest")
+
+    The Following can be used if output is being split. If Output is not split
+    these will be ignored.
+    %S ... Sequence Number (default)
+
+    %T ... Tool Number
+    %t ... Tool Controller label
+
+    %W ... Work Coordinate System
+    %O ... Operation Label
+
+        self.job.Fixtures = ["G54"]
+        self.job.SplitOutput = False
+        self.job.OrderOutputBy = "Fixture"
+
+    Assume:
+    active document: self.assertTrue(filename, f"{home}/testdoc.fcstd
+    user macro: ~/.local/share/FreeCAD/Macro
+    Job:  MainJob
+    Operations:
+        OutsideProfile
+        DrillAllHoles
+    TC: 7/16" two flute  (5)
+    TC: Drill (2)
+    Fixtures: (G54, G55)
+
+    Strings should be sanitized like this to ensure valid filenames
+    # import re
+    # filename="TC: 7/16" two flute"
+    # >>> re.sub(r"[^\w\d-]","_",filename)
+    # "TC__7_16__two_flute"
+
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        # cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/boxtest.fcstd")
+        # cls.job = cls.doc.getObject("Job")
+
+        cls.testfile = FreeCAD.getHomePath() + "Mod/CAM/Tests/test_filenaming.fcstd"
+        cls.testfilepath, cls.testfilename = os.path.split(cls.testfile)
+        cls.testfilename, cls.ext = os.path.splitext(cls.testfilename)
+
+        cls.doc = FreeCAD.open(cls.testfile)
+        cls.job = cls.doc.getObjectsByLabel("MainJob")[0]
+        cls.macro = FreeCAD.getUserMacroDir()
+        cls.job.SplitOutput = False
+
+    @classmethod
+    def tearDownClass(cls):
+        FreeCAD.closeDocument(cls.doc.Name)
 
     # def test010(self):
-    #     # Assuming PostUtils.FilenameGenerator has been imported correctly
-    #     generator = PostUtils.FilenameGenerator(job=self.job, base_output_path="output",
-    #                                             filename_template="file", extension=".nc")
+    #     self.job.PostProcessorOutputFile = ""
+    #     generator = PostUtils.FilenameGenerator(job=self.job)
 
     #     filename_generator = generator.generate_filenames()
-    #     for i in range(5):
+    #     generated_filename = next(filename_generator)
+    #     self.assertEqual(generated_filename, "-Job.nc")
+
+    # def test020(self):
+    #     generator = PostUtils.FilenameGenerator(job=self.job)
+    #     filename_generator = generator.generate_filenames()
+    #     expected_filenames = ["-Job.nc"] + [f"-Job-{i}.nc" for i in range(1, 5)]
+    #     print(expected_filenames)
+    #     for expected_filename in expected_filenames:
     #         generated_filename = next(filename_generator)
-    #         expected_filename = f"output/file-{i}.nc"
     #         self.assertEqual(generated_filename, expected_filename)
 
+    # def setUp(self):
+    #     self.testfile = FreeCAD.getHomePath() + "Mod/CAM/Tests/test_filenaming.fcstd"
+    #     self.testfilepath, self.testfilename = os.path.split(self.testfile)
+    #     self.testfilename, self.ext = os.path.splitext(self.testfilename)
+
+    #     self.doc = FreeCAD.open(self.testfile)
+    #     self.job = self.doc.getObjectsByLabel("MainJob")[0]
+    #     self.macro = FreeCAD.getUserMacroDir()
+    #     self.job.SplitOutput = False
+
+    # def tearDown(self):
+    #     FreeCAD.closeDocument(self.doc.Name)
+
+    def test000(self):
+        # Test basic name generation with empty string
+        FreeCAD.setActiveDocument(self.doc.Label)
+        teststring = ""
+        self.job.PostProcessorOutputFile = teststring
+        Path.Preferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        filename_generator = generator.generate_filenames()
+        filename = next(filename_generator)
+        # outlist = PathPost.buildPostList(self.job)
+
+        # self.assertTrue(len(outlist) == 1)
+        # subpart, objs = outlist[0]
+
+        # filename = PathPost.resolveFileName(self.job, subpart, 0)
+        self.assertEqual(filename, os.path.normpath(f"{self.testfilename}.nc"))
 
     def test010(self):
-        generator = PostUtils.FilenameGenerator(job=self.job, base_output_path="output",
-                                                filename_template="file", extension=".nc")
+        # Substitute current file path
+        teststring = "%D/testfile.nc"
+        self.job.PostProcessorOutputFile = teststring
+        Path.Preferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
         filename_generator = generator.generate_filenames()
-        expected_filenames = ["output/file.nc"] + [f"output/file-{i}.nc" for i in range(1, 5)]
+        filename = next(filename_generator)
+
+        print(os.path.normpath(filename))
+        self.assertEqual(
+            filename,
+            os.path.normpath(f"{self.testfilepath}/testfile.nc"),
+        )
+
+    def test015(self):
+        # Test basic string substitution without splitting
+        teststring = "~/Desktop/%j.nc"
+        self.job.PostProcessorOutputFile = teststring
+        Path.Preferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
+        # outlist = PathPost.buildPostList(self.job)
+
+        # self.assertTrue(len(outlist) == 1)
+        # subpart, objs = outlist[0]
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        filename_generator = generator.generate_filenames()
+        filename = next(filename_generator)
+
+        # filename = PathPost.resolveFileName(self.job, subpart, 0)
+        self.assertEqual(
+            os.path.normpath(filename), os.path.normpath("~/Desktop/MainJob.nc")
+        )
+
+    def test020(self):
+        teststring = "%d.nc"
+        self.job.PostProcessorOutputFile = teststring
+        Path.Preferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        filename_generator = generator.generate_filenames()
+        filename = next(filename_generator)
+
+        self.assertEqual(filename, f"{self.testfilename}.nc")
+
+    def test030(self):
+        teststring = "%M/outfile.nc"
+        self.job.PostProcessorOutputFile = teststring
+        Path.Preferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        filename_generator = generator.generate_filenames()
+        filename = next(filename_generator)
+
+        self.assertEqual(filename, os.path.normpath(f"{self.macro}outfile.nc"))
+
+    def test040(self):
+        # unused substitution strings should be ignored
+        teststring = "%d%T%t%W%O/testdoc.nc"
+        self.job.PostProcessorOutputFile = teststring
+        Path.Preferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        filename_generator = generator.generate_filenames()
+        filename = next(filename_generator)
+
+        self.assertEqual(
+            filename,
+            os.path.normpath(f"{self.testfilename}/testdoc.nc"),
+        )
+
+    def test045(self):
+        """Testing the sequence number substitution"""
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        filename_generator = generator.generate_filenames()
+        expected_filenames = [f"test_filenaming{os.sep}testdoc.nc"] + [
+            f"test_filenaming{os.sep}testdoc-{i}.nc" for i in range(1, 5)
+        ]
         for expected_filename in expected_filenames:
-            generated_filename = next(filename_generator)
-            self.assertEqual(generated_filename, expected_filename)
+            filename = next(filename_generator)
+            self.assertEqual(filename, os.path.normpath(expected_filename))
+
+    def test046(self):
+        """Testing the sequence number substitution"""
+        teststring = "%S-%d.nc"
+        self.job.PostProcessorOutputFile = teststring
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        filename_generator = generator.generate_filenames()
+        expected_filenames = [f"{i}-test_filenaming.nc" for i in range(5)]
+        for expected_filename in expected_filenames:
+            filename = next(filename_generator)
+            self.assertEqual(filename, os.path.normpath(expected_filename))
+
+    def test050(self):
+        # explicitly using the sequence number should include it where indicated.
+        teststring = "%S-%d.nc"
+        self.job.PostProcessorOutputFile = teststring
+        Path.Preferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        filename_generator = generator.generate_filenames()
+        filename = next(filename_generator)
+
+        self.assertEqual(filename, os.path.normpath("0-test_filenaming.nc"))
+
+    def test060(self):
+        """ Test subpart naming"""
+        teststring = "%M/outfile.nc"
+        self.job.PostProcessorOutputFile = teststring
+        Path.Preferences.setOutputFileDefaults(
+            teststring, "Append Unique ID on conflict"
+        )
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        generator.set_subpartname("Tool")
+        filename_generator = generator.generate_filenames()
+        filename = next(filename_generator)
+
+        self.assertEqual(filename, os.path.normpath(f"{self.macro}outfile-Tool.nc"))
+
 
 class TestResolvingPostProcessorName(unittest.TestCase):
     def setUp(self):
@@ -87,13 +303,13 @@ class TestResolvingPostProcessorName(unittest.TestCase):
 
     def test010(self):
         # Test if post is defined in job
-        with patch('Path.Post.Processor.PostProcessor.exists', return_value=True):
+        with patch("Path.Post.Processor.PostProcessor.exists", return_value=True):
             postname = PathCommand._resolve_post_processor_name(self.job)
             self.assertEqual(postname, "linuxcnc")
 
     def test020(self):
         # Test if post is invalid
-        with patch('Path.Post.Processor.PostProcessor.exists', return_value=False):
+        with patch("Path.Post.Processor.PostProcessor.exists", return_value=False):
             with self.assertRaises(ValueError):
                 PathCommand._resolve_post_processor_name(self.job)
 
@@ -102,7 +318,7 @@ class TestResolvingPostProcessorName(unittest.TestCase):
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
         pref.SetString("PostProcessorDefault", "grbl")
         self.job.PostProcessor = ""
-        with patch('Path.Post.Processor.PostProcessor.exists', return_value=True):
+        with patch("Path.Post.Processor.PostProcessor.exists", return_value=True):
             postname = PathCommand._resolve_post_processor_name(self.job)
             self.assertEqual(postname, "grbl")
 
@@ -110,14 +326,16 @@ class TestResolvingPostProcessorName(unittest.TestCase):
         # Test if user interaction is correctly handled
         self.job.PostProcessor = ""
         if FreeCAD.GuiUp:
-            with patch('Path.Post.Command.DlgSelectPostProcessor') as mock_dlg, \
-                    patch('Path.Post.Processor.PostProcessor.exists', return_value=True):
-                mock_dlg.return_value.exec_.return_value = 'generic'
+            with patch("Path.Post.Command.DlgSelectPostProcessor") as mock_dlg, patch(
+                "Path.Post.Processor.PostProcessor.exists", return_value=True
+            ):
+                mock_dlg.return_value.exec_.return_value = "generic"
                 postname = PathCommand._resolve_post_processor_name(self.job)
-                self.assertEqual(postname, 'generic')
+                self.assertEqual(postname, "generic")
         else:
             with self.assertRaises(ValueError):
                 PathCommand._resolve_post_processor_name(self.job)
+
 
 class TestPostProcessorFactory(unittest.TestCase):
     """Test creation of postprocessor objects."""
@@ -128,7 +346,6 @@ class TestPostProcessorFactory(unittest.TestCase):
 
     def tearDown(self):
         FreeCAD.closeDocument("boxtest")
-
 
     def test020(self):
         # test creation of postprocessor object
@@ -143,98 +360,135 @@ class TestPostProcessorFactory(unittest.TestCase):
         self.assertTrue(post is not None)
         self.assertTrue(hasattr(post, "_buildPostList"))
 
+    # def test100(self):
+    #     """Test the processFileNameSubstitutions function."""
 
-    def test100(self):
-        """Test the processFileNameSubstitutions function."""
+    #     document_dir = os.path.dirname(FreeCAD.ActiveDocument.FileName)
+    #     Path.Log.debug(f"document_dir: {document_dir}")
 
-        document_dir = os.path.dirname(FreeCAD.ActiveDocument.FileName)
-        Path.Log.debug(f"document_dir: {document_dir}")
+    #     user_macro_dir = os.path.dirname(FreeCAD.getUserMacroDir())
+    #     Path.Log.debug(f"user_macro_dir: {user_macro_dir}")
 
-        user_macro_dir = os.path.dirname(FreeCAD.getUserMacroDir())
-        Path.Log.debug(f"user_macro_dir: {user_macro_dir}")
+    #     outputpath = "%D/output"
+    #     filename = "outputfile-%j-%d"
+    #     ext = ".txt"
+    #     expected_path = f"{document_dir}{os.path.sep}output/outputfile-{self.job.Label}-{self.doc.Label}{ext}"
 
-        outputpath = "%D/output"
-        filename = "outputfile-%j-%d"
-        ext = ".txt"
-        expected_path = f"{document_dir}{os.path.sep}output/outputfile-{self.job.Label}-{self.doc.Label}{ext}"
+    #     # Call the function
+    #     result = processFileNameSubstitutions(
+    #         self.job, "Subpart", 1, outputpath, filename, ext
+    #     )
 
-        # Call the function
-        result = processFileNameSubstitutions(self.job, "Subpart", 1, outputpath, filename, ext)
+    #     Path.Log.debug(f"result: {result}")
 
-        Path.Log.debug(f"result: {result}")
+    #     self.assertEqual(result, expected_path)
 
-        self.assertEqual(result, expected_path)
+    #     # test macro path substitution
+    #     outputpath = "%M/output"
+    #     filename = "file-%j"
+    #     ext = ".txt"
 
-        # test macro path substitution
-        outputpath = "%M/output"
-        filename = "file-%j"
-        ext = ".txt"
+    #     result = processFileNameSubstitutions(
+    #         self.job, "Subpart", 1, outputpath, filename, ext
+    #     )
+    #     expected_path = f"{user_macro_dir}/output/file-{self.job.Label}.txt"
 
-        result = processFileNameSubstitutions(self.job, "Subpart", 1, outputpath, filename, ext)
-        expected_path = f"{user_macro_dir}/output/file-{self.job.Label}.txt"
+    #     self.assertEqual(result, expected_path)
 
-        self.assertEqual(result, expected_path)
+    #     # test job name substitution
+    #     document_label = FreeCAD.ActiveDocument.Label
+    #     outputpath = "output/%d"
+    #     filename = "file-%d-%j"
+    #     ext = ".txt"
 
-        # test job name substitution
-        document_label = FreeCAD.ActiveDocument.Label
-        outputpath = "output/%d"
-        filename = "file-%d-%j"
-        ext = ".txt"
+    #     result = processFileNameSubstitutions(
+    #         self.job, "Subpart", 1, outputpath, filename, ext
+    #     )
+    #     expected_path = (
+    #         f"output/{document_label}/file-{document_label}-{self.job.Label}.txt"
+    #     )
 
-        result = processFileNameSubstitutions(self.job, "Subpart", 1, outputpath, filename, ext)
-        expected_path = f"output/{document_label}/file-{document_label}-{self.job.Label}.txt"
+    #     self.assertEqual(result, expected_path)
 
-        self.assertEqual(result, expected_path)
+    #     # test sequence number substitution
+    #     outputpath = "output"
+    #     filename = "file-%S"
+    #     ext = ".txt"
 
-        # test sequence number substitution
-        outputpath = "output"
-        filename = "file-%S"
-        ext = ".txt"
+    #     result = processFileNameSubstitutions(
+    #         self.job, "Subpart", 42, outputpath, filename, ext
+    #     )
+    #     expected_path = f"output/file-42.txt"
 
-        result = processFileNameSubstitutions(self.job, "Subpart", 42, outputpath, filename, ext)
-        expected_path = f"output/file-42.txt"
+    #     self.assertEqual(result, expected_path)
 
-        self.assertEqual(result, expected_path)
+    #     # test tool number substitution
+    #     outputpath = "output"
+    #     filename = "file"
+    #     ext = ""
 
-        # test tool number substitution
-        outputpath = "output"
-        filename = "file"
-        ext = ""
+    #     result = processFileNameSubstitutions(
+    #         self.job, "Subpart", 1, outputpath, filename, ext
+    #     )
+    #     expected_path = f"output/file.nc"  # Expect default .nc extension
 
-        result = processFileNameSubstitutions(self.job, "Subpart", 1, outputpath, filename, ext)
-        expected_path = f"output/file.nc"  # Expect default .nc extension
-
-        self.assertEqual(result, expected_path)
+    #     self.assertEqual(result, expected_path)
 
 
 class TestPostProcessorClass(unittest.TestCase):
     """Test new post structure objects."""
 
     def setUp(self):
-        self.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/boxtest.fcstd")
-        self.job = self.doc.getObject("Job")
-        post = PostProcessorFactory.get_post_processor(self.job, "generic")
+        pass
 
     def tearDown(self):
-        FreeCAD.closeDocument("boxtest")
+        FreeCAD.closeDocument(FreeCAD.ActiveDocument.Name)
 
-class TestPostProcessorScript(unittest.TestCase):
-    """Test old-school posts"""
+    def test010(self):
+        """Test the export function."""
+        doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/boxtest.fcstd")
+        job = doc.getObject("Job")
+        post = PostProcessorFactory.get_post_processor(job, "linuxcnc")
+        sections = post.export()
+        for sec in sections:
+            print(sec[0])
 
-    def setUp(self):
-        self.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/boxtest.fcstd")
-        self.job = self.doc.getObject("Job")
-        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc")
+    def test020(self):
+        """Test the export function with splitting."""
+        doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/test_filenaming.fcstd")
+        job = doc.getObject("Job")
+        post = PostProcessorFactory.get_post_processor(job, "linuxcnc")
+        sections = post.export()
+        for sec in sections:
+            print(sec[0])
 
-    def tearDown(self):
-        FreeCAD.closeDocument("boxtest")
+    def test030(self):
+        """Test the export function with splitting."""
+        doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/test_filenaming.fcstd")
+        job = doc.getObject("Job")
+        post = PostProcessorFactory.get_post_processor(job, "generic")
+        sections = post.export()
+        for sec in sections:
+            print(sec[0])
 
+
+# class TestPostProcessorScript(unittest.TestCase):
+#     """Test old-school posts"""
+
+#     def setUp(self):
+#         self.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/boxtest.fcstd")
+#         self.job = self.doc.getObject("Job")
+#         post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc")
+#         results = post.export()
+
+#     def tearDown(self):
+#         FreeCAD.closeDocument("boxtest")
 
     ##
     ## You can run just this test using:
     ## ./FreeCAD -c -t Tests.TestPathPost.TestPathPost.test_postprocessors
     ##
-    #def test_postprocessors(self):
+    # def test_postprocessors(self):
     #    """Test the postprocessors."""
     #    #
     #    # The tests are performed in the order they are listed:
@@ -410,13 +664,13 @@ class TestPathPostUtils(unittest.TestCase):
         )
 
 
-#def dumpgroup(group):
-    #print("====Dump Group======")
-    #for i in group:
-    #    print(i[0])
-    #    for j in i[1]:
-    #        print(f"--->{j.Name}")
-    #print("====================")
+# def dumpgroup(group):
+# print("====Dump Group======")
+# for i in group:
+#    print(i[0])
+#    for j in i[1]:
+#        print(f"--->{j.Name}")
+# print("====================")
 
 
 class TestBuildPostList(unittest.TestCase):
@@ -648,8 +902,7 @@ class TestOutputNameSubstitution(unittest.TestCase):
         subpart, objs = outlist[0]
         filename = PathPost.resolveFileName(self.job, subpart, 0)
         self.assertEqual(
-            os.path.normpath(filename),
-            os.path.normpath(f"{self.macro}outfile.nc")
+            os.path.normpath(filename), os.path.normpath(f"{self.macro}outfile.nc")
         )
 
     def test040(self):
