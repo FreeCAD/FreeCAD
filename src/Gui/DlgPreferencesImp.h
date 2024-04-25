@@ -27,6 +27,7 @@
 #define GUI_DIALOG_DLGPREFERENCESIMP_H
 
 #include <QDialog>
+#include <QStyledItemDelegate>
 #include <QStandardItemModel>
 #include <QStackedWidget>
 #include <memory>
@@ -54,6 +55,19 @@ public:
 private:
     QWidget* _widget = nullptr;
     bool _expanded = false;
+};
+
+class PreferencesDelegate : public QStyledItemDelegate
+{
+    Q_OBJECT
+
+public:
+    explicit PreferencesDelegate(QObject *parent = nullptr);
+
+    bool helpEvent(QHelpEvent *event,
+                   QAbstractItemView *view,
+                   const QStyleOptionViewItem &option,
+                   const QModelIndex &index) override;
 };
 
 /**

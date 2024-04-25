@@ -78,6 +78,29 @@ QModelIndex findRootIndex(const QModelIndex& index)
     return root;
 }
 
+// ----------------------------------------------------------------------------
+
+PreferencesDelegate::PreferencesDelegate(QObject* parent)
+    : QStyledItemDelegate(parent)
+{}
+
+bool PreferencesDelegate::helpEvent(QHelpEvent *event,
+                                    QAbstractItemView *view,
+                                    const QStyleOptionViewItem &option,
+                                    const QModelIndex &index)
+{
+    if (event->type() == QEvent::ToolTip) {
+        QHelpEvent* he = static_cast<QHelpEvent*>(event);
+        QString tooltip = index.isValid() ? index.data(Qt::ToolTipRole).toString() : QString();
+        QToolTip::showText(he->globalPos(), tooltip);
+        event->setAccepted(!tooltip.isEmpty());
+        return true;
+    }
+    return QStyledItemDelegate::helpEvent(event, view, option, index);
+}
+
+// ----------------------------------------------------------------------------
+
 QWidget* PreferencesPageItem::getWidget() const
 {
     return _widget;
@@ -136,6 +159,7 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
     setupConnections();
 
     ui->groupsTreeView->setModel(&_model);
+    ui->groupsTreeView->setItemDelegate(new PreferencesDelegate(this));
 
     setupPages();
 
