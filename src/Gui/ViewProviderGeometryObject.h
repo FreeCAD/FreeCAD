@@ -96,6 +96,7 @@ public:
 
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject() override;
+    static App::Material getUserDefinedMaterial();
 
 protected:
     /// get called by the container whenever a property has been changed
@@ -110,7 +111,6 @@ protected:
 
 private:
     void setSoMaterial(const App::Material& source);
-    App::Material getDefaultMaterial() const;
     bool isSelectionEnabled() const;
 
 protected:
