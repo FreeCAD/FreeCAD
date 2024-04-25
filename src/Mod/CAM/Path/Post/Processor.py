@@ -30,10 +30,11 @@ import Path.Base.Util as PathUtil
 import importlib.util
 import os
 import sys
+import re
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
-debug = True
+debug = False
 if debug:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
@@ -108,12 +109,14 @@ class PostProcessor:
     @property
     def tooltip(self):
         """Get the tooltip text for the post processor."""
-        return self._tooltip
+        raise NotImplementedError("Subclass must implement abstract method")
+        # return self._tooltip
 
     @property
-    def tooltipargs(self):
+    def tooltipArgs(self):
         """Get the tooltip arguments for the post processor."""
-        return self._tooltipargs
+        raise NotImplementedError("Subclass must implement abstract method")
+        # return self._tooltipargs
 
     @property
     def units(self):
@@ -259,7 +262,7 @@ class PostProcessor:
                 Path.Log.debug(f"obj: {obj.Name}")
 
                 for index, f in enumerate(wcslist):
-                    sublist.append(_fixtureSetup(index, f, self._job))
+                    sublist.append(__fixtureSetup(index, f, self._job))
                     tc = PathUtil.toolControllerForOp(obj)
                     if tc is not None:
                         if self._job.SplitOutput or (tc.ToolNumber != currTool):
@@ -334,7 +337,7 @@ class WrapperPost(PostProcessor):
         return self._tooltip
 
     @property
-    def tooltipargs(self):
+    def tooltipArgs(self):
         return self._tooltipargs
 
     @property

@@ -175,7 +175,6 @@ class FilenameGenerator:
             yield os.path.normpath(full_path)
 
 
-
 class GCodeHighlighter(QtGui.QSyntaxHighlighter):
     def __init__(self, parent=None):
         super(GCodeHighlighter, self).__init__(parent)
