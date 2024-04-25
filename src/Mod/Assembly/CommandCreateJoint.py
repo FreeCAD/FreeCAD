@@ -224,8 +224,8 @@ class CommandCreateJointDistance:
             + "</p><p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointDistance",
-                "It can be used to create a lot of different joints based on the selection."
-                "For example a distance of 0 between a plane and a cylinder is a tangent. A distance of 0 between planes will make them coplanar. And so on.",
+                "Create one of several different joints based on the selection."
+                "For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.",
             )
             + "</p>",
             "CmdType": "ForEdit",
