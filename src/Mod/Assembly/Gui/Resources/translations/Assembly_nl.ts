@@ -128,7 +128,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="52"/>
       <source>Insert Link</source>
-      <translation type="unfinished">Insert Link</translation>
+      <translation>Link invoegen</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="59"/>
@@ -205,7 +205,7 @@
     <message>
       <location filename="../../../JointObject.py" line="50"/>
       <source>Cylindrical</source>
-      <translation type="unfinished">Cylindrical</translation>
+      <translation>Cylindrisch</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
@@ -374,7 +374,7 @@
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="14"/>
       <source>Insert Link</source>
-      <translation type="unfinished">Insert Link</translation>
+      <translation>Link invoegen</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="20"/>

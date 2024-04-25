@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QCoreApplication>
+#include <QApplication>
 #include <QCheckBox>
 #include <QGridLayout>
 #include <QLabel>
@@ -37,6 +37,7 @@
 #include "StartView.h"
 #include "FileCardDelegate.h"
 #include "FileCardView.h"
+#include "FlowLayout.h"
 #include "Gui/Workbench.h"
 #include <Gui/Document.h>
 #include <App/DocumentObject.h>
@@ -44,7 +45,7 @@
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <3rdParty/GSL/include/gsl/pointers>
+#include <gsl/pointers>
 
 using namespace StartGui;
 
@@ -64,8 +65,9 @@ gsl::owner<QPushButton*> createNewButton(const NewButton& newButton)
 {
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
-    const auto cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 20));      // NOLINT
-    const auto newFileIconSize = static_cast<int>(hGrp->GetInt("NewFileIconSize", 48));  // NOLINT
+    const auto cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 20));       // NOLINT
+    const auto newFileIconSize = static_cast<int>(hGrp->GetInt("NewFileIconSize", 48));   // NOLINT
+    const auto cardLabelWith = static_cast<int>(hGrp->GetInt("FileCardLabelWith", 180));  // NOLINT
 
     auto button = gsl::owner<QPushButton*>(new QPushButton());
     auto mainLayout = gsl::owner<QHBoxLayout*>(new QHBoxLayout(button));
@@ -88,6 +90,7 @@ gsl::owner<QPushButton*> createNewButton(const NewButton& newButton)
     mainLayout->addStretch();
 
     button->setMinimumHeight(newFileIconSize + cardSpacing);
+    button->setMinimumWidth(newFileIconSize + cardLabelWith);
     return button;
 }
 
@@ -100,7 +103,7 @@ StartView::StartView(Gui::Document* pcDocument, QWidget* parent)
     setObjectName(QLatin1String("StartView"));
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
-    auto cardSpacing = hGrp->GetInt("FileCardSpacing", 20);  // NOLINT
+    auto cardSpacing = hGrp->GetInt("FileCardSpacing", 30);  // NOLINT
 
     auto scrolledWidget = gsl::owner<QWidget*>(new QWidget(this));
     _contents->setWidget(scrolledWidget);
@@ -137,9 +140,9 @@ StartView::StartView(Gui::Document* pcDocument, QWidget* parent)
 
     auto newFileLabel = gsl::owner<QLabel*>(new QLabel(h1Start + tr("New File") + h1End));
     layout->addWidget(newFileLabel);
-    auto gridLayout = gsl::owner<QGridLayout*>(new QGridLayout);
-    layout->addLayout(gridLayout);
-    configureNewFileButtons(gridLayout);
+    auto flowLayout = gsl::owner<FlowLayout*>(new FlowLayout);
+    layout->addLayout(flowLayout);
+    configureNewFileButtons(flowLayout);
 
     auto recentFilesLabel = gsl::owner<QLabel*>(new QLabel(h1Start + tr("Recent Files") + h1End));
     layout->addWidget(recentFilesLabel);
@@ -165,8 +168,7 @@ StartView::StartView(Gui::Document* pcDocument, QWidget* parent)
     configureRecentFilesListWidget(recentFilesListWidget, recentFilesLabel);
 }
 
-
-void StartView::configureNewFileButtons(QGridLayout* layout) const
+void StartView::configureNewFileButtons(QLayout* layout) const
 {
     auto newEmptyFile = createNewButton({tr("Empty file"),
                                          tr("Create a new empty FreeCAD file"),
@@ -187,14 +189,26 @@ void StartView::configureNewFileButtons(QGridLayout* layout) const
                                  tr("Create an architectural project"),
                                  QLatin1String(":/icons/ArchWorkbench.svg")});
 
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Start");
+    if (hGrp->GetBool("FileCardUseStyleSheet", true)) {
+        QString style = fileCardStyle();
+        newEmptyFile->setStyleSheet(style);
+        openFile->setStyleSheet(style);
+        partDesign->setStyleSheet(style);
+        assembly->setStyleSheet(style);
+        draft->setStyleSheet(style);
+        arch->setStyleSheet(style);
+    }
+
     // TODO: Ensure all of the required WBs are actually available
     // TODO: Make this layout more flexible (e.g. use a single line if possible)
-    layout->addWidget(partDesign, 0, 0);
-    layout->addWidget(assembly, 0, 1);
-    layout->addWidget(draft, 0, 2);
-    layout->addWidget(arch, 1, 0);
-    layout->addWidget(newEmptyFile, 1, 1);
-    layout->addWidget(openFile, 1, 2);
+    layout->addWidget(partDesign);
+    layout->addWidget(assembly);
+    layout->addWidget(draft);
+    layout->addWidget(arch);
+    layout->addWidget(newEmptyFile);
+    layout->addWidget(openFile);
 
     connect(newEmptyFile, &QPushButton::clicked, this, &StartView::newEmptyFile);
     connect(openFile, &QPushButton::clicked, this, &StartView::openExistingFile);
@@ -204,14 +218,60 @@ void StartView::configureNewFileButtons(QGridLayout* layout) const
     connect(arch, &QPushButton::clicked, this, &StartView::newArchFile);
 }
 
+QString StartView::fileCardStyle() const
+{
+    if (!qApp->styleSheet().isEmpty()) {
+        return {};
+    }
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Start");
+
+    auto getUserColor = [&hGrp](QColor color, const char* parameter) {
+        uint32_t packed = App::Color::asPackedRGB<QColor>(color);
+        packed = hGrp->GetUnsigned(parameter, packed);
+        color = App::Color::fromPackedRGB<QColor>(packed);
+        return color;
+    };
+
+    QColor background(221, 221, 221);  // NOLINT
+    background = getUserColor(background, "FileCardBackgroundColor");
+
+    QColor hovered(98, 160, 234);  // NOLINT
+    hovered = getUserColor(hovered, "FileCardBorderColor");
+
+    QColor pressed(38, 162, 105);  // NOLINT
+    pressed = getUserColor(pressed, "FileCardSelectionColor");
+
+    return QString::fromLatin1("QPushButton {"
+                               " background-color: rgb(%1, %2, %3);"
+                               " border-radius: 8px;"
+                               "}"
+                               "QPushButton:hover {"
+                               " border: 2px solid rgb(%4, %5, %6);"
+                               "}"
+                               "QPushButton:pressed {"
+                               " border: 2px solid rgb(%7, %8, %9);"
+                               "}")
+        .arg(background.red())
+        .arg(background.green())
+        .arg(background.blue())
+        .arg(hovered.red())
+        .arg(hovered.green())
+        .arg(hovered.blue())
+        .arg(pressed.red())
+        .arg(pressed.green())
+        .arg(pressed.blue());
+}
+
 void StartView::configureFileCardWidget(QListView* fileCardWidget)
 {
-    auto delegate = gsl::owner<FileCardDelegate*>(new FileCardDelegate);
+    auto delegate = gsl::owner<FileCardDelegate*>(new FileCardDelegate(fileCardWidget));
     fileCardWidget->setItemDelegate(delegate);
     fileCardWidget->setMinimumWidth(fileCardWidget->parentWidget()->width());
-    fileCardWidget->setGridSize(
-        fileCardWidget->itemDelegate()->sizeHint(QStyleOptionViewItem(),
-                                                 fileCardWidget->model()->index(0, 0)));
+    //    fileCardWidget->setGridSize(
+    //        fileCardWidget->itemDelegate()->sizeHint(QStyleOptionViewItem(),
+    //                                                 fileCardWidget->model()->index(0, 0)));
 }
 
 

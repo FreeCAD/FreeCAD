@@ -62,7 +62,7 @@ class StartMigrator2024:
     # If the old Start workbench was set as the Autoload Module, reconfigure it so the Start command is run at startup,
     # and set the Autoload module to "PartDesignWorkbench"
     def _update_startup_flags(self):
-        autoload_module = self.general_prefs.GetString("AutoloadModule", "")
+        autoload_module = self.general_prefs.GetString("AutoloadModule", "StartWorkbench")
         if autoload_module == "StartWorkbench":
             self.start_prefs.SetBool("ShowOnStartup", True)
             self.general_prefs.SetString("AutoloadModule", "PartDesignWorkbench")
@@ -101,7 +101,7 @@ class StartMigrator2024:
 
     # Delete old Start preferences
     def _remove_deprecated_parameters(self):
-        show_on_startup = self.start_prefs.GetBool("", False)
+        show_on_startup = self.start_prefs.GetBool("ShowOnStartup", True)
         show_examples = self.start_prefs.GetBool("ShowExamples", True)
         close_start = self.start_prefs.GetBool("closeStart", False)
         custom_folder = self.start_prefs.GetString(

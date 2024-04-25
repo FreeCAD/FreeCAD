@@ -36,7 +36,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/MenuManager.h>
 
-#include <3rdParty/GSL/include/gsl/pointers>
+#include <gsl/pointers>
 
 DEF_STD_CMD(CmdStart)
 
@@ -69,8 +69,11 @@ void CmdStart::activated(int iMsg)
 void StartGui::Manipulator::modifyMenuBar(Gui::MenuItem* menuBar)
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
-    auto newCommand = gsl::owner<CmdStart*>(new CmdStart);
-    rcCmdMgr.addCommand(newCommand);  // Transfer ownership
+    if (!rcCmdMgr.getCommandByName("Start_Start")) {
+        auto newCommand = gsl::owner<CmdStart*>(new CmdStart);
+        rcCmdMgr.addCommand(newCommand);  // Transfer ownership
+    }
+
     Gui::MenuItem* helpMenu = menuBar->findItem("&Help");
     Gui::MenuItem* loadStart = new Gui::MenuItem();
     loadStart->setCommand("Start_Start");

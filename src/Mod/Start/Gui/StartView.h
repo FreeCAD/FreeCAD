@@ -75,7 +75,7 @@ public:
     };
 
 protected:
-    void configureNewFileButtons(QGridLayout* layout) const;
+    void configureNewFileButtons(QLayout* layout) const;
     static void configureFileCardWidget(QListView* fileCardWidget);
     void configureRecentFilesListWidget(QListView* recentFilesListWidget, QLabel* recentFilesLabel);
     void configureExamplesListWidget(QListView* examplesListWidget);
@@ -85,6 +85,7 @@ protected:
     void fileCardSelected(const QModelIndex& index);
 
     void showOnStartupChanged(bool checked);
+    QString fileCardStyle() const;
 
 private:
     QScrollArea* _contents = nullptr;

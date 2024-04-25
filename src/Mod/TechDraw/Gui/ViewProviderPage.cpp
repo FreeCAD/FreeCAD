@@ -275,7 +275,7 @@ bool ViewProviderPage::doubleClicked(void)
 
     show();
     if (m_mdiView) {
-        Gui::getMainWindow()->setActiveWindow(m_mdiView);
+        switchToMdiViewPage();
     }
     return true;
 }
@@ -339,6 +339,11 @@ void ViewProviderPage::createMDIViewPage()
     m_mdiView->setWindowTitle(tabTitle + QString::fromLatin1("[*]"));
     m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_TreePage"));
     Gui::getMainWindow()->addWindow(m_mdiView);
+    switchToMdiViewPage();
+}
+
+void ViewProviderPage::switchToMdiViewPage()
+{
     Gui::getMainWindow()->setActiveWindow(m_mdiView);
     m_graphicsView->setFocus();
 }

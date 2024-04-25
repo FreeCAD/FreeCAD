@@ -107,6 +107,7 @@ public:
     MDIViewPage* getMDIViewPage() const;
     bool showMDIViewPage();
     void removeMDIView();
+    void switchToMdiViewPage();
 
     Gui::MDIView* getMDIView() const override;
 

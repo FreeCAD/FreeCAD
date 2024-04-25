@@ -31,8 +31,12 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+namespace Gui {
+    class QuantitySpinBox;
+}
 
 namespace TechDraw {
+class DrawView;
 class DrawProjGroup;
 class DrawPage;
 }
@@ -41,14 +45,14 @@ namespace TechDrawGui
 {
 class MDIViewPage;
 class Ui_TaskProjGroup;
-class ViewProviderProjGroup;
+class ViewProviderDrawingView;
 
 class TaskProjGroup : public QWidget
 {
     Q_OBJECT
 
 public:
-    TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode);
+    TaskProjGroup(TechDraw::DrawView* featView, bool mode);
     ~TaskProjGroup() override = default;
 
     virtual bool accept();
@@ -77,6 +81,10 @@ protected:
     void setUiPrimary();
     void saveGroupState();
     void restoreGroupState();
+    void updateUi();
+
+    void turnViewToProjGroup();
+    void turnProjGroupToView();
 
     QString formatVector(Base::Vector3d vec);
 
@@ -85,6 +93,8 @@ protected Q_SLOTS:
 
     /// Requests appropriate rotation of our DrawProjGroup
     void rotateButtonClicked();
+
+    void customDirectionClicked();
 
     void projectionTypeChanged(QString qText);
     void scaleTypeChanged(int index);
@@ -98,10 +108,12 @@ private:
     MDIViewPage* m_mdi;
 
     std::unique_ptr<Ui_TaskProjGroup> ui;
+    TechDraw::DrawView* view;
     TechDraw::DrawProjGroup* multiView;
     bool m_createMode;
 
     bool blockUpdate;
+    bool blockCheckboxes;
     /// Translate a view checkbox index into represented view string, depending on projection type
     const char *  viewChkIndexToCStr(int index);
     QString getToolTipForBox(int boxNumber);
@@ -126,11 +138,11 @@ class TaskDlgProjGroup : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgProjGroup(TechDraw::DrawProjGroup* featView, bool mode);
+    TaskDlgProjGroup(TechDraw::DrawView* featView, bool mode);
     ~TaskDlgProjGroup() override;
 
-    const ViewProviderProjGroup * getViewProvider() const { return viewProvider; }
-    TechDraw::DrawProjGroup * getMultiView() const { return multiView; }
+    const ViewProviderDrawingView* getViewProvider() const { return viewProvider; }
+    TechDraw::DrawView* getView() const { return view; }
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel; }
@@ -152,12 +164,37 @@ public:
     void update();
 
 protected:
-    const ViewProviderProjGroup *viewProvider;
-    TechDraw::DrawProjGroup *multiView;
+    const ViewProviderDrawingView *viewProvider;
+    TechDraw::DrawView* view;
 
 private:
     TaskProjGroup * widget;
     Gui::TaskView::TaskBox* taskbox;
+};
+
+
+class DirectionEditDialog : public QDialog {
+    Q_OBJECT
+
+public:
+    explicit DirectionEditDialog(QWidget* parent = nullptr);
+
+    void setDirection(const Base::Vector3d& pos);
+    Base::Vector3d getDirection() const;
+
+    void setAngle(double val);
+    double getAngle() const;
+
+protected:
+    void showEvent(QShowEvent* event) override;
+
+private:
+    Gui::QuantitySpinBox* xSpinBox;
+    Gui::QuantitySpinBox* ySpinBox;
+    Gui::QuantitySpinBox* zSpinBox;
+    Gui::QuantitySpinBox* angleSpinBox;
+
+    void createUI();
 };
 
 } //namespace TechDrawGui
