@@ -151,6 +151,19 @@ from the Addon Manager.</string>
          </widget>
         </item>
         <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
           <property name="toolTip">
            <string>If unchecked, texts and mtexts won't be imported</string>
@@ -221,9 +234,22 @@ from the Addon Manager.</string>
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Create</string>
+           <string>Create (legacy importer only)</string>
           </property>
          </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item>
          <widget class="Gui::PrefRadioButton" name="radioButton">
