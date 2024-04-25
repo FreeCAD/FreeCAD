@@ -413,7 +413,10 @@ class Joint:
         return None
 
     def getAssembly(self, joint):
-        return joint.InList[0]
+        for obj in joint.InList:
+            if obj.isDerivedFrom("Assembly::AssemblyObject"):
+                return obj
+        return None
 
     def setJointType(self, joint, jointType):
         joint.JointType = jointType
@@ -882,7 +885,11 @@ class ViewProviderJoint:
         if task:
             task.reject()
 
-        assembly = vobj.Object.InList[0]
+        assembly = vobj.Object.Proxy.getAssembly(vobj.Object)
+
+        if assembly is None:
+            return False
+
         if UtilsAssembly.activeAssembly() != assembly:
             self.gui_doc.setEdit(assembly)
 
