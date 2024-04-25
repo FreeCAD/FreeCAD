@@ -445,6 +445,10 @@ void MbD::ASMTAssembly::runDraggingLogTest()
 {
 	auto assembly = ASMTAssembly::assemblyFromFile("../testapp/runPreDrag.asmt");
 	assembly->runDraggingLog("../testapp/dragging.log");
+	//auto assembly = ASMTAssembly::assemblyFromFile("../temp/runPreDrag.asmt");
+	//assembly->setDebug(true);
+	//assembly->runDraggingLog("../temp/dragging.log");
+	//assembly->setDebug(false);
 }
 
 void MbD::ASMTAssembly::runDraggingTest()
@@ -1279,7 +1283,6 @@ void MbD::ASMTAssembly::solve()
 
 void MbD::ASMTAssembly::runPreDrag()
 {
-	debug = true;	//Comment out in release build.
 	if (debug) {
 		outputFile("runPreDrag.asmt");
 		std::ofstream os("dragging.log");
@@ -1327,7 +1330,6 @@ void MbD::ASMTAssembly::runPostDrag()
 		os << "runPostDrag" << std::endl;
 		os.close();
 	}
-	debug = false;
 	mbdSystem = std::make_shared<System>();
 	mbdSystem->externalSystem->asmtAssembly = this;
 	mbdSystem->runPreDrag(mbdSystem);
@@ -1620,6 +1622,11 @@ void MbD::ASMTAssembly::setFilename(std::string str)
 	auto str2 = ss.str();
 	logString(str2);
 	filename = str;
+}
+
+void MbD::ASMTAssembly::setDebug(bool todebug)
+{
+	debug = todebug;
 }
 
 

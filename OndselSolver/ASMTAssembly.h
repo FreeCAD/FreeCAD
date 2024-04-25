@@ -27,7 +27,6 @@ namespace MbD {
 	class ASMTLimit;
 	class SystemSolver;
 	class ASMTItemIJ;
-	class MBDynSystem;
 
 	class ASMTAssembly : public ASMTSpatialContainer
 	{
@@ -129,6 +128,7 @@ namespace MbD {
 		void storeOnLevelGeneralConstraintSets(std::ofstream& os, size_t level);
 		void storeOnTimeSeries(std::ofstream& os) override;
 		void setFilename(std::string filename);
+		void setDebug(bool todebug);
 
 		std::string filename = "";
 		std::string notes = "(Text string: '' runs: (Core.RunArray runs: #() values: #()))";
@@ -146,7 +146,6 @@ namespace MbD {
 		std::shared_ptr<ASMTTime> asmtTime = ASMTTime::With();
 		std::shared_ptr<Units> mbdUnits = std::make_shared<Units>();
 		std::shared_ptr<System> mbdSystem;
-		MBDynSystem* mbdynItem = nullptr;
 		bool debug = false;
 
 	};
