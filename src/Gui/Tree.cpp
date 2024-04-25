@@ -907,7 +907,11 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     if (this->contextItem && this->contextItem->type() == DocumentType) {
         auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
-        App::GetApplication().setActiveDocument(doc);
+        
+        // It's better to let user decide whether and how to activate
+        // the current document, such as by double-clicking.
+        // App::GetApplication().setActiveDocument(doc);
+        
         showHiddenAction->setChecked(docitem->showHidden());
         contextMenu.addAction(this->showHiddenAction);
         contextMenu.addAction(this->searchObjectsAction);
