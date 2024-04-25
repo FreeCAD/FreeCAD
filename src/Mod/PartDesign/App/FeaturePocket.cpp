@@ -87,9 +87,9 @@ App::DocumentObjectExecReturn *Pocket::execute()
     }
 
     // if the Base property has a valid shape, fuse the prism into it
-    TopoDS_Shape base;
+    TopoShape base;
     try {
-        base = getBaseShape();
+        base = getBaseTopoShape();
     }
     catch (const Base::Exception&) {
         std::string text(QT_TRANSLATE_NOOP("Exception", ("The requested feature cannot be created. The reason may be that:\n"
@@ -109,7 +109,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
         this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
-        base.Move(invObjLoc);
+        base.move(invObjLoc);
 
         Base::Vector3d pocketDirection = computeDirection(SketchVector);
 
@@ -145,7 +145,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
 
         std::string method(Type.getValueAsString());
         if (method == "UpToFirst" || method == "UpToFace") {
-            if (base.IsNull())
+            if (base.isNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Extruding up to a face is only possible if the sketch is located on a face"));
 
             // Note: This will return an unlimited planar face if support is a datum plane
@@ -161,7 +161,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
                 getFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
-            getUpToFace(upToFace, base, profileshape, method, dir);
+            getUpToFace(upToFace, base.getShape(), profileshape, method, dir);
             addOffsetToFace(upToFace, dir, Offset.getValue());
 
             // BRepFeat_MakePrism(..., 2, 1) in combination with PerForm(upToFace) is buggy when the
@@ -176,10 +176,10 @@ App::DocumentObjectExecReturn *Pocket::execute()
                 supportface = TopoDS_Face();
             TopoDS_Shape prism;
             PrismMode mode = PrismMode::CutFromBase;
-            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, mode, Standard_True);
+            generatePrism(prism, method, base.getShape(), profileshape, supportface, upToFace, dir, mode, Standard_True);
 
             // And the really expensive way to get the SubShape...
-            BRepAlgoAPI_Cut mkCut(base, prism);
+            BRepAlgoAPI_Cut mkCut(base.getShape(), prism);
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Up to face: Could not get SubShape!"));
             // FIXME: In some cases this affects the Shape property: It is set to the same shape as the SubShape!!!!
@@ -212,7 +212,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
             this->AddSubShape.setValue(prism);
 
             // Cut the SubShape out of the base feature
-            BRepAlgoAPI_Cut mkCut(base, prism);
+            BRepAlgoAPI_Cut mkCut(base.getShape(), prism);
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pocket: Cut out of base feature failed"));
             TopoDS_Shape result = mkCut.Shape();

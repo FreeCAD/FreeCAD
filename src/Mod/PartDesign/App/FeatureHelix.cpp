@@ -192,13 +192,13 @@ App::DocumentObjectExecReturn* Helix::execute()
     }
 
     // if the Base property has a valid shape, fuse the AddShape into it
-    TopoDS_Shape base;
+    TopoShape base;
     try {
-        base = getBaseShape();
+        base = getBaseTopoShape();
     }
     catch (const Base::Exception&) {
         // fall back to support (for legacy features)
-        base = TopoDS_Shape();
+        base = TopoShape();
     }
 
     // update Axis from ReferenceAxis
@@ -213,7 +213,7 @@ App::DocumentObjectExecReturn* Helix::execute()
         this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
-        base.Move(invObjLoc);
+        base.move(invObjLoc);
 
 
         std::vector<TopoDS_Wire> wires;
@@ -246,7 +246,7 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         AddSubShape.setValue(result);
 
-        if (base.IsNull()) {
+        if (base.isNull()) {
 
             if (getAddSubType() == FeatureAddSub::Subtractive)
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: There is nothing to subtract"));
@@ -261,7 +261,7 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         if (getAddSubType() == FeatureAddSub::Additive) {
 
-            BRepAlgoAPI_Fuse mkFuse(base, result);
+            BRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the helix failed"));
             // we have to get the solids (fuse sometimes creates compounds)
@@ -284,14 +284,14 @@ App::DocumentObjectExecReturn* Helix::execute()
             TopoDS_Shape boolOp;
 
             if (Outside.getValue()) {  // are we subtracting the inside or the outside of the profile.
-                BRepAlgoAPI_Common mkCom(result, base);
+                BRepAlgoAPI_Common mkCom(result, base.getShape());
                 if (!mkCom.IsDone())
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Intersecting the helix failed"));
                 boolOp = this->getSolid(mkCom.Shape());
 
             }
             else {
-                BRepAlgoAPI_Cut mkCut(base, result);
+                BRepAlgoAPI_Cut mkCut(base.getShape(), result);
                 if (!mkCut.IsDone())
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Subtracting the helix failed"));
                 boolOp = this->getSolid(mkCut.Shape());

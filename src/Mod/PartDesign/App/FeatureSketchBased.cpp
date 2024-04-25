@@ -908,11 +908,11 @@ void ProfileBased::addOffsetToFace(TopoShape& upToFace, const gp_Dir& dir, doubl
 double ProfileBased::getThroughAllLength() const
 {
     TopoDS_Shape profileshape;
-    TopoDS_Shape base;
+    TopoShape base;
     profileshape = getVerifiedFace();
-    base = getBaseShape();
+    base = getBaseTopoShape();
     Bnd_Box box;
-    BRepBndLib::Add(base, box);
+    BRepBndLib::Add(base.getShape(), box);
     BRepBndLib::Add(profileshape, box);
     box.SetGap(0.0);
     // The diagonal of the bounding box, plus 1%  extra to eliminate risk of
