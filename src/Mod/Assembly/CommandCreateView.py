@@ -94,9 +94,6 @@ class ExplodedView:
     def loads(self, state):
         return None
 
-    def getAssembly(self, viewObj):
-        return viewObj.InList[0]
-
     def onChanged(self, viewObj, prop):
         if prop == "Moves" and hasattr(self, "stepsChangedCallback"):
             if self.stepsChangedCallback is not None:
@@ -120,7 +117,10 @@ class ExplodedView:
         return positions
 
     def getAssembly(self, viewObj):
-        return viewObj.InList[0]
+        for obj in viewObj.InList:
+            if obj.isDerivedFrom("Assembly::AssemblyObject"):
+                return obj
+        return None
 
     def saveAssemblyAndExplode(self, viewObj):
         self.initialPlcs = UtilsAssembly.saveAssemblyPartsPlacements(self.getAssembly(viewObj))
@@ -197,11 +197,8 @@ class ViewProviderExplodedView:
         if task:
             task.reject()
 
-        assembly = None
-        for obj in vobj.Object.InList:
-            if obj.isDerivedFrom("Assembly::AssemblyObject"):
-                assembly = obj
-                break
+        assembly = vobj.Object.Proxy.getAssembly(vobj.Object)
+
         if assembly is None:
             return False
 
@@ -278,7 +275,7 @@ class ExplodedViewStep:
         positions = []
         if move.MoveType == "Radial":
             distance = move.MovementTransform.Base.Length
-            factor = 1 + 4 * distance / size
+            factor = 4 * distance / size
 
         for objName, part in zip(move.ObjNames, move.Parts):
             if not objName:
@@ -291,8 +288,9 @@ class ExplodedViewStep:
                 startPos = UtilsAssembly.getCenterOfBoundingBox([obj], [part])
 
             if move.MoveType == "Radial":
-                init_vec = obj.Placement.Base - com
-                obj.Placement.Base = com + init_vec * factor
+                objCom, objSize = UtilsAssembly.getComAndSize(obj)
+                init_vec = objCom - com
+                obj.Placement.Base = obj.Placement.Base + init_vec * factor
             else:
                 obj.Placement = move.MovementTransform * obj.Placement
 
@@ -304,9 +302,6 @@ class ExplodedViewStep:
             move.ViewObject.Proxy.redrawLines(move, positions)
 
         return positions
-
-    def getAssembly(self, move):
-        return move.InList[0].InList[0]
 
     def getMovingobjects(self, move):
         movingObjs = []
@@ -453,7 +448,8 @@ class TaskAssemblyCreateView(QtCore.QObject):
         actionAlignToCenter.triggered.connect(self.onAlignToCenter)
         actionAlignToOrigin.triggered.connect(self.onAlignToPartOrigin)
 
-        self.form.btnAlignDragger.setVisible(False)
+        self.form.btnAlignDragger.setEnabled(False)
+        self.form.btnAlignDragger.setText("Select a part")
         self.form.btnRadialExplosion.clicked.connect(self.onRadialClicked)
 
         pref = Preferences.preferences()
@@ -591,7 +587,11 @@ class TaskAssemblyCreateView(QtCore.QObject):
 
     def enableDragger(self, val):
         self.assembly.ViewObject.DraggerVisibility = val
-        self.form.btnAlignDragger.setVisible(val)
+        self.form.btnAlignDragger.setEnabled(val)
+        if val:
+            self.form.btnAlignDragger.setText("Align dragger to...")
+        else:
+            self.form.btnAlignDragger.setText("Select a part")
 
     def onMovesChanged(self):
         # First reset positions
