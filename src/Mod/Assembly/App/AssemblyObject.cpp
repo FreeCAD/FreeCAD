@@ -187,36 +187,42 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
 
 void AssemblyObject::doDragStep()
 {
-    for (auto& mbdPart : dragMbdParts) {
-        App::DocumentObject* part = nullptr;
-        for (auto& pair : objectPartMap) {
-            if (pair.second == mbdPart) {
-                part = pair.first;
-                break;
+    try {
+        for (auto& mbdPart : dragMbdParts) {
+            App::DocumentObject* part = nullptr;
+            for (auto& pair : objectPartMap) {
+                if (pair.second == mbdPart) {
+                    part = pair.first;
+                    break;
+                }
             }
-        }
-        if (!part) {
-            continue;
+            if (!part) {
+                continue;
+            }
+
+            Base::Placement plc = getPlacementFromProp(part, "Placement");
+            Base::Vector3d pos = plc.getPosition();
+            mbdPart->updateMbDFromPosition3D(
+                std::make_shared<FullColumn<double>>(ListD {pos.x, pos.y, pos.z}));
+
+            Base::Rotation rot = plc.getRotation();
+            Base::Matrix4D mat;
+            rot.getValue(mat);
+            Base::Vector3d r0 = mat.getRow(0);
+            Base::Vector3d r1 = mat.getRow(1);
+            Base::Vector3d r2 = mat.getRow(2);
+            mbdPart
+                ->updateMbDFromRotationMatrix(r0.x, r0.y, r0.z, r1.x, r1.y, r1.z, r2.x, r2.y, r2.z);
         }
 
-        Base::Placement plc = getPlacementFromProp(part, "Placement");
-        Base::Vector3d pos = plc.getPosition();
-        mbdPart->updateMbDFromPosition3D(
-            std::make_shared<FullColumn<double>>(ListD {pos.x, pos.y, pos.z}));
-
-        Base::Rotation rot = plc.getRotation();
-        Base::Matrix4D mat;
-        rot.getValue(mat);
-        Base::Vector3d r0 = mat.getRow(0);
-        Base::Vector3d r1 = mat.getRow(1);
-        Base::Vector3d r2 = mat.getRow(2);
-        mbdPart->updateMbDFromRotationMatrix(r0.x, r0.y, r0.z, r1.x, r1.y, r1.z, r2.x, r2.y, r2.z);
+        auto dragPartsVec = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>(dragMbdParts);
+        mbdAssembly->runDragStep(dragPartsVec);
+        setNewPlacements();
+        redrawJointPlacements(getJoints());
     }
-
-    auto dragPartsVec = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>(dragMbdParts);
-    mbdAssembly->runDragStep(dragPartsVec);
-    setNewPlacements();
-    redrawJointPlacements(getJoints());
+    catch (...) {
+        // We do nothing if a solve step fails.
+    }
 }
 
 void AssemblyObject::postDrag()
