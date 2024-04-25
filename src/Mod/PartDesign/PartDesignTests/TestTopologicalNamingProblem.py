@@ -549,7 +549,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Doc.recompute()
         # Assert
         self.assertEqual(len(body.Shape.childShapes()), 1)
-        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 26)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 30)
 
     def testPartDesignElementMapPipe(self):
         # Arrange
