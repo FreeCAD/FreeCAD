@@ -43,10 +43,13 @@ from Tests.TestPathHelixGenerator import TestPathHelixGenerator
 from Tests.TestPathLog import TestPathLog
 from Tests.TestPathOpUtil import TestPathOpUtil
 
-# from Tests.TestPathPost import TestPathPost
+#from Tests.TestPathPost import TestPathPost
 from Tests.TestPathPost import TestPathPostUtils
 from Tests.TestPathPost import TestBuildPostList
 from Tests.TestPathPost import TestOutputNameSubstitution
+from Tests.TestPathPost import TestPostProcessorFactory
+from Tests.TestPathPost import TestResolvingPostProcessorName
+from Tests.TestPathPost import TestFileNameGenerator
 
 from Tests.TestPathPreferences import TestPathPreferences
 from Tests.TestPathProfile import TestPathProfile
@@ -81,6 +84,7 @@ False if TestApp.__name__ else True
 False if TestBuildPostList.__name__ else True
 False if TestDressupDogbone.__name__ else True
 False if TestDressupDogboneII.__name__ else True
+False if TestFileNameGenerator.__name__ else True
 False if TestGeneratorDogboneII.__name__ else True
 False if TestHoldingTags.__name__ else True
 False if TestPathLanguage.__name__ else True
@@ -94,7 +98,9 @@ False if TestPathHelpers.__name__ else True
 # False if TestPathHelix.__name__ else True
 False if TestPathLog.__name__ else True
 False if TestPathOpUtil.__name__ else True
-# False if TestPathPost.__name__ else True
+#False if TestPathPost.__name__ else True
+False if TestPostProcessorFactory.__name__ else True
+False if TestResolvingPostProcessorName.__name__ else True
 False if TestPathPostUtils.__name__ else True
 False if TestPathPreferences.__name__ else True
 False if TestPathProfile.__name__ else True

@@ -24,189 +24,362 @@
 import difflib
 import os
 import unittest
+from unittest.mock import patch, MagicMock
 
 import FreeCAD
 import Path
 
-import Path.Post.Command as PathPost
+import Path.Post.Command as PathCommand
 import Path.Post.Utils as PostUtils
 
-from Path.Post.Processor import PostProcessor
+from Path.Post.Processor import PostProcessor, PostProcessorFactory
+
+from Path.Post.Command import processFileNameSubstitutions, DlgSelectPostProcessor
 
 # If KEEP_DEBUG_OUTPUT is False, remove the gcode file after the test succeeds.
 # If KEEP_DEBUG_OUTPUT is True or the test fails leave the gcode file behind
 # so it can be looked at easily.
 KEEP_DEBUG_OUTPUT = False
 
-PathPost.LOG_MODULE = Path.Log.thisModule()
-Path.Log.setLevel(Path.Log.Level.INFO, PathPost.LOG_MODULE)
+PathCommand.LOG_MODULE = Path.Log.thisModule()
+Path.Log.setLevel(Path.Log.Level.DEBUG, PathCommand.LOG_MODULE)
 
 
-class TestPathPost(unittest.TestCase):
-    """Test some of the output of the postprocessors.
-
-    So far there are three tests each for the linuxcnc
-    and centroid postprocessors.
-    """
+class TestFileNameGenerator(unittest.TestCase):
 
     def setUp(self):
-        """Set up the postprocessor tests."""
-        pass
+        self.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/boxtest.fcstd")
+        self.job = self.doc.getObject("Job")
 
     def tearDown(self):
-        """Tear down after the postprocessor tests."""
-        pass
+        FreeCAD.closeDocument("boxtest")
 
-    #
-    # You can run just this test using:
-    # ./FreeCAD -c -t Tests.TestPathPost.TestPathPost.test_postprocessors
-    #
-    def test_postprocessors(self):
-        """Test the postprocessors."""
-        #
-        # The tests are performed in the order they are listed:
-        # one test performed on all of the postprocessors
-        # then the next test on all of the postprocessors, etc.
-        # You can comment out the tuples for tests that you don't want
-        # to use.
-        #
-        tests_to_perform = (
-            # (output_file_id, freecad_document, job_name, postprocessor_arguments,
-            #  postprocessor_list)
-            #
-            # test with all of the defaults (metric mode, etc.)
-            ("default", "boxtest1", "Job", "--no-show-editor", ()),
-            # test in Imperial mode
-            ("imperial", "boxtest1", "Job", "--no-show-editor --inches", ()),
-            # test in metric, G55, M4, the other way around the part
-            ("other_way", "boxtest1", "Job001", "--no-show-editor", ()),
-            # test in metric, split by fixtures, G54, G55, G56
-            ("split", "boxtest1", "Job002", "--no-show-editor", ()),
-            # test in metric mode without the header
-            ("no_header", "boxtest1", "Job", "--no-header --no-show-editor", ()),
-            # test translating G81, G82, and G83 to G00 and G01 commands
-            (
-                "drill_translate",
-                "drill_test1",
-                "Job",
-                "--no-show-editor --translate_drill",
-                ("grbl", "refactored_grbl"),
-            ),
-        )
-        #
-        # The postprocessors to test.
-        # You can comment out any postprocessors that you don't want
-        # to test.
-        #
-        postprocessors_to_test = (
-            "centroid",
-            # "fanuc",
-            "grbl",
-            "linuxcnc",
-            "mach3_mach4",
-            "refactored_centroid",
-            # "refactored_fanuc",
-            "refactored_grbl",
-            "refactored_linuxcnc",
-            "refactored_mach3_mach4",
-            "refactored_test",
-        )
-        #
-        # Enough of the path to where the tests are stored so that
-        # they can be found by the python interpreter.
-        #
-        PATHTESTS_LOCATION = "Mod/CAM/Tests"
-        #
-        # The following code tries to re-use an open FreeCAD document
-        # as much as possible.  It compares the current document with
-        # the document for the next test.  If the names are different
-        # then the current document is closed and the new document is
-        # opened.  The final document is closed at the end of the code.
-        #
-        current_document = ""
-        for (
-            output_file_id,
-            freecad_document,
-            job_name,
-            postprocessor_arguments,
-            postprocessor_list,
-        ) in tests_to_perform:
-            if current_document != freecad_document:
-                if current_document != "":
-                    FreeCAD.closeDocument(current_document)
-                current_document = freecad_document
-                current_document_path = (
-                    FreeCAD.getHomePath()
-                    + PATHTESTS_LOCATION
-                    + os.path.sep
-                    + current_document
-                    + ".fcstd"
-                )
-                FreeCAD.open(current_document_path)
-            job = FreeCAD.ActiveDocument.getObject(job_name)
-            # Create the objects to be written by the postprocessor.
-            postlist = PathPost.buildPostList(job)
-            for postprocessor_id in postprocessors_to_test:
-                if postprocessor_list == () or postprocessor_id in postprocessor_list:
-                    print(
-                        "\nRunning %s test on %s postprocessor:\n"
-                        % (output_file_id, postprocessor_id)
-                    )
-                    processor = PostProcessor.load(postprocessor_id)
-                    output_file_path = FreeCAD.getHomePath() + PATHTESTS_LOCATION
-                    output_file_pattern = "test_%s_%s" % (
-                        postprocessor_id,
-                        output_file_id,
-                    )
-                    output_file_extension = ".ngc"
-                    for idx, section in enumerate(postlist):
-                        partname = section[0]
-                        sublist = section[1]
-                        output_filename = PathPost.processFileNameSubstitutions(
-                            job,
-                            partname,
-                            idx,
-                            output_file_path,
-                            output_file_pattern,
-                            output_file_extension,
-                        )
-                        # print("output file: " + output_filename)
-                        file_path, extension = os.path.splitext(output_filename)
-                        reference_file_name = "%s%s%s" % (file_path, "_ref", extension)
-                        # print("reference file: " + reference_file_name)
-                        gcode = processor.export(
-                            sublist, output_filename, postprocessor_arguments
-                        )
-                        if not gcode:
-                            print("no gcode")
-                        with open(reference_file_name, "r") as fp:
-                            reference_gcode = fp.read()
-                        if not reference_gcode:
-                            print("no reference gcode")
-                        # Remove the "Output Time:" line in the header from the
-                        # comparison if it is present because it changes with
-                        # every test.
-                        gcode_lines = [
-                            i for i in gcode.splitlines(True) if "Output Time:" not in i
-                        ]
-                        reference_gcode_lines = [
-                            i
-                            for i in reference_gcode.splitlines(True)
-                            if "Output Time:" not in i
-                        ]
-                        if gcode_lines != reference_gcode_lines:
-                            msg = "".join(
-                                difflib.ndiff(gcode_lines, reference_gcode_lines)
-                            )
-                            self.fail(
-                                os.path.basename(output_filename)
-                                + " output doesn't match:\n"
-                                + msg
-                            )
-                        if not KEEP_DEBUG_OUTPUT:
-                            os.remove(output_filename)
-        if current_document != "":
-            FreeCAD.closeDocument(current_document)
+    # def test010(self):
+    #     # Assuming PostUtils.FilenameGenerator has been imported correctly
+    #     generator = PostUtils.FilenameGenerator(job=self.job, base_output_path="output",
+    #                                             filename_template="file", extension=".nc")
+
+    #     filename_generator = generator.generate_filenames()
+    #     for i in range(5):
+    #         generated_filename = next(filename_generator)
+    #         expected_filename = f"output/file-{i}.nc"
+    #         self.assertEqual(generated_filename, expected_filename)
+
+
+    def test010(self):
+        generator = PostUtils.FilenameGenerator(job=self.job, base_output_path="output",
+                                                filename_template="file", extension=".nc")
+        filename_generator = generator.generate_filenames()
+        expected_filenames = ["output/file.nc"] + [f"output/file-{i}.nc" for i in range(1, 5)]
+        for expected_filename in expected_filenames:
+            generated_filename = next(filename_generator)
+            self.assertEqual(generated_filename, expected_filename)
+
+class TestResolvingPostProcessorName(unittest.TestCase):
+    def setUp(self):
+        self.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/boxtest.fcstd")
+        self.job = self.doc.getObject("Job")
+        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        pref.SetString("PostProcessorDefault", "")
+
+    def tearDown(self):
+        FreeCAD.closeDocument("boxtest")
+
+    def test010(self):
+        # Test if post is defined in job
+        with patch('Path.Post.Processor.PostProcessor.exists', return_value=True):
+            postname = PathCommand._resolve_post_processor_name(self.job)
+            self.assertEqual(postname, "linuxcnc")
+
+    def test020(self):
+        # Test if post is invalid
+        with patch('Path.Post.Processor.PostProcessor.exists', return_value=False):
+            with self.assertRaises(ValueError):
+                PathCommand._resolve_post_processor_name(self.job)
+
+    def test030(self):
+        # Test if post is defined in prefs
+        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        pref.SetString("PostProcessorDefault", "grbl")
+        self.job.PostProcessor = ""
+        with patch('Path.Post.Processor.PostProcessor.exists', return_value=True):
+            postname = PathCommand._resolve_post_processor_name(self.job)
+            self.assertEqual(postname, "grbl")
+
+    def test040(self):
+        # Test if user interaction is correctly handled
+        self.job.PostProcessor = ""
+        if FreeCAD.GuiUp:
+            with patch('Path.Post.Command.DlgSelectPostProcessor') as mock_dlg, \
+                    patch('Path.Post.Processor.PostProcessor.exists', return_value=True):
+                mock_dlg.return_value.exec_.return_value = 'generic'
+                postname = PathCommand._resolve_post_processor_name(self.job)
+                self.assertEqual(postname, 'generic')
+        else:
+            with self.assertRaises(ValueError):
+                PathCommand._resolve_post_processor_name(self.job)
+
+class TestPostProcessorFactory(unittest.TestCase):
+    """Test creation of postprocessor objects."""
+
+    def setUp(self):
+        self.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/boxtest.fcstd")
+        self.job = self.doc.getObject("Job")
+
+    def tearDown(self):
+        FreeCAD.closeDocument("boxtest")
+
+
+    def test020(self):
+        # test creation of postprocessor object
+        post = PostProcessorFactory.get_post_processor(self.job, "generic")
+        self.assertTrue(post is not None)
+        self.assertTrue(hasattr(post, "export"))
+        self.assertTrue(hasattr(post, "_buildPostList"))
+
+    def test030(self):
+        # test wrapping of old school postprocessor scripts
+        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc")
+        self.assertTrue(post is not None)
+        self.assertTrue(hasattr(post, "_buildPostList"))
+
+
+    def test100(self):
+        """Test the processFileNameSubstitutions function."""
+
+        document_dir = os.path.dirname(FreeCAD.ActiveDocument.FileName)
+        Path.Log.debug(f"document_dir: {document_dir}")
+
+        user_macro_dir = os.path.dirname(FreeCAD.getUserMacroDir())
+        Path.Log.debug(f"user_macro_dir: {user_macro_dir}")
+
+        outputpath = "%D/output"
+        filename = "outputfile-%j-%d"
+        ext = ".txt"
+        expected_path = f"{document_dir}{os.path.sep}output/outputfile-{self.job.Label}-{self.doc.Label}{ext}"
+
+        # Call the function
+        result = processFileNameSubstitutions(self.job, "Subpart", 1, outputpath, filename, ext)
+
+        Path.Log.debug(f"result: {result}")
+
+        self.assertEqual(result, expected_path)
+
+        # test macro path substitution
+        outputpath = "%M/output"
+        filename = "file-%j"
+        ext = ".txt"
+
+        result = processFileNameSubstitutions(self.job, "Subpart", 1, outputpath, filename, ext)
+        expected_path = f"{user_macro_dir}/output/file-{self.job.Label}.txt"
+
+        self.assertEqual(result, expected_path)
+
+        # test job name substitution
+        document_label = FreeCAD.ActiveDocument.Label
+        outputpath = "output/%d"
+        filename = "file-%d-%j"
+        ext = ".txt"
+
+        result = processFileNameSubstitutions(self.job, "Subpart", 1, outputpath, filename, ext)
+        expected_path = f"output/{document_label}/file-{document_label}-{self.job.Label}.txt"
+
+        self.assertEqual(result, expected_path)
+
+        # test sequence number substitution
+        outputpath = "output"
+        filename = "file-%S"
+        ext = ".txt"
+
+        result = processFileNameSubstitutions(self.job, "Subpart", 42, outputpath, filename, ext)
+        expected_path = f"output/file-42.txt"
+
+        self.assertEqual(result, expected_path)
+
+        # test tool number substitution
+        outputpath = "output"
+        filename = "file"
+        ext = ""
+
+        result = processFileNameSubstitutions(self.job, "Subpart", 1, outputpath, filename, ext)
+        expected_path = f"output/file.nc"  # Expect default .nc extension
+
+        self.assertEqual(result, expected_path)
+
+
+class TestPostProcessorClass(unittest.TestCase):
+    """Test new post structure objects."""
+
+    def setUp(self):
+        self.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/boxtest.fcstd")
+        self.job = self.doc.getObject("Job")
+        post = PostProcessorFactory.get_post_processor(self.job, "generic")
+
+    def tearDown(self):
+        FreeCAD.closeDocument("boxtest")
+
+class TestPostProcessorScript(unittest.TestCase):
+    """Test old-school posts"""
+
+    def setUp(self):
+        self.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/boxtest.fcstd")
+        self.job = self.doc.getObject("Job")
+        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc")
+
+    def tearDown(self):
+        FreeCAD.closeDocument("boxtest")
+
+
+    ##
+    ## You can run just this test using:
+    ## ./FreeCAD -c -t Tests.TestPathPost.TestPathPost.test_postprocessors
+    ##
+    #def test_postprocessors(self):
+    #    """Test the postprocessors."""
+    #    #
+    #    # The tests are performed in the order they are listed:
+    #    # one test performed on all of the postprocessors
+    #    # then the next test on all of the postprocessors, etc.
+    #    # You can comment out the tuples for tests that you don't want
+    #    # to use.
+    #    #
+    #    tests_to_perform = (
+    #        # (output_file_id, freecad_document, job_name, postprocessor_arguments,
+    #        #  postprocessor_list)
+    #        #
+    #        # test with all of the defaults (metric mode, etc.)
+    #        ("default", "boxtest1", "Job", "--no-show-editor", ()),
+    #        # test in Imperial mode
+    #        ("imperial", "boxtest1", "Job", "--no-show-editor --inches", ()),
+    #        # test in metric, G55, M4, the other way around the part
+    #        ("other_way", "boxtest1", "Job001", "--no-show-editor", ()),
+    #        # test in metric, split by fixtures, G54, G55, G56
+    #        ("split", "boxtest1", "Job002", "--no-show-editor", ()),
+    #        # test in metric mode without the header
+    #        ("no_header", "boxtest1", "Job", "--no-header --no-show-editor", ()),
+    #        # test translating G81, G82, and G83 to G00 and G01 commands
+    #        (
+    #            "drill_translate",
+    #            "drill_test1",
+    #            "Job",
+    #            "--no-show-editor --translate_drill",
+    #            ("grbl", "refactored_grbl"),
+    #        ),
+    #    )
+    #    #
+    #    # The postprocessors to test.
+    #    # You can comment out any postprocessors that you don't want
+    #    # to test.
+    #    #
+    #    postprocessors_to_test = (
+    #        "centroid",
+    #        # "fanuc",
+    #        "grbl",
+    #        "linuxcnc",
+    #        "mach3_mach4",
+    #        "refactored_centroid",
+    #        # "refactored_fanuc",
+    #        "refactored_grbl",
+    #        "refactored_linuxcnc",
+    #        "refactored_mach3_mach4",
+    #        "refactored_test",
+    #    )
+    #    #
+    #    # Enough of the path to where the tests are stored so that
+    #    # they can be found by the python interpreter.
+    #    #
+    #    PATHTESTS_LOCATION = "Mod/CAM/Tests"
+    #    #
+    #    # The following code tries to re-use an open FreeCAD document
+    #    # as much as possible.  It compares the current document with
+    #    # the document for the next test.  If the names are different
+    #    # then the current document is closed and the new document is
+    #    # opened.  The final document is closed at the end of the code.
+    #    #
+    #    current_document = ""
+    #    for (
+    #        output_file_id,
+    #        freecad_document,
+    #        job_name,
+    #        postprocessor_arguments,
+    #        postprocessor_list,
+    #    ) in tests_to_perform:
+    #        if current_document != freecad_document:
+    #            if current_document != "":
+    #                FreeCAD.closeDocument(current_document)
+    #            current_document = freecad_document
+    #            current_document_path = (
+    #                FreeCAD.getHomePath()
+    #                + PATHTESTS_LOCATION
+    #                + os.path.sep
+    #                + current_document
+    #                + ".fcstd"
+    #            )
+    #            FreeCAD.open(current_document_path)
+    #        job = FreeCAD.ActiveDocument.getObject(job_name)
+    #        # Create the objects to be written by the postprocessor.
+    #        postlist = PathPost.buildPostList(job)
+    #        for postprocessor_id in postprocessors_to_test:
+    #            if postprocessor_list == () or postprocessor_id in postprocessor_list:
+    #                print(
+    #                    "\nRunning %s test on %s postprocessor:\n"
+    #                    % (output_file_id, postprocessor_id)
+    #                )
+    #                processor = PostProcessor.load(postprocessor_id)
+    #                output_file_path = FreeCAD.getHomePath() + PATHTESTS_LOCATION
+    #                output_file_pattern = "test_%s_%s" % (
+    #                    postprocessor_id,
+    #                    output_file_id,
+    #                )
+    #                output_file_extension = ".ngc"
+    #                for idx, section in enumerate(postlist):
+    #                    partname = section[0]
+    #                    sublist = section[1]
+    #                    output_filename = PathPost.processFileNameSubstitutions(
+    #                        job,
+    #                        partname,
+    #                        idx,
+    #                        output_file_path,
+    #                        output_file_pattern,
+    #                        output_file_extension,
+    #                    )
+    #                    # print("output file: " + output_filename)
+    #                    file_path, extension = os.path.splitext(output_filename)
+    #                    reference_file_name = "%s%s%s" % (file_path, "_ref", extension)
+    #                    # print("reference file: " + reference_file_name)
+    #                    gcode = processor.export(
+    #                        sublist, output_filename, postprocessor_arguments
+    #                    )
+    #                    if not gcode:
+    #                        print("no gcode")
+    #                    with open(reference_file_name, "r") as fp:
+    #                        reference_gcode = fp.read()
+    #                    if not reference_gcode:
+    #                        print("no reference gcode")
+    #                    # Remove the "Output Time:" line in the header from the
+    #                    # comparison if it is present because it changes with
+    #                    # every test.
+    #                    gcode_lines = [
+    #                        i for i in gcode.splitlines(True) if "Output Time:" not in i
+    #                    ]
+    #                    reference_gcode_lines = [
+    #                        i
+    #                        for i in reference_gcode.splitlines(True)
+    #                        if "Output Time:" not in i
+    #                    ]
+    #                    if gcode_lines != reference_gcode_lines:
+    #                        msg = "".join(
+    #                            difflib.ndiff(gcode_lines, reference_gcode_lines)
+    #                        )
+    #                        self.fail(
+    #                            os.path.basename(output_filename)
+    #                            + " output doesn't match:\n"
+    #                            + msg
+    #                        )
+    #                    if not KEEP_DEBUG_OUTPUT:
+    #                        os.remove(output_filename)
+    #    if current_document != "":
+    #        FreeCAD.closeDocument(current_document)
 
 
 class TestPathPostUtils(unittest.TestCase):
@@ -237,13 +410,13 @@ class TestPathPostUtils(unittest.TestCase):
         )
 
 
-def dumpgroup(group):
-    print("====Dump Group======")
-    for i in group:
-        print(i[0])
-        for j in i[1]:
-            print(f"--->{j.Name}")
-    print("====================")
+#def dumpgroup(group):
+    #print("====Dump Group======")
+    #for i in group:
+    #    print(i[0])
+    #    for j in i[1]:
+    #        print(f"--->{j.Name}")
+    #print("====================")
 
 
 class TestBuildPostList(unittest.TestCase):

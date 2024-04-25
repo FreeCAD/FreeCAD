@@ -27,19 +27,153 @@
 These are common functions and classes for creating custom post processors.
 """
 
-from PySide import QtCore, QtGui
-
-import FreeCAD
-
-import Path
-import Part
 
 from Path.Base.MachineState import MachineState
+from PySide import QtCore, QtGui
+import FreeCAD
+import Part
+import Path
+import os
+import re
+
+debug = False
+if debug:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
+
 FreeCADGui = None
 if FreeCAD.GuiUp:
     import FreeCADGui
+
+
+class FilenameGenerator:
+    def __init__(self, job):
+        self.job = job
+        self.subpartname = ""
+        self.sequencenumber = 0
+        path, filename, ext = self.get_path_and_filename_default()
+
+        self.qualified_path = self._apply_path_substitutions(path)
+        self.qualified_filename = self._apply_filename_substitutions(filename)
+        self.extension = ext
+
+    def get_path_and_filename_default(self):
+        outputpath = ""
+        filename = ""
+        ext = ".nc"
+
+        validPathSubstitutions = ["D", "d", "M", "j"]
+        validFilenameSubstitutions = ["j", "d", "T", "t", "W", "O", "S"]
+
+        if self.job.PostProcessorOutputFile:
+            candidateOutputPath, candidateFilename = os.path.split(
+                self.job.PostProcessorOutputFile
+            )
+
+            if candidateOutputPath:
+                outputpath = candidateOutputPath
+
+            if candidateFilename:
+                filename, ext = os.path.splitext(candidateFilename)
+        else:
+            outputpath, filename = os.path.split(Path.Preferences.defaultOutputFile())
+            filename, ext = os.path.splitext(filename)
+
+        # Make sure we have something to work with
+        if not filename:
+            filename = FreeCAD.ActiveDocument.Label
+
+        if not outputpath:
+            outputpath = "."
+
+        if not ext:
+            ext = ".nc"
+
+        # Check for invalid matches
+        for match in re.findall("%(.)", outputpath):
+            Path.Log.debug(f"match: {match}")
+            if match not in validPathSubstitutions:
+                outputpath = outputpath.replace(f"%{match}", "")
+                FreeCAD.Console.PrintWarning(
+                    "Invalid substitution strings will be ignored in output path: %s\n"
+                    % match
+                )
+
+        for match in re.findall("%(.)", filename):
+            Path.Log.debug(f"match: {match}")
+            if match not in validFilenameSubstitutions:
+                filename = filename.replace(f"%{match}", "")
+                FreeCAD.Console.PrintWarning(
+                    "Invalid substitution strings will be ignored in file path: %s\n"
+                    % match
+                )
+
+        Path.Log.debug(f"outputpath: {outputpath} filename: {filename} ext: {ext}")
+        return outputpath, filename, ext
+
+    def set_subpartname(self, subpartname):
+        self.subpartname = subpartname
+
+    def _apply_path_substitutions(self, file_path):
+        """Apply substitutions based on job settings and other parameters."""
+        substitutions = {
+            "%D": os.path.dirname(self.job.Document.FileName or "."),
+            "%d": self.job.Document.Label,
+            "%j": self.job.Label,
+            "%M": os.path.dirname(FreeCAD.getUserMacroDir()),
+        }
+        for key, value in substitutions.items():
+            file_path = file_path.replace(key, value)
+
+        Path.Log.debug(f"file_path: {file_path}")
+        return file_path
+
+    def _apply_filename_substitutions(self, file_name):
+        Path.Log.debug(f"file_name: {file_name}")
+        """Apply substitutions based on job settings and other parameters."""
+        substitutions = {
+            "%d": self.job.Document.Label,
+            "%j": self.job.Label,
+            "%T": self.subpartname,  # Tool
+            "%t": self.subpartname,  # Tool
+            "%W": self.subpartname,  # Fixture
+            "%O": self.subpartname,  # Operation
+        }
+        for key, value in substitutions.items():
+            file_name = file_name.replace(key, value)
+
+        Path.Log.debug(f"file_name: {file_name}")
+        return file_name
+
+    def generate_filenames(self):
+        """Yield filenames indefinitely with proper substitutions."""
+        while True:
+            temp_filename = self.qualified_filename
+            Path.Log.debug(f"temp_filename: {temp_filename}")
+            explicit_sequence = False
+            matches = re.findall("%S", temp_filename)
+            if matches:
+                Path.Log.debug(f"matches: {matches}")
+                temp_filename = re.sub("%S", str(self.sequencenumber), temp_filename)
+                explicit_sequence = True
+
+            subpart = f"-{self.subpartname}" if self.subpartname else ""
+            sequence = (
+                f"-{self.sequencenumber}"
+                if not explicit_sequence and self.sequencenumber
+                else ""
+            )
+            filename = f"{temp_filename}{subpart}{sequence}{self.extension}"
+            full_path = os.path.join(self.qualified_path, filename)
+
+            self.sequencenumber += 1
+            Path.Log.debug(f"yielding filename: {full_path}")
+            yield os.path.normpath(full_path)
+
 
 
 class GCodeHighlighter(QtGui.QSyntaxHighlighter):
