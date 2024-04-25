@@ -88,7 +88,7 @@ class FilenameGenerator:
             filename = FreeCAD.ActiveDocument.Label
 
         if not outputpath:
-            outputpath = "."
+            outputpath = os.getcwd()
 
         if not ext:
             ext = ".nc"

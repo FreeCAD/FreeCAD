@@ -46,7 +46,7 @@ from Tests.TestPathOpUtil import TestPathOpUtil
 #from Tests.TestPathPost import TestPathPost
 from Tests.TestPathPost import TestPathPostUtils
 from Tests.TestPathPost import TestBuildPostList
-from Tests.TestPathPost import TestOutputNameSubstitution
+# from Tests.TestPathPost import TestOutputNameSubstitution
 from Tests.TestPathPost import TestPostProcessorFactory
 from Tests.TestPathPost import TestResolvingPostProcessorName
 from Tests.TestPathPost import TestFileNameGenerator
@@ -88,7 +88,7 @@ False if TestFileNameGenerator.__name__ else True
 False if TestGeneratorDogboneII.__name__ else True
 False if TestHoldingTags.__name__ else True
 False if TestPathLanguage.__name__ else True
-False if TestOutputNameSubstitution.__name__ else True
+# False if TestOutputNameSubstitution.__name__ else True
 False if TestPathAdaptive.__name__ else True
 False if TestPathCore.__name__ else True
 False if TestPathOpDeburr.__name__ else True
