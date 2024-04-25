@@ -676,7 +676,7 @@ void TaskProjGroup::setupViewCheckboxes(bool addConnections)
         const char *viewStr = viewChkIndexToCStr(i);
 
         if (!multiView) {
-            box->setCheckState(viewStr == "Front" ? Qt::Checked : Qt::Unchecked);
+            box->setCheckState(strcmp(viewStr, "Front") == 0 ? Qt::Checked : Qt::Unchecked);
         }
 
         if (addConnections) {
