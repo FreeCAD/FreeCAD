@@ -121,9 +121,9 @@ FColDsptr Part::qX()
 	return partFrame->qX;
 }
 
-void Part::qE(std::shared_ptr<EulerParameters<double>> x)
+void Part::qE(std::shared_ptr<EulerParameters<double>> qe)
 {
-	partFrame->qE = x;
+	partFrame->qE = qe;
 }
 
 std::shared_ptr<EulerParameters<double>> Part::qE()

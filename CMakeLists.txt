@@ -25,21 +25,14 @@ endif()
 
 
 set(ONDSELSOLVER_SRC
-        OndselSolver/AllowZRotation.cpp
-        OndselSolver/AllowZRotationConstraintIqctJqc.cpp
-        OndselSolver/ASMTAllowRotation.cpp
-        OndselSolver/Array.cpp
-        OndselSolver/FullVector.cpp
-        OndselSolver/RowTypeMatrix.cpp
-        OndselSolver/FullColumn.cpp
-        OndselSolver/FullMatrix.cpp
-        OndselSolver/FullRow.cpp
         OndselSolver/Abs.cpp
         OndselSolver/AbsConstraint.cpp
         OndselSolver/AccICKineNewtonRaphson.cpp
         OndselSolver/AccICNewtonRaphson.cpp
         OndselSolver/AccKineNewtonRaphson.cpp
         OndselSolver/AccNewtonRaphson.cpp
+        OndselSolver/AllowZRotation.cpp
+        OndselSolver/AllowZRotationConstraintIqctJqc.cpp
         OndselSolver/AngleJoint.cpp
         OndselSolver/AngleZConstraintIJ.cpp
         OndselSolver/AngleZConstraintIqcJc.cpp
@@ -53,6 +46,8 @@ set(ONDSELSOLVER_SRC
         OndselSolver/ArcTan.cpp
         OndselSolver/ArcTan2.cpp
         OndselSolver/Arguments.cpp
+        OndselSolver/Array.cpp
+        OndselSolver/ASMTAllowRotation.cpp
         OndselSolver/ASMTAngleJoint.cpp
         OndselSolver/ASMTAnimationParameters.cpp
         OndselSolver/ASMTAssembly.cpp
@@ -192,7 +187,11 @@ set(ONDSELSOLVER_SRC
         OndselSolver/FixedJoint.cpp
         OndselSolver/ForceTorqueData.cpp
         OndselSolver/ForceTorqueItem.cpp
+        OndselSolver/FullColumn.cpp
+        OndselSolver/FullMatrix.cpp
         OndselSolver/FullMotion.cpp
+        OndselSolver/FullRow.cpp
+        OndselSolver/FullVector.cpp
         OndselSolver/Function.cpp
         OndselSolver/FunctionFromData.cpp
         OndselSolver/FunctionWithManyArgs.cpp
@@ -245,31 +244,6 @@ set(ONDSELSOLVER_SRC
         OndselSolver/MatrixSolver.cpp
         OndselSolver/MaximumIterationError.cpp
         OndselSolver/MbDMath.cpp
-        OndselSolver/MBDynAxialRotationJoint.cpp
-        OndselSolver/MBDynClampJoint.cpp
-        OndselSolver/MBDynDriveHingeJoint.cpp
-        OndselSolver/MBDynInLineJoint.cpp
-        OndselSolver/MBDynInPlaneJoint.cpp
-        OndselSolver/MBDynPrismaticJoint.cpp
-        OndselSolver/MBDynRevoluteHingeJoint.cpp
-        OndselSolver/MBDynRevolutePinJoint.cpp
-        OndselSolver/MBDynSphericalHingeJoint.cpp
-        OndselSolver/MBDynTotalJoint.cpp
-        OndselSolver/MBDynBlock.cpp
-        OndselSolver/MBDynBody.cpp
-        OndselSolver/MBDynControlData.cpp
-        OndselSolver/MBDynData.cpp
-        OndselSolver/MBDynDrive.cpp
-        OndselSolver/MBDynElement.cpp
-        OndselSolver/MBDynGravity.cpp
-        OndselSolver/MBDynInitialValue.cpp
-        OndselSolver/MBDynItem.cpp
-        OndselSolver/MBDynJoint.cpp
-        OndselSolver/MBDynMarker.cpp
-        OndselSolver/MBDynNode.cpp
-        OndselSolver/MBDynReference.cpp
-        OndselSolver/MBDynStructural.cpp
-        OndselSolver/MBDynSystem.cpp
         OndselSolver/MomentOfInertiaSolver.cpp
         OndselSolver/Negative.cpp
         OndselSolver/NewtonRaphson.cpp
@@ -312,6 +286,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/RevoluteJoint.cpp
         OndselSolver/RevRevJoint.cpp
         OndselSolver/RotationLimitIJ.cpp
+        OndselSolver/RowTypeMatrix.cpp
         OndselSolver/ScalarNewtonRaphson.cpp
         OndselSolver/ScrewConstraintIJ.cpp
         OndselSolver/ScrewConstraintIqcJc.cpp
@@ -360,21 +335,14 @@ set(ONDSELSOLVER_SRC
 )
 
 set(ONDSELSOLVER_HEADERS
-        OndselSolver/AllowZRotation.h
-        OndselSolver/AllowZRotationConstraintIqctJqc.h
-        OndselSolver/ASMTAllowRotation.h
-        OndselSolver/Array.h
-        OndselSolver/FullVector.h
-        OndselSolver/RowTypeMatrix.h
-        OndselSolver/FullRow.h
-        OndselSolver/FullColumn.h
-        OndselSolver/FullMatrix.h
         OndselSolver/Abs.h
         OndselSolver/AbsConstraint.h
         OndselSolver/AccICKineNewtonRaphson.h
         OndselSolver/AccICNewtonRaphson.h
         OndselSolver/AccKineNewtonRaphson.h
         OndselSolver/AccNewtonRaphson.h
+        OndselSolver/AllowZRotation.h
+        OndselSolver/AllowZRotationConstraintIqctJqc.h
         OndselSolver/AngleJoint.h
         OndselSolver/AngleZConstraintIJ.h
         OndselSolver/AngleZConstraintIqcJc.h
@@ -388,15 +356,17 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/ArcTan.h
         OndselSolver/ArcTan2.h
         OndselSolver/Arguments.h
+        OndselSolver/Array.h
+        OndselSolver/ASMTAllowRotation.h
         OndselSolver/ASMTAngleJoint.h
         OndselSolver/ASMTAnimationParameters.h
         OndselSolver/ASMTAssembly.h
-        OndselSolver/ASMTCylSphJoint.h
         OndselSolver/ASMTCompoundJoint.h
         OndselSolver/ASMTConstantGravity.h
         OndselSolver/ASMTConstantVelocityJoint.h
         OndselSolver/ASMTConstraintSet.h
         OndselSolver/ASMTCylindricalJoint.h
+        OndselSolver/ASMTCylSphJoint.h
         OndselSolver/ASMTExtrusion.h
         OndselSolver/ASMTFixedJoint.h
         OndselSolver/ASMTForceTorque.h
@@ -529,8 +499,12 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/FixedJoint.h
         OndselSolver/ForceTorqueData.h
         OndselSolver/ForceTorqueItem.h
+        OndselSolver/FullColumn.h
+        OndselSolver/FullMatrix.h
         OndselSolver/FullMotion.h
         OndselSolver/FullRow.h
+        OndselSolver/FullRow.h
+        OndselSolver/FullVector.h
         OndselSolver/Function.h
         OndselSolver/FunctionFromData.h
         OndselSolver/FunctionWithManyArgs.h
@@ -582,30 +556,6 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/MatrixSolver.h
         OndselSolver/MaximumIterationError.h
         OndselSolver/MbDMath.h
-        OndselSolver/MBDynAxialRotationJoint.h
-        OndselSolver/MBDynClampJoint.h
-        OndselSolver/MBDynDriveHingeJoint.h
-        OndselSolver/MBDynInLineJoint.h
-        OndselSolver/MBDynInPlaneJoint.h
-        OndselSolver/MBDynPrismaticJoint.h
-        OndselSolver/MBDynRevoluteHingeJoint.h
-        OndselSolver/MBDynRevolutePinJoint.h
-        OndselSolver/MBDynSphericalHingeJoint.h
-        OndselSolver/MBDynTotalJoint.h
-        OndselSolver/MBDynBlock.h
-        OndselSolver/MBDynBody.h
-        OndselSolver/MBDynControlData.h
-        OndselSolver/MBDynData.h
-        OndselSolver/MBDynElement.h
-        OndselSolver/MBDynGravity.h
-        OndselSolver/MBDynInitialValue.h
-        OndselSolver/MBDynItem.h
-        OndselSolver/MBDynJoint.h
-        OndselSolver/MBDynMarker.h
-        OndselSolver/MBDynNode.h
-        OndselSolver/MBDynReference.h
-        OndselSolver/MBDynStructural.h
-        OndselSolver/MBDynSystem.h
         OndselSolver/MomentOfInertiaSolver.h
         OndselSolver/Negative.h
         OndselSolver/NewtonRaphson.h
@@ -646,6 +596,7 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/RevoluteJoint.h
         OndselSolver/RevRevJoint.h
         OndselSolver/RotationLimitIJ.h
+        OndselSolver/RowTypeMatrix.h
         OndselSolver/ScalarNewtonRaphson.h
         OndselSolver/ScrewConstraintIJ.h
         OndselSolver/ScrewConstraintIqcJc.h

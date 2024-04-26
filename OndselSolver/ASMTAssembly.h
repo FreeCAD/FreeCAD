@@ -27,7 +27,6 @@ namespace MbD {
 	class ASMTLimit;
 	class SystemSolver;
 	class ASMTItemIJ;
-	class MBDynSystem;
 
 	class ASMTAssembly : public ASMTSpatialContainer
 	{
@@ -41,6 +40,7 @@ namespace MbD {
 		static void runSinglePendulum();
 		static std::shared_ptr<ASMTAssembly> assemblyFromFile(const char* chars);
 		static void runFile(const char* chars);
+		static void runDraggingLogTest();
 		static void runDraggingTest();
 		static void runDraggingTest2();
 		static void runDraggingTest3();
@@ -73,6 +73,7 @@ namespace MbD {
 		void readJointSeries(std::vector<std::string>& lines);
 		void readMotionSeriesMany(std::vector<std::string>& lines);
 		void readMotionSeries(std::vector<std::string>& lines);
+		void runDraggingLog(const char* chars);
 
 		void outputFor(AnalysisType type);
 		void preMbDrun(std::shared_ptr<System> mbdSys);
@@ -92,11 +93,12 @@ namespace MbD {
 		void solve();
 
 		void runPreDrag();
-		void runDragStep(std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> dragParts) const;
+		void runDragStep(std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> dragParts);
 		void runPostDrag();
 		void runKINEMATIC();
 		void initprincipalMassMarker();
 		std::shared_ptr<ASMTSpatialContainer> spatialContainerAt(std::shared_ptr<ASMTAssembly> self, std::string& longname) const;
+		std::shared_ptr<ASMTPart> partAt(std::string& longname) const;
 		std::shared_ptr<ASMTMarker> markerAt(std::string& longname) const;
 		std::shared_ptr<ASMTJoint> jointAt(std::string& longname) const;
 		std::shared_ptr<ASMTMotion> motionAt(std::string& longname) const;
@@ -126,6 +128,7 @@ namespace MbD {
 		void storeOnLevelGeneralConstraintSets(std::ofstream& os, size_t level);
 		void storeOnTimeSeries(std::ofstream& os) override;
 		void setFilename(std::string filename);
+		void setDebug(bool todebug);
 
 		std::string filename = "";
 		std::string notes = "(Text string: '' runs: (Core.RunArray runs: #() values: #()))";
@@ -143,7 +146,8 @@ namespace MbD {
 		std::shared_ptr<ASMTTime> asmtTime = ASMTTime::With();
 		std::shared_ptr<Units> mbdUnits = std::make_shared<Units>();
 		std::shared_ptr<System> mbdSystem;
-		MBDynSystem* mbdynItem = nullptr;
+		bool debug = false;
+
 	};
 }
 

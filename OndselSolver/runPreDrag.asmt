@@ -3,7 +3,7 @@ Assembly
 	Notes
 		(Text string: '' runs: (Core.RunArray runs: #() values: #()))
 	Name
-		Assembly
+		OndselAssembly
 	Position3D
 		0	0	0	
 	RotationMatrix
@@ -25,9 +25,9 @@ Assembly
 			Markers
 				Marker
 					Name
-						Marker0
+						marker-AssemblyExample#BasePin
 					Position3D
-						0	0	0	
+						-206.51702880859375	40.255699157714844	364.26800537109375	
 					RotationMatrix
 						1	0	0	
 						0	1	0	
@@ -37,9 +37,9 @@ Assembly
 	Parts
 		Part
 			Name
-				structural_node_1
+				AssemblyExample#BasePin
 			Position3D
-				-0.1322131193924678	0.04215394533365132	0.2000000152587891	
+				-206.51702880859375	40.255699157714844	364.26800537109375	
 			RotationMatrix
 				1	0	0	
 				0	1	0	
@@ -61,9 +61,9 @@ Assembly
 				Mass
 					1
 				MomentOfInertias
-					1	2	3	
+					1	1	1	
 				Density
-					10
+					1
 			RefPoints
 				RefPoint
 					Position3D
@@ -75,41 +75,24 @@ Assembly
 					Markers
 						Marker
 							Name
-								Marker0
+								FixingMarker
 							Position3D
-								0.1322131193924678	-0.04215394533365132	-0.2000000152587891	
+								0	0	0	
 							RotationMatrix
 								1	0	0	
 								0	1	0	
 								0	0	1	
-				RefPoint
-					Position3D
-						0	0	0	
-					RotationMatrix
-						1	0	0	
-						0	1	0	
-						0	0	1	
-					Markers
-						Marker
-							Name
-								Marker1
-							Position3D
-								0.2032130965042842	0.117846068852255	-2.842170943040401e-17	
-							RotationMatrix
-								1	-0	0	
-								0	1	2.471452993948174e-16	
-								-0	-2.471452993948174e-16	1	
 			RefCurves
 			RefSurfaces
 		Part
 			Name
-				structural_node_2
+				AssemblyExample#Stick
 			Position3D
-				0.4257698614077033	0.1732822793381788	0.302175885912376	
+				-206.81702880859257	269.20743548911616	124.57579919241013	
 			RotationMatrix
-				-0.8995965927692124	0.4234982246408653	-0.1066546951805642	
-				-0.4367218454325635	-0.8723574602808865	0.2196963614042295	
-				1.387778780781446e-17	0.2442165334663419	0.969720725148062	
+				1	1.9573942562249709e-15	-4.8204795291975149e-16	
+				-1.4705626826996499e-15	0.87188642801965233	0.48970813413208841	
+				1.3788429567821853e-15	-0.48970813413208841	0.87188642801965233	
 			Velocity3D
 				0	0	0	
 			Omega3D
@@ -119,35 +102,18 @@ Assembly
 				Name
 					MassMarker
 				Position3D
-					-0.003947705364974695	0.01042661386112648	-1.13686837721616e-16	
+					0	0	0	
 				RotationMatrix
 					1	0	0	
 					0	1	0	
 					0	0	1	
 				Mass
-					12.63583350443436
+					1
 				MomentOfInertias
-					0.08708924866282601	0.085370944710882	0.06459712318937701	
+					1	1	1	
 				Density
-					10
+					1
 			RefPoints
-				RefPoint
-					Position3D
-						0	0	0	
-					RotationMatrix
-						1	0	0	
-						0	1	0	
-						0	0	1	
-					Markers
-						Marker
-							Name
-								Marker0
-							Position3D
-								0	0	0	
-							RotationMatrix
-								1	0	0	
-								0	1	0	
-								0	0	1	
 			RefCurves
 			RefSurfaces
 	KinematicIJs
@@ -155,19 +121,12 @@ Assembly
 		Joints
 			FixedJoint
 				Name
-					joint_1
+					AssemblyExample#GroundedJoint
 				MarkerI
-					/Assembly/Marker0
+					/OndselAssembly/marker-AssemblyExample#BasePin
 				MarkerJ
-					/Assembly/structural_node_1/Marker0
+					/OndselAssembly/AssemblyExample#BasePin/FixingMarker
 		Motions
-			GeneralMotion
-				Name
-					joint_2
-				MarkerI
-					/Assembly/structural_node_1/Marker1
-				MarkerJ
-					/Assembly/structural_node_2/Marker0
 		Limits
 		GeneralConstraintSets
 	ForceTorques
@@ -177,15 +136,15 @@ Assembly
 		tstart
 			0
 		tend
-			4
-		hmin
-			1e-09
-		hmax
 			1
+		hmin
+			1.0000000000000001e-09
+		hmax
+			1000000000
 		hout
-			0.01
+			0.10000000000000001
 		errorTol
-			1e-06
+			9.9999999999999995e-07
 	AnimationParameters
 		nframe
 			1000000

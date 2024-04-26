@@ -30,10 +30,12 @@ namespace MbD {
 		virtual std::string classname();
 		void setName(std::string str);
 		virtual void parseASMT(std::vector<std::string>& lines);
-		std::string popOffTop(std::vector<std::string>& args);
-		std::string readStringOffTop(std::vector<std::string>& args);
+		std::string popOffTop(std::vector<std::string>& lines);
+		std::string readStringOffTop(std::vector<std::string>& lines);
 		FRowDsptr readRowOfDoubles(std::string& line);
+		FRowDsptr readRowOfDoublesOffTop(std::vector<std::string>& lines);
 		FColDsptr readColumnOfDoubles(std::string& line);
+		FColDsptr readColumnOfDoublesOffTop(std::vector<std::string>& lines);
 		double readDouble(std::string& line);
 		int readInt(std::string& line);
 		size_t readSize_t(std::string& line);
@@ -58,8 +60,8 @@ namespace MbD {
 		virtual void storeOnLevelBool(std::ofstream& os, size_t level, bool value);
 		//template<typename T>
 		//void storeOnLevelArray(std::ofstream& os, size_t level, std::vector<T> array);
-		void storeOnLevelArray(std::ofstream& os, size_t level, std::vector<double> array);
-		void storeOnLevelName(std::ofstream& os, size_t level);
+		virtual void storeOnLevelArray(std::ofstream& os, size_t level, std::vector<double> array);
+		virtual void storeOnLevelName(std::ofstream& os, size_t level);
 		virtual void storeOnTimeSeries(std::ofstream& os);
 		void logString(std::string& str);
 		void logString(const char* chars);
