@@ -122,6 +122,8 @@ public:
     void isInnerView(bool state) { m_innerView = state; }
     QGIViewClip* getClipGroup();
 
+    void snapPosition(QPointF& position);
+
     void alignTo(QGraphicsItem*, const QString &alignment);
 
     QColor prefNormalColor(); //preference
