@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>368</height>
+    <height>390</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -103,7 +103,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbCenterX" native="true">
+      <widget class="Gui::QuantitySpinBox" name="qsbCenterX">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -117,7 +117,7 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbCenterY" native="true">
+      <widget class="Gui::QuantitySpinBox" name="qsbCenterY">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -131,7 +131,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbCenterZ" native="true">
+      <widget class="Gui::QuantitySpinBox" name="qsbCenterZ">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -149,11 +149,14 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbRadius" native="true">
+      <widget class="Gui::QuantitySpinBox" name="qsbRadius">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
-       <property name="value" stdset="0">
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
+       <property name="value">
         <double>10.000000000000000</double>
        </property>
       </widget>
@@ -163,7 +166,7 @@
    <item>
     <layout class="QGridLayout" name="gridLayout_5" columnstretch="1,0">
      <item row="1" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbStartAngle" native="true">
+      <widget class="Gui::QuantitySpinBox" name="qsbStartAngle">
        <property name="toolTip">
         <string>Start angle (conventional) of arc in degrees.</string>
        </property>
@@ -187,7 +190,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbEndAngle" native="true">
+      <widget class="Gui::QuantitySpinBox" name="qsbEndAngle">
        <property name="toolTip">
         <string>End angle (conventional) of arc in degrees.</string>
        </property>

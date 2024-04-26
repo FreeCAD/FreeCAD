@@ -907,14 +907,20 @@ void execDrawCosmArc(Gui::Command* cmd)
     std::vector<Base::Vector3d> vertexPoints;
     vertexPoints = _getVertexPoints(SubNames, objFeat);
     if (vertexPoints.size() >= 3) {
-        // vertexPoints come from stored geometry, so are centered, scaled, rotated and inverted (CSRIz)
-        double arcRadius = (vertexPoints[1] - vertexPoints[0]).Length() / objFeat->getScale();
-        double angle1 = _getAngle(vertexPoints[0], vertexPoints[1]);
-        double angle2 = _getAngle(vertexPoints[0], vertexPoints[2]);
-        Base::Vector3d center = CosmeticVertex::makeCanonicalPointInverted(objFeat, vertexPoints[0]);
+        // vertexPoints come from stored geometry, so are centered, scaled, rotated and inverted (CSRIz).
+        // because the points are inverted, the start and end angles will be mirrored unless we invert the points
+        // before calculating the angle.
+        Base::Vector3d center = CosmeticVertex::makeCanonicalPoint(objFeat, DU::invertY(vertexPoints[0]));
+        Base::Vector3d end1 = CosmeticVertex::makeCanonicalPoint(objFeat, DU::invertY(vertexPoints[1]));
+        Base::Vector3d end2 = CosmeticVertex::makeCanonicalPoint(objFeat, DU::invertY(vertexPoints[2]));
+        double arcRadius = (end1 - center).Length();
+        double angle1 = _getAngle(center, end1);
+        double angle2 = _getAngle(center, end2);
         TechDraw::BaseGeomPtr baseGeo = std::make_shared<TechDraw::AOC>(
             center, arcRadius, angle1, angle2);
-        std::string arcTag = objFeat->addCosmeticEdge(baseGeo);
+        TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(baseGeo);
+        // having done our calculations in sensible coordinates, we convert to inverted coords
+        std::string arcTag = objFeat->addCosmeticEdge(baseGeo->inverted());
         TechDraw::CosmeticEdge* arcEdge = objFeat->getCosmeticEdge(arcTag);
         _setLineAttributes(arcEdge);
         objFeat->refreshCEGeoms();

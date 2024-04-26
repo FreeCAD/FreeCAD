@@ -813,9 +813,9 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
     cw = (a < 0) ? true: false;
     largeArc = (fabs(l-f) > M_PI) ? true : false;
 
-    startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
-    endPnt = Base::Vector3d(ePt.X(), ePt.Y(), s.Z());
-    midPnt = Base::Vector3d(m.X(), m.Y(), s.Z());
+    startPnt = DU::toVector3d(s);
+    endPnt = DU::toVector3d(ePt);
+    midPnt = DU::toVector3d(m);
     if (e.Orientation() == TopAbs_REVERSED) {
         reversed = true;
     }
@@ -853,6 +853,7 @@ AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
     // this is a bit of an arcane method of determining if v2 is clockwise from v1 or counter clockwise from v1.
     // The v1 x v2 points up if v2 is ccw from v1 and points down if v2 is cw from v1.  Taking (v1 x v2) * stdZ
     // gives 1 for parallel with stdZ (v2 is ccw from v1) or -1 for antiparallel with stdZ (v2 is clockwise from v1).
+    // this cw flag is a problem.  we should just declare that arcs are always ccw and flip the start and end angles.
     double a = v3.DotCross(v1, v2);    //error if v1 = v2?
 
     startAngle = fmod(f, 2.0*M_PI);
@@ -860,9 +861,9 @@ AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
     cw = (a < 0) ? true: false;
     largeArc = (fabs(l-f) > M_PI) ? true : false;
 
-    startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
-    endPnt = Base::Vector3d(ePt.X(), ePt.Y(), s.Z());
-    midPnt = Base::Vector3d(m.X(), m.Y(), s.Z());
+    startPnt = DU::toVector3d(s);
+    endPnt = DU::toVector3d(ePt);
+    midPnt = DU::toVector3d(m);
     if (edge.Orientation() == TopAbs_REVERSED) {
         reversed = true;
     }
@@ -900,7 +901,6 @@ bool AOC::isOnArc(Base::Vector3d p)
 
 BaseGeomPtr AOC::copy()
 {
-    Base::Console().Message("AOC::copy()\n");
     auto base = BaseGeom::copy();
     TechDraw::CirclePtr circle =  std::static_pointer_cast<TechDraw::Circle>(base);
     TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(circle);
