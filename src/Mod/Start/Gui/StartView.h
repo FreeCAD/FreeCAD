@@ -101,7 +101,6 @@ private:
     QLabel* _examplesLabel;
     QLabel* _recentFilesLabel;
     QCheckBox* _showOnStartupCheckBox;
-    QLabel* _rewriteLabel;
 
 
 };  // namespace StartGui

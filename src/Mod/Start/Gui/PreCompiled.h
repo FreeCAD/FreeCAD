@@ -50,6 +50,7 @@
 #include <QCoreApplication>
 #include <QFile>
 #include <QFileIconProvider>
+#include <QFrame>
 #include <QGridLayout>
 #include <QGuiApplication>
 #include <QHBoxLayout>

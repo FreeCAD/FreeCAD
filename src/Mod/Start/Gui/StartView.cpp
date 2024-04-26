@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #include <QApplication>
 #include <QCheckBox>
+#include <QFrame>
 #include <QGridLayout>
 #include <QLabel>
 #include <QListView>
@@ -76,6 +77,7 @@ gsl::owner<QPushButton*> createNewButton(const NewButton& newButton)
     mainLayout->addWidget(iconLabel);
     QIcon baseIcon(newButton.iconPath);
     iconLabel->setPixmap(baseIcon.pixmap(newFileIconSize, newFileIconSize));
+    iconLabel->setPixmap(baseIcon.pixmap(newFileIconSize, newFileIconSize));
 
     auto textLayout = gsl::owner<QVBoxLayout*>(new QVBoxLayout);
     auto textLabelLine1 = gsl::owner<QLabel*>(new QLabel(button));
@@ -104,7 +106,6 @@ StartView::StartView(Gui::Document* pcDocument, QWidget* parent)
     , _examplesLabel {nullptr}
     , _recentFilesLabel {nullptr}
     , _showOnStartupCheckBox {nullptr}
-    , _rewriteLabel {nullptr}
 {
     setObjectName(QLatin1String("StartView"));
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -119,19 +120,6 @@ StartView::StartView(Gui::Document* pcDocument, QWidget* parent)
     auto layout = gsl::owner<QVBoxLayout*>(new QVBoxLayout(scrolledWidget));
     layout->setSizeConstraint(QLayout::SizeConstraint::SetMinAndMaxSize);
 
-    // New WB notice: temporary to explain why all your setting disappeared
-    _rewriteLabel = gsl::owner<QLabel*>(new QLabel());
-    _rewriteLabel->setWordWrap(true);
-    layout->addWidget(_rewriteLabel);
-
-    // Launch start automatically?
-    _showOnStartupCheckBox = gsl::owner<QCheckBox*>(new QCheckBox());
-    bool showOnStartup = hGrp->GetBool("ShowOnStartup", true);
-    _showOnStartupCheckBox->setCheckState(showOnStartup ? Qt::CheckState::Checked
-                                                        : Qt::CheckState::Unchecked);
-    connect(_showOnStartupCheckBox, &QCheckBox::toggled, this, &StartView::showOnStartupChanged);
-    layout->addWidget(_showOnStartupCheckBox);
-
     auto firstStart = hGrp->GetBool("FirstStart2024", true);  // NOLINT
     if (firstStart) {
         auto firstStartRegion = gsl::owner<QHBoxLayout*>(new QHBoxLayout);
@@ -140,7 +128,21 @@ StartView::StartView(Gui::Document* pcDocument, QWidget* parent)
         firstStartRegion->addWidget(firstStartWidget);
         firstStartRegion->addStretch();
         layout->addLayout(firstStartRegion);
+
+        // Try to further differentiate the checkbox below, when the First Start box is shown
+        auto line = new QFrame();
+        line->setFrameShape(QFrame::HLine);
+        line->setFrameShadow(QFrame::Sunken);
+        layout->addWidget(line);
     }
+
+    // Launch start automatically?
+    _showOnStartupCheckBox = gsl::owner<QCheckBox*>(new QCheckBox());
+    bool showOnStartup = hGrp->GetBool("ShowOnStartup", true);
+    _showOnStartupCheckBox->setCheckState(showOnStartup ? Qt::CheckState::Unchecked
+                                                        : Qt::CheckState::Checked);
+    connect(_showOnStartupCheckBox, &QCheckBox::toggled, this, &StartView::showOnStartupChanged);
+    layout->addWidget(_showOnStartupCheckBox);
 
     _newFileLabel = gsl::owner<QLabel*>(new QLabel());
     layout->addWidget(_newFileLabel);
@@ -406,7 +408,11 @@ void StartView::showOnStartupChanged(bool checked)
 {
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
-    hGrp->SetBool("ShowOnStartup", checked);
+    hGrp->SetBool(
+        "ShowOnStartup",
+        !checked);  // The sense of this option has been reversed: the checkbox actually says
+                    // "*Don't* show on startup" now, but the option is preserved in its
+                    // original sense, so is stored inverted.
 }
 
 void StartView::changeEvent(QEvent* event)
@@ -430,11 +436,6 @@ void StartView::retranslateUi()
     _recentFilesLabel->setText(h1Start + tr("Recent Files") + h1End);
 
     QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
-    _showOnStartupCheckBox->setText(tr("Show this view when starting %1").arg(application));
-
-    _rewriteLabel->setText(
-        tr("NOTE: The Start Workbench has been completely rewritten to remove all "
-           "network access, and to remove its dependency on Chromium. This is still a "
-           "work-in-progress, and not all settings from the previous version of Start "
-           "have been migrated yet."));
+    _showOnStartupCheckBox->setText(
+        tr("Don't show this Start page again (start with blank screen)"));
 }
