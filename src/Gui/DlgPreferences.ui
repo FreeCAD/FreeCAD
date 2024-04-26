@@ -2,6 +2,11 @@
 <ui version="4.0">
  <class>Gui::Dialog::DlgPreferences</class>
  <widget class="QDialog" name="Gui::Dialog::DlgPreferences">
+  <property name="styleSheet">
+    <string notr="true">#sidebar { background-color: rgba(0, 0, 0, 25); }
+      #groupsTreeView { background-color: transparent; }
+      #groupsTreeView::item { padding: 6px 8px; }</string>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -69,10 +74,6 @@
        <property name="autoFillBackground">
         <bool>false</bool>
        </property>
-       <property name="styleSheet">
-        <string notr="true">QFrame { background-color: rgba(0, 0, 0, 25); }
-QFrame::item { padding: 6px 8px };</string>
-       </property>
        <property name="frameShape">
         <enum>QFrame::NoFrame</enum>
        </property>
@@ -105,9 +106,6 @@ QFrame::item { padding: 6px 8px };</string>
           </property>
           <property name="autoFillBackground">
            <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color: transparent;</string>
           </property>
           <property name="frameShape">
            <enum>QFrame::NoFrame</enum>
