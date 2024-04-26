@@ -164,13 +164,14 @@ void TaskLineDecor::initializeRejectArrays()
     }
 }
 
+// get the current line tool appearance default
 void TaskLineDecor::getDefaults()
 {
 //    Base::Console().Message("TLD::getDefaults()\n");
-    m_color = LineFormat::getDefEdgeColor();
-    m_weight = LineFormat::getDefEdgeWidth();
-    m_visible = true;
-    m_lineNumber = 1;
+    m_color = LineFormat::getCurrentLineFormat().getColor();
+    m_weight = LineFormat::getCurrentLineFormat().getWidth();
+    m_visible = LineFormat::getCurrentLineFormat().getVisible();
+    m_lineNumber = LineFormat::getCurrentLineFormat().getLineNumber();
 
     //set defaults to format of 1st edge
     if (!m_originalFormats.empty()) {

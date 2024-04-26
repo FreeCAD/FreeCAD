@@ -757,7 +757,7 @@ CmdTechDrawExtensionSelectLineAttributes::CmdTechDrawExtensionSelectLineAttribut
 void CmdTechDrawExtensionSelectLineAttributes::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new TaskDlgSelectLineAttributes(&_getActiveLineAttributes()));
+    Gui::Control().showDialog(new TaskDlgSelectLineAttributes());
 }
 
 bool CmdTechDrawExtensionSelectLineAttributes::isActive()
@@ -2022,8 +2022,7 @@ namespace TechDrawGui
 
 LineFormat& _getActiveLineAttributes()
 {
-    static TechDraw::LineFormat attributes;
-    return attributes;
+    return LineFormat::getCurrentLineFormat();
 }
 
 std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat)
