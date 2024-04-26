@@ -1351,8 +1351,9 @@ void ProfileBased::getAxis(const App::DocumentObject * pcReferenceAxis, const st
     };
 
     dir = Base::Vector3d(0, 0, 0); // If unchanged signals that no valid axis was found
-    if (!pcReferenceAxis)
+    if (!pcReferenceAxis || subReferenceAxis.empty()) {
         return;
+    }
 
     App::DocumentObject* profile = Profile.getValue();
     gp_Pln sketchplane;
