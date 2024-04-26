@@ -56,6 +56,7 @@ import xml.sax
 import FreeCAD
 import Draft
 import DraftVecUtils
+import WorkingPlane as wp
 from FreeCAD import Vector
 from draftutils import params
 from draftutils import utils
@@ -1834,10 +1835,28 @@ def export(exportList, filename):
                        "with a valid bounding box"))
         return
 
-    minx = bb.XMin
-    maxx = bb.XMax
-    miny = bb.YMin
-    maxy = bb.YMax
+    # The SVG XY plane is not necessarily identical to the 3D World XY plane.
+    # Use simple heuristics: Project along the shortest bounding box edge.
+    if bb.XLength <= bb.YLength and bb.XLength <= bb.ZLength:
+        proj = wp.PlaneBase(Vector(0, 1, 0), Vector(0, 0, 1))
+        minx = bb.YMin
+        maxx = bb.YMax
+        miny = bb.ZMin
+        maxy = bb.ZMax
+    elif bb.YLength <= bb.XLength and bb.YLength <= bb.ZLength:
+        proj = wp.PlaneBase(Vector(1, 0, 0), Vector(0, 0, 1))
+        minx = bb.XMin
+        maxx = bb.XMax
+        miny = bb.ZMin
+        maxy = bb.ZMax
+    else:
+        proj = wp.PlaneBase(Vector(1, 0, 0), Vector(0, 1, 0))
+        minx = bb.XMin
+        maxx = bb.XMax
+        miny = bb.YMin
+        maxy = bb.YMax
+
+    # print("direction=", proj)
 
     if svg_export_style == 0:
         # translated-style exports get a bit of a margin
@@ -1891,7 +1910,7 @@ def export(exportList, filename):
             # raw-style exports do not translate the sketch
             svg.write('<g id="%s" transform="scale(1,-1)">\n' % ob.Name)
 
-        svg.write(Draft.get_svg(ob, override=False))
+        svg.write(Draft.get_svg(ob, direction=proj, override=False))
         _label_enc = str(ob.Label.encode('utf8'))
         _label = _label_enc.replace('<', '&lt;').replace('>', '&gt;')
         # replace('"', "&quot;")
