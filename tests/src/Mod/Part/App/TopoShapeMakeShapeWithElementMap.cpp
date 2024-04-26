@@ -3,7 +3,7 @@
 // Tests for the makeShapeWithElementMap method, extracted from the main set of tests for TopoShape
 // due to length and complexity.
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include "src/App/InitApplication.h"
 #include "PartTestHelpers.h"
 #include <Mod/Part/App/TopoShape.h>

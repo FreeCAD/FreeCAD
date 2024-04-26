@@ -1,3 +1,15 @@
+if ( EXISTS "${CMAKE_SOURCE_DIR}/tests/lib/googletest" )
+    include_directories( ${CMAKE_SOURCE_DIR}/tests/lib/googletest/include/ )
+    include_directories( ${CMAKE_SOURCE_DIR}/tests/lib/googlemock/include/ )
+else()
+    find_package(GTest)
+    if( GTest_FOUND )
+        message( STATUS "Found Google Test: version ${GTest_VERSION}" )
+    else()
+        message( SEND_ERROR "The Google Test submodule is not available. Please run git submodule update --init" )
+    endif()
+endif()
+
 if(MSVC)
     add_compile_options(/wd4251)
 
@@ -106,7 +118,9 @@ foreach (exe ${TestExecutables})
     add_executable(${exe})
 endforeach()
 
-add_subdirectory(lib)
+if ( EXISTS "${CMAKE_SOURCE_DIR}/tests/lib/googletest" )
+    add_subdirectory(lib)
+endif()
 add_subdirectory(src)
 
 target_include_directories(Tests_run PUBLIC
