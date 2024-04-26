@@ -34,6 +34,7 @@
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
@@ -158,22 +159,25 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         newPos = value.toPointF();            //position within parent!
 
         TechDraw::DrawView *viewObj = getViewObject();
-        if (viewObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+        auto* dpgi = dynamic_cast<TechDraw::DrawProjGroupItem*>(viewObj);
+        if (dpgi && dpgi->getPGroup()) {
             // restrict movements of secondary views.
-            TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(viewObj);
-            TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
-            if (dpg) {
-                if(alignHash.size() == 1) {   //if aligned.
-                    QGraphicsItem* item = alignHash.begin().value();
-                    QString alignMode   = alignHash.begin().key();
-                    if(alignMode == QString::fromLatin1("Vertical")) {
-                        newPos.setX(item->pos().x());
-                    } else if(alignMode == QString::fromLatin1("Horizontal")) {
-                        newPos.setY(item->pos().y());
-                    }
+            if(alignHash.size() == 1) {   //if aligned.
+                QGraphicsItem* item = alignHash.begin().value();
+                QString alignMode   = alignHash.begin().key();
+                if(alignMode == QString::fromLatin1("Vertical")) {
+                    newPos.setX(item->pos().x());
+                }
+                else if(alignMode == QString::fromLatin1("Horizontal")) {
+                    newPos.setY(item->pos().y());
                 }
             }
         }
+        else {
+            // For general views we check if we need to snap to a position
+            snapPosition(newPos);
+        }
+
         // tell the feature that we have moved
         Gui::ViewProvider *vp = getViewProvider(viewObj);
         if (vp && !vp->isRestoring()) {
@@ -195,6 +199,44 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     }
 
     return QGraphicsItemGroup::itemChange(change, value);
+}
+
+void QGIView::snapPosition(QPointF& pos)
+{
+    // For general views we check if the view is close to aligned vertically or horizontally to another view.
+
+    // First get a list of the views of the page.
+    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
+        return;
+    }
+    ViewProviderPage* vp = mdi->getViewProviderPage();
+    if (!vp) {
+        return;
+    }
+    QGSPage* scenePage = vp->getQGSPage();
+    if (!scenePage) {
+        return;
+    }
+
+    std::vector<QGIView*> views = scenePage->getViews();
+
+    qreal snapPercent = 0.05;
+    for (auto* view : views) {
+        if (view == this) { continue; }
+
+        QPointF vPos = view->pos();
+        qreal dx = view->boundingRect().width() * snapPercent;
+        qreal dy = view->boundingRect().height() * snapPercent;
+        if (fabs(pos.x() - vPos.x()) < dx) {
+            pos.setX(vPos.x());
+            break;
+        }
+        else if (fabs(pos.y() - vPos.y()) < dy) {
+            pos.setY(vPos.y());
+            break;
+        }
+    }
 }
 
 void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
