@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cmath>
 #endif // #ifndef _PreComp_
 
 #include <Base/Console.h>
@@ -176,10 +175,10 @@ void TaskLineDecor::getDefaults()
     //set defaults to format of 1st edge
     if (!m_originalFormats.empty()) {
         LineFormat &lf = m_originalFormats.front();
-        m_style = lf.m_style;
-        m_color = lf.m_color;
-        m_weight = lf.m_weight;
-        m_visible = lf.m_visible;
+        m_style = lf.getStyle();
+        m_color = lf.getColor();
+        m_weight = lf.getWidth();
+        m_visible = lf.getVisible();
         m_lineNumber = lf.getLineNumber();
     }
 }
@@ -218,10 +217,10 @@ void TaskLineDecor::applyDecorations()
     for (auto& e: m_edges) {
         LineFormat *lf = getFormatAccessPtr(e);
         if (lf) {
-            lf->m_style = m_style;
-            lf->m_color = m_color;
-            lf->m_weight = m_weight;
-            lf->m_visible = m_visible;
+            lf->setStyle(m_style);
+            lf->setColor(m_color);
+            lf->setWidth(m_weight);
+            lf->setVisible(m_visible);
             lf->setLineNumber(m_lineNumber);
         }
     }
@@ -353,7 +352,7 @@ int TaskRestoreLines::countInvisibleGeoms()
     int iGeoms = 0;
     const std::vector<TechDraw::GeomFormat*> geoms = m_partFeat->GeomFormats.getValues();
     for (auto& g : geoms) {
-        if (!g->m_format.m_visible) {
+        if (!g->m_format.getVisible()) {
             iGeoms++;
         }
     }
@@ -365,7 +364,7 @@ int TaskRestoreLines::countInvisibleCosmetics()
     int iCosmos = 0;
     const std::vector<TechDraw::CosmeticEdge*> cosmos = m_partFeat->CosmeticEdges.getValues();
     for (auto& c : cosmos) {
-        if (!c->m_format.m_visible) {
+        if (!c->m_format.getVisible()) {
             iCosmos++;
         }
     }
@@ -377,7 +376,7 @@ int TaskRestoreLines::countInvisibleCenters()
     int iCenter = 0;
     const std::vector<TechDraw::CenterLine*> centers = m_partFeat->CenterLines.getValues();
     for (auto& c : centers) {
-        if (!c->m_format.m_visible) {
+        if (!c->m_format.getVisible()) {
             iCenter++;
         }
     }
@@ -395,8 +394,8 @@ void TaskRestoreLines::restoreInvisibleGeoms()
 {
     const std::vector<TechDraw::GeomFormat*> geoms = m_partFeat->GeomFormats.getValues();
     for (auto& g : geoms) {
-        if (!g->m_format.m_visible) {
-            g->m_format.m_visible = true;
+        if (!g->m_format.getVisible()) {
+            g->m_format.setVisible(true);
         }
     }
     m_partFeat->GeomFormats.setValues(geoms);
@@ -407,8 +406,8 @@ void TaskRestoreLines::restoreInvisibleCosmetics()
 {
     const std::vector<TechDraw::CosmeticEdge*> cosmos = m_partFeat->CosmeticEdges.getValues();
     for (auto& c : cosmos) {
-        if (!c->m_format.m_visible) {
-            c->m_format.m_visible = true;
+        if (!c->m_format.getVisible()) {
+            c->m_format.setVisible(true);
         }
     }
     m_partFeat->CosmeticEdges.setValues(cosmos);
@@ -419,8 +418,8 @@ void TaskRestoreLines::restoreInvisibleCenters()
 {
     const std::vector<TechDraw::CenterLine*> centers = m_partFeat->CenterLines.getValues();
     for (auto& c : centers) {
-        if (!c->m_format.m_visible) {
-            c->m_format.m_visible = true;
+        if (!c->m_format.getVisible()) {
+            c->m_format.setVisible(true);
         }
     }
     m_partFeat->CenterLines.setValues(centers);

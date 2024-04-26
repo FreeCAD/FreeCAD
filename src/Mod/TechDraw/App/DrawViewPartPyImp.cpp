@@ -367,9 +367,9 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
     std::string newTag = dvp->addCosmeticEdge(DU::invertY(pnt1), DU::invertY(pnt2));
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce) {
-        ce->m_format.m_style = style;
-        ce->m_format.m_weight = weight;
-        ce->m_format.m_color = pColor ? DrawUtil::pyTupleToColor(pColor) : defCol;
+        ce->m_format.setStyle(style);
+        ce->m_format.setWidth(weight);
+        ce->m_format.setColor(pColor ? DrawUtil::pyTupleToColor(pColor) : defCol);
     }
     else {
         PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticLine - line creation failed");
@@ -413,9 +413,9 @@ PyObject* DrawViewPartPy::makeCosmeticLine3D(PyObject *args)
     std::string newTag = dvp->addCosmeticEdge(pnt1, pnt2);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce) {
-        ce->m_format.m_style = style;
-        ce->m_format.m_weight = weight;
-        ce->m_format.m_color = pColor ? DrawUtil::pyTupleToColor(pColor) : defCol;
+        ce->m_format.setStyle(style);
+        ce->m_format.setWidth(weight);
+        ce->m_format.setColor(pColor ? DrawUtil::pyTupleToColor(pColor) : defCol);
     }
     else {
         PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticLine - line creation failed");
@@ -451,9 +451,9 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce) {
         ce->permaRadius = radius;
-        ce->m_format.m_style = style;
-        ce->m_format.m_weight = weight;
-        ce->m_format.m_color = pColor ? DrawUtil::pyTupleToColor(pColor) : defCol;
+        ce->m_format.setStyle(style);
+        ce->m_format.setWidth(weight);
+        ce->m_format.setColor(pColor ? DrawUtil::pyTupleToColor(pColor) : defCol);
     }
     else {
         PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticCircle - circle creation failed");
@@ -491,12 +491,12 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce) {
         ce->permaRadius = radius;
-        ce->m_format.m_style = style;
-        ce->m_format.m_weight = weight;
+        ce->m_format.setStyle(style);
+        ce->m_format.setWidth(weight);
         if (!pColor)
-            ce->m_format.m_color = defCol;
+            ce->m_format.setColor(defCol);
         else
-            ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
+            ce->m_format.setColor(DrawUtil::pyTupleToColor(pColor));
     }
     else {
         PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticCircleArc - arc creation failed");
@@ -536,9 +536,9 @@ PyObject* DrawViewPartPy::makeCosmeticCircle3d(PyObject *args)
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce) {
         ce->permaRadius = radius;
-        ce->m_format.m_style = style;
-        ce->m_format.m_weight = weight;
-        ce->m_format.m_color = pColor ? DrawUtil::pyTupleToColor(pColor) : defCol;
+        ce->m_format.setStyle(style);
+        ce->m_format.setWidth(weight);
+        ce->m_format.setColor(pColor ? DrawUtil::pyTupleToColor(pColor) : defCol);
     }
     else {
         PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticCircle - circle creation failed");
@@ -579,12 +579,12 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc3d(PyObject *args)
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce) {
         ce->permaRadius = radius;
-        ce->m_format.m_style = style;
-        ce->m_format.m_weight = weight;
+        ce->m_format.setStyle(style);
+        ce->m_format.setWidth(weight);
         if (!pColor)
-            ce->m_format.m_color = defCol;
+            ce->m_format.setColor(defCol);
         else
-            ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
+            ce->m_format.setColor(DrawUtil::pyTupleToColor(pColor));
     }
     else {
         PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticCircleArc - arc creation failed");
@@ -770,10 +770,10 @@ PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
     DrawViewPart* dvp = getDrawViewPartPtr();
     TechDraw::GeomFormat* gf = dvp->getGeomFormatBySelection(idx);
     if (gf) {
-        gf->m_format.m_style = style;
-        gf->m_format.m_color = color;
-        gf->m_format.m_weight = weight;
-        gf->m_format.m_visible = visible;
+        gf->m_format.setStyle(style);
+        gf->m_format.setColor(color);
+        gf->m_format.setWidth(weight);
+        gf->m_format.setVisible(visible);
     }
     else {
         TechDraw::LineFormat fmt(style, weight, color, visible);

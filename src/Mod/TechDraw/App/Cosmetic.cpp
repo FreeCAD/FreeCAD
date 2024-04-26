@@ -37,10 +37,7 @@
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
 #include "GeometryObject.h"
-#include "LineGroup.h"
-#include "LineGenerator.h"
 #include "Preferences.h"
-
 
 using namespace TechDraw;
 using namespace std;
@@ -49,61 +46,6 @@ using DU = DrawUtil;
 #define GEOMETRYEDGE 0
 #define COSMETICEDGE 1
 #define CENTERLINE   2
-
-LineFormat::LineFormat()
-{
-    m_style = getDefEdgeStyle();
-    m_weight = getDefEdgeWidth();
-    m_color= getDefEdgeColor();
-    m_visible = true;
-    m_lineNumber = LineGenerator::fromQtStyle((Qt::PenStyle)m_style);
-}
-
-LineFormat::LineFormat(const int style,
-                       const double weight,
-                       const App::Color& color,
-                       const bool visible) :
-    m_style(style),
-    m_weight(weight),
-    m_color(color),
-    m_visible(visible),
-    m_lineNumber(LineGenerator::fromQtStyle((Qt::PenStyle)m_style))
-{
-}
-
-void LineFormat::dump(const char* title)
-{
-    Base::Console().Message("LF::dump - %s \n", title);
-    Base::Console().Message("LF::dump - %s \n", toString().c_str());
-}
-
-std::string LineFormat::toString() const
-{
-    std::stringstream ss;
-    ss << m_style << ", " <<
-          m_weight << ", " <<
-          m_color.asHexString() << ", " <<
-          m_visible;
-    return ss.str();
-}
-
-//static preference getters.
-double LineFormat::getDefEdgeWidth()
-{
-    return TechDraw::LineGroup::getDefaultWidth("Graphic");
-}
-
-App::Color LineFormat::getDefEdgeColor()
-{
-    return Preferences::normalColor();
-}
-
-int LineFormat::getDefEdgeStyle()
-{
-    return Preferences::getPreferenceGroup("Decorations")->GetInt("CenterLineStyle", 2);   //dashed
-}
-
-//******************************************
 
 TYPESYSTEM_SOURCE(TechDraw::CosmeticEdge, Base::Persistence)
 
@@ -271,10 +213,10 @@ void CosmeticEdge::Save(Base::Writer &writer) const
 {
     // TODO: this should be using m_format->Save(writer) instead of saving the individual
     // fields.
-    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << endl;
-    const char v = m_format.m_visible?'1':'0';
+    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.getStyle() << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.getWidth() << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.getColor().asHexString() << "\"/>" << endl;
+    const char v = m_format.getVisible() ? '1' : '0';
     writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
 
     writer.Stream() << writer.ind() << "<GeometryType value=\"" << m_geometry->getGeomType() <<"\"/>" << endl;
@@ -302,14 +244,16 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     }
 //    Base::Console().Message("CE::Restore - reading elements\n");
     reader.readElement("Style");
-    m_format.m_style = reader.getAttributeAsInteger("value");
+    m_format.setStyle(reader.getAttributeAsInteger("value"));
     reader.readElement("Weight");
-    m_format.m_weight = reader.getAttributeAsFloat("value");
+    m_format.setWidth(reader.getAttributeAsFloat("value"));
     reader.readElement("Color");
-    std::string temp = reader.getAttribute("value");
-    m_format.m_color.fromHexString(temp);
+    std::string tempHex = reader.getAttribute("value");
+    App::Color tempColor;
+    tempColor.fromHexString(tempHex);
+    m_format.setColor(tempColor);
     reader.readElement("Visible");
-    m_format.m_visible = reader.getAttributeAsInteger("value") != 0;
+    m_format.setVisible(reader.getAttributeAsInteger("value") != 0);
 
     reader.readElement("GeometryType");
     TechDraw::GeomType gType = static_cast<TechDraw::GeomType>(reader.getAttributeAsInteger("value"));
@@ -422,10 +366,10 @@ TYPESYSTEM_SOURCE(TechDraw::GeomFormat, Base::Persistence)
 GeomFormat::GeomFormat() :
     m_geomIndex(-1)
 {
-    m_format.m_style = LineFormat::getDefEdgeStyle();
-    m_format.m_weight = LineFormat::getDefEdgeWidth();
-    m_format.m_color = LineFormat::getDefEdgeColor();
-    m_format.m_visible = true;
+    m_format.setStyle(LineFormat::getDefEdgeStyle());
+    m_format.setWidth(LineFormat::getDefEdgeWidth());
+    m_format.setColor(LineFormat::getDefEdgeColor());
+    m_format.setVisible(true);
     m_format.setLineNumber(LineFormat::InvalidLine);
 
     createNewTag();
@@ -434,10 +378,10 @@ GeomFormat::GeomFormat() :
 GeomFormat::GeomFormat(const GeomFormat* gf)
 {
     m_geomIndex  = gf->m_geomIndex;
-    m_format.m_style = gf->m_format.m_style;
-    m_format.m_weight = gf->m_format.m_weight;
-    m_format.m_color = gf->m_format.m_color;
-    m_format.m_visible = gf->m_format.m_visible;
+    m_format.setStyle(gf->m_format.getStyle());
+    m_format.setWidth(gf->m_format.getWidth());
+    m_format.setColor(gf->m_format.getColor());
+    m_format.setVisible(gf->m_format.getVisible());
     m_format.setLineNumber(gf->m_format.getLineNumber());
 
     createNewTag();
@@ -447,10 +391,10 @@ GeomFormat::GeomFormat(const int idx,
                        const TechDraw::LineFormat& fmt) :
     m_geomIndex(idx)
 {
-    m_format.m_style = fmt.m_style;
-    m_format.m_weight = fmt.m_weight;
-    m_format.m_color = fmt.m_color;
-    m_format.m_visible = fmt.m_visible;
+    m_format.setStyle(fmt.getStyle());
+    m_format.setWidth(fmt.getWidth());
+    m_format.setColor(fmt.getColor());
+    m_format.setVisible(fmt.getVisible());
     m_format.setLineNumber(fmt.getLineNumber());
 
     createNewTag();
@@ -482,13 +426,13 @@ unsigned int GeomFormat::getMemSize () const
 
 void GeomFormat::Save(Base::Writer &writer) const
 {
-    const char v = m_format.m_visible?'1':'0';
+    const char v = m_format.getVisible() ? '1' : '0';
     writer.Stream() << writer.ind() << "<GeomIndex value=\"" <<  m_geomIndex << "\"/>" << endl;
     // style is deprecated in favour of line number, but we still save and restore it
     // to avoid problems with old documents.
-    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.getStyle() << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.getWidth() << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.getColor().asHexString() << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<LineNumber value=\"" <<  m_format.getLineNumber() << "\"/>" << endl;
 }
@@ -506,14 +450,16 @@ void GeomFormat::Restore(Base::XMLReader &reader)
     // style is deprecated in favour of line number, but we still save and restore it
     // to avoid problems with old documents.
     reader.readElement("Style");
-    m_format.m_style = reader.getAttributeAsInteger("value");
+    m_format.setStyle(reader.getAttributeAsInteger("value"));
     reader.readElement("Weight");
-    m_format.m_weight = reader.getAttributeAsFloat("value");
+    m_format.setWidth(reader.getAttributeAsFloat("value"));
     reader.readElement("Color");
-    std::string temp = reader.getAttribute("value");
-    m_format.m_color.fromHexString(temp);
+    std::string tempHex = reader.getAttribute("value");
+    App::Color tempColor;
+    tempColor.fromHexString(tempHex);
+    m_format.setColor(tempColor);
     reader.readElement("Visible");
-    m_format.m_visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    m_format.setVisible((int)reader.getAttributeAsInteger("value") == 0 ? false : true);
     // older documents may not have the LineNumber element, so we need to check the
     // next entry.  if it is a start element, then we check if it is a start element
     // for LineNumber.
@@ -576,10 +522,10 @@ GeomFormat* GeomFormat::copy() const
 {
     GeomFormat* newFmt = new GeomFormat();
     newFmt->m_geomIndex = m_geomIndex;
-    newFmt->m_format.m_style = m_format.m_style;
-    newFmt->m_format.m_weight = m_format.m_weight;
-    newFmt->m_format.m_color = m_format.m_color;
-    newFmt->m_format.m_visible = m_format.m_visible;
+    newFmt->m_format.setStyle(m_format.getStyle());
+    newFmt->m_format.setWidth(m_format.getWidth());
+    newFmt->m_format.setColor(m_format.getColor());
+    newFmt->m_format.setVisible(m_format.getVisible());
     newFmt->m_format.setLineNumber(m_format.getLineNumber());
     return newFmt;
 }

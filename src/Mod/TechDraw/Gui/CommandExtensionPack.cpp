@@ -57,6 +57,8 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/Preferences.h>
+#include <Mod/TechDraw/App/LineFormat.h>
+#include <Mod/TechDraw/App/LineGenerator.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 
 #include "DrawGuiUtil.h"
@@ -1531,9 +1533,9 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                         toDelete.push_back(uniTag);
                         if (baseGeo->source() == 1) {
                             auto cosEdge = objFeat->getCosmeticEdge(uniTag);
-                            oldStyle = cosEdge->m_format.m_lineNumber;
-                            oldWeight = cosEdge->m_format.m_weight;
-                            oldColor = cosEdge->m_format.m_color;
+                            oldStyle = cosEdge->m_format.getLineNumber();
+                            oldWeight = cosEdge->m_format.getWidth();
+                            oldColor = cosEdge->m_format.getColor();
                             objFeat->removeCosmeticEdge(toDelete);
                         }
                         else if (baseGeo->source() == 2) {
@@ -2180,35 +2182,38 @@ void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge)
     cosEdge->m_format.setStyle(_getActiveLineAttributes().getStyle());
     cosEdge->m_format.setWidth(_getActiveLineAttributes().getWidth());
     cosEdge->m_format.setColor(_getActiveLineAttributes().getColor());
+    cosEdge->m_format.setVisible(_getActiveLineAttributes().getVisible());
     cosEdge->m_format.setLineNumber(_getActiveLineAttributes().getLineNumber());
 }
 
 void _setLineAttributes(TechDraw::CenterLine* cosEdge)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
-    cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidth();
-    cosEdge->m_format.m_color = _getActiveLineAttributes().getColor();
+    cosEdge->m_format.setStyle(_getActiveLineAttributes().getStyle());
+    cosEdge->m_format.setWidth(_getActiveLineAttributes().getWidth());
+    cosEdge->m_format.setColor(_getActiveLineAttributes().getColor());
+    cosEdge->m_format.setVisible(_getActiveLineAttributes().getVisible());
     cosEdge->m_format.setLineNumber(_getActiveLineAttributes().getLineNumber());
 }
 
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
-    cosEdge->m_format.m_weight = weight;
-    cosEdge->m_format.m_color = color;
-    cosEdge->m_format.setLineNumber(style);
+    cosEdge->m_format.setStyle(style);
+    cosEdge->m_format.setWidth(weight);
+    cosEdge->m_format.setColor(color);
+    cosEdge->m_format.setVisible(_getActiveLineAttributes().getVisible());
+    cosEdge->m_format.setLineNumber(LineGenerator::fromQtStyle((Qt::PenStyle)style));
 }
 
 void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, App::Color color)
 {
     // set line attributes of a centerline
-    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
-    cosEdge->m_format.m_weight = weight;
-    cosEdge->m_format.m_color = color;
-    cosEdge->m_format.setLineNumber(style);
-}
+    cosEdge->m_format.setStyle(style);
+    cosEdge->m_format.setWidth(weight);
+    cosEdge->m_format.setColor(color);
+    cosEdge->m_format.setVisible(_getActiveLineAttributes().getVisible());
+    cosEdge->m_format.setLineNumber(style);}
 }// namespace TechDrawGui
 
 //------------------------------------------------------------------------------

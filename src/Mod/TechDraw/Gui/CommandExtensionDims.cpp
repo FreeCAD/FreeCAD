@@ -1465,10 +1465,10 @@ std::vector<DrawViewDimension*> TechDrawGui::makeObliqueChainDimension(std::vect
                 Base::Vector3d oldCanon = CosmeticVertex::makeCanonicalPointInverted(objFeat, oldVertex.point);
                 std::string edgeTag = objFeat->addCosmeticEdge(oldCanon, cvPoint);
                 auto edge = objFeat->getCosmeticEdge(edgeTag);
-                edge->m_format.m_style = 1;
-                edge->m_format.m_lineNumber = 1;
-                edge->m_format.m_weight = TechDraw::LineGroup::getDefaultWidth("Thin");
-                edge->m_format.m_color = App::Color(0.0f, 0.0f, 0.0f);
+                edge->m_format.setStyle(1);
+                edge->m_format.setLineNumber(1);
+                edge->m_format.setWidth(TechDraw::LineGroup::getDefaultWidth("Thin"));
+                edge->m_format.setColor(App::Color(0.0f, 0.0f, 0.0f));
             }
             else
                 carrierVertexes.push_back(oldVertex);
@@ -1848,10 +1848,10 @@ std::vector<DrawViewDimension*> TechDrawGui::makeObliqueCoordDimension(std::vect
                 Base::Vector3d oldCanon = CosmeticVertex::makeCanonicalPointInverted(objFeat, oldVertex.point);
                 std::string edgeTag = objFeat->addCosmeticEdge(oldCanon, cvPoint);
                 auto edge = objFeat->getCosmeticEdge(edgeTag);
-                edge->m_format.m_style = 1;
-                edge->m_format.m_lineNumber = 1;
-                edge->m_format.m_weight = TechDraw::LineGroup::getDefaultWidth("Thin");
-                edge->m_format.m_color = App::Color(0.0, 0.0, 0.0);
+                edge->m_format.setStyle(1);
+                edge->m_format.setLineNumber(1);
+                edge->m_format.setWidth(TechDraw::LineGroup::getDefaultWidth("Thin"));
+                edge->m_format.setColor(App::Color(0.0, 0.0, 0.0));
             }
             else {
                 carrierVertexes.push_back(oldVertex);

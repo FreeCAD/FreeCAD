@@ -402,15 +402,15 @@ void QGIViewPart::drawAllEdges()
             // geometry edge - apply format if applicable
             TechDraw::GeomFormat* gf = dvp->getGeomFormatBySelection(iEdge);
             if (gf) {
-                App::Color  color = Preferences::getAccessibleColor(gf->m_format.m_color);
+                App::Color  color = Preferences::getAccessibleColor(gf->m_format.getColor());
                 item->setNormalColor(color.asValue<QColor>());
                 int lineNumber = gf->m_format.getLineNumber();
-                int qtStyle = gf->m_format.m_style;
+                int qtStyle = gf->m_format.getStyle();
                 item->setLinePen(m_dashedLineGenerator->getBestPen(lineNumber, (Qt::PenStyle)qtStyle,
-                                                     gf->m_format.m_weight));
+                                                     gf->m_format.getWidth()));
                 // but we need to actually draw the lines in QGScene coords (0.1 mm).
-                item->setWidth(Rez::guiX(gf->m_format.m_weight));
-                showItem = gf->m_format.m_visible;
+                item->setWidth(Rez::guiX(gf->m_format.getWidth()));
+                showItem = gf->m_format.getVisible();
             } else {
                 if (!(*itGeom)->getHlrVisible()) {
                     // hidden line without a format
@@ -565,13 +565,13 @@ bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)
     auto partFeat(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     TechDraw::CosmeticEdge* ce = partFeat ? partFeat->getCosmeticEdge(cTag) : nullptr;
     if (ce) {
-        App::Color color = Preferences::getAccessibleColor(ce->m_format.m_color);
+        App::Color color = Preferences::getAccessibleColor(ce->m_format.getColor());
         item->setNormalColor(color.asValue<QColor>());
         item->setLinePen(m_dashedLineGenerator->getBestPen(ce->m_format.getLineNumber(),
-                                                     (Qt::PenStyle)ce->m_format.m_style,
-                                                     ce->m_format.m_weight));
-        item->setWidth(Rez::guiX(ce->m_format.m_weight));
-        result = ce->m_format.m_visible;
+                                                     (Qt::PenStyle)ce->m_format.getStyle(),
+                                                     ce->m_format.getWidth()));
+        item->setWidth(Rez::guiX(ce->m_format.getWidth()));
+        result = ce->m_format.getVisible();
     }
     return result;
 }
@@ -584,13 +584,13 @@ bool QGIViewPart::formatGeomFromCenterLine(std::string cTag, QGIEdge* item)
     auto partFeat(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     TechDraw::CenterLine* cl = partFeat ? partFeat->getCenterLine(cTag) : nullptr;
     if (cl) {
-        App::Color color = Preferences::getAccessibleColor(cl->m_format.m_color);
+        App::Color color = Preferences::getAccessibleColor(cl->m_format.getColor());
         item->setNormalColor(color.asValue<QColor>());
         item->setLinePen(m_dashedLineGenerator->getBestPen(cl->m_format.getLineNumber(),
-                                                     (Qt::PenStyle)cl->m_format.m_style,
-                                                     cl->m_format.m_weight));
-        item->setWidth(Rez::guiX(cl->m_format.m_weight));
-        result = cl->m_format.m_visible;
+                                                     (Qt::PenStyle)cl->m_format.getStyle(),
+                                                     cl->m_format.getWidth()));
+        item->setWidth(Rez::guiX(cl->m_format.getWidth()));
+        result = cl->m_format.getVisible();
     }
     return result;
 }
