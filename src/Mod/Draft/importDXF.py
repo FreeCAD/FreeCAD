@@ -626,7 +626,10 @@ def getColor():
 def formatObject(obj, dxfobj=None):
     """Apply text and line color to an object from a DXF object.
 
-    This function only works when the graphical user interface is loaded
+    If `dxfUseDraftVisGroups` is `True` the function returns immediately.
+    The color of the object then depends on the Draft Layer the object is in.
+
+    Else this function only works if the graphical user interface is loaded
     as it needs access to the `ViewObject` attribute of the objects.
 
     If `dxfobj` and the global variable `dxfGetColors` exist
@@ -652,6 +655,9 @@ def formatObject(obj, dxfobj=None):
     -----
     Use local variables, not global variables.
     """
+    if dxfUseDraftVisGroups:
+        return
+
     if dxfGetColors and dxfobj and hasattr(dxfobj, "color_index"):
         if hasattr(obj.ViewObject, "TextColor"):
             if dxfobj.color_index == 256:
@@ -2208,7 +2214,8 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
     global resolvedScale
     resolvedScale = getScaleFromDXF(drawing.header) * dxfScaling
     global layers
-    layers = []
+    typ = "Layer" if dxfUseDraftVisGroups else "App::DocumentObjectGroup"
+    layers = [o for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == typ]
     global doc
     doc = document
     global blockshapes
@@ -2838,11 +2845,7 @@ def insert(filename, docname):
     if dxfUseLegacyImporter:
         getDXFlibs()
         if dxfReader:
-            groupname = os.path.splitext(os.path.basename(filename))[0]
-            importgroup = doc.addObject("App::DocumentObjectGroup", groupname)
             processdxf(doc, filename)
-            for l in layers:
-                importgroup.addObject(l)
         else:
             errorDXFLib(gui)
     else:
