@@ -223,6 +223,7 @@ public:
     Connection connectIcon;
     Connection connectTool;
     Connection connectStat;
+    Connection connectHl;
 
     DocumentObjectData(DocumentItem* docItem, ViewProviderDocumentObject* vpd)
         : docItem(docItem)
@@ -236,6 +237,8 @@ public:
             std::bind(&DocumentObjectData::slotChangeToolTip, this, sp::_1));
         connectStat = viewObject->signalChangeStatusTip.connect(
             std::bind(&DocumentObjectData::slotChangeStatusTip, this, sp::_1));
+        connectHl = viewObject->signalChangeHighlight.connect(
+            std::bind(&DocumentObjectData::slotChangeHighlight, this, sp::_1, sp::_2));
         //NOLINTEND
 
         removeChildrenFromRoot = viewObject->canRemoveChildrenFromRoot();
@@ -358,6 +361,11 @@ public:
     void slotChangeStatusTip(const QString& tip) {
         for (auto item : items)
             item->setStatusTip(0, tip);
+    }
+
+    void slotChangeHighlight(bool set, Gui::HighlightMode mode) {
+        for (auto item : items)
+            item->setHighlight(set, mode);
     }
 };
 
