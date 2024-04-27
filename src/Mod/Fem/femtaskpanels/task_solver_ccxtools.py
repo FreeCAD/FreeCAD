@@ -40,6 +40,7 @@ import FreeCAD
 import FreeCADGui
 
 import FemGui
+from femtools.femutils import getOutputWinColor
 
 
 def unicode(text, *args):
@@ -186,11 +187,25 @@ class _TaskPanel:
             self.form.rb_buckling_analysis.setChecked(True)
         return
 
-    def femConsoleMessage(self, message="", color="#000000"):
+    def femConsoleMessage(self, message="", outputwin_color_type=None):
         self.fem_console_message = self.fem_console_message + (
-            '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'
-            .format(time.time() - self.Start, color, message)
+            '<font color="{}">{:4.1f}:</font> '.format(
+                getOutputWinColor("Logging"), time.time() - self.Start
+            )
         )
+        if outputwin_color_type:
+            if (
+                outputwin_color_type == "#00AA00"
+            ):  # Success is not part of output window parameters
+                self.fem_console_message += '<font color="{}">{}</font><br>'.format(
+                    outputwin_color_type, message
+                )
+            else:
+                self.fem_console_message += '<font color="{}">{}</font><br>'.format(
+                    getOutputWinColor(outputwin_color_type), message
+                )
+        else:
+            self.fem_console_message += message + "<br>"
         self.form.textEdit_Output.setText(self.fem_console_message)
         self.form.textEdit_Output.moveCursor(QtGui.QTextCursor.End)
 
@@ -201,7 +216,7 @@ class _TaskPanel:
         # <class 'PySide2.QtCore.QByteArray'>
 
         if out.isEmpty():
-            self.femConsoleMessage("CalculiX stdout is empty", "#FF0000")
+            self.femConsoleMessage("CalculiX stdout is empty", "Error")
             return False
 
         # https://forum.freecad.org/viewtopic.php?f=18&t=39195
@@ -231,11 +246,13 @@ class _TaskPanel:
 
     def calculixError(self, error=""):
         print("Error() {}".format(error))
-        self.femConsoleMessage("CalculiX execute error: {}".format(error), "#FF0000")
+        self.femConsoleMessage("CalculiX execute error: {}".format(error), "Error")
 
     def calculixNoError(self):
         print("CalculiX done without error!")
-        self.femConsoleMessage("CalculiX done without error!", "#00AA00")
+        self.femConsoleMessage(
+            "CalculiX done without error!", "#00AA00"
+        )  # Green leaving hard coded
 
     def calculixStarted(self):
         # print("calculixStarted()")
@@ -248,9 +265,9 @@ class _TaskPanel:
         elif newState == QtCore.QProcess.ProcessState.Running:
             self.femConsoleMessage("CalculiX is running...")
         elif newState == QtCore.QProcess.ProcessState.NotRunning:
-            self.femConsoleMessage("CalculiX stopped.")
+            self.femConsoleMessage("CalculiX stopped.", "Error")
         else:
-            self.femConsoleMessage("Problems.")
+            self.femConsoleMessage("Problems.", "Error")
 
     def calculixFinished(self, exitCode, exitStatus):
         # print("calculixFinished(), exit code: {}".format(exitCode))
@@ -326,7 +343,7 @@ class _TaskPanel:
                 self.form.pb_edit_inp.setEnabled(True)
                 self.form.pb_run_ccx.setEnabled(True)
             else:
-                self.femConsoleMessage("Write .inp file failed!", "#FF0000")
+                self.femConsoleMessage("Write .inp file failed!", "Error")
             QApplication.restoreOverrideCursor()
         self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
 
