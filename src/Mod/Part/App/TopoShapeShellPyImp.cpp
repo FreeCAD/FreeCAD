@@ -140,6 +140,9 @@ PyObject*  TopoShapeShellPy::add(PyObject *args)
 
     BRep_Builder builder;
     TopoDS_Shape shell = getTopoShapePtr()->getShape();
+    if (shell.IsNull()) {
+        builder.MakeShell(TopoDS::Shell(shell));
+    }
 
     try {
         const TopoShape& shape = *static_cast<TopoShapeFacePy*>(obj)->getTopoShapePtr();
