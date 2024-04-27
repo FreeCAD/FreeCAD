@@ -46,18 +46,21 @@ class ConstraintFlowVelocity(base_fempythonobject.BaseFemPythonObject):
             "Parameter",
             "Velocity in x-direction"
         )
+        obj.setPropertyStatus("VelocityX", "LockDynamic")
         obj.addProperty(
             "App::PropertyString",
             "VelocityXFormula",
             "Parameter",
             "Velocity formula in x-direction"
         )
+        obj.setPropertyStatus("VelocityXFormula", "LockDynamic")
         obj.addProperty(
             "App::PropertyBool",
             "VelocityXUnspecified",
             "Parameter",
             "Use velocity in x-direction"
         )
+        obj.setPropertyStatus("VelocityXUnspecified", "LockDynamic")
         obj.VelocityXUnspecified = True
         obj.addProperty(
             "App::PropertyBool",
@@ -65,6 +68,7 @@ class ConstraintFlowVelocity(base_fempythonobject.BaseFemPythonObject):
             "Parameter",
             "Use formula for velocity in x-direction"
         )
+        obj.setPropertyStatus("VelocityXHasFormula", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyVelocity",
@@ -72,18 +76,21 @@ class ConstraintFlowVelocity(base_fempythonobject.BaseFemPythonObject):
             "Parameter",
             "Velocity in y-direction"
         )
+        obj.setPropertyStatus("VelocityY", "LockDynamic")
         obj.addProperty(
             "App::PropertyString",
             "VelocityYFormula",
             "Parameter",
             "Velocity formula in y-direction"
         )
+        obj.setPropertyStatus("VelocityYFormula", "LockDynamic")
         obj.addProperty(
             "App::PropertyBool",
             "VelocityYUnspecified",
             "Parameter",
             "Use velocity in y-direction"
         )
+        obj.setPropertyStatus("VelocityYUnspecified", "LockDynamic")
         obj.VelocityYUnspecified = True
         obj.addProperty(
             "App::PropertyBool",
@@ -91,6 +98,7 @@ class ConstraintFlowVelocity(base_fempythonobject.BaseFemPythonObject):
             "Parameter",
             "Use formula for velocity in y-direction"
         )
+        obj.setPropertyStatus("VelocityYHasFormula", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyVelocity",
@@ -98,18 +106,21 @@ class ConstraintFlowVelocity(base_fempythonobject.BaseFemPythonObject):
             "Parameter",
             "Velocity in z-direction"
         )
+        obj.setPropertyStatus("VelocityZ", "LockDynamic")
         obj.addProperty(
             "App::PropertyString",
             "VelocityZFormula",
             "Parameter",
             "Velocity formula in z-direction"
         )
+        obj.setPropertyStatus("VelocityZFormula", "LockDynamic")
         obj.addProperty(
             "App::PropertyBool",
             "VelocityZUnspecified",
             "Parameter",
             "Use velocity in z-direction"
         )
+        obj.setPropertyStatus("VelocityZUnspecified", "LockDynamic")
         obj.VelocityZUnspecified = True
         obj.addProperty(
             "App::PropertyBool",
@@ -117,6 +128,7 @@ class ConstraintFlowVelocity(base_fempythonobject.BaseFemPythonObject):
             "Parameter",
             "Use formula for velocity in z-direction"
         )
+        obj.setPropertyStatus("VelocityZHasFormula", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyBool",
@@ -124,3 +136,4 @@ class ConstraintFlowVelocity(base_fempythonobject.BaseFemPythonObject):
             "Parameter",
             "Flow is in normal direction"
         )
+        obj.setPropertyStatus("NormalToBoundary", "LockDynamic")

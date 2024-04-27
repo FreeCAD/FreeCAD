@@ -69,6 +69,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "FluidSection",
             "List of fluid section shapes"
         )
+        obj.setPropertyStatus("References", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -76,6 +77,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "FluidSection",
             "select fluid section type"
         )
+        obj.setPropertyStatus("SectionType", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -83,6 +85,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidSection",
             "select liquid section type"
         )
+        obj.setPropertyStatus("LiquidSectionType", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyArea",
@@ -90,6 +93,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidManning",
             "set area of the manning fluid section"
         )
+        obj.setPropertyStatus("ManningArea", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyLength",
@@ -97,6 +101,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidManning",
             "set hydraulic radius of manning fluid section"
         )
+        obj.setPropertyStatus("ManningRadius", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyFloat",
@@ -104,6 +109,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidManning",
             "set coefficient of manning fluid section"
         )
+        obj.setPropertyStatus("ManningCoefficient", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyArea",
@@ -111,12 +117,14 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidEnlargement",
             "set initial area of the enlargement fluid section"
         )
+        obj.setPropertyStatus("EnlargeArea1", "LockDynamic")
         obj.addProperty(
             "App::PropertyArea",
             "EnlargeArea2",
             "LiquidEnlargement",
             "set enlarged area of enlargement fluid section"
         )
+        obj.setPropertyStatus("EnlargeArea2", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyArea",
@@ -124,6 +132,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidContraction",
             "set initial area of the contraction fluid section"
         )
+        obj.setPropertyStatus("ContractArea1", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyArea",
@@ -131,6 +140,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidContraction",
             "set contracted area of contraction fluid section"
         )
+        obj.setPropertyStatus("ContractArea2", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyFloat",
@@ -138,6 +148,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidInlet",
             "set inlet pressure for fluid section"
         )
+        obj.setPropertyStatus("InletPressure", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyFloat",
@@ -145,6 +156,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidOutlet",
             "set outlet pressure for fluid section"
         )
+        obj.setPropertyStatus("OutletPressure", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyFloat",
@@ -152,6 +164,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidInlet",
             "set inlet mass flow rate for fluid section"
         )
+        obj.setPropertyStatus("InletFlowRate", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyFloat",
@@ -159,6 +172,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidOutlet",
             "set outlet mass flow rate for fluid section"
         )
+        obj.setPropertyStatus("OutletFlowRate", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyBool",
@@ -166,6 +180,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidInlet",
             "activates or deactivates inlet pressure for fluid section"
         )
+        obj.setPropertyStatus("InletPressureActive", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyBool",
@@ -173,6 +188,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidOutlet",
             "activates or deactivates outlet pressure for fluid section"
         )
+        obj.setPropertyStatus("OutletPressureActive", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyBool",
@@ -180,6 +196,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidInlet",
             "activates or deactivates inlet flow rate for fluid section"
         )
+        obj.setPropertyStatus("InletFlowRateActive", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyBool",
@@ -187,6 +204,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidOutlet",
             "activates or deactivates outlet flow rate for fluid section"
         )
+        obj.setPropertyStatus("OutletFlowRateActive", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyArea",
@@ -194,6 +212,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidEntrance",
             "set the pipe area of the entrance fluid section"
         )
+        obj.setPropertyStatus("EntrancePipeArea", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyArea",
@@ -201,6 +220,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidEntrance",
             "set the entrance area of the entrance fluid section"
         )
+        obj.setPropertyStatus("EntranceArea", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyArea",
@@ -208,6 +228,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidDiaphragm",
             "set the pipe area of the diaphragm fluid section"
         )
+        obj.setPropertyStatus("DiaphragmPipeArea", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyArea",
@@ -215,6 +236,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidDiaphragm",
             "set the diaphragm area of the diaphragm fluid section"
         )
+        obj.setPropertyStatus("DiaphragmArea", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyArea",
@@ -222,6 +244,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidBend",
             "set pipe area of the bend fluid section"
         )
+        obj.setPropertyStatus("BendPipeArea", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyFloat",
@@ -229,6 +252,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidBend",
             "set ratio of bend radius over pipe diameter of the bend fluid section"
         )
+        obj.setPropertyStatus("BendRadiusDiameter", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyFloat",
@@ -236,6 +260,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidBend",
             "set bend angle of the bend fluid section"
         )
+        obj.setPropertyStatus("BendAngle", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyFloat",
@@ -243,6 +268,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidBend",
             "set loss coefficient of the bend fluid section"
         )
+        obj.setPropertyStatus("BendLossCoefficient", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyArea",
@@ -250,6 +276,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidGateValve",
             "set pipe area of the gate valve fluid section"
         )
+        obj.setPropertyStatus("GateValvePipeArea", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyFloat",
@@ -257,6 +284,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidGateValve",
             "set closing coefficient of the gate valve fluid section"
         )
+        obj.setPropertyStatus("GateValveClosingCoeff", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyFloatList",
@@ -264,6 +292,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidPump",
             "set the pump characteristic flow rate of the pump fluid section"
         )
+        obj.setPropertyStatus("PumpFlowRate", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyFloatList",
@@ -271,6 +300,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidPump",
             "set the pump characteristic head loss of the pump fluid section"
         )
+        obj.setPropertyStatus("PumpHeadLoss", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyArea",
@@ -278,6 +308,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidColebrooke",
             "set pipe area of the colebrooke fluid section"
         )
+        obj.setPropertyStatus("ColebrookeArea", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyLength",
@@ -285,6 +316,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidColebrooke",
             "set hydraulic radius of the colebrooke fluid section"
         )
+        obj.setPropertyStatus("ColebrookeRadius", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyLength",
@@ -292,6 +324,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidColebrooke",
             "set grain diameter of the colebrooke fluid section"
         )
+        obj.setPropertyStatus("ColebrookeGrainDiameter", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyFloat",
@@ -299,6 +332,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "LiquidColebrooke",
             "set coefficient of the colebrooke fluid section"
         )
+        obj.setPropertyStatus("ColebrookeFormFactor", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -306,6 +340,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "GasSection",
             "select gas section type"
         )
+        obj.setPropertyStatus("GasSectionType", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -313,6 +348,7 @@ class ElementFluid1D(base_fempythonobject.BaseFemPythonObject):
             "ChannelSection",
             "select channel section type"
         )
+        obj.setPropertyStatus("ChannelSectionType", "LockDynamic")
 
         # set property default values
         obj.SectionType = ElementFluid1D.known_fluid_types
