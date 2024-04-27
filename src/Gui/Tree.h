@@ -357,6 +357,7 @@ protected:
             App::DocumentObject *obj, const char *subname, bool select=false);
 
     DocumentObjectItem *findItem(bool sync, DocumentObjectItem *item, const char *subname, bool select=true);
+    DocumentObjectItem *findItem(App::DocumentObject* obj, const std::string& subname) const;
 
     App::DocumentObject *getTopParent(App::DocumentObject *obj, std::string &subname);
 

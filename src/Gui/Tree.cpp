@@ -206,6 +206,7 @@ using DocumentObjectItems = std::set<DocumentObjectItem*>;
 
 class Gui::DocumentObjectData {
 public:
+    bool dirtyFlag {};
     DocumentItem* docItem;
     DocumentObjectItems items;
     ViewProviderDocumentObject* viewObject;
@@ -241,6 +242,24 @@ public:
         itemHidden = !viewObject->showInTree();
         label = viewObject->getObject()->Label.getValue();
         label2 = viewObject->getObject()->Label2.getValue();
+    }
+
+    void insertItem(DocumentObjectItem* item)
+    {
+        items.insert(item);
+        dirtyFlag = true;
+    }
+
+    void removeItem(DocumentObjectItem* item)
+    {
+        auto it = items.find(item);
+        if (it == items.end()) {
+            assert(0);
+        }
+        else {
+            items.erase(it);
+            dirtyFlag = true;
+        }
     }
 
     const char* getTreeName() const {
@@ -4544,12 +4563,18 @@ void DocumentItem::clearSelection(DocumentObjectItem* exclude)
     // Block signals here otherwise we get a recursion and quadratic runtime
     bool ok = treeWidget()->blockSignals(true);
     FOREACH_ITEM_ALL(item);
+    _v.second->dirtyFlag = false;
     if (item == exclude) {
         if (item->selected > 0)
             item->selected = -1;
         else
             item->selected = 0;
         updateItemSelection(item);
+        // The set has been changed while calling updateItemSelection
+        // so that the iterator has become invalid -> Abort
+        if (_v.second->dirtyFlag) {
+            break;
+        }
     }
     else {
         item->selected = 0;
@@ -4586,7 +4611,13 @@ void DocumentItem::updateSelection(QTreeWidgetItem* ti, bool unselect) {
         updateSelection(ti->child(i));
 }
 
-void DocumentItem::updateItemSelection(DocumentObjectItem* item) {
+void DocumentItem::updateItemSelection(DocumentObjectItem* item)
+{
+    // Note: In several places of this function the selection is altered and the notification of
+    // the selection observers can trigger a recreation of all DocumentObjectItem so that the
+    // passed 'item' can become a dangling pointer.
+    // Thus,'item' mustn't be accessed any more after altering the selection.
+    // For further details see the bug analsysis of #13107
     bool selected = item->isSelected();
     bool checked = item->checkState(0) == Qt::Checked;
 
@@ -4654,23 +4685,30 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item) {
         Gui::Selection().rmvSelection(docname, objname, subname.c_str());
         return;
     }
+
+    auto vobj = item->object();
     selected = false;
     if (!item->mySubs.empty()) {
         for (auto& sub : item->mySubs) {
-            if (Gui::Selection().addSelection(docname, objname, (subname + sub).c_str()))
+            if (Gui::Selection().addSelection(docname, objname, (subname + sub).c_str())) {
                 selected = true;
+            }
         }
     }
     if (!selected) {
         item->mySubs.clear();
         if (!Gui::Selection().addSelection(docname, objname, subname.c_str())) {
-            item->selected = 0;
-            item->setSelected(false);
-            item->setCheckState(false);
+            // Safely re-access the item
+            DocumentObjectItem* item2 = findItem(vobj->getObject(), subname);
+            if (item2) {
+                item2->selected = 0;
+                item2->setSelected(false);
+                item2->setCheckState(false);
+            }
             return;
         }
     }
-    getTree()->syncView(item->object());
+    getTree()->syncView(vobj);
 }
 
 App::DocumentObject* DocumentItem::getTopParent(App::DocumentObject* obj, std::string& subname) {
@@ -4715,6 +4753,39 @@ App::DocumentObject* DocumentItem::getTopParent(App::DocumentObject* obj, std::s
         << " -> " << topParent->getFullName() << '.' << ss.str());
     subname = ss.str();
     return topParent;
+}
+
+DocumentObjectItem *DocumentItem::findItem(App::DocumentObject* obj, const std::string& subname) const
+{
+    auto it = ObjectMap.find(obj);
+    if (it == ObjectMap.end()) {
+        return nullptr;
+    }
+
+    // There is only one instance in the tree view
+    if (it->second->items.size() == 1) {
+        return *(it->second->items.begin());
+    }
+
+    // If there are multiple instances use the one with the same subname
+    DocumentObjectItem* item {};
+    for (auto jt : it->second->items) {
+        std::ostringstream str;
+        App::DocumentObject* topParent = nullptr;
+        jt->getSubName(str, topParent);
+        if (topParent) {
+            if (!obj->redirectSubName(str, topParent, nullptr)) {
+                str << obj->getNameInDocument() << '.';
+            }
+        }
+
+        if (subname == str.str()) {
+            item = jt;
+            break;
+        }
+    }
+
+    return item;
 }
 
 DocumentObjectItem* DocumentItem::findItemByObject(
@@ -5017,7 +5088,7 @@ DocumentObjectItem::DocumentObjectItem(DocumentItem* ownerDocItem, DocumentObjec
     setFlags(flags() | Qt::ItemIsEditable | Qt::ItemIsUserCheckable);
     setCheckState(false);
 
-    myData->items.insert(this);
+    myData->insertItem(this);
     ++countItems;
     TREE_LOG("Create item: " << countItems << ", " << object()->getObject()->getFullName());
 }
@@ -5026,11 +5097,7 @@ DocumentObjectItem::~DocumentObjectItem()
 {
     --countItems;
     TREE_LOG("Delete item: " << countItems << ", " << object()->getObject()->getFullName());
-    auto it = myData->items.find(this);
-    if (it == myData->items.end())
-        assert(0);
-    else
-        myData->items.erase(it);
+    myData->removeItem(this);
 
     if (myData->rootItem == this)
         myData->rootItem = nullptr;
