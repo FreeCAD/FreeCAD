@@ -1143,11 +1143,11 @@ void OverlayTabWidget::setOverlayMode(QWidget *widget, OverlayOption option)
 
 void OverlayTabWidget::setTransparent(bool enable)
 {
-    setProperty("transparent", enable);
     if(actTransparent.isChecked() == enable)
         return;
     if(hGrp) {
         Base::StateLocker lock(_saving);
+        hGrp->SetBool("Transparent", enable);
     }
     actTransparent.setChecked(enable);
     OverlayManager::instance()->refresh(this);
