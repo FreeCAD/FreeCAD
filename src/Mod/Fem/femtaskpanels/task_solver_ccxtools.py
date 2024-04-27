@@ -189,7 +189,7 @@ class _TaskPanel:
 
     def femConsoleMessage(self, message="", outputwin_color_type=None):
         self.fem_console_message = self.fem_console_message + (
-            '<font color="{}">{:4.1f}:</font> '.format(
+            '<font color="{}"><b>{:4.1f}:</b></font> '.format(
                 getOutputWinColor("Logging"), time.time() - self.Start
             )
         )
@@ -265,7 +265,7 @@ class _TaskPanel:
         elif newState == QtCore.QProcess.ProcessState.Running:
             self.femConsoleMessage("CalculiX is running...")
         elif newState == QtCore.QProcess.ProcessState.NotRunning:
-            self.femConsoleMessage("CalculiX stopped.", "Error")
+            self.femConsoleMessage("CalculiX stopped.")
         else:
             self.femConsoleMessage("Problems.", "Error")
 
