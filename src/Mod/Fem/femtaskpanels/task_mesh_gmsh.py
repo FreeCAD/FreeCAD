@@ -155,7 +155,7 @@ class _TaskPanel:
 
     def console_log(self, message="", outputwin_color_type=None):
         self.console_message_gmsh = self.console_message_gmsh + (
-            '<font color="{}">{:4.1f}:</font> '.format(
+            '<font color="{}"><b>{:4.1f}:</b></font> '.format(
                 getOutputWinColor("Logging"), time.time() - self.Start
             )
         )
