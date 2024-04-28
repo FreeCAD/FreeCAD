@@ -1015,6 +1015,22 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
                                hiddens,
                                lastLink);
 
+    if (needSubElement && shape.shapeType(true) == TopAbs_COMPOUND) {
+        if (shape.countSubShapes(TopAbs_SOLID) == 1)
+            shape = shape.getSubTopoShape(TopAbs_SOLID, 1);
+        else if (shape.countSubShapes(TopAbs_COMPSOLID) == 1)
+            shape = shape.getSubTopoShape(TopAbs_COMPSOLID, 1);
+        else if (shape.countSubShapes(TopAbs_FACE) == 1)
+            shape = shape.getSubTopoShape(TopAbs_FACE, 1);
+        else if (shape.countSubShapes(TopAbs_SHELL) == 1)
+            shape = shape.getSubTopoShape(TopAbs_SHELL, 1);
+        else if (shape.countSubShapes(TopAbs_EDGE) == 1)
+            shape = shape.getSubTopoShape(TopAbs_EDGE, 1);
+        else if (shape.countSubShapes(TopAbs_WIRE) == 1)
+            shape = shape.getSubTopoShape(TopAbs_WIRE, 1);
+        else if (shape.countSubShapes(TopAbs_VERTEX) == 1)
+            shape = shape.getSubTopoShape(TopAbs_VERTEX, 1);
+    }
     Base::Matrix4D topMat;
     if (pmat || transform) {
         // Obtain top level transformation

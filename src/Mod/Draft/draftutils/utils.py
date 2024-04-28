@@ -88,14 +88,14 @@ def get_default_shape_style():
     display_mode_index = params.get_param("DefaultDisplayMode")
     draw_style_index = params.get_param("DefaultDrawStyle")
     return {
-        "DisplayMode":     ("index", display_mode_index, DISPLAY_MODES[display_mode_index]),
-        "DrawStyle":       ("index", draw_style_index, DRAW_STYLES[draw_style_index]),
-        "LineColor":       ("color", params.get_param_view("DefaultShapeLineColor")),
-        "LineWidth":       ("int",   params.get_param_view("DefaultShapeLineWidth")),
-        "PointColor":      ("color", params.get_param_view("DefaultShapeVertexColor")),
-        "PointSize":       ("int",   params.get_param_view("DefaultShapePointSize")),
-        "ShapeColor":      ("color", params.get_param_view("DefaultShapeColor")),
-        "Transparency":    ("int",   params.get_param_view("DefaultShapeTransparency"))
+        "DisplayMode":  ("index", display_mode_index, DISPLAY_MODES[display_mode_index]),
+        "DrawStyle":    ("index", draw_style_index, DRAW_STYLES[draw_style_index]),
+        "LineColor":    ("color", params.get_param_view("DefaultShapeLineColor")),
+        "LineWidth":    ("int",   params.get_param_view("DefaultShapeLineWidth")),
+        "PointColor":   ("color", params.get_param_view("DefaultShapeVertexColor")),
+        "PointSize":    ("int",   params.get_param_view("DefaultShapePointSize")),
+        "ShapeColor":   ("color", params.get_param_view("DefaultShapeColor")),
+        "Transparency": ("int",   params.get_param_view("DefaultShapeTransparency"))
     }
 
 

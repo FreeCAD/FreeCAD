@@ -228,6 +228,10 @@ void ViewProviderFemConstraint::updateSymbol()
     auto obj = static_cast<const Fem::Constraint*>(this->getObject());
     const std::vector<Base::Vector3d>& points = obj->Points.getValue();
     const std::vector<Base::Vector3d>& normals = obj->Normals.getValue();
+    if (points.size() != normals.size()) {
+        return;
+    }
+
     pMultCopy->matrix.setNum(points.size());
     SbMatrix* mat = pMultCopy->matrix.startEditing();
 

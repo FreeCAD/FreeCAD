@@ -474,7 +474,7 @@ def format_object(target, origin=None):
 
     If construction mode is active target is then placed in the construction
     group and the `constr` color is applied to its applicable color properties:
-    TextColor, PointColor, LineColor, and ShapeAppearance.
+    TextColor, PointColor, LineColor, and ShapeColor.
 
     Parameters
     ----------
