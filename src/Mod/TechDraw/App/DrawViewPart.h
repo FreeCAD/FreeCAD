@@ -172,6 +172,12 @@ public:
     virtual Base::Vector3d getLegacyX(const Base::Vector3d& pt, const Base::Vector3d& axis,
                                       const bool flip = true) const;
 
+    void rotate(const std::string& rotationdirection);
+    void spin(const std::string& spindirection);
+    void spin(double val);
+    std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(std::string viewType);
+    Base::Vector3d dir2vec(gp_Dir d);
+
     gp_Ax2 localVectorToCS(const Base::Vector3d localUnit) const;
     Base::Vector3d localVectorToDirection(const Base::Vector3d localUnit) const;
 

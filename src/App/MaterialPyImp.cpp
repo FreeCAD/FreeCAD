@@ -143,31 +143,36 @@ int MaterialPy::PyInit(PyObject* args, PyObject* kwds)
         return -1;
     }
 
-    if (diffuse) {
-        setDiffuseColor(Py::Object(diffuse));
-    }
+    try {
+        if (diffuse) {
+            setDiffuseColor(Py::Object(diffuse));
+        }
 
-    if (ambient) {
-        setAmbientColor(Py::Object(ambient));
-    }
+        if (ambient) {
+            setAmbientColor(Py::Object(ambient));
+        }
 
-    if (specular) {
-        setSpecularColor(Py::Object(specular));
-    }
+        if (specular) {
+            setSpecularColor(Py::Object(specular));
+        }
 
-    if (emissive) {
-        setEmissiveColor(Py::Object(emissive));
-    }
+        if (emissive) {
+            setEmissiveColor(Py::Object(emissive));
+        }
 
-    if (shininess) {
-        setShininess(Py::Float(shininess));
-    }
+        if (shininess) {
+            setShininess(Py::Float(shininess));
+        }
 
-    if (transparency) {
-        setTransparency(Py::Float(transparency));
-    }
+        if (transparency) {
+            setTransparency(Py::Float(transparency));
+        }
 
-    return 0;
+        return 0;
+    }
+    catch (const Py::Exception&) {
+        return -1;
+    }
 }
 
 // returns a string which represents the object e.g. when printed in python
@@ -200,7 +205,13 @@ Py::Object MaterialPy::getAmbientColor() const
 
 void MaterialPy::setAmbientColor(Py::Object arg)
 {
-    getMaterialPtr()->ambientColor = toColor(*arg);
+    try {
+        getMaterialPtr()->ambientColor = toColor(*arg);
+    }
+    catch (const Base::Exception& e) {
+        e.setPyException();
+        throw Py::Exception();
+    }
 }
 
 Py::Object MaterialPy::getDiffuseColor() const
@@ -215,7 +226,13 @@ Py::Object MaterialPy::getDiffuseColor() const
 
 void MaterialPy::setDiffuseColor(Py::Object arg)
 {
-    getMaterialPtr()->diffuseColor = toColor(*arg);
+    try {
+        getMaterialPtr()->diffuseColor = toColor(*arg);
+    }
+    catch (const Base::Exception& e) {
+        e.setPyException();
+        throw Py::Exception();
+    }
 }
 
 Py::Object MaterialPy::getEmissiveColor() const
@@ -230,7 +247,13 @@ Py::Object MaterialPy::getEmissiveColor() const
 
 void MaterialPy::setEmissiveColor(Py::Object arg)
 {
-    getMaterialPtr()->emissiveColor = toColor(*arg);
+    try {
+        getMaterialPtr()->emissiveColor = toColor(*arg);
+    }
+    catch (const Base::Exception& e) {
+        e.setPyException();
+        throw Py::Exception();
+    }
 }
 
 Py::Object MaterialPy::getSpecularColor() const
@@ -245,7 +268,13 @@ Py::Object MaterialPy::getSpecularColor() const
 
 void MaterialPy::setSpecularColor(Py::Object arg)
 {
-    getMaterialPtr()->specularColor = toColor(*arg);
+    try {
+        getMaterialPtr()->specularColor = toColor(*arg);
+    }
+    catch (const Base::Exception& e) {
+        e.setPyException();
+        throw Py::Exception();
+    }
 }
 
 Py::Float MaterialPy::getShininess() const

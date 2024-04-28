@@ -474,7 +474,7 @@ def format_object(target, origin=None):
 
     If construction mode is active target is then placed in the construction
     group and the `constr` color is applied to its applicable color properties:
-    TextColor, PointColor, LineColor, and ShapeAppearance.
+    TextColor, PointColor, LineColor, and ShapeColor.
 
     Parameters
     ----------
@@ -734,7 +734,7 @@ def load_texture(filename, size=None, gui=App.GuiUp):
             # else:
             #    p = QtGui.QImage(filename)
             size = coin.SbVec2s(p.width(), p.height())
-            buffersize = p.byteCount()
+            buffersize = p.sizeInBytes()
             width = size[0]
             height = size[1]
             numcomponents = int(buffersize / (width * height))

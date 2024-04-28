@@ -163,7 +163,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1604"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Стварае клон геаметрыі, у якасці эталону ўжывае апошнюю абраную кропку</translation>
+      <translation>Стварае дублікат геаметрыі, у якасці эталону ўжывае апошнюю абраную кропку</translation>
     </message>
   </context>
   <context>
@@ -1111,7 +1111,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../Command.cpp" line="552"/>
       <source>Attach sketch...</source>
-      <translation type="unfinished">Attach sketch...</translation>
+      <translation>Прымацаваць эскіз...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="553"/>
@@ -1393,7 +1393,7 @@ This will clear the 'AttachmentSupport' property, if any.</source>
     <message>
       <location filename="../../Command.cpp" line="380"/>
       <source>When in edit mode, stop the active operation (drawing, constraining, etc.).</source>
-      <translation>В рэжыме змены спыніць бягучую аперацыю (маляванне чарцяжа, абмежаванне і гэтак далей).</translation>
+      <translation>В рэжыме праўкі спыніць бягучую аперацыю (маляванне чарцяжа, абмежаванне і гэтак далей).</translation>
     </message>
   </context>
   <context>
@@ -1511,7 +1511,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Command.cpp" line="1046"/>
       <source>When in edit mode, switch between section view and full view.</source>
-      <translation>У рэжыме змены пераключыць выгляд паміж выглядам перасеку і поўным выглядам.</translation>
+      <translation>У рэжыме праўкі пераключыць выгляд паміж выглядам перасеку і поўным выглядам.</translation>
     </message>
   </context>
   <context>
@@ -1524,7 +1524,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Command.cpp" line="752"/>
       <source>When in edit mode, set the camera orientation perpendicular to the sketch plane.</source>
-      <translation>У рэжыме змены пераключыць, ужыць арыентацыю камеры перпендыкулярна плоскасці эскіза.</translation>
+      <translation>У рэжыме праўкі пераключыць, ужыць арыентацыю камеры перпендыкулярна плоскасці эскіза.</translation>
     </message>
   </context>
   <context>
@@ -1988,7 +1988,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Стварыць акругленне</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="150"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="171"/>
       <source>Trim edge</source>
       <translation>Абрэзаць рабро</translation>
     </message>
@@ -2228,59 +2228,59 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Памылка аўтаматычнага абмежавання: Невырашальны эскіз пасля ўжывання абмежаванняў роўнасці.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2346"/>
+      <location filename="../../../App/SketchObject.cpp" line="2366"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Немагчыма разлічыць скрыжаванне крывых. Паспрабуйце дадаць абмежаванні супадзенняў паміж вяршынямі крывых, якія вы збіраецеся акругліць.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6545"/>
-      <location filename="../../../App/SketchObject.cpp" line="6753"/>
+      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6773"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>BSpline ідэнтыфікатар геаметрыі (GeoID) знаходзіцца за межамі дапушчальных значэнняў.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6550"/>
+      <location filename="../../../App/SketchObject.cpp" line="6570"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Вы не запытваеце аніякіх зменах у кратнасці вузлоў.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6556"/>
-      <location filename="../../../App/SketchObject.cpp" line="6763"/>
+      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6783"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Ідэнтыфікатар геаметрыі (GeoId) не з'яўляецца крывой B-сплайна.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6585"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Індэкс вузла знаходзіцца за межамі дапушчальных значэнняў. Звярніце ўвагу, што ў адпаведнасці з назначэннем OCC першы вузел мае індэкс 1, а не 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6596"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Кратнасць не можа быць павялічана звыш ступені B-сплайна.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6584"/>
+      <location filename="../../../App/SketchObject.cpp" line="6604"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Кратнасць не можа быць паменшана ніжэй за 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6598"/>
+      <location filename="../../../App/SketchObject.cpp" line="6618"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OpenCASCADE не можа паменшыць кратнасць у межах найбольшай дакладнасці.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6757"/>
+      <location filename="../../../App/SketchObject.cpp" line="6777"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Вузел не можа мець нулявую кратнасць.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6774"/>
+      <location filename="../../../App/SketchObject.cpp" line="6794"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Кратнасць вузла не можа быць вышэй ступені B-сплайна.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6780"/>
+      <location filename="../../../App/SketchObject.cpp" line="6800"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Вузел не можа быць устаўлены за межы дыяпазону наладаў B-сплайна.</translation>
     </message>
@@ -3038,7 +3038,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="9825"/>
       <source>Select one dimensional constraint from the sketch.</source>
-      <translation type="unfinished">Select one dimensional constraint from the sketch.</translation>
+      <translation>Абраць адно памернае абмежаванне на эскізе.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9903"/>
@@ -4070,8 +4070,8 @@ reflected on copies</source>
       <location filename="../../SketcherSettings.ui" line="52"/>
       <source>Special solver algorithm will be used while dragging sketch elements.
 Requires to re-enter edit mode to take effect.</source>
-      <translation>Пры перацягванні элементаў эскізу будзе выкарыстоўвацца спецыяльны алгарытм сродку рашэння.
-Каб уступіла ў сілу, патрэбна паўторна ўвайсці ў рэжым змены.</translation>
+      <translation>Пры перацягванні элементаў эскізу будзе ўжывацца спецыяльны алгарытм сродку рашэння.
+Каб уступіла ў сілу, патрэбна паўторна ўвайсці ў рэжым праўкі.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="56"/>
@@ -4091,12 +4091,12 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="127"/>
       <source>Allow to leave sketch edit mode when pressing Esc button</source>
-      <translation>Дазволіць выхад з рэжыму змены эскіза пры націску клавішы &lt;Esc&gt;</translation>
+      <translation>Дазволіць выхад з рэжыму праўкі эскіза пры націску клавішы &lt;Esc&gt;</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="130"/>
       <source>Esc can leave sketch edit mode</source>
-      <translation>Па клавішы &lt;Esc&gt; можна выйсці з рэжыму змены эскіза</translation>
+      <translation>Па клавішы &lt;Esc&gt; можна выйсці з рэжыму праўкі эскіза</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="146"/>
@@ -4421,8 +4421,8 @@ Defaults to: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="403"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation>Пры ўваходзе ў рэжым змены прымусова ўжыць артаганальны выгляд камеры.
-Працуе толькі тады, калі ўключана функцыя "Аднавіць становішча камеры пасля змены".</translation>
+      <translation>Пры ўваходзе ў рэжым праўкі прымусова ўжыць артаганальны выгляд камеры.
+Працуе калі ўключана функцыя "Аднавіць становішча камеры пасля змены".</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="407"/>
@@ -5222,7 +5222,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandSketcherTools.cpp" line="1677"/>
       <location filename="../../CommandSketcherTools.cpp" line="1680"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation>Стварае дублікат геаметрыі, у якасці эталону ўжывае апошнюю абраную кропку</translation>
+      <translation>Стварае клон геаметрыі, у якасці эталону ўжывае апошнюю абраную кропку</translation>
     </message>
   </context>
   <context>
@@ -5840,7 +5840,7 @@ Eigen Sparse QR - аптымізаваны для разрэджаных мат�
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Sketcher edit mode</source>
-      <translation>Рэжым змены варштата эскізу</translation>
+      <translation>Рэжым праўкі варштата эскізу</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -6033,17 +6033,17 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="402"/>
+      <location filename="../../../App/SketchObject.cpp" line="422"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Эскіз мае скажоныя абмежаванні!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="408"/>
+      <location filename="../../../App/SketchObject.cpp" line="428"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Эскіз мае часткова залішнія абмежаванні!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9232"/>
+      <location filename="../../../App/SketchObject.cpp" line="9252"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Парабалы былі перанесены. Перанесеныя файлы не будуць адчыняцца ў папярэдніх версіях FreeCAD!!
@@ -6083,7 +6083,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="182"/>
       <source>Error</source>
       <translation>Памылка</translation>
     </message>
@@ -6267,7 +6267,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>Немагчыма дадаць рабро</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="162"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="183"/>
       <source>Failed to trim edge</source>
       <translation>Немагчыма абрэзаць рабро</translation>
     </message>
@@ -6920,7 +6920,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="212"/>
       <source>Color of fully constrained edge color in edit mode</source>
-      <translation>Колер цалкам абмежаванага колеру рабра ў рэжыме змены</translation>
+      <translation>Колер цалкам абмежаванага колеру рабра ў рэжыме праўкі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="199"/>
@@ -6950,12 +6950,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="306"/>
       <source>Color of fully constrained construction edge color in edit mode</source>
-      <translation>Колер цалкам абмежаванага колеру будаўнічага рабра ў рэжыме змены</translation>
+      <translation>Колер цалкам абмежаванага колеру будаўнічага рабра ў рэжыме праўкі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="332"/>
       <source>Color of construction geometry in edit mode</source>
-      <translation>Колер будаўнічай геаметрыі ў рэжыме змены</translation>
+      <translation>Колер будаўнічай геаметрыі ў рэжыме праўкі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="352"/>
@@ -6975,7 +6975,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="400"/>
       <source>Color of fully constrained internal alignment edge color in edit mode</source>
-      <translation>Колер цалкам абмежаванага ўнутранага выраўноўвання колеру рабра ў рэжыме змены</translation>
+      <translation>Колер цалкам абмежаванага ўнутранага выраўноўвання колеру рабра ў рэжыме праўкі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="426"/>
@@ -7000,7 +7000,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="494"/>
       <source>Color of external geometry in edit mode</source>
-      <translation>Колер вонкавай геаметрыі ў рэжыме змены</translation>
+      <translation>Колер вонкавай геаметрыі ў рэжыме праўкі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="514"/>
@@ -7020,7 +7020,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="568"/>
       <source>Color of fully constrained geometry in edit mode</source>
-      <translation>Колер цалкам абмежаванай геаметрыі ў рэжыме змены</translation>
+      <translation>Колер цалкам абмежаванай геаметрыі ў рэжыме праўкі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="588"/>
@@ -7045,7 +7045,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="645"/>
       <source>Color of driving constraints in edit mode</source>
-      <translation>Колер кіруючага абмежавання ў рэжыме змены</translation>
+      <translation>Колер кіруючага абмежавання ў рэжыме праўкі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="665"/>
@@ -7065,7 +7065,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="699"/>
       <source>Color of reference constraints in edit mode</source>
-      <translation>Колер апорнага абмежавання ў рэжыме змены</translation>
+      <translation>Колер апорнага абмежавання ў рэжыме праўкі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="719"/>
@@ -7075,7 +7075,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="726"/>
       <source>Color of expression dependent constraints in edit mode</source>
-      <translation>Колер абмежавання, якое залежыць ад выразу, у рэжыме змены</translation>
+      <translation>Колер абмежавання, якое залежыць ад выразу, у рэжыме праўкі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="746"/>
@@ -7085,7 +7085,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="753"/>
       <source>Color of deactivated constraints in edit mode</source>
-      <translation>Колер адключанага абмежаванне ў рэжыме змены</translation>
+      <translation>Колер адключанага абмежаванне ў рэжыме зменыпраўкі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="791"/>
@@ -7446,7 +7446,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandConstraints.cpp" line="9790"/>
       <source>Change the value of a dimensional constraint</source>
-      <translation type="unfinished">Change the value of a dimensional constraint</translation>
+      <translation>Змяніць значэнне памернага абмежавання</translation>
     </message>
   </context>
   <context>

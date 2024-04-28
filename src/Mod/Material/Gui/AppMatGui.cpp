@@ -34,6 +34,8 @@
 #include "DlgSettingsMaterial.h"
 #include "Workbench.h"
 #include "WorkbenchManipulator.h"
+#include "MaterialTreeWidget.h"
+#include "MaterialTreeWidgetPy.h"
 
 // use a different name to CreateCommand()
 void CreateMaterialCommands();
@@ -78,7 +80,7 @@ PyMOD_INIT_FUNC(MatGui)
 
     // load needed modules
     try {
-        Base::Interpreter().runString("import Material");
+        Base::Interpreter().runString("import Materials");
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
@@ -106,6 +108,19 @@ PyMOD_INIT_FUNC(MatGui)
 
     // add resources and reloads the translators
     loadMaterialResource();
+
+    Base::Interpreter().addType(&MatGui::MaterialTreeWidgetPy::Type,
+                                matGuiModule,
+                                "MaterialTreeWidget");
+
+
+    // Initialize types
+
+    MatGui::MaterialTreeWidget::init();
+
+    // Add custom widgets
+    new Gui::WidgetProducer<MatGui::MaterialTreeWidget>;
+
 
     PyMOD_Return(matGuiModule);
 }

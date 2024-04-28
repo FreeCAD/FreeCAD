@@ -33,12 +33,31 @@
 
 using namespace Materials;
 
+MaterialFilterOptions::MaterialFilterOptions()
+    : _includeFavorites(true)
+    , _includeRecent(true)
+    , _includeFolders(true)
+    , _includeLibraries(true)
+    , _includeLegacy(false)
+{}
+
+MaterialFilterTreeWidgetOptions::MaterialFilterTreeWidgetOptions()
+{
+    auto param = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/TreeWidget");
+    _includeFavorites = param->GetBool("ShowFavorites", true);
+    _includeRecent = param->GetBool("ShowRecent", true);
+    _includeFolders = param->GetBool("ShowEmptyFolders", false);
+    _includeLibraries = param->GetBool("ShowEmptyLibraries", true);
+    _includeLegacy = param->GetBool("ShowLegacy", false);
+}
+
+//===
+
 TYPESYSTEM_SOURCE(Materials::MaterialFilter, Base::BaseClass)
 
 MaterialFilter::MaterialFilter()
-    : _includeFolders(true)
-    , _includeLegacy(true)
-    , _required()
+    : _required()
     , _requiredComplete()
 {}
 

@@ -38,6 +38,9 @@ class VPConstraintTie(view_base_femconstraint.VPBaseFemConstraint):
     A View Provider for the ConstraintTie object
     """
 
+    def __init__(self, vobj):
+        super().__init__(vobj)
+
     def setEdit(self, vobj, mode=0):
         view_base_femconstraint.VPBaseFemConstraint.setEdit(
             self,
@@ -45,3 +48,7 @@ class VPConstraintTie(view_base_femconstraint.VPBaseFemConstraint):
             mode,
             task_constraint_tie._TaskPanel
         )
+
+    def attach(self, vobj):
+        super().attach(vobj)
+        vobj.loadSymbol(self.resource_symbol_dir + "ConstraintTie.iv")

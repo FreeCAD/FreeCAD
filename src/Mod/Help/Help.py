@@ -73,7 +73,7 @@ LOCTXT = translate(
 )
 LOGTXT = translate(
     "Help",
-    "PySide QtWebEngineWidgets module is not available. Help rendering is done with the Web module",
+    "PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser",
 )
 CONVERTTXT = translate(
     "Help",
@@ -244,14 +244,13 @@ def show_tab(html, baseurl, title, view=None):
 
 def get_qtwebwidgets(html, baseurl, title):
     """opens a web module view if qtwebwidgets module is not available, and returns False"""
+    from PySide import QtGui
 
     try:
-        from PySide import QtGui, QtWebEngineWidgets
+        from PySide import QtWebEngineWidgets
     except:
         FreeCAD.Console.PrintLog(LOGTXT + "\n")
-        import WebGui
-
-        WebGui.openBrowserHTML(html, baseurl, title, ICON)
+        QtGui.QDesktopServices.openUrl(baseurl)
         return False
     else:
         return True

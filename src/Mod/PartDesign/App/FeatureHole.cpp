@@ -1652,7 +1652,7 @@ static gp_Pnt toPnt(gp_Vec dir)
 
 App::DocumentObjectExecReturn* Hole::execute()
 {
-     TopoDS_Shape profileshape;
+     TopoShape profileshape;
     try {
         profileshape = getVerifiedFace();
     }
@@ -1661,9 +1661,9 @@ App::DocumentObjectExecReturn* Hole::execute()
     }
 
     // Find the base shape
-    TopoDS_Shape base;
+    TopoShape base;
     try {
-        base = getBaseShape();
+        base = getBaseTopoShape();
     }
     catch (const Base::Exception&) {
         std::string text(QT_TRANSLATE_NOOP("Exception", "The requested feature cannot be created. The reason may be that:\n"
@@ -1680,12 +1680,12 @@ App::DocumentObjectExecReturn* Hole::execute()
         this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
-        base.Move(invObjLoc);
+        base.move(invObjLoc);
 
-        if (profileshape.IsNull())
+        if (profileshape.isNull())
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Hole error: Creating a face from sketch failed"));
-        profileshape.Move(invObjLoc);
+        profileshape.move(invObjLoc);
 
         /* Build the prototype hole */
 
@@ -1883,11 +1883,11 @@ App::DocumentObjectExecReturn* Hole::execute()
             protoHole = mkFuse.Shape();
         }
 
-        TopoDS_Compound holes = findHoles(profileshape, protoHole);
+        TopoDS_Compound holes = findHoles(profileshape.getShape(), protoHole);
         this->AddSubShape.setValue(holes);
 
         // For some reason it is faster to do the cut through a BooleanOperation.
-        BRepAlgoAPI_Cut mkBool(base, holes);
+        BRepAlgoAPI_Cut mkBool(base.getShape(), holes);
         if (!mkBool.IsDone()) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
         }
@@ -1896,13 +1896,13 @@ App::DocumentObjectExecReturn* Hole::execute()
 
         // We have to get the solids (fuse sometimes creates compounds)
         base = getSolid(result);
-        if (base.IsNull())
+        if (base.isNull())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
         base = refineShapeIfActive(base);
 
 
 
-        int solidCount = countSolids(base);
+        int solidCount = countSolids(base.getShape());
         if (solidCount > 1) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));

@@ -1184,9 +1184,13 @@ class gridTracker(Tracker):
         gtrans = params.get_param("gridTransparency")/100.0
         col = utils.get_rgba_tuple(params.get_param("gridColor"))[:3]
         if params.get_param("coloredGridAxes"):
-            red = ((1.0+col[0])/2,0.0,0.0)
-            green = (0.0,(1.0+col[1])/2,0.0)
-            blue = (0.0,0.0,(1.0+col[2])/2)
+            vp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+            red = vp.GetUnsigned("AxisXColor",0xCC333300)
+            green =  vp.GetUnsigned("AxisYColor",0x33CC3300)
+            blue = vp.GetUnsigned("AxisZColor",0x3333CC00)
+            red = utils.get_rgba_tuple(red)[:3]
+            green = utils.get_rgba_tuple(green)[:3]
+            blue = utils.get_rgba_tuple(blue)[:3]
         else:
             red = col
             green = col

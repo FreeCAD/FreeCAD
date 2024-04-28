@@ -224,11 +224,11 @@ Svaka vrijednost Tabele postavki koja je promijenjena u odnosu na zadano je unap
 This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
 
 Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</source>
-      <translation>Ako je omogućeno, stvaranje materijala je uključeno u predložak.Ako predložak ne sadrži definiciju materijala, koristit će se standardni algoritam za stvaranje materijala (stvaranje iz okvirnog okvira objekta baze).
+      <translation type="unfinished">If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bounding box).
 
-Ova je opcija najkorisnija ako je materijal blok ili cilindar, ili ako stroj ima standardnu poziciju za obradu.
+This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
 
-Imajte na umu da je ova opcija onemogućena ako se u poslu koristi predmet materijala iz postojećeg čvrstog tijela - oni se ne mogu pohraniti u predlošku.</translation>
+Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="184"/>
@@ -276,11 +276,11 @@ Imajte na umu da su navedene samo operacije koje trenutno imaju postavljene konf
 For Box and Cylinder stocks this means the actual size of the stock solid being created.
 
 For stock from the Base object's bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.</source>
-      <translation>Ako je omogućeno, trenutne postavke veličine materijala obrade  su uključene u predložak.
+      <translation type="unfinished">If enabled the current size settings for the stock object are included in the template.
 
-Za blokove i cilindre to znači stvarnu veličinu materijala obrade koji se koristi.
+For Box and Cylinder stocks this means the actual size of the stock solid being created.
 
-Za materijal obrade iz graničnog okvira to znači dodatni materijal u svim smjerovima. Objekt materijala stvoren iz takvog predloška dobit će svoju osnovnu veličinu iz novog posla osnovnog objekta i primijeniti pohranjene dodatne postavke.</translation>
+For stock from the Base object's bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="168"/>
@@ -387,7 +387,7 @@ Za materijal obrade iz graničnog okvira to znači dodatni materijal u svim smje
     <message>
       <location filename="../panels/PropertyCreate.ui" line="27"/>
       <source>Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces "Mixed Case"</source>
-      <translation>Naziv svojstva. Može sadržavati samo slova, brojeve i podcrte. Imena sa velikim-malim slovima će se prikazivati s razmacima</translation>
+      <translation type="unfinished">Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces "Mixed Case"</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="34"/>
@@ -586,12 +586,12 @@ Za materijal obrade iz graničnog okvira to znači dodatni materijal u svim smje
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="107"/>
       <source>Extension of bounding box's MinX</source>
-      <translation>Proširenje minX okvira omeđenja</translation>
+      <translation type="unfinished">Extension of bounding box's MinX</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="120"/>
       <source>Extension of bounding box's MaxX</source>
-      <translation>Proširenje maxX okvira omeđenja</translation>
+      <translation type="unfinished">Extension of bounding box's MaxX</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="127"/>
@@ -601,12 +601,12 @@ Za materijal obrade iz graničnog okvira to znači dodatni materijal u svim smje
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="134"/>
       <source>Extension of bounding box's MinY</source>
-      <translation>Proširenje minY okvira omeđenja</translation>
+      <translation type="unfinished">Extension of bounding box's MinY</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="141"/>
       <source>Extension of bounding box's MaxY</source>
-      <translation>Proširenje maxY okvira omeđenja</translation>
+      <translation type="unfinished">Extension of bounding box's MaxY</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="148"/>
@@ -616,12 +616,12 @@ Za materijal obrade iz graničnog okvira to znači dodatni materijal u svim smje
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="155"/>
       <source>Extension of bounding box's MinZ</source>
-      <translation/>
+      <translation type="unfinished">Extension of bounding box's MinZ</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="162"/>
       <source>Extension of bounding box's MaxZ</source>
-      <translation/>
+      <translation type="unfinished">Extension of bounding box's MaxZ</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="182"/>
@@ -651,12 +651,12 @@ Za materijal obrade iz graničnog okvira to znači dodatni materijal u svim smje
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
       <source>If checked the path is constrained by the solid. Otherwise the volume of the solid describes a 'keep out' zone</source>
-      <translation>Ako je označeno, staza je ograničena čvrstim tijelom. Inače, volumen čvrstog tijela opisuje 'Isključenu zonu'.</translation>
+      <translation type="unfinished">If checked the path is constrained by the solid. Otherwise the volume of the solid describes a 'keep out' zone</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
       <source>Extend Model's Bounding Box</source>
-      <translation>Proširi granični okvir modela</translation>
+      <translation type="unfinished">Extend Model's Bounding Box</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="175"/>
@@ -697,7 +697,7 @@ Za materijal obrade iz graničnog okvira to znači dodatni materijal u svim smje
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="59"/>
       <source>Select one or more features in the 3d view and press 'Add' to add them as the base items for this operation. Selected features can be deleted entirely.</source>
-      <translation>Odaberite jednu ili više značajki u 3D prikazu i pritisnite 'Dodaj' da biste ih dodali kao osnovne stavke za ovu operaciju. Odabrane značajke mogu se u potpunosti izbrisati.</translation>
+      <translation type="unfinished">Select one or more features in the 3d view and press 'Add' to add them as the base items for this operation. Selected features can be deleted entirely.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="69"/>
@@ -774,7 +774,7 @@ Resetiranje briše sve trenutne stavke s popisa i popunjava popis svim okruglim 
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="66"/>
       <source>Remove all list items and fill list with all eligible features from the job's base object.</source>
-      <translation>Ukloni sve stavke popisa i popuni popis sa svim odobrenim značajkama iz objekta osnove posla.</translation>
+      <translation type="unfinished">Remove all list items and fill list with all eligible features from the job's base object.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="69"/>
@@ -1193,7 +1193,7 @@ Resetiranje briše sve trenutne stavke s popisa i popunjava popis svim okruglim 
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="63"/>
       <source>Don't retract after every hole</source>
-      <translation>Ne povlači alat nazad nakon svake rupe</translation>
+      <translation type="unfinished">Don't retract after every hole</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="66"/>
@@ -1404,7 +1404,7 @@ Ovo se može koristiti za obradu cijelog područja obrade kako bi se osigurala u
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
       <source>The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit's rotation and the tool's lateral movement are in the same direction</source>
-      <translation>Režim rezanja pretpostavlja da rez na jednoj strani alata predstavlja rezultirajući dio, a druga strana je već ostrugana ili će se ukloniti kasnije. Penjući se način rada je kada se svrdlo pomiče u rez pri svakoj rotaciji, dok je u konvencionalnom načinu rada rotacija svrdla i bočno kretanje alata u istom smjeru.</translation>
+      <translation type="unfinished">The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit's rotation and the tool's lateral movement are in the same direction</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="119"/>
@@ -1597,7 +1597,7 @@ Ovo se može koristiti za obradu cijelog područja obrade kako bi se osigurala u
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
       <source>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don't warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</source>
-      <translation>Provjerite želite li ovu operaciju profila primijeniti i na cilindrične rupe, koje se obično buše. To može biti korisno ako nije dostupno svrdlo odgovarajuće veličine ili ako broj rupa ne opravdava promjenu alata. Imajte na umu da je strana reza i smjer obrnuti u odnosu na specificirane vrijednosti.</translation>
+      <translation type="unfinished">Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don't warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
@@ -1841,7 +1841,7 @@ Ovo se može koristiti za obradu cijelog područja obrade kako bi se osigurala u
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="140"/>
       <source>Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.</source>
-      <translation>Izbjegavajte rezanje zadnjih 'N' lica na popisu Osnovna geometrija odabranih površina.</translation>
+      <translation type="unfinished">Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="147"/>
@@ -2009,25 +2009,25 @@ Zadano: OpToolDiameter</translation>
       <source>Expression set as ClearanceHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
-      <translation>Izraz postavljen kao sigurna Visina prijelaza novo kreirane operacije. 
+      <translation type="unfinished">Expression set as ClearanceHeight for new operations.
 
-Zadano: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
+Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="145"/>
       <source>Expression set as SafeHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</source>
-      <translation>Izraz postavljen kao Sigurna Visina novo kreirane operacije. 
+      <translation type="unfinished">Expression set as SafeHeight for new operations.
 
-Zadano: "OpStockZMax+SetupSheet.SafeHeightOffset"</translation>
+Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="154"/>
       <source>SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
 Default: "5mm"</source>
-      <translation>SafeHeightOffset može se koristiti za izraze postavljanja SafeHeight za nove operacije.
+      <translation type="unfinished">SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
 Default: "5mm"</translation>
     </message>
@@ -2292,9 +2292,9 @@ Ako je zadana visina 0, priprema će koristiti polovicu visine dijela. Ako je vi
       <source>Radius of the fillet on the tag's top edge.
 
 If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.</source>
-      <translation>Polumjer zaobljenja gornjeg ruba mostića.
+      <translation type="unfinished">Radius of the fillet on the tag's top edge.
 
-Ako je polumjer veći od onoga što ga oblik oznake može podržati, rezultantna forma će biti kupola.</translation>
+If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="109"/>
@@ -2513,7 +2513,7 @@ Ako se ostavi prazno, nijedan predložak neće biti unaprijed odabran.</translat
     <message>
       <location filename="../preferences/PathJob.ui" line="298"/>
       <source>It doesn't seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.</source>
-      <translation>Izgleda da nema instaliranih post-procesorskih skripti. Dodajte neke u svoju mapu makroa i pazite da naziv datoteke završava sa &amp;quot;_post.py&amp;quot;.</translation>
+      <translation type="unfinished">It doesn't seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="312"/>
@@ -2523,7 +2523,7 @@ Ako se ostavi prazno, nijedan predložak neće biti unaprijed odabran.</translat
     <message>
       <location filename="../preferences/PathJob.ui" line="332"/>
       <source>Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.</source>
-      <translation>Neophodni argumenti koji se prosljeđuju zadanim post procesoru navedenim iznad. Pogledajte dokumentaciju post procesora za podržane argumente.</translation>
+      <translation type="unfinished">Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="370"/>
@@ -2548,7 +2548,7 @@ Ako se ostavi prazno, nijedan predložak neće biti unaprijed odabran.</translat
     <message>
       <location filename="../preferences/PathJob.ui" line="405"/>
       <source>Extend Model's Bounding Box</source>
-      <translation>Proširi granični okvir modela</translation>
+      <translation type="unfinished">Extend Model's Bounding Box</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="429"/>
@@ -2937,7 +2937,7 @@ Ako u različitim direktorijima postoje više alata ili oblika alata s istim ime
     <message>
       <location filename="../panels/DogboneEdit.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Odaberite željeni stil kostura za pripremu:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Pseća kost&lt;/span&gt; ... uzmite najkraću putanju da pokrijete kut.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;T-kost&lt;/span&gt; ... Proširite određeni smjer dok kut nije prekriven.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="52"/>
@@ -2992,8 +2992,7 @@ Ako u različitim direktorijima postoje više alata ili oblika alata s istim ime
     <message>
       <location filename="../panels/DogboneEdit.ui" line="114"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it's the radius of the tool (R) and for dogbones it's R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;custom&lt;/span&gt; ... let's you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Određuje duljinu incizije kosti koja će se umetnuti u profil.
-&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Adaptivno&lt;/span&gt; ... duljina se prilagođava tako da pokrije kut na temelju kuta njegovih rubova, uzimajući u obzir trenutni radijus alata (zadano).&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Fiksno&lt;/span&gt; ... isto je kao adaptivno za ravne kutove. Za T-kosti to je radijus alata (R) i za dogbone to je R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Prilagođeno&lt;/span&gt; ... omogućuje vam da specificirate prilagođenu (fiksnu) duljinu u nastavku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it's the radius of the tool (R) and for dogbones it's R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;custom&lt;/span&gt; ... let's you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="121"/>
@@ -3013,12 +3012,12 @@ Ako u različitim direktorijima postoje više alata ili oblika alata s istim ime
     <message>
       <location filename="../panels/DogboneEdit.ui" line="142"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter length for each bone if &lt;span style=" font-weight:600;"&gt;Incision&lt;/span&gt; is set to &lt;span style=" font-weight:600;"&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Die Länge für jeden Knochen eingeben, wenn &lt;span style=" font-weight:600;"&gt;Einschnitt&lt;/span&gt; auf &lt;span style=" font-weight:600;"&gt;Benutzerdefiniert&lt;/span&gt; gesetzt ist, ansonst wird dies ignoriert.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter length for each bone if &lt;span style=" font-weight:600;"&gt;Incision&lt;/span&gt; is set to &lt;span style=" font-weight:600;"&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="155"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=" font-weight:600;"&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=" font-weight:600;"&gt;un-check&lt;/span&gt; the bones you don't want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=" font-weight:600;"&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you're trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html>&lt;head/>&lt;body>&lt;p>Opis lokacija kostiju (sa svim kostima na toj lokaciji) koje su dio ove pripreme. Popis se određuje uglovima u profilu i odabiru&lt;span style=" font-weight:600;">strane&lt;/span> za kosti. &lt;/p>&lt;p>Vi možete&lt;span style=" font-weight:600;">un-check&lt;/span> deaktivirati kosti koje ne želite pripremiti..&lt;/p>&lt;p>Ako je kost&lt;span style=" font-weight:600;">sivo (blokirano)&lt;/span> to znači da je već pripremljen prethodnim pripremanjem. Drugim riječima, ako ovo pripremamo ponovo, moći ćete odabrati samo kosti koje su ovdje odznačene.&lt;/p>&lt;p>Ako je ovaj popis prazan, to vjerojatno znači da pokušavate stvoriti kosti na pogrešnoj strani profila.&lt;/p>&lt;/body>&lt;/html></translation>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=" font-weight:600;"&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=" font-weight:600;"&gt;un-check&lt;/span&gt; the bones you don't want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=" font-weight:600;"&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you're trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="165"/>
@@ -3088,7 +3087,7 @@ Ako u različitim direktorijima postoje više alata ili oblika alata s istim ime
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="54"/>
       <source>Height of holding tag. Note that resulting tag might be smaller if the tag's width and angle result in a triangular shape.</source>
-      <translation>Visina mostića držača. Imajte na umu da bi rezultirajući mostić mogao biti manji ako širina i kut mostića rezultiraju trokutastim oblikom.</translation>
+      <translation type="unfinished">Height of holding tag. Note that resulting tag might be smaller if the tag's width and angle result in a triangular shape.</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="61"/>
@@ -3103,7 +3102,7 @@ Ako u različitim direktorijima postoje više alata ili oblika alata s istim ime
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="97"/>
       <source>List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don't lie on the base wire.</source>
-      <translation>Popis trenutnih potpornih mostića. Uredi koordinate dvostrukim klikom ili gumbom Uredi. Mostići se automatski onemogućavaju ako se preklapaju s prethodnim mostićem ili ne leže na osnovnoj liniji</translation>
+      <translation type="unfinished">List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don't lie on the base wire.</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="116"/>
@@ -3590,20 +3589,20 @@ This is useful if the operator can safely load work into one coordinate system w
 Ordering by Tool, will minimize the Tool Changes. A tool change will be done, then all operations in all coordinate systems before changing tools.
 
 Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the 'split output' even with only a single work coordinate system since it will put each operation into a separate file.</source>
-      <translation>Redoslijed po učvršćenju, uzrokovat će da se sve operacije izvode u prvom koordinatnom sustavu prije prelaska na drugi. Tada će se sve operacije tamo izvoditi istim redoslijedom.
+      <translation type="unfinished">Ordering by Fixture, will cause all operations to be performed in the first coordinate system before switching to the second. Then all operations will be performed there in the same order.
 
-Ovo je korisno ako operater može sigurno učitati rad u jedan koordinatni sustav dok stroj radi u drugom. 
+This is useful if the operator can safely load work into one coordinate system while the machine is doing work in another.
 
-Redoslijed po alatu minimizirat će promjene alata. Izvršit će se promjena alata, zatim sve operacije u svim koordinatnim sustavima prije promjene alata. 
+Ordering by Tool, will minimize the Tool Changes. A tool change will be done, then all operations in all coordinate systems before changing tools.
 
-Redoslijed po operaciji izvršit će svaku operaciju u svim koordinatnim sustavima prije prelaska na sljedeću operaciju. Ovo je posebno korisno u kombinaciji s 'podijeljenim izlazom' čak i sa samo jednim radnim koordinatnim sustavom jer će svaku operaciju staviti u zasebnu datoteku.</translation>
+Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the 'split output' even with only a single work coordinate system since it will put each operation into a separate file.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="254"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=" font-style:italic;"&gt;Work Offsets&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
 FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the 'order by' setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Radne koordinatne sustave&lt;/span&gt; koji se također nazivaju &lt;span style=" font-style:italic;"&gt;Radni odmaci&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;Odmaci učvršćenja&lt;/span&gt;, ili &lt;span style=" font-style:italic;"&gt;Učvršćenja &lt;/span&gt;korisni su za izradu efikasnih proizvodnih poslova u kojima se isti dio obrađuje više puta na stroju.
-FreeCAD nema pojma gdje se određeni koordinatni sustav nalazi unutar strojnog koordinatnog sustava, pa dodavanje dodatnih koordinatnih sustava vašem poslu neće imati vizualne promjene u vašem poslu. Međutim, to će promijeniti vaš izlaz gcoda. Točan način na koji se na izlaz utječe kontroliraju postavke "poredaj po".&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=" font-style:italic;"&gt;Work Offsets&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
+FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the 'order by' setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="409"/>
@@ -3638,7 +3637,7 @@ FreeCAD nema pojma gdje se određeni koordinatni sustav nalazi unutar strojnog k
     <message>
       <location filename="../panels/PathEdit.ui" line="488"/>
       <source>Extend Model's Bounding Box</source>
-      <translation>Proširi granični okvir modela</translation>
+      <translation type="unfinished">Extend Model's Bounding Box</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="493"/>
@@ -3787,25 +3786,25 @@ FreeCAD nema pojma gdje se određeni koordinatni sustav nalazi unutar strojnog k
       <source>Expression set as ClearanceHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
-      <translation>Izraz postavljen kao sigurna Visina prijelaza novo kreirane operacije. 
+      <translation type="unfinished">Expression set as ClearanceHeight for new operations.
 
-Zadano: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
+Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1139"/>
       <source>Expression set as SafeHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</source>
-      <translation>Izraz postavljen kao Sigurna Visina novo kreirane operacije. 
+      <translation type="unfinished">Expression set as SafeHeight for new operations.
 
-Zadano: "OpStockZMax+SetupSheet.SafeHeightOffset"</translation>
+Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1148"/>
       <source>SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
 Default: "5mm"</source>
-      <translation>SafeHeightOffset može se koristiti za izraze postavljanja SafeHeight za nove operacije.
+      <translation type="unfinished">SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
 Default: "5mm"</translation>
     </message>
@@ -3866,36 +3865,36 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
 "/home/cnc/%d.g-code"
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation>Navedite putanju i opcionalno ime datoteke (pogledajte dolje) koja će se koristiti kao zadano za izvoz Naknadne obrade.
-Prije razrješenja naziva u vrijeme post obrade vrše se sljedeće zamjene:
-Zamjena omogućuje sljedeće:
-%D ... direktorij aktivnog dokumenta
-%d ... ime aktivnog dokumenta (s ekstenzijom)
-%M ... korisnički direktorij makro naredbi
-%j ... ime aktivnog objekta posla
+      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
+Substitution allows the following:
+%D ... directory of the active document
+%d ... name of the active document (with extension)
+%M ... user macro directory
+%j ... name of the active Job object
 
-Sljedeće se može koristiti ako je izlaz podijeljen. Ako izlaz nije podijeljen,
-ovo će biti zanemareno.
-%T ... Alatni broj
-%t ... Oznaka kontrolera alata
+The Following can be used if output is being split. If Output is not split
+these will be ignored.
+%T ... Tool Number
+%t ... Tool Controller label
 
-%W ... Radni koordinatni sustav
-%O ... Oznaka operacije
+%W ... Work Coordinate System
+%O ... Operation Label
 
-Prilikom dijeljenja izlaza uvijek će se dodati sekvencijski broj.
+When splitting output, a sequence number will always be added.
 
-Ako je uključen %S, možete odrediti gdje se broj pojavljuje. Bez njega, broj će se dodati na kraju reda.
+if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
 
-%S ... Sekvencijski broj
+%S ... Sequence Number
 
-Sljedeći primjer pohranjuje sve datoteke s istim imenom kao dokument u direktorij /home/freecad (molimo uklonite navodnike):
+The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
 "/home/cnc/%d.g-code"
-Pogledajte politiku spremanja datoteka u nastavku kako biste saznali kako se nositi s sukobima dodavanja imena.</translation>
+See the file save policy below on how to deal with name conflicts.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="397"/>
       <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
-      <translation>Ako se koristi više koordinatnih sustava, postavljanjem ovoga na TOČNO uzrokovat će se zapisivanje g-coda u više izlaznih datoteka kako je kontrolirano svojstvom 'poredaj po'. Na primjer, ako poredate po Učvršćenje, prva izlazna datoteka bit će za prvo učvršćenje, a zasebna datoteka za drugo.</translation>
+      <translation type="unfinished">If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="400"/>
@@ -3906,12 +3905,13 @@ For example, if &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is
 
 
 If &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to &lt;span style=" font-style:italic;"&gt;operation&lt;/span&gt; and &lt;span style=" font-style:italic;"&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ako je Istinito, naknadna obrada će stvoriti više izlaznih datoteka na temelju &lt;span style=" font-style:italic;"&gt;redoslijed po&lt;/span&gt; postavki.
-
-Na primjer, ako je &lt;span style=" font-style:italic;"&gt;redoslijed po&lt;/span&gt; postavljen na Alat, prva izlazna datoteka će sadržavati prvu promjenu alata i sve operacije, u svim koordinatnim sustavima, koje se mogu izvršiti s tim alatom prije nego što se pozove sljedeća promjena alata.
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post processing will create multiple output files based on the &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; setting.
 
 
-ako je &lt;span style=" font-style:italic;"&gt;redoslijed po&lt;/span&gt; postavljen na &lt;span style=" font-style:italic;"&gt;operacija&lt;/span&gt; i &lt;span style=" font-style:italic;"&gt;razdijeli izlaz&lt;/span&gt; ije točno, svaka operacija će se zapisati u odvojenu datoteku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+For example, if &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to Tool, the first output file will contain the first tool change and all operations, in all coordinate systems, that can be done with that tool before the next tool change is called.
+
+
+If &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to &lt;span style=" font-style:italic;"&gt;operation&lt;/span&gt; and &lt;span style=" font-style:italic;"&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1037"/>
@@ -4121,47 +4121,6 @@ Zadano: "3mm"</translation>
   <context>
     <name>Path</name>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
-      <source>The currently selected unit schema: 
-     '{}' for this document
- Does not use 'minutes' for velocity values. 
- 
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct G-code: 
-Select a minute-based schema in preferences.
-For example:
-    'Metric, Small Parts &amp; CNC'
-    'US Customary'
-    'Imperial Decimal'</source>
-      <translation>Trenutačno odabrani modul jedinica: 
-     '{}' za ovaj dokument
- ne koristi 'minute' za vrijednosti ubrzanja. 
- 
-CNC strojevi zahtijevaju da se brzina rezanja izrazi u 
-jedinicama/minuti. Da bi se osigurao ispravan G-kod: 
-odaberite minutni modul u postavkama. 
-Na primjer: 
-   'Metarski, mali dijelovi i CNC' 
-   'Sjedinjene Države' 
-   'Imperijal decimal'
-</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="71"/>
-      <source>Warning</source>
-      <translation>Upozorenje</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="76"/>
-      <source>Ok</source>
-      <translation>"Ok"</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="79"/>
-      <source>Don't Show This Anymore</source>
-      <translation>Ne prikazuj ovo više</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Base/Gui/IconViewProvider.py" line="97"/>
       <source>Edit</source>
       <translation>Uredi</translation>
@@ -4228,11 +4187,6 @@ Na primjer:
       <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
       <source>Choose a Path Job</source>
       <translation>Izaberi posao Staze</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/Bit.py" line="199"/>
-      <source>Invalid Filename</source>
-      <translation>Nevažeći naziv datoteke</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="545"/>
@@ -4398,13 +4352,13 @@ Na primjer:
       <location filename="../../../Path/Dressup/DogboneII.py" line="250"/>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="463"/>
       <source>Dressup length if incision is set to 'custom'</source>
-      <translation>Duljina pripreme ako je zasjek postavljen na 'prilagođeno'</translation>
+      <translation type="unfinished">Dressup length if incision is set to 'custom'</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/DogboneII.py" line="258"/>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="445"/>
       <source>Bones that aren't dressed up</source>
-      <translation>Kosti koje nisu dotjerane (dressed up)</translation>
+      <translation type="unfinished">Bones that aren't dressed up</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="946"/>
@@ -5393,7 +5347,7 @@ Visina potpornih mostića.</translation>
       <location filename="../../../Path/Op/Surface.py" line="212"/>
       <location filename="../../../Path/Op/Waterline.py" line="232"/>
       <source>Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.</source>
-      <translation>Izbjegavajte rezanje zadnjih 'N' lica na popisu Osnovna geometrija odabranih površina.</translation>
+      <translation type="unfinished">Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="220"/>
@@ -5483,7 +5437,7 @@ započnite s vanjske strane i radite prema sredini.</translation>
       <location filename="../../../Path/Op/Surface.py" line="369"/>
       <location filename="../../../Path/Op/Waterline.py" line="407"/>
       <source>Set the stepover percentage, based on the tool's diameter.</source>
-      <translation>Postavite postotak preklapanja na temelju promjera alata.</translation>
+      <translation type="unfinished">Set the stepover percentage, based on the tool's diameter.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="378"/>
@@ -5532,22 +5486,22 @@ započnite s vanjske strane i radite prema sredini.</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="349"/>
       <source>Set thread's major diameter</source>
-      <translation>Postavite vanjski promjer navoja</translation>
+      <translation type="unfinished">Set thread's major diameter</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="355"/>
       <source>Set thread's minor diameter</source>
-      <translation>Postavite promjer jezgre navoja</translation>
+      <translation type="unfinished">Set thread's minor diameter</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="363"/>
       <source>Set thread's pitch - used for metric threads</source>
-      <translation>Postavite korak navoja - koristi se za metričke navoje</translation>
+      <translation type="unfinished">Set thread's pitch - used for metric threads</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="372"/>
       <source>Set thread's TPI (turns per inch) - used for imperial threads</source>
-      <translation>Postavi visinu navoja TPI (okretaja po inču) - koristi se za inč navoje</translation>
+      <translation type="unfinished">Set thread's TPI (turns per inch) - used for imperial threads</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="381"/>
@@ -5897,21 +5851,6 @@ Staza obrade koju treba kopirati</translation>
   </context>
   <context>
     <name>PathPocket</name>
-    <message>
-      <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="179"/>
-      <source>Normal</source>
-      <translation>Normalno</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="180"/>
-      <source>X</source>
-      <translation>X</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="181"/>
-      <source>Y</source>
-      <translation>Y</translation>
-    </message>
     <message>
       <location filename="../../../Path/Op/Gui/PocketBase.py" line="82"/>
       <source>Pass Extension</source>
@@ -6365,14 +6304,6 @@ Prekidam OP-stvaranje.</translation>
       <location filename="../../../Path/Op/Gui/Array.py" line="334"/>
       <source>Arrays of toolpaths having different tool controllers are handled according to the tool controller of the first path.</source>
       <translation>Matrice staza obrade koji imaju različite kontrolere alata obrađuju se prema kontroleru alata prve staze.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathToolBit</name>
-    <message>
-      <location filename="../../../Path/Tool/Gui/Bit.py" line="118"/>
-      <source>Toolbit cannot be edited: Shapefile not found</source>
-      <translation>Alatni nastavak ne može se urediti: Datoteka oblika nije pronađena</translation>
     </message>
   </context>
   <context>
@@ -6969,6 +6900,7 @@ Prekidam OP-stvaranje.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1621"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="71"/>
       <source>Warning</source>
       <translation>Upozorenje</translation>
     </message>
@@ -6979,6 +6911,7 @@ Prekidam OP-stvaranje.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1623"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="76"/>
       <source>Ok</source>
       <translation>"Ok"</translation>
     </message>
@@ -7008,6 +6941,36 @@ Prekidam OP-stvaranje.</translation>
       <translation>Kreira posao za CAM</translation>
     </message>
     <message>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
+      <source>The currently selected unit schema: 
+     '{}' for this document
+ Does not use 'minutes' for velocity values. 
+ 
+CNC machines require feed rate to be expressed in 
+unit/minute. To ensure correct G-code: 
+Select a minute-based schema in preferences.
+For example:
+    'Metric, Small Parts &amp; CNC'
+    'US Customary'
+    'Imperial Decimal'</source>
+      <translation type="unfinished">The currently selected unit schema: 
+     '{}' for this document
+ Does not use 'minutes' for velocity values. 
+ 
+CNC machines require feed rate to be expressed in 
+unit/minute. To ensure correct G-code: 
+Select a minute-based schema in preferences.
+For example:
+    'Metric, Small Parts &amp; CNC'
+    'US Customary'
+    'Imperial Decimal'</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="79"/>
+      <source>Don't Show This Anymore</source>
+      <translation type="unfinished">Don't Show This Anymore</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="88"/>
       <source>Solids</source>
       <translation>Tijela</translation>
@@ -7016,6 +6979,21 @@ Prekidam OP-stvaranje.</translation>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="90"/>
       <source>Jobs</source>
       <translation>Poslovi</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="190"/>
+      <source>Model</source>
+      <translation>Model</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="190"/>
+      <source>Count</source>
+      <translation>Broj</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="272"/>
+      <source>&lt;none&gt;</source>
+      <translation type="unfinished">&lt;none&gt;</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="358"/>
@@ -7399,17 +7377,17 @@ podržani od Path-Sanity</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="1376"/>
       <source>Tool Controller '{}' has no feedrate</source>
-      <translation>Kontroler alata '{}' nema brzinu pomaka</translation>
+      <translation type="unfinished">Tool Controller '{}' has no feedrate</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="1386"/>
       <source>Tool Controller '{}' has no spindlespeed</source>
-      <translation>Kontroler alata '{}' nema brzinu vretena</translation>
+      <translation type="unfinished">Tool Controller '{}' has no spindlespeed</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="1415"/>
       <source>Tool Controller '{}' is not used</source>
-      <translation>Kontroler alata '{}' nije korišten</translation>
+      <translation type="unfinished">Tool Controller '{}' is not used</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="1512"/>
@@ -7498,7 +7476,7 @@ Razmotrite specificiranje Materijala obrade</translation>
     <message>
       <location filename="../../../Path/Op/Base.py" line="641"/>
       <source>Parent job %s doesn't have a base object</source>
-      <translation>Nadređeni zadatak %s nema osnovni (bazni) objekt</translation>
+      <translation type="unfinished">Parent job %s doesn't have a base object</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="787"/>
@@ -7588,16 +7566,6 @@ Razmotrite specificiranje Materijala obrade</translation>
       <location filename="../../../Path/Op/Gui/Engrave.py" line="83"/>
       <source>Base shape %s already in the list</source>
       <translation>Osnovni oblik %s već je na popisu</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="165"/>
-      <source>Profile</source>
-      <translation>Profil</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="168"/>
-      <source>Profile entire model, selected face(s) or selected edge(s)</source>
-      <translation>Profilirajte cijeli model, odabrana lica ili odabrane rubove</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/Controller.py" line="116"/>
@@ -7742,6 +7710,26 @@ Razmotrite specificiranje Materijala obrade</translation>
       <location filename="../../../Path/Op/PocketBase.py" line="73"/>
       <source>Grid</source>
       <translation>Mreža</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="179"/>
+      <source>Normal</source>
+      <translation>Normalno</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="180"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="181"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="185"/>
+      <source>Extensions</source>
+      <translation type="unfinished">Extensions</translation>
     </message>
   </context>
   <context>
@@ -8481,23 +8469,33 @@ Razmotrite specificiranje Materijala obrade</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="668"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="795"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="799"/>
       <source>Tooltable JSON (*.fctl)</source>
       <translation>Tabela Alata JSON  (* .fctl)</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="670"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="800"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="804"/>
       <source>Save toolbit library</source>
       <translation>Spremi biblioteku nastavaka alata</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="796"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="731"/>
+      <source>Tool</source>
+      <translation>Alat</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="732"/>
+      <source>Shape</source>
+      <translation>Oblik</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="800"/>
       <source>LinuxCNC tooltable (*.tbl)</source>
       <translation>LinuxCNC Tabela alata (*.tbl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="798"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="802"/>
       <source>Camotics tooltable (*.json)</source>
       <translation>Camotics Tabela alata (*.json)</translation>
     </message>
@@ -8526,6 +8524,42 @@ Razmotrite specificiranje Materijala obrade</translation>
       <location filename="../../../Path/Tool/Gui/BitLibraryCmd.py" line="80"/>
       <source>Open an editor to manage ToolBit libraries</source>
       <translation>Otvorite uređivač za upravljanje bibliotekama Alatnih nastavaka</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_Profile</name>
+    <message>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="165"/>
+      <source>Profile</source>
+      <translation>Profil</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="168"/>
+      <source>Profile entire model, selected face(s) or selected edge(s)</source>
+      <translation type="unfinished">Profile entire model, selected face(s) or selected edge(s)</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_Toolbit</name>
+    <message>
+      <location filename="../../../Path/Tool/Gui/Bit.py" line="118"/>
+      <source>Toolbit cannot be edited: Shapefile not found</source>
+      <translation type="unfinished">Toolbit cannot be edited: Shapefile not found</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/Bit.py" line="193"/>
+      <source>Tool</source>
+      <translation>Alat</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/Bit.py" line="199"/>
+      <source>Invalid Filename</source>
+      <translation type="unfinished">Invalid Filename</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/Bit.py" line="242"/>
+      <source>Select Tool Shape</source>
+      <translation type="unfinished">Select Tool Shape</translation>
     </message>
   </context>
 </TS>

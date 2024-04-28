@@ -215,7 +215,7 @@
     <message>
       <location filename="../../../JointObject.py" line="52"/>
       <source>Ball</source>
-      <translation type="unfinished">Ball</translation>
+      <translation>球</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="53"/>

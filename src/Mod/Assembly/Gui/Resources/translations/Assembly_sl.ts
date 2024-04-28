@@ -6,12 +6,12 @@
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="48"/>
       <source>Create Assembly</source>
-      <translation type="unfinished">Create Assembly</translation>
+      <translation>Ustvari sestavitev</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="53"/>
       <source>Create an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</source>
-      <translation type="unfinished">Create an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</translation>
+      <translation>Ustvari sestavitveni predmet v trenutnem dokumentu ali v trenutne dejavni sestavitvi (če je dejavna). Omejitev na eno sestavitev na datoteko.</translation>
     </message>
   </context>
   <context>
@@ -19,17 +19,17 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="68"/>
       <source>Create a Fixed Joint</source>
-      <translation type="unfinished">Create a Fixed Joint</translation>
+      <translation>Ustvari togi spoj</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="75"/>
       <source>1 - If an assembly is active : Create a joint permanently locking two parts together, preventing any movement or rotation.</source>
-      <translation type="unfinished">1 - If an assembly is active : Create a joint permanently locking two parts together, preventing any movement or rotation.</translation>
+      <translation>1 - Če je sestavljanje dejavno ustvari spoj, ki trajno zduži dva dela skupaj tako, da je onemogočeno vsakršno premikanje ali sukanje.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="81"/>
       <source>2 - If a part is active : Position sub parts by matching selected coordinate systems. The second part selected will move.</source>
-      <translation type="unfinished">2 - If a part is active : Position sub parts by matching selected coordinate systems. The second part selected will move.</translation>
+      <translation>2 - Če je dejaven del: umesti poddele z ujemajočim izbranimi koordinatnimi sistemi. Del, ki bo drugi izbran, se bo premikal.</translation>
     </message>
   </context>
   <context>
@@ -37,12 +37,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="103"/>
       <source>Create Revolute Joint</source>
-      <translation type="unfinished">Create Revolute Joint</translation>
+      <translation>Ustvari vrtljivi spoj</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="110"/>
       <source>Create a Revolute Joint: Allows rotation around a single axis between selected parts.</source>
-      <translation type="unfinished">Create a Revolute Joint: Allows rotation around a single axis between selected parts.</translation>
+      <translation>Ustvari vrtljivi spoj: dopušča sukanje izbranih delov okoli ene osi.</translation>
     </message>
   </context>
   <context>
@@ -50,12 +50,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="131"/>
       <source>Create Cylindrical Joint</source>
-      <translation type="unfinished">Create Cylindrical Joint</translation>
+      <translation>Ustvari valjčni spoj</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="138"/>
       <source>Create a Cylindrical Joint: Enables rotation along one axis while permitting movement along the same axis between assembled parts.</source>
-      <translation type="unfinished">Create a Cylindrical Joint: Enables rotation along one axis while permitting movement along the same axis between assembled parts.</translation>
+      <translation>Ustvari valjčni spoj: omogoča sukanje izbranih delov okoli ene osi in dovoljuje njihovo premikanje vzdolž iste osi.</translation>
     </message>
   </context>
   <context>
@@ -63,12 +63,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="157"/>
       <source>Create Slider Joint</source>
-      <translation type="unfinished">Create Slider Joint</translation>
+      <translation>Ustvari drsni spoj</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="164"/>
       <source>Create a Slider Joint: Allows linear movement along a single axis but restricts rotation between selected parts.</source>
-      <translation type="unfinished">Create a Slider Joint: Allows linear movement along a single axis but restricts rotation between selected parts.</translation>
+      <translation>Ustvari drsni spoj: dopušča premo gibanje med izbranimi deli vzdolž ene osi brez sukanja.</translation>
     </message>
   </context>
   <context>
@@ -76,12 +76,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="183"/>
       <source>Create Ball Joint</source>
-      <translation type="unfinished">Create Ball Joint</translation>
+      <translation>Ustvari kroglični zglob</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="190"/>
       <source>Create a Ball Joint: Connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact.</source>
-      <translation type="unfinished">Create a Ball Joint: Connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact.</translation>
+      <translation>Ustvari kroglični zglob: v eni točki združeni deli z neomejenim gibanjem pod pogojem, da se ohranja stična točka.</translation>
     </message>
   </context>
   <context>
@@ -89,12 +89,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="209"/>
       <source>Create Distance Joint</source>
-      <translation type="unfinished">Create Distance Joint</translation>
+      <translation>Ustvari odmični spoj</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="216"/>
       <source>Create a Distance Joint: Fix the distance between the selected objects.</source>
-      <translation type="unfinished">Create a Distance Joint: Fix the distance between the selected objects.</translation>
+      <translation>Ustvari odmični spoj: določi nespremenljiv odmik med izbranimi predmeti.</translation>
     </message>
   </context>
   <context>
@@ -102,12 +102,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="250"/>
       <source>Toggle grounded</source>
-      <translation type="unfinished">Toggle grounded</translation>
+      <translation>Preklopi usidranje</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="257"/>
       <source>Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
-      <translation type="unfinished">Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</translation>
+      <translation>Z usidranjem se trajno zaklene položaj dela v sestavu in onemogoči njegovo premikanje oz. sukanje. Pred pričetkom sestavljanja mora biti vsaj en del usidran.</translation>
     </message>
   </context>
   <context>
@@ -115,12 +115,12 @@
     <message>
       <location filename="../../../CommandExportASMT.py" line="47"/>
       <source>Export ASMT File</source>
-      <translation type="unfinished">Export ASMT File</translation>
+      <translation>Izvozi datoteko ASMT</translation>
     </message>
     <message>
       <location filename="../../../CommandExportASMT.py" line="52"/>
       <source>Export currently active assembly as a ASMT file.</source>
-      <translation type="unfinished">Export currently active assembly as a ASMT file.</translation>
+      <translation>Izvozi trenutno dejaven sestav kot datoteko ASMT.</translation>
     </message>
   </context>
   <context>
@@ -128,27 +128,27 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="52"/>
       <source>Insert Link</source>
-      <translation type="unfinished">Insert Link</translation>
+      <translation>Vstavi povezavo</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="59"/>
       <source>Insert a Link into the currently active assembly. This will create dynamic links to parts/bodies/primitives/assemblies. To insert external objects, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;</source>
-      <translation type="unfinished">Insert a Link into the currently active assembly. This will create dynamic links to parts/bodies/primitives/assemblies. To insert external objects, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;</translation>
+      <translation>Vstavi povezavo v trenutno dejavni sestav. S tem naredite dinamične povezave do delov/teles/osnovnikov/sestavov. Če želite vstaviti predmete, preverite, da je datoteka &lt;b&gt;odprta v trenutni seji&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="61"/>
       <source>Insert by left clicking items in the list.</source>
-      <translation type="unfinished">Insert by left clicking items in the list.</translation>
+      <translation>Vstavite z levim klikom na predmete s seznama.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="65"/>
       <source>Remove by right clicking items in the list.</source>
-      <translation type="unfinished">Remove by right clicking items in the list.</translation>
+      <translation>Odstranite z desnim klikom na predmete s seznama.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="70"/>
       <source>Press shift to add several links while clicking on the view.</source>
-      <translation type="unfinished">Press shift to add several links while clicking on the view.</translation>
+      <translation>Če želite dodati več povezav, med klikanjem na pogled držite PREMAKNI.</translation>
     </message>
   </context>
   <context>
@@ -182,12 +182,12 @@
     <message>
       <location filename="../../../InitGui.py" line="99"/>
       <source>Assembly Joints</source>
-      <translation type="unfinished">Assembly Joints</translation>
+      <translation>Spoji pri sestavljanju</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="102"/>
       <source>&amp;Assembly</source>
-      <translation type="unfinished">&amp;Assembly</translation>
+      <translation>&amp;Sestavitev (Assembly)</translation>
     </message>
   </context>
   <context>
@@ -200,22 +200,22 @@
     <message>
       <location filename="../../../JointObject.py" line="49"/>
       <source>Revolute</source>
-      <translation type="unfinished">Revolute</translation>
+      <translation>Vrtljivi</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="50"/>
       <source>Cylindrical</source>
-      <translation type="unfinished">Cylindrical</translation>
+      <translation>Valjčni</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
       <source>Slider</source>
-      <translation type="unfinished">Slider</translation>
+      <translation>Drsni</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="52"/>
       <source>Ball</source>
-      <translation type="unfinished">Ball</translation>
+      <translation>Krogelni</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="53"/>
@@ -243,17 +243,17 @@
     <message>
       <location filename="../../../JointObject.py" line="116"/>
       <source>The type of the joint</source>
-      <translation type="unfinished">The type of the joint</translation>
+      <translation>Vrsta spoja/zgloba</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="126"/>
       <source>The first object of the joint</source>
-      <translation type="unfinished">The first object of the joint</translation>
+      <translation>Prvi predmet za spajanje</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="133"/>
       <source>The first part of the joint</source>
-      <translation type="unfinished">The first part of the joint</translation>
+      <translation>Prvi del za spajanje</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="140"/>
@@ -374,7 +374,7 @@
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="14"/>
       <source>Insert Link</source>
-      <translation type="unfinished">Insert Link</translation>
+      <translation>Vstavi povezavo</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="20"/>

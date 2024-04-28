@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Approximate B-spline surface...</source>
-      <translation>Približek B-spline ploskve...</translation>
+      <translation>Približek B-zlepkovemu površju ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Approximate a B-spline surface</source>
-      <translation>Približek B-spline ploskve</translation>
+      <translation>Približek B-zlepkovemu površju</translation>
     </message>
   </context>
   <context>
@@ -647,32 +647,32 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="111"/>
       <source>G2</source>
-      <translation type="unfinished">G2</translation>
+      <translation>G2</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="116"/>
       <source>C2</source>
-      <translation type="unfinished">C2</translation>
+      <translation>C2</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="121"/>
       <source>C3</source>
-      <translation type="unfinished">C3</translation>
+      <translation>C3</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="126"/>
       <source>CN</source>
-      <translation type="unfinished">CN</translation>
+      <translation>CN</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="134"/>
       <source>Minimum degree</source>
-      <translation type="unfinished">Minimum degree</translation>
+      <translation>Najmanjša stopnja</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="141"/>
       <source>Closed curve</source>
-      <translation type="unfinished">Closed curve</translation>
+      <translation>Sklenjena krivulja</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="151"/>
@@ -682,12 +682,12 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="160"/>
       <source>Torsion</source>
-      <translation type="unfinished">Torsion</translation>
+      <translation>Zvoj</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="167"/>
       <source>Curve length</source>
-      <translation type="unfinished">Curve length</translation>
+      <translation>Dolžina krivulje</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="174"/>
@@ -705,12 +705,12 @@
     <message>
       <location filename="../../Command.cpp" line="70"/>
       <source>Approximate B-spline curve...</source>
-      <translation type="unfinished">Approximate B-spline curve...</translation>
+      <translation>Približek b-zlepkovi krivulji …</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="71"/>
       <source>Approximate a B-spline curve</source>
-      <translation type="unfinished">Approximate a B-spline curve</translation>
+      <translation>Približek b-zlepkovi krivulji</translation>
     </message>
   </context>
   <context>

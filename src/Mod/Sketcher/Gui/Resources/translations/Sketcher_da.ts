@@ -1511,7 +1511,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="1045"/>
       <source>View section</source>
-      <translation type="unfinished">View section</translation>
+      <translation>Vis tværsnit</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1046"/>
@@ -1524,7 +1524,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="751"/>
       <source>View sketch</source>
-      <translation type="unfinished">View sketch</translation>
+      <translation>Vis skitse</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="752"/>
@@ -1993,7 +1993,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Opret runding</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="150"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="171"/>
       <source>Trim edge</source>
       <translation>Afkort linje</translation>
     </message>
@@ -2233,59 +2233,59 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying equality constraints.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2346"/>
+      <location filename="../../../App/SketchObject.cpp" line="2366"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Kan ikke beregne skæringspunktet mellem kurverne. Prøv at tilføje en sammenfaldende relation mellem knudepunkterne for de kanter, du har til hensigt at afrunde.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6545"/>
-      <location filename="../../../App/SketchObject.cpp" line="6753"/>
+      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6773"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation type="unfinished">BSpline Geometry Index (GeoID) is out of bounds.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6550"/>
+      <location filename="../../../App/SketchObject.cpp" line="6570"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation type="unfinished">You are requesting no change in knot multiplicity.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6556"/>
-      <location filename="../../../App/SketchObject.cpp" line="6763"/>
+      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6783"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline curve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6565"/>
+      <location filename="../../../App/SketchObject.cpp" line="6585"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation type="unfinished">The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6576"/>
+      <location filename="../../../App/SketchObject.cpp" line="6596"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation type="unfinished">The multiplicity cannot be increased beyond the degree of the B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6584"/>
+      <location filename="../../../App/SketchObject.cpp" line="6604"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation type="unfinished">The multiplicity cannot be decreased beyond zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6598"/>
+      <location filename="../../../App/SketchObject.cpp" line="6618"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation type="unfinished">OCC is unable to decrease the multiplicity within the maximum tolerance.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6757"/>
+      <location filename="../../../App/SketchObject.cpp" line="6777"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation type="unfinished">Knot cannot have zero multiplicity.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6774"/>
+      <location filename="../../../App/SketchObject.cpp" line="6794"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6780"/>
+      <location filename="../../../App/SketchObject.cpp" line="6800"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation type="unfinished">Knot cannot be inserted outside the BSpline parameter range.</translation>
     </message>
@@ -2513,7 +2513,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <source>Wrong selection</source>
-      <translation>Forkert valg</translation>
+      <translation type="unfinished">Wrong selection</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="168"/>
@@ -3546,7 +3546,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../EditDatumDialog.cpp" line="98"/>
       <source>Insert angle</source>
-      <translation type="unfinished">Insert angle</translation>
+      <translation>Indtast vinkel</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="100"/>
@@ -3556,27 +3556,27 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../EditDatumDialog.cpp" line="105"/>
       <source>Insert radius</source>
-      <translation type="unfinished">Insert radius</translation>
+      <translation>Indtast radius</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="107"/>
       <source>Radius:</source>
-      <translation type="unfinished">Radius:</translation>
+      <translation>Radius:</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="112"/>
       <source>Insert diameter</source>
-      <translation type="unfinished">Insert diameter</translation>
+      <translation>Indtast diameter</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="114"/>
       <source>Diameter:</source>
-      <translation type="unfinished">Diameter:</translation>
+      <translation>Diameter:</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="119"/>
       <source>Insert weight</source>
-      <translation type="unfinished">Insert weight</translation>
+      <translation>Indsæt vægt</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="120"/>
@@ -3598,7 +3598,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../EditDatumDialog.cpp" line="132"/>
       <source>Insert length</source>
-      <translation type="unfinished">Insert length</translation>
+      <translation>Indsæt længde</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="134"/>
@@ -3794,7 +3794,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="82"/>
       <source>Select Origin</source>
-      <translation type="unfinished">Select Origin</translation>
+      <translation>Vælg origo</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="83"/>
@@ -3829,7 +3829,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="784"/>
       <source>Delete</source>
-      <translation>Slette</translation>
+      <translation>Slet</translation>
     </message>
   </context>
   <context>
@@ -6035,17 +6035,17 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="402"/>
+      <location filename="../../../App/SketchObject.cpp" line="422"/>
       <source>The Sketch has malformed constraints!</source>
       <translation type="unfinished">The Sketch has malformed constraints!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="408"/>
+      <location filename="../../../App/SketchObject.cpp" line="428"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Skitsen indeholder delvist overflødige relationer!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9232"/>
+      <location filename="../../../App/SketchObject.cpp" line="9252"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
@@ -6085,7 +6085,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="182"/>
       <source>Error</source>
       <translation>Fejl</translation>
     </message>
@@ -6103,7 +6103,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <location filename="../../CommandSketcherTools.cpp" line="133"/>
       <location filename="../../CommandSketcherTools.cpp" line="2371"/>
       <source>Invalid selection</source>
-      <translation type="unfinished">Invalid selection</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="134"/>
@@ -6269,7 +6269,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
       <translation>Kunne ikke tilføje linje</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="162"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="183"/>
       <source>Failed to trim edge</source>
       <translation>Kunne ikke trimme linje</translation>
     </message>
@@ -6484,7 +6484,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="2667"/>
       <source>Dimension</source>
-      <translation>Dimension</translation>
+      <translation>Hold dimension</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2668"/>
@@ -6514,7 +6514,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandConstraints.cpp" line="1204"/>
       <source>Dimension</source>
-      <translation>Hold dimension</translation>
+      <translation>Dimension</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1205"/>

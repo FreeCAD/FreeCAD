@@ -6,12 +6,12 @@
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="48"/>
       <source>Create Assembly</source>
-      <translation type="unfinished">Create Assembly</translation>
+      <translation>Crear Ensamblaje</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="53"/>
       <source>Create an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</source>
-      <translation type="unfinished">Create an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</translation>
+      <translation>Cree un objeto de ensamblaje en el documento actual, o en el ensamblaje activo (si lo hay). Límite de un ensamblaje raíz por archivo.</translation>
     </message>
   </context>
   <context>
@@ -19,17 +19,17 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="68"/>
       <source>Create a Fixed Joint</source>
-      <translation type="unfinished">Create a Fixed Joint</translation>
+      <translation>Crear una articulación fija</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="75"/>
       <source>1 - If an assembly is active : Create a joint permanently locking two parts together, preventing any movement or rotation.</source>
-      <translation type="unfinished">1 - If an assembly is active : Create a joint permanently locking two parts together, preventing any movement or rotation.</translation>
+      <translation>1 - Si un ensamblaje está activo: Crea una articulación bloqueando permanentemente dos partes juntas, evitando cualquier movimiento o rotación.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="81"/>
       <source>2 - If a part is active : Position sub parts by matching selected coordinate systems. The second part selected will move.</source>
-      <translation type="unfinished">2 - If a part is active : Position sub parts by matching selected coordinate systems. The second part selected will move.</translation>
+      <translation>2 - Si una parte está activa: Coloca las sub partes coincidiendo los sistemas de coordenadas seleccionados. La segunda parte seleccionada se moverá.</translation>
     </message>
   </context>
   <context>
@@ -37,12 +37,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="103"/>
       <source>Create Revolute Joint</source>
-      <translation type="unfinished">Create Revolute Joint</translation>
+      <translation>Crear articulación de revoluta</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="110"/>
       <source>Create a Revolute Joint: Allows rotation around a single axis between selected parts.</source>
-      <translation type="unfinished">Create a Revolute Joint: Allows rotation around a single axis between selected parts.</translation>
+      <translation>Crea una articulación de revoluta: Permite la rotación alrededor de un solo eje entre las partes seleccionadas.</translation>
     </message>
   </context>
   <context>
@@ -50,12 +50,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="131"/>
       <source>Create Cylindrical Joint</source>
-      <translation type="unfinished">Create Cylindrical Joint</translation>
+      <translation>Crear articulación cilíndrica</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="138"/>
       <source>Create a Cylindrical Joint: Enables rotation along one axis while permitting movement along the same axis between assembled parts.</source>
-      <translation type="unfinished">Create a Cylindrical Joint: Enables rotation along one axis while permitting movement along the same axis between assembled parts.</translation>
+      <translation>Crea una articulación cilíndrica: Permite la rotación a lo largo de un eje permitiendo el movimiento a lo largo del mismo eje entre las partes ensambladas.</translation>
     </message>
   </context>
   <context>
@@ -63,12 +63,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="157"/>
       <source>Create Slider Joint</source>
-      <translation type="unfinished">Create Slider Joint</translation>
+      <translation>Crear articulación deslizante</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="164"/>
       <source>Create a Slider Joint: Allows linear movement along a single axis but restricts rotation between selected parts.</source>
-      <translation type="unfinished">Create a Slider Joint: Allows linear movement along a single axis but restricts rotation between selected parts.</translation>
+      <translation>Crea una articulación deslizante: Permite el movimiento lineal a lo largo de un solo eje pero restringe la rotación entre las partes seleccionadas.</translation>
     </message>
   </context>
   <context>
@@ -89,7 +89,7 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="209"/>
       <source>Create Distance Joint</source>
-      <translation type="unfinished">Create Distance Joint</translation>
+      <translation>Crear articulación de distancia</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="216"/>
@@ -115,7 +115,7 @@
     <message>
       <location filename="../../../CommandExportASMT.py" line="47"/>
       <source>Export ASMT File</source>
-      <translation type="unfinished">Export ASMT File</translation>
+      <translation>Exportar archivo ASMT</translation>
     </message>
     <message>
       <location filename="../../../CommandExportASMT.py" line="52"/>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="51"/>
       <source>Solve Assembly</source>
-      <translation type="unfinished">Solve Assembly</translation>
+      <translation>Resolver Ensamblaje</translation>
     </message>
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="58"/>
@@ -182,12 +182,12 @@
     <message>
       <location filename="../../../InitGui.py" line="99"/>
       <source>Assembly Joints</source>
-      <translation type="unfinished">Assembly Joints</translation>
+      <translation>Articulaciones del ensamblaje</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="102"/>
       <source>&amp;Assembly</source>
-      <translation type="unfinished">&amp;Assembly</translation>
+      <translation>&amp;Ensamblaje</translation>
     </message>
   </context>
   <context>
@@ -200,17 +200,17 @@
     <message>
       <location filename="../../../JointObject.py" line="49"/>
       <source>Revolute</source>
-      <translation type="unfinished">Revolute</translation>
+      <translation>Revoluta</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="50"/>
       <source>Cylindrical</source>
-      <translation type="unfinished">Cylindrical</translation>
+      <translation>Clíndrica</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
       <source>Slider</source>
-      <translation type="unfinished">Slider</translation>
+      <translation>Deslizante</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="52"/>
@@ -243,92 +243,92 @@
     <message>
       <location filename="../../../JointObject.py" line="116"/>
       <source>The type of the joint</source>
-      <translation type="unfinished">The type of the joint</translation>
+      <translation>El tipo de articulación</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="126"/>
       <source>The first object of the joint</source>
-      <translation type="unfinished">The first object of the joint</translation>
+      <translation>El primer objeto de la articulación</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="133"/>
       <source>The first part of the joint</source>
-      <translation type="unfinished">The first part of the joint</translation>
+      <translation>La primera parte de la articulación</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="140"/>
       <source>The selected element of the first object</source>
-      <translation type="unfinished">The selected element of the first object</translation>
+      <translation>El elemento seleccionado del primer objeto</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="147"/>
       <source>The selected vertex of the first object</source>
-      <translation type="unfinished">The selected vertex of the first object</translation>
+      <translation>El vértice seleccionado del primer objeto</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="157"/>
       <source>This is the local coordinate system within object1 that will be used for the joint.</source>
-      <translation type="unfinished">This is the local coordinate system within object1 that will be used for the joint.</translation>
+      <translation>Este es el sistema de coordenadas local dentro del objeto 1 que se usará para la articulación.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="167"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
-      <translation type="unfinished">This prevents Placement1 from recomputing, enabling custom positioning of the placement.</translation>
+      <translation>Esto evita recalcular Placement1 habilitando el posicionamiento personalizado de la ubicación.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="175"/>
       <source>The second object of the joint</source>
-      <translation type="unfinished">The second object of the joint</translation>
+      <translation>El segundo objeto de la articulación</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="182"/>
       <source>The second part of the joint</source>
-      <translation type="unfinished">The second part of the joint</translation>
+      <translation>La segunda parte de la articulación</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="189"/>
       <source>The selected element of the second object</source>
-      <translation type="unfinished">The selected element of the second object</translation>
+      <translation>El elemento seleccionado del segundo objeto</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="196"/>
       <source>The selected vertex of the second object</source>
-      <translation type="unfinished">The selected vertex of the second object</translation>
+      <translation>El vértice seleccionado del segundo objeto</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="206"/>
       <source>This is the local coordinate system within object2 that will be used for the joint.</source>
-      <translation type="unfinished">This is the local coordinate system within object2 that will be used for the joint.</translation>
+      <translation>Este es el sistema de coordenadas local dentro del objeto 2 que se usará para la articulación.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="216"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement.</source>
-      <translation type="unfinished">This prevents Placement2 from recomputing, enabling custom positioning of the placement.</translation>
+      <translation>Esto evita recalcular Placement2 habilitando el posicionamiento personalizado de la ubicación.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="226"/>
       <source>This is the distance of the joint. It is used only by the distance joint.</source>
-      <translation type="unfinished">This is the distance of the joint. It is used only by the distance joint.</translation>
+      <translation>Esta es la distancia de la articulación. Es utilizada solamente por la articulación de distancia.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="236"/>
       <source>This is the rotation of the joint.</source>
-      <translation type="unfinished">This is the rotation of the joint.</translation>
+      <translation>Esta es la rotación de la articulación.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="246"/>
       <source>This is the offset vector of the joint.</source>
-      <translation type="unfinished">This is the offset vector of the joint.</translation>
+      <translation>Este es el vector de desplazamiento de la articulación.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="256"/>
       <source>This indicates if the joint is active.</source>
-      <translation type="unfinished">This indicates if the joint is active.</translation>
+      <translation>Esto indica si la articulación está activa.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="889"/>
       <source>The object to ground</source>
-      <translation type="unfinished">The object to ground</translation>
+      <translation>El objeto a fijar</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="901"/>
@@ -341,7 +341,7 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="14"/>
       <source>Create Joint</source>
-      <translation type="unfinished">Create Joint</translation>
+      <translation>Crear Articulación</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="28"/>
@@ -379,12 +379,12 @@
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="20"/>
       <source>Search parts...</source>
-      <translation type="unfinished">Search parts...</translation>
+      <translation>Buscar partes...</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="32"/>
       <source>Don't find your part? </source>
-      <translation type="unfinished">Don't find your part? </translation>
+      <translation>¿No encuentra su parte? </translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
@@ -394,12 +394,12 @@
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="48"/>
       <source>If checked, the selected object will be inserted inside a Part container, unless it is already a Part.</source>
-      <translation type="unfinished">If checked, the selected object will be inserted inside a Part container, unless it is already a Part.</translation>
+      <translation>Si está marcado, el objeto seleccionado se insertará dentro del contenedor Parte, a menos que ya sea una Parte.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="51"/>
       <source>Insert as part</source>
-      <translation type="unfinished">Insert as part</translation>
+      <translation>Insertar como parte</translation>
     </message>
   </context>
   <context>
@@ -412,17 +412,17 @@
     <message>
       <location filename="../preferences/Assembly.ui" line="20"/>
       <source>Allow to leave edit mode when pressing Esc button</source>
-      <translation type="unfinished">Allow to leave edit mode when pressing Esc button</translation>
+      <translation>Permitir dejar el modo de edición al presionar el botón Esc</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
       <source>Esc leave edit mode</source>
-      <translation type="unfinished">Esc leave edit mode</translation>
+      <translation>Esc permite salir del modo de edición</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>
       <source>Ground first part:</source>
-      <translation type="unfinished">Ground first part:</translation>
+      <translation>Bloquear primer parte:</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="46"/>
@@ -450,7 +450,7 @@
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="651"/>
       <source>Move part</source>
-      <translation type="unfinished">Move part</translation>
+      <translation>Mover parte</translation>
     </message>
   </context>
 </TS>

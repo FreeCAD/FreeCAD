@@ -6,12 +6,12 @@
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="48"/>
       <source>Create Assembly</source>
-      <translation type="unfinished">Create Assembly</translation>
+      <translation>Créer un assemblage</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="53"/>
       <source>Create an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</source>
-      <translation type="unfinished">Create an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</translation>
+      <translation>Créer un objet d'assemblage dans le document courant, ou dans l'assemblage actif courant (s'il y en a un). Limiter à un assemblage racine par fichier.</translation>
     </message>
   </context>
   <context>
@@ -19,17 +19,17 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="68"/>
       <source>Create a Fixed Joint</source>
-      <translation type="unfinished">Create a Fixed Joint</translation>
+      <translation>Créer une liaison fixe</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="75"/>
       <source>1 - If an assembly is active : Create a joint permanently locking two parts together, preventing any movement or rotation.</source>
-      <translation type="unfinished">1 - If an assembly is active : Create a joint permanently locking two parts together, preventing any movement or rotation.</translation>
+      <translation>1 - Si un assemblage est actif : créer une liaison bloquant définitivement deux pièces ensemble, empêchant tout mouvement ou rotation.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="81"/>
       <source>2 - If a part is active : Position sub parts by matching selected coordinate systems. The second part selected will move.</source>
-      <translation type="unfinished">2 - If a part is active : Position sub parts by matching selected coordinate systems. The second part selected will move.</translation>
+      <translation>2 - Si une pièce est active : positionner les sous-pièces en faisant correspondre les systèmes de coordonnées sélectionnés. La deuxième pièce sélectionnée se déplacera.</translation>
     </message>
   </context>
   <context>
@@ -37,12 +37,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="103"/>
       <source>Create Revolute Joint</source>
-      <translation type="unfinished">Create Revolute Joint</translation>
+      <translation>Créer une liaison pivot</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="110"/>
       <source>Create a Revolute Joint: Allows rotation around a single axis between selected parts.</source>
-      <translation type="unfinished">Create a Revolute Joint: Allows rotation around a single axis between selected parts.</translation>
+      <translation>Créer une liaison pivot : permettre la rotation autour d'un seul axe entre les pièces sélectionnées.</translation>
     </message>
   </context>
   <context>
@@ -50,12 +50,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="131"/>
       <source>Create Cylindrical Joint</source>
-      <translation type="unfinished">Create Cylindrical Joint</translation>
+      <translation>Créer une liaison pivot glissant</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="138"/>
       <source>Create a Cylindrical Joint: Enables rotation along one axis while permitting movement along the same axis between assembled parts.</source>
-      <translation type="unfinished">Create a Cylindrical Joint: Enables rotation along one axis while permitting movement along the same axis between assembled parts.</translation>
+      <translation>Créer une liaison pivot glissant : permettre la rotation sur un axe tout en permettant le mouvement le long du même axe entre les parties assemblées.</translation>
     </message>
   </context>
   <context>
@@ -63,12 +63,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="157"/>
       <source>Create Slider Joint</source>
-      <translation type="unfinished">Create Slider Joint</translation>
+      <translation>Créer une liaison glissière</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="164"/>
       <source>Create a Slider Joint: Allows linear movement along a single axis but restricts rotation between selected parts.</source>
-      <translation type="unfinished">Create a Slider Joint: Allows linear movement along a single axis but restricts rotation between selected parts.</translation>
+      <translation>Créer une liaison glissière : permettre un mouvement linéaire le long d'un seul axe, mais limite la rotation entre les pièces sélectionnées.</translation>
     </message>
   </context>
   <context>
@@ -76,12 +76,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="183"/>
       <source>Create Ball Joint</source>
-      <translation type="unfinished">Create Ball Joint</translation>
+      <translation>Créer une liaison bille</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="190"/>
       <source>Create a Ball Joint: Connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact.</source>
-      <translation type="unfinished">Create a Ball Joint: Connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact.</translation>
+      <translation>Créer une liaison bille : relier des pièces en un point, ce qui permet un mouvement illimité tant que les points de connexion restent en contact.</translation>
     </message>
   </context>
   <context>
@@ -89,12 +89,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="209"/>
       <source>Create Distance Joint</source>
-      <translation type="unfinished">Create Distance Joint</translation>
+      <translation>Créer une liaison distance</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="216"/>
       <source>Create a Distance Joint: Fix the distance between the selected objects.</source>
-      <translation type="unfinished">Create a Distance Joint: Fix the distance between the selected objects.</translation>
+      <translation>Créer une liaison distance : fixer la distance entre les objets sélectionnés.</translation>
     </message>
   </context>
   <context>
@@ -102,12 +102,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="250"/>
       <source>Toggle grounded</source>
-      <translation type="unfinished">Toggle grounded</translation>
+      <translation>Activer/désactiver le blocage</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="257"/>
       <source>Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
-      <translation type="unfinished">Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</translation>
+      <translation>Le blocage d'une pièce bloque sa position dans l'assemblage de façon permanente, empêchant tout mouvement ou rotation. Vous devez avoir au moins une pièce bloquée avant de commencer à assembler.</translation>
     </message>
   </context>
   <context>
@@ -115,12 +115,12 @@
     <message>
       <location filename="../../../CommandExportASMT.py" line="47"/>
       <source>Export ASMT File</source>
-      <translation type="unfinished">Export ASMT File</translation>
+      <translation>Exporter un fichier ASMT</translation>
     </message>
     <message>
       <location filename="../../../CommandExportASMT.py" line="52"/>
       <source>Export currently active assembly as a ASMT file.</source>
-      <translation type="unfinished">Export currently active assembly as a ASMT file.</translation>
+      <translation>Exporter l'assemblage en cours dans un fichier ASMT.</translation>
     </message>
   </context>
   <context>
@@ -128,27 +128,27 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="52"/>
       <source>Insert Link</source>
-      <translation type="unfinished">Insert Link</translation>
+      <translation>Insérer un lien</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="59"/>
       <source>Insert a Link into the currently active assembly. This will create dynamic links to parts/bodies/primitives/assemblies. To insert external objects, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;</source>
-      <translation type="unfinished">Insert a Link into the currently active assembly. This will create dynamic links to parts/bodies/primitives/assemblies. To insert external objects, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;</translation>
+      <translation>Insérer un lien dans l'assemblage actif. Cela créera des liens dynamiques vers les pièces/corps/primitives/assemblages. Pour insérer des objets externes, assurez-vous que le fichier est &lt;b&gt;ouvert dans la session en cours&lt;/b&gt;.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="61"/>
       <source>Insert by left clicking items in the list.</source>
-      <translation type="unfinished">Insert by left clicking items in the list.</translation>
+      <translation>Insérer par un clic gauche des éléments de la liste.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="65"/>
       <source>Remove by right clicking items in the list.</source>
-      <translation type="unfinished">Remove by right clicking items in the list.</translation>
+      <translation>Supprimer par un clic droit des éléments de la liste.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="70"/>
       <source>Press shift to add several links while clicking on the view.</source>
-      <translation type="unfinished">Press shift to add several links while clicking on the view.</translation>
+      <translation>Appuyer sur Maj pour ajouter plusieurs liens en cliquant sur la vue.</translation>
     </message>
   </context>
   <context>
@@ -156,12 +156,12 @@
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="51"/>
       <source>Solve Assembly</source>
-      <translation type="unfinished">Solve Assembly</translation>
+      <translation>Résoudre l'assemblage</translation>
     </message>
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="58"/>
       <source>Solve the currently active assembly.</source>
-      <translation type="unfinished">Solve the currently active assembly.</translation>
+      <translation>Résoudre l'assemblage actif.</translation>
     </message>
   </context>
   <context>
@@ -182,12 +182,12 @@
     <message>
       <location filename="../../../InitGui.py" line="99"/>
       <source>Assembly Joints</source>
-      <translation type="unfinished">Assembly Joints</translation>
+      <translation>Liaisons d'assemblage</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="102"/>
       <source>&amp;Assembly</source>
-      <translation type="unfinished">&amp;Assembly</translation>
+      <translation>&amp;Assemblage</translation>
     </message>
   </context>
   <context>
@@ -200,22 +200,22 @@
     <message>
       <location filename="../../../JointObject.py" line="49"/>
       <source>Revolute</source>
-      <translation type="unfinished">Revolute</translation>
+      <translation>Pivot</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="50"/>
       <source>Cylindrical</source>
-      <translation type="unfinished">Cylindrical</translation>
+      <translation>Cylindrique</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
       <source>Slider</source>
-      <translation type="unfinished">Slider</translation>
+      <translation>Glissière</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="52"/>
       <source>Ball</source>
-      <translation type="unfinished">Ball</translation>
+      <translation>Bille</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="53"/>
@@ -243,97 +243,97 @@
     <message>
       <location filename="../../../JointObject.py" line="116"/>
       <source>The type of the joint</source>
-      <translation type="unfinished">The type of the joint</translation>
+      <translation>Le type de liaison</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="126"/>
       <source>The first object of the joint</source>
-      <translation type="unfinished">The first object of the joint</translation>
+      <translation>Le premier objet de la liaison</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="133"/>
       <source>The first part of the joint</source>
-      <translation type="unfinished">The first part of the joint</translation>
+      <translation>La première pièce de la liaison</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="140"/>
       <source>The selected element of the first object</source>
-      <translation type="unfinished">The selected element of the first object</translation>
+      <translation>L'élément sélectionné du premier objet</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="147"/>
       <source>The selected vertex of the first object</source>
-      <translation type="unfinished">The selected vertex of the first object</translation>
+      <translation>Le sommet sélectionné du premier objet</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="157"/>
       <source>This is the local coordinate system within object1 that will be used for the joint.</source>
-      <translation type="unfinished">This is the local coordinate system within object1 that will be used for the joint.</translation>
+      <translation>Il s'agit du système de coordonnées local de l'objet 1 qui sera utilisé pour la liaison.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="167"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
-      <translation type="unfinished">This prevents Placement1 from recomputing, enabling custom positioning of the placement.</translation>
+      <translation>Cela empêche Placement1 de recalculer, ce qui permet un positionnement personnalisé du placement.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="175"/>
       <source>The second object of the joint</source>
-      <translation type="unfinished">The second object of the joint</translation>
+      <translation>Le deuxième objet de la liaison</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="182"/>
       <source>The second part of the joint</source>
-      <translation type="unfinished">The second part of the joint</translation>
+      <translation>La seconde pièce de la liaison</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="189"/>
       <source>The selected element of the second object</source>
-      <translation type="unfinished">The selected element of the second object</translation>
+      <translation>L'élément sélectionné du second objet</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="196"/>
       <source>The selected vertex of the second object</source>
-      <translation type="unfinished">The selected vertex of the second object</translation>
+      <translation>Le sommet sélectionné du second objet</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="206"/>
       <source>This is the local coordinate system within object2 that will be used for the joint.</source>
-      <translation type="unfinished">This is the local coordinate system within object2 that will be used for the joint.</translation>
+      <translation>Il s'agit du système de coordonnées local de l'objet 2 qui sera utilisé pour la liaison.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="216"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement.</source>
-      <translation type="unfinished">This prevents Placement2 from recomputing, enabling custom positioning of the placement.</translation>
+      <translation>Cela empêche Placement2 de recalculer, ce qui permet un positionnement personnalisé du placement.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="226"/>
       <source>This is the distance of the joint. It is used only by the distance joint.</source>
-      <translation type="unfinished">This is the distance of the joint. It is used only by the distance joint.</translation>
+      <translation>Il s'agit de la distance de la liaison. Elle n'est utilisée que par la liaison de distance.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="236"/>
       <source>This is the rotation of the joint.</source>
-      <translation type="unfinished">This is the rotation of the joint.</translation>
+      <translation>Il s'agit de la rotation de la liaison.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="246"/>
       <source>This is the offset vector of the joint.</source>
-      <translation type="unfinished">This is the offset vector of the joint.</translation>
+      <translation>Il s'agit du vecteur de décalage de la liaison.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="256"/>
       <source>This indicates if the joint is active.</source>
-      <translation type="unfinished">This indicates if the joint is active.</translation>
+      <translation>Ceci indique si la liaison est active.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="889"/>
       <source>The object to ground</source>
-      <translation type="unfinished">The object to ground</translation>
+      <translation>L'objet à bloquer</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="901"/>
       <source>This is where the part is grounded.</source>
-      <translation type="unfinished">This is where the part is grounded.</translation>
+      <translation>C'est là que la pièce est bloquée.</translation>
     </message>
   </context>
   <context>
@@ -341,7 +341,7 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="14"/>
       <source>Create Joint</source>
-      <translation type="unfinished">Create Joint</translation>
+      <translation>Créer une liaison</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="28"/>
@@ -361,7 +361,7 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="104"/>
       <source>Reverse the direction of the joint.</source>
-      <translation type="unfinished">Reverse the direction of the joint.</translation>
+      <translation>Inverser la direction de la liaison</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="107"/>
@@ -374,17 +374,17 @@
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="14"/>
       <source>Insert Link</source>
-      <translation type="unfinished">Insert Link</translation>
+      <translation>Insérer un lien</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="20"/>
       <source>Search parts...</source>
-      <translation type="unfinished">Search parts...</translation>
+      <translation>Rechercher des pièces...</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="32"/>
       <source>Don't find your part? </source>
-      <translation type="unfinished">Don't find your part? </translation>
+      <translation>Vous ne trouvez pas votre pièce ?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
@@ -394,12 +394,12 @@
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="48"/>
       <source>If checked, the selected object will be inserted inside a Part container, unless it is already a Part.</source>
-      <translation type="unfinished">If checked, the selected object will be inserted inside a Part container, unless it is already a Part.</translation>
+      <translation>Si cette case est cochée, l'objet sélectionné sera inséré dans un conteneur de Part, sauf s'il s'agit déjà d'un objet de type Part.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="51"/>
       <source>Insert as part</source>
-      <translation type="unfinished">Insert as part</translation>
+      <translation>Insérer en tant qu'objet de type Part</translation>
     </message>
   </context>
   <context>
@@ -412,22 +412,22 @@
     <message>
       <location filename="../preferences/Assembly.ui" line="20"/>
       <source>Allow to leave edit mode when pressing Esc button</source>
-      <translation type="unfinished">Allow to leave edit mode when pressing Esc button</translation>
+      <translation>Permettre de quitter le mode édition en appuyant sur la touche Échap</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
       <source>Esc leave edit mode</source>
-      <translation type="unfinished">Esc leave edit mode</translation>
+      <translation>La touche Échap permet de quitter le mode édition.</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>
       <source>Ground first part:</source>
-      <translation type="unfinished">Ground first part:</translation>
+      <translation>Bloquer d'abord une pièce :</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="46"/>
       <source>When you insert the first part in the assembly, you can choose to ground the part automatically.</source>
-      <translation type="unfinished">When you insert the first part in the assembly, you can choose to ground the part automatically.</translation>
+      <translation>Lorsque vous insérez la première pièce de l'assemblage, vous pouvez choisir de la bloquer automatiquement.</translation>
     </message>
   </context>
   <context>
@@ -435,22 +435,22 @@
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="136"/>
       <source>Delete associated joints</source>
-      <translation type="unfinished">Delete associated joints</translation>
+      <translation>Supprimer les liaisons associées</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="148"/>
       <source>The object is associated to one or more joints.</source>
-      <translation type="unfinished">The object is associated to one or more joints.</translation>
+      <translation>L'objet est associé à une ou plusieurs liaisons.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="150"/>
       <source>Do you want to move the object and delete associated joints?</source>
-      <translation type="unfinished">Do you want to move the object and delete associated joints?</translation>
+      <translation>Voulez-vous déplacer l'objet et supprimer les liaisons associées ?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="651"/>
       <source>Move part</source>
-      <translation type="unfinished">Move part</translation>
+      <translation>Déplacer une pièce</translation>
     </message>
   </context>
 </TS>

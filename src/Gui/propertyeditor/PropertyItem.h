@@ -90,13 +90,10 @@ class GuiExport PropertyItemFactory : public Base::Factory
 {
 public:
     static PropertyItemFactory& instance();
-    static void destruct ();
 
     PropertyItem* createPropertyItem (const char* sName) const;
 
 private:
-    static PropertyItemFactory* _singleton;
-
     PropertyItemFactory() = default;
     ~PropertyItemFactory() override = default;
 };
@@ -180,7 +177,7 @@ public:
     int childCount() const;
     int columnCount() const;
     QString propertyName() const;
-    void setPropertyName(QString name, QString realName=QString());
+    void setPropertyName(const QString& name, const QString& realName=QString());
     void setPropertyValue(const QString&);
     virtual QVariant data(int column, int role) const;
     bool setData (const QVariant& value);
@@ -203,6 +200,15 @@ protected:
 
     //gets called when the bound expression is changed
     void onChange() override;
+
+private:
+    QVariant dataProperty(int role) const;
+    QVariant dataValue(int role) const;
+    QString toString(const Py::Object&) const;
+    QString asNone(const Py::Object&) const;
+    QString asString(const Py::Object&) const;
+    QString asSequence(const Py::Object&) const;
+    QString asMapping(const Py::Object&) const;
 
 protected:
     QString propName;
@@ -809,7 +815,7 @@ class PlacementEditor : public Gui::LabelButton
     Q_OBJECT
 
 public:
-    explicit PlacementEditor(const QString& name, QWidget * parent = nullptr);
+    explicit PlacementEditor(QString name, QWidget * parent = nullptr);
     ~PlacementEditor() override;
 
 private Q_SLOTS:
@@ -882,7 +888,10 @@ class GuiExport PropertyEnumItem: public PropertyItem
     QVariant editorData(QWidget *editor) const override;
 
     QStringList getEnum() const;
-    void setEnum(QStringList);
+    void setEnum(const QStringList&);
+
+private:
+    QStringList getCommonModes() const;
 
 protected:
     QVariant value(const App::Property*) const override;

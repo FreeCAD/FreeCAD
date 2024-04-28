@@ -6,7 +6,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="654"/>
       <source>Add Centerline between 2 Lines</source>
-      <translation>Додати центрлінію між 2 лініями</translation>
+      <translation>Додати центральну лінію між 2 лініями</translation>
     </message>
   </context>
   <context>
@@ -14,7 +14,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="658"/>
       <source>Add Centerline between 2 Points</source>
-      <translation>Додати центрлінію між 2 точками</translation>
+      <translation>Додати центральну лінію між 2 точками</translation>
     </message>
   </context>
   <context>
@@ -22,7 +22,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="287"/>
       <source>Add Midpoint Vertices</source>
-      <translation type="unfinished">Add Midpoint Vertices</translation>
+      <translation>Додати центр вершини</translation>
     </message>
   </context>
   <context>
@@ -30,7 +30,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="291"/>
       <source>Add Quadrant Vertices</source>
-      <translation type="unfinished">Add Quadrant Vertices</translation>
+      <translation>Додати вершини квадранта</translation>
     </message>
   </context>
   <context>
@@ -38,12 +38,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="790"/>
       <source>TechDraw</source>
-      <translation>ТехМалюнок</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="791"/>
       <source>Add Centerline between 2 Lines</source>
-      <translation>Додати центрлінію між 2 лініями</translation>
+      <translation>Додати центральну лінію між 2 лініями</translation>
     </message>
   </context>
   <context>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="866"/>
       <source>Add Centerline between 2 Points</source>
-      <translation>Додати центрлінію між 2 точками</translation>
+      <translation>Додати центральну лінію між 2 точками</translation>
     </message>
   </context>
   <context>
@@ -69,7 +69,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="979"/>
       <source>Add Cosmetic Line Through 2 Points</source>
-      <translation type="unfinished">Add Cosmetic Line Through 2 Points</translation>
+      <translation>Додати допоміжну лінію через 2 точки</translation>
     </message>
   </context>
   <context>
@@ -134,12 +134,12 @@
     <message>
       <location filename="../../Command.cpp" line="1533"/>
       <source>Insert Arch Workbench Object</source>
-      <translation type="unfinished">Insert Arch Workbench Object</translation>
+      <translation>Вставити об'єкт з Arch Workbench</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1534"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
-      <translation type="unfinished">Insert a View of a Section Plane from Arch Workbench</translation>
+      <translation>Вставити вигляд площини перетину з Arch верстака</translation>
     </message>
   </context>
   <context>
@@ -152,7 +152,7 @@
     <message>
       <location filename="../../Command.cpp" line="1158"/>
       <source>Insert Balloon Annotation</source>
-      <translation type="unfinished">Insert Balloon Annotation</translation>
+      <translation>Вставити анотацію кулі</translation>
     </message>
   </context>
   <context>
@@ -165,12 +165,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="577"/>
       <source>Insert Center Line</source>
-      <translation type="unfinished">Insert Center Line</translation>
+      <translation>Вставити центральну лінію</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="650"/>
       <source>Add Centerline to Faces</source>
-      <translation type="unfinished">Add Centerline to Faces</translation>
+      <translation>Додати центральну лінію до поверхонь</translation>
     </message>
   </context>
   <context>
@@ -183,7 +183,7 @@
     <message>
       <location filename="../../Command.cpp" line="1222"/>
       <source>Insert Clip Group</source>
-      <translation type="unfinished">Insert Clip Group</translation>
+      <translation>Вставити групу видів</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="1259"/>
       <source>Add View to Clip Group</source>
-      <translation type="unfinished">Add View to Clip Group</translation>
+      <translation>Додати Вид до Групи видів</translation>
     </message>
   </context>
   <context>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="1343"/>
       <source>Remove View from Clip Group</source>
-      <translation type="unfinished">Remove View from Clip Group</translation>
+      <translation>Видалити Вид із Групи видів</translation>
     </message>
   </context>
   <context>
@@ -222,12 +222,12 @@
     <message>
       <location filename="../../Command.cpp" line="750"/>
       <source>Insert Complex Section</source>
-      <translation type="unfinished">Insert Complex Section</translation>
+      <translation>Вставити складний поділ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="751"/>
       <source>Insert a Complex Section</source>
-      <translation type="unfinished">Insert a Complex Section</translation>
+      <translation>Вставити складний поділ</translation>
     </message>
   </context>
   <context>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1284"/>
       <source>Remove Cosmetic Object</source>
-      <translation type="unfinished">Remove Cosmetic Object</translation>
+      <translation>Видалити допоміжний об'єкт</translation>
     </message>
   </context>
   <context>
@@ -253,7 +253,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="395"/>
       <source>Add Cosmetic Vertex</source>
-      <translation type="unfinished">Add Cosmetic Vertex</translation>
+      <translation>Додати допоміжну вершину</translation>
     </message>
   </context>
   <context>
@@ -266,12 +266,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="208"/>
       <source>Insert Cosmetic Vertex</source>
-      <translation type="unfinished">Insert Cosmetic Vertex</translation>
+      <translation>Вставити допоміжну вершину</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="283"/>
       <source>Add Cosmetic Vertex</source>
-      <translation type="unfinished">Add Cosmetic Vertex</translation>
+      <translation>Додати допоміжну вершину</translation>
     </message>
   </context>
   <context>
@@ -341,12 +341,12 @@
     <message>
       <location filename="../../Command.cpp" line="1469"/>
       <source>Insert Draft Workbench Object</source>
-      <translation type="unfinished">Insert Draft Workbench Object</translation>
+      <translation>Вставити об'єкт з Arch Workbench</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1470"/>
       <source>Insert a View of a Draft Workbench object</source>
-      <translation type="unfinished">Insert a View of a Draft Workbench object</translation>
+      <translation>Вставити Вид чернетки в об'єкт Workbench</translation>
     </message>
   </context>
   <context>
@@ -400,7 +400,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1634"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</translation>
+      <translation>Розширте допоміжну лінію або осьову лінію з обох кінців:&lt;br&gt;- Вкажіть дельта-відстань (необов'язково)&lt;br&gt;- Виберіть одну лінію&lt;br&gt;- Натисніть цей інструмент</translation>
     </message>
   </context>
   <context>
@@ -431,12 +431,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1151"/>
       <source>Cascade Horizontal Dimensions</source>
-      <translation type="unfinished">Cascade Horizontal Dimensions</translation>
+      <translation>Горизонтальні розміри каскаду</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1152"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Рівномірно розставити горизонтальні розміри:&lt;br&gt;- Вкажіть інтервал між каскадом (необов'язково)&lt;br&gt;- Виберіть два або більше горизонтальних розмірів&lt;br&gt;- Перший розмір визначає позицію&lt;br&gt;- Натисніть цей інструмент</translation>
     </message>
   </context>
   <context>
@@ -450,13 +450,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="973"/>
       <location filename="../../CommandExtensionDims.cpp" line="1227"/>
       <source>Cascade Horizontal Dimensions</source>
-      <translation type="unfinished">Cascade Horizontal Dimensions</translation>
+      <translation>Горизонтальні розміри каскаду</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="974"/>
       <location filename="../../CommandExtensionDims.cpp" line="1228"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Рівномірно розставити горизонтальні розміри:&lt;br&gt;- Вкажіть інтервал між каскадом (необов'язково)&lt;br&gt;- Виберіть два або більше горизонтальних розмірів&lt;br&gt;- Перший розмір визначає позицію&lt;br&gt;- Натисніть цей інструмент</translation>
     </message>
   </context>
   <context>
@@ -470,13 +470,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1115"/>
       <location filename="../../CommandExtensionDims.cpp" line="1245"/>
       <source>Cascade Oblique Dimensions</source>
-      <translation type="unfinished">Cascade Oblique Dimensions</translation>
+      <translation>Вирівняти Похилі Елементи</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1116"/>
       <location filename="../../CommandExtensionDims.cpp" line="1246"/>
       <source>Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Рівномірно розставте похилі елементи:&lt;br&gt;- Вкажіть відстань між каскадами (необов'язково)&lt;br&gt;- Виберіть два або більше паралельних похилих елементів&lt;br&gt;- Перший елемент визначає позицію&lt;br&gt;- Клацніть цей інструмент</translation>
     </message>
   </context>
   <context>
@@ -490,13 +490,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1040"/>
       <location filename="../../CommandExtensionDims.cpp" line="1236"/>
       <source>Cascade Vertical Dimensions</source>
-      <translation type="unfinished">Cascade Vertical Dimensions</translation>
+      <translation>Вирівняти Вертикальні Елементи</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1041"/>
       <location filename="../../CommandExtensionDims.cpp" line="1237"/>
       <source>Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</translation>
+      <translation>Рівномірно розмістити вертикальні розміри:&lt;br&gt;- Вкажіть каскадний інтервал (необов'язково)&lt;br&gt;- Оберіть два або більше вертикальних елементів&lt;br&gt;- Перший елемент визначає позицію&lt;br&gt;- Натисніть цей інструмент</translation>
     </message>
   </context>
   <context>
@@ -509,12 +509,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2124"/>
       <source>Create Horizontal Chamfer Dimension</source>
-      <translation type="unfinished">Create Horizontal Chamfer Dimension</translation>
+      <translation>Створити Горизонтальний Елемент Фаски</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2125"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Створіть горизонтальний розмір і кут для фаски:&lt;br&gt;- Виділіть дві вершини&lt;br&gt;- Натисніть цей інструмент</translation>
     </message>
   </context>
   <context>
@@ -527,12 +527,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="775"/>
       <source>Change Line Attributes</source>
-      <translation type="unfinished">Change Line Attributes</translation>
+      <translation>Замінити Атрибути Ліній</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="776"/>
       <source>Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</translation>
+      <translation>Змініть атрибути допоміжних та осьових ліній:&lt;br&gt;- Вкажіть атрибути лінії (необов'язково)&lt;br&gt;- Оберіть одну або декілька ліній&lt;br&gt;- Натисніть цей інструмент</translation>
     </message>
   </context>
   <context>
@@ -546,13 +546,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="253"/>
       <location filename="../../CommandExtensionPack.cpp" line="355"/>
       <source>Add Circle Centerlines</source>
-      <translation type="unfinished">Add Circle Centerlines</translation>
+      <translation>Додати Осьові Лінії Кола</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="254"/>
       <location filename="../../CommandExtensionPack.cpp" line="356"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</translation>
+      <translation>Додавання осьових ліній до кіл і дуг:&lt;br&gt;- Вкажіть атрибути лінії (необов'язково)&lt;br&gt;- Оберіть одне або кілька кіл чи дуг&lt;br&gt;- Натисніть цей інструмент</translation>
     </message>
   </context>
   <context>
@@ -565,12 +565,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="287"/>
       <source>Add Circle Centerlines</source>
-      <translation type="unfinished">Add Circle Centerlines</translation>
+      <translation>Додати Осьові Лінії Кола</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="288"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</translation>
+      <translation>Додавання осьових ліній до кіл і дуг:&lt;br&gt;- Вкажіть атрибути лінії (необов'язково)&lt;br&gt;- Оберіть одне або кілька кіл чи дуг&lt;br&gt;- Натисніть цей інструмент</translation>
     </message>
   </context>
   <context>
@@ -583,12 +583,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1500"/>
       <source>Create Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Create Horizontal Chain Dimensions</translation>
+      <translation>Створити Горизонтальні Ланцюги Елементів</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1501"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Створити послідовність вирівняних горизонтальних елементів:&lt;br&gt;- Виділіть три або більше вершин&lt;br&gt;- Натисніть цей інструмент</translation>
     </message>
   </context>
   <context>
@@ -601,12 +601,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1863"/>
       <source>Create Horizontal Coordinate Dimensions</source>
-      <translation type="unfinished">Create Horizontal Coordinate Dimensions</translation>
+      <translation>Створити Горизонтальних Лінійних Елементів</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1864"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</translation>
+      <translation>Створити декілька рівномірно розташованих горизонтальних розмірів, починаючи з однієї базової лінії:&lt;br&gt;- Вкажіть інтервал між каскадами (необов'язково)&lt;br&gt;- Оберіть три або більше вершин&lt;br&gt;- Порядок вибору перших двох вершин визначає положення базової лінії&lt;br&gt;- Клацніть цей інструмент</translation>
     </message>
   </context>
   <context>
@@ -620,13 +620,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1305"/>
       <location filename="../../CommandExtensionDims.cpp" line="1574"/>
       <source>Create Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Create Horizontal Chain Dimensions</translation>
+      <translation>Створити Горизонтальні Ланцюги Елементів</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1306"/>
       <location filename="../../CommandExtensionDims.cpp" line="1575"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Створити послідовність вирівняних горизонтальних елементів:&lt;br&gt;- Виділіть три або більше вершин&lt;br&gt;- Натисніть цей інструмент</translation>
     </message>
   </context>
   <context>
@@ -640,13 +640,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="2022"/>
       <location filename="../../CommandExtensionDims.cpp" line="2191"/>
       <source>Create Horizontal Chamfer Dimension</source>
-      <translation type="unfinished">Create Horizontal Chamfer Dimension</translation>
+      <translation>Створити Горизонтальний Елемент Фаски</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2023"/>
       <location filename="../../CommandExtensionDims.cpp" line="2192"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</translation>
+      <translation>Створіть горизонтальний розмір і кут для фаски:&lt;br&gt;- Виділіть дві вершини&lt;br&gt;- Натисніть цей інструмент</translation>
     </message>
   </context>
   <context>
@@ -660,13 +660,13 @@
       <location filename="../../CommandExtensionDims.cpp" line="1653"/>
       <location filename="../../CommandExtensionDims.cpp" line="1939"/>
       <source>Create Horizontal Coordinate Dimensions</source>
-      <translation type="unfinished">Create Horizontal Coordinate Dimensions</translation>
+      <translation>Створити Горизонтальних Лінійних Елементів</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1654"/>
       <location filename="../../CommandExtensionDims.cpp" line="1940"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</translation>
+      <translation>Створити декілька рівномірно розташованих горизонтальних розмірів, починаючи з однієї базової лінії:&lt;br&gt;- Вкажіть інтервал між каскадами (необов'язково)&lt;br&gt;- Оберіть три або більше вершин&lt;br&gt;- Порядок вибору перших двох вершин визначає положення базової лінії&lt;br&gt;- Клацніть цей інструмент</translation>
     </message>
   </context>
   <context>
@@ -924,7 +924,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1564"/>
       <location filename="../../CommandExtensionPack.cpp" line="1702"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</translation>
+      <translation>Розширте допоміжну лінію або осьову лінію з обох кінців:&lt;br&gt;- Вкажіть дельта-відстань (необов'язково)&lt;br&gt;- Виберіть одну лінію&lt;br&gt;- Натисніть цей інструмент</translation>
     </message>
   </context>
   <context>
@@ -1402,7 +1402,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="680"/>
       <source>Add Centerline to Faces</source>
-      <translation type="unfinished">Add Centerline to Faces</translation>
+      <translation>Додати центральну лінію до поверхонь</translation>
     </message>
   </context>
   <context>
@@ -1548,7 +1548,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="456"/>
       <source>Add Midpoint Vertices</source>
-      <translation type="unfinished">Add Midpoint Vertices</translation>
+      <translation>Додати центр вершини</translation>
     </message>
   </context>
   <context>
@@ -1641,7 +1641,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="495"/>
       <source>Add Quadrant Vertices</source>
-      <translation type="unfinished">Add Quadrant Vertices</translation>
+      <translation>Додати вершини квадранта</translation>
     </message>
   </context>
   <context>
@@ -1698,7 +1698,7 @@
     <message>
       <location filename="../../Command.cpp" line="660"/>
       <source>Section View</source>
-      <translation type="unfinished">Section View</translation>
+      <translation>Перегляд розділу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="664"/>
@@ -2009,12 +2009,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="341"/>
       <source>Add Midpoint Vertices</source>
-      <translation type="unfinished">Add Midpoint Vertices</translation>
+      <translation>Додати центр вершини</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="368"/>
       <source>Add Quadrant Vertices</source>
-      <translation type="unfinished">Add Quadrant Vertices</translation>
+      <translation>Додати вершини квадранта</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="551"/>
@@ -2063,7 +2063,7 @@
       <translation type="unfinished">Drag Dimension</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="530"/>
+      <location filename="../../QGSPage.cpp" line="523"/>
       <source>Create Balloon</source>
       <translation type="unfinished">Create Balloon</translation>
     </message>
@@ -2152,7 +2152,7 @@
     <message>
       <location filename="../../TaskCosVertex.cpp" line="138"/>
       <source>Add Cosmetic Vertex</source>
-      <translation type="unfinished">Add Cosmetic Vertex</translation>
+      <translation>Додати допоміжну вершину</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="106"/>
@@ -2322,7 +2322,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="793"/>
       <source>Change Line Attributes</source>
-      <translation type="unfinished">Change Line Attributes</translation>
+      <translation>Замінити Атрибути Ліній</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="851"/>
@@ -8808,7 +8808,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawPage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="55"/>
+      <location filename="../../../App/DrawView.cpp" line="56"/>
       <source>Page</source>
       <translation>Сторінка</translation>
     </message>
@@ -8816,7 +8816,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawSVGTemplate</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="56"/>
+      <location filename="../../../App/DrawView.cpp" line="57"/>
       <source>Template</source>
       <translation>Шаблон</translation>
     </message>
@@ -8824,7 +8824,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="57"/>
+      <location filename="../../../App/DrawView.cpp" line="58"/>
       <source>View</source>
       <translation>Вид</translation>
     </message>
@@ -8832,7 +8832,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewPart</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="58"/>
+      <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>View</source>
       <translation>Вид</translation>
     </message>
@@ -8840,7 +8840,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="59"/>
+      <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>Section</source>
       <translation>Розріз</translation>
     </message>
@@ -8848,7 +8848,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawComplexSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="60"/>
+      <location filename="../../../App/DrawView.cpp" line="61"/>
       <source>Section</source>
       <translation>Розріз</translation>
     </message>
@@ -8856,7 +8856,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewDetail</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="61"/>
+      <location filename="../../../App/DrawView.cpp" line="62"/>
       <source>Detail</source>
       <translation type="unfinished">Detail</translation>
     </message>
@@ -8864,7 +8864,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawActiveView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="62"/>
+      <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>ActiveView</source>
       <translation type="unfinished">ActiveView</translation>
     </message>
@@ -8872,7 +8872,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewAnnotation</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="63"/>
+      <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>Annotation</source>
       <translation>Анотація</translation>
     </message>
@@ -8880,7 +8880,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewImage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="64"/>
+      <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Image</source>
       <translation>Зображення</translation>
     </message>
@@ -8888,7 +8888,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewSymbol</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="65"/>
+      <location filename="../../../App/DrawView.cpp" line="66"/>
       <source>Symbol</source>
       <translation type="unfinished">Symbol</translation>
     </message>
@@ -8896,7 +8896,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewArch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="66"/>
+      <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Arch</source>
       <translation>Арка</translation>
     </message>
@@ -8904,7 +8904,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewDraft</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="67"/>
+      <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Draft</source>
       <translation>Креслення</translation>
     </message>
@@ -8912,7 +8912,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawLeaderLine</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="68"/>
+      <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>LeaderLine</source>
       <translation type="unfinished">LeaderLine</translation>
     </message>
@@ -8920,7 +8920,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewBalloon</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>Balloon</source>
       <translation type="unfinished">Balloon</translation>
     </message>
@@ -8928,7 +8928,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewDimension</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="70"/>
+      <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>Dimension</source>
       <translation>Розмірність</translation>
     </message>
@@ -8936,15 +8936,15 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawViewDimExtent</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="71"/>
+      <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>Extent</source>
-      <translation type="unfinished">Extent</translation>
+      <translation>Ступінь</translation>
     </message>
   </context>
   <context>
     <name>DrawHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="72"/>
+      <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Hatch</source>
       <translation type="unfinished">Hatch</translation>
     </message>
@@ -8952,7 +8952,7 @@ there is an open task dialog.</translation>
   <context>
     <name>DrawGeomHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="73"/>
+      <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>GeomHatch</source>
       <translation type="unfinished">GeomHatch</translation>
     </message>
@@ -9409,7 +9409,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="82"/>
       <source>Chain</source>
-      <translation type="unfinished">Chain</translation>
+      <translation>Ланцюг</translation>
     </message>
   </context>
   <context>
