@@ -34,6 +34,7 @@
 #include <Base/Parameter.h>
 
 class QAction;
+class QMenu;
 class QMouseEvent;
 class QToolBar;
 
@@ -118,6 +119,11 @@ public:
     void setState(const QList<QString>& names, State state);
     void setState(const QString& name, State state);
     
+    int toolBarIconSize(QWidget *widget=nullptr) const;
+    void setupToolBarIconSize();
+
+    void populateUndockMenu(QMenu *menu, ToolBarArea *area = nullptr);
+
 protected:
     void setup(ToolBarItem*, QToolBar*) const;
 
@@ -128,6 +134,7 @@ protected:
     bool addToolBarToArea(QObject *source, QMouseEvent *ev);
     bool showContextMenu(QObject *source);
     void onToggleStatusBarWidget(QWidget *widget, bool visible);
+    void setToolBarIconSize(QToolBar *toolbar);
     void onTimer();
 
     bool eventFilter(QObject *source, QEvent *ev) override;
@@ -145,6 +152,8 @@ private:
 
     QTimer timer;
     QTimer menuBarTimer;
+    QTimer sizeTimer;
+    QTimer resizeTimer;
     boost::signals2::scoped_connection connParam;
     ToolBarArea *statusBarArea = nullptr;
     ToolBarArea *menuBarLeftArea = nullptr;
@@ -154,6 +163,11 @@ private:
     ParameterGrp::handle hStatusBar;
     ParameterGrp::handle hMenuBarLeft;
     ParameterGrp::handle hMenuBarRight;
+    std::map<QToolBar*, QPointer<QToolBar>> resizingToolbars;
+    int _toolBarIconSize = 0;
+    int _statusBarIconSize = 0;
+    int _menuBarIconSize = 0;
+    mutable bool restored = false;
 };
 
 } // namespace Gui
