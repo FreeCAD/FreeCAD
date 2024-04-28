@@ -197,6 +197,7 @@ def getDXFlibs():
     if not libsok:
         errorDXFLib(gui)
         try:
+            import dxfColorMap, dxfLibrary, dxfReader
             import importlib
             importlib.reload(dxfColorMap)
             importlib.reload(dxfLibrary)
