@@ -197,8 +197,11 @@ def getDXFlibs():
     if not libsok:
         errorDXFLib(gui)
         try:
-            import dxfColorMap, dxfLibrary, dxfReader
-        except ImportError:
+            import importlib
+            importlib.reload(dxfColorMap)
+            importlib.reload(dxfLibrary)
+            importlib.reload(dxfReader)
+        except Exception:
             dxfReader = None
             dxfLibrary = None
             FCC.PrintWarning("DXF libraries not available. Aborting.\n")
