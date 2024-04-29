@@ -53,19 +53,31 @@ SET(StartGui_SRCS
         FileCardDelegate.h
         FileCardView.cpp
         FileCardView.h
+        FirstStartWidget.cpp
+        FirstStartWidget.h
         FlowLayout.cpp
         FlowLayout.h
+        GeneralSettingsWidget.cpp
+        GeneralSettingsWidget.h
         Manipulator.cpp
         Manipulator.h
         PreCompiled.cpp
         PreCompiled.h
         StartView.cpp
         StartView.h
+        ThemeSelectorWidget.cpp
+        ThemeSelectorWidget.h
         )
 
 SET(StartGuiIcon_SVG
         Resources/icons/StartCommandIcon.svg
         Resources/icons/PartDesignWorkbench.svg
+        )
+
+SET(StartGuiThumbnail_PNG
+        Resources/thumbnails/Classic512.png
+        Resources/thumbnails/OpenDark512.png
+        Resources/thumbnails/OpenLight512.png
         )
 
 # TODO: Evaluate PCH use with Qt6/QtQuick/Qml
@@ -75,7 +87,7 @@ if (FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(StartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif (FREECAD_USE_PCH)
 
-add_library(StartGui SHARED ${StartGui_SRCS} ${StartGuiIcon_SVG})
+add_library(StartGui SHARED ${StartGui_SRCS} ${StartGuiIcon_SVG} ${StartGuiThumbnail_PNG})
 # target_link_libraries(StartGui ${StartGui_LIBS} Qt::Quick Qt::Qml Qt::QuickWidgets)
 target_link_libraries(StartGui ${StartGui_LIBS})
 

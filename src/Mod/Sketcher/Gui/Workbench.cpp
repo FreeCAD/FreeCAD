@@ -428,12 +428,7 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
     SketcherAddWorkspaceRectangles(geom);
     SketcherAddWorkspaceRegularPolygon(geom);
     SketcherAddWorkspaceslots(geom);
-    geom << "Separator";
-    SketcherAddWorkspaceFillets(geom);
-    SketcherAddWorkspaceCurveEdition(geom);
-    geom << "Sketcher_External"
-         << "Sketcher_CarbonCopy"
-         << "Sketcher_ToggleConstruction"
+    geom << "Sketcher_ToggleConstruction"
         /*<< "Sketcher_CreateText"*/
         /*<< "Sketcher_CreateDraftLine"*/;
 }
@@ -538,12 +533,10 @@ inline void SketcherAddWorkbenchTools(T& consaccel);
 template<>
 inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
 {
-    consaccel << "Sketcher_SelectElementsWithDoFs"
-              << "Sketcher_SelectConstraints"
-              << "Sketcher_SelectElementsAssociatedWithConstraints"
-              << "Sketcher_SelectRedundantConstraints"
-              << "Sketcher_SelectConflictingConstraints"
-              << "Sketcher_RestoreInternalAlignmentGeometry"
+    SketcherAddWorkspaceFillets(consaccel);
+    SketcherAddWorkspaceCurveEdition(consaccel);
+    consaccel << "Sketcher_External"
+              << "Sketcher_CarbonCopy"
               << "Separator"
               << "Sketcher_SelectOrigin"
               << "Sketcher_SelectHorizontalAxis"
@@ -567,15 +560,17 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
 template<>
 inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consaccel)
 {
-    consaccel << "Sketcher_Translate"
+    SketcherAddWorkspaceFillets(consaccel);
+    SketcherAddWorkspaceCurveEdition(consaccel);
+    consaccel << "Sketcher_External"
+              << "Sketcher_CarbonCopy"
+              << "Separator"
+              << "Sketcher_Translate"
               << "Sketcher_Rotate"
               << "Sketcher_Scale"
               << "Sketcher_Offset"
               << "Sketcher_Symmetry"
-              << "Sketcher_RemoveAxesAlignment"
-              << "Sketcher_SelectConstraints"
-              << "Sketcher_SelectElementsAssociatedWithConstraints"
-              << "Sketcher_RestoreInternalAlignmentGeometry";
+              << "Sketcher_RemoveAxesAlignment";
 }
 
 template<typename T>
@@ -610,7 +605,14 @@ inline void SketcherAddWorkbenchVisual(T& visual);
 template<>
 inline void SketcherAddWorkbenchVisual<Gui::MenuItem>(Gui::MenuItem& visual)
 {
-    visual << "Sketcher_SwitchVirtualSpace"
+    visual << "Sketcher_SelectElementsWithDoFs"
+           << "Sketcher_SelectConstraints"
+           << "Sketcher_SelectElementsAssociatedWithConstraints"
+           << "Sketcher_SelectRedundantConstraints"
+           << "Sketcher_SelectConflictingConstraints"
+           << "Separator"
+           << "Sketcher_RestoreInternalAlignmentGeometry"
+           << "Sketcher_SwitchVirtualSpace"
            << "Sketcher_CompBSplineShowHideGeometryInformation"
            << "Sketcher_ArcOverlay";
 }
@@ -618,7 +620,11 @@ inline void SketcherAddWorkbenchVisual<Gui::MenuItem>(Gui::MenuItem& visual)
 template<>
 inline void SketcherAddWorkbenchVisual<Gui::ToolBarItem>(Gui::ToolBarItem& visual)
 {
-    visual << "Sketcher_SwitchVirtualSpace"
+    visual << "Sketcher_SelectConstraints"
+           << "Sketcher_SelectElementsAssociatedWithConstraints"
+           << "Separator"
+           << "Sketcher_RestoreInternalAlignmentGeometry"
+           << "Sketcher_SwitchVirtualSpace"
            << "Sketcher_CompBSplineShowHideGeometryInformation"
            << "Sketcher_ArcOverlay";
 }

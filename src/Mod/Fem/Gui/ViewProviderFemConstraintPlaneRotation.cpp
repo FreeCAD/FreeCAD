@@ -45,7 +45,7 @@ ViewProviderFemConstraintPlaneRotation::ViewProviderFemConstraintPlaneRotation()
     loadSymbol((resourceSymbolDir + "ConstraintPlaneRotation.iv").c_str());
     // Note change "planerotation" in line above to new constraint name, make sure it is the same as
     // in taskFem* cpp file
-    ADD_PROPERTY(FaceColor, (0.2f, 0.3f, 0.2f));
+    ShapeAppearance.setDiffuseColor(0.2f, 0.3f, 0.2f);
 }
 
 ViewProviderFemConstraintPlaneRotation::~ViewProviderFemConstraintPlaneRotation() = default;

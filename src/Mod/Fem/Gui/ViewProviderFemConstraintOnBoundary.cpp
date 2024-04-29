@@ -99,10 +99,10 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 std::vector<App::Color> colors = originalFaceColors[base];
 
                 // go through the subelements with constraint and recolor them
-                // TODO: Replace `FaceColor` with anything more appropriate
-                PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(),
-                                                          colors.empty() ? FaceColor.getValue()
-                                                                         : colors[0]);
+                // TODO: Replace shape DiffuseColor with anything more appropriate
+                PartGui::ReferenceHighlighter highlighter(
+                    base->Shape.getValue(),
+                    colors.empty() ? ShapeAppearance.getDiffuseColor() : colors[0]);
                 highlighter.getFaceColors(subSet.second, colors);
                 vp->DiffuseColor.setValues(colors);
             }

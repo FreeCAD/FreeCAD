@@ -27,7 +27,10 @@
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 
+#include <App/CleanupProcess.h>
+
 #include "MaterialFilterPy.h"
+#include "MaterialLoader.h"
 #include "MaterialManagerPy.h"
 #include "MaterialPy.h"
 #include "ModelManagerPy.h"
@@ -61,6 +64,12 @@ PyObject* initModule()
 
 PyMOD_INIT_FUNC(Materials)
 {
+#ifdef FC_DEBUG
+    App::CleanupProcess::registerCleanup([](){
+        Materials::MaterialManager::cleanup();
+        Materials::ModelManager::cleanup();
+    });
+#endif
     PyObject* module = Materials::initModule();
 
     Base::Console().Log("Loading Material module... done\n");

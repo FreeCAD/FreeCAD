@@ -134,19 +134,19 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
     std::string boundaryType = pcConstraint->BoundaryType.getValueAsString();
     if (prop == &pcConstraint->BoundaryType) {
         if (boundaryType == "wall") {
-            FaceColor.setValue(0.0, 1.0, 1.0);
+            ShapeAppearance.setDiffuseColor(0.0, 1.0, 1.0);
         }
         else if (boundaryType == "interface") {
-            FaceColor.setValue(0.0, 1.0, 0.0);
+            ShapeAppearance.setDiffuseColor(0.0, 1.0, 0.0);
         }
         else if (boundaryType == "freestream") {
-            FaceColor.setValue(1.0, 1.0, 0.0);
+            ShapeAppearance.setDiffuseColor(1.0, 1.0, 0.0);
         }
         else if (boundaryType == "inlet") {
-            FaceColor.setValue(1.0, 0.0, 0.0);
+            ShapeAppearance.setDiffuseColor(1.0, 0.0, 0.0);
         }
         else {  //(boundaryType == "outlet")
-            FaceColor.setValue(0.0, 0.0, 1.0);
+            ShapeAppearance.setDiffuseColor(0.0, 0.0, 1.0);
         }
     }
 

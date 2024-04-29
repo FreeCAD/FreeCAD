@@ -32,10 +32,11 @@
 #include "../App/RecentFilesModel.h"
 #include "../App/ExamplesModel.h"
 
-
+class QCheckBox;
+class QEvent;
+class QGridLayout;
 class QLabel;
 class QListView;
-class QGridLayout;
 class QScrollArea;
 
 namespace Gui
@@ -75,6 +76,8 @@ public:
     };
 
 protected:
+    void changeEvent(QEvent* e) override;
+
     void configureNewFileButtons(QLayout* layout) const;
     static void configureFileCardWidget(QListView* fileCardWidget);
     void configureRecentFilesListWidget(QListView* recentFilesListWidget, QLabel* recentFilesLabel);
@@ -88,9 +91,16 @@ protected:
     QString fileCardStyle() const;
 
 private:
+    void retranslateUi();
+
     QScrollArea* _contents = nullptr;
     Start::RecentFilesModel _recentFilesModel;
     Start::ExamplesModel _examplesModel;
+
+    QLabel* _newFileLabel;
+    QLabel* _examplesLabel;
+    QLabel* _recentFilesLabel;
+    QCheckBox* _showOnStartupCheckBox;
 
 
 };  // namespace StartGui

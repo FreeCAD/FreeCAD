@@ -62,4 +62,5 @@ class _PropHelper:
 
     def add_to_object(self, obj):
         obj.addProperty(**self.info)
+        obj.setPropertyStatus(self.name, "LockDynamic")
         setattr(obj, self.name, self.value)

@@ -48,6 +48,11 @@ FileCardDelegate::FileCardDelegate(QObject* parent)
 {
     _parameterGroup = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
+    _widget = std::make_unique<QWidget>();
+    _widget->setObjectName(QLatin1String("thumbnailWidget"));
+    auto layout = gsl::owner<QVBoxLayout*>(new QVBoxLayout());
+    layout->setSpacing(0);
+    _widget->setLayout(layout);
 }
 
 QColor FileCardDelegate::getBorderColor() const
@@ -89,12 +94,9 @@ void FileCardDelegate::paint(QPainter* painter,
     auto image = index.data(static_cast<int>(DisplayedFilesModelRoles::image)).toByteArray();
     auto path = index.data(static_cast<int>(DisplayedFilesModelRoles::path)).toString();
     painter->save();
-    auto widget = gsl::owner<QWidget*>(new QWidget());
-    widget->setObjectName(QLatin1String("thumbnailWidget"));
-    auto layout = gsl::owner<QVBoxLayout*>(new QVBoxLayout());
-    widget->setLayout(layout);
-    auto thumbnail = gsl::owner<QLabel*>(new QLabel());
-    auto pixmap = gsl::owner<QPixmap*>(new QPixmap());
+    auto thumbnail = std::make_unique<QLabel>();
+    auto pixmap = std::make_unique<QPixmap>();
+    auto layout = qobject_cast<QVBoxLayout*>(_widget->layout());
     if (!image.isEmpty()) {
         pixmap->loadFromData(image);
         if (!pixmap->isNull()) {
@@ -110,61 +112,61 @@ void FileCardDelegate::paint(QPainter* painter,
     thumbnail->setFixedSize(thumbnailSize, thumbnailSize);
     thumbnail->setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
 
-    widget->setProperty("state", QStringLiteral(""));
+    _widget->setProperty("state", QStringLiteral(""));
     if (option.state & QStyle::State_Selected) {
-        widget->setProperty("state", QStringLiteral("pressed"));
+        _widget->setProperty("state", QStringLiteral("pressed"));
         if (qApp->styleSheet().isEmpty()) {
             QColor color = getSelectionColor();
-            widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
-                                                      " border: 2px solid rgb(%1, %2, %3);"
-                                                      " border-radius: 4px;"
-                                                      " padding: 2px;"
-                                                      "}")
-                                      .arg(color.red())
-                                      .arg(color.green())
-                                      .arg(color.blue()));
+            _widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
+                                                       " border: 2px solid rgb(%1, %2, %3);"
+                                                       " border-radius: 4px;"
+                                                       " padding: 2px;"
+                                                       "}")
+                                       .arg(color.red())
+                                       .arg(color.green())
+                                       .arg(color.blue()));
         }
     }
     else if (option.state & QStyle::State_MouseOver) {
-        widget->setProperty("state", QStringLiteral("hovered"));
+        _widget->setProperty("state", QStringLiteral("hovered"));
         if (qApp->styleSheet().isEmpty()) {
             QColor color = getBorderColor();
-            widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
-                                                      " border: 2px solid rgb(%1, %2, %3);"
-                                                      " border-radius: 4px;"
-                                                      " padding: 2px;"
-                                                      "}")
-                                      .arg(color.red())
-                                      .arg(color.green())
-                                      .arg(color.blue()));
+            _widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
+                                                       " border: 2px solid rgb(%1, %2, %3);"
+                                                       " border-radius: 4px;"
+                                                       " padding: 2px;"
+                                                       "}")
+                                       .arg(color.red())
+                                       .arg(color.green())
+                                       .arg(color.blue()));
         }
     }
     else if (qApp->styleSheet().isEmpty()) {
         QColor color = getBackgroundColor();
-        widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
-                                                  " background-color: rgb(%1, %2, %3);"
-                                                  " border-radius: 8px;"
-                                                  "}")
-                                  .arg(color.red())
-                                  .arg(color.green())
-                                  .arg(color.blue()));
+        _widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
+                                                   " background-color: rgb(%1, %2, %3);"
+                                                   " border-radius: 8px;"
+                                                   "}")
+                                   .arg(color.red())
+                                   .arg(color.green())
+                                   .arg(color.blue()));
     }
 
     auto elided =
         painter->fontMetrics().elidedText(baseName, Qt::TextElideMode::ElideRight, cardWidth);
-    auto name = gsl::owner<QLabel*>(new QLabel(elided));
-    layout->addWidget(thumbnail);
-    layout->addWidget(name);
-    auto sizeLabel = gsl::owner<QLabel*>(new QLabel(size));
-    layout->addWidget(sizeLabel);
+    auto name = std::make_unique<QLabel>(elided);
+    layout->addWidget(thumbnail.get());  // Temp. ownership transfer
+    layout->addWidget(name.get());       // Temp. ownership transfer
+    auto sizeLabel = std::make_unique<QLabel>(size);
+    layout->addWidget(sizeLabel.get());  // Temp. ownership transfer
     layout->addStretch();
-    layout->setSpacing(0);
-    widget->resize(option.rect.size());
+    _widget->resize(option.rect.size());
     painter->translate(option.rect.topLeft());
-    widget->render(painter, QPoint(), QRegion(), QWidget::DrawChildren);
+    _widget->render(painter, QPoint(), QRegion(), QWidget::DrawChildren);
     painter->restore();
-    delete pixmap;
-    delete widget;
+    layout->removeWidget(sizeLabel.get());
+    layout->removeWidget(thumbnail.get());
+    layout->removeWidget(name.get());
 }
 
 
@@ -173,13 +175,15 @@ QSize FileCardDelegate::sizeHint(const QStyleOptionViewItem& option, const QMode
     Q_UNUSED(option)
     Q_UNUSED(index)
     auto thumbnailSize = _parameterGroup->GetInt("FileThumbnailIconsSize", 128);  // NOLINT
-    auto cardSpacing = _parameterGroup->GetInt("FileCardSpacing", 30);            // NOLINT
-    auto cardWidth = thumbnailSize + cardSpacing;
+    auto cardMargin = _widget->layout()->contentsMargins();
+    auto cardWidth = thumbnailSize + cardMargin.left() + cardMargin.right();
+    auto spacing = _widget->layout()->spacing();
 
     auto font = QGuiApplication::font();
     auto qfm = QFontMetrics(font);
     auto textHeight = 2 * qfm.lineSpacing();
-    auto cardHeight = thumbnailSize + textHeight + cardSpacing;
+    auto cardHeight =
+        thumbnailSize + textHeight + 2 * spacing + cardMargin.top() + cardMargin.bottom();
 
     return {static_cast<int>(cardWidth), static_cast<int>(cardHeight)};
 }
