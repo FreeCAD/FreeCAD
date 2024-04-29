@@ -29,9 +29,9 @@
      inkscape:window-height="837"
      id="namedview3057"
      showgrid="true"
-     inkscape:zoom="5.4250344"
-     inkscape:cx="13.363971"
-     inkscape:cy="5.2534229"
+     inkscape:zoom="43.400275"
+     inkscape:cx="36.60115"
+     inkscape:cy="24.27404"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -1112,7 +1112,7 @@
     <path
        id="path3900-2"
        d="M 30,23 H 44"
-       style="display:inline;fill:#2e3436;fill-opacity:1;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:2;stroke-opacity:1" />
+       style="display:inline;fill:#2e3436;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:4,2;stroke-dashoffset:2;stroke-opacity:1" />
     <rect
        style="display:inline;fill:none;fill-opacity:1;stroke:#2e3436;stroke-width:1.96492;stroke-dasharray:none;stroke-opacity:1"
        id="rect1"
