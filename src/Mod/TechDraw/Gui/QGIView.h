@@ -122,6 +122,7 @@ public:
     void isInnerView(bool state) { m_innerView = state; }
     QGIViewClip* getClipGroup();
 
+    bool isSnapping() { return snapping; }
     void snapPosition(QPointF& position);
 
     void alignTo(QGraphicsItem*, const QString &alignment);
@@ -182,6 +183,7 @@ private:
     QHash<QString, QGraphicsItem*> alignHash;
     bool m_innerView;                                                  //View is inside another View
     bool m_multiselectActivated;
+    bool snapping;
 
     QPen m_pen;
     QBrush m_brush;
