@@ -54,6 +54,7 @@ def Startup():
         from Path.Main.Gui import Inspect
         from Path.Main.Gui import Sanity
         from Path.Main.Gui import Simulator
+        from Path.Main.Gui import SimulatorGL
 
         from Path.Op.Gui import Adaptive
         from Path.Op.Gui import Array

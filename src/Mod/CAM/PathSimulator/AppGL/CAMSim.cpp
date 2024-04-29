@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,46 +20,45 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#include "PreCompiled.h"
+#include "CAMSim.h"
+#include "DlgCAMSimulator.h"
 
-#ifndef PATH_GLOBAL_H
-#define PATH_GLOBAL_H
+
+using namespace Base;
+using namespace CAMSimulator;
+
+TYPESYSTEM_SOURCE(CAMSimulator::CAMSim , Base::BaseClass);
+
+CAMSim::CAMSim()
+{
+}
+
+CAMSim::~CAMSim()
+{
+}
+
+void CAMSim::BeginSimulation(Part::TopoShape * stock, float resolution)
+{
+	Base::BoundBox3d bbox = stock->getBoundBox();
+	m_stock = std::make_unique<cStock>(bbox.MinX, bbox.MinY, bbox.MinZ, bbox.LengthX(), bbox.LengthY(), bbox.LengthZ(), resolution);
+    CAMSimulator::ShowWindow();
+}
+
+void CAMSim::SetToolShape(const TopoDS_Shape& toolShape, float resolution)
+{
+}
+
+Base::Placement * CAMSim::ApplyCommand(Base::Placement * pos, Command * cmd)
+{
+	Base::Placement *plc = new Base::Placement();
+    Vector3d vec(pos->getPosition().x, pos->getPosition().y, pos->getPosition().z);
+	plc->setPosition(vec);
+	return plc;
+}
 
 
-// Path
-#ifndef PathExport
-#ifdef Path_EXPORTS
-#  define PathExport      FREECAD_DECL_EXPORT
-#else
-#  define PathExport      FREECAD_DECL_IMPORT
-#endif
-#endif
 
-// PathGui
-#ifndef PathGuiExport
-#ifdef PathGui_EXPORTS
-#  define PathGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define PathGuiExport   FREECAD_DECL_IMPORT
-#endif
-#endif
 
-// PathSimulator
-#ifndef PathSimulatorExport
-#ifdef PathSimulator_EXPORTS
-#define PathSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define PathSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
 
-// CAMSimulator (new GL simulator)
-#ifndef CAMSimulatorExport
-#ifdef CAMSimulator_EXPORTS
-#define CAMSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define CAMSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
 
-#endif //PATH_GLOBAL_H

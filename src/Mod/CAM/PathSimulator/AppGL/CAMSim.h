@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,46 +20,55 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#ifndef CAMSimulator_CAMSim_H
+#define CAMSimulator_CAMSim_H
 
-#ifndef PATH_GLOBAL_H
-#define PATH_GLOBAL_H
+#include <memory>
+#include <TopoDS_Shape.hxx>
+
+#include <Mod/CAM/App/Command.h>
+#include <Mod/Part/App/TopoShape.h>
+#include <Mod/CAM/PathGlobal.h>
+#include <Mod/Mesh/App/Mesh.h>
+#include <Mod/CAM/App/Command.h>
+
+#include "DlgCAMSimulator.h"
+
+using namespace Path;
+
+namespace CAMSimulator
+{
+
+    /** The representation of a CNC Toolpath Simulator */
+
+	class CAMSimulatorExport CAMSim: public Base::BaseClass
+    {
+        //TYPESYSTEM_HEADER();
+
+    public:
+        static Base::Type getClassTypeId(void);
+        virtual Base::Type getTypeId(void) const;
+        static void init(void);
+        static void* create(void);
+
+    private:
+        static Base::Type classTypeId;
 
 
-// Path
-#ifndef PathExport
-#ifdef Path_EXPORTS
-#  define PathExport      FREECAD_DECL_EXPORT
-#else
-#  define PathExport      FREECAD_DECL_IMPORT
-#endif
-#endif
 
-// PathGui
-#ifndef PathGuiExport
-#ifdef PathGui_EXPORTS
-#  define PathGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define PathGuiExport   FREECAD_DECL_IMPORT
-#endif
-#endif
+        public:
+			CAMSim();
+			~CAMSim();
 
-// PathSimulator
-#ifndef PathSimulatorExport
-#ifdef PathSimulator_EXPORTS
-#define PathSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define PathSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
+			void BeginSimulation(Part::TopoShape * stock, float resolution);
+			void SetToolShape(const TopoDS_Shape& toolShape, float resolution);
+			Base::Placement * ApplyCommand(Base::Placement * pos, Command * cmd);
 
-// CAMSimulator (new GL simulator)
-#ifndef CAMSimulatorExport
-#ifdef CAMSimulator_EXPORTS
-#define CAMSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define CAMSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
+		public:
+			std::unique_ptr<cStock> m_stock;
+	};
 
-#endif //PATH_GLOBAL_H
+} //namespace CAMSimulator
+
+
+#endif // CAMSimulator_CAMSim_H

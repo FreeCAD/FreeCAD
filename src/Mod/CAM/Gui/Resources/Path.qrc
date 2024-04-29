@@ -121,6 +121,7 @@
         <file>panels/ToolBitSelector.ui</file>
         <file>panels/TaskPathCamoticsSim.ui</file>
         <file>panels/TaskPathSimulator.ui</file>
+        <file>panels/TaskCAMSimulator.ui</file>
         <file>panels/ZCorrectEdit.ui</file>
         <file>preferences/Advanced.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>

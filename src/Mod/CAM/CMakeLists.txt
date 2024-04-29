@@ -100,6 +100,7 @@ SET(PathPythonMainGui_SRCS
     Path/Main/Gui/Sanity_Note.svg
     Path/Main/Gui/Sanity_Warning.svg
     Path/Main/Gui/Simulator.py
+    Path/Main/Gui/SimulatorGL.py
 )
 
 SET(PathPythonTools_SRCS
