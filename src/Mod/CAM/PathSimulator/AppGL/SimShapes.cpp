@@ -2,7 +2,7 @@
 #include "Shader.h"
 #include "GlUtils.h"
 #include <math.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 #include <cstddef>
 

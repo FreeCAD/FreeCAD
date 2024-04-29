@@ -3,7 +3,7 @@
 #include "MillSimulation.h"
 #include <cstddef>
 #include "GlUtils.h"
-#include <malloc.h>
+#include <stdlib.h>
 
 using namespace MillSim;
 

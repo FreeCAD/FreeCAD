@@ -1,6 +1,6 @@
 #include "StockObject.h"
 #include "Shader.h"
-#include <malloc.h>
+#include <stdlib.h>
 
 #define NUM_PROFILE_POINTS 4
 

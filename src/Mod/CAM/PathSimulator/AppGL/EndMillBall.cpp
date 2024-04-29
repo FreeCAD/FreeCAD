@@ -2,7 +2,7 @@
 #include "SimShapes.h"
 #include "GlUtils.h"
 #include <math.h>
-#include <malloc.h>
+#include <stdlib.h>
 
 using namespace MillSim;
 

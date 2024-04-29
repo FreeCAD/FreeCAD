@@ -1,3 +1,7 @@
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include "GCodeParser.h"
 #include <ctype.h>
 #include <stdio.h>
@@ -19,7 +23,7 @@ bool GCodeParser::Parse(const char* filename)
 	lastTool = -1;
 
 	FILE* fl;
-	if (fopen_s(&fl, filename, "rt") != 0)
+	if ((fl = fopen(filename, "rt")) == nullptr)
 		return false;
 
 	char line[120];
