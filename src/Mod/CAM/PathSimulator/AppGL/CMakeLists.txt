@@ -40,21 +40,59 @@ SET(CAMSimulator_SRCS_Module
     PreCompiled.h
 )
 
+SET(CAMSimulator_SRCS_Core
+    EndMill.cpp
+	EndMill.h
+	EndMillBall.cpp
+	EndMillBall.h
+	EndMillFlat.cpp
+	EndMillFlat.h
+	EndMillTaper.cpp
+	EndMillTaper.h
+	GCodeParser.cpp
+	GCodeParser.h
+	GlUtils.cpp
+	GlUtils.h
+	GuiDisplay.cpp
+	GuiDisplay.h
+	linmath.h
+	MillMotion.h
+	MillPathSegment.cpp
+	MillPathSegment.h
+	MillSimulation.cpp
+	MillSimulation.h
+	OpenGlWrapper.h
+	Shader.cpp
+	Shader.h
+	SimShapes.cpp
+	SimShapes.h
+	StockObject.cpp
+	StockObject.h
+	Texture.cpp
+	Texture.h
+)
+
+
 generate_from_xml(CAMSimPy)
 
 
 SOURCE_GROUP("Module" FILES ${CAMSimulator_SRCS_Module})
 SOURCE_GROUP("Python" FILES ${CAMSimulator_SRCS_Python})
+SOURCE_GROUP("Core" FILES ${CAMSimulator_SRCS_Core})
 
-
-SET(CAMSimulator_SRCS
+SET(CAMSimulator_SRCS_precomp
     ${CAMSimulator_SRCS_Module}
     ${CAMSimulator_SRCS_Python}
 )
 
+SET(CAMSimulator_SRCS
+    ${CAMSimulator_SRCS_precomp}
+	${CAMSimulator_SRCS_Core}
+)
+
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${CAMSimulator_SRCS})
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${CAMSimulator_SRCS_precomp})
     ADD_MSVC_PRECOMPILED_HEADER(CAMSimulator PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif(FREECAD_USE_PCH)
 
