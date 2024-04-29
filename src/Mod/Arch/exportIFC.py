@@ -46,6 +46,7 @@ from DraftGeomUtils import vec
 from importIFCHelper import dd2dms
 from draftutils import params
 from draftutils.messages import _msg, _err
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     import FreeCADGui
