@@ -235,7 +235,7 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
     Model::ModelType type =
         (base == "Model") ? Model::ModelType_Physical : Model::ModelType_Appearance;
 
-    Model* finalModel = new Model(library, type, name, directory, uuid, description, url, doi);
+    Model finalModel(library, type, name, directory, uuid, description, url, doi);
 
     // Add inheritance list
     if (yamlModel[base]["Inherits"]) {
@@ -243,7 +243,7 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
         for (auto it = inherits.begin(); it != inherits.end(); it++) {
             QString nodeName = QString::fromStdString((*it)["UUID"].as<std::string>());
 
-            finalModel->addInheritance(nodeName);
+            finalModel.addInheritance(nodeName);
         }
     }
 
@@ -299,11 +299,11 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
                 property.setInheritance((*inheritances)[key]);
             }
 
-            finalModel->addProperty(property);
+            finalModel.addProperty(property);
         }
     }
 
-    (*_modelMap)[uuid] = library->addModel(*finalModel, directory);
+    (*_modelMap)[uuid] = library->addModel(finalModel, directory);
 }
 
 void ModelLoader::loadLibrary(std::shared_ptr<ModelLibrary> library)
@@ -330,16 +330,14 @@ void ModelLoader::loadLibrary(std::shared_ptr<ModelLibrary> library)
         }
     }
 
-    std::map<std::pair<QString, QString>, QString>* inheritances =
-        new std::map<std::pair<QString, QString>, QString>();
+    std::map<std::pair<QString, QString>, QString> inheritances;
     for (auto it = _modelEntryMap->begin(); it != _modelEntryMap->end(); it++) {
-        dereference(it->second, inheritances);
+        dereference(it->second, &inheritances);
     }
 
     for (auto it = _modelEntryMap->begin(); it != _modelEntryMap->end(); it++) {
-        addToTree(it->second, inheritances);
+        addToTree(it->second, &inheritances);
     }
-    // delete inheritances;
 }
 
 void ModelLoader::loadLibraries()

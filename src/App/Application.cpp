@@ -84,6 +84,7 @@
 
 #include "Annotation.h"
 #include "Application.h"
+#include "CleanupProcess.h"
 #include "ComplexGeoData.h"
 #include "DocumentObjectFileIncluded.h"
 #include "DocumentObjectGroup.h"
@@ -1698,6 +1699,8 @@ void Application::destruct()
     // Do this only in debug mode for memory leak checkers
     cleanupUnits();
 #endif
+
+    CleanupProcess::callCleanup();
 
     // not initialized or double destruct!
     assert(_pcSingleton);

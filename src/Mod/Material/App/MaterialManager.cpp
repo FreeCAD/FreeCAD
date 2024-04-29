@@ -77,6 +77,21 @@ void MaterialManager::initLibraries()
     }
 }
 
+void MaterialManager::cleanup()
+{
+    if (_libraryList) {
+        _libraryList->clear();
+    }
+
+    if (_materialMap) {
+        for (auto& it : *_materialMap) {
+            // This is needed to resolve cyclic dependencies
+            it.second->setLibrary(nullptr);
+        }
+        _materialMap->clear();
+    }
+}
+
 void MaterialManager::saveMaterial(const std::shared_ptr<MaterialLibrary>& library,
                                    const std::shared_ptr<Material>& material,
                                    const QString& path,

@@ -54,6 +54,7 @@ public:
     MaterialManager();
     ~MaterialManager() override = default;
 
+    static void cleanup();
     static std::shared_ptr<Material> defaultMaterial();
     static QString defaultMaterialUUID();
 
