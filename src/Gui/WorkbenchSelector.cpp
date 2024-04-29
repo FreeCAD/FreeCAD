@@ -31,6 +31,7 @@
 # include <QScreen>
 # include <QStatusBar>
 # include <QToolBar>
+# include <QLayout>
 #endif
 
 #include "Action.h"
@@ -101,29 +102,30 @@ void WorkbenchComboBox::refreshList(QList<QAction*> actionList)
 
 
 WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
-    : QTabBar(parent)
+    : QWidget(parent)
     , wbActionGroup(aGroup)
 {
     setToolTip(aGroup->toolTip());
     setStatusTip(aGroup->action()->statusTip());
     setWhatsThis(aGroup->action()->whatsThis());
+    setObjectName(QString::fromLatin1("WbTabBar"));
 
-    QAction* moreAction = new QAction(this);
-    menu = new QMenu(this);
-    moreAction->setMenu(menu);
-    connect(moreAction, &QAction::triggered, [this]() {
-        menu->popup(QCursor::pos());
-    });
-    connect(menu, &QMenu::aboutToHide, this, [this]() {
-        // if the more tab did not triggered a disabled workbench, make sure we reselect the correct tab.
-        std::string activeWbName = WorkbenchManager::instance()->activeName();
-        for (int i = 0; i < count(); ++i) {
-            if (wbActionGroup->actions()[i]->objectName().toStdString() == activeWbName) {
-                setCurrentIndex(i + 1);
-                break;
-            }
-        }
-    });
+    tabBar = new QTabBar(this);
+    moreButton = new QToolButton(this);
+
+    auto layout = new QHBoxLayout(this);
+
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(tabBar);
+    layout->addWidget(moreButton);
+
+    setLayout(layout);
+
+    moreButton->setIcon(Gui::BitmapFactory().iconFromTheme("list-add"));
+    moreButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
+    moreButton->setPopupMode(QToolButton::InstantPopup);
+    moreButton->setMenu(new QMenu(moreButton));
+    moreButton->setObjectName(QString::fromLatin1("WbTabBarMore"));
 
     if (parent->inherits("QToolBar")) {
         // set the initial orientation. We cannot do updateLayoutAndTabOrientation(false);
@@ -132,33 +134,47 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
         hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
         std::string orientation = hGrp->GetASCII("TabBarOrientation", "North");
 
-        this->setShape(orientation == "North" ? QTabBar::RoundedNorth :
+        tabBar->setShape(orientation == "North" ? QTabBar::RoundedNorth :
             orientation == "South" ? QTabBar::RoundedSouth :
             orientation == "East" ? QTabBar::RoundedEast :
             QTabBar::RoundedWest);
     }
 
-    setDocumentMode(true);
-    setUsesScrollButtons(true);
-    setDrawBase(true);
-    setObjectName(QString::fromLatin1("WbTabBar"));
-    setIconSize(QSize(16, 16));
+    tabBar->setDocumentMode(true);
+    tabBar->setUsesScrollButtons(true);
+    tabBar->setDrawBase(true);
+    tabBar->setIconSize(QSize(16, 16));
 
     refreshList(aGroup->getEnabledWbActions());
+ 
     connect(aGroup, &WorkbenchGroup::workbenchListRefreshed, this, &WorkbenchTabWidget::refreshList);
-    connect(aGroup->groupAction(), &QActionGroup::triggered, this, [this, aGroup](QAction* action) {
-        int index = aGroup->actions().indexOf(action) + 1;
-        if (index > this->count() - 1) {
-            index = 0;
+    connect(aGroup->groupAction(), &QActionGroup::triggered, this, [this](QAction* action) {
+        if (wbActionGroup->getDisabledWbActions().contains(action)) {
+            if (additionalWorkbenchAction == action) {
+                return;
+            }
+
+            if (additionalWorkbenchAction) {
+                tabBar->removeTab(tabBar->count() - 1);
+            }
+
+            additionalWorkbenchAction = action;
+
+            addWorkbenchTab(action);
+            tabBar->setCurrentIndex(tabBar->count() - 1);
+
+            return;
         }
-        setCurrentIndex(index);
+
+        tabBar->setCurrentIndex(actionToTabIndex[action]);
     });
-    connect(this, qOverload<int>(&QTabBar::tabBarClicked), aGroup, [aGroup, moreAction](int index) {
-        if(index == 0) {
-            moreAction->trigger();
-        }
-        else if (index <= aGroup->getEnabledWbActions().size()) {
-            aGroup->actions()[index - 1]->trigger();
+
+    connect(tabBar, qOverload<int>(&QTabBar::currentChanged), aGroup, [this](int index) {
+        tabIndexToAction[index]->trigger();
+
+        if (index != tabBar->count() - 1 && additionalWorkbenchAction) {
+            tabBar->removeTab(tabBar->count() - 1);
+            additionalWorkbenchAction = nullptr;
         }
     });
 
@@ -171,41 +187,47 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
 
 void WorkbenchTabWidget::refreshList(QList<QAction*> actionList)
 {
+    actionToTabIndex.clear();
+
     // tabs->clear() (QTabBar has no clear)
-    for (int i = count() - 1; i >= 0; --i) {
-        removeTab(i);
+    for (int i = tabBar->count() - 1; i >= 0; --i) {
+        tabBar->removeTab(i);
     }
 
+    for (QAction* action : actionList) {
+        addWorkbenchTab(action);
+    }
+
+    if (additionalWorkbenchAction != nullptr) {
+        addWorkbenchTab(additionalWorkbenchAction);
+    }
+
+    buildPrefMenu();
+}
+
+void WorkbenchTabWidget::addWorkbenchTab(QAction* action)
+{
     ParameterGrp::handle hGrp;
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
     int itemStyleIndex = hGrp->GetInt("WorkbenchSelectorItem", 0);
 
-    QIcon icon = Gui::BitmapFactory().iconFromTheme("list-add");
-    if (itemStyleIndex == 2) {
-        addTab(QString::fromLatin1("+"));
+    actionToTabIndex[action] = tabBar->count();
+    tabIndexToAction[tabBar->count()] = action;
+
+    QIcon icon = action->icon();
+    if (icon.isNull() || itemStyleIndex == 2) {
+        tabBar->addTab(action->text());
+    }
+    else if (itemStyleIndex == 1) {
+        tabBar->addTab(icon, QString::fromLatin1(""));
     }
     else {
-        addTab(icon, QString::fromLatin1(""));
+        tabBar->addTab(icon, action->text());
     }
 
-    for (QAction* action : actionList) {
-        QIcon icon = action->icon();
-        if (icon.isNull() || itemStyleIndex == 2) {
-            addTab(action->text());
-        }
-        else if (itemStyleIndex == 1) {
-            addTab(icon, QString::fromLatin1(""));
-        }
-        else {
-            addTab(icon, action->text());
-        }
-
-        if (action->isChecked()) {
-            setCurrentIndex(count() - 1);
-        }
+    if (action->isChecked()) {
+        tabBar->setCurrentIndex(tabBar->count() - 1);
     }
-
-    buildPrefMenu();
 }
 
 void WorkbenchTabWidget::updateLayoutAndTabOrientation(bool floating)
@@ -236,21 +258,29 @@ void WorkbenchTabWidget::updateLayoutAndTabOrientation(bool floating)
     }
 
     if (area == Qt::LeftToolBarArea || area == Qt::RightToolBarArea) {
-        setShape(area == Qt::LeftToolBarArea ? QTabBar::RoundedWest : QTabBar::RoundedEast);
+        tabBar->setShape(area == Qt::LeftToolBarArea ? QTabBar::RoundedWest : QTabBar::RoundedEast);
         hGrp->SetASCII("TabBarOrientation", area == Qt::LeftToolBarArea ? "West" : "East");
     }
     else {
-        setShape(area == Qt::TopToolBarArea ? QTabBar::RoundedNorth : QTabBar::RoundedSouth);
+        tabBar->setShape(area == Qt::TopToolBarArea ? QTabBar::RoundedNorth : QTabBar::RoundedSouth);
         hGrp->SetASCII("TabBarOrientation", area == Qt::TopToolBarArea ? "North" : "South");
     }
 }
 
 void WorkbenchTabWidget::buildPrefMenu()
 {
+    auto menu = moreButton->menu();
+
     menu->clear();
 
     // Add disabled workbenches, sorted alphabetically.
-    menu->addActions(wbActionGroup->getDisabledWbActions());
+    for (auto action : wbActionGroup->getDisabledWbActions()) {
+        if (action->text() == QString::fromLatin1("<none>")) {
+            continue;
+        }
+
+        menu->addAction(action);
+    }
 
     menu->addSeparator();
 

@@ -27,7 +27,9 @@
 #include <QComboBox>
 #include <QTabBar>
 #include <QMenu>
+#include <QToolButton>
 #include <FCGlobal.h>
+#include <map>
 
 namespace Gui
 {
@@ -49,7 +51,7 @@ private:
 };
 
 
-class GuiExport WorkbenchTabWidget : public QTabBar
+class GuiExport WorkbenchTabWidget : public QWidget
 {
     Q_OBJECT
 
@@ -61,10 +63,17 @@ public:
 
 public Q_SLOTS:
     void refreshList(QList<QAction*>);
+    void addWorkbenchTab(QAction* workbenchActivateAction);
 
 private:
     WorkbenchGroup* wbActionGroup;
-    QMenu* menu;
+    QToolButton* moreButton;
+    QTabBar* tabBar;
+    // this action is used for workbenches that are typically disabled
+    QAction* additionalWorkbenchAction = nullptr;
+
+    std::map<QAction*, int> actionToTabIndex;
+    std::map<int, QAction*> tabIndexToAction;
 };
 
 
