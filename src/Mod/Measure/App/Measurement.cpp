@@ -202,7 +202,7 @@ TopoDS_Shape Measurement::getShape(App::DocumentObject *obj , const char *subNam
 
     try {
         Part::TopoShape partShape = Part::Feature::getTopoShape(obj);
-        App::GeoFeature* geoFeat = dynamic_cast<App::GeoFeature*>(obj);
+        App::GeoFeature* geoFeat =  dynamic_cast<App::GeoFeature*>(obj);
         if (geoFeat) {
             partShape.setPlacement(geoFeat->globalPlacement());
         }

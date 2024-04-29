@@ -103,6 +103,7 @@
 #include "VarSet.h"
 #include "MaterialObject.h"
 #include "MeasureDistance.h"
+#include "MeasureManagerPy.h"
 #include "Origin.h"
 #include "OriginFeature.h"
 #include "OriginGroupExtension.h"
@@ -314,6 +315,8 @@ void Application::setupPythonTypes()
 
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
     Base::Interpreter().addType(&App::MetadataPy::Type, pAppModule, "Metadata");
+
+    Base::Interpreter().addType(&App::MeasureManagerPy::Type, pAppModule, "MeasureManager");
 
     Base::Interpreter().addType(&App::StringHasherPy::Type, pAppModule, "StringHasher");
     Base::Interpreter().addType(&App::StringIDPy::Type, pAppModule, "StringID");

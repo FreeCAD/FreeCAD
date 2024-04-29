@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2022                                                    *
+ *   Copyright (c) 2013 Thomas Anderson <blobfish[at]gmx.com>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,39 +20,54 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef GUI_ARCENGINE_H
+#define GUI_ARCENGINE_H
 
-#ifndef PARTGUI_DIALOG_DLGSETTINGSMEASURE_H
-#define PARTGUI_DIALOG_DLGSETTINGSMEASURE_H
+#include <FCGlobal.h>
+#include <Inventor/fields/SoMFColor.h>
+#include <Inventor/engines/SoEngineOutput.h>
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+#include <Inventor/engines/SoSubEngine.h>
+#include <Inventor/engines/SoEngine.h>
+#include <Inventor/fields/SoSFColor.h>
+#include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFMatrix.h>
+#include <Inventor/fields/SoSFRotation.h>
+#include <Inventor/fields/SoSFString.h>
+#include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/nodekits/SoSeparatorKit.h>
 
-namespace PartGui {
-class Ui_DlgSettingsMeasure;
+class SoText2;
+class SoTranslation;
+class SoCoordinate3;
+class SoIndexedLineSet;
 
-/**
- * The DlgSettingsMeasure class implements a preference page to change color
- *   and font settings for Measure Dimensions
- */
-class DlgSettingsMeasure : public Gui::Dialog::PreferencePage
+namespace Gui {
+
+
+// /*used for generating points for arc display*/
+class GuiExport ArcEngine : public SoEngine
 {
-  Q_OBJECT
-
+    SO_ENGINE_HEADER(ArcEngine);
 public:
-  explicit DlgSettingsMeasure(QWidget* parent = nullptr);
-  ~DlgSettingsMeasure() override;
+    ArcEngine();
+    static void initClass();
 
-  void saveSettings() override;
-  void loadSettings() override;
+    SoSFFloat radius;
+    SoSFFloat angle;
+    SoSFFloat deviation;
 
+    SoEngineOutput points;
+    SoEngineOutput pointCount;
+    SoEngineOutput midpoint;
+    
 protected:
-  void changeEvent(QEvent *e) override;
-
+    void evaluate() override;
 private:
-  std::unique_ptr<Ui_DlgSettingsMeasure> ui;
-  void onMeasureRefresh();
+    ~ArcEngine() override{}
+    void defaultValues(); //some non error values if something goes wrong.
 };
 
-} // namespace PartGui
+} // namespace Gui
 
-#endif // PARTGUI_DIALOG_DLGSETTINGSMEASURE_H
+#endif // GUI_ARCENGINE_H
