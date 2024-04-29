@@ -579,6 +579,9 @@ void CmdFemConstraintHeatflux::activated(int)
               "App.activeDocument().%s.FilmCoef = 10.0",
               FeatName.c_str());  // OvG: set default not equal to 0
     doCommand(Doc,
+              "App.activeDocument().%s.Emissivity = 1.0",
+              FeatName.c_str());  // OvG: set default not equal to 0
+    doCommand(Doc,
               "App.activeDocument().%s.Scale = 1",
               FeatName.c_str());  // OvG: set initial scale to 1
     doCommand(Doc,
