@@ -52,7 +52,9 @@ namespace MillSim
 
 	bool CheckCompileResult(int shader)
 	{
-#ifndef HAVE_OPENGL_EXT
+#ifdef HAVE_OPENGL_EXT
+		return false;
+#else
 		char log[1024];
 		int res = 0;
 		GLsizei len;
@@ -64,8 +66,8 @@ namespace MillSim
 			len = 1020;
 		log[len] = 0;
 		std::cout << log << std::endl;
-#endif
 		return true;
+#endif
 	}
 
 	unsigned int Shader::CompileShader(char* _vertShader, char* _fragShader)

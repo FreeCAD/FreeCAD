@@ -403,8 +403,6 @@ namespace MillSim {
         shaderFlat.CompileShader((char*)VertShader3DNorm, (char*)FragShaderFlat);
         shaderFlat.UpdateProjectionMat(projmat);
 
-        glMatrixMode(GL_MODELVIEW);
-
         // setup light object and generate tools
         mlightObject.GenerateBoxStock(-0.5f, -0.5f, -0.5f, 1, 1, 1);
         for (int i = 0; i < mToolTable.size(); i++)

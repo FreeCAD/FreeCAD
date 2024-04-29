@@ -38,7 +38,7 @@ namespace MillSim
 		float tx, ty;
 	};
 
-	class GuiDisplay OpenGlInherit
+	class GuiDisplay
 	{
 	public:
 		//GuiDisplay() {};

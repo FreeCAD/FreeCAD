@@ -6,7 +6,7 @@
 
 namespace MillSim
 {
-	class Shader OpenGlInherit
+	class Shader
 	{
 	public:
 		Shader() {}

@@ -24,14 +24,127 @@
 
 #include "DlgCAMSimulator.h"
 #include <QtGui/QMatrix4x4>
-#include <QtGui/qopenglshaderprogram.h>
 #include <QtGui/qscreen.h>
-
+#include "MillSimulation.h"
+#include <QDateTime>
 
 using namespace CAMSimulator;
+using namespace MillSim;
+
+const char* demoCode[] = {
+    "T2",
+    "G0 X-0.7 Y-0.7 Z10",
+    "G0 X-0.7 Y-0.7 Z1",
+    "G0 X0.7 Y0.7 Z1 I0.7 J0.7 K0",
+    "G0 X0.7 Y0.7 Z10",
+
+    "G0 X-3 Y-3 Z10",
+    "G0 X-3 Y-3 Z0.5",
+    "G3 X3 Y3 Z0.5 I3 J3 K0",
+    "G0 X3 Y3 Z10",
+
+    "G0 X15 Y15 Z10",
+    "G0 X 15 Y15 Z1.5",
+    "G0 X15 Y-15 Z1.5",
+    "G0 X-15 Y-15 Z1.5",
+    "G0 X-15 Y15 Z1.5",
+    "G0 X15 Y15 Z1.5",
+
+    "G0 X15 Y15 Z1",
+    "G0 X15 Y-15 Z1",
+    "G0 X-15 Y-15 Z1",
+    "G0 X-15 Y15 Z1",
+    "G0 X15 Y15 Z1",
+
+    "G0 X15 Y15 Z0.5",
+    "G0 X15 Y-15 Z0.5",
+    "G0 X-15 Y-15 Z0.5",
+    "G0 X-15 Y15 Z0.5",
+    "G0 X15 Y15 Z0.5",
+
+    "G0 X15 Y15 Z0",
+    "G0 X15 Y-15 Z0",
+    "G0 X-15 Y-15 Z0",
+    "G0 X-15 Y15 Z0",
+    "G0 X15 Y15 Z0",
+
+    "G0 X15 Y15 Z10",
+
+    "T1",
+    "G0 X8 Y8 Z10",
+    "G0 X8 Y8 Z1.5",
+    "G0 X8 Y-8 Z1.5",
+    "G0 X6.1 Y-8 Z1.5",
+    "G0 X6.1 Y8 Z1.5",
+    "G0 X4.2 Y8 Z1.5",
+    "G0 X4.2 Y-8 Z1.5",
+    "G0 X2.3 Y-8 Z1.5",
+    "G0 X2.3 Y8 Z1.5",
+    "G0 X0.4 Y8 Z1.5",
+    "G0 X0.4 Y-8 Z1.5",
+    "G0 X-1.5 Y-8 Z1.5",
+    "G0 X-1.5 Y8 Z1.5",
+    "G0 X-3.4 Y8 Z1.5",
+    "G0 X-3.4 Y-8 Z1.5",
+    "G0 X-5.3 Y-8 Z1.5",
+    "G0 X-5.3 Y8 Z1.5",
+    "G0 X-7.2 Y8 Z1.5",
+    "G0 X-7.2 Y-8 Z1.5",
+    "G0 X-8 Y-8 Z1.5",
+    "G0 X-8 Y8 Z1.5",
+    "G0 X 8 Y8 Z1.5",
+    "G0 X 8 Y-8 Z1.5",
+    "G0 X-8 Y-8 Z1.5",
+
+    "G0 X-8 Y-8 Z10",
+
+    // taper mill motion
+    "T3",
+    "G0 X14.2 Y14.2 Z10",
+    "G0 X14.2 Y14.2 Z1.5",
+    "G0 X14.2 Y-14.2 Z1.5",
+    "G0 X-14.2 Y-14.2 Z1.5",
+    "G0 X-14.2 Y14.2 Z1.5",
+    "G0 X14.2 Y14.2 Z1.5",
+    "G0 X14.2 Y14.2 Z10",
+    "G0 X0 Y0 Z10",
+
+    // ball mill motion
+    "T4",
+    "G0 X12 Y12 Z10",
+    "G0 X12 Y12 Z1.5",
+    "G0 X12 Y-12 Z2.5",
+    "G0 X-12 Y-12 Z1.5",
+    "G0 X-12 Y12 Z2.5",
+    "G0 X12 Y12 Z1.5",
+    "G0 X12 Y12 Z10",
+    "G0 X0 Y0 Z10",
+};
+
+#define NUM_DEMO_MOTIONS (sizeof(demoCode) / sizeof(char*))
+
+EndMillFlat endMillFlat01(1, 3.175f, 16);
+EndMillFlat endMillFlat02(2, 1.5f, 16);
+EndMillBall endMillBall03(4, 1, 16, 4, 0.2f);
+EndMillTaper endMillTaper04(3, 1, 16, 90, 0.2f);
+
+MillSim::MillSimulation gMillSimulator;
+
+QOpenGLContext *gOpenGlContext;
+OpenGLWindow* gWindow = nullptr;
 
 namespace CAMSimulator
 {
+
+    class test : protected QOpenGLExtraFunctions
+    {
+    public:
+        unsigned int vbo;
+        void genbuff()
+        {
+            glGenBuffers(1, &vbo);
+        }
+    };
 
 
     OpenGLWindow::OpenGLWindow(QWindow* parent)
@@ -46,21 +159,41 @@ namespace CAMSimulator
     }
 
     void OpenGLWindow::initialize()
-    {}
+    {
+        //glClearColor(0.6f, 0.8f, 1.0f, 1.0f);
+        test tst;
+        tst.genbuff();
+
+        for (int i = 0; i < NUM_DEMO_MOTIONS; i++) {
+            gMillSimulator.AddGcodeLine(demoCode[i]);
+        }
+        gMillSimulator.AddTool(&endMillFlat01);
+        gMillSimulator.AddTool(&endMillFlat02);
+        gMillSimulator.AddTool(&endMillBall03);
+        gMillSimulator.AddTool(&endMillTaper04);
+        gMillSimulator.InitSimulation();
+        // gMillSimulator.SetBoxStock(0, 0, -8.7f, 50, 50, 8.7f);
+        gMillSimulator.SetBoxStock(-20, -20, 0.001f, 50, 50, 2);
+        gMillSimulator.InitDisplay();
+    
+    }
 
     void OpenGLWindow::render()
     {
-        if (!m_device) {
-            m_device = new QOpenGLPaintDevice;
-        }
+        // if (!m_device) {
+        //    m_device = new QOpenGLPaintDevice;
+        //}
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-        m_device->setSize(size() * devicePixelRatio());
-        m_device->setDevicePixelRatio(devicePixelRatio());
+        //m_device->setSize(size() * devicePixelRatio());
+        //m_device->setDevicePixelRatio(devicePixelRatio());
 
-        QPainter painter(m_device);
-        render(&painter);
+        //gMillSimulator.ProcessSim((unsigned int)(QDateTime::currentMSecsSinceEpoch() * 1000));
+
+        //QPainter painter(m_device);
+        //render(&painter);
+        gMillSimulator.ProcessSim((unsigned int)(QDateTime::currentMSecsSinceEpoch() * 1000));
     }
 
     void OpenGLWindow::renderLater()
@@ -100,7 +233,7 @@ namespace CAMSimulator
             m_context = new QOpenGLContext(this);
             m_context->setFormat(requestedFormat());
             m_context->create();
-
+            gOpenGlContext = m_context;
             needsInitialize = true;
         }
 
@@ -129,25 +262,8 @@ namespace CAMSimulator
         }
     }
 
-    class TriangleWindow: public OpenGLWindow
-    {
-    public:
-        using OpenGLWindow::OpenGLWindow;
 
-        void initialize() override;
-        void render() override;
-
-    private:
-        GLint m_posAttr = 0;
-        GLint m_colAttr = 0;
-        GLint m_matrixUniform = 0;
-
-        QOpenGLShaderProgram* m_program = nullptr;
-        int m_frame = 0;
-    };
-
-    TriangleWindow* gWindow = nullptr;
-
+    
     int ShowWindow()
     {
         QSurfaceFormat format;
@@ -155,7 +271,7 @@ namespace CAMSimulator
 
         if (gWindow == nullptr) 
         {
-            gWindow = new TriangleWindow();
+            gWindow = new OpenGLWindow();
             gWindow->setFormat(format);
             gWindow->resize(800, 600);
             gWindow->show();
@@ -165,69 +281,6 @@ namespace CAMSimulator
         return 0;
     }
 
-    static const char* vertexShaderSource = "attribute highp vec4 posAttr;\n"
-                                            "attribute lowp vec4 colAttr;\n"
-                                            "varying lowp vec4 col;\n"
-                                            "uniform highp mat4 matrix;\n"
-                                            "void main() {\n"
-                                            "   col = colAttr;\n"
-                                            "   gl_Position = matrix * posAttr;\n"
-                                            "}\n";
-
-    static const char* fragmentShaderSource = "varying lowp vec4 col;\n"
-                                              "void main() {\n"
-                                              "   gl_FragColor = col;\n"
-                                              "}\n";
-
-    void TriangleWindow::initialize()
-    {
-        m_program = new QOpenGLShaderProgram(this);
-        m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
-        m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
-        m_program->link();
-        m_posAttr = m_program->attributeLocation("posAttr");
-        Q_ASSERT(m_posAttr != -1);
-        m_colAttr = m_program->attributeLocation("colAttr");
-        Q_ASSERT(m_colAttr != -1);
-        m_matrixUniform = m_program->uniformLocation("matrix");
-        Q_ASSERT(m_matrixUniform != -1);
-    }
-
-    void TriangleWindow::render()
-    {
-        const qreal retinaScale = devicePixelRatio();
-        glViewport(0, 0, width() * retinaScale, height() * retinaScale);
-
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        m_program->bind();
-
-        QMatrix4x4 matrix;
-        matrix.perspective(60.0f, 4.0f / 3.0f, 0.1f, 100.0f);
-        matrix.translate(0, 0, -2);
-        matrix.rotate(100.0f * m_frame / screen()->refreshRate(), 0, 1, 0);
-
-        m_program->setUniformValue(m_matrixUniform, matrix);
-
-        static const GLfloat vertices[] = {0.0f, 0.707f, -0.5f, -0.5f, 0.5f, -0.5f};
-
-        static const GLfloat colors[] = {1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f};
-
-        glVertexAttribPointer(m_posAttr, 2, GL_FLOAT, GL_FALSE, 0, vertices);
-        glVertexAttribPointer(m_colAttr, 3, GL_FLOAT, GL_FALSE, 0, colors);
-
-        glEnableVertexAttribArray(m_posAttr);
-        glEnableVertexAttribArray(m_colAttr);
-
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-
-        glDisableVertexAttribArray(m_colAttr);
-        glDisableVertexAttribArray(m_posAttr);
-
-        m_program->release();
-
-        ++m_frame;
-    }
 
 
     //************************************************************************************************************

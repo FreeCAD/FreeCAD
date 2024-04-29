@@ -30,14 +30,15 @@
 // #include <Mod/Part/App/TopoShape.h>
 // #include <Mod/CAM/PathGlobal.h>
 #include <QtGui/qwindow.h>
-#include <QtGui/qopenglfunctions.h>
+//#include <QtGui/qopenglfunctions.h>
+#include <QOpenGLExtraFunctions>
 #include <QtGui/qpainter.h>
 #include <QtGui/qopenglpaintdevice.h>
 
 namespace CAMSimulator
 {
 
-    class OpenGLWindow: public QWindow, protected QOpenGLFunctions
+    class OpenGLWindow: public QWindow, public QOpenGLExtraFunctions
     {
         Q_OBJECT
     public:

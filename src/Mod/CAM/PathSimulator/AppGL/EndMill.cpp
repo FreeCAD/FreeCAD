@@ -35,11 +35,8 @@ void EndMill::GenerateDisplayLists()
 unsigned int EndMill::GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape *retShape)
 {
 	int nFullPoints = PROFILE_BUFFER_POINTS(mNPoints);
-	unsigned int dispId = glGenLists(1);
-	glNewList(dispId, GL_COMPILE);
 	retShape->ExtrudeProfileRadial(mProfPoints, PROFILE_BUFFER_POINTS(mNPoints), radius, angleRad, zShift, true, true);
-	glEndList();
-	return dispId;
+	return 0;
 }
 
 void EndMill::MirrorPointBuffer()

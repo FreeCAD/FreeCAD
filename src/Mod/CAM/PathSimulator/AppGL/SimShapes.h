@@ -21,7 +21,7 @@ namespace MillSim
 		float nx, ny, nz;
 	};
 
-	class Shape OpenGlInherit
+	class Shape 
 	{
 	public:
 		Shape() {}

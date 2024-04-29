@@ -5,7 +5,7 @@
 namespace MillSim
 {
 
-	class Texture OpenGlInherit
+	class Texture
 	{
 	public:
 		Texture() {}

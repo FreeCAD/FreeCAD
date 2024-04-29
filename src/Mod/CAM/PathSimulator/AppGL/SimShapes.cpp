@@ -329,7 +329,9 @@ void MillSim::Shape::GenerateModel(float* vbuffer, GLushort* ibuffer, int numVer
 
     // vertex buffer
     glGenBuffers(1, &vbo);
+    GLClearError();
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    GLLogError();
     glBufferData(GL_ARRAY_BUFFER, numVerts * sizeof(Vertex), vbuffer, GL_STATIC_DRAW);
 
     // index buffer
