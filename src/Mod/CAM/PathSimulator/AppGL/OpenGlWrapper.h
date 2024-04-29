@@ -1,6 +1,6 @@
 #ifndef __openglwrapper_h__
 #define __openglwrapper_h__
-#ifdef HAVE_OPENGL_EXT
+#ifdef QT_OPENGL_LIB
 #include "DlgCAMSimulator.h"
 extern QOpenGLContext* gOpenGlContext;
 extern CAMSimulator::OpenGLWindow* gWindow;
