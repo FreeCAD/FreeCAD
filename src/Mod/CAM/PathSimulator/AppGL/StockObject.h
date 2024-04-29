@@ -26,11 +26,11 @@ namespace MillSim {
         Shape mShape;
         void SetPosition(vec3 position);
         void GenerateBoxStock(float x, float y, float z, float l, float w, float h);
-        vec3 mCenter;
-        vec3 mSize;
+        vec3 mCenter = {};
+        vec3 mSize = {};
 
     private:
-        float mProfile[8];
+        float mProfile[8] = {};
         mat4x4 modelMat;
 
     };

@@ -188,7 +188,7 @@ bool GuiDisplay::InutGui()
 		GenerateGlItem(&(guiItems[i]));
 
 	mThumbStartX = guiItems[eGuiItemSlider].sx - guiItems[eGuiItemThumb].w / 2;
-	mThumbMaxMotion = guiItems[eGuiItemSlider].w;
+	mThumbMaxMotion = (float)guiItems[eGuiItemSlider].w;
 
 	// shader
 	mat4x4 projmat;
@@ -206,7 +206,7 @@ void GuiDisplay::RenderItem(int itemId)
 	if (item->hidden)
 		return;
 	mat4x4 model;
-	mat4x4_translate(model, item->sx, item->sy, 0);
+	mat4x4_translate(model, (float)item->sx, (float)item->sy, 0);
 	mShader.UpdateModelMat(model, nullptr);
 	if (itemId == mPressedItem)
 		mShader.UpdateObjColor(mPressedColor);

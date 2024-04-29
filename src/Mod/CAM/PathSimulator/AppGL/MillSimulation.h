@@ -62,8 +62,8 @@ namespace MillSim {
 		std::ostringstream mFpsStream;
 
 		MillMotion mZeroPos = { eNop, -1, 0, 0,  10 };
-		MillMotion mCurMotion;
-		MillMotion mDestMotion;
+		MillMotion mCurMotion = { eNop, -1, 0, 0,  0, 0, 0, 0 };
+		MillMotion mDestMotion = { eNop, -1, 0, 0, 0, 0, 0, 0 };
 
 		StockObject mStockObject;
 		StockObject mlightObject;

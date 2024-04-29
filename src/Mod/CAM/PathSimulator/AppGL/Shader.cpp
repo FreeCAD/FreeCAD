@@ -31,11 +31,11 @@ namespace MillSim
 	void Shader::UpdateEnvColor(vec3 lightPos, vec3 lightColor, vec3 ambient)
 	{
 		if (lightPosPos >= 0)
-			GL(glUniform3fv(lightPosPos, 1, lightPos));
+			glUniform3fv(lightPosPos, 1, lightPos);
 		if (lightColorPos >= 0)
-			GL(glUniform3fv(lightColorPos, 1, lightColor));
+			glUniform3fv(lightColorPos, 1, lightColor);
 		if (ambientPos >= 0)
-			GL(glUniform3fv(ambientPos, 1, ambient));
+			glUniform3fv(ambientPos, 1, ambient);
 	}
 
 	void Shader::UpdateObjColor(vec3 objColor)
@@ -74,21 +74,21 @@ namespace MillSim
 		fragShader = _fragShader;
 		const GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 		GLint res = 0;
-		GL(glShaderSource(vertex_shader, 1, &vertShader, NULL));
-		GL(glCompileShader(vertex_shader));
+		glShaderSource(vertex_shader, 1, &vertShader, NULL);
+		glCompileShader(vertex_shader);
 		if (CheckCompileResult(vertex_shader))
 			return 0xdeadbeef;
 
 		const GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-		GL(glShaderSource(fragment_shader, 1, &fragShader, NULL));
-		GL(glCompileShader(fragment_shader));
+		glShaderSource(fragment_shader, 1, &fragShader, NULL);
+		glCompileShader(fragment_shader);
 		if (CheckCompileResult(fragment_shader))
 			return 0xdeadbeef;
 
 		shaderId = glCreateProgram();
-		GL(glAttachShader(shaderId, vertex_shader));
-		GL(glAttachShader(shaderId, fragment_shader));
-		GL(glLinkProgram(shaderId));
+		glAttachShader(shaderId, vertex_shader);
+		glAttachShader(shaderId, fragment_shader);
+		glLinkProgram(shaderId);
 
 		glGetProgramiv(shaderId, GL_LINK_STATUS, &res);
 		if (res == 0)

@@ -7,6 +7,7 @@
 MillSim::StockObject::StockObject()
 {
     mat4x4_identity(modelMat);
+    vec3_set(mCenter, 0, 0, 0);
 }
 
 MillSim::StockObject::~StockObject()

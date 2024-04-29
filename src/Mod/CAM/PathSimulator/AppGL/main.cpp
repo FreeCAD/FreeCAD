@@ -195,7 +195,6 @@ void mouse_callback(GLFWwindow* window, int button, int action, int mods)
 void handle_mouse_move(GLFWwindow* window)
 {
     double fx, fy;
-    int x, y, dx, dy;
     glfwGetCursorPos(window, &fx, &fy);
     if (gMouseButtonState > 0)
     {
@@ -211,7 +210,7 @@ void handle_mouse_move(GLFWwindow* window)
         }
     }
     else
-        gMillSimulator.MouseHover(fx, fy);
+        gMillSimulator.MouseHover((int)fx, (int)fy);
 }
 
 static void error_callback(int error, const char* description)
@@ -258,7 +257,7 @@ int main(int argc, char **argv)
     gMillSimulator.AddTool(&endMillTaper04);
     gMillSimulator.InitSimulation();
     //gMillSimulator.SetBoxStock(0, 0, -8.7f, 50, 50, 8.7f);
-    gMillSimulator.SetBoxStock(-20, -20, 0.001, 50, 50, 2);
+    gMillSimulator.SetBoxStock(-20, -20, 0.001f, 50, 50, 2);
     gMillSimulator.InitDisplay();
     
     while (!glfwWindowShouldClose(glwind))

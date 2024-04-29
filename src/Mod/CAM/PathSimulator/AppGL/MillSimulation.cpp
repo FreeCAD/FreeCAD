@@ -7,6 +7,7 @@ namespace MillSim {
 
     MillSimulation::MillSimulation()
     {
+        mCurMotion = { eNop, -1, 0, 0,  0, 0, 0, 0 };
     }
 
     void MillSimulation::ClearMillPathSegments() {
@@ -58,7 +59,7 @@ namespace MillSim {
                 MillPathSegments.push_back(segment);
             }
         }
-        mNPathSteps = MillPathSegments.size();
+        mNPathSteps = (int)MillPathSegments.size();
     }
 
     EndMill* MillSimulation::GetTool(int toolId)
@@ -381,7 +382,7 @@ namespace MillSim {
     void MillSimulation::InitDisplay()
     {
         // gray background
-        GL(glClearColor(0.6f, 0.8f, 1.0f, 1.0f));
+        glClearColor(0.6f, 0.8f, 1.0f, 1.0f);
 
         // Setup projection
         mat4x4 projmat;
