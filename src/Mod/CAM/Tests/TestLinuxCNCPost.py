@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2023 Larry Woestman <LarryWoestman2@gmail.com>          *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -78,6 +79,19 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         """
         FreeCAD.ActiveDocument.removeObject("testpath")
 
+    def compare_sixth_line(self, path_string, expected, args, debug=False):
+        """Perform a test with a single comparison to the sixth line of the output."""
+        nl = "\n"
+        if path_string:
+            self.docobj.Path = Path.Path([Path.Command(path_string)])
+        else:
+            self.docobj.Path = Path.Path([])
+        postables = [self.docobj]
+        gcode = postprocessor.export(postables, "-", args)
+        if debug:
+            print(f"--------{nl}{gcode}--------{nl}")
+        self.assertEqual(gcode.splitlines()[5], expected)
+
     def test000(self):
         """Test Output Generation.
         Empty path.  Produces only the preamble and postable.
@@ -132,37 +146,26 @@ M2
         Test Precision
         Test imperial / inches
         """
-        c = Path.Command("G0 X10 Y20 Z30")
-
-        self.docobj.Path = Path.Path([c])
-        postables = [self.docobj]
-
-        args = "--no-header --no-show-editor"
-        gcode = postprocessor.export(postables, "-", args)
-        result = gcode.splitlines()[5]
-        expected = "G0 X10.000 Y20.000 Z30.000 "
-        self.assertEqual(result, expected)
-
-        args = "--no-header --precision=2 --no-show-editor"
-        gcode = postprocessor.export(postables, "-", args)
-        result = gcode.splitlines()[5]
-        expected = "G0 X10.00 Y20.00 Z30.00 "
-        self.assertEqual(result, expected)
+        self.compare_sixth_line(
+            "G0 X10 Y20 Z30",
+            "G0 X10.000 Y20.000 Z30.000 ",
+            "--no-header --no-show-editor"
+        )
+        self.compare_sixth_line(
+            "G0 X10 Y20 Z30",
+            "G0 X10.00 Y20.00 Z30.00 ",
+            "--no-header --precision=2 --no-show-editor"
+        )
 
     def test020(self):
         """
         Test Line Numbers
         """
-        c = Path.Command("G0 X10 Y20 Z30")
-
-        self.docobj.Path = Path.Path([c])
-        postables = [self.docobj]
-
-        args = "--no-header --line-numbers --no-show-editor"
-        gcode = postprocessor.export(postables, "-", args)
-        result = gcode.splitlines()[5]
-        expected = "N160  G0 X10.000 Y20.000 Z30.000 "
-        self.assertEqual(result, expected)
+        self.compare_sixth_line(
+            "G0 X10 Y20 Z30",
+            "N160  G0 X10.000 Y20.000 Z30.000 ",
+            "--no-header --line-numbers --no-show-editor"
+        )
 
     def test030(self):
         """
@@ -274,14 +277,162 @@ M2
         """
         Test comment
         """
+        self.compare_sixth_line(
+            "(comment)",
+            "(comment) ",
+            "--no-header --no-show-editor"
+        )
 
-        c = Path.Command("(comment)")
+    def test100(self):
+        """Test A, B, & C axis output for values between 0 and 90 degrees
+        """
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A40 B50 C60",
+            "G1 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 ",
+            "--no-header --no-show-editor"
+        )
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A40 B50 C60",
+            "G1 X0.3937 Y0.7874 Z1.1811 A40.0000 B50.0000 C60.0000 ",
+            "--no-header --inches --no-show-editor"
+        )
 
-        self.docobj.Path = Path.Path([c])
-        postables = [self.docobj]
+    def test110(self):
+        """Test A, B, & C axis output for 89 degrees
+        """
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A89 B89 C89",
+            "G1 X10.000 Y20.000 Z30.000 A89.000 B89.000 C89.000 ",
+            "--no-header --no-show-editor"
+        )
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A89 B89 C89",
+            "G1 X0.3937 Y0.7874 Z1.1811 A89.0000 B89.0000 C89.0000 ",
+            "--no-header --inches --no-show-editor"
+        )
 
-        args = "--no-header --no-show-editor"
-        gcode = postprocessor.export(postables, "-", args)
-        result = gcode.splitlines()[5]
-        expected = "(comment) "
-        self.assertEqual(result, expected)
+    def test120(self):
+        """Test A, B, & C axis output for 90 degrees
+        """
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A90 B90 C90",
+            "G1 X10.000 Y20.000 Z30.000 A90.000 B90.000 C90.000 ",
+            "--no-header --no-show-editor"
+        )
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A90 B90 C90",
+            "G1 X0.3937 Y0.7874 Z1.1811 A90.0000 B90.0000 C90.0000 ",
+            "--no-header --inches --no-show-editor"
+        )
+
+    def test130(self):
+        """Test A, B, & C axis output for 91 degrees
+        """
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A91 B91 C91",
+            "G1 X10.000 Y20.000 Z30.000 A91.000 B91.000 C91.000 ",
+            "--no-header --no-show-editor"
+        )
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A91 B91 C91",
+            "G1 X0.3937 Y0.7874 Z1.1811 A91.0000 B91.0000 C91.0000 ",
+            "--no-header --inches --no-show-editor"
+        )
+
+    def test140(self):
+        """Test A, B, & C axis output for values between 90 and 180 degrees
+        """
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A100 B110 C120",
+            "G1 X10.000 Y20.000 Z30.000 A100.000 B110.000 C120.000 ",
+            "--no-header --no-show-editor"
+        )
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A100 B110 C120",
+            "G1 X0.3937 Y0.7874 Z1.1811 A100.0000 B110.0000 C120.0000 ",
+            "--no-header --inches --no-show-editor"
+        )
+
+    def test150(self):
+        """Test A, B, & C axis output for values between 180 and 360 degrees
+        """
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A240 B250 C260",
+            "G1 X10.000 Y20.000 Z30.000 A240.000 B250.000 C260.000 ",
+            "--no-header --no-show-editor"
+        )
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A240 B250 C260",
+            "G1 X0.3937 Y0.7874 Z1.1811 A240.0000 B250.0000 C260.0000 ",
+            "--no-header --inches --no-show-editor"
+        )
+
+    def test160(self):
+        """Test A, B, & C axis output for values greater than 360 degrees
+        """
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A440 B450 C460",
+            "G1 X10.000 Y20.000 Z30.000 A440.000 B450.000 C460.000 ",
+            "--no-header --no-show-editor"
+        )
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A440 B450 C460",
+            "G1 X0.3937 Y0.7874 Z1.1811 A440.0000 B450.0000 C460.0000 ",
+            "--no-header --inches --no-show-editor"
+        )
+
+    def test170(self):
+        """Test A, B, & C axis output for values between 0 and -90 degrees
+        """
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A-40 B-50 C-60",
+            "G1 X10.000 Y20.000 Z30.000 A-40.000 B-50.000 C-60.000 ",
+            "--no-header --no-show-editor"
+        )
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A-40 B-50 C-60",
+            "G1 X0.3937 Y0.7874 Z1.1811 A-40.0000 B-50.0000 C-60.0000 ",
+            "--no-header --inches --no-show-editor"
+        )
+
+    def test180(self):
+        """Test A, B, & C axis output for values between -90 and -180 degrees
+        """
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A-100 B-110 C-120",
+            "G1 X10.000 Y20.000 Z30.000 A-100.000 B-110.000 C-120.000 ",
+            "--no-header --no-show-editor"
+        )
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A-100 B-110 C-120",
+            "G1 X0.3937 Y0.7874 Z1.1811 A-100.0000 B-110.0000 C-120.0000 ",
+            "--no-header --inches --no-show-editor"
+        )
+
+    def test190(self):
+        """Test A, B, & C axis output for values between -180 and -360 degrees
+        """
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A-240 B-250 C-260",
+            "G1 X10.000 Y20.000 Z30.000 A-240.000 B-250.000 C-260.000 ",
+            "--no-header --no-show-editor"
+        )
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A-240 B-250 C-260",
+            "G1 X0.3937 Y0.7874 Z1.1811 A-240.0000 B-250.0000 C-260.0000 ",
+            "--no-header --inches --no-show-editor"
+        )
+
+    def test200(self):
+        """Test A, B, & C axis output for values below -360 degress
+        """
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A-440 B-450 C-460",
+            "G1 X10.000 Y20.000 Z30.000 A-440.000 B-450.000 C-460.000 ",
+            "--no-header --no-show-editor"
+        )
+        self.compare_sixth_line(
+            "G1 X10 Y20 Z30 A-440 B-450 C-460",
+            "G1 X0.3937 Y0.7874 Z1.1811 A-440.0000 B-450.0000 C-460.0000 ",
+            "--no-header --inches --no-show-editor"
+        )
