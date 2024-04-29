@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
-#    Copyright (c) 2024 The FreeCAD Project Association AISBL               *
+ *   Copyright (c) 2024 The FreeCAD Project Association AISBL               *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,55 +21,41 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef STARTGUI_PRECOMPILED_H
-#define STARTGUI_PRECOMPILED_H
+#ifndef FREECAD_FIRSTSTARTWIDGET_H
+#define FREECAD_FIRSTSTARTWIDGET_H
 
-#include <FCConfig.h>
-
-#ifdef _MSC_VER
-#pragma warning(disable : 5208)
-#endif
-
-#ifdef _PreComp_
-
-// standard
-#include <cinttypes>
-#include <cmath>
-#include <iomanip>
-#include <map>
-#include <sstream>
-#include <string>
-#include <vector>
-#include <unordered_map>
-
-// Qt
-#include <QApplication>
-#include <QBoxLayout>
-#include <QCheckBox>
-#include <QComboBox>
-#include <QCoreApplication>
-#include <QFile>
-#include <QFileIconProvider>
-#include <QFrame>
-#include <QGridLayout>
-#include <QGuiApplication>
-#include <QHBoxLayout>
-#include <QImageReader>
-#include <QLabel>
-#include <QListView>
-#include <QModelIndex>
-#include <QPainter>
-#include <QPushButton>
-#include <QResizeEvent>
-#include <QScrollArea>
-#include <QSpacerItem>
-#include <QString>
-#include <QStyleOptionViewItem>
-#include <QTimer>
-#include <QToolButton>
-#include <QUrl>
-#include <QVBoxLayout>
 #include <QWidget>
+#include <QGroupBox>
 
-#endif  // _PreComp_
-#endif  // STARTGUI_PRECOMPILED_H
+class QLabel;
+class QPushButton;
+
+namespace StartGui
+{
+
+class ThemeSelectorWidget;
+class GeneralSettingsWidget;
+
+class FirstStartWidget: public QGroupBox
+{
+    Q_OBJECT
+public:
+    explicit FirstStartWidget(QWidget* parent = nullptr);
+    bool eventFilter(QObject* object, QEvent* event) override;
+
+private:
+    void retranslateUi();
+    void setupUi();
+    void doneClicked();
+
+    ThemeSelectorWidget* _themeSelectorWidget;
+    GeneralSettingsWidget* _generalSettingsWidget;
+
+    QLabel* _welcomeLabel;
+    QLabel* _descriptionLabel;
+    QPushButton* _doneButton;
+};
+
+}  // namespace StartGui
+
+#endif  // FREECAD_FIRSTSTARTWIDGET_H
