@@ -1666,6 +1666,14 @@ void setupFilter(Gui::Command* cmd, std::string Name)
     cmd->doCommand(Gui::Command::Doc,
                    "__list__ = App.ActiveDocument.%s.Filter",
                    pipeline->getNameInDocument());
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.ActiveDocument.%s.ViewObject.Visibility = False",
+                   pipeline->getNameInDocument());
+
+    std::ostringstream oss;
+    oss << "for _ in __list__:\n";
+    oss << "    _.ViewObject.Visibility = False";
+    cmd->doCommand(Gui::Command::Doc, oss.str().c_str());
     cmd->doCommand(Gui::Command::Doc, "__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
     cmd->doCommand(Gui::Command::Doc,
                    "App.ActiveDocument.%s.Filter = __list__",
