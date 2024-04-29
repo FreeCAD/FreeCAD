@@ -21,6 +21,8 @@ set(CAMSimulator_LIBS
     Mesh
     FreeCADApp
     FreeCADGui
+	${QtOpenGL_LIBRARIES}
+	${OPENGL_gl_LIBRARY}
 )
 
 SET(CAMSimulator_SRCS_Python
