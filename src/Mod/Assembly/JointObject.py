@@ -1534,6 +1534,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         Gui.Selection.addSelection(self.doc.Name, self.joint.Part2.Name, elName)
 
         self.form.distanceSpinbox.setProperty("rawValue", self.joint.Distance)
+        self.form.distanceSpinbox2.setProperty("rawValue", self.joint.Distance2)
         self.form.offsetSpinbox.setProperty("rawValue", self.joint.Offset.z)
         self.form.rotationSpinbox.setProperty("rawValue", self.joint.Rotation)
 
