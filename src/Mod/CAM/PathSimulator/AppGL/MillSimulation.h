@@ -1,3 +1,25 @@
+/***************************************************************************
+ *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef __millsimulation__h__
 #define __millsimulation__h__
 
@@ -35,8 +57,9 @@ namespace MillSim {
 		void SetSimulationStage(float stage);
 		void SetBoxStock(float x, float y, float z, float l, float w, float h);
 		void MouseDrag(int buttons, int dx, int dy);
+		void MouseMove(int px, int py);
 		void MouseHover(int px, int py);
-		void MousePress(int button, bool isPressed);
+		void MousePress(int button, bool isPressed, int px, int py);
 
 
 	protected:
@@ -95,6 +118,9 @@ namespace MillSim {
 		int mDebug1 = 0;
 		int mDebug2 = 12;
 		int mSimSpeed = 1;
+
+		int mLastMouseX = 0, mLastMouseY = 0;
+		int mMouseButtonState = 0;
 
 		bool mIsInStock = false;
 		bool mIsRotate = true;

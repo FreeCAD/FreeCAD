@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
+ *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,6 +27,9 @@
 #include <QtGui/qscreen.h>
 #include "MillSimulation.h"
 #include <QDateTime>
+#include <QSurfaceFormat>
+#include <QMouseEvent>
+#include <QPoint>
 
 using namespace CAMSimulator;
 using namespace MillSim;
@@ -131,21 +134,9 @@ EndMillTaper endMillTaper04(3, 1, 16, 90, 0.2f);
 MillSim::MillSimulation gMillSimulator;
 
 QOpenGLContext *gOpenGlContext;
-OpenGLWindow* gWindow = nullptr;
 
 namespace CAMSimulator
 {
-
-    class test : protected QOpenGLExtraFunctions
-    {
-    public:
-        unsigned int vbo;
-        void genbuff()
-        {
-            glGenBuffers(1, &vbo);
-        }
-    };
-
 
     OpenGLWindow::OpenGLWindow(QWindow* parent)
         : QWindow(parent)
@@ -160,10 +151,6 @@ namespace CAMSimulator
 
     void OpenGLWindow::initialize()
     {
-        //glClearColor(0.6f, 0.8f, 1.0f, 1.0f);
-        test tst;
-        tst.genbuff();
-
         for (int i = 0; i < NUM_DEMO_MOTIONS; i++) {
             gMillSimulator.AddGcodeLine(demoCode[i]);
         }
@@ -175,25 +162,15 @@ namespace CAMSimulator
         // gMillSimulator.SetBoxStock(0, 0, -8.7f, 50, 50, 8.7f);
         gMillSimulator.SetBoxStock(-20, -20, 0.001f, 50, 50, 2);
         gMillSimulator.InitDisplay();
+
+        const qreal retinaScale = devicePixelRatio();
+        glViewport(0, 0, width() * retinaScale, height() * retinaScale);
     
     }
 
     void OpenGLWindow::render()
     {
-        // if (!m_device) {
-        //    m_device = new QOpenGLPaintDevice;
-        //}
-
-        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-        //m_device->setSize(size() * devicePixelRatio());
-        //m_device->setDevicePixelRatio(devicePixelRatio());
-
-        //gMillSimulator.ProcessSim((unsigned int)(QDateTime::currentMSecsSinceEpoch() * 1000));
-
-        //QPainter painter(m_device);
-        //render(&painter);
-        gMillSimulator.ProcessSim((unsigned int)(QDateTime::currentMSecsSinceEpoch() * 1000));
+        gMillSimulator.ProcessSim((unsigned int)(QDateTime::currentMSecsSinceEpoch()));
     }
 
     void OpenGLWindow::renderLater()
@@ -220,6 +197,28 @@ namespace CAMSimulator
             renderNow();
         }
     }
+
+    void OpenGLWindow::mouseMoveEvent(QMouseEvent* ev)
+    {
+        gMillSimulator.MouseMove(ev->x(), ev->y());
+    }
+
+    void OpenGLWindow::mousePressEvent(QMouseEvent* ev)
+    {
+        gMillSimulator.MousePress(ev->button(), true, ev->x(), ev->y());
+    }
+
+    void OpenGLWindow::mouseReleaseEvent(QMouseEvent* ev)
+    {
+        gMillSimulator.MousePress(ev->button(), false, ev->x(), ev->y());
+    }
+
+    void OpenGLWindow::hideEvent(QHideEvent* ev)
+    {
+        m_animating = false;
+    }
+
+
 
     void OpenGLWindow::renderNow()
     {
@@ -253,6 +252,12 @@ namespace CAMSimulator
         }
     }
 
+    void OpenGLWindow::ShowWindow()
+    {
+        show();
+        setAnimating(true);
+    }
+
     void OpenGLWindow::setAnimating(bool animating)
     {
         m_animating = animating;
@@ -262,26 +267,22 @@ namespace CAMSimulator
         }
     }
 
-
-    
-    int ShowWindow()
+    OpenGLWindow* OpenGLWindow::GetInstance()
     {
-        QSurfaceFormat format;
-        format.setSamples(16);
-
-        if (gWindow == nullptr) 
+        if (mInstance == nullptr)
         {
-            gWindow = new OpenGLWindow();
-            gWindow->setFormat(format);
-            gWindow->resize(800, 600);
-            gWindow->show();
-
-            gWindow->setAnimating(true);
+            QSurfaceFormat format;
+            format.setSamples(16);
+            format.setSwapInterval(1);
+            mInstance = new OpenGLWindow();
+            mInstance->setFormat(format);
+            mInstance->resize(800, 600);
+            mInstance->show();
         }
-        return 0;
+        return mInstance;
     }
 
-
+    OpenGLWindow* OpenGLWindow::mInstance = nullptr;
 
     //************************************************************************************************************
     // stock

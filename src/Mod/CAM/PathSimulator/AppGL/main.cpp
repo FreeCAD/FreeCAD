@@ -126,9 +126,6 @@ EndMillTaper endMillTaper04(3, 1, 16, 90, 0.2f);
 // test section - remove!
 GLuint tprogram, tmodel, tview, tprojection, tarray;
 
-int gLastX = 0, gLastY = 0;
-int gMouseButtonState = 0;
-
 void ShowStats() {
     glDisable(GL_DEPTH_TEST);
     glLoadIdentity();
@@ -178,17 +175,7 @@ void mouse_callback(GLFWwindow* window, int button, int action, int mods)
     if (button > 2)
         return;
     int buttMask = (1 << button);
-    if (action == GLFW_PRESS)
-        gMouseButtonState |= buttMask;
-    else
-        gMouseButtonState &= ~buttMask;
-
-    if (gMouseButtonState > 0)
-    {
-        gLastX = (int)x;
-        gLastY = (int)y;
-    }
-    gMillSimulator.MousePress(buttMask, action == GLFW_PRESS);
+    gMillSimulator.MousePress(buttMask, action == GLFW_PRESS, (int)x, (int)y);
 }
 
 
@@ -196,21 +183,7 @@ void handle_mouse_move(GLFWwindow* window)
 {
     double fx, fy;
     glfwGetCursorPos(window, &fx, &fy);
-    if (gMouseButtonState > 0)
-    {
-        int x = (int)fx;
-        int y = (int)fy;
-        int dx = x - gLastX;
-        int dy = y - gLastY;
-        if (dx != 0 || dy != 0)
-        {
-            gMillSimulator.MouseDrag(gMouseButtonState, dx, dy);
-            gLastX = x;
-            gLastY = y;
-        }
-    }
-    else
-        gMillSimulator.MouseHover((int)fx, (int)fy);
+    gMillSimulator.MouseMove((int)fx, (int)fy);
 }
 
 static void error_callback(int error, const char* description)

@@ -1,47 +1,69 @@
+/***************************************************************************
+ *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef __openglwrapper_h__
 #define __openglwrapper_h__
 #ifdef QT_OPENGL_LIB
 #include "DlgCAMSimulator.h"
 extern QOpenGLContext* gOpenGlContext;
-extern CAMSimulator::OpenGLWindow* gWindow;
-#define glGenBuffers gWindow->glGenBuffers
-#define glBindBuffer gWindow->glBindBuffer
-#define glBufferData gWindow->glBufferData
-#define glGenVertexArrays gWindow->glGenVertexArrays
-#define glBindVertexArray gWindow->glBindVertexArray
-#define glEnableVertexAttribArray gWindow->glEnableVertexAttribArray
-#define glVertexAttribPointer gWindow->glVertexAttribPointer
-#define glShaderSource gWindow->glShaderSource
-#define glCompileShader gWindow->glCompileShader
-#define glAttachShader gWindow->glAttachShader
-#define glLinkProgram gWindow->glLinkProgram
-#define glGetProgramiv gWindow->glGetProgramiv
-#define glGetUniformLocation gWindow->glGetUniformLocation
-#define glGetError gWindow->glGetError
-#define glEnable gWindow->glEnable
-#define glColorMask gWindow->glColorMask
-#define glCullFace gWindow->glCullFace
-#define glDepthFunc gWindow->glDepthFunc
-#define glStencilFunc gWindow->glStencilFunc
-#define glStencilOp gWindow->glStencilOp
-#define glDepthMask gWindow->glDepthMask
-#define glDisable gWindow->glDisable
-#define glMatrixMode gWindow->glMatrixMode
-#define glUseProgram gWindow->glUseProgram
-#define glDrawElements gWindow->glDrawElements
-#define glDeleteVertexArrays gWindow->glDeleteVertexArrays
-#define glUniformMatrix4fv gWindow->glUniformMatrix4fv
-#define glUniform3fv gWindow->glUniform3fv
-#define glUniform1i gWindow->glUniform1i
-#define glCreateShader gWindow->glCreateShader
-#define glCreateProgram gWindow->glCreateProgram
-#define glDeleteBuffers gWindow->glDeleteBuffers
-#define glActiveTexture gWindow->glActiveTexture
-#define glBindTexture gWindow->glBindTexture
-#define glGenTextures gWindow->glGenTextures
-#define glTexParameteri gWindow->glTexParameteri
-#define glTexImage2D gWindow->glTexImage2D
-#define glDeleteTextures gWindow->glDeleteTextures
+#define gSimWindow CAMSimulator::OpenGLWindow::GetInstance()
+#define glGenBuffers gSimWindow->glGenBuffers
+#define glBindBuffer gSimWindow->glBindBuffer
+#define glBufferData gSimWindow->glBufferData
+#define glGenVertexArrays gSimWindow->glGenVertexArrays
+#define glBindVertexArray gSimWindow->glBindVertexArray
+#define glEnableVertexAttribArray gSimWindow->glEnableVertexAttribArray
+#define glVertexAttribPointer gSimWindow->glVertexAttribPointer
+#define glShaderSource gSimWindow->glShaderSource
+#define glCompileShader gSimWindow->glCompileShader
+#define glAttachShader gSimWindow->glAttachShader
+#define glLinkProgram gSimWindow->glLinkProgram
+#define glGetProgramiv gSimWindow->glGetProgramiv
+#define glGetUniformLocation gSimWindow->glGetUniformLocation
+#define glGetError gSimWindow->glGetError
+#define glEnable gSimWindow->glEnable
+#define glColorMask gSimWindow->glColorMask
+#define glCullFace gSimWindow->glCullFace
+#define glDepthFunc gSimWindow->glDepthFunc
+#define glStencilFunc gSimWindow->glStencilFunc
+#define glStencilOp gSimWindow->glStencilOp
+#define glDepthMask gSimWindow->glDepthMask
+#define glDisable gSimWindow->glDisable
+#define glMatrixMode gSimWindow->glMatrixMode
+#define glUseProgram gSimWindow->glUseProgram
+#define glDrawElements gSimWindow->glDrawElements
+#define glDeleteVertexArrays gSimWindow->glDeleteVertexArrays
+#define glUniformMatrix4fv gSimWindow->glUniformMatrix4fv
+#define glUniform3fv gSimWindow->glUniform3fv
+#define glUniform1i gSimWindow->glUniform1i
+#define glCreateShader gSimWindow->glCreateShader
+#define glCreateProgram gSimWindow->glCreateProgram
+#define glDeleteBuffers gSimWindow->glDeleteBuffers
+#define glActiveTexture gSimWindow->glActiveTexture
+#define glBindTexture gSimWindow->glBindTexture
+#define glGenTextures gSimWindow->glGenTextures
+#define glTexParameteri gSimWindow->glTexParameteri
+#define glTexImage2D gSimWindow->glTexImage2D
+#define glDeleteTextures gSimWindow->glDeleteTextures
 #else
 #include "GL/glew.h"
 #endif // HAVE_OPENGL_EXT

@@ -42,7 +42,7 @@ void CAMSim::BeginSimulation(Part::TopoShape * stock, float resolution)
 {
 	Base::BoundBox3d bbox = stock->getBoundBox();
 	m_stock = std::make_unique<cStock>(bbox.MinX, bbox.MinY, bbox.MinZ, bbox.LengthX(), bbox.LengthY(), bbox.LengthZ(), resolution);
-    CAMSimulator::ShowWindow();
+    OpenGLWindow::GetInstance()->ShowWindow();
 }
 
 void CAMSim::SetToolShape(const TopoDS_Shape& toolShape, float resolution)

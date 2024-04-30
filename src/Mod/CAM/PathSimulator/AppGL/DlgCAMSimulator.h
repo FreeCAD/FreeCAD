@@ -51,25 +51,32 @@ namespace CAMSimulator
         virtual void initialize();
 
         void setAnimating(bool animating);
+        static OpenGLWindow* GetInstance();
 
-    public: //    slots:
+    public:  //slots:
         void renderLater();
         void renderNow();
+        void ShowWindow();
 
     protected:
         bool event(QEvent* event) override;
 
         void exposeEvent(QExposeEvent* event) override;
+        void mouseMoveEvent(QMouseEvent* ev) override;
+        void mousePressEvent(QMouseEvent* ev) override;
+        void mouseReleaseEvent(QMouseEvent* ev) override;
+        void hideEvent(QHideEvent* ev) override;
 
     private:
         bool m_animating = false;
 
         QOpenGLContext* m_context = nullptr;
         QOpenGLPaintDevice* m_device = nullptr;
+
+        static OpenGLWindow* mInstance;
     };
 
 
-    int ShowWindow();
 
     class cStock
     {
