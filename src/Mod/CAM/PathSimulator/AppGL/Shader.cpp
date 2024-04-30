@@ -52,7 +52,7 @@ namespace MillSim
 
 	bool CheckCompileResult(int shader)
 	{
-#ifdef HAVE_OPENGL_EXT
+#ifdef QT_OPENGL_LIB
 		return false;
 #else
 		char log[1024];
