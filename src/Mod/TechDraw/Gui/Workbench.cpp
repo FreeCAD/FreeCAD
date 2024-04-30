@@ -368,9 +368,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     if (separatedTools) {
         *extdimensions << "TechDraw_ExtensionCreateChainDimensionGroup";
         *extdimensions << "TechDraw_ExtensionCreateCoordDimensionGroup";
-    }
-    *extdimensions << "TechDraw_ExtensionChamferDimensionGroup";
-    if (separatedTools) {
+        *extdimensions << "TechDraw_ExtensionChamferDimensionGroup";
         *extdimensions << "TechDraw_ExtensionCreateLengthArc";
     }
     *extdimensions << "TechDraw_ExtensionInsertPrefixGroup";

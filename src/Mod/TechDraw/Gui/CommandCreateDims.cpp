@@ -31,11 +31,13 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QPoint>
+#include <QPixmap>
 #endif//#ifndef _PreComp_
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -45,6 +47,8 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Mod/TechDraw/App/DrawDimHelper.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -82,6 +86,7 @@ using DimensionType = TechDraw::DrawViewDimension::DimensionType;
 //internal functions
 bool _checkSelection(Gui::Command* cmd, unsigned maxObjs = 2);
 bool _checkDrawViewPart(Gui::Command* cmd);
+
 
 void execDistance(Gui::Command* cmd);
 void execDistanceX(Gui::Command* cmd);
@@ -210,6 +215,7 @@ public:
 
     enum class SpecialDimension {
         LineOr2PointsDistance,
+        LineOr2PointsChamfer,
         ExtendDistance,
         ChainDistance,
         CoordDistance,
@@ -288,7 +294,8 @@ public:
         bool textToMiddle = false;
         Base::Vector3d dirMaster, delta;
         //Change distance dimension based on position of mouse.
-        if (specialDimension == SpecialDimension::LineOr2PointsDistance){
+        if (specialDimension == SpecialDimension::LineOr2PointsDistance
+            || specialDimension == SpecialDimension::LineOr2PointsChamfer){
             updateDistanceType();
         }
         else if (specialDimension == SpecialDimension::ExtendDistance){
@@ -795,6 +802,14 @@ protected:
             createDistanceDimension("Distance", { selPoints[0], selPoints[1] });
             specialDimension = SpecialDimension::LineOr2PointsDistance;
             selAllowed = true;
+            if (!isVerticalDistance({ selPoints[0], selPoints[1] })) {
+                availableDimension = AvailableDimension::RESET;
+            }
+        }
+        if (availableDimension == AvailableDimension::SECOND) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceX Chamfer dimension"));
+            createDistanceDimension("DistanceX", { selPoints[0], selPoints[1] }, true);
+            specialDimension = SpecialDimension::LineOr2PointsChamfer;
             availableDimension = AvailableDimension::RESET;
         }
     }
@@ -890,6 +905,17 @@ protected:
             createDistanceDimension("Distance", { selLine[0] });
             specialDimension = SpecialDimension::LineOr2PointsDistance;
             selAllowed = true;
+            if (!isVerticalDistance({ selLine[0] })) {
+                availableDimension = AvailableDimension::RESET;
+            }
+            // Potential improvement for the future: we could show available modes in cursor trail.
+            //std::vector<QPixmap> pixmaps = { icon("TechDraw_LengthDimension"), icon("TechDraw_ExtensionCreateHorizChamferDimension") };
+            //addCursorTail(pixmaps);
+        }
+        if (availableDimension == AvailableDimension::SECOND) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceX Chamfer dimension"));
+            createDistanceDimension("DistanceX", { selLine[0] }, true);
+            specialDimension = SpecialDimension::LineOr2PointsChamfer;
             availableDimension = AvailableDimension::RESET;
         }
     }
@@ -1098,9 +1124,21 @@ protected:
         moveDimension(mousePos, dim);
     }
 
-    void createDistanceDimension(std::string type, ReferenceVector refs)
+    void createDistanceDimension(std::string type, ReferenceVector refs, bool chamfer = false)
     {
         DrawViewDimension* dim = dimMaker(partFeat, type, refs, {});
+
+        if (chamfer) {
+            // Add the angle to the label
+            TechDraw::pointPair pp = dim->getLinearPoints();
+            float dx = pp.first().x - pp.second().x;
+            float dy = pp.first().y - pp.second().y;
+            int alpha = round(Base::toDegrees(abs(atan(type == "DistanceY" ? (dx / dy) : (dy / dx)))));
+            std::string sAlpha = std::to_string(alpha);
+            std::string formatSpec = dim->FormatSpec.getStrValue();
+            formatSpec = formatSpec + " x" + sAlpha + "°";
+            dim->FormatSpec.setValue(formatSpec);
+        }
 
         dims.push_back(dim);
         moveDimension(mousePos, dim);
@@ -1122,13 +1160,14 @@ protected:
         }
 
         auto type = static_cast<DimensionType>(dims[0]->Type.getValue());
+        SpecialDimension backup = specialDimension;
+        bool chamfer = specialDimension == SpecialDimension::LineOr2PointsChamfer;
 
         TechDraw::pointPair pp = dims[0]->getLinearPoints();
         Base::Vector3d pnt1 = Rez::guiX(pp.first());
         Base::Vector3d pnt2 = Rez::guiX(pp.second());
 
         QPointF fpos = getDimPositionToBe(mousePos);
-
         double minX, minY, maxX, maxY;
         minX = min(pnt1.x, pnt2.x);
         maxX = max(pnt1.x, pnt2.x);
@@ -1138,28 +1177,39 @@ protected:
         std::string newType = "Distance";
         if (fpos.x() > minX && fpos.x() < maxX
             && (fpos.y() < minY || fpos.y() > maxY) && type != DimensionType::DistanceX) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceX dimension"));
+            if (chamfer) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceX Chamfer dimension"));
+            }
+            else {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceX dimension"));
+            }
             newType = "DistanceX";
         }
         else if (fpos.y() > minY && fpos.y() < maxY
             && (fpos.x() < minX || fpos.x() > maxX) && type != DimensionType::DistanceY) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceY dimension"));
+            if (chamfer) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceY Chamfer dimension"));
+            }
+            else {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceY dimension"));
+            }
             newType = "DistanceY";
         }
         else if ((((fpos.y() < minY || fpos.y() > maxY) && (fpos.x() < minX || fpos.x() > maxX))
-            || (fpos.y() > minY && fpos.y() < maxY && fpos.x() > minX && fpos.x() < maxX)) && type != DimensionType::Distance) {
+            || (fpos.y() > minY && fpos.y() < maxY && fpos.x() > minX && fpos.x() < maxX)) && type != DimensionType::Distance
+            && !chamfer) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance dimension"));
         }
         else {
             return;
         }
-        specialDimension = SpecialDimension::LineOr2PointsDistance;
+        specialDimension = backup;
 
         if (selLine.size() == 1) {
-            createDistanceDimension(newType, { selLine[0] });
+            createDistanceDimension(newType, { selLine[0] }, chamfer);
         }
         else {
-            createDistanceDimension(newType, { selPoints[0], selPoints[1] });
+            createDistanceDimension(newType, { selPoints[0], selPoints[1] }, chamfer);
         }
         setDimsSelectability(false);
     }
@@ -1297,6 +1347,25 @@ protected:
         }
     }
 
+    bool isVerticalDistance(ReferenceVector refs)
+    {
+        DimensionGeometryType geometryRefs2d = validateDimSelection(
+            refs, { "Edge", "Vertex" }, { 1, 2 }, { isDiagonal });
+
+        return geometryRefs2d == TechDraw::isDiagonal;
+    }
+
+    QPixmap icon(std::string name)
+    {
+        qreal pixelRatio = 1;
+        Gui::View3DInventorViewer* viewer = getViewer();
+        if (viewer) {
+            pixelRatio = viewer->devicePixelRatio();
+        }
+        int width = 16 * pixelRatio;
+        return Gui::BitmapFactory().pixmapFromSvg(name.c_str(), QSize(width, width));
+    }
+
     void restartCommand(const char* cstrName) {
         specialDimension = SpecialDimension::None;
         Gui::Command::abortCommand();
@@ -1403,6 +1472,9 @@ public:
         addCommand("TechDraw_ExtensionCreateHorizCoordDimension");
         addCommand("TechDraw_ExtensionCreateVertCoordDimension");
         addCommand("TechDraw_ExtensionCreateObliqueCoordDimension");
+        addCommand(); //separator
+        addCommand("TechDraw_ExtensionCreateHorizChamferDimension");
+        addCommand("TechDraw_ExtensionCreateVertChamferDimension");
     }
 
     const char* className() const override { return "CmdTechDrawCompDimensionTools"; }

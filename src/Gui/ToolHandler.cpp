@@ -180,56 +180,50 @@ void ToolHandler::setCursor(const QPixmap& p, int x, int y, bool autoScale)
 void ToolHandler::addCursorTail(std::vector<QPixmap>& pixmaps)
 {
     // Create a pixmap that will contain icon and each autoconstraint icon
-    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-        QPixmap baseIcon = QPixmap(actCursorPixmap);
-        baseIcon.setDevicePixelRatio(actCursorPixmap.devicePixelRatio());
-        qreal pixelRatio = baseIcon.devicePixelRatio();
-        // cursor size in device independent pixels
-        qreal baseCursorWidth = baseIcon.width();
-        qreal baseCursorHeight = baseIcon.height();
+    QPixmap baseIcon = QPixmap(actCursorPixmap);
+    baseIcon.setDevicePixelRatio(actCursorPixmap.devicePixelRatio());
+    qreal pixelRatio = baseIcon.devicePixelRatio();
+    // cursor size in device independent pixels
+    qreal baseCursorWidth = baseIcon.width();
+    qreal baseCursorHeight = baseIcon.height();
 
-        int tailWidth = 0;
-        for (auto const& p : pixmaps) {
-            tailWidth += p.width();
-        }
-
-        int newIconWidth = baseCursorWidth + tailWidth;
-        int newIconHeight = baseCursorHeight;
-
-        QPixmap newIcon(newIconWidth, newIconHeight);
-        newIcon.fill(Qt::transparent);
-
-        QPainter qp;
-        qp.begin(&newIcon);
-
-        qp.drawPixmap(QPointF(0, 0),
-                      baseIcon.scaled(baseCursorWidth * pixelRatio,
-                                      baseCursorHeight * pixelRatio,
-                                      Qt::KeepAspectRatio,
-                                      Qt::SmoothTransformation));
-
-        // Iterate through pixmaps and them to the cursor pixmap
-        std::vector<QPixmap>::iterator pit = pixmaps.begin();
-        int i = 0;
-        qreal currentIconX = baseCursorWidth;
-        qreal currentIconY;
-
-        for (; pit != pixmaps.end(); ++pit, i++) {
-            QPixmap icon = *pit;
-            currentIconY = baseCursorHeight - icon.height();
-            qp.drawPixmap(QPointF(currentIconX, currentIconY), icon);
-            currentIconX += icon.width();
-        }
-
-        qp.end();  // Finish painting
-
-        // Create the new cursor with the icon.
-        QPoint p = actCursor.hotSpot();
-        newIcon.setDevicePixelRatio(pixelRatio);
-        QCursor newCursor(newIcon, p.x(), p.y());
-        applyCursor(newCursor);
+    int tailWidth = 0;
+    for (auto const& p : pixmaps) {
+        tailWidth += p.width();
     }
+
+    int newIconWidth = baseCursorWidth + tailWidth;
+    int newIconHeight = baseCursorHeight;
+
+    QPixmap newIcon(newIconWidth, newIconHeight);
+    newIcon.fill(Qt::transparent);
+
+    QPainter qp;
+    qp.begin(&newIcon);
+
+    qp.drawPixmap(QPointF(0, 0),
+                    baseIcon.scaled(baseCursorWidth * pixelRatio,
+                                    baseCursorHeight * pixelRatio,
+                                    Qt::KeepAspectRatio,
+                                    Qt::SmoothTransformation));
+
+    // Iterate through pixmaps and them to the cursor pixmap
+    qreal currentIconX = baseCursorWidth;
+    qreal currentIconY;
+
+    for (auto& icon : pixmaps) {
+        currentIconY = baseCursorHeight - icon.height();
+        qp.drawPixmap(QPointF(currentIconX, currentIconY), icon);
+        currentIconX += icon.width();
+    }
+
+    qp.end();  // Finish painting
+
+    // Create the new cursor with the icon.
+    QPoint p = actCursor.hotSpot();
+    newIcon.setDevicePixelRatio(pixelRatio);
+    QCursor newCursor(newIcon, p.x(), p.y());
+    applyCursor(newCursor);
 }
 
 void ToolHandler::updateCursor()
