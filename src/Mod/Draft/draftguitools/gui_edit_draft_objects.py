@@ -595,13 +595,26 @@ class DraftLabelGuiTools(GuiTools):
     def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
         if obj.StraightDirection != "Custom":
             if node_idx == 0:
+                vector_p1_p2 = obj.Placement.inverse().multVec(obj.Points[1]) - obj.Placement.inverse().multVec(v)
+                if obj.StraightDirection == "Horizontal":
+                    if round(vector_p1_p2.y, utils.precision()) == 0.0:
+                        obj.StraightDistance = vector_p1_p2.x
+                elif obj.StraightDirection == "Vertical":
+                    if round(vector_p1_p2.x, utils.precision()) == 0.0:
+                        obj.StraightDistance = vector_p1_p2.y
                 obj.Placement.Base = v
             elif node_idx == 1:
                 vector_p1_p2 = obj.Placement.inverse().multVec(v) - obj.Placement.inverse().multVec(obj.Placement.Base)
                 if obj.StraightDirection == "Horizontal":
-                    obj.StraightDistance = vector_p1_p2.x
+                    if round(vector_p1_p2.y, utils.precision()) == 0.0:
+                        obj.StraightDistance = vector_p1_p2.x
+                    else:
+                        obj.Placement.Base = obj.Placement.Base + (v - obj.Points[1])
                 elif obj.StraightDirection == "Vertical":
-                    obj.StraightDistance = vector_p1_p2.y
+                    if round(vector_p1_p2.x, utils.precision()) == 0.0:
+                        obj.StraightDistance = vector_p1_p2.y
+                    else:
+                        obj.Placement.Base = obj.Placement.Base + (v - obj.Points[1])
             elif node_idx == 2:
                 obj.TargetPoint = v
         else:
