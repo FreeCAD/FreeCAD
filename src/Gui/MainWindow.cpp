@@ -268,6 +268,7 @@ struct MainWindowP
 {
     DimensionWidget* sizeLabel;
     QLabel* actionLabel;
+    QLabel* rightSideLabel;
     QTimer* actionTimer;
     QTimer* statusTimer;
     QTimer* activityTimer;
@@ -444,6 +445,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     // labels and progressbar
     d->status = new StatusBarObserver();
     d->actionLabel = new QLabel(statusBar());
+    d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     // d->actionLabel->setMinimumWidth(120);
 
     d->sizeLabel = new DimensionWidget(statusBar());
@@ -452,6 +454,10 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
     statusBar()->addPermanentWidget(progressBar, 0);
     statusBar()->addPermanentWidget(d->sizeLabel, 0);
+
+    d->rightSideLabel = new QLabel(statusBar());
+    d->rightSideLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    statusBar()->addPermanentWidget(d->rightSideLabel);
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NotificationArea");
 
@@ -463,6 +469,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         notificationArea->setStyleSheet(QStringLiteral("text-align:left;"));
         statusBar()->addPermanentWidget(notificationArea);
     }
+
     // clears the action label
     d->actionTimer = new QTimer( this );
     d->actionTimer->setObjectName(QString::fromLatin1("actionTimer"));
@@ -2417,6 +2424,11 @@ void MainWindow::showMessage(const QString& message, int timeout) {
         d->actionTimer->start(timeout);
     }else
         d->actionTimer->stop();
+}
+
+void MainWindow::setRightSideMessage(const QString& message)
+{
+    d->rightSideLabel->setText(message.simplified());
 }
 
 void MainWindow::showStatus(int type, const QString& message)

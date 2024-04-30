@@ -41,3 +41,5 @@ FreeCAD.MeasureManager.addMeasureType(
         MeasureCOM,
 )
 
+import MeasureGui
+MeasureGui.QuickMeasure()
