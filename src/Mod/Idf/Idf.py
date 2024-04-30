@@ -25,10 +25,7 @@ import FreeCAD, Part, os, FreeCADGui
 from FreeCAD import Base
 from math import *
 import ImportGui
-
-# to distinguish python built-in open function from the one declared here
-if open.__module__ in ['__builtin__','io']:
-    pythonopen = open
+from builtins import open as pyopen
 
 ##########################################################
 # Script version dated 19-Jan-2012                       #
@@ -74,7 +71,7 @@ def insert(filename,docname):
 
 def process_emn(doc,filename):
    """process_emn(document, filename)-> adds emn geometry from emn file"""
-   emnfile=pythonopen(filename, "r")
+   emnfile=pyopen(filename, "r")
    emn_unit=1.0 #presume millimeter like emn unit
    emn_version=2 #presume emn_version 2
    board_thickness=0 #presume 0 board height
@@ -227,7 +224,7 @@ def split_records(line_record):
 def process_emp(doc,filename,placement,board_thickness):
    """process_emp(doc,filename,placement,board_thickness) -> place components from emn file to board"""
    filename=filename.partition(".emn")[0]+".emp"
-   empfile=pythonopen(filename, "r")
+   empfile=pyopen(filename, "r")
    emp_unit=1.0 #presume millimeter like emn unit
    emp_version=2 #presume emn_version 2
    comp_height=0 #presume 0 part height
@@ -274,7 +271,7 @@ def process_emp(doc,filename,placement,board_thickness):
    FreeCAD.Console.PrintMessage("\n".join(passed_sections)+"\n")
    #Write file with list of footprint
    if IDF_diag==1:
-     empfile=pythonopen(IDF_diag_path+"/footprint.lst", "w")
+     empfile=pyopen(IDF_diag_path+"/footprint.lst", "w")
      for compx in comps:
        empfile.writelines(str(compx[1][1])+"\n")
      empfile.close()
@@ -331,12 +328,12 @@ def place_steps(doc,placement,board_thickness):
 
         list of models and path to step files is set at start of this script
                  model_tab_filename= "" &   step_path="" """
-    model_file=pythonopen(model_tab_filename, "r")
+    model_file=pyopen(model_tab_filename, "r")
     model_lines=model_file.readlines()
     model_file.close()
     model_dict=[]
     if IDF_diag==1:
-        model_file=pythonopen(IDF_diag_path+"/missing_models.lst", "w")
+        model_file=pyopen(IDF_diag_path+"/missing_models.lst", "w")
     keys=[]
     #prev_step="*?.*?" #hope nobody will insert this step filename
     step_dict=[]

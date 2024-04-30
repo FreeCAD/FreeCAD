@@ -30,6 +30,7 @@ import time
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
 import math
+from builtins import open as pyopen
 
 TOOLTIP = """Post processor for Maho M 600E mill
 
@@ -296,8 +297,7 @@ GCODE_FOOTER = "M30"
 
 linenr = 0  # variable has to be global because it is used by linenumberify and export
 
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
+
 
 
 def angleUnder180(command, lastX, lastY, x, y, i, j):
@@ -623,6 +623,6 @@ def export(objectslist, filename, argstring):
     gcode += linenumberify(GCODE_FOOTER)
     if SHOW_EDITOR:
         PostUtils.editor(gcode)
-    gfile = pythonopen(filename, "w")
+    gfile = pyopen(filename, "w")
     gfile.write(gcode)
     gfile.close()

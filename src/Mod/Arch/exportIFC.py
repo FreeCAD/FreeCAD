@@ -46,6 +46,7 @@ from DraftGeomUtils import vec
 from importIFCHelper import dd2dms
 from draftutils import params
 from draftutils.messages import _msg, _err
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -53,10 +54,6 @@ if FreeCAD.GuiUp:
 __title__  = "FreeCAD IFC export"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
 __url__    = "https://www.freecad.org"
-
-# Save the Python open function because it will be redefined
-if open.__module__ in ['__builtin__', 'io']:
-    pyopen = open
 
 # Templates and other definitions ****
 # Specific FreeCAD <-> IFC slang translations

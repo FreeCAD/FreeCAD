@@ -29,6 +29,7 @@ import PathScripts.PathUtils as PathUtils
 import FreeCAD
 from FreeCAD import Units
 import shlex
+from builtins import open as pyopen
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
@@ -140,9 +141,7 @@ TOOL_CHANGE = """"""
 # Number of digits after the decimal point
 PRECISION = 5
 
-# to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
+
 
 
 def processArguments(argstring):
@@ -280,7 +279,7 @@ def export(objectslist, filename, argstring):
     else:
 
         if not filename == "-":
-            gfile = pythonopen(filename, "w")
+            gfile = pyopen(filename, "w")
             gfile.write(final)
             gfile.close()
 

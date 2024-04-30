@@ -48,6 +48,7 @@ import PathScripts.PathUtils as PathUtils
 import os
 import re
 from PySide.QtCore import QT_TRANSLATE_NOOP
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     import Path.Op.Gui.Custom as PathCustomGui
@@ -80,9 +81,7 @@ class PathNoJobException(Exception):
         super().__init__("No job object")
 
 
-# to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
+
 
 
 def open(filename):
@@ -186,7 +185,7 @@ def _identifygcodeByToolNumberList(filename):
     Path.Log.track(filename)
     gcodeByToolNumberList = []
 
-    gfile = pythonopen(filename)
+    gfile = pyopen(filename)
     gcode = gfile.read()
     gfile.close()
 

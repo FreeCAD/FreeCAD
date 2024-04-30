@@ -44,9 +44,7 @@ import Draft
 from OpenSCADFeatures import *
 from OpenSCADUtils import *
 
-# Save the native open function to avoid collisions
-if open.__module__ in ['__builtin__', 'io']:
-    pythonopen = open
+
 import ply.lex as lex
 import ply.yacc as yacc
 
@@ -66,6 +64,7 @@ original_root_objects = []
 # Get the token map from the lexer. This is required.
 import tokrules
 from tokrules import tokens
+from builtins import open as pyopen
 
 translate = FreeCAD.Qt.translate
 
@@ -897,8 +896,8 @@ def processSVG(fname, ext):
 
     # pathName is a Global
     filename = os.path.join(pathName,fname+'.'+ext)
-    # Use the native Python open which was saved as `pythonopen`
-    parser.parse(pythonopen(filename))
+    # Use the native Python open which was saved as `pyopen`
+    parser.parse(pyopen(filename))
 
     #combine SVG objects into one
     shapes = []
