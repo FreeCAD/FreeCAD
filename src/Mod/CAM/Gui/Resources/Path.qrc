@@ -49,6 +49,7 @@
         <file>icons/CAM_Shape.svg</file>
         <file>icons/CAM_SimpleCopy.svg</file>
         <file>icons/CAM_Simulator.svg</file>
+        <file>icons/CAM_SimulatorGL.svg</file>
         <file>icons/CAM_Slot.svg</file>
         <file>icons/CAM_Stop.svg</file>
         <file>icons/CAM_ThreadMilling.svg</file>

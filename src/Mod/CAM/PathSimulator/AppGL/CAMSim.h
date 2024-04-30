@@ -61,8 +61,9 @@ namespace CAMSimulator
 			~CAMSim();
 
 			void BeginSimulation(Part::TopoShape * stock, float resolution);
+            void ResetSimulation();
 			void SetToolShape(const TopoDS_Shape& toolShape, float resolution);
-			Base::Placement * ApplyCommand(Base::Placement * pos, Command * cmd);
+			Base::Placement * AddCommand(Base::Placement * pos, Command * cmd);
 
 		public:
 			std::unique_ptr<cStock> m_stock;

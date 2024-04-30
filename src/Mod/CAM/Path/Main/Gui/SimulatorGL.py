@@ -260,6 +260,9 @@ class CAMSimulation:
         self.EndSimulation()
 
     def SimPlay(self):
+        self.voxSim.ResetSimulation()
+        for cmd in self.opCommands:
+            self.voxSim.AddCommand(self.curpos, cmd)
         self.voxSim.BeginSimulation(self.stock, self.resolution)
         # GL: update simulator and open window 
         pass
@@ -274,7 +277,7 @@ class CAMSimulation:
 class CommandCAMSimulate:
     def GetResources(self):
         return {
-            "Pixmap": "CAM_Simulator",
+            "Pixmap": "CAM_SimulatorGL",
             "MenuText": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "CAM Simulator"),
             "Accel": "P, M",
             "ToolTip": QtCore.QT_TRANSLATE_NOOP(

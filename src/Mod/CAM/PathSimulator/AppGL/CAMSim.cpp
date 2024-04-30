@@ -23,12 +23,15 @@
 #include "PreCompiled.h"
 #include "CAMSim.h"
 #include "DlgCAMSimulator.h"
+#include <stdio.h>
 
 
 using namespace Base;
 using namespace CAMSimulator;
 
 TYPESYSTEM_SOURCE(CAMSimulator::CAMSim , Base::BaseClass);
+
+#define MAX_GCODE_LINE_LEN 120
 
 CAMSim::CAMSim()
 {
@@ -41,16 +44,28 @@ CAMSim::~CAMSim()
 void CAMSim::BeginSimulation(Part::TopoShape * stock, float resolution)
 {
 	Base::BoundBox3d bbox = stock->getBoundBox();
-	m_stock = std::make_unique<cStock>(bbox.MinX, bbox.MinY, bbox.MinZ, bbox.LengthX(), bbox.LengthY(), bbox.LengthZ(), resolution);
-    OpenGLWindow::GetInstance()->ShowWindow();
+    cStock stk = {(float)bbox.MinX, (float)bbox.MinY, (float)bbox.MinZ, 
+		(float)bbox.LengthX(), (float)bbox.LengthY(), (float)bbox.LengthZ(), resolution};
+    DlgCAMSimulator::GetInstance()->StartSimulation(&stk);
+}
+
+void CAMSimulator::CAMSim::ResetSimulation()
+{
+    DlgCAMSimulator::GetInstance()->ResetSimulation();
 }
 
 void CAMSim::SetToolShape(const TopoDS_Shape& toolShape, float resolution)
 {
 }
 
-Base::Placement * CAMSim::ApplyCommand(Base::Placement * pos, Command * cmd)
+Base::Placement * CAMSim::AddCommand(Base::Placement * pos, Command * cmd)
 {
+    if (cmd->Name == "G0" || cmd->Name == "G1" || cmd->Name == "G2" || cmd->Name == "G3") 
+    {
+        std::string gline = cmd->toGCode();
+        DlgCAMSimulator::GetInstance()->AddGcodeCommand(gline.c_str());
+    }
+
 	Base::Placement *plc = new Base::Placement();
     Vector3d vec(pos->getPosition().x, pos->getPosition().y, pos->getPosition().z);
 	plc->setPosition(vec);

@@ -36,6 +36,7 @@ namespace MillSim
 	{
 		while (glGetError() != GL_NO_ERROR);
 	}
+
 	bool GLLogError()
 	{
 		while (GLenum err = glGetError())

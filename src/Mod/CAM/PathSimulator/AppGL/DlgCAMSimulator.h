@@ -30,53 +30,18 @@
 // #include <Mod/Part/App/TopoShape.h>
 // #include <Mod/CAM/PathGlobal.h>
 #include <QtGui/qwindow.h>
-//#include <QtGui/qopenglfunctions.h>
 #include <QOpenGLExtraFunctions>
 #include <QtGui/qpainter.h>
 #include <QtGui/qopenglpaintdevice.h>
 
+
+namespace MillSim
+{
+    class MillSimulation; // use short declaration as using 'include' causes a header loop
+}
+
 namespace CAMSimulator
 {
-
-    class OpenGLWindow: public QWindow, public QOpenGLExtraFunctions
-    {
-        Q_OBJECT
-    public:
-        explicit OpenGLWindow(QWindow* parent = nullptr);
-        ~OpenGLWindow() {}
-
-        virtual void render(QPainter* painter);
-        virtual void render();
-
-        virtual void initialize();
-
-        void setAnimating(bool animating);
-        static OpenGLWindow* GetInstance();
-
-    public:  //slots:
-        void renderLater();
-        void renderNow();
-        void ShowWindow();
-
-    protected:
-        bool event(QEvent* event) override;
-
-        void exposeEvent(QExposeEvent* event) override;
-        void mouseMoveEvent(QMouseEvent* ev) override;
-        void mousePressEvent(QMouseEvent* ev) override;
-        void mouseReleaseEvent(QMouseEvent* ev) override;
-        void hideEvent(QHideEvent* ev) override;
-
-    private:
-        bool m_animating = false;
-
-        QOpenGLContext* m_context = nullptr;
-        QOpenGLPaintDevice* m_device = nullptr;
-
-        static OpenGLWindow* mInstance;
-    };
-
-
 
     class cStock
     {
@@ -84,12 +49,69 @@ namespace CAMSimulator
         cStock(float px, float py, float pz, float lx, float ly, float lz, float res);
         ~cStock();
 
-    private:
-        float m_px, m_py, m_pz;  // stock zero position
-        float m_lx, m_ly, m_lz;  // stock dimensions
+    public:
+        float mPx, mPy, mPz;  // stock zero position
+        float mLx, mLy, mLz;  // stock dimensions
     };
 
-} //namespace CAMSimulator
+    class cTool
+    {
+    public:
+        cTool()
+        {}
+        ~cTool()
+        {}
+
+    private:
+    };
+
+
+    class DlgCAMSimulator: public QWindow, public QOpenGLExtraFunctions
+    {
+        Q_OBJECT
+    public:
+        explicit DlgCAMSimulator(QWindow* parent = nullptr);
+        ~DlgCAMSimulator() {}
+
+        virtual void render(QPainter* painter);
+        virtual void render();
+        virtual void initialize();
+
+        void setAnimating(bool animating);
+        static DlgCAMSimulator* GetInstance();
+
+    public:  //slots:
+        void renderLater();
+        void renderNow();
+        void StartSimulation(const cStock *stock);
+        void ResetSimulation();
+        void AddGcodeCommand(const char* cmd);
+
+    protected:
+        bool event(QEvent* event) override;
+
+        void CheckInitialization();
+        void exposeEvent(QExposeEvent* event) override;
+        void mouseMoveEvent(QMouseEvent* ev) override;
+        void mousePressEvent(QMouseEvent* ev) override;
+        void mouseReleaseEvent(QMouseEvent* ev) override;
+        void hideEvent(QHideEvent* ev) override;
+
+    private:
+        bool mAnimating = false;
+        bool mNeedsInitialize = false;
+
+        QOpenGLContext* mContext = nullptr;
+        QOpenGLPaintDevice* mDevice = nullptr;
+        MillSim::MillSimulation* mMillSimulator = nullptr;
+        static DlgCAMSimulator* mInstance;
+        cStock mStock = {0, 0, 0, 1, 1, 1, 1};
+    };
+
+
+
+
+}  // namespace CAMSimulator
 
 
 #endif // PATHSIMULATOR_PathSim_H

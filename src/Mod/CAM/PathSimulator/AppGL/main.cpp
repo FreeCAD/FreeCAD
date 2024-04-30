@@ -229,8 +229,8 @@ int main(int argc, char **argv)
     gMillSimulator.AddTool(&endMillBall03);
     gMillSimulator.AddTool(&endMillTaper04);
     gMillSimulator.InitSimulation();
-    //gMillSimulator.SetBoxStock(0, 0, -8.7f, 50, 50, 8.7f);
-    gMillSimulator.SetBoxStock(-20, -20, 0.001f, 50, 50, 2);
+    gMillSimulator.SetBoxStock(0, 0, -8.7f, 50, 50, 8.7f);
+    //gMillSimulator.SetBoxStock(-119, -124, 0.003f, 245, 234, 30);
     gMillSimulator.InitDisplay();
     
     while (!glfwWindowShouldClose(glwind))

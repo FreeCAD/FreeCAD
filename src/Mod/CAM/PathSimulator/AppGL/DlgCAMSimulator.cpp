@@ -23,9 +23,9 @@
 #include "PreCompiled.h"
 
 #include "DlgCAMSimulator.h"
+#include "MillSimulation.h"
 #include <QtGui/QMatrix4x4>
 #include <QtGui/qscreen.h>
-#include "MillSimulation.h"
 #include <QDateTime>
 #include <QSurfaceFormat>
 #include <QMouseEvent>
@@ -127,58 +127,41 @@ const char* demoCode[] = {
 #define NUM_DEMO_MOTIONS (sizeof(demoCode) / sizeof(char*))
 
 EndMillFlat endMillFlat01(1, 3.175f, 16);
+EndMillFlat endMillFlat12(5, 12.0f, 16);
 EndMillFlat endMillFlat02(2, 1.5f, 16);
 EndMillBall endMillBall03(4, 1, 16, 4, 0.2f);
 EndMillTaper endMillTaper04(3, 1, 16, 90, 0.2f);
 
-MillSim::MillSimulation gMillSimulator;
-
 QOpenGLContext *gOpenGlContext;
+
+using namespace MillSim;
 
 namespace CAMSimulator
 {
 
-    OpenGLWindow::OpenGLWindow(QWindow* parent)
+    DlgCAMSimulator::DlgCAMSimulator(QWindow* parent)
         : QWindow(parent)
     {
         setSurfaceType(QWindow::OpenGLSurface);
+        mMillSimulator = new MillSimulation();
     }
 
-    void OpenGLWindow::render(QPainter* painter)
+    void DlgCAMSimulator::render(QPainter* painter)
     {
         Q_UNUSED(painter);
     }
 
-    void OpenGLWindow::initialize()
+    void DlgCAMSimulator::render()
     {
-        for (int i = 0; i < NUM_DEMO_MOTIONS; i++) {
-            gMillSimulator.AddGcodeLine(demoCode[i]);
-        }
-        gMillSimulator.AddTool(&endMillFlat01);
-        gMillSimulator.AddTool(&endMillFlat02);
-        gMillSimulator.AddTool(&endMillBall03);
-        gMillSimulator.AddTool(&endMillTaper04);
-        gMillSimulator.InitSimulation();
-        // gMillSimulator.SetBoxStock(0, 0, -8.7f, 50, 50, 8.7f);
-        gMillSimulator.SetBoxStock(-20, -20, 0.001f, 50, 50, 2);
-        gMillSimulator.InitDisplay();
-
-        const qreal retinaScale = devicePixelRatio();
-        glViewport(0, 0, width() * retinaScale, height() * retinaScale);
-    
+        mMillSimulator->ProcessSim((unsigned int)(QDateTime::currentMSecsSinceEpoch()));
     }
 
-    void OpenGLWindow::render()
-    {
-        gMillSimulator.ProcessSim((unsigned int)(QDateTime::currentMSecsSinceEpoch()));
-    }
-
-    void OpenGLWindow::renderLater()
+    void DlgCAMSimulator::renderLater()
     {
         requestUpdate();
     }
 
-    bool OpenGLWindow::event(QEvent* event)
+    bool DlgCAMSimulator::event(QEvent* event)
     {
         switch (event->type()) {
             case QEvent::UpdateRequest:
@@ -189,7 +172,7 @@ namespace CAMSimulator
         }
     }
 
-    void OpenGLWindow::exposeEvent(QExposeEvent* event)
+    void DlgCAMSimulator::exposeEvent(QExposeEvent* event)
     {
         Q_UNUSED(event);
 
@@ -198,83 +181,117 @@ namespace CAMSimulator
         }
     }
 
-    void OpenGLWindow::mouseMoveEvent(QMouseEvent* ev)
+    void DlgCAMSimulator::mouseMoveEvent(QMouseEvent* ev)
     {
-        gMillSimulator.MouseMove(ev->x(), ev->y());
+        mMillSimulator->MouseMove(ev->x(), ev->y());
     }
 
-    void OpenGLWindow::mousePressEvent(QMouseEvent* ev)
+    void DlgCAMSimulator::mousePressEvent(QMouseEvent* ev)
     {
-        gMillSimulator.MousePress(ev->button(), true, ev->x(), ev->y());
+        mMillSimulator->MousePress(ev->button(), true, ev->x(), ev->y());
     }
 
-    void OpenGLWindow::mouseReleaseEvent(QMouseEvent* ev)
+    void DlgCAMSimulator::mouseReleaseEvent(QMouseEvent* ev)
     {
-        gMillSimulator.MousePress(ev->button(), false, ev->x(), ev->y());
+        mMillSimulator->MousePress(ev->button(), false, ev->x(), ev->y());
     }
 
-    void OpenGLWindow::hideEvent(QHideEvent* ev)
+    void DlgCAMSimulator::ResetSimulation()
     {
-        m_animating = false;
+        mMillSimulator->Clear();
+        //for (int i = 0; i < NUM_DEMO_MOTIONS; i++) {
+        //    mMillSimulator->AddGcodeLine(demoCode[i]);
+        //}
+        mMillSimulator->AddGcodeLine("T5");
+        mMillSimulator->AddTool(&endMillFlat01);
+        mMillSimulator->AddTool(&endMillFlat02);
+        mMillSimulator->AddTool(&endMillBall03);
+        mMillSimulator->AddTool(&endMillTaper04);
+        mMillSimulator->AddTool(&endMillFlat12);
     }
 
+    void DlgCAMSimulator::AddGcodeCommand(const char* cmd)
+    {
+        mMillSimulator->AddGcodeLine(cmd);
+    }
 
+    void DlgCAMSimulator::hideEvent(QHideEvent* ev)
+    {
+        mAnimating = false;
+    }
 
-    void OpenGLWindow::renderNow()
+    void DlgCAMSimulator::StartSimulation(const cStock* stock)
+    {
+        mStock = *stock;
+        mNeedsInitialize = true;
+        show();
+        setAnimating(true);
+    }
+
+    void DlgCAMSimulator::initialize()
+    {
+        mMillSimulator->InitSimulation();
+        // gMillSimulator->SetBoxStock(0, 0, -8.7f, 50, 50, 8.7f);
+        mMillSimulator->SetBoxStock(mStock.mPx, mStock.mPy, mStock.mPz, mStock.mLx, mStock.mLy, mStock.mLz);
+        mMillSimulator->InitDisplay();
+
+        const qreal retinaScale = devicePixelRatio();
+        glViewport(0, 0, width() * retinaScale, height() * retinaScale);
+    }
+
+    void DlgCAMSimulator::CheckInitialization()
+    {
+        if (!mContext) {
+            mContext = new QOpenGLContext(this);
+            mContext->setFormat(requestedFormat());
+            mContext->create();
+            gOpenGlContext = mContext;
+            mNeedsInitialize = true;
+        }
+
+        mContext->makeCurrent(this);
+
+        if (mNeedsInitialize) {
+            initializeOpenGLFunctions();
+            initialize();
+            mNeedsInitialize = false;
+        }
+    }
+
+    void DlgCAMSimulator::renderNow()
     {
         if (!isExposed()) {
             return;
         }
 
-        bool needsInitialize = false;
-
-        if (!m_context) {
-            m_context = new QOpenGLContext(this);
-            m_context->setFormat(requestedFormat());
-            m_context->create();
-            gOpenGlContext = m_context;
-            needsInitialize = true;
-        }
-
-        m_context->makeCurrent(this);
-
-        if (needsInitialize) {
-            initializeOpenGLFunctions();
-            initialize();
-        }
+        CheckInitialization();
 
         render();
 
-        m_context->swapBuffers(this);
+        mContext->swapBuffers(this);
 
-        if (m_animating) {
+        if (mAnimating) {
             renderLater();
         }
     }
 
-    void OpenGLWindow::ShowWindow()
+    void DlgCAMSimulator::setAnimating(bool animating)
     {
-        show();
-        setAnimating(true);
-    }
-
-    void OpenGLWindow::setAnimating(bool animating)
-    {
-        m_animating = animating;
+        mAnimating = animating;
 
         if (animating) {
             renderLater();
         }
     }
 
-    OpenGLWindow* OpenGLWindow::GetInstance()
+    DlgCAMSimulator* DlgCAMSimulator::GetInstance()
     {
         if (mInstance == nullptr)
         {
             QSurfaceFormat format;
             format.setSamples(16);
             format.setSwapInterval(1);
-            mInstance = new OpenGLWindow();
+            mInstance = new DlgCAMSimulator();
             mInstance->setFormat(format);
             mInstance->resize(800, 600);
             mInstance->show();
@@ -282,13 +299,13 @@ namespace CAMSimulator
         return mInstance;
     }
 
-    OpenGLWindow* OpenGLWindow::mInstance = nullptr;
+    DlgCAMSimulator* DlgCAMSimulator::mInstance = nullptr;
 
     //************************************************************************************************************
     // stock
     //************************************************************************************************************
     cStock::cStock(float px, float py, float pz, float lx, float ly, float lz, float res)
-        : m_px(px), m_py(py), m_pz(pz), m_lx(lx), m_ly(ly), m_lz(lz)
+        : mPx(px), mPy(py), mPz(pz + 0.005 * lz), mLx(lx), mLy(ly), mLz(1.01 * lz)
     {}
 
     cStock::~cStock()

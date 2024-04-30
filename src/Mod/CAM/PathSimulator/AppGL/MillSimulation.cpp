@@ -30,6 +30,7 @@ namespace MillSim {
     MillSimulation::MillSimulation()
     {
         mCurMotion = { eNop, -1, 0, 0,  0, 0, 0, 0 };
+        guiDisplay.SetMillSimulator(this);
     }
 
     void MillSimulation::ClearMillPathSegments() {
@@ -38,8 +39,18 @@ namespace MillSim {
             delete p;
         }
         MillPathSegments.clear();
-        guiDisplay.SetMillSimulator(this);
     }
+
+    void MillSimulation::Clear()
+    {
+        mCodeParser.Operations.clear();
+        mToolTable.clear();
+        mCurStep = 0;
+        mPathStep = -1;
+        mNTotalSteps = 0;
+    }
+
+
 
     void MillSimulation::SimNext()
     {
@@ -401,29 +412,38 @@ namespace MillSim {
             mEyeRoration = 0;
     }
 
+    void MillSimulation::UpdateProjection()
+    {
+        // Setup projection
+        mat4x4 projmat;
+        mat4x4_perspective(projmat, 0.7f, 4.0f / 3.0f, 1.0f, mMaxFar);
+        //mat4x4_perspective(projmat, 0.7f, 4.0f / 3.0f, 1, 100);
+        shader3D.Activate();
+        shader3D.UpdateProjectionMat(projmat);
+        shaderInv3D.Activate();
+        shaderInv3D.UpdateProjectionMat(projmat);
+        shaderFlat.Activate();
+        shaderFlat.UpdateProjectionMat(projmat);
+    }
+
     void MillSimulation::InitDisplay()
     {
         // gray background
         glClearColor(0.6f, 0.8f, 1.0f, 1.0f);
 
-        // Setup projection
-        mat4x4 projmat;
-        mat4x4_perspective(projmat, 0.7f, 4.0f / 3.0f, 1.0f, 200.0f);
 
         // use shaders
         //   standard diffuse shader
         shader3D.CompileShader((char*)VertShader3DNorm, (char*)FragShaderNorm);
         shader3D.UpdateEnvColor(lightPos, lightColor, ambientCol);
-        shader3D.UpdateProjectionMat(projmat);
 
         //   invarted normal diffuse shader for inner mesh
         shaderInv3D.CompileShader((char*)VertShader3DInvNorm, (char*)FragShaderNorm);
         shaderInv3D.UpdateEnvColor(lightPos, lightColor, ambientCol);
-        shaderInv3D.UpdateProjectionMat(projmat);
 
         //   null shader to calculate meshes only (simulation stage)
         shaderFlat.CompileShader((char*)VertShader3DNorm, (char*)FragShaderFlat);
-        shaderFlat.UpdateProjectionMat(projmat);
+        UpdateProjection();
 
         // setup light object and generate tools
         mlightObject.GenerateBoxStock(-0.5f, -0.5f, -0.5f, 1, 1, 1);
@@ -439,6 +459,8 @@ namespace MillSim {
     {
         mStockObject.GenerateBoxStock(x, y, z, l, w, h);
         float maxw = fmaxf(w, l);
+        mMaxFar = maxw * 4;
+        UpdateProjection();
         vec3_set(eye, 0, -2.0f * maxw, 0);
         vec3_set(lightPos, x, y, h + maxw / 3);
         mlightObject.SetPosition(lightPos);

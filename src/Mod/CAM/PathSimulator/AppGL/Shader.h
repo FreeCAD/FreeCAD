@@ -43,6 +43,7 @@ namespace MillSim
 		void UpdateTextureSlot(int slot);
 		unsigned int CompileShader(char* vertShader, char* fragShader);
 		void Activate();
+		bool IsValid() { return shaderId > 0; }
 
 
 	protected:

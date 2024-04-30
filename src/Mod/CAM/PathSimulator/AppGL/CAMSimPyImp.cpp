@@ -55,21 +55,36 @@ int CAMSimPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 }
 
 
-PyObject* CAMSimPy::BeginSimulation(PyObject * args, PyObject * kwds)
+PyObject* CAMSimPy::ResetSimulation(PyObject* args)
 {
-	static const std::array<const char *, 3> kwlist { "stock", "resolution", nullptr };
-	PyObject *pObjStock;
-	float resolution;
-	if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!f", kwlist, &(Part::TopoShapePy::Type), &pObjStock, &resolution))
-		return nullptr;
-	CAMSim *sim = getCAMSimPtr();
-	Part::TopoShape *stock = static_cast<Part::TopoShapePy*>(pObjStock)->getTopoShapePtr();
-	sim->BeginSimulation(stock, resolution);
-	Py_IncRef(Py_None);
-	return Py_None;
+    CAMSim* sim = getCAMSimPtr();
+    sim->ResetSimulation();
+    Py_IncRef(Py_None);
+    return Py_None;
 }
 
-PyObject* CAMSimPy::SetToolShape(PyObject * args)
+PyObject* CAMSimPy::BeginSimulation(PyObject* args, PyObject* kwds)
+{
+    static const std::array<const char*, 3> kwlist {"stock", "resolution", nullptr};
+    PyObject* pObjStock;
+    float resolution;
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwds,
+                                             "O!f",
+                                             kwlist,
+                                             &(Part::TopoShapePy::Type),
+                                             &pObjStock,
+                                             &resolution)) {
+        return nullptr;
+    }
+    CAMSim* sim = getCAMSimPtr();
+    Part::TopoShape* stock = static_cast<Part::TopoShapePy*>(pObjStock)->getTopoShapePtr();
+    sim->BeginSimulation(stock, resolution);
+    Py_IncRef(Py_None);
+    return Py_None;
+}
+
+PyObject* CAMSimPy::SetToolShape(PyObject* args)
 {
 	PyObject *pObjToolShape;
 	float resolution;
@@ -94,7 +109,7 @@ PyObject* CAMSimPy::AddCommand(PyObject* args, PyObject* kwds)
 	CAMSim *sim = getCAMSimPtr();
 	Base::Placement *pos = static_cast<Base::PlacementPy*>(pObjPlace)->getPlacementPtr();
 	Path::Command *cmd = static_cast<Path::CommandPy*>(pObjCmd)->getCommandPtr();
-	Base::Placement *newpos = sim->ApplyCommand(pos, cmd);
+	Base::Placement *newpos = sim->AddCommand(pos, cmd);
 	//Base::Console().Log("Done...\n");
 	//Base::Console().Refresh();
 	Base::PlacementPy *newposPy = new Base::PlacementPy(newpos);
