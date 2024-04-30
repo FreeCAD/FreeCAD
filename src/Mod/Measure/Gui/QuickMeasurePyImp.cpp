@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2023 Pierre-Louis Boyer <development@Ondsel.com>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,30 +20,45 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MEASUREGUI_PRECOMPILED_H
-#define MEASUREGUI_PRECOMPILED_H
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#endif
 
-#include <FCConfig.h>
+#include <App/Application.h>
+#include <App/Document.h>
+#include <Base/GeometryPyCXX.h>
 
-#include <Mod/Measure/MeasureGlobal.h>
-
-#ifdef _PreComp_
-
-// standard
-#include <cfloat>
-#include <cmath>
-
-// STL
-#include <algorithm>
-#include <map>
-#include <sstream>
-#include <string>
-#include <vector>
-
-// OpenCasCade
-#include <Mod/Part/App/OpenCascadeAll.h>
+// inclusion of the generated files (generated out of QuickMeasurePy.xml)
+#include "QuickMeasurePy.h"
+#include "QuickMeasurePy.cpp"
 
 
-#endif  //_PreComp_
+using namespace MeasureGui;
 
-#endif // MEASUREGUI_PRECOMPILED_H
+// returns a string which represents the object e.g. when printed in python
+std::string QuickMeasurePy::representation() const
+{
+    return "<MeasureGui::QuickMeasure>";
+}
+
+PyObject *QuickMeasurePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+{
+    // create a new instance of BoundBoxPy and the Twin object
+    return new QuickMeasurePy(new QuickMeasure);
+}
+
+// constructor method
+int QuickMeasurePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
+{
+   return 0;
+}
+
+PyObject *QuickMeasurePy::getCustomAttributes(const char* /*attr*/) const
+{
+    return nullptr;
+}
+
+int QuickMeasurePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+{
+    return 0;
+}

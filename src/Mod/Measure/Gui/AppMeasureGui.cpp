@@ -30,6 +30,8 @@
 #include <Gui/WidgetFactory.h>
 
 #include "DlgPrefsMeasureAppearanceImp.h"
+#include "QuickMeasure.h"
+#include "QuickMeasurePy.h"
 #include "ViewProviderMeasureAngle.h"
 #include "ViewProviderMeasureDistance.h"
 #include "ViewProviderMeasureBase.h"
@@ -86,7 +88,7 @@ PyMOD_INIT_FUNC(MeasureGui)
     CreateMeasureCommands();
 
     MeasureGui::ViewProviderMeasureBase                ::init();
-    MeasureGui::ViewProviderMeasure        ::init();
+    MeasureGui::ViewProviderMeasure                    ::init();
     MeasureGui::ViewProviderMeasureAngle               ::init();
     MeasureGui::ViewProviderMeasureDistance            ::init();
 
@@ -94,6 +96,8 @@ PyMOD_INIT_FUNC(MeasureGui)
     new Gui::PrefPageProducer<MeasureGui::DlgPrefsMeasureAppearanceImp>(QT_TRANSLATE_NOOP("QObject", "Measure"));
 
 //    Q_INIT_RESOURCE(Measure);
+
+    Base::Interpreter().addType(&MeasureGui::QuickMeasurePy::Type, mod, "QuickMeasure");
 
     PyMOD_Return(mod);
 }
