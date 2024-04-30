@@ -92,6 +92,6 @@ macro(SetGlobalCompilerAndLinkerSettings)
     endif(MINGW)
 
     # Enable the Topological Naming Problem mitigation code
-    add_compile_options(-DFC_ENABLE_TNP_FIX)
+    add_compile_options(-DFC_USE_TNP_FIX)
 
 endmacro(SetGlobalCompilerAndLinkerSettings)
