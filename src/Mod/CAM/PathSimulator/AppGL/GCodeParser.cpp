@@ -30,7 +30,7 @@
 
 using namespace MillSim;
 
-static char TokTypes[] = "GTXYZIJK";
+static char TokTypes[] = "GTXYZIJKR";
 
 GCodeParser::~GCodeParser()
 {
@@ -140,9 +140,11 @@ bool GCodeParser::ParseLine(const char* ptr)
 	GCToken token;
 	bool validMotion = false;
 	bool exitLoop = false;
+	int cmd = 0;
 	while (*ptr != 0 && !exitLoop)
 	{
 		ptr = GetNextToken(ptr, &token);
+		lastLastState = lastState;
 		switch (token.letter)
 		{
 		case '*':
@@ -150,12 +152,15 @@ bool GCodeParser::ParseLine(const char* ptr)
 			break;
 
 		case 'G':
-			if (token.ival == 0 || token.ival == 1)
+			cmd = token.ival;
+			if (cmd == 0 || cmd == 1)
 				lastState.cmd = eMoveLiner;
-			else if (token.ival == 2)
+			else if (cmd == 2)
 				lastState.cmd = eRotateCW;
-			else if (token.ival == 3)
+			else if (cmd == 3)
 				lastState.cmd = eRotateCCW;
+			else if (cmd == 73 || cmd == 81 || cmd == 82 || cmd == 83)
+				lastState.cmd = eDril;
 			break;
 
 		case 'T':
@@ -188,6 +193,10 @@ bool GCodeParser::ParseLine(const char* ptr)
 		case 'K':
 			lastState.k = token.fval;
 			break;
+
+		case 'R':
+			lastState.r = token.fval;
+			break;
 		}
 	}
 	return validMotion;
@@ -197,6 +206,25 @@ bool GCodeParser::AddLine(const char* ptr)
 {
 	bool res = ParseLine(ptr);
 	if (res)
-		Operations.push_back(lastState);
+	{
+		if (lastState.cmd == eDril)
+		{
+			// split to several motions
+			lastState.cmd = eMoveLiner;
+			float rPlane = lastState.r;
+			float finalDepth = lastState.z;
+			lastState.z = rPlane;
+			Operations.push_back(lastState);
+			lastState.z = finalDepth;
+			Operations.push_back(lastState);
+			lastState.z = rPlane;
+			Operations.push_back(lastState);
+			// restore original state
+			lastState.z = finalDepth;
+			lastState.cmd = eDril;
+		}
+		else
+			Operations.push_back(lastState);
+	}
 	return res;
 }

@@ -45,6 +45,7 @@ namespace MillSim
 	public:
 		std::vector<MillMotion> Operations;
 		MillMotion lastState = { eNop };
+		MillMotion lastLastState = { eNop };
 
 	protected:
 		const char* GetNextToken(const char* ptr, GCToken* token);

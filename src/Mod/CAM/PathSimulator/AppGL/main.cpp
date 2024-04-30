@@ -25,16 +25,17 @@ using namespace MillSim;
 
 const char *demoCode[] = {
  "T2",
- "G0 X-0.7 Y-0.7 Z10",
- "G0 X-0.7 Y-0.7 Z1",
- "G0 X0.7 Y0.7 Z1 I0.7 J0.7 K0",
- "G0 X0.7 Y0.7 Z10",
+ 
+ "G81 X0.5 Y0.5 Z0.5 R5",
+ "X-0.5 Y-0.5 Z-0.5",
+
 
  "G0 X-3 Y-3 Z10",
  "G0 X-3 Y-3 Z0.5",
  "G3 X3 Y3 Z0.5 I3 J3 K0",
  "G0 X3 Y3 Z10",
 
+ 
  "G0 X15 Y15 Z10",
  "G0 X 15 Y15 Z1.5",
  "G0 X15 Y-15 Z1.5",
@@ -229,7 +230,8 @@ int main(int argc, char **argv)
     gMillSimulator.AddTool(&endMillBall03);
     gMillSimulator.AddTool(&endMillTaper04);
     gMillSimulator.InitSimulation();
-    gMillSimulator.SetBoxStock(0, 0, -8.7f, 50, 50, 8.7f);
+    //gMillSimulator.SetBoxStock(0, 0, -8.7f, 50, 50, 8.7f);
+    gMillSimulator.SetBoxStock(-20, -20, 0.005f, 40, 40, 2);
     //gMillSimulator.SetBoxStock(-119, -124, 0.003f, 245, 234, 30);
     gMillSimulator.InitDisplay();
     

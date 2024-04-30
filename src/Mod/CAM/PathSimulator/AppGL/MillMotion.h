@@ -41,6 +41,7 @@ namespace MillSim {
 		eMoveLiner,
 		eRotateCW,
 		eRotateCCW,
+		eDril,
 		eChangeTool
 	};
 
@@ -50,6 +51,7 @@ namespace MillSim {
 		int tool;
 		float x, y, z;
 		float i, j, k;
+		float r;
 	};
 
 	static inline void MotionPosToVec(vec3 vec, const MillMotion* motion)
