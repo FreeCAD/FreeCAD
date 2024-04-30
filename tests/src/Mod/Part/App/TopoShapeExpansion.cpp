@@ -1803,6 +1803,7 @@ TEST_F(TopoShapeExpansionTest, makeElementThickSolid)
     std::vector<TopoShape> shapes = {subFaces[0], subFaces[1]};
     // Act
     TopoShape& result = cube1TS.makeElementThickSolid(cube1TS, shapes, 0.1, 1e-07);
+    (void)result;
     auto elements = elementMap(cube1TS);
     // Assert
     EXPECT_EQ(cube1TS.countSubElements("Wire"), 16);
