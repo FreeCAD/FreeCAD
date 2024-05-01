@@ -157,6 +157,9 @@ void Transformed::Restore(Base::XMLReader& reader)
 
 bool Transformed::isMultiTransformChild() const
 {
+    // Checking for a MultiTransform in the dependency list is not reliable on initialization
+    // because the dependencies are only established after creation.
+    /*
     for (auto const* obj : getInList()) {
         auto mt = Base::freecad_dynamic_cast<PartDesign::MultiTransform>(obj);
         if (!mt) {
@@ -168,6 +171,14 @@ bool Transformed::isMultiTransformChild() const
             return true;
         }
     }
+    */
+
+    // instead check for default property values because these are invalid for a standalone transform feature.
+    // This will mislabel standalone features during the initialization phase.
+    if (TransformMode.getValue() == 0 && Originals.getValue().empty()) {
+        return true;
+    }
+
     return false;
 }
 
@@ -210,15 +221,6 @@ App::DocumentObjectExecReturn* Transformed::execute()
         Originals.setValues({});
     }
 
-    if (!this->BaseFeature.getValue()) {
-        auto body = getFeatureBody();
-        if (body) {
-            body->setBaseProperty(this);
-        }
-    }
-
-    this->positionBySupport();
-
     std::vector<App::DocumentObject*> originals = Originals.getValues();
     // Remove suppressed features from the list so the transformations behave as if they are not
     // there
@@ -234,6 +236,15 @@ App::DocumentObjectExecReturn* Transformed::execute()
     if (mode == Mode::TransformToolShapes && originals.empty()) {
         return App::DocumentObject::StdReturn;
     }
+
+    if (!this->BaseFeature.getValue()) {
+        auto body = getFeatureBody();
+        if (body) {
+            body->setBaseProperty(this);
+        }
+    }
+
+    this->positionBySupport();
 
     // get transformations from subclass by calling virtual method
     std::vector<gp_Trsf> transformations;
