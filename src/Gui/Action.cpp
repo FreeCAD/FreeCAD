@@ -54,7 +54,6 @@
 #include "Macro.h"
 #include "MainWindow.h"
 #include "PythonEditor.h"
-#include "UserSettings.h"
 #include "WhatsThis.h"
 #include "Widgets.h"
 #include "Workbench.h"
