@@ -43,8 +43,7 @@ ViewProviderFemConstraintTemperature::ViewProviderFemConstraintTemperature()
 {
     sPixmap = "FEM_ConstraintTemperature";
     loadSymbol((resourceSymbolDir + "ConstraintTemperature.iv").c_str());
-
-    FaceColor.setValue(1.0f, 0.0f, 0.0f);
+    ShapeAppearance.setDiffuseColor(1.0f, 0.0f, 0.0f);
 }
 
 ViewProviderFemConstraintTemperature::~ViewProviderFemConstraintTemperature() = default;

@@ -2632,7 +2632,10 @@ TYPESYSTEM_SOURCE(App::PropertyMaterialList, App::PropertyLists)
 //**************************************************************************
 // Construction/Destruction
 
-PropertyMaterialList::PropertyMaterialList() = default;
+PropertyMaterialList::PropertyMaterialList()
+{
+    setSizeOne();
+}
 
 PropertyMaterialList::~PropertyMaterialList() = default;
 

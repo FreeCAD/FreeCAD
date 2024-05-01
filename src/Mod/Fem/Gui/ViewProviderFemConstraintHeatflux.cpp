@@ -44,8 +44,7 @@ ViewProviderFemConstraintHeatflux::ViewProviderFemConstraintHeatflux()
 {
     sPixmap = "FEM_ConstraintHeatflux";
     loadSymbol((resourceSymbolDir + "ConstraintHeatFlux.iv").c_str());
-
-    FaceColor.setValue(1.0f, 0.0f, 0.0f);
+    ShapeAppearance.setDiffuseColor(1.0f, 0.0f, 0.0f);
 }
 
 ViewProviderFemConstraintHeatflux::~ViewProviderFemConstraintHeatflux() = default;

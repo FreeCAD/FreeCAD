@@ -48,6 +48,7 @@ class ConstraintCentrif(base_fempythonobject.BaseFemPythonObject):
             "Constraint CENTRIF",
             "set rotation frequency f<sub>rot"
         )
+        obj.setPropertyStatus("RotationFrequency", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyLinkSubList",
@@ -55,3 +56,4 @@ class ConstraintCentrif(base_fempythonobject.BaseFemPythonObject):
             "Constraint CENTRIF",
             "set line as axis of rotation"
         )
+        obj.setPropertyStatus("RotationAxis", "LockDynamic")

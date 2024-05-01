@@ -51,6 +51,7 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
                 "Vector Potential",
                 "Real part of current density x-component"
             )
+            obj.setPropertyStatus("CurrentDensity_re_1", "LockDynamic")
             obj.CurrentDensity_re_1 = "0 A/m^2"
         if not hasattr(obj, "CurrentDensity_re_2"):
             obj.addProperty(
@@ -59,6 +60,7 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
                 "Vector Potential",
                 "Real part of current density y-component"
             )
+            obj.setPropertyStatus("CurrentDensity_re_2", "LockDynamic")
             obj.CurrentDensity_re_2 = "0 A/m^2"
         if not hasattr(obj, "CurrentDensity_re_3"):
             obj.addProperty(
@@ -67,6 +69,7 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
                 "Vector Potential",
                 "Real part of current density z-component"
             )
+            obj.setPropertyStatus("CurrentDensity_re_3", "LockDynamic")
             obj.CurrentDensity_re_3 = "0 A/m^2"
         if not hasattr(obj, "CurrentDensity_im_1"):
             obj.addProperty(
@@ -75,6 +78,7 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
                 "Vector Potential",
                 "Imaginary part of current density x-component"
             )
+            obj.setPropertyStatus("CurrentDensity_im_1", "LockDynamic")
             obj.CurrentDensity_im_1 = "0 A/m^2"
         if not hasattr(obj, "CurrentDensity_im_2"):
             obj.addProperty(
@@ -83,6 +87,7 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
                 "Vector Potential",
                 "Imaginary part of current density y-component"
             )
+            obj.setPropertyStatus("CurrentDensity_im_2", "LockDynamic")
             obj.CurrentDensity_im_2 = "0 A/m^2"
         if not hasattr(obj, "CurrentDensity_im_3"):
             obj.addProperty(
@@ -91,6 +96,7 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
                 "Vector Potential",
                 "Imaginary part of current density z-component"
             )
+            obj.setPropertyStatus("CurrentDensity_im_3", "LockDynamic")
             obj.CurrentDensity_im_3 = "0 A/m^2"
 
         # now the enable bools
@@ -101,6 +107,7 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
                 "Vector Potential",
                 ""
             )
+            obj.setPropertyStatus("CurrentDensity_re_1_Disabled", "LockDynamic")
             obj.CurrentDensity_re_1_Disabled = True
         if not hasattr(obj, "CurrentDensity_re_2_Disabled"):
             obj.addProperty(
@@ -109,6 +116,7 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
                 "Vector Potential",
                 ""
             )
+            obj.setPropertyStatus("CurrentDensity_re_2_Disabled", "LockDynamic")
             obj.CurrentDensity_re_2_Disabled = True
         if not hasattr(obj, "CurrentDensity_re_3_Disabled"):
             obj.addProperty(
@@ -117,6 +125,7 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
                 "Vector Potential",
                 ""
             )
+            obj.setPropertyStatus("CurrentDensity_re_3_Disabled", "LockDynamic")
             obj.CurrentDensity_re_3_Disabled = True
         if not hasattr(obj, "CurrentDensity_im_1_Disabled"):
             obj.addProperty(
@@ -125,6 +134,7 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
                 "Vector Potential",
                 ""
             )
+            obj.setPropertyStatus("CurrentDensity_im_1_Disabled", "LockDynamic")
             obj.CurrentDensity_im_1_Disabled = True
         if not hasattr(obj, "CurrentDensity_im_2_Disabled"):
             obj.addProperty(
@@ -133,6 +143,7 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
                 "Vector Potential",
                 ""
             )
+            obj.setPropertyStatus("CurrentDensity_im_2_Disabled", "LockDynamic")
             obj.CurrentDensity_im_2_Disabled = True
         if not hasattr(obj, "CurrentDensity_im_3_Disabled"):
             obj.addProperty(
@@ -141,4 +152,5 @@ class ConstraintCurrentDensity(base_fempythonobject.BaseFemPythonObject):
                 "Vector Potential",
                 ""
             )
+            obj.setPropertyStatus("CurrentDensity_im_3_Disabled", "LockDynamic")
             obj.CurrentDensity_im_3_Disabled = True

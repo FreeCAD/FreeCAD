@@ -27,6 +27,7 @@ import FreeCAD
 import Draft
 import Mesh
 import Part
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -37,8 +38,7 @@ else:
     def translate(ctxt, txt): return txt
 
 
-if open.__module__ in ['__builtin__','io']:
-    pythonopen = open
+
 
 
 def export(exportList, filename):
@@ -52,7 +52,7 @@ def export(exportList, filename):
         }
 
     # Write file
-    outfile = pythonopen(filename, "w")
+    outfile = pyopen(filename, "w")
     json.dump(data, outfile, separators = (',', ':'))
     outfile.close()
 

@@ -52,6 +52,7 @@ import FreeCAD
 import Path
 import os
 import Path
+from builtins import open as pyopen
 
 AXIS = (
     "X",
@@ -62,9 +63,7 @@ AXIS = (
 )  # OpenSBP always puts multiaxis move parameters in this order
 SPEEDS = "XY", "Z", "A", "B"
 
-# to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
+
 
 
 def open(filename):
@@ -78,7 +77,7 @@ def insert(filename, docname):
     """called when freecad imports a file
     This insert expects parse to return a list of strings
     each string will become a separate path"""
-    gfile = pythonopen(filename)
+    gfile = pyopen(filename)
     gcode = gfile.read()
     gfile.close()
     gcode = parse(gcode)
