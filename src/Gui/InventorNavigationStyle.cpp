@@ -28,7 +28,7 @@
 #endif
 
 #include "NavigationStyle.h"
-#include "SoMouseWheelEvent.h"
+#include "Inventor/events/SoMouseWheelEvent.h"
 #include "View3DInventorViewer.h"
 
 

@@ -47,7 +47,7 @@
 #include "MouseSelection.h"
 #include "NavigationAnimator.h"
 #include "NavigationAnimation.h"
-#include "SoMouseWheelEvent.h"
+#include "Inventor/events/SoMouseWheelEvent.h"
 #include "View3DInventorViewer.h"
 
 using namespace Gui;

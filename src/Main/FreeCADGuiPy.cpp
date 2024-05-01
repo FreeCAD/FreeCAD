@@ -50,7 +50,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/StartupProcess.h>
 #include <Gui/SoFCDB.h>
-#include <Gui/Quarter/Quarter.h>
+#include <Quarter/Quarter.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/nodekits/SoNodeKit.h>

@@ -44,7 +44,7 @@
 
 #include "CornerCrossLetters.h"
 #include "View3DInventorSelection.h"
-#include "Quarter/SoQTQuarterAdaptor.h"
+#include "SoQTQuarterAdaptor.h"
 
 
 class SoTranslation;

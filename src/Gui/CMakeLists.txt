@@ -39,14 +39,12 @@ endif(BUILD_ADDONMGR)
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/Quarter
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_CURRENT_BINARY_DIR}/..
     ${CMAKE_CURRENT_BINARY_DIR}/Language
     ${CMAKE_CURRENT_BINARY_DIR}/propertyeditor
     ${CMAKE_CURRENT_BINARY_DIR}/TaskView
-    ${CMAKE_CURRENT_BINARY_DIR}/Quarter
     ${CMAKE_CURRENT_BINARY_DIR}/DAGView
     ${Boost_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
@@ -55,6 +53,7 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${3DCONNEXION_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/src/3rdParty/Quarter/
 )
 
 if(MSVC)
@@ -67,6 +66,7 @@ if(MSVC)
     set(FreeCADGui_LIBS
          FreeCADApp
          ${COIN3D_LIBRARIES}
+         Quarter
          ${OPENGL_gl_LIBRARY}
     )
 
@@ -80,6 +80,7 @@ else(MSVC)
     set(FreeCADGui_LIBS
         FreeCADApp
         ${COIN3D_LIBRARIES}
+        Quarter
         ${Boost_LIBRARIES}
         ${OPENGL_gl_LIBRARY}
         ${3DCONNEXION_LINKFLAGS}
@@ -882,30 +883,6 @@ SET(View3D_SRCS
 )
 SOURCE_GROUP("View3D" FILES ${View3D_SRCS})
 
-#quarter sources
-FILE(GLOB_RECURSE Quarter_CPP_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} Quarter/*.cpp)
-FILE(GLOB_RECURSE Quarter_H_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} Quarter/*.h)
-
-SET(Quarter_MOC_HDR
-    Quarter/SignalThread.h
-    Quarter/InteractionMode.h
-    Quarter/SensorManager.h
-    Quarter/ContextMenu.h
-    Quarter/eventhandlers/FocusHandler.h
-    Quarter/eventhandlers/DragDropHandler.h
-    Quarter/eventhandlers/EventFilter.h
-    Quarter/QuarterWidget.h
-)
-
-qt_wrap_cpp(Quarter_MOC_SRCS ${Quarter_MOC_HDR})
-
-SET(Quarter_SRCS
-    ${Quarter_CPP_SRC}
-    ${Quarter_H_SRC}
-    ${Quarter_MOC_SRCS}
-)
-SOURCE_GROUP("Quarter" FILES ${Quarter_SRCS})
-
 # The view provider sources
 SET(Viewprovider_CPP_SRCS
     ViewProvider.cpp
@@ -1008,8 +985,8 @@ SET(Inventor_CPP_SRCS
     SoAxisCrossKit.cpp
     SoTextLabel.cpp
     SoDatumLabel.cpp
+    SoQTQuarterAdaptor.cpp
     SoTouchEvents.cpp
-    SoMouseWheelEvent.cpp
     SoFCCSysDragger.cpp
     ArcEngine.cpp
 )
@@ -1037,8 +1014,8 @@ SET(Inventor_SRCS
     SoAxisCrossKit.h
     SoTextLabel.h
     SoDatumLabel.h
+    SoQTQuarterAdaptor.h
     SoTouchEvents.h
-    SoMouseWheelEvent.h
     SoFCCSysDragger.h
     ArcEngine.h
 )
@@ -1277,7 +1254,6 @@ SET(FreeCADGui_SRCS
     ${Task_View_SRCS}
     ${qsintActionPanel_SRCS}
     ${Resource_SRCS}
-    ${Quarter_SRCS}
     ${View3D_SRCS}
     ${Viewprovider_SRCS}
     ${Widget_SRCS}
