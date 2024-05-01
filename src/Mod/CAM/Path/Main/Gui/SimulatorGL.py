@@ -45,6 +45,14 @@ if FreeCAD.GuiUp:
 
 _filePath = os.path.dirname(os.path.abspath(__file__))
 
+def IsSame(x, y):
+    return abs(x - y) < 0.0001
+
+def RadiusAt(edge, p):
+    x = edge.valueAt(p).x
+    y = edge.valueAt(p).y
+    return math.sqrt(x * x + y * y)
+
 
 class CAMSimTaskUi:
     def __init__(self, parent):
@@ -69,8 +77,6 @@ def TSError(msg):
 class CAMSimulation:
     def __init__(self):
         self.debug = False
-        self.timer = QtCore.QTimer()
-        QtCore.QObject.connect(self.timer, QtCore.SIGNAL("timeout()"), self.PerformCut)
         self.stdrot = FreeCAD.Rotation(Vector(0, 0, 1), 0)
         self.iprogress = 0
         self.numCommands = 0
@@ -82,11 +88,79 @@ class CAMSimulation:
     def Connect(self, but, sig):
         QtCore.QObject.connect(but, QtCore.SIGNAL("clicked()"), sig)
 
-    def UpdateProgress(self):
-        if self.numCommands > 0:
-            self.taskForm.form.progressBar.setValue(
-                self.iprogress * 100 / self.numCommands
-            )
+    ## Convert tool shape to tool profile needed by GL simulator
+    def FindClosestEdge(self, edges, px, pz):
+        for edge in edges:
+            p1 = edge.FirstParameter
+            p2 = edge.LastParameter
+            rad = RadiusAt(edge, p1)
+            z = edge.valueAt(p1).z
+            if IsSame(px, rad) and IsSame(pz, z):
+                return edge, p1, p2
+            rad = RadiusAt(edge, p2)
+            z = edge.valueAt(p2).z
+            if IsSame(px, rad) and IsSame(pz, z):
+                return edge, p2, p1
+        return None, 0.0, 0.0
+
+    def FindTopMostEdge(self, edges):
+        maxz = 0.0
+        topedge = None
+        top_p1 = 0.0
+        top_p2 = 0.0
+        for edge in edges:
+            p1 = edge.FirstParameter
+            p2 = edge.LastParameter
+            z = edge.valueAt(p1).z
+            if z > maxz:
+                topedge = edge
+                top_p1 = p1
+                top_p2 = p2
+                maxz = z
+            z = edge.valueAt(p2).z
+            if z > maxz:
+                topedge = edge
+                top_p1 = p2
+                top_p2 = p1
+                maxz = z
+        return topedge, top_p1, top_p2
+
+    #the algo is based on locating the side edge that OCC creates on any revolved object 
+    def GetToolProfile(self, tool):
+        shape = tool.Shape
+        sideEdgeList = []
+        for i in range(len(shape.Edges)):
+            edge = shape.Edges[i]
+            if not edge.isClosed():
+                v1 = edge.firstVertex()
+                v2 = edge.lastVertex()
+                tp = "arc" if type(edge.Curve) is Part.Circle else "line"
+                sideEdgeList.append(edge)
+                if tp == "arc":
+                    start = edge.FirstParameter
+                    end = edge.LastParameter
+                    diff = end - start
+
+        # sort edges as a single 3d line on the x-z plane
+        profile = [0.0, 0.0]
+
+        # first find the topmost edge
+        edge, p1, p2 = self.FindTopMostEdge(sideEdgeList)
+        profile = [RadiusAt(edge, p1), edge.valueAt(p1).z]
+        endrad = 0.0
+        # one by one find all connecting edges
+        while (edge is not None):
+            sideEdgeList.remove(edge)
+            endrad = RadiusAt(edge, p2)
+            endz = edge.valueAt(p2).z
+            profile.append(endrad)
+            profile.append(endz)
+            edge, p1, p2 =  self.FindClosestEdge(sideEdgeList, endrad, endz)
+            if edge is None:
+                break
+
+        print(profile)
+        return profile
 
     def Activate(self):
         self.initdone = False
@@ -102,8 +176,10 @@ class CAMSimulation:
         self.disableAnim = False
         self.firstDrill = True
         self.voxSim = CAMSimulator.PathSim()
-        self.SimulateMill()
         self.initdone = True
+        self.job = self.jobs[self.taskForm.form.comboJobs.currentIndex()]
+        self.curpos = FreeCAD.Placement(Vector(0, 0, 0), self.stdrot) ## GL: Remove!!!
+        self.SetupSimulation()
 
     def _populateJobSelection(self, form):
         # Make Job selection combobox
@@ -153,84 +229,7 @@ class CAMSimulation:
                 self.numCommands += len(self.operations[i].Path.Commands)
 
         self.stock = self.job.Stock.Shape
-        maxlen = self.stock.BoundBox.XLength
-        if maxlen < self.stock.BoundBox.YLength:
-            maxlen = self.stock.BoundBox.YLength
-        self.resolution = 0.01 * self.accuracy * maxlen
         self.busy = False
-        self.tool = None
-        for i in range(len(self.activeOps)):
-            self.SetupOperation(0)
-            if self.tool is not None:
-                break
-        self.iprogress = 0
-        self.UpdateProgress()
-
-    def SetupOperation(self, itool):
-        self.operation = self.activeOps[itool]
-        try:
-            self.tool = PathDressup.toolController(self.operation).Tool
-        except Exception:
-            self.tool = None
-
-        if self.tool is not None:
-            # GL: add tool table
-            pass
-        self.icmd = 0
-        self.curpos = FreeCAD.Placement(self.initialPos, self.stdrot)
-        self.opCommands = PathUtils.getPathWithPlacement(self.operation).Commands
-
-    def SimulateMill(self):
-        self.job = self.jobs[self.taskForm.form.comboJobs.currentIndex()]
-        self.busy = False
-        self.height = 10
-        self.skipStep = False
-        self.initialPos = Vector(0, 0, self.job.Stock.Shape.BoundBox.ZMax)
-
-        # Add cut material - GL: add stock to wind
-
-        self.SetupSimulation()
-        self.resetSimulation = True
-        FreeCAD.ActiveDocument.recompute()
-
-    def PerformCutVoxel(self):
-        if self.resetSimulation:
-            self.resetSimulation = False
-            self.SetupSimulation()
-
-        if self.busy:
-            return
-        self.busy = True
-
-        cmd = self.opCommands[self.icmd]
-        # for cmd in job.Path.Commands:
-        # GL: add all commands to simulator
-        # GL: support all the following
-        if cmd.Name in ["G0", "G1", "G2", "G3"]:
-            pass
-        if cmd.Name in ["G80"]:
-            pass
-        if cmd.Name in ["G73", "G81", "G82", "G83"]:
-            pass
-            extendcommands = []
-            if self.firstDrill:
-                extendcommands.append(Path.Command("G0", {"Z": cmd.r}))
-                self.firstDrill = False
-            extendcommands.append(
-                Path.Command("G0", {"X": cmd.x, "Y": cmd.y, "Z": cmd.r})
-            )
-            extendcommands.append(
-                Path.Command("G1", {"X": cmd.x, "Y": cmd.y, "Z": cmd.z})
-            )
-            extendcommands.append(
-                Path.Command("G1", {"X": cmd.x, "Y": cmd.y, "Z": cmd.r})
-            )
-        self.icmd += 1
-        self.iprogress += 1
-        self.busy = False
-
-    def PerformCut(self):
-        self.PerformCutVoxel()
 
     def onJobChange(self):
         form = self.taskForm.form
@@ -250,20 +249,20 @@ class CAMSimulation:
 
     def onAccuracyBarChange(self):
         form = self.taskForm.form
-        self.accuracy = 1.1 - 0.1 * form.sliderAccuracy.value()
+        self.accuracy = 2.2 - 0.2 * form.sliderAccuracy.value()
         form.labelAccuracy.setText(str(round(self.accuracy, 1)) + "%")
-
-    def EndSimulation(self):
-        self.resetSimulation = True
-
-    def SimStop(self):
-        self.EndSimulation()
 
     def SimPlay(self):
         self.voxSim.ResetSimulation()
-        for cmd in self.opCommands:
-            self.voxSim.AddCommand(self.curpos, cmd)
-        self.voxSim.BeginSimulation(self.stock, self.resolution)
+        for op in self.activeOps:
+            tool = PathDressup.toolController(op).Tool
+            toolNumber = PathDressup.toolController(op).ToolNumber
+            toolProfile = self.GetToolProfile(tool)
+            # GL: Call add tool cmd
+            opCommands = PathUtils.getPathWithPlacement(op).Commands
+            for cmd in opCommands:
+                self.voxSim.AddCommand(self.curpos, cmd)
+        self.voxSim.BeginSimulation(self.stock, 0.1)
         # GL: update simulator and open window 
         pass
 
