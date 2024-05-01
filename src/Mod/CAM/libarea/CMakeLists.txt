@@ -163,7 +163,11 @@ target_link_libraries(area area-native ${area_LIBS} ${area_native_LIBS})
 # TODO why CMAKE_SHARED_LINKER_FLAGS is not used here?
 # This is a dirty workaround!
 if(NOT BUILD_DYNAMIC_LINK_PYTHON AND CMAKE_COMPILER_IS_CLANGXX)
-    target_link_libraries(area "-Wl,--undefined,dynamic_lookup")
+    if(APPLE)
+        target_link_libraries(area "-Wl,-undefined,dynamic_lookup")
+    else(UNIX)
+        target_link_libraries(area "-Wl,--undefined,dynamic_lookup")
+    endif()
 endif()
 
 SET_BIN_DIR(area area /Mod/CAM)
