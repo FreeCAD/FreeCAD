@@ -31,7 +31,6 @@
 #include "Application.h"
 #include "Command.h"
 #include "MainWindow.h"
-#include "UserSettings.h"
 
 
 using namespace Gui;

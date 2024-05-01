@@ -27,7 +27,9 @@
 # include <QAbstractItemView>
 # include <QActionGroup>
 # include <QApplication>
+# include <QMenuBar>
 # include <QScreen>
+# include <QStatusBar>
 # include <QToolBar>
 #endif
 
