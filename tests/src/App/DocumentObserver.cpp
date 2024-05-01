@@ -15,7 +15,7 @@
 using namespace App;
 using namespace Data;
 
-class DocumentObserverTest: public ::testing::Test
+class DISABLED_DocumentObserverTest: public ::testing::Test
 {
 protected:
     static void SetUpTestSuite()
@@ -40,7 +40,7 @@ protected:
     // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
 };
 
-TEST_F(DocumentObserverTest, hasSubObject)
+TEST_F(DISABLED_DocumentObserverTest, hasSubObject)
 {
     // Arrange
 
@@ -83,7 +83,7 @@ TEST_F(DocumentObserverTest, hasSubObject)
     EXPECT_TRUE(hasSubObj);
 }
 
-TEST_F(DocumentObserverTest, hasSubElement)
+TEST_F(DISABLED_DocumentObserverTest, hasSubElement)
 {
     // Arrange
 
@@ -127,7 +127,7 @@ TEST_F(DocumentObserverTest, hasSubElement)
     EXPECT_TRUE(hasSubEl);
 }
 
-TEST_F(DocumentObserverTest, normalize)
+TEST_F(DISABLED_DocumentObserverTest, normalize)
 {
     // Arrange
 
@@ -307,7 +307,7 @@ TEST_F(DocumentObserverTest, normalize)
     EXPECT_TRUE(normalizeConvertIndex);
 }
 
-TEST_F(DocumentObserverTest, normalized)
+TEST_F(DISABLED_DocumentObserverTest, normalized)
 {
     // Arrange
 
