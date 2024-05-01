@@ -38,6 +38,8 @@
 #include "DocumentObject.h"
 #include "DocumentObjectPy.h"
 #include "ObjectIdentifier.h"
+#include "ElementNamingUtils.h"
+#include "GeoFeature.h"
 
 
 FC_LOG_LEVEL_INIT("PropertyLinks",true,true)
@@ -55,6 +57,9 @@ namespace sp = std::placeholders;
 TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLinkBase , App::Property)
 
 static std::unordered_map<std::string, std::set<PropertyLinkBase*> > _LabelMap;
+
+static std::unordered_map<App::DocumentObject *, std::unordered_set<PropertyLinkBase*> > _ElementRefMap;
+
 PropertyLinkBase::PropertyLinkBase() = default;
 
 PropertyLinkBase::~PropertyLinkBase() {
@@ -97,6 +102,17 @@ bool PropertyLinkBase::isSame(const Property &other) const
 }
 
 void PropertyLinkBase::unregisterElementReference() {
+#ifdef FC_USE_TNP_FIX
+    for(auto obj : _ElementRefs) {
+        auto it = _ElementRefMap.find(obj);
+        if(it != _ElementRefMap.end()) {
+            it->second.erase(this);
+            if(it->second.empty())
+                _ElementRefMap.erase(it);
+        }
+    }
+    _ElementRefs.clear();
+#endif
 }
 
 void PropertyLinkBase::unregisterLabelReferences()
@@ -202,15 +218,58 @@ static std::string propertyName(const Property *prop) {
 }
 
 void PropertyLinkBase::updateElementReferences(DocumentObject *feature, bool reverse) {
+#ifdef FC_USE_TNP_FIX
+    if(!feature || !feature->getNameInDocument())
+        return;
+    auto it = _ElementRefMap.find(feature);
+    if(it == _ElementRefMap.end())
+        return;
+    std::vector<PropertyLinkBase*> props;
+    props.reserve(it->second.size());
+    props.insert(props.end(),it->second.begin(),it->second.end());
+    for(auto prop : props) {
+        if(prop->getContainer()) {
+            try {
+                prop->updateElementReference(feature,reverse,true);
+            }catch(Base::Exception &e) {
+                e.ReportException();
+                FC_ERR("Failed to update element reference of " << propertyName(prop));
+            }catch(std::exception &e) {
+                FC_ERR("Failed to update element reference of " << propertyName(prop)
+                                                                << ": " << e.what());
+            }
+        }
+    }
+#else
     (void)feature;
     (void)reverse;
+#endif
 }
 
 void PropertyLinkBase::_registerElementReference(App::DocumentObject *obj, std::string &sub, ShadowSub &shadow)
 {
+#ifdef FC_USE_TNP_FIX
+    if(!obj || !obj->getNameInDocument() || sub.empty())
+        return;
+    if(shadow.first.empty()) {
+        _updateElementReference(0,obj,sub,shadow,false);
+        return;
+    }
+    GeoFeature *geo = 0;
+    const char *element = 0;
+    std::pair<std::string, std::string> elementName;
+    GeoFeature::resolveElement(obj,sub.c_str(), elementName,true,
+                               GeoFeature::ElementNameType::Export,0,&element,&geo);
+    if(!geo || !element || !element[0])
+        return;
+
+    if(_ElementRefs.insert(geo).second)
+        _ElementRefMap[geo].insert(this);
+#else
     (void)obj;
     (void)sub;
     (void)shadow;
+#endif
 }
 
 class StringGuard {
@@ -275,12 +334,171 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
         App::DocumentObject *obj, std::string &sub, ShadowSub &shadow,
         bool reverse, bool notify)
 {
+#ifdef FC_USE_TNP_FIX
+    if (!obj || !obj->getNameInDocument()) return false;
+    ShadowSub elementName;
+    const char* subname;
+    if (shadow.first.size())
+        subname = shadow.first.c_str();
+    else if (shadow.second.size())
+        subname = shadow.second.c_str();
+    else
+        subname = sub.c_str();
+    GeoFeature* geo = 0;
+    const char* element = 0;
+    auto ret = GeoFeature::resolveElement(obj,
+                                          subname,
+                                          elementName,
+                                          true,
+                                          GeoFeature::ElementNameType::Export,
+                                          feature,
+                                          &element,
+                                          &geo);
+    if (!ret || !geo || !element || !element[0]) {
+        if (elementName.second.size())
+            shadow.second.swap(elementName.second);
+        return false;
+    }
+
+    if (_ElementRefs.insert(geo).second)
+            _ElementRefMap[geo].insert(this);
+
+        if (!reverse) {
+        if (elementName.first.empty()) {
+            shadow.second.swap(elementName.second);
+            return false;
+        }
+        if (shadow == elementName)
+                return false;
+        }
+
+    bool missing = Data::hasMissingElement(elementName.second.c_str());
+    if (feature == geo && (missing || reverse)) {
+        // If the referenced element is missing, or we are generating element
+        // map for the first time, or we are re-generating the element map due
+        // to version change, i.e. 'reverse', try search by geometry first
+        const char* oldElement = Data::findElementName(shadow.second.c_str());
+        if (!Data::hasMissingElement(oldElement)) {
+//            const auto& names = geo->searchElementCache(oldElement);
+            std::vector<std::string> names; // searchElementCache isn't implemented.
+            if (names.size()) {
+                missing = false;
+                std::string newsub(subname, strlen(subname) - strlen(element));
+                newsub += names.front();
+                GeoFeature::resolveElement(obj,
+                                           newsub.c_str(),
+                                           elementName,
+                                           true,
+                                           GeoFeature::ElementNameType::Export,
+                                           feature);
+                const auto& oldName = shadow.first.size() ? shadow.first : shadow.second;
+                const auto& newName =
+                    elementName.first.size() ? elementName.first : elementName.second;
+                if (oldName != newName) {
+                    FC_WARN(propertyName(this)
+                            << " auto change element reference " << ret->getFullName() << " "
+                            << oldName << " -> " << newName);
+                }
+            }
+            // Note: the following code proves to be too risky. There is no way
+            // (so far) to ensure the recompute do not change the geometry. If
+            // the geometry does remain the same, the above geometry search
+            // should be able to find the new reference any way!
+#if 0
+                else if (missing && reverse && shadow.first.size()) {
+                    // reverse means we are trying to either generate the element
+                    // name for the first time, or upgrade to a new map version. In
+                    // case of upgrading, we still consult the original mapped name
+                    // in first try. Here means the first try failed, and the
+                    // geometry search cannot find any match, so we try the
+                    // non-mapped name as a last resort.
+                    //
+                    // WARNING! We are assuming the recomputation is done with no
+                    // actual property change, and the resulting geometry remains
+                    // the same. If this condition is not met, the result may be
+                    // undesirable. TODO: find a way to ensure this condition.
+
+                    GeoFeature::resolveElement(obj, shadow.second.c_str(), elementName, true,
+                            GeoFeature::ElementNameType::Export,feature);
+                    if(!elementName.second.empty()) {
+                        missing = Data::ComplexGeoData::hasMissingElement(elementName.second.c_str());
+                        if (!missing) {
+                            FC_WARN(propertyName(this)
+                                << " element reference changed " << ret->getFullName() << " "
+                                << shadow.first << " -> " << elementName.first);
+                        }
+                    }
+                }
+#endif
+        }
+    }
+
+    if (notify)
+            aboutToSetValue();
+
+        auto updateSub = [&](const std::string& newSub) {
+        if (sub != newSub) {
+            //signalUpdateElementReference(sub, newSub);
+            sub = newSub;
+        }
+    };
+
+    if (missing) {
+        FC_WARN(propertyName(this)
+                << " missing element reference " << ret->getFullName() << " "
+                << (elementName.first.size() ? elementName.first : elementName.second));
+        shadow.second.swap(elementName.second);
+    }
+    else {
+        FC_TRACE(propertyName(this) << " element reference shadow update " << ret->getFullName()
+                                    << " " << shadow.first << " -> " << elementName.first);
+        shadow.swap(elementName);
+        if (shadow.first.size() && Data::hasMappedElementName(sub.c_str()))
+                updateSub(shadow.first);
+        }
+
+    if (reverse) {
+        if (shadow.first.size() && Data::hasMappedElementName(sub.c_str()))
+                updateSub(shadow.first);
+            else
+                updateSub(shadow.second);
+            return true;
+    }
+    if (missing) {
+        if (sub != shadow.first)
+                updateSub(shadow.second);
+            return true;
+    }
+    auto pos2 = shadow.first.rfind('.');
+    if (pos2 == std::string::npos)
+            return true;
+        ++pos2;
+    auto pos = sub.rfind('.');
+    if (pos == std::string::npos)
+            pos = 0;
+        else
+            ++pos;
+        if (pos == pos2) {
+        if (sub.compare(pos, sub.size() - pos, &shadow.first[pos2]) != 0) {
+            FC_LOG("element reference update " << sub << " -> " << shadow.first);
+            std::string newSub(sub);
+            newSub.replace(pos, sub.size() - pos, &shadow.first[pos2]);
+            updateSub(newSub);
+        }
+    }
+    else if (sub != shadow.second) {
+        FC_LOG("element reference update " << sub << " -> " << shadow.second);
+        updateSub(shadow.second);
+    }
+    return true;
+#else
     (void)feature;
     (void)obj;
     (void)reverse;
     (void)notify;
     shadow.second = sub;
     return false;
+#endif
 }
 
 std::pair<DocumentObject*, std::string>
@@ -297,6 +515,13 @@ PropertyLinkBase::tryReplaceLink(const PropertyContainer *owner, DocumentObject 
             return res;
         }
         return res;
+#ifdef FC_USE_TNP_FIX
+    } else if (newObj == obj) {
+        // This means the new object is already sub-object of this parent
+        // (consider a case of swapping the tool and base object of the Cut
+        // feature). We'll swap the old and new object.
+        return tryReplaceLink(owner, obj, parent, newObj, oldObj, subname);
+#endif
     }
     if(!subname || !subname[0])
         return res;
@@ -323,6 +548,10 @@ PropertyLinkBase::tryReplaceLink(const PropertyContainer *owner, DocumentObject 
                 return res;
             }
             break;
+#ifdef FC_USE_TNP_FIX
+        }else if(sobj == newObj) {
+            return tryReplaceLink(owner, obj, parent, newObj, oldObj, subname);
+#endif
         }else if(prev == parent)
             break;
         prev = sobj;
@@ -910,18 +1139,19 @@ void PropertyLinkSub::setValue(App::DocumentObject * lValue,
         std::vector<std::string> &&subs, std::vector<ShadowSub> &&shadows)
 {
     auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
-    if(lValue) {
-        if(!lValue->isAttachedToDocument())
+    if (lValue) {
+        if (!lValue->isAttachedToDocument())
             throw Base::ValueError("PropertyLinkSub: invalid document object");
-        if(!testFlag(LinkAllowExternal) && parent && parent->getDocument()!=lValue->getDocument())
+        if (!testFlag(LinkAllowExternal) && parent
+            && parent->getDocument() != lValue->getDocument())
             throw Base::ValueError("PropertyLinkSub does not support external object");
     }
     aboutToSetValue();
 #ifndef USE_OLD_DAG
-    if(parent) {
+    if (parent) {
         // before accessing internals make sure the object is not about to be destroyed
         // otherwise the backlink contains dangling pointers
-        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
+        if (!parent->testStatus(ObjectStatus::Destroy) && _pcScope != LinkScope::Hidden) {
             if (_pcLinkSub)
                 _pcLinkSub->_removeBackLink(parent);
             if (lValue)
@@ -929,11 +1159,12 @@ void PropertyLinkSub::setValue(App::DocumentObject * lValue,
         }
     }
 #endif
-    _pcLinkSub=lValue;
-    _cSubList=std::move(subs);
-    if(shadows.size()==_cSubList.size())
+    _pcLinkSub = lValue;
+    _cSubList = std::move(subs);
+    if (shadows.size() == _cSubList.size()) {
         _ShadowSubList = std::move(shadows);
-    else
+        onContainerRestored();  // re-register element references
+    } else
         updateElementReference(nullptr);
     checkLabelReferences(_cSubList);
     hasSetValue();
@@ -950,13 +1181,24 @@ const std::vector<std::string>& PropertyLinkSub::getSubValues() const
 }
 
 static inline const std::string &getSubNameWithStyle(const std::string &subName,
-        const PropertyLinkBase::ShadowSub &shadow, bool newStyle)
+        const PropertyLinkBase::ShadowSub &shadow, bool newStyle, std::string &tmp)
 {
     if(!newStyle) {
         if(!shadow.second.empty())
             return shadow.second;
-    }else if(!shadow.first.empty())
+    }else if(!shadow.first.empty()) {
+#ifdef FC_USE_TNP_FIX
+        if (Data::hasMissingElement(shadow.second.c_str())) {
+            auto pos = shadow.first.rfind('.');
+            if (pos != std::string::npos) {
+                tmp = shadow.first.substr(0, pos+1);
+                tmp += shadow.second;
+                return tmp;
+            }
+        }
+#endif
         return shadow.first;
+    }
     return subName;
 }
 
@@ -964,13 +1206,27 @@ std::vector<std::string> PropertyLinkSub::getSubValues(bool newStyle) const {
     assert(_cSubList.size() == _ShadowSubList.size());
     std::vector<std::string> ret;
     ret.reserve(_cSubList.size());
+    std::string tmp;
     for(size_t i=0;i<_ShadowSubList.size();++i)
-        ret.push_back(getSubNameWithStyle(_cSubList[i],_ShadowSubList[i],newStyle));
+        ret.push_back(getSubNameWithStyle(_cSubList[i],_ShadowSubList[i],newStyle,tmp));
     return ret;
 }
 
 std::vector<std::string> PropertyLinkSub::getSubValuesStartsWith(const char* starter, bool newStyle) const
 {
+#ifdef FC_USE_TNP_FIX
+    assert(_cSubList.size() == _ShadowSubList.size());
+    std::vector<std::string> ret;
+    std::string tmp;
+    for(size_t i=0;i<_ShadowSubList.size();++i) {
+        const auto &sub = getSubNameWithStyle(_cSubList[i],_ShadowSubList[i],newStyle,tmp);
+        auto element = Data::findElementName(sub.c_str());
+        if(element && boost::starts_with(element,starter))
+            ret.emplace_back(element);
+    }
+    return ret;
+
+#else
     (void)newStyle;
 
     std::vector<std::string> temp;
@@ -980,6 +1236,7 @@ std::vector<std::string> PropertyLinkSub::getSubValuesStartsWith(const char* sta
         }
     }
     return temp;
+#endif
 }
 
 App::DocumentObject * PropertyLinkSub::getValue(Base::Type t) const
@@ -993,8 +1250,14 @@ PyObject *PropertyLinkSub::getPyObject()
     Py::List list(static_cast<int>(_cSubList.size()));
     if (_pcLinkSub) {
         tup[0] = Py::asObject(_pcLinkSub->getPyObject());
+        int i = 0;
+#ifdef FC_USE_TNP_FIX
+        for (auto &sub : getSubValues(true))
+            list[i++] = Py::String(sub);
+#else
         for(unsigned int i = 0;i<_cSubList.size(); i++)
             list[i] = Py::String(_cSubList[i]);
+#endif
         tup[1] = list;
         return Py::new_reference_to(tup);
     }
@@ -1460,6 +1723,9 @@ Property *PropertyLinkSub::Copy() const
     PropertyLinkSub *p= new PropertyLinkSub();
     p->_pcLinkSub = _pcLinkSub;
     p->_cSubList = _cSubList;
+#ifdef FC_USE_TNP_FIX
+    p->_ShadowSubList = _ShadowSubList;
+#endif
     return p;
 }
 
@@ -1468,7 +1734,12 @@ void PropertyLinkSub::Paste(const Property &from)
     if(!from.isDerivedFrom(PropertyLinkSub::getClassTypeId()))
         throw Base::TypeError("Incompatible property to paste to");
     auto &link = static_cast<const PropertyLinkSub&>(from);
+#ifdef FC_USE_TNP_FIX
+    setValue(link._pcLinkSub, link._cSubList,
+             std::vector<ShadowSub>(link._ShadowSubList));
+#else
     setValue(link._pcLinkSub, link._cSubList);
+#endif
 }
 
 void PropertyLinkSub::getLinks(std::vector<App::DocumentObject *> &objs,
@@ -1727,9 +1998,10 @@ void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
     aboutToSetValue();
     _lValueList = std::move(lValue);
     _lSubList = std::move(lSubNames);
-    if(ShadowSubList.size()==_lSubList.size())
+    if(ShadowSubList.size()==_lSubList.size()) {
         _ShadowSubList = std::move(ShadowSubList);
-    else
+        onContainerRestored();  // re-register element references
+    } else
         updateElementReference(nullptr);
     checkLabelReferences(_lSubList);
     hasSetValue();
@@ -1914,14 +2186,26 @@ void PropertyLinkSubList::setSubListValues(const std::vector<PropertyLinkSubList
 {
     std::vector<DocumentObject*> links;
     std::vector<std::string> subs;
-
+#ifdef FC_USE_TNP_FIX
+    for (std::vector<PropertyLinkSubList::SubSet>::const_iterator it = values.begin(); it != values.end(); ++it) {
+        if (it->second.empty()) {
+            links.push_back(it->first);
+            subs.emplace_back();
+            continue;
+        }
+        for (std::vector<std::string>::const_iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
+            links.push_back(it->first);
+            subs.push_back(*jt);
+        }
+    }
+#else
     for (const auto & value : values) {
         for (const auto& jt : value.second) {
             links.push_back(value.first);
             subs.push_back(jt);
         }
     }
-
+#endif
     setValues(links, subs);
 }
 
@@ -2386,6 +2670,9 @@ Property *PropertyLinkSubList::Copy() const
     PropertyLinkSubList *p = new PropertyLinkSubList();
     p->_lValueList = _lValueList;
     p->_lSubList   = _lSubList;
+#ifdef FC_USE_TNP_FIX
+    p->_ShadowSubList = _ShadowSubList;
+#endif
     return p;
 }
 
@@ -2394,7 +2681,12 @@ void PropertyLinkSubList::Paste(const Property &from)
     if(!from.isDerivedFrom(PropertyLinkSubList::getClassTypeId()))
         throw Base::TypeError("Incompatible property to paste to");
     auto &link = static_cast<const PropertyLinkSubList&>(from);
+#ifdef FC_USE_TNP_FIX
+    setValues(link._lValueList, link._lSubList,
+              std::vector<ShadowSub>(link._ShadowSubList));
+#else
     setValues(link._lValueList, link._lSubList);
+#endif
 }
 
 unsigned int PropertyLinkSubList::getMemSize () const
@@ -2409,8 +2701,9 @@ std::vector<std::string> PropertyLinkSubList::getSubValues(bool newStyle) const 
     assert(_lSubList.size() == _ShadowSubList.size());
     std::vector<std::string> ret;
     ret.reserve(_ShadowSubList.size());
+    std::string tmp;
     for(size_t i=0;i<_ShadowSubList.size();++i)
-        ret.push_back(getSubNameWithStyle(_lSubList[i],_ShadowSubList[i],newStyle));
+        ret.push_back(getSubNameWithStyle(_lSubList[i],_ShadowSubList[i],newStyle,tmp));
     return ret;
 }
 
@@ -2965,9 +3258,12 @@ void PropertyXLink::setSubValues(std::vector<std::string> &&subs,
 {
     _SubList = std::move(subs);
     _ShadowSubList.clear();
-    if(shadows.size() == _SubList.size())
+    if(shadows.size() == _SubList.size()) {
         _ShadowSubList = std::move(shadows);
-    else
+#ifdef FC_USE_TNP_FIX
+        onContainerRestored(); // re-register element references
+#endif
+    } else
         updateElementReference(nullptr);
     checkLabelReferences(_SubList);
 }
@@ -3468,8 +3764,12 @@ void PropertyXLink::copyTo(PropertyXLink &other,
     }
     if(subs)
         other._SubList = std::move(*subs);
-    else
+    else {
         other._SubList = _SubList;
+#ifdef FC_USE_TNP_FIX
+        other._ShadowSubList = _ShadowSubList;
+#endif
+    }
     other._Flags = _Flags;
 }
 
@@ -3497,10 +3797,19 @@ void PropertyXLink::Paste(const Property &from)
             FC_WARN("Object '" << other.docName << '#' << other.objectName << "' not found");
             return;
         }
+#ifdef FC_USE_TNP_FIX
+        setValue(obj,std::vector<std::string>(other._SubList),
+                 std::vector<ShadowSub>(other._ShadowSubList));
+    } else
+        setValue(std::string(other.filePath),std::string(other.objectName),
+                 std::vector<std::string>(other._SubList),
+                 std::vector<ShadowSub>(other._ShadowSubList));
+#else
         setValue(obj,std::vector<std::string>(other._SubList));
     } else
         setValue(std::string(other.filePath),std::string(other.objectName),
                 std::vector<std::string>(other._SubList));
+#endif
     setFlag(LinkAllowPartial,other.testFlag(LinkAllowPartial));
 }
 
@@ -3652,7 +3961,7 @@ void PropertyXLink::setPyObject(PyObject *value) {
 const char *PropertyXLink::getSubName(bool newStyle) const {
     if(_SubList.empty() || _ShadowSubList.empty())
         return "";
-    return getSubNameWithStyle(_SubList[0],_ShadowSubList[0],newStyle).c_str();
+    return getSubNameWithStyle(_SubList[0],_ShadowSubList[0],newStyle,tmpShadow).c_str();
 }
 
 void PropertyXLink::getLinks(std::vector<App::DocumentObject *> &objs,
@@ -3683,8 +3992,9 @@ std::vector<std::string> PropertyXLink::getSubValues(bool newStyle) const {
     assert(_SubList.size() == _ShadowSubList.size());
     std::vector<std::string> ret;
     ret.reserve(_SubList.size());
+    std::string tmp;
     for(size_t i=0;i<_ShadowSubList.size();++i)
-        ret.push_back(getSubNameWithStyle(_SubList[i],_ShadowSubList[i],newStyle));
+        ret.push_back(getSubNameWithStyle(_SubList[i],_ShadowSubList[i],newStyle,tmp));
     return ret;
 }
 
