@@ -1295,6 +1295,32 @@ public:
     const char* className() const override { return "CmdSketcherCompConstrainTools"; }
 };
 
+// Comp for toggle constraint tools =============================================
+
+class CmdSketcherCompToggleConstraints : public Gui::GroupCommand
+{
+public:
+    CmdSketcherCompToggleConstraints()
+        : GroupCommand("Sketcher_CompToggleConstraints")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Toggle constraints");
+        sToolTipText = QT_TR_NOOP("Toggle constrain tools.");
+        sWhatsThis = "Sketcher_CompToggleConstraints";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("Sketcher_ToggleDrivingConstraint");
+        addCommand("Sketcher_ToggleActiveConstraint");
+
+    }
+    const char* className() const override { return "CmdSketcherCompToggleConstraints"; }
+};
+
 // Dimension tool =======================================================
 
 class GeomSelectionSizes
@@ -10111,5 +10137,6 @@ void CreateSketcherCommandsConstraints()
     rcCmdMgr.addCommand(new CmdSketcherToggleActiveConstraint());
     rcCmdMgr.addCommand(new CmdSketcherCompDimensionTools());
     rcCmdMgr.addCommand(new CmdSketcherCompConstrainTools());
+    rcCmdMgr.addCommand(new CmdSketcherCompToggleConstraints());
 }
 // clang-format on
