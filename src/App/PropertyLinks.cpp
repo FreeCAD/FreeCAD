@@ -400,36 +400,6 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
                             << oldName << " -> " << newName);
                 }
             }
-            // Note: the following code proves to be too risky. There is no way
-            // (so far) to ensure the recompute do not change the geometry. If
-            // the geometry does remain the same, the above geometry search
-            // should be able to find the new reference any way!
-#if 0
-                else if (missing && reverse && shadow.first.size()) {
-                    // reverse means we are trying to either generate the element
-                    // name for the first time, or upgrade to a new map version. In
-                    // case of upgrading, we still consult the original mapped name
-                    // in first try. Here means the first try failed, and the
-                    // geometry search cannot find any match, so we try the
-                    // non-mapped name as a last resort.
-                    //
-                    // WARNING! We are assuming the recomputation is done with no
-                    // actual property change, and the resulting geometry remains
-                    // the same. If this condition is not met, the result may be
-                    // undesirable. TODO: find a way to ensure this condition.
-
-                    GeoFeature::resolveElement(obj, shadow.second.c_str(), elementName, true,
-                            GeoFeature::ElementNameType::Export,feature);
-                    if(!elementName.second.empty()) {
-                        missing = Data::ComplexGeoData::hasMissingElement(elementName.second.c_str());
-                        if (!missing) {
-                            FC_WARN(propertyName(this)
-                                << " element reference changed " << ret->getFullName() << " "
-                                << shadow.first << " -> " << elementName.first);
-                        }
-                    }
-                }
-#endif
         }
     }
 

@@ -155,11 +155,6 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         return nullptr;
     auto linked = sobj->getLinkedObject(true);
     auto geo = Base::freecad_dynamic_cast<GeoFeature>(linked);
-//    if(!geo && linked) {
-//        auto ext = linked->getExtensionByType<LinkBaseExtension>(true);
-//        if(ext)
-//            geo = Base::freecad_dynamic_cast<GeoFeature>(ext->getTrueLinkedObject(true));
-//    }
 #else
     auto sobj = obj->getSubObject(subname);
     if(!sobj)
@@ -223,13 +218,6 @@ void GeoFeature::updateElementReference() {
     auto geo = prop->getComplexData();
     if(!geo) return;
     bool reset = false;
-//    auto version = getElementMapVersion(prop);
-//    if(_ElementMapVersion.getStrValue().empty())
-//        _ElementMapVersion.setValue(version);
-//    else if(_ElementMapVersion.getStrValue()!=version) {
-//        reset = true;
-//        _ElementMapVersion.setValue(version);
-//    }
     PropertyLinkBase::updateElementReferences(this,reset);
 }
 
@@ -244,35 +232,6 @@ void GeoFeature::onChanged(const Property *prop) {
     DocumentObject::onChanged(prop);
 }
 
-//void GeoFeature::onDocumentRestored() {
-//    if(!getDocument()->testStatus(Document::Status::Importing))
-//        _ElementMapVersion.setValue(getElementMapVersion(getPropertyOfGeometry(),true));
-//    DocumentObject::onDocumentRestored();
-//}
-
-//const std::vector<std::string>&
-//GeoFeature::searchElementCache(const std::string &element,
-//                               Data::SearchOptions options,
-//                               double tol,
-//                               double atol) const
-//{
-//    static std::vector<std::string> none;
-//    (void)element;
-//    (void)options;
-//    (void)tol;
-//    (void)atol;
-//    return none;
-//}
-
-//const std::vector<const char *>&
-//GeoFeature::getElementTypes(bool /*all*/) const
-//{
-//    static std::vector<const char *> nil;
-//    auto prop = getPropertyOfGeometry();
-//    if (!prop)
-//        return nil;
-//    return prop->getComplexData()->getElementTypes();
-//}
 
 std::vector<Data::IndexedName>
 GeoFeature::getHigherElements(const char *element, bool silent) const
