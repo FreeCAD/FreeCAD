@@ -46,6 +46,7 @@
 // other python types
 #include "ConstraintPy.h"
 #include "GeometryFacadePy.h"
+#include "SketchAnalysis.h"
 
 
 using namespace Sketcher;
@@ -258,6 +259,30 @@ PyObject* SketchObjectPy::deleteAllGeometry(PyObject* args)
     }
 
     Py_Return;
+}
+
+PyObject* SketchObjectPy::detectDegeneratedGeometries(PyObject* args)
+{
+    double tolerance {};
+    if (!PyArg_ParseTuple(args, "d", &tolerance)) {
+        return nullptr;
+    }
+
+    SketchAnalysis analyse(this->getSketchObjectPtr());
+    int count = analyse.detectDegeneratedGeometries(tolerance);
+    return Py::new_reference_to(Py::Long(count));
+}
+
+PyObject* SketchObjectPy::removeDegeneratedGeometries(PyObject* args)
+{
+    double tolerance {};
+    if (!PyArg_ParseTuple(args, "d", &tolerance)) {
+        return nullptr;
+    }
+
+    SketchAnalysis analyse(this->getSketchObjectPtr());
+    int count = analyse.removeDegeneratedGeometries(tolerance);
+    return Py::new_reference_to(Py::Long(count));
 }
 
 PyObject* SketchObjectPy::deleteAllConstraints(PyObject* args)
@@ -614,6 +639,12 @@ PyObject* SketchObjectPy::delConstraintOnPoint(PyObject* args)
         return nullptr;
     }
 
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::delConstraintsToExternal()
+{
+    this->getSketchObjectPtr()->delConstraintsToExternal();
     Py_Return;
 }
 
@@ -1938,6 +1969,18 @@ PyObject* SketchObjectPy::makeMissingEquality(PyObject* args)
 
     this->getSketchObjectPtr()->makeMissingEquality(Base::asBoolean(onebyone));
 
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::evaluateConstraints()
+{
+    bool ok = this->getSketchObjectPtr()->evaluateConstraints();
+    return Py::new_reference_to(Py::Boolean(ok));
+}
+
+PyObject* SketchObjectPy::validateConstraints()
+{
+    this->getSketchObjectPtr()->validateConstraints();
     Py_Return;
 }
 

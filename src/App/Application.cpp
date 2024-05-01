@@ -84,6 +84,7 @@
 
 #include "Annotation.h"
 #include "Application.h"
+#include "CleanupProcess.h"
 #include "ComplexGeoData.h"
 #include "DocumentObjectFileIncluded.h"
 #include "DocumentObjectGroup.h"
@@ -102,6 +103,7 @@
 #include "VarSet.h"
 #include "MaterialObject.h"
 #include "MeasureDistance.h"
+#include "MeasureManagerPy.h"
 #include "Origin.h"
 #include "OriginFeature.h"
 #include "OriginGroupExtension.h"
@@ -313,6 +315,8 @@ void Application::setupPythonTypes()
 
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
     Base::Interpreter().addType(&App::MetadataPy::Type, pAppModule, "Metadata");
+
+    Base::Interpreter().addType(&App::MeasureManagerPy::Type, pAppModule, "MeasureManager");
 
     Base::Interpreter().addType(&App::StringHasherPy::Type, pAppModule, "StringHasher");
     Base::Interpreter().addType(&App::StringIDPy::Type, pAppModule, "StringID");
@@ -1698,6 +1702,8 @@ void Application::destruct()
     // Do this only in debug mode for memory leak checkers
     cleanupUnits();
 #endif
+
+    CleanupProcess::callCleanup();
 
     // not initialized or double destruct!
     assert(_pcSingleton);

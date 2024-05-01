@@ -35,10 +35,6 @@
 
 
 class SbRotation;
-class SoFontStyle;
-class SoText2;
-class SoBaseColor;
-class SoMaterial;
 class SoMultipleCopy;
 
 namespace FemGui
@@ -55,13 +51,6 @@ public:
     /// Constructor
     ViewProviderFemConstraint();
     ~ViewProviderFemConstraint() override;
-
-    // Display properties
-    App::PropertyColor TextColor;
-    App::PropertyColor FaceColor;
-    App::PropertyInteger FontSize;
-    App::PropertyFloat DistFactor;
-    App::PropertyBool Mirror;
 
     void attach(App::DocumentObject*) override;
     void updateData(const App::Property* prop) override;
@@ -98,6 +87,9 @@ protected:
     void onChanged(const App::Property* prop) override;
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
+    void handleChangedPropertyName(Base::XMLReader& reader,
+                                   const char* typeName,
+                                   const char* propName) override;
 
     void updateSymbol();
     virtual void
@@ -165,10 +157,6 @@ protected:
                                const bool gap = false);
 
 private:
-    SoFontStyle* pFont;
-    SoText2* pLabel;
-    SoBaseColor* pTextColor;
-    SoBaseColor* pMaterials;
     bool rotateSymbol;
 
 protected:

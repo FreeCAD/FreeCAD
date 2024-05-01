@@ -48,6 +48,7 @@ class MeshGroup(base_fempythonobject.BaseFemPythonObject):
             "MeshGroupProperties",
             "The identifier used for export (True: Label, False: Name)"
         )
+        obj.setPropertyStatus("UseLabel", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyLinkSubList",
@@ -55,3 +56,4 @@ class MeshGroup(base_fempythonobject.BaseFemPythonObject):
             "MeshGroupShapes",
             "List of FEM mesh group shapes"
         )
+        obj.setPropertyStatus("References", "LockDynamic")

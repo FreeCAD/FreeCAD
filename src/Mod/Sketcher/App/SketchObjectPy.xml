@@ -94,6 +94,38 @@ deleteAllGeometry()
             </UserDocu>
         </Documentation>
     </Methode>
+    <Methode Name="detectDegeneratedGeometries">
+        <Documentation>
+            <UserDocu>
+Detect degenerated geometries. A curve geometry is considered degenerated
+if the parameter range is less than the tolerance.
+
+detectDegeneratedGeometries(tolerance:float)
+
+    Args:
+        tolerance: The tolerance to check the parameter range of a curve.
+
+    Returns:
+        The number of degenerated geometries.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="removeDegeneratedGeometries">
+        <Documentation>
+            <UserDocu>
+Remove degenerated geometries. A curve geometry is considered degenerated
+if the parameter range is less than the tolerance.
+
+removeDegeneratedGeometries(tolerance:float)
+
+    Args:
+        tolerance: The tolerance to check the parameter range of a curve.
+
+    Returns:
+        The number of degenerated geometries.
+            </UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="deleteAllConstraints">
         <Documentation>
             <UserDocu>
@@ -261,6 +293,11 @@ delConstraintOnPoint(geoId:int, pointPos:int)
             2: the end of a line or bounded curve.
             3: the center of a circle or ellipse.
         </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="delConstraintsToExternal" NoArgs="true">
+      <Documentation>
+        <UserDocu>Deletes all constraints referencing an external geometry.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setDatum">
@@ -717,6 +754,20 @@ setLabelDistance(constraintIndex:int, value:float)
         <Documentation>
             <UserDocu>
                 Applies the detected / set Equality constraints. If the argument is True, then solving and redundant removal is done after each individual addition.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="evaluateConstraints" Const="true" NoArgs="true">
+        <Documentation>
+            <UserDocu>
+                Check for constraints with invalid indexes. Returns True if invalid constraints are found, False otherwise.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="validateConstraints" NoArgs="true">
+        <Documentation>
+            <UserDocu>
+                Removes constraints with invalid indexes.
             </UserDocu>
         </Documentation>
     </Methode>

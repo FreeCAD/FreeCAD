@@ -12,6 +12,10 @@ SET(Stylesheets_Files
 
 SET(Overlay_Stylesheets_Files
     "overlay/Dark.qss"
+    "overlay/Default_Dark-theme_dark-background.qss"
+    "overlay/Default_Dark-theme_Light-background.qss"
+    "overlay/Default_Light-theme_dark-background.qss"
+    "overlay/Default_Light-theme_light-background.qss"
     "overlay/Light.qss"
     "overlay/Dark-Outline.qss"
     "overlay/Light-Outline.qss"

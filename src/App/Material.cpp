@@ -39,16 +39,15 @@ using namespace App;
 Material::Material()
     : shininess {0.9000F}
     , transparency {}
-    , _matType {USER_DEFINED}
+    , _matType {}
 {
-    setType(STEEL);
-    setType(USER_DEFINED);
+    setType(DEFAULT);
 }
 
 Material::Material(const char* MatName)
     : shininess {0.9000F}
     , transparency {}
-    , _matType {USER_DEFINED}
+    , _matType {}
 {
     set(MatName);
 }
@@ -56,7 +55,7 @@ Material::Material(const char* MatName)
 Material::Material(MaterialType MatType)
     : shininess {0.9000F}
     , transparency {}
-    , _matType {USER_DEFINED}
+    , _matType {}
 {
     setType(MatType);
 }

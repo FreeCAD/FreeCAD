@@ -61,6 +61,7 @@ from draftutils import params
 from draftutils import utils
 from draftutils.translate import translate
 from draftutils.messages import _err, _msg, _wrn
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     from PySide import QtWidgets
@@ -74,9 +75,7 @@ else:
     gui = False
     draftui = None
 
-# Save the native open function to avoid collisions
-if open.__module__ in ['__builtin__', 'io']:
-    pythonopen = open
+
 
 svgcolors = {
     'Pink': (255, 192, 203),
@@ -1701,8 +1700,8 @@ def getContents(filename, tag, stringmode=False):
     if stringmode:
         contents = filename
     else:
-        # Use the native Python open which was saved as `pythonopen`
-        f = pythonopen(filename)
+        # Use the native Python open which was saved as `pyopen`
+        f = pyopen(filename)
         contents = f.read()
         f.close()
 
@@ -1746,8 +1745,8 @@ def open(filename):
     parser.setContentHandler(svgHandler())
     parser._cont_handler.doc = doc
 
-    # Use the native Python open which was saved as `pythonopen`
-    f = pythonopen(filename)
+    # Use the native Python open which was saved as `pyopen`
+    f = pyopen(filename)
     parser.parse(f)
     f.close()
     doc.recompute()
@@ -1785,8 +1784,8 @@ def insert(filename, docname):
     parser.setContentHandler(svgHandler())
     parser._cont_handler.doc = doc
 
-    # Use the native Python open which was saved as `pythonopen`
-    parser.parse(pythonopen(filename))
+    # Use the native Python open which was saved as `pyopen`
+    parser.parse(pyopen(filename))
     doc.recompute()
 
 
@@ -1854,8 +1853,8 @@ def export(exportList, filename):
     sizey = maxy - miny
     miny += margin
 
-    # Use the native Python open which was saved as `pythonopen`
-    svg = pythonopen(filename, 'w')
+    # Use the native Python open which was saved as `pyopen`
+    svg = pyopen(filename, 'w')
 
     # Write header.
     # We specify the SVG width and height in FreeCAD's physical units (mm),

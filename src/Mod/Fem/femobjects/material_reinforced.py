@@ -48,6 +48,7 @@ class MaterialReinforced(base_fempythonobject.BaseFemPythonObject):
             "Material",
             "List of material shapes"
         )
+        obj.setPropertyStatus("References", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyMap",
@@ -55,6 +56,7 @@ class MaterialReinforced(base_fempythonobject.BaseFemPythonObject):
             "Composites",
             "Reinforcement material properties"
         )
+        obj.setPropertyStatus("Reinforcement", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -62,6 +64,7 @@ class MaterialReinforced(base_fempythonobject.BaseFemPythonObject):
             "Material",
             "Matrix material properties"
         )
+        obj.setPropertyStatus("Category", "LockDynamic")
 
         obj.Category = ["Solid"]
         obj.Category = "Solid"

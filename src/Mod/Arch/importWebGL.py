@@ -44,6 +44,7 @@ import Part
 import OfflineRenderingUtils
 import json
 import textwrap
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -52,7 +53,7 @@ else:
     FreeCADGui = None
     def translate(ctxt, txt): return txt
 
-if open.__module__ in ['__builtin__','io']: pythonopen = open
+
 
 ## @package importWebGL
 #  \ingroup ARCH
@@ -868,7 +869,7 @@ def export( exportList, filename, colors = None, camera = None ):
 
     html = html.replace('$data', json.dumps(data, separators=(',', ':')) ) # Shape Data
 
-    outfile = pythonopen(filename, "w")
+    outfile = pyopen(filename, "w")
     outfile.write( html )
     outfile.close()
     FreeCAD.Console.PrintMessage( translate("Arch", "Successfully written") + ' ' + filename + "\n" )

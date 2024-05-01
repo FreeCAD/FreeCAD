@@ -53,6 +53,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Parameter",
                 "Electric Potential"
             )
+            obj.setPropertyStatus("Potential", "LockDynamic")
             # setting  1 V assures that the unit does not switch to mV
             # and the constraint holds usually Volts
             obj.Potential = "1 V"
@@ -64,6 +65,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Vector Potential",
                 "Real part of potential x-component"
             )
+            obj.setPropertyStatus("AV_re_1", "LockDynamic")
             obj.AV_re_1 = "0 V"
         if not hasattr(obj, "AV_re_2"):
             obj.addProperty(
@@ -72,6 +74,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Vector Potential",
                 "Real part of potential y-component"
             )
+            obj.setPropertyStatus("AV_re_2", "LockDynamic")
             obj.AV_re_2 = "0 V"
         if not hasattr(obj, "AV_re_3"):
             obj.addProperty(
@@ -80,6 +83,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Vector Potential",
                 "Real part of potential z-component"
             )
+            obj.setPropertyStatus("AV_re_3", "LockDynamic")
             obj.AV_re_3 = "0 V"
         if not hasattr(obj, "AV_im"):
             obj.addProperty(
@@ -88,6 +92,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Vector Potential",
                 "Imaginary part of scalar potential"
             )
+            obj.setPropertyStatus("AV_im", "LockDynamic")
             obj.AV_im = "0 V"
         if not hasattr(obj, "AV_im_1"):
             obj.addProperty(
@@ -96,6 +101,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Vector Potential",
                 "Imaginary part of potential x-component"
             )
+            obj.setPropertyStatus("AV_im_1", "LockDynamic")
             obj.AV_im_1 = "0 V"
         if not hasattr(obj, "AV_im_2"):
             obj.addProperty(
@@ -104,6 +110,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Vector Potential",
                 "Imaginary part of potential y-component"
             )
+            obj.setPropertyStatus("AV_im_2", "LockDynamic")
             obj.AV_im_2 = "0 V"
         if not hasattr(obj, "AV_im_3"):
             obj.addProperty(
@@ -112,6 +119,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Vector Potential",
                 "Imaginary part of potential z-component"
             )
+            obj.setPropertyStatus("AV_im_3", "LockDynamic")
             obj.AV_im_3 = "0 V"
 
         # now the enable bools
@@ -122,6 +130,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Parameter",
                 "Potential Enabled"
             )
+            obj.setPropertyStatus("PotentialEnabled", "LockDynamic")
             obj.PotentialEnabled = True
         if not hasattr(obj, "AV_re_1_Disabled"):
             obj.addProperty(
@@ -130,6 +139,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Vector Potential",
                 ""
             )
+            obj.setPropertyStatus("AV_re_1_Disabled", "LockDynamic")
             obj.AV_re_1_Disabled = True
         if not hasattr(obj, "AV_re_2_Disabled"):
             obj.addProperty(
@@ -138,6 +148,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Vector Potential",
                 ""
             )
+            obj.setPropertyStatus("AV_re_2_Disabled", "LockDynamic")
             obj.AV_re_2_Disabled = True
         if not hasattr(obj, "AV_re_3_Disabled"):
             obj.addProperty(
@@ -146,6 +157,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Vector Potential",
                 ""
             )
+            obj.setPropertyStatus("AV_re_3_Disabled", "LockDynamic")
             obj.AV_re_3_Disabled = True
         if not hasattr(obj, "AV_im_Disabled"):
             obj.addProperty(
@@ -154,6 +166,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Vector Potential",
                 ""
             )
+            obj.setPropertyStatus("AV_im_Disabled", "LockDynamic")
             obj.AV_im_Disabled = True
         if not hasattr(obj, "AV_im_1_Disabled"):
             obj.addProperty(
@@ -162,6 +175,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Vector Potential",
                 ""
             )
+            obj.setPropertyStatus("AV_im_1_Disabled", "LockDynamic")
             obj.AV_im_1_Disabled = True
         if not hasattr(obj, "AV_im_2_Disabled"):
             obj.addProperty(
@@ -170,6 +184,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Vector Potential",
                 ""
             )
+            obj.setPropertyStatus("AV_im_2_Disabled", "LockDynamic")
             obj.AV_im_2_Disabled = True
         if not hasattr(obj, "AV_im_3_Disabled"):
             obj.addProperty(
@@ -178,6 +193,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Vector Potential",
                 ""
             )
+            obj.setPropertyStatus("AV_im_3_Disabled", "LockDynamic")
             obj.AV_im_3_Disabled = True
 
         if not hasattr(obj, "PotentialConstant"):
@@ -187,6 +203,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Parameter",
                 "Potential Constant"
             )
+            obj.setPropertyStatus("PotentialConstant", "LockDynamic")
             obj.PotentialConstant = False
 
         if not hasattr(obj, "ElectricInfinity"):
@@ -196,6 +213,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Parameter",
                 "Electric Infinity"
             )
+            obj.setPropertyStatus("ElectricInfinity", "LockDynamic")
             obj.ElectricInfinity = False
 
         if not hasattr(obj, "ElectricForcecalculation"):
@@ -205,6 +223,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Parameter",
                 "Electric Force Calculation"
             )
+            obj.setPropertyStatus("ElectricForcecalculation", "LockDynamic")
             obj.ElectricForcecalculation = False
 
         if not hasattr(obj, "CapacitanceBody"):
@@ -214,6 +233,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Parameter",
                 "Capacitance Body"
             )
+            obj.setPropertyStatus("CapacitanceBody", "LockDynamic")
             obj.CapacitanceBody = 0
 
         if not hasattr(obj, "CapacitanceBodyEnabled"):
@@ -223,4 +243,5 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Parameter",
                 "Capacitance Body Enabled"
             )
+            obj.setPropertyStatus("CapacitanceBodyEnabled", "LockDynamic")
             obj.CapacitanceBodyEnabled = False

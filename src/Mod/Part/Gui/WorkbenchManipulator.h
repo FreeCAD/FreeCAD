@@ -39,12 +39,6 @@ protected:
      */
     void modifyMenuBar(Gui::MenuItem* menuBar) override;
     /*!
-     * \brief modifyContextMenu
-     * Method to manipulate the contextmenu structure of a workbench.
-     * The default implementation doesn't change anything.
-     */
-    void modifyContextMenu(const char* recipient, Gui::MenuItem* menuBar) override;
-    /*!
      * \brief modifyToolBars
      * Method to manipulate the toolbar structure of a workbench
      * The default implementation doesn't change anything.
@@ -60,7 +54,6 @@ protected:
 private:
     static void addSectionCut(Gui::MenuItem* menuBar);
     static void addSelectionFilter(Gui::ToolBarItem* toolBar);
-    static void addSelectionFilter(Gui::MenuItem* menuBar);
 };
 
 } // namespace PartGui

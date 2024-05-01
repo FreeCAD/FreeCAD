@@ -298,7 +298,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_ClipGroup";
-    *views << "TechDraw_ProjectShape";
 
     Gui::ToolBarItem* stacking = new Gui::ToolBarItem(root);
     stacking->setCommand("TechDraw Stacking");
@@ -400,7 +399,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_ClipGroup";
-    *views << "TechDraw_ProjectShape";
 
     Gui::ToolBarItem* stacking = new Gui::ToolBarItem(root);
     stacking->setCommand("TechDraw Stacking");

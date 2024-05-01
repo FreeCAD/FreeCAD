@@ -66,6 +66,7 @@ from FreeCAD import Console as FCC
 from Draft import LinearDimension
 from draftutils import params
 from draftutils import utils
+from builtins import open as pyopen
 
 gui = FreeCAD.GuiUp
 draftui = None
@@ -84,11 +85,6 @@ else:
 dxfReader = None
 dxfColorMap = None
 dxfLibrary = None
-
-# Save the native open function to avoid collisions
-# with the function declared here
-if open.__module__ in ['__builtin__', 'io']:
-    pythonopen = open
 
 
 def errorDXFLib(gui):
@@ -198,7 +194,11 @@ def getDXFlibs():
         errorDXFLib(gui)
         try:
             import dxfColorMap, dxfLibrary, dxfReader
-        except ImportError:
+            import importlib
+            importlib.reload(dxfColorMap)
+            importlib.reload(dxfLibrary)
+            importlib.reload(dxfReader)
+        except Exception:
             dxfReader = None
             dxfLibrary = None
             FCC.PrintWarning("DXF libraries not available. Aborting.\n")
@@ -626,7 +626,10 @@ def getColor():
 def formatObject(obj, dxfobj=None):
     """Apply text and line color to an object from a DXF object.
 
-    This function only works when the graphical user interface is loaded
+    If `dxfUseDraftVisGroups` is `True` the function returns immediately.
+    The color of the object then depends on the Draft Layer the object is in.
+
+    Else this function only works if the graphical user interface is loaded
     as it needs access to the `ViewObject` attribute of the objects.
 
     If `dxfobj` and the global variable `dxfGetColors` exist
@@ -652,6 +655,9 @@ def formatObject(obj, dxfobj=None):
     -----
     Use local variables, not global variables.
     """
+    if dxfUseDraftVisGroups:
+        return
+
     if dxfGetColors and dxfobj and hasattr(dxfobj, "color_index"):
         if hasattr(obj.ViewObject, "TextColor"):
             if dxfobj.color_index == 256:
@@ -2208,7 +2214,8 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
     global resolvedScale
     resolvedScale = getScaleFromDXF(drawing.header) * dxfScaling
     global layers
-    layers = []
+    typ = "Layer" if dxfUseDraftVisGroups else "App::DocumentObjectGroup"
+    layers = [o for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == typ]
     global doc
     doc = document
     global blockshapes
@@ -2838,11 +2845,7 @@ def insert(filename, docname):
     if dxfUseLegacyImporter:
         getDXFlibs()
         if dxfReader:
-            groupname = os.path.splitext(os.path.basename(filename))[0]
-            importgroup = doc.addObject("App::DocumentObjectGroup", groupname)
             processdxf(doc, filename)
-            for l in layers:
-                importgroup.addObject(l)
         else:
             errorDXFLib(gui)
     else:
@@ -3618,7 +3621,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
             # arch view: export it "as is"
             dxf = exportList[0].Proxy.getDXF()
             if dxf:
-                f = pythonopen(filename, "w")
+                f = pyopen(filename, "w")
                 f.write(dxf)
                 f.close()
 
@@ -3899,11 +3902,11 @@ def exportPage(page, filename):
         template = os.path.splitext(page.Template)[0] + ".dxf"
         views = page.Group
     if os.path.exists(template):
-        f = pythonopen(template, "U")
+        f = pyopen(template, "U")
         template = f.read()
         f.close()
         # find & replace editable texts
-        f = pythonopen(page.Template, "rb")
+        f = pyopen(page.Template, "rb")
         svgtemplate = f.read()
         f.close()
         editables = re.findall("freecad:editable=\"(.*?)\"", svgtemplate)
@@ -3943,7 +3946,7 @@ def exportPage(page, filename):
     c = dxfcounter()
     pat = re.compile("(_handle_)")
     template = pat.sub(c.incr, template)
-    f = pythonopen(filename, "w")
+    f = pyopen(filename, "w")
     f.write(template)
     f.close()
 

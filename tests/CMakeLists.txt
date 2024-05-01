@@ -29,7 +29,7 @@ if(MSVC)
 endif()
 
 if(WIN32)
-    add_definitions(-DCOIN_DLL)
+    add_definitions(-DCOIN_DLL -D_USE_MATH_DEFINES)
 endif(WIN32)
 
 if(NOT BUILD_DYNAMIC_LINK_PYTHON)

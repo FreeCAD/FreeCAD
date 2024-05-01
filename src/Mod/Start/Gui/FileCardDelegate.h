@@ -51,6 +51,7 @@ private:
 
 private:
     Base::Reference<ParameterGrp> _parameterGroup;
+    std::unique_ptr<QWidget> _widget;
 };
 
 

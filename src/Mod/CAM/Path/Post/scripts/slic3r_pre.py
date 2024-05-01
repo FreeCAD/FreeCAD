@@ -28,10 +28,9 @@ This is an preprocessor to read gcode files produced from slic3r.
 import os
 import Path
 import FreeCAD
+from builtins import open as pyopen
 
-# to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
+
 
 
 def open(filename):
@@ -43,7 +42,7 @@ def open(filename):
 
 def insert(filename, docname):
     "called when freecad imports a file"
-    gfile = pythonopen(filename)
+    gfile = pyopen(filename)
     gcode = gfile.read()
     gfile.close()
     gcode = parse(gcode)
