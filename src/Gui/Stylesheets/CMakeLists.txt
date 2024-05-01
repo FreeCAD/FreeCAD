@@ -8,6 +8,7 @@ SET(Stylesheets_Files
     "ProDark.qss"
     "Dark-modern.qss"
     "Light-modern.qss"
+    "Dark-classic.qss"
 )
 
 SET(Overlay_Stylesheets_Files
@@ -45,6 +46,7 @@ SET(Overlay_Stylesheets_Files
     "overlay/float_light.svg"
     "overlay/transparent_lighter.svg"
     "overlay/close_red.svg"
+
 )
 
 # Find all the image files
@@ -79,4 +81,10 @@ INSTALL(
          ${Images_Files}
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/Gui/Stylesheets/images_dark-light
+)
+INSTALL(
+    FILES
+         ${Images_Files}
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Gui/Stylesheets/images_classic
 )
