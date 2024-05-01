@@ -100,12 +100,12 @@ App::DocumentObjectExecReturn *Revolution::execute()
     }
 
     // if the Base property has a valid shape, fuse the AddShape into it
-    TopoDS_Shape base;
+    TopoShape base;
     try {
-        base = getBaseShape();
+        base = getBaseTopoShape();
     } catch (const Base::Exception&) {
         // fall back to support (for legacy features)
-        base = TopoDS_Shape();
+        base = TopoShape();
     }
 
     // update Axis from ReferenceAxis
@@ -131,7 +131,7 @@ App::DocumentObjectExecReturn *Revolution::execute()
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
         pnt.Transform(invObjLoc.Transformation());
         dir.Transform(invObjLoc.Transformation());
-        base.Move(invObjLoc);
+        base.move(invObjLoc);
         sketchshape.Move(invObjLoc);
 
         // Check distance between sketchshape and axis - to avoid failures and crashes
@@ -169,7 +169,7 @@ App::DocumentObjectExecReturn *Revolution::execute()
             if (!Ex.More())
                 supportface = TopoDS_Face();
             RevolMode mode = RevolMode::None;
-            generateRevolution(result, base, sketchshape, supportface, upToFace, gp_Ax1(pnt, dir), method, mode, Standard_True);
+            generateRevolution(result, base.getShape(), sketchshape, supportface, upToFace, gp_Ax1(pnt, dir), method, mode, Standard_True);
         }
         else {
             bool midplane = Midplane.getValue();
@@ -182,9 +182,9 @@ App::DocumentObjectExecReturn *Revolution::execute()
             // set the additive shape property for later usage in e.g. pattern
             this->AddSubShape.setValue(result);
 
-            if (!base.IsNull()) {
+            if (!base.isNull()) {
                 // Let's call algorithm computing a fuse operation:
-                BRepAlgoAPI_Fuse mkFuse(base, result);
+                BRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
                 // Let's check if the fusion has been successful
                 if (!mkFuse.IsDone())
                     throw Part::BooleanException(QT_TRANSLATE_NOOP("Exception", "Fusion with base feature failed"));

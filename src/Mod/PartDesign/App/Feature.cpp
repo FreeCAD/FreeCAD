@@ -66,9 +66,9 @@ Feature::Feature()
 App::DocumentObjectExecReturn* Feature::recompute()
 {
     try {
-        auto baseShape = getBaseShape();
+        auto baseShape = getBaseTopoShape();
         if (Suppressed.getValue()) {
-            this->Shape.setValue(baseShape);
+            this->Shape.setValue(baseShape.getShape());
             return StdReturn;
         }
     }
@@ -106,9 +106,13 @@ TopoShape Feature::getSolid(const TopoShape& shape)
     if (shape.isNull()) {
         throw Part::NullShapeException("Null shape");
     }
-    auto res = shape.getSubTopoShape(TopAbs_SOLID, 1);
-    res.fixSolidOrientation();
-    return res;
+    int count = shape.countSubShapes(TopAbs_SOLID);
+    if(count) {
+        auto res = shape.getSubTopoShape(TopAbs_SOLID,1);
+        res.fixSolidOrientation();
+        return res;
+    }
+    return shape;
 }
 
 int Feature::countSolids(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)

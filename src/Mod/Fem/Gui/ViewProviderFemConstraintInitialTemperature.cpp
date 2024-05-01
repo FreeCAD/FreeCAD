@@ -40,7 +40,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintInitialTemperature,
 ViewProviderFemConstraintInitialTemperature::ViewProviderFemConstraintInitialTemperature()
 {
     sPixmap = "FEM_ConstraintInitialTemperature";
-    ADD_PROPERTY(FaceColor, (0.2f, 0.3f, 0.2f));
+    ShapeAppearance.setDiffuseColor(0.2f, 0.3f, 0.2f);
 }
 
 ViewProviderFemConstraintInitialTemperature::~ViewProviderFemConstraintInitialTemperature() =

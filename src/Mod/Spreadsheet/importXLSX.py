@@ -63,9 +63,6 @@ except ValueError:
 else:
     gui = True
 
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
-
 
 # The sepToken structure is used in the tokenizer functions isKey and
 # getNextToken.

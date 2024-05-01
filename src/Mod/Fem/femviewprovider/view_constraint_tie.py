@@ -40,6 +40,9 @@ class VPConstraintTie(view_base_femconstraint.VPBaseFemConstraint):
 
     def __init__(self, vobj):
         super().__init__(vobj)
+        mat = vobj.ShapeAppearance[0]
+        mat.DiffuseColor = (0.3, 0.7, 0.5, 0.0)
+        vobj.ShapeAppearance = mat
 
     def setEdit(self, vobj, mode=0):
         view_base_femconstraint.VPBaseFemConstraint.setEdit(

@@ -121,6 +121,8 @@ SET(SketchModule_SRCS
     AppSketcherPy.cpp
     PreCompiled.cpp
     PreCompiled.h
+    Measure.cpp
+    Measure.h
 )
 SOURCE_GROUP("Module" FILES ${SketchModule_SRCS})
 

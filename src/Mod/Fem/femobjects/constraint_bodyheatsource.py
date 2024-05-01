@@ -52,4 +52,5 @@ class ConstraintBodyHeatSource(base_fempythonobject.BaseFemPythonObject):
                 "Base",
                 "Body heat source"
             )
+            obj.setPropertyStatus("HeatSource", "LockDynamic")
             obj.HeatSource = 0.0

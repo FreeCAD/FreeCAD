@@ -27,6 +27,7 @@ import Path
 import PathScripts.PathUtils as PathUtils
 import datetime
 import importDXF
+from builtins import open as pyopen
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
@@ -58,9 +59,7 @@ else:
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-# to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
+
 
 
 def processArguments(argstring):

@@ -183,18 +183,11 @@ CurveConverter::CurveConverter()
 
 CurveConverter::~CurveConverter()
 {
-    try {
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/View");
-        hGrp->Detach(this);
-    }
-    catch (const Base::ValueError&
-               e) {  // ensure that if parameter strings are not well-formed, the program is not
-                     // terminated when calling the noexcept destructor.
-        Base::Console().DeveloperError("CurveConverter",
-                                       "Malformed parameter string: %s\n",
-                                       e.what());
-    }
+    // Do not detach from the parameter group.
+    // So far there is only a single static instance of CurveConverter inside
+    // DrawSketchHandler::drawEdit. This static instance will be destroyed after
+    // the main() function has been exited so that any attempt to access the
+    // parameter managers is undefined behaviour. See issue #13622.
 }
 
 std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry* geometry)

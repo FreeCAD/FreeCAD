@@ -104,6 +104,7 @@
 #include "ViewProviderFeature.h"
 #include "ViewProviderGeoFeatureGroup.h"
 #include "ViewProviderGeometryObject.h"
+#include "ViewProviderGeometryObjectPy.h"
 #include "ViewProviderGroupExtension.h"
 #include "ViewProviderSuppressibleExtension.h"
 #include "ViewProviderImagePlane.h"
@@ -469,6 +470,8 @@ Application::Application(bool GUIenabled)
         Base::Interpreter().addType(&ViewProviderPy::Type, module, "ViewProvider");
         Base::Interpreter().addType(
             &ViewProviderDocumentObjectPy::Type, module, "ViewProviderDocumentObject");
+        Base::Interpreter().addType(
+            &ViewProviderGeometryObjectPy::Type, module, "ViewProviderGeometryObject");
         Base::Interpreter().addType(&ViewProviderLinkPy::Type, module, "ViewProviderLink");
     }
 

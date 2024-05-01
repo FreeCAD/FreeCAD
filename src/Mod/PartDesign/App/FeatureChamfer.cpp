@@ -108,7 +108,7 @@ App::DocumentObjectExecReturn *Chamfer::execute()
     // The only difference is that the Base property also stores the edges that are to be chamfered
     Part::TopoShape TopShape;
     try {
-        TopShape = getBaseShape();
+        TopShape = getBaseTopoShape();
     }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());

@@ -24,16 +24,15 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoCone.h>
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoCylinder.h>
-#include <Inventor/nodes/SoFontStyle.h>
+#include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoMultipleCopy.h>
+#include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
 #include <QAction>
 #include <QDockWidget>
@@ -67,40 +66,19 @@ ViewProviderFemConstraint::ViewProviderFemConstraint()
     , wizardSubLayout(nullptr)
     , constraintDialog(nullptr)
 {
-    ADD_PROPERTY(TextColor, (0.0f, 0.0f, 0.0f));
-    ADD_PROPERTY(FaceColor, (1.0f, 0.0f, 0.2f));
-    ADD_PROPERTY(FontSize, (18));
-    ADD_PROPERTY(DistFactor, (1.0));
-    ADD_PROPERTY(Mirror, (false));
-
-    pFont = new SoFontStyle();
-    pFont->ref();
-    pLabel = new SoText2();
-    pLabel->ref();
-    pTextColor = new SoBaseColor();
-    pTextColor->ref();
     pShapeSep = new SoSeparator();
     pShapeSep->ref();
     pMultCopy = new SoMultipleCopy();
     pMultCopy->ref();
 
-    pMaterials = new SoBaseColor();
-    pMaterials->ref();
-    pMaterials->rgb.setValue(1.0f, 0.0f, 0.2f);
-
-    TextColor.touch();
-    FontSize.touch();
-    FaceColor.touch();
+    ShapeAppearance.setDiffuseColor(1.0f, 0.0f, 0.2f);
+    ShapeAppearance.setSpecularColor(0.0f, 0.0f, 0.0f);
 
     Gui::ViewProviderSuppressibleExtension::initExtension(this);
 }
 
 ViewProviderFemConstraint::~ViewProviderFemConstraint()
 {
-    pFont->unref();
-    pLabel->unref();
-    pTextColor->unref();
-    pMaterials->unref();
     pMultCopy->unref();
     pShapeSep->unref();
 }
@@ -118,7 +96,7 @@ void ViewProviderFemConstraint::attach(App::DocumentObject* pcObject)
     hints->vertexOrdering.setValue(SoShapeHints::COUNTERCLOCKWISE);
     sep->addChild(ps);
     sep->addChild(hints);
-    sep->addChild(pMaterials);
+    sep->addChild(pcShapeMaterial);
     sep->addChild(pShapeSep);
     addDisplayMaskMode(sep, "Base");
 }
@@ -191,23 +169,7 @@ void ViewProviderFemConstraint::setupContextMenu(QMenu* menu, QObject* receiver,
 
 void ViewProviderFemConstraint::onChanged(const App::Property* prop)
 {
-    if (prop == &Mirror) {
-        updateData(prop);
-    }
-    else if (prop == &TextColor) {
-        const App::Color& c = TextColor.getValue();
-        pTextColor->rgb.setValue(c.r, c.g, c.b);
-    }
-    else if (prop == &FaceColor) {
-        const App::Color& c = FaceColor.getValue();
-        pMaterials->rgb.setValue(c.r, c.g, c.b);
-    }
-    else if (prop == &FontSize) {
-        pFont->size = FontSize.getValue();
-    }
-    else {
-        ViewProviderDocumentObject::onChanged(prop);  // clazy:exclude=skipped-base-method
-    }
+    ViewProviderGeometryObject::onChanged(prop);
 }
 
 void ViewProviderFemConstraint::updateData(const App::Property* prop)
@@ -223,11 +185,34 @@ void ViewProviderFemConstraint::updateData(const App::Property* prop)
     }
 }
 
+void ViewProviderFemConstraint::handleChangedPropertyName(Base::XMLReader& reader,
+                                                          const char* typeName,
+                                                          const char* propName)
+{
+    if (strcmp(propName, "FaceColor") == 0
+        && Base::Type::fromName(typeName) == App::PropertyColor::getClassTypeId()) {
+        App::PropertyColor color;
+        color.Restore(reader);
+        ShapeAppearance.setDiffuseColor(color.getValue());
+    }
+    else if (strcmp(propName, "ShapeMaterial") == 0
+             && Base::Type::fromName(typeName) == App::PropertyMaterial::getClassTypeId()) {
+        // nothing
+    }
+    else {
+        ViewProviderGeometryObject::handleChangedPropertyName(reader, typeName, propName);
+    }
+}
+
 void ViewProviderFemConstraint::updateSymbol()
 {
     auto obj = static_cast<const Fem::Constraint*>(this->getObject());
     const std::vector<Base::Vector3d>& points = obj->Points.getValue();
     const std::vector<Base::Vector3d>& normals = obj->Normals.getValue();
+    if (points.size() != normals.size()) {
+        return;
+    }
+
     pMultCopy->matrix.setNum(points.size());
     SbMatrix* mat = pMultCopy->matrix.startEditing();
 

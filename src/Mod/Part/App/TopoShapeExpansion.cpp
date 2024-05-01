@@ -5574,6 +5574,9 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
         for (auto it = shapes.begin(); it != shapes.end(); ++it) {
             auto& s = *it;
             if (s.isNull()) {
+                if ( it == shapes.begin() ) {
+                    return *this; // Compatible with pre-TNP allowing <null shape>.fuse() behavior
+                }
                 FC_THROWM(NullShapeException, "Null input shape");
             }
             if (s.shapeType() == TopAbs_COMPOUND) {
