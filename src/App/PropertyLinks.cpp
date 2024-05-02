@@ -103,12 +103,13 @@ bool PropertyLinkBase::isSame(const Property &other) const
 
 void PropertyLinkBase::unregisterElementReference() {
 #ifdef FC_USE_TNP_FIX
-    for(auto obj : _ElementRefs) {
+    for (auto obj : _ElementRefs) {
         auto it = _ElementRefMap.find(obj);
-        if(it != _ElementRefMap.end()) {
+        if (it != _ElementRefMap.end()) {
             it->second.erase(this);
-            if(it->second.empty())
+            if (it->second.empty()) {
                 _ElementRefMap.erase(it);
+            }
         }
     }
     _ElementRefs.clear();
@@ -219,24 +220,28 @@ static std::string propertyName(const Property *prop) {
 
 void PropertyLinkBase::updateElementReferences(DocumentObject *feature, bool reverse) {
 #ifdef FC_USE_TNP_FIX
-    if(!feature || !feature->getNameInDocument())
+    if (!feature || !feature->getNameInDocument()) {
         return;
+    }
     auto it = _ElementRefMap.find(feature);
-    if(it == _ElementRefMap.end())
+    if (it == _ElementRefMap.end()) {
         return;
+    }
     std::vector<PropertyLinkBase*> props;
     props.reserve(it->second.size());
-    props.insert(props.end(),it->second.begin(),it->second.end());
-    for(auto prop : props) {
-        if(prop->getContainer()) {
+    props.insert(props.end(), it->second.begin(), it->second.end());
+    for (auto prop : props) {
+        if (prop->getContainer()) {
             try {
-                prop->updateElementReference(feature,reverse,true);
-            }catch(Base::Exception &e) {
+                prop->updateElementReference(feature, reverse, true);
+            }
+            catch (Base::Exception& e) {
                 e.ReportException();
                 FC_ERR("Failed to update element reference of " << propertyName(prop));
-            }catch(std::exception &e) {
-                FC_ERR("Failed to update element reference of " << propertyName(prop)
-                                                                << ": " << e.what());
+            }
+            catch (std::exception& e) {
+                FC_ERR("Failed to update element reference of " << propertyName(prop) << ": "
+                                                                << e.what());
             }
         }
     }
@@ -249,22 +254,31 @@ void PropertyLinkBase::updateElementReferences(DocumentObject *feature, bool rev
 void PropertyLinkBase::_registerElementReference(App::DocumentObject *obj, std::string &sub, ShadowSub &shadow)
 {
 #ifdef FC_USE_TNP_FIX
-    if(!obj || !obj->getNameInDocument() || sub.empty())
-        return;
-    if(shadow.first.empty()) {
-        _updateElementReference(0,obj,sub,shadow,false);
+    if (!obj || !obj->getNameInDocument() || sub.empty()) {
         return;
     }
-    GeoFeature *geo = 0;
-    const char *element = 0;
-    std::pair<std::string, std::string> elementName;
-    GeoFeature::resolveElement(obj,sub.c_str(), elementName,true,
-                               GeoFeature::ElementNameType::Export,0,&element,&geo);
-    if(!geo || !element || !element[0])
+    if (shadow.first.empty()) {
+        _updateElementReference(0, obj, sub, shadow, false);
         return;
+    }
+    GeoFeature* geo = nullptr;
+    const char* element = nullptr;
+    std::pair<std::string, std::string> elementName;
+    GeoFeature::resolveElement(obj,
+                               sub.c_str(),
+                               elementName,
+                               true,
+                               GeoFeature::ElementNameType::Export,
+                               0,
+                               &element,
+                               &geo);
+    if (!geo || !element || !element[0]) {
+        return;
+    }
 
-    if(_ElementRefs.insert(geo).second)
+    if (_ElementRefs.insert(geo).second) {
         _ElementRefMap[geo].insert(this);
+    }
 #else
     (void)obj;
     (void)sub;
@@ -335,17 +349,22 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
         bool reverse, bool notify)
 {
 #ifdef FC_USE_TNP_FIX
-    if (!obj || !obj->getNameInDocument()) return false;
+    if (!obj || !obj->getNameInDocument()) {
+        return false;
+    }
     ShadowSub elementName;
     const char* subname;
-    if (shadow.first.size())
+    if (shadow.first.size()) {
         subname = shadow.first.c_str();
-    else if (shadow.second.size())
+    }
+    else if (shadow.second.size()) {
         subname = shadow.second.c_str();
-    else
+    }
+    else {
         subname = sub.c_str();
-    GeoFeature* geo = 0;
-    const char* element = 0;
+    }
+    GeoFeature* geo = nullptr;
+    const char* element = nullptr;
     auto ret = GeoFeature::resolveElement(obj,
                                           subname,
                                           elementName,
@@ -355,22 +374,25 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
                                           &element,
                                           &geo);
     if (!ret || !geo || !element || !element[0]) {
-        if (elementName.second.size())
+        if (elementName.second.size()) {
             shadow.second.swap(elementName.second);
+        }
         return false;
     }
 
-    if (_ElementRefs.insert(geo).second)
-            _ElementRefMap[geo].insert(this);
+    if (_ElementRefs.insert(geo).second) {
+        _ElementRefMap[geo].insert(this);
+    }
 
-        if (!reverse) {
+    if (!reverse) {
         if (elementName.first.empty()) {
             shadow.second.swap(elementName.second);
             return false;
         }
-        if (shadow == elementName)
-                return false;
+        if (shadow == elementName) {
+            return false;
         }
+    }
 
     bool missing = Data::hasMissingElement(elementName.second.c_str());
     if (feature == geo && (missing || reverse)) {
@@ -379,8 +401,8 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
         // to version change, i.e. 'reverse', try search by geometry first
         const char* oldElement = Data::findElementName(shadow.second.c_str());
         if (!Data::hasMissingElement(oldElement)) {
-//            const auto& names = geo->searchElementCache(oldElement);
-            std::vector<std::string> names; // searchElementCache isn't implemented.
+            //            const auto& names = geo->searchElementCache(oldElement);
+            std::vector<std::string> names;  // searchElementCache isn't implemented.
             if (names.size()) {
                 missing = false;
                 std::string newsub(subname, strlen(subname) - strlen(element));
@@ -403,12 +425,13 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
         }
     }
 
-    if (notify)
-            aboutToSetValue();
+    if (notify) {
+        aboutToSetValue();
+    }
 
-        auto updateSub = [&](const std::string& newSub) {
+    auto updateSub = [&](const std::string& newSub) {
         if (sub != newSub) {
-            //signalUpdateElementReference(sub, newSub);
+            // signalUpdateElementReference(sub, newSub);
             sub = newSub;
         }
     };
@@ -423,32 +446,39 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
         FC_TRACE(propertyName(this) << " element reference shadow update " << ret->getFullName()
                                     << " " << shadow.first << " -> " << elementName.first);
         shadow.swap(elementName);
-        if (shadow.first.size() && Data::hasMappedElementName(sub.c_str()))
-                updateSub(shadow.first);
+        if (shadow.first.size() && Data::hasMappedElementName(sub.c_str())) {
+            updateSub(shadow.first);
         }
+    }
 
     if (reverse) {
-        if (shadow.first.size() && Data::hasMappedElementName(sub.c_str()))
-                updateSub(shadow.first);
-            else
-                updateSub(shadow.second);
-            return true;
+        if (shadow.first.size() && Data::hasMappedElementName(sub.c_str())) {
+            updateSub(shadow.first);
+        }
+        else {
+            updateSub(shadow.second);
+        }
+        return true;
     }
     if (missing) {
-        if (sub != shadow.first)
-                updateSub(shadow.second);
-            return true;
+        if (sub != shadow.first) {
+            updateSub(shadow.second);
+        }
+        return true;
     }
     auto pos2 = shadow.first.rfind('.');
-    if (pos2 == std::string::npos)
-            return true;
-        ++pos2;
+    if (pos2 == std::string::npos) {
+        return true;
+    }
+    ++pos2;
     auto pos = sub.rfind('.');
-    if (pos == std::string::npos)
-            pos = 0;
-        else
-            ++pos;
-        if (pos == pos2) {
+    if (pos == std::string::npos) {
+        pos = 0;
+    }
+    else {
+        ++pos;
+    }
+    if (pos == pos2) {
         if (sub.compare(pos, sub.size() - pos, &shadow.first[pos2]) != 0) {
             FC_LOG("element reference update " << sub << " -> " << shadow.first);
             std::string newSub(sub);
@@ -478,52 +508,62 @@ PropertyLinkBase::tryReplaceLink(const PropertyContainer *owner, DocumentObject 
     std::pair<DocumentObject*, std::string> res;
     res.first = 0;
 
-    if(oldObj == obj) {
-        if(owner == parent) {
+    if (oldObj == obj) {
+        if (owner == parent) {
             res.first = newObj;
-            if(subname) res.second = subname;
+            if (subname) {
+                res.second = subname;
+            }
             return res;
         }
         return res;
 #ifdef FC_USE_TNP_FIX
-    } else if (newObj == obj) {
+    }
+    else if (newObj == obj) {
         // This means the new object is already sub-object of this parent
         // (consider a case of swapping the tool and base object of the Cut
         // feature). We'll swap the old and new object.
         return tryReplaceLink(owner, obj, parent, newObj, oldObj, subname);
 #endif
     }
-    if(!subname || !subname[0])
+    if (!subname || !subname[0]) {
         return res;
+    }
 
-    App::DocumentObject *prev = obj;
+    App::DocumentObject* prev = obj;
     std::size_t prevPos = 0;
     std::string sub = subname;
-    for(auto pos=sub.find('.');pos!=std::string::npos;pos=sub.find('.',pos)) {
+    for (auto pos = sub.find('.'); pos != std::string::npos; pos = sub.find('.', pos)) {
         ++pos;
         char c = sub[pos];
         sub[pos] = 0;
         auto sobj = obj->getSubObject(sub.c_str());
         sub[pos] = c;
-        if(!sobj)
+        if (!sobj) {
             break;
-        if(sobj == oldObj) {
-            if(prev == parent) {
-                if(sub[prevPos] == '$')
-                    sub.replace(prevPos+1,pos-1-prevPos,newObj->Label.getValue());
-                else
-                    sub.replace(prevPos,pos-1-prevPos,newObj->getNameInDocument());
+        }
+        if (sobj == oldObj) {
+            if (prev == parent) {
+                if (sub[prevPos] == '$') {
+                    sub.replace(prevPos + 1, pos - 1 - prevPos, newObj->Label.getValue());
+                }
+                else {
+                    sub.replace(prevPos, pos - 1 - prevPos, newObj->getNameInDocument());
+                }
                 res.first = obj;
                 res.second = std::move(sub);
                 return res;
             }
             break;
 #ifdef FC_USE_TNP_FIX
-        }else if(sobj == newObj) {
+        }
+        else if (sobj == newObj) {
             return tryReplaceLink(owner, obj, parent, newObj, oldObj, subname);
 #endif
-        }else if(prev == parent)
+        }
+        else if (prev == parent) {
             break;
+        }
         prev = sobj;
         prevPos = pos;
     }
@@ -580,7 +620,6 @@ TYPESYSTEM_SOURCE(App::PropertyLinkHidden , App::PropertyLink)
 
 
 PropertyLink::PropertyLink() = default;
-
 PropertyLink::~PropertyLink()
 {
     resetLink();

@@ -28,5 +28,5 @@
 using namespace std;
 
 void CreateMeasureCommands() {
-    Base::Console().Message("Init MeasureGui\n");
+    Base::Console().Log("Init MeasureGui\n");
 }
