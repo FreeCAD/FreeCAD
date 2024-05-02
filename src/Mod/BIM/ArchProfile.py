@@ -55,9 +55,9 @@ else:
 # Presets in the form: Class, Name, Profile type, [profile data]
 # Search for profiles.csv in data/Mod/Arch/Presets and in the same folder as this file
 # and in the user path
-profilefiles = [os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","profiles.csv"),
+profilefiles = [os.path.join(FreeCAD.getResourceDir(),"Mod","BIM","Presets","profiles.csv"),
                 os.path.join(os.path.dirname(__file__),"Presets","profiles.csv"),
-                os.path.join(FreeCAD.getUserAppDataDir(),"Arch","profiles.csv")]
+                os.path.join(FreeCAD.getUserAppDataDir(),"BIM","profiles.csv")]
 
 
 def readPresets():

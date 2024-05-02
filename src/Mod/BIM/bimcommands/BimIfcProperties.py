@@ -105,7 +105,7 @@ class BIM_IfcProperties:
         ]
         self.psetdefs = {}
         psetpath = os.path.join(
-            FreeCAD.getResourceDir(), "Mod", "Arch", "Presets", "pset_definitions.csv"
+            FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "pset_definitions.csv"
         )
         custompath = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "CustomPsets.csv")
         self.psetdefs = self.readFromCSV(psetpath)
