@@ -989,32 +989,16 @@ void MainWindow::whatsThis()
 void MainWindow::showDocumentation(const QString& help)
 {
     Base::PyGILStateLocker lock;
-    PyObject* module = PyImport_ImportModule("Help");
-    if (module) {
-        Py_DECREF(module);
-        Gui::Command::addModule(Gui::Command::Gui,"Help");
-        Gui::Command::doCommand(Gui::Command::Gui,"Help.show(\"%s\")", help.toStdString().c_str());
+    try {
+        PyObject* module = PyImport_ImportModule("Help");
+        if (module) {
+            Py_DECREF(module);
+            Gui::Command::addModule(Gui::Command::Gui,"Help");
+            Gui::Command::doCommand(Gui::Command::Gui,"Help.show(\"%s\")", help.toStdString().c_str());
+        }
     }
-    else {
-        PyErr_Clear();
-        QUrl url(help);
-        if (url.scheme().isEmpty()) {
-            QMessageBox msgBox(getMainWindow());
-            msgBox.setWindowTitle(tr("Help addon needed!"));
-            msgBox.setText(tr("The Help system of %1 is now handled by the \"Help\" addon. "
-               "It can easily be installed via the Addons Manager").arg(QString(qApp->applicationName())));
-            QAbstractButton* pButtonAddonMgr = msgBox.addButton(tr("Open Addon Manager"), QMessageBox::YesRole);
-            msgBox.addButton(QMessageBox::Ok);
-            msgBox.exec();
-            if (msgBox.clickedButton() == pButtonAddonMgr) {
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Addons");
-                hGrp->SetASCII("SelectedAddon", "Help");
-                Gui::Command::doCommand(Gui::Command::Gui,"Gui.runCommand('Std_AddonMgr',0)");
-            }
-        }
-        else {
-            QDesktopServices::openUrl(url);
-        }
+    catch (const Base::Exception& e) {
+        e.ReportException();
     }
 }
 
