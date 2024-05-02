@@ -3690,7 +3690,7 @@ CmdSketcherConstrainCoincidentUnified::CmdSketcherConstrainCoincidentUnified(con
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
-    sAccel = hGrp->GetBool("UnifiedCoincident", false) ? "C" :"C,O";
+    sAccel = hGrp->GetBool("UnifiedCoincident", true) ? "C" :"C,O";
 
     eType = ForEdit;
 
@@ -4202,7 +4202,7 @@ CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
     sPixmap = "Constraint_PointOnPoint";
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
-    sAccel = hGrp->GetBool("UnifiedCoincident", false) ? "C,C" : "C";
+    sAccel = hGrp->GetBool("UnifiedCoincident", true) ? "C,C" : "C";
     eType = ForEdit;
 
     allowedSelSequences = {{SelVertex, SelVertexOrRoot},

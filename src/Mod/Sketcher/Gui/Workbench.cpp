@@ -442,7 +442,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
 
-    if (hGrp->GetBool("UnifiedCoincident", false)) {
+    if (hGrp->GetBool("UnifiedCoincident", true)) {
         cons << "Sketcher_ConstrainCoincidentUnified";
     }
     else {
@@ -503,7 +503,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
 
-    if (hGrp->GetBool("UnifiedCoincident", false)) {
+    if (hGrp->GetBool("UnifiedCoincident", true)) {
         cons << "Sketcher_ConstrainCoincidentUnified";
     }
     else {
