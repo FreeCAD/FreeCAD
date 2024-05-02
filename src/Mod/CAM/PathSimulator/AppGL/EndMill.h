@@ -48,13 +48,17 @@ namespace MillSim
 		Shape mToolShape;
 
 	public:
-		EndMill(int toolid, float radius, int nslices);
+		EndMill(int toolid, float diameter, int nslices);
+		EndMill(const float* toolProfile, int numPoints, int toolid, float diameter, int nslices);
 		virtual ~EndMill();
 		void GenerateDisplayLists();
 		unsigned int GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape* retShape);
 
 	protected:
 		void MirrorPointBuffer();
+
+	private:
+		bool mHandleAllocation = false;
 	};
 }
 

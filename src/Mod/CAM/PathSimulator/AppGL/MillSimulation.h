@@ -30,9 +30,6 @@
 #include "GlUtils.h"
 #include "StockObject.h"
 #include "MillPathSegment.h"
-#include "EndMillFlat.h"
-#include "EndMillBall.h"
-#include "EndMillTaper.h"
 #include "GuiDisplay.h"
 #include <sstream>
 
@@ -47,6 +44,8 @@ namespace MillSim {
 		void SimNext();
 		void InitSimulation();
 		void AddTool(EndMill* tool);
+		void AddTool(const float* toolProfile, int numPoints, int toolid, float diameter, int nslices);
+		bool ToolExists(int toolid) { return GetTool(toolid) != nullptr; }
 		void Render();
 		void ProcessSim(unsigned int time_ms);
 		void HandleKeyPress(int key);
@@ -76,6 +75,8 @@ namespace MillSim {
 		void renderSegmentReversed(int iSeg);
 		void CalcSegmentPositions();
 		EndMill* GetTool(int tool);
+		void RemoveTool(int toolId);
+
 
 
 	protected:

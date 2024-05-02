@@ -84,36 +84,42 @@ PyObject* CAMSimPy::BeginSimulation(PyObject* args, PyObject* kwds)
     return Py_None;
 }
 
-PyObject* CAMSimPy::SetToolShape(PyObject* args)
+PyObject* CAMSimPy::AddTool(PyObject* args, PyObject* kwds)
 {
-	PyObject *pObjToolShape;
+    static const std::array<const char*, 5> kwlist {"shape", "toolnumber", "diameter", "resolution", nullptr};
+    PyObject* pObjToolShape;
+    int toolNumber;
 	float resolution;
-	if (!PyArg_ParseTuple(args, "O!f", &(Part::TopoShapePy::Type), &pObjToolShape, &resolution))
-		return nullptr;
-	CAMSim *sim = getCAMSimPtr();
-	const TopoDS_Shape& toolShape = static_cast<Part::TopoShapePy*>(pObjToolShape)->getTopoShapePtr()->getShape();
-	sim->SetToolShape(toolShape, resolution);
-	Py_IncRef(Py_None);
-	return Py_None;
-}
-
-PyObject* CAMSimPy::AddCommand(PyObject* args, PyObject* kwds)
-{
-    static const std::array<const char *, 3> kwlist { "position", "command", nullptr };
-	PyObject *pObjPlace;
-	PyObject *pObjCmd;
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!O!", kwlist, &(Base::PlacementPy::Type), &pObjPlace,
-                                             &(Path::CommandPy::Type), &pObjCmd)) {
+    float diameter;
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "Oiff", kwlist,
+                                             &pObjToolShape, &toolNumber, &diameter, &resolution)) {
         return nullptr;
     }
+    // The tool shape is defined by a list of 2d points that represents the tool revolving profile 
+    Py_ssize_t num_floats = PyList_Size(pObjToolShape);
+    float* toolProfile = new float[num_floats];
+    for (Py_ssize_t i = 0; i < num_floats; ++i) {
+        PyObject* item = PyList_GetItem(pObjToolShape, i);
+        toolProfile[i] = static_cast<float>(PyFloat_AsDouble(item));
+    }
+
 	CAMSim *sim = getCAMSimPtr();
-	Base::Placement *pos = static_cast<Base::PlacementPy*>(pObjPlace)->getPlacementPtr();
+    sim->AddTool(toolProfile, num_floats / 2, toolNumber, diameter, resolution);
+
+    delete[] toolProfile;
+    return Py_None;
+}
+
+PyObject* CAMSimPy::AddCommand(PyObject* args)
+{
+	PyObject *pObjCmd;
+    if (!PyArg_ParseTuple(args, "O!", &(Path::CommandPy::Type), &pObjCmd)) {
+        return nullptr;
+    }
+    CAMSim* sim = getCAMSimPtr();
 	Path::Command *cmd = static_cast<Path::CommandPy*>(pObjCmd)->getCommandPtr();
-	Base::Placement *newpos = sim->AddCommand(pos, cmd);
-	//Base::Console().Log("Done...\n");
-	//Base::Console().Refresh();
-	Base::PlacementPy *newposPy = new Base::PlacementPy(newpos);
-	return newposPy;
+    sim->AddCommand(cmd);
+    return Py_None;
 }
 
 PyObject *CAMSimPy::getCustomAttributes(const char* /*attr*/) const

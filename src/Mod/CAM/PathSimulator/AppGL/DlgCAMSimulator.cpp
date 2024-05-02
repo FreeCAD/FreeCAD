@@ -34,104 +34,6 @@
 using namespace CAMSimulator;
 using namespace MillSim;
 
-const char* demoCode[] = {
-    "T2",
-    "G0 X-0.7 Y-0.7 Z10",
-    "G0 X-0.7 Y-0.7 Z1",
-    "G0 X0.7 Y0.7 Z1 I0.7 J0.7 K0",
-    "G0 X0.7 Y0.7 Z10",
-
-    "G0 X-3 Y-3 Z10",
-    "G0 X-3 Y-3 Z0.5",
-    "G3 X3 Y3 Z0.5 I3 J3 K0",
-    "G0 X3 Y3 Z10",
-
-    "G0 X15 Y15 Z10",
-    "G0 X 15 Y15 Z1.5",
-    "G0 X15 Y-15 Z1.5",
-    "G0 X-15 Y-15 Z1.5",
-    "G0 X-15 Y15 Z1.5",
-    "G0 X15 Y15 Z1.5",
-
-    "G0 X15 Y15 Z1",
-    "G0 X15 Y-15 Z1",
-    "G0 X-15 Y-15 Z1",
-    "G0 X-15 Y15 Z1",
-    "G0 X15 Y15 Z1",
-
-    "G0 X15 Y15 Z0.5",
-    "G0 X15 Y-15 Z0.5",
-    "G0 X-15 Y-15 Z0.5",
-    "G0 X-15 Y15 Z0.5",
-    "G0 X15 Y15 Z0.5",
-
-    "G0 X15 Y15 Z0",
-    "G0 X15 Y-15 Z0",
-    "G0 X-15 Y-15 Z0",
-    "G0 X-15 Y15 Z0",
-    "G0 X15 Y15 Z0",
-
-    "G0 X15 Y15 Z10",
-
-    "T1",
-    "G0 X8 Y8 Z10",
-    "G0 X8 Y8 Z1.5",
-    "G0 X8 Y-8 Z1.5",
-    "G0 X6.1 Y-8 Z1.5",
-    "G0 X6.1 Y8 Z1.5",
-    "G0 X4.2 Y8 Z1.5",
-    "G0 X4.2 Y-8 Z1.5",
-    "G0 X2.3 Y-8 Z1.5",
-    "G0 X2.3 Y8 Z1.5",
-    "G0 X0.4 Y8 Z1.5",
-    "G0 X0.4 Y-8 Z1.5",
-    "G0 X-1.5 Y-8 Z1.5",
-    "G0 X-1.5 Y8 Z1.5",
-    "G0 X-3.4 Y8 Z1.5",
-    "G0 X-3.4 Y-8 Z1.5",
-    "G0 X-5.3 Y-8 Z1.5",
-    "G0 X-5.3 Y8 Z1.5",
-    "G0 X-7.2 Y8 Z1.5",
-    "G0 X-7.2 Y-8 Z1.5",
-    "G0 X-8 Y-8 Z1.5",
-    "G0 X-8 Y8 Z1.5",
-    "G0 X 8 Y8 Z1.5",
-    "G0 X 8 Y-8 Z1.5",
-    "G0 X-8 Y-8 Z1.5",
-
-    "G0 X-8 Y-8 Z10",
-
-    // taper mill motion
-    "T3",
-    "G0 X14.2 Y14.2 Z10",
-    "G0 X14.2 Y14.2 Z1.5",
-    "G0 X14.2 Y-14.2 Z1.5",
-    "G0 X-14.2 Y-14.2 Z1.5",
-    "G0 X-14.2 Y14.2 Z1.5",
-    "G0 X14.2 Y14.2 Z1.5",
-    "G0 X14.2 Y14.2 Z10",
-    "G0 X0 Y0 Z10",
-
-    // ball mill motion
-    "T4",
-    "G0 X12 Y12 Z10",
-    "G0 X12 Y12 Z1.5",
-    "G0 X12 Y-12 Z2.5",
-    "G0 X-12 Y-12 Z1.5",
-    "G0 X-12 Y12 Z2.5",
-    "G0 X12 Y12 Z1.5",
-    "G0 X12 Y12 Z10",
-    "G0 X0 Y0 Z10",
-};
-
-#define NUM_DEMO_MOTIONS (sizeof(demoCode) / sizeof(char*))
-
-EndMillFlat endMillFlat01(1, 3.175f, 16);
-EndMillFlat endMillFlat12(5, 12.0f, 16);
-EndMillFlat endMillFlat02(2, 1.5f, 16);
-EndMillBall endMillBall03(4, 1, 16, 4, 0.2f);
-EndMillTaper endMillTaper04(3, 1, 16, 90, 0.2f);
-
 QOpenGLContext *gOpenGlContext;
 
 using namespace MillSim;
@@ -199,20 +101,19 @@ namespace CAMSimulator
     void DlgCAMSimulator::ResetSimulation()
     {
         mMillSimulator->Clear();
-        //for (int i = 0; i < NUM_DEMO_MOTIONS; i++) {
-        //    mMillSimulator->AddGcodeLine(demoCode[i]);
-        //}
-        mMillSimulator->AddGcodeLine("T5");
-        mMillSimulator->AddTool(&endMillFlat01);
-        mMillSimulator->AddTool(&endMillFlat02);
-        mMillSimulator->AddTool(&endMillBall03);
-        mMillSimulator->AddTool(&endMillTaper04);
-        mMillSimulator->AddTool(&endMillFlat12);
     }
 
     void DlgCAMSimulator::AddGcodeCommand(const char* cmd)
     {
         mMillSimulator->AddGcodeLine(cmd);
+    }
+
+    void DlgCAMSimulator::AddTool(const float* toolProfilePoints, int numPoints, int toolNumber, float diameter, float resolution)
+    {
+        std::string toolCmd = "T" + std::to_string(toolNumber);
+        mMillSimulator->AddGcodeLine(toolCmd.c_str());
+        if (!mMillSimulator->ToolExists(toolNumber))
+            mMillSimulator->AddTool(toolProfilePoints, numPoints, toolNumber, diameter, 16);
     }
 
     void DlgCAMSimulator::hideEvent(QHideEvent* ev)

@@ -34,16 +34,20 @@ namespace MillSim {
     }
 
     void MillSimulation::ClearMillPathSegments() {
-        for (std::vector<MillPathSegment*>::const_iterator i = MillPathSegments.begin(); i != MillPathSegments.end(); ++i) {
-            MillSim::MillPathSegment* p = *i;
-            delete p;
-        }
+        //for (std::vector<MillPathSegment*>::const_iterator i = MillPathSegments.begin(); i != MillPathSegments.end(); ++i) {
+        //    MillSim::MillPathSegment* p = *i;
+        //    delete p;
+        //}
+        for (int i = 0; i < MillPathSegments.size(); i++)
+            delete MillPathSegments[i];
         MillPathSegments.clear();
     }
 
     void MillSimulation::Clear()
     {
         mCodeParser.Operations.clear();
+        for (int i = 0; i < mToolTable.size(); i++)
+            delete mToolTable[i];
         mToolTable.clear();
         mCurStep = 0;
         mPathStep = -1;
@@ -107,8 +111,30 @@ namespace MillSim {
         return nullptr;
     }
 
+    void MillSimulation::RemoveTool(int toolId)
+    {
+        EndMill* tool;
+        if ((tool = GetTool(toolId)) != nullptr) {
+            auto it = std::find(mToolTable.begin(), mToolTable.end(), tool);
+            if (it != mToolTable.end()) {
+                mToolTable.erase(it);
+            }
+            delete tool;
+        }
+    }
+
     void MillSimulation::AddTool(EndMill* tool)
     {
+        // if we have another tool with same id, remove it
+        RemoveTool(tool->mToolId);
+        mToolTable.push_back(tool);
+    }
+
+    void MillSimulation::AddTool(const float* toolProfile, int numPoints, int toolid, float diameter, int nslices)
+    {
+        // if we have another tool with same id, remove it
+        RemoveTool(toolid);
+        EndMill* tool = new EndMill(toolProfile, numPoints, toolid, diameter, nslices);
         mToolTable.push_back(tool);
     }
 
@@ -461,7 +487,7 @@ namespace MillSim {
         float maxw = fmaxf(w, l);
         mMaxFar = maxw * 4;
         UpdateProjection();
-        vec3_set(eye, 0, -2.0f * maxw, 0);
+        vec3_set(eye, 0, -1.6f * maxw, 0);
         vec3_set(lightPos, x, y, h + maxw / 3);
         mlightObject.SetPosition(lightPos);
     }

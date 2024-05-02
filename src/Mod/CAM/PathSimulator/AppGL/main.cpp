@@ -10,6 +10,9 @@
 #include <GLFW/glfw3.h>
 #include "linmath.h"
 #include "MillSimulation.h"
+#include "EndMillFlat.h"
+#include "EndMillBall.h"
+#include "EndMillTaper.h"
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -119,10 +122,6 @@ const char *demoCode[] = {
 
 
 
-EndMillFlat endMillFlat01(1, 3.175f, 16);
-EndMillFlat endMillFlat02(2, 1.5f, 16);
-EndMillBall endMillBall03(4, 1, 16, 4, 0.2f);
-EndMillTaper endMillTaper04(3, 1, 16, 90, 0.2f);
 
 // test section - remove!
 GLuint tprogram, tmodel, tview, tprojection, tarray;
@@ -225,10 +224,16 @@ int main(int argc, char **argv)
     {
         gMillSimulator.AddGcodeLine(demoCode[i]);
     }
-    gMillSimulator.AddTool(&endMillFlat01);
-    gMillSimulator.AddTool(&endMillFlat02);
-    gMillSimulator.AddTool(&endMillBall03);
-    gMillSimulator.AddTool(&endMillTaper04);
+    //EndMillFlat endMillFlat01(1, 3.175f, 16);
+    //EndMillFlat endMillFlat02(2, 1.5f, 16);
+    //EndMillBall endMillBall03(4, 1, 16, 4, 0.2f);
+    //EndMillTaper endMillTaper04(3, 1, 16, 90, 0.2f);
+    float rad = 3.175f / 2.0f;
+    float buff4[4] = { rad, 30, rad, 0 };
+    gMillSimulator.AddTool(new EndMill(buff4, 2, 1, 3.175f, 16));
+    gMillSimulator.AddTool(new EndMillFlat(2, 1.5f, 16));
+    gMillSimulator.AddTool(new EndMillBall(4, 1, 16, 4, 0.2f));
+    gMillSimulator.AddTool(new EndMillTaper(3, 1, 16, 90, 0.2f));
     gMillSimulator.InitSimulation();
     //gMillSimulator.SetBoxStock(0, 0, -8.7f, 50, 50, 8.7f);
     gMillSimulator.SetBoxStock(-20, -20, 0.005f, 40, 40, 2);

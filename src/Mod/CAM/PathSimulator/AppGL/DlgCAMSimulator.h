@@ -86,6 +86,7 @@ namespace CAMSimulator
         void StartSimulation(const cStock *stock);
         void ResetSimulation();
         void AddGcodeCommand(const char* cmd);
+        void AddTool(const float *toolProfilePoints, int numPoints, int toolNumber, float diameter, float resolution);
 
     protected:
         bool event(QEvent* event) override;

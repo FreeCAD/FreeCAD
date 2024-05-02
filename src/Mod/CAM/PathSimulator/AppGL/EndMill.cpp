@@ -34,11 +34,39 @@ EndMill::EndMill(int toolid, float diameter, int nslices)
 	//mToolDisplayId = mHToolDisplayId = mPathDisplayId = 0;
 }
 
+MillSim::EndMill::EndMill(const float* toolProfile, int numPoints, int toolid, float diameter, int nslices)
+	: EndMill(toolid, diameter, nslices)
+{
+	mNPoints = numPoints;
+	int srcBuffSize = numPoints * 2;
+
+	// make sure last point is at 0,0 else, add it
+	bool missingCenterPoint = fabs(toolProfile[numPoints * 2 - 2]) > 0.0001f;
+	if (missingCenterPoint)
+		mNPoints++;
+
+	int buffSize = PROFILE_BUFFER_SIZE(mNPoints);
+	mProfPoints = new float[buffSize];
+	if (mProfPoints == nullptr)
+		return;
+
+	// copy profile points
+	mHandleAllocation = true;
+	for (int i = 0; i < srcBuffSize; i++)
+		mProfPoints[i] = toolProfile[i] + 0.01f; // add some width to reduce simulation artifacts
+	if (missingCenterPoint)
+		mProfPoints[srcBuffSize] = mProfPoints[srcBuffSize + 1] = 0.0f;
+
+	MirrorPointBuffer();
+}
+
 EndMill::~EndMill()
 {
 	mToolShape.FreeResources();
 	mHToolShape.FreeResources();
 	mPathShape.FreeResources();
+	if (mHandleAllocation)
+		delete[] mProfPoints;
 }
 
 void EndMill::GenerateDisplayLists()
@@ -54,7 +82,7 @@ void EndMill::GenerateDisplayLists()
 	mPathShape.ExtrudeProfileLinear(mProfPoints, nFullPoints, 0, 1, 0, 0, true, false);
 }
 
-unsigned int EndMill::GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape *retShape)
+unsigned int EndMill::GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape* retShape)
 {
 	int nFullPoints = PROFILE_BUFFER_POINTS(mNPoints);
 	retShape->ExtrudeProfileRadial(mProfPoints, PROFILE_BUFFER_POINTS(mNPoints), radius, angleRad, zShift, true, true);

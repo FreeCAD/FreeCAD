@@ -54,22 +54,15 @@ void CAMSimulator::CAMSim::ResetSimulation()
     DlgCAMSimulator::GetInstance()->ResetSimulation();
 }
 
-void CAMSim::SetToolShape(const TopoDS_Shape& toolShape, float resolution)
+void CAMSim::AddTool(const float *toolProfilePoints, int numPoints, int toolNumber, float diameter, float resolution)
 {
+    DlgCAMSimulator::GetInstance()->AddTool(toolProfilePoints, numPoints, toolNumber, diameter, resolution);
 }
 
-Base::Placement * CAMSim::AddCommand(Base::Placement * pos, Command * cmd)
+void CAMSim::AddCommand(Command * cmd)
 {
-    if (cmd->Name == "G0" || cmd->Name == "G1" || cmd->Name == "G2" || cmd->Name == "G3") 
-    {
-        std::string gline = cmd->toGCode();
-        DlgCAMSimulator::GetInstance()->AddGcodeCommand(gline.c_str());
-    }
-
-	Base::Placement *plc = new Base::Placement();
-    Vector3d vec(pos->getPosition().x, pos->getPosition().y, pos->getPosition().z);
-	plc->setPosition(vec);
-	return plc;
+    std::string gline = cmd->toGCode();
+    DlgCAMSimulator::GetInstance()->AddGcodeCommand(gline.c_str());
 }
 
 

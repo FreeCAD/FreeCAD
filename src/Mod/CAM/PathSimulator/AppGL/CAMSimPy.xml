@@ -39,19 +39,19 @@
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="SetToolShape">
+    <Methode Name="AddTool" Keyword='true'>
       <Documentation>
           <UserDocu>
-		      SetToolShape(shape, resolution):
+		      SetToolShape(shape, toolnumber, diameter, resolution):
 
           Set the shape of the tool to be used for simulation
 		      </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="AddCommand" Keyword='true'>
+    <Methode Name="AddCommand">
       <Documentation>
         <UserDocu>
-          AddCommand(placement, command):
+          AddCommand(command):
 
           Add a path command to the simulation.
         </UserDocu>

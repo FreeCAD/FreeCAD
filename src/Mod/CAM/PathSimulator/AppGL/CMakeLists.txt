@@ -45,12 +45,6 @@ SET(CAMSimulator_SRCS_Module
 SET(CAMSimulator_SRCS_Core
     EndMill.cpp
 	EndMill.h
-	EndMillBall.cpp
-	EndMillBall.h
-	EndMillFlat.cpp
-	EndMillFlat.h
-	EndMillTaper.cpp
-	EndMillTaper.h
 	GCodeParser.cpp
 	GCodeParser.h
 	GlUtils.cpp

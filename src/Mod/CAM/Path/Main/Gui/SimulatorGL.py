@@ -126,7 +126,7 @@ class CAMSimulation:
         return topedge, top_p1, top_p2
 
     #the algo is based on locating the side edge that OCC creates on any revolved object 
-    def GetToolProfile(self, tool):
+    def GetToolProfile(self, tool, resolution):
         shape = tool.Shape
         sideEdgeList = []
         for i in range(len(shape.Edges)):
@@ -136,10 +136,6 @@ class CAMSimulation:
                 v2 = edge.lastVertex()
                 tp = "arc" if type(edge.Curve) is Part.Circle else "line"
                 sideEdgeList.append(edge)
-                if tp == "arc":
-                    start = edge.FirstParameter
-                    end = edge.LastParameter
-                    diff = end - start
 
         # sort edges as a single 3d line on the x-z plane
         profile = [0.0, 0.0]
@@ -149,12 +145,26 @@ class CAMSimulation:
         profile = [RadiusAt(edge, p1), edge.valueAt(p1).z]
         endrad = 0.0
         # one by one find all connecting edges
-        while (edge is not None):
+        while edge is not None:
             sideEdgeList.remove(edge)
-            endrad = RadiusAt(edge, p2)
-            endz = edge.valueAt(p2).z
-            profile.append(endrad)
-            profile.append(endz)
+            if type(edge.Curve) is Part.Circle:
+                # if edge is curved, aproximate it with lines based on resolution
+                nsegments = int(edge.Length / resolution) + 1
+                step = (p2 - p1) / nsegments
+                location = p1 + step
+                print (edge.Length, nsegments, step)
+                while nsegments > 0:
+                    endrad = RadiusAt(edge, location)
+                    endz = edge.valueAt(location).z
+                    profile.append(endrad)
+                    profile.append(endz)
+                    location += step
+                    nsegments -= 1
+            else:
+                endrad = RadiusAt(edge, p2)
+                endz = edge.valueAt(p2).z
+                profile.append(endrad)
+                profile.append(endz)
             edge, p1, p2 =  self.FindClosestEdge(sideEdgeList, endrad, endz)
             if edge is None:
                 break
@@ -175,7 +185,7 @@ class CAMSimulation:
         FreeCADGui.Control.showDialog(self.taskForm)
         self.disableAnim = False
         self.firstDrill = True
-        self.voxSim = CAMSimulator.PathSim()
+        self.millSim = CAMSimulator.PathSim()
         self.initdone = True
         self.job = self.jobs[self.taskForm.form.comboJobs.currentIndex()]
         self.curpos = FreeCAD.Placement(Vector(0, 0, 0), self.stdrot) ## GL: Remove!!!
@@ -253,16 +263,16 @@ class CAMSimulation:
         form.labelAccuracy.setText(str(round(self.accuracy, 1)) + "%")
 
     def SimPlay(self):
-        self.voxSim.ResetSimulation()
+        self.millSim.ResetSimulation()
         for op in self.activeOps:
             tool = PathDressup.toolController(op).Tool
             toolNumber = PathDressup.toolController(op).ToolNumber
-            toolProfile = self.GetToolProfile(tool)
-            # GL: Call add tool cmd
+            toolProfile = self.GetToolProfile(tool, 0.5)
+            self.millSim.AddTool(toolProfile, toolNumber, tool.Diameter, 1)
             opCommands = PathUtils.getPathWithPlacement(op).Commands
             for cmd in opCommands:
-                self.voxSim.AddCommand(self.curpos, cmd)
-        self.voxSim.BeginSimulation(self.stock, 0.1)
+                self.millSim.AddCommand(cmd)
+        self.millSim.BeginSimulation(self.stock, 0.1)
         # GL: update simulator and open window 
         pass
 
