@@ -1,6 +1,5 @@
- /**************************************************************************
- *   Copyright (c) 2020 FreeCAD Developers                                 *
- *   Author: Uwe Stöhr <uwestoehr@lyx.org>                                 *
+/***************************************************************************
+ *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,48 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
+#ifndef MATTINGENUMS_H_
+#define MATTINGENUMS_H_
 
-#include <memory>
-#include <Gui/PrefWidgets.h>
-#include <Gui/PropertyPage.h>
+#include <string>
+#include <vector>
+#include <QCoreApplication>
+
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-namespace TechDraw {
-class LineGenerator;
-}
 
-namespace TechDrawGui {
-class Ui_DlgPrefsTechDrawAnnotationImp;
-
-class DlgPrefsTechDrawAnnotationImp : public Gui::Dialog::PreferencePage
+namespace TechDraw
 {
-    Q_OBJECT
 
-public:
-    explicit DlgPrefsTechDrawAnnotationImp( QWidget* parent = nullptr );
-    ~DlgPrefsTechDrawAnnotationImp() override;
+class TechDrawExport MattingPropEnum {
+    Q_DECLARE_TR_FUNCTIONS(TechDraw::MattingPropEnum)
 
-public Q_SLOTS:
-    void onLineGroupChanged(int);
-    void onLineStandardChanged(int);
-
-protected:
-    void saveSettings() override;
-    void loadSettings() override;
-    void changeEvent(QEvent *e) override;
-
-    int prefBalloonArrow() const;
-    int prefBalloonShape() const;
-    int prefMattingStyle() const;
-    void loadLineStyleBoxes();
+    public:
+        static const char* MattingTypeEnums[];
+        static const int   MattingCount;
+        static const std::vector<std::string> MattingTypeIcons;
 
 private:
-    std::unique_ptr<Ui_DlgPrefsTechDrawAnnotationImp> ui;
-    TechDraw::LineGenerator* m_lineGenerator;
+
 };
 
-} // namespace TechDrawGui
-
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
+} //end namespace TechDraw
+#endif

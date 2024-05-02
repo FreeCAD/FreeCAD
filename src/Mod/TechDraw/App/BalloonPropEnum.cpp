@@ -1,6 +1,5 @@
- /**************************************************************************
- *   Copyright (c) 2020 FreeCAD Developers                                 *
- *   Author: Uwe Stöhr <uwestoehr@lyx.org>                                 *
+/***************************************************************************
+ *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,48 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
+#include "PreCompiled.h"
 
-#include <memory>
-#include <Gui/PrefWidgets.h>
-#include <Gui/PropertyPage.h>
-#include <Mod/TechDraw/TechDrawGlobal.h>
+#include "BalloonPropEnum.h"
+
 
 namespace TechDraw {
-class LineGenerator;
+
+const int   BalloonPropEnum::BalloonCount = 8;
+const char* BalloonPropEnum::BalloonTypeEnums[]= {
+    QT_TRANSLATE_NOOP("BalloonPropEnum", "Circular"),
+    QT_TRANSLATE_NOOP("BalloonPropEnum", "None"),
+    QT_TRANSLATE_NOOP("BalloonPropEnum", "Triangle"),
+    QT_TRANSLATE_NOOP("BalloonPropEnum", "Inspection"),
+    QT_TRANSLATE_NOOP("BalloonPropEnum", "Hexagon"),
+    QT_TRANSLATE_NOOP("BalloonPropEnum", "Square"),
+    QT_TRANSLATE_NOOP("BalloonPropEnum", "Rectangle"),
+    QT_TRANSLATE_NOOP("BalloonPropEnum", "Line"),
+    nullptr};
+
+const std::vector<std::string> BalloonPropEnum::BalloonTypeIcons = { ":icons/circular.svg",
+                                            ":icons/none.svg",
+                                            ":icons/triangle.svg",
+                                            ":icons/inspection.svg",
+                                            ":icons/hexagon.svg",
+                                            ":icons/square.svg",
+                                            ":icons/rectangle.svg",
+                                            ":icons/bottomline.svg"};
+
 }
-
-namespace TechDrawGui {
-class Ui_DlgPrefsTechDrawAnnotationImp;
-
-class DlgPrefsTechDrawAnnotationImp : public Gui::Dialog::PreferencePage
-{
-    Q_OBJECT
-
-public:
-    explicit DlgPrefsTechDrawAnnotationImp( QWidget* parent = nullptr );
-    ~DlgPrefsTechDrawAnnotationImp() override;
-
-public Q_SLOTS:
-    void onLineGroupChanged(int);
-    void onLineStandardChanged(int);
-
-protected:
-    void saveSettings() override;
-    void loadSettings() override;
-    void changeEvent(QEvent *e) override;
-
-    int prefBalloonArrow() const;
-    int prefBalloonShape() const;
-    int prefMattingStyle() const;
-    void loadLineStyleBoxes();
-
-private:
-    std::unique_ptr<Ui_DlgPrefsTechDrawAnnotationImp> ui;
-    TechDraw::LineGenerator* m_lineGenerator;
-};
-
-} // namespace TechDrawGui
-
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
