@@ -52,29 +52,6 @@ else:
 #  another file.
 
 
-
-def makeReference(filepath=None, partname=None, name=None):
-
-    """makeReference([filepath],[partname],[name]): Creates an Arch Reference object"""
-
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","ArchReference")
-    obj.Label = name if name else translate("Arch","External Reference")
-    ArchReference(obj)
-    if FreeCAD.GuiUp:
-        ViewProviderArchReference(obj.ViewObject)
-    if filepath:
-        obj.File = filepath
-    if partname:
-        obj.Part = partname
-    import Draft
-    Draft.select(obj)
-    return obj
-
-
-
 class ArchReference:
 
     """The Arch Reference object"""
@@ -197,8 +174,8 @@ class ArchReference:
                     if not ifcfile:
                         return
                     try:
-                        import ifc_tools
-                        import ifc_generator
+                        from nativeifc import ifc_tools
+                        from nativeifc import ifc_generator
                     except:
                         t = translate("Arch","NativeIFC not available - unable to process IFC files")
                         FreeCAD.Console.PrintError(t+"\n")
@@ -244,7 +221,7 @@ class ArchReference:
         """returns IFC elements for this object"""
 
         try:
-            import ifc_generator
+            from nativeifc import ifc_generator
         except:
             t = translate("Arch","NativeIFC not available - unable to process IFC files")
             FreeCAD.Console.PrintError(t+"\n")
@@ -852,8 +829,8 @@ class ViewProviderArchReference:
         """Sets the coin node of this object from an IFC file"""
 
         try:
-            import ifc_tools
-            import ifc_generator
+            from nativeifc import ifc_tools
+            from nativeifc import ifc_generator
         except:
             t = translate("Arch","NativeIFC not available - unable to process IFC files")
             FreeCAD.Console.PrintError(t+"\n")
@@ -957,7 +934,7 @@ class ArchReferenceTaskPanel:
         filters = "*.FCStd *.dxf"
         # enable IFC support if NativeIFC is present
         try:
-            import ifc_tools
+            from nativeifc import ifc_tools
         except:
             pass
         else:
@@ -995,34 +972,4 @@ class ArchReferenceTaskPanel:
             FreeCADGui.ActiveDocument.resetEdit()
 
 
-class ArchReferenceCommand:
 
-
-    "the Arch Reference command definition"
-
-    def GetResources(self):
-
-        return {'Pixmap'  : 'Arch_Reference',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Reference","External reference"),
-                'Accel': "E, X",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Reference","Creates an external reference object")}
-
-    def IsActive(self):
-
-        return not FreeCAD.ActiveDocument is None
-
-    def Activated(self):
-
-        FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create external reference"))
-        FreeCADGui.addModule("Arch")
-        FreeCADGui.addModule("Draft")
-        FreeCADGui.doCommand("obj = Arch.makeReference()")
-        FreeCADGui.doCommand("Draft.autogroup(obj)")
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCADGui.doCommand("obj.ViewObject.Document.setEdit(obj.ViewObject, 0)")
-
-
-
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Arch_Reference', ArchReferenceCommand())

@@ -57,34 +57,6 @@ else:
 
 ISRENDERING = False # flag to prevent concurrent runs of the coin renderer
 
-def makeSectionPlane(objectslist=None,name=None):
-
-    """makeSectionPlane([objectslist],[name]) : Creates a Section plane objects including the
-    given objects. If no object is given, the whole document will be considered."""
-
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Section")
-    obj.Label = name if name else translate("Arch","Section")
-    _SectionPlane(obj)
-    if FreeCAD.GuiUp:
-        _ViewProviderSectionPlane(obj.ViewObject)
-    if objectslist:
-        obj.Objects = objectslist
-        bb = FreeCAD.BoundBox()
-        for o in Draft.get_group_contents(objectslist):
-            if hasattr(o,"Shape") and hasattr(o.Shape,"BoundBox"):
-                bb.add(o.Shape.BoundBox)
-        import WorkingPlane
-        obj.Placement = WorkingPlane.get_working_plane().get_placement()
-        obj.Placement.Base = bb.Center
-        if FreeCAD.GuiUp:
-            margin = bb.XLength*0.1
-            obj.ViewObject.DisplayLength = bb.XLength+margin
-            obj.ViewObject.DisplayHeight = bb.YLength+margin
-    return obj
-
 
 def getSectionData(source):
 
@@ -825,38 +797,6 @@ def closeViewer(name):
             sw.close()
 
 
-
-class _CommandSectionPlane:
-
-    "the Arch SectionPlane command definition"
-
-    def GetResources(self):
-
-        return {'Pixmap'  : 'Arch_SectionPlane',
-                'Accel': "S, E",
-                'MenuText': QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_SectionPlane","Creates a section plane object, including the selected objects")}
-
-    def IsActive(self):
-
-        return not FreeCAD.ActiveDocument is None
-
-    def Activated(self):
-
-        sel = FreeCADGui.Selection.getSelection()
-        ss = "["
-        for o in sel:
-            if len(ss) > 1:
-                ss += ","
-            ss += "FreeCAD.ActiveDocument."+o.Name
-        ss += "]"
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Section Plane"))
-        FreeCADGui.addModule("Arch")
-        FreeCADGui.doCommand("section = Arch.makeSectionPlane("+ss+")")
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
-
-
 class _SectionPlane:
 
     "A section plane object"
@@ -1398,5 +1338,3 @@ class SectionPlaneTaskPanel:
         self.recenterButton.setText(QtGui.QApplication.translate("Arch", "Center", None))
         self.recenterButton.setToolTip(QtGui.QApplication.translate("Arch", "Centers the plane on the objects in the list above", None))
 
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Arch_SectionPlane',_CommandSectionPlane())

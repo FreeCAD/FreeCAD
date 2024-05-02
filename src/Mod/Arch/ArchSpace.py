@@ -172,33 +172,7 @@ else:
 #  Spaces define an open volume inside or outside a
 #  building, ie. a room.
 
-def makeSpace(objects=None,baseobj=None,name=None):
 
-    """makeSpace([objects],[baseobj],[name]): Creates a space object from the given objects.
-    Objects can be one document object, in which case it becomes the base shape of the space
-    object, or a list of selection objects as got from getSelectionEx(), or a list of tuples
-    (object, subobjectname)"""
-
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Space")
-    obj.Label = name if name else translate("Arch","Space")
-    _Space(obj)
-    if FreeCAD.GuiUp:
-        _ViewProviderSpace(obj.ViewObject)
-    if baseobj:
-        objects = baseobj
-    if objects:
-        if not isinstance(objects,list):
-            objects = [objects]
-        if len(objects) == 1:
-            obj.Base = objects[0]
-            if FreeCAD.GuiUp:
-                objects[0].ViewObject.hide()
-        else:
-            obj.Proxy.addSubobjects(obj,objects)
-    return obj
 
 def addSpaceBoundaries(space,subobjects):
 
@@ -221,42 +195,6 @@ def removeSpaceBoundaries(space,objects):
                     bounds.remove(b)
                     break
         space.Boundaries = bounds
-
-class _CommandSpace:
-
-    "the Arch Space command definition"
-
-    def GetResources(self):
-
-        return {'Pixmap'  : 'Arch_Space',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Space","Space"),
-                'Accel': "S, P",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Space","Creates a space object from selected boundary objects")}
-
-    def IsActive(self):
-
-        return not FreeCAD.ActiveDocument is None
-
-    def Activated(self):
-
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Space"))
-        FreeCADGui.addModule("Arch")
-        sel = FreeCADGui.Selection.getSelection()
-        if sel:
-            FreeCADGui.Control.closeDialog()
-            if len(sel) == 1:
-                FreeCADGui.doCommand("obj = Arch.makeSpace(FreeCADGui.Selection.getSelection())")
-            else:
-                FreeCADGui.doCommand("obj = Arch.makeSpace(FreeCADGui.Selection.getSelectionEx())")
-            FreeCADGui.addModule("Draft")
-            FreeCADGui.doCommand("Draft.autogroup(obj)")
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
-        else:
-            FreeCAD.Console.PrintMessage(translate("Arch","Please select a base object")+"\n")
-            FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
-            FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Space")
-            FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
 
 
 class _Space(ArchComponent.Component):
@@ -727,7 +665,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
 
         elif prop == "ShapeColor":
             if hasattr(vobj,"ShapeColor"):
-                self.fmat.diffuseColor.setValue((vobj.ShapeColor[0],vobj.ShapeColor[1],vobj.ShapeColor[2]))
+                self.fmat = vobj.ShapeColor.getValue()
 
         elif prop == "Transparency":
             if hasattr(vobj,"Transparency"):
@@ -839,7 +777,3 @@ class SpaceTaskPanel(ArchComponent.ComponentTaskPanel):
                         break
                 self.obj.Boundaries = bounds
                 self.updateBoundaries()
-
-
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Arch_Space',_CommandSpace())

@@ -105,7 +105,7 @@ class CutPlaneTaskPanel:
 
     def getStandardButtons(self):
         from PySide import QtGui
-        return int(QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
+        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
 
     def previewCutVolume(self, i):
         import Arch

@@ -34,9 +34,6 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
     from pivy import coin
     from PySide.QtCore import QT_TRANSLATE_NOOP
-
-    from ArchAxisSystem import _CommandAxisSystem
-    from ArchGrid import CommandArchGrid
 else:
     # \cond
     def translate(ctxt,txt):
@@ -55,58 +52,6 @@ __url__    = "https://www.freecad.org"
 #
 #  This module provides tools to build axis
 #  An axis is a collection of planar axes with a number/tag
-
-
-def makeAxis(num=5,size=1000,name=None):
-
-    '''makeAxis([num],[size],[name]): makes an Axis set
-    based on the given number of axes and interval distances'''
-
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Axis")
-    obj.Label = name if name else translate("Arch","Axes")
-    _Axis(obj)
-    if FreeCAD.GuiUp:
-        _ViewProviderAxis(obj.ViewObject)
-    if num:
-        dist = []
-        angles = []
-        for i in range(num):
-            if i == 0:
-                dist.append(0)
-            else:
-                dist.append(float(size))
-            angles.append(float(0))
-        obj.Distances = dist
-        obj.Angles = angles
-    FreeCAD.ActiveDocument.recompute()
-    return obj
-
-
-class _CommandAxis:
-
-    "the Arch Axis command definition"
-
-    def GetResources(self):
-
-        return {'Pixmap'  : 'Arch_Axis',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Axis","Axis"),
-                'Accel': "A, X",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Axis","Creates a set of axes")}
-
-    def Activated(self):
-
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Axis"))
-        FreeCADGui.addModule("Arch")
-
-        FreeCADGui.doCommand("Arch.makeAxis()")
-        FreeCAD.ActiveDocument.commitTransaction()
-
-    def IsActive(self):
-
-        return not FreeCAD.ActiveDocument is None
 
 
 class _Axis:
@@ -812,21 +757,3 @@ class _AxisTaskPanel:
                                    QtGui.QApplication.translate("Arch", "Angle", None),
                                    QtGui.QApplication.translate("Arch", "Label", None)])
 
-
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Arch_Axis',_CommandAxis())
-    FreeCADGui.addCommand('Arch_AxisSystem',_CommandAxisSystem())
-    FreeCADGui.addCommand('Arch_Grid',CommandArchGrid())
-
-    class _ArchAxisGroupCommand:
-
-        def GetCommands(self):
-            return tuple(['Arch_Axis','Arch_AxisSystem','Arch_Grid'])
-        def GetResources(self):
-            return { 'MenuText': QT_TRANSLATE_NOOP("Arch_AxisTools",'Axis tools'),
-                     'ToolTip': QT_TRANSLATE_NOOP("Arch_AxisTools",'Axis tools')
-                   }
-        def IsActive(self):
-            return not FreeCAD.ActiveDocument is None
-
-    FreeCADGui.addCommand('Arch_AxisTools', _ArchAxisGroupCommand())

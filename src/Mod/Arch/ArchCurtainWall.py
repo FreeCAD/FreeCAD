@@ -70,88 +70,6 @@ the facet is triangulated and receives a third mullion
 """
 
 
-def makeCurtainWall(baseobj=None,name=None):
-
-    """
-    makeCurtainWall([baseobj],[name]): Creates a curtain wall in the active document
-    """
-
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","CurtainWall")
-    obj.Label = name if name else translate("Arch","Curtain Wall")
-    CurtainWall(obj)
-    if FreeCAD.GuiUp:
-        ViewProviderCurtainWall(obj.ViewObject)
-    if baseobj:
-        obj.Base = baseobj
-        if FreeCAD.GuiUp:
-            baseobj.ViewObject.hide()
-    return obj
-
-
-class CommandArchCurtainWall:
-
-
-    "the Arch Curtain Wall command definition"
-
-    def GetResources(self):
-
-        return {'Pixmap'  : 'Arch_CurtainWall',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_CurtainWall","Curtain Wall"),
-                'Accel': "C, W",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_CurtainWall","Creates a curtain wall object from selected line or from scratch")}
-
-    def IsActive(self):
-
-        return not FreeCAD.ActiveDocument is None
-
-    def Activated(self):
-
-        sel = FreeCADGui.Selection.getSelection()
-        if len(sel) > 1:
-            FreeCAD.Console.PrintError(translate("Arch","Please select only one base object or none")+"\n")
-        elif len(sel) == 1:
-            # build on selection
-            FreeCADGui.Control.closeDialog()
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Curtain Wall"))
-            FreeCADGui.addModule("Draft")
-            FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("obj = Arch.makeCurtainWall(FreeCAD.ActiveDocument."+FreeCADGui.Selection.getSelection()[0].Name+")")
-            FreeCADGui.doCommand("Draft.autogroup(obj)")
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
-        else:
-            # interactive line drawing
-            self.points = []
-            import WorkingPlane
-            WorkingPlane.get_working_plane()
-            if hasattr(FreeCADGui,"Snapper"):
-                FreeCADGui.Snapper.getPoint(callback=self.getPoint)
-
-    def getPoint(self,point=None,obj=None):
-
-        """Callback for clicks during interactive mode"""
-
-        if point is None:
-            # cancelled
-            return
-        self.points.append(point)
-        if len(self.points) == 1:
-            FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint)
-        elif len(self.points) == 2:
-            FreeCADGui.Control.closeDialog()
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Curtain Wall"))
-            FreeCADGui.addModule("Draft")
-            FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("base = Draft.makeLine(FreeCAD."+str(self.points[0])+",FreeCAD."+str(self.points[1])+")")
-            FreeCADGui.doCommand("obj = Arch.makeCurtainWall(base)")
-            FreeCADGui.doCommand("Draft.autogroup(obj)")
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
-
-
 class CurtainWall(ArchComponent.Component):
 
 
@@ -611,7 +529,3 @@ class ViewProviderCurtainWall(ArchComponent.ViewProviderComponent):
         if self.areDifferentColors(colors,obj.ViewObject.DiffuseColor) or force:
             obj.ViewObject.DiffuseColor = colors
 
-
-
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Arch_CurtainWall',CommandArchCurtainWall())

@@ -61,31 +61,6 @@ __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
 
 
-def makeSite(objectslist=None,baseobj=None,name=None):
-
-    '''makeBuilding([objectslist],[baseobj],[name]): creates a site including the
-    objects from the given list.'''
-
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    import Part
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Site")
-    obj.Label = name if name else translate("Arch","Site")
-    _Site(obj)
-    if FreeCAD.GuiUp:
-        _ViewProviderSite(obj.ViewObject)
-    if objectslist:
-        obj.Group = objectslist
-    if baseobj:
-        import Part
-        if isinstance(baseobj,Part.Shape):
-            obj.Shape = baseobj
-        else:
-            obj.Terrain = baseobj
-    return obj
-
-
 def toNode(shape):
 
     """builds a linear pivy node from a shape"""
@@ -503,57 +478,6 @@ class Compass(object):
 
         return coords
 
-class _CommandSite:
-
-    "the Arch Site command definition"
-
-    def GetResources(self):
-
-        return {'Pixmap'  : 'Arch_Site',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Site","Site"),
-                'Accel': "S, I",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Site","Creates a site including selected objects.")}
-
-    def IsActive(self):
-
-        return not FreeCAD.ActiveDocument is None
-
-    def Activated(self):
-
-        sel = FreeCADGui.Selection.getSelection()
-        link = params.get_param_arch("FreeLinking")
-        siteobj = []
-        warning = False
-        for obj in sel:
-            if (Draft.getType(obj) == "Building") or (hasattr(obj,"IfcType") and obj.IfcType == "Building"):
-                siteobj.append(obj)
-            else:
-                if link:
-                    siteobj.append(obj)
-                else:
-                    warning = True
-        if warning:
-            message = translate( "Arch" ,  "Please either select only Building objects or nothing at all!\n\
-Site is not allowed to accept any other object besides Building.\n\
-Other objects will be removed from the selection.\n\
-Note: You can change that in the preferences.")
-            ArchCommands.printMessage( message )
-        if sel and len(siteobj) == 0:
-            message = translate( "Arch" ,  "There is no valid object in the selection.\n\
-Site creation aborted.") + "\n"
-            ArchCommands.printMessage( message )
-        else:
-            ss = "[ "
-            for o in siteobj:
-                ss += "FreeCAD.ActiveDocument." + o.Name + ", "
-            ss += "]"
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Site"))
-            FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("obj = Arch.makeSite("+ss+")")
-            FreeCADGui.addModule("Draft")
-            FreeCADGui.doCommand("Draft.autogroup(obj)")
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
 
 
 
@@ -1242,6 +1166,3 @@ class _ViewProviderSite:
 
         return None
 
-
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Arch_Site',_CommandSite())

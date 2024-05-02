@@ -48,55 +48,6 @@ __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
 
-def makeFrame(baseobj,profile,name=None):
-
-    """makeFrame(baseobj,profile,[name]): creates a frame object from a base sketch (or any other object
-    containing wires) and a profile object (an extrudable 2D object containing faces or closed wires)"""
-
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Frame")
-    obj.Label = name if name else translate("Arch","Frame")
-    _Frame(obj)
-    if FreeCAD.GuiUp:
-        _ViewProviderFrame(obj.ViewObject)
-    if baseobj:
-        obj.Base = baseobj
-    if profile:
-        obj.Profile = profile
-        if FreeCAD.GuiUp:
-            profile.ViewObject.hide()
-    return obj
-
-
-class _CommandFrame:
-
-    "the Arch Frame command definition"
-
-    def GetResources(self):
-
-        return {'Pixmap'  : 'Arch_Frame',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Frame","Frame"),
-                'Accel': "F, R",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Frame","Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.")}
-
-    def IsActive(self):
-
-        return not FreeCAD.ActiveDocument is None
-
-    def Activated(self):
-
-        s = FreeCADGui.Selection.getSelection()
-        if len(s) == 2:
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Frame"))
-            FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("obj = Arch.makeFrame(FreeCAD.ActiveDocument."+s[0].Name+",FreeCAD.ActiveDocument."+s[1].Name+")")
-            FreeCADGui.addModule("Draft")
-            FreeCADGui.doCommand("Draft.autogroup(obj)")
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
-
 
 class _Frame(ArchComponent.Component):
 
@@ -276,6 +227,3 @@ class _ViewProviderFrame(ArchComponent.ViewProviderComponent):
                 p = [self.Object.Profile]
         return ArchComponent.ViewProviderComponent.claimChildren(self)+p
 
-
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Arch_Frame',_CommandFrame())
