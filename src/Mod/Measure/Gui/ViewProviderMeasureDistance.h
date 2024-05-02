@@ -47,7 +47,6 @@ public:
     ViewProviderMeasureDistance();
     ~ViewProviderMeasureDistance() override;
 
-    Measure::MeasureDistance* getMeasureDistance();
     void redrawAnnotation() override;
     void positionAnno(const Measure::MeasureBase* measureObject) override;
 
