@@ -728,6 +728,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ProjectUtil"
           << "Separator"
           << "Std_MeasureDistance"
+          << "Std_Measure"
           << "Separator"
           << "Std_TextDocument"
           << "Separator"
