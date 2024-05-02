@@ -498,14 +498,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Doc.recompute()
         # Assert
         # self.assertEqual(len(body.Shape.childShapes()), 1)
-        if App.GuiUp:
-            # Todo: This triggers a 'hasher mismatch' warning in TopoShape::mapSubElement as called by
-            #   flushElementMap.  This appears to be the case whenever you have a parent with a hasher
-            #   that has children without hashmaps.  The warning seems to be spurious in this case, but
-            #   perhaps there is a solution involving setting hashmaps on all elements.
-            self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 30)
-        else:
-            self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 26)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 30)
         self.assertEqual(body.Shape.ElementMapSize,30)
         self.assertEqual(sketch.Shape.ElementMapSize,12)
         self.assertEqual(pad.Shape.ElementMapSize,30)
@@ -520,7 +513,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
             return
         # Act
         revolution = self.Doc.addObject('PartDesign::Revolution', 'Revolution')
-        revolution.ReferenceAxis = body.Origin.OriginFeatures[1]
+        revolution.ReferenceAxis = (self.Doc.getObject('Sketch'),['V_Axis'])
         revolution.Profile = sketch  # Causing segfault
         body.addObject(sketch)
         body.addObject(revolution)
@@ -582,7 +575,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Act
         helix = self.Doc.addObject('PartDesign::AdditiveHelix', 'Helix')
         helix.Profile = sketch
-        helix.ReferenceAxis = body.Origin.OriginFeatures[2]
+        helix.ReferenceAxis = (self.Doc.getObject('Sketch'),['V_Axis'])
         body.addObject(sketch)
         body.addObject(helix)
         self.Doc.recompute()
@@ -788,6 +781,166 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Assert
         self.assertEqual(plane.Shape.ElementMapSize, 0)
         self.assertEqual(pad.Shape.ElementMapSize, 26)
+
+    # def testChangeSketch(self):
+    #     # Arrange
+    #     self.Body = self.Doc.addObject('PartDesign::Body', 'Body')
+    #     # Make first offset cube Pad
+    #     self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
+    #     self.Body.addObject(self.PadSketch)
+    #     TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (31.37, 25.2))
+    #     self.Doc.recompute()
+    #     self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+    #     self.Body.addObject(self.Pad)
+    #     self.Pad.Profile = self.PadSketch
+    #     self.Pad.Length = 10
+    #     self.Doc.recompute()
+    #
+    #     self.Sketch001 = self.Body.newObject('Sketcher::SketchObject','Sketch001')
+    #     self.Sketch001.AttachmentSupport = (self.Doc.getObject('Pad'),['Face6',])
+    #     self.Sketch001.MapMode = 'FlatFace'
+    #     App.ActiveDocument.recompute()
+    #
+    #     self.Sketch001.addExternal("Pad","Edge10")
+    #     self.Sketch001.addExternal("Pad","Edge7")
+    #
+    #     geoList = []
+    #     geoList.append(Part.Circle(App.Vector(15.093666, 13.036922, 0.000000),
+    #                                App.Vector(0.000000, 0.000000, 1.000000), 5.000000))
+    #     self.Sketch001.addGeometry(geoList,False)
+    #     del geoList
+    #     self.Sketch001.addConstraint(Sketcher.Constraint('Radius',0,5.000000))
+    #     self.Sketch001.addConstraint(Sketcher.Constraint('Symmetric',-3,2,-4,1,0,3))
+    #     App.ActiveDocument.recompute()
+    #     self.Doc.recompute()
+    #
+    #     self.Pad001 = self.Body.newObject('PartDesign::Pad','Pad001')
+    #     self.Pad001.Profile = self.Doc.getObject('Sketch001')
+    #     self.Pad001.Length = 10
+    #     App.ActiveDocument.recompute()
+    #     self.Pad001.ReferenceAxis = (self.Doc.getObject('Sketch001'),['N_Axis'])
+    #     self.Sketch001.Visibility = False
+    #     App.ActiveDocument.recompute()
+    #
+    #     self.Pad001.Length = 10.000000
+    #     self.Pad001.TaperAngle = 0.000000
+    #     self.Pad001.UseCustomVector = 0
+    #     self.Pad001.Direction = (0, 0, 1)
+    #     self.Pad001.ReferenceAxis = (self.Doc.getObject('Sketch001'), ['N_Axis'])
+    #     self.Pad001.AlongSketchNormal = 1
+    #     self.Pad001.Type = 0
+    #     self.Pad001.UpToFace = None
+    #     self.Pad001.Reversed = 0
+    #     self.Pad001.Midplane = 0
+    #     self.Pad001.Offset = 0
+    #     self.Doc.recompute()
+    #     self.Doc.getObject('Pad').Visibility = False
+    #
+    #     self.Doc.getObject('Sketch001').Visibility = False
+    #
+    #     # Modify the original sketch to generate TNP issue
+    #     geoList = []
+    #     geoList.append(Part.LineSegment(App.Vector(2.510468, 22.837425, 0.000000),
+    #                                     App.Vector(2.510468, 19.933617, 0.000000)))
+    #     geoList.append(Part.LineSegment(App.Vector(2.510468, 19.933617, 0.000000),
+    #                                     App.Vector(4.869811, 19.933617, 0.000000)))
+    #     geoList.append(Part.LineSegment(App.Vector(4.869811, 19.933617, 0.000000),
+    #                                     App.Vector(4.869811, 22.837425, 0.000000)))
+    #     geoList.append(Part.LineSegment(App.Vector(4.869811, 22.837425, 0.000000),
+    #                                     App.Vector(2.510468, 22.837425, 0.000000)))
+    #     self.PadSketch.addGeometry(geoList,False)
+    #     del geoList
+    #
+    #     constraintList = []
+    #     constraintList.append(Sketcher.Constraint('Coincident', 4, 2, 5, 1))
+    #     constraintList.append(Sketcher.Constraint('Coincident', 5, 2, 6, 1))
+    #     constraintList.append(Sketcher.Constraint('Coincident', 6, 2, 7, 1))
+    #     constraintList.append(Sketcher.Constraint('Coincident', 7, 2, 4, 1))
+    #     constraintList.append(Sketcher.Constraint('Vertical', 4))
+    #     constraintList.append(Sketcher.Constraint('Vertical', 6))
+    #     constraintList.append(Sketcher.Constraint('Horizontal', 5))
+    #     constraintList.append(Sketcher.Constraint('Horizontal', 7))
+    #     self.PadSketch.addConstraint(constraintList)
+    #     del constraintList
+    #     self.Doc.recompute()
+    #     # Assert
+    #     if self.Body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+    #         return
+    #     self.assertEqual(self.Body.Shape.BoundBox.XMin,0)
+    #     self.assertEqual(self.Body.Shape.BoundBox.YMin,0)
+    #     self.assertEqual(self.Body.Shape.BoundBox.ZMin,0)
+    #     self.assertEqual(self.Body.Shape.BoundBox.XMax,31.37)
+    #     self.assertEqual(self.Body.Shape.BoundBox.YMax,25.2)
+    #     self.assertEqual(self.Body.Shape.BoundBox.ZMax,20)
+    #
+    # def testApplyFillet(self):
+    #     # Arrange
+    #     self.Body = self.Doc.addObject('PartDesign::Body', 'Body')
+    #     # Make first offset cube Pad
+    #     self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
+    #     self.Body.addObject(self.PadSketch)
+    #     TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (31.37, 25.2))
+    #     self.Doc.recompute()
+    #     self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+    #     self.Body.addObject(self.Pad)
+    #     self.Pad.Profile = self.PadSketch
+    #     self.Pad.Length = 10
+    #     self.Doc.recompute()
+    #
+    #     self.Sketch001 = self.Body.newObject('Sketcher::SketchObject','Sketch001')
+    #     self.Sketch001.AttachmentSupport = (self.Doc.getObject('Pad'),['Face6',])
+    #     self.Sketch001.MapMode = 'FlatFace'
+    #     App.ActiveDocument.recompute()
+    #
+    #     self.Sketch001.addExternal("Pad","Edge10")
+    #     self.Sketch001.addExternal("Pad","Edge7")
+    #
+    #     geoList = []
+    #     geoList.append(Part.Circle(App.Vector(15.093666, 13.036922, 0.000000),
+    #                                App.Vector(0.000000, 0.000000, 1.000000), 5.000000))
+    #     self.Sketch001.addGeometry(geoList,False)
+    #     del geoList
+    #     self.Sketch001.addConstraint(Sketcher.Constraint('Radius',0,5.000000))
+    #     self.Sketch001.addConstraint(Sketcher.Constraint('Symmetric',-3,2,-4,1,0,3))
+    #     App.ActiveDocument.recompute()
+    #     self.Doc.recompute()
+    #
+    #     self.Pad001 = self.Body.newObject('PartDesign::Pad','Pad001')
+    #     self.Pad001.Profile = self.Doc.getObject('Sketch001')
+    #     self.Pad001.Length = 10
+    #     App.ActiveDocument.recompute()
+    #     self.Pad001.ReferenceAxis = (self.Doc.getObject('Sketch001'),['N_Axis'])
+    #     self.Sketch001.Visibility = False
+    #     App.ActiveDocument.recompute()
+    #
+    #     self.Pad001.Length = 10.000000
+    #     self.Pad001.TaperAngle = 0.000000
+    #     self.Pad001.UseCustomVector = 0
+    #     self.Pad001.Direction = (0, 0, 1)
+    #     self.Pad001.ReferenceAxis = (self.Doc.getObject('Sketch001'), ['N_Axis'])
+    #     self.Pad001.AlongSketchNormal = 1
+    #     self.Pad001.Type = 0
+    #     self.Pad001.UpToFace = None
+    #     self.Pad001.Reversed = 0
+    #     self.Pad001.Midplane = 0
+    #     self.Pad001.Offset = 0
+    #     self.Doc.recompute()
+    #     self.Doc.getObject('Pad').Visibility = False
+    #
+    #     self.Doc.getObject('Sketch001').Visibility = False
+    #     filleted = self.Pad001.Shape.makeFillet(1,self.Pad001.Shape.Edges[0:2])
+    #     self.filleted = Part.show(filleted,"Filleted")
+    #     # self.Body.addObject(self.filleted)
+    #     self.Doc.recompute()
+    #     # Assert
+    #     if self.Body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+    #         return
+    #     self.assertEqual(self.Body.Shape.BoundBox.XMin,0)
+    #     self.assertEqual(self.Body.Shape.BoundBox.YMin,0)
+    #     self.assertEqual(self.Body.Shape.BoundBox.ZMin,0)
+    #     self.assertEqual(self.Body.Shape.BoundBox.XMax,31.37)
+    #     self.assertEqual(self.Body.Shape.BoundBox.YMax,25.2)
+    #     self.assertEqual(self.Body.Shape.BoundBox.ZMax,20)
 
     def create_t_sketch(self):
         self.Doc.getObject('Body').newObject('Sketcher::SketchObject', 'Sketch')
