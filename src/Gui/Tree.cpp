@@ -398,6 +398,21 @@ namespace Gui {
  */
 class TreeWidgetItemDelegate: public QStyledItemDelegate {
     typedef QStyledItemDelegate inherited;
+
+    // Beware, big scary hack incoming!
+    //
+    // This is artificial QTreeWidget that is not rendered and its sole goal is to be the source
+    // of style information that can be manipulated using QSS. From Qt6.5 tree branches also 
+    // have rendered background using ::item sub-control. Whole row also gets background from 
+    // the same sub-control. Only way to prevent this is to disable background of ::item,
+    // this however limits our ability to style tree items. As solution we create this widget
+    // that will be for painter to read information and draw proper backgrounds only when asked.
+    //
+    // More information: https://github.com/FreeCAD/FreeCAD/pull/13807
+    QTreeView *artificial;
+
+    QRect calculateItemRect(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+
 public:
     explicit TreeWidgetItemDelegate(QObject* parent=nullptr);
 
@@ -416,6 +431,40 @@ public:
 TreeWidgetItemDelegate::TreeWidgetItemDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
 {
+    artificial = new QTreeView(qobject_cast<QWidget*>(parent));
+    artificial->setObjectName(QString::fromLatin1("DocumentTreeItems"));
+    artificial->setFixedSize(0, 0); // ensure that it does not render
+}
+
+
+QRect TreeWidgetItemDelegate::calculateItemRect(const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    auto tree = static_cast<TreeWidget*>(parent());
+    auto style = tree->style();
+
+    QRect rect = option.rect;
+
+    const int margin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, &option, artificial) + 1;
+    
+    // 2 margin for text, 2 margin for decoration (icon) = 4 times margin
+    int width = 4 * margin 
+        + option.fontMetrics.boundingRect(option.text).width()
+        + option.decorationSize.width()
+        + TreeParams::getItemBackgroundPadding()
+    ;
+
+    if (TreeParams::getCheckBoxesSelection()) {
+        // another 2 margin for checkbox
+        width += 2 * margin 
+            + style->pixelMetric(QStyle::PM_IndicatorWidth)
+            + style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
+    }
+
+    if (width < rect.width()) {
+        rect.setWidth(width);
+    }
+
+    return rect;
 }
 
 void TreeWidgetItemDelegate::paint(QPainter *painter,
@@ -424,42 +473,29 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
     QStyleOptionViewItem opt = option;
     initStyleOption(&opt, index);
 
-    TreeWidget * tree = static_cast<TreeWidget*>(parent());
+    auto tree = static_cast<TreeWidget*>(parent());
     auto style = tree->style();
 
     // If the second column is not shown, we'll trim the color background when
     // rendering as transparent overlay.
     bool trimBG = TreeParams::getHideColumn();
-    QRect rect = opt.rect;
 
     if (index.column() == 0) {
         if (tree->testAttribute(Qt::WA_NoSystemBackground)
                 && (trimBG || (opt.backgroundBrush.style() == Qt::NoBrush
                                 && _TreeItemBackground.style() != Qt::NoBrush)))
         {
-            const int margin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, &option, tree) + 1;
-            // 2 margin for text, 2 margin for decoration (icon)
-            int width = 4*margin + opt.fontMetrics.boundingRect(opt.text).width()
-                + opt.decorationSize.width() + TreeParams::getItemBackgroundPadding();
-            if (TreeParams::getCheckBoxesSelection()) {
-                // another 2 margin for checkbox
-                width += 2*margin + style->pixelMetric(QStyle::PM_IndicatorWidth)
-                    + style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
-            }
-            if (width < rect.width())
-                rect.setWidth(width);
-            if (trimBG) {
-                rect.setWidth(rect.width() + 5);
-                opt.rect = rect;
-                if (opt.backgroundBrush.style() == Qt::NoBrush)
-                    painter->fillRect(rect, _TreeItemBackground);
-            } else if (!opt.state.testFlag(QStyle::State_Selected))
-                painter->fillRect(rect, _TreeItemBackground);
-        }
+            QRect rect = calculateItemRect(option, index);
 
+            if (trimBG && opt.backgroundBrush.style() == Qt::NoBrush) {
+                painter->fillRect(rect, _TreeItemBackground);
+            } else if (!opt.state.testFlag(QStyle::State_Selected)) {
+                painter->fillRect(rect, _TreeItemBackground);
+            }
+        }
     }
 
-    style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, tree);
+    style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, artificial);
 }
 
 void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
@@ -467,16 +503,35 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
 {
     inherited::initStyleOption(option, index);
 
-    TreeWidget * tree = static_cast<TreeWidget*>(parent());
-    QTreeWidgetItem * item = tree->itemFromIndex(index);
-    if (!item || item->type() != TreeWidget::ObjectType)
-        return;
+    auto tree = static_cast<TreeWidget*>(parent());
+    auto item = tree->itemFromIndex(index);
 
-    QSize size;
-    size = option->icon.actualSize(QSize(0xffff, 0xffff));
-    if (size.height())
-        option->decorationSize = QSize(size.width()*TreeWidget::iconSize()/size.height(),
-                                       TreeWidget::iconSize());
+    if (!item) {
+        return;
+    }
+
+    auto mousePos = option->widget->mapFromGlobal(QCursor::pos());
+    auto isHovered = option->rect.contains(mousePos);
+    if (!isHovered) {
+        option->state &= ~QStyle::State_MouseOver;
+    }
+
+    QSize size = option->icon.actualSize(QSize(0xffff, 0xffff));
+
+    if (size.height() > 0) {
+        option->decorationSize = QSize(
+            size.width() * TreeWidget::iconSize() / size.height(),
+            TreeWidget::iconSize()
+        );
+    }
+
+    if (TreeParams::getHideColumn()) {
+        option->rect = calculateItemRect(*option, index);
+
+        // we need to extend this shape a bit, 3px on each side
+        // this value was obtained experimentally
+        option->rect.setWidth(option->rect.width() + 3 * 2);
+    }
 }
 
 QWidget* TreeWidgetItemDelegate::createEditor(
@@ -536,6 +591,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->setDragDropMode(QTreeWidget::InternalMove);
     this->setColumnCount(2);
     this->setItemDelegate(new TreeWidgetItemDelegate(this));
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     this->showHiddenAction = new QAction(this);
     this->showHiddenAction->setCheckable(true);
@@ -613,7 +669,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     //NOLINTEND
 
     setupResizableColumn(this);
-    this->header()->setStretchLastSection(false);
+    this->header()->setStretchLastSection(true);
     QObject::connect(this->header(), &QHeaderView::sectionResized, [](int idx, int, int newSize) {
         if (idx)
             TreeParams::setColumnSize2(newSize);
