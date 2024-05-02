@@ -29,7 +29,6 @@
 import FreeCAD, Arch, Draft, os, sys, time, Part, DraftVecUtils, uuid, math, re
 from draftutils import params
 from draftutils.translate import translate
-from builtins import open as pyopen
 
 __title__="FreeCAD IFC importer"
 __author__ = "Yorik van Havre"
@@ -55,7 +54,8 @@ supportedIfcTypes = ["IfcSite", "IfcBuilding", "IfcBuildingStorey", "IfcBeam", "
                      "IfcPile", "IfcFooting", "IfcReinforcingBar", "IfcTendon"]
 # TODO : shading device not supported?
 
-
+if open.__module__ in ['__builtin__','io']:
+    pyopen = open # because we'll redefine open below
 
 def open(filename,skip=None):
     "called when freecad opens a file"
@@ -1795,6 +1795,7 @@ def explorer(filename,schema="IFC2X3_TC1.exp"):
     tree.headerItem().setText(1, "")
     tree.headerItem().setText(2, "Item and Properties")
     bold = QtGui.QFont()
+    bold.setWeight(75)
     bold.setBold(True)
 
     #print(ifc.Entities)

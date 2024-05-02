@@ -34,7 +34,6 @@ import Arch
 import Draft
 import Mesh
 import Part
-from builtins import open as pyopen
 
 ## @package importSH3D
 #  \ingroup ARCH
@@ -44,7 +43,8 @@ from builtins import open as pyopen
 
 DEBUG = True
 
-
+if open.__module__ in ['__builtin__','io']:
+    pyopen = open # because we'll redefine open below
 
 
 def open(filename):
