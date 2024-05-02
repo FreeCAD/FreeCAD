@@ -1,6 +1,5 @@
- /**************************************************************************
- *   Copyright (c) 2020 FreeCAD Developers                                 *
- *   Author: Uwe Stöhr <uwestoehr@lyx.org>                                 *
+/***************************************************************************
+ *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,48 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
+#include "PreCompiled.h"
 
-#include <memory>
-#include <Gui/PrefWidgets.h>
-#include <Gui/PropertyPage.h>
-#include <Mod/TechDraw/TechDrawGlobal.h>
+#include "MattingPropEnum.h"
+
 
 namespace TechDraw {
-class LineGenerator;
+
+const int   MattingPropEnum::MattingCount = 2;
+const char* MattingPropEnum::MattingTypeEnums[]= {
+    QT_TRANSLATE_NOOP("MattingPropEnum", "Circle"),
+    QT_TRANSLATE_NOOP("MattingPropEnum", "Square"),
+    nullptr};
+
+const std::vector<std::string> MattingPropEnum::MattingTypeIcons = { ":icons/circular.svg",
+                                            ":icons/square.svg"};
+
 }
-
-namespace TechDrawGui {
-class Ui_DlgPrefsTechDrawAnnotationImp;
-
-class DlgPrefsTechDrawAnnotationImp : public Gui::Dialog::PreferencePage
-{
-    Q_OBJECT
-
-public:
-    explicit DlgPrefsTechDrawAnnotationImp( QWidget* parent = nullptr );
-    ~DlgPrefsTechDrawAnnotationImp() override;
-
-public Q_SLOTS:
-    void onLineGroupChanged(int);
-    void onLineStandardChanged(int);
-
-protected:
-    void saveSettings() override;
-    void loadSettings() override;
-    void changeEvent(QEvent *e) override;
-
-    int prefBalloonArrow() const;
-    int prefBalloonShape() const;
-    int prefMattingStyle() const;
-    void loadLineStyleBoxes();
-
-private:
-    std::unique_ptr<Ui_DlgPrefsTechDrawAnnotationImp> ui;
-    TechDraw::LineGenerator* m_lineGenerator;
-};
-
-} // namespace TechDrawGui
-
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H

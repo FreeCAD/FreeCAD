@@ -41,9 +41,9 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 
 
-DlgPrefsTechDrawAnnotationImp::DlgPrefsTechDrawAnnotationImp( QWidget* parent )
-  : PreferencePage( parent )
-  , ui(new Ui_DlgPrefsTechDrawAnnotationImp)
+DlgPrefsTechDrawAnnotationImp::DlgPrefsTechDrawAnnotationImp(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgPrefsTechDrawAnnotationImp)
 {
     ui->setupUi(this);
     ui->pdsbBalloonKink->setUnit(Base::Unit::Length);
@@ -62,14 +62,18 @@ DlgPrefsTechDrawAnnotationImp::DlgPrefsTechDrawAnnotationImp( QWidget* parent )
     ui->pcbHiddenStyle->setStyleSheet(ssOverride);
 
     // connect the LineGroup the update the tooltip if index changed
-    connect(ui->pcbLineGroup, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &DlgPrefsTechDrawAnnotationImp::onLineGroupChanged);
+    connect(ui->pcbLineGroup,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &DlgPrefsTechDrawAnnotationImp::onLineGroupChanged);
 
     // NOTE that we block onChanged processing while loading the Line Standard combobox
-    connect(ui->pcbLineStandard, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &DlgPrefsTechDrawAnnotationImp::onLineStandardChanged);
+    connect(ui->pcbLineStandard,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &DlgPrefsTechDrawAnnotationImp::onLineStandardChanged);
 
-     m_lineGenerator = new LineGenerator();
+    m_lineGenerator = new LineGenerator();
 }
 
 DlgPrefsTechDrawAnnotationImp::~DlgPrefsTechDrawAnnotationImp()
@@ -103,7 +107,7 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
     if (ui->pcbSectionStyle->currentIndex() >= 0) {
         ui->pcbSectionStyle->onSave();
     }
-    if (ui->pcbCenterStyle->currentIndex() >= 0)  {
+    if (ui->pcbCenterStyle->currentIndex() >= 0) {
         ui->pcbCenterStyle->onSave();
     }
     if (ui->pcbHighlightStyle->currentIndex() >= 0) {
@@ -125,9 +129,9 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
 
 void DlgPrefsTechDrawAnnotationImp::loadSettings()
 {
-    //set defaults for Quantity widgets if property not found
-    //Quantity widgets do not use preset value since they are based on
-    //QAbstractSpinBox
+    // set defaults for Quantity widgets if property not found
+    // Quantity widgets do not use preset value since they are based on
+    // QAbstractSpinBox
     double kinkDefault = 5.0;
     ui->pdsbBalloonKink->setValue(kinkDefault);
     // re-read the available LineGroup files
@@ -151,15 +155,21 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     ui->cbComplexMarks->onRestore();
     ui->cbShowCenterMarks->onRestore();
     ui->pcbLineGroup->onRestore();
-    ui->pcbBalloonArrow->onRestore();
-    ui->pcbBalloonShape->onRestore();
-    ui->pcbMatting->onRestore();
     ui->pdsbBalloonKink->onRestore();
     ui->cbCutSurface->onRestore();
     ui->pcbDetailMatting->onRestore();
     ui->pcbDetailHighlight->onRestore();
+
     ui->cb_ShowSectionLine->onRestore();
     ui->cb_IncludeCutLine->onRestore();
+
+    ui->pcbMatting->onRestore();
+    DrawGuiUtil::loadMattingStyleBox(ui->pcbMatting);
+    ui->pcbMatting->setCurrentIndex(prefMattingStyle());
+
+    ui->pcbBalloonShape->onRestore();
+    DrawGuiUtil::loadBalloonShapeBox(ui->pcbBalloonShape);
+    ui->pcbBalloonShape->setCurrentIndex(prefBalloonShape());
 
     ui->pcbBalloonArrow->onRestore();
     DrawGuiUtil::loadArrowBox(ui->pcbBalloonArrow);
@@ -206,6 +216,16 @@ void DlgPrefsTechDrawAnnotationImp::changeEvent(QEvent *e)
 int DlgPrefsTechDrawAnnotationImp::prefBalloonArrow() const
 {
     return Preferences::balloonArrow();
+}
+
+int DlgPrefsTechDrawAnnotationImp::prefBalloonShape() const
+{
+    return Preferences::balloonShape();
+}
+
+int DlgPrefsTechDrawAnnotationImp::prefMattingStyle() const
+{
+    return Preferences::mattingStyle();
 }
 
 /**
