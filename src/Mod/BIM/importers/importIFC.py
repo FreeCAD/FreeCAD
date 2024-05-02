@@ -39,8 +39,8 @@ import Draft
 import Arch
 import DraftVecUtils
 import ArchIFCSchema
-import importIFCHelper
-import importIFCmulticore
+from importers import importIFCHelper
+from importers import importIFCmulticore
 
 from draftutils import params
 from draftutils.messages import _msg, _err
@@ -152,7 +152,7 @@ def export(exportList, filename, colors=None, preferences=None):
     The export code is now in a separate module; this call is retained
     in this module for compatibility purposes with older scripts.
     """
-    import exportIFC
+    from importers import exportIFC
     exportIFC.export(exportList, filename, colors, preferences)
 
 

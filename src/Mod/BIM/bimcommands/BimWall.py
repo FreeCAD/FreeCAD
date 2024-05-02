@@ -68,6 +68,7 @@ class Arch_Wall:
         import Draft
         import WorkingPlane
         from draftutils import params
+        import draftguitools.gui_trackers as DraftTrackers
         self.Align = ["Center","Left","Right"][params.get_param_arch("WallAlignment")]
         self.MultiMat = None
         self.Length = None
@@ -199,6 +200,7 @@ class Arch_Wall:
         created a Part.LineSegment assigned as the variable "trace"
         """
 
+        from draftutils import params
         FreeCADGui.addModule("Draft")
         FreeCADGui.addModule("WorkingPlane")
         FreeCADGui.doCommand("wp = WorkingPlane.get_working_plane()")
@@ -262,6 +264,7 @@ class Arch_Wall:
 
         from PySide import QtCore, QtGui
         import Draft
+        from draftutils import params
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
         w.setWindowTitle(translate("Arch","Wall options"))

@@ -49,6 +49,7 @@ class Arch_Space:
 
     def Activated(self):
 
+        import ArchComponent
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Space"))
         FreeCADGui.addModule("Arch")
         sel = FreeCADGui.Selection.getSelection()

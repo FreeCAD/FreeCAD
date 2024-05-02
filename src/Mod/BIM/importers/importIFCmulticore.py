@@ -27,7 +27,7 @@ import os
 import FreeCAD
 import Draft
 import Arch
-import importIFCHelper
+from importers import importIFCHelper
 from FreeCAD import Base
 import ArchIFC
 

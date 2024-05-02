@@ -49,9 +49,10 @@ class Arch_Profile:
 
     def Activated(self):
 
+        import ArchProfile
         self.Profile = None
         self.Categories = []
-        self.Presets = readPresets()
+        self.Presets = ArchProfile.readPresets()
         for pre in self.Presets:
             if pre[1] not in self.Categories:
                 self.Categories.append(pre[1])
@@ -62,6 +63,7 @@ class Arch_Profile:
         "sets up a taskbox widget"
 
         from PySide import QtGui
+        from draftutils import params
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
         w.setWindowTitle(translate("Arch","Profile settings"))
