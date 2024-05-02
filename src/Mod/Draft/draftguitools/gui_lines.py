@@ -77,6 +77,7 @@ class Line(gui_base_original.Creator):
 
         self.obj = self.doc.addObject("Part::Feature", self.featureName)
         gui_utils.format_object(self.obj)
+        self.obj.ViewObject.ShowInTree = False
 
         self.call = self.view.addEventCallback("SoEvent", self.action)
         _toolmsg(translate("draft", "Pick first point"))
