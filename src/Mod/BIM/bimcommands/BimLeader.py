@@ -30,7 +30,7 @@ import FreeCADGui
 from draftguitools import gui_lines  # Line tool from Draft
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
-
+translate = FreeCAD.Qt.translate
 
 class BIM_Leader(gui_lines.Line):
 
@@ -51,6 +51,7 @@ class BIM_Leader(gui_lines.Line):
         super(BIM_Leader, self).Activated(name="Leader", icon="Draft_Wire")
 
     def finish(self, closed=False, cont=False):
+        import DraftVecUtils
         self.removeTemporaryObject()
         if getattr(self,"oldWP",None):
             FreeCAD.DraftWorkingPlane = self.oldWP

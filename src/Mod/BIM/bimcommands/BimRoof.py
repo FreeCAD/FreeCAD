@@ -45,6 +45,7 @@ class Arch_Roof:
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+        import ArchComponent
         sel = FreeCADGui.Selection.getSelectionEx()
         if sel:
             sel = sel[0]

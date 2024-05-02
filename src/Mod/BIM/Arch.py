@@ -44,6 +44,7 @@ translate = FreeCAD.Qt.translate
 # generic functions
 
 from ArchCommands import *
+from ArchWindowPresets import *
 
 
 # TODO: migrate this one
@@ -122,7 +123,7 @@ def makeFloor(objectslist=None,baseobj=None,name=None):
     """makes a BuildingPart and turns it into a Floor/Level"""
 
     obj = makeBuildingPart(objectslist)
-    obj.Label = name if name else translate("Arch","Floor")
+    obj.Label = name if name else translate("Arch","Level")
     obj.IfcType = "Building Storey"
     return obj
 
@@ -871,7 +872,7 @@ def makeRailing(stairs):
                 outlineLRAll = stair.OutlineRightAll
                 stairRailingLR = "RailingRight"
             if outlineLR or outlineLRAll:
-                lrRail = ArchPipe.makePipe(baseobj=None,diameter=0,length=0,placement=None,name=translate("Arch","Railing"))
+                lrRail = Arch.makePipe(baseobj=None,diameter=0,length=0,placement=None,name=translate("Arch","Railing"))
                 if outlineLRAll:
                     setattr(stair, stairRailingLR, lrRail)
                     break

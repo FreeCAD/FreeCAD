@@ -501,14 +501,14 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
         return (s,wp)
 
     if windowtype in WindowPresets:
-        import ArchWindow
+        import Arch
         default = makeSketch(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2)
         FreeCAD.ActiveDocument.recompute()
         if default:
             if placement:
                 default[0].Placement = placement
                 FreeCAD.ActiveDocument.recompute()
-            obj = ArchWindow.makeWindow(default[0],width,height,default[1])
+            obj = Arch.makeWindow(default[0],width,height,default[1])
             obj.Preset = WindowPresets.index(windowtype)+1
             obj.Frame = w2
             obj.Offset = o1

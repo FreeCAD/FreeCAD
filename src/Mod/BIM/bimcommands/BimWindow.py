@@ -153,6 +153,7 @@ class Arch_Window:
 
         import Draft
         self.tracker.finalize()
+        from ArchWindowPresets import WindowPresets
         if point is None:
             return
         # if something was selected, override the underlying object
@@ -252,6 +253,8 @@ class Arch_Window:
         "sets up a taskbox widget"
 
         from draftutils import params
+        from PySide import QtCore, QtGui, QtSvg
+        from ArchWindowPresets import WindowPresets
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
         w.setWindowTitle(translate("Arch","Window options"))
@@ -261,14 +264,14 @@ class Arch_Window:
         include = QtGui.QCheckBox(translate("Arch","Auto include in host object"))
         include.setChecked(True)
         grid.addWidget(include,0,0,1,2)
-        QtCore.QObject.connect(include,QtCore.SIGNAL("stateChanged(int)"),self.setInclude)
+        include.stateChanged.connect(self.setInclude)
 
         # sill height
         labels = QtGui.QLabel(translate("Arch","Sill height"))
         values = ui.createWidget("Gui::InputField")
         grid.addWidget(labels,1,0,1,1)
         grid.addWidget(values,1,1,1,1)
-        QtCore.QObject.connect(values,QtCore.SIGNAL("valueChanged(double)"),self.setSill)
+        values.valueChanged.connect(self.setSill)
 
         # check for Parts library and Arch presets
 
@@ -303,7 +306,7 @@ class Arch_Window:
         valuep.setCurrentIndex(self.Preset)
         grid.addWidget(labelp,2,0,1,1)
         grid.addWidget(valuep,2,1,1,1)
-        QtCore.QObject.connect(valuep,QtCore.SIGNAL("currentIndexChanged(int)"),self.setPreset)
+        valuep.currentIndexChanged.connect(self.setPreset)
         for it in self.librarypresets:
             valuep.addItem(it[0])
 
@@ -386,6 +389,7 @@ class Arch_Window:
     def setPreset(self,i):
 
         from draftutils import params
+        from ArchWindowPresets import WindowPresets
         self.Preset = i
         if self.doormode:
             params.set_param_arch("DoorPreset",i)

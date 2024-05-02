@@ -71,7 +71,7 @@ def htmlize(diff):
 def show_diff(diff):
     """Shows a dialog showing the diff contents"""
 
-    dlg = FreeCADGui.PySideUic.loadUi(":/ui/dialogDiff.ui"))
+    dlg = FreeCADGui.PySideUic.loadUi(":/ui/dialogDiff.ui")
     dlg.textEdit.setStyleSheet("background-color: white; color: black;")
     dlg.textEdit.setHtml(htmlize(diff))
     result = dlg.exec_()

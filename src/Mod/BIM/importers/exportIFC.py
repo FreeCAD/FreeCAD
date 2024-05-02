@@ -39,11 +39,11 @@ import Draft
 import Arch
 import DraftVecUtils
 import ArchIFCSchema
-import exportIFCHelper
-import exportIFCStructuralTools
+from importers import exportIFCHelper
+from importers import exportIFCStructuralTools
 
 from DraftGeomUtils import vec
-from importIFCHelper import dd2dms
+from importers.importIFCHelper import dd2dms
 from draftutils import params
 from draftutils.messages import _msg, _err
 
@@ -2231,7 +2231,7 @@ def getRepresentation(
                                 if not joinfacets:
                                     shapetype = "triangulated"
                                     if usedae:
-                                        import importDAE
+                                        from importers import importDAE
                                         tris = importDAE.triangulate(fcsolid)
                                     else:
                                         tris = fcsolid.tessellate(tessellation)
