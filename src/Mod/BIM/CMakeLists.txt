@@ -43,8 +43,6 @@ SET(Arch_SRCS
     OfflineRenderingUtils.py
     ArchTruss.py
     ArchCurtainWall.py
-    ifc_objects.py
-    ifc_viewproviders.py
     ArchSketchObject.py
     BimSelect.py
     BimStatusBar.py
@@ -192,11 +190,11 @@ SET(nativeifc_SRCS
 
 SOURCE_GROUP("" FILES ${Arch_SRCS})
 
-SET(ArchGuiIcon_SVG
+SET(BIMGuiIcon_SVG
     Resources/icons/BIMWorkbench.svg
 )
 
-ADD_CUSTOM_TARGET(Arch ALL
+ADD_CUSTOM_TARGET(BIM ALL
     SOURCES ${Arch_SRCS}
             ${Arch_QRC_SRCS}
             ${Dice3DS_SRCS}
@@ -207,23 +205,23 @@ ADD_CUSTOM_TARGET(Arch ALL
             ${nativeifc_SRCS}
 )
 
-fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${Arch_SRCS})
-fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${Dice3DS_SRCS})
-fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${importers_SRCS})
-fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${bimcommands_SRCS})
-fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${nativeifc_SRCS})
-fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Arch" ${ArchGuiIcon_SVG})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/Arch" ${Arch_SRCS})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/Arch" ${Dice3DS_SRCS})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/Arch" ${importers_SRCS})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/Arch" ${bimcommands_SRCS})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/Arch" ${nativeifc_SRCS})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Arch" ${BIMGuiIcon_SVG})
 
-fc_target_copy_resource(Arch
-    ${CMAKE_SOURCE_DIR}/src/Mod/Arch
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Arch
+fc_target_copy_resource(BIM
+    ${CMAKE_SOURCE_DIR}/src/Mod/BIM
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM
     ${Arch_presets}
 )
 
 IF (BUILD_GUI)
-    fc_target_copy_resource(Arch
+    fc_target_copy_resource(BIM
         ${CMAKE_CURRENT_BINARY_DIR}
-        ${CMAKE_BINARY_DIR}/Mod/Arch
+        ${CMAKE_BINARY_DIR}/Mod/BIM
         Arch_rc.py)
 ENDIF (BUILD_GUI)
 
@@ -231,44 +229,44 @@ INSTALL(
     FILES
         ${Arch_SRCS}
         ${Arch_QRC_SRCS}
-    DESTINATION Mod/Arch
+    DESTINATION Mod/BIM
 )
 
 INSTALL(
     FILES
         ${Dice3DS_SRCS}
-    DESTINATION Mod/Arch/Dice3DS
+    DESTINATION Mod/BIM/Dice3DS
 )
 
 INSTALL(
     FILES
         ${importers_SRCS}
-    DESTINATION Mod/Arch/importers
+    DESTINATION Mod/BIM/importers
 )
 
 INSTALL(
     FILES
         ${bimcommands_SRCS}
-    DESTINATION Mod/Arch/bimcommands
+    DESTINATION Mod/BIM/bimcommands
 )
 
 INSTALL(
     FILES
         ${nativeifc_SRCS}
-    DESTINATION Mod/Arch/nativeifc
+    DESTINATION Mod/BIM/nativeifc
 )
 
 INSTALL(
     DIRECTORY
         Presets
     DESTINATION
-        ${CMAKE_INSTALL_DATADIR}/Mod/Arch
+        ${CMAKE_INSTALL_DATADIR}/Mod/BIM
 )
 
 INSTALL(
     FILES
-        ${ArchGuiIcon_SVG}
+        ${BIMGuiIcon_SVG}
     DESTINATION
-       "${CMAKE_INSTALL_DATADIR}/Mod/Arch/Resources/icons"
+       "${CMAKE_INSTALL_DATADIR}/Mod/BIM/Resources/icons"
 )
 
