@@ -51,86 +51,6 @@ rodmodes = ("/|/|/|",
             "/|\\|/|\\",
            )
 
-def makeTruss(baseobj=None,name=None):
-
-    """
-    makeTruss([baseobj],[name]): Creates a space object from the given object (a line)
-    """
-
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Truss")
-    obj.Label = name if name else translate("Arch","Truss")
-    Truss(obj)
-    if FreeCAD.GuiUp:
-        ViewProviderTruss(obj.ViewObject)
-    if baseobj:
-        obj.Base = baseobj
-        if FreeCAD.GuiUp:
-            baseobj.ViewObject.hide()
-    return obj
-
-
-class CommandArchTruss:
-
-    "the Arch Truss command definition"
-
-    def GetResources(self):
-
-        return {'Pixmap'  : 'Arch_Truss',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Truss","Truss"),
-                'Accel': "T, U",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Truss","Creates a truss object from selected line or from scratch")}
-
-    def IsActive(self):
-
-        return not FreeCAD.ActiveDocument is None
-
-    def Activated(self):
-
-        sel = FreeCADGui.Selection.getSelection()
-        if len(sel) > 1:
-            FreeCAD.Console.PrintError(translate("Arch","Please select only one base object or none")+"\n")
-        elif len(sel) == 1:
-            # build on selection
-            FreeCADGui.Control.closeDialog()
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Truss"))
-            FreeCADGui.addModule("Draft")
-            FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("obj = Arch.makeTruss(FreeCAD.ActiveDocument."+FreeCADGui.Selection.getSelection()[0].Name+")")
-            FreeCADGui.doCommand("Draft.autogroup(obj)")
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
-        else:
-            # interactive line drawing
-            self.points = []
-            import WorkingPlane
-            WorkingPlane.get_working_plane()
-            if hasattr(FreeCADGui,"Snapper"):
-                FreeCADGui.Snapper.getPoint(callback=self.getPoint)
-
-    def getPoint(self,point=None,obj=None):
-
-        """Callback for clicks during interactive mode"""
-
-        if point is None:
-            # cancelled
-            return
-        self.points.append(point)
-        if len(self.points) == 1:
-            FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint)
-        elif len(self.points) == 2:
-            FreeCADGui.Control.closeDialog()
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Truss"))
-            FreeCADGui.addModule("Draft")
-            FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("base = Draft.makeLine(FreeCAD."+str(self.points[0])+",FreeCAD."+str(self.points[1])+")")
-            FreeCADGui.doCommand("obj = Arch.makeTruss(base)")
-            FreeCADGui.doCommand("Draft.autogroup(obj)")
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
-
 
 class Truss(ArchComponent.Component):
 
@@ -407,6 +327,3 @@ class ViewProviderTruss(ArchComponent.ViewProviderComponent):
         import Arch_rc
         return ":/icons/Arch_Truss_Tree.svg"
 
-
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Arch_Truss',CommandArchTruss())

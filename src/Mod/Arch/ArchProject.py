@@ -48,89 +48,6 @@ __title__  = "FreeCAD Project"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
-def makeProject(sites=None, name=None):
-    """Create an Arch project.
-
-    If sites are provided, add them as children of the new project.
-
-    Parameters
-    ----------
-    sites: list of <Part::FeaturePython>, optional
-        Sites to add as children of the project. Ultimately this could be
-        anything, however.
-    name: str, optional
-        The label for the project.
-
-    Returns
-    -------
-    <Part::FeaturePython>
-        The created project.
-    """
-
-    if not FreeCAD.ActiveDocument:
-        return FreeCAD.Console.PrintError("No active document. Aborting\n")
-
-    import Part
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Project")
-    obj.Label = name if name else translate("Arch", "Project")
-    _Project(obj)
-    if FreeCAD.GuiUp:
-        _ViewProviderProject(obj.ViewObject)
-    if sites:
-        obj.Group = sites
-    return obj
-
-class _CommandProject:
-    """The command definition for the Arch workbench's gui tool, Arch Project.
-
-    A tool for creating Arch projects.
-
-    Creates a project from the objects selected by the user that have the Site
-    IfcType, if any.
-
-    Find documentation on the end user usage of Arch Project here:
-    https://wiki.freecad.org/Arch_Project
-    """
-
-    def GetResources(self):
-        """Return a dictionary with the visual aspects of the Arch Project tool."""
-        return {'Pixmap'  : 'Arch_Project',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Project", "Project"),
-                'Accel': "P, O",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Project", "Creates a project entity aggregating the selected sites.")}
-
-    def IsActive(self):
-        """Determine whether or not the Arch Project tool is active.
-
-        Inactive commands are indicated by a greyed-out icon in the menus and toolbars.
-        """
-        return not FreeCAD.ActiveDocument is None
-
-    def Activated(self):
-        """Executed when Arch Project is called.
-
-        Create a project from the objects selected by the user that have the
-        Site IfcType, if any.
-        """
-
-        selection = FreeCADGui.Selection.getSelection()
-        siteobj = []
-
-        for obj in selection:
-            if hasattr(obj, "IfcType") and obj.IfcType == "Site":
-                siteobj.append(obj)
-
-        ss = "[ "
-        for o in siteobj:
-            ss += "FreeCAD.ActiveDocument." + o.Name + ", "
-        ss += "]"
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Project"))
-        FreeCADGui.addModule("Arch")
-        FreeCADGui.doCommand("obj = Arch.makeProject("+ss+")")
-        FreeCADGui.addModule("Draft")
-        FreeCADGui.doCommand("Draft.autogroup(obj)")
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
 
 class _Project(ArchIFC.IfcContext):
     """The project object.
@@ -219,6 +136,3 @@ class _ViewProviderProject(ArchIFCView.IfcContextView):
 
     def onChanged(self,vobj,prop):
         self.removeDisplaymodeChildNodes(vobj)
-
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Arch_Project', _CommandProject())

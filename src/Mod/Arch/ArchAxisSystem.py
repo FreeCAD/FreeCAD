@@ -48,55 +48,6 @@ __url__    = "https://www.freecad.org"
 #  An axis system is a collection of multiple axes
 
 
-def makeAxisSystem(axes,name=None):
-
-    '''makeAxisSystem(axes,[name]): makes a system from the given list of axes'''
-
-    if not isinstance(axes,list):
-        axes = [axes]
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","AxisSystem")
-    obj.Label = name if name else translate("Arch","Axis System")
-    _AxisSystem(obj)
-    obj.Axes = axes
-    if FreeCAD.GuiUp:
-        _ViewProviderAxisSystem(obj.ViewObject)
-    FreeCAD.ActiveDocument.recompute()
-    return obj
-
-
-class _CommandAxisSystem:
-
-    "the Arch Axis System command definition"
-
-    def GetResources(self):
-
-        return {'Pixmap'  : 'Arch_Axis_System',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_AxisSystem","Axis System"),
-                'Accel': "X, S",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_AxisSystem","Creates an axis system from a set of axes")}
-
-    def Activated(self):
-
-        if FreeCADGui.Selection.getSelection():
-            s = "["
-            for o in FreeCADGui.Selection.getSelection():
-                if Draft.getType(o) != "Axis":
-                    FreeCAD.Console.PrintError(translate("Arch","Only axes must be selected")+"\n")
-                    return
-                s += "FreeCAD.ActiveDocument."+o.Name+","
-            s += "]"
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Axis System"))
-            FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("Arch.makeAxisSystem("+s+")")
-            FreeCAD.ActiveDocument.commitTransaction()
-        else:
-            FreeCAD.Console.PrintError(translate("Arch","Please select at least one axis")+"\n")
-
-    def IsActive(self):
-
-        return not FreeCAD.ActiveDocument is None
-
-
 class _AxisSystem:
 
     "The Axis System object"

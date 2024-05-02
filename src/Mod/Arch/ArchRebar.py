@@ -39,6 +39,10 @@ else:
         return txt
     # \endcond
 
+# for Rebar addon compatibility
+from bimcommands import BimRebar
+_CommandRebar = BimRebar.Arch_Rebar
+
 ## @package ArchRebar
 #  \ingroup ARCH
 #  \brief The Rebar object and tools
@@ -50,117 +54,6 @@ else:
 __title__  = "FreeCAD Rebar"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
-
-
-def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name=None):
-
-    """makeRebar([baseobj],[sketch],[diameter],[amount],[offset],[name]): adds a Reinforcement Bar object
-    to the given structural object, using the given sketch as profile."""
-
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Rebar")
-    obj.Label = name if name else translate("Arch","Rebar")
-    _Rebar(obj)
-    if FreeCAD.GuiUp:
-        _ViewProviderRebar(obj.ViewObject)
-    if baseobj and sketch:
-        if hasattr(sketch,"AttachmentSupport"):
-            if sketch.AttachmentSupport:
-                if isinstance(sketch.AttachmentSupport,tuple):
-                    if sketch.AttachmentSupport[0] == baseobj:
-                        sketch.AttachmentSupport = None
-                elif sketch.AttachmentSupport == baseobj:
-                    sketch.AttachmentSupport = None
-        obj.Base = sketch
-        if FreeCAD.GuiUp:
-            sketch.ViewObject.hide()
-        obj.Host = baseobj
-    elif sketch and not baseobj:
-        # a rebar could be based on a wire without the existence of a Structure
-        obj.Base = sketch
-        if FreeCAD.GuiUp:
-            sketch.ViewObject.hide()
-        obj.Host = None
-    elif baseobj and not sketch:
-        obj.Shape = baseobj.Shape
-    if diameter:
-        obj.Diameter = diameter
-    else:
-        obj.Diameter = params.get_param_arch("RebarDiameter")
-    obj.Amount = amount
-    obj.Document.recompute()
-    if offset is not None:
-        obj.OffsetStart = offset
-        obj.OffsetEnd = offset
-    else:
-        obj.OffsetStart = params.get_param_arch("RebarOffset")
-        obj.OffsetEnd = params.get_param_arch("RebarOffset")
-    obj.Mark = obj.Label
-    return obj
-
-
-class _CommandRebar:
-
-    "the Arch Rebar command definition"
-
-    def GetResources(self):
-
-        return {'Pixmap'  : 'Arch_Rebar',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Rebar","Custom Rebar"),
-                'Accel': "R, B",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Rebar","Creates a Reinforcement bar from the selected face of solid object and/or a sketch")}
-
-    def IsActive(self):
-
-        return not FreeCAD.ActiveDocument is None
-
-    def Activated(self):
-
-        sel = FreeCADGui.Selection.getSelectionEx()
-        if sel:
-            obj = sel[0].Object
-            if hasattr(obj,"Shape") and obj.Shape.Solids:
-                # this is our host object
-                if len(sel) > 1:
-                    sk = sel[1].Object
-                    if hasattr(sk,'Shape'):
-                        if len(sk.Shape.Wires) == 1:
-                            # we have a structure and a wire: create the rebar now
-                            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
-                            FreeCADGui.addModule("Arch")
-                            FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+obj.Name+",FreeCAD.ActiveDocument."+sk.Name+")")
-                            FreeCAD.ActiveDocument.commitTransaction()
-                            FreeCAD.ActiveDocument.recompute()
-                            return
-                else:
-                    # we have only a structure: open the sketcher
-                    FreeCADGui.activateWorkbench("SketcherWorkbench")
-                    FreeCADGui.runCommand("Sketcher_NewSketch")
-                    FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(obj,FreeCAD.ActiveDocument.Objects[-1],hide=False,nextCommand="Arch_Rebar")
-                    FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
-                    return
-            elif hasattr(obj,'Shape'):
-                if len(obj.Shape.Wires) == 1:
-                    # we have only a wire: extract its support object, if available, and make the rebar
-                    support = "None"
-                    if hasattr(obj,"AttachmentSupport"):
-                        if obj.AttachmentSupport:
-                            if len(obj.AttachmentSupport) != 0:
-                                support = "FreeCAD.ActiveDocument."+obj.AttachmentSupport[0][0].Name
-                    FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
-                    FreeCADGui.addModule("Arch")
-                    FreeCADGui.doCommand("Arch.makeRebar("+support+",FreeCAD.ActiveDocument."+obj.Name+")")
-                    FreeCAD.ActiveDocument.commitTransaction()
-                    FreeCAD.ActiveDocument.recompute()
-                    return
-
-        FreeCAD.Console.PrintMessage(translate("Arch","Please select a base face on a structural object")+"\n")
-        FreeCADGui.Control.closeDialog()
-        FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
-        FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Rebar")
-        FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
 
 
 class _Rebar(ArchComponent.Component):
@@ -676,5 +569,3 @@ def getLengthOfRebar(rebar):
         FreeCAD.Console.PrintError("Cannot calculate rebar length from its base object\n")
         return None
 
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Arch_Rebar',_CommandRebar())

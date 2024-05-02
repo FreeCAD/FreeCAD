@@ -47,44 +47,6 @@ __url__    = "https://www.freecad.org"
 #  This module provides tools to build grid systems
 
 
-def makeGrid(name=None):
-
-    '''makeGrid([name]): makes a grid object'''
-
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Grid")
-    obj.Label = name if name else translate("Arch","Grid")
-    ArchGrid(obj)
-    if FreeCAD.GuiUp:
-        ViewProviderArchGrid(obj.ViewObject)
-        obj.ViewObject.Transparency = 85
-    FreeCAD.ActiveDocument.recompute()
-    return obj
-
-
-class CommandArchGrid:
-
-    "the Arch Grid command definition"
-
-    def GetResources(self):
-
-        return {'Pixmap'  : 'Arch_Grid',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Grid","Grid"),
-                'Accel': "A, X",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Grid","Creates a customizable grid object")}
-
-    def Activated(self):
-
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Grid"))
-        FreeCADGui.addModule("Arch")
-
-        FreeCADGui.doCommand("Arch.makeGrid()")
-        FreeCAD.ActiveDocument.commitTransaction()
-
-    def IsActive(self):
-
-        return not FreeCAD.ActiveDocument is None
-
-
 class ArchGrid:
 
     "The Grid object"

@@ -374,61 +374,12 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
             return colorsToUse[start:end]
 
 
-class _CommandFence:
-    "the Arch Fence command definition"
-
-    def GetResources(self):
-        return {'Pixmap': 'Arch_Fence',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Fence", "Fence"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Fence", "Creates a fence object from a selected section, post and path")}
-
-    def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
-
-    def Activated(self):
-        sel = FreeCADGui.Selection.getSelection()
-
-        if len(sel) != 3:
-            QtGui.QMessageBox.information(QtGui.QApplication.activeWindow(
-            ), 'Arch Fence selection', 'Select a section, post and path in exactly this order to build a fence.')
-
-            return
-
-        section = sel[0]
-        post = sel[1]
-        path = sel[2]
-
-        makeFence(section, post, path)
-
-
-def makeFence(section, post, path):
-    obj = FreeCAD.ActiveDocument.addObject(
-        'Part::FeaturePython', 'Fence')
-
-    _Fence(obj)
-    obj.Section = section
-    obj.Post = post
-    obj.Path = path
-
-    if FreeCAD.GuiUp:
-        _ViewProviderFence(obj.ViewObject)
-
-        hide(section)
-        hide(post)
-        hide(path)
-
-    FreeCAD.ActiveDocument.recompute()
-
-    return obj
-
-
 def hide(obj):
     if hasattr(obj, 'ViewObject') and obj.ViewObject:
         obj.ViewObject.Visibility = False
 
 
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Arch_Fence', _CommandFence())
+
 
 if __name__ == '__main__':
     # For testing purposes. When someone runs the File as a macro a default fence will be generated

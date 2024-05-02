@@ -53,28 +53,6 @@ verbose = True # change this for silent recomputes
 
 
 
-class CommandArchSchedule:
-
-    "the Arch Schedule command definition"
-
-    def GetResources(self):
-        return {'Pixmap': 'Arch_Schedule',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Schedule","Schedule"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Schedule","Creates a schedule to collect data from the model")}
-
-    def Activated(self):
-        if hasattr(self,"taskd"):
-            if self.taskd:
-                self.taskd.form.hide()
-        self.taskd = ArchScheduleTaskPanel()
-
-    def IsActive(self):
-        if FreeCAD.ActiveDocument:
-            return True
-        else:
-            return False
-
-
 class _ArchScheduleDocObserver:
 
     "doc observer to monitor all recomputes"
@@ -769,5 +747,3 @@ class ArchScheduleTaskPanel:
         FreeCAD.ActiveDocument.recompute()
 
 
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Arch_Schedule',CommandArchSchedule())
