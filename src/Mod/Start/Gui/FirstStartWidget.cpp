@@ -76,6 +76,12 @@ void FirstStartWidget::setupUi()
     buttonBar->addWidget(_doneButton);
     outerLayout->addLayout(buttonBar);
 
+    // Try to further differentiate the checkbox below, when the First Start box is shown
+    auto line = new QFrame();
+    line->setFrameShape(QFrame::HLine);
+    line->setFrameShadow(QFrame::Sunken);
+    outerLayout->addWidget(line);
+
     connect(_doneButton, &QPushButton::clicked, this, &FirstStartWidget::doneClicked);
     retranslateUi();
 }
