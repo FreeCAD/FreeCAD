@@ -226,7 +226,6 @@ class Line(gui_base_original.Creator):
 
     def drawSegment(self, point):
         """Draws new line segment."""
-
         import Part
         if self.planetrack and self.node:
             self.planetrack.set(self.node[-1])
@@ -237,7 +236,6 @@ class Line(gui_base_original.Creator):
             newseg = Part.LineSegment(last, point).toShape()
             self.obj.Shape = newseg
             self.obj.ViewObject.Visibility = True
-            self.obj.ViewObject.ShowInTree = False
             if self.isWire:
                 _toolmsg(translate("draft", "Pick next point"))
         else:
@@ -247,7 +245,6 @@ class Line(gui_base_original.Creator):
                 newseg = Part.LineSegment(last, point).toShape()
                 newshape = currentshape.fuse(newseg)
                 self.obj.Shape = newshape
-
             _toolmsg(translate("draft", "Pick next point"))
 
     def wipe(self):
@@ -255,7 +252,6 @@ class Line(gui_base_original.Creator):
         if len(self.node) > 1:
             # self.obj.Shape.nullify()  # For some reason this fails
             self.obj.ViewObject.Visibility = False
-            self.obj.ViewObject.ShowInTree = False
             self.node = [self.node[-1]]
             if self.planetrack:
                 self.planetrack.set(self.node[0])
