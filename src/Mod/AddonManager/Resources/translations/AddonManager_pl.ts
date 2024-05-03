@@ -512,8 +512,8 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz "Zig
       <location filename="../../AddonManagerOptions.ui" line="20"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates</translation>
+      <translation>Jeśli ta opcja jest zaznaczona, podczas uruchamiania Menedżera dodatków,
+zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="24"/>

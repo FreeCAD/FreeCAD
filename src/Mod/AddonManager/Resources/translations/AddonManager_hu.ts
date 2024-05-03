@@ -512,8 +512,8 @@ A bővítmény kezelő automatikusan telepítse őket? Válassza a &quot;Elvet&q
       <location filename="../../AddonManagerOptions.ui" line="20"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates</translation>
+      <translation>Ha ez a beállítás be van jelölve, az Bővítmény kezelője indításakor,
+a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítésekre vonatkozóan</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="24"/>

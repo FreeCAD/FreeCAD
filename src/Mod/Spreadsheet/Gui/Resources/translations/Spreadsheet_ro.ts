@@ -681,7 +681,7 @@ schimba configurația proiectului. Proprietatea va fi creată dacă nu există.<
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
+      <translation>CSV (*.csv *.CSV);;Toate (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -899,7 +899,7 @@ Doriţi să continuaţi?</translation>
       <location filename="../../DlgBindSheet.cpp" line="276"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>Eroare:
 </translation>
     </message>
     <message>
@@ -951,17 +951,17 @@ Implicit la: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
       <source>Delimiter Character:</source>
-      <translation type="unfinished">Delimiter Character:</translation>
+      <translation>Caracterul Delimitator:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="156"/>
       <source>Quote Character:</source>
-      <translation type="unfinished">Quote Character:</translation>
+      <translation>Caracterul Ofertei:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="188"/>
       <source>Escape Character:</source>
-      <translation type="unfinished">Escape Character:</translation>
+      <translation>Caracterul de scăpare:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -1011,10 +1011,10 @@ Implicit la: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="134"/>
       <source>Insert %n row(s) below</source>
-      <translation type="unfinished">
-        <numerusform>Introduceți rânduri mai jos</numerusform>
-        <numerusform>Introduceți i%n rânduri mai jos</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
+      <translation>
+        <numerusform>Introduceți %n rânduri mai sus</numerusform>
+        <numerusform>Introduceți %n rânduri mai jos</numerusform>
+        <numerusform>Introduceți %n rânduri(s) mai jos</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1029,46 +1029,46 @@ Implicit la: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="142"/>
       <source>Remove row(s)</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Eliminați rândul(s)</numerusform>
         <numerusform>Elimină rând(e)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Elimină rânduri(s)</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="155"/>
       <source>Insert %n column(s) left</source>
-      <translation type="unfinished">
-        <numerusform>Inserare coloană la stânga</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
+      <translation>
+        <numerusform>Inserare %n coloană(s) la stânga</numerusform>
+        <numerusform>Inserare%n coloană(s) la stânga</numerusform>
+        <numerusform>Inserare%n coloană(s) la stânga</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="160"/>
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
-        <numerusform>Inserare coloană la dreapta</numerusform>
-        <numerusform>Inserare coloană la dreapta</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+      <translation>
+        <numerusform>Inserare%n coloană(s) la dreapta</numerusform>
+        <numerusform>Inserare%n coloană(s) la dreapta</numerusform>
+        <numerusform>Inserare%n coloană(s) la stânga</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="169"/>
       <source>Insert %n non-contiguous columns</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+      <translation>
+        <numerusform>Inserați %n coloane necontigue</numerusform>
+        <numerusform>Inserați %n coloane necontigue</numerusform>
+        <numerusform>Inserați %n coloane necontigue</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="172"/>
       <source>Remove column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Elimină coloanele</numerusform>
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
+      <translation>
+        <numerusform>Elimină coloanele(s)</numerusform>
+        <numerusform>Elimină coloanele(s)</numerusform>
+        <numerusform>Elimină coloanele(s)</numerusform>
       </translation>
     </message>
     <message>
