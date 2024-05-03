@@ -225,6 +225,8 @@ void WorkbenchTabWidget::addWorkbenchTab(QAction* action)
         tabBar->addTab(icon, action->text());
     }
 
+    tabBar->setTabToolTip(tabBar->count() - 1, action->toolTip());
+
     if (action->isChecked()) {
         tabBar->setCurrentIndex(tabBar->count() - 1);
     }
