@@ -46,9 +46,7 @@ public:
 
     static App::Color defaultLineColor();
     static App::Color defaultTextColor();
-    static double defaultDistFactor();
     static int defaultFontSize();
-    static bool defaultMirror();
     static App::Color defaultTextBackgroundColor();
 };
 

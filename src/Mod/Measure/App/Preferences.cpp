@@ -64,17 +64,7 @@ App::Color Preferences::defaultTextBackgroundColor()
     return fcColor;
 }
 
-double Preferences::defaultDistFactor()
-{
-    return getPreferenceGroup("Appearance")->GetFloat("DefaultDistFactor", 1.0);
-}
-
 int Preferences::defaultFontSize()
 {
     return getPreferenceGroup("Appearance")->GetInt("DefaultFontSize", 18);
-}
-
-bool Preferences::defaultMirror()
-{
-    return getPreferenceGroup("Appearance")->GetBool("DefaultMirror", false);
 }
