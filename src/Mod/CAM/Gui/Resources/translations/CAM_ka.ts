@@ -224,11 +224,11 @@ Any values of the SetupSheet that are changed from their default are preselected
 This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
 
 Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</source>
-      <translation type="unfinished">If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bounding box).
+      <translation>თუ ჩართულია, ნახევარფაბრიკატის შექმნა შაბლონში ჩაისმება. თუ შაბლონი არ შეიცავს ნახევარფაბრიკატის აღწერას, გამოყენებული იქნება ნახულისხმები ნახევარფაბრიკატის შექმნის ალგორითმი (საბაზისო ობიექტიდან შემომსაზღვრელი ჩარჩოს შექმნა).
 
-This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
+ეს პარამეტრი ყველაზე მეტად გამოსადეგია, თუ ნახევარფაბრიკატი ჩარჩო ან ცილინდრია, ან თუ მანქანას დამუშავებისთვის სტანდარტული მდებარეობა გააჩნია.
 
-Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</translation>
+დაიმახსოვრეთ, რომ ეს პარამეტრი გამორთულია, თუ ნახევარფაბრიკატი ობიექტი არსებული მყარი სხეულიდან დავალებაში გამოიყენება - მათ, შაბლონში ვერ შეინახავთ.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="184"/>
@@ -276,11 +276,11 @@ Note that only operations which currently have configuration values set are list
 For Box and Cylinder stocks this means the actual size of the stock solid being created.
 
 For stock from the Base object's bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.</source>
-      <translation type="unfinished">If enabled the current size settings for the stock object are included in the template.
+      <translation>თუ ჩართულია, ნახევარფაბრიკატი ობიექტის მიმდინარე ზომის პარამეტრები შაბლონში ჩაისმება.
 
-For Box and Cylinder stocks this means the actual size of the stock solid being created.
+ჩარჩოსა და ცილინდრის ნახევარფაბრიკატებისთვის ეს ნიშნავს, რომ მოხდება მიმდინარე ზომის მქონე ნახევარფაბრიკატი მყარი სხეულის შექმნა.
 
-For stock from the Base object's bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.</translation>
+საბაზისო ობიექტის შემომსაზღვრელი ჩარჩოდან მიღებული ნახევარფაბრკატისთვის ეს დამატებით მასაცალს ნიშნავს ყველა მიმართულებით. ნახევარფაბრიკატის ობიექტი, რომელსაც ასეთი შაბლონით შექმნით, საბაზისო ზომას ახალი დავალების საბასიზო ობიექტიდან მიღებს, დამახსოვრებული დამატებითი პარამეტრების დამატებით.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="168"/>
@@ -385,7 +385,7 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/PropertyCreate.ui" line="27"/>
       <source>Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces "Mixed Case"</source>
-      <translation type="unfinished">Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces "Mixed Case"</translation>
+      <translation>თვისების სახელი. ის, მხოლოდ, ასოებს, რიცხვებს და ქვედატირეებს შეიძლება, შეიცავდეს. შერეულირეგისტრის (MixedCase) მქონე სახელები გამოტოვებით იქნება ნაჩვენები: "Mixed Case"</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="34"/>
@@ -584,12 +584,12 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="107"/>
       <source>Extension of bounding box's MinX</source>
-      <translation type="unfinished">Extension of bounding box's MinX</translation>
+      <translation>შემომსაზღვრელი ჩარჩოს MinX-ის გაფართოება</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="120"/>
       <source>Extension of bounding box's MaxX</source>
-      <translation type="unfinished">Extension of bounding box's MaxX</translation>
+      <translation>შემომსაზღვრელი ჩარჩოს MaxX-ის გაფართოება</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="127"/>
@@ -599,12 +599,12 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="134"/>
       <source>Extension of bounding box's MinY</source>
-      <translation type="unfinished">Extension of bounding box's MinY</translation>
+      <translation>შემომსაზღვრელი ჩარჩოს MinY-ის გაფართოება</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="141"/>
       <source>Extension of bounding box's MaxY</source>
-      <translation type="unfinished">Extension of bounding box's MaxY</translation>
+      <translation>შემომსაზღვრელი ჩარჩოს MaxY-ის გაფართოება</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="148"/>
@@ -614,12 +614,12 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="155"/>
       <source>Extension of bounding box's MinZ</source>
-      <translation type="unfinished">Extension of bounding box's MinZ</translation>
+      <translation>შემომსაზღვრელი ჩარჩოს MinZ-ის გაფართოება</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="162"/>
       <source>Extension of bounding box's MaxZ</source>
-      <translation type="unfinished">Extension of bounding box's MaxZ</translation>
+      <translation>შემომსაზღვრელი ჩარჩოს MaxZ-ის გაფართოება</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="182"/>
@@ -649,12 +649,12 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
       <source>If checked the path is constrained by the solid. Otherwise the volume of the solid describes a 'keep out' zone</source>
-      <translation type="unfinished">If checked the path is constrained by the solid. Otherwise the volume of the solid describes a 'keep out' zone</translation>
+      <translation>თუ ჩართულია, ტრაექტორია შეზღუდულია მყარი სხეულის მიერ. სხვა შემთხვევაში მყარი სხეულის მოცულობა 'გარეთ გეჭიროთ' ზონას აღწერს</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
       <source>Extend Model's Bounding Box</source>
-      <translation type="unfinished">Extend Model's Bounding Box</translation>
+      <translation>მოდელის შემომსაზღვრელი ჩარჩოს გაფართოება</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="175"/>
@@ -695,7 +695,7 @@ For stock from the Base object's bounding box it means the extra material in all
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="59"/>
       <source>Select one or more features in the 3d view and press 'Add' to add them as the base items for this operation. Selected features can be deleted entirely.</source>
-      <translation type="unfinished">Select one or more features in the 3d view and press 'Add' to add them as the base items for this operation. Selected features can be deleted entirely.</translation>
+      <translation>აირჩიეთ ერთი ან მეტი თვისება 3D ხედში და დააწექით 'დამატების' ღილაკს, რომ ისინი ამ ოპერაციისთვის საბაზისო ელემენტებად დაამატოთ. მონიშნული თვისებები, შეიძლება, სრულად წაიშალოს.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="69"/>
@@ -770,7 +770,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="66"/>
       <source>Remove all list items and fill list with all eligible features from the job's base object.</source>
-      <translation type="unfinished">Remove all list items and fill list with all eligible features from the job's base object.</translation>
+      <translation>სიიდან ყველა ელემენტის წაშლა და მისი დავალების საბაზისო ობიექტიდან ყველა შესაფერისი თვისებით შევსება.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="69"/>
@@ -1189,7 +1189,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="63"/>
       <source>Don't retract after every hole</source>
-      <translation type="unfinished">Don't retract after every hole</translation>
+      <translation>ყოველი ხვრელის შემდეგ გამოწევა არ მოხდება</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="66"/>
@@ -1400,7 +1400,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
       <source>The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit's rotation and the tool's lateral movement are in the same direction</source>
-      <translation type="unfinished">The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit's rotation and the tool's lateral movement are in the same direction</translation>
+      <translation>ამოჭრის რეჟიმი გულისხმობს, რომ ამოჭრა ხელსაწყოს მჭრელი იარაღის ერთ მხარეს წარმოადგენს შედეგობრივ ნაწილს და მეორე მხარეს ან უკვე დაფრეზილია, ან მოგვიანებით წაიშლება. აღმართის რეჟიმია, როცა ხელსაწყოს მჭრელი იარაღი შედის ამოჭრაში თითოეული ბრუნვისას, როცა მღებულ რეჟიმში ხელსაწყოს მჭრელი იარაღის ბრუნვა და ხელსაწყოს გვერდითი მოძრაობა იგივე მიმართულებით ხდება</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="119"/>
@@ -1593,7 +1593,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
       <source>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don't warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</source>
-      <translation type="unfinished">Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don't warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</translation>
+      <translation>ჩართეთ, თუ გნებავთ, ეს პროფილის ოპერაცია ცილინდრულ ნახვრეტებზეც გადაატაროს, რომლებიც ჩვეულებრივ, იბურღება. ეს შეიძლება გამოგადგეთ, თუ ადეკვატური ზომის ბურღი ხელმისაწვდომი არაა ან ნახვრეტების რაოდენობა ბურღის შეცვლის გარანტიას არ იძლევა. დაიმახსოვრეთ, რომ ჭრის კუთხე და მიმართულება შებრუნდება მითითებულ მნიშვნელობებზე დაყრდნობით</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
@@ -1835,7 +1835,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="140"/>
       <source>Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.</source>
-      <translation type="unfinished">Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.</translation>
+      <translation>მონიშნული ზედაპირების საბაზისო გეომეტრიების სიაში ბოლო 'N' ზედაპირის ამოჭრის თავიდან არიდება.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="147"/>
@@ -2000,27 +2000,27 @@ Default: OpToolDiameter</translation>
       <source>Expression set as ClearanceHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
-      <translation type="unfinished">Expression set as ClearanceHeight for new operations.
+      <translation>გამოსახულება, რომელიც დაყენებულია გაბარიტულ სიმაღლედ ახალი ოპერაციებისთვის.
 
-Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
+ნაგულისხმევი: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="145"/>
       <source>Expression set as SafeHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</source>
-      <translation type="unfinished">Expression set as SafeHeight for new operations.
+      <translation>გამოსახულება, რომელიც დაყენებულია უსაფრთხო სიმაღლედ ახალი ოპერაციებისთვის.
 
-Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</translation>
+ნაგულისხმევი: "OpStockZMax+SetupSheet.SafeHeightOffset"</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="154"/>
       <source>SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
 Default: "5mm"</source>
-      <translation type="unfinished">SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
+      <translation>SafeHeightOffset შეიძლება გამოყენებული იყოს გამოსახულებებისთვის ახალ ოპერაციებისთვის SafeHeight-ის დასაყენებლად.
 
-Default: "5mm"</translation>
+ნაგულისხმევი: "5მმ"</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="205"/>
@@ -2282,9 +2282,9 @@ If the specified height is 0 the dressup will use half the height of the part. S
       <source>Radius of the fillet on the tag's top edge.
 
 If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.</source>
-      <translation type="unfinished">Radius of the fillet on the tag's top edge.
+      <translation>ჭდის ზედა წიბოზე არსებული მომრგვალებული ნაზოლის რადუსი.
 
-If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.</translation>
+თუ რადიუსი ჭდის მოხაზულობის მიერ მხარდაჭერილ ზომაზე დიდია, მიღებული მოხაზულობა გუმბათის ფორმის იქნება.</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="109"/>
@@ -2502,7 +2502,7 @@ If left empty no template will be preselected.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="298"/>
       <source>It doesn't seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.</source>
-      <translation type="unfinished">It doesn't seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.</translation>
+      <translation>როგორც ჩანს, პოსტპროცესორის სკრიპტები დაყენებული არ გაქვთ. დაამატეთ ისინი თქვენს მაკროების საქაღალდეს და დარწმუნდით, რომ ფაილის სახელი სრულდება სტრიქონით &amp;quot;_post.py&amp;quot;.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="312"/>
@@ -2512,7 +2512,7 @@ If left empty no template will be preselected.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="332"/>
       <source>Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.</source>
-      <translation type="unfinished">Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.</translation>
+      <translation>ზემოთ მითითებული ნაგულისხმევი პოსტპროცესორისთვის გადაცემული არასავალდებულო არგუმენტების სია. მხარდაჭერილი არგუმენტებისთვის იხილეთ პოსტპროცესორის დოკუმენტაცია.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="370"/>
@@ -2537,7 +2537,7 @@ If left empty no template will be preselected.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="405"/>
       <source>Extend Model's Bounding Box</source>
-      <translation type="unfinished">Extend Model's Bounding Box</translation>
+      <translation>მოდელის შემომსაზღვრელი ჩარჩოს გაფართოება</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="429"/>
@@ -2926,7 +2926,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DogboneEdit.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;აირჩიეთ კუთხის გარშემო შემოჭრის ზღუდარის ტიპი:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;ძაღლისძვალა&lt;/span&gt;... უმოკლესი მანძილი კუთხის დასაფარად ან&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;მართობძვალა&lt;/span&gt;... გზის გარკვეული მიმართულებით გაგრძელება მანამდე, სანამ კუთხე არ დაიფარება&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="52"/>
@@ -3001,7 +3001,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DogboneEdit.ui" line="142"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter length for each bone if &lt;span style=" font-weight:600;"&gt;Incision&lt;/span&gt; is set to &lt;span style=" font-weight:600;"&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter length for each bone if &lt;span style=" font-weight:600;"&gt;Incision&lt;/span&gt; is set to &lt;span style=" font-weight:600;"&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;შეიყვანეთ თითოეული კუთხის გარშემო მომრგვალების სიგრძე, თუ&lt;span style=" font-weight:600;"&gt;შეჭრა&lt;/span&gt;დაყენებულია&lt;span style=" font-weight:600;"&gt;ხელით მითითებულზე.&lt;/span&gt;წინააღმდეგ შემთხვევაში მნიშვნელობა იგნორირებულია.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="155"/>
@@ -3076,7 +3076,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="54"/>
       <source>Height of holding tag. Note that resulting tag might be smaller if the tag's width and angle result in a triangular shape.</source>
-      <translation type="unfinished">Height of holding tag. Note that resulting tag might be smaller if the tag's width and angle result in a triangular shape.</translation>
+      <translation>სამაგრის სიმაღლე. დაიმახსოვრეთ, რომ მიღებული ჭდე, შეიძლება, უფრო პატარა იყოს, თუ ჭდის სიგანე და კუთხე სამკუთხედ მოხაზულობამდე მიგვიყვანს.</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="61"/>
@@ -3091,7 +3091,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="97"/>
       <source>List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don't lie on the base wire.</source>
-      <translation type="unfinished">List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don't lie on the base wire.</translation>
+      <translation>მიმდინარე ჭდეების სია. ჩაასწორეთ კოორდინატები ორმაგი წკაპით ან ჩასწორების ღილაკით. ჭდეები ავტომატურად გაითიშება, თუ ისინი წინა ჭდეს გადაფარავენ, ან საბაზისო პოლიხაზზე არ მდებარეობენ.</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="116"/>
@@ -3578,20 +3578,20 @@ This is useful if the operator can safely load work into one coordinate system w
 Ordering by Tool, will minimize the Tool Changes. A tool change will be done, then all operations in all coordinate systems before changing tools.
 
 Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the 'split output' even with only a single work coordinate system since it will put each operation into a separate file.</source>
-      <translation type="unfinished">Ordering by Fixture, will cause all operations to be performed in the first coordinate system before switching to the second. Then all operations will be performed there in the same order.
+      <translation>ჩამჭერით დალაგება გამოიწვევს ყველა ოპერაციის პირველ კოორდინატების სისტემაზე შესრულებას, სანამ მეორეზე გადავერთვებით. შემდეგ ყველა ოპერაცია იგივე მიმდევრობით შესრულდება.
 
-This is useful if the operator can safely load work into one coordinate system while the machine is doing work in another.
+ეს სასარგებლოა, თუ ოპერატორს შეუძლია, უსაფრთხოს ჩატვირთოს სამუშაო ერთ კოორდინატების სისტემაში, როცა მანქანა განსხვავებულში მუშაობს.
 
-Ordering by Tool, will minimize the Tool Changes. A tool change will be done, then all operations in all coordinate systems before changing tools.
+ხელსაწყოებით დალაგება ხელსაწყოების შეცვლების რაოდენობას შეამცირებს. ხელსაწყო შეიცვლება, შემდეგ კი ყველა ოპერაცია შესრულდება ყველა კოორდინატების სისტემაში, სანამ ხელსაწყოს მორიგი ცვლილება მოხდება.
 
-Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the 'split output' even with only a single work coordinate system since it will put each operation into a separate file.</translation>
+ოპერაციით დალაგება თითოეულ ოპერაციას ყველა კოორდინატების სისტემაში შეასრულებს, სანამ შემდეგ ოპერაციაზე გადავა. ეს განსაკუთრებულად გამოგადგებათ, თუ 'გამოტანის დაყოფას' იყენებთ, ერთი სამუშაო კოორდინატების სისტემის გამოყენების შემთხვევაშიც კი, რადგან ის თითოეულ ოპერაციას ცალკე ფაილში ჩაგიწერთ.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="254"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=" font-style:italic;"&gt;Work Offsets&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
 FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the 'order by' setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=" font-style:italic;"&gt;Work Offsets&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
-FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the 'order by' setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;სამუშაო კოორდინატების სისტემა,&lt;/span&gt; ასევე ცნობილი, როგორც &lt;span style=" font-style:italic;"&gt; სამუშაო წანაცვლება s&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;ჩამჭერის წანაცვლება,&lt;/span&gt;, ან &lt;span style=" font-style:italic;"&gt;ჩამჭერები &lt;/span&gt;ar, სასარგებლოა ეფექტური საწარმოო პროცესის დავალების ასაგებად, სადაც იგივე ნაწილი მანქანაზე ბევრჯერ სრულდება.
+FreeCAD-მა არ ცის, სად არსებობს ეს კონკრეტული კოორდინატების სისტემა მანქანის კოორდინატების სისტემაში, ასე რომ დამატებითი კოორდინატების სისტემების დამატებით თქვენს დავალებაში დავალებას ვიზუალურად არ შეცვლის. მაგრამ ის შეცვლის გამოტანილ G-Code-ს. ზუსტი გზა, როგორ ხდება გამოტანის შეცვლა, კონტროლდება პარამეტრით 'დალაგების პირობა'.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="409"/>
@@ -3626,7 +3626,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="488"/>
       <source>Extend Model's Bounding Box</source>
-      <translation type="unfinished">Extend Model's Bounding Box</translation>
+      <translation>მოდელის შემომსაზღვრელი ჩარჩოს გაფართოება</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="493"/>
@@ -3775,27 +3775,27 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
       <source>Expression set as ClearanceHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
-      <translation type="unfinished">Expression set as ClearanceHeight for new operations.
+      <translation>გამოსახულება, რომელიც დაყენებულია გაბარიტულ სიმაღლედ ახალი ოპერაციებისთვის.
 
-Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
+ნაგულისხმევი: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1139"/>
       <source>Expression set as SafeHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</source>
-      <translation type="unfinished">Expression set as SafeHeight for new operations.
+      <translation>გამოსახულება, რომელიც დაყენებულია უსაფრთხო სიმაღლედ ახალი ოპერაციებისთვის.
 
-Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</translation>
+ნაგულისხმევი: "OpStockZMax+SetupSheet.SafeHeightOffset"</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1148"/>
       <source>SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
 Default: "5mm"</source>
-      <translation type="unfinished">SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
+      <translation>SafeHeightOffset შეიძლება გამოყენებული იყოს გამოსახულებებისთვის ახალ ოპერაციებისთვის SafeHeight-ის დასაყენებლად.
 
-Default: "5mm"</translation>
+ნაგულისხმევი: "5მმ"</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1247"/>
@@ -3854,36 +3854,35 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
 "/home/cnc/%d.g-code"
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
+      <translation>შეიყვანეთ პოსტპროცესორის გატანის ნაგულისხმები ბილიკი დ არასავალდებულო ფაილის სახელი (იხ. ქვემოთ).
+პოსტპროცესინგისას შეგიძლიათ გამოიყენოთ შემდეგი ცვლადები:
+ჩანაცვლდება სიიდან:
+%D ... აქტიური დოკუმენტის საქაღალდე
+%d ... აქტიური დოკუმენტის სახელი (გაფართოების ჩათვლით)
+%M ... მომხმარებლის მაკროების საქაღალდე
+%j ... აქტიური დავალების ობიექტის სახელი
 
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
+თუ გამოტანას ყოფთ, შეგიძლიათ, გამოიყენოთ შემდეგი ცვლადები (თუ გამოყოფა არ იყოფა, ეს პარამეტრები იგნორირებული იქნება).
+%T ... ხელსაწყოს ნომერი
+%t ... ხელსაწყოს კონტროლერის ჭდე
 
-%W ... Work Coordinate System
-%O ... Operation Label
+%W ... სამუშაოს კოორდინატების სისტემა
+%O ... ოპერაციის ჭდე
 
-When splitting output, a sequence number will always be added.
+გამოტანის დაყოფისას მიმდევრობის ნომერი ყოველთვის ემატება.
 
-if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
+თუ შეიცავს %S -ს, ასევე შეგიძლიათ, მიუთითოთ, სად ემატება რიცხვები. მის გარეშე რიცხვები სტრიქონის ბოლოს მიეწერება.
 
-%S ... Sequence Number
+%S ... მიმდევრობის ნომერი
 
-The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-"/home/cnc/%d.g-code"
-See the file save policy below on how to deal with name conflicts.</translation>
+შემდეგი მაგალითი ყველა ფაილს დოკუმენტების საქაღლდეში /home/freecad-ში ინახავს (მოაცილეთ ბრჭყალები):
+"home/cnc/%d.g-code"
+სახელების კონფლიქტებთან გასამკლავებლად იხილეთ ქვემოთ არსებული შენახვის პოლიტიკა.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="397"/>
       <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
-      <translation type="unfinished">If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</translation>
+      <translation>თუ გამოიყენება ერთზე მეტი კოორდინატების სისტემა, ამის ჭეშმარიტზე დაყენება gcode-ს ერთზე მეტ ფაილში ჩაწერას გამოიწვევს, 'დალაგების პირობის' თვისებაზე დაყრდნობით. მაგალითად, თუ ალაგებთ ჩამჭერებით, პირველი გამოტანის ფაილი პირველი ჩამჭერის იქნება, მეორეს კი ცალკე ფაილი ექნება.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="400"/>
@@ -3894,13 +3893,13 @@ For example, if &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is
 
 
 If &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to &lt;span style=" font-style:italic;"&gt;operation&lt;/span&gt; and &lt;span style=" font-style:italic;"&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post processing will create multiple output files based on the &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; setting.
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;თუ ჩართულია, პოსტპროცესინგი ბევრ გამოტანილ ფაილს შექმნის, &lt;span style=" font-style:italic;"&gt;დალაგების პირობის&lt;/span&gt; პარამეტრზე დაყრდნობით.
 
 
-For example, if &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to Tool, the first output file will contain the first tool change and all operations, in all coordinate systems, that can be done with that tool before the next tool change is called.
+მაგალითად, თუ &lt;span style=" font-style:italic;"&gt;დალაგების პირობა&lt;/span&gt; დაყენებულია ხელსაწყოზე, გამოტანილი ფაილი შეიცავს პირველი ხელსაწყოს შეცვლას და ყველა ოპერაციას ყველა კოორდინატების სისტემაში, რომელიც ამ ხელსაწყოთი შეიძლება მოხეს, სანამ შემდეგ ხელსაწყოს შეცვლას გამოვიძახებთ.
 
 
-If &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to &lt;span style=" font-style:italic;"&gt;operation&lt;/span&gt; and &lt;span style=" font-style:italic;"&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+თუ &lt;span style=" font-style:italic;"&gt;დალაგების პირობა&lt;/span&gt; დაყენებულია &lt;span style=" font-style:italic;"&gt;ოპერაციაზე&lt;/span&gt; და &lt;span style=" font-style:italic;"&gt;გამოტანის დაყოფა&lt;/span&gt; ჭეშმარიტია, თითოეული ოპერაცია ცალ-ცალკე ფაილში იქნება ჩაწერილი.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1037"/>
@@ -4336,13 +4335,13 @@ Default: 3 mm</source>
       <location filename="../../../Path/Dressup/DogboneII.py" line="250"/>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="463"/>
       <source>Dressup length if incision is set to 'custom'</source>
-      <translation type="unfinished">Dressup length if incision is set to 'custom'</translation>
+      <translation>ზღუდარის სიგრძე, თუ შეჭრა დაყენებულია 'ხელით მითითებულზე'</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/DogboneII.py" line="258"/>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="445"/>
       <source>Bones that aren't dressed up</source>
-      <translation type="unfinished">Bones that aren't dressed up</translation>
+      <translation>კუთხის გარშემო შემოჭრები, რომლებსაც ზღუდარი არ აქვთ</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="946"/>
@@ -5324,7 +5323,7 @@ Default: 3 mm</source>
       <location filename="../../../Path/Op/Surface.py" line="212"/>
       <location filename="../../../Path/Op/Waterline.py" line="232"/>
       <source>Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.</source>
-      <translation type="unfinished">Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.</translation>
+      <translation>მონიშნული ზედაპირების საბაზისო გეომეტრიების სიაში ბოლო 'N' ზედაპირის ამოჭრის თავიდან არიდება.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="220"/>
@@ -5413,7 +5412,7 @@ Default: 3 mm</source>
       <location filename="../../../Path/Op/Surface.py" line="369"/>
       <location filename="../../../Path/Op/Waterline.py" line="407"/>
       <source>Set the stepover percentage, based on the tool's diameter.</source>
-      <translation type="unfinished">Set the stepover percentage, based on the tool's diameter.</translation>
+      <translation>გადაბიჯების პროცენტულობის დაყენება ხელსაწყოს დიამეტრზე დაყრდნობით.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="378"/>
@@ -5462,22 +5461,22 @@ Default: 3 mm</source>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="349"/>
       <source>Set thread's major diameter</source>
-      <translation type="unfinished">Set thread's major diameter</translation>
+      <translation>დააყენეთ კუთხვილის ძირითადი დიამეტრი</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="355"/>
       <source>Set thread's minor diameter</source>
-      <translation type="unfinished">Set thread's minor diameter</translation>
+      <translation>დააყენეთ კუთხვილის მცირე დიამეტრი</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="363"/>
       <source>Set thread's pitch - used for metric threads</source>
-      <translation type="unfinished">Set thread's pitch - used for metric threads</translation>
+      <translation>კუთხვილის ბიჯის დაყენება - გამოიყენება მეტრული კუთხვილებისთვის</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="372"/>
       <source>Set thread's TPI (turns per inch) - used for imperial threads</source>
-      <translation type="unfinished">Set thread's TPI (turns per inch) - used for imperial threads</translation>
+      <translation>კუთხვილის TPI(შემოტრიალება დუიმზე) - გამოიყენება იმპერიული კუთხვილებისთვის</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="381"/>
@@ -6918,22 +6917,22 @@ For example:
     'Metric, Small Parts &amp; CNC'
     'US Customary'
     'Imperial Decimal'</source>
-      <translation type="unfinished">The currently selected unit schema: 
-     '{}' for this document
- Does not use 'minutes' for velocity values. 
+      <translation>ამჟამად არჩეული ერთეულების სქემა: 
+     '{}' ამ დოკუმენტისთვის
+ არ გამოიყენოთ 'წუთები' აჩქარების მნიშვნელობებში. 
  
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct G-code: 
-Select a minute-based schema in preferences.
-For example:
-    'Metric, Small Parts &amp; CNC'
-    'US Customary'
-    'Imperial Decimal'</translation>
+CNC ჩარხებს მიწოდების სიჩქარის 
+ერთეული/წთ-ში სჭირდება. იმისათვის, რომ G-code სწორი იყოს: 
+აირჩიეთ წუთებზე დაფუძნებული სქემა მორგების ფანჯარაში.
+მაგალითად:
+    'მეტრული, პატარა ნაწილები &amp; CNC'
+    'US ერთეულები'
+    'იმპერიული ათობითი'</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="79"/>
       <source>Don't Show This Anymore</source>
-      <translation type="unfinished">Don't Show This Anymore</translation>
+      <translation>აღარ მაჩვენო</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="88"/>
@@ -6958,7 +6957,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="272"/>
       <source>&lt;none&gt;</source>
-      <translation type="unfinished">&lt;none&gt;</translation>
+      <translation>&lt;none&gt;</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="358"/>
@@ -7343,17 +7342,17 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="1376"/>
       <source>Tool Controller '{}' has no feedrate</source>
-      <translation type="unfinished">Tool Controller '{}' has no feedrate</translation>
+      <translation>ხელსაწყოს კონტროლერს '{}' მიწოდების სიჩქარე არ გააჩნია</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="1386"/>
       <source>Tool Controller '{}' has no spindlespeed</source>
-      <translation type="unfinished">Tool Controller '{}' has no spindlespeed</translation>
+      <translation>ხელსაწყოს კონტროლერს '{}' შპინდელის სიჩქარე არ გააჩნია</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="1415"/>
       <source>Tool Controller '{}' is not used</source>
-      <translation type="unfinished">Tool Controller '{}' is not used</translation>
+      <translation>ხელსაწყოს კონტროლერი '{}' არ გამოიყენება</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="1512"/>
@@ -7440,7 +7439,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Base.py" line="641"/>
       <source>Parent job %s doesn't have a base object</source>
-      <translation type="unfinished">Parent job %s doesn't have a base object</translation>
+      <translation>მშობელ დავალებას %s ძირითადი ობიექტი არ გააჩნია</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="787"/>
@@ -7691,7 +7690,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="185"/>
       <source>Extensions</source>
-      <translation type="unfinished">Extensions</translation>
+      <translation>გაფართოებები</translation>
     </message>
   </context>
   <context>
@@ -8314,12 +8313,12 @@ For example:
   <context>
     <name>CAM_Gcode_pre</name>
     <message>
-      <location filename="../../../Path/Post/scripts/gcode_pre.py" line="226"/>
+      <location filename="../../../Path/Post/scripts/gcode_pre.py" line="225"/>
       <source>No active document</source>
       <translation>აქტიური დოკუმენტის გარეშე</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/gcode_pre.py" line="229"/>
+      <location filename="../../../Path/Post/scripts/gcode_pre.py" line="228"/>
       <source>No job object</source>
       <translation>დავალების ობიექტის გარეშე</translation>
     </message>
@@ -8494,7 +8493,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Profile.py" line="168"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
-      <translation type="unfinished">Profile entire model, selected face(s) or selected edge(s)</translation>
+      <translation>სრული მოდელი მონიშნული ზედაპირებისა და მონიშნული წიბოების პროფილირება</translation>
     </message>
   </context>
   <context>
@@ -8502,7 +8501,7 @@ For example:
     <message>
       <location filename="../../../Path/Tool/Gui/Bit.py" line="118"/>
       <source>Toolbit cannot be edited: Shapefile not found</source>
-      <translation type="unfinished">Toolbit cannot be edited: Shapefile not found</translation>
+      <translation>ხელსაწყოს იარაღის მჭრელი იარაღის ჩასწორება შეუძლებელია: Shapefile ვერ ვიპოვე</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/Bit.py" line="193"/>
@@ -8512,12 +8511,12 @@ For example:
     <message>
       <location filename="../../../Path/Tool/Gui/Bit.py" line="199"/>
       <source>Invalid Filename</source>
-      <translation type="unfinished">Invalid Filename</translation>
+      <translation>არასწორი ფაილის სახელი</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/Bit.py" line="242"/>
       <source>Select Tool Shape</source>
-      <translation type="unfinished">Select Tool Shape</translation>
+      <translation>აირჩიეთ ხელსაწყოს მოხაზულობა</translation>
     </message>
   </context>
 </TS>

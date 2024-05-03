@@ -215,11 +215,6 @@ locations = [
         "../Mod/TechDraw/Gui/Resources/TechDraw.qrc",
     ],
     ["Tux", "../Mod/Tux/Resources/translations", "../Mod/Tux/Resources/Tux.qrc"],
-    [
-        "Web",
-        "../Mod/Web/Gui/Resources/translations",
-        "../Mod/Web/Gui/Resources/Web.qrc",
-    ],
 ]
 
 THRESHOLD = 25  # how many % must be translated for the translation to be included in FreeCAD

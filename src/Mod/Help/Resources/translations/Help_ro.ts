@@ -21,11 +21,11 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-You can easily download the documentation for offline use by using the Addon
-Manager and installing the &quot;offline-documentation&quot; addon. If this
-field is left blank, FreeCAD will automatically search for the help files at
-the default location ($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Setați acest lucru la un URL personalizat sau la directorul în care sunt localizate fișierele ajutor.
+Puteți descărca cu ușurință documentația pentru utilizare offline utilizând managerul Addon
+și instalând &quot;offline documentation&quot; addon. Dacă acest câmp
+este lăsat necompletat, FreeCAD va căuta automat fişierele de ajutor de la
+locaţia implicită ($USERAPPDATADIR/Mod/documentaţie offline).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
@@ -46,27 +46,26 @@ the default location ($USERAPPDATADIR/Mod/offline-documentation).</translation>
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>This will fetch the documentation from pages rendered on GitHub.
 This is currently not available...</source>
-      <translation type="unfinished">This will fetch the documentation from pages rendered on GitHub.
-This is currently not available...</translation>
+      <translation>Aceasta va prelua documentația din paginile redate pe github. Acest lucru nu este disponibil momentan...</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="33"/>
       <source>GitHub (online)</source>
-      <translation type="unfinished">GitHub (online)</translation>
+      <translation>GitHub (online)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="72"/>
       <source>A translation suffix to use, for example &quot;fr&quot;
 to get French translation of the documentation.</source>
-      <translation type="unfinished">A translation suffix to use, for example &quot;fr&quot;
-to get French translation of the documentation.</translation>
+      <translation>Un sufix de traducere folosit, de exemplu &quot;fr&quot;
+pentru a obține traducerea documentației în franceză.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="119"/>
       <source>The documentation pages will be fetched from the official
 FreeCADwiki at https://wiki.freecad.org</source>
-      <translation type="unfinished">The documentation pages will be fetched from the official
-FreeCADwiki at https://wiki.freecad.org</translation>
+      <translation>Paginile documentației vor fi preluate din secțiunea
+FreeCADwiki la https://wiki.freecad.org</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="139"/>
@@ -74,10 +73,10 @@ FreeCADwiki at https://wiki.freecad.org</translation>
 of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
 custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
 &apos;Pandoc&apos; Python module should be installed for optimal results.</source>
-      <translation type="unfinished">The documentation pages will be fetched from an automatic Markdown conversion
-of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
-custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
-&apos;Pandoc&apos; Python module should be installed for optimal results.</translation>
+      <translation>Paginile de documentare vor fi preluate dintr-o conversie Markdown automată
+din wiki-ul FreeCAD, găzduit pe FreeCAD&apos;s contul GitHub. Aceasta poate fi stilizată cu o foaie de stil personalizată
+de mai jos şi poate arăta mai frumos decât opţiunea de pe wiki. Modulul &apos;Markdown&apos; sau
+&apos;Pandoc&apos; Python trebuie instalat pentru rezultate optime.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="145"/>
@@ -102,23 +101,23 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="189"/>
       <source>The documentation will open in your default web browser.</source>
-      <translation type="unfinished">The documentation will open in your default web browser.</translation>
+      <translation>Documentația se va deschide în browserul web implicit.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="208"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open whlle working in the 3D view.</source>
-      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open whlle working in the 3D view.</translation>
+      <translation>Documentaţia se va deschide într-un dialog andocabil în interiorul ferestrei FreeCAD,
+care vă permite să îl păstrați deschis în timp ce funcționează în vizualizarea 3D.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="243"/>
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
 Markdown version above.</source>
-      <translation type="unfinished">You can here indicate the path to an alternative CSS file to be used
-to style the Markdown pages. This will only work if you have selected the
-Markdown version above.</translation>
+      <translation>Aici poți indica calea către un fișier CSS alternativ care să fie folosit
+pentru a stiliza paginile Markdown. Acest lucru va funcționa doar dacă ați selectat versiunea de Markdown
+de mai sus.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="192"/>
@@ -155,8 +154,8 @@ Markdown version above.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="78"/>
-      <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the Web module</source>
-      <translation type="unfinished">PySide QtWebEngineWidgets module is not available. Help rendering is done with the Web module</translation>
+      <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
+      <translation type="unfinished">PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="82"/>
@@ -172,7 +171,7 @@ Markdown version above.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="394"/>
+      <location filename="../../Help.py" line="393"/>
       <source>General</source>
       <translation>General</translation>
     </message>

@@ -154,8 +154,8 @@ Toto bude fungovat, pouze pokud jste vybrali Markdown verzi výše.</translation
     </message>
     <message>
       <location filename="../../Help.py" line="78"/>
-      <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the Web module</source>
-      <translation>Modul PySide QtWebEngineWidgets není k dispozici. Vykreslování nápovědy je provedeno s webovým modulem</translation>
+      <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
+      <translation type="unfinished">PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="82"/>
@@ -171,7 +171,7 @@ Toto bude fungovat, pouze pokud jste vybrali Markdown verzi výše.</translation
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="394"/>
+      <location filename="../../Help.py" line="393"/>
       <source>General</source>
       <translation>Obecné</translation>
     </message>

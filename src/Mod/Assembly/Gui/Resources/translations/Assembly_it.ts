@@ -148,7 +148,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="70"/>
       <source>Press shift to add several links while clicking on the view.</source>
-      <translation type="unfinished">Press shift to add several links while clicking on the view.</translation>
+      <translation>Premere il tasto Maiusc per aggiungere più collegamenti mentre si fa clic sulla vista.</translation>
     </message>
   </context>
   <context>
@@ -258,82 +258,82 @@
     <message>
       <location filename="../../../JointObject.py" line="140"/>
       <source>The selected element of the first object</source>
-      <translation type="unfinished">The selected element of the first object</translation>
+      <translation>L'elemento selezionato del primo oggetto</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="147"/>
       <source>The selected vertex of the first object</source>
-      <translation type="unfinished">The selected vertex of the first object</translation>
+      <translation>Il vertice selezionato del primo oggetto</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="157"/>
       <source>This is the local coordinate system within object1 that will be used for the joint.</source>
-      <translation type="unfinished">This is the local coordinate system within object1 that will be used for the joint.</translation>
+      <translation>Questo è il sistema di coordinate locali all'interno del primo oggetto che sarà utilizzato per il vincolo.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="167"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
-      <translation type="unfinished">This prevents Placement1 from recomputing, enabling custom positioning of the placement.</translation>
+      <translation>Questo impedisce il ricalcolo di Placement1, consentendo il posizionamento personalizzato.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="175"/>
       <source>The second object of the joint</source>
-      <translation type="unfinished">The second object of the joint</translation>
+      <translation>Il secondo oggetto del vincolo</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="182"/>
       <source>The second part of the joint</source>
-      <translation type="unfinished">The second part of the joint</translation>
+      <translation>La seconda parte del vincolo</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="189"/>
       <source>The selected element of the second object</source>
-      <translation type="unfinished">The selected element of the second object</translation>
+      <translation>L'elemento selezionato del secondo oggetto</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="196"/>
       <source>The selected vertex of the second object</source>
-      <translation type="unfinished">The selected vertex of the second object</translation>
+      <translation>Il vertice selezionato del secondo oggetto</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="206"/>
       <source>This is the local coordinate system within object2 that will be used for the joint.</source>
-      <translation type="unfinished">This is the local coordinate system within object2 that will be used for the joint.</translation>
+      <translation>Questo è il sistema di coordinate locali all'interno del secondo oggetto che sarà utilizzato per il vincolo.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="216"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement.</source>
-      <translation type="unfinished">This prevents Placement2 from recomputing, enabling custom positioning of the placement.</translation>
+      <translation>Questo impedisce il ricalcolo di Placement2, consentendo il posizionamento personalizzato.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="226"/>
       <source>This is the distance of the joint. It is used only by the distance joint.</source>
-      <translation type="unfinished">This is the distance of the joint. It is used only by the distance joint.</translation>
+      <translation>Questa è la distanza del vincolo. È utilizzata solo dal vincolo di distanza.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="236"/>
       <source>This is the rotation of the joint.</source>
-      <translation type="unfinished">This is the rotation of the joint.</translation>
+      <translation>Questa è la rotazione del vincolo.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="246"/>
       <source>This is the offset vector of the joint.</source>
-      <translation type="unfinished">This is the offset vector of the joint.</translation>
+      <translation>Questo è il vettore di offset del vincolo.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="256"/>
       <source>This indicates if the joint is active.</source>
-      <translation type="unfinished">This indicates if the joint is active.</translation>
+      <translation>Questo indica se il vincolo è attivo.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="889"/>
       <source>The object to ground</source>
-      <translation type="unfinished">The object to ground</translation>
+      <translation>L'oggetto è fissato</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="901"/>
       <source>This is where the part is grounded.</source>
-      <translation type="unfinished">This is where the part is grounded.</translation>
+      <translation>Questo è dove la parte è fissata.</translation>
     </message>
   </context>
   <context>
@@ -341,7 +341,7 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="14"/>
       <source>Create Joint</source>
-      <translation type="unfinished">Create Joint</translation>
+      <translation>Crea Vincolo</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="28"/>
@@ -361,7 +361,7 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="104"/>
       <source>Reverse the direction of the joint.</source>
-      <translation type="unfinished">Reverse the direction of the joint.</translation>
+      <translation>Inverte la direzione del vincolo.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="107"/>
@@ -412,22 +412,22 @@
     <message>
       <location filename="../preferences/Assembly.ui" line="20"/>
       <source>Allow to leave edit mode when pressing Esc button</source>
-      <translation type="unfinished">Allow to leave edit mode when pressing Esc button</translation>
+      <translation>Permette di uscire dalla modalità di modifica quando si preme il tasto Esc</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
       <source>Esc leave edit mode</source>
-      <translation type="unfinished">Esc leave edit mode</translation>
+      <translation>Esc lascia la modalità di modifica</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>
       <source>Ground first part:</source>
-      <translation type="unfinished">Ground first part:</translation>
+      <translation>Fissa al prima parte:</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="46"/>
       <source>When you insert the first part in the assembly, you can choose to ground the part automatically.</source>
-      <translation type="unfinished">When you insert the first part in the assembly, you can choose to ground the part automatically.</translation>
+      <translation>Quando si inserisce la prima parte nell'assieme, è possibile scegliere di fissare la parte automaticamente.</translation>
     </message>
   </context>
   <context>
@@ -435,22 +435,22 @@
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="136"/>
       <source>Delete associated joints</source>
-      <translation type="unfinished">Delete associated joints</translation>
+      <translation>Elimina i vincoli associati</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="148"/>
       <source>The object is associated to one or more joints.</source>
-      <translation type="unfinished">The object is associated to one or more joints.</translation>
+      <translation>L'oggetto è associato a uno o più vincoli.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="150"/>
       <source>Do you want to move the object and delete associated joints?</source>
-      <translation type="unfinished">Do you want to move the object and delete associated joints?</translation>
+      <translation>Si desidera spostare l'oggetto ed eliminare i vincoli associati?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="651"/>
       <source>Move part</source>
-      <translation type="unfinished">Move part</translation>
+      <translation>Sposta parte</translation>
     </message>
   </context>
 </TS>
