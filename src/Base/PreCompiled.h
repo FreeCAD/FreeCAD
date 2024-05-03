@@ -76,6 +76,7 @@
 #include <memory>
 #include <mutex>
 #include <bitset>
+#include <algorithm>
 
 // streams
 #include <iostream>
