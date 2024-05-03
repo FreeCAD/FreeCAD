@@ -140,7 +140,21 @@ public:
      * appearance from an App::Material object.
      */
     virtual void setMaterialAppearance(const App::Material& material);
+#ifdef FC_USE_TNP_FIX
+    static bool hasMissingElement(const char *subname);
 
+    /// Return the object that owns the shape that contains the give element name
+    virtual DocumentObject *getElementOwner(const Data::MappedName & /*name*/) const
+    {return nullptr;}
+
+    /// Return the higher level element names of the given element
+    virtual std::vector<Data::IndexedName> getHigherElements(const char *name, bool silent=false) const;
+
+protected:
+    void onChanged(const Property* prop) override;
+//    void onDocumentRestored() override;
+    void updateElementReference();
+#endif
 protected:
     std::pair<std::string, std::string> _getElementName(const char* name,
                                                         const Data::MappedElement& mapped) const;
