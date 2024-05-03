@@ -54,7 +54,7 @@ from ArchStructure import *
 
 # make functions
 
-def makeAxis(num=5,size=1000,name=None):
+def makeAxis(num=1,size=1000,name=None):
 
     '''makeAxis([num],[size],[name]): makes an Axis set
     based on the given number of axes and interval distances'''

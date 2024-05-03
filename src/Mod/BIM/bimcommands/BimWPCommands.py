@@ -39,7 +39,7 @@ class BIM_SetWPFront:
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_SetWPFront", "Set the working plane to Front"
             ),
-            "Accel": "Ctrl+Shift+1",
+            "Accel": "W,P,1",
         }
 
     def Activated(self):
@@ -55,7 +55,7 @@ class BIM_SetWPSide:
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_SetWPSide", "Set the working plane to Side"
             ),
-            "Accel": "Ctrl+Shift+3",
+            "Accel": "W,P,3",
         }
 
     def Activated(self):
@@ -71,7 +71,7 @@ class BIM_SetWPTop:
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_SetWPTop", "Set the working plane to Top"
             ),
-            "Accel": "Ctrl+Shift+2",
+            "Accel": "W,P,2",
         }
 
     def Activated(self):

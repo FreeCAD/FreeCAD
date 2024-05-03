@@ -219,7 +219,7 @@ class BuildingPart(ArchIFC.IfcProduct):
             obj.addProperty("App::PropertyBool","HeightPropagate","Children",QT_TRANSLATE_NOOP("App::Property","If true, the height value propagates to contained objects if the height of those objects is set to 0"))
             obj.HeightPropagate = True
         if not "LevelOffset" in pl:
-            obj.addProperty("App::PropertyLength","LevelOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The level of the (0,0,0) point of this level"))
+            obj.addProperty("App::PropertyDistance","LevelOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The level of the (0,0,0) point of this level"))
         if not "Area" in pl:
             obj.addProperty("App::PropertyArea","Area", "BuildingPart",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"))
         if not "Description" in pl:
