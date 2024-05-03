@@ -1205,6 +1205,8 @@ static inline const std::string &getSubNameWithStyle(const std::string &subName,
                 return tmp;
             }
         }
+#else
+        (void) tmp;
 #endif
         return shadow.first;
     }
@@ -1259,8 +1261,8 @@ PyObject *PropertyLinkSub::getPyObject()
     Py::List list(static_cast<int>(_cSubList.size()));
     if (_pcLinkSub) {
         tup[0] = Py::asObject(_pcLinkSub->getPyObject());
-        int i = 0;
 #ifdef FC_USE_TNP_FIX
+        int i = 0;
         for (auto &sub : getSubValues(true))
             list[i++] = Py::String(sub);
 #else
