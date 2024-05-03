@@ -186,6 +186,15 @@ void handle_mouse_move(GLFWwindow* window)
     gMillSimulator.MouseMove((int)fx, (int)fy);
 }
 
+
+
+//The callback function receives two - dimensional scroll offsets.
+void scroll_callback(GLFWwindow * window, double xoffset, double yoffset)
+{
+    gMillSimulator.MouseScroll(yoffset);
+}
+
+
 static void error_callback(int error, const char* description)
 {
     fprintf(stderr, "Error: %s\n", description);
@@ -213,6 +222,7 @@ int main(int argc, char **argv)
 
     glfwSetKeyCallback(glwind, key_callback);
     glfwSetMouseButtonCallback(glwind, mouse_callback);
+    glfwSetScrollCallback(glwind, scroll_callback);
 
     glfwMakeContextCurrent(glwind);
     glewInit();

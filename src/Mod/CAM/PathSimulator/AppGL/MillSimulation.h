@@ -49,8 +49,10 @@ namespace MillSim {
 		void Render();
 		void ProcessSim(unsigned int time_ms);
 		void HandleKeyPress(int key);
+		void UpdateEyeFactor(float factor);
 		void TiltEye(float tiltStep);
 		void RotateEye(float rotStep);
+		void MoveEye(float x, float y);
 		void UpdateProjection();
 		void InitDisplay();
 		bool LoadGCodeFile(const char* fileName);
@@ -59,6 +61,7 @@ namespace MillSim {
 		void SetBoxStock(float x, float y, float z, float l, float w, float h);
 		void MouseDrag(int buttons, int dx, int dy);
 		void MouseMove(int px, int py);
+		void MouseScroll(float dy);
 		void MouseHover(int px, int py);
 		void MousePress(int button, bool isPressed, int px, int py);
 
@@ -112,6 +115,12 @@ namespace MillSim {
 		float mEyeStep = PI / 36;  // 5 degree
 
 		float mMaxFar = 100;
+		float mEyeDistFactor = 0.4f;
+		float mEyeXZFactor = 0.01f;
+		float mEyeXZScale = 0;
+		float mEyeX = 0.0f;
+		float mEyeZ = 0.0f;
+
 
 
 		int mCurStep = 0;

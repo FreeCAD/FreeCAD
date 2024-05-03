@@ -29,6 +29,7 @@
 #include <QDateTime>
 #include <QSurfaceFormat>
 #include <QMouseEvent>
+#include <QWheelEvent>
 #include <QPoint>
 
 using namespace CAMSimulator;
@@ -96,6 +97,11 @@ namespace CAMSimulator
     void DlgCAMSimulator::mouseReleaseEvent(QMouseEvent* ev)
     {
         mMillSimulator->MousePress(ev->button(), false, ev->x(), ev->y());
+    }
+
+    void DlgCAMSimulator::wheelEvent(QWheelEvent* ev)
+    {
+        mMillSimulator->MouseScroll((float)ev->angleDelta().y() / 120.0f);
     }
 
     void DlgCAMSimulator::ResetSimulation()

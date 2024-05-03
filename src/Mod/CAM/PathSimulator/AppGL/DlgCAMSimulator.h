@@ -96,6 +96,7 @@ namespace CAMSimulator
         void mouseMoveEvent(QMouseEvent* ev) override;
         void mousePressEvent(QMouseEvent* ev) override;
         void mouseReleaseEvent(QMouseEvent* ev) override;
+        void wheelEvent(QWheelEvent* ev) override;
         void hideEvent(QHideEvent* ev) override;
 
     private:
