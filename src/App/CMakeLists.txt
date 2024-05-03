@@ -165,7 +165,6 @@ SET(Document_CPP_SRCS
     Origin.cpp
     Path.cpp
     InventorObject.cpp
-    MeasureDistance.cpp
     Placement.cpp
     ProjectFile.cpp
     OriginFeature.cpp
@@ -212,7 +211,6 @@ SET(Document_HPP_SRCS
     Origin.h
     Path.h
     InventorObject.h
-    MeasureDistance.h
     Placement.h
     ProjectFile.h
     OriginFeature.h

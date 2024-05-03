@@ -113,7 +113,6 @@
 #include "ViewProviderLink.h"
 #include "ViewProviderLinkPy.h"
 #include "ViewProviderMaterialObject.h"
-#include "ViewProviderMeasureDistance.h"
 #include "ViewProviderOrigin.h"
 #include "ViewProviderOriginFeature.h"
 #include "ViewProviderOriginGroup.h"
@@ -1908,8 +1907,6 @@ void Application::initTypes()
     Gui::ViewProviderVRMLObject                 ::init();
     Gui::ViewProviderAnnotation                 ::init();
     Gui::ViewProviderAnnotationLabel            ::init();
-    Gui::ViewProviderPointMarker                ::init();
-    Gui::ViewProviderMeasureDistance            ::init();
     Gui::ViewProviderPythonFeature              ::init();
     Gui::ViewProviderPythonGeometry             ::init();
     Gui::ViewProviderPlacement                  ::init();

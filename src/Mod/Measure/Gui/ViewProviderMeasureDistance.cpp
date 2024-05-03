@@ -42,11 +42,9 @@
 #include <Gui/Inventor/MarkerBitmaps.h>
 
 #include <App/Document.h>
-#include <App/MeasureDistance.h>
 #include <Base/BaseClass.h>
 #include <Base/Console.h>
 #include <Base/Quantity.h>
-#include "Mod/Measure/App/MeasureDistance.h"
 #include <Mod/Measure/App/Preferences.h>
 
 #include "ViewProviderMeasureDistance.h"
