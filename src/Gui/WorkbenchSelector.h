@@ -28,7 +28,9 @@
 #include <QTabBar>
 #include <QMenu>
 #include <QToolButton>
+#include <QLayout>
 #include <FCGlobal.h>
+#include <Gui/ToolBarManager.h>
 #include <map>
 
 namespace Gui
@@ -55,20 +57,31 @@ class GuiExport WorkbenchTabWidget : public QWidget
 {
     Q_OBJECT
 
+    void addWorkbenchTab(QAction* workbenchActivateAction);
+
 public:
     explicit WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent = nullptr);
     
-    void updateLayoutAndTabOrientation(bool);
+    void setToolBarArea(Gui::ToolBarArea area);
     void buildPrefMenu();
 
+
+    void adjustSize();
+
 public Q_SLOTS:
-    void refreshList(QList<QAction*>);
-    void addWorkbenchTab(QAction* workbenchActivateAction);
+    void handleWorkbenchSelection(QAction* selectedWorkbenchAction);
+    void handleTabChange(int selectedTabIndex);
+
+    void updateLayout();
+    void updateWorkbenchList();
 
 private:
+    bool isInitializing = false;
+
     WorkbenchGroup* wbActionGroup;
     QToolButton* moreButton;
     QTabBar* tabBar;
+    QBoxLayout* layout;
     // this action is used for workbenches that are typically disabled
     QAction* additionalWorkbenchAction = nullptr;
 

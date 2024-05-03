@@ -34,14 +34,14 @@
 # include <QLayout>
 #endif
 
+#include "Base/Tools.h"
 #include "Action.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include "PreferencePages/DlgSettingsWorkbenchesImp.h"
 #include "DlgPreferencesImp.h"
 #include "MainWindow.h"
-#include "WorkbenchManager.h"
 #include "WorkbenchSelector.h"
+#include "ToolBarManager.h"
 
 
 using namespace Gui;
@@ -113,11 +113,12 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
     tabBar = new QTabBar(this);
     moreButton = new QToolButton(this);
 
-    auto layout = new QHBoxLayout(this);
+    layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
 
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(tabBar);
     layout->addWidget(moreButton);
+    layout->setAlignment(moreButton, Qt::AlignCenter);
 
     setLayout(layout);
 
@@ -134,10 +135,12 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
         hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
         std::string orientation = hGrp->GetASCII("TabBarOrientation", "North");
 
-        tabBar->setShape(orientation == "North" ? QTabBar::RoundedNorth :
-            orientation == "South" ? QTabBar::RoundedSouth :
-            orientation == "East" ? QTabBar::RoundedEast :
-            QTabBar::RoundedWest);
+        setToolBarArea(
+            orientation == "North" ? Gui::ToolBarArea::TopToolBarArea :
+            orientation == "South" ? Gui::ToolBarArea::BottomToolBarArea :
+            orientation == "East" ? Gui::ToolBarArea::LeftToolBarArea :
+            Gui::ToolBarArea::RightToolBarArea
+        );
     }
 
     tabBar->setDocumentMode(true);
@@ -145,48 +148,91 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
     tabBar->setDrawBase(true);
     tabBar->setIconSize(QSize(16, 16));
 
-    refreshList(aGroup->getEnabledWbActions());
+    updateWorkbenchList();
  
-    connect(aGroup, &WorkbenchGroup::workbenchListRefreshed, this, &WorkbenchTabWidget::refreshList);
-    connect(aGroup->groupAction(), &QActionGroup::triggered, this, [this](QAction* action) {
-        if (wbActionGroup->getDisabledWbActions().contains(action)) {
-            if (additionalWorkbenchAction == action) {
-                return;
-            }
+    connect(aGroup, &WorkbenchGroup::workbenchListRefreshed, this, &WorkbenchTabWidget::updateWorkbenchList);
+    connect(aGroup->groupAction(), &QActionGroup::triggered, this, &WorkbenchTabWidget::handleWorkbenchSelection);
+    connect(tabBar, &QTabBar::currentChanged, this, &WorkbenchTabWidget::handleTabChange);
 
-            if (additionalWorkbenchAction) {
-                tabBar->removeTab(tabBar->count() - 1);
-            }
-
-            additionalWorkbenchAction = action;
-
-            addWorkbenchTab(action);
-            tabBar->setCurrentIndex(tabBar->count() - 1);
-
-            return;
-        }
-
-        tabBar->setCurrentIndex(actionToTabIndex[action]);
-    });
-
-    connect(tabBar, qOverload<int>(&QTabBar::currentChanged), aGroup, [this](int index) {
-        tabIndexToAction[index]->trigger();
-
-        if (index != tabBar->count() - 1 && additionalWorkbenchAction) {
-            tabBar->removeTab(tabBar->count() - 1);
-            additionalWorkbenchAction = nullptr;
-        }
-    });
-
-    if (parent->inherits("QToolBar")) {
-        // Connect toolbar orientation changed
-        QToolBar* tb = qobject_cast<QToolBar*>(parent);
-        connect(tb, &QToolBar::topLevelChanged, this, &WorkbenchTabWidget::updateLayoutAndTabOrientation);
+    if (auto toolBar = qobject_cast<QToolBar*>(parent)) {
+        connect(toolBar, &QToolBar::topLevelChanged, this, &WorkbenchTabWidget::updateLayout);
+        connect(toolBar, &QToolBar::orientationChanged, this, &WorkbenchTabWidget::updateLayout);
     }
 }
 
-void WorkbenchTabWidget::refreshList(QList<QAction*> actionList)
+void WorkbenchTabWidget::updateLayout() 
 {
+    if (!parentWidget()) {
+        setToolBarArea(Gui::ToolBarArea::TopToolBarArea);
+        return;
+    }
+
+    if (auto toolBar = qobject_cast<QToolBar*>(parentWidget())) {
+        setSizePolicy(toolBar->sizePolicy());
+        tabBar->setSizePolicy(toolBar->sizePolicy());
+
+        if (toolBar->isFloating()) {
+            setToolBarArea(toolBar->orientation() == Qt::Horizontal ? Gui::ToolBarArea::TopToolBarArea : Gui::ToolBarArea::LeftToolBarArea);
+            return;
+        }
+    }
+
+    auto toolBarArea = Gui::ToolBarManager::getInstance()->toolBarArea(parentWidget());
+
+    setToolBarArea(toolBarArea);
+}
+
+void WorkbenchTabWidget::handleWorkbenchSelection(QAction* selectedWorkbenchAction) 
+{
+    if (wbActionGroup->getDisabledWbActions().contains(selectedWorkbenchAction)) {
+        if (additionalWorkbenchAction == selectedWorkbenchAction) {
+            return;
+        }
+
+        if (additionalWorkbenchAction) {
+            tabBar->removeTab(tabBar->count() - 1);
+        }
+
+        additionalWorkbenchAction = selectedWorkbenchAction;
+
+        addWorkbenchTab(selectedWorkbenchAction);
+        tabBar->setCurrentIndex(tabBar->count() - 1);
+
+        return;
+    }
+
+    updateLayout();
+
+    tabBar->setCurrentIndex(actionToTabIndex[selectedWorkbenchAction]);
+}
+
+void WorkbenchTabWidget::handleTabChange(int selectedTabIndex)
+{
+    // Prevents from rapid workbench changes on initialization as this can cause
+    // some serious race conditions.
+    if (isInitializing) {
+        return;
+    }
+
+    if (tabIndexToAction.find(selectedTabIndex) != tabIndexToAction.end()) {
+        tabIndexToAction[selectedTabIndex]->trigger();
+    }
+
+    if (selectedTabIndex != tabBar->count() - 1 && additionalWorkbenchAction) {
+        tabBar->removeTab(tabBar->count() - 1);
+        additionalWorkbenchAction = nullptr;
+    }
+
+    adjustSize();
+}
+
+void WorkbenchTabWidget::updateWorkbenchList()
+{
+    // As clearing and adding tabs can cause changing current tab in QTabBar.
+    // This in turn will cause workbench to change, so we need to prevent 
+    // processing of such events until the QTabBar is fully prepared.
+    Base::StateLocker lock(isInitializing);
+
     actionToTabIndex.clear();
 
     // tabs->clear() (QTabBar has no clear)
@@ -194,7 +240,7 @@ void WorkbenchTabWidget::refreshList(QList<QAction*> actionList)
         tabBar->removeTab(i);
     }
 
-    for (QAction* action : actionList) {
+    for (QAction* action : wbActionGroup->getEnabledWbActions()) {
         addWorkbenchTab(action);
     }
 
@@ -203,6 +249,7 @@ void WorkbenchTabWidget::refreshList(QList<QAction*> actionList)
     }
 
     buildPrefMenu();
+    adjustSize();
 }
 
 void WorkbenchTabWidget::addWorkbenchTab(QAction* action)
@@ -211,8 +258,10 @@ void WorkbenchTabWidget::addWorkbenchTab(QAction* action)
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
     int itemStyleIndex = hGrp->GetInt("WorkbenchSelectorItem", 0);
 
-    actionToTabIndex[action] = tabBar->count();
-    tabIndexToAction[tabBar->count()] = action;
+    auto  tabIndex = tabBar->count();
+
+    actionToTabIndex[action] = tabIndex;
+    tabIndexToAction[tabIndex] = action;
 
     QIcon icon = action->icon();
     if (icon.isNull() || itemStyleIndex == 2) {
@@ -225,48 +274,48 @@ void WorkbenchTabWidget::addWorkbenchTab(QAction* action)
         tabBar->addTab(icon, action->text());
     }
 
-    tabBar->setTabToolTip(tabBar->count() - 1, action->toolTip());
+    tabBar->setTabToolTip(tabIndex, action->toolTip());
 
     if (action->isChecked()) {
-        tabBar->setCurrentIndex(tabBar->count() - 1);
+        tabBar->setCurrentIndex(tabIndex);
     }
 }
 
-void WorkbenchTabWidget::updateLayoutAndTabOrientation(bool floating)
+void WorkbenchTabWidget::setToolBarArea(Gui::ToolBarArea area)
 {
-    auto parent = parentWidget();
-    if (!parent || !parent->inherits("QToolBar")) {
-        return;
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
+
+    switch (area) {
+        case Gui::ToolBarArea::LeftToolBarArea: 
+        case Gui::ToolBarArea::RightToolBarArea: {
+            layout->setDirection(QBoxLayout::TopToBottom);
+            tabBar->setShape(area == Gui::ToolBarArea::LeftToolBarArea ? QTabBar::RoundedWest : QTabBar::RoundedEast);
+            hGrp->SetASCII("TabBarOrientation", area == Gui::ToolBarArea::LeftToolBarArea ? "West" : "East");
+            break;
+        }
+
+        case Gui::ToolBarArea::TopToolBarArea:
+        case Gui::ToolBarArea::BottomToolBarArea:
+        case Gui::ToolBarArea::LeftMenuToolBarArea:
+        case Gui::ToolBarArea::RightMenuToolBarArea:
+        case Gui::ToolBarArea::StatusBarToolBarArea: {
+            layout->setDirection(QBoxLayout::LeftToRight);
+
+            bool isTop = 
+                area == Gui::ToolBarArea::TopToolBarArea ||
+                area == Gui::ToolBarArea::LeftMenuToolBarArea ||
+                area == Gui::ToolBarArea::RightMenuToolBarArea;
+
+            tabBar->setShape(isTop ? QTabBar::RoundedNorth : QTabBar::RoundedSouth);
+            hGrp->SetASCII("TabBarOrientation", isTop ? "North" : "South");
+            break;
+        }
+        default:
+            // no-op
+            break;
     }
 
-    ParameterGrp::handle hGrp = App::GetApplication()
-        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
-
-    Qt::ToolBarArea area;
-    parent = parent->parentWidget();
-
-    if (floating) {
-        area = Qt::TopToolBarArea;
-    }
-    else if (parent && parent->parentWidget() == getMainWindow()->statusBar()) {
-        area = Qt::BottomToolBarArea;
-    }
-    else if (parent && parent->parentWidget() == getMainWindow()->menuBar()) {
-        area = Qt::TopToolBarArea;
-    }
-    else {
-        QToolBar* tb = qobject_cast<QToolBar*>(parentWidget());
-        area = getMainWindow()->toolBarArea(tb);
-    }
-
-    if (area == Qt::LeftToolBarArea || area == Qt::RightToolBarArea) {
-        tabBar->setShape(area == Qt::LeftToolBarArea ? QTabBar::RoundedWest : QTabBar::RoundedEast);
-        hGrp->SetASCII("TabBarOrientation", area == Qt::LeftToolBarArea ? "West" : "East");
-    }
-    else {
-        tabBar->setShape(area == Qt::TopToolBarArea ? QTabBar::RoundedNorth : QTabBar::RoundedSouth);
-        hGrp->SetASCII("TabBarOrientation", area == Qt::TopToolBarArea ? "North" : "South");
-    }
+    adjustSize();
 }
 
 void WorkbenchTabWidget::buildPrefMenu()
@@ -292,6 +341,13 @@ void WorkbenchTabWidget::buildPrefMenu()
         cDlg.activateGroupPage(QString::fromUtf8("Workbenches"), 0);
         cDlg.exec();
     });
+}
+
+void WorkbenchTabWidget::adjustSize()
+{
+    QWidget::adjustSize();
+
+    parentWidget()->adjustSize();
 }
 
 #include "moc_WorkbenchSelector.cpp"
