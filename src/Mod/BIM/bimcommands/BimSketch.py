@@ -50,6 +50,7 @@ class BIM_Sketch:
             return False
 
     def Activated(self):
+        from draftutils import params
         issnap = False
         if hasattr(FreeCAD, "DraftWorkingPlane"):
             FreeCAD.DraftWorkingPlane.setup()
@@ -64,6 +65,9 @@ class BIM_Sketch:
             sk.ViewObject.GridSize = s
             sk.ViewObject.GridSnap = True
         sk.MapMode = "Deactivated"
+        sk.ViewObject.LineColor = params.get_param_view("DefaultShapeLineColor")
+        sk.ViewObject.PointColor = params.get_param_view("DefaultShapeLineColor")
+        sk.ViewObject.LineWidth = params.get_param_view("DefaultShapeLineWidth")
         p = FreeCAD.DraftWorkingPlane.getPlacement()
         p.Base = FreeCAD.DraftWorkingPlane.position
         sk.Placement = p

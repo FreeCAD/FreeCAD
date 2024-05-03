@@ -30,6 +30,7 @@ import FreeCADGui
 from draftguitools import gui_shape2dview
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+translate = FreeCAD.Qt.translate
 
 
 class BIM_Shape2DView(gui_shape2dview.Shape2DView):
@@ -39,6 +40,51 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
         d["Pixmap"] = "Arch_BuildingPart_Tree"
         d["MenuText"] = QT_TRANSLATE_NOOP("BIM_Shape2DView", "Shape-based view")
         return d
+
+    def proceed(self):
+        """Proceed with the command if one object was selected."""
+        # difference from Draft: it sets InPlace to False
+        import DraftVecUtils
+        if self.call is not None:
+            self.end_callbacks(self.call)
+        faces = []
+        objs = []
+        view = FreeCADGui.ActiveDocument.ActiveView
+        vec = view.getViewDirection().negative()
+        sel = FreeCADGui.Selection.getSelectionEx()
+        for s in sel:
+            objs.append(s.Object)
+            for e in s.SubElementNames:
+                if "Face" in e:
+                    faces.append(int(e[4:]) - 1)
+        # print(objs, faces)
+        commitlist = []
+        FreeCADGui.addModule("Draft")
+        if len(objs) == 1 and faces:
+            _cmd = "Draft.make_shape2dview"
+            _cmd += "("
+            _cmd += "FreeCAD.ActiveDocument." + objs[0].Name + ", "
+            _cmd += DraftVecUtils.toString(vec) + ", "
+            _cmd += "facenumbers=" + str(faces)
+            _cmd += ")"
+            commitlist.append("sv = " + _cmd)
+            commitlist.append("sv.InPlace = False")
+        else:
+            n = 0
+            for o in objs:
+                _cmd = "Draft.make_shape2dview"
+                _cmd += "("
+                _cmd += "FreeCAD.ActiveDocument." + o.Name + ", "
+                _cmd += DraftVecUtils.toString(vec)
+                _cmd += ")"
+                commitlist.append("sv" + str(n) + " = " + _cmd)
+                commitlist.append("sv" + str(n) + ".InPlace = False")
+                n += 1
+        if commitlist:
+            commitlist.append("FreeCAD.ActiveDocument.recompute()")
+            self.commit(translate("draft", "Create 2D view"),
+                        commitlist)
+        self.finish()
 
 
 FreeCADGui.addCommand("BIM_Shape2DView", BIM_Shape2DView())
