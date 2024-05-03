@@ -31,7 +31,7 @@
 #endif
 
 #include "ThemeSelectorWidget.h"
-#include <3rdParty/GSL/include/gsl/pointers>
+#include <gsl/pointers>
 #include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/PreferencePackManager.h>
