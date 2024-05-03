@@ -229,3 +229,65 @@ std::vector<App::DocumentObject*> MeasureDistance::getSubject() const
     return {Element1.getValue()};
 }
 
+
+
+PROPERTY_SOURCE(Measure::MeasureDistanceDetached, Measure::MeasureBase)
+
+MeasureDistanceDetached::MeasureDistanceDetached()
+{
+    ADD_PROPERTY_TYPE(Distance,(0.0),"Measurement",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+                                            "Distance between the two elements");
+    Distance.setUnit(Base::Unit::Length);
+
+    ADD_PROPERTY_TYPE(Position1,(Base::Vector3d(0.0,0.0,0.0)),"Measurement", App::Prop_None, "Position1");
+    ADD_PROPERTY_TYPE(Position2,(Base::Vector3d(0.0,1.0,0.0)),"Measurement", App::Prop_None, "Position2");
+}
+
+MeasureDistanceDetached::~MeasureDistanceDetached() = default;
+
+
+bool MeasureDistanceDetached::isValidSelection(const App::MeasureSelection& selection){
+    return selection.size() == 2;
+}
+
+void MeasureDistanceDetached::parseSelection(const App::MeasureSelection& selection) {
+    auto sel1 = selection.at(0);
+    auto sel2 = selection.at(1);
+    
+    Position1.setValue(sel1.pickedPoint);
+    Position2.setValue(sel2.pickedPoint);
+}
+
+
+App::DocumentObjectExecReturn *MeasureDistanceDetached::execute()
+{
+    recalculateDistance();
+    return DocumentObject::StdReturn;
+}
+
+void MeasureDistanceDetached::recalculateDistance()
+{
+    auto delta = Position1.getValue() - Position2.getValue();
+    Distance.setValue(delta.Length());
+}
+
+void MeasureDistanceDetached::onChanged(const App::Property* prop)
+{
+    if (isRestoring() || isRemoving()) {
+        return;
+    }
+
+    if (prop == &Position1 || prop == &Position2) {
+        recalculateDistance();
+    }
+    
+    MeasureBase::onChanged(prop);
+}
+
+
+std::vector<App::DocumentObject*> MeasureDistanceDetached::getSubject() const
+{
+    return {};
+}
+
+

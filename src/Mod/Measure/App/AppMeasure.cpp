@@ -97,6 +97,7 @@ PyMOD_INIT_FUNC(Measure)
     Measure::MeasurePython          ::init();
     Measure::MeasureAngle           ::init();
     Measure::MeasureDistance        ::init();
+    Measure::MeasureDistanceDetached::init();
     Measure::MeasurePosition        ::init();
     Measure::MeasureLength          ::init();
     Measure::MeasureArea            ::init();
@@ -110,6 +111,13 @@ PyMOD_INIT_FUNC(Measure)
                        MeasureDistance::isValidSelection,
                        MeasureDistance::isPrioritizedSelection
         );
+
+    App::MeasureManager::addMeasureType("DISTANCEFREE",
+                    "Distance Free",
+                    "Measure::MeasureDistanceDetached",
+                    MeasureDistanceDetached::isValidSelection,
+                    nullptr
+    );
 
     App::MeasureManager::addMeasureType(
             "ANGLE",

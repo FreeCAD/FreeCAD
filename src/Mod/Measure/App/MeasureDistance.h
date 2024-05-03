@@ -81,6 +81,47 @@ private:
     void onChanged(const App::Property* prop) override;
 };
 
+
+
+
+
+class MeasureExport MeasureDistanceDetached : public Measure::MeasureBase
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureDistanceDetached);
+
+public:
+    /// Constructor
+    MeasureDistanceDetached();
+    ~MeasureDistanceDetached() override;
+
+    App::PropertyDistance Distance;
+
+    App::PropertyVector Position1;
+    App::PropertyVector Position2;
+
+    App::DocumentObjectExecReturn *execute() override;
+    void recalculateDistance();
+
+    const char* getViewProviderName() const override {
+        return "MeasureGui::ViewProviderMeasureDistance";
+    }
+
+    static bool isValidSelection(const App::MeasureSelection& selection);
+    void parseSelection(const App::MeasureSelection& selection) override;
+
+    std::vector<std::string> getInputProps() override {return {"Position1", "Position2"};}
+    App::Property* getResultProp() override {return &this->Distance;}
+
+    // Return the object we are measuring
+    std::vector<App::DocumentObject*> getSubject() const override;
+
+
+private:
+    void onChanged(const App::Property* prop) override;
+
+};
+
+
 } //namespace Measure
 
 
