@@ -332,6 +332,7 @@ class _ArchSchedule:
                     q = None
                     if obj.Unit[i]:
                         unit = obj.Unit[i]
+                        unit = unit.replace("^","")  # get rid of existing power symbol
                         unit = unit.replace("2","^2")
                         unit = unit.replace("3","^3")
                         unit = unit.replace("²","^2")
