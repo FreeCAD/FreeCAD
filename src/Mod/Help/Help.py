@@ -49,7 +49,7 @@ Preferences keys (in "User parameter:BaseApp/Preferences/Mod/Help"):
     Location (string): offline location
     Suffix (string): a suffix to add to the URL, ex: /fr
     StyleSheet (string): optional CSS stylesheet to style the output
-    
+
 Defaults are to open the wiki in the desktop browser
 """
 
@@ -112,13 +112,13 @@ def show(page, view=None, conv=None):
     pagename = os.path.basename(page.replace("_", " ").replace(".md", ""))
     title = translate("Help", "Help") + ": " + pagename
     if FreeCAD.GuiUp:
-        if PREFS.GetBool("optionTab", False) and get_qtwebwidgets():  
+        if PREFS.GetBool("optionTab", False) and get_qtwebwidgets():
             # MDI tab
             show_tab(html, baseurl, title, view)
-        elif PREFS.GetBool("optionDialog", False)  and get_qtwebwidgets():
+        elif PREFS.GetBool("optionDialog", False) and get_qtwebwidgets():
             # floating dock window
             show_dialog(html, baseurl, title, view)
-        else:  
+        else:
             # desktop web browser - default
             show_browser(location)
     else:
@@ -237,7 +237,7 @@ def show_tab(html, baseurl, title, view=None):
         view.setHtml(html, baseUrl=QtCore.QUrl(baseurl))
         view.parent().parent().setWindowTitle(title)
     else:
-        openBrowserHTML(html,baseurl,title,ICON)
+        openBrowserHTML(html, baseurl, title, ICON)
 
 
 def get_qtwebwidgets():
