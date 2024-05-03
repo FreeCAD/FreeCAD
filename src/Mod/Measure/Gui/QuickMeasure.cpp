@@ -90,15 +90,17 @@ void QuickMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 
     MeasureType mtype = measurement->getType();
-    if (mtype == MeasureType::Volumes) {
-        Base::Quantity area(measurement->area(), Base::Unit::Area);
-        Base::Quantity vol(measurement->volume(), Base::Unit::Volume);
-        print(tr("Volume: %1, Area: %2").arg(vol.getSafeUserString()).arg(area.getSafeUserString()));
-    }
-    else if (mtype == MeasureType::Surfaces) {
+    if (mtype == MeasureType::Surfaces) {
         Base::Quantity area(measurement->area(), Base::Unit::Area);
         print(tr("Total area: %1").arg(area.getUserString()));
     }
+    /* deactivated because computing the volumes/area of solids makes a significant
+    slow down in selection of complex solids.
+    else if (mtype == MeasureType::Volumes) {
+        Base::Quantity area(measurement->area(), Base::Unit::Area);
+        Base::Quantity vol(measurement->volume(), Base::Unit::Volume);
+        print(tr("Volume: %1, Area: %2").arg(vol.getSafeUserString()).arg(area.getSafeUserString()));
+    }*/
     else if (mtype == MeasureType::TwoPlanes) {
         Base::Quantity dist(measurement->planePlaneDistance(), Base::Unit::Length);
         print(tr("Nominal distance: %1").arg(dist.getSafeUserString()));
