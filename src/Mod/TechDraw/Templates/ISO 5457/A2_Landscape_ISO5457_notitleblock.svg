@@ -5,70 +5,71 @@
    height="420mm"
    viewBox="0 0 594 420"
    version="1.1"
-   id="svg1"
+   id="svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:freecad="https://www.freecadweb.org/wiki/index.php?title=Svg_Namespace">
-  <title id="title1">Drawing sheet ISO 5457 - A2T</title>
-  <metadata id="metadata1">
+  <title id="title">Drawing sheet ISO 5457 - A2T</title>
+  <metadata id="metadata">
     <rdf:RDF>
-      <cc:Work rdf:about=""><dc:title>Drawing sheet ISO 5457 - A2T</dc:title>
-       <cc:license rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+      <cc:Work rdf:about="">
+        <cc:license rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:title>Drawing sheet ISO 5457 - A2T</dc:title>
       </cc:Work>
-      <cc:License  rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
-       <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction" />
-       <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution" />
-       <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      <cc:License rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
       </cc:License>
     </rdf:RDF>
   </metadata>
-  <rect id="Drawing space frame" x="20" y="10" width="564" height="400" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round" />
-  <g id="Centring marks" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round">
-    <path id="Top"    d="m 297,5 v 10" />
-    <path id="Right"  d="m 589,210 h -10" />
-    <path id="Bottom" d="m 297,415 v -10" />
-    <path id="Left"   d="m 15,210 h 10" />
+  <rect id="drawing_space_frame" x="20" y="10" width="564" height="400" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round" />
+  <g id="centring_marks" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round">
+    <path id="top_centering" d="m 297,5 v 10" />
+    <path id="right_centering" d="m 589,210 h -10" />
+    <path id="bottom_centering" d="m 297,415 v -10" />
+    <path id="left_centering" d="m 15,210 h 10" />
   </g>
-  <g id="Grid reference system">
-    <g id="Grid reference borders" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round">
-      <rect id="Grid reference border" x="15" y="5" width="574" height="410" />
-      <path id="path14" d="m 347,5 v 5" />
-      <path id="path15" d="m 397,5 v 5" />
-      <path id="path16" d="m 447,5 v 5" />
-      <path id="path17" d="m 497,5 v 5" />
-      <path id="path18" d="m 547,5 v 5" />
-      <path id="path19" d="m 247,5 v 5" />
-      <path id="path20" d="m 197,5 v 5" />
-      <path id="path21" d="m 147,5 v 5" />
-      <path id="path22" d="m 97,5 v 5" />
-      <path id="path23" d="m 47,5 v 5" />
-      <path id="path25" d="m 15,160 h 5" />
-      <path id="path26" d="m 15,110 h 5" />
-      <path id="path27" d="m 15,60 h 5" />
-      <path id="path28" d="m 15,260 h 5" />
-      <path id="path29" d="m 15,310 h 5" />
-      <path id="path30" d="m 15,360 h 5" />
-      <path id="path33" d="m 584,160 h 5" />
-      <path id="path35" d="m 584,110 h 5" />
-      <path id="path37" d="m 584,60 h 5" />
-      <path id="path39" d="m 584,260 h 5" />
-      <path id="path41" d="m 584,310 h 5" />
-      <path id="path43" d="m 584,360 h 5" />
-      <path id="path47" d="m 247,410 v 5" />
-      <path id="path49" d="m 197,410 v 5" />
-      <path id="path51" d="m 147,410 v 5" />
-      <path id="path53" d="m 97,410 v 5" />
-      <path id="path55" d="m 47,410 v 5" />
-      <path id="path58" d="m 347,410 v 5" />
-      <path id="path60" d="m 397,410 v 5" />
-      <path id="path62" d="m 447,410 v 5" />
-      <path id="path64" d="m 497,410 v 5" />
-      <path id="path67" d="m 547,410 v 5" />
+  <g id="grid_reference_system">
+    <g id="grid_reference_borders" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round">
+      <rect id="grid_reference_border"  x="15" y="5" width="574" height="410" />
+      <path id="upper_border_1" d="m 47,5 v 5"/>
+      <path id="upper_border_2" d="m 97,5 v 5"/>
+      <path id="upper_border_3" d="m 147,5 v 5"/>
+      <path id="upper_border_4" d="m 197,5 v 5"/>
+      <path id="upper_border_5" d="m 247,5 v 5"/>
+      <path id="upper_border_7" d="m 347,5 v 5"/>
+      <path id="upper_border_8" d="m 397,5 v 5"/>
+      <path id="upper_border_9" d="m 447,5 v 5"/>
+      <path id="upper_border_10" d="m 497,5 v 5"/>
+      <path id="upper_border_11" d="m 547,5 v 5"/>
+      <path id="right_border_1" d="m 589,60 h -5"/>
+      <path id="right_border_2" d="m 589,110 h -5"/>
+      <path id="right_border_3" d="m 589,160 h -5"/>
+      <path id="right_border_5" d="m 589,260 h -5"/>
+      <path id="right_border_6" d="m 589,310 h -5"/>
+      <path id="right_border_7" d="m 589,360 h -5"/>
+      <path id="lower_border_1" d="m 47,415 v -5"/>
+      <path id="lower_border_2" d="m 97,415 v -5"/>
+      <path id="lower_border_3" d="m 147,415 v -5"/>
+      <path id="lower_border_4" d="m 197,415 v -5"/>
+      <path id="lower_border_5" d="m 247,415 v -5"/>
+      <path id="lower_border_7" d="m 347,415 v -5"/>
+      <path id="lower_border_8" d="m 397,415 v -5"/>
+      <path id="lower_border_9" d="m 447,415 v -5"/>
+      <path id="lower_border_10" d="m 497,415 v -5"/>
+      <path id="lower_border_11" d="m 547,415 v -5"/>
+      <path id="left_border_1" d="m 15,60 h 5"/>
+      <path id="left_border_2" d="m 15,110 h 5"/>
+      <path id="left_border_3" d="m 15,160 h 5"/>
+      <path id="left_border_5" d="m 15,260 h 5"/>
+      <path id="left_border_6" d="m 15,310 h 5"/>
+      <path id="left_border_7" d="m 15,360 h 5"/>
     </g>
-    <g id="Grid reference markers" style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">
+    <g id="grid_reference_markers" style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">
       <text id="upper_marker_1" x="22" y="8.8">1</text>
       <text id="upper_marker_2" x="72" y="8.8">2</text>
       <text id="upper_marker_3" x="122" y="8.8">3</text>
@@ -111,10 +112,10 @@
       <text id="left_marker_8" x="17.5" y="386.3">H</text>
     </g>
   </g>
-  <g id="Trimming marks" style="fill:#000000;stroke:none">
-    <path id="Top left"     d="m 0,0 h 10 v 5 h -5 v 5 h -5 z" />
-    <path id="Top right"    d="m 594,0 h -10 v 5 h 5 v 5 h 5 z" />
-    <path id="Bottom right" d="m 594,420 h -10 v -5 h 5 v -5 h 5 z" />
-    <path id="Bottom left"  d="m 0,420 h 10 v -5 h -5 v -5 h -5 z" />
+  <g id="trimming_marks" style="fill:#000000;stroke:none">
+    <path id="top_left_trimming" d="m 0,0 h 10 v 5 h -5 v 5 h -5 z" />
+    <path id="top_right_trimming" d="m 594,0 h -10 v 5 h 5 v 5 h 5 z" />
+    <path id="bottom_right_trimming" d="m 594,420 h -10 v -5 h 5 v -5 h 5 z" />
+    <path id="bottom_left_trimming" d="m 0,420 h 10 v -5 h -5 v -5 h -5 z" />
   </g>
 </svg>

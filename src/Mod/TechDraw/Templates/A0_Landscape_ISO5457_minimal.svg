@@ -5,19 +5,24 @@
    height="841mm"
    viewBox="0 0 1189 841"
    version="1.1"
-   id="svg1"
+   id="svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:freecad="https://www.freecadweb.org/wiki/index.php?title=Svg_Namespace">
-  <title id="title1">Drawing sheet ISO 5457 - A0T</title>
-  <metadata id="metadata1">
+  <title id="title">Drawing sheet ISO 5457 - A0T - Minimal</title>
+  <metadata id="metadata">
     <rdf:RDF>
       <cc:Work rdf:about="">
         <cc:license rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
-        <dc:title>Drawing sheet ISO 5457 - A0T</dc:title>
+        <dc:title>Drawing sheet ISO 5457 - A0T - Minimal</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Benjamin May</dc:title>
+          </cc:Agent>
+        </dc:creator>
       </cc:Work>
       <cc:License rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
         <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction" />
@@ -26,90 +31,90 @@
       </cc:License>
     </rdf:RDF>
   </metadata>
-  <rect id="Drawing space frame" x="20" y="10" width="1159" height="821" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round" />
-  <g id="Centring marks" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round">
-    <path id="Top"    d="m 594.5,5 v 10" />
-    <path id="Right"  d="m 1184,420.5 h -10" />
-    <path id="Bottom" d="m 594.5,836 v -10"  />
-    <path id="Left"   d="m 15,420.5 h 10" />
+  <rect id="drawing_space_frame" x="20" y="10" width="1159" height="821" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round" />
+  <g id="centring_marks" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round">
+    <path id="top_centering" d="m 594.5,5 v 10" />
+    <path id="right_centering" d="m 1184,420.5 h -10" />
+    <path id="bottom_centering" d="m 594.5,836 v -10"  />
+    <path id="left_centering" d="m 15,420.5 h 10" />
   </g>
-  <g id="Grid reference system">
-    <g id="Grid reference borders" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round">
-      <rect id="Grid reference border"  x="15" y="5" width="1169" height="831" />
-      <path id="path17" d="m 15,370.5 h 5" />
-      <path id="path18" d="m 15,320.5 h 5" />
-      <path id="path19" d="m 15,270.5 h 5" />
-      <path id="path20" d="m 15,220.5 h 5" />
-      <path id="path21" d="m 15,170.5 h 5" />
-      <path id="path22" d="m 15,120.5 h 5" />
-      <path id="path23" d="m 15,70.5 h 5" />
-      <path id="path25" d="m 15,770.5 h 5" />
-      <path id="path26" d="m 15,720.5 h 5" />
-      <path id="path27" d="m 15,670.5 h 5" />
-      <path id="path28" d="m 15,620.5 h 5" />
-      <path id="path29" d="m 15,570.5 h 5" />
-      <path id="path30" d="m 15,520.5 h 5" />
-      <path id="path31" d="m 15,470.5 h 5" />
-      <path id="path33" d="m 1179,370.5 h 5" />
-      <path id="path34" d="m 1179,320.5 h 5" />
-      <path id="path35" d="m 1179,270.5 h 5" />
-      <path id="path36" d="m 1179,220.5 h 5" />
-      <path id="path37" d="m 1179,170.5 h 5" />
-      <path id="path38" d="m 1179,120.5 h 5" />
-      <path id="path39" d="m 1179,70.5 h 5" />
-      <path id="path41" d="m 1179,770.5 h 5" />
-      <path id="path42" d="m 1179,720.5 h 5" />
-      <path id="path43" d="m 1179,670..5 h 5" />
-      <path id="path44" d="m 1179,620..5 h 5" />
-      <path id="path45" d="m 1179,570.5 h 5" />
-      <path id="path46" d="m 1179,520.5 h 5" />
-      <path id="path47" d="m 1179,470.5 h 5" />
-      <path id="path49" d="m 544.5,5 v 5" />
-      <path id="path50" d="m 494.5,5 v 5" />
-      <path id="path51" d="m 444.5,5 v 5" />
-      <path id="path52" d="m 394.5,5 v 5" />
-      <path id="path53" d="m 344.5,5 v 5" />
-      <path id="path54" d="m 294.5,5 v 5" />
-      <path id="path55" d="m 244.5,5 v 5" />
-      <path id="path56" d="m 194.5,5 v 5" />
-      <path id="path57" d="M 144.5,5 v 5" />
-      <path id="path58" d="M 94.57,5 v 5" />
-      <path id="path59" d="M 44.52,5 v 5" />
-      <path id="path61" d="m 1144.5,5 v 5" />
-      <path id="path62" d="m 1094.5,5 v 5" />
-      <path id="path63" d="m 1044.5,5 v 5" />
-      <path id="path64" d="m 994.5,5 v 5" />
-      <path id="path65" d="m 944.5,5 v 5" />
-      <path id="path66" d="m 894.5,5 v 5" />
-      <path id="path67" d="m 844.5,5 v 5" />
-      <path id="path68" d="m 794.5,5 v 5" />
-      <path id="path69" d="m 744.5,5 v 5" />
-      <path id="path70" d="m 694.5,5 v 5" />
-      <path id="path71" d="m 644.5,5 v 5" />
-      <path id="path73" d="m 544.5,831 v 5" />
-      <path id="path74" d="m 494.5,831 v 5" />
-      <path id="path77" d="m 444.5,831 v 5" />
-      <path id="path79" d="m 394.5,831 v 5" />
-      <path id="path81" d="m 344.5,831 v 5" />
-      <path id="path83" d="m 294.5,831 v 5" />
-      <path id="path85" d="m 244.5,831 v 5" />
-      <path id="path87" d="m 194.5,831 v 5" />
-      <path id="path89" d="m 144.5,831 v 5" />
-      <path id="path91" d="m 94.57,831 v 5" />
-      <path id="path93" d="m 44.52,831 v 5" />
-      <path id="path96" d="m 1144.5,831 v 5" />
-      <path id="path98" d="m 1094.5,831 v 5" />
-      <path id="path100" d="m 1044.5,831 v 5" />
-      <path id="path102" d="m 994.5,831 v 5" />
-      <path id="path104" d="m 944.5,831 v 5" />
-      <path id="path106" d="m 894.5,831 v 5" />
-      <path id="path108" d="m 844.5,831 v 5" />
-      <path id="path110" d="m 794.5,831 v 5" />
-      <path id="path112" d="m 744.5,831 v 5" />
-      <path id="path114" d="m 694.5,831 v 5" />
-      <path id="path116" d="m 644.5,831 v 5" />
+  <g id="grid_reference_system">
+    <g id="grid_reference_borders" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round">
+      <rect id="grid_reference_border"  x="15" y="5" width="1169" height="831" />
+      <path id="upper_border_1" d="m 44.5,5 v 5"/>
+      <path id="upper_border_2" d="m 94.5,5 v 5"/>
+      <path id="upper_border_3" d="m 144.5,5 v 5"/>
+      <path id="upper_border_4" d="m 194.5,5 v 5"/>
+      <path id="upper_border_5" d="m 244.5,5 v 5"/>
+      <path id="upper_border_6" d="m 294.5,5 v 5"/>
+      <path id="upper_border_7" d="m 344.5,5 v 5"/>
+      <path id="upper_border_8" d="m 394.5,5 v 5"/>
+      <path id="upper_border_9" d="m 444.5,5 v 5"/>
+      <path id="upper_border_10" d="m 494.5,5 v 5"/>
+      <path id="upper_border_11" d="m 544.5,5 v 5"/>
+      <path id="upper_border_13" d="m 644.5,5 v 5"/>
+      <path id="upper_border_14" d="m 694.5,5 v 5"/>
+      <path id="upper_border_15" d="m 744.5,5 v 5"/>
+      <path id="upper_border_16" d="m 794.5,5 v 5"/>
+      <path id="upper_border_17" d="m 844.5,5 v 5"/>
+      <path id="upper_border_18" d="m 894.5,5 v 5"/>
+      <path id="upper_border_19" d="m 944.5,5 v 5"/>
+      <path id="upper_border_20" d="m 994.5,5 v 5"/>
+      <path id="upper_border_21" d="m 1044.5,5 v 5"/>
+      <path id="upper_border_22" d="m 1094.5,5 v 5"/>
+      <path id="upper_border_23" d="m 1144.5,5 v 5"/>
+      <path id="right_border_1" d="m 1184,70.5 h -5"/>
+      <path id="right_border_2" d="m 1184,120.5 h -5"/>
+      <path id="right_border_3" d="m 1184,170.5 h -5"/>
+      <path id="right_border_4" d="m 1184,220.5 h -5"/>
+      <path id="right_border_5" d="m 1184,270.5 h -5"/>
+      <path id="right_border_6" d="m 1184,320.5 h -5"/>
+      <path id="right_border_7" d="m 1184,370.5 h -5"/>
+      <path id="right_border_9" d="m 1184,470.5 h -5"/>
+      <path id="right_border_10" d="m 1184,520.5 h -5"/>
+      <path id="right_border_11" d="m 1184,570.5 h -5"/>
+      <path id="right_border_12" d="m 1184,620.5 h -5"/>
+      <path id="right_border_13" d="m 1184,670.5 h -5"/>
+      <path id="right_border_14" d="m 1184,720.5 h -5"/>
+      <path id="right_border_15" d="m 1184,770.5 h -5"/>
+      <path id="lower_border_1" d="m 44.5,836 v -5"/>
+      <path id="lower_border_2" d="m 94.5,836 v -5"/>
+      <path id="lower_border_3" d="m 144.5,836 v -5"/>
+      <path id="lower_border_4" d="m 194.5,836 v -5"/>
+      <path id="lower_border_5" d="m 244.5,836 v -5"/>
+      <path id="lower_border_6" d="m 294.5,836 v -5"/>
+      <path id="lower_border_7" d="m 344.5,836 v -5"/>
+      <path id="lower_border_8" d="m 394.5,836 v -5"/>
+      <path id="lower_border_9" d="m 444.5,836 v -5"/>
+      <path id="lower_border_10" d="m 494.5,836 v -5"/>
+      <path id="lower_border_11" d="m 544.5,836 v -5"/>
+      <path id="lower_border_13" d="m 644.5,836 v -5"/>
+      <path id="lower_border_14" d="m 694.5,836 v -5"/>
+      <path id="lower_border_15" d="m 744.5,836 v -5"/>
+      <path id="lower_border_16" d="m 794.5,836 v -5"/>
+      <path id="lower_border_17" d="m 844.5,836 v -5"/>
+      <path id="lower_border_18" d="m 894.5,836 v -5"/>
+      <path id="lower_border_19" d="m 944.5,836 v -5"/>
+      <path id="lower_border_20" d="m 994.5,836 v -5"/>
+      <path id="lower_border_21" d="m 1044.5,836 v -5"/>
+      <path id="lower_border_22" d="m 1094.5,836 v -5"/>
+      <path id="lower_border_23" d="m 1144.5,836 v -5"/>
+      <path id="left_border_1" d="m 15,70.5 h 5"/>
+      <path id="left_border_2" d="m 15,120.5 h 5"/>
+      <path id="left_border_3" d="m 15,170.5 h 5"/>
+      <path id="left_border_4" d="m 15,220.5 h 5"/>
+      <path id="left_border_5" d="m 15,270.5 h 5"/>
+      <path id="left_border_6" d="m 15,320.5 h 5"/>
+      <path id="left_border_7" d="m 15,370.5 h 5"/>
+      <path id="left_border_9" d="m 15,470.5 h 5"/>
+      <path id="left_border_10" d="m 15,520.5 h 5"/>
+      <path id="left_border_11" d="m 15,570.5 h 5"/>
+      <path id="left_border_12" d="m 15,620.5 h 5"/>
+      <path id="left_border_13" d="m 15,670.5 h 5"/>
+      <path id="left_border_14" d="m 15,720.5 h 5"/>
+      <path id="left_border_15" d="m 15,770.5 h 5"/>
     </g>
-    <g id="Grid reference markers" style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">
+    <g id="grid_reference_markers" style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">
       <text id="upper_marker_1" x="19.5" y="8.8">1</text>
       <text id="upper_marker_2" x="69.5" y="8.8">2</text>
       <text id="upper_marker_3" x="119.5" y="8.8">3</text>
@@ -192,66 +197,66 @@
       <text id="left_marker_16" x="17.5" y="796.8">R</text>
     </g>
   </g>
-  <g id="Trimming marks" style="fill:#000000;stroke:none">
-    <path id="Top left" d="m 0,0 h 10 v 5 h -5 v 5 h -5 z" />
-    <path id="Top right" d="m 1189,0 h -10 v 5 h 5 v 5 h 5 z" />
-    <path id="Bottom right" d="m 1189,841 h -10 v -5 h 5 v -5 h 5 z" />
-    <path id="Bottom left" d="m 0,841 h 10 v -5 h -5 v -5 h -5 z" />
+  <g id="trimming_marks" style="fill:#000000;stroke:none">
+    <path id="top_left_trimming" d="m 0,0 h 10 v 5 h -5 v 5 h -5 z" />
+    <path id="top_right_trimming" d="m 1189,0 h -10 v 5 h 5 v 5 h 5 z" />
+    <path id="bottom_right_trimming" d="m 1189,841 h -10 v -5 h 5 v -5 h 5 z" />
+    <path id="bottom_left_trimming" d="m 0,841 h 10 v -5 h -5 v -5 h -5 z" />
   </g>
 <!-- Title block -->
-  <g id="Borders" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round">
-    <rect id="Frame" x="999" y="795" width="180" height="36" style="stroke-width:0.7" />
-    <rect id="Owner border" x="1139" y="795" width="40" height="24" />
-    <rect id="Identification number border" x="999" y="819" width="80" height="12" />
-    <rect id="Revision index border" x="1139" y="819" width="20" height="12" />
-    <rect id="Date of issue border" x="1099" y="819" width="40" height="12" />
-    <rect id="Sheet number border" x="1159" y="819" width="20" height="12" />
-    <rect id="Title border" x="999" y="795" width="80" height="12" />
-    <rect id="Approval person border" x="1079" y="807" width="60" height="12" />
-    <rect id="Creator border" x="1079" y="795" width="60" height="12" />
-    <rect id="Document type border" x="999" y="807" width="80" height="12" />
-    <rect id="Paper size border" x="1079" y="819" width="20" height="12" />
+  <g id="title_block_borders" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round">
+    <rect id="title_block_frame" x="999" y="795" width="180" height="36" style="stroke-width:0.7"/>
+    <rect id="legal_owner_border" x="1139" y="795" width="40" height="24"/>
+    <rect id="identification_number_border" x="999" y="819" width="80" height="12"/>
+    <rect id="revision_index_border" x="1139" y="819" width="20" height="12"/>
+    <rect id="date_of_issue_border" x="1099" y="819" width="40" height="12"/>
+    <rect id="sheet_number_border" x="1159" y="819" width="20" height="12"/>
+    <rect id="language_code_border" x="1079" y="819" width="20" height="12"/>
+    <rect id="title_border" x="999" y="795" width="80" height="12"/>
+    <rect id="approval_person_border" x="1079" y="807" width="60" height="12"/>
+    <rect id="creator_border" x="1079" y="795" width="60" height="12"/>
+    <rect id="document_type_border" x="999" y="807" width="80" height="12"/>
   </g>
-  <g id="Labels" style="font-size:3.5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
-    <text id="Owner label" x="1139.5" y="798.6">Owner:</text>
-    <text id="Identification number label" x="999.5" y="822.6">Drawing number:</text>
-    <text id="Revision index label" x="1139.5" y="822.6">Revision:</text>
-    <text id="Date of issue label" x="1099.5" y="822.6">Issue date:</text>
-    <text id="Sheet number label" x="1159.5" y="822.6">Sheet:</text>
-    <text id="Title label" x="999.5" y="798.6">Title:</text>
-    <text id="Approval person label" x="1079.5" y="810.6">Approved by:</text>
-    <text id="Creator label" x="1079.5" y="798.6">Created by:</text>
-    <text id="Document type label" x="999.5" y="810.6">Document type:</text>
-    <text id="Paper size label" x="1079.5" y="822.6">Paper size:</text>
-    <text x="1119.5" id="Sheet scale label" y="786.6">Scale:</text>
-    <text x="1079.5" id="General tolerances label" y="786.6">General tolerances:</text>
-    <text x="999.5" id="Part material label" y="786.6">Part Material:</text>
+  <g id="title_block_labels" style="font-size:3.5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
+    <text id="legal_owner label" x="1139.5" y="798.6">Owner:</text>
+    <text id="identification_number_label" x="999.5" y="822.6">Drawing number:</text>
+    <text id="revision_index_label" x="1139.5" y="822.6">Revision:</text>
+    <text id="date_of_issue_label" x="1099.5" y="822.6">Issue date:</text>
+    <text id="sheet_number_label" x="1159.5" y="822.6">Sheet:</text>
+    <text id="language_code_label" x="1079.5" y="822.6">Language:</text>
+    <text id="title_label" x="999.5" y="798.6">Title:</text>
+    <text id="approval_person_label" x="1079.5" y="810.6">Approved by:</text>
+    <text id="creator_label" x="1079.5" y="798.6">Created by:</text>
+    <text id="document_type_label" x="999.5" y="810.6">Document type:</text>
+    <text id="sheet_scale_label" x="1119.5" y="786.6">Scale:</text>
+    <text id="general_tolerances_label" x="1079.5" y="786.6">General tolerances:</text>
+    <text id="part_material_label" x="999.5" y="786.6">Part Material:</text>
   </g>
-  <g id="Data fields" style="font-size:5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
-    <text id="owner_1_data_field" x="1159" y="804.1" freecad:editable="owner_1" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan> </tspan></text>
-    <text id="owner_2_data_field" x="1159" y="808.1" freecad:editable="owner_2" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan> </tspan></text>
-    <text id="owner_3_data_field" x="1159" y="812.1" freecad:editable="owner_3" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan> </tspan></text>
-    <text id="owner_4_data_field" x="1159" y="816.1" freecad:editable="owner_4" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan> </tspan></text>
-    <text id="Identification number data field" x="1000" y="828.2" freecad:editable="drawing_number"><tspan>DN</tspan></text>
-    <text id="Revision index data field" x="1149" y="828.2" freecad:editable="revision_index" style="text-align:center;text-anchor:middle"><tspan>AAA</tspan></text>
-    <text id="Date of issue data field" x="1100" y="828.2" freecad:editable="issue_date"><tspan>YYYY-MM-DD</tspan></text>
-    <text id="Sheet number data field" x="1169" y="828.2" freecad:editable="sheet_number" style="text-align:center;text-anchor:middle"><tspan>X / Y</tspan></text>
-    <text id="Title data field" x="1000" y="804.2" freecad:editable="title"><tspan>ISO 5457 template</tspan></text>
-    <text id="Approval person data field" x="1080" y="816.2" freecad:editable="approved_by"><tspan>B. Hecate</tspan></text>
-    <text id="Creator data field" x="1080.2" y="804.2" freecad:editable="created_by"><tspan>A. Nemesis</tspan></text>
-    <text id="Document type data field" x="1000" y="816.2" freecad:editable="document_type"><tspan>Assembly Drawing</tspan></text>
-    <text id="Paper size data field" x="1089" y="828.2" style="text-align:center;text-anchor:middle">A0</text>
-    <text x="1129" id="Sheet scale data field" y="792.2" style="text-align:center;text-anchor:middle" freecad:editable="page_scale"><tspan>1 : 1</tspan></text>
-    <text x="1080" id="General tolerances data field" y="792.2" freecad:editable="general_tolerances"><tspan>ISO 2768-m</tspan></text>
-    <text x="1000" id="Part material data field" y="792.2" freecad:editable="general_notes"><tspan>Stainless steel Mat.No. 1.4301</tspan></text>
+  <g id="title_block_data_fields" style="font-size:5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
+    <text id="legal_owner_1_data_field" x="1159" y="804.1" freecad:editable="legal_owner_1" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan/></text>
+    <text id="legal_owner_2_data_field" x="1159" y="808.1" freecad:editable="legal_owner_2" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan/></text>
+    <text id="legal_owner_3_data_field" x="1159" y="812.1" freecad:editable="legal_owner_3" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan/></text>
+    <text id="legal_owner_4_data_field" x="1159" y="816.1" freecad:editable="legal_owner_4" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan/></text>
+    <text id="identification_number_data_field" x="1000" y="828.2" freecad:editable="identification_number"><tspan>DN</tspan></text>
+    <text id="revision_index_data_field" x="1149" y="828.2" freecad:editable="revision_index" style="text-align:center;text-anchor:middle"><tspan>AAA</tspan></text>
+    <text id="date_of_issue_data_field" x="1100" y="828.2" freecad:editable="date_of_issue"><tspan>YYYY-MM-DD</tspan></text>
+    <text id="sheet_number_data_field" x="1169" y="828.2" freecad:editable="sheet_number" style="text-align:center;text-anchor:middle"><tspan>X / Y</tspan></text>
+    <text id="language_code_data_field" x="1089" y="828.2" freecad:editable="language_code" style="text-align:center;text-anchor:middle"><tspan>EN</tspan></text>
+    <text id="title_data_field" x="1000" y="804.2" freecad:editable="title"><tspan>ISO 5457 template</tspan></text>
+    <text id="approval_person_data_field" x="1080" y="816.2" freecad:editable="approval_person"><tspan>B. Hecate</tspan></text>
+    <text id="creator_data_field" x="1080" y="804.2" freecad:editable="creator"><tspan>A. Nemesis</tspan></text>
+    <text id="document_type_data_field" x="1000" y="816.2" freecad:editable="document_type"><tspan>Assembly Drawing</tspan></text>
+    <text id="sheet_scale_data_field" x="1129" y="792.2" style="text-align:center;text-anchor:middle" freecad:editable="sheet_scale"><tspan>1 : 1</tspan></text>
+    <text id="general_tolerances_data_field" x="1080" y="792.2" freecad:editable="general_tolerances"><tspan>ISO 2768-m</tspan></text>
+    <text id="part_material_data_field" x="1000" y="792.2" freecad:editable="part_material"><tspan>Stainless steel Mat.No. 1.4301</tspan></text>
   </g>
-  <g id="Outlines" style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round">
-    <path id="Trapezoid" d="m 1158,778 -10,2.5 v 5 l 10,2.5 z"/>
-    <circle id="Inner circle" cx="1165" r="2.5" cy="783"/>
-    <circle id="Outer circle" cx="1165" r="5" cy="783"/>
+  <g id="extras_outlines" style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round">
+    <path id="first_angle_trapezoid" d="m 1158,778 -10,2.5 v 5 l 10,2.5 z"/>
+    <circle id="first_angle_inner circle" cx="1165" cy="783" r="2.5"/>
+    <circle id="first_angle_outer circle" cx="1165" cy="783" r="5"/>
   </g>
-  <g id="Centre lines" style="fill:none;stroke:#000000;stroke-width:0.25;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:6, 0.75, 0.125, 0.75">
-    <path id="Horizontal" d="m 1147,783 h 24" style="stroke-dashoffset:0.25"/>
-    <path id="Vertical" d="m 1165,789 v -12" style="stroke-dashoffset:4.625"/>
+  <g id="extras_centre_lines" style="fill:none;stroke:#000000;stroke-width:0.25;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:6, 0.75, 0.125, 0.75">
+    <path id="first_angle_horizontal" d="m 1147,783 h 24" style="stroke-dashoffset:0.25"/>
+    <path id="first_angle_vertical" d="m 1165,789 v -12" style="stroke-dashoffset:4.625"/>
   </g>
 </svg>

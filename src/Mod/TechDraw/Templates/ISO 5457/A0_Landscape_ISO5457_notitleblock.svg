@@ -5,15 +5,15 @@
    height="841mm"
    viewBox="0 0 1189 841"
    version="1.1"
-   id="svg1"
+   id="svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:freecad="https://www.freecadweb.org/wiki/index.php?title=Svg_Namespace">
-  <title id="title1">Drawing sheet ISO 5457 - A0T</title>
-  <metadata id="metadata1">
+  <title id="title">Drawing sheet ISO 5457 - A0T</title>
+  <metadata id="metadata">
     <rdf:RDF>
       <cc:Work rdf:about="">
         <cc:license rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
@@ -26,90 +26,90 @@
       </cc:License>
     </rdf:RDF>
   </metadata>
-  <rect id="Drawing space frame" x="20" y="10" width="1159" height="821" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round" />
-  <g id="Centring marks" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round">
-    <path id="Top"    d="m 594.5,5 v 10" />
-    <path id="Right"  d="m 1184,420.5 h -10" />
-    <path id="Bottom" d="m 594.5,836 v -10"  />
-    <path id="Left"   d="m 15,420.5 h 10" />
+  <rect id="drawing_space_frame" x="20" y="10" width="1159" height="821" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round" />
+  <g id="centring_marks" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round">
+    <path id="top_centering" d="m 594.5,5 v 10" />
+    <path id="right_centering" d="m 1184,420.5 h -10" />
+    <path id="bottom_centering" d="m 594.5,836 v -10"  />
+    <path id="left_centering" d="m 15,420.5 h 10" />
   </g>
-  <g id="Grid reference system">
-    <g id="Grid reference borders" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round">
-      <rect id="Grid reference border"  x="15" y="5" width="1169" height="831" />
-      <path id="path17" d="m 15,370.5 h 5" />
-      <path id="path18" d="m 15,320.5 h 5" />
-      <path id="path19" d="m 15,270.5 h 5" />
-      <path id="path20" d="m 15,220.5 h 5" />
-      <path id="path21" d="m 15,170.5 h 5" />
-      <path id="path22" d="m 15,120.5 h 5" />
-      <path id="path23" d="m 15,70.5 h 5" />
-      <path id="path25" d="m 15,770.5 h 5" />
-      <path id="path26" d="m 15,720.5 h 5" />
-      <path id="path27" d="m 15,670.5 h 5" />
-      <path id="path28" d="m 15,620.5 h 5" />
-      <path id="path29" d="m 15,570.5 h 5" />
-      <path id="path30" d="m 15,520.5 h 5" />
-      <path id="path31" d="m 15,470.5 h 5" />
-      <path id="path33" d="m 1179,370.5 h 5" />
-      <path id="path34" d="m 1179,320.5 h 5" />
-      <path id="path35" d="m 1179,270.5 h 5" />
-      <path id="path36" d="m 1179,220.5 h 5" />
-      <path id="path37" d="m 1179,170.5 h 5" />
-      <path id="path38" d="m 1179,120.5 h 5" />
-      <path id="path39" d="m 1179,70.5 h 5" />
-      <path id="path41" d="m 1179,770.5 h 5" />
-      <path id="path42" d="m 1179,720.5 h 5" />
-      <path id="path43" d="m 1179,670..5 h 5" />
-      <path id="path44" d="m 1179,620..5 h 5" />
-      <path id="path45" d="m 1179,570.5 h 5" />
-      <path id="path46" d="m 1179,520.5 h 5" />
-      <path id="path47" d="m 1179,470.5 h 5" />
-      <path id="path49" d="m 544.5,5 v 5" />
-      <path id="path50" d="m 494.5,5 v 5" />
-      <path id="path51" d="m 444.5,5 v 5" />
-      <path id="path52" d="m 394.5,5 v 5" />
-      <path id="path53" d="m 344.5,5 v 5" />
-      <path id="path54" d="m 294.5,5 v 5" />
-      <path id="path55" d="m 244.5,5 v 5" />
-      <path id="path56" d="m 194.5,5 v 5" />
-      <path id="path57" d="M 144.5,5 v 5" />
-      <path id="path58" d="M 94.57,5 v 5" />
-      <path id="path59" d="M 44.52,5 v 5" />
-      <path id="path61" d="m 1144.5,5 v 5" />
-      <path id="path62" d="m 1094.5,5 v 5" />
-      <path id="path63" d="m 1044.5,5 v 5" />
-      <path id="path64" d="m 994.5,5 v 5" />
-      <path id="path65" d="m 944.5,5 v 5" />
-      <path id="path66" d="m 894.5,5 v 5" />
-      <path id="path67" d="m 844.5,5 v 5" />
-      <path id="path68" d="m 794.5,5 v 5" />
-      <path id="path69" d="m 744.5,5 v 5" />
-      <path id="path70" d="m 694.5,5 v 5" />
-      <path id="path71" d="m 644.5,5 v 5" />
-      <path id="path73" d="m 544.5,831 v 5" />
-      <path id="path74" d="m 494.5,831 v 5" />
-      <path id="path77" d="m 444.5,831 v 5" />
-      <path id="path79" d="m 394.5,831 v 5" />
-      <path id="path81" d="m 344.5,831 v 5" />
-      <path id="path83" d="m 294.5,831 v 5" />
-      <path id="path85" d="m 244.5,831 v 5" />
-      <path id="path87" d="m 194.5,831 v 5" />
-      <path id="path89" d="m 144.5,831 v 5" />
-      <path id="path91" d="m 94.57,831 v 5" />
-      <path id="path93" d="m 44.52,831 v 5" />
-      <path id="path96" d="m 1144.5,831 v 5" />
-      <path id="path98" d="m 1094.5,831 v 5" />
-      <path id="path100" d="m 1044.5,831 v 5" />
-      <path id="path102" d="m 994.5,831 v 5" />
-      <path id="path104" d="m 944.5,831 v 5" />
-      <path id="path106" d="m 894.5,831 v 5" />
-      <path id="path108" d="m 844.5,831 v 5" />
-      <path id="path110" d="m 794.5,831 v 5" />
-      <path id="path112" d="m 744.5,831 v 5" />
-      <path id="path114" d="m 694.5,831 v 5" />
-      <path id="path116" d="m 644.5,831 v 5" />
+  <g id="grid_reference_system">
+    <g id="grid_reference_borders" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round">
+      <rect id="grid_reference_border"  x="15" y="5" width="1169" height="831" />
+      <path id="upper_border_1" d="m 44.5,5 v 5"/>
+      <path id="upper_border_2" d="m 94.5,5 v 5"/>
+      <path id="upper_border_3" d="m 144.5,5 v 5"/>
+      <path id="upper_border_4" d="m 194.5,5 v 5"/>
+      <path id="upper_border_5" d="m 244.5,5 v 5"/>
+      <path id="upper_border_6" d="m 294.5,5 v 5"/>
+      <path id="upper_border_7" d="m 344.5,5 v 5"/>
+      <path id="upper_border_8" d="m 394.5,5 v 5"/>
+      <path id="upper_border_9" d="m 444.5,5 v 5"/>
+      <path id="upper_border_10" d="m 494.5,5 v 5"/>
+      <path id="upper_border_11" d="m 544.5,5 v 5"/>
+      <path id="upper_border_13" d="m 644.5,5 v 5"/>
+      <path id="upper_border_14" d="m 694.5,5 v 5"/>
+      <path id="upper_border_15" d="m 744.5,5 v 5"/>
+      <path id="upper_border_16" d="m 794.5,5 v 5"/>
+      <path id="upper_border_17" d="m 844.5,5 v 5"/>
+      <path id="upper_border_18" d="m 894.5,5 v 5"/>
+      <path id="upper_border_19" d="m 944.5,5 v 5"/>
+      <path id="upper_border_20" d="m 994.5,5 v 5"/>
+      <path id="upper_border_21" d="m 1044.5,5 v 5"/>
+      <path id="upper_border_22" d="m 1094.5,5 v 5"/>
+      <path id="upper_border_23" d="m 1144.5,5 v 5"/>
+      <path id="right_border_1" d="m 1184,70.5 h -5"/>
+      <path id="right_border_2" d="m 1184,120.5 h -5"/>
+      <path id="right_border_3" d="m 1184,170.5 h -5"/>
+      <path id="right_border_4" d="m 1184,220.5 h -5"/>
+      <path id="right_border_5" d="m 1184,270.5 h -5"/>
+      <path id="right_border_6" d="m 1184,320.5 h -5"/>
+      <path id="right_border_7" d="m 1184,370.5 h -5"/>
+      <path id="right_border_9" d="m 1184,470.5 h -5"/>
+      <path id="right_border_10" d="m 1184,520.5 h -5"/>
+      <path id="right_border_11" d="m 1184,570.5 h -5"/>
+      <path id="right_border_12" d="m 1184,620.5 h -5"/>
+      <path id="right_border_13" d="m 1184,670.5 h -5"/>
+      <path id="right_border_14" d="m 1184,720.5 h -5"/>
+      <path id="right_border_15" d="m 1184,770.5 h -5"/>
+      <path id="lower_border_1" d="m 44.5,836 v -5"/>
+      <path id="lower_border_2" d="m 94.5,836 v -5"/>
+      <path id="lower_border_3" d="m 144.5,836 v -5"/>
+      <path id="lower_border_4" d="m 194.5,836 v -5"/>
+      <path id="lower_border_5" d="m 244.5,836 v -5"/>
+      <path id="lower_border_6" d="m 294.5,836 v -5"/>
+      <path id="lower_border_7" d="m 344.5,836 v -5"/>
+      <path id="lower_border_8" d="m 394.5,836 v -5"/>
+      <path id="lower_border_9" d="m 444.5,836 v -5"/>
+      <path id="lower_border_10" d="m 494.5,836 v -5"/>
+      <path id="lower_border_11" d="m 544.5,836 v -5"/>
+      <path id="lower_border_13" d="m 644.5,836 v -5"/>
+      <path id="lower_border_14" d="m 694.5,836 v -5"/>
+      <path id="lower_border_15" d="m 744.5,836 v -5"/>
+      <path id="lower_border_16" d="m 794.5,836 v -5"/>
+      <path id="lower_border_17" d="m 844.5,836 v -5"/>
+      <path id="lower_border_18" d="m 894.5,836 v -5"/>
+      <path id="lower_border_19" d="m 944.5,836 v -5"/>
+      <path id="lower_border_20" d="m 994.5,836 v -5"/>
+      <path id="lower_border_21" d="m 1044.5,836 v -5"/>
+      <path id="lower_border_22" d="m 1094.5,836 v -5"/>
+      <path id="lower_border_23" d="m 1144.5,836 v -5"/>
+      <path id="left_border_1" d="m 15,70.5 h 5"/>
+      <path id="left_border_2" d="m 15,120.5 h 5"/>
+      <path id="left_border_3" d="m 15,170.5 h 5"/>
+      <path id="left_border_4" d="m 15,220.5 h 5"/>
+      <path id="left_border_5" d="m 15,270.5 h 5"/>
+      <path id="left_border_6" d="m 15,320.5 h 5"/>
+      <path id="left_border_7" d="m 15,370.5 h 5"/>
+      <path id="left_border_9" d="m 15,470.5 h 5"/>
+      <path id="left_border_10" d="m 15,520.5 h 5"/>
+      <path id="left_border_11" d="m 15,570.5 h 5"/>
+      <path id="left_border_12" d="m 15,620.5 h 5"/>
+      <path id="left_border_13" d="m 15,670.5 h 5"/>
+      <path id="left_border_14" d="m 15,720.5 h 5"/>
+      <path id="left_border_15" d="m 15,770.5 h 5"/>
     </g>
-    <g id="Grid reference markers" style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">
+    <g id="grid_reference_markers" style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">
       <text id="upper_marker_1" x="19.5" y="8.8">1</text>
       <text id="upper_marker_2" x="69.5" y="8.8">2</text>
       <text id="upper_marker_3" x="119.5" y="8.8">3</text>
@@ -192,10 +192,10 @@
       <text id="left_marker_16" x="17.5" y="796.8">R</text>
     </g>
   </g>
-  <g id="Trimming marks" style="fill:#000000;stroke:none">
-    <path id="Top left" d="m 0,0 h 10 v 5 h -5 v 5 h -5 z" />
-    <path id="Top right" d="m 1189,0 h -10 v 5 h 5 v 5 h 5 z" />
-    <path id="Bottom right" d="m 1189,841 h -10 v -5 h 5 v -5 h 5 z" />
-    <path id="Bottom left" d="m 0,841 h 10 v -5 h -5 v -5 h -5 z" />
+  <g id="trimming_marks" style="fill:#000000;stroke:none">
+    <path id="top_left_trimming" d="m 0,0 h 10 v 5 h -5 v 5 h -5 z" />
+    <path id="top_right_trimming" d="m 1189,0 h -10 v 5 h 5 v 5 h 5 z" />
+    <path id="bottom_right_trimming" d="m 1189,841 h -10 v -5 h 5 v -5 h 5 z" />
+    <path id="bottom_left_trimming" d="m 0,841 h 10 v -5 h -5 v -5 h -5 z" />
   </g>
 </svg>

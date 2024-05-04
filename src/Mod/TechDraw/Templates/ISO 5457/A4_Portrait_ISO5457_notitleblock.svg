@@ -5,19 +5,19 @@
    height="297mm"
    viewBox="0 0 210 297"
    version="1.1"
-   id="svg1"
+   id="svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:freecad="https://www.freecadweb.org/wiki/index.php?title=Svg_Namespace">
-  <title id="title1">Drawing sheet ISO 5457 - A4T</title>
-  <metadata id="metadata1">
+  <title id="title">Drawing sheet ISO 5457 - A4T</title>
+  <metadata id="metadata">
     <rdf:RDF>
       <cc:Work rdf:about="">
-        <dc:title>Drawing sheet ISO 5457 - A4T</dc:title>
         <cc:license rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:title>Drawing sheet ISO 5457 - A4T</dc:title>
       </cc:Work>
       <cc:License rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
         <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction" />
@@ -26,30 +26,30 @@
       </cc:License>
     </rdf:RDF>
   </metadata>
-  <rect id="Drawing space frame" x="20" y="10" width="180" height="277" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round" />
-  <g id="Centring marks" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round">
-    <path id="Top"    d="m 105,5 v 10" />
-    <path id="Right"  d="m 205,148.5 h -10" />
-    <path id="Bottom" d="m 105,292 v -10" />
-    <path id="Left"   d="m 15,148.5 h 10" />
+  <rect id="drawing_space_frame" x="20" y="10" width="180" height="277" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round" />
+  <g id="centring_marks" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round">
+    <path id="top_centring" d="m 105,5 v 10" />
+    <path id="right_centring" d="m 205,148.5 h -10" />
+    <path id="bottom_centring" d="m 105,292 v -10" />
+    <path id="left_centring" d="m 15,148.5 h 10" />
   </g>
-  <g id="Grid reference system">
-    <g id="Grid reference borders" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round">
-      <rect id="Grid reference border" x="15" y="5" width="190" height="287" />
-      <path id="path46" d="m 15,98.5 h 5" />
-      <path id="path47" d="m 15,48.5 h 5" />
-      <path id="path49" d="m 15,198.5 h 5" />
-      <path id="path50" d="m 15,248.5 h 5" />
-      <path id="path53" d="m 200,98.5 h 5" />
-      <path id="path54" d="m 200,48.5 h 5" />
-      <path id="path55" d="m 200,198.5 h 5" />
-      <path id="path56" d="m 200,248.5 h 5" />
-      <path id="path31" d="m 155,5 v 5" />
-      <path id="path35" d="m 55,5 v 5" />
-      <path id="path38" d="m 155,287 v 5" />
-      <path id="path42" d="m 55,287 v 5" />
+  <g id="grid_reference_system">
+    <g id="grid_reference_borders" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round">
+      <rect id="grid_reference_border"  x="15" y="5" width="190" height="287" />
+      <path id="upper_border_1" d="m 55,5 v 5"/>
+      <path id="upper_border_3" d="m 155,5 v 5"/>
+      <path id="right_border_1" d="m 205,48.5 h -5"/>
+      <path id="right_border_2" d="m 205,98.5 h -5"/>
+      <path id="right_border_4" d="m 205,198.5 h -5"/>
+      <path id="right_border_5" d="m 205,248.5 h -5"/>
+      <path id="lower_border_1" d="m 55,292 v -5"/>
+      <path id="lower_border_3" d="m 155,292 v -5"/>
+      <path id="left_border_1" d="m 15,48.5 h 5"/>
+      <path id="left_border_2" d="m 15,98.5 h 5"/>
+      <path id="left_border_4" d="m 15,198.5 h 5"/>
+      <path id="left_border_5" d="m 15,248.5 h 5"/>
     </g>
-    <g id="Grid reference markers" style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">
+    <g id="grid_reference_markers" style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">
       <text id="upper_marker_1" x="30" y="8.8">1</text>
       <text id="upper_marker_2" x="80" y="8.8">2</text>
       <text id="upper_marker_3" x="130" y="8.8">3</text>
@@ -63,10 +63,10 @@
       <text id="lower_marker_4" x="180" y="290.8">A4</text>
     </g>
   </g>
-  <g id="Trimming marks" style="fill:#000000;stroke:none">
-    <path id="Top left"     d="m 0,0 h 10 v 5 h -5 v 5 h -5 z" />
-    <path id="Top right"    d="m 210,0 h -10 v 5 h 5 v 5 h 5 z" />
-    <path id="Bottom right" d="m 210,297 h -10 v -5 h 5 v -5 h 5 z" />
-    <path id="Bottom left"  d="m 0,297 h 10 v -5 h -5 v -5 h -5 z" />
+  <g id="trimming_marks" style="fill:#000000;stroke:none">
+    <path id="top_left_trimming" d="m 0,0 h 10 v 5 h -5 v 5 h -5 z" />
+    <path id="top_right_trimming" d="m 210,0 h -10 v 5 h 5 v 5 h 5 z" />
+    <path id="bottom_right_trimming" d="m 210,297 h -10 v -5 h 5 v -5 h 5 z" />
+    <path id="bottom_left_trimming" d="m 0,297 h 10 v -5 h -5 v -5 h -5 z" />
   </g>
 </svg>
