@@ -129,9 +129,9 @@ QWidget {
 }
 
 QWidget:disabled {
-  color: #c2c7cb;
+  color: #adadad;
   selection-background-color: @ThemeAccentColor1;
-  selection-color: #c2c7cb;
+  selection-color: #cccccc;
 }
 
 QWidget::item:selected {
@@ -254,7 +254,7 @@ QCheckBox:focus {
 }
 
 QCheckBox QWidget:disabled {
-  color: #c2c7cb;
+  color: #adadad;
 }
 
 QCheckBox::indicator {
@@ -347,7 +347,7 @@ QGroupBox::indicator:unchecked:hover, QGroupBox::indicator:unchecked:focus, QGro
 }
 
 QGroupBox::indicator:unchecked:disabled {
-  background-color: #272727;
+  background-color: #444444;
   border: 1px solid #020202;
 }
 
@@ -384,8 +384,8 @@ QRadioButton:focus {
 }
 
 QRadioButton:disabled {
-  background-color: #020202;
-  color: #353535;
+  background-color: #444444;
+  /* color: #444444; */
 }
 
 QRadioButton QWidget {
@@ -415,7 +415,7 @@ QRadioButton::indicator:unchecked:hover, QRadioButton::indicator:unchecked:press
 
 QRadioButton::indicator:unchecked:disabled {
   /*image:url(qss:images_classic/Radio-checked-lightgray.png);*/
-  border: 1px solid #020202;
+  border: 1px solid #444444;
 }
 
 QRadioButton::indicator:checked {
@@ -433,7 +433,7 @@ QRadioButton::indicator:checked:hover, QRadioButton::indicator:checked:pressed {
 
 QRadioButton::indicator:checked:disabled {
   outline: none;
-  background-color: #020202;
+  background-color: #444444;
   image:url(qss:images_classic/Radio-checked-lightgray.png);
 }
 
@@ -654,7 +654,7 @@ QAbstractScrollArea {
 }
 
 QAbstractScrollArea:disabled {
-  color: #353535;
+  color: #adadad;
 }
 
 /* QScrollArea ------------------------------------------------------------
@@ -1058,7 +1058,7 @@ QLabel {
 QLabel:disabled {
   background-color: transparent;
   border: 0px solid #020202;
-  color: #c2c7cb;
+  color: #adadad;
 }
 
 QLabel[haslink="true"] {
@@ -1081,7 +1081,7 @@ QTextBrowser {
 QTextBrowser:disabled {
   background-color: #444444;
   border: 1px solid #020202;
-  color: #c2c7cb;
+  color: #adadad;
   border-radius: 1.9px;
 }
 
@@ -1102,7 +1102,7 @@ QGraphicsView {
 QGraphicsView:disabled {
   background-color: #272727;
   border: 0px solid #020202;
-  color: #c2c7cb;
+  color: #adadad;
   border-radius: 0px;
 }
 
@@ -1120,7 +1120,7 @@ QCalendarWidget {
 
 QCalendarWidget:disabled {
   background-color: #353535;
-  color: #c2c7cb;
+  color: #adadad;
 }
 
 /* QLCDNumber -------------------------------------------------------------
@@ -1133,7 +1133,7 @@ QLCDNumber {
 
 QLCDNumber:disabled {
   background-color: #444444;
-  color: #c2c7cb;
+  color: #adadad;
 }
 
 /* QProgressBar -----------------------------------------------------------
@@ -1142,7 +1142,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qprogressbar
 
 --------------------------------------------------------------------------- */
 QProgressBar {
-  background-color: #c2c7cb;
+  background-color: #cccccc;
   border: 1px solid #020202;
   color: White;
   border-radius: 1.9px;
@@ -1150,7 +1150,7 @@ QProgressBar {
 }
 
 QProgressBar:disabled {
-  background-color: #161616;
+  background-color: #444444;
   border: 1px solid #020202;
   color: #696969;
   border-radius: 1.9px;
@@ -1164,7 +1164,7 @@ QProgressBar::chunk {
 }
 
 QProgressBar::chunk:disabled {
-  background-color: #161616;
+  background-color: #444444;
   color: #020202;
   border-radius: 1.9px;
 }
@@ -1188,7 +1188,7 @@ QPushButton {
 
 QPushButton:disabled {
   background-color: #444444;
-  color: #c2c7cb;
+  color: #adadad;
   border: 1px solid #020202;
 }
 
@@ -1199,7 +1199,7 @@ QPushButton:checked {
 
 QPushButton:checked:disabled {
   border: 1px solid  @ThemeAccentColor1;
-  color: #3c3c3c;
+  color: #adadad;
   outline: none;
 }
 
@@ -1251,7 +1251,7 @@ QToolButton {
 
 QToolButton:disabled {
   background-color: rgba(0, 0, 0, 0.065);
-  color: #c2c7cb;
+  color: #adadad;
   border-radius: 1px;
   padding: 0px;
 }
@@ -1265,7 +1265,7 @@ QToolButton:checked {
 
 QToolButton:checked:disabled {
   background-color: #b65555;
-  color: #c2c7cb;
+  color: #adadad;
   border-radius: 1.9px;
   padding: 0px;
   outline: none;
@@ -1395,7 +1395,7 @@ QCommandLinkButton {
 
 QCommandLinkButton:disabled {
   background-color: transparent;
-  color: #c2c7cb;
+  color: #adadad;
 }
 
 /* ------------------------------------------------------------------------ */
@@ -1453,7 +1453,7 @@ QComboBox:checked {
 
 QComboBox:disabled {
   background-color: #444444;
-  color: #353535;
+  color: #adadad;
 }
 
 QComboBox:hover {
@@ -1691,8 +1691,8 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:focus {
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:disabled,
 QSint--ActionGroup QFrame[class="content"] QToolButton:disabled:checked {
-    color: #696969;
-    background-color: #272727;
+    color: #adadad;
+    /* background-color: #272727; */
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
@@ -1738,7 +1738,7 @@ QSlider::add-page:vertical {
 }
 
 QSlider::add-page:vertical :disabled {
-  background: #020202;
+  background: #444444;
 }
 
 QSlider::sub-page:horizontal {
@@ -1811,7 +1811,7 @@ QLineEdit {
 
 QLineEdit:disabled {
   background-color: #444444;
-  color: #c2c7cb;
+  color: #adadad;
 }
 
 QLineEdit:hover {
@@ -2304,8 +2304,8 @@ QTreeView:disabled,
 QListView:disabled,
 QTableView:disabled,
 QColumnView:disabled {
-  background-color: #272727;
-  color: #c2c7cb;
+  background-color: #444444;
+  color: #adadad;
 }
 
 QTreeView:selected,
@@ -2379,8 +2379,8 @@ QHeaderView {
 }
 
 QHeaderView:disabled {
-  background-color: #444444;
-  color: rgb(174, 174, 174);
+  /* background-color: #444444; */
+  color: #adadad;
 }
 
 QHeaderView::section {
@@ -2403,7 +2403,7 @@ QHeaderView::section::horizontal::first, QHeaderView::section::horizontal::only-
 }
 
 QHeaderView::section::horizontal:disabled {
-  color: #353535;
+  color: #adadad;
 }
 
 QHeaderView::section::vertical {
@@ -2472,7 +2472,7 @@ QToolBox::tab {
 }
 
 QToolBox::tab:disabled {
-  color: #696969;
+  color: #adadad;
 }
 
 QToolBox::tab:selected {
@@ -2485,7 +2485,7 @@ QToolBox::tab:selected {
 QToolBox::tab:selected:disabled {
   background-color: #696969;
   border-bottom: 0px solid #cccccc;
-  color: white;
+  color: #adadad;
 }
 
 QToolBox::tab:!selected {
