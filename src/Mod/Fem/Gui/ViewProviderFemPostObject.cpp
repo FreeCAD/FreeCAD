@@ -1041,7 +1041,7 @@ void ViewProviderFemPostObject::show()
 
 void ViewProviderFemPostObject::OnChange(Base::Subject<int>& /*rCaller*/, int /*rcReason*/)
 {
-    bool ResetColorBarRange = false;
+    bool ResetColorBarRange = true;
     WriteColorData(ResetColorBarRange);
 }
 
