@@ -1703,6 +1703,11 @@ void setupFilter(Gui::Command* cmd, std::string Name)
                    "App.activeDocument().ActiveObject.ViewObject.VectorMode = \"%s\"",
                    selObjectView->VectorMode.getValueAsString());
 
+    // hide selected filter
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().%s.ViewObject.Visibility = False",
+                   selObject->getNameInDocument());
+
     cmd->updateActive();
     // open the dialog to edit the filter
     cmd->doCommand(Gui::Command::Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());

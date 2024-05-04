@@ -811,11 +811,13 @@ void ViewProviderFemPostObject::filterArtifacts(vtkDataSet* dset)
             m_surface->SetInputData(dset);
         }
     }
+
+    m_blockPropertyChanges = false;
+
     // restore initial vsibility
     if (!visibility) {
         this->Visibility.setValue(visibility);
     }
-    m_blockPropertyChanges = false;
 }
 
 bool ViewProviderFemPostObject::setupPipeline()
