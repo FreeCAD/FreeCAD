@@ -28,7 +28,7 @@
 #include <iostream>
 
 #define N_MILL_SLICES 8
-#define MAX_SEG_DEG (PI / 8.0f)   // 22.5 deg
+#define MAX_SEG_DEG (PI / 2.0f)   // 90 deg
 #define NIN_SEG_DEG (PI / 90.0f)  // 2 deg
 #define SWEEP_ARC_PAD 1.05f
 #define PX 0
@@ -51,10 +51,11 @@ namespace MillSim {
         return fabs(m->i > EPSILON) || fabs(m->j) > EPSILON;
     }
 
-    float resolution = 1;
+    float MillPathSegment::mResolution = 1;
+    float MillPathSegment::mSmallRadStep = (PI / 8);
 
-    MillPathSegment::MillPathSegment(EndMill *endmill, MillMotion* from, MillMotion* to)
-        : mShearMat {
+    MillPathSegment::MillPathSegment(EndMill* endmill, MillMotion* from, MillMotion* to)
+        : mShearMat{
             1.0f, 0.0f, 0.0f, 0.0f,
             0.0f, 1.0f, 0.0f, 0.0f,
             0.0f, 0.0f, 1.0f, 0.0f,
@@ -76,15 +77,22 @@ namespace MillSim {
             mMotionType = MTCurved;
             mRadius = sqrtf(to->j * to->j + to->i * to->i);
             mSmallRad = mRadius <= mEndmill->mRadius;
-            mStepAngRad = mSmallRad ? MAX_SEG_DEG : asinf(resolution / mRadius);
+
+            if (mSmallRad)
+                mStepAngRad = mSmallRadStep;
+            else
+            {
+                mStepAngRad = asinf(mResolution / mRadius);
+                if (mStepAngRad > MAX_SEG_DEG)
+                    mStepAngRad = MAX_SEG_DEG;
+                else if (mStepAngRad < NIN_SEG_DEG)
+                    mStepAngRad = NIN_SEG_DEG;
+            }
+
             MotionPosToVec(mCenter, from);
             mCenter[PX] += to->i;
             mCenter[PY] += to->j;
             mArcDir = to->cmd == eRotateCCW ? -1.f : 1.f;
-            if (mStepAngRad > MAX_SEG_DEG)
-                mStepAngRad = MAX_SEG_DEG;
-            else if (mStepAngRad < NIN_SEG_DEG)
-                mStepAngRad = NIN_SEG_DEG;
             mStartAngRad = atan2f(mCenter[PX] - from->x, from->y - mCenter[PY]);
             float endAng = atan2f(mCenter[PX] - to->x, to->y - mCenter[PY]);
             mSweepAng = (mStartAngRad - endAng) * mArcDir;
@@ -105,7 +113,7 @@ namespace MillSim {
         }
         else
         {
-            numSimSteps = (int)(mXYZDistance / resolution);
+            numSimSteps = (int)(mXYZDistance / mResolution);
             if (numSimSteps == 0)
                 numSimSteps = 1;
             isMultyPart = false;
@@ -191,5 +199,19 @@ namespace MillSim {
             vec3_add(mHeadPos, mHeadPos, mStartPos);
         }
         vec3_dup(headPos, mHeadPos);
+    }
+    float MillPathSegment::SetQuality(float quality, float maxStockDimension)
+    {
+        mResolution = maxStockDimension * 0.05 / quality;
+        if (mResolution > 4)
+            mResolution = 4;
+        if (mResolution < 0.5)
+            mResolution = 0.5;
+        mSmallRadStep = PI / 8;
+        if (quality < 4)
+            mSmallRadStep = PI / 2;
+        else if (quality < 8)
+            mSmallRadStep = PI / 4;
+        return mResolution;
     }
 }

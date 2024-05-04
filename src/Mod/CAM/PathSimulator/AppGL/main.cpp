@@ -230,25 +230,21 @@ int main(int argc, char **argv)
 
     std::cout << glGetString(GL_VERSION) << std::endl;
     //gMillSimulator.LoadGCodeFile("cam_test1.txt");
+
+
     for (int i = 0; i < NUM_DEMO_MOTIONS; i++)
     {
         gMillSimulator.AddGcodeLine(demoCode[i]);
     }
-    //EndMillFlat endMillFlat01(1, 3.175f, 16);
-    //EndMillFlat endMillFlat02(2, 1.5f, 16);
-    //EndMillBall endMillBall03(4, 1, 16, 4, 0.2f);
-    //EndMillTaper endMillTaper04(3, 1, 16, 90, 0.2f);
     float rad = 3.175f / 2.0f;
     float buff4[4] = { rad, 30, rad, 0 };
-    gMillSimulator.AddTool(new EndMill(buff4, 2, 1, 3.175f, 16));
-    gMillSimulator.AddTool(new EndMillFlat(2, 1.5f, 16));
-    gMillSimulator.AddTool(new EndMillBall(4, 1, 16, 4, 0.2f));
-    gMillSimulator.AddTool(new EndMillTaper(3, 1, 16, 90, 0.2f));
-    gMillSimulator.InitSimulation();
-    //gMillSimulator.SetBoxStock(0, 0, -8.7f, 50, 50, 8.7f);
+    gMillSimulator.AddTool(new EndMill(buff4, 2, 1, 3.175f));
+    gMillSimulator.AddTool(new EndMillFlat(2, 1.5f));
+    gMillSimulator.AddTool(new EndMillBall(4, 1, 4, 0.2f));
+    gMillSimulator.AddTool(new EndMillTaper(3, 1, 90, 0.2f));
     gMillSimulator.SetBoxStock(-20, -20, 0.005f, 40, 40, 2);
+    gMillSimulator.InitSimulation(10);
     //gMillSimulator.SetBoxStock(-119, -124, 0.003f, 245, 234, 30);
-    gMillSimulator.InitDisplay();
     
     while (!glfwWindowShouldClose(glwind))
     {

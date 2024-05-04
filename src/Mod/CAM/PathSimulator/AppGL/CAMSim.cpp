@@ -41,12 +41,12 @@ CAMSim::~CAMSim()
 {
 }
 
-void CAMSim::BeginSimulation(Part::TopoShape * stock, float resolution)
+void CAMSim::BeginSimulation(Part::TopoShape * stock, float quality)
 {
 	Base::BoundBox3d bbox = stock->getBoundBox();
     cStock stk = {(float)bbox.MinX, (float)bbox.MinY, (float)bbox.MinZ, 
-		(float)bbox.LengthX(), (float)bbox.LengthY(), (float)bbox.LengthZ(), resolution};
-    DlgCAMSimulator::GetInstance()->StartSimulation(&stk);
+		(float)bbox.LengthX(), (float)bbox.LengthY(), (float)bbox.LengthZ(), quality};
+    DlgCAMSimulator::GetInstance()->StartSimulation(&stk, quality);
 }
 
 void CAMSimulator::CAMSim::ResetSimulation()

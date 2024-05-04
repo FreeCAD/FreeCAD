@@ -83,7 +83,7 @@ namespace CAMSimulator
     public:  //slots:
         void renderLater();
         void renderNow();
-        void StartSimulation(const cStock *stock);
+        void StartSimulation(const cStock *stock, float quality);
         void ResetSimulation();
         void AddGcodeCommand(const char* cmd);
         void AddTool(const float *toolProfilePoints, int numPoints, int toolNumber, float diameter, float resolution);
@@ -108,6 +108,7 @@ namespace CAMSimulator
         MillSim::MillSimulation* mMillSimulator = nullptr;
         static DlgCAMSimulator* mInstance;
         cStock mStock = {0, 0, 0, 1, 1, 1, 1};
+        float mQuality = 10;
     };
 
 

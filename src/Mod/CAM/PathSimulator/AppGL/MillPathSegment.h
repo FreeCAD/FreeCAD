@@ -37,7 +37,6 @@ namespace MillSim {
         MTCurved
     };
 
-    extern float resolution;
 
     bool IsVerticalMotion(MillMotion* m1, MillMotion* m2);
 
@@ -57,14 +56,15 @@ namespace MillSim {
 
         /// Calls the display list.
         virtual void render(int substep);
-        //virtual Vector3* GetHeadPosition();
         virtual void GetHeadPosition(vec3 headPos);
+        static float SetQuality(float quality, float maxStockDimension); // 1 minimum, 10 maximum
 
     public:
         EndMill* mEndmill = nullptr;
         bool isMultyPart;
         int numSimSteps;
         int indexInArray;
+
 
     protected:
         mat4x4 mShearMat;
@@ -84,6 +84,10 @@ namespace MillSim {
          float mArcDir = 0;
          bool mSmallRad = false;
          int mStepNumber = 0;
+
+         static float mSmallRadStep;
+         static float mResolution;
+
          vec3 mDiff;
          vec3 mStepLength = { 0 };
          vec3 mCenter = { 0 };

@@ -42,9 +42,9 @@ namespace MillSim {
 		void ClearMillPathSegments();
 		void Clear();
 		void SimNext();
-		void InitSimulation();
+		void InitSimulation(float quality);
 		void AddTool(EndMill* tool);
-		void AddTool(const float* toolProfile, int numPoints, int toolid, float diameter, int nslices);
+		void AddTool(const float* toolProfile, int numPoints, int toolid, float diameter);
 		bool ToolExists(int toolid) { return GetTool(toolid) != nullptr; }
 		void Render();
 		void ProcessSim(unsigned int time_ms);
@@ -54,7 +54,6 @@ namespace MillSim {
 		void RotateEye(float rotStep);
 		void MoveEye(float x, float y);
 		void UpdateProjection();
-		void InitDisplay();
 		bool LoadGCodeFile(const char* fileName);
 		bool AddGcodeLine(const char* line);
 		void SetSimulationStage(float stage);
@@ -67,6 +66,7 @@ namespace MillSim {
 
 
 	protected:
+		void InitDisplay(float quality);
 		void GlsimStart();
 		void GlsimToolStep1(void);
 		void GlsimToolStep2(void);
@@ -114,6 +114,7 @@ namespace MillSim {
 		float mEyeInclination = PI / 6; // 30 degree
 		float mEyeStep = PI / 36;  // 5 degree
 
+		float mMaxStockDim = 100;
 		float mMaxFar = 100;
 		float mEyeDistFactor = 0.4f;
 		float mEyeXZFactor = 0.01f;

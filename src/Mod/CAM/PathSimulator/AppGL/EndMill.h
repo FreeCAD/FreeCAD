@@ -37,7 +37,6 @@ namespace MillSim
 		float* mProfPoints = nullptr;
 		float mRadius;
 		int mNPoints = 0;
-		int mNSlices;
 		int mToolId = -1;
 		//unsigned int mPathDisplayId;
 		//unsigned int mHToolDisplayId;
@@ -48,10 +47,10 @@ namespace MillSim
 		Shape mToolShape;
 
 	public:
-		EndMill(int toolid, float diameter, int nslices);
-		EndMill(const float* toolProfile, int numPoints, int toolid, float diameter, int nslices);
+		EndMill(int toolid, float diameter);
+		EndMill(const float* toolProfile, int numPoints, int toolid, float diameter);
 		virtual ~EndMill();
-		void GenerateDisplayLists();
+		void GenerateDisplayLists(float quality);
 		unsigned int GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape* retShape);
 
 	protected:

@@ -58,7 +58,6 @@ class CAMSimTaskUi:
     def __init__(self, parent):
         # this will create a Qt widget from our ui file
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/TaskCAMSimulator.ui")
-        #self.form = FreeCADGui.PySideUic.loadUi(_filePath + "/TaskCAMSimulator.ui")
         self.parent = parent
 
     def accept(self):
@@ -81,7 +80,7 @@ class CAMSimulation:
         self.iprogress = 0
         self.numCommands = 0
         self.simperiod = 20
-        self.accuracy = 0.1
+        self.quality = 10
         self.resetSimulation = False
         self.jobs = []
 
@@ -168,8 +167,6 @@ class CAMSimulation:
             edge, p1, p2 =  self.FindClosestEdge(sideEdgeList, endrad, endz)
             if edge is None:
                 break
-
-        print(profile)
         return profile
 
     def Activate(self):
@@ -259,8 +256,13 @@ class CAMSimulation:
 
     def onAccuracyBarChange(self):
         form = self.taskForm.form
-        self.accuracy = 2.2 - 0.2 * form.sliderAccuracy.value()
-        form.labelAccuracy.setText(str(round(self.accuracy, 1)) + "%")
+        self.quality = form.sliderAccuracy.value()
+        qualText = QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "High")
+        if (self.quality < 4):
+            qualText = QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Low")
+        elif (self.quality < 9):
+            qualText = QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Medium")
+        form.labelAccuracy.setText(qualText)
 
     def SimPlay(self):
         self.millSim.ResetSimulation()
@@ -272,7 +274,7 @@ class CAMSimulation:
             opCommands = PathUtils.getPathWithPlacement(op).Commands
             for cmd in opCommands:
                 self.millSim.AddCommand(cmd)
-        self.millSim.BeginSimulation(self.stock, 0.1)
+        self.millSim.BeginSimulation(self.stock, self.quality)
         # GL: update simulator and open window 
         pass
 
@@ -287,8 +289,8 @@ class CommandCAMSimulate:
     def GetResources(self):
         return {
             "Pixmap": "CAM_SimulatorGL",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "CAM Simulator"),
-            "Accel": "P, M",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "New CAM Simulator"),
+            "Accel": "P, N",
             "ToolTip": QtCore.QT_TRANSLATE_NOOP(
                 "CAM_Simulator", "Simulate G-code on stock"
             ),

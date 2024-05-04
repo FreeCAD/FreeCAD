@@ -73,7 +73,7 @@ namespace MillSim {
         }
     }
 
-    void MillSimulation::InitSimulation()
+    void MillSimulation::InitSimulation(float quality)
     {
         ClearMillPathSegments();
 
@@ -82,6 +82,7 @@ namespace MillSim {
         mCurStep = 0;
         mPathStep = -1;
         mNTotalSteps = 0;
+        MillPathSegment::SetQuality(quality, mMaxFar);
         int nOperations = (int)mCodeParser.Operations.size();;
         for (int i = 0; i < nOperations; i++)
         {
@@ -97,6 +98,7 @@ namespace MillSim {
             }
         }
         mNPathSteps = (int)MillPathSegments.size();
+        InitDisplay(quality);
     }
 
     EndMill* MillSimulation::GetTool(int toolId)
@@ -130,11 +132,11 @@ namespace MillSim {
         mToolTable.push_back(tool);
     }
 
-    void MillSimulation::AddTool(const float* toolProfile, int numPoints, int toolid, float diameter, int nslices)
+    void MillSimulation::AddTool(const float* toolProfile, int numPoints, int toolid, float diameter)
     {
         // if we have another tool with same id, remove it
         RemoveTool(toolid);
-        EndMill* tool = new EndMill(toolProfile, numPoints, toolid, diameter, nslices);
+        EndMill* tool = new EndMill(toolProfile, numPoints, toolid, diameter);
         mToolTable.push_back(tool);
     }
 
@@ -470,7 +472,7 @@ namespace MillSim {
         shaderFlat.UpdateProjectionMat(projmat);
     }
 
-    void MillSimulation::InitDisplay()
+    void MillSimulation::InitDisplay(float quality)
     {
         // gray background
         glClearColor(0.6f, 0.8f, 1.0f, 1.0f);
@@ -492,7 +494,7 @@ namespace MillSim {
         // setup light object and generate tools
         mlightObject.GenerateBoxStock(-0.5f, -0.5f, -0.5f, 1, 1, 1);
         for (int i = 0; i < mToolTable.size(); i++)
-            mToolTable[i]->GenerateDisplayLists();
+            mToolTable[i]->GenerateDisplayLists(quality);
 
         // init gui elements
         guiDisplay.InutGui();
@@ -502,12 +504,12 @@ namespace MillSim {
     void MillSimulation::SetBoxStock(float x, float y, float z, float l, float w, float h)
     {
         mStockObject.GenerateBoxStock(x, y, z, l, w, h);
-        float maxw = fmaxf(w, l);
-        mMaxFar = maxw * 4;
+        mMaxStockDim = fmaxf(w, l);
+        mMaxFar = mMaxStockDim * 4;
         UpdateProjection();
         vec3_set(eye, 0, 0, 0);
         UpdateEyeFactor(0.4f);
-        vec3_set(lightPos, x, y, h + maxw / 3);
+        vec3_set(lightPos, x, y, h + mMaxStockDim / 3);
         mlightObject.SetPosition(lightPos);
     }
 
@@ -520,7 +522,7 @@ namespace MillSim {
         }
         else if (buttons == MS_MOUSE_MID)
         {
-            MoveEye(mEyeXZFactor * dx, -mEyeXZFactor * dy);
+            MoveEye(dx, -dy);
         }
         guiDisplay.MouseDrag(buttons, dx, dy);
     }

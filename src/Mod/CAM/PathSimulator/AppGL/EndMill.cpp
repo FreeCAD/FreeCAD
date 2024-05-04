@@ -26,16 +26,14 @@
 
 using namespace MillSim;
 
-EndMill::EndMill(int toolid, float diameter, int nslices)
+EndMill::EndMill(int toolid, float diameter)
 {
 	mRadius = diameter / 2;
-	mNSlices = nslices;
 	mToolId = toolid;
-	//mToolDisplayId = mHToolDisplayId = mPathDisplayId = 0;
 }
 
-MillSim::EndMill::EndMill(const float* toolProfile, int numPoints, int toolid, float diameter, int nslices)
-	: EndMill(toolid, diameter, nslices)
+MillSim::EndMill::EndMill(const float* toolProfile, int numPoints, int toolid, float diameter)
+	: EndMill(toolid, diameter)
 {
 	mNPoints = numPoints;
 	int srcBuffSize = numPoints * 2;
@@ -69,13 +67,20 @@ EndMill::~EndMill()
 		delete[] mProfPoints;
 }
 
-void EndMill::GenerateDisplayLists()
+void EndMill::GenerateDisplayLists(float quality)
 {
+	// calculate number of slices based on quality.
+	int nslices = 16;
+	if (quality < 3)
+		nslices = 4;
+	else if (quality < 7)
+		nslices = 8;
+
 	// full tool
-	mToolShape.RotateProfile(mProfPoints, mNPoints, 0, 0, mNSlices, false);
+	mToolShape.RotateProfile(mProfPoints, mNPoints, 0, 0, nslices, false);
 
 	// half tool
-	mHToolShape.RotateProfile(mProfPoints, mNPoints, 0, 0, mNSlices / 2, true);
+	mHToolShape.RotateProfile(mProfPoints, mNPoints, 0, 0, nslices / 2, true);
 
 	// unit path
 	int nFullPoints = PROFILE_BUFFER_POINTS(mNPoints);

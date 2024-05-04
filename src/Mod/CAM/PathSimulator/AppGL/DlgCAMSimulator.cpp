@@ -119,7 +119,7 @@ namespace CAMSimulator
         std::string toolCmd = "T" + std::to_string(toolNumber);
         mMillSimulator->AddGcodeLine(toolCmd.c_str());
         if (!mMillSimulator->ToolExists(toolNumber))
-            mMillSimulator->AddTool(toolProfilePoints, numPoints, toolNumber, diameter, 16);
+            mMillSimulator->AddTool(toolProfilePoints, numPoints, toolNumber, diameter);
     }
 
     void DlgCAMSimulator::hideEvent(QHideEvent* ev)
@@ -127,9 +127,10 @@ namespace CAMSimulator
         mAnimating = false;
     }
 
-    void DlgCAMSimulator::StartSimulation(const cStock* stock)
+    void DlgCAMSimulator::StartSimulation(const cStock* stock, float quality)
     {
         mStock = *stock;
+        mQuality = quality;
         mNeedsInitialize = true;
         show();
         setAnimating(true);
@@ -137,10 +138,8 @@ namespace CAMSimulator
 
     void DlgCAMSimulator::initialize()
     {
-        mMillSimulator->InitSimulation();
-        // gMillSimulator->SetBoxStock(0, 0, -8.7f, 50, 50, 8.7f);
         mMillSimulator->SetBoxStock(mStock.mPx, mStock.mPy, mStock.mPz, mStock.mLx, mStock.mLy, mStock.mLz);
-        mMillSimulator->InitDisplay();
+        mMillSimulator->InitSimulation(mQuality);
 
         const qreal retinaScale = devicePixelRatio();
         glViewport(0, 0, width() * retinaScale, height() * retinaScale);
@@ -167,16 +166,27 @@ namespace CAMSimulator
 
     void DlgCAMSimulator::renderNow()
     {
+        static unsigned int lastTime = 0;
+        static int frameCount = 0;
+        static int fps = 0;
         if (!isExposed()) {
             return;
         }
 
         CheckInitialization();
 
+        frameCount++;
+        unsigned int curtime = QDateTime::currentMSecsSinceEpoch();
+        unsigned int timediff = curtime - lastTime;
+        if (timediff > 10000)
+        {
+            fps = frameCount * 1000 / timediff; // for debug only. not used otherwise.
+            lastTime = curtime;
+            frameCount = 0;
+        }
         render();
-
         mContext->swapBuffers(this);
-
+ 
         if (mAnimating) {
             renderLater();
         }
@@ -197,10 +207,11 @@ namespace CAMSimulator
         {
             QSurfaceFormat format;
             format.setSamples(16);
-            format.setSwapInterval(1);
+            format.setSwapInterval(2);
             mInstance = new DlgCAMSimulator();
             mInstance->setFormat(format);
             mInstance->resize(800, 600);
+            mInstance->setModality(Qt::ApplicationModal);
             mInstance->show();
         }
         return mInstance;
