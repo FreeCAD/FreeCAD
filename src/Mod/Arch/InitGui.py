@@ -232,6 +232,8 @@ class ArchWorkbench(FreeCADGui.Workbench):
             FreeCADGui.Snapper.show()
         import WorkingPlane
         WorkingPlane._view_observer_start()
+        from draftutils import grid_observer
+        grid_observer._view_observer_start()
         FreeCAD.Console.PrintLog("Arch workbench activated.\n")
 
     def Deactivated(self):
@@ -242,6 +244,8 @@ class ArchWorkbench(FreeCADGui.Workbench):
             FreeCADGui.Snapper.hide()
         import WorkingPlane
         WorkingPlane._view_observer_stop()
+        from draftutils import grid_observer
+        grid_observer._view_observer_stop()
         FreeCAD.Console.PrintLog("Arch workbench deactivated.\n")
 
     def ContextMenu(self, recipient):
