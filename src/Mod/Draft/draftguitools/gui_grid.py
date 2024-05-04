@@ -36,6 +36,7 @@ import FreeCADGui as Gui
 import WorkingPlane
 
 from draftguitools import gui_base
+from draftutils import grid_observer
 from draftutils import gui_utils
 from draftutils.translate import translate
 
@@ -60,7 +61,8 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
                 "MenuText": QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggle grid"),
                 "ToolTip": QT_TRANSLATE_NOOP("Draft_ToggleGrid",
                                              "Toggles the Draft grid on and off."),
-                "CmdType": "ForEdit"}
+                "CmdType": "ForEdit",
+                "Checkable": False,}
 
     def IsActive(self):
         """Return True when this command should be available."""
@@ -80,14 +82,17 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
         if grid.Visible:
             grid.off()
             grid.show_always = False
+            grid_observer._update_gridgui()
             if cmdactive:
                 grid.show_during_command = False
         elif cmdactive:
             grid.set()  # set() required: the grid must be updated to match the current WP
             grid.show_during_command = True
+            grid_observer._update_gridgui()
         else:
             grid.set()
             WorkingPlane.get_working_plane()
+            grid_observer._update_gridgui()
             grid.show_always = True
 
 Gui.addCommand("Draft_ToggleGrid", ToggleGrid())
