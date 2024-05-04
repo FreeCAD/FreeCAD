@@ -259,6 +259,7 @@ class CurtainWall(ArchComponent.Component):
             obj.addProperty("App::PropertyVector","VerticalDirection","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall"))
             obj.VerticalDirection = FreeCAD.Vector(0,0,1)
+        self.Type = "CurtainWall"
 
     def onDocumentRestored(self,obj):
 

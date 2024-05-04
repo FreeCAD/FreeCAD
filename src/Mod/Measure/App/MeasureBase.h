@@ -67,7 +67,7 @@ public:
     virtual QString getResultString();
 
     virtual std::vector<std::string> getInputProps();
-    virtual App::Property* getResultProp() {return {};};
+    virtual App::Property* getResultProp() {return {};}
     virtual Base::Placement getPlacement();
 
     // Return the objects that are measured

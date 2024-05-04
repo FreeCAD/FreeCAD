@@ -261,6 +261,13 @@ enum class OpenResult
     allowOpenResult
 };
 
+// See BRepFeat_MakeRevol
+enum class RevolMode {
+    CutFromBase = 0,
+    FuseWithBase = 1,
+    None = 2
+};
+
 /** The representation for a CAD Shape
  */
 // NOLINTNEXTLINE cppcoreguidelines-special-member-functions
@@ -1081,7 +1088,6 @@ public:
 
     /** Make revolved shell around a basis shape
      *
-     * @param base: the basis shape
      * @param axis: the revolving axis
      * @param d: rotation angle in degree
      * @param face_maker: optional type name of the the maker used to make a
@@ -1096,6 +1102,67 @@ public:
         return TopoShape(0,Hasher).makeElementRevolve(*this,axis,d,face_maker,op);
     }
 
+
+    /** Make revolved shell around a basis shape
+     *
+     * @param base: the basis shape
+     * @param axis: the revolving axis
+     * @param d: rotation angle in degree
+     * @param face_maker: optional type name of the the maker used to make a
+     *                    face from basis shape
+     * @param supportface:  the bottom face for the revolution, or null
+     * @param uptoface:  the upper limit face for the revolution, or null
+     * @param Mode: the opencascade defined modes
+     * @param Modify: if opencascade should modify existing shapes
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the generated new shape. The TopoShape itself is not modified.
+     */
+    TopoShape& makeElementRevolution(const TopoShape& _base,
+                                     const gp_Ax1& axis,
+                                     double d,
+                                     const TopoDS_Face& supportface,
+                                     const TopoDS_Face& uptoface,
+                                     const char* face_maker = nullptr,
+                                     RevolMode Mode = RevolMode::None,
+                                     Standard_Boolean Modify = Standard_True,
+                                     const char* op = nullptr);
+
+    /** Make revolved shell around a basis shape
+     *
+     * @param axis: the revolving axis
+     * @param d: rotation angle in degree
+     * @param face_maker: optional type name of the the maker used to make a
+     *                    face from basis shape
+     * @param supportface:  the bottom face for the revolution, or null
+     * @param uptoface:  the upper limit face for the revolution, or null
+     * @param Mode: the opencascade defined modes
+     * @param Modify: if opencascade should modify existing shapes
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the generated new shape. The TopoShape itself is not modified.
+     */
+    TopoShape& makeElementRevolution(const gp_Ax1& axis,
+                                     double d,
+                                     const TopoDS_Face& supportface,
+                                     const TopoDS_Face& uptoface,
+                                     const char* face_maker = nullptr,
+                                     RevolMode Mode = RevolMode::None,
+                                     Standard_Boolean Modify = Standard_True,
+                                     const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementRevolution(*this,
+                                                          axis,
+                                                          d,
+                                                          supportface,
+                                                          uptoface,
+                                                          face_maker,
+                                                          Mode,
+                                                          Modify,
+                                                          op);
+    }
 
     /** Make a prism that is a linear sweep of a basis shape
      *

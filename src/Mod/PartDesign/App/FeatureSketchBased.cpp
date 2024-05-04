@@ -280,7 +280,7 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
 }
 
 TopoShape ProfileBased::getTopoShapeVerifiedFace(bool silent,
-                                                 bool doFit,
+                                                 [[maybe_unused]]bool doFit, // TODO: Remove parameter
                                                  bool allowOpen,
                                                  const App::DocumentObject* profile,
                                                  const std::vector<std::string>& _subs) const

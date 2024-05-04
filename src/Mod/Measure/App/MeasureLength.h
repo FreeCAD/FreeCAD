@@ -63,7 +63,7 @@ public:
     App::Property* getResultProp() override {return &this->Length;}
 
     // Return a placement for the viewprovider, just use the first element for now
-    Base::Placement getPlacement();
+    Base::Placement getPlacement() override;
 
     // Return the object we are measuring
     std::vector<App::DocumentObject*> getSubject() const override;

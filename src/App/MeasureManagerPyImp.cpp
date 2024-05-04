@@ -63,7 +63,7 @@ PyObject* MeasureManagerPy::addMeasureType(PyObject *args)
 }
 
 
-PyObject* MeasureManagerPy::getMeasureTypes(PyObject *args)
+PyObject* MeasureManagerPy::getMeasureTypes()
 {
     Py::List types;
     for (auto & it : MeasureManager::getMeasureTypes()) {
@@ -73,7 +73,7 @@ PyObject* MeasureManagerPy::getMeasureTypes(PyObject *args)
         type.setItem(2, Py::Object(it->pythonClass));
 
         types.append(type);
-        }
+    }
 
     return Py::new_reference_to(types);
 }
