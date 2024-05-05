@@ -37,6 +37,12 @@ namespace Gui
 {
 class WorkbenchGroup;
 
+enum WorkbenchItemStyle {
+    IconAndText = 0,
+    IconOnly = 1,
+    TextOnly = 2
+};
+
 class GuiExport WorkbenchComboBox : public QComboBox
 {
     Q_OBJECT
@@ -56,8 +62,15 @@ private:
 class GuiExport WorkbenchTabWidget : public QWidget
 {
     Q_OBJECT
+    Q_PROPERTY(Qt::LayoutDirection direction READ direction WRITE setDirection NOTIFY directionChanged)
 
-    void addWorkbenchTab(QAction* workbenchActivateAction);
+    int addWorkbenchTab(QAction* workbenchActivateAction, int index = -1);
+
+    void setTemporaryWorkbenchTab(QAction* workbenchActivateAction);
+    int temporaryWorkbenchTabIndex() const;
+
+    QAction* workbenchActivateActionByTabIndex(int tabIndex) const;
+    int tabIndexForWorkbenchActivateAction(QAction* workbenchActivateAction) const;
 
 public:
     explicit WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent = nullptr);
@@ -65,6 +78,8 @@ public:
     void setToolBarArea(Gui::ToolBarArea area);
     void buildPrefMenu();
 
+    Qt::LayoutDirection direction() const;
+    void setDirection(Qt::LayoutDirection direction);
 
     void adjustSize();
 
@@ -75,6 +90,9 @@ public Q_SLOTS:
     void updateLayout();
     void updateWorkbenchList();
 
+Q_SIGNALS:
+    void directionChanged(const Qt::LayoutDirection&);
+
 private:
     bool isInitializing = false;
 
@@ -82,8 +100,11 @@ private:
     QToolButton* moreButton;
     QTabBar* tabBar;
     QBoxLayout* layout;
+
+    Qt::LayoutDirection _direction = Qt::LeftToRight;
+
     // this action is used for workbenches that are typically disabled
-    QAction* additionalWorkbenchAction = nullptr;
+    QAction* temporaryWorkbenchAction = nullptr;
 
     std::map<QAction*, int> actionToTabIndex;
     std::map<int, QAction*> tabIndexToAction;

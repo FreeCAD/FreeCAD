@@ -632,15 +632,16 @@ void WorkbenchGroup::addTo(QWidget *widget)
     if (widget->inherits("QToolBar")) {
         ParameterGrp::handle hGrp;
         hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
-        QWidget* wbSel;
+
+        QWidget* workbenchSelectorWidget;
         if (hGrp->GetInt("WorkbenchSelectorType", 0) == 0) {
-            wbSel = new WorkbenchComboBox(this, widget);
+            workbenchSelectorWidget = new WorkbenchComboBox(this, widget);
         }
         else {
-            wbSel = new WorkbenchTabWidget(this, widget);
+            workbenchSelectorWidget = new WorkbenchTabWidget(this, widget);
         }
 
-        static_cast<QToolBar*>(widget)->addWidget(wbSel);
+        static_cast<QToolBar*>(widget)->addWidget(workbenchSelectorWidget);
     }
     else if (widget->inherits("QMenu")) {
         auto menu = qobject_cast<QMenu*>(widget);
