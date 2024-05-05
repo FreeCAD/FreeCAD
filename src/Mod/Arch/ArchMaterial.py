@@ -652,7 +652,7 @@ class _ArchMaterialTaskPanel:
         "sets self.material from a card"
         if card in self.cards:
             import importFCMat
-            self.material = importFCMat.read(self.cards[card])
+            self.material = importFCMat.read(self.cards[card][0], self.cards[card][1])
             self.setFields()
 
     def fromExisting(self,index):
@@ -690,16 +690,31 @@ class _ArchMaterialTaskPanel:
         "fills the combo with the existing FCMat cards"
         # look for cards in both resources dir and a Materials sub-folder in the user folder.
         # User cards with same name will override system cards
-        paths = [FreeCAD.getResourceDir() + os.sep + "Mod" + os.sep + "Material" + os.sep + "StandardMaterial"]
-        ap = FreeCAD.ConfigGet("UserAppData") + os.sep + "Materials"
-        if os.path.exists(ap):
-            paths.append(ap)
+        resources_mat_path = os.path.join(FreeCAD.getResourceDir(), "Mod", "Material", "Resources", "Materials")
+        resources_mat_path_std = os.path.join(resources_mat_path, "Standard")
+        user_mat_path = os.path.join(FreeCAD.ConfigGet("UserAppData"), "Material")
+
+        paths = [resources_mat_path_std]        
+        if os.path.exists(user_mat_path):
+            paths.append(user_mat_path)
         self.cards = {}
+        library = None
         for p in paths:
-            for f in os.listdir(p):
-                b,e = os.path.splitext(f)
-                if e.upper() == ".FCMAT":
-                    self.cards[b] = p + os.sep + f
+            for root, _, f_names in os.walk(p):
+                for f in f_names:
+                    b,e = os.path.splitext(f)
+                    if e.upper() == ".FCMAT":
+                        if p == resources_mat_path_std:
+                            root_removed = root.replace(resources_mat_path, '')
+                            library = "System"
+                        else:
+                            root_removed = root.replace(p, '')
+                            library = "User"
+                        mat_path = os.path.join(root_removed, f)
+                        # Material paths follow the OS' filesystem hierarchy but
+                        # are stored internally separated by '/', regardless of the platform
+                        # E.g. '/Standard/Metal/Steel/CalculiX-Steel.FCMat'
+                        self.cards[b] = (mat_path.replace(os.sep, '/'), library)
         if self.cards:
             for k in sorted(self.cards):
                 self.form.comboBox_MaterialsInDir.addItem(k)
