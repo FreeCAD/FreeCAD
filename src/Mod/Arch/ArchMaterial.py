@@ -652,7 +652,7 @@ class _ArchMaterialTaskPanel:
         "sets self.material from a card"
         if card in self.cards:
             import importFCMat
-            self.material = importFCMat.read(self.cards[card][0], self.cards[card][1])
+            self.material = importFCMat.read(self.cards[card])
             self.setFields()
 
     def fromExisting(self,index):
