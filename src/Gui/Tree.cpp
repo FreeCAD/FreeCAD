@@ -1983,7 +1983,8 @@ TreeWidget::TargetItemInfo TreeWidget::getTargetInfo(QEvent* ev)
     return targetInfo;
 }
 
-bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo, std::vector<std::pair<DocumentObjectItem*, std::vector<std::string> > > items)
+bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
+                                std::vector<TreeWidget::ObjectItemSubname> items)
 {
     std::string errMsg;
     auto da = event->dropAction();
@@ -2187,7 +2188,8 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo, s
     return touched;
 }
 
-bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo, std::vector<std::pair<DocumentObjectItem*, std::vector<std::string> > > items)
+bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
+                              std::vector<TreeWidget::ObjectItemSubname> items)
 {
     std::string errMsg;
     auto da = event->dropAction();
@@ -2554,7 +2556,7 @@ void TreeWidget::dropEvent(QDropEvent* event)
     }
 
     // filter out the selected items we cannot handle
-    std::vector<std::pair<DocumentObjectItem*, std::vector<std::string> > > items;
+    std::vector<ObjectItemSubname> items;
     items = DropHandler::filterItems(selectedItems(), targetInfo.targetItem);
     if (items.empty()) {
         return; // nothing needs to be done
@@ -3035,7 +3037,9 @@ void TreeWidget::onItemEntered(QTreeWidgetItem* item)
         Selection().rmvPreselect();
 }
 
-void TreeWidget::leaveEvent(QEvent*) {
+void TreeWidget::leaveEvent(QEvent* event)
+{
+    Q_UNUSED(event)
     if (!updateBlocked && TreeParams::getPreSelection()) {
         preselectTimer->stop();
         Selection().rmvPreselect();
