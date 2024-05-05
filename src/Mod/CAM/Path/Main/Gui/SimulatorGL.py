@@ -279,10 +279,12 @@ class CAMSimulation:
         pass
 
     def accept(self):
-        self.EndSimulation()
+        #self.EndSimulation()
+        pass
 
     def cancel(self):
-        self.EndSimulation()
+        #self.EndSimulation()
+        pass
 
 
 class CommandCAMSimulate:
