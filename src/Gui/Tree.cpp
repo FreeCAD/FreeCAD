@@ -2661,7 +2661,7 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
             auto vpA = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(a));
             auto vpB = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(b));
             if (vpA && vpB) {
-                return vpA->TreeRank.getValue() < vpB->TreeRank.getValue();
+                return vpA->getTreeRank() < vpB->getTreeRank();
             }
             return false; // Keep the original order if either vpA or vpB is nullptr
         });
@@ -2669,10 +2669,10 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
         // Then we move dropped objects to their correct position
         sortIntoList(objList);
 
-        // Then we update the TreeRank properties
+        // Then we set the tree rank
         for (size_t i = 0; i < sortedObjList.size(); ++i) {
             auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(sortedObjList[i]));
-            vp->TreeRank.setValue(i);
+            vp->setTreeRank(i);
         }
 
         // Lastly we refresh the tree
@@ -4081,10 +4081,10 @@ int DocumentItem::findRootIndex(App::DocumentObject* childObj) {
     int first, last;
 
     auto getTreeRank = [](Gui::ViewProviderDocumentObject* vp) -> int {
-        if (vp->TreeRank.getValue() == -1) {
-            vp->TreeRank.setValue(vp->getObject()->getID());
+        if (vp->getTreeRank() == -1) {
+            vp->setTreeRank(vp->getObject()->getID());
         }
-        return vp->TreeRank.getValue();
+        return vp->getTreeRank();
     };
 
     auto vpc = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(childObj));
@@ -4126,7 +4126,7 @@ int DocumentItem::findRootIndex(App::DocumentObject* childObj) {
             if (citem->type() != TreeWidget::ObjectType)
                 continue;
             auto vp = static_cast<DocumentObjectItem*>(citem)->object();
-            if (vp->TreeRank.getValue() < childTreeRank) {
+            if (vp->getTreeRank() < childTreeRank) {
                 first = ++pos;
                 count -= step + 1;
             }
@@ -4158,7 +4158,7 @@ void DocumentItem::sortObjectItems()
 
     std::stable_sort(sortedItems.begin(), sortedItems.end(),
         [](DocumentObjectItem* a, DocumentObjectItem* b) {
-        return a->object()->TreeRank.getValue() < b->object()->TreeRank.getValue();
+        return a->object()->getTreeRank() < b->object()->getTreeRank();
     });
 
     int sortedIndex = 0;
