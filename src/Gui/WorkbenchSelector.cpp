@@ -32,6 +32,7 @@
 # include <QStatusBar>
 # include <QToolBar>
 # include <QLayout>
+# include <QTimer>
 #endif
 
 #include "Base/Tools.h"
@@ -78,8 +79,7 @@ void WorkbenchComboBox::refreshList(QList<QAction*> actionList)
 {
     clear();
 
-    ParameterGrp::handle hGrp;
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
 
     auto itemStyle = static_cast<WorkbenchItemStyle>(hGrp->GetInt("WorkbenchSelectorItem", 0));
 
@@ -114,7 +114,6 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
 
     tabBar = new QTabBar(this);
     moreButton = new QToolButton(this);
-
     layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
 
     layout->setContentsMargins(0, 0, 0, 0);
@@ -131,18 +130,15 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
     moreButton->setObjectName(QString::fromLatin1("WbTabBarMore"));
 
     if (parent->inherits("QToolBar")) {
-        // set the initial orientation. We cannot do updateLayoutAndTabOrientation(false);
-        // because on init the toolbar area is always TopToolBarArea.
-        ParameterGrp::handle hGrp;
-        hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
-        std::string orientation = hGrp->GetASCII("TabBarOrientation", "North");
-
-        setToolBarArea(
-            orientation == "North" ? Gui::ToolBarArea::TopToolBarArea :
-            orientation == "South" ? Gui::ToolBarArea::BottomToolBarArea :
-            orientation == "East" ? Gui::ToolBarArea::LeftToolBarArea :
-            Gui::ToolBarArea::RightToolBarArea
-        );
+        // when toolbar is created it is not yet placed in its designated area
+        // therefore we need to wait a bit and then update layout when it is ready
+        // this is prone to race conditions, but Qt does not supply any event that
+        // informs us about toolbar changing its placement.
+        //
+        // previous implementation saved that information to user settings and
+        // restored last layout but this creates issues when default workbench has
+        // different layout than last visited one
+        QTimer::singleShot(500, [this]() { updateLayout(); });
     }
 
     tabBar->setDocumentMode(true);
@@ -293,6 +289,10 @@ void WorkbenchTabWidget::handleTabChange(int selectedTabIndex)
 
 void WorkbenchTabWidget::updateWorkbenchList()
 {
+    if (isInitializing) {
+        return;
+    }
+
     // As clearing and adding tabs can cause changing current tab in QTabBar.
     // This in turn will cause workbench to change, so we need to prevent
     // processing of such events until the QTabBar is fully prepared.
@@ -320,8 +320,7 @@ void WorkbenchTabWidget::updateWorkbenchList()
 
 int WorkbenchTabWidget::addWorkbenchTab(QAction* action, int tabIndex)
 {
-    ParameterGrp::handle hGrp;
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
     auto itemStyle = static_cast<WorkbenchItemStyle>(hGrp->GetInt("WorkbenchSelectorItem", 0));
 
     // if tabIndex is negative we assume that tab must be placed at the end of tabBar (default behavior)
@@ -356,15 +355,12 @@ int WorkbenchTabWidget::addWorkbenchTab(QAction* action, int tabIndex)
 
 void WorkbenchTabWidget::setToolBarArea(Gui::ToolBarArea area)
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
-
     switch (area) {
         case Gui::ToolBarArea::LeftToolBarArea:
         case Gui::ToolBarArea::RightToolBarArea: {
             setDirection(Qt::LeftToRight);
             layout->setDirection(direction() == Qt::LeftToRight ? QBoxLayout::TopToBottom : QBoxLayout::BottomToTop);
             tabBar->setShape(area == Gui::ToolBarArea::LeftToolBarArea ? QTabBar::RoundedWest : QTabBar::RoundedEast);
-            hGrp->SetASCII("TabBarOrientation", area == Gui::ToolBarArea::LeftToolBarArea ? "West" : "East");
             break;
         }
 
@@ -385,7 +381,6 @@ void WorkbenchTabWidget::setToolBarArea(Gui::ToolBarArea area)
             setDirection(isRightAligned ? Qt::RightToLeft : Qt::LeftToRight);
             layout->setDirection(direction() == Qt::LeftToRight ? QBoxLayout::LeftToRight : QBoxLayout::RightToLeft);
             tabBar->setShape(isTop ? QTabBar::RoundedNorth : QTabBar::RoundedSouth);
-            hGrp->SetASCII("TabBarOrientation", isTop ? "North" : "South");
             break;
         }
         default:
