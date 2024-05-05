@@ -64,9 +64,6 @@ public:
     App::PropertyEnumeration OnTopWhenSelected;
     App::PropertyEnumeration SelectionStyle;
 
-    // Hidden properties
-    App::PropertyInteger TreeRank;
-
     virtual void attach(App::DocumentObject *pcObject);
     virtual void reattach(App::DocumentObject *);
     void update(const App::Property*) override;
@@ -124,6 +121,18 @@ public:
     //@{
     virtual void startRestoring();
     virtual void finishRestoring();
+    //@}
+
+    /** @name Tree rank */
+    //@{
+    int getTreeRank() const
+    {
+        return treeRank;
+    }
+    void setTreeRank(int value)
+    {
+        treeRank = value;
+    }
     //@}
 
     bool removeDynamicProperty(const char* prop) override;
@@ -220,6 +229,7 @@ protected:
 
 private:
     bool _Showable = true;
+    int treeRank = -1;
 
     std::vector<const char*> aDisplayEnumsArray;
     std::vector<std::string> aDisplayModesArray;
