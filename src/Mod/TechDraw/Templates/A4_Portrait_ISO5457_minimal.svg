@@ -35,7 +35,7 @@
   <g id="centring_marks" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round">
     <path id="top_centring" d="m 105,5 v 10" />
     <path id="right_centring" d="m 205,148.5 h -10" />
-    <path id="bottom_centring" d="m 105,292 v -10" />
+    <path id="bottom_centring" d="m 105,292 v -6" />
     <path id="left_centring" d="m 15,148.5 h 10" />
   </g>
   <g id="grid_reference_system">
