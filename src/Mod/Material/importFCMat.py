@@ -97,9 +97,9 @@ def decode(name):
 # as we had and we might will have problems again and again
 # https://github.com/berndhahnebach/FreeCAD_bhb/commits/materialdev
 
-def read(filename, library):
+def read(filename):
     materialManager = Materials.MaterialManager()
-    material = materialManager.getMaterialByPath(filename, library)
+    material = materialManager.getMaterialByPath(filename)
     return material.Properties
 
 # Metainformation
