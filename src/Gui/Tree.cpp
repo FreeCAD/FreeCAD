@@ -2143,7 +2143,8 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
                 }
                 else if (da == Qt::MoveAction && obj->getDocument() == targetInfo.targetDoc) {
                     // Moving a object within the document root.
-                    res = obj;
+                    // Do not set 'res' as changing the placement is not desired: #13690
+                    droppedObjs.push_back(obj);
                 }
                 else {
                     // Moving a object from another document.
