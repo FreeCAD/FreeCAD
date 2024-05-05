@@ -141,6 +141,8 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent * event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
+
+private:
     struct TargetItemInfo {
         QTreeWidgetItem* targetItem = nullptr; //target may be the parent of underMouse
         QTreeWidgetItem* underMouseItem = nullptr;
@@ -150,19 +152,23 @@ protected:
         bool inThresholdZone = false;
     };
     TargetItemInfo getTargetInfo(QEvent* ev);
-    bool dropInObject(QDropEvent* event, TargetItemInfo& targetInfo, std::vector<std::pair<DocumentObjectItem*, std::vector<std::string> > > items);
-    bool dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo, std::vector<std::pair<DocumentObjectItem*, std::vector<std::string> > > items);
+    using ObjectItemSubname = std::pair<DocumentObjectItem*, std::vector<std::string>>;
+    bool dropInObject(QDropEvent* event, TargetItemInfo& targetInfo, std::vector<ObjectItemSubname> items);
+    bool dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo, std::vector<ObjectItemSubname> items);
     void sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App::DocumentObject*> draggedObjects);
     //@}
+
+protected:
     bool event(QEvent *e) override;
     void keyPressEvent(QKeyEvent *event) override;
     void mousePressEvent(QMouseEvent * event) override;
     void mouseDoubleClickEvent(QMouseEvent * event) override;
 
-protected:
-    void showEvent(QShowEvent *) override;
-    void hideEvent(QHideEvent *) override;
-    void leaveEvent(QEvent *) override;
+    void showEvent(QShowEvent *ev) override;
+    void hideEvent(QHideEvent *ev) override;
+    void leaveEvent(QEvent *event) override;
+
+private:
     void _updateStatus(bool delay=true);
 
 protected Q_SLOTS:
