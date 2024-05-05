@@ -551,7 +551,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Separator"
           << datums
           << "PartDesign_CoordinateSystem"
-          << "PartDesign_ShapeBinder"
           << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone"
           << "Separator"
@@ -566,6 +565,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << dressups
           << "Separator"
           << "PartDesign_Boolean"
+          << "Separator"
+          << "Part_CheckGeometry"
           << "Separator"
           << "PartDesign_Migrate"
           << "PartDesign_Sprocket";
@@ -604,18 +605,12 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     part->setCommand("Part Design Helper");
 
     *part << "PartDesign_Body"
-          << "PartDesign_NewSketch"
-          << "Sketcher_EditSketch"
-          << "Sketcher_MapSketch"
+          << "PartDesign_CompSketches"
           << "Sketcher_ValidateSketch"
-          << "Separator"
-          << "PartDesign_Point"
-          << "PartDesign_Line"
-          << "PartDesign_Plane"
-          << "PartDesign_CoordinateSystem"
-          << "PartDesign_ShapeBinder"
+          << "Part_CheckGeometry"
           << "PartDesign_SubShapeBinder"
-          << "PartDesign_Clone";
+          << "PartDesign_Clone"
+          << "PartDesign_CompDatums";
 
     part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design Modeling");
@@ -635,18 +630,24 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_SubtractiveHelix"
           << "PartDesign_CompPrimitiveSubtractive"
           << "Separator"
-          << "PartDesign_Mirrored"
-          << "PartDesign_LinearPattern"
-          << "PartDesign_PolarPattern"
-//          << "PartDesign_Scaled"
-          << "PartDesign_MultiTransform"
-          << "Separator"
-          << "PartDesign_Fillet"
+          << "PartDesign_Boolean";
+
+    part = new Gui::ToolBarItem(root);
+
+    part->setCommand("Part Design Dressup");
+    *part << "PartDesign_Fillet"
           << "PartDesign_Chamfer"
           << "PartDesign_Draft"
-          << "PartDesign_Thickness"
-          << "Separator"
-          << "PartDesign_Boolean";
+          << "PartDesign_Thickness";
+
+    part = new Gui::ToolBarItem(root);
+    part->setCommand("Part Design Patterns");
+
+    *part << "PartDesign_Mirrored"
+          << "PartDesign_LinearPattern"
+          << "PartDesign_PolarPattern"
+          // << "PartDesign_Scaled"
+          << "PartDesign_MultiTransform";
 
     return root;
 }
