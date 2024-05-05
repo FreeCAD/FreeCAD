@@ -25,7 +25,7 @@
 #define FREECAD_START_GENERALSETTINGSWIDGET_H
 
 #include <QWidget>
-#include <3rdParty/GSL/include/gsl/pointers>
+#include <gsl/pointers>
 
 class QLabel;
 class QComboBox;
