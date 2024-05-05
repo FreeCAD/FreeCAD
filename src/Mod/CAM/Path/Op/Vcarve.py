@@ -150,13 +150,44 @@ def _sortVoronoiWires(wires, start=FreeCAD.Vector(0, 0, 0)):
 class _Geometry(object):
     """POD class so the limits only have to be calculated once."""
 
-    def __init__(self, zStart, zStop, zScale):
+    def __init__(self, zStart, zStop, zScale, zStepDown):
         self.start = zStart
         self.stop = zStop
         self.scale = zScale
+        self.stepDown = zStepDown
+        self.stepDownPass = 1
+
+        # offset is used in finishing passes to override
+        # any calculated vcarving depths. Usually going deeper 0.1-0.2 mm on finishing pass can help
+        # remove "fuzzy skin" or other imperfections.
+        self.offset = 0
+
+    def incrementStepDownPass(self):
+        """
+        Increase stepDown depth before staring new carving pass.
+        :returns: True if successful, False if maximum depth achieved
+        """
+
+        # do not allot to increase depth if we are already at max
+        if self.maximumDepth == self.stop:
+            return False
+
+        self.stepDownPass += 1
+        return True
+
+    @property
+    def maximumDepth(self):
+        """
+        Return maximum vcarving depth computed from step down setting and pass number
+        """
+
+        if self.stepDown == 0:
+            return self.stop
+
+        return max(self.stop, self.start - (self.stepDownPass * self.stepDown))
 
     @classmethod
-    def FromTool(cls, tool, zStart, zFinal):
+    def FromTool(cls, tool, zStart, zFinal, zStepDown=0):
         rMax = float(tool.Diameter) / 2.0
         rMin = float(tool.TipDiameter) / 2.0
         toolangle = math.tan(math.radians(tool.CuttingEdgeAngle.Value / 2.0))
@@ -164,14 +195,15 @@ class _Geometry(object):
         zStop = zStart - rMax * zScale
         zOff = rMin * zScale
 
-        return _Geometry(zStart + zOff, max(zStop + zOff, zFinal), zScale)
+        return _Geometry(zStart + zOff, max(zStop + zOff, zFinal), zScale, zStepDown)
 
     @classmethod
     def FromObj(cls, obj, model):
         zStart = model.Shape.BoundBox.ZMax
         finalDepth = obj.FinalDepth.Value
+        stepDown = obj.StepDown.Value
 
-        return cls.FromTool(obj.ToolController.Tool, zStart, finalDepth)
+        return cls.FromTool(obj.ToolController.Tool, zStart, finalDepth, stepDown)
 
 
 def _calculate_depth(MIC, geom):
@@ -180,13 +212,15 @@ def _calculate_depth(MIC, geom):
     depth = geom.start - round(MIC * geom.scale, 4)
     Path.Log.debug("zStart value: {} depth: {}".format(geom.start, depth))
 
-    return max(depth, geom.stop)
+    print(f"AAA - {geom.maximumDepth}")
+
+    return max(depth, geom.maximumDepth)
 
 
-def _getPartEdge(edge, depths):
+def _getPartEdge(edge, geom):
     dist = edge.getDistances()
-    zBegin = _calculate_depth(dist[0], depths)
-    zEnd = _calculate_depth(dist[1], depths)
+    zBegin = _calculate_depth(dist[0], geom)
+    zEnd = _calculate_depth(dist[1], geom)
     return edge.toShape(zBegin, zEnd)
 
 
@@ -199,6 +233,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             PathOp.FeatureTool
             | PathOp.FeatureHeights
             | PathOp.FeatureDepths
+            | PathOp.FeatureStepDown
             | PathOp.FeatureBaseFaces
             | PathOp.FeatureCoolant
         )
@@ -214,6 +249,23 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 ),
             )
         obj.setEditorMode("BaseShapes", 2)  # hide
+
+        obj.addProperty(
+            "App::PropertyBool",
+            "FinishingPass",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Add finishing pass"),
+        )
+
+        obj.addProperty(
+            "App::PropertyFloat",
+            "FinishingPassZOffset",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Finishing pass Z offset"),
+        )
+
+        obj.FinishingPass = False
+        obj.FinishingPassZOffset = 0
 
     def initOperation(self, obj):
         """initOperation(obj) ... create vcarve specific properties."""
@@ -241,6 +293,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Vcarve Tolerance"),
         )
+
         obj.Colinear = 10.0
         obj.Discretize = 0.01
         obj.Tolerance = Path.Preferences.defaultGeometryTolerance()
@@ -256,7 +309,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             edges.append(_getPartEdge(e, geom))
         return edges
 
-    def buildPathMedial(self, obj, faces):
+    def buildMedialWires(self, obj, faces):
         """constructs a medial axis path using openvoronoi"""
 
         def insert_many_wires(vd, wires):
@@ -276,31 +329,15 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                     dist = ptv[-1].distanceToPoint(ptv[0])
                     if dist < FreeCAD.Base.Precision.confusion():
                         Path.Log.debug(
-                            "Removing bad carve point: {} from polygon origin"
-                            .format(dist))
+                            "Removing bad carve point: {} from polygon origin".format(
+                                dist
+                            )
+                        )
                         del ptv[-1]
                 ptv.append(ptv[0])
 
-                for i in range(len(ptv)-1):
+                for i in range(len(ptv) - 1):
                     vd.addSegment(ptv[i], ptv[i + 1])
-
-        def cutWire(edges):
-            path = []
-            path.append(Path.Command("G0 Z{}".format(obj.SafeHeight.Value)))
-            e = edges[0]
-            p = e.valueAt(e.FirstParameter)
-            path.append(
-                Path.Command("G0 X{} Y{} Z{}".format(p.x, p.y, obj.SafeHeight.Value))
-            )
-            hSpeed = obj.ToolController.HorizFeed.Value
-            vSpeed = obj.ToolController.VertFeed.Value
-            path.append(
-                Path.Command("G1 X{} Y{} Z{} F{}".format(p.x, p.y, p.z, vSpeed))
-            )
-            for e in edges:
-                path.extend(Path.Geom.cmdsForEdge(e, hSpeed=hSpeed, vSpeed=vSpeed))
-
-            return path
 
         voronoiWires = []
         for f in faces:
@@ -335,15 +372,53 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         if _sorting == "global":
             voronoiWires = _sortVoronoiWires(voronoiWires)
 
+        return voronoiWires
+
+    def buildCommandList(self, obj, faces):
+        """
+        Build command list to cut wires - based on voronoi
+        wire list from buildMedialWires
+        """
+
+        def cutWire(edges):
+            path = []
+            path.append(Path.Command("G0 Z{}".format(obj.SafeHeight.Value)))
+            e = edges[0]
+            p = e.valueAt(e.FirstParameter)
+            path.append(
+                Path.Command("G0 X{} Y{} Z{}".format(p.x, p.y, obj.SafeHeight.Value))
+            )
+            hSpeed = obj.ToolController.HorizFeed.Value
+            vSpeed = obj.ToolController.VertFeed.Value
+            path.append(
+                Path.Command("G1 X{} Y{} Z{} F{}".format(p.x, p.y, p.z, vSpeed))
+            )
+            for e in edges:
+                path.extend(Path.Geom.cmdsForEdge(e, hSpeed=hSpeed, vSpeed=vSpeed))
+
+            return path
+
         geom = _Geometry.FromObj(obj, self.model[0])
+
+        wires = self.buildMedialWires(obj, faces)
 
         pathlist = []
         pathlist.append(Path.Command("(starting)"))
-        for w in voronoiWires:
+
+        # firt pass
+        for w in wires:
             pWire = self._getPartEdges(obj, w, geom)
             if pWire:
-                wires.append(pWire)
                 pathlist.extend(cutWire(pWire))
+
+        # subsequent stepDown depth passes (if any)
+        while geom.incrementStepDownPass():
+            for w in wires:
+                pWire = self._getPartEdges(obj, w, geom)
+                if pWire:
+                    pathlist.extend(cutWire(pWire))
+
+
         self.commandlist = pathlist
 
     def opExecute(self, obj):
@@ -386,7 +461,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                         faces.extend(model.Shape.Faces)
 
             if faces:
-                self.buildPathMedial(obj, faces)
+                self.buildCommandList(obj, faces)
             else:
                 Path.Log.error(
                     translate(
