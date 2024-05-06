@@ -215,90 +215,47 @@
         <file>ui/preferences-ifc.ui</file>
         <file>ui/preferencesNativeIFC.ui</file>
         <file>translations/Arch_af.qm</file>
-        <file>translations/Arch_af.ts</file>
         <file>translations/Arch_ar.qm</file>
-        <file>translations/Arch_ar.ts</file>
         <file>translations/Arch_be.qm</file>
-        <file>translations/Arch_be.ts</file>
         <file>translations/Arch_bg.qm</file>
-        <file>translations/Arch_bg.ts</file>
         <file>translations/Arch_ca.qm</file>
-        <file>translations/Arch_ca.ts</file>
         <file>translations/Arch_cs.qm</file>
-        <file>translations/Arch_cs.ts</file>
         <file>translations/Arch_da.qm</file>
-        <file>translations/Arch_da.ts</file>
         <file>translations/Arch_de.qm</file>
-        <file>translations/Arch_de.ts</file>
         <file>translations/Arch_el.qm</file>
-        <file>translations/Arch_el.ts</file>
         <file>translations/Arch_es-AR.qm</file>
-        <file>translations/Arch_es-AR.ts</file>
         <file>translations/Arch_es-ES.qm</file>
-        <file>translations/Arch_es-ES.ts</file>
         <file>translations/Arch_eu.qm</file>
-        <file>translations/Arch_eu.ts</file>
         <file>translations/Arch_fi.qm</file>
-        <file>translations/Arch_fi.ts</file>
         <file>translations/Arch_fil.qm</file>
-        <file>translations/Arch_fil.ts</file>
         <file>translations/Arch_fr.qm</file>
-        <file>translations/Arch_fr.ts</file>
         <file>translations/Arch_gl.qm</file>
-        <file>translations/Arch_gl.ts</file>
         <file>translations/Arch_hr.qm</file>
-        <file>translations/Arch_hr.ts</file>
         <file>translations/Arch_hu.qm</file>
-        <file>translations/Arch_hu.ts</file>
         <file>translations/Arch_id.qm</file>
-        <file>translations/Arch_id.ts</file>
         <file>translations/Arch_it.qm</file>
-        <file>translations/Arch_it.ts</file>
         <file>translations/Arch_ja.qm</file>
-        <file>translations/Arch_ja.ts</file>
         <file>translations/Arch_ka.qm</file>
-        <file>translations/Arch_ka.ts</file>
         <file>translations/Arch_kab.qm</file>
-        <file>translations/Arch_kab.ts</file>
         <file>translations/Arch_ko.qm</file>
-        <file>translations/Arch_ko.ts</file>
         <file>translations/Arch_lt.qm</file>
-        <file>translations/Arch_lt.ts</file>
         <file>translations/Arch_nl.qm</file>
-        <file>translations/Arch_nl.ts</file>
         <file>translations/Arch_no.qm</file>
-        <file>translations/Arch_no.ts</file>
         <file>translations/Arch_pl.qm</file>
-        <file>translations/Arch_pl.ts</file>
         <file>translations/Arch_pt-BR.qm</file>
-        <file>translations/Arch_pt-BR.ts</file>
         <file>translations/Arch_pt-PT.qm</file>
-        <file>translations/Arch_pt-PT.ts</file>
         <file>translations/Arch_ro.qm</file>
-        <file>translations/Arch_ro.ts</file>
         <file>translations/Arch_ru.qm</file>
-        <file>translations/Arch_ru.ts</file>
         <file>translations/Arch_sk.qm</file>
-        <file>translations/Arch_sk.ts</file>
         <file>translations/Arch_sl.qm</file>
-        <file>translations/Arch_sl.ts</file>
         <file>translations/Arch_sr-CS.qm</file>
-        <file>translations/Arch_sr-CS.ts</file>
         <file>translations/Arch_sr.qm</file>
-        <file>translations/Arch_sr.ts</file>
         <file>translations/Arch_sv-SE.qm</file>
-        <file>translations/Arch_sv-SE.ts</file>
         <file>translations/Arch_tr.qm</file>
-        <file>translations/Arch_tr.ts</file>
         <file>translations/Arch_uk.qm</file>
-        <file>translations/Arch_uk.ts</file>
         <file>translations/Arch_val-ES.qm</file>
-        <file>translations/Arch_val-ES.ts</file>
         <file>translations/Arch_vi.qm</file>
-        <file>translations/Arch_vi.ts</file>
         <file>translations/Arch_zh-CN.qm</file>
-        <file>translations/Arch_zh-CN.ts</file>
         <file>translations/Arch_zh-TW.qm</file>
-        <file>translations/Arch_zh-TW.ts</file>
     </qresource>
 </RCC>
