@@ -94,12 +94,19 @@ SET(PathPythonMainGui_SRCS
     Path/Main/Gui/JobCmd.py
     Path/Main/Gui/JobDlg.py
     Path/Main/Gui/PreferencesJob.py
-    Path/Main/Gui/Sanity.py
-    Path/Main/Gui/Sanity_Bulb.svg
-    Path/Main/Gui/Sanity_Caution.svg
-    Path/Main/Gui/Sanity_Note.svg
-    Path/Main/Gui/Sanity_Warning.svg
+    Path/Main/Gui/SanityCmd.py
     Path/Main/Gui/Simulator.py
+)
+
+SET(PathPythonMainSanity_SRCS
+    Path/Main/Sanity/Sanity.py
+    Path/Main/Sanity/ImageBuilder.py
+    Path/Main/Sanity/ReportGenerator.py
+    Path/Main/Sanity/HTMLTemplate.py
+    Path/Main/Sanity/Sanity_Bulb.svg
+    Path/Main/Sanity/Sanity_Caution.svg
+    Path/Main/Sanity/Sanity_Note.svg
+    Path/Main/Sanity/Sanity_Warning.svg
 )
 
 SET(PathPythonTools_SRCS
@@ -289,6 +296,7 @@ SET(Tests_SRCS
     Tests/test_filenaming.fcstd
     Tests/test_geomop.fcstd
     Tests/test_holes00.fcstd
+    Tests/TestCAMSanity.py
     Tests/TestCentroidPost.py
     Tests/TestGrblPost.py
     Tests/TestLinuxCNCPost.py
@@ -376,6 +384,7 @@ SET(all_files
     ${PathPythonDressupGui_SRCS}
     ${PathPythonMain_SRCS}
     ${PathPythonMainGui_SRCS}
+    ${PathPythonMainSanity_SRCS}
     ${PathPythonOp_SRCS}
     ${PathPythonOpGui_SRCS}
     ${PathPythonPost_SRCS}
@@ -467,6 +476,12 @@ INSTALL(
         ${PathPythonMainGui_SRCS}
     DESTINATION
         Mod/CAM/Path/Main/Gui
+)
+INSTALL(
+    FILES
+        ${PathPythonMainSanity_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Main/Sanity
 )
 
 INSTALL(
