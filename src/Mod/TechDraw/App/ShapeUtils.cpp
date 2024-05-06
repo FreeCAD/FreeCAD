@@ -320,6 +320,48 @@ TopoDS_Shape ShapeUtils::moveShape(const TopoDS_Shape& input, const Base::Vector
     return transShape;
 }
 
+//mirror a shape thru XZ plane for Qt's inverted Y coordinate
+TopoDS_Shape ShapeUtils::invertGeometry(const TopoDS_Shape s)
+{
+    if (s.IsNull()) {
+        return s;
+    }
+
+    gp_Trsf mirrorY;
+    gp_Pnt org(0.0, 0.0, 0.0);
+    gp_Dir Y(0.0, 1.0, 0.0);
+    gp_Ax2 mirrorPlane(org, Y);
+    mirrorY.SetMirror(mirrorPlane);
+    BRepBuilderAPI_Transform mkTrf(s, mirrorY, true);
+    return mkTrf.Shape();
+}
+
+//! transforms a shape defined in invertedY (Qt) coordinates into one defined by
+//! conventional coordinates
+TopoDS_Shape ShapeUtils::fromQt(const TopoDS_Shape& inShape)
+{
+    gp_Ax3  OXYZ;
+    gp_Ax3  Qt;
+    Qt.YReverse();
+    gp_Trsf xFromQt;
+    xFromQt.SetTransformation(Qt, OXYZ);
+    BRepBuilderAPI_Transform mkTrf(inShape, xFromQt);
+    return mkTrf.Shape();
+}
+
+//! transforms a shape defined in conventional coordinates coordinates into one defined by
+//! invertedY (Qt) coordinates
+TopoDS_Shape ShapeUtils::toQt(const TopoDS_Shape& inShape)
+{
+    gp_Ax3  OXYZ;
+    gp_Ax3  Qt;
+    Qt.YReverse();
+    gp_Trsf xFromQt;
+    xFromQt.SetTransformation(OXYZ, Qt);
+    BRepBuilderAPI_Transform mkTrf(inShape, xFromQt);
+    return mkTrf.Shape();
+}
+
 std::pair<Base::Vector3d, Base::Vector3d> ShapeUtils::getEdgeEnds(TopoDS_Edge edge)
 {
     std::pair<Base::Vector3d, Base::Vector3d> result;

@@ -79,6 +79,10 @@ public:
     void scale(double factor);
     void dump(const std::string& text) const;
 
+    pointPair toCanonicalForm(DrawViewPart* dvp) const;
+    pointPair toDisplayForm(DrawViewPart* dvp) const;
+
+
 private:
     Base::Vector3d m_first;
     Base::Vector3d m_second;
@@ -115,6 +119,10 @@ public:
     void invertY();
     void dump(const std::string& text) const;
 
+    anglePoints toCanonicalForm(DrawViewPart* dvp) const;
+    anglePoints toDisplayForm(DrawViewPart* dvp) const;
+
+
 private:
     pointPair m_ends;
     Base::Vector3d m_vertex;
@@ -134,6 +142,9 @@ public:
     void mapToPage(const DrawViewPart* dvp);
     void invertY();
     void dump(const std::string& text) const;
+
+    arcPoints toCanonicalForm(DrawViewPart* dvp) const;
+    arcPoints toDisplayForm(DrawViewPart* dvp) const;
 
 //TODO: setters and getters
     bool isArc;

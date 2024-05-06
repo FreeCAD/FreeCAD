@@ -42,12 +42,9 @@ class GeometryMatcher;
 class TechDrawExport DimensionAutoCorrect
 {
 public:
-    DimensionAutoCorrect()
-    {}
-    explicit DimensionAutoCorrect(DrawViewDimension* dim)
-    {
-        m_dimension = dim;
-    }
+    DimensionAutoCorrect() = default;
+    explicit DimensionAutoCorrect(DrawViewDimension* dim) :
+           m_dimension(dim)  {}
     ~DimensionAutoCorrect() = default;
 
     bool referencesHaveValidGeometry(std::vector<bool>& referenceState) const;
@@ -61,31 +58,30 @@ public:
     bool fixBrokenReferences(ReferenceVector& fixedReferences) const;
 
 private:
-    bool fix1GeomExact(ReferenceEntry& refToFix, TopoDS_Shape geomToFix) const;
-    bool fix1GeomSimilar(ReferenceEntry& refToFix, TopoDS_Shape geomToFix) const;
+    bool fix1GeomExact(ReferenceEntry& refToFix, const TopoDS_Shape& geomToMatch) const;
+    bool fix1GeomSimilar(ReferenceEntry& refToFix, const TopoDS_Shape& geomToMatch) const;
 
-    bool findExactVertex2d(ReferenceEntry& refToFix, Part::TopoShape refGeom) const;
-    bool findExactEdge2d(ReferenceEntry& refToFix, Part::TopoShape refGeom) const;
-    bool findExactVertex3d(ReferenceEntry& refToFix, Part::TopoShape refGeom) const;
-    bool findExactEdge3d(ReferenceEntry& refToFix, Part::TopoShape refGeom) const;
+    bool findExactVertex2d(ReferenceEntry& refToFix, const Part::TopoShape& refGeom) const;
+    bool findExactEdge2d(ReferenceEntry& refToFix, const Part::TopoShape& refGeom) const;
+    bool findExactVertex3d(ReferenceEntry& refToFix, const Part::TopoShape& refGeom) const;
+    bool findExactEdge3d(ReferenceEntry& refToFix, const Part::TopoShape& refGeom) const;
 
-    bool findSimilarVertex2d(ReferenceEntry& refToFix, Part::TopoShape refGeom) const;
-    bool findSimilarEdge2d(ReferenceEntry& refToFix, Part::TopoShape refGeom) const;
-    bool findSimilarVertex3d(ReferenceEntry& refToFix, Part::TopoShape refGeom) const;
-    bool findSimilarEdge3d(ReferenceEntry& refToFix, Part::TopoShape refGeom) const;
+    bool findSimilarVertex2d(ReferenceEntry& refToFix, const Part::TopoShape& refGeom) const;
+    bool findSimilarEdge2d(ReferenceEntry& refToFix, const Part::TopoShape& refGeom) const;
+    bool findSimilarVertex3d(ReferenceEntry& refToFix, const Part::TopoShape& refGeom) const;
+    bool findSimilarEdge3d(ReferenceEntry& refToFix, const Part::TopoShape& refGeom) const;
 
     ReferenceEntry
-    searchObjForVert(App::DocumentObject* obj, Part::TopoShape refVertex, bool exact = true) const;
+    searchObjForVert(App::DocumentObject* obj, const Part::TopoShape& refVertex, bool exact = true) const;
     ReferenceEntry
-    searchViewForVert(DrawViewPart* obj, Part::TopoShape refVertex, bool exact = true) const;
+    searchViewForVert(DrawViewPart* obj, const Part::TopoShape& refVertex, bool exact = true) const;
     ReferenceEntry
-    searchObjForEdge(App::DocumentObject* obj, Part::TopoShape refEdge, bool exact = true) const;
+    searchObjForEdge(App::DocumentObject* obj, const Part::TopoShape& refEdge, bool exact = true) const;
 
-    ReferenceEntry searchViewForExactEdge(DrawViewPart* obj, Part::TopoShape refEdge) const;
-    ReferenceEntry searchViewForSimilarEdge(DrawViewPart* obj, Part::TopoShape refEdge) const;
+    ReferenceEntry searchViewForExactEdge(DrawViewPart* obj, const Part::TopoShape& refEdge) const;
+    ReferenceEntry searchViewForSimilarEdge(DrawViewPart* obj, const Part::TopoShape& refEdge) const;
 
-
-    bool isMatchingGeometry(ReferenceEntry ref, Part::TopoShape savedGeometry) const;
+    bool isMatchingGeometry(const ReferenceEntry& ref, const Part::TopoShape& savedGeometry) const;
 
     DrawViewDimension* getDimension() const
     {
@@ -93,7 +89,7 @@ private:
     }
     GeometryMatcher* getMatcher() const;
 
-    DrawViewDimension* m_dimension;
+    DrawViewDimension* m_dimension{nullptr};
     std::set<std::string> m_3dObjectCache;
 };
 
