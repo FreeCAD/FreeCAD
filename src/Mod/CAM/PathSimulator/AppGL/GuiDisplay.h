@@ -39,6 +39,10 @@ namespace MillSim
 		eGuiItemSingleStep,
 		eGuiItemFaster,
 		eGuiItemRotate,
+		eGuiItemCharXImg,
+		eGuiItemChar0Img,
+		eGuiItemChar1Img,
+		eGuiItemChar4Img,
 		eGuiItemMax
 	};
 
@@ -71,6 +75,7 @@ namespace MillSim
 		void MouseDrag(int buttons, int dx, int dy);
 		void SetMillSimulator(MillSimulation* millSim) { mMillSim = millSim; }
 		void UpdatePlayState(bool isRunning);
+		void UpdateSimSpeed(int speed);
 
 	private:
 		bool ParseImage(GuiItem* guiItem, unsigned int* buffPos, int stride);
@@ -82,6 +87,7 @@ namespace MillSim
 		vec3 mStdColor = { 0.8f, 0.8f, 0.4f };
 		vec3 mHighlightColor = { 1.0f, 1.0f, 0.9f };
 		vec3 mPressedColor = { 1.0f, 0.5f, 0.0f };
+		vec3 mTextColor = { 1.0f, 0.5f, 0.0f };
 
 
 	private:

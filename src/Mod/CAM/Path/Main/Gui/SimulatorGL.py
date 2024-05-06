@@ -32,6 +32,7 @@ import math
 import os
 
 from FreeCAD import Vector, Base
+from PySide2.QtWidgets import QDialogButtonBox
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -60,9 +61,8 @@ class CAMSimTaskUi:
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/TaskCAMSimulator.ui")
         self.parent = parent
 
-    def accept(self):
-        self.parent.accept()
-        FreeCADGui.Control.closeDialog()
+    def getStandardButtons(self, *args):
+        return QDialogButtonBox.Close
 
     def reject(self):
         self.parent.cancel()
@@ -185,7 +185,6 @@ class CAMSimulation:
         self.millSim = CAMSimulator.PathSim()
         self.initdone = True
         self.job = self.jobs[self.taskForm.form.comboJobs.currentIndex()]
-        self.curpos = FreeCAD.Placement(Vector(0, 0, 0), self.stdrot) ## GL: Remove!!!
         self.SetupSimulation()
 
     def _populateJobSelection(self, form):
@@ -275,12 +274,6 @@ class CAMSimulation:
             for cmd in opCommands:
                 self.millSim.AddCommand(cmd)
         self.millSim.BeginSimulation(self.stock, self.quality)
-        # GL: update simulator and open window 
-        pass
-
-    def accept(self):
-        #self.EndSimulation()
-        pass
 
     def cancel(self):
         #self.EndSimulation()

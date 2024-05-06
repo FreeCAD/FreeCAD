@@ -413,6 +413,7 @@ namespace MillSim {
             if (mSimSpeed == 1) mSimSpeed = 10;
             else if (mSimSpeed == 10) mSimSpeed = 40;
             else mSimSpeed = 1;
+            guiDisplay.UpdateSimSpeed(mSimSpeed);
             break;
 
         default:
