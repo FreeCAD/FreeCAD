@@ -1674,19 +1674,29 @@ void Application::cleanupUnits()
 void Application::destruct()
 {
     // saving system parameter
-    Base::Console().Log("Saving system parameter...\n");
-    _pcSysParamMngr->SaveDocument();
+    if (_pcSysParamMngr->IgnoreSave()) {
+        Base::Console().Warning("Discard system parameter\n");
+    }
+    else {
+        Base::Console().Log("Saving system parameter...\n");
+        _pcSysParamMngr->SaveDocument();
+        Base::Console().Log("Saving system parameter...done\n");
+    }
     // saving the User parameter
-    Base::Console().Log("Saving system parameter...done\n");
-    Base::Console().Log("Saving user parameter...\n");
-    _pcUserParamMngr->SaveDocument();
-    Base::Console().Log("Saving user parameter...done\n");
+    if (_pcUserParamMngr->IgnoreSave()) {
+        Base::Console().Warning("Discard user parameter\n");
+    }
+    else {
+        Base::Console().Log("Saving user parameter...\n");
+        _pcUserParamMngr->SaveDocument();
+        Base::Console().Log("Saving user parameter...done\n");
+    }
 
     // now save all other parameter files
     auto& paramMgr = _pcSingleton->mpcPramManager;
     for (auto it : paramMgr) {
         if ((it.second != _pcSysParamMngr) && (it.second != _pcUserParamMngr)) {
-            if (it.second->HasSerializer()) {
+            if (it.second->HasSerializer() && !it.second->IgnoreSave()) {
                 Base::Console().Log("Saving %s...\n", it.first.c_str());
                 it.second->SaveDocument();
                 Base::Console().Log("Saving %s...done\n", it.first.c_str());

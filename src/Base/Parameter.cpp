@@ -1617,6 +1617,7 @@ ParameterManager::ParameterManager()
     // ---------------------------------------------------------------------------
 
     // NOLINTBEGIN
+    gIgnoreSave = false;
     gDoNamespaces = false;
     gDoSchema = false;
     gSchemaFullChecking = false;
@@ -1723,14 +1724,34 @@ void ParameterManager::SaveDocument() const
     }
 }
 
+void ParameterManager::SetIgnoreSave(bool value)
+{
+    gIgnoreSave = value;
+}
+
+bool ParameterManager::IgnoreSave() const
+{
+    return gIgnoreSave;
+}
+
 namespace
 {
-void waitForFileAccess(const Base::FileInfo& file)
+QString getLockFile(const Base::FileInfo& file)
 {
     QFileInfo fi(QDir::tempPath(), QString::fromStdString(file.fileName() + ".lock"));
-    QLockFile lock(fi.absoluteFilePath());
-    const int waitOneSecond = 1000;
-    lock.tryLock(waitOneSecond);
+    return fi.absoluteFilePath();
+}
+
+int getTimeout()
+{
+    const int timeout = 5000;
+    return timeout;
+}
+
+bool waitForReadAccess(const Base::FileInfo& file)
+{
+    QLockFile lock(getLockFile(file));
+    return lock.tryLock(getTimeout());
 }
 }  // namespace
 
@@ -1753,7 +1774,13 @@ int ParameterManager::LoadDocument(const char* sFileName)
 {
     try {
         Base::FileInfo file(sFileName);
-        waitForFileAccess(file);
+        if (!waitForReadAccess(file)) {
+            // Continue with empty config
+            CreateDocument();
+            SetIgnoreSave(true);
+            std::cerr << "Failed to access file for reading: " << sFileName << std::endl;
+            return 1;
+        }
 #if defined(FC_OS_WIN32)
         std::wstring name = file.toStdWString();
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
@@ -1845,7 +1872,11 @@ void ParameterManager::SaveDocument(const char* sFileName) const
 {
     try {
         Base::FileInfo file(sFileName);
-        waitForFileAccess(file);
+        QLockFile lock(getLockFile(file));
+        if (!lock.tryLock(getTimeout())) {
+            std::cerr << "Failed to access file for writing: " << sFileName << std::endl;
+            return;
+        }
         //
         // Plug in a format target to receive the resultant
         // XML stream from the serializer.
