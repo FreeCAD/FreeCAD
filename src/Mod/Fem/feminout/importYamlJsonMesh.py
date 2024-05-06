@@ -36,6 +36,7 @@ import FreeCAD
 from FreeCAD import Console
 
 from . import importToolsFem
+from builtins import open as pyopen
 
 has_yaml = True
 try:
@@ -53,7 +54,7 @@ except ImportError:
 # names are fix given from FreeCAD, these methods are called from FreeCAD
 # they are set in FEM modules Init.py
 
-pyopen = open
+
 
 
 def open(

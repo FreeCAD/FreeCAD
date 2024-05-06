@@ -1189,13 +1189,21 @@ public:
 protected:
     Material getPyValue(PyObject* py) const override;
 
+private:
+    enum Format {
+        Version_0,
+        Version_1,
+        Version_2
+    };
+
     void RestoreDocFileV0(uint32_t count, Base::Reader& reader);
     void RestoreDocFileV1(Base::Reader& reader);
 
-private:
     void verifyIndex(int index) const;
     void setSizeOne();
     int resizeByOneIfNeeded(int index);
+
+    Format formatVersion {Version_0};
 };
 
 

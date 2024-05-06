@@ -29,6 +29,7 @@ __author__ = "Keith Sloan <keith@sloan-home.co.uk>"
 __url__ = ["http://www.sloan-home.co.uk/Export/Export.html"]
 
 import FreeCAD
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     gui = True
@@ -48,9 +49,6 @@ convexity = 'convexity = %d' % conv
 #***************************************************************************
 # Radius values not fixed for value apart from cylinder & Cone
 # no doubt there will be a problem when they do implement Value
-if open.__module__ in ['__builtin__', 'io']:
-    pythonopen = open # to distinguish python built-in open function from the one declared here
-
 
 def center(b):
     if b == 2:
@@ -254,7 +252,7 @@ def export(exportList, filename):
     # process Objects
     print("\nStart Export 0.1d\n")
     print("Open Output File")
-    csg = pythonopen(filename,'w')
+    csg = pyopen(filename,'w')
     print("Write Initial Output")
     # Not sure if comments as per scad are allowed in csg file
     csg.write("// CSG file generated from FreeCAD %s\n" % \

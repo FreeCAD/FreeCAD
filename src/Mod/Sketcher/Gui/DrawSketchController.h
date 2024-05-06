@@ -571,7 +571,7 @@ protected:
     void initNOnViewParameters(int n)
     {
         Gui::View3DInventorViewer* viewer = handler->getViewer();
-        Base::Placement placement = handler->sketchgui->getSketchObject()->Placement.getValue();
+        Base::Placement placement = handler->sketchgui->getSketchObject()->globalPlacement();
 
         onViewParameters.clear();
 

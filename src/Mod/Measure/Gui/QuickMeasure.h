@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2023 Pierre-Louis Boyer <development@Ondsel.com>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,29 +20,38 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_USERSETTINGS_H
-#define GUI_USERSETTINGS_H
 
-#include <FCGlobal.h>
-#include <string>
-#include <QVector>
+#ifndef MEASUREGUI_QUICKMEASURE_H
+#define MEASUREGUI_QUICKMEASURE_H
 
-namespace Gui {
+#include <QObject>
 
-class GuiExport WorkbenchSwitcher
+#include <Mod/Measure/MeasureGlobal.h>
+
+#include <Gui/Selection.h>
+namespace Measure {
+    class Measurement;
+}
+
+namespace MeasureGui {
+
+class QuickMeasure : public QObject, Gui::SelectionObserver
 {
+    Q_OBJECT
+
 public:
-    static bool isLeftCorner(const std::string&);
-    static bool isRightCorner(const std::string&);
-    static bool isToolbar(const std::string&);
-    static std::string getValue();
-    static int getIndex();
-    static void setIndex(int);
+    explicit QuickMeasure(QObject* parent = nullptr);
+    ~QuickMeasure() override;
 
 private:
-    static QVector<std::string> values();
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+
+    void print(const QString& message);
+
+    Measure::Measurement* measurement;
+
 };
 
-} // namespace Gui
+} //namespace MeasureGui
 
-#endif // GUI_USERSETTINGS_H
+#endif // MEASUREGUI_QUICKMEASURE_H

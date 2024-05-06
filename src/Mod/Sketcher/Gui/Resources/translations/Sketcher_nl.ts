@@ -69,12 +69,12 @@
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1661"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1714"/>
       <source>Create carbon copy</source>
       <translation>Kopie maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1662"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1715"/>
       <source>Copy the geometry of another sketch</source>
       <translation>Kopieer de geometrie van een andere schets</translation>
     </message>
@@ -169,22 +169,22 @@
   <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="469"/>
+      <location filename="../../CommandCreateGeo.cpp" line="522"/>
       <source>Create arc</source>
       <translation>Boog maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="470"/>
+      <location filename="../../CommandCreateGeo.cpp" line="523"/>
       <source>Create an arc in the sketcher</source>
       <translation>Creëer een boog in de Sketcher</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="554"/>
+      <location filename="../../CommandCreateGeo.cpp" line="607"/>
       <source>Center and endpoints</source>
       <translation>Middelpunt en eindpunten</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="560"/>
+      <location filename="../../CommandCreateGeo.cpp" line="613"/>
       <source>Endpoints and rim point</source>
       <translation>Eindpunten en punt op de boog</translation>
     </message>
@@ -192,12 +192,12 @@
   <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1085"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1138"/>
       <source>Create B-spline</source>
       <translation>Maak B-spline aan</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1086"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1139"/>
       <source>Create a B-spline in the sketch</source>
       <translation>Maak een B-spline in de schets</translation>
     </message>
@@ -205,22 +205,22 @@
   <context>
     <name>CmdSketcherCompCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1279"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1332"/>
       <source>Create circle</source>
       <translation>Cirkel maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1280"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1333"/>
       <source>Create a circle in the sketcher</source>
       <translation>Maak een cirkel in de Sketcher</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1364"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1417"/>
       <source>Center and rim point</source>
       <translation>Middelpunt en randpunt</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1370"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1423"/>
       <source>3 rim points</source>
       <translation>3 randpunten</translation>
     </message>
@@ -228,37 +228,37 @@
   <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="773"/>
+      <location filename="../../CommandCreateGeo.cpp" line="826"/>
       <source>Create conic</source>
       <translation>Maak kegel</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="774"/>
+      <location filename="../../CommandCreateGeo.cpp" line="827"/>
       <source>Create a conic in the sketch</source>
       <translation>Creëer een kegel in de schets</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="892"/>
+      <location filename="../../CommandCreateGeo.cpp" line="945"/>
       <source>Ellipse by center, radius, rim point</source>
       <translation>Ellips met middelpunt, radius, punt op ellips</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="901"/>
+      <location filename="../../CommandCreateGeo.cpp" line="954"/>
       <source>Ellipse by axis endpoints, rim point</source>
       <translation>Ellips door as-eindpunten, punt op ellips</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="910"/>
+      <location filename="../../CommandCreateGeo.cpp" line="963"/>
       <source>Arc of ellipse by center, radius, endpoints</source>
       <translation>Elliptische boog via het middelpunt, radii en eindpunten</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="920"/>
+      <location filename="../../CommandCreateGeo.cpp" line="973"/>
       <source>Arc of hyperbola by center, vertex, endpoints</source>
       <translation>Hyperbolische boog via de hoofdas, hoekpunt en eindpunten</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="929"/>
+      <location filename="../../CommandCreateGeo.cpp" line="982"/>
       <source>Arc of parabola by focus, vertex, endpoints</source>
       <translation>Paraboolboog door zijn focus, hoekpunt, eindpunten</translation>
     </message>
@@ -266,27 +266,27 @@
   <context>
     <name>CmdSketcherCompCreateRectangles</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="243"/>
+      <location filename="../../CommandCreateGeo.cpp" line="328"/>
       <source>Create rectangle</source>
       <translation>Rechthoek maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="244"/>
+      <location filename="../../CommandCreateGeo.cpp" line="329"/>
       <source>Creates a rectangle in the sketch</source>
       <translation>Maakt een rechthoek in de schets</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="341"/>
+      <location filename="../../CommandCreateGeo.cpp" line="426"/>
       <source>Rectangle</source>
       <translation>Rechthoek</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="347"/>
+      <location filename="../../CommandCreateGeo.cpp" line="432"/>
       <source>Centered rectangle</source>
       <translation>Gecentreerde rechthoek</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="353"/>
+      <location filename="../../CommandCreateGeo.cpp" line="438"/>
       <source>Rounded rectangle</source>
       <translation>Afgeronde rechthoek</translation>
     </message>
@@ -294,47 +294,47 @@
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2014"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2067"/>
       <source>Create regular polygon</source>
       <translation>Regelmatige veelhoek maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2015"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2068"/>
       <source>Create a regular polygon in the sketcher</source>
       <translation>Maak een regelmatige veelhoek in de Sketcher</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2139"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2192"/>
       <source>Triangle</source>
       <translation>Driehoek</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2147"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2200"/>
       <source>Square</source>
       <translation>Vierkant</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2154"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2207"/>
       <source>Pentagon</source>
       <translation>Vijfhoek</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2162"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2215"/>
       <source>Hexagon</source>
       <translation>Zeshoek</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2170"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2223"/>
       <source>Heptagon</source>
       <translation>Zevenkant</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2178"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2231"/>
       <source>Octagon</source>
       <translation>Achthoek</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2187"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2240"/>
       <source>Regular polygon</source>
       <translation>Regelmatige veelhoek</translation>
     </message>
@@ -470,8 +470,8 @@
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3080"/>
-      <source>Constrain horizontally</source>
-      <translation>Horizontale beperking</translation>
+      <source>Constrain horizontal</source>
+      <translation type="unfinished">Constrain horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3081"/>
@@ -523,8 +523,8 @@ on the selected vertex</source>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4223"/>
-      <source>Constrain point onto object</source>
-      <translation>Zet punt vast op object</translation>
+      <source>Constrain point on object</source>
+      <translation type="unfinished">Constrain point on object</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4224"/>
@@ -563,8 +563,8 @@ and an edge as an interface.</source>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9233"/>
-      <source>Constrain symmetrical</source>
-      <translation>Symmetrische-beperken</translation>
+      <source>Constrain symmetric</source>
+      <translation type="unfinished">Constrain symmetric</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9234"/>
@@ -578,8 +578,8 @@ met betrekking tot een lijn of een derde punt</translation>
     <name>CmdSketcherConstrainVertical</name>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3125"/>
-      <source>Constrain vertically</source>
-      <translation>Verticale beperking</translation>
+      <source>Constrain vertical</source>
+      <translation type="unfinished">Constrain vertical</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3126"/>
@@ -616,12 +616,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="437"/>
-      <source>Create arc by three points</source>
-      <translation>Een boog van 3 punten maken</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="490"/>
+      <source>Create arc by 3 points</source>
+      <translation type="unfinished">Create arc by 3 points</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="438"/>
+      <location filename="../../CommandCreateGeo.cpp" line="491"/>
       <source>Create an arc by its end points and a point along the arc</source>
       <translation>Maak een boog door zijn eindpunten en een punt langs de boog</translation>
     </message>
@@ -629,12 +629,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1247"/>
-      <source>Create circle by three points</source>
-      <translation>Een cirkel van 3 punten maken</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="1300"/>
+      <source>Create circle by 3 points</source>
+      <translation type="unfinished">Create circle by 3 points</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1248"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1301"/>
       <source>Create a circle by 3 perimeter points</source>
       <translation>Een cirkel aanmaken op basis van 3 omtrekpunten</translation>
     </message>
@@ -642,12 +642,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="405"/>
+      <location filename="../../CommandCreateGeo.cpp" line="458"/>
       <source>Create arc by center</source>
       <translation>Creëer boog vanaf center</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="406"/>
+      <location filename="../../CommandCreateGeo.cpp" line="459"/>
       <source>Create an arc by its center and by its end points</source>
       <translation>Maak een boog door zijn eindpunten en een punt langs de boog</translation>
     </message>
@@ -655,12 +655,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateArcOfEllipse</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="683"/>
+      <location filename="../../CommandCreateGeo.cpp" line="736"/>
       <source>Create arc of ellipse</source>
       <translation>Maak een ellips boog</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="684"/>
+      <location filename="../../CommandCreateGeo.cpp" line="737"/>
       <source>Create an arc of ellipse in the sketch</source>
       <translation>Maak Boog of ovaal in de schets</translation>
     </message>
@@ -668,12 +668,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateArcOfHyperbola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="712"/>
+      <location filename="../../CommandCreateGeo.cpp" line="765"/>
       <source>Create arc of hyperbola</source>
       <translation>Maak een hyperbool</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="713"/>
+      <location filename="../../CommandCreateGeo.cpp" line="766"/>
       <source>Create an arc of hyperbola in the sketch</source>
       <translation>Maak een hyperbolische boog aan in de schets</translation>
     </message>
@@ -681,12 +681,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateArcOfParabola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="740"/>
+      <location filename="../../CommandCreateGeo.cpp" line="793"/>
       <source>Create arc of parabola</source>
       <translation>Maak een parabool</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="741"/>
+      <location filename="../../CommandCreateGeo.cpp" line="794"/>
       <source>Create an arc of parabola in the sketch</source>
       <translation>Maak een parabolische boog aan in de schets</translation>
     </message>
@@ -694,12 +694,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="953"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1006"/>
       <source>Create B-spline</source>
       <translation>Maak B-spline aan</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="954"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1007"/>
       <source>Create a B-spline by control points in the sketch.</source>
       <translation>Maak een B-spline door middel van controlepunten in de schets.</translation>
     </message>
@@ -707,12 +707,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="585"/>
-      <source>Create circle</source>
-      <translation>Cirkel maken</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="638"/>
+      <source>Create circle by center</source>
+      <translation type="unfinished">Create circle by center</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="586"/>
+      <location filename="../../CommandCreateGeo.cpp" line="639"/>
       <source>Create a circle in the sketch</source>
       <translation>Maak een cirkel in de schets</translation>
     </message>
@@ -720,12 +720,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="652"/>
+      <location filename="../../CommandCreateGeo.cpp" line="705"/>
       <source>Create ellipse by 3 points</source>
       <translation>Ovaal van 3 punten maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="653"/>
+      <location filename="../../CommandCreateGeo.cpp" line="706"/>
       <source>Create an ellipse by 3 points in the sketch</source>
       <translation>Maak een ovaal van 3 punten in de schets</translation>
     </message>
@@ -733,12 +733,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateEllipseByCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="619"/>
+      <location filename="../../CommandCreateGeo.cpp" line="672"/>
       <source>Create ellipse by center</source>
       <translation>Maak ellips aan via het midden</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="620"/>
+      <location filename="../../CommandCreateGeo.cpp" line="673"/>
       <source>Create an ellipse by center in the sketch</source>
       <translation>Maak een ellips aan via het midden in de schets</translation>
     </message>
@@ -746,12 +746,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1422"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1475"/>
       <source>Create fillet</source>
       <translation>Maak afronding</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1423"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1476"/>
       <source>Create a fillet between two lines or at a coincident point</source>
       <translation type="unfinished">Create a fillet between two lines or at a coincident point</translation>
     </message>
@@ -759,12 +759,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1922"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1975"/>
       <source>Create heptagon</source>
       <translation>Zevenkant maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1923"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1976"/>
       <source>Create a heptagon in the sketch</source>
       <translation>Maak een zevenkant in de schets</translation>
     </message>
@@ -772,12 +772,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1893"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1946"/>
       <source>Create hexagon</source>
       <translation>Zeskant maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1894"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1947"/>
       <source>Create a hexagon in the sketch</source>
       <translation>Maak een zeskant in de schets</translation>
     </message>
@@ -785,12 +785,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="112"/>
+      <location filename="../../CommandCreateGeo.cpp" line="166"/>
       <source>Create line</source>
       <translation>Lijn maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="113"/>
+      <location filename="../../CommandCreateGeo.cpp" line="167"/>
       <source>Create a line in the sketch</source>
       <translation>Maak een lijn in de schets</translation>
     </message>
@@ -798,12 +798,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateOblong</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="209"/>
+      <location filename="../../CommandCreateGeo.cpp" line="294"/>
       <source>Create rounded rectangle</source>
       <translation>Maak afgeronde rechthoek</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="210"/>
+      <location filename="../../CommandCreateGeo.cpp" line="295"/>
       <source>Create a rounded rectangle in the sketch</source>
       <translation>Maak een afgeronde rechthoek in de schets</translation>
     </message>
@@ -811,12 +811,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1951"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2004"/>
       <source>Create octagon</source>
       <translation>Achtkant maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1952"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2005"/>
       <source>Create an octagon in the sketch</source>
       <translation>Maak een achtkant in de schets</translation>
     </message>
@@ -824,12 +824,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1863"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1916"/>
       <source>Create pentagon</source>
       <translation>Vijfkant maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1864"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1917"/>
       <source>Create a pentagon in the sketch</source>
       <translation>Maak vijfkant in de schets</translation>
     </message>
@@ -837,12 +837,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="986"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1039"/>
       <source>Create periodic B-spline</source>
       <translation>Maken van periodieke B-spline</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="987"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1040"/>
       <source>Create a periodic B-spline by control points in the sketch.</source>
       <translation>Maak een periodieke B-spline door middel van controlepunten in de schets.</translation>
     </message>
@@ -850,12 +850,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1393"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1446"/>
       <source>Create point</source>
       <translation>Punt maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1394"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1447"/>
       <source>Create a point in the sketch</source>
       <translation>Maak een punt in de schets</translation>
     </message>
@@ -863,12 +863,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="373"/>
+      <location filename="../../CommandCreateGeo.cpp" line="197"/>
       <source>Create polyline</source>
       <translation>Polylijn aanmaken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="374"/>
+      <location filename="../../CommandCreateGeo.cpp" line="198"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
       <translation>Maak een meervoudige lijn in de schets. Met de 'M-toets' schakelt u tussen de verschillende opties</translation>
     </message>
@@ -876,12 +876,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="144"/>
+      <location filename="../../CommandCreateGeo.cpp" line="229"/>
       <source>Create rectangle</source>
       <translation>Rechthoek maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="145"/>
+      <location filename="../../CommandCreateGeo.cpp" line="230"/>
       <source>Create a rectangle in the sketch</source>
       <translation>Maak een rechthoek in de schets</translation>
     </message>
@@ -889,12 +889,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateRectangleCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="175"/>
+      <location filename="../../CommandCreateGeo.cpp" line="260"/>
       <source>Create centered rectangle</source>
       <translation>Gecentreerde rechthoek maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="176"/>
+      <location filename="../../CommandCreateGeo.cpp" line="261"/>
       <source>Create a centered rectangle in the sketch</source>
       <translation>Maak een gecentreerde rechthoek in de schets</translation>
     </message>
@@ -902,12 +902,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1980"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2033"/>
       <source>Create regular polygon</source>
       <translation>Regelmatige veelhoek maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1981"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2034"/>
       <source>Create a regular polygon in the sketch</source>
       <translation>Maak een regelmatige veelhoek aan in de schets</translation>
     </message>
@@ -915,12 +915,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1743"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1796"/>
       <source>Create slot</source>
       <translation>Sleuf maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1744"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1797"/>
       <source>Create a slot in the sketch</source>
       <translation>Maak sleuf in de schets</translation>
     </message>
@@ -928,12 +928,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1834"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1887"/>
       <source>Create square</source>
       <translation>Vierkant maken</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1835"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1888"/>
       <source>Create a square in the sketch</source>
       <translation>Maak een vierkant aan in de schets</translation>
     </message>
@@ -941,12 +941,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1805"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1858"/>
       <source>Create equilateral triangle</source>
       <translation>Maak gelijkzijdige driehoek aan</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1806"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1859"/>
       <source>Create an equilateral triangle in the sketch</source>
       <translation>Maak een gelijkzijdige driehoek aan in de schets</translation>
     </message>
@@ -1019,12 +1019,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1543"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1596"/>
       <source>Extend edge</source>
       <translation>Breid de rand uit</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1544"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1597"/>
       <source>Extend an edge with respect to the picked position</source>
       <translation>Breid een rand uit ten opzichte van de geselecteerde positie</translation>
     </message>
@@ -1032,12 +1032,12 @@ met betrekking tot een lijn of een derde punt</translation>
   <context>
     <name>CmdSketcherExternal</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1632"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1685"/>
       <source>Create external geometry</source>
       <translation>Maak externe geometrie</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1633"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1686"/>
       <source>Create an edge linked to an external geometry</source>
       <translation>Maak een rand gekoppeld aan een externe geometrie</translation>
     </message>
@@ -1376,12 +1376,12 @@ This will clear the 'AttachmentSupport' property, if any.</translation>
   <context>
     <name>CmdSketcherSplit</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1574"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1627"/>
       <source>Split edge</source>
       <translation>Splits rand</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1575"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1628"/>
       <source>Splits an edge into two while preserving constraints</source>
       <translation>Splitst een rand in twee terwijl je de kaders behoudt</translation>
     </message>
@@ -1469,12 +1469,12 @@ op sturende of referentie modus</translation>
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1512"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1565"/>
       <source>Trim edge</source>
       <translation>Inkorten van rand</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1513"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1566"/>
       <source>Trim an edge with respect to the picked position</source>
       <translation>Trim een rand ten opzichte van de gekozen positie</translation>
     </message>
@@ -1920,7 +1920,7 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <translation>Schetsen samenvoegen</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="182"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="183"/>
       <source>Toggle draft from/to draft</source>
       <translation>Draft in-/uitschakelen van/naar draft</translation>
     </message>
@@ -2105,7 +2105,7 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchDefaultHandler.h" line="858"/>
-      <location filename="../../DrawSketchHandler.cpp" line="968"/>
+      <location filename="../../DrawSketchHandler.cpp" line="961"/>
       <source>Add auto constraints</source>
       <translation>Voeg automatische beperkingen toe</translation>
     </message>
@@ -2363,8 +2363,8 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <translation>Niet bijvoegen</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="167"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="176"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="168"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="177"/>
       <location filename="../../CommandConstraints.cpp" line="171"/>
       <location filename="../../CommandConstraints.cpp" line="178"/>
       <location filename="../../CommandConstraints.cpp" line="2392"/>
@@ -2514,8 +2514,8 @@ ongeldige constraints, gedegenereerde geometrie, etc.</translation>
       <translation>Verkeerde selectie</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="168"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="177"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="169"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="178"/>
       <source>Select edge(s) from the sketch.</source>
       <translation>Selecteer rand(en) uit de schets.</translation>
     </message>
@@ -4472,55 +4472,55 @@ Dan zijn alleen achter het schets vlak objecten zichtbaaar.</translation>
   <context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="187"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="180"/>
       <source>No missing coincidences</source>
       <translation>Geen ontbrekende coïncidenties</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="188"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="181"/>
       <source>No missing coincidences found</source>
       <translation>Geen ontbrekende coïncidenties gevonden</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="196"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="189"/>
       <source>Missing coincidences</source>
       <translation>Ontbrekende coïncidenties</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="197"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="190"/>
       <source>%1 missing coincidences found</source>
       <translation>%1 ontbrekende coïncidenties gevonden</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="248"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="241"/>
       <source>No invalid constraints</source>
       <translation>Geen ongeldige beperkingen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="249"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="242"/>
       <source>No invalid constraints found</source>
       <translation>Geen ongeldige beperkingen gevonden</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="255"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="248"/>
       <source>Invalid constraints</source>
       <translation>Ongeldige beperkingen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="256"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="249"/>
       <source>Invalid constraints found</source>
       <translation>Ongeldige beperkingen gevonden</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="299"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="314"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="325"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="342"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="290"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="305"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="316"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="333"/>
       <source>Reversed external geometry</source>
       <translation>Omgekeerde externe geometrie</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="300"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="291"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
@@ -4533,7 +4533,7 @@ Click "Swap endpoints in constraints" button to reassign endpoints. Do this only
 Klik op "Swap eindpunten in constraints" knop om het opnieuw toewijzen van eindpunten. Doe dit slechts eenmaal bij schetsen gemaakt in FreeCAD ouder dan v0.15</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="315"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="306"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
@@ -4542,64 +4542,64 @@ However, no constraints linking to the endpoints were found.</source>
 Er zijn echter geen beperkingen gevonden die verband houden met de eindpunten.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="326"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="317"/>
       <source>No reversed external-geometry arcs were found.</source>
       <translation>Er zijn geen omgekeerde externe geometriebogen gevonden.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="343"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="334"/>
       <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
       <translation>%1 wijzigingen werden aangebracht in de beperkingen die verband houden met eindpunten van omgekeerde bogen.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="363"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="384"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="354"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="375"/>
       <source>Constraint orientation locking</source>
       <translation>Vergrendeling van de beperkingensoriëntatie</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="364"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="355"/>
       <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).</source>
       <translation>Oriëntatie vergendeling was ingeschakeld en opnieuw berekend voor %1 constraints. De constraints zijn opgesomd in rapportweergave (menu Weergave-&gt; panelen -&gt; rapportweergave).</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="385"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="376"/>
       <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
       <translation>Oriëntatie vergrendelen is uitgeschakeld voor %1 constraints. De constraints zijn opgenomen in de rapportweergave bekijken (menu Weergave-&gt; panelen-&gt; rapportweergave). Merk op dat voor alle toekomstige constraints, de vergrendeling nog steeds standaard op AAN.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="403"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="422"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="393"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="412"/>
       <source>Delete constraints to external geom.</source>
       <translation>Verwijder beperkingen van de externe geom.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="404"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="394"/>
       <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
       <translation>U staat op het punt om ALLE beperkingen te verwijderen die verband houden met externe geometrie. Dit is nuttig om een schets te redden met gebroken/gewijzigde koppelingen naar externe geometrie. Weet u zeker dat u de beperkingen wilt verwijderen?</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="423"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="413"/>
       <source>All constraints that deal with external geometry were deleted.</source>
       <translation>Alle beperkingen die verband houden met de externe geometrie werden verwijderd.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="493"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="482"/>
       <source>No degenerated geometry</source>
       <translation>Geen gedegenereerde geometrie</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="494"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="483"/>
       <source>No degenerated geometry found</source>
       <translation>Geen gedegenereerde geometrie gevonden</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="500"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="489"/>
       <source>Degenerated geometry</source>
       <translation>Geen gedegenereerde geometrie</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="501"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="490"/>
       <source>%1 degenerated geometry found</source>
       <translation>%1 gedegenereerde geometrie gevonden</translation>
     </message>
@@ -5282,8 +5282,8 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
   <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1372"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1374"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1425"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1427"/>
       <source>Create a circle by 3 rim points</source>
       <translation>Maak een cirkel door 3 randpunten</translation>
     </message>
@@ -5291,13 +5291,13 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
   <context>
     <name>Sketcher_CreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1199"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1252"/>
       <source>B-spline by control points</source>
       <translation>B-spline via controlepunten</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1201"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1203"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1254"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1256"/>
       <source>Create a B-spline by control points</source>
       <translation>Maak een B-spline via controlepunten</translation>
     </message>
@@ -5305,8 +5305,8 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1365"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1367"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1418"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1420"/>
       <source>Create a circle by its center and by a rim point</source>
       <translation>Maak een cirkel door zijn midden en een randpunt</translation>
     </message>
@@ -5324,8 +5324,8 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
   <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2172"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2175"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2225"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2228"/>
       <source>Create a heptagon by its center and by one corner</source>
       <translation>Maak een zevenhoek door zijn midden en door een hoek</translation>
     </message>
@@ -5333,8 +5333,8 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
   <context>
     <name>Sketcher_CreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2164"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2167"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2217"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2220"/>
       <source>Create a hexagon by its center and by one corner</source>
       <translation>Maak een zeshoek door zijn midden en door een hoek</translation>
     </message>
@@ -5342,7 +5342,7 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
   <context>
     <name>Sketcher_CreateOblong</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="355"/>
+      <location filename="../../CommandCreateGeo.cpp" line="440"/>
       <source>Create a rounded rectangle</source>
       <translation>Maak een afgeronde rechthoek</translation>
     </message>
@@ -5350,14 +5350,14 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
   <context>
     <name>Sketcher_CreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2180"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2183"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2233"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2236"/>
       <source>Create an octagon by its center and by one corner</source>
       <translation>Maak een achthoek door zijn midden en door een hoek</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2189"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2192"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2242"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2245"/>
       <source>Create a regular polygon by its center and by one corner</source>
       <translation>Maak een regelmatige veelhoek door zijn midden en door een hoek</translation>
     </message>
@@ -5365,8 +5365,8 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
   <context>
     <name>Sketcher_CreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2156"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2159"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2209"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2212"/>
       <source>Create a pentagon by its center and by one corner</source>
       <translation>Maak een vijfhoek door zijn midden en door een hoek</translation>
     </message>
@@ -5374,7 +5374,7 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
   <context>
     <name>Sketcher_CreateRectangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="343"/>
+      <location filename="../../CommandCreateGeo.cpp" line="428"/>
       <source>Create a rectangle</source>
       <translation>Maak een rechthoek</translation>
     </message>
@@ -5382,7 +5382,7 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
   <context>
     <name>Sketcher_CreateRectangle_Center</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="349"/>
+      <location filename="../../CommandCreateGeo.cpp" line="434"/>
       <source>Create a centered rectangle</source>
       <translation>Maak een gecentreerde rechthoek</translation>
     </message>
@@ -5390,8 +5390,8 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
   <context>
     <name>Sketcher_CreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2148"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2151"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2201"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2204"/>
       <source>Create a square by its center and by one corner</source>
       <translation>Maak een vierkant door zijn midden en door een hoek</translation>
     </message>
@@ -5399,8 +5399,8 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
   <context>
     <name>Sketcher_CreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2141"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2144"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2194"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2197"/>
       <source>Create an equilateral triangle by its center and by one corner</source>
       <translation>Maak een gelijkzijdige driehoek door zijn midden en door een hoek</translation>
     </message>
@@ -5408,13 +5408,13 @@ Dit wordt gedaan door de geometrie en beperkingen van de schets te analyseren.</
   <context>
     <name>Sketcher_Create_Periodic_BSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1205"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1258"/>
       <source>Periodic B-spline by control points</source>
       <translation>Periodieke B-spline via controlepunten</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1208"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1211"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1261"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1264"/>
       <source>Create a periodic B-spline by control points</source>
       <translation>Maak een periodieke B-spline via controlepunten</translation>
     </message>
@@ -6114,7 +6114,7 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
       <translation type="unfinished">Selection has no valid geometries. BSplines, Points are not supported yet.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectPyImp.cpp" line="389"/>
+      <location filename="../../../App/SketchObjectPyImp.cpp" line="414"/>
       <source>The constraint has invalid index information and is malformed.</source>
       <translation>De beperking heeft ongeldige index informatie en is onjuist vormgegeven.</translation>
     </message>
@@ -6342,13 +6342,13 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
   <context>
     <name>Sketcher_CreateBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1215"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1268"/>
       <source>B-spline by knots</source>
       <translation>B-spline middels knooppunten</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1216"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1218"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1269"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1271"/>
       <source>Create a B-spline by knots</source>
       <translation>Maak een B-spline middels knooppunten</translation>
     </message>
@@ -6454,12 +6454,12 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
   <context>
     <name>CmdSketcherCreateBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1017"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1070"/>
       <source>Create B-spline by knots</source>
       <translation>Maak een B-spline middels knooppunten</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1018"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1071"/>
       <source>Create a B-spline by knots, i.e. by interpolation, in the sketch.</source>
       <translation>Maak een gesloten B-spline middels knooppunten, door middel van interpolatie, in de schets.</translation>
     </message>
@@ -6467,12 +6467,12 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
   <context>
     <name>CmdSketcherCreatePeriodicBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1049"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1102"/>
       <source>Create periodic B-spline by knots</source>
       <translation>Maak een gesloten B-spline middels knooppunten</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1051"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1104"/>
       <source>Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</source>
       <translation>Maak een gesloten B-spline middels knooppunten, door middel van interpolatie, in de schets.</translation>
     </message>
@@ -6738,8 +6738,8 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
     <name>CmdSketcherCompHorizontalVertical</name>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2724"/>
-      <source>Horizontal/Vertical</source>
-      <translation>Horizontaal/verticaal</translation>
+      <source>Constrain horizontal/vertical</source>
+      <translation type="unfinished">Constrain horizontal/vertical</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2725"/>
@@ -6751,8 +6751,8 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
     <name>CmdSketcherConstrainHorVer</name>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3034"/>
-      <source>Horizontal/Vertical</source>
-      <translation>Horizontaal/verticaal</translation>
+      <source>Constrain horizontal/vertical</source>
+      <translation type="unfinished">Constrain horizontal/vertical</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3035"/>
@@ -6763,12 +6763,12 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
   <context>
     <name>CmdSketcherCompCurveEdition</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1604"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1657"/>
       <source>Curve Edition</source>
       <translation type="unfinished">Curve Edition</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1605"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1658"/>
       <source>Curve Edition tools.</source>
       <translation type="unfinished">Curve Edition tools.</translation>
     </message>
@@ -6776,12 +6776,12 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
   <context>
     <name>CmdSketcherCompSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1693"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1746"/>
       <source>Slots</source>
       <translation>Sleuven</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1694"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1747"/>
       <source>Slot tools.</source>
       <translation>Sleuf gereedschap.</translation>
     </message>
@@ -6789,12 +6789,12 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
   <context>
     <name>CmdSketcherCreateArcSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1774"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1827"/>
       <source>Create arc slot</source>
       <translation>Maak een boog-sleuf</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1775"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1828"/>
       <source>Create an arc slot in the sketch</source>
       <translation>Maak een boog-sleuf in de schets</translation>
     </message>
@@ -6830,7 +6830,7 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="14"/>
       <source>Appearance</source>
-      <translation>Uiterlijk</translation>
+      <translation>Vormgeving</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="20"/>
@@ -6895,9 +6895,64 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
       <translation>Breedte</translation>
     </message>
     <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="212"/>
+      <source>Color of fully constrained normal geometry in edit mode</source>
+      <translation type="unfinished">Color of fully constrained normal geometry in edit mode</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="238"/>
+      <source>Color of normal geometry in edit mode</source>
+      <translation type="unfinished">Color of normal geometry in edit mode</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="306"/>
+      <source>Color of fully constrained construction geometry in edit mode</source>
+      <translation type="unfinished">Color of fully constrained construction geometry in edit mode</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="387"/>
+      <source>Internal alignment geometry</source>
+      <translation type="unfinished">Internal alignment geometry</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="400"/>
+      <source>Color of fully constrained internal alignment geometry in edit mode</source>
+      <translation type="unfinished">Color of fully constrained internal alignment geometry in edit mode</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="426"/>
+      <source>Color of internal alignment geometry in edit mode</source>
+      <translation type="unfinished">Color of internal alignment geometry in edit mode</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="555"/>
+      <source>Fully constrained sketch</source>
+      <translation type="unfinished">Fully constrained sketch</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="568"/>
+      <source>Color of geometry indicating a fully constrained sketch</source>
+      <translation type="unfinished">Color of geometry indicating a fully constrained sketch</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="588"/>
+      <source>Invalid sketch</source>
+      <translation>Ongeldige schets</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="672"/>
+      <source>Color of dimensional driving constraints in edit mode</source>
+      <translation type="unfinished">Color of dimensional driving constraints in edit mode</translation>
+    </message>
+    <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="799"/>
       <source>Vertex</source>
       <translation>Hoekpunt</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="806"/>
+      <source>Color of vertices outside edit mode</source>
+      <translation type="unfinished">Color of vertices outside edit mode</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="845"/>
@@ -6905,19 +6960,14 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
       <translation>Rand</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="212"/>
-      <source>Color of fully constrained edge color in edit mode</source>
-      <translation>Kleur van volledig beperkte randkleur in bewerkingsmodus</translation>
+      <location filename="../../SketcherSettingsAppearance.ui" line="852"/>
+      <source>Color of edges outside edit mode</source>
+      <translation type="unfinished">Color of edges outside edit mode</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="199"/>
       <source>Geometry</source>
       <translation>Geometrie</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="238"/>
-      <source>Color of edges being edited</source>
-      <translation>Kleur van de randen die bewerkt worden</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="258"/>
@@ -6935,11 +6985,6 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
       <translation>Constructie geometrie</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="306"/>
-      <source>Color of fully constrained construction edge color in edit mode</source>
-      <translation>Kleur van volledig beperkte rand in bewerkingsmodus</translation>
-    </message>
-    <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="332"/>
       <source>Color of construction geometry in edit mode</source>
       <translation>Kleur van de hulplijnen in bewerkingsmodus</translation>
@@ -6953,21 +6998,6 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
       <location filename="../../SketcherSettingsAppearance.ui" line="362"/>
       <source>Width of construction edges.</source>
       <translation type="unfinished">Width of construction edges.</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="387"/>
-      <source>Internal alignment edge</source>
-      <translation>Inwendige rand voor uitlijning</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="400"/>
-      <source>Color of fully constrained internal alignment edge color in edit mode</source>
-      <translation>Kleur van de interne uitlijning wanneer deze volledig ingeperkt is in de bewerkingsmodus</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="426"/>
-      <source>Color of edges of internal alignment geometry</source>
-      <translation>Kleur van de randen van de interne uitlijningsgeometrie</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="446"/>
@@ -7000,21 +7030,6 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
       <translation type="unfinished">Width of external edges.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="555"/>
-      <source>Fully constrained Sketch</source>
-      <translation>Volledig ingeperkte schets</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="568"/>
-      <source>Color of fully constrained geometry in edit mode</source>
-      <translation>Kleur van de volledig beperkte geometrie in bewerkingsmodus</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="588"/>
-      <source>Invalid Sketch</source>
-      <translation>Ongeldige schets</translation>
-    </message>
-    <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="601"/>
       <source>Color of geometry indicating an invalid sketch</source>
       <translation>Kleur van geometrie die een ongeldige schets aangeeft</translation>
@@ -7038,11 +7053,6 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
       <location filename="../../SketcherSettingsAppearance.ui" line="665"/>
       <source>Dimensional constraint</source>
       <translation>Dimensionale beperking</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="672"/>
-      <source>Color of dimensional driving constraints</source>
-      <translation>Kleur van maatgedreven beperkingen</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="692"/>
@@ -7078,16 +7088,6 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
       <location filename="../../SketcherSettingsAppearance.ui" line="791"/>
       <source>Colors outside Sketcher</source>
       <translation>Kleuren buiten de Sketcher</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="806"/>
-      <source>Color of vertices</source>
-      <translation>Kleur van hoekpunten</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="852"/>
-      <source>Color of edges</source>
-      <translation>Kleur van de randen</translation>
     </message>
   </context>
   <context>
@@ -7224,8 +7224,8 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="555"/>
-      <location filename="../../CommandCreateGeo.cpp" line="557"/>
+      <location filename="../../CommandCreateGeo.cpp" line="608"/>
+      <location filename="../../CommandCreateGeo.cpp" line="610"/>
       <source>Create an arc by its center and by its endpoints</source>
       <translation type="unfinished">Create an arc by its center and by its endpoints</translation>
     </message>
@@ -7243,8 +7243,8 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
   <context>
     <name>Sketcher_Create3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="562"/>
-      <location filename="../../CommandCreateGeo.cpp" line="565"/>
+      <location filename="../../CommandCreateGeo.cpp" line="615"/>
+      <location filename="../../CommandCreateGeo.cpp" line="618"/>
       <source>Create an arc by its endpoints and a point along the arc</source>
       <translation type="unfinished">Create an arc by its endpoints and a point along the arc</translation>
     </message>
@@ -7252,8 +7252,8 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
   <context>
     <name>Sketcher_CreateEllipseByCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="894"/>
-      <location filename="../../CommandCreateGeo.cpp" line="897"/>
+      <location filename="../../CommandCreateGeo.cpp" line="947"/>
+      <location filename="../../CommandCreateGeo.cpp" line="950"/>
       <source>Create an ellipse by its center, one of its radii and a rim point</source>
       <translation type="unfinished">Create an ellipse by its center, one of its radii and a rim point</translation>
     </message>
@@ -7261,8 +7261,8 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
   <context>
     <name>Sketcher_CreateEllipseBy3Points</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="903"/>
-      <location filename="../../CommandCreateGeo.cpp" line="906"/>
+      <location filename="../../CommandCreateGeo.cpp" line="956"/>
+      <location filename="../../CommandCreateGeo.cpp" line="959"/>
       <source>Create an ellipse by the endpoints of one of its axes and a rim point</source>
       <translation type="unfinished">Create an ellipse by the endpoints of one of its axes and a rim point</translation>
     </message>
@@ -7270,8 +7270,8 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
   <context>
     <name>Sketcher_CreateArcOfEllipse</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="912"/>
-      <location filename="../../CommandCreateGeo.cpp" line="915"/>
+      <location filename="../../CommandCreateGeo.cpp" line="965"/>
+      <location filename="../../CommandCreateGeo.cpp" line="968"/>
       <source>Create an arc of ellipse by its center, one of its radii, and its endpoints</source>
       <translation type="unfinished">Create an arc of ellipse by its center, one of its radii, and its endpoints</translation>
     </message>
@@ -7279,8 +7279,8 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
   <context>
     <name>Sketcher_CreateArcOfHyperbola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="923"/>
-      <location filename="../../CommandCreateGeo.cpp" line="926"/>
+      <location filename="../../CommandCreateGeo.cpp" line="976"/>
+      <location filename="../../CommandCreateGeo.cpp" line="979"/>
       <source>Create an arc of hyperbola by its center, vertex and endpoints</source>
       <translation type="unfinished">Create an arc of hyperbola by its center, vertex and endpoints</translation>
     </message>
@@ -7288,8 +7288,8 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
   <context>
     <name>Sketcher_CreateArcOfParabola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="932"/>
-      <location filename="../../CommandCreateGeo.cpp" line="935"/>
+      <location filename="../../CommandCreateGeo.cpp" line="985"/>
+      <location filename="../../CommandCreateGeo.cpp" line="988"/>
       <source>Create an arc of parabola by its focus, vertex and endpoints</source>
       <translation type="unfinished">Create an arc of parabola by its focus, vertex and endpoints</translation>
     </message>
@@ -7297,12 +7297,12 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
   <context>
     <name>CmdSketcherCreateChamfer</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1453"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1506"/>
       <source>Create chamfer</source>
       <translation type="unfinished">Create chamfer</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1454"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1507"/>
       <source>Create a chamfer between two lines or at a coincident point</source>
       <translation type="unfinished">Create a chamfer between two lines or at a coincident point</translation>
     </message>
@@ -7310,12 +7310,12 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
   <context>
     <name>CmdSketcherCompCreateFillets</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1484"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1537"/>
       <source>Create fillet or chamfer</source>
       <translation type="unfinished">Create fillet or chamfer</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1485"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1538"/>
       <source>Create a fillet or chamfer between two lines</source>
       <translation type="unfinished">Create a fillet or chamfer between two lines</translation>
     </message>
@@ -7435,15 +7435,28 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
   <context>
     <name>Sketcher_CreatePeriodicBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1222"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1275"/>
       <source>Periodic B-spline by knots</source>
       <translation>Gesloten B-spline middels knooppunten</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1225"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1228"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1278"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1281"/>
       <source>Create a periodic B-spline by knots</source>
       <translation>Maak een gesloten B-spline middels knooppunten</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCompLine</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="115"/>
+      <source>Create polyline</source>
+      <translation>Polylijn aanmaken</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="116"/>
+      <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
+      <translation>Maak een meervoudige lijn in de schets. Met de 'M-toets' schakelt u tussen de verschillende opties</translation>
     </message>
   </context>
 </TS>

@@ -115,6 +115,7 @@ PyObject* initModule()
 PyMOD_INIT_FUNC(StartGui)
 {
     static StartGui::StartLauncher* launcher = new StartGui::StartLauncher();
+    Q_UNUSED(launcher)
 
     Base::Console().Log("Loading GUI of Start module... ");
     PyObject* mod = StartGui::initModule();

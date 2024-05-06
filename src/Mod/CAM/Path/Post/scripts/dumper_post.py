@@ -24,9 +24,10 @@
 import datetime
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
+from builtins import open as pyopen
 
 TOOLTIP = """
-Dumper is an extremely simple postprocessor file for the Path workbench. It is used
+Dumper is an extremely simple postprocessor file for the CAM workbench. It is used
 to dump the command list from one or more Path objects for simple inspection. This post
 doesn't do any manipulation of the path and doesn't write anything to disk.  It just
 shows the dialog so you can see it.  Useful for debugging, but not much else.
@@ -35,9 +36,7 @@ shows the dialog so you can see it.  Useful for debugging, but not much else.
 now = datetime.datetime.now()
 SHOW_EDITOR = True
 
-# to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
+
 
 
 def export(objectslist, filename, argstring):

@@ -25,6 +25,7 @@ __url__    = "https://www.freecad.org"
 
 import FreeCAD
 import Draft
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     from draftutils.translate import translate

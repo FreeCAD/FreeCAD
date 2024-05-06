@@ -82,15 +82,15 @@ to get French translation of the documentation.</string>
       </item>
       <item row="6" column="1">
        <widget class="Gui::PrefFileChooser" name="fileChooser">
-        <property name="mode">
-         <enum>Gui::FileChooser::Directory</enum>
-        </property>
         <property name="toolTip">
          <string>Set this to a custom URL or the folder where the help files are located.
 You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</string>
+        </property>
+        <property name="mode">
+         <enum>Gui::FileChooser::Directory</enum>
         </property>
         <property name="fileName">
          <string/>
@@ -165,25 +165,6 @@ custom stylesheet below and can look nicer than the wiki option. The 'Markdown' 
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="Gui::PrefRadioButton" name="radioTab">
-        <property name="toolTip">
-         <string>The documentation will open in a new tab inside the FreeCAD interface.</string>
-        </property>
-        <property name="text">
-         <string>In a FreeCAD tab</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>optionTab</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Help</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="Gui::PrefRadioButton" name="radioBrowser">
         <property name="toolTip">
          <string>The documentation will open in your default web browser.</string>
@@ -191,8 +172,30 @@ custom stylesheet below and can look nicer than the wiki option. The 'Markdown' 
         <property name="text">
          <string>In your default web browser</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>optionBrowser</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Help</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefRadioButton" name="radioTab">
+        <property name="toolTip">
+         <string>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</string>
+        </property>
+        <property name="text">
+         <string>In a FreeCAD tab</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>optionTab</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Help</cstring>
@@ -206,7 +209,7 @@ custom stylesheet below and can look nicer than the wiki option. The 'Markdown' 
         </property>
         <property name="toolTip">
          <string>The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open whlle working in the 3D view.</string>
+which allows you to keep it open whlle working in the 3D view. This requires the PySide QtWebengineWidgets component</string>
         </property>
         <property name="text">
          <string>In a separate, embeddable dialog</string>

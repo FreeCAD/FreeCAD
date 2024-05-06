@@ -46,7 +46,7 @@ Base::Reference<ParameterGrp> Preferences::getPreferenceGroup(const char* Name)
 App::Color Preferences::defaultLineColor()
 {
     App::Color fcColor;
-    fcColor.setPackedValue(getPreferenceGroup("Appearance")->GetUnsigned("DefaultLineColor", 0xFFFFFFFF));
+    fcColor.setPackedValue(getPreferenceGroup("Appearance")->GetUnsigned("DefaultLineColor", 0x3CF00000));
     return fcColor;
 }
 
@@ -60,7 +60,7 @@ App::Color Preferences::defaultTextColor()
 App::Color Preferences::defaultTextBackgroundColor()
 {
     App::Color fcColor;
-    fcColor.setPackedValue(getPreferenceGroup("Appearance")->GetUnsigned("DefaultTextBackgroundColor", 0xFFFFFFFF));
+    fcColor.setPackedValue(getPreferenceGroup("Appearance")->GetUnsigned("DefaultTextBackgroundColor", 0x3CF00000));
     return fcColor;
 }
 

@@ -53,13 +53,6 @@
 #include <Base/Rotation.h>
 #include <Base/Vector3D.h>
 
-#include <Mod/Measure/App/MeasureAngle.h>
-#include <Mod/Measure/App/MeasureDistance.h>
-#include <Mod/Measure/App/MeasureLength.h>
-#include <Mod/Measure/App/MeasurePosition.h>
-#include <Mod/Measure/App/MeasureArea.h>
-#include <Mod/Measure/App/MeasureRadius.h>
-
 #include "VectorAdapter.h"
 #include "PartFeature.h"
 

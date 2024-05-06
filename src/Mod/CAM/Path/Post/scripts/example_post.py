@@ -22,6 +22,7 @@
 # ***************************************************************************
 
 import datetime
+from builtins import open as pyopen
 
 TOOLTIP = """
 This is an example postprocessor file for the Path workbench. It is used
@@ -33,9 +34,7 @@ to GCode.
 
 now = datetime.datetime.now()
 
-# to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
+
 
 
 def export(objectslist, filename, argstring):
@@ -48,7 +47,7 @@ def export(objectslist, filename, argstring):
         print("the given object is not a path")
     gcode = obj.Path.toGCode()
     gcode = parse(gcode)
-    gfile = pythonopen(filename, "w")
+    gfile = pyopen(filename, "w")
     gfile.write(gcode)
     gfile.close()
 

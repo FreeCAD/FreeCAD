@@ -21,11 +21,11 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-You can easily download the documentation for offline use by using the Addon
-Manager and installing the &quot;offline-documentation&quot; addon. If this
-field is left blank, FreeCAD will automatically search for the help files at
-the default location ($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Impostare questo su un URL personalizzato o la cartella in cui si trovano i file di aiuto.
+È possibile scaricare facilmente la documentazione per l'uso offline utilizzando l'Addon
+Manager e l'addon per l'installazione della &quot;documentazione offline&quot;. Se questo campo
+è lasciato vuoto, FreeCAD cercherà automaticamente i file di aiuto nella
+posizione predefinita ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
@@ -155,8 +155,8 @@ Markdown sopra.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="78"/>
-      <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the Web module</source>
-      <translation>Il modulo PySide QtWebEngineWidgets non è disponibile. Il rendering della guida viene eseguito con il modulo Web</translation>
+      <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
+      <translation type="unfinished">PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="82"/>
@@ -172,7 +172,7 @@ Markdown sopra.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="394"/>
+      <location filename="../../Help.py" line="393"/>
       <source>General</source>
       <translation>Generale</translation>
     </message>

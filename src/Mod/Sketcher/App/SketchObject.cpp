@@ -7434,6 +7434,7 @@ void SketchObject::validateExternalLinks()
         const std::string SubElement = SubElements[i];
 
         TopoDS_Shape refSubShape;
+        bool removeBadLink = false;
         try {
             if (Obj->isDerivedFrom<Part::Datum>()) {
                 const Part::Datum* datum = static_cast<const Part::Datum*>(Obj);
@@ -7445,7 +7446,15 @@ void SketchObject::validateExternalLinks()
                 refSubShape = refShape.getSubShape(SubElement.c_str());
             }
         }
+        catch ( Base::IndexError& indexError) {
+            removeBadLink = true;
+            Base::Console().Warning(
+                this->getFullLabel(), (indexError.getMessage() + "\n").c_str());
+        }
         catch (Standard_Failure&) {
+            removeBadLink = true;
+        }
+        if ( removeBadLink ) {
             rebuild = true;
             Objects.erase(Objects.begin() + i);
             SubElements.erase(SubElements.begin() + i);
@@ -9548,7 +9557,7 @@ std::pair<std::string,std::string> SketchObject::getElementName(
     //  Todo: Toponaming Project March 2024:  This method override breaks the sketcher - selection and deletion
     //          of constraints ceases to work.  See #13169.  We need to prove that this works before
     //          enabling it.  For now, bypass it.
-    return Part2DObject::getElementName(name,type);
+//    return Part2DObject::getElementName(name,type);
 
     std::pair<std::string, std::string> ret;
     if(!name) return ret;

@@ -28,6 +28,5 @@
 using namespace std;
 
 void CreateMeasureCommands() {
-    Base::Console().Message("Init MeasureGui\n");
-    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    Base::Console().Log("Init MeasureGui\n");
 }

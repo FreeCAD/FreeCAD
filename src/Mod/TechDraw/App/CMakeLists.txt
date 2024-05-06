@@ -107,8 +107,6 @@ SET(Draw_SRCS
     DimensionFormatter.h
     DimensionAutoCorrect.cpp
     DimensionAutoCorrect.h
-    GeometryMatcher.cpp
-    GeometryMatcher.h
     DrawViewBalloon.cpp
     DrawViewBalloon.h
     DrawViewSection.cpp
@@ -201,6 +199,8 @@ SET(Geometry_SRCS
     PropertyCosmeticVertexList.h
     CosmeticExtension.cpp
     CosmeticExtension.h
+    GeometryMatcher.cpp
+    GeometryMatcher.h
 )
 
 SET(Python_SRCS

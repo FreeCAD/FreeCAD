@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2014 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,67 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
+
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
+// inclusion of the generated files (generated out of ViewGroup.xml)
+#include "ViewGroupPy.h"
+#include "ViewGroupPy.cpp"
 
-#include "UserSettings.h"
-#include <App/Application.h>
+using namespace Assembly;
 
-
-using namespace Gui;
-
-namespace {
-
-ParameterGrp::handle getWSParameter()
+// returns a string which represents the object e.g. when printed in python
+std::string ViewGroupPy::representation() const
 {
-    return App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+    return {"<Exploded View Group>"};
 }
 
+PyObject* ViewGroupPy::getCustomAttributes(const char* /*attr*/) const
+{
+    return nullptr;
 }
 
-std::string WorkbenchSwitcher::getValue()
+int ViewGroupPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return getWSParameter()->GetASCII("WSPosition", "WSToolbar");
-}
-
-bool WorkbenchSwitcher::isLeftCorner(const std::string& value)
-{
-    return (value == "WSLeftCorner");
-}
-
-bool WorkbenchSwitcher::isRightCorner(const std::string& value)
-{
-    return (value == "WSRightCorner");
-}
-
-bool WorkbenchSwitcher::isToolbar(const std::string& value)
-{
-    return (value == "WSToolbar");
-}
-
-QVector<std::string> WorkbenchSwitcher::values()
-{
-    QVector<std::string> wsPositions;
-    wsPositions << "WSToolbar" << "WSLeftCorner" << "WSRightCorner";
-    return wsPositions;
-}
-
-int WorkbenchSwitcher::getIndex()
-{
-    auto hGrp = getWSParameter();
-    std::string pos = hGrp->GetASCII("WSPosition", "WSToolbar");
-    auto wsPositions = values();
-    int index = std::max(0, static_cast<int>(wsPositions.indexOf(pos)));
-    return index;
-}
-
-void WorkbenchSwitcher::setIndex(int index)
-{
-    auto wsPositions = values();
-    auto hGrp = getWSParameter();
-    if (index >= 0 && index < wsPositions.size()) {
-        hGrp->SetASCII("WSPosition", wsPositions[index].c_str());
-    }
+    return 0;
 }

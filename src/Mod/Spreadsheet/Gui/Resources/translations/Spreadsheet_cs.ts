@@ -953,17 +953,17 @@ Výchozí hodnota: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
       <source>Delimiter Character:</source>
-      <translation type="unfinished">Delimiter Character:</translation>
+      <translation>Znak oddělovače:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="156"/>
       <source>Quote Character:</source>
-      <translation type="unfinished">Quote Character:</translation>
+      <translation>Znak citace:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="188"/>
       <source>Escape Character:</source>
-      <translation type="unfinished">Escape Character:</translation>
+      <translation>Znak escapu:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>

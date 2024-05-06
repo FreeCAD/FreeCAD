@@ -47,12 +47,13 @@ class TopoShape;
 
 namespace TechDraw
 {
+class DrawViewPart;
 
 //a convenient way of handling object+subName references
 class TechDrawExport ReferenceEntry
 {
 public:
-    ReferenceEntry() {};
+    ReferenceEntry() = default;
     ReferenceEntry( App::DocumentObject* docObject, std::string subName, App::Document* document = nullptr);
     ReferenceEntry(const ReferenceEntry& other);
     ~ReferenceEntry() = default;
@@ -62,9 +63,9 @@ public:
     App::DocumentObject* getObject() const;
     void setObject(App::DocumentObject* docObj) { m_object = docObj; }
     std::string getSubName(bool longForm = false) const;
-    void setSubName(std::string subName) { m_subName = subName; }
+    void setSubName(const std::string& subName) { m_subName = subName; }
     std::string getObjectName() const { return m_objectName; }
-    void setObjectName(std::string name) { m_objectName = name; }
+    void setObjectName(const std::string& name) { m_objectName = name; }
     App::Document* getDocument() const { return m_document; }
     void setDocument(App::Document* document) { m_document = document; }
 
@@ -73,17 +74,22 @@ public:
     bool isWholeObject() const;
 
     Part::TopoShape asTopoShape() const;
+    Part::TopoShape asCanonicalTopoShape() const;
+    static Part::TopoShape asCanonicalTopoShape(const Part::TopoShape& inShape, const DrawViewPart& dvp);
 
     bool is3d() const;
     bool hasGeometry() const;
 
 private:
-    Part::TopoShape asTopoShapeVertex(TopoDS_Vertex &vert) const;
-    Part::TopoShape asTopoShapeEdge(TopoDS_Edge& edge) const;
+    bool hasGeometry2d() const;
+    TopoDS_Shape getGeometry2d() const;
+
+    static Part::TopoShape asTopoShapeVertex(const TopoDS_Vertex &vert);
+    static Part::TopoShape asTopoShapeEdge(const TopoDS_Edge& edge);
 
     App::DocumentObject* m_object{nullptr};
-    std::string m_subName{""};
-    std::string m_objectName{""};
+    std::string m_subName;
+    std::string m_objectName;
     App::Document* m_document{nullptr};
 };
 

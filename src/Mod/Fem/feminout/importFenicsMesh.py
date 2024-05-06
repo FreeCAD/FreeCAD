@@ -38,6 +38,7 @@ from . import importToolsFem
 from . import readFenicsXML
 from . import writeFenicsXML
 from . import writeFenicsXDMF
+from builtins import open as pyopen
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -46,7 +47,7 @@ if FreeCAD.GuiUp:
 
 # Template copied from importZ88Mesh.py. Thanks Bernd!
 # ********* generic FreeCAD import and export methods *********
-pyopen = open
+
 
 if FreeCAD.GuiUp:
     class WriteXDMFTaskPanel:

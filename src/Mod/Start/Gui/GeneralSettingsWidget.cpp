@@ -104,7 +104,7 @@ gsl::owner<QComboBox*> GeneralSettingsWidget::createLanguageComboBox()
     auto comboBox = gsl::owner<QComboBox*>(new QComboBox);
     comboBox->addItem(QString::fromLatin1("English"), QByteArray("English"));
     Gui::TStringMap list = Gui::Translator::instance()->supportedLocales();
-    int index {0};
+    int index {1};
     for (auto it = list.begin(); it != list.end(); ++it, ++index) {
         QByteArray lang = it->first.c_str();
         QString langname = QString::fromLatin1(lang.constData());
@@ -128,6 +128,9 @@ gsl::owner<QComboBox*> GeneralSettingsWidget::createLanguageComboBox()
         if (language == lang) {
             comboBox->setCurrentIndex(index);
         }
+    }
+    if (QAbstractItemModel* model = comboBox->model()) {
+        model->sort(0);
     }
     _languageComboBox = comboBox;
     connect(_languageComboBox,

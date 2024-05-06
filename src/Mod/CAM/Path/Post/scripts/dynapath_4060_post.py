@@ -33,6 +33,7 @@ import datetime
 import shlex
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
+from builtins import open as pyopen
 
 TOOLTIP = """
 This is a post processor file for the FreeCAD Path workbench. It is used to
@@ -151,9 +152,7 @@ M30
 # Create following variable for use with the 2nd reference plane.
 clearanceHeight = None
 
-# to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
+
 
 
 def processArguments(argstring):
@@ -346,7 +345,7 @@ def export(objectslist, filename, argstring):
     print("done postprocessing.")
 
     if not filename == "-":
-        gfile = pythonopen(filename, "w")
+        gfile = pyopen(filename, "w")
         gfile.write(final)
         gfile.close()
 

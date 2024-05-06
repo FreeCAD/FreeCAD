@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #include "ArcEngine.h"
+#include <limits>
 #include <vector>
 
 # include <Inventor/engines/SoCalculator.h>

@@ -480,6 +480,62 @@ class TestSketcherSolver(unittest.TestCase):
             msg="Reference constraint did not return the expected distance.",
         )
 
+    def testRemovedExternalGeometryReference(self):
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        CreateRectangleSketch(sketch, (0, 0), (30, 30))
+        pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        pad.Profile = sketch
+        sketch1 = self.Doc.addObject("Sketcher::SketchObject", "Sketch1")
+        CreateCircleSketch(sketch1, (15, 15), 0.25)
+        body.addObject(sketch)
+        body.addObject(pad)
+        body.addObject(sketch1)
+        self.Doc.recompute()
+        hole = self.Doc.addObject("PartDesign::Hole", "Hole")
+        body.addObject(hole)
+        hole.Profile = sketch1
+        hole.Diameter = 0.250000
+        hole.Depth = 10.000000
+        hole.DrillPointAngle = 118.000000
+        hole.TaperedAngle = 90.000000
+        hole.Diameter = 6.000000
+        hole.Depth = 8.000000
+        hole.DrillPointAngle = 118.000000
+        hole.TaperedAngle = 90.000000
+        hole.Tapered = 0
+        hole.Depth = 8.000000
+        hole.DrillPointAngle = 118.000000
+        hole.Threaded = 1
+        hole.ModelThread = 0
+        hole.ThreadDepthType = 0
+        hole.ThreadType = 1
+        hole.ThreadSize = 16
+        hole.ThreadClass = 0
+        hole.ThreadDirection = 0
+        hole.HoleCutType = 0
+        hole.DepthType = 0
+        hole.DrillPoint = 1
+        hole.DrillForDepth = 0
+        hole.Tapered = 0
+        self.Doc.recompute()
+        self.assertEqual(len(hole.Shape.Edges), 13)
+        hole.Threaded = True
+        hole.ModelThread = True
+        body.addObject(hole)
+        #
+        sketch2 = self.Doc.addObject("Sketcher::SketchObject", "Sketch2")
+        CreateRectangleSketch(sketch2, (0, 0), (3, 3))
+        body.addObject(sketch2)
+        self.Doc.recompute()
+        sketch2.addExternal("Hole", "Edge35")  # Edge35 will disappear when we stop modeling threads
+        self.assertEqual(len(hole.Shape.Edges), 38)
+        hole.ModelThread = False
+        hole.Refine = True
+        self.Doc.recompute()
+        self.assertEqual(len(hole.Shape.Edges), 32)
+        self.assertEqual(len(sketch2.ExternalGeometry), 1)
+
     def assertSuccessfulSolve(self, sketch, msg=None):
         status = sketch.solve()
         # TODO: can we get the solver's messages somehow to improve the message?
