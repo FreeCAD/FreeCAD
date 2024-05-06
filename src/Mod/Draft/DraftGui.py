@@ -131,7 +131,7 @@ class DraftTaskPanel:
         else:
             self.form = widget
     def getStandardButtons(self):
-        return int(QtWidgets.QDialogButtonBox.Close)
+        return QtWidgets.QDialogButtonBox.Close
     def accept(self):
         if hasattr(FreeCADGui,"draftToolBar"):
             return FreeCADGui.draftToolBar.validatePoint()
@@ -919,7 +919,7 @@ class DraftToolBar:
                     self.form = [extra]
                 self.callback = callback
             def getStandardButtons(self):
-                return int(QtWidgets.QDialogButtonBox.Close)
+                return QtWidgets.QDialogButtonBox.Close
             def reject(self):
                 if self.callback:
                     self.callback()
@@ -1687,7 +1687,7 @@ class FacebinderTaskPanel:
         return True
 
     def getStandardButtons(self):
-        return int(QtWidgets.QDialogButtonBox.Ok)
+        return QtWidgets.QDialogButtonBox.Ok
 
     def update(self):
         """fills the treewidget"""
