@@ -309,26 +309,20 @@ inline void SketcherAddWorkspaceArcs<Gui::MenuItem>(Gui::MenuItem& geom)
 {
     geom << "Sketcher_CreateArc"
          << "Sketcher_Create3PointArc"
-         << "Sketcher_CreateCircle"
-         << "Sketcher_Create3PointCircle"
-         << "Sketcher_CreateEllipseByCenter"
-         << "Sketcher_CreateEllipseBy3Points"
          << "Sketcher_CreateArcOfEllipse"
          << "Sketcher_CreateArcOfHyperbola"
          << "Sketcher_CreateArcOfParabola"
-         << "Sketcher_CreateBSpline"
-         << "Sketcher_CreatePeriodicBSpline"
-         << "Sketcher_CreateBSplineByInterpolation"
-         << "Sketcher_CreatePeriodicBSplineByInterpolation";
+         << "Sketcher_CreateCircle"
+         << "Sketcher_Create3PointCircle"
+         << "Sketcher_CreateEllipseByCenter"
+         << "Sketcher_CreateEllipseBy3Points";
 }
 
 template<>
 inline void SketcherAddWorkspaceArcs<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
 {
     geom << "Sketcher_CompCreateArc"
-         << "Sketcher_CompCreateCircle"
-         << "Sketcher_CompCreateConic"
-         << "Sketcher_CompCreateBSpline";
+         << "Sketcher_CompCreateConic";
 }
 
 template<typename T>
@@ -376,13 +370,19 @@ template<>
 inline void SketcherAddWorkspaceslots<Gui::MenuItem>(Gui::MenuItem& geom)
 {
     geom << "Sketcher_CreateSlot"
-         << "Sketcher_CreateArcSlot";
+         << "Sketcher_CreateArcSlot"
+         << "Sketcher_CreateBSpline"
+         << "Sketcher_CreatePeriodicBSpline"
+         << "Sketcher_CreateBSplineByInterpolation"
+         << "Sketcher_CreatePeriodicBSplineByInterpolation";
 }
 
 template<>
 inline void SketcherAddWorkspaceslots<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
 {
-    geom << "Sketcher_CompSlot";
+    geom << "Sketcher_CompSlot"
+         << "Sketcher_CompCreateBSpline";
+    ;
 }
 
 template<typename T>
@@ -424,13 +424,13 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
     geom << "Sketcher_CreatePoint";
     SketcherAddWorkspaceLines(geom);
     SketcherAddWorkspaceArcs(geom);
-    geom << "Separator";
     SketcherAddWorkspaceRectangles(geom);
     SketcherAddWorkspaceRegularPolygon(geom);
     SketcherAddWorkspaceslots(geom);
-    geom << "Sketcher_ToggleConstruction"
-        /*<< "Sketcher_CreateText"*/
-        /*<< "Sketcher_CreateDraftLine"*/;
+    geom << "Separator"
+         << "Sketcher_ToggleConstruction";
+    /*<< "Sketcher_CreateText"*/
+    /*<< "Sketcher_CreateDraftLine"*/;
 }
 
 template<typename T>
@@ -442,7 +442,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
 
-    if (hGrp->GetBool("UnifiedCoincident", false)) {
+    if (hGrp->GetBool("UnifiedCoincident", true)) {
         cons << "Sketcher_ConstrainCoincidentUnified";
     }
     else {
@@ -478,31 +478,6 @@ template<>
 inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& cons)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
-
-    if (hGrp->GetBool("UnifiedCoincident", false)) {
-        cons << "Sketcher_ConstrainCoincidentUnified";
-    }
-    else {
-        cons << "Sketcher_ConstrainCoincident"
-             << "Sketcher_ConstrainPointOnObject";
-    }
-    if (hGrp->GetBool("AutoHorVer", true)) {
-        cons << "Sketcher_CompHorVer";
-    }
-    else {
-        cons << "Sketcher_ConstrainHorizontal"
-             << "Sketcher_ConstrainVertical";
-    }
-    cons << "Sketcher_ConstrainParallel"
-         << "Sketcher_ConstrainPerpendicular"
-         << "Sketcher_ConstrainTangent"
-         << "Sketcher_ConstrainEqual"
-         << "Sketcher_ConstrainSymmetric"
-         << "Sketcher_ConstrainBlock"
-         << "Separator";
-
-    hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
 
     if (hGrp->GetBool("SingleDimensioningTool", true)) {
@@ -522,9 +497,35 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
              << "Sketcher_ConstrainLock";
         // << "Sketcher_ConstrainSnellsLaw" // Rarely used, show only in menu
     }
+
+    cons << "Separator";
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
+
+    if (hGrp->GetBool("UnifiedCoincident", true)) {
+        cons << "Sketcher_ConstrainCoincidentUnified";
+    }
+    else {
+        cons << "Sketcher_ConstrainCoincident"
+             << "Sketcher_ConstrainPointOnObject";
+    }
+    if (hGrp->GetBool("AutoHorVer", true)) {
+        cons << "Sketcher_CompHorVer";
+    }
+    else {
+        cons << "Sketcher_ConstrainHorizontal"
+             << "Sketcher_ConstrainVertical";
+    }
+    cons << "Sketcher_ConstrainParallel"
+         << "Sketcher_ConstrainPerpendicular"
+         << "Sketcher_ConstrainTangent"
+         << "Sketcher_ConstrainEqual"
+         << "Sketcher_ConstrainSymmetric"
+         << "Sketcher_ConstrainBlock";
+
     cons << "Separator"
-         << "Sketcher_ToggleDrivingConstraint"
-         << "Sketcher_ToggleActiveConstraint";
+         << "Sketcher_CompToggleConstraints";
 }
 
 template<typename T>
@@ -611,10 +612,10 @@ inline void SketcherAddWorkbenchVisual<Gui::MenuItem>(Gui::MenuItem& visual)
            << "Sketcher_SelectRedundantConstraints"
            << "Sketcher_SelectConflictingConstraints"
            << "Separator"
+           << "Sketcher_ArcOverlay"
            << "Sketcher_RestoreInternalAlignmentGeometry"
            << "Sketcher_SwitchVirtualSpace"
-           << "Sketcher_CompBSplineShowHideGeometryInformation"
-           << "Sketcher_ArcOverlay";
+           << "Sketcher_CompBSplineShowHideGeometryInformation";
 }
 
 template<>
@@ -623,10 +624,10 @@ inline void SketcherAddWorkbenchVisual<Gui::ToolBarItem>(Gui::ToolBarItem& visua
     visual << "Sketcher_SelectConstraints"
            << "Sketcher_SelectElementsAssociatedWithConstraints"
            << "Separator"
-           << "Sketcher_RestoreInternalAlignmentGeometry"
-           << "Sketcher_SwitchVirtualSpace"
+           << "Sketcher_ArcOverlay"
            << "Sketcher_CompBSplineShowHideGeometryInformation"
-           << "Sketcher_ArcOverlay";
+           << "Sketcher_RestoreInternalAlignmentGeometry"
+           << "Sketcher_SwitchVirtualSpace";
 }
 
 template<typename T>

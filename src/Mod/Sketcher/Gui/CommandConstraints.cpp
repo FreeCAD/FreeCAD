@@ -1295,6 +1295,32 @@ public:
     const char* className() const override { return "CmdSketcherCompConstrainTools"; }
 };
 
+// Comp for toggle constraint tools =============================================
+
+class CmdSketcherCompToggleConstraints : public Gui::GroupCommand
+{
+public:
+    CmdSketcherCompToggleConstraints()
+        : GroupCommand("Sketcher_CompToggleConstraints")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Toggle constraints");
+        sToolTipText = QT_TR_NOOP("Toggle constrain tools.");
+        sWhatsThis = "Sketcher_CompToggleConstraints";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("Sketcher_ToggleDrivingConstraint");
+        addCommand("Sketcher_ToggleActiveConstraint");
+
+    }
+    const char* className() const override { return "CmdSketcherCompToggleConstraints"; }
+};
+
 // Dimension tool =======================================================
 
 class GeomSelectionSizes
@@ -3690,7 +3716,7 @@ CmdSketcherConstrainCoincidentUnified::CmdSketcherConstrainCoincidentUnified(con
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
-    sAccel = hGrp->GetBool("UnifiedCoincident", false) ? "C" :"C,O";
+    sAccel = hGrp->GetBool("UnifiedCoincident", true) ? "C" :"C,O";
 
     eType = ForEdit;
 
@@ -4202,7 +4228,7 @@ CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
     sPixmap = "Constraint_PointOnPoint";
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
-    sAccel = hGrp->GetBool("UnifiedCoincident", false) ? "C,C" : "C";
+    sAccel = hGrp->GetBool("UnifiedCoincident", true) ? "C,C" : "C";
     eType = ForEdit;
 
     allowedSelSequences = {{SelVertex, SelVertexOrRoot},
@@ -10137,5 +10163,6 @@ void CreateSketcherCommandsConstraints()
     rcCmdMgr.addCommand(new CmdSketcherToggleActiveConstraint());
     rcCmdMgr.addCommand(new CmdSketcherCompDimensionTools());
     rcCmdMgr.addCommand(new CmdSketcherCompConstrainTools());
+    rcCmdMgr.addCommand(new CmdSketcherCompToggleConstraints());
 }
 // clang-format on
