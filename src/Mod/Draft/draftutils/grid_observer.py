@@ -43,10 +43,16 @@ if FreeCAD.GuiUp:
                 mw = FreeCADGui.getMainWindow()
                 if mw.findChild(QtWidgets.QToolBar, "Draft snap"):
                     tbSnap = mw.findChild(QtWidgets.QToolBar, "Draft snap")
-                    btnGrid = _find_grid_toolbutton("Draft snap", "Toggle grid", "transparent")
+                    btnGrid = _find_grid_toolbutton(
+                        "Draft snap", "Toggle grid", False, False
+                    )
                     if mw.findChild(QtWidgets.QToolBar, "draft_snap_widget"):
-                        tbSnapWidget = mw.findChild(QtWidgets.QToolBar, "draft_snap_widget")
-                        btnGridSW = _find_grid_toolbutton("draft_snap_widget", "Toggle grid", "transparent")
+                        tbSnapWidget = mw.findChild(
+                            QtWidgets.QToolBar, "draft_snap_widget"
+                        )
+                        btnGridSW = _find_grid_toolbutton(
+                            "draft_snap_widget", "Toggle grid", False, False
+                        )
                 return
             _update_gridgui()
         except Exception:
@@ -81,34 +87,45 @@ if FreeCAD.GuiUp:
             mdi.subWindowActivated.disconnect(_view_observer_callback)
             _view_observer_active = False
 
-
     def _update_gridgui():
-        if FreeCAD.GuiUp \
-                and hasattr(FreeCADGui, "draftToolBar") \
-                and gui_utils.get_3d_view() is not None:
+        if (
+            FreeCAD.GuiUp
+            and hasattr(FreeCADGui, "draftToolBar")
+            and gui_utils.get_3d_view() is not None
+        ):
             mw = FreeCADGui.getMainWindow()
             if mw.findChild(QtWidgets.QToolBar, "Draft snap"):
                 if FreeCADGui.Snapper.grid.Visible:
                     tbSnap = mw.findChild(QtWidgets.QToolBar, "Draft snap")
-                    btnGrid = _find_grid_toolbutton("Draft snap", "Toggle grid", "#469143")
+                    btnGrid = _find_grid_toolbutton(
+                        "Draft snap", "Toggle grid", True, True
+                    )
                     if mw.findChild(QtWidgets.QToolBar, "draft_snap_widget"):
-                        tbSnapWidget = mw.findChild(QtWidgets.QToolBar, "draft_snap_widget")
-                        btnGridSW = _find_grid_toolbutton("draft_snap_widget", "Toggle grid", "#469143")
+                        tbSnapWidget = mw.findChild(
+                            QtWidgets.QToolBar, "draft_snap_widget"
+                        )
+                        btnGridSW = _find_grid_toolbutton(
+                            "draft_snap_widget", "Toggle grid", True, True
+                        )
                 else:
                     tbSnap = mw.findChild(QtWidgets.QToolBar, "Draft snap")
-                    btnGrid = _find_grid_toolbutton("Draft snap", "Toggle grid", "#914343")
+                    btnGrid = _find_grid_toolbutton(
+                        "Draft snap", "Toggle grid", True, False
+                    )
                     if mw.findChild(QtWidgets.QToolBar, "draft_snap_widget"):
-                        tbSnapWidget = mw.findChild(QtWidgets.QToolBar, "draft_snap_widget")
-                        btnGridSW = _find_grid_toolbutton("draft_snap_widget", "Toggle grid", "#914343")
- 
+                        tbSnapWidget = mw.findChild(
+                            QtWidgets.QToolBar, "draft_snap_widget"
+                        )
+                        btnGridSW = _find_grid_toolbutton(
+                            "draft_snap_widget", "Toggle grid", True, False
+                        )
 
-    def _find_grid_toolbutton(tbObj, tbButton, tbButtonColor):
+    def _find_grid_toolbutton(tbObj, tbButton, tbButtonEnabled, tbButtonChecked):
         mw = FreeCADGui.getMainWindow()
         for toolbar in mw.findChildren(QtWidgets.QToolBar):
             if toolbar.objectName() == tbObj:
                 for toolbutton in toolbar.findChildren(QtWidgets.QToolButton):
                     if hasattr(toolbutton, "text"):
                         if toolbutton.text() == tbButton:
-                            toolbutton.setStyleSheet('background-color: ' + tbButtonColor + ';')
-
-
+                            toolbutton.setEnabled(tbButtonEnabled)
+                            toolbutton.setChecked(tbButtonChecked)
