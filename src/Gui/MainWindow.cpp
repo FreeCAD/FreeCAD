@@ -37,6 +37,7 @@
 # include <QLabel>
 # include <QMdiSubWindow>
 # include <QMenu>
+# include <QMenuBar>
 # include <QMessageBox>
 # include <QMimeData>
 # include <QPainter>
@@ -789,7 +790,19 @@ bool MainWindow::updateDAGView(bool show)
 
 QMenu* MainWindow::createPopupMenu ()
 {
-    QMenu* menu = QMainWindow::createPopupMenu();
+    QMenu *menu = new QMenu(this);
+    populateDockWindowMenu(menu);
+    menu->addSeparator();
+    populateToolBarMenu(menu);
+    QMenu *undockMenu = new QMenu(menu);
+    ToolBarManager::getInstance()->populateUndockMenu(undockMenu);
+    if (undockMenu->actions().isEmpty()) {
+        delete undockMenu;
+    }
+    else {
+        menu->addMenu(undockMenu);
+    }
+    menu->addSeparator();
     Workbench* wb = WorkbenchManager::instance()->active();
     if (wb) {
         MenuItem item;
@@ -1406,26 +1419,41 @@ void MainWindow::onToolBarMenuAboutToShow()
 {
     auto menu = static_cast<QMenu*>(sender());
     menu->clear();
-    QList<QToolBar*> dock = this->findChildren<QToolBar*>();
-    for (const auto & it : dock) {
-        if (it->parentWidget() == this) {
-            QAction* action = it->toggleViewAction();
-            action->setToolTip(tr("Toggles this toolbar"));
-            action->setStatusTip(tr("Toggles this toolbar"));
-            action->setWhatsThis(tr("Toggles this toolbar"));
-            menu->addAction(action);
-        }
-    }
+    populateToolBarMenu(menu);
 
     menu->addSeparator();
 
     Application::Instance->commandManager().getCommandByName("Std_ToggleToolBarLock")->addTo(menu);
 }
 
+void MainWindow::populateToolBarMenu(QMenu *menu)
+{
+    QList<QToolBar*> toolbars = this->findChildren<QToolBar*>();
+    for (const auto & toolbar : toolbars) {
+        if (auto parent = toolbar->parentWidget()) {
+            if (parent == this
+                    || parent == statusBar()
+                    || parent->parentWidget() == statusBar()
+                    || parent->parentWidget() == menuBar()) {
+                QAction* action = toolbar->toggleViewAction();
+                action->setToolTip(tr("Toggles this toolbar"));
+                action->setStatusTip(tr("Toggles this toolbar"));
+                action->setWhatsThis(tr("Toggles this toolbar"));
+                menu->addAction(action);
+            }
+        }
+    }
+}
+
 void MainWindow::onDockWindowMenuAboutToShow()
 {
     auto menu = static_cast<QMenu*>(sender());
     menu->clear();
+    populateDockWindowMenu(menu);
+}
+
+void MainWindow::populateDockWindowMenu(QMenu *menu)
+{
     QList<QDockWidget*> dock = this->findChildren<QDockWidget*>();
     for (auto & it : dock) {
         QAction* action = it->toggleViewAction();

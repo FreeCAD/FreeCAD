@@ -308,6 +308,9 @@ private:
     bool updateComboView(bool show);
     bool updateDAGView(bool show);
 
+    void populateToolBarMenu(QMenu *);
+    void populateDockWindowMenu(QMenu *);
+
     static void renderDevBuildWarning(QPainter &painter, const QPoint startPosition, const QSize maxSize);
 
 private Q_SLOTS:
