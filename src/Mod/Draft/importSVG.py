@@ -1840,7 +1840,7 @@ def export(exportList, filename):
                        "with a valid bounding box"))
         return
 
-    # The SVG XY plane is not necessarily identical to the 3D World XY plane.
+    # The SVG XY plane is not necessarily identical to the 3D world XY plane.
     # Use simple heuristics: Project along the shortest bounding box edge.
     if bb.XLength <= bb.YLength and bb.XLength <= bb.ZLength:
         proj = wp.Plane(Vector(0, 1, 0), Vector(0, 0, 1))
