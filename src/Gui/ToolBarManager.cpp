@@ -85,7 +85,7 @@ ToolBarItem* ToolBarItem::findItem(const std::string& name)
         return this;
     }
 
-    for (auto it : qAsConst(_items)) {
+    for (auto it : std::as_const(_items)) {
         if (it->_name == name) {
             return it;
         }
@@ -138,7 +138,7 @@ void ToolBarItem::removeItem(ToolBarItem* item)
 
 void ToolBarItem::clear()
 {
-    for (auto it : qAsConst(_items)) {
+    for (auto it : std::as_const(_items)) {
         delete it;
     }
 

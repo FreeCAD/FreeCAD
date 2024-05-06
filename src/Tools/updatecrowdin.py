@@ -399,7 +399,7 @@ def updateTranslatorCpp(lncode):
 
     cppfile = os.path.join(os.path.dirname(__file__), "..", "Gui", "Language", "Translator.cpp")
     l = QtCore.QLocale(lncode)
-    lnname = l.languageToString(l.language())
+    lnname = QtCore.QLocale.languageToString(l.language())
 
     # read file contents
     f = open(cppfile, "r")

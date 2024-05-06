@@ -850,13 +850,13 @@ void AboutDialog::copyToClipboard()
         << '\n';
 #endif
     QLocale loc;
-    str << "Locale: " << loc.languageToString(loc.language()) << "/"
-        << loc.countryToString(loc.country())
+    str << "Locale: " << QLocale::languageToString(loc.language()) << "/"
+        << QLocale::countryToString(loc.country())
         << " (" << loc.name() << ")";
     if (loc != QLocale::system()) {
         loc = QLocale::system();
-        str << " [ OS: " << loc.languageToString(loc.language()) << "/"
-            << loc.countryToString(loc.country())
+        str << " [ OS: " << QLocale::languageToString(loc.language()) << "/"
+            << QLocale::countryToString(loc.country())
             << " (" << loc.name() << ") ]";
     }
     str << "\n";

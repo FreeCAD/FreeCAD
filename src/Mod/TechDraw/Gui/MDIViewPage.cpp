@@ -717,7 +717,7 @@ void MDIViewPage::sceneSelectionManager()
     //add to m_qgSceneSelected anything that is in q_sceneSel
     for (auto qts : sceneSel) {
         bool found = false;
-        for (auto ms : qAsConst(m_qgSceneSelected)) {
+        for (auto ms : std::as_const(m_qgSceneSelected)) {
             if (qts == ms) {
                 found = true;
                 break;
@@ -731,7 +731,7 @@ void MDIViewPage::sceneSelectionManager()
 
     //remove items from m_qgSceneSelected that are not in q_sceneSel
     QList<QGraphicsItem*> m_new;
-    for (auto m : qAsConst(m_qgSceneSelected)) {
+    for (auto m : std::as_const(m_qgSceneSelected)) {
         for (auto q : sceneSel) {
             if (m == q) {
                 m_new.push_back(m);
