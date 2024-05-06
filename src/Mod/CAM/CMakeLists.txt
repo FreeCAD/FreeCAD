@@ -147,6 +147,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/fanuc_post.py
     Path/Post/scripts/fangling_post.py
     Path/Post/scripts/gcode_pre.py
+    Path/Post/scripts/generic_post.py
     Path/Post/scripts/grbl_post.py
     Path/Post/scripts/heidenhain_post.py
     Path/Post/scripts/jtech_post.py
