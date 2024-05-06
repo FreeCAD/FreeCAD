@@ -285,6 +285,7 @@ set(MaterialTest_Files
     materialtests/__init__.py
     materialtests/TestModels.py
     materialtests/TestMaterials.py
+    materialtests/TestMaterialCreation.py
 )
 
 ADD_CUSTOM_TARGET(MaterialTest ALL
