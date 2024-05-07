@@ -37,8 +37,9 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Vcarve operation page controller and command implementation."
 
+# There is a bug in logging library. To enable debugging - set True also in Op/Vcarve.py
 
-if False:
+if True:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
