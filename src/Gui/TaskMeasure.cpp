@@ -104,15 +104,15 @@ TaskMeasure::~TaskMeasure(){
 void TaskMeasure::modifyStandardButtons(QDialogButtonBox* box) {
 
     QPushButton* btn = box->button(QDialogButtonBox::Apply);
-    btn->setText(tr("Annotate"));
-    btn->setToolTip(tr("Press the Annotate button to add measurement to the document."));
+    btn->setText(tr("Save"));
+    btn->setToolTip(tr("Save the measurement in the active document."));
     connect(btn, &QPushButton::released, this, &TaskMeasure::apply);
 
     // Disable button by default
     btn->setEnabled(false);
     btn = box->button(QDialogButtonBox::Abort);
     btn->setText(tr("Close"));
-    btn->setToolTip(tr("Press the Close button to exit."));
+    btn->setToolTip(tr("Close the measurement task."));
 
     // Connect reset button
     btn = box->button(QDialogButtonBox::Reset);
