@@ -35,6 +35,8 @@
 
 #include <App/Document.h>
 #include <App/GroupExtension.h>
+#include <App/FeaturePythonPyImp.h>
+#include <App/PropertyPythonObject.h>
 #include <App/Link.h>
 #include <App/Part.h>
 #include <Base/Console.h>
@@ -43,6 +45,7 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <Mod/Part/App/FeaturePartCircle.h>
+#include <Mod/Part/App/TopoShapePy.h>
 //#include <Mod/Sketcher/App/SketchObject.h>
 
 #include "ShapeExtractor.h"
@@ -88,21 +91,68 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
             // Base::Console().Message("SE::getShapes - skipping 2d link: %s\n", l->Label.getValue());
             continue;
         }
-        if (l->isDerivedFrom<App::Link>()) {
-            App::Link* xLink = dynamic_cast<App::Link*>(l);
+
+        // Copy the pointer as not const so it can be changed if needed.
+        App::DocumentObject* obj = l;
+
+        bool isExplodedView = false;
+        auto proxy = dynamic_cast<App::PropertyPythonObject*>(l->getPropertyByName("Proxy"));
+        Base::PyGILStateLocker lock;
+        if (proxy && proxy->getValue().hasAttr("saveAssemblyAndExplode")) {
+            isExplodedView = true;
+
+            Py::Object explodedViewPy = proxy->getValue();
+            Py::Object attr = explodedViewPy.getAttr("saveAssemblyAndExplode");
+
+            if (attr.ptr() && attr.isCallable()) {
+                Py::Tuple args(1);
+                args.setItem(0, Py::asObject(l->getPyObject()));
+                Py::Callable methode(attr);
+                Py::Object pyResult = methode.apply(args);
+
+                if (PyObject_TypeCheck(pyResult.ptr(), &(Part::TopoShapePy::Type))) {
+                    auto* shapepy = static_cast<Part::TopoShapePy*>(pyResult.ptr());
+                    const TopoDS_Shape& shape = shapepy->getTopoShapePtr()->getShape();
+                    sourceShapes.push_back(shape);
+                }
+            }
+
+            for (auto* inObj : l->getInList()) {
+                if (inObj->isDerivedFrom(App::Part::getClassTypeId())) {
+                    // we replace obj by the assembly
+                    obj = inObj;
+                    break;
+                }
+            }
+        }
+
+        if (obj->isDerivedFrom<App::Link>()) {
+            App::Link* xLink = dynamic_cast<App::Link*>(obj);
             std::vector<TopoDS_Shape> xShapes = getXShapes(xLink);
             if (!xShapes.empty()) {
                 sourceShapes.insert(sourceShapes.end(), xShapes.begin(), xShapes.end());
                 continue;
             }
-        } else {
-            auto shape = Part::Feature::getShape(l);
-            // if link l has a shape, we use that shape.
+        }
+        else {
+            auto shape = Part::Feature::getShape(obj);
+            // if link obj has a shape, we use that shape.
             if(!SU::isShapeReallyNull((shape))) {
-                sourceShapes.push_back(getLocatedShape(l));
+                sourceShapes.push_back(getLocatedShape(obj));
             } else {
-                std::vector<TopoDS_Shape> shapeList = getShapesFromObject(l);
+                std::vector<TopoDS_Shape> shapeList = getShapesFromObject(obj);
                 sourceShapes.insert(sourceShapes.end(), shapeList.begin(), shapeList.end());
+            }
+        }
+
+        if (isExplodedView) {
+            Py::Object explodedViewPy = proxy->getValue();
+            
+            Py::Object attr = explodedViewPy.getAttr("restoreAssembly");
+            if (attr.ptr() && attr.isCallable()) {
+                Py::Tuple args(1);
+                args.setItem(0, Py::asObject(l->getPyObject()));
+                Py::Callable(attr).apply(args);
             }
         }
     }

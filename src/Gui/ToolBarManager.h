@@ -25,13 +25,22 @@
 #define GUI_TOOLBARMANAGER_H
 
 #include <string>
+#include <boost_signals2.hpp>
+
 #include <QStringList>
+#include <QTimer>
+
 #include <FCGlobal.h>
+#include <Base/Parameter.h>
 
 class QAction;
+class QMenu;
+class QMouseEvent;
 class QToolBar;
 
 namespace Gui {
+
+class ToolBarArea;
 
 class GuiExport ToolBarItem
 {
@@ -83,8 +92,9 @@ private:
  * @see MenuManager
  * @author Werner Mayer
  */
-class GuiExport ToolBarManager
+class GuiExport ToolBarManager : public QObject
 {
+    Q_OBJECT
 public:
 
     enum class State {
@@ -109,12 +119,25 @@ public:
     void setState(const QList<QString>& names, State state);
     void setState(const QString& name, State state);
     
+    int toolBarIconSize(QWidget *widget=nullptr) const;
+    void setupToolBarIconSize();
+
+    void populateUndockMenu(QMenu *menu, ToolBarArea *area = nullptr);
+
 protected:
     void setup(ToolBarItem*, QToolBar*) const;
 
     void setMovable(bool movable) const;
 
     ToolBarItem::DefaultVisibility getToolbarPolicy(const QToolBar *) const;
+
+    bool addToolBarToArea(QObject *source, QMouseEvent *ev);
+    bool showContextMenu(QObject *source);
+    void onToggleStatusBarWidget(QWidget *widget, bool visible);
+    void setToolBarIconSize(QToolBar *toolbar);
+    void onTimer();
+
+    bool eventFilter(QObject *source, QEvent *ev) override;
 
     /** Returns a list of all currently existing toolbars. */
     QList<QToolBar*> toolBars() const;
@@ -126,6 +149,25 @@ protected:
 private:
     QStringList toolbarNames;
     static ToolBarManager* _instance;
+
+    QTimer timer;
+    QTimer menuBarTimer;
+    QTimer sizeTimer;
+    QTimer resizeTimer;
+    boost::signals2::scoped_connection connParam;
+    ToolBarArea *statusBarArea = nullptr;
+    ToolBarArea *menuBarLeftArea = nullptr;
+    ToolBarArea *menuBarRightArea = nullptr;
+    ParameterGrp::handle hGeneral;
+    ParameterGrp::handle hPref;
+    ParameterGrp::handle hStatusBar;
+    ParameterGrp::handle hMenuBarLeft;
+    ParameterGrp::handle hMenuBarRight;
+    std::map<QToolBar*, QPointer<QToolBar>> resizingToolbars;
+    int _toolBarIconSize = 0;
+    int _statusBarIconSize = 0;
+    int _menuBarIconSize = 0;
+    mutable bool restored = false;
 };
 
 } // namespace Gui

@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="48"/>
       <source>Create Assembly</source>
-      <translation>Erzeuge Baugruppe</translation>
+      <translation>Baugruppe erstellen</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="53"/>
@@ -19,17 +19,17 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="68"/>
       <source>Create a Fixed Joint</source>
-      <translation>Erzeuge Feste Verbindung</translation>
+      <translation>Starre Verbindung erstellen</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="75"/>
       <source>1 - If an assembly is active : Create a joint permanently locking two parts together, preventing any movement or rotation.</source>
-      <translation>1- Wenn eine Baugruppe aktiv ist: Erzeugt eine feste Verbindung zwischen zwei Bauteilen, welche jegliche Bewegung oder Rotation sperrt.</translation>
+      <translation>1 - Ist eine Baugruppe aktiv: Erstellt eine dauerhaft starre Verbindung zwischen zwei Bauteilen, welche jegliche Verschiebung oder Drehung verhindert.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="81"/>
       <source>2 - If a part is active : Position sub parts by matching selected coordinate systems. The second part selected will move.</source>
-      <translation>2 - Wenn ein Bauteil aktiv ist: Unterbauteile zueinander über ausgewähle Koordinatensysteme positionieren. Das zweite ausgewählte Bauteil wird sich verschieben.</translation>
+      <translation>2 - Ist ein Bauteil aktiv: Unterbauteile werden durch Angleichen der ausgewählten Koordinatensysteme zueinander ausgerichtet. Das als zweites ausgewählte Bauteil wird sich bewegen.</translation>
     </message>
   </context>
   <context>
@@ -89,7 +89,7 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="209"/>
       <source>Create Distance Joint</source>
-      <translation>Erzeuge Parallelverbindung</translation>
+      <translation>Parallelverbindung erstellen</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="216"/>
@@ -102,12 +102,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="250"/>
       <source>Toggle grounded</source>
-      <translation>Gesperrt umschalten</translation>
+      <translation>Festsetzen umschalten</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="257"/>
       <source>Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
-      <translation>Sperren eines Bauteils fixiert die Position in der Baugruppe und verhindert jegliche Bewegung oder Rotation. Es wird mindestens ein gesperrtes Bauteil in der Baugruppe benötigt, bevor andere Bauteile verknüpft werden können.</translation>
+      <translation>Das Festsetzen eines Bauteils fixiert seine Position in der Baugruppe und verhindert jegliches Verschieben oder Drehen. Es muss mindestens ein Bauteil in der Baugruppe festgesetzt werden, bevor weitere Bauteilverbindungen erstellt werden können.</translation>
     </message>
   </context>
   <context>
@@ -148,7 +148,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="70"/>
       <source>Press shift to add several links while clicking on the view.</source>
-      <translation>Drücken der Umschalttaste auf der Ansicht um mehrere Verknüpfungen hinzuzufügen.</translation>
+      <translation>Umschalttaste drücken, um durch Klicken in der Ansicht mehrere Verknüpfungen hinzuzufügen.</translation>
     </message>
   </context>
   <context>
@@ -182,7 +182,7 @@
     <message>
       <location filename="../../../InitGui.py" line="99"/>
       <source>Assembly Joints</source>
-      <translation>Baugruppen Verbindungen</translation>
+      <translation>Assembly-Verbindungen</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="102"/>
@@ -195,7 +195,7 @@
     <message>
       <location filename="../../../JointObject.py" line="48"/>
       <source>Fixed</source>
-      <translation>Fixiert</translation>
+      <translation>Starr</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="49"/>
@@ -328,12 +328,12 @@
     <message>
       <location filename="../../../JointObject.py" line="889"/>
       <source>The object to ground</source>
-      <translation>Zu sperrendes Objekt</translation>
+      <translation>Das festzusetzende Objekt</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="901"/>
       <source>This is where the part is grounded.</source>
-      <translation>Dies ist die Position des gesperrten Objekts.</translation>
+      <translation>Dies ist die Position, an der das Objekt festgesetzt wird.</translation>
     </message>
   </context>
   <context>
@@ -422,12 +422,12 @@
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>
       <source>Ground first part:</source>
-      <translation>Erstes Bauteil sperren:</translation>
+      <translation>Erstes Bauteil festsetzen:</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="46"/>
       <source>When you insert the first part in the assembly, you can choose to ground the part automatically.</source>
-      <translation>Wenn das erste Bauteil in die Baugruppe eingefügt wird, kann es automatisch gesperrt werden.</translation>
+      <translation>Wenn das erste Bauteil in die Baugruppe eingefügt wird, kann es automatisch festgesetzt werden.</translation>
     </message>
   </context>
   <context>

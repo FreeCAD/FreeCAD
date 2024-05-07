@@ -34,16 +34,44 @@ const QString ModelUUIDs::ModelUUID_Legacy_Father =
 const QString ModelUUIDs::ModelUUID_Legacy_MaterialStandard =
     QString::fromStdString("1e2c0088-904a-4537-925f-64064c07d700");
 
+const QString ModelUUIDs::ModelUUID_Mechanical_ArrudaBoyce =
+    QString::fromStdString("e10d00de-c7de-4e59-bcdd-058c2ea19ec6");
 const QString ModelUUIDs::ModelUUID_Mechanical_Density =
     QString::fromStdString("454661e5-265b-4320-8e6f-fcf6223ac3af");
+const QString ModelUUIDs::ModelUUID_Mechanical_Hardness =
+    QString::fromStdString("3d1a6141-d032-4d82-8bb5-a8f339fff8ad");
 const QString ModelUUIDs::ModelUUID_Mechanical_IsotropicLinearElastic =
     QString::fromStdString("f6f9e48c-b116-4e82-ad7f-3659a9219c50");
 const QString ModelUUIDs::ModelUUID_Mechanical_LinearElastic =
     QString::fromStdString("7b561d1d-fb9b-44f6-9da9-56a4f74d7536");
+const QString ModelUUIDs::ModelUUID_Mechanical_MooneyRivlin =
+    QString::fromStdString("beeed169-7770-4da0-ab67-c9172cf7d23d");
+const QString ModelUUIDs::ModelUUID_Mechanical_NeoHooke =
+    QString::fromStdString("569ebc58-ef29-434a-83be-555a0980d505");
+const QString ModelUUIDs::ModelUUID_Mechanical_OgdenN1 =
+    QString::fromStdString("a2634a2c-412f-468d-9bec-74ae5d87a9c0");
+const QString ModelUUIDs::ModelUUID_Mechanical_OgdenN2 =
+    QString::fromStdString("233540bb-7b13-4f49-ac12-126a5c82cedf");
+const QString ModelUUIDs::ModelUUID_Mechanical_OgdenN3 =
+    QString::fromStdString("a917d6b8-209f-429e-9972-fe4bbb97af3f");
 const QString ModelUUIDs::ModelUUID_Mechanical_OgdenYld2004p18 =
     QString::fromStdString("3ef9e427-cc25-43f7-817f-79ff0d49625f");
 const QString ModelUUIDs::ModelUUID_Mechanical_OrthotropicLinearElastic =
     QString::fromStdString("b19ccc6b-a431-418e-91c2-0ac8c649d146");
+const QString ModelUUIDs::ModelUUID_Mechanical_PolynomialN1 =
+    QString::fromStdString("285a6042-0f0c-4a36-a898-4afadd6408ce");
+const QString ModelUUIDs::ModelUUID_Mechanical_PolynomialN2 =
+    QString::fromStdString("4c2fb7b2-5121-4d6f-be0d-8c5970c9e682");
+const QString ModelUUIDs::ModelUUID_Mechanical_PolynomialN3 =
+    QString::fromStdString("e83ada22-947e-4beb-91e7-482a16f5ba77");
+const QString ModelUUIDs::ModelUUID_Mechanical_ReducedPolynomialN1 =
+    QString::fromStdString("f8052a3c-db17-42ea-b2be-13aa5ef30730");
+const QString ModelUUIDs::ModelUUID_Mechanical_ReducedPolynomialN2 =
+    QString::fromStdString("c52b5021-4bb8-441c-80d4-855fce9de15e");
+const QString ModelUUIDs::ModelUUID_Mechanical_ReducedPolynomialN3 =
+    QString::fromStdString("fa4e58b4-74c7-4292-8e79-7d5fd232fb55");
+const QString ModelUUIDs::ModelUUID_Mechanical_Yeoh =
+    QString::fromStdString("cd13c492-21a9-4578-8191-deec003e4c01");
 
 const QString ModelUUIDs::ModelUUID_Fluid_Default =
     QString::fromStdString("1ae66d8c-1ba1-4211-ad12-b9917573b202");

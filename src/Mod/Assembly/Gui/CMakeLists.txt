@@ -40,6 +40,8 @@ SET(AssemblyGui_SRCS_Module
     ViewProviderAssembly.h
     ViewProviderJointGroup.cpp
     ViewProviderJointGroup.h
+    ViewProviderViewGroup.cpp
+    ViewProviderViewGroup.h
     ${Assembly_QRC_SRCS}
 )
 

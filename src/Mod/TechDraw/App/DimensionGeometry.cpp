@@ -28,6 +28,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 
 #include "DimensionGeometry.h"
 #include "DrawUtil.h"
@@ -117,6 +118,43 @@ void pointPair::dump(const std::string& text) const
                             DU::formatVector(first()).c_str(), DU::formatVector(second()).c_str());
 }
 
+//! return unscaled, unrotated version of this pointPair.  caller is responsible for
+//! for ensuring this pointPair is in scaled, rotated form before calling this method.
+pointPair pointPair::toCanonicalForm(DrawViewPart* dvp) const
+{
+    pointPair result;
+    // invert points?
+    result.m_first = CosmeticVertex::makeCanonicalPoint(dvp, m_first);
+    result.m_second = CosmeticVertex::makeCanonicalPoint(dvp, m_second);
+    result.m_overrideFirst = CosmeticVertex::makeCanonicalPoint(dvp, m_overrideFirst);
+    result.m_overrideSecond = CosmeticVertex::makeCanonicalPoint(dvp, m_overrideSecond);
+    return result;
+}
+
+//! return scaled and rotated version of this pointPair.  caller is responsible for
+//! for ensuring this pointPair is in canonical form before calling this method.
+pointPair pointPair::toDisplayForm(DrawViewPart* dvp) const
+{
+    pointPair result;
+
+    // invert points?
+    result.m_first = m_first * dvp->getScale();
+    result.m_second = m_second * dvp->getScale();
+    result.m_overrideFirst = m_overrideFirst * dvp->getScale();
+    result.m_overrideSecond = m_overrideSecond * dvp->getScale();
+    auto rotationDeg = dvp->Rotation.getValue();
+    if (rotationDeg != 0.0) {
+        auto rotationRad = Base::toRadians(rotationDeg);
+        result.m_first.RotateZ(rotationRad);
+        result.m_second.RotateZ(rotationRad);
+        result.m_overrideFirst.RotateZ(rotationRad);
+        result.m_overrideSecond.RotateZ(rotationRad);
+    }
+    return result;
+}
+
+
+
 anglePoints::anglePoints()
 {
     m_ends.first(Base::Vector3d(0.0, 0.0, 0.0));
@@ -168,6 +206,30 @@ void anglePoints::invertY()
     m_vertex = DU::invertY(m_vertex);
 }
 
+//! return unscaled, unrotated version of this anglePoints.  caller is responsible for
+//! for ensuring this anglePoints is in scaled, rotated form before calling this method.
+anglePoints anglePoints::toCanonicalForm(DrawViewPart* dvp) const
+{
+    anglePoints result;
+    result.m_ends = m_ends.toCanonicalForm(dvp);
+    result.m_vertex = CosmeticVertex::makeCanonicalPoint(dvp, m_vertex);
+    return result;
+}
+
+//! return scaled and rotated version of this anglePoints.  caller is responsible for
+//! for ensuring this anglePoints is in canonical form before calling this method.
+anglePoints anglePoints::toDisplayForm(DrawViewPart* dvp) const
+{
+    anglePoints result;
+    result.m_ends = m_ends.toDisplayForm(dvp);
+    result.m_vertex = m_vertex * dvp->getScale();
+    auto rotationDeg = dvp->Rotation.getValue();
+    if (rotationDeg != 0.0) {
+        auto rotationRad = Base::toRadians(rotationDeg);
+        result.m_vertex.RotateZ(rotationRad);
+    }
+    return result;
+}
 void anglePoints::dump(const std::string& text) const
 {
     Base::Console().Message("anglePoints - %s\n", text.c_str());
@@ -251,6 +313,39 @@ void arcPoints::invertY()
     arcEnds.invertY();
     midArc = DU::invertY(midArc);
 }
+
+//! return scaled and rotated version of this arcPoints.  caller is responsible for
+//! for ensuring this arcPoints is in canonical form before calling this method.
+arcPoints arcPoints::toDisplayForm(DrawViewPart* dvp) const
+{
+    arcPoints result;
+    result.onCurve = onCurve.toDisplayForm(dvp);
+    result.arcEnds = arcEnds.toDisplayForm(dvp);
+    result.center = center * dvp->getScale();
+    result.midArc = midArc * dvp->getScale();
+    result.radius = radius * dvp->getScale();
+    auto rotationDeg = dvp->Rotation.getValue();
+    if (rotationDeg != 0.0) {
+        auto rotationRad = Base::toRadians(rotationDeg);
+        result.center.RotateZ(rotationRad);
+        result.midArc.RotateZ(rotationRad);
+    }
+    return result;
+}
+
+//! return unscaled, unrotated version of this arcPoints.  caller is responsible for
+//! for ensuring this arcPoints is in scaled, rotated form before calling this method.
+arcPoints arcPoints::toCanonicalForm(DrawViewPart* dvp) const
+{
+    arcPoints result;
+    result.onCurve = onCurve.toCanonicalForm(dvp);
+    result.arcEnds = arcEnds.toCanonicalForm(dvp);
+    result.center = CosmeticVertex::makeCanonicalPoint(dvp, center);
+    result.midArc = CosmeticVertex::makeCanonicalPoint(dvp, midArc);
+    result.radius = radius / dvp->getScale();
+    return result;
+}
+
 
 void arcPoints::dump(const std::string& text) const
 {
