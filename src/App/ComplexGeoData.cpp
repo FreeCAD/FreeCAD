@@ -685,7 +685,7 @@ void ComplexGeoData::dumpElementMap(std::ostream& stream) const
 {
     auto map = getElementMap();
     std::sort(map.begin(), map.end());
-    for ( auto element : map ) {
+    for ( auto& element : map ) {
         stream << element.index << " : " << element.name << std::endl;
     }
 }
