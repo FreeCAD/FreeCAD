@@ -9557,7 +9557,7 @@ std::pair<std::string,std::string> SketchObject::getElementName(
     //  Todo: Toponaming Project March 2024:  This method override breaks the sketcher - selection and deletion
     //          of constraints ceases to work.  See #13169.  We need to prove that this works before
     //          enabling it.  For now, bypass it.
-//    return Part2DObject::getElementName(name,type);
+    return Part2DObject::getElementName(name,type);
 
     std::pair<std::string, std::string> ret;
     if(!name) return ret;
