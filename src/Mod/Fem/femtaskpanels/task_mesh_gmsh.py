@@ -107,7 +107,9 @@ class _TaskPanel:
         self.update()
 
     def getStandardButtons(self):
-        button_value = QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel
+        button_value = int(
+            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel
+        )
         return button_value
         # show a OK, a apply and a Cancel button
         # def reject() is called on Cancel button

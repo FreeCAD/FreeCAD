@@ -1274,7 +1274,11 @@ class TaskPanel(object):
 
     def getStandardButtons(self):
         """getStandardButtons() ... returns the Buttons for the task panel."""
-        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel
+        return int(
+            QtGui.QDialogButtonBox.Ok
+            | QtGui.QDialogButtonBox.Apply
+            | QtGui.QDialogButtonBox.Cancel
+        )
 
     def setupUi(self):
         """setupUi() ... internal function to initialise all pages."""

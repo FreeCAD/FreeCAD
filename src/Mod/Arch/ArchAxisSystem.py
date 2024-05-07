@@ -313,7 +313,7 @@ class AxisSystemTaskPanel:
 
     def getStandardButtons(self):
 
-        return QtGui.QDialogButtonBox.Ok
+        return int(QtGui.QDialogButtonBox.Ok)
 
     def getIcon(self,obj):
 

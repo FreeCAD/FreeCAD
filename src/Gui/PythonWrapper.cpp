@@ -583,36 +583,6 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
     return qt_getCppType<QObject>(pyobject.ptr());
 }
 
-qsizetype PythonWrapper::toEnum(PyObject* pyPtr)
-{
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    return Shiboken::Enum::getValue(pyPtr);
-#else
-    return toEnum(Py::Object(pyPtr);
-#endif
-}
-
-qsizetype PythonWrapper::toEnum(const Py::Object& pyobject)
-{
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    return toEnum(pyobject.ptr());
-#else
-    try {
-        Py::Int ret;
-        if (pyobject.hasAttr(std::string("value"))) {
-            ret = Py::Int(pyobject.getAttr(std::string("value")));
-        } else {
-            ret = Py::Int(pyobject);
-        }
-        return (qsizetype)ret;
-    }
-    catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
-        e.ReportException();
-    }
-#endif
-}
-
 QGraphicsItem* PythonWrapper::toQGraphicsItem(PyObject* pyPtr)
 {
     return qt_getCppType<QGraphicsItem>(pyPtr);

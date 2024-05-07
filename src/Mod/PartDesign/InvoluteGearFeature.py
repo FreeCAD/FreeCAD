@@ -258,7 +258,7 @@ class _InvoluteGearTaskPanel:
         self.form.doubleSpinBox_ProfileShift.setValue(self.obj.ProfileShiftCoefficient)
 
     def getStandardButtons(self):
-        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel | QtGui.QDialogButtonBox.Apply
+        return int(QtGui.QDialogButtonBox.Ok) | int(QtGui.QDialogButtonBox.Cancel)| int(QtGui.QDialogButtonBox.Apply)
 
     def clicked(self,button):
         if button == QtGui.QDialogButtonBox.Apply:

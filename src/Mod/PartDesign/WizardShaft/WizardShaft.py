@@ -155,7 +155,7 @@ class TaskWizardShaft:
             self.updateButton(row,  col,  flag)
 
     def getStandardButtons(self):
-        return QtGui.QDialogButtonBox.Ok
+        return int(QtGui.QDialogButtonBox.Ok)
 
     def accept(self):
         if self.table:

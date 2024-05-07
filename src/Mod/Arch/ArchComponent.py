@@ -1660,7 +1660,7 @@ class SelectionTaskPanel:
 
     def getStandardButtons(self):
         """Adds the cancel button."""
-        return QtGui.QDialogButtonBox.Cancel
+        return int(QtGui.QDialogButtonBox.Cancel)
 
     def reject(self):
         """The method run when the user selects the cancel button."""
@@ -1766,7 +1766,7 @@ class ComponentTaskPanel:
     def getStandardButtons(self):
         """Add the standard ok button."""
 
-        return QtGui.QDialogButtonBox.Ok
+        return int(QtGui.QDialogButtonBox.Ok)
 
     def check(self,wid,col):
         """This method is run as the callback when the user selects an item in the tree.

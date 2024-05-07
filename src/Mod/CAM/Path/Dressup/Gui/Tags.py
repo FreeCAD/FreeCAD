@@ -75,7 +75,11 @@ class PathDressupTagTaskPanel:
         self.editItem = None
 
     def getStandardButtons(self):
-        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel
+        return int(
+            QtGui.QDialogButtonBox.Ok
+            | QtGui.QDialogButtonBox.Apply
+            | QtGui.QDialogButtonBox.Cancel
+        )
 
     def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:

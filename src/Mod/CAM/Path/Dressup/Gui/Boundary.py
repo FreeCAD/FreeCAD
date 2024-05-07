@@ -59,7 +59,11 @@ class TaskPanel(object):
         self.stockEdit = None
 
     def getStandardButtons(self):
-        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel
+        return int(
+            QtGui.QDialogButtonBox.Ok
+            | QtGui.QDialogButtonBox.Apply
+            | QtGui.QDialogButtonBox.Cancel
+        )
 
     def modifyStandardButtons(self, buttonBox):
         self.buttonBox = buttonBox

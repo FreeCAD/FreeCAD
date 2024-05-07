@@ -61,7 +61,7 @@ class TaskPanel:
         return True
 
     def getStandardButtons(self):
-        return QtGui.QDialogButtonBox.Ok
+        return int(QtGui.QDialogButtonBox.Ok)
 
     def helpRequested(self):
         pass

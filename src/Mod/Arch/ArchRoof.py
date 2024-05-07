@@ -985,7 +985,7 @@ class _RoofTaskPanel:
         return True
 
     def getStandardButtons(self):
-        return QtGui.QDialogButtonBox.Close
+        return int(QtGui.QDialogButtonBox.Close)
 
     def update(self):
         '''fills the treewidget'''

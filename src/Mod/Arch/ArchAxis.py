@@ -725,7 +725,7 @@ class _AxisTaskPanel:
 
     def getStandardButtons(self):
 
-        return QtGui.QDialogButtonBox.Close
+        return int(QtGui.QDialogButtonBox.Close)
 
     def update(self):
 

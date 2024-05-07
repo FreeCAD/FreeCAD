@@ -156,7 +156,7 @@ class ControlTaskPanel(QtCore.QObject):
         femsolver.report.display(machine.report, _REPORT_TITLE, text)
 
     def getStandardButtons(self):
-        return QtGui.QDialogButtonBox.Close
+        return int(QtGui.QDialogButtonBox.Close)
 
     def reject(self):
         Gui.ActiveDocument.resetEdit()
