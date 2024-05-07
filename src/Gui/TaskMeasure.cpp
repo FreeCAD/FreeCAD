@@ -74,8 +74,8 @@ TaskMeasure::TaskMeasure()
     // formLayout->setFieldGrowthPolicy(QFormLayout::FieldGrowthPolicy::ExpandingFieldsGrow);
     formLayout->setFormAlignment(Qt::AlignCenter);
 
-    formLayout->addRow(QString::fromLatin1("Mode:"), modeSwitch);
-    formLayout->addRow(QString::fromLatin1("Result:"), valueResult);
+    formLayout->addRow(tr("Mode:"), modeSwitch);
+    formLayout->addRow(tr("Result:"), valueResult);
     layout->addLayout(formLayout);
 
     Content.emplace_back(taskbox);
@@ -111,7 +111,7 @@ void TaskMeasure::modifyStandardButtons(QDialogButtonBox* box) {
     // Disable button by default
     btn->setEnabled(false);
     btn = box->button(QDialogButtonBox::Abort);
-    btn->setText(QString::fromLatin1("Close"));
+    btn->setText(tr("Close"));
     btn->setToolTip(tr("Press the Close button to exit."));
 
     // Connect reset button
