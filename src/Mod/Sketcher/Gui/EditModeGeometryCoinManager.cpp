@@ -303,7 +303,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
                         z = viewOrientationFactor * drawingParameters.zLowPoints;
                     }
                     else {
-                        if (isExternal) {
+                        if (isExternal || isInternalAlignedGeom(GeoId)) {
                             z = viewOrientationFactor * drawingParameters.zRootPoint;
                         }
                         else if (geom->getConstruction()) {
