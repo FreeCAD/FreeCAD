@@ -364,6 +364,17 @@ public:
     void resetRestoreFailure() const { _restoreFailed = true; }
     //@}
 
+    /**
+     * Debugging method to dump an entire element map in human readable form to a stream
+     * @param stream
+     */
+    void dumpElementMap(std::ostream& stream) const;
+    /**
+     * Debugging method to dump an entire element map in human readable form into a string
+     * @return The string
+     */
+    const std::string dumpElementMap() const;
+
 protected:
 
     /// from local to outside
@@ -424,8 +435,6 @@ protected:
 public:
     mutable long Tag{0};
 
-
-public:
     /// String hasher for element name shortening
     mutable App::StringHasherRef Hasher;
 

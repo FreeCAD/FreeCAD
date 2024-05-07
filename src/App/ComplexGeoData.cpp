@@ -681,5 +681,20 @@ bool ComplexGeoData::hasChildElementMap() const
     return _elementMap && _elementMap->hasChildElementMap();
 }
 
+void ComplexGeoData::dumpElementMap(std::ostream& stream) const
+{
+    auto map = getElementMap();
+    std::sort(map.begin(), map.end());
+    for ( auto& element : map ) {
+        stream << element.index << " : " << element.name << std::endl;
+    }
+}
+
+const std::string ComplexGeoData::dumpElementMap() const
+{
+    std::stringstream ss;
+    dumpElementMap(ss);
+    return ss.str();
+}
 
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)

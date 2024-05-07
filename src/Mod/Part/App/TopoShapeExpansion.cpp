@@ -1313,7 +1313,7 @@ void checkForParallelOrCoplanar(const TopoDS_Shape& newShape,
                                 const ShapeInfo& newInfo,
                                 std::vector<TopoDS_Shape>& newShapes,
                                 const gp_Pln& pln,
-                                int parallelFace,
+                                int& parallelFace,
                                 int& coplanarFace,
                                 int& checkParallel)
 {
