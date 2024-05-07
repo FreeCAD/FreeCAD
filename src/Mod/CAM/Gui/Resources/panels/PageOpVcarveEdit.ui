@@ -133,9 +133,12 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QDoubleSpinBox" name="finishingPassZOffset">
-       <property name="enabled">
-        <bool>true</bool>
+      <widget class="Gui::QuantitySpinBox" name="finishingPassZOffset">
+       <property name="toolTip">
+        <string>Endmill offset for the finishing pass run. Use small value like -0.2 mm to help clean &quot;fuzzy skin&quot; or other artefacts.</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
        </property>
        <property name="singleStep">
         <double>0.100000000000000</double>
@@ -159,6 +162,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

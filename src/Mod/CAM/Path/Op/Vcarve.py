@@ -168,7 +168,7 @@ class _Geometry(object):
         :returns: True if successful, False if maximum depth achieved
         """
 
-        # do not allot to increase depth if we are already at max
+        # do not allow to increase depth if we are already at max
         if self.maximumDepth == self.stop:
             return False
 
@@ -201,7 +201,7 @@ class _Geometry(object):
     def FromObj(cls, obj, model):
         zStart = model.Shape.BoundBox.ZMax
         finalDepth = obj.FinalDepth.Value
-        stepDown = obj.StepDown.Value
+        stepDown = abs(obj.StepDown.Value)
 
         return cls.FromTool(obj.ToolController.Tool, zStart, finalDepth, stepDown)
 
@@ -212,9 +212,7 @@ def _calculate_depth(MIC, geom):
     depth = geom.start - round(MIC * geom.scale, 4)
     Path.Log.debug("zStart value: {} depth: {}".format(geom.start, depth))
 
-    print(f"AAA - {geom.maximumDepth}")
-
-    return max(depth, geom.maximumDepth)
+    return max(depth, geom.maximumDepth) + geom.offset
 
 
 def _getPartEdge(edge, geom):
@@ -258,14 +256,14 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         )
 
         obj.addProperty(
-            "App::PropertyFloat",
+            "App::PropertyDistance",
             "FinishingPassZOffset",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Finishing pass Z offset"),
         )
 
         obj.FinishingPass = False
-        obj.FinishingPassZOffset = 0
+        obj.FinishingPassZOffset = "0.00"
 
     def initOperation(self, obj):
         """initOperation(obj) ... create vcarve specific properties."""
@@ -418,6 +416,15 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 if pWire:
                     pathlist.extend(cutWire(pWire))
 
+        # add finishing pass if enabled
+
+        if obj.FinishingPass:
+            geom.offset = obj.FinishingPassZOffset.Value
+
+            for w in wires:
+                pWire = self._getPartEdges(obj, w, geom)
+                if pWire:
+                    pathlist.extend(cutWire(pWire))
 
         self.commandlist = pathlist
 

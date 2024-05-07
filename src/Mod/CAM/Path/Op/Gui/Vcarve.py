@@ -25,6 +25,8 @@ import FreeCADGui
 import Path
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Vcarve as PathVcarve
+import Path.Base.Gui.Util as PathGuiUtil
+
 import PathGui
 import PathScripts.PathUtils as PathUtils
 from PySide import QtCore, QtGui
@@ -124,6 +126,11 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     """Page controller class for the Vcarve operation."""
 
+    def initPage(self, obj):
+        self.finishingPassZOffsetSpinBox = PathGuiUtil.QuantitySpinBox(
+            self.form.finishingPassZOffset, obj, "FinishingPassZOffset"
+        )
+
     def getForm(self):
         """getForm() ... returns UI"""
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpVcarveEdit.ui")
@@ -161,8 +168,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.FinishingPass != self.form.finishingPassEnabled.isChecked():
             obj.FinishingPass = self.form.finishingPassEnabled.isChecked()
 
-        if obj.FinishingPassZOffset != self.form.finishingPassZOffset.value():
-            obj.FinishingPassZOffset = self.form.finishingPassZOffset.value()
+        self.finishingPassZOffsetSpinBox.updateProperty()
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
@@ -172,10 +178,13 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.discretize.setValue(obj.Discretize)
         self.form.colinearFilter.setValue(obj.Colinear)
         self.form.finishingPassEnabled.setChecked(obj.FinishingPass)
-        self.form.finishingPassZOffset.setValue(obj.FinishingPassZOffset)
+
+        self.finishingPassZOffsetSpinBox.updateSpinBox()
 
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
+
+        self.updateFormConditionalState(self.form)
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
