@@ -181,7 +181,7 @@ public:
         , _conn(conn)
     {
         _layout = new QHBoxLayout(this);
-        _layout->setMargin(0);
+        _layout->setContentsMargins(QMargins());
     }
 
     void addWidget(QWidget *w)
