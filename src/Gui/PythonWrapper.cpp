@@ -588,7 +588,7 @@ qsizetype PythonWrapper::toEnum(PyObject* pyPtr)
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     return Shiboken::Enum::getValue(pyPtr);
 #else
-    return toEnum(Py::Object(pyPtr);
+    return toEnum(Py::Object(pyPtr));
 #endif
 }
 
