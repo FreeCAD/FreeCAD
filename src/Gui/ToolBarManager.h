@@ -34,6 +34,7 @@
 #include <Base/Parameter.h>
 
 class QAction;
+class QLayout;
 class QMenu;
 class QMouseEvent;
 class QToolBar;
@@ -144,7 +145,20 @@ protected:
     QToolBar* findToolBar(const QList<QToolBar*>&, const QString&) const;
     QAction* findAction(const QList<QAction*>&, const QString&) const;
     ToolBarManager();
-    ~ToolBarManager();
+    ~ToolBarManager() override;
+
+private:
+    void setupParameters();
+    void setupStatusBar();
+    void setupMenuBar();
+    void setupConnection();
+    void setupTimer();
+    void setupSizeTimer();
+    void setupResizeTimer();
+    void setupMenuBarTimer();
+    void addToMenu(QLayout* layout, QWidget* area, QMenu* menu);
+    QLayout* findLayoutOfObject(QObject* source, QWidget* area) const;
+    ToolBarArea* findToolBarArea() const;
 
 private:
     QStringList toolbarNames;
