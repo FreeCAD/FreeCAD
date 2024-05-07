@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import os
 txt = "<RCC>\n    <qresource>\n"
 cdir = os.path.dirname(__file__)
