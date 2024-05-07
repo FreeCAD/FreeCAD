@@ -139,7 +139,9 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade& geoli
             ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
         for (auto& constr : constraints) {
             if (constr->Type == Coincident
-                || (constr->Type == Tangent && constr->FirstPos != Sketcher::PointPos::none)) {
+                || (constr->Type == Tangent && constr->FirstPos != Sketcher::PointPos::none)
+                || (constr->Type == Perpendicular && constr->FirstPos != Sketcher::PointPos::none
+                    && constr->SecondPos != Sketcher::PointPos::none)) {
                 if ((constr->First == GeoId && constr->FirstPos == PosId)
                     || (constr->Second == GeoId && constr->SecondPos == PosId)) {
                     return true;
