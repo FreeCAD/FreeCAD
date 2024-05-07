@@ -167,7 +167,6 @@ private:
     int _toolBarIconSize = 0;
     int _statusBarIconSize = 0;
     int _menuBarIconSize = 0;
-    mutable bool restored = false;
 };
 
 } // namespace Gui

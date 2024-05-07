@@ -809,7 +809,7 @@ bool ToolBarManager::addToolBarToArea(QObject *source, QMouseEvent *ev)
         }
     } else {
         tbIndex = idx;
-        QTimer::singleShot(10, tb, [tb,this]() {
+        QTimer::singleShot(10, tb, [tb]() {
             if (!lastArea)
                 return;
             else {
@@ -839,7 +839,7 @@ void ToolBarManager::populateUndockMenu(QMenu *menu, ToolBarArea *area)
         undockAction->setText(action->text());
         undockAction->setToolTip(tooltip);
         menu->addAction(undockAction);
-        QObject::connect(undockAction, &QAction::triggered, [area, toolbar, this]() {
+        QObject::connect(undockAction, &QAction::triggered, [area, toolbar]() {
             if (toolbar->parentWidget() == getMainWindow()) {
                 return;
             }
@@ -856,8 +856,9 @@ void ToolBarManager::populateUndockMenu(QMenu *menu, ToolBarArea *area)
             toolbar->topLevelChanged(true);
         });
     };
-    if (area)
+    if (area) {
         area->foreachToolBar(addMenuUndockItem);
+    }
     else {
         statusBarArea->foreachToolBar(addMenuUndockItem);
         menuBarLeftArea->foreachToolBar(addMenuUndockItem);
