@@ -559,7 +559,7 @@ void PropertyView::changeEvent(QEvent *e)
 PropertyDockView::PropertyDockView(Gui::Document* pcDocument, QWidget *parent)
   : DockWindow(pcDocument,parent)
 {
-    setWindowTitle(tr("Property View"));
+    setWindowTitle(tr("Property view"));
 
     auto view = new PropertyView(this);
     auto pLayout = new QGridLayout(this);
