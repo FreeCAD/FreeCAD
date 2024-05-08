@@ -1992,38 +1992,38 @@ unit to work with when opening the file.</source>
       <translation>Стварыць будаўнічую дэталь</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="913"/>
+      <location filename="../../ArchBuildingPart.py" line="924"/>
       <source>Deactivate</source>
       <translation>Адключыць</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="915"/>
+      <location filename="../../ArchBuildingPart.py" line="926"/>
       <source>Activate</source>
       <translation>Задзейнічаць</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="923"/>
+      <location filename="../../ArchBuildingPart.py" line="934"/>
       <source>Set working plane</source>
       <translation>Задаць працоўную плоскасць</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="931"/>
+      <location filename="../../ArchBuildingPart.py" line="942"/>
       <source>Write camera position</source>
       <translation>Запісаць становішча камеры</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="938"/>
+      <location filename="../../ArchBuildingPart.py" line="949"/>
       <source>Create group...</source>
       <translation>Стварыць суполку...</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="945"/>
+      <location filename="../../ArchBuildingPart.py" line="956"/>
       <location filename="../../ArchMaterial.py" line="223"/>
       <source>Reorder children alphabetically</source>
       <translation>Змяніць парадак размяшчэння спадчыннікаў у алфавітным парадку</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="952"/>
+      <location filename="../../ArchBuildingPart.py" line="963"/>
       <source>Clone level up</source>
       <translation>Дубліраваць узровень уверх</translation>
     </message>
@@ -2519,7 +2519,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchMaterial.py" line="495"/>
       <location filename="../../ArchMaterial.py" line="789"/>
       <location filename="../../ArchReference.py" line="675"/>
-      <location filename="../../ArchSchedule.py" line="453"/>
+      <location filename="../../ArchSchedule.py" line="454"/>
       <location filename="../../ArchSectionPlane.py" line="1198"/>
       <location filename="../../ArchSite.py" line="932"/>
       <location filename="../../ArchWindow.py" line="1807"/>
@@ -2661,7 +2661,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../importJSON.py" line="61"/>
       <location filename="../../importOBJ.py" line="261"/>
       <location filename="../../importOBJ.py" line="285"/>
-      <location filename="../../importWebGL.py" line="874"/>
+      <location filename="../../importWebGL.py" line="875"/>
       <source>Successfully written</source>
       <translation>Паспяхова запісана</translation>
     </message>
@@ -2785,13 +2785,13 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>залежыць ад аб'екта</translation>
     </message>
     <message>
-      <location filename="../../importGBXML.py" line="46"/>
-      <location filename="../../importGBXML.py" line="50"/>
+      <location filename="../../importGBXML.py" line="47"/>
+      <location filename="../../importGBXML.py" line="51"/>
       <source>This exporter can currently only export one site object</source>
       <translation>У бягучы час сродак экспартавання можа экспартаваць толькі адзін аб'ект мясцовасці</translation>
     </message>
     <message>
-      <location filename="../../importGBXML.py" line="92"/>
+      <location filename="../../importGBXML.py" line="93"/>
       <source>Error: Space '%s' has no Zone. Aborting.</source>
       <translation>Памылка: Памяшканне '%s' не мае зоны. Перапынена.</translation>
     </message>
@@ -3191,27 +3191,27 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>дададзена ўласцівасць 'Schedule'</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="362"/>
+      <location filename="../../ArchSchedule.py" line="363"/>
       <source>Unable to retrieve value from object</source>
       <translation>Немагчыма атрымаць значэнне з аб'екту</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="462"/>
+      <location filename="../../ArchSchedule.py" line="463"/>
       <source>Remove spreadsheet</source>
       <translation>Выдаліць аркуш</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="464"/>
+      <location filename="../../ArchSchedule.py" line="465"/>
       <source>Attach spreadsheet</source>
       <translation>Прымацаваць аркуш</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="589"/>
+      <location filename="../../ArchSchedule.py" line="590"/>
       <source>Import CSV file</source>
       <translation>Імпартаваць файл CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="622"/>
+      <location filename="../../ArchSchedule.py" line="623"/>
       <source>Export CSV file</source>
       <translation>Экспартаваць файл CSV</translation>
     </message>
@@ -3221,34 +3221,34 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Экспартаваць файл CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="643"/>
+      <location filename="../../ArchSchedule.py" line="644"/>
       <source>Unable to recognize that file type</source>
       <translation>Немагчыма распазнаць тып файла</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1010"/>
-      <location filename="../../ArchSchedule.py" line="665"/>
-      <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchSchedule.py" line="666"/>
+      <location filename="../../ArchSchedule.py" line="684"/>
       <source>Description</source>
       <translation>Апісанне</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1631"/>
       <location filename="../../ArchComponent.py" line="2009"/>
-      <location filename="../../ArchSchedule.py" line="665"/>
-      <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchSchedule.py" line="666"/>
+      <location filename="../../ArchSchedule.py" line="684"/>
       <source>Value</source>
       <translation>Значэнне</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1632"/>
-      <location filename="../../ArchSchedule.py" line="665"/>
-      <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchSchedule.py" line="666"/>
+      <location filename="../../ArchSchedule.py" line="684"/>
       <source>Unit</source>
       <translation>Адзінка вымярэння</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="744"/>
+      <location filename="../../ArchSchedule.py" line="745"/>
       <source>Schedule</source>
       <translation>Наменклатура</translation>
     </message>
@@ -4071,8 +4071,8 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="335"/>
-      <source>If true, the height value propagates to contained objects</source>
-      <translation>Калі true, значэнне вышыні распаўсюджваецца на аб'екты, якія змяшчаюцца</translation>
+      <source>If true, the height value propagates to contained objects if the height of those objects is set to 0</source>
+      <translation type="unfinished">If true, the height value propagates to contained objects if the height of those objects is set to 0</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="338"/>
@@ -4119,148 +4119,148 @@ Building creation aborted.</source>
       <translation>Супастаўленне MaterialName:SolidIndexesList, якое звязвае назвы матэрыялаў з індэксамі суцэльных цел, якія будуць ужывацца, калі на аб'ект спасылаюцца ў іншых файлах</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="553"/>
+      <location filename="../../ArchBuildingPart.py" line="564"/>
       <location filename="../../ArchSectionPlane.py" line="963"/>
       <source>The line width of this object</source>
       <translation>Шырыня лініі аб'екту</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="556"/>
+      <location filename="../../ArchBuildingPart.py" line="567"/>
       <source>An optional unit to express levels</source>
       <translation>Неабавязковы блок для абазначэння ўзроўняў</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="558"/>
+      <location filename="../../ArchBuildingPart.py" line="569"/>
       <source>A transformation to apply to the level mark</source>
       <translation>Пераўтварэнне, якое прымяняецца да адзнакі ўзроўню</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="561"/>
+      <location filename="../../ArchBuildingPart.py" line="572"/>
       <source>If true, show the level</source>
       <translation>Калі true, паказаць узровень</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="564"/>
+      <location filename="../../ArchBuildingPart.py" line="575"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Калі true, паказаць адзінку вымярэння на пазнацы ўзроўню</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="566"/>
+      <location filename="../../ArchBuildingPart.py" line="577"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>Калі true, зрушэнне адлюстравання таксама паўплывае на зыходную пазнаку</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="568"/>
+      <location filename="../../ArchBuildingPart.py" line="579"/>
       <source>If true, the object's label is displayed</source>
       <translation>Калі true, адлюстроўваецца пазнака аб'екту</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="571"/>
+      <location filename="../../ArchBuildingPart.py" line="582"/>
       <source>The font to be used for texts</source>
       <translation>Шрыфт, які будзе ўжыты для тэксту</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="574"/>
+      <location filename="../../ArchBuildingPart.py" line="585"/>
       <source>The font size of texts</source>
       <translation>Памер шрыфту тэкстаў</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="577"/>
+      <location filename="../../ArchBuildingPart.py" line="588"/>
       <source>The individual face colors</source>
       <translation>Індывідуальныя колеры грані</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="581"/>
+      <location filename="../../ArchBuildingPart.py" line="592"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Калі птушка, калі задзейнічае працоўная плоскасць, яна аўтаматычна адаптуецца да гэтага ўзроўню</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="584"/>
+      <location filename="../../ArchBuildingPart.py" line="595"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Калі True, працоўная плоскасць будзе знаходзіцца ў аўтаматычным рэжыме</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="586"/>
+      <location filename="../../ArchBuildingPart.py" line="597"/>
       <source>Camera position data associated with this object</source>
       <translation>Дадзеныя аб становішчы камеры, якая звязаная з аб'ектам</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="589"/>
+      <location filename="../../ArchBuildingPart.py" line="600"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Калі зададзена, выгляд, які захаваны ў аб'екце, будзе адноўлены падвоенай пстрычкай</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="591"/>
+      <location filename="../../ArchBuildingPart.py" line="602"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>Калі птушка, падвоеная пстрычка па аб'екце ў дрэве задзейнічае яго</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="595"/>
+      <location filename="../../ArchBuildingPart.py" line="606"/>
       <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>Калі птушка, прадстаўленне Inventor аб'екту будзе захавана ў файле FreeCAD, што дазволіць спасылацца на яго ў іншых файлах у палегчаным рэжыме.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="597"/>
+      <location filename="../../ArchBuildingPart.py" line="608"/>
       <source>A slot to save the inventor representation of this object, if enabled</source>
       <translation>Калі ўключана, слот для захавання прадстаўлення Inventor аб'екта</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="602"/>
+      <location filename="../../ArchBuildingPart.py" line="613"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Калі true, каб паказаць аб'екты, якія змяшчаюцца ў гэтай частцы будынка, будуць ужытыя дадзеныя налады ліній, колеру і празрыстасці</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="604"/>
+      <location filename="../../ArchBuildingPart.py" line="615"/>
       <source>The line width of child objects</source>
       <translation>Шырыня лініі дачынных аб'ектаў</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="607"/>
+      <location filename="../../ArchBuildingPart.py" line="618"/>
       <source>The line color of child objects</source>
       <translation>Колер лініі дачынных аб'ектаў</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="610"/>
+      <location filename="../../ArchBuildingPart.py" line="621"/>
       <source>The shape appearance of child objects</source>
       <translation>Знешні выгляд фігуры даччыных аб'ектаў</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="613"/>
+      <location filename="../../ArchBuildingPart.py" line="624"/>
       <source>The transparency of child objects</source>
       <translation>Празрыстасць дачынных аб'ектаў</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="618"/>
+      <location filename="../../ArchBuildingPart.py" line="629"/>
       <source>Cut the view above this level</source>
       <translation>Рэзаць выгляд вышэй дадзенага ўзроўню</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="620"/>
+      <location filename="../../ArchBuildingPart.py" line="631"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>Адлегласць паміж плоскасці ўзроўню і лініяй разрэзу</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="623"/>
+      <location filename="../../ArchBuildingPart.py" line="634"/>
       <source>Turn cutting on when activating this level</source>
       <translation>Уключае абрэзку, калі задзейнічалі дадзены ўзровень</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="627"/>
+      <location filename="../../ArchBuildingPart.py" line="638"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>Поле захопу для зноў створаных аб'ектаў, прадстаўленыя як [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="629"/>
+      <location filename="../../ArchBuildingPart.py" line="640"/>
       <source>Turns auto group box on/off</source>
       <translation>Ўключае/выключае поле аўтаматычнай суполкі</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="631"/>
+      <location filename="../../ArchBuildingPart.py" line="642"/>
       <source>Automatically set size from contents</source>
       <translation>Аўтаматычна задае памер з зместу</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="633"/>
+      <location filename="../../ArchBuildingPart.py" line="644"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>Поле для ўжывання пры ўключанай аўтаматычнай змене памеру</translation>
     </message>
@@ -5894,7 +5894,8 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSpace.py" line="512"/>
       <source>The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</source>
-      <translation type="unfinished">The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</translation>
+      <translation>Тэкст, які трэба паказаць.
+Ужывайце $area, $label, $tag, $longname, $description, і для аздаблення $floor, $walls, $ceiling для ўстаўкі адпаведных дадзеных</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="518"/>
@@ -6068,7 +6069,7 @@ Building creation aborted.</source>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="996"/>
+      <location filename="../../ArchBuildingPart.py" line="1007"/>
       <source>Writing camera position</source>
       <translation>Запісвае становішча камеры</translation>
     </message>

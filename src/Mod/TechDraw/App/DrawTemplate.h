@@ -56,6 +56,7 @@ public:
     virtual double getHeight() const;
 
     virtual DrawPage* getParentPage() const;
+    virtual std::pair<int, int> getPageNumbers() const;
 
     virtual QString getAutofillValue(const QString &id) const;
 
@@ -76,6 +77,8 @@ public:
             static constexpr const char *Scale        = "scale";
             static constexpr const char *Sheet        = "sheet";
             static constexpr const char *Title        = "title";
+            static constexpr const char *PageNumber   = "page_number";
+            static constexpr const char *PageCount    = "page_count";
     };
 
 private:

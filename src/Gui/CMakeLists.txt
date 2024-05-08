@@ -455,6 +455,7 @@ SET(Dialog_CPP_SRCS
     DownloadManager.cpp
     DocumentRecovery.cpp
     TaskElementColors.cpp
+    TaskMeasure.cpp
     DlgObjectSelection.cpp
     DlgAddProperty.cpp
     VectorListEditor.cpp
@@ -494,6 +495,7 @@ SET(Dialog_HPP_SRCS
     DownloadManager.h
     DocumentRecovery.h
     TaskElementColors.h
+    TaskMeasure.h
     DlgObjectSelection.h
     DlgAddProperty.h
     VectorListEditor.h
@@ -1009,6 +1011,7 @@ SET(Inventor_CPP_SRCS
     SoTouchEvents.cpp
     SoMouseWheelEvent.cpp
     SoFCCSysDragger.cpp
+    ArcEngine.cpp
 )
 SET(Inventor_SRCS
     ${Inventor_CPP_SRCS}
@@ -1037,6 +1040,7 @@ SET(Inventor_SRCS
     SoTouchEvents.h
     SoMouseWheelEvent.h
     SoFCCSysDragger.h
+    ArcEngine.h
 )
 SOURCE_GROUP("View3D\\Inventor" FILES ${Inventor_SRCS})
 
@@ -1213,7 +1217,6 @@ SET(FreeCADGui_CPP_SRCS
     ManualAlignment.cpp
     StartupProcess.cpp
     TransactionObject.cpp
-    UserSettings.cpp
 )
 SET(FreeCADGui_SRCS
     Application.h
@@ -1251,7 +1254,6 @@ SET(FreeCADGui_SRCS
     ManualAlignment.h
     StartupProcess.h
     TransactionObject.h
-    UserSettings.h
     ${FreeCADGui_SDK_MOC_HDRS}
 )
 

@@ -49,6 +49,8 @@ Preferences keys (in "User parameter:BaseApp/Preferences/Mod/Help"):
     Location (string): offline location
     Suffix (string): a suffix to add to the URL, ex: /fr
     StyleSheet (string): optional CSS stylesheet to style the output
+
+Defaults are to open the wiki in the desktop browser
 """
 
 import os
@@ -110,12 +112,15 @@ def show(page, view=None, conv=None):
     pagename = os.path.basename(page.replace("_", " ").replace(".md", ""))
     title = translate("Help", "Help") + ": " + pagename
     if FreeCAD.GuiUp:
-        if PREFS.GetBool("optionBrowser", False):  # desktop web browser
-            show_browser(location)
-        elif PREFS.GetBool("optionDialog", False):  # floating dock window
-            show_dialog(html, baseurl, title, view)
-        else:  # MDI tab - default
+        if PREFS.GetBool("optionTab", False) and get_qtwebwidgets():
+            # MDI tab
             show_tab(html, baseurl, title, view)
+        elif PREFS.GetBool("optionDialog", False) and get_qtwebwidgets():
+            # floating dock window
+            show_dialog(html, baseurl, title, view)
+        else:
+            # desktop web browser - default
+            show_browser(location)
     else:
         # console mode, we just print the output
         print(md)
@@ -216,12 +221,11 @@ def show_dialog(html, baseurl, title, view=None):
 
     from PySide import QtCore
 
-    if get_qtwebwidgets(html, baseurl, title):
-        if view:  # reusing existing view
-            view.setHtml(html, baseUrl=QtCore.QUrl(baseurl))
-            view.parent().parent().setWindowTitle(title)
-        else:
-            openBrowserHTML(html, baseurl, title, ICON, dialog=True)
+    if view:  # reusing existing view
+        view.setHtml(html, baseUrl=QtCore.QUrl(baseurl))
+        view.parent().parent().setWindowTitle(title)
+    else:
+        openBrowserHTML(html, baseurl, title, ICON, dialog=True)
 
 
 def show_tab(html, baseurl, title, view=None):
@@ -229,28 +233,20 @@ def show_tab(html, baseurl, title, view=None):
 
     from PySide import QtCore
 
-    if get_qtwebwidgets(html, baseurl, title):
-        if view:  # reusing existing view
-            view.setHtml(html, baseUrl=QtCore.QUrl(baseurl))
-            view.parent().parent().setWindowTitle(title)
-        else:
-            # the line below causes a crash with current Qt5 version
-            # openBrowserHTML(html,baseurl,title,ICON)
-            # so ATM we use the WebGui browser instead
-            import WebGui
-
-            WebGui.openBrowserHTML(html, baseurl, title, ICON)
+    if view:  # reusing existing view
+        view.setHtml(html, baseUrl=QtCore.QUrl(baseurl))
+        view.parent().parent().setWindowTitle(title)
+    else:
+        openBrowserHTML(html, baseurl, title, ICON)
 
 
-def get_qtwebwidgets(html, baseurl, title):
-    """opens a web module view if qtwebwidgets module is not available, and returns False"""
-    from PySide import QtGui
+def get_qtwebwidgets():
+    """verifies if qtwebengine is available"""
 
     try:
         from PySide import QtWebEngineWidgets
     except:
         FreeCAD.Console.PrintLog(LOGTXT + "\n")
-        QtGui.QDesktopServices.openUrl(baseurl)
         return False
     else:
         return True

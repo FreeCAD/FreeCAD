@@ -28,6 +28,7 @@
 #endif
 
 #include <App/GeoFeature.h>
+#include <App/MaterialPy.h>
 #include <App/PropertyStandard.h>
 
 #include "ViewProviderGeometryObjectPy.h"
@@ -66,6 +67,12 @@ PyObject* ViewProviderGeometryObjectPy::getCustomAttributes(const char* attr) co
         }
     }
     return nullptr;
+}
+
+PyObject* ViewProviderGeometryObjectPy::getUserDefinedMaterial()
+{
+    App::Material mat = ViewProviderGeometryObject::getUserDefinedMaterial();
+    return new App::MaterialPy(new App::Material(mat));
 }
 
 int ViewProviderGeometryObjectPy::setCustomAttributes(const char* attr, PyObject* obj)

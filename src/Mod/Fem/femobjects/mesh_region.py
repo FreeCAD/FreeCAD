@@ -48,6 +48,7 @@ class MeshRegion(base_fempythonobject.BaseFemPythonObject):
             "MeshRegionProperties",
             "set characteristic length of FEM elements for this refinement"
         )
+        obj.setPropertyStatus("CharacteristicLength", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyLinkSubList",
@@ -55,3 +56,4 @@ class MeshRegion(base_fempythonobject.BaseFemPythonObject):
             "MeshRegionShapes",
             "List of FEM mesh refinement shapes"
         )
+        obj.setPropertyStatus("References", "LockDynamic")

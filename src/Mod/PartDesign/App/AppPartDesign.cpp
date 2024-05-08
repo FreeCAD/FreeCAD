@@ -31,6 +31,7 @@
 #include "DatumLine.h"
 #include "DatumPlane.h"
 #include "DatumPoint.h"
+#include "Measure.h"
 #include "FeatureBase.h"
 #include "FeatureBoolean.h"
 #include "FeatureChamfer.h"
@@ -152,6 +153,8 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::AdditiveWedge               ::init();
     PartDesign::SubtractiveWedge            ::init();
     PartDesign::FeatureBase                 ::init();
+
+    PartDesign::Measure ::initialize();
 
     PyMOD_Return(mod);
 }

@@ -48,6 +48,7 @@ class ElementRotation1D(base_fempythonobject.BaseFemPythonObject):
             "BeamRotation",
             "Set the rotation of beam elements"
         )
+        obj.setPropertyStatus("Rotation", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyLinkSubList",
@@ -55,3 +56,4 @@ class ElementRotation1D(base_fempythonobject.BaseFemPythonObject):
             "BeamRotation",
             "List of beam rotation shapes"
         )
+        obj.setPropertyStatus("References", "LockDynamic")

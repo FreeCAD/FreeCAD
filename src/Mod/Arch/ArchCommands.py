@@ -1018,7 +1018,7 @@ class SurveyTaskPanel:
         return True
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def reject(self):
         if hasattr(FreeCAD,"SurveyObserver"):

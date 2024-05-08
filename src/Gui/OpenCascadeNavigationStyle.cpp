@@ -170,9 +170,7 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
         case SoMouseButtonEvent::BUTTON3:
             if (press) {
                 this->centerTime = ev->getTime();
-                float ratio = vp.getViewportAspectRatio();
-                SbViewVolume vv = viewer->getSoRenderManager()->getCamera()->getViewVolume(ratio);
-                this->panningplane = vv.getPlane(viewer->getSoRenderManager()->getCamera()->focalDistance.getValue());
+                setupPanningPlane(getCamera());
                 this->lockrecenter = false;
             }
             else if (this->currentmode == NavigationStyle::PANNING) {

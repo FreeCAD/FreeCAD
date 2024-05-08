@@ -29,6 +29,7 @@ import datetime
 import shlex
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
+from builtins import open as pyopen
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
@@ -128,9 +129,7 @@ POST_OPERATION = """"""
 # Tool Change commands will be inserted before a tool change
 TOOL_CHANGE = """"""
 
-# to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
+
 
 
 def processArguments(argstring):
@@ -290,7 +289,7 @@ def export(objectslist, filename, argstring):
     print("done postprocessing.")
 
     if not filename == "-":
-        gfile = pythonopen(filename, "w")
+        gfile = pyopen(filename, "w")
         gfile.write(final)
         gfile.close()
 
@@ -356,7 +355,14 @@ def parse(pathobj):
         # if OUTPUT_COMMENTS:
         #     out += linenumber() + "(" + pathobj.Label + ")\n"
 
-        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
+        # The following "for" statement was fairly recently added
+        # but seems to be using the A, B, and C parameters in ways
+        # that don't appear to be compatible with how the PATH code
+        # uses the A, B, and C parameters.  I have reverted the
+        # change here until we can figure out what it going on.
+        #
+        # for c in PathUtils.getPathWithPlacement(pathobj).Commands:
+        for c in pathobj.Path.Commands:
 
             outstring = []
             command = c.Name
@@ -409,15 +415,24 @@ def parse(pathobj):
                         ):
                             continue
                         else:
-                            pos = Units.Quantity(
-                                c.Parameters[param], FreeCAD.Units.Length
-                            )
-                            outstring.append(
-                                param
-                                + format(
-                                    float(pos.getValueAs(UNIT_FORMAT)), precision_string
+                            if param in ("A", "B", "C"):
+                                outstring.append(
+                                    param
+                                    + format(
+                                        float(c.Parameters[param]),
+                                        precision_string
+                                    )
                                 )
-                            )
+                            else:
+                                pos = Units.Quantity(
+                                    c.Parameters[param], FreeCAD.Units.Length
+                                )
+                                outstring.append(
+                                    param
+                                    + format(
+                                        float(pos.getValueAs(UNIT_FORMAT)), precision_string
+                                    )
+                                )
 
             # store the latest command
             lastcommand = command

@@ -243,6 +243,36 @@ If unchecked, they will be sorted by their name.</source>
         <source>Use legacy editor</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="237"/>
+        <source>Material Selector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="243"/>
+        <source>Show favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="259"/>
+        <source>Show recent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="275"/>
+        <source>Show empty libraries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="291"/>
+        <source>Show empty folders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="304"/>
+        <source>Show legacy files</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatGui::MaterialSave</name>
@@ -583,12 +613,12 @@ If unchecked, they will be sorted by their name.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Gui/AppMatGui.cpp" line="103"/>
+        <location filename="../../Gui/AppMatGui.cpp" line="105"/>
         <source>Material workbench</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/AppMatGui.cpp" line="105"/>
+        <location filename="../../Gui/AppMatGui.cpp" line="107"/>
         <source>Material</source>
         <translation type="unfinished"></translation>
     </message>
@@ -906,18 +936,38 @@ If unchecked, they will be sorted by their name.</source>
 <context>
     <name>MatGui::MaterialTreeWidget</name>
     <message>
-        <location filename="../../Gui/MaterialTreeWidget.cpp" line="91"/>
+        <location filename="../../Gui/MaterialTreeWidget.cpp" line="112"/>
         <source>Launch editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialTreeWidget.cpp" line="317"/>
+        <location filename="../../Gui/MaterialTreeWidget.cpp" line="276"/>
+        <location filename="../../Gui/MaterialTreeWidget.cpp" line="497"/>
         <source>Favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialTreeWidget.cpp" line="322"/>
+        <location filename="../../Gui/MaterialTreeWidget.cpp" line="276"/>
+        <location filename="../../Gui/MaterialTreeWidget.cpp" line="504"/>
         <source>Recent</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MatGui::DlgDisplayPropertiesImp</name>
+    <message>
+        <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="215"/>
+        <source>Basic Appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="220"/>
+        <source>Texture Appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="225"/>
+        <source>All Materials</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

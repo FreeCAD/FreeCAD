@@ -27,6 +27,7 @@
 import datetime
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
+from builtins import open as pyopen
 
 now = datetime.datetime.now()
 
@@ -90,9 +91,7 @@ POST_OPERATION = """"""
 TOOL_CHANGE = """"""
 
 
-# to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
+
 
 
 def processArguments(argstring):
@@ -205,7 +204,7 @@ def export(objectslist, filename, argstring):
 
     print("done postprocessing.")
 
-    gfile = pythonopen(filename, "w")
+    gfile = pyopen(filename, "w")
     gfile.write(final)
     gfile.close()
 

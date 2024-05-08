@@ -31,7 +31,6 @@
 
 using namespace Start;
 
-FC_LOG_LEVEL_INIT(ExamplesModel)
 
 ExamplesModel::ExamplesModel(QObject* parent)
     : DisplayedFilesModel(parent)

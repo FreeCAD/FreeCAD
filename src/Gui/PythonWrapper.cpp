@@ -106,6 +106,11 @@
 #  define HAVE_PYSIDE
 #  define HAVE_SHIBOKEN_TYPE_FOR_TYPENAME
 # endif // HAVE_PYSIDE6
+# include <sbkversion.h>
+# define SHIBOKEN_FULL_VERSION QT_VERSION_CHECK(SHIBOKEN_MAJOR_VERSION, SHIBOKEN_MINOR_VERSION, 0)
+# if (SHIBOKEN_FULL_VERSION >= QT_VERSION_CHECK(6, 7, 0))
+#  define HAVE_SHIBOKEN_TYPEINITSTRUCT
+# endif
 #endif // HAVE_SHIBOKEN6
 
 //-----------------------------------------------------------------------------
@@ -163,11 +168,19 @@ constexpr const char* ModuleShiboken            = "shiboken2";
 #endif
 constexpr const char* ModulePySide              = "PySide2";
 #elif defined(HAVE_SHIBOKEN6)
+#ifdef HAVE_SHIBOKEN_TYPEINITSTRUCT
+Shiboken::Module::TypeInitStruct* SbkPySide6_QtCoreTypes           = nullptr;
+Shiboken::Module::TypeInitStruct* SbkPySide6_QtGuiTypes            = nullptr;
+Shiboken::Module::TypeInitStruct* SbkPySide6_QtWidgetsTypes        = nullptr;
+Shiboken::Module::TypeInitStruct* SbkPySide6_QtPrintSupportTypes   = nullptr;
+Shiboken::Module::TypeInitStruct* SbkPySide6_QtUiToolsTypes        = nullptr;
+#else
 PyTypeObject** SbkPySide6_QtCoreTypes           = nullptr;
 PyTypeObject** SbkPySide6_QtGuiTypes            = nullptr;
 PyTypeObject** SbkPySide6_QtWidgetsTypes        = nullptr;
 PyTypeObject** SbkPySide6_QtPrintSupportTypes   = nullptr;
 PyTypeObject** SbkPySide6_QtUiToolsTypes        = nullptr;
+#endif
 constexpr auto &SbkPySide_QtCoreTypes           = SbkPySide6_QtCoreTypes;
 constexpr auto &SbkPySide_QtGuiTypes            = SbkPySide6_QtGuiTypes;
 constexpr auto &SbkPySide_QtWidgetsTypes        = SbkPySide6_QtWidgetsTypes;
@@ -294,7 +307,11 @@ static std::string getPySideModuleName(const std::string& moduleName)
     return name;
 }
 
+#ifdef HAVE_SHIBOKEN_TYPEINITSTRUCT
+static bool loadPySideModule(const std::string& moduleName, Shiboken::Module::TypeInitStruct*& types)
+#else
 static bool loadPySideModule(const std::string& moduleName, PyTypeObject**& types)
+#endif
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     if (!types) {
@@ -564,6 +581,36 @@ bool PythonWrapper::toCString(const Py::Object& pyobject, std::string& str)
 QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
 {
     return qt_getCppType<QObject>(pyobject.ptr());
+}
+
+qsizetype PythonWrapper::toEnum(PyObject* pyPtr)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    return Shiboken::Enum::getValue(pyPtr);
+#else
+    return toEnum(Py::Object(pyPtr));
+#endif
+}
+
+qsizetype PythonWrapper::toEnum(const Py::Object& pyobject)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    return toEnum(pyobject.ptr());
+#else
+    try {
+        Py::Int ret;
+        if (pyobject.hasAttr(std::string("value"))) {
+            ret = Py::Int(pyobject.getAttr(std::string("value")));
+        } else {
+            ret = Py::Int(pyobject);
+        }
+        return (qsizetype)ret;
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+#endif
 }
 
 QGraphicsItem* PythonWrapper::toQGraphicsItem(PyObject* pyPtr)

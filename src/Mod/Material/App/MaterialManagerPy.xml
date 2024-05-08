@@ -47,5 +47,10 @@
         <UserDocu>Get a list of materials implementing the specified model, with values for all properties</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="save" Keyword="true">
+      <Documentation>
+        <UserDocu>Save the material in the specified library</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateMaterial>

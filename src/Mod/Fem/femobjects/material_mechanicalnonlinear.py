@@ -79,6 +79,7 @@ class MaterialMechanicalNonlinear(base_fempythonobject.BaseFemPythonObject):
                 "Base",
                 "Set the linear material the nonlinear builds upon."
             )
+            obj.setPropertyStatus("LinearBaseMaterial", "LockDynamic")
 
         if not hasattr(obj, "MaterialModelNonlinearity"):
             choices_nonlinear_material_models = ["isotropic hardening","kinematic hardening"]
@@ -88,6 +89,7 @@ class MaterialMechanicalNonlinear(base_fempythonobject.BaseFemPythonObject):
                 "Fem",
                 "Set the type on nonlinear material model"
             )
+            obj.setPropertyStatus("MaterialModelNonlinearity", "LockDynamic")
             obj.MaterialModelNonlinearity = choices_nonlinear_material_models
             obj.MaterialModelNonlinearity = choices_nonlinear_material_models[0]
 
@@ -104,4 +106,5 @@ class MaterialMechanicalNonlinear(base_fempythonobject.BaseFemPythonObject):
                 "Set stress and strain for yield points as a list of strings, "
                 "each point \"stress, plastic strain\""
             )
+            obj.setPropertyStatus("YieldPoints", "LockDynamic")
             obj.YieldPoints = []

@@ -71,7 +71,7 @@ const App::PropertyIntegerConstraint::Constraints intPercent = {0, 100, 5};
 
 ViewProviderGeometryObject::ViewProviderGeometryObject()
 {
-    App::Material mat = getDefaultMaterial();
+    App::Material mat = getUserDefinedMaterial();
     long initialTransparency = toPercent(mat.transparency);
 
     static const char* dogroup = "Display Options";
@@ -115,7 +115,7 @@ ViewProviderGeometryObject::~ViewProviderGeometryObject()
     pcBoundColor->unref();
 }
 
-App::Material ViewProviderGeometryObject::getDefaultMaterial() const
+App::Material ViewProviderGeometryObject::getUserDefinedMaterial()
 {
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");

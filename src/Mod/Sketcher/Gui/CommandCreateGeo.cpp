@@ -512,118 +512,69 @@ bool CmdSketcherCreate3PointArc::isActive()
 }
 
 
-DEF_STD_CMD_ACLU(CmdSketcherCompCreateArc)
+// Comp create arc tools =============================================
 
-CmdSketcherCompCreateArc::CmdSketcherCompCreateArc()
-    : Command("Sketcher_CompCreateArc")
+class CmdSketcherCompCreateArc: public Gui::GroupCommand
 {
-    sAppModule = "Sketcher";
-    sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create arc");
-    sToolTipText = QT_TR_NOOP("Create an arc in the sketcher");
-    sWhatsThis = "Sketcher_CompCreateArc";
-    sStatusTip = sToolTipText;
-    eType = ForEdit;
-}
+public:
+    CmdSketcherCompCreateArc()
+        : GroupCommand("Sketcher_CompCreateArc")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Create arc");
+        sToolTipText = QT_TR_NOOP("Create an arc in the sketch");
+        sWhatsThis = "Sketcher_CompCreateArc";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
 
-void CmdSketcherCompCreateArc::activated(int iMsg)
-{
-    if (iMsg == 0) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArc());
-    }
-    else if (iMsg == 1) {
-        ActivateHandler(getActiveGuiDocument(),
-                        new DrawSketchHandlerArc(
-                            ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
-    }
-    else {
-        return;
+        setCheckable(false);
+        // setRememberLast(true);
+
+        addCommand("Sketcher_CreateArc");
+        addCommand("Sketcher_Create3PointArc");
+        addCommand("Sketcher_CreateArcOfEllipse");
+        addCommand("Sketcher_CreateArcOfHyperbola");
+        addCommand("Sketcher_CreateArcOfParabola");
     }
 
-    // Since the default icon is reset when enabling/disabling the command we have
-    // to explicitly set the icon of the used command.
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
+    void updateAction(int mode) override
+    {
+        Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+        if (!pcAction) {
+            return;
+        }
 
-    assert(iMsg < a.size());
-    pcAction->setIcon(a[iMsg]->icon());
-}
-
-Gui::Action* CmdSketcherCompCreateArc::createAction()
-{
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
-    pcAction->setDropDownMenu(true);
-    applyCommandData(this->className(), pcAction);
-
-    QAction* arc1 = pcAction->addAction(QString());
-    arc1->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc"));
-    QAction* arc2 = pcAction->addAction(QString());
-    arc2->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc"));
-
-    _pcAction = pcAction;
-    languageChange();
-
-    pcAction->setIcon(arc1->icon());
-    int defaultId = 0;
-    pcAction->setProperty("defaultAction", QVariant(defaultId));
-
-    return pcAction;
-}
-
-void CmdSketcherCompCreateArc::updateAction(int mode)
-{
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    if (!pcAction) {
-        return;
+        QList<QAction*> al = pcAction->actions();
+        int index = pcAction->property("defaultAction").toInt();
+        switch (static_cast<GeometryCreationMode>(mode)) {
+            case GeometryCreationMode::Normal:
+                al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc"));
+                al[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc"));
+                al[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc"));
+                al[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc"));
+                al[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc"));
+                getAction()->setIcon(al[index]->icon());
+                break;
+            case GeometryCreationMode::Construction:
+                al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc_Constr"));
+                al[1]->setIcon(
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc_Constr"));
+                al[2]->setIcon(
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc_Constr"));
+                al[3]->setIcon(
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc_Constr"));
+                al[4]->setIcon(
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc_Constr"));
+                getAction()->setIcon(al[index]->icon());
+                break;
+        }
     }
-
-    QList<QAction*> a = pcAction->actions();
-    int index = pcAction->property("defaultAction").toInt();
-    switch (static_cast<GeometryCreationMode>(mode)) {
-        case GeometryCreationMode::Normal:
-            a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc"));
-            a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc"));
-            getAction()->setIcon(a[index]->icon());
-            break;
-        case GeometryCreationMode::Construction:
-            a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc_Constr"));
-            a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc_Constr"));
-            getAction()->setIcon(a[index]->icon());
-            break;
+    const char* className() const override
+    {
+        return "CmdSketcherCompCreateArc";
     }
-}
-
-void CmdSketcherCompCreateArc::languageChange()
-{
-    Command::languageChange();
-
-    if (!_pcAction) {
-        return;
-    }
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdSketcherCompCreateArc", "Center and endpoints"));
-    arc1->setToolTip(QApplication::translate("Sketcher_CreateArc",
-                                             "Create an arc by its center and by its endpoints"));
-    arc1->setStatusTip(QApplication::translate("Sketcher_CreateArc",
-                                               "Create an arc by its center and by its endpoints"));
-    QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdSketcherCompCreateArc", "Endpoints and rim point"));
-    arc2->setToolTip(
-        QApplication::translate("Sketcher_Create3PointArc",
-                                "Create an arc by its endpoints and a point along the arc"));
-    arc2->setStatusTip(
-        QApplication::translate("Sketcher_Create3PointArc",
-                                "Create an arc by its endpoints and a point along the arc"));
-}
-
-bool CmdSketcherCompCreateArc::isActive()
-{
-    return isCommandActive(getActiveGuiDocument());
-}
-
+};
 
 // ======================================================================================
 
@@ -812,187 +763,66 @@ bool CmdSketcherCreateArcOfParabola::isActive()
 }
 
 
-/// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateEllipse'
-DEF_STD_CMD_ACLU(CmdSketcherCompCreateConic)
-
-/**
- * @brief ctor
- */
-CmdSketcherCompCreateConic::CmdSketcherCompCreateConic()
-    : Command("Sketcher_CompCreateConic")
+// Comp create conic tools =============================================
+class CmdSketcherCompCreateConic: public Gui::GroupCommand
 {
-    sAppModule = "Sketcher";
-    sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create conic");
-    sToolTipText = QT_TR_NOOP("Create a conic in the sketch");
-    sWhatsThis = "Sketcher_CompCreateConic";
-    sStatusTip = sToolTipText;
-    eType = ForEdit;
-}
+public:
+    CmdSketcherCompCreateConic()
+        : GroupCommand("Sketcher_CompCreateConic")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Create conic");
+        sToolTipText = QT_TR_NOOP("Create a conic in the sketch");
+        sWhatsThis = "Sketcher_CompCreateConic";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
 
-/**
- * @brief Instantiates the conic handler when the conic command activated
- * @param int iMsg
- */
-void CmdSketcherCompCreateConic::activated(int iMsg)
-{
-    if (iMsg == 0) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse());
-    }
-    else if (iMsg == 1) {
-        ActivateHandler(getActiveGuiDocument(),
-                        new DrawSketchHandlerEllipse(
-                            ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
-    }
-    else if (iMsg == 2) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArcOfEllipse());
-    }
-    else if (iMsg == 3) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArcOfHyperbola());
-    }
-    else if (iMsg == 4) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArcOfParabola());
-    }
-    else {
-        return;
+        setCheckable(false);
+        setRememberLast(true);
+
+        addCommand("Sketcher_CreateCircle");
+        addCommand("Sketcher_Create3PointCircle");
+        addCommand("Sketcher_CreateEllipseByCenter");
+        addCommand("Sketcher_CreateEllipseBy3Points");
     }
 
-    // Since the default icon is reset when enabling/disabling the command we have
-    // to explicitly set the icon of the used command.
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
+    void updateAction(int mode) override
+    {
+        Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+        if (!pcAction) {
+            return;
+        }
 
-    assert(iMsg < a.size());
-    pcAction->setIcon(a[iMsg]->icon());
-}
-
-Gui::Action* CmdSketcherCompCreateConic::createAction()
-{
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
-    pcAction->setDropDownMenu(true);
-    applyCommandData(this->className(), pcAction);
-
-    QAction* ellipseByCenter = pcAction->addAction(QString());
-    ellipseByCenter->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipseByCenter"));
-    QAction* ellipseBy3Points = pcAction->addAction(QString());
-    ellipseBy3Points->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
-
-    QAction* arcofellipse = pcAction->addAction(QString());
-    arcofellipse->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc"));
-
-    QAction* arcofhyperbola = pcAction->addAction(QString());
-    arcofhyperbola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc"));
-
-    QAction* arcofparabola = pcAction->addAction(QString());
-    arcofparabola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc"));
-
-    _pcAction = pcAction;
-    languageChange();
-
-    // set ellipse by center, a, b as default method
-    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Conics"));
-    int defaultId = 0;
-    pcAction->setProperty("defaultAction", QVariant(defaultId));
-
-    return pcAction;
-}
-
-void CmdSketcherCompCreateConic::updateAction(int mode)
-{
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    if (!pcAction) {
-        return;
+        QList<QAction*> al = pcAction->actions();
+        int index = pcAction->property("defaultAction").toInt();
+        switch (static_cast<GeometryCreationMode>(mode)) {
+            case GeometryCreationMode::Normal:
+                al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle"));
+                al[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle"));
+                al[2]->setIcon(
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipseByCenter"));
+                al[3]->setIcon(
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
+                getAction()->setIcon(al[index]->icon());
+                break;
+            case GeometryCreationMode::Construction:
+                al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle_Constr"));
+                al[1]->setIcon(
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle_Constr"));
+                al[2]->setIcon(
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipseByCenter_Constr"));
+                al[3]->setIcon(
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points_Constr"));
+                getAction()->setIcon(al[index]->icon());
+                break;
+        }
     }
-
-    QList<QAction*> a = pcAction->actions();
-    int index = pcAction->property("defaultAction").toInt();
-    switch (static_cast<GeometryCreationMode>(mode)) {
-        case GeometryCreationMode::Normal:
-            a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipseByCenter"));
-            a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
-            a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc"));
-            a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc"));
-            a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc"));
-            getAction()->setIcon(a[index]->icon());
-            break;
-        case GeometryCreationMode::Construction:
-            a[0]->setIcon(
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipseByCenter_Constr"));
-            a[1]->setIcon(
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points_Constr"));
-            a[2]->setIcon(
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc_Constr"));
-            a[3]->setIcon(
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc_Constr"));
-            a[4]->setIcon(
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc_Constr"));
-            getAction()->setIcon(a[index]->icon());
-            break;
+    const char* className() const override
+    {
+        return "CmdSketcherCompCreateConic";
     }
-}
-
-void CmdSketcherCompCreateConic::languageChange()
-{
-    Command::languageChange();
-
-    if (!_pcAction) {
-        return;
-    }
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    QAction* ellipseByCenter = a[0];
-    ellipseByCenter->setText(QApplication::translate("CmdSketcherCompCreateConic",
-                                                     "Ellipse by center, radius, rim point"));
-    ellipseByCenter->setToolTip(QApplication::translate(
-        "Sketcher_CreateEllipseByCenter",
-        "Create an ellipse by its center, one of its radii and a rim point"));
-    ellipseByCenter->setStatusTip(QApplication::translate(
-        "Sketcher_CreateEllipseByCenter",
-        "Create an ellipse by its center, one of its radii and a rim point"));
-    QAction* ellipseBy3Points = a[1];
-    ellipseBy3Points->setText(QApplication::translate("CmdSketcherCompCreateConic",
-                                                      "Ellipse by axis endpoints, rim point"));
-    ellipseBy3Points->setToolTip(QApplication::translate(
-        "Sketcher_CreateEllipseBy3Points",
-        "Create an ellipse by the endpoints of one of its axes and a rim point"));
-    ellipseBy3Points->setStatusTip(QApplication::translate(
-        "Sketcher_CreateEllipseBy3Points",
-        "Create an ellipse by the endpoints of one of its axes and a rim point"));
-    QAction* arcofellipse = a[2];
-    arcofellipse->setText(QApplication::translate("CmdSketcherCompCreateConic",
-                                                  "Arc of ellipse by center, radius, endpoints"));
-    arcofellipse->setToolTip(QApplication::translate(
-        "Sketcher_CreateArcOfEllipse",
-        "Create an arc of ellipse by its center, one of its radii, and its endpoints"));
-    arcofellipse->setStatusTip(QApplication::translate(
-        "Sketcher_CreateArcOfEllipse",
-        "Create an arc of ellipse by its center, one of its radii, and its endpoints"));
-    QAction* arcofhyperbola = a[3];
-    arcofhyperbola->setText(
-        QApplication::translate("CmdSketcherCompCreateConic",
-                                "Arc of hyperbola by center, vertex, endpoints"));
-    arcofhyperbola->setToolTip(
-        QApplication::translate("Sketcher_CreateArcOfHyperbola",
-                                "Create an arc of hyperbola by its center, vertex and endpoints"));
-    arcofhyperbola->setStatusTip(
-        QApplication::translate("Sketcher_CreateArcOfHyperbola",
-                                "Create an arc of hyperbola by its center, vertex and endpoints"));
-    QAction* arcofparabola = a[4];
-    arcofparabola->setText(QApplication::translate("CmdSketcherCompCreateConic",
-                                                   "Arc of parabola by focus, vertex, endpoints"));
-    arcofparabola->setToolTip(
-        QApplication::translate("Sketcher_CreateArcOfParabola",
-                                "Create an arc of parabola by its focus, vertex and endpoints"));
-    arcofparabola->setStatusTip(
-        QApplication::translate("Sketcher_CreateArcOfParabola",
-                                "Create an arc of parabola by its focus, vertex and endpoints"));
-}
-
-bool CmdSketcherCompCreateConic::isActive()
-{
-    return isCommandActive(getActiveGuiDocument());
-}
+};
 
 // ======================================================================================
 
@@ -1320,118 +1150,6 @@ bool CmdSketcherCreate3PointCircle::isActive()
 {
     return isCommandActive(getActiveGuiDocument());
 }
-
-
-DEF_STD_CMD_ACLU(CmdSketcherCompCreateCircle)
-
-CmdSketcherCompCreateCircle::CmdSketcherCompCreateCircle()
-    : Command("Sketcher_CompCreateCircle")
-{
-    sAppModule = "Sketcher";
-    sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create circle");
-    sToolTipText = QT_TR_NOOP("Create a circle in the sketcher");
-    sWhatsThis = "Sketcher_CompCreateCircle";
-    sStatusTip = sToolTipText;
-    eType = ForEdit;
-}
-
-void CmdSketcherCompCreateCircle::activated(int iMsg)
-{
-    if (iMsg == 0) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCircle());
-    }
-    else if (iMsg == 1) {
-        ActivateHandler(getActiveGuiDocument(),
-                        new DrawSketchHandlerCircle(
-                            ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
-    }
-    else {
-        return;
-    }
-
-    // Since the default icon is reset when enabling/disabling the command we have
-    // to explicitly set the icon of the used command.
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    assert(iMsg < a.size());
-    pcAction->setIcon(a[iMsg]->icon());
-}
-
-Gui::Action* CmdSketcherCompCreateCircle::createAction()
-{
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
-    pcAction->setDropDownMenu(true);
-    applyCommandData(this->className(), pcAction);
-
-    QAction* arc1 = pcAction->addAction(QString());
-    arc1->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle"));
-    QAction* arc2 = pcAction->addAction(QString());
-    arc2->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle"));
-
-    _pcAction = pcAction;
-    languageChange();
-
-    pcAction->setIcon(arc1->icon());
-    int defaultId = 0;
-    pcAction->setProperty("defaultAction", QVariant(defaultId));
-
-    return pcAction;
-}
-
-void CmdSketcherCompCreateCircle::updateAction(int mode)
-{
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    if (!pcAction) {
-        return;
-    }
-
-    QList<QAction*> a = pcAction->actions();
-    int index = pcAction->property("defaultAction").toInt();
-    switch (static_cast<GeometryCreationMode>(mode)) {
-        case GeometryCreationMode::Normal:
-            a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle"));
-            a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle"));
-            getAction()->setIcon(a[index]->icon());
-            break;
-        case GeometryCreationMode::Construction:
-            a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle_Constr"));
-            a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle_Constr"));
-            getAction()->setIcon(a[index]->icon());
-            break;
-    }
-}
-
-void CmdSketcherCompCreateCircle::languageChange()
-{
-    Command::languageChange();
-
-    if (!_pcAction) {
-        return;
-    }
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdSketcherCompCreateCircle", "Center and rim point"));
-    arc1->setToolTip(QApplication::translate("Sketcher_CreateCircle",
-                                             "Create a circle by its center and by a rim point"));
-    arc1->setStatusTip(QApplication::translate("Sketcher_CreateCircle",
-                                               "Create a circle by its center and by a rim point"));
-    QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdSketcherCompCreateCircle", "3 rim points"));
-    arc2->setToolTip(
-        QApplication::translate("Sketcher_Create3PointCircle", "Create a circle by 3 rim points"));
-    arc2->setStatusTip(
-        QApplication::translate("Sketcher_Create3PointCircle", "Create a circle by 3 rim points"));
-}
-
-bool CmdSketcherCompCreateCircle::isActive()
-{
-    return isCommandActive(getActiveGuiDocument());
-}
-
 
 // ======================================================================================
 
@@ -2258,16 +1976,15 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCreatePoint());
     rcCmdMgr.addCommand(new CmdSketcherCreateArc());
     rcCmdMgr.addCommand(new CmdSketcherCreate3PointArc());
-    rcCmdMgr.addCommand(new CmdSketcherCompCreateArc());
     rcCmdMgr.addCommand(new CmdSketcherCreateCircle());
     rcCmdMgr.addCommand(new CmdSketcherCreate3PointCircle());
-    rcCmdMgr.addCommand(new CmdSketcherCompCreateCircle());
     rcCmdMgr.addCommand(new CmdSketcherCreateEllipseByCenter());
     rcCmdMgr.addCommand(new CmdSketcherCreateEllipseBy3Points());
     rcCmdMgr.addCommand(new CmdSketcherCompCreateConic());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcOfEllipse());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcOfHyperbola());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcOfParabola());
+    rcCmdMgr.addCommand(new CmdSketcherCompCreateArc());
     rcCmdMgr.addCommand(new CmdSketcherCreateBSpline());
     rcCmdMgr.addCommand(new CmdSketcherCreatePeriodicBSpline());
     rcCmdMgr.addCommand(new CmdSketcherCreateBSplineByInterpolation());

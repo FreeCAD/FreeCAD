@@ -4081,6 +4081,7 @@ bool TopoShape::findPlane(gp_Pln& pln, double tol, double atol) const
 }
 #else
 bool TopoShape::findPlane(gp_Pln &pln, double tol, double atol) const {
+    (void)atol;
     if(_Shape.IsNull())
         return false;
     TopoDS_Shape shape = _Shape;

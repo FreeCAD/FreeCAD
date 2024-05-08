@@ -49,6 +49,7 @@ class ElementGeometry1D(base_fempythonobject.BaseFemPythonObject):
             "RectBeamSection",
             "set width of the rectangular beam elements"
         )
+        obj.setPropertyStatus("RectWidth", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyLength",
@@ -56,6 +57,7 @@ class ElementGeometry1D(base_fempythonobject.BaseFemPythonObject):
             "RectBeamSection",
             "set height of therectangular beam elements"
         )
+        obj.setPropertyStatus("RectHeight", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyLength",
@@ -63,6 +65,7 @@ class ElementGeometry1D(base_fempythonobject.BaseFemPythonObject):
             "CircBeamSection",
             "set diameter of the circular beam elements"
         )
+        obj.setPropertyStatus("CircDiameter", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyLength",
@@ -70,6 +73,7 @@ class ElementGeometry1D(base_fempythonobject.BaseFemPythonObject):
             "PipeBeamSection",
             "set outer diameter of the pipe beam elements"
         )
+        obj.setPropertyStatus("PipeDiameter", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyLength",
@@ -77,6 +81,7 @@ class ElementGeometry1D(base_fempythonobject.BaseFemPythonObject):
             "PipeBeamSection",
             "set thickness of the pipe beam elements"
         )
+        obj.setPropertyStatus("PipeThickness", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -84,6 +89,7 @@ class ElementGeometry1D(base_fempythonobject.BaseFemPythonObject):
             "BeamSection",
             "select beam section type"
         )
+        obj.setPropertyStatus("SectionType", "LockDynamic")
 
         obj.addProperty(
             "App::PropertyLinkSubList",
@@ -91,6 +97,6 @@ class ElementGeometry1D(base_fempythonobject.BaseFemPythonObject):
             "BeamSection",
             "List of beam section shapes"
         )
-
+        obj.setPropertyStatus("References", "LockDynamic")
         obj.SectionType = ElementGeometry1D.known_beam_types
         obj.SectionType = "Rectangular"

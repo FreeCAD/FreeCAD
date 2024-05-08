@@ -44,6 +44,7 @@ public:
     ModelManager();
     ~ModelManager() override = default;
 
+    static void cleanup();
     void refresh();
 
     std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getModelLibraries()

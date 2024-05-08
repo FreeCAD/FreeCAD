@@ -37,10 +37,9 @@ http://paulbourke.net/dataformats/hpgl/
 import FreeCAD
 import Part
 import Path.Post.Utils as PostUtils
+from builtins import open as pyopen
 
-# to distinguish python built-in open function from the one declared below
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
+
 
 
 # Entrypoint used by FreeCAD
@@ -51,7 +50,7 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
         code += convertobject(obj)
 
-    gfile = pythonopen(filename, "w")
+    gfile = pyopen(filename, "w")
     gfile.write(code)
     gfile.close()
 

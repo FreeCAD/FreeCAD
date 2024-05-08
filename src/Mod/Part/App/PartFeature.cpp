@@ -1014,7 +1014,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
                                noElementMap,
                                hiddens,
                                lastLink);
-
+#ifdef FC_USE_TNP_FIX
     if (needSubElement && shape.shapeType(true) == TopAbs_COMPOUND) {
         if (shape.countSubShapes(TopAbs_SOLID) == 1)
             shape = shape.getSubTopoShape(TopAbs_SOLID, 1);
@@ -1031,6 +1031,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
         else if (shape.countSubShapes(TopAbs_VERTEX) == 1)
             shape = shape.getSubTopoShape(TopAbs_VERTEX, 1);
     }
+#endif
     Base::Matrix4D topMat;
     if (pmat || transform) {
         // Obtain top level transformation

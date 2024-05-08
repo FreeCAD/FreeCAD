@@ -1121,7 +1121,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManager.py" line="258"/>
       <source>Loading addon information</source>
-      <translation type="unfinished">Loading addon information</translation>
+      <translation>Eklenti bilgileri yükleniyor</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="284"/>
@@ -1145,12 +1145,12 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManager.py" line="339"/>
       <source>Addon manager</source>
-      <translation type="unfinished">Addon manager</translation>
+      <translation>Eklenti Yöneticisi</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="346"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
+      <translation>Değişikliklerin uygulanması için FreeCAD' ı yeniden başlatmalısınız.</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="352"/>
@@ -1160,7 +1160,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManager.py" line="353"/>
       <source>Restart later</source>
-      <translation type="unfinished">Restart later</translation>
+      <translation>Daha sonra yeniden başlat</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="417"/>
@@ -1171,13 +1171,13 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManager.py" line="547"/>
       <source>Updating cache...</source>
-      <translation type="unfinished">Updating cache...</translation>
+      <translation>Önbellek güncelleniyor...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="607"/>
       <location filename="../../AddonManager.py" line="642"/>
       <source>Checking for updates...</source>
-      <translation type="unfinished">Checking for updates...</translation>
+      <translation>Güncellemeler kontrol ediliyor...</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="95"/>
@@ -1188,7 +1188,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="96"/>
       <source>Update all addons</source>
-      <translation type="unfinished">Update all addons</translation>
+      <translation>Tüm Eklentileri Güncelle</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="97"/>
@@ -1198,7 +1198,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="98"/>
       <source>Python dependencies...</source>
-      <translation type="unfinished">Python dependencies...</translation>
+      <translation>Python gereksinimleri...</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="99"/>
@@ -1241,7 +1241,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../manage_python_dependencies.py" line="164"/>
       <source>New Python Version Detected</source>
-      <translation type="unfinished">New Python Version Detected</translation>
+      <translation>Yeni Python Sürümü Tespit Edildi</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="169"/>
@@ -1251,7 +1251,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../manage_python_dependencies.py" line="199"/>
       <source>Processing, please wait...</source>
-      <translation type="unfinished">Processing, please wait...</translation>
+      <translation>İşleminiz yapılıyor, Lütfen bekleyiniz...</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="247"/>
@@ -1262,7 +1262,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../manage_python_dependencies.py" line="341"/>
       <source>Updating...</source>
-      <translation type="unfinished">Updating...</translation>
+      <translation>Güncelleniyor...</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="96"/>
@@ -1299,12 +1299,12 @@ installed addons will be checked for available updates</translation>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="61"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="71"/>
       <source>Confirm remove</source>
-      <translation type="unfinished">Confirm remove</translation>
+      <translation>Kaldırmayı onayla</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="80"/>
       <source>Are you sure you want to uninstall {}?</source>
-      <translation type="unfinished">Are you sure you want to uninstall {}?</translation>
+      <translation>{} kaldırmak istediğinizden emin misiniz?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="90"/>
@@ -1322,28 +1322,28 @@ installed addons will be checked for available updates</translation>
       <location filename="../../addonmanager_uninstaller_gui.py" line="114"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="109"/>
       <source>Uninstall complete</source>
-      <translation type="unfinished">Uninstall complete</translation>
+      <translation>Kaldırma işlemi tamamlandı</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="126"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="118"/>
       <source>Uninstall failed</source>
-      <translation type="unfinished">Uninstall failed</translation>
+      <translation>Kaldırma işlemi başarısız oldu</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="259"/>
       <source>Version {version} installed on {date}</source>
-      <translation type="unfinished">Version {version} installed on {date}</translation>
+      <translation>Sürüm {version}, {date} tarihinde yüklendi</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="266"/>
       <source>Version {version} installed</source>
-      <translation type="unfinished">Version {version} installed</translation>
+      <translation>Sürüm {version} yüklendi</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="270"/>
       <source>Installed on {date}</source>
-      <translation type="unfinished">Installed on {date}</translation>
+      <translation>{date} tarihinde yüklendi</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="447"/>
@@ -1361,17 +1361,17 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="285"/>
       <source>Git tag &apos;{}&apos; checked out, no updates possible</source>
-      <translation type="unfinished">Git tag &apos;{}&apos; checked out, no updates possible</translation>
+      <translation>Git etiketi '{}' kontrol edildi, güncelleme mümkün değil</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="278"/>
       <source>Update check in progress</source>
-      <translation type="unfinished">Update check in progress</translation>
+      <translation>Güncellemelerin kontrol edilmesi devam ediyor</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="122"/>
       <source>Installation location</source>
-      <translation type="unfinished">Installation location</translation>
+      <translation>Kurulum konumu</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="186"/>
@@ -1386,7 +1386,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="231"/>
       <source>Disabled</source>
-      <translation type="unfinished">Disabled</translation>
+      <translation>Devre dışı</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="302"/>
@@ -1438,7 +1438,7 @@ installed addons will be checked for available updates</translation>
       <location filename="../../addonmanager_package_details_controller.py" line="245"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
-      <translation type="unfinished">Success</translation>
+      <translation>Başarılı</translation>
     </message>
     <message>
       <location filename="../../addonmanager_package_details_controller.py" line="249"/>
@@ -1469,7 +1469,7 @@ installed addons will be checked for available updates</translation>
       <location filename="../../addonmanager_package_details_controller.py" line="125"/>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="110"/>
       <source>Check for update</source>
-      <translation type="unfinished">Check for update</translation>
+      <translation>Güncellemeleri kontrol et</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="116"/>
@@ -1489,22 +1489,22 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="70"/>
       <source>Checking connection</source>
-      <translation type="unfinished">Checking connection</translation>
+      <translation>Bağlantı kontrol ediliyor</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="71"/>
       <source>Checking for connection to GitHub...</source>
-      <translation type="unfinished">Checking for connection to GitHub...</translation>
+      <translation>Github bağlantısı kontrol ediliyor...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="94"/>
       <source>Connection failed</source>
-      <translation type="unfinished">Connection failed</translation>
+      <translation>Bağlantı başarısız oldu</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="100"/>
       <source>Missing dependency</source>
-      <translation type="unfinished">Missing dependency</translation>
+      <translation>Eksik bağımlılık</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="105"/>
@@ -1515,7 +1515,7 @@ installed addons will be checked for available updates</translation>
       <location filename="../../addonmanager_devmode_license_selector.py" line="114"/>
       <source>Other...</source>
       <comment>For providing a license other than one listed</comment>
-      <translation type="unfinished">Other...</translation>
+      <translation>Diğer...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="204"/>
@@ -1590,7 +1590,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="430"/>
       <source>Python</source>
-      <translation type="unfinished">Python</translation>
+      <translation>Python</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="440"/>
@@ -1616,7 +1616,7 @@ installed addons will be checked for available updates</translation>
       <location filename="../../addonmanager_devmode_add_content.py" line="559"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="570"/>
       <source>Other...</source>
-      <translation type="unfinished">Other...</translation>
+      <translation>Diğer...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="153"/>
@@ -1673,18 +1673,18 @@ installed addons will be checked for available updates</translation>
       <location filename="../../addonmanager_installer_gui.py" line="314"/>
       <location filename="../../addonmanager_installer_gui.py" line="315"/>
       <source>Installing dependencies</source>
-      <translation type="unfinished">Installing dependencies</translation>
+      <translation>Bağımlılıklar kuruluyor</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="340"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="76"/>
       <source>Cannot execute Python</source>
-      <translation type="unfinished">Cannot execute Python</translation>
+      <translation>Python çalıştırılamıyor</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="345"/>
       <source>Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</source>
-      <translation type="unfinished">Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</translation>
+      <translation>Yürütülebilir Python dosyanız otomatik olarak bulunamadı veya yol yanlış ayarlanmış. Lütfen Python yolu için Eklenti Yöneticisi tercihlerini kontrol edin.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="349"/>
@@ -1712,12 +1712,12 @@ installed addons will be checked for available updates</translation>
       <location filename="../../addonmanager_installer_gui.py" line="391"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="96"/>
       <source>Package installation failed</source>
-      <translation type="unfinished">Package installation failed</translation>
+      <translation>Paket kurulumu başarısız oldu</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="395"/>
       <source>See Report View for detailed failure log.</source>
-      <translation type="unfinished">See Report View for detailed failure log.</translation>
+      <translation>Ayrıntılı hata raporu için Rapor Görünümü'ne bakın.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="436"/>
@@ -1732,7 +1732,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="451"/>
       <source>Cancelling</source>
-      <translation type="unfinished">Cancelling</translation>
+      <translation>İptal Ediliyor</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="452"/>
@@ -1748,7 +1748,7 @@ installed addons will be checked for available updates</translation>
       <location filename="../../addonmanager_installer_gui.py" line="490"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="64"/>
       <source>Installation Failed</source>
-      <translation type="unfinished">Installation Failed</translation>
+      <translation>Kurulum Başarısız Oldu</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="491"/>
@@ -1759,7 +1759,7 @@ installed addons will be checked for available updates</translation>
       <location filename="../../addonmanager_installer_gui.py" line="608"/>
       <location filename="../../install_to_toolbar.py" line="96"/>
       <source>Create new toolbar</source>
-      <translation type="unfinished">Create new toolbar</translation>
+      <translation>Yeni araç çubuğu oluştur</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="734"/>
@@ -1864,7 +1864,7 @@ installed addons will be checked for available updates</translation>
       <location filename="../../addonmanager_devmode.py" line="645"/>
       <location filename="../../addonmanager_devmode.py" line="660"/>
       <source>Installation failed</source>
-      <translation type="unfinished">Installation failed</translation>
+      <translation>Kurulum Başarısız Oldu</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="650"/>
@@ -1916,7 +1916,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../package_list.py" line="381"/>
       <source>Maintainers:</source>
-      <translation type="unfinished">Maintainers:</translation>
+      <translation>Sorumlular:</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="330"/>
@@ -1952,7 +1952,7 @@ installed addons will be checked for available updates</translation>
       <location filename="../../package_list.py" line="449"/>
       <location filename="../../package_list.py" line="501"/>
       <source>Up-to-date</source>
-      <translation type="unfinished">Up-to-date</translation>
+      <translation>Güncel</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="451"/>
@@ -1961,7 +1961,7 @@ installed addons will be checked for available updates</translation>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="305"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="313"/>
       <source>Update available</source>
-      <translation type="unfinished">Update available</translation>
+      <translation>Güncelleme mevcut</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="454"/>
@@ -1983,17 +1983,17 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../package_list.py" line="480"/>
       <source>Unknown version</source>
-      <translation type="unfinished">Unknown version</translation>
+      <translation>Bilinmeyen sürüm</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="482"/>
       <source>Installed on</source>
-      <translation type="unfinished">Installed on</translation>
+      <translation>Yüklendiği konum</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="491"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>Mevcut sürüm</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="106"/>
@@ -2003,7 +2003,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="108"/>
       <source>Addon Type</source>
-      <translation type="unfinished">Addon Type</translation>
+      <translation>Eklenti Türü</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="111"/>
@@ -2024,12 +2024,12 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="126"/>
       <source>Installation Status</source>
-      <translation type="unfinished">Installation Status</translation>
+      <translation>Kurulum Durumu</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="132"/>
       <source>Not installed</source>
-      <translation type="unfinished">Not installed</translation>
+      <translation>Yüklenmedi</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="255"/>
@@ -2039,7 +2039,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../change_branch.py" line="87"/>
       <source>DANGER: Developer feature</source>
-      <translation type="unfinished">DANGER: Developer feature</translation>
+      <translation>TEHLİKE: Geliştirici özelliği</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="94"/>
@@ -2378,17 +2378,17 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="74"/>
       <source>Installing</source>
-      <translation type="unfinished">Installing</translation>
+      <translation>Kuruluyor</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="77"/>
       <source>Succeeded</source>
-      <translation type="unfinished">Succeeded</translation>
+      <translation>Başarılı</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="79"/>
       <source>Failed</source>
-      <translation type="unfinished">Failed</translation>
+      <translation>Başarısız</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="199"/>
@@ -2423,42 +2423,42 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="153"/>
       <source>Expanded view</source>
-      <translation type="unfinished">Expanded view</translation>
+      <translation>Genişletilmiş görünüm</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="154"/>
       <source>Compact view</source>
-      <translation type="unfinished">Compact view</translation>
+      <translation>Kompakt görünüm</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="155"/>
       <source>Alphabetical</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Alphabetical</translation>
+      <translation>Alfabetik</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="158"/>
       <source>Last Updated</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Last Updated</translation>
+      <translation>Son Güncelleme</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="161"/>
       <source>Date Created</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Date Created</translation>
+      <translation>Oluşturulma Tarihi</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="164"/>
       <source>GitHub Stars</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">GitHub Stars</translation>
+      <translation>GitHub Yıldızları</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="168"/>
       <source>Score</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Score</translation>
+      <translation>Puan</translation>
     </message>
   </context>
   <context>
@@ -2466,7 +2466,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../AddonManager.py" line="160"/>
       <source>&amp;Addon manager</source>
-      <translation type="unfinished">&amp;Addon manager</translation>
+      <translation>&amp;Eklenti Yöneticisi</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="164"/>
@@ -2484,7 +2484,8 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="127"/>
       <source>Failed to remove some files</source>
-      <translation type="unfinished">Failed to remove some files</translation>
+      <translation>Bazı dosyalar kaldırılamadı
+</translation>
     </message>
   </context>
   <context>

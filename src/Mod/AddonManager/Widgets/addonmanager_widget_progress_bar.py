@@ -78,7 +78,7 @@ class WidgetProgressBar(QtWidgets.QWidget):
         self.progress_bar.setMaximum(_TOTAL_INCREMENTS)
         self.stop_button.clicked.connect(self.stop_clicked)
         self.stop_button.setIcon(
-            QtGui.QIcon.fromTheme("stop", QtGui.QIcon(":/icons/media-playback-stop.svg"))
+            QtGui.QIcon.fromTheme("stop", QtGui.QIcon(":/icons/debug-stop.svg"))
         )
         self.vertical_layout.addLayout(self.horizontal_layout)
         self.vertical_layout.addWidget(self.status_label)

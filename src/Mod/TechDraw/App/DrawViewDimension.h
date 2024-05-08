@@ -128,7 +128,10 @@ public:
     virtual bool haveTolerance();
 
     virtual double getDimValue();
-    QStringList getPrefixSuffixSpec(QString fSpec);
+    virtual double getTrueDimValue() const;
+    virtual double getProjectedDimValue() const;
+
+    QStringList getPrefixSuffixSpec(const QString& fSpec);
 
     virtual DrawViewPart* getViewPart() const;
     QRectF getRect() const override
@@ -238,6 +241,7 @@ protected:
     void updateSavedGeometry();
 
     bool validateReferenceForm() const;
+    bool autocorrectReferences();
 
 private:
     static const char* TypeEnums[];

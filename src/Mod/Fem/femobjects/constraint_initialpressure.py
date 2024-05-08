@@ -51,5 +51,6 @@ class ConstraintInitialPressure(base_fempythonobject.BaseFemPythonObject):
                 "Parameter",
                 "Initial Pressure"
             )
+            obj.setPropertyStatus("Pressure", "LockDynamic")
             # we initialize 1 bar
             obj.Pressure = "100 kPa"

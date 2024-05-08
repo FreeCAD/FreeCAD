@@ -33,7 +33,6 @@
 #endif
 
 #include <Gui/Application.h>
-#include <Gui/UserSettings.h>
 #include <Gui/Workbench.h>
 #include <Gui/WorkbenchManager.h>
 
@@ -365,9 +364,6 @@ void DlgSettingsWorkbenchesImp::resetSettingsToDefaults()
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     hGrp->RemoveASCII("WSPosition");
-    if  (ui->WorkbenchSelectorPosition->currentIndex() != WorkbenchSwitcher::getIndex()) {
-        requireRestart();
-    }
 
     //finally reset all the parameters associated to Gui::Pref* widgets
     PreferencePage::resetSettingsToDefaults();
@@ -499,19 +495,11 @@ void DlgSettingsWorkbenchesImp::changeEvent(QEvent *e)
 
 void DlgSettingsWorkbenchesImp::saveWorkbenchSelector()
 {
-    //save workbench selector position
-    int prevIndex = WorkbenchSwitcher::getIndex();
-    auto index = ui->WorkbenchSelectorPosition->currentIndex();
-    if (prevIndex != index) {
-        WorkbenchSwitcher::setIndex(index);
-        requireRestart();
-    }
-
     //save workbench selector type
     ParameterGrp::handle hGrp;
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
-    prevIndex = hGrp->GetInt("WorkbenchSelectorType", 0);
-    index = ui->WorkbenchSelectorType->currentIndex();
+    int prevIndex = hGrp->GetInt("WorkbenchSelectorType", 0);
+    int index = ui->WorkbenchSelectorType->currentIndex();
     if (prevIndex != index) {
         hGrp->SetInt("WorkbenchSelectorType", index);
         requireRestart();
@@ -528,13 +516,6 @@ void DlgSettingsWorkbenchesImp::saveWorkbenchSelector()
 
 void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
 {
-    //workbench selector position combobox setup
-    ui->WorkbenchSelectorPosition->clear();
-    ui->WorkbenchSelectorPosition->addItem(tr("Toolbar"));
-    ui->WorkbenchSelectorPosition->addItem(tr("Left corner"));
-    ui->WorkbenchSelectorPosition->addItem(tr("Right corner"));
-    ui->WorkbenchSelectorPosition->setCurrentIndex(WorkbenchSwitcher::getIndex());
-
     //workbench selector type setup
     ParameterGrp::handle hGrp;
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");

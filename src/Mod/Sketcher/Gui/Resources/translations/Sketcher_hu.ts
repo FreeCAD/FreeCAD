@@ -69,12 +69,12 @@
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1661"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1714"/>
       <source>Create carbon copy</source>
       <translation>Másolat létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1662"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1715"/>
       <source>Copy the geometry of another sketch</source>
       <translation>Másik vázlat geometriáinak másolatai</translation>
     </message>
@@ -169,22 +169,22 @@
   <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="469"/>
+      <location filename="../../CommandCreateGeo.cpp" line="522"/>
       <source>Create arc</source>
       <translation>Ív létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="470"/>
+      <location filename="../../CommandCreateGeo.cpp" line="523"/>
       <source>Create an arc in the sketcher</source>
       <translation>Ívet hoz létre a vázlatkészítőben</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="554"/>
+      <location filename="../../CommandCreateGeo.cpp" line="607"/>
       <source>Center and endpoints</source>
       <translation>Közép és végpontok</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="560"/>
+      <location filename="../../CommandCreateGeo.cpp" line="613"/>
       <source>Endpoints and rim point</source>
       <translation>Végpontok és perem pontok</translation>
     </message>
@@ -192,12 +192,12 @@
   <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1085"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1138"/>
       <source>Create B-spline</source>
       <translation>B-görbe létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1086"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1139"/>
       <source>Create a B-spline in the sketch</source>
       <translation>Hozzon létre egy B-görbét a vázlatban</translation>
     </message>
@@ -205,22 +205,22 @@
   <context>
     <name>CmdSketcherCompCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1279"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1332"/>
       <source>Create circle</source>
       <translation>Kör rajzolása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1280"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1333"/>
       <source>Create a circle in the sketcher</source>
       <translation>Kör létrehozása a vázlatkészítőben</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1364"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1417"/>
       <source>Center and rim point</source>
       <translation>Közép- és a perem pont</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1370"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1423"/>
       <source>3 rim points</source>
       <translation>3 perem pont</translation>
     </message>
@@ -228,37 +228,37 @@
   <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="773"/>
+      <location filename="../../CommandCreateGeo.cpp" line="826"/>
       <source>Create conic</source>
       <translation>Kúpszelet létrehozás</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="774"/>
+      <location filename="../../CommandCreateGeo.cpp" line="827"/>
       <source>Create a conic in the sketch</source>
       <translation>Létrehoz egy kúp ívet a vázlaton</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="892"/>
+      <location filename="../../CommandCreateGeo.cpp" line="945"/>
       <source>Ellipse by center, radius, rim point</source>
       <translation>Ellipszis központtal, sugárral, perem ponttal</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="901"/>
+      <location filename="../../CommandCreateGeo.cpp" line="954"/>
       <source>Ellipse by axis endpoints, rim point</source>
       <translation>Ellipszis a tengely végpontjaival, peremponttal</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="910"/>
+      <location filename="../../CommandCreateGeo.cpp" line="963"/>
       <source>Arc of ellipse by center, radius, endpoints</source>
       <translation>Ellipszis ív központtal, sugárral, végpontokkal</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="920"/>
+      <location filename="../../CommandCreateGeo.cpp" line="973"/>
       <source>Arc of hyperbola by center, vertex, endpoints</source>
       <translation>Hiperbola ív központtal, sugárral, végpontokkal</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="929"/>
+      <location filename="../../CommandCreateGeo.cpp" line="982"/>
       <source>Arc of parabola by focus, vertex, endpoints</source>
       <translation>Parabola fókusszal, csúcsponttal, végpontokkal</translation>
     </message>
@@ -266,27 +266,27 @@
   <context>
     <name>CmdSketcherCompCreateRectangles</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="243"/>
+      <location filename="../../CommandCreateGeo.cpp" line="328"/>
       <source>Create rectangle</source>
       <translation>Téglalap rajzolása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="244"/>
+      <location filename="../../CommandCreateGeo.cpp" line="329"/>
       <source>Creates a rectangle in the sketch</source>
       <translation>Téglalap létrehozása a vázlatban</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="341"/>
+      <location filename="../../CommandCreateGeo.cpp" line="426"/>
       <source>Rectangle</source>
       <translation>Téglalap</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="347"/>
+      <location filename="../../CommandCreateGeo.cpp" line="432"/>
       <source>Centered rectangle</source>
       <translation>Középre tett téglalap</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="353"/>
+      <location filename="../../CommandCreateGeo.cpp" line="438"/>
       <source>Rounded rectangle</source>
       <translation>Lekerekített téglalap</translation>
     </message>
@@ -294,47 +294,47 @@
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2014"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2067"/>
       <source>Create regular polygon</source>
       <translation>Szabályos sokszög létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2015"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2068"/>
       <source>Create a regular polygon in the sketcher</source>
       <translation>Szabályos sokszög létrehozása a vázlatkészítőben</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2139"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2192"/>
       <source>Triangle</source>
       <translation>Háromszög</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2147"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2200"/>
       <source>Square</source>
       <translation>Négyzet</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2154"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2207"/>
       <source>Pentagon</source>
       <translation>Ötszög</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2162"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2215"/>
       <source>Hexagon</source>
       <translation>Hatszög</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2170"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2223"/>
       <source>Heptagon</source>
       <translation>Hétszög</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2178"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2231"/>
       <source>Octagon</source>
       <translation>Nyolcszög</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2187"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2240"/>
       <source>Regular polygon</source>
       <translation>Szabályos sokszög</translation>
     </message>
@@ -470,8 +470,8 @@
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3080"/>
-      <source>Constrain horizontally</source>
-      <translation>Vízszintes illesztés</translation>
+      <source>Constrain horizontal</source>
+      <translation type="unfinished">Constrain horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3081"/>
@@ -524,8 +524,8 @@ a kijelölt csúcsponton</translation>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4223"/>
-      <source>Constrain point onto object</source>
-      <translation>A pont illesztése a tárgyra</translation>
+      <source>Constrain point on object</source>
+      <translation type="unfinished">Constrain point on object</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4224"/>
@@ -564,8 +564,8 @@ and an edge as an interface.</source>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9233"/>
-      <source>Constrain symmetrical</source>
-      <translation>Szimmetria illesztés</translation>
+      <source>Constrain symmetric</source>
+      <translation type="unfinished">Constrain symmetric</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9234"/>
@@ -578,8 +578,8 @@ with respect to a line or a third point</source>
     <name>CmdSketcherConstrainVertical</name>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3125"/>
-      <source>Constrain vertically</source>
-      <translation>Függőleges illesztés</translation>
+      <source>Constrain vertical</source>
+      <translation type="unfinished">Constrain vertical</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3126"/>
@@ -616,12 +616,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="437"/>
-      <source>Create arc by three points</source>
-      <translation>Ív létrehozása három ponttal</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="490"/>
+      <source>Create arc by 3 points</source>
+      <translation type="unfinished">Create arc by 3 points</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="438"/>
+      <location filename="../../CommandCreateGeo.cpp" line="491"/>
       <source>Create an arc by its end points and a point along the arc</source>
       <translation>Ívet hoz létre az ív végpontjaival és egy ív menti ponttal</translation>
     </message>
@@ -629,12 +629,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1247"/>
-      <source>Create circle by three points</source>
-      <translation>Kör létrehozása három ponttal</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="1300"/>
+      <source>Create circle by 3 points</source>
+      <translation type="unfinished">Create circle by 3 points</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1248"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1301"/>
       <source>Create a circle by 3 perimeter points</source>
       <translation>Kör létrehozása 3 kerületi ponttal</translation>
     </message>
@@ -642,12 +642,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="405"/>
+      <location filename="../../CommandCreateGeo.cpp" line="458"/>
       <source>Create arc by center</source>
       <translation>Ív létrehozása középpont kijelöléssel</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="406"/>
+      <location filename="../../CommandCreateGeo.cpp" line="459"/>
       <source>Create an arc by its center and by its end points</source>
       <translation>Ívet hoz létre a középpontjával és a végpontokkal</translation>
     </message>
@@ -655,12 +655,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateArcOfEllipse</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="683"/>
+      <location filename="../../CommandCreateGeo.cpp" line="736"/>
       <source>Create arc of ellipse</source>
       <translation>Ellipszisív létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="684"/>
+      <location filename="../../CommandCreateGeo.cpp" line="737"/>
       <source>Create an arc of ellipse in the sketch</source>
       <translation>Létrehoz egy ellipszis ívet a vázlaton</translation>
     </message>
@@ -668,12 +668,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateArcOfHyperbola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="712"/>
+      <location filename="../../CommandCreateGeo.cpp" line="765"/>
       <source>Create arc of hyperbola</source>
       <translation>Hiperbolaív létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="713"/>
+      <location filename="../../CommandCreateGeo.cpp" line="766"/>
       <source>Create an arc of hyperbola in the sketch</source>
       <translation>Létrehoz egy hiperbola ívet a vázlaton</translation>
     </message>
@@ -681,12 +681,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateArcOfParabola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="740"/>
+      <location filename="../../CommandCreateGeo.cpp" line="793"/>
       <source>Create arc of parabola</source>
       <translation>Parabolaív létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="741"/>
+      <location filename="../../CommandCreateGeo.cpp" line="794"/>
       <source>Create an arc of parabola in the sketch</source>
       <translation>Létrehoz egy parabola ívet a vázlaton</translation>
     </message>
@@ -694,12 +694,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="953"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1006"/>
       <source>Create B-spline</source>
       <translation>B-görbe létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="954"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1007"/>
       <source>Create a B-spline by control points in the sketch.</source>
       <translation>Létrehoz egy B-görbét ellenőrző ponttokkal a vázlaton.</translation>
     </message>
@@ -707,12 +707,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="585"/>
-      <source>Create circle</source>
-      <translation>Kör rajzolása</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="638"/>
+      <source>Create circle by center</source>
+      <translation type="unfinished">Create circle by center</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="586"/>
+      <location filename="../../CommandCreateGeo.cpp" line="639"/>
       <source>Create a circle in the sketch</source>
       <translation>Kör rajzolása a vázlaton</translation>
     </message>
@@ -720,12 +720,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="652"/>
+      <location filename="../../CommandCreateGeo.cpp" line="705"/>
       <source>Create ellipse by 3 points</source>
       <translation>Létrehoz egy 3 pontos ellipszist</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="653"/>
+      <location filename="../../CommandCreateGeo.cpp" line="706"/>
       <source>Create an ellipse by 3 points in the sketch</source>
       <translation>Létrehoz egy 3 pontos ellipszist a vázlaton</translation>
     </message>
@@ -733,12 +733,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateEllipseByCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="619"/>
+      <location filename="../../CommandCreateGeo.cpp" line="672"/>
       <source>Create ellipse by center</source>
       <translation>Ellipszis létrehozása középponttal</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="620"/>
+      <location filename="../../CommandCreateGeo.cpp" line="673"/>
       <source>Create an ellipse by center in the sketch</source>
       <translation>Ellipszis létrehozása középponttal a vázlaton</translation>
     </message>
@@ -746,12 +746,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1422"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1475"/>
       <source>Create fillet</source>
       <translation>Lekerekítés létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1423"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1476"/>
       <source>Create a fillet between two lines or at a coincident point</source>
       <translation>Lekerekítés létrehozása két vonal között vagy egybeeső pontok közt</translation>
     </message>
@@ -759,12 +759,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1922"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1975"/>
       <source>Create heptagon</source>
       <translation>Hétszög létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1923"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1976"/>
       <source>Create a heptagon in the sketch</source>
       <translation>Egy hétszög létrehozása a vázlaton</translation>
     </message>
@@ -772,12 +772,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1893"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1946"/>
       <source>Create hexagon</source>
       <translation>Hatszög létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1894"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1947"/>
       <source>Create a hexagon in the sketch</source>
       <translation>Egy hatszög létrehozása a vázlaton</translation>
     </message>
@@ -785,12 +785,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="112"/>
+      <location filename="../../CommandCreateGeo.cpp" line="166"/>
       <source>Create line</source>
       <translation>Vonal rajzolása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="113"/>
+      <location filename="../../CommandCreateGeo.cpp" line="167"/>
       <source>Create a line in the sketch</source>
       <translation>Vonal rajzolása a vázlaton</translation>
     </message>
@@ -798,12 +798,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateOblong</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="209"/>
+      <location filename="../../CommandCreateGeo.cpp" line="294"/>
       <source>Create rounded rectangle</source>
       <translation>Lekerekített téglalap létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="210"/>
+      <location filename="../../CommandCreateGeo.cpp" line="295"/>
       <source>Create a rounded rectangle in the sketch</source>
       <translation>Lekerekített téglalap létrehozása a vázlatban</translation>
     </message>
@@ -811,12 +811,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1951"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2004"/>
       <source>Create octagon</source>
       <translation>Nyolcszög létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1952"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2005"/>
       <source>Create an octagon in the sketch</source>
       <translation>Egy nyolcszög létrehozása a vázlaton</translation>
     </message>
@@ -824,12 +824,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1863"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1916"/>
       <source>Create pentagon</source>
       <translation>Ötszög létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1864"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1917"/>
       <source>Create a pentagon in the sketch</source>
       <translation>Egy ötszög létrehozása a vázlaton</translation>
     </message>
@@ -837,12 +837,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="986"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1039"/>
       <source>Create periodic B-spline</source>
       <translation>Időszakos B-görbe létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="987"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1040"/>
       <source>Create a periodic B-spline by control points in the sketch.</source>
       <translation>Létrehoz egy időszakos B-görbét ellenőrző ponttokkal a vázlaton.</translation>
     </message>
@@ -850,12 +850,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1393"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1446"/>
       <source>Create point</source>
       <translation>Pont létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1394"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1447"/>
       <source>Create a point in the sketch</source>
       <translation>Pont létrehozása a vázlaton</translation>
     </message>
@@ -863,12 +863,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="373"/>
+      <location filename="../../CommandCreateGeo.cpp" line="197"/>
       <source>Create polyline</source>
       <translation>Vonallánc rajzolása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="374"/>
+      <location filename="../../CommandCreateGeo.cpp" line="198"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
       <translation>Vonallánc létrehozása a vázlatban. Az 'M' billentyűvel váltogathat a módok közt</translation>
     </message>
@@ -876,12 +876,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="144"/>
+      <location filename="../../CommandCreateGeo.cpp" line="229"/>
       <source>Create rectangle</source>
       <translation>Téglalap rajzolása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="145"/>
+      <location filename="../../CommandCreateGeo.cpp" line="230"/>
       <source>Create a rectangle in the sketch</source>
       <translation>Téglalap rajzolása a vázlaton</translation>
     </message>
@@ -889,12 +889,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateRectangleCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="175"/>
+      <location filename="../../CommandCreateGeo.cpp" line="260"/>
       <source>Create centered rectangle</source>
       <translation>Középre tett téglalap létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="176"/>
+      <location filename="../../CommandCreateGeo.cpp" line="261"/>
       <source>Create a centered rectangle in the sketch</source>
       <translation>Középre tett téglalap létrehozása a vázlatban</translation>
     </message>
@@ -902,12 +902,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1980"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2033"/>
       <source>Create regular polygon</source>
       <translation>Szabályos sokszög létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1981"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2034"/>
       <source>Create a regular polygon in the sketch</source>
       <translation>Egy szabályos sokszög létrehozása a vázlatban</translation>
     </message>
@@ -915,12 +915,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1743"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1796"/>
       <source>Create slot</source>
       <translation>Hozzon létre nyílást</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1744"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1797"/>
       <source>Create a slot in the sketch</source>
       <translation>Hozzon létre egy nyílást a vázlatban</translation>
     </message>
@@ -928,12 +928,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1834"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1887"/>
       <source>Create square</source>
       <translation>Négyzet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1835"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1888"/>
       <source>Create a square in the sketch</source>
       <translation>Egy négyszög létrehozása a vázlaton</translation>
     </message>
@@ -941,12 +941,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1805"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1858"/>
       <source>Create equilateral triangle</source>
       <translation>Egyenlő oldalú háromszög létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1806"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1859"/>
       <source>Create an equilateral triangle in the sketch</source>
       <translation>Egyenlő oldalú háromszög létrehozása a vázlaton</translation>
     </message>
@@ -1019,12 +1019,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1543"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1596"/>
       <source>Extend edge</source>
       <translation>Él meghosszabbítás</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1544"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1597"/>
       <source>Extend an edge with respect to the picked position</source>
       <translation>Hosszabbítson meg egy élt a kiválasztott pozíció figyelembe vételével</translation>
     </message>
@@ -1032,12 +1032,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherExternal</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1632"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1685"/>
       <source>Create external geometry</source>
       <translation>Külső geometria létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1633"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1686"/>
       <source>Create an edge linked to an external geometry</source>
       <translation>Hozzon létre egy szegélyt, összekötve a külső geometriával</translation>
     </message>
@@ -1171,7 +1171,7 @@ mint tükörreferencia hivatkozás.</translation>
     <message>
       <location filename="../../Command.cpp" line="844"/>
       <source>Wrong selection</source>
-      <translation>Rossz kijelölés</translation>
+      <translation>Hibás kijelölés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="845"/>
@@ -1376,12 +1376,12 @@ A 'Melléklet támogatás' tulajdonság törlődik, ha van.</translation>
   <context>
     <name>CmdSketcherSplit</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1574"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1627"/>
       <source>Split edge</source>
       <translation>Él felosztás</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1575"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1628"/>
       <source>Splits an edge into two while preserving constraints</source>
       <translation>Kettévágja az éleket, miközben megőrzi a kényszerítéseket</translation>
     </message>
@@ -1469,12 +1469,12 @@ megvezetett vagy hivatkozási üzemmódban</translation>
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1512"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1565"/>
       <source>Trim edge</source>
       <translation>Él vágása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1513"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1566"/>
       <source>Trim an edge with respect to the picked position</source>
       <translation>Él levágása, tekintettel a kiválasztott helyzetre</translation>
     </message>
@@ -1920,7 +1920,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Vázlatok egyesítése</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="182"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="183"/>
       <source>Toggle draft from/to draft</source>
       <translation>Vázlat váltása piszkozatról/vázlatra</translation>
     </message>
@@ -2105,7 +2105,7 @@ invalid constraints, degenerated geometry, etc.</source>
     </message>
     <message>
       <location filename="../../DrawSketchDefaultHandler.h" line="858"/>
-      <location filename="../../DrawSketchHandler.cpp" line="968"/>
+      <location filename="../../DrawSketchHandler.cpp" line="961"/>
       <source>Add auto constraints</source>
       <translation>Automatikus kényszerítés hozzáadása</translation>
     </message>
@@ -2363,8 +2363,8 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Ne csatolja</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="167"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="176"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="168"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="177"/>
       <location filename="../../CommandConstraints.cpp" line="171"/>
       <location filename="../../CommandConstraints.cpp" line="178"/>
       <location filename="../../CommandConstraints.cpp" line="2392"/>
@@ -2514,8 +2514,8 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Rossz kijelölés</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="168"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="177"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="169"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="178"/>
       <source>Select edge(s) from the sketch.</source>
       <translation>A kiválasztott él(ek) a vázlatból való.</translation>
     </message>
@@ -4470,55 +4470,55 @@ A tárgyak csak a vázlatsík mögött lesznek láthatók.</translation>
   <context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="187"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="180"/>
       <source>No missing coincidences</source>
       <translation>Nincsenek hiányzó egybeesések</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="188"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="181"/>
       <source>No missing coincidences found</source>
       <translation>Nem található hiányzó egybeesés</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="196"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="189"/>
       <source>Missing coincidences</source>
       <translation>Hiányzó egybeesések</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="197"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="190"/>
       <source>%1 missing coincidences found</source>
       <translation>%1 hiányzó egybeesést talált</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="248"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="241"/>
       <source>No invalid constraints</source>
       <translation>Nincs érvényes kényszerítés</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="249"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="242"/>
       <source>No invalid constraints found</source>
       <translation>Nem talált érvényes kényszerítést</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="255"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="248"/>
       <source>Invalid constraints</source>
       <translation>Érvénytelen illesztés</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="256"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="249"/>
       <source>Invalid constraints found</source>
       <translation>Érvénytelen kényszerítést talált</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="299"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="314"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="325"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="342"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="290"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="305"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="316"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="333"/>
       <source>Reversed external geometry</source>
       <translation>Fordított külső geometria</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="300"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="291"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
@@ -4531,7 +4531,7 @@ Click "Swap endpoints in constraints" button to reassign endpoints. Do this only
 "Kényszerítés végpontjait cseréli fel" gombra kattintva a végpontokat újrarendezi. Csak egyszer végezze el a FreeCAD v0.15, vagy régebbi vázlatokkal</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="315"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="306"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
@@ -4540,64 +4540,64 @@ However, no constraints linking to the endpoints were found.</source>
 Azonban, nem találhatók a végpontokhoz kötött kényszerítések.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="326"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="317"/>
       <source>No reversed external-geometry arcs were found.</source>
       <translation>Fordított külső-geometria ívek nem találhatóak.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="343"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="334"/>
       <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
       <translation>%1 módosítás volt a visszafordított ívek végpontjaival összekötött kényszerítéseken.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="363"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="384"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="354"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="375"/>
       <source>Constraint orientation locking</source>
       <translation>Kényszerítés orientáció zárolás</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="364"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="355"/>
       <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).</source>
       <translation>Tájolás zárolás és újraszámítás volt engedélyezve a %1 kényszerítésen. A kényszerítés listázásra került a jelentés nézetben (Nézet menü -&gt; Panelek -&gt; jelentés nézetben).</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="385"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="376"/>
       <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
       <translation>Tájolás zár letiltásra került a %1 kényszerítésen. A kényszerítés listázásra került a jelentés nézetben (Nézet menü-&gt; Panelek -&gt; jelentés nézetben). Vegye figyelembe, hogy minden jövőbeli kényszerítésen a zár alapértelmezetten bekapcsolt.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="403"/>
-      <location filename="../../TaskSketcherValidation.cpp" line="422"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="393"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="412"/>
       <source>Delete constraints to external geom.</source>
       <translation>Törli a külső geom. kényszerítést.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="404"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="394"/>
       <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
       <translation>Közel áll az ÖSSZES külső geometriához tartozó kényszerítés törléséhez. Ez hasznos a tört/megváltozott külső geometriákat összekötő vázlatok megmentéséhez. Biztosan törli a kényszerítéseket?</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="423"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="413"/>
       <source>All constraints that deal with external geometry were deleted.</source>
       <translation>Az összes külső geometriával foglalkozó kényszerítés törlésre került.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="493"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="482"/>
       <source>No degenerated geometry</source>
       <translation>Nincs korcs geometria</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="494"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="483"/>
       <source>No degenerated geometry found</source>
       <translation>Nem talált korcs geometriát</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="500"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="489"/>
       <source>Degenerated geometry</source>
       <translation>Korcs geometria</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="501"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="490"/>
       <source>%1 degenerated geometry found</source>
       <translation>%1 korcs geometriát talált</translation>
     </message>
@@ -5280,8 +5280,8 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1372"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1374"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1425"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1427"/>
       <source>Create a circle by 3 rim points</source>
       <translation>Kört hoz létre 3 határoló ponttal</translation>
     </message>
@@ -5289,13 +5289,13 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_CreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1199"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1252"/>
       <source>B-spline by control points</source>
       <translation>B-görbe ellenőrzési pontokkal</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1201"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1203"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1254"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1256"/>
       <source>Create a B-spline by control points</source>
       <translation>Létrehoz egy B-görbét ellenőrzési pontokkal</translation>
     </message>
@@ -5303,8 +5303,8 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1365"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1367"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1418"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1420"/>
       <source>Create a circle by its center and by a rim point</source>
       <translation>Kört hoz létre annak középpontjával és egy határoló ponttal</translation>
     </message>
@@ -5322,8 +5322,8 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2172"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2175"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2225"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2228"/>
       <source>Create a heptagon by its center and by one corner</source>
       <translation>Létrehoz egy hétszöget a középpontból és egy sarokból</translation>
     </message>
@@ -5331,8 +5331,8 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_CreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2164"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2167"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2217"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2220"/>
       <source>Create a hexagon by its center and by one corner</source>
       <translation>Létrehoz egy hatszöget a középpontból és egy sarokból</translation>
     </message>
@@ -5340,7 +5340,7 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_CreateOblong</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="355"/>
+      <location filename="../../CommandCreateGeo.cpp" line="440"/>
       <source>Create a rounded rectangle</source>
       <translation>Egy lekerekített téglalapot hoz létre</translation>
     </message>
@@ -5348,14 +5348,14 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_CreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2180"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2183"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2233"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2236"/>
       <source>Create an octagon by its center and by one corner</source>
       <translation>Létrehoz egy nyolcszöget a középpontból és egy sarokból</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2189"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2192"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2242"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2245"/>
       <source>Create a regular polygon by its center and by one corner</source>
       <translation>Létrehoz egy egyszerű sokszöget a középpontból és egy sarokból</translation>
     </message>
@@ -5363,8 +5363,8 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_CreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2156"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2159"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2209"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2212"/>
       <source>Create a pentagon by its center and by one corner</source>
       <translation>Létrehoz egy ötszöget a középpontból és egy sarokból</translation>
     </message>
@@ -5372,7 +5372,7 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_CreateRectangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="343"/>
+      <location filename="../../CommandCreateGeo.cpp" line="428"/>
       <source>Create a rectangle</source>
       <translation>Téglalap létrehozása</translation>
     </message>
@@ -5380,7 +5380,7 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_CreateRectangle_Center</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="349"/>
+      <location filename="../../CommandCreateGeo.cpp" line="434"/>
       <source>Create a centered rectangle</source>
       <translation>Középre tett téglalap létrehozása</translation>
     </message>
@@ -5388,8 +5388,8 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_CreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2148"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2151"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2201"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2204"/>
       <source>Create a square by its center and by one corner</source>
       <translation>Létrehoz egy négyszöget a középpontból és egy sarokból</translation>
     </message>
@@ -5397,8 +5397,8 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_CreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2141"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2144"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2194"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2197"/>
       <source>Create an equilateral triangle by its center and by one corner</source>
       <translation>Létrehoz egy egyenlő oldalú háromszöget a középpontból és egy sarokból</translation>
     </message>
@@ -5406,13 +5406,13 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_Create_Periodic_BSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1205"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1258"/>
       <source>Periodic B-spline by control points</source>
       <translation>Időszakos B-görbe ellenőrzési pontokkal</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1208"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1211"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1261"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1264"/>
       <source>Create a periodic B-spline by control points</source>
       <translation>Létrehoz egy időszakos B-görbét ellenőrzési pontokkal</translation>
     </message>
@@ -6111,7 +6111,7 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
       <translation>A kiválasztás nem rendelkezik érvényes geometriákkal. A B-görbek, pontok még nem támogatottak.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectPyImp.cpp" line="389"/>
+      <location filename="../../../App/SketchObjectPyImp.cpp" line="414"/>
       <source>The constraint has invalid index information and is malformed.</source>
       <translation>A korlátozás érvénytelen indexinformációval rendelkezik, és rosszul formázott.</translation>
     </message>
@@ -6339,13 +6339,13 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
   <context>
     <name>Sketcher_CreateBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1215"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1268"/>
       <source>B-spline by knots</source>
       <translation>B-görbe csomópontokkal</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1216"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1218"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1269"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1271"/>
       <source>Create a B-spline by knots</source>
       <translation>Létrehoz egy B-görbét csomópontokkal</translation>
     </message>
@@ -6451,12 +6451,12 @@ A pontokat a rácsháló távolságának egyötödénél közelebb kell állíta
   <context>
     <name>CmdSketcherCreateBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1017"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1070"/>
       <source>Create B-spline by knots</source>
       <translation>B-görbe létrehozása csomópontokkal</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1018"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1071"/>
       <source>Create a B-spline by knots, i.e. by interpolation, in the sketch.</source>
       <translation>Hozzon létre egy B-görbét csomópontok által, azaz interpolációval a vázlatban.</translation>
     </message>
@@ -6464,12 +6464,12 @@ A pontokat a rácsháló távolságának egyötödénél közelebb kell állíta
   <context>
     <name>CmdSketcherCreatePeriodicBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1049"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1102"/>
       <source>Create periodic B-spline by knots</source>
       <translation>Időszakos B-görbe létrehozása csomópontok által</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1051"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1104"/>
       <source>Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.</source>
       <translation>Hozzon létre egy B-görbét csomópontokkal, azaz interpolációval a vázlatban.</translation>
     </message>
@@ -6736,8 +6736,8 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
     <name>CmdSketcherCompHorizontalVertical</name>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2724"/>
-      <source>Horizontal/Vertical</source>
-      <translation>Vízszintes/Függőleges</translation>
+      <source>Constrain horizontal/vertical</source>
+      <translation type="unfinished">Constrain horizontal/vertical</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2725"/>
@@ -6749,8 +6749,8 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
     <name>CmdSketcherConstrainHorVer</name>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3034"/>
-      <source>Horizontal/Vertical</source>
-      <translation>Vízszintes/Függőleges</translation>
+      <source>Constrain horizontal/vertical</source>
+      <translation type="unfinished">Constrain horizontal/vertical</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3035"/>
@@ -6761,12 +6761,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdSketcherCompCurveEdition</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1604"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1657"/>
       <source>Curve Edition</source>
       <translation>Görbe szerkesztő</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1605"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1658"/>
       <source>Curve Edition tools.</source>
       <translation>Görbe szerkesztő eszközök.</translation>
     </message>
@@ -6774,12 +6774,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdSketcherCompSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1693"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1746"/>
       <source>Slots</source>
       <translation>Hornyok</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1694"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1747"/>
       <source>Slot tools.</source>
       <translation>Horony eszközök.</translation>
     </message>
@@ -6787,12 +6787,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdSketcherCreateArcSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1774"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1827"/>
       <source>Create arc slot</source>
       <translation>Hozzon létre íves hornyot</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1775"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1828"/>
       <source>Create an arc slot in the sketch</source>
       <translation>Íves horony létrehozása a vázlaton</translation>
     </message>
@@ -6893,9 +6893,64 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
       <translation>Szélesség</translation>
     </message>
     <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="212"/>
+      <source>Color of fully constrained normal geometry in edit mode</source>
+      <translation type="unfinished">Color of fully constrained normal geometry in edit mode</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="238"/>
+      <source>Color of normal geometry in edit mode</source>
+      <translation type="unfinished">Color of normal geometry in edit mode</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="306"/>
+      <source>Color of fully constrained construction geometry in edit mode</source>
+      <translation type="unfinished">Color of fully constrained construction geometry in edit mode</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="387"/>
+      <source>Internal alignment geometry</source>
+      <translation type="unfinished">Internal alignment geometry</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="400"/>
+      <source>Color of fully constrained internal alignment geometry in edit mode</source>
+      <translation type="unfinished">Color of fully constrained internal alignment geometry in edit mode</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="426"/>
+      <source>Color of internal alignment geometry in edit mode</source>
+      <translation type="unfinished">Color of internal alignment geometry in edit mode</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="555"/>
+      <source>Fully constrained sketch</source>
+      <translation type="unfinished">Fully constrained sketch</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="568"/>
+      <source>Color of geometry indicating a fully constrained sketch</source>
+      <translation type="unfinished">Color of geometry indicating a fully constrained sketch</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="588"/>
+      <source>Invalid sketch</source>
+      <translation>Érvénytelen vázlat</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="672"/>
+      <source>Color of dimensional driving constraints in edit mode</source>
+      <translation type="unfinished">Color of dimensional driving constraints in edit mode</translation>
+    </message>
+    <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="799"/>
       <source>Vertex</source>
       <translation>Végpont</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="806"/>
+      <source>Color of vertices outside edit mode</source>
+      <translation type="unfinished">Color of vertices outside edit mode</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="845"/>
@@ -6903,19 +6958,14 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
       <translation>Él</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="212"/>
-      <source>Color of fully constrained edge color in edit mode</source>
-      <translation>Teljesen kényszerített geometria éleinek színe szerkesztési módban</translation>
+      <location filename="../../SketcherSettingsAppearance.ui" line="852"/>
+      <source>Color of edges outside edit mode</source>
+      <translation type="unfinished">Color of edges outside edit mode</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="199"/>
       <source>Geometry</source>
       <translation>Geometria</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="238"/>
-      <source>Color of edges being edited</source>
-      <translation>Élek színe szerkesztve lesznek</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="258"/>
@@ -6933,11 +6983,6 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
       <translation>Építőipari geometria</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="306"/>
-      <source>Color of fully constrained construction edge color in edit mode</source>
-      <translation>Teljesen kényszerített szerkesztési élszín színe szerkesztési módban</translation>
-    </message>
-    <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="332"/>
       <source>Color of construction geometry in edit mode</source>
       <translation>Építési geometria színe a szerkesztési módban</translation>
@@ -6951,21 +6996,6 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
       <location filename="../../SketcherSettingsAppearance.ui" line="362"/>
       <source>Width of construction edges.</source>
       <translation>Az építési élek szélessége.</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="387"/>
-      <source>Internal alignment edge</source>
-      <translation>Belső igazítás éle</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="400"/>
-      <source>Color of fully constrained internal alignment edge color in edit mode</source>
-      <translation>Teljesen kényszerített belső igazítási élszín színe szerkesztési módban</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="426"/>
-      <source>Color of edges of internal alignment geometry</source>
-      <translation>A belső nyomvonal geometria élének színe</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="446"/>
@@ -6998,21 +7028,6 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
       <translation>Külső élek szélessége.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="555"/>
-      <source>Fully constrained Sketch</source>
-      <translation>Teljesen kényszerezett vázlat</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="568"/>
-      <source>Color of fully constrained geometry in edit mode</source>
-      <translation>Teljesen kényszerített geometria színe a szerkesztési módban</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="588"/>
-      <source>Invalid Sketch</source>
-      <translation>Érvénytelen vázlat</translation>
-    </message>
-    <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="601"/>
       <source>Color of geometry indicating an invalid sketch</source>
       <translation>Érvénytelen vázlatot jelző geometria színe</translation>
@@ -7036,11 +7051,6 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
       <location filename="../../SketcherSettingsAppearance.ui" line="665"/>
       <source>Dimensional constraint</source>
       <translation>Méretezett illesztés</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="672"/>
-      <source>Color of dimensional driving constraints</source>
-      <translation>Szín a méretkényszerek beállításhoz</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="692"/>
@@ -7076,16 +7086,6 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
       <location filename="../../SketcherSettingsAppearance.ui" line="791"/>
       <source>Colors outside Sketcher</source>
       <translation>A rajzolón kívüli színek</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="806"/>
-      <source>Color of vertices</source>
-      <translation>Csúcspontok színei</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="852"/>
-      <source>Color of edges</source>
-      <translation>Élek színei</translation>
     </message>
   </context>
   <context>
@@ -7222,8 +7222,8 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="555"/>
-      <location filename="../../CommandCreateGeo.cpp" line="557"/>
+      <location filename="../../CommandCreateGeo.cpp" line="608"/>
+      <location filename="../../CommandCreateGeo.cpp" line="610"/>
       <source>Create an arc by its center and by its endpoints</source>
       <translation>Egy ív létrehozása a középpontja és a végpontjai alapján</translation>
     </message>
@@ -7241,8 +7241,8 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>Sketcher_Create3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="562"/>
-      <location filename="../../CommandCreateGeo.cpp" line="565"/>
+      <location filename="../../CommandCreateGeo.cpp" line="615"/>
+      <location filename="../../CommandCreateGeo.cpp" line="618"/>
       <source>Create an arc by its endpoints and a point along the arc</source>
       <translation>Hozzon létre egy ívet a végpontjaival és az ív mentén lévő ponttal</translation>
     </message>
@@ -7250,8 +7250,8 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>Sketcher_CreateEllipseByCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="894"/>
-      <location filename="../../CommandCreateGeo.cpp" line="897"/>
+      <location filename="../../CommandCreateGeo.cpp" line="947"/>
+      <location filename="../../CommandCreateGeo.cpp" line="950"/>
       <source>Create an ellipse by its center, one of its radii and a rim point</source>
       <translation>Egy ellipszis létrehozása a középpontja, az egyik sugara és egy perempont segítségével</translation>
     </message>
@@ -7259,8 +7259,8 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>Sketcher_CreateEllipseBy3Points</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="903"/>
-      <location filename="../../CommandCreateGeo.cpp" line="906"/>
+      <location filename="../../CommandCreateGeo.cpp" line="956"/>
+      <location filename="../../CommandCreateGeo.cpp" line="959"/>
       <source>Create an ellipse by the endpoints of one of its axes and a rim point</source>
       <translation>Ellipszis létrehozása az egyik tengely végpontjaival és egy peremponttal</translation>
     </message>
@@ -7268,8 +7268,8 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>Sketcher_CreateArcOfEllipse</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="912"/>
-      <location filename="../../CommandCreateGeo.cpp" line="915"/>
+      <location filename="../../CommandCreateGeo.cpp" line="965"/>
+      <location filename="../../CommandCreateGeo.cpp" line="968"/>
       <source>Create an arc of ellipse by its center, one of its radii, and its endpoints</source>
       <translation>Egy ellipszis ív létrehozása a középpontja, az egyik sugara és a végpontjai segítségével</translation>
     </message>
@@ -7277,8 +7277,8 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>Sketcher_CreateArcOfHyperbola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="923"/>
-      <location filename="../../CommandCreateGeo.cpp" line="926"/>
+      <location filename="../../CommandCreateGeo.cpp" line="976"/>
+      <location filename="../../CommandCreateGeo.cpp" line="979"/>
       <source>Create an arc of hyperbola by its center, vertex and endpoints</source>
       <translation>Hozzon létre egy hiperbola ívet a középpontja, csúcsa és végpontjai alapján</translation>
     </message>
@@ -7286,8 +7286,8 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>Sketcher_CreateArcOfParabola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="932"/>
-      <location filename="../../CommandCreateGeo.cpp" line="935"/>
+      <location filename="../../CommandCreateGeo.cpp" line="985"/>
+      <location filename="../../CommandCreateGeo.cpp" line="988"/>
       <source>Create an arc of parabola by its focus, vertex and endpoints</source>
       <translation>Hozzon létre egy parabola ívet a fókusz, a csúcs és a végpontok segítségével</translation>
     </message>
@@ -7295,12 +7295,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdSketcherCreateChamfer</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1453"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1506"/>
       <source>Create chamfer</source>
       <translation>Letörés létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1454"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1507"/>
       <source>Create a chamfer between two lines or at a coincident point</source>
       <translation>Letörés létrehozása két vonal között vagy egybeeső pontok közt</translation>
     </message>
@@ -7308,12 +7308,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdSketcherCompCreateFillets</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1484"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1537"/>
       <source>Create fillet or chamfer</source>
       <translation>Lekerekítés vagy letörés létrehozás</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1485"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1538"/>
       <source>Create a fillet or chamfer between two lines</source>
       <translation>Létrehoz egy lekerekítést vagy letörést két vonal közt</translation>
     </message>
@@ -7433,15 +7433,28 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>Sketcher_CreatePeriodicBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1222"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1275"/>
       <source>Periodic B-spline by knots</source>
       <translation>Időszakos B-görbe csomópontokkal</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1225"/>
-      <location filename="../../CommandCreateGeo.cpp" line="1228"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1278"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1281"/>
       <source>Create a periodic B-spline by knots</source>
       <translation>Létrehoz egy időszakos B-görbét csomópontokkal</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCompLine</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="115"/>
+      <source>Create polyline</source>
+      <translation>Vonallánc rajzolása</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="116"/>
+      <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
+      <translation>Vonallánc létrehozása a vázlatban. Az 'M' billentyűvel váltogathat a módok közt</translation>
     </message>
   </context>
 </TS>

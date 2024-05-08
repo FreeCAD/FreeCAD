@@ -102,7 +102,7 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="250"/>
       <source>Toggle grounded</source>
-      <translation>Укљ/Искљ учвршћеност</translation>
+      <translation>Учврсти</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="257"/>
