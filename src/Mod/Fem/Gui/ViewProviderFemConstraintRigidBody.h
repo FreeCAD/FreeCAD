@@ -43,6 +43,8 @@ public:
 
 protected:
     bool setEdit(int ModNum) override;
+
+    void transformExtraSymbol() const override;
 };
 
 }  // namespace FemGui

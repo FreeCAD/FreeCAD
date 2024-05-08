@@ -24,17 +24,14 @@
 
 #ifndef _PreComp_
 #include <QMessageBox>
-#include <Inventor/SbRotation.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/nodes/SoMultipleCopy.h>
-#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoTransform.h>
 #endif
 
-#include <Mod/Fem/App/FemConstraintRigidBody.h>
 #include "Gui/Control.h"
+#include <Mod/Fem/App/FemConstraintRigidBody.h>
 
-#include "ViewProviderFemConstraintRigidBody.h"
 #include "TaskFemConstraintRigidBody.h"
+#include "ViewProviderFemConstraintRigidBody.h"
 
 
 using namespace FemGui;
@@ -46,10 +43,11 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintRigidBody,
 ViewProviderFemConstraintRigidBody::ViewProviderFemConstraintRigidBody()
 {
     sPixmap = "FEM_ConstraintRigidBody";
+    loadSymbol((resourceSymbolDir + "ConstraintRigidBody.iv").c_str());
+    ShapeAppearance.setDiffuseColor(0.0f, 0.5f, 0.0f);
 }
 
-ViewProviderFemConstraintRigidBody::~ViewProviderFemConstraintRigidBody()
-{}
+ViewProviderFemConstraintRigidBody::~ViewProviderFemConstraintRigidBody() = default;
 
 bool ViewProviderFemConstraintRigidBody::setEdit(int ModNum)
 {
@@ -110,71 +108,31 @@ bool ViewProviderFemConstraintRigidBody::setEdit(int ModNum)
     }
 }
 
-#define WIDTH (2)
-#define HEIGHT (1)
-// #define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing -
-// so disable
-
 void ViewProviderFemConstraintRigidBody::updateData(const App::Property* prop)
 {
-    // Gets called whenever a property of the attached object changes
-    Fem::ConstraintRigidBody* pcConstraint =
-        static_cast<Fem::ConstraintRigidBody*>(this->getObject());
-    float scaledwidth =
-        WIDTH * pcConstraint->Scale.getValue();  // OvG: Calculate scaled values once only
-    float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
+    auto obj = static_cast<Fem::ConstraintRigidBody*>(this->getObject());
 
-#ifdef USE_MULTIPLE_COPY
-    // OvG: always need access to cp for scaling
-    SoMultipleCopy* cp = new SoMultipleCopy();
-    if (pShapeSep->getNumChildren() == 0) {
-        // Set up the nodes
-        cp->matrix.setNum(0);
-        cp->addChild((SoNode*)createRigidBody(scaledheight, scaledwidth));  // OvG: Scaling
-        pShapeSep->addChild(cp);
-    }
-#endif
-
-    if (strcmp(prop->getName(), "Points") == 0) {
-        const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
-        const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
-        if (points.size() != normals.size()) {
-            return;
-        }
-        std::vector<Base::Vector3d>::const_iterator n = normals.begin();
-
-#ifdef USE_MULTIPLE_COPY
-        cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
-        cp->matrix.setNum(points.size());
-        SbMatrix* matrices = cp->matrix.startEditing();
-        int idx = 0;
-#else
-        // Note: Points and Normals are always updated together
-        Gui::coinRemoveAllChildren(pShapeSep);
-#endif
-
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end();
-             p++) {
-            SbVec3f base(p->x, p->y, p->z);
-            SbVec3f dir(n->x, n->y, n->z);
-            SbRotation rot(SbVec3f(0, -1, 0), dir);
-#ifdef USE_MULTIPLE_COPY
-            SbMatrix m;
-            m.setTransform(base, rot, SbVec3f(1, 1, 1));
-            matrices[idx] = m;
-            idx++;
-#else
-            SoSeparator* sep = new SoSeparator();
-            createPlacement(sep, base, rot);
-            createFixed(sep, scaledheight, scaledwidth);  // OvG: Scaling
-            pShapeSep->addChild(sep);
-#endif
-            n++;
-        }
-#ifdef USE_MULTIPLE_COPY
-        cp->matrix.finishEditing();
-#endif
+    if (prop == &obj->ReferenceNode) {
+        updateSymbol();
     }
 
     ViewProviderFemConstraint::updateData(prop);
+}
+
+void ViewProviderFemConstraintRigidBody::transformExtraSymbol() const
+{
+    SoTransform* symTrans = getExtraSymbolTransform();
+    if (symTrans) {
+        auto obj = static_cast<const Fem::ConstraintRigidBody*>(this->getObject());
+        float s = obj->getScaleFactor();
+        const Base::Vector3d& refNode = obj->ReferenceNode.getValue();
+        SbVec3f tra(refNode.x, refNode.y, refNode.z);
+        SbVec3f sca(s, s, s);
+        SbRotation rot(SbVec3f(0, 0, 1), 0);
+
+        SbMatrix mat;
+        mat.setTransform(tra, rot, sca);
+
+        symTrans->setMatrix(mat);
+    }
 }

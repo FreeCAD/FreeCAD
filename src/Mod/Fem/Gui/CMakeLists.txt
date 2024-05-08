@@ -360,6 +360,7 @@ SET(FemGuiSymbol_IV
     Resources/symbols/ConstraintHeatFlux.iv
     Resources/symbols/ConstraintPlaneRotation.iv
     Resources/symbols/ConstraintPressure.iv
+    Resources/symbols/ConstraintRigidBody.iv
     Resources/symbols/ConstraintSpring.iv
     Resources/symbols/ConstraintTemperature.iv
     Resources/symbols/ConstraintTie.iv
