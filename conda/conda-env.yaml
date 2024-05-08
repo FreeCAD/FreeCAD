@@ -5,3 +5,4 @@ dependencies:
 - conda-devenv
 - mamba
 - python==3.11.*
+- zstd==1.5.6
