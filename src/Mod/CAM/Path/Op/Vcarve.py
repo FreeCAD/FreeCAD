@@ -351,10 +351,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         :returns: dictionary - each face object is a key containing list of wires"""
 
         wires_by_face = dict()
-
-        if hasattr(self, "voronoiDebugCache"):
-                self.voronoiDebugCache = []
-
+        self.voronoiDebugCache = dict()
 
         def insert_many_wires(vd, wires):
             for wire in wires:
@@ -412,10 +409,8 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             wires = _sortVoronoiWires(wires)
             voronoiWires.extend(wires)
 
-            if hasattr(self, "voronoiDebugCache"):
-                self.voronoiDebugCache.append(vd)
-
             wires_by_face[f] = voronoiWires
+            self.voronoiDebugCache = wires_by_face
 
         return wires_by_face
 
@@ -491,6 +486,8 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
     def opExecute(self, obj):
         """opExecute(obj) ... process engraving operation"""
         Path.Log.track()
+
+        self.voronoiDebugCache = None
 
         if not hasattr(obj.ToolController.Tool, "CuttingEdgeAngle"):
             Path.Log.error(
@@ -570,16 +567,30 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
     def debugVoronoi(self, obj):
         """Debug function to display calculated voronoi edges"""
 
-        # create voronoiDebugCache so buildMedialWires() can fill it
-        self.voronoiDebugCache = []
-        self.opExecute(obj)
+        if not getattr(self, "voronoiDebugCache", None):
+            Path.Log.error("debugVoronoi: empty debug cache. Recompute VCarve operation first")
+            return
 
         vPart = FreeCAD.activeDocument().addObject('App::Part', f"{obj.Name}-VoronoiDebug")
 
-        for diag_no, diagram in enumerate(self.voronoiDebugCache):
-            for edge_no, edge in enumerate([s for s in diagram.Edges if s.Color == 0]):
-                vPart.addObject(Part.show(edge.toShape(), f"Edge-{diag_no}-{edge_no}"))
+        wiresToShow = []
 
+        for face, wires in self.voronoiDebugCache.items():
+            for wire in wires:
+                lastEdge = None
+                currentPartWire = Part.Wire()
+                currentPartWire.fixTolerance(0.01)
+                for edge in wire:
+                    currentEdge = edge.toShape()
+
+                    for v in currentEdge.Vertexes:
+                        v.fixTolerance(0.1)
+
+                    currentPartWire.add(currentEdge)
+                wiresToShow.append(currentPartWire)
+
+        for w in wiresToShow:
+            vPart.addObject(Part.show(w))
 
 
 def SetupProperties():
