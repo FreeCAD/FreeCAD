@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <boost/core/ignore_unused.hpp>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <TopoDS.hxx>
@@ -1277,10 +1278,12 @@ int AssemblyObject::slidingPartIndex(App::DocumentObject* joint)
 {
     App::DocumentObject* part1 = getLinkObjFromProp(joint, "Part1");
     App::DocumentObject* obj1 = getObjFromNameProp(joint, "Object1", "Part1");
+    boost::ignore_unused(obj1);
     Base::Placement plc1 = getPlacementFromProp(joint, "Placement1");
 
     App::DocumentObject* part2 = getLinkObjFromProp(joint, "Part2");
     App::DocumentObject* obj2 = getObjFromNameProp(joint, "Object2", "Part2");
+    boost::ignore_unused(obj2);
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
 
     int slidingFound = 0;

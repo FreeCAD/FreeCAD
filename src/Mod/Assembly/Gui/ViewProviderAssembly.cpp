@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <boost/core/ignore_unused.hpp>
 #include <QMessageBox>
 #include <vector>
 #include <sstream>
@@ -389,6 +390,7 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
 
                     Base::Vector3d projInitialPositionRot =
                         initialPositionRot.ProjectToPlane(newJcsGlobalPlc.getPosition(), norm);
+                    boost::ignore_unused(projInitialPositionRot);
                     double angle =
                         (newPosRot - center).GetAngleOriented(initialPositionRot - center, norm);
                     // Base::Console().Warning("angle %f\n", angle);
@@ -818,7 +820,6 @@ void ViewProviderAssembly::initMoveDragger()
 
     // find the placement for the dragger.
     App::DocumentObject* obj = docsToMove[0].first;
-    AssemblyObject* assemblyPart = static_cast<AssemblyObject*>(getObject());
     draggerInitPlc = AssemblyObject::getGlobalPlacement(obj, obj);
     std::vector<App::DocumentObject*> listOfObjs;
     for (auto& pair : docsToMove) {
@@ -841,6 +842,7 @@ void ViewProviderAssembly::endMoveDragger()
 
 void ViewProviderAssembly::draggerMotionCallback(void* data, SoDragger* d)
 {
+    boost::ignore_unused(d);
     auto sudoThis = static_cast<ViewProviderAssembly*>(data);
 
     Base::Placement draggerPlc = sudoThis->getDraggerPlacement();
