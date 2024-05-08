@@ -41,22 +41,26 @@ public:
     explicit TaskFemConstraintRigidBody(ViewProviderFemConstraintRigidBody* ConstraintView,
                                         QWidget* parent = nullptr);
     ~TaskFemConstraintRigidBody() override;
+
     const std::string getReferences() const override;
-    double get_xRefNode() const;
-    double get_yRefNode() const;
-    double get_zRefNode() const;
-    double get_xForce() const;
-    double get_yForce() const;
-    double get_zForce() const;
-    double get_xMoment() const;
-    double get_yMoment() const;
-    double get_zMoment() const;
-    bool get_DefineRefNode() const;
+    Base::Vector3d getReferenceNode() const;
+    Base::Vector3d getDisplacement() const;
+    Base::Rotation getRotation() const;
+    std::vector<std::string> getForce() const;
+    std::vector<std::string> getMoment() const;
+    std::vector<std::string> getTranslationalMode() const;
+    std::vector<std::string> getRotationalMode() const;
 
 private Q_SLOTS:
     void onReferenceDeleted();
     void addToSelection() override;
     void removeFromSelection() override;
+    void onTransModeXChanged(int);
+    void onTransModeYChanged(int);
+    void onTransModeZChanged(int);
+    void onRotModeXChanged(int);
+    void onRotModeYChanged(int);
+    void onRotModeZChanged(int);
 
 protected:
     bool event(QEvent* e) override;

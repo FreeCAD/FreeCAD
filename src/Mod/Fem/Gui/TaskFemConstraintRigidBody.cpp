@@ -67,45 +67,161 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
             &QListWidget::itemClicked,
             this,
             &TaskFemConstraintRigidBody::setSelection);
-
-    // TODO: Relate inputs to property
+    connect(ui->cb_x_trans_mode,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskFemConstraintRigidBody::onTransModeXChanged);
+    connect(ui->cb_y_trans_mode,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskFemConstraintRigidBody::onTransModeYChanged);
+    connect(ui->cb_z_trans_mode,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskFemConstraintRigidBody::onTransModeZChanged);
+    connect(ui->cb_x_rot_mode,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskFemConstraintRigidBody::onRotModeXChanged);
+    connect(ui->cb_y_rot_mode,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskFemConstraintRigidBody::onRotModeYChanged);
+    connect(ui->cb_z_rot_mode,
+            qOverload<int>(&QComboBox::activated),
+            this,
+            &TaskFemConstraintRigidBody::onRotModeZChanged);
 
     this->groupLayout()->addWidget(proxy);
 
     /* Note: */
     // Get the feature data
-    Fem::ConstraintRigidBody* pcConstraint =
-        static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
-    double fStates[15];
-    fStates[0] = pcConstraint->xRefNode.getValue();
-    fStates[1] = pcConstraint->yRefNode.getValue();
-    fStates[2] = pcConstraint->zRefNode.getValue();
-    fStates[3] = pcConstraint->xDisplacement.getValue();
-    fStates[4] = pcConstraint->yDisplacement.getValue();
-    fStates[5] = pcConstraint->zDisplacement.getValue();
-    fStates[6] = pcConstraint->xRotation.getValue();
-    fStates[7] = pcConstraint->yRotation.getValue();
-    fStates[8] = pcConstraint->zRotation.getValue();
-    fStates[9] = pcConstraint->xForce.getValue();
-    fStates[10] = pcConstraint->yForce.getValue();
-    fStates[11] = pcConstraint->zForce.getValue();
-    fStates[12] = pcConstraint->xMoment.getValue();
-    fStates[13] = pcConstraint->yMoment.getValue();
-    fStates[14] = pcConstraint->zMoment.getValue();
+    auto pcConstraint = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
+
+    const Base::Vector3d& refNode = pcConstraint->ReferenceNode.getValue();
+    const Base::Vector3d& disp = pcConstraint->Displacement.getValue();
+    Base::Vector3d rotDir;
+    double rotAngleRad;
+    pcConstraint->Rotation.getValue().getValue(rotDir, rotAngleRad);
+    Base::Quantity rotAngle(rotAngleRad, QString::fromUtf8("rad"));
+    Base::Quantity forceX = pcConstraint->ForceX.getQuantityValue();
+    Base::Quantity forceY = pcConstraint->ForceY.getQuantityValue();
+    Base::Quantity forceZ = pcConstraint->ForceZ.getQuantityValue();
+    Base::Quantity momentX = pcConstraint->MomentX.getQuantityValue();
+    Base::Quantity momentY = pcConstraint->MomentY.getQuantityValue();
+    Base::Quantity momentZ = pcConstraint->MomentZ.getQuantityValue();
 
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     // Fill data into dialog elements
-    ui->if_ref_node_x->setValue(fStates[0]);
-    ui->if_ref_node_y->setValue(fStates[1]);
-    ui->if_ref_node_z->setValue(fStates[2]);
-    ui->if_ref_force_x->setValue(fStates[9]);
-    ui->if_ref_force_y->setValue(fStates[10]);
-    ui->if_ref_force_z->setValue(fStates[11]);
-    ui->if_rot_force_x->setValue(fStates[12]);
-    ui->if_rot_force_y->setValue(fStates[13]);
-    ui->if_rot_force_z->setValue(fStates[14]);
+    ui->qsb_ref_node_x->setValue(refNode.x);
+    ui->qsb_ref_node_y->setValue(refNode.y);
+    ui->qsb_ref_node_z->setValue(refNode.z);
+    ui->qsb_ref_node_x->bind(
+        App::ObjectIdentifier::parse(pcConstraint, std::string("ReferenceNode.x")));
+    ui->qsb_ref_node_y->bind(
+        App::ObjectIdentifier::parse(pcConstraint, std::string("ReferenceNode.y")));
+    ui->qsb_ref_node_z->bind(
+        App::ObjectIdentifier::parse(pcConstraint, std::string("ReferenceNode.z")));
+    ui->qsb_ref_node_x->setMinimum(-FLOAT_MAX);
+    ui->qsb_ref_node_x->setMaximum(FLOAT_MAX);
+    ui->qsb_ref_node_y->setMinimum(-FLOAT_MAX);
+    ui->qsb_ref_node_y->setMaximum(FLOAT_MAX);
+    ui->qsb_ref_node_z->setMinimum(-FLOAT_MAX);
+    ui->qsb_ref_node_z->setMaximum(FLOAT_MAX);
+
+    ui->qsb_disp_x->setValue(disp.x);
+    ui->qsb_disp_y->setValue(disp.y);
+    ui->qsb_disp_z->setValue(disp.z);
+    ui->qsb_disp_x->bind(App::ObjectIdentifier::parse(pcConstraint, std::string("Displacement.x")));
+    ui->qsb_disp_y->bind(App::ObjectIdentifier::parse(pcConstraint, std::string("Displacement.y")));
+    ui->qsb_disp_z->bind(App::ObjectIdentifier::parse(pcConstraint, std::string("Displacement.z")));
+    ui->qsb_disp_x->setMinimum(-FLOAT_MAX);
+    ui->qsb_disp_x->setMaximum(FLOAT_MAX);
+    ui->qsb_disp_y->setMinimum(-FLOAT_MAX);
+    ui->qsb_disp_y->setMaximum(FLOAT_MAX);
+    ui->qsb_disp_z->setMinimum(-FLOAT_MAX);
+    ui->qsb_disp_z->setMaximum(FLOAT_MAX);
+
+    ui->spb_rot_axis_x->setValue(rotDir.x);
+    ui->spb_rot_axis_y->setValue(rotDir.y);
+    ui->spb_rot_axis_z->setValue(rotDir.z);
+    ui->qsb_rot_angle->setValue(rotAngle.getValueAs(Base::Quantity::Degree));
+    ui->spb_rot_axis_x->bind(
+        App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Axis.x")));
+    ui->spb_rot_axis_y->bind(
+        App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Axis.y")));
+    ui->spb_rot_axis_z->bind(
+        App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Axis.z")));
+    ui->qsb_rot_angle->bind(
+        App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Angle")));
+    ui->spb_rot_axis_x->setMinimum(-FLOAT_MAX);
+    ui->spb_rot_axis_x->setMaximum(FLOAT_MAX);
+    ui->spb_rot_axis_y->setMinimum(-FLOAT_MAX);
+    ui->spb_rot_axis_y->setMaximum(FLOAT_MAX);
+    ui->spb_rot_axis_z->setMinimum(-FLOAT_MAX);
+    ui->spb_rot_axis_z->setMaximum(FLOAT_MAX);
+    ui->qsb_rot_angle->setMinimum(-FLOAT_MAX);
+    ui->qsb_rot_angle->setMaximum(FLOAT_MAX);
+
+    ui->qsb_force_x->setValue(forceX);
+    ui->qsb_force_y->setValue(forceY);
+    ui->qsb_force_z->setValue(forceZ);
+    ui->qsb_force_x->bind(pcConstraint->ForceX);
+    ui->qsb_force_y->bind(pcConstraint->ForceY);
+    ui->qsb_force_z->bind(pcConstraint->ForceZ);
+    ui->qsb_force_x->setMinimum(-FLOAT_MAX);
+    ui->qsb_force_x->setMaximum(FLOAT_MAX);
+    ui->qsb_force_y->setMinimum(-FLOAT_MAX);
+    ui->qsb_force_y->setMaximum(FLOAT_MAX);
+    ui->qsb_force_z->setMinimum(-FLOAT_MAX);
+    ui->qsb_force_z->setMaximum(FLOAT_MAX);
+
+    ui->qsb_moment_x->setValue(momentX);
+    ui->qsb_moment_y->setValue(momentY);
+    ui->qsb_moment_z->setValue(momentZ);
+    ui->qsb_moment_x->bind(pcConstraint->MomentX);
+    ui->qsb_moment_y->bind(pcConstraint->MomentY);
+    ui->qsb_moment_z->bind(pcConstraint->MomentZ);
+    ui->qsb_moment_x->setMinimum(-FLOAT_MAX);
+    ui->qsb_moment_x->setMaximum(FLOAT_MAX);
+    ui->qsb_moment_y->setMinimum(-FLOAT_MAX);
+    ui->qsb_moment_y->setMaximum(FLOAT_MAX);
+    ui->qsb_moment_z->setMinimum(-FLOAT_MAX);
+    ui->qsb_moment_z->setMaximum(FLOAT_MAX);
+
+    QStringList modeList;
+
+    App::PropertyEnumeration* transMode = &pcConstraint->TranslationalModeX;
+    for (auto item : transMode->getEnumVector()) {
+        modeList << QString::fromUtf8(item.c_str());
+    }
+    ui->cb_x_trans_mode->addItems(modeList);
+    ui->cb_y_trans_mode->addItems(modeList);
+    ui->cb_z_trans_mode->addItems(modeList);
+    ui->cb_x_trans_mode->setCurrentIndex(pcConstraint->TranslationalModeX.getValue());
+    ui->cb_y_trans_mode->setCurrentIndex(pcConstraint->TranslationalModeY.getValue());
+    ui->cb_z_trans_mode->setCurrentIndex(pcConstraint->TranslationalModeZ.getValue());
+
+    modeList.clear();
+    App::PropertyEnumeration* rotMode = &pcConstraint->RotationalModeX;
+    for (auto item : rotMode->getEnumVector()) {
+        modeList << QString::fromUtf8(item.c_str());
+    }
+    ui->cb_x_rot_mode->addItems(modeList);
+    ui->cb_y_rot_mode->addItems(modeList);
+    ui->cb_z_rot_mode->addItems(modeList);
+    ui->cb_x_rot_mode->setCurrentIndex(pcConstraint->RotationalModeX.getValue());
+    ui->cb_y_rot_mode->setCurrentIndex(pcConstraint->RotationalModeY.getValue());
+    ui->cb_z_rot_mode->setCurrentIndex(pcConstraint->RotationalModeZ.getValue());
+
+    onTransModeXChanged(pcConstraint->TranslationalModeX.getValue());
+    onTransModeYChanged(pcConstraint->TranslationalModeY.getValue());
+    onTransModeZChanged(pcConstraint->TranslationalModeZ.getValue());
+    onRotModeXChanged(pcConstraint->RotationalModeX.getValue());
+    onRotModeYChanged(pcConstraint->RotationalModeY.getValue());
+    onRotModeZChanged(pcConstraint->RotationalModeZ.getValue());
 
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
@@ -274,6 +390,123 @@ void TaskFemConstraintRigidBody::onReferenceDeleted()
     TaskFemConstraintRigidBody::removeFromSelection();
 }
 
+void TaskFemConstraintRigidBody::onRotModeXChanged(int item)
+{
+    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+                          ->RotationalModeX.getEnumVector()[item]
+                          .c_str();
+
+    if (strcmp(val, "Free") == 0) {
+        ui->spb_rot_axis_x->setEnabled(false);
+        ui->qsb_moment_x->setEnabled(false);
+    }
+    else if (strcmp(val, "Constraint") == 0) {
+        ui->spb_rot_axis_x->setEnabled(true);
+        ui->qsb_moment_x->setEnabled(false);
+    }
+    else if (strcmp(val, "Load") == 0) {
+        ui->spb_rot_axis_x->setEnabled(false);
+        ui->qsb_moment_x->setEnabled(true);
+    }
+}
+void TaskFemConstraintRigidBody::onRotModeYChanged(int item)
+{
+    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+                          ->RotationalModeY.getEnumVector()[item]
+                          .c_str();
+
+    if (strcmp(val, "Free") == 0) {
+        ui->spb_rot_axis_y->setEnabled(false);
+        ui->qsb_moment_y->setEnabled(false);
+    }
+    else if (strcmp(val, "Constraint") == 0) {
+        ui->spb_rot_axis_y->setEnabled(true);
+        ui->qsb_moment_y->setEnabled(false);
+    }
+    else if (strcmp(val, "Load") == 0) {
+        ui->spb_rot_axis_y->setEnabled(false);
+        ui->qsb_moment_y->setEnabled(true);
+    }
+}
+void TaskFemConstraintRigidBody::onRotModeZChanged(int item)
+{
+    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+                          ->RotationalModeZ.getEnumVector()[item]
+                          .c_str();
+
+    if (strcmp(val, "Free") == 0) {
+        ui->spb_rot_axis_z->setEnabled(false);
+        ui->qsb_moment_z->setEnabled(false);
+    }
+    else if (strcmp(val, "Constraint") == 0) {
+        ui->spb_rot_axis_z->setEnabled(true);
+        ui->qsb_moment_z->setEnabled(false);
+    }
+    else if (strcmp(val, "Load") == 0) {
+        ui->spb_rot_axis_z->setEnabled(false);
+        ui->qsb_moment_z->setEnabled(true);
+    }
+}
+
+void TaskFemConstraintRigidBody::onTransModeXChanged(int item)
+{
+    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+                          ->TranslationalModeX.getEnumVector()[item]
+                          .c_str();
+
+    if (strcmp(val, "Free") == 0) {
+        ui->qsb_disp_x->setEnabled(false);
+        ui->qsb_force_x->setEnabled(false);
+    }
+    else if (strcmp(val, "Constraint") == 0) {
+        ui->qsb_disp_x->setEnabled(true);
+        ui->qsb_force_x->setEnabled(false);
+    }
+    else if (strcmp(val, "Load") == 0) {
+        ui->qsb_disp_x->setEnabled(false);
+        ui->qsb_force_x->setEnabled(true);
+    }
+}
+void TaskFemConstraintRigidBody::onTransModeYChanged(int item)
+{
+    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+                          ->TranslationalModeY.getEnumVector()[item]
+                          .c_str();
+
+    if (strcmp(val, "Free") == 0) {
+        ui->qsb_disp_y->setEnabled(false);
+        ui->qsb_force_y->setEnabled(false);
+    }
+    else if (strcmp(val, "Constraint") == 0) {
+        ui->qsb_disp_y->setEnabled(true);
+        ui->qsb_force_y->setEnabled(false);
+    }
+    else if (strcmp(val, "Load") == 0) {
+        ui->qsb_disp_y->setEnabled(false);
+        ui->qsb_force_y->setEnabled(true);
+    }
+}
+void TaskFemConstraintRigidBody::onTransModeZChanged(int item)
+{
+    const char* val = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject())
+                          ->TranslationalModeZ.getEnumVector()[item]
+                          .c_str();
+
+    if (strcmp(val, "Free") == 0) {
+        ui->qsb_disp_z->setEnabled(false);
+        ui->qsb_force_z->setEnabled(false);
+    }
+    else if (strcmp(val, "Constraint") == 0) {
+        ui->qsb_disp_z->setEnabled(true);
+        ui->qsb_force_z->setEnabled(false);
+    }
+    else if (strcmp(val, "Load") == 0) {
+        ui->qsb_disp_z->setEnabled(false);
+        ui->qsb_force_z->setEnabled(true);
+    }
+}
+
+
 const std::string TaskFemConstraintRigidBody::getReferences() const
 {
     int rows = ui->lw_references->model()->rowCount();
@@ -284,46 +517,70 @@ const std::string TaskFemConstraintRigidBody::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-double TaskFemConstraintRigidBody::get_xRefNode() const
+Base::Vector3d TaskFemConstraintRigidBody::getReferenceNode() const
 {
-    return ui->if_ref_node_x->rawValue();
+    double x = ui->qsb_ref_node_x->rawValue();
+    double y = ui->qsb_ref_node_y->rawValue();
+    double z = ui->qsb_ref_node_z->rawValue();
+
+    return Base::Vector3d(x, y, z);
 }
-double TaskFemConstraintRigidBody::get_yRefNode() const
+
+Base::Vector3d TaskFemConstraintRigidBody::getDisplacement() const
 {
-    return ui->if_ref_node_y->rawValue();
+    double x = ui->qsb_disp_x->rawValue();
+    double y = ui->qsb_disp_y->rawValue();
+    double z = ui->qsb_disp_z->rawValue();
+
+    return Base::Vector3d(x, y, z);
 }
-double TaskFemConstraintRigidBody::get_zRefNode() const
+
+Base::Rotation TaskFemConstraintRigidBody::getRotation() const
 {
-    return ui->if_ref_node_z->rawValue();
+    double x = ui->spb_rot_axis_x->value();
+    double y = ui->spb_rot_axis_y->value();
+    double z = ui->spb_rot_axis_z->value();
+    double angle = ui->qsb_rot_angle->value().getValueAs(Base::Quantity::Radian);
+
+    return Base::Rotation(Base::Vector3d(x, y, z), angle);
 }
-double TaskFemConstraintRigidBody::get_xForce() const
+
+std::vector<std::string> TaskFemConstraintRigidBody::getForce() const
 {
-    return ui->if_ref_force_x->rawValue();
+    std::string x = ui->qsb_force_x->value().getSafeUserString().toStdString();
+    std::string y = ui->qsb_force_y->value().getSafeUserString().toStdString();
+    std::string z = ui->qsb_force_z->value().getSafeUserString().toStdString();
+
+    return {x, y, z};
 }
-double TaskFemConstraintRigidBody::get_yForce() const
+
+std::vector<std::string> TaskFemConstraintRigidBody::getMoment() const
 {
-    return ui->if_ref_force_y->rawValue();
+    std::string x = ui->qsb_moment_x->value().getSafeUserString().toStdString();
+    std::string y = ui->qsb_moment_y->value().getSafeUserString().toStdString();
+    std::string z = ui->qsb_moment_z->value().getSafeUserString().toStdString();
+
+    return std::vector<std::string>({x, y, z});
 }
-double TaskFemConstraintRigidBody::get_zForce() const
+
+std::vector<std::string> TaskFemConstraintRigidBody::getTranslationalMode() const
 {
-    return ui->if_ref_force_z->rawValue();
+    std::vector<std::string> transModes(3);
+    transModes[0] = ui->cb_x_trans_mode->currentText().toStdString();
+    transModes[1] = ui->cb_y_trans_mode->currentText().toStdString();
+    transModes[2] = ui->cb_z_trans_mode->currentText().toStdString();
+
+    return transModes;
 }
-double TaskFemConstraintRigidBody::get_xMoment() const
+
+std::vector<std::string> TaskFemConstraintRigidBody::getRotationalMode() const
 {
-    return ui->if_rot_force_x->rawValue();
-}
-double TaskFemConstraintRigidBody::get_yMoment() const
-{
-    return ui->if_rot_force_y->rawValue();
-}
-double TaskFemConstraintRigidBody::get_zMoment() const
-{
-    return ui->if_rot_force_z->rawValue();
-}
-// TODO: This needs to be implemented
-bool TaskFemConstraintRigidBody::get_DefineRefNode() const
-{
-    return true;
+    std::vector<std::string> rotModes(3);
+    rotModes[0] = ui->cb_x_rot_mode->currentText().toStdString();
+    rotModes[1] = ui->cb_y_rot_mode->currentText().toStdString();
+    rotModes[2] = ui->cb_z_rot_mode->currentText().toStdString();
+
+    return rotModes;
 }
 
 bool TaskFemConstraintRigidBody::event(QEvent* e)
@@ -381,52 +638,95 @@ bool TaskDlgFemConstraintRigidBody::accept()
     const TaskFemConstraintRigidBody* parameters =
         static_cast<const TaskFemConstraintRigidBody*>(parameter);
     try {
+        Base::Vector3d ref = parameters->getReferenceNode();
         Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.xRefNode = %f",
+                                "App.ActiveDocument.%s.ReferenceNode = App.Vector(%f, %f, %f)",
                                 name.c_str(),
-                                parameters->get_xRefNode());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.yRefNode = %f",
-                                name.c_str(),
-                                parameters->get_yRefNode());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.zRefNode = %f",
-                                name.c_str(),
-                                parameters->get_zRefNode());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.xForce = %f",
-                                name.c_str(),
-                                parameters->get_xForce());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.yForce = %f",
-                                name.c_str(),
-                                parameters->get_yForce());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.zForce = %f",
-                                name.c_str(),
-                                parameters->get_zForce());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.xMoment = %f",
-                                name.c_str(),
-                                parameters->get_xMoment());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.yMoment = %f",
-                                name.c_str(),
-                                parameters->get_yMoment());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.zMoment = %f",
-                                name.c_str(),
-                                parameters->get_zMoment());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.DefineRefNode = %s",
-                                name.c_str(),
-                                parameters->get_DefineRefNode() ? "True" : "False");
+                                ref.x,
+                                ref.y,
+                                ref.z);
 
-        std::string scale = parameters->getScale();  // OvG: determine modified scale
+        Base::Vector3d disp = parameters->getDisplacement();
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.Displacement = App.Vector(%f, %f, %f)",
+                                name.c_str(),
+                                disp.x,
+                                disp.y,
+                                disp.z);
+
+        Base::Rotation rot = parameters->getRotation();
+        Base::Vector3d axis;
+        double angle;
+        rot.getValue(axis, angle);
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.Rotation = App.Rotation(App.Vector(%f,% f, %f), Radian=%f)",
+            name.c_str(),
+            axis.x,
+            axis.y,
+            axis.z,
+            angle);
+
+        auto force = parameters->getForce();
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.ForceX = \"%s\"",
+                                name.c_str(),
+                                force[0].c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.ForceY = \"%s\"",
+                                name.c_str(),
+                                force[1].c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.ForceZ = \"%s\"",
+                                name.c_str(),
+                                force[2].c_str());
+
+        auto moment = parameters->getMoment();
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.MomentX = \"%s\"",
+                                name.c_str(),
+                                moment[0].c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.MomentY = \"%s\"",
+                                name.c_str(),
+                                moment[1].c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.MomentZ = \"%s\"",
+                                name.c_str(),
+                                moment[2].c_str());
+
+        auto transModes = parameters->getTranslationalMode();
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.TranslationalModeX = \"%s\"",
+                                name.c_str(),
+                                transModes[0].c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.TranslationalModeY = \"%s\"",
+                                name.c_str(),
+                                transModes[1].c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.TranslationalModeZ = \"%s\"",
+                                name.c_str(),
+                                transModes[2].c_str());
+
+        auto rotModes = parameters->getRotationalMode();
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.RotationalModeX = \"%s\"",
+                                name.c_str(),
+                                rotModes[0].c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.RotationalModeY = \"%s\"",
+                                name.c_str(),
+                                rotModes[1].c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.RotationalModeZ = \"%s\"",
+                                name.c_str(),
+                                rotModes[2].c_str());
+
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.Scale = %s",
                                 name.c_str(),
-                                scale.c_str());  // OvG: implement modified scale
+                                parameters->getScale().c_str());
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
