@@ -116,35 +116,37 @@ void PropertyTopoShapeList::afterRestore()
 
 PyObject *PropertyTopoShapeList::getPyObject()
 {
-    PyObject* list = PyList_New(getSize());
-    for (int i = 0; i < getSize(); i++)
-        PyList_SetItem( list, i, _lValueList[i].getPyObject());
-    return list;
+    Py::List list;
+    for (int i = 0; i < getSize(); i++) {
+        list.append(Py::asObject(_lValueList[i].getPyObject()));
+    }
+    return Py::new_reference_to(list);
 }
 
 void PropertyTopoShapeList::setPyObject(PyObject *value)
 {
     if (PySequence_Check(value)) {
-        Py_ssize_t nSize = PySequence_Size(value);
+        Py::Sequence sequence(value);
+        Py_ssize_t nSize = sequence.size();
         std::vector<TopoShape> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i < nSize; ++i) {
-            PyObject* item = PySequence_GetItem(value, i);
-            if (!PyObject_TypeCheck(item, &(TopoShapePy::Type))) {
+            Py::Object item = sequence.getItem(i);
+            if (!PyObject_TypeCheck(item.ptr(), &(TopoShapePy::Type))) {
                 std::string error = std::string("types in list must be 'Shape', not ");
-                error += item->ob_type->tp_name;
+                error += item.ptr()->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
 
-            values[i] = *static_cast<TopoShapePy*>(item)->getTopoShapePtr();
+            values[i] = *static_cast<TopoShapePy*>(item.ptr())->getTopoShapePtr();
         }
         setValues(values);
     }
     else if (PyObject_TypeCheck(value, &(TopoShapePy::Type))) {
         TopoShapePy  *pcObject = static_cast<TopoShapePy*>(value);
         setValue(*pcObject->getTopoShapePtr());
-   }
+    }
     else {
         std::string error = std::string("type must be 'Shape' or list of 'Shape', not ");
         error += value->ob_type->tp_name;
@@ -183,8 +185,7 @@ App::Property *PropertyTopoShapeList::Copy() const
     std::vector<TopoShape> copiedShapes;
     for (auto& shape : _lValueList) {
         BRepBuilderAPI_Copy copy(shape.getShape());
-        TopoDS_Shape* newShape = new TopoDS_Shape(copy.Shape());
-        copiedShapes.emplace_back(*newShape);
+        copiedShapes.emplace_back(copy.Shape());
     }
     p->setValues(copiedShapes);
     return p;
