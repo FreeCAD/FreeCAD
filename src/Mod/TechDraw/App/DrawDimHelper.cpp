@@ -59,14 +59,15 @@
 
 using namespace TechDraw;
 
-void DrawDimHelper::makeExtentDim(DrawViewPart* dvp, std::vector<std::string> edgeNames,
+DrawViewDimExtent*
+DrawDimHelper::makeExtentDim(DrawViewPart* dvp, std::vector<std::string> edgeNames,
                                   int direction)
 {
     //    Base::Console().Message("DDH::makeExtentDim() - dvp: %s edgeNames: %d\n",
     //                            dvp->Label.getValue(), edgeNames.size());
-    if (!dvp) {
-        return;
-    }
+    //if (!dvp) {
+    //    return;
+    //}
 
     std::string dimType = "DistanceX";
     int dimNum = 0;
@@ -113,6 +114,7 @@ void DrawDimHelper::makeExtentDim(DrawViewPart* dvp, std::vector<std::string> ed
                                      dimName.c_str());
 
     dimExt->recomputeFeature();
+    return dimExt;
 }
 
 void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp, ReferenceVector references, int direction)

@@ -64,6 +64,7 @@
 #include "DrawUtil.h"
 #include "DrawViewAnnotation.h"
 #include "DrawViewDimension.h"
+#include "DrawViewDimExtent.h"
 #include "DrawViewPart.h"
 #include "DrawViewPartPy.h"
 #include "EdgeWalker.h"
@@ -867,10 +868,12 @@ private:
             throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());
         }
 
+        DrawViewDimExtent* dvde =
         DrawDimHelper::makeExtentDim(dvp,
                                      edgeList,
                                      direction);
-        return Py::None();
+        PyObject* dvdePy = dvde->getPyObject();
+        return Py::asObject(dvdePy);
     }
 
     Py::Object makeDistanceDim(const Py::Tuple& args)

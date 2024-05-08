@@ -40,11 +40,12 @@ namespace TechDraw
 class BaseGeom;
 class DrawViewPart;
 class DrawViewDimension;
+class DrawViewDimExtent;
 
 /// Additional functions for working with Dimensions
 class TechDrawExport DrawDimHelper {
     public:
-    static void makeExtentDim(DrawViewPart* dvp,
+    static TechDraw::DrawViewDimExtent* makeExtentDim(DrawViewPart* dvp,
                               std::vector<std::string> edgeNames,
                               int direction);
     static void makeExtentDim3d(DrawViewPart* dvp,
