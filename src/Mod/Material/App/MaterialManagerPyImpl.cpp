@@ -163,17 +163,17 @@ PyObject* MaterialManagerPy::materialsWithModel(PyObject* args)
     }
 
     auto materials = getMaterialManagerPtr()->materialsWithModel(QString::fromStdString(uuid));
-    PyObject* dict = PyDict_New();
+    Py::Dict dict;
 
     for (auto it = materials->begin(); it != materials->end(); it++) {
         QString key = it->first;
         auto material = it->second;
 
         PyObject* materialPy = new MaterialPy(new Material(*material));
-        PyDict_SetItem(dict, PyUnicode_FromString(key.toStdString().c_str()), materialPy);
+        dict.setItem(key.toStdString(), Py::asObject(materialPy));
     }
 
-    return dict;
+    return Py::new_reference_to(dict);
 }
 
 PyObject* MaterialManagerPy::materialsWithModelComplete(PyObject* args)
@@ -185,17 +185,17 @@ PyObject* MaterialManagerPy::materialsWithModelComplete(PyObject* args)
 
     auto materials =
         getMaterialManagerPtr()->materialsWithModelComplete(QString::fromStdString(uuid));
-    PyObject* dict = PyDict_New();
+    Py::Dict dict;
 
     for (auto it = materials->begin(); it != materials->end(); it++) {
         QString key = it->first;
         auto material = it->second;
 
         PyObject* materialPy = new MaterialPy(new Material(*material));
-        PyDict_SetItem(dict, PyUnicode_FromString(key.toStdString().c_str()), materialPy);
+        dict.setItem(key.toStdString(), Py::asObject(materialPy));
     }
 
-    return dict;
+    return Py::new_reference_to(dict);
 }
 
 PyObject* MaterialManagerPy::save(PyObject* args, PyObject* kwds)
