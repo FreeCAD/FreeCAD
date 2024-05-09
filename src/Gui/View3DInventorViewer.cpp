@@ -227,7 +227,12 @@ public:
         else if (event->type() == QEvent::KeyPress) {
             auto ke = static_cast<QKeyEvent*>(event);  // NOLINT
             if (ke->matches(QKeySequence::SelectAll)) {
-                static_cast<View3DInventorViewer*>(obj)->selectAll();
+                auto* viewer3d = static_cast<View3DInventorViewer*>(obj);
+                auto* editingVP = viewer3d->getEditingViewProvider();
+                if(!editingVP || !editingVP->selectAll())
+                {
+                    viewer3d->selectAll();
+                }
                 return true;
             }
         }
@@ -1086,6 +1091,12 @@ void View3DInventorViewer::resetEditingViewProvider()
 bool View3DInventorViewer::isEditingViewProvider() const
 {
     return this->editViewProvider != nullptr;
+}
+
+/// return currently editing view provider
+ViewProvider* View3DInventorViewer::getEditingViewProvider() const
+{
+    return this->editViewProvider;
 }
 
 /// display override mode

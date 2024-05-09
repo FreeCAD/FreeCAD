@@ -2588,6 +2588,12 @@ void ViewProviderSketch::updateColor()
     editCoinManager->updateColor();
 }
 
+bool ViewProviderSketch::selectAll()
+{
+    // TODO: eventually implement "select all" logic
+    return true;
+}
+
 bool ViewProviderSketch::doubleClicked()
 {
     Gui::Application::Instance->activeDocument()->setEdit(this);
