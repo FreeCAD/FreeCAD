@@ -4079,16 +4079,16 @@ bool StdRecallWorkingView::isActive()
 //===========================================================================
 // Std_AlignToSelection
 //===========================================================================
-
 DEF_STD_CMD_A(StdCmdAlignToSelection)
 
 StdCmdAlignToSelection::StdCmdAlignToSelection()
   : Command("Std_AlignToSelection")
 {
-    sGroup        = "Standard-View";
+    sGroup        = "View";
     sMenuText     = QT_TR_NOOP("Align to selection");
     sToolTipText  = QT_TR_NOOP("Align the view with the selection");
     sWhatsThis    = "Std_AlignToSelection";
+    sPixmap       = "align-to-selection";
     eType         = Alter3DView;
 }
 
