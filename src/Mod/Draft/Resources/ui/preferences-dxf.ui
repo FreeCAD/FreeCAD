@@ -37,6 +37,9 @@
      <property name="text">
       <string>Show this dialog when importing and exporting</string>
      </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
      <property name="prefEntry" stdset="0">
       <cstring>dxfShowDialog</cstring>
      </property>
@@ -445,7 +448,7 @@ instead of the size they have in the DXF document</string>
            <string>If this is checked, DXF layers will be imported as Draft Layers</string>
           </property>
           <property name="text">
-           <string>Use Layers</string>
+           <string>Use layers</string>
           </property>
           <property name="checked">
            <bool>true</bool>
