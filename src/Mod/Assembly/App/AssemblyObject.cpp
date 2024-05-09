@@ -1166,9 +1166,9 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
     App::DocumentObject* part = getLinkObjFromProp(joint, propPartName);
     App::DocumentObject* obj = getObjFromNameProp(joint, propObjName, propPartName);
 
-    if (!part) {
+    if (!part || !obj) {
         Base::Console().Warning("The property %s or Joint %s is empty.",
-                                propPartName,
+                                obj ? propPartName : propObjName,
                                 joint->getFullName());
         return "";
     }
