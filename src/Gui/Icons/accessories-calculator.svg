@@ -5,13 +5,7 @@
    width="64"
    height="64"
    id="svg5816"
-   sodipodi:version="0.32"
-   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
-   sodipodi:docname="accessories-calculator.svg"
-   inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
@@ -21,8 +15,7 @@
   <defs
      id="defs3">
     <linearGradient
-       id="linearGradient6"
-       inkscape:collect="always">
+       id="linearGradient6">
       <stop
          style="stop-color:#729fcf;stop-opacity:1;"
          offset="0"
@@ -33,8 +26,7 @@
          id="stop7" />
     </linearGradient>
     <linearGradient
-       id="linearGradient4"
-       inkscape:collect="always">
+       id="linearGradient4">
       <stop
          style="stop-color:#eeeeec;stop-opacity:1;"
          offset="0"
@@ -45,8 +37,7 @@
          id="stop5" />
     </linearGradient>
     <linearGradient
-       id="linearGradient13"
-       inkscape:collect="always">
+       id="linearGradient13">
       <stop
          style="stop-color:#4e9a06;stop-opacity:1;"
          offset="0"
@@ -56,13 +47,6 @@
          offset="1"
          id="stop14" />
     </linearGradient>
-    <inkscape:perspective
-       sodipodi:type="inkscape:persp3d"
-       inkscape:vp_x="0 : 40 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_z="48 : 40 : 1"
-       inkscape:persp3d-origin="24 : 32 : 1"
-       id="perspective84" />
     <linearGradient
        id="linearGradient5048">
       <stop
@@ -127,7 +111,6 @@
          id="stop30522" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient30505">
       <stop
          style="stop-color:#000000;stop-opacity:1;"
@@ -139,7 +122,6 @@
          id="stop30509" />
     </linearGradient>
     <radialGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient30505"
        id="radialGradient30511"
        cx="25.375"
@@ -150,7 +132,6 @@
        gradientTransform="matrix(1,0,0,0.343066,0,28.49453)"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient13"
        id="linearGradient14"
        x1="14.194713"
@@ -160,7 +141,6 @@
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(0.94803464,0,0,0.82319109,1.4248779,2.6449737)" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient4"
        id="linearGradient5"
        x1="13.925462"
@@ -169,7 +149,6 @@
        y2="28.767968"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient6"
        id="linearGradient7"
        x1="14.345589"
@@ -178,29 +157,6 @@
        y2="45.668344"
        gradientUnits="userSpaceOnUse" />
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="8"
-     inkscape:cx="14.5"
-     inkscape:cy="38.6875"
-     inkscape:current-layer="layer2"
-     showgrid="false"
-     inkscape:grid-bbox="true"
-     inkscape:document-units="px"
-     inkscape:window-width="1600"
-     inkscape:window-height="837"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     fill="#2e3436"
-     inkscape:showpageshadow="2"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:window-maximized="1" />
   <metadata
      id="metadata4">
     <rdf:RDF>
@@ -209,7 +165,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title>Calculator</dc:title>
         <dc:creator>
           <cc:Agent>
             <dc:title>Jakub Steiner</dc:title>
@@ -241,9 +196,7 @@
     </rdf:RDF>
   </metadata>
   <g
-     inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="Layer 2"
      style="display:inline"
      transform="matrix(0.99687962,0,0,0.99742739,0.09985202,0.07897114)">
     <rect
@@ -254,10 +207,9 @@
        x="8.9491701"
        y="2.9502759"
        rx="2.0884511"
-       ry="1.9982854"
-       inkscape:label="Vertical Rectangle" />
+       ry="1.9982854" />
     <path
-       style="display:inline;fill:none;stroke:#babdb6;stroke-width:2.05078;stroke-linejoin:round;stroke-dasharray:none"
+       style="display:inline;fill:none;stroke:#babdb6;stroke-width:2.00571;stroke-linejoin:round;stroke-dasharray:none"
        d="M 10.956529,31.000781 V 4.956534 H 32 53.043472 V 31.000781 57.045027 H 32 10.956529 Z"
        id="path12" />
     <rect
