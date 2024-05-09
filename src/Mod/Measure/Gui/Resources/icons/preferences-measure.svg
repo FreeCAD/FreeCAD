@@ -7,34 +7,12 @@
    id="svg2869"
    version="1.1"
    viewBox="0 0 64 64"
-   sodipodi:docname="umf-measurement.svg"
-   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <sodipodi:namedview
-     id="namedview1"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="14.164233"
-     inkscape:cx="33.888175"
-     inkscape:cy="33.076271"
-     inkscape:window-width="1600"
-     inkscape:window-height="837"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg2869" />
   <defs
      id="defs2871">
     <linearGradient
@@ -281,8 +259,7 @@
       <path
          style="font-variation-settings:normal;display:inline;opacity:1;fill:url(#linearGradient37);fill-opacity:1;fill-rule:evenodd;stroke:#d3d7cf;stroke-width:2.32135;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal;stop-color:#000000;stop-opacity:1"
          d="M 8.5959558,29.245104 H 32.96299 V 55.43252 l -2.16235,1.02e-4 5.94e-4,-19.565596 -22.1840766,-4.943087 z"
-         id="path10"
-         sodipodi:nodetypes="ccccccc" />
+         id="path10" />
       <g
          id="g3"
          transform="matrix(0.92803287,0,0,1.003866,3.8042111,-1.0001008)"
