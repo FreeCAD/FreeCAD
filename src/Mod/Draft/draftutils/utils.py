@@ -88,15 +88,33 @@ def get_default_shape_style():
     display_mode_index = params.get_param("DefaultDisplayMode")
     draw_style_index = params.get_param("DefaultDrawStyle")
     return {
-        "DisplayMode":  ("index", display_mode_index, DISPLAY_MODES[display_mode_index]),
-        "DrawStyle":    ("index", draw_style_index, DRAW_STYLES[draw_style_index]),
-        "LineColor":    ("color", params.get_param_view("DefaultShapeLineColor")),
-        "LineWidth":    ("int",   params.get_param_view("DefaultShapeLineWidth")),
-        "PointColor":   ("color", params.get_param_view("DefaultShapeVertexColor")),
-        "PointSize":    ("int",   params.get_param_view("DefaultShapePointSize")),
-        "ShapeColor":   ("color", params.get_param_view("DefaultShapeColor")),
-        "Transparency": ("int",   params.get_param_view("DefaultShapeTransparency"))
+        "DisplayMode":     ("index",    display_mode_index, DISPLAY_MODES[display_mode_index]),
+        "DrawStyle":       ("index",    draw_style_index, DRAW_STYLES[draw_style_index]),
+        "LineColor":       ("color",    params.get_param_view("DefaultShapeLineColor")),
+        "LineWidth":       ("int",      params.get_param_view("DefaultShapeLineWidth")),
+        "PointColor":      ("color",    params.get_param_view("DefaultShapeVertexColor")),
+        "PointSize":       ("int",      params.get_param_view("DefaultShapePointSize")),
+        "ShapeAppearance": ("material", (get_appearance_material(), ))
     }
+
+
+def get_appearance_material(ret_default=False):
+    """Return a ShapeAppearance material with properties based on the preferences.
+
+    Parameters
+    ----------
+    ret_default: bool, optional
+        Defaults to `False`.
+        If `True`, always use default preference values even if stored values are available.
+    """
+    material = App.Material()
+    material.AmbientColor = params.get_param_view("DefaultAmbientColor", ret_default=ret_default)
+    material.DiffuseColor = params.get_param_view("DefaultShapeColor", ret_default=ret_default)
+    material.EmissiveColor = params.get_param_view("DefaultEmissiveColor", ret_default=ret_default)
+    material.Shininess = params.get_param_view("DefaultShapeShininess", ret_default=ret_default) / 100
+    material.SpecularColor = params.get_param_view("DefaultSpecularColor", ret_default=ret_default)
+    material.Transparency = params.get_param_view("DefaultShapeTransparency", ret_default=ret_default) / 100
+    return material
 
 
 def string_encode_coin(ustr):
