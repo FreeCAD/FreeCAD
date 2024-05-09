@@ -27,6 +27,7 @@
 name: FreeCAD master CI
 
 on: [workflow_dispatch, push, pull_request]
+runs-on: self-hosted
 
 concurrency:
   group: FC-CI-${{ github.head_ref || github.run_id }}
