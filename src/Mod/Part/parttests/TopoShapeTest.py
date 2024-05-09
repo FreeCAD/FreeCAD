@@ -367,6 +367,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         path = Part.makeLine(App.Vector(), App.Vector(0, 0, 10))
         Part.show(circle, "Circle")  # Trigger the elementMapping
         Part.show(path, "Path")  # Trigger the elementMapping
+        del circle
         # Act
         surface1 = Part.makeSweepSurface(self.doc.Path.Shape, self.doc.Circle.Shape, 0.001, 0)
         Part.show(surface1, "Sweep")
@@ -387,6 +388,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
             #       looks suspiciously like a substantial bug in OCCT.
             # Assert Shape
             self.assertBounds(surface1, App.BoundBox(-5, -2.72011, 0, 5, 5, 6.28319), precision=3)
+        del surface1
 
     def testAppPartMakeLoft(self):
         # Act
