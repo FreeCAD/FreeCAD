@@ -169,6 +169,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.FinishingPass != self.form.finishingPassEnabled.isChecked():
             obj.FinishingPass = self.form.finishingPassEnabled.isChecked()
 
+        if obj.OptimizeMovements != self.form.optimizeMovementsEnabled.isChecked():
+             obj.OptimizeMovements = self.form.optimizeMovementsEnabled.isChecked()
+
         self.finishingPassZOffsetSpinBox.updateProperty()
 
         self.updateToolController(obj, self.form.toolController)
@@ -179,6 +182,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.discretize.setValue(obj.Discretize)
         self.form.colinearFilter.setValue(obj.Colinear)
         self.form.finishingPassEnabled.setChecked(obj.FinishingPass)
+        self.form.optimizeMovementsEnabled.setChecked(obj.OptimizeMovements)
 
         self.finishingPassZOffsetSpinBox.updateSpinBox()
 
@@ -194,6 +198,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.colinearFilter.editingFinished)
         signals.append(self.form.finishingPassEnabled.stateChanged)
         signals.append(self.form.finishingPassZOffset.editingFinished)
+
+        signals.append(self.form.optimizeMovementsEnabled.stateChanged)
+
 
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)

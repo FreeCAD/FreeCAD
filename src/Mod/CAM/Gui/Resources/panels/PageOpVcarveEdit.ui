@@ -111,28 +111,14 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="finishingPassLabel">
-       <property name="text">
-        <string>Finishing Pass</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QCheckBox" name="finishingPassEnabled">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
+     <item row="4" column="0">
       <widget class="QLabel" name="finishingPassZOffsetLabel">
        <property name="text">
         <string>Finishing pass Z offset</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
+     <item row="4" column="1">
       <widget class="Gui::QuantitySpinBox" name="finishingPassZOffset">
        <property name="toolTip">
         <string>Endmill offset for the finishing pass run. Use small value like -0.2 mm to help clean &quot;fuzzy skin&quot; or other artefacts.</string>
@@ -142,6 +128,32 @@
        </property>
        <property name="singleStep">
         <double>0.100000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QCheckBox" name="finishingPassEnabled">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="toolTip">
+        <string>After carving travel again the path to remove artifacts and imperfections</string>
+       </property>
+       <property name="statusTip">
+        <string/>
+       </property>
+       <property name="text">
+        <string>Finishing pass</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QCheckBox" name="optimizeMovementsEnabled">
+       <property name="toolTip">
+        <string>Optimize path to avoid raising endmill when moving to adjacent edges. May result in sub-millimeter inaccuracies. </string>
+       </property>
+       <property name="text">
+        <string>Optimize movements</string>
        </property>
       </widget>
      </item>

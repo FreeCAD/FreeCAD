@@ -20,7 +20,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import App
 import FreeCAD
 import Part
 import Path
@@ -52,7 +51,6 @@ else:
 
 
 translate = FreeCAD.Qt.translate
-_sorting = "global"
 
 
 def _collectVoronoiWires(vd):
@@ -173,13 +171,13 @@ class _Geometry(object):
         # do not allow to increase depth if we are already at stop depth
         if self.maximumDepth == self.stop:
             return False
-        
+
         # do not allow to increase depth if we are already at
         # maximum usable depth
 
         if self.maximumDepth <= maximumUsableDepth:
             return False
-        
+
         self.stepDownPass += 1
         return True
 
@@ -232,15 +230,13 @@ def _get_maximumUsableDepth(wires, geom):
         """Similar logic to _calculate_depth but without stepdown and offset calculations"""
         depth = geom.start - round(MIC * geom.scale, 4)
         return max(depth, geom.stop)
-        
+
     min_depth = None
 
     for wire in wires:
         for edge in wire:
             dist = edge.getDistances()
-            depth = min(
-                _get_depth(dist[0], geom), _get_depth(dist[1], geom)
-            )
+            depth = min(_get_depth(dist[0], geom), _get_depth(dist[1], geom))
 
             if min_depth is None:
                 min_depth = depth
@@ -292,6 +288,13 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         obj.addProperty(
             "App::PropertyBool",
+            "OptimizeMovements",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Optimize movements"),
+        )
+
+        obj.addProperty(
+            "App::PropertyBool",
             "FinishingPass",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Add finishing pass"),
@@ -338,8 +341,6 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         obj.Discretize = 0.01
         obj.Tolerance = Path.Preferences.defaultGeometryTolerance()
         self.setupAdditionalProperties(obj)
-
-     
 
     def opOnDocumentRestored(self, obj):
         # upgrade ...
@@ -420,20 +421,71 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         wire list from buildMedialWires
         """
 
-        def cutWire(edges):
+        def getCurrentPosition(wire):
+            """
+            Calculate CNC head position assuming it reached the end of the wire
+            """
+
+            if not wire:
+                return None
+
+            lastEdge = wire[-1]
+            return lastEdge.valueAt(lastEdge.LastParameter)
+
+        def cutWires(wires, pathlist, optimizeMovements=False):
+            currentPosition = None
+            for w in wires:
+                pWire = _getPartEdges(obj, w, geom)
+                if pWire:
+                    pathlist.extend(_cutWire(pWire, currentPosition))
+
+                    # movement optimization only works if we provide current head position
+                    if optimizeMovements:
+                        currentPosition = getCurrentPosition(pWire)
+
+        def canSkipRepositioning(currentPosition, newPosition):
+            """
+            Calculate if it makes sense to raise head to safe height and reposition before
+            starting to cut another edge
+            """
+
+            if not currentPosition:
+                return False
+            
+            # get vertex position on X/Y plane only
+            v0 = FreeCAD.Base.Vector(currentPosition.x, currentPosition.y)
+            v1 = FreeCAD.Base.Vector(newPosition.x, newPosition.y)
+
+            return v0.distanceToPoint(v1) <= 0.5
+
+        def _cutWire(wire, currentPosition=None):
             path = []
-            path.append(Path.Command("G0 Z{}".format(obj.SafeHeight.Value)))
-            e = edges[0]
-            p = e.valueAt(e.FirstParameter)
-            path.append(
-                Path.Command("G0 X{} Y{} Z{}".format(p.x, p.y, obj.SafeHeight.Value))
-            )
+
+            e = wire[0]
+            newPosition = e.valueAt(e.FirstParameter)
+
+            # raise and reposition the head only if new wire starts further than 0.5 mm
+            # from current head position
+            if not canSkipRepositioning(currentPosition, newPosition):
+                path.append(Path.Command("G0 Z{}".format(obj.SafeHeight.Value)))
+                path.append(
+                    Path.Command(
+                        "G0 X{} Y{} Z{}".format(
+                            newPosition.x, newPosition.y, obj.SafeHeight.Value
+                        )
+                    )
+                )
+
             hSpeed = obj.ToolController.HorizFeed.Value
             vSpeed = obj.ToolController.VertFeed.Value
             path.append(
-                Path.Command("G1 X{} Y{} Z{} F{}".format(p.x, p.y, p.z, vSpeed))
+                Path.Command(
+                    "G1 X{} Y{} Z{} F{}".format(
+                        newPosition.x, newPosition.y, newPosition.z, vSpeed
+                    )
+                )
             )
-            for e in edges:
+            for e in wire:
                 path.extend(Path.Geom.cmdsForEdge(e, hSpeed=hSpeed, vSpeed=vSpeed))
 
             return path
@@ -453,33 +505,29 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             maximumUsableDepth = geom.stop
 
             if geom.stepDown > 0:
-               _maximumUsableDepth = _get_maximumUsableDepth(wires, geom)
-               if _maximumUsableDepth is not None:
-                   maximumUsableDepth = _maximumUsableDepth
-                   Path.Log.debug(f"Maximum usable depth for current face: {maximumUsableDepth}")
+                _maximumUsableDepth = _get_maximumUsableDepth(wires, geom)
+                if _maximumUsableDepth is not None:
+                    maximumUsableDepth = _maximumUsableDepth
+                    Path.Log.debug(
+                        f"Maximum usable depth for current face: {maximumUsableDepth}"
+                    )
 
             # first pass
-            for w in wires:
-                pWire = _getPartEdges(obj, w, geom)
-                if pWire:
-                    pathlist.extend(cutWire(pWire))
+            cutWires(wires, pathlist, obj.OptimizeMovements)
 
             # subsequent stepDown depth passes (if any)
             while geom.incrementStepDownDepth(maximumUsableDepth):
-                for w in wires:
-                    pWire = _getPartEdges(obj, w, geom)
-                    if pWire:
-                        pathlist.extend(cutWire(pWire))
+                cutWires(wires, pathlist, obj.OptimizeMovements)
 
         # add finishing pass if enabled
 
-     #   if obj.FinishingPass:
-     #       geom.offset = obj.FinishingPassZOffset.Value
+        #   if obj.FinishingPass:
+        #       geom.offset = obj.FinishingPassZOffset.Value
 
-     #       for w in wires:
-     #           pWire = self._getPartEdges(obj, w, geom)
-     #           if pWire:
-     #               pathlist.extend(cutWire(pWire))
+        #       for w in wires:
+        #           pWire = self._getPartEdges(obj, w, geom)
+        #           if pWire:
+        #               pathlist.extend(cutWire(pWire))
 
         self.commandlist = pathlist
 
@@ -539,6 +587,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 "Error processing Base object. Engraving operation will produce no output."
             )
             import traceback
+
             Path.Log.error(f"Engraving operation exception: {traceback.format_exc()}")
 
     def opUpdateDepths(self, obj, ignoreErrors=False):
@@ -563,15 +612,19 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             and hasattr(tool, "CuttingEdgeAngle")
             and hasattr(tool, "TipDiameter")
         )
-    
+
     def debugVoronoi(self, obj):
         """Debug function to display calculated voronoi edges"""
 
         if not getattr(self, "voronoiDebugCache", None):
-            Path.Log.error("debugVoronoi: empty debug cache. Recompute VCarve operation first")
+            Path.Log.error(
+                "debugVoronoi: empty debug cache. Recompute VCarve operation first"
+            )
             return
 
-        vPart = FreeCAD.activeDocument().addObject('App::Part', f"{obj.Name}-VoronoiDebug")
+        vPart = FreeCAD.activeDocument().addObject(
+            "App::Part", f"{obj.Name}-VoronoiDebug"
+        )
 
         wiresToShow = []
 
