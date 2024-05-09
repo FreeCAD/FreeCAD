@@ -2,6 +2,7 @@ name: freecad
 channels:
 - conda-forge
 dependencies:
+- libspnav                             # [linux]
 - kernel-headers_linux-64              # [linux and x86_64]
 - libdrm-cos6-x86_64                   # [linux and x86_64]
 - libselinux-cos6-x86_64               # [linux and x86_64]
@@ -99,3 +100,4 @@ dependencies:
 - xerces-c
 - yaml-cpp
 - zlib
+- zstd==1.5.6

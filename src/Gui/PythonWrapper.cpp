@@ -586,6 +586,9 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
 qsizetype PythonWrapper::toEnum(PyObject* pyPtr)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    if (PyLong_Check(pyPtr)) {
+        return PyLong_AsLong(pyPtr);
+    }
     return Shiboken::Enum::getValue(pyPtr);
 #else
     return toEnum(Py::Object(pyPtr));
@@ -598,17 +601,19 @@ qsizetype PythonWrapper::toEnum(const Py::Object& pyobject)
     return toEnum(pyobject.ptr());
 #else
     try {
-        Py::Int ret;
+        qsizetype ret {};
         if (pyobject.hasAttr(std::string("value"))) {
             ret = Py::Int(pyobject.getAttr(std::string("value")));
-        } else {
+        }
+        else {
             ret = Py::Int(pyobject);
         }
-        return (qsizetype)ret;
+        return ret;
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         e.ReportException();
+        return 0;
     }
 #endif
 }
