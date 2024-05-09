@@ -656,6 +656,9 @@ public:
     {
         return nullptr;
     }
+    /// is called when the provider is in edit and a "Select All" command was issued
+    /// Provider shall return 'false' is it ignores the command, 'true' otherwise
+    bool selectAll() override;
     /// is called by the tree if the user double clicks on the object
     bool doubleClicked() override;
     /// is called when the Provider is in edit and the mouse is moved
