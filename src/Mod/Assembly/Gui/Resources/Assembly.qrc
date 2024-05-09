@@ -5,8 +5,11 @@
         <file>icons/Assembly_ToggleGrounded.svg</file>
         <file>icons/Assembly_CreateJointBall.svg</file>
         <file>icons/Assembly_CreateJointCylindrical.svg</file>
+        <file>icons/Assembly_AssemblyContextCreate.svg</file>
         <file>icons/Assembly_CreateJointFixed.svg</file>
         <file>icons/Assembly_CreateJointPlanar.svg</file>
+        <file>icons/Assembly_AssemblyContextUpdate.svg</file>
+        <file>icons/AssemblyWorkbench_alternate.svg</file>
         <file>icons/Assembly_CreateJointRevolute.svg</file>
         <file>icons/Assembly_CreateJointSlider.svg</file>
         <file>icons/Assembly_CreateJointTangent.svg</file>
@@ -16,14 +19,15 @@
         <file>icons/Assembly_CreateJointScrew.svg</file>
         <file>icons/Assembly_ExportASMT.svg</file>
         <file>icons/Assembly_SolveAssembly.svg</file>
-        <file>icons/Assembly_JointGroup.svg</file>
-        <file>icons/Assembly_ExplodedView.svg</file>
-        <file>icons/Assembly_ExplodedViewGroup.svg</file>
         <file>panels/TaskAssemblyCreateJoint.ui</file>
         <file>panels/TaskAssemblyInsertLink.ui</file>
-        <file>panels/TaskAssemblyCreateView.ui</file>
+        <file>panels/TaskAssemblyCreateContext.ui</file>
         <file>preferences/Assembly.ui</file>
         <file>icons/Assembly_CreateJointDistance.svg</file>
         <file>icons/AssemblyWorkbench.svg</file>
+        <file>icons/Assembly_JointGroup.svg</file>
+        <file>icons/Assembly_ExplodedView.svg</file>
+        <file>panels/TaskAssemblyCreateView.ui</file>
+        <file>icons/Assembly_ExplodedViewGroup.svg</file>
     </qresource>
 </RCC>

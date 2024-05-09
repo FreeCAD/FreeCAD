@@ -63,7 +63,7 @@ class AssemblyWorkbench(Workbench):
         # load the builtin modules
         from PySide import QtCore, QtGui
         from PySide.QtCore import QT_TRANSLATE_NOOP
-        import CommandCreateAssembly, CommandInsertLink, CommandCreateJoint, CommandSolveAssembly, CommandExportASMT, CommandCreateView
+        import CommandUpdateAssemblyContext, CommandCreateAssemblyContext, CommandCreateAssembly, CommandInsertLink, CommandCreateJoint, CommandSolveAssembly, CommandExportASMT, CommandCreateView
         import Preferences
 
         FreeCADGui.addLanguagePath(":/translations")
@@ -74,8 +74,11 @@ class AssemblyWorkbench(Workbench):
         )
 
         # build commands list
+
         cmdList = [
             "Assembly_CreateAssembly",
+            "Assembly_CreateAssemblyContext",
+            "Assembly_UpdateAssemblyContext",
             "Assembly_InsertLink",
             "Assembly_SolveAssembly",
         ]
