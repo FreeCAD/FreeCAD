@@ -208,10 +208,11 @@ enum class Flip
     flip
 };
 
-enum class AsAngle
+enum class ChamferType
 {
-    no,
-    yes
+    equalDistance,
+    twoDistances,
+    distanceAngle
 };
 
 enum class CheckScale
@@ -2050,11 +2051,11 @@ public:
      */
     TopoShape& makeElementChamfer(const TopoShape& source,
                                   const std::vector<TopoShape>& edges,
+                                  ChamferType chamferType,
                                   double radius1,
                                   double radius2,
                                   const char* op = nullptr,
-                                  Flip flipDirection = Flip::none,
-                                  AsAngle asAngle = AsAngle::no);
+                                  Flip flipDirection = Flip::none);
     /* Make chamfer shape
      *
      * @param source: the source shape
@@ -2067,14 +2068,14 @@ public:
      * @return Return the new shape. The TopoShape itself is not modified.
      */
     TopoShape makeElementChamfer(const std::vector<TopoShape>& edges,
+                                 ChamferType chamferType,
                                  double radius1,
                                  double radius2,
                                  const char* op = nullptr,
-                                 Flip flipDirection = Flip::none,
-                                 AsAngle asAngle = AsAngle::no) const
+                                 Flip flipDirection = Flip::none) const
     {
         return TopoShape(0, Hasher)
-            .makeElementChamfer(*this, edges, radius1, radius2, op, flipDirection, asAngle);
+            .makeElementChamfer(*this, edges, chamferType, radius1, radius2, op, flipDirection);
     }
 
     /** Make a new shape with transformation
