@@ -3033,7 +3033,7 @@ haga clic de nuevo para finalizar la selección</translation>
       <location filename="../../TaskTransformedParameters.cpp" line="387"/>
       <location filename="../../TaskTransformedParameters.cpp" line="423"/>
       <source>Select reference...</source>
-      <translation>Seleccione referencia...</translation>
+      <translation>Seleccionar referencia...</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="413"/>
@@ -4645,12 +4645,12 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="214"/>
       <source>Shaft design wizard...</source>
-      <translation>Asistente de diseño de eje...</translation>
+      <translation>Asistente de diseño de ejes...</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="215"/>
       <source>Start the shaft design wizard</source>
-      <translation>Iniciar el asistente de diseño de ejes</translation>
+      <translation>Inicia el asistente de diseño de ejes</translation>
     </message>
   </context>
   <context>
@@ -4844,22 +4844,22 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="441"/>
       <source>Length too small</source>
-      <translation type="unfinished">Length too small</translation>
+      <translation>Longitud demasiado pequeña</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="448"/>
       <source>Second length too small</source>
-      <translation type="unfinished">Second length too small</translation>
+      <translation>Segunda longitud demasiado pequeña</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="482"/>
       <source>Failed to obtain profile shape</source>
-      <translation type="unfinished">Failed to obtain profile shape</translation>
+      <translation>Error al obtener la forma del perfil</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="534"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation type="unfinished">Creation failed because direction is orthogonal to sketch's normal vector</translation>
+      <translation>La creación falló porque la dirección es ortogonal al vector normal del croquis</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="553"/>
@@ -4872,12 +4872,12 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="615"/>
       <source>Up to face: Could not get SubShape!</source>
-      <translation type="unfinished">Up to face: Could not get SubShape!</translation>
+      <translation>Hasta la cara: ¡No se pudo obtener SubShape!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="657"/>
       <source>Magnitude of taper angle matches or exceeds 90 degrees</source>
-      <translation type="unfinished">Magnitude of taper angle matches or exceeds 90 degrees</translation>
+      <translation>La magnitud del ángulo cónico coincide o supera los 90 grados</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="668"/>
@@ -5369,13 +5369,13 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
       <location filename="../../../App/FeatureLoft.cpp" line="515"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
       <source>Unknown operation type</source>
-      <translation type="unfinished">Unknown operation type</translation>
+      <translation>Tipo de operación desconocido</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
       <source>Failed to perform boolean operation</source>
-      <translation type="unfinished">Failed to perform boolean operation</translation>
+      <translation>Error al realizar la operación booleana</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="145"/>
@@ -5498,7 +5498,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="133"/>
       <source>Reference axis is invalid</source>
-      <translation type="unfinished">Reference axis is invalid</translation>
+      <translation>Eje de referencia no es válido</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="709"/>

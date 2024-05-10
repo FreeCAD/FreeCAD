@@ -5161,7 +5161,7 @@ Intersecando entità di schizzo o più facce in uno schizzo non sono consentiti 
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="442"/>
       <source>Loft: Creating a face from sketch failed</source>
-      <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
+      <translation>Loft: impossibile creare una faccia dallo schizzo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="475"/>

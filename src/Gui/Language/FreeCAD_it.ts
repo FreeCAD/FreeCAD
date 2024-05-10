@@ -3004,12 +3004,12 @@ del riquadro di delimitazione dell'oggetto 3D che è attualmente visualizzato.</
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="28"/>
       <source>Location (read-only):</source>
-      <translation type="unfinished">Location (read-only):</translation>
+      <translation>Posizione (sola Lettura):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="42"/>
       <source>Browse cache directory</source>
-      <translation type="unfinished">Browse cache directory</translation>
+      <translation>Sfoglia la directory della cache</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="59"/>
@@ -8980,7 +8980,7 @@ la copia corrente andranno perse.
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="95"/>
       <source>Suppressed</source>
-      <translation type="unfinished">Suppressed</translation>
+      <translation>Soppresso</translation>
     </message>
   </context>
   <context>
@@ -13585,13 +13585,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3205"/>
       <source>&amp;Measure</source>
-      <translation type="unfinished">&amp;Measure</translation>
+      <translation>&amp;Misurare</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3206"/>
       <location filename="../CommandView.cpp" line="3208"/>
       <source>Measure a feature</source>
-      <translation type="unfinished">Measure a feature</translation>
+      <translation>Misurare una funzione</translation>
     </message>
   </context>
   <context>
@@ -13599,22 +13599,22 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="51"/>
       <source>Measurement</source>
-      <translation type="unfinished">Measurement</translation>
+      <translation>Misurazione</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="107"/>
       <source>Annotate</source>
-      <translation type="unfinished">Annotate</translation>
+      <translation>Annotare</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="108"/>
       <source>Press the Annotate button to add measurement to the document.</source>
-      <translation type="unfinished">Press the Annotate button to add measurement to the document.</translation>
+      <translation>Premere il pulsante Annotazione per aggiungere misurazioni al documento.</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="115"/>
       <source>Press the Close button to exit.</source>
-      <translation type="unfinished">Press the Close button to exit.</translation>
+      <translation>Tocca il pulsante Chiudi per uscire.</translation>
     </message>
   </context>
 </TS>

@@ -1985,19 +1985,23 @@
       <source>Insert a View in current page.
 Selected objects, spreadsheets or Arch WB section planes will be added.
 Without a selection, a file browser lets you select a SVG or image file.</source>
-      <translation type="unfinished">Insert a View in current page.
-Selected objects, spreadsheets or Arch WB section planes will be added.
-Without a selection, a file browser lets you select a SVG or image file.</translation>
+      <translation>Wstaw widok na bieżącej stronie.
+Zostaną dodane wybrane obiekty, arkusze kalkulacyjne lub 
+płaszczyzny przekroju środowiska pracy Architektura .
+Praca bez zaznaczenia, umożliwia wybranie pliku SVG lub obrazu w przeglądarce plików.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="425"/>
       <source>If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</source>
-      <translation type="unfinished">If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</translation>
+      <translation>Jeśli chcesz wstawić widok z istniejących obiektów, 
+wybierz je przed wywołaniem tego narzędzia. 
+Praca bez zaznaczenia spowoduje otworzenie przeglądarki plików, 
+aby wstawić plik SVG lub obraz.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="426"/>
       <source>Do not show this message again</source>
-      <translation type="unfinished">Do not show this message again</translation>
+      <translation>Nie pokazuj ponownie tego komunikatu</translation>
     </message>
   </context>
   <context>
@@ -2811,12 +2815,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Command.cpp" line="439"/>
       <source>Select a SVG or Image file to open</source>
-      <translation type="unfinished">Select a SVG or Image file to open</translation>
+      <translation>Wybierz plik SVG lub plik obrazu do otwarcia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>SVG or Image files</source>
-      <translation type="unfinished">SVG or Image files</translation>
+      <translation>Pliki SVG lub plik obrazów</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="565"/>
@@ -3978,7 +3982,7 @@ thick: %4</source>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="174"/>
       <source>Part View</source>
-      <translation type="unfinished">Part View</translation>
+      <translation>Widok części</translation>
     </message>
   </context>
   <context>
@@ -6774,7 +6778,7 @@ Niestandardowa: stosuje się współczynnik skalowania podany przez użytkownika
     <message>
       <location filename="../../TaskDimension.ui" line="28"/>
       <source>If theoretical exact (basic) dimension</source>
-      <translation>Zaznacz to pole jeśli wymiar jest teoretycznie dokładny (podstawowy)</translation>
+      <translation>Zaznacz to pole, jeśli wymiar jest teoretycznie dokładny (podstawowy)</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="31"/>
@@ -7442,7 +7446,7 @@ Możesz wybrać kolejne punkty, aby uzyskać odcinki linii.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="126"/>
       <source>Spin clock wise</source>
-      <translation type="unfinished">Spin clock wise</translation>
+      <translation>Kręć w prawo</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="537"/>
@@ -7508,7 +7512,7 @@ Możesz wybrać kolejne punkty, aby uzyskać odcinki linii.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="174"/>
       <source>Spin counter clock wise</source>
-      <translation type="unfinished">Spin counter clock wise</translation>
+      <translation>Kręć w lewo</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="195"/>
@@ -7528,7 +7532,7 @@ Możesz wybrać kolejne punkty, aby uzyskać odcinki linii.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="252"/>
       <source>Set document front view as primary direction.</source>
-      <translation type="unfinished">Set document front view as primary direction.</translation>
+      <translation>Ustaw widok dokumentu od przodu jako główny kierunek.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="273"/>
@@ -7538,7 +7542,7 @@ Możesz wybrać kolejne punkty, aby uzyskać odcinki linii.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="294"/>
       <source>Set direction of the camera, or selected face if any, as primary direction.</source>
-      <translation type="unfinished">Set direction of the camera, or selected face if any, as primary direction.</translation>
+      <translation>Ustaw kierunek ujęcia widoku lub wybraną powierzchnię, jeśli istnieje, jako główny kierunek.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="318"/>
@@ -9608,17 +9612,17 @@ ponieważ jest otwarte okno dialogowe zadania.</translation>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="922"/>
       <source>X: </source>
-      <translation type="unfinished">X: </translation>
+      <translation>X: </translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="930"/>
       <source>Y: </source>
-      <translation type="unfinished">Y: </translation>
+      <translation>Y: </translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="938"/>
       <source>Z: </source>
-      <translation type="unfinished">Z: </translation>
+      <translation>Z: </translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="954"/>
@@ -9633,7 +9637,7 @@ ponieważ jest otwarte okno dialogowe zadania.</translation>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="961"/>
       <source>Rotate by</source>
-      <translation type="unfinished">Rotate by</translation>
+      <translation>Obróć o</translation>
     </message>
   </context>
 </TS>

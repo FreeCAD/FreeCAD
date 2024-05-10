@@ -40,7 +40,7 @@ the default location ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="123"/>
       <source>FreeCAD Wiki (online)</source>
-      <translation type="unfinished">FreeCAD Wiki (online)</translation>
+      <translation>FreeCAD Wiki (オンライン)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
@@ -52,7 +52,7 @@ This is currently not available...</translation>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="33"/>
       <source>GitHub (online)</source>
-      <translation type="unfinished">GitHub (online)</translation>
+      <translation>GitHub (オンライン)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="72"/>
@@ -82,7 +82,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="145"/>
       <source>Markdown version (online)</source>
-      <translation type="unfinished">Markdown version (online)</translation>
+      <translation>Markdown バージョン (オンライン)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="164"/>

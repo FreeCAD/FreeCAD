@@ -5877,7 +5877,7 @@ Creación de construcción cancelada.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="512"/>
       <source>The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</source>
-      <translation type="unfinished">The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</translation>
+      <translation>Texto a mostrar. Usa $area, $label, $tag, $longname, $description y para finalizar $floor $walls, $ceiling para insertar los datos correspondientes</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="518"/>

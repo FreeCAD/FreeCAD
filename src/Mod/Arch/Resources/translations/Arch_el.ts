@@ -399,7 +399,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="38"/>
       <source>List of IFC properties for this object. Double-click to edit, drag and drop to reorganize</source>
-      <translation type="unfinished">List of IFC properties for this object. Double-click to edit, drag and drop to reorganize</translation>
+      <translation>Λίστα ιδιοτήτων IFC για αυτό το αντικείμενο. Κάντε διπλό κλικ για επεξεργασία, μεταφορά και απόθεση για αναδιοργάνωση</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="63"/>
@@ -1030,7 +1030,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="41"/>
       <source>Show this dialog when importing</source>
-      <translation type="unfinished">Show this dialog when importing</translation>
+      <translation>Εμφάνιση αυτού του διαλόγου κατά την εισαγωγή </translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="54"/>
@@ -1672,7 +1672,7 @@ unit to work with when opening the file.</translation>
       <location filename="../../ArchStructure.py" line="128"/>
       <location filename="../../ArchStructure.py" line="442"/>
       <source>Column</source>
-      <translation type="unfinished">Column</translation>
+      <translation>Στήλη </translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="150"/>
@@ -1708,28 +1708,28 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="325"/>
       <source>First point of the beam</source>
-      <translation type="unfinished">First point of the beam</translation>
+      <translation>Πρώτο σημείο της δοκού</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="327"/>
       <source>Base point of column</source>
-      <translation type="unfinished">Base point of column</translation>
+      <translation>Σημείο βάσης στήλης</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="343"/>
       <location filename="../../ArchWall.py" line="389"/>
       <source>Next point</source>
-      <translation type="unfinished">Next point</translation>
+      <translation>Επόμενο σημείο</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="436"/>
       <source>Structure options</source>
-      <translation type="unfinished">Structure options</translation>
+      <translation>Επιλογές δομής</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="440"/>
       <source>Drawing mode</source>
-      <translation type="unfinished">Drawing mode</translation>
+      <translation>Λειτουργία σχεδίασης</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1628"/>
@@ -1744,7 +1744,7 @@ unit to work with when opening the file.</translation>
       <location filename="../../ArchStructure.py" line="459"/>
       <location filename="../../ArchWindow.py" line="410"/>
       <source>Preset</source>
-      <translation type="unfinished">Preset</translation>
+      <translation>Προκαθορισμένο</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1011"/>
@@ -1773,36 +1773,36 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="495"/>
       <source>Switch L/H</source>
-      <translation type="unfinished">Switch L/H</translation>
+      <translation>Εναλλαγή L/H</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="497"/>
       <source>Switch L/W</source>
-      <translation type="unfinished">Switch L/W</translation>
+      <translation>Εναλλαγή L/W</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="249"/>
       <location filename="../../ArchStructure.py" line="501"/>
       <location filename="../../ArchWall.py" line="546"/>
       <source>Con&amp;tinue</source>
-      <translation type="unfinished">Con&amp;tinue</translation>
+      <translation>Συνεχίστε&amp;</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="779"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
-      <translation type="unfinished">Error: The base shape couldn't be extruded along this tool object</translation>
+      <translation>Σφάλμα: Αδύνατη η επέκταση του σχήματος βάσης κατά μήκος αυτού του αντικειμένου-εργαλείου</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="805"/>
       <location filename="../../ArchWall.py" line="969"/>
       <source>This mesh is an invalid solid</source>
-      <translation type="unfinished">This mesh is an invalid solid</translation>
+      <translation>Αυτό το πλέγμα είναι ένα μη έγκυρο στερεό</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="522"/>
       <location filename="../../ArchStructure.py" line="869"/>
       <source>Facemaker returned an error</source>
-      <translation type="unfinished">Facemaker returned an error</translation>
+      <translation>Το Facemaker επέστρεψε ένα σφάλμα</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1184"/>

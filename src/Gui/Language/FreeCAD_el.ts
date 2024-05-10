@@ -3004,7 +3004,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="28"/>
       <source>Location (read-only):</source>
-      <translation type="unfinished">Location (read-only):</translation>
+      <translation>Τοποθεσία (μόνο για ανάγνωση):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="42"/>
@@ -6626,7 +6626,7 @@ Do you want to exit without saving your data?</source>
     <message>
       <location filename="../PythonConsole.cpp" line="1379"/>
       <source>Save history</source>
-      <translation type="unfinished">Save history</translation>
+      <translation>Αποθήκευση ιστορικού</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="1380"/>

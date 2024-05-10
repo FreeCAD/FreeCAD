@@ -2997,12 +2997,12 @@ Der angegebene Wert ist ein Faktor, der mit der Größe des Hüllquaders des ger
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="28"/>
       <source>Location (read-only):</source>
-      <translation type="unfinished">Location (read-only):</translation>
+      <translation>Verzeichnis (schreibgeschützt):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="42"/>
       <source>Browse cache directory</source>
-      <translation type="unfinished">Browse cache directory</translation>
+      <translation>Cache-Verzeichnis durchsuchen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="59"/>
@@ -8971,7 +8971,7 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="95"/>
       <source>Suppressed</source>
-      <translation type="unfinished">Suppressed</translation>
+      <translation>Unterdrückt</translation>
     </message>
   </context>
   <context>
@@ -9320,7 +9320,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="281"/>
       <source>Panels</source>
-      <translation>Paneele</translation>
+      <translation>Tafeln</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="282"/>
@@ -13573,13 +13573,13 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3205"/>
       <source>&amp;Measure</source>
-      <translation type="unfinished">&amp;Measure</translation>
+      <translation>&amp;Messen</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3206"/>
       <location filename="../CommandView.cpp" line="3208"/>
       <source>Measure a feature</source>
-      <translation type="unfinished">Measure a feature</translation>
+      <translation>Merkmal messen</translation>
     </message>
   </context>
   <context>
@@ -13587,22 +13587,22 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="51"/>
       <source>Measurement</source>
-      <translation type="unfinished">Measurement</translation>
+      <translation>Messung</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="107"/>
       <source>Annotate</source>
-      <translation type="unfinished">Annotate</translation>
+      <translation>Annotieren</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="108"/>
       <source>Press the Annotate button to add measurement to the document.</source>
-      <translation type="unfinished">Press the Annotate button to add measurement to the document.</translation>
+      <translation>Mit Annotieren wird das Messergebnis im Dokument gespeichert.</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="115"/>
       <source>Press the Close button to exit.</source>
-      <translation type="unfinished">Press the Close button to exit.</translation>
+      <translation>Schließen klicken, um den Vorgang zu beenden.</translation>
     </message>
   </context>
 </TS>

@@ -812,7 +812,7 @@ chaque fois qu’une commande est lancée</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="87"/>
       <source>Offset</source>
-      <translation>Décaler</translation>
+      <translation>Décalage</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="94"/>
@@ -1406,11 +1406,10 @@ manually in any of the coordinate fields. Setting this to 0 disables the delay.
 If a delay of 1 is set, after entering a numeric value, the mouse will not
 update the field anymore during one second, to avoid moving the mouse
 accidentally and modifying the entered value.</source>
-      <translation type="unfinished">This is a delay during which the mouse is inactive, after entering numbers
-manually in any of the coordinate fields. Setting this to 0 disables the delay.
-If a delay of 1 is set, after entering a numeric value, the mouse will not
-update the field anymore during one second, to avoid moving the mouse
-accidentally and modifying the entered value.</translation>
+      <translation>Il s'agit du délai pendant lequel la souris est inactive après la saisie manuelle de nombres dans l'un des
+champs de coordonnées. La valeur 0 désactive le délai.
+Si un délai de 1 est défini, après avoir saisi une valeur numérique, la souris n'actualisera plus le champ
+pendant une seconde, afin d'éviter de déplacer la souris accidentellement et de modifier la valeur saisie.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="296"/>
@@ -7034,7 +7033,7 @@ et fusionner les faces en une seule face.</translation>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="63"/>
       <source>Offset</source>
-      <translation>Décaler</translation>
+      <translation>Décalage</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="66"/>

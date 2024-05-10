@@ -941,17 +941,17 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
       <source>Delimiter Character:</source>
-      <translation type="unfinished">Delimiter Character:</translation>
+      <translation>Χαρακτήρας Οριοθέτησης:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="156"/>
       <source>Quote Character:</source>
-      <translation type="unfinished">Quote Character:</translation>
+      <translation>Χαρακτήρας παραθέματος:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="188"/>
       <source>Escape Character:</source>
-      <translation type="unfinished">Escape Character:</translation>
+      <translation>Χαρακτήρας Διαφυγής:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -992,16 +992,16 @@ Defaults to: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="129"/>
       <source>Insert %n row(s) above</source>
-      <translation type="unfinished">
-        <numerusform>Εισαγωγή %n γραμμής(ών) παραπάνω</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
+      <translation>
+        <numerusform>Εισαγωγή %n γραμμής(ων) παραπάνω</numerusform>
+        <numerusform>Εισαγωγή %n γραμμής(ων) παραπάνω</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="134"/>
       <source>Insert %n row(s) below</source>
       <translation type="unfinished">
-        <numerusform>Εισάγετε %n γραμμή(ές) παρακάτω</numerusform>
+        <numerusform>Εισάγετε %n γραμμή(ες) παρακάτω</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
       </translation>
     </message>
@@ -1017,7 +1017,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="142"/>
       <source>Remove row(s)</source>
       <translation type="unfinished">
-        <numerusform>Αφαίρεση σειράς(ών)</numerusform>
+        <numerusform>Αφαίρεση σειράς(ων)</numerusform>
         <numerusform>Remove row(s)</numerusform>
       </translation>
     </message>
@@ -1049,7 +1049,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="172"/>
       <source>Remove column(s)</source>
       <translation type="unfinished">
-        <numerusform>Αφαίρεση στήλη(ών)</numerusform>
+        <numerusform>Αφαίρεση στήλη(ων)</numerusform>
         <numerusform>Remove column(s)</numerusform>
       </translation>
     </message>
