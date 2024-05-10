@@ -1,249 +1,357 @@
-# - Try to find OpenCV library installation
-# See http://sourceforge.net/projects/opencvlibrary/
+# ===================================================================================
+#  The OpenCV CMake configuration file
 #
-# The following variables are optionally searched for defaults
-#  OpenCV_ROOT_DIR:            Base directory of OpenCv tree to use.
-#  OpenCV_FIND_REQUIRED_COMPONENTS : FIND_PACKAGE(OpenCV COMPONENTS ..)
-#    compatible interface. typically  CV CXCORE CVAUX HIGHGUI CVCAM .. etc.
+#             ** File generated automatically, do not modify **
 #
-# The following are set after configuration is done:
-#  OpenCV_FOUND
-#  OpenCV_INCLUDE_DIR
-#  OpenCV_LIBRARIES
-#  OpenCV_LINK_DIRECTORIES
+#  Usage from an external project:
+#    In your CMakeLists.txt, add these lines:
 #
-# deprecated:
-#  OPENCV_* uppercase replaced by case sensitive OpenCV_*
-#  OPENCV_EXE_LINKER_FLAGS
-#  OPENCV_INCLUDE_DIR : replaced by plural *_DIRS
+#    find_package(OpenCV REQUIRED)
+#    include_directories(${OpenCV_INCLUDE_DIRS}) # Not needed for CMake >= 2.8.11
+#    target_link_libraries(MY_TARGET_NAME ${OpenCV_LIBS})
 #
-# 2004/05 Jan Woetzel, Friso, Daniel Grest
-# 2006/01 complete rewrite by Jan Woetzel
-# 1006/09 2nd rewrite introducing ROOT_DIR and PATH_SUFFIXES
-#   to handle multiple installed versions gracefully by Jan Woetzel
+#    Or you can search for specific OpenCV modules:
 #
-# tested with:
-# -OpenCV 0.97 (beta5a):  MSVS 7.1, gcc 3.3, gcc 4.1
-# -OpenCV 0.99 (1.0rc1):  MSVS 7.1
+#    find_package(OpenCV REQUIRED core videoio)
 #
-# www.mip.informatik.uni-kiel.de/~jw
-# --------------------------------
+#    You can also mark OpenCV components as optional:
+
+#    find_package(OpenCV REQUIRED core OPTIONAL_COMPONENTS viz)
+#
+#    If the module is found then OPENCV_<MODULE>_FOUND is set to TRUE.
+#
+#    This file will define the following variables:
+#      - OpenCV_LIBS                     : The list of all imported targets for OpenCV modules.
+#      - OpenCV_INCLUDE_DIRS             : The OpenCV include directories.
+#      - OpenCV_COMPUTE_CAPABILITIES     : The version of compute capability.
+#      - OpenCV_ANDROID_NATIVE_API_LEVEL : Minimum required level of Android API.
+#      - OpenCV_VERSION                  : The version of this OpenCV build: "@OPENCV_VERSION_PLAIN@"
+#      - OpenCV_VERSION_MAJOR            : Major version part of OpenCV_VERSION: "@OPENCV_VERSION_MAJOR@"
+#      - OpenCV_VERSION_MINOR            : Minor version part of OpenCV_VERSION: "@OPENCV_VERSION_MINOR@"
+#      - OpenCV_VERSION_PATCH            : Patch version part of OpenCV_VERSION: "@OPENCV_VERSION_PATCH@"
+#      - OpenCV_VERSION_STATUS           : Development status of this build: "@OPENCV_VERSION_STATUS@"
+#
+#    Advanced variables:
+#      - OpenCV_SHARED                   : Use OpenCV as shared library
+#      - OpenCV_INSTALL_PATH             : OpenCV location
+#      - OpenCV_LIB_COMPONENTS           : Present OpenCV modules list
+#      - OpenCV_USE_MANGLED_PATHS        : Mangled OpenCV path flag
+#
+#    Deprecated variables:
+#      - OpenCV_VERSION_TWEAK            : Always "0"
+#
+# ===================================================================================
+
+# ======================================================
+#  Version variables:
+# ======================================================
+SET(OpenCV_VERSION @OPENCV_VERSION_PLAIN@)
+SET(OpenCV_VERSION_MAJOR  @OPENCV_VERSION_MAJOR@)
+SET(OpenCV_VERSION_MINOR  @OPENCV_VERSION_MINOR@)
+SET(OpenCV_VERSION_PATCH  @OPENCV_VERSION_PATCH@)
+SET(OpenCV_VERSION_TWEAK  0)
+SET(OpenCV_VERSION_STATUS "@OPENCV_VERSION_STATUS@")
+
+include(FindPackageHandleStandardArgs)
+
+if(NOT CMAKE_VERSION VERSION_LESS 2.8.8
+    AND OpenCV_FIND_COMPONENTS  # prevent excessive output
+)
+  # HANDLE_COMPONENTS was introduced in CMake 2.8.8
+  list(APPEND _OpenCV_FPHSA_ARGS HANDLE_COMPONENTS)
+  # The missing components will be handled by the FindPackageHandleStandardArgs
+  # module.
+  set(_OpenCV_HANDLE_COMPONENTS_MANUALLY FALSE)
+else()
+  # The missing components will be handled by this config.
+  set(_OpenCV_HANDLE_COMPONENTS_MANUALLY TRUE)
+endif()
+
+# Extract directory name from full path of the file currently being processed.
+# Note that CMake 2.8.3 introduced CMAKE_CURRENT_LIST_DIR. We reimplement it
+# for older versions of CMake to support these as well.
+if(CMAKE_VERSION VERSION_LESS "2.8.3")
+  get_filename_component(CMAKE_CURRENT_LIST_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+endif()
+
+# Extract the directory where *this* file has been installed (determined at cmake run-time)
+# Get the absolute path with no ../.. relative marks, to eliminate implicit linker warnings
+get_filename_component(OpenCV_CONFIG_PATH "${CMAKE_CURRENT_LIST_DIR}" REALPATH)
+get_filename_component(OpenCV_INSTALL_PATH "${OpenCV_CONFIG_PATH}/@OpenCV_INSTALL_PATH_RELATIVE_CONFIGCMAKE@" REALPATH)
+
+# Search packages for host system instead of packages for target system.
+# in case of cross compilation this macro should be defined by toolchain file
+if(NOT COMMAND find_host_package)
+    macro(find_host_package)
+        find_package(${ARGN})
+    endmacro()
+endif()
+if(NOT COMMAND find_host_program)
+    macro(find_host_program)
+        find_program(${ARGN})
+    endmacro()
+endif()
 
 
-MACRO(DBG_MSG _MSG)
-  #  MESSAGE(STATUS "${CMAKE_CURRENT_LIST_FILE}(${CMAKE_CURRENT_LIST_LINE}):\n${_MSG}")
-ENDMACRO(DBG_MSG)
+@CUDA_CONFIGCMAKE@
+@ANDROID_CONFIGCMAKE@
+
+@IPPICV_CONFIGCMAKE@
+@IPPIW_CONFIGCMAKE@
+
+# Some additional settings are required if OpenCV is built as static libs
+set(OpenCV_SHARED @BUILD_SHARED_LIBS@)
+
+# Enables mangled install paths, that help with side by side installs
+set(OpenCV_USE_MANGLED_PATHS @OpenCV_USE_MANGLED_PATHS_CONFIGCMAKE@)
+
+set(OpenCV_LIB_COMPONENTS @OPENCV_MODULES_CONFIGCMAKE@)
+set(__OpenCV_INCLUDE_DIRS @OpenCV_INCLUDE_DIRS_CONFIGCMAKE@)
+
+set(OpenCV_INCLUDE_DIRS "")
+foreach(d ${__OpenCV_INCLUDE_DIRS})
+  get_filename_component(__d "${d}" REALPATH)
+  if(NOT EXISTS "${__d}")
+    if(NOT OpenCV_FIND_QUIETLY)
+      message(WARNING "OpenCV: Include directory doesn't exist: '${d}'. OpenCV installation may be broken. Skip...")
+    endif()
+  else()
+    list(APPEND OpenCV_INCLUDE_DIRS "${__d}")
+  endif()
+endforeach()
+unset(__d)
 
 
+if(NOT TARGET opencv_core)
+  include(${CMAKE_CURRENT_LIST_DIR}/OpenCVModules${OpenCV_MODULES_SUFFIX}.cmake)
+endif()
 
-# required cv components with header and library if COMPONENTS unspecified
-IF    (NOT OpenCV_FIND_COMPONENTS)
-  # default
-  SET(OpenCV_FIND_REQUIRED_COMPONENTS   CV CXCORE CVAUX HIGHGUI )
-  IF   (WIN32)
-    LIST(APPEND OpenCV_FIND_REQUIRED_COMPONENTS  CVCAM ) # WIN32 only actually
-  ENDIF(WIN32)
-ENDIF (NOT OpenCV_FIND_COMPONENTS)
-
-
-# typical root dirs of installations, exactly one of them is used
-SET (OpenCV_POSSIBLE_ROOT_DIRS
-  "${OpenCV_ROOT_DIR}"
-  "$ENV{OpenCV_ROOT_DIR}"
-  "$ENV{OPENCV_DIR}"  # only for backward compatibility deprecated by ROOT_DIR
-  "$ENV{OPENCV_HOME}" # only for backward compatibility
-  "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Intel(R) Open Source Computer Vision Library_is1;Inno Setup: App Path]"
-  "$ENV{ProgramFiles}/OpenCV"
-  /usr/local
-  /usr
-  )
+if(NOT CMAKE_VERSION VERSION_LESS "2.8.11")
+  # Target property INTERFACE_INCLUDE_DIRECTORIES available since 2.8.11:
+  # * http://www.cmake.org/cmake/help/v2.8.11/cmake.html#prop_tgt:INTERFACE_INCLUDE_DIRECTORIES
+  foreach(__component ${OpenCV_LIB_COMPONENTS})
+    if(TARGET ${__component})
+      set_target_properties(
+          ${__component}
+          PROPERTIES
+          INTERFACE_INCLUDE_DIRECTORIES "${OpenCV_INCLUDE_DIRS}"
+      )
+    endif()
+  endforeach()
+endif()
 
 
-# MIP Uni Kiel /opt/net network installation
-# get correct prefix for current gcc compiler version for gcc 3.x  4.x
-IF    (${CMAKE_COMPILER_IS_GNUCXX})
-  IF    (NOT OpenCV_FIND_QUIETLY)
-    MESSAGE(STATUS "Checking GNUCXX version 3/4 to determine  OpenCV /opt/net/ path")
-  ENDIF (NOT OpenCV_FIND_QUIETLY)
-  EXEC_PROGRAM(${CMAKE_CXX_COMPILER} ARGS --version OUTPUT_VARIABLE CXX_COMPILER_VERSION)
-  IF   (CXX_COMPILER_VERSION MATCHES ".*3\\.[0-9].*")
-    SET(IS_GNUCXX3 TRUE)
-    LIST(APPEND OpenCV_POSSIBLE_ROOT_DIRS /opt/net/gcc33/OpenCV )
-  ENDIF(CXX_COMPILER_VERSION MATCHES ".*3\\.[0-9].*")
-  IF   (CXX_COMPILER_VERSION MATCHES ".*4\\.[0-9].*")
-    SET(IS_GNUCXX4 TRUE)
-    LIST(APPEND OpenCV_POSSIBLE_ROOT_DIRS /opt/net/gcc41/OpenCV )
-  ENDIF(CXX_COMPILER_VERSION MATCHES ".*4\\.[0-9].*")
-ENDIF (${CMAKE_COMPILER_IS_GNUCXX})
+if(NOT DEFINED OPENCV_MAP_IMPORTED_CONFIG)
+  if(CMAKE_GENERATOR MATCHES "Visual Studio" OR MSVC)
+    # OpenCV supports Debug and Release builds only.
+    # But MSVS has 'RelWithDebInfo' 'MinSizeRel' configurations for applications.
+    # By default CMake maps these configuration on the first available (Debug) which is wrong.
+    # Non-Debug build of Application can't be used with OpenCV Debug build (ABI mismatch problem)
+    # Add mapping of RelWithDebInfo and MinSizeRel to Release here
+    set(OPENCV_MAP_IMPORTED_CONFIG "RELWITHDEBINFO=!Release;MINSIZEREL=!Release")
+  endif()
+endif()
+set(__remap_warnings "")
+macro(ocv_map_imported_config target)
+  if(DEFINED OPENCV_MAP_IMPORTED_CONFIG) # list, "RELWITHDEBINFO=Release;MINSIZEREL=Release"
+    get_target_property(__available_configurations ${target} IMPORTED_CONFIGURATIONS)
+    foreach(remap ${OPENCV_MAP_IMPORTED_CONFIG})
+      if(remap MATCHES "^(.+)=(!?)([^!]+)$")
+        set(__remap_config "${CMAKE_MATCH_1}")
+        set(__final_config "${CMAKE_MATCH_3}")
+        set(__force_flag "${CMAKE_MATCH_2}")
+        string(TOUPPER "${__final_config}" __final_config_upper)
+        string(TOUPPER "${__remap_config}" __remap_config_upper)
+        if(";${__available_configurations};" MATCHES ";${__remap_config_upper};" AND NOT "${__force_flag}" STREQUAL "!")
+          # configuration already exists, skip remap
+          set(__remap_warnings "${__remap_warnings}... Configuration already exists ${__remap_config} (skip mapping ${__remap_config} => ${__final_config}) (available configurations: ${__available_configurations})\n")
+          continue()
+        endif()
+        if(__available_configurations AND NOT ";${__available_configurations};" MATCHES ";${__final_config_upper};")
+          # skip, configuration is not available
+          if(NOT "${__force_flag}" STREQUAL "!")
+            set(__remap_warnings "${__remap_warnings}... Configuration is not available '${__final_config}' for ${target}, build may fail (available configurations: ${__available_configurations})\n")
+          endif()
+        endif()
+        set_target_properties(${target} PROPERTIES
+            MAP_IMPORTED_CONFIG_${__remap_config} "${__final_config}"
+        )
+      else()
+        message(WARNING "Invalid entry of OPENCV_MAP_IMPORTED_CONFIG: '${remap}' (${OPENCV_MAP_IMPORTED_CONFIG})")
+      endif()
+    endforeach()
+  endif()
+endmacro()
 
-#DBG_MSG("DBG (OpenCV_POSSIBLE_ROOT_DIRS=${OpenCV_POSSIBLE_ROOT_DIRS}")
+
+# ==============================================================
+#  Form list of modules (components) to find
+# ==============================================================
+if(NOT OpenCV_FIND_COMPONENTS)
+  set(OpenCV_FIND_COMPONENTS ${OpenCV_LIB_COMPONENTS})
+  list(REMOVE_ITEM OpenCV_FIND_COMPONENTS opencv_java)
+  if(GTest_FOUND OR GTEST_FOUND)
+    list(REMOVE_ITEM OpenCV_FIND_COMPONENTS opencv_ts)
+  endif()
+endif()
+
+set(OpenCV_WORLD_COMPONENTS @OPENCV_WORLD_MODULES@)
+
+# expand short module names and see if requested components exist
+foreach(__cvcomponent ${OpenCV_FIND_COMPONENTS})
+  # Store the name of the original component so we can set the
+  # OpenCV_<component>_FOUND variable which can be checked by the user.
+  set (__original_cvcomponent ${__cvcomponent})
+  if(NOT __cvcomponent MATCHES "^opencv_")
+    set(__cvcomponent opencv_${__cvcomponent})
+  endif()
+  list(FIND OpenCV_LIB_COMPONENTS ${__cvcomponent} __cvcomponentIdx)
+  if(__cvcomponentIdx LESS 0)
+    if(_OpenCV_HANDLE_COMPONENTS_MANUALLY)
+      # Either the component is required or the user did not set any components at
+      # all. In the latter case, the OpenCV_FIND_REQUIRED_<component> variable
+      # will not be defined since it is not set by this config. So let's assume
+      # the implicitly set components are always required.
+      if(NOT DEFINED OpenCV_FIND_REQUIRED_${__original_cvcomponent} OR
+          OpenCV_FIND_REQUIRED_${__original_cvcomponent})
+        message(FATAL_ERROR "${__cvcomponent} is required but was not found")
+      elseif(NOT OpenCV_FIND_QUIETLY)
+        # The component was marked as optional using OPTIONAL_COMPONENTS
+        message(WARNING "Optional component ${__cvcomponent} was not found")
+      endif()
+    endif(_OpenCV_HANDLE_COMPONENTS_MANUALLY)
+    #indicate that module is NOT found
+    string(TOUPPER "${__cvcomponent}" __cvcomponentUP)
+    set(${__cvcomponentUP}_FOUND "${__cvcomponentUP}_FOUND-NOTFOUND")
+    set(OpenCV_${__original_cvcomponent}_FOUND FALSE)
+  else()
+    # Not using list(APPEND) here, because OpenCV_LIBS may not exist yet.
+    # Also not clearing OpenCV_LIBS anywhere, so that multiple calls
+    # to find_package(OpenCV) with different component lists add up.
+    set(OpenCV_LIBS ${OpenCV_LIBS} "${__cvcomponent}")
+    #indicate that module is found
+    string(TOUPPER "${__cvcomponent}" __cvcomponentUP)
+    set(${__cvcomponentUP}_FOUND 1)
+    set(OpenCV_${__original_cvcomponent}_FOUND TRUE)
+  endif()
+  if(OpenCV_SHARED AND ";${OpenCV_WORLD_COMPONENTS};" MATCHES ";${__cvcomponent};" AND NOT TARGET ${__cvcomponent})
+    get_target_property(__implib_dbg opencv_world IMPORTED_IMPLIB_DEBUG)
+    get_target_property(__implib_release opencv_world  IMPORTED_IMPLIB_RELEASE)
+    get_target_property(__location_dbg opencv_world IMPORTED_LOCATION_DEBUG)
+    get_target_property(__location_release opencv_world  IMPORTED_LOCATION_RELEASE)
+    get_target_property(__include_dir opencv_world INTERFACE_INCLUDE_DIRECTORIES)
+    add_library(${__cvcomponent} SHARED IMPORTED)
+    set_target_properties(${__cvcomponent} PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${__include_dir}")
+    if(__location_dbg)
+      set_property(TARGET ${__cvcomponent} APPEND PROPERTY IMPORTED_CONFIGURATIONS DEBUG)
+      set_target_properties(${__cvcomponent} PROPERTIES
+        IMPORTED_IMPLIB_DEBUG "${__implib_dbg}"
+        IMPORTED_LINK_INTERFACE_LIBRARIES_DEBUG ""
+        IMPORTED_LOCATION_DEBUG "${__location_dbg}"
+      )
+    endif()
+    if(__location_release)
+      set_property(TARGET ${__cvcomponent} APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
+      set_target_properties(${__cvcomponent} PROPERTIES
+        IMPORTED_IMPLIB_RELEASE "${__implib_release}"
+        IMPORTED_LINK_INTERFACE_LIBRARIES_RELEASE ""
+        IMPORTED_LOCATION_RELEASE "${__location_release}"
+      )
+    endif()
+  endif()
+  if(TARGET ${__cvcomponent})
+    ocv_map_imported_config(${__cvcomponent})
+  endif()
+endforeach()
+
+if(__remap_warnings AND NOT OpenCV_FIND_QUIETLY)
+  message("OpenCV: configurations remap warnings:\n${__remap_warnings}OpenCV: Check variable OPENCV_MAP_IMPORTED_CONFIG=${OPENCV_MAP_IMPORTED_CONFIG}")
+endif()
+
+# ==============================================================
+# Compatibility stuff
+# ==============================================================
+set(OpenCV_LIBRARIES ${OpenCV_LIBS})
+
+# Require C++11 features for OpenCV modules
+if(CMAKE_VERSION VERSION_LESS "3.1")
+  if(NOT OpenCV_FIND_QUIETLY AND NOT OPENCV_HIDE_WARNING_COMPILE_FEATURES)
+    message(STATUS "OpenCV: CMake version is low (${CMAKE_VERSION}, required 3.1+). Can't enable C++11 features: https://github.com/opencv/opencv/issues/13000")
+  endif()
+else()
+  set(__target opencv_core)
+  if(TARGET opencv_world)
+    set(__target opencv_world)
+  endif()
+  set(__compile_features cxx_std_11)  # CMake 3.8+
+  if(DEFINED OPENCV_COMPILE_FEATURES)
+    set(__compile_features ${OPENCV_COMPILE_FEATURES})  # custom override
+  elseif(CMAKE_VERSION VERSION_LESS "3.8")
+    set(__compile_features cxx_auto_type cxx_rvalue_references cxx_lambdas)
+  endif()
+  if(__compile_features)
+    # Simulate exported result of target_compile_features(opencv_core PUBLIC ...)
+    set_target_properties(${__target} PROPERTIES
+        INTERFACE_COMPILE_FEATURES "${__compile_features}"
+    )
+  endif()
+  unset(__target)
+  unset(__compile_features)
+endif()
 
 #
-# select exactly ONE OpenCV base directory/tree
-# to avoid mixing different version headers and libs
+# Some macros for samples
 #
-FIND_PATH(OpenCV_ROOT_DIR
-  NAMES
-  cv/include/cv.h     # windows
-  include/opencv/cv.h # linux /opt/net
-  include/cv/cv.h
-  include/cv.h
-  PATHS ${OpenCV_POSSIBLE_ROOT_DIRS})
-DBG_MSG("OpenCV_ROOT_DIR=${OpenCV_ROOT_DIR}")
+macro(ocv_check_dependencies)
+  set(OCV_DEPENDENCIES_FOUND TRUE)
+  foreach(d ${ARGN})
+    if(NOT TARGET ${d})
+      message(WARNING "OpenCV: Can't resolve dependency: ${d}")
+      set(OCV_DEPENDENCIES_FOUND FALSE)
+      break()
+    endif()
+  endforeach()
+endmacro()
 
+# adds include directories in such way that directories from the OpenCV source tree go first
+function(ocv_include_directories)
+  set(__add_before "")
+  file(TO_CMAKE_PATH "${OpenCV_INSTALL_PATH}" __baseDir)
+  foreach(dir ${ARGN})
+    get_filename_component(__abs_dir "${dir}" ABSOLUTE)
+    if("${__abs_dir}" MATCHES "^${__baseDir}")
+      list(APPEND __add_before "${dir}")
+    else()
+      include_directories(AFTER SYSTEM "${dir}")
+    endif()
+  endforeach()
+  include_directories(BEFORE ${__add_before})
+endfunction()
 
-# header include dir suffixes appended to OpenCV_ROOT_DIR
-SET(OpenCV_INCDIR_SUFFIXES
-  include
-  include/cv
-  include/opencv
-  cv/include
-  cxcore/include
-  cvaux/include
-  otherlibs/cvcam/include
-  otherlibs/highgui
-  otherlibs/highgui/include
-  otherlibs/_graphics/include
-  )
+macro(ocv_include_modules)
+  include_directories(BEFORE "${OpenCV_INCLUDE_DIRS}")
+endmacro()
 
-# library linkdir suffixes appended to OpenCV_ROOT_DIR
-SET(OpenCV_LIBDIR_SUFFIXES
-  lib
-  OpenCV/lib
-  otherlibs/_graphics/lib
-  )
-#DBG_MSG("OpenCV_LIBDIR_SUFFIXES=${OpenCV_LIBDIR_SUFFIXES}")
+macro(ocv_include_modules_recurse)
+  include_directories(BEFORE "${OpenCV_INCLUDE_DIRS}")
+endmacro()
 
+macro(ocv_target_link_libraries)
+  target_link_libraries(${ARGN})
+endmacro()
 
-#
-# find incdir for each lib
-#
-FIND_PATH(OpenCV_CV_INCLUDE_DIR
-  NAMES cv.h
-  PATHS ${OpenCV_ROOT_DIR}
-  PATH_SUFFIXES ${OpenCV_INCDIR_SUFFIXES} )
-FIND_PATH(OpenCV_CXCORE_INCLUDE_DIR
-  NAMES cxcore.h
-  PATHS ${OpenCV_ROOT_DIR}
-  PATH_SUFFIXES ${OpenCV_INCDIR_SUFFIXES} )
-FIND_PATH(OpenCV_CVAUX_INCLUDE_DIR
-  NAMES cvaux.h
-  PATHS ${OpenCV_ROOT_DIR}
-  PATH_SUFFIXES ${OpenCV_INCDIR_SUFFIXES} )
-FIND_PATH(OpenCV_HIGHGUI_INCLUDE_DIR
-  NAMES highgui.h
-  PATHS ${OpenCV_ROOT_DIR}
-  PATH_SUFFIXES ${OpenCV_INCDIR_SUFFIXES} )
-FIND_PATH(OpenCV_CVCAM_INCLUDE_DIR
-  NAMES cvcam.h
-  PATHS ${OpenCV_ROOT_DIR}
-  PATH_SUFFIXES ${OpenCV_INCDIR_SUFFIXES} )
+# remove all matching elements from the list
+macro(ocv_list_filterout lst regex)
+  foreach(item ${${lst}})
+    if(item MATCHES "${regex}")
+      list(REMOVE_ITEM ${lst} "${item}")
+    endif()
+  endforeach()
+endmacro()
 
-#
-# find sbsolute path to all libraries
-# some are optionally, some may not exist on Linux
-#
-FIND_LIBRARY(OpenCV_CV_LIBRARY
-  NAMES cv opencv
-  PATHS ${OpenCV_ROOT_DIR}
-  PATH_SUFFIXES  ${OpenCV_LIBDIR_SUFFIXES} )
-FIND_LIBRARY(OpenCV_CVAUX_LIBRARY
-  NAMES cvaux
-  PATHS ${OpenCV_ROOT_DIR}  PATH_SUFFIXES ${OpenCV_LIBDIR_SUFFIXES} )
-FIND_LIBRARY(OpenCV_CVCAM_LIBRARY
-  NAMES cvcam
-  PATHS ${OpenCV_ROOT_DIR}  PATH_SUFFIXES ${OpenCV_LIBDIR_SUFFIXES} )
-FIND_LIBRARY(OpenCV_CVHAARTRAINING_LIBRARY
-  NAMES cvhaartraining
-  PATHS ${OpenCV_ROOT_DIR}  PATH_SUFFIXES ${OpenCV_LIBDIR_SUFFIXES} )
-FIND_LIBRARY(OpenCV_CXCORE_LIBRARY
-  NAMES cxcore
-  PATHS ${OpenCV_ROOT_DIR}  PATH_SUFFIXES ${OpenCV_LIBDIR_SUFFIXES} )
-FIND_LIBRARY(OpenCV_CXTS_LIBRARY
-  NAMES cxts
-  PATHS ${OpenCV_ROOT_DIR}  PATH_SUFFIXES ${OpenCV_LIBDIR_SUFFIXES} )
-FIND_LIBRARY(OpenCV_HIGHGUI_LIBRARY
-  NAMES highgui
-  PATHS ${OpenCV_ROOT_DIR}  PATH_SUFFIXES ${OpenCV_LIBDIR_SUFFIXES} )
-FIND_LIBRARY(OpenCV_ML_LIBRARY
-  NAMES ml
-  PATHS ${OpenCV_ROOT_DIR}  PATH_SUFFIXES ${OpenCV_LIBDIR_SUFFIXES} )
-FIND_LIBRARY(OpenCV_TRS_LIBRARY
-  NAMES trs
-  PATHS ${OpenCV_ROOT_DIR}  PATH_SUFFIXES ${OpenCV_LIBDIR_SUFFIXES} )
-
-
-
-#
-# Logic selecting required libs and headers
-#
-SET(OpenCV_FOUND ON)
-DBG_MSG("OpenCV_FIND_REQUIRED_COMPONENTS=${OpenCV_FIND_REQUIRED_COMPONENTS}")
-FOREACH(NAME ${OpenCV_FIND_REQUIRED_COMPONENTS} )
-
-  # only good if header and library both found
-  IF    (OpenCV_${NAME}_INCLUDE_DIR AND OpenCV_${NAME}_LIBRARY)
-    LIST(APPEND OpenCV_INCLUDE_DIRS ${OpenCV_${NAME}_INCLUDE_DIR} )
-    LIST(APPEND OpenCV_LIBRARIES    ${OpenCV_${NAME}_LIBRARY} )
-    #DBG_MSG("appending for NAME=${NAME} ${OpenCV_${NAME}_INCLUDE_DIR} and ${OpenCV_${NAME}_LIBRARY}" )
-  ELSE  (OpenCV_${NAME}_INCLUDE_DIR AND OpenCV_${NAME}_LIBRARY)
-    DBG_MSG("OpenCV component NAME=${NAME} not found! "
-      "\nOpenCV_${NAME}_INCLUDE_DIR=${OpenCV_${NAME}_INCLUDE_DIR} "
-      "\nOpenCV_${NAME}_LIBRARY=${OpenCV_${NAME}_LIBRARY} ")
-    SET(OpenCV_FOUND OFF)
-  ENDIF (OpenCV_${NAME}_INCLUDE_DIR AND OpenCV_${NAME}_LIBRARY)
-
-ENDFOREACH(NAME)
-
-DBG_MSG("OpenCV_INCLUDE_DIRS=${OpenCV_INCLUDE_DIRS}")
-DBG_MSG("OpenCV_LIBRARIES=${OpenCV_LIBRARIES}")
-
-# get the link directory for rpath to be used with LINK_DIRECTORIES:
-IF    (OpenCV_CV_LIBRARY)
-  GET_FILENAME_COMPONENT(OpenCV_LINK_DIRECTORIES ${OpenCV_CV_LIBRARY} PATH)
-ENDIF (OpenCV_CV_LIBRARY)
-
-MARK_AS_ADVANCED(
-  OpenCV_ROOT_DIR
-  OpenCV_INCLUDE_DIRS
-  OpenCV_CV_INCLUDE_DIR
-  OpenCV_CXCORE_INCLUDE_DIR
-  OpenCV_CVAUX_INCLUDE_DIR
-  OpenCV_CVCAM_INCLUDE_DIR
-  OpenCV_HIGHGUI_INCLUDE_DIR
-  OpenCV_LIBRARIES
-  OpenCV_CV_LIBRARY
-  OpenCV_CXCORE_LIBRARY
-  OpenCV_CVAUX_LIBRARY
-  OpenCV_CVCAM_LIBRARY
-  OpenCV_CVHAARTRAINING_LIBRARY
-  OpenCV_CXTS_LIBRARY
-  OpenCV_HIGHGUI_LIBRARY
-  OpenCV_ML_LIBRARY
-  OpenCV_TRS_LIBRARY
-  )
-
-
-# be backward compatible:
-SET(OPENCV_LIBRARIES   ${OpenCV_LIBRARIES} )
-SET(OPENCV_INCLUDE_DIR ${OpenCV_INCLUDE_DIRS} )
-SET(OPENCV_FOUND       ${OpenCV_FOUND})
-
-
-
-# display help message
-IF(NOT OpenCV_FOUND)
-  # make FIND_PACKAGE friendly
-  IF(NOT OpenCV_FIND_QUIETLY)
-    IF(OpenCV_FIND_REQUIRED)
-      MESSAGE(FATAL_ERROR
-        "OpenCV required but some headers or libs not found. Please specify it's location with OpenCV_ROOT_DIR env. variable.")
-    ELSE(OpenCV_FIND_REQUIRED)
-      MESSAGE(STATUS
-        "ERROR: OpenCV was not found.")
-    ENDIF(OpenCV_FIND_REQUIRED)
-  ENDIF(NOT OpenCV_FIND_QUIETLY)
-ENDIF(NOT OpenCV_FOUND)
-
+# We do not actually need REQUIRED_VARS to be checked for. Just use the
+# installation directory for the status.
+find_package_handle_standard_args(OpenCV REQUIRED_VARS OpenCV_INSTALL_PATH
+                                  VERSION_VAR OpenCV_VERSION ${_OpenCV_FPHSA_ARGS})
 
 
