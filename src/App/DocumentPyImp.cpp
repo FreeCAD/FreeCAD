@@ -746,6 +746,18 @@ Py::List DocumentPy::getRootObjects() const
     return res;
 }
 
+Py::List DocumentPy::getRootObjectsIgnoreLinks() const
+{
+    std::vector<App::DocumentObject*> objs = getDocumentPtr()->getRootObjectsIgnoreLinks();
+    Py::List res;
+
+    for (auto obj : objs)
+        //Note: Here we must force the Py::Object to own this Python object as getPyObject() increments the counter
+        res.append(Py::Object(obj->getPyObject(), true));
+
+    return res;
+}
+
 Py::Int DocumentPy::getUndoMode() const
 {
     return Py::Int(getDocumentPtr()->getUndoMode());

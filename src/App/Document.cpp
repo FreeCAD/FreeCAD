@@ -4005,6 +4005,32 @@ std::vector<App::DocumentObject*> Document::getRootObjects() const
     return ret;
 }
 
+std::vector<App::DocumentObject*> Document::getRootObjectsIgnoreLinks() const
+{
+    std::vector<App::DocumentObject*> ret;
+
+    for (auto objectIt : d->objectArray) {
+        auto list = objectIt->getInList();
+        bool noParents = list.empty();
+
+        if (!noParents) {
+            // App::Document getRootObjects returns the root objects of the dependency graph.
+            // So if an object is referenced by a App::Link, it will not be returned by that function.
+            // So here, as we want the tree-root level objects,
+            // we check if all the parents are links. In which case its still a root object.
+            noParents = std::all_of(list.cbegin(), list.cend(), [](App::DocumentObject* obj) {
+                return obj->isDerivedFrom<App::Link>();
+            });
+        }
+
+        if (noParents) {
+            ret.push_back(objectIt);
+        }
+    }
+
+    return ret;
+}
+
 void DocumentP::findAllPathsAt(const std::vector <Node> &all_nodes, size_t id,
                                 std::vector <Path> &all_paths, Path tmp)
 {
