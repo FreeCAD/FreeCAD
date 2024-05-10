@@ -259,6 +259,84 @@ std::vector<TopoShape> DressUp::getFaces(const TopoShape& shape)
     return ret;
 }
 
+std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape &shape) {
+    std::vector<TopoShape> ret;
+    std::unordered_set<TopoDS_Shape, Part::ShapeHasher, Part::ShapeHasher> shapeSet;
+
+    auto addEdge = [&](const TopoDS_Shape &subshape, const std::string &ref) {
+        if (!shapeSet.insert(subshape).second)
+            return;
+
+        auto faces = shape.findAncestorsShapes(subshape, TopAbs_FACE);
+        if(faces.size() != 2) {
+            FC_WARN(getFullName() << ": skip edge "
+                    << ref << " with less two attaching faces");
+            return;
+        }
+        const TopoDS_Shape& face1 = faces.front();
+        const TopoDS_Shape& face2 = faces.back();
+        GeomAbs_Shape cont = BRep_Tool::Continuity(TopoDS::Edge(subshape),
+                                                    TopoDS::Face(face1),
+                                                    TopoDS::Face(face2));
+        if (cont != GeomAbs_C0) {
+            FC_WARN(getFullName() << ": skip edge "
+                    << ref << " that is not C0 continuous");
+            return;
+        }
+        ret.push_back(subshape);
+    };
+
+    for(const auto &v : Base.getShadowSubs()) {
+        TopoDS_Shape subshape;
+        const auto &ref = v.first.size()?v.first:v.second;
+        subshape = shape.getSubShape(ref.c_str(), true);
+        if(subshape.IsNull())
+            FC_THROWM(Base::CADKernelError, "Invalid edge link: " << v.second);
+
+        if (subshape.ShapeType() == TopAbs_EDGE)
+            addEdge(subshape, ref);
+        else if(subshape.ShapeType() == TopAbs_FACE || subshape.ShapeType() == TopAbs_WIRE) {
+            for(TopExp_Explorer exp(subshape,TopAbs_EDGE);exp.More();exp.Next())
+                addEdge(exp.Current(), std::string());
+        } else
+            FC_WARN(getFullName() << ": skip invalid shape '"
+                    << ref << "' with type " << TopoShape::shapeName(subshape.ShapeType()));
+    }
+    return ret;
+}
+
+std::vector<TopoShape> DressUp::getFaces(const TopoShape &shape) {
+    std::vector<TopoShape> ret;
+    const auto &vals = Base.getSubValues();
+    const auto &subs = Base.getShadowSubs();
+    size_t i=0;
+    for(auto &val : vals) {
+        if(!boost::starts_with(val,"Face"))
+            continue;
+        auto &sub = subs[i++];
+        auto &ref = sub.first.size()?sub.first:val;
+        TopoShape subshape;
+        try {
+            subshape = shape.getSubTopoShape(ref.c_str());
+        }catch(...)
+        {
+        }
+
+        if(subshape.isNull()) {
+            FC_ERR(getFullName() << ": invalid face reference '" << ref << "'");
+            throw Part::NullShapeException("Invalid Invalid face link");
+        }
+
+        if(subshape.shapeType() != TopAbs_FACE) {
+            FC_WARN(getFullName() << ": skip invalid shape '"
+                    << ref << "' with type " << subshape.shapeName());
+            continue;
+        }
+        ret.push_back(subshape);
+    }
+    return ret;
+}
+
 void DressUp::onChanged(const App::Property* prop)
 {
     // the BaseFeature property should track the Base and vice-versa as long as
