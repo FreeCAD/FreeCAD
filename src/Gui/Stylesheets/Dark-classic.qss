@@ -1883,7 +1883,7 @@ QTabWidget::pane {
 
 QTabWidget::pane:selected {
   background-color: @ThemeAccentColor1;
-  border: 1px solid #346792;
+  border: 1px solid #252525;
 }
 
 QTabWidget::pane:selected {
@@ -1893,22 +1893,22 @@ QTabWidget::pane:selected {
 
 QTabWidget::pane:top {
   top: -1px;
-  border-top: 1px solid #696969;
+  border-top: 1px solid #252525;
 }
 
 QTabWidget::pane:bottom {
   bottom: -1px;
-  border-bottom: 1px solid #696969;
+  border-bottom: 1px solid #252525;
 }
 
 QTabWidget::pane:left {
   right: -1px;
-  border-right: 1px solid #696969;
+  border-right: 1px solid #252525;
 }
 
 QTabWidget::pane:right {
   left: -1px;
-  border-left: 1px solid #696969;
+  border-left: 1px solid #252525;
 }
 /* QTabBar ----------------------------------------------------------------
 
