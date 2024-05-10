@@ -128,9 +128,6 @@ App::DocumentObjectExecReturn* ShapeBinder::execute()
             this->Placement.setValue(shape.getTransform());
             this->Shape.setValue(shape);
         }
-        else {
-            this->Shape.setValue(shape);
-        }
     }
 
     return Part::Feature::execute();
