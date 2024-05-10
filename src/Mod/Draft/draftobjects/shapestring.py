@@ -105,9 +105,9 @@ class ShapeString(DraftObject):
         super().onDocumentRestored(obj)
         if hasattr(obj, "ObliqueAngle"): # several more properties were added
             return
-        self.update_properties_0v22(obj)
+        self.update_properties_1v0(obj)
 
-    def update_properties_0v22(self, obj):
+    def update_properties_1v0(self, obj):
         """Update view properties."""
         old_tracking = obj.Tracking # no need for obj.getTypeIdOfProperty("Tracking")
         obj.removeProperty("Tracking")
@@ -115,9 +115,9 @@ class ShapeString(DraftObject):
         obj.KeepLeftMargin = True
         obj.ScaleToSize = False
         obj.Tracking = old_tracking
-        _wrn("v0.22, " + obj.Label + ", "
+        _wrn("v1.0, " + obj.Label + ", "
              + translate("draft", "added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties"))
-        _wrn("v0.22, " + obj.Label + ", "
+        _wrn("v1.0, " + obj.Label + ", "
              + translate("draft", "changed 'Tracking' property type"))
 
     def execute(self, obj):
