@@ -2004,7 +2004,7 @@ Base::Placement AssemblyObject::getGlobalPlacement(App::DocumentObject* targetOb
                                                    App::DocumentObject* container)
 {
     bool inContainerBranch = (container == nullptr);
-    auto rootObjects = App::GetApplication().getActiveDocument()->getRootObjects();
+    auto rootObjects = App::GetApplication().getActiveDocument()->getRootObjectsIgnoreLinks();
     for (auto& part : rootObjects) {
         Base::Placement foundPlc;
         bool found =

@@ -203,7 +203,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                         ):
                             process_objects(obj.OutList, objItem)
 
-            process_objects(doc.RootObjects, docItem)
+            process_objects(doc.RootObjectsIgnoreLinks, docItem)
             self.form.partList.expandAll()
 
     def onFilterChange(self):
