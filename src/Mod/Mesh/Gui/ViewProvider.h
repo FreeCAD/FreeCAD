@@ -200,6 +200,11 @@ public:
     void highlightSegments(const std::vector<App::Color>&);
     //@}
 
+    /** @name Restoring view provider from document load */
+    //@{
+    void finishRestoring() override;
+    //@}
+
 protected:
     /// Sets the edit mode
     bool setEdit(int ModNum) override;

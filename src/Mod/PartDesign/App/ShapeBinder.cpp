@@ -76,10 +76,12 @@ void ShapeBinder::onChanged(const App::Property* prop)
 
 short int ShapeBinder::mustExecute() const {
 
-    if (Support.isTouched())
+    if (Support.isTouched()) {
         return 1;
-    if (TraceSupport.isTouched())
+    }
+    if (TraceSupport.isTouched()) {
         return 1;
+    }
 
     return Part::Feature::mustExecute();
 }
@@ -118,15 +120,12 @@ bool ShapeBinder::hasPlacementChanged() const
     return this->Placement.getValue() != placement;
 }
 
-App::DocumentObjectExecReturn* ShapeBinder::execute() {
-
+App::DocumentObjectExecReturn* ShapeBinder::execute()
+{
     if (!this->isRestoring()) {
         Part::TopoShape shape(updatedShape());
         if (!shape.isNull()) {
             this->Placement.setValue(shape.getTransform());
-            this->Shape.setValue(shape);
-        }
-        else {
             this->Shape.setValue(shape);
         }
     }
@@ -151,8 +150,8 @@ void ShapeBinder::getFilteredReferences(const App::PropertyLinkSubList* prop,
     //we only allow one part feature, so get the first one we find
     size_t index = 0;
     for (auto* it : objs) {
-        if (it && it->isDerivedFrom<Part::Feature>()) {
-            obj = static_cast<Part::Feature*>(it);
+        if (auto part = dynamic_cast<Part::Feature*>(it)) {
+            obj = part;
             break;
         }
         index++;
@@ -168,13 +167,15 @@ void ShapeBinder::getFilteredReferences(const App::PropertyLinkSubList* prop,
         //collect all subshapes for the object
         for (index = 0; index < objs.size(); index++) {
             //we only allow subshapes from a single Part::Feature
-            if (objs[index] != obj)
+            if (objs[index] != obj) {
                 continue;
+            }
 
             //in this mode the full shape is not allowed, as we already started the subshape
             //processing
-            if (subs[index].empty())
+            if (subs[index].empty()) {
                 continue;
+            }
 
             subobjects.push_back(subs[index]);
         }
@@ -182,12 +183,12 @@ void ShapeBinder::getFilteredReferences(const App::PropertyLinkSubList* prop,
     else {
         // search for Origin features
         for (auto* it : objs) {
-            if (it && it->isDerivedFrom<App::Line>()) {
-                obj = static_cast<App::GeoFeature*>(it);
+            if (auto line = dynamic_cast<App::Line*>(it)) {
+                obj = line;
                 break;
             }
-            else if (it && it->isDerivedFrom<App::Plane>()) {
-                obj = static_cast<App::GeoFeature*>(it);
+            if (auto plane = dynamic_cast<App::Plane*>(it)) {
+                obj = plane;
                 break;
             }
         }
@@ -196,15 +197,18 @@ void ShapeBinder::getFilteredReferences(const App::PropertyLinkSubList* prop,
 
 Part::TopoShape ShapeBinder::buildShapeFromReferences(App::GeoFeature* obj, std::vector< std::string > subs) {
 
-    if (!obj)
+    if (!obj) {
         return TopoDS_Shape();
+    }
 
     if (obj->isDerivedFrom<Part::Feature>()) {
-        Part::Feature* part = static_cast<Part::Feature*>(obj);
-        if (subs.empty())
+        auto part = static_cast<Part::Feature*>(obj);
+        if (subs.empty()) {
             return part->Shape.getValue();
+        }
 
         std::vector<TopoDS_Shape> shapes;
+        shapes.reserve(subs.size());
         for (const std::string& sub : subs) {
             shapes.push_back(part->Shape.getShape().getSubShape(sub.c_str()));
         }
@@ -213,16 +217,15 @@ Part::TopoShape ShapeBinder::buildShapeFromReferences(App::GeoFeature* obj, std:
             //single subshape. Return directly.
             return shapes[0];
         }
-        else {
-            //multiple subshapes. Make a compound.
-            BRep_Builder builder;
-            TopoDS_Compound cmp;
-            builder.MakeCompound(cmp);
-            for (const TopoDS_Shape& sh : shapes) {
-                builder.Add(cmp, sh);
-            }
-            return cmp;
+
+        //multiple subshapes. Make a compound.
+        BRep_Builder builder;
+        TopoDS_Compound cmp;
+        builder.MakeCompound(cmp);
+        for (const TopoDS_Shape& sh : shapes) {
+            builder.Add(cmp, sh);
         }
+        return cmp;
     }
     else if (obj->isDerivedFrom<App::Line>()) {
         gp_Lin line;
@@ -267,14 +270,18 @@ void ShapeBinder::onSettingDocument()
 void ShapeBinder::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
 {
     App::Document* doc = getDocument();
-    if (!doc || doc->testStatus(App::Document::Restoring))
+    if (!doc || doc->testStatus(App::Document::Restoring)) {
         return;
-    if (this == &Obj)
+    }
+    if (this == &Obj) {
         return;
-    if (!TraceSupport.getValue())
+    }
+    if (!TraceSupport.getValue()) {
         return;
-    if (!Prop.isDerivedFrom<App::PropertyPlacement>())
+    }
+    if (!Prop.isDerivedFrom<App::PropertyPlacement>()) {
         return;
+    }
 
     App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
@@ -282,8 +289,9 @@ void ShapeBinder::slotChangedObject(const App::DocumentObject& Obj, const App::P
     if (obj) {
         if (obj == &Obj) {
             // the directly referenced object has changed
-            if (hasPlacementChanged())
+            if (hasPlacementChanged()) {
                 enforceRecompute();
+            }
         }
         else if (Obj.hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
             // check if the changed property belongs to a group-like object
@@ -296,8 +304,9 @@ void ShapeBinder::slotChangedObject(const App::DocumentObject& Obj, const App::P
 
             auto it = std::find(chain.begin(), chain.end(), &Obj);
             if (it != chain.end()) {
-                if (hasPlacementChanged())
+                if (hasPlacementChanged()) {
                     enforceRecompute();
+                }
             }
         }
     }

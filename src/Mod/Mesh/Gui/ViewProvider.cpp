@@ -511,6 +511,14 @@ void ViewProviderMesh::updateData(const App::Property* prop)
     }
 }
 
+void ViewProviderMesh::finishRestoring()
+{
+    if (Coloring.getValue()) {
+        Coloring.touch();
+    }
+    Gui::ViewProviderGeometryObject::finishRestoring();
+}
+
 QIcon ViewProviderMesh::getIcon() const
 {
     static QIcon icon = Gui::BitmapFactory().pixmap("Mesh_Tree");
