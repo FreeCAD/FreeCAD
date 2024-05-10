@@ -924,25 +924,23 @@ QToolBar:disabled {
 
 QToolBar::handle:horizontal {
   width: 8px;
-  margin: 3px 3px;
+  /* margin: 3px 3px; */
   image: url(qss:images_classic/Hmovetoolbar-lightgray.png);
 }
 
 QToolBar::handle:vertical {
   height: 8px;
-  margin: 3px 3px;
+  /* margin: 3px 3px; */
   image: url(qss:images_classic/Vmovetoolbar-lightgray.png);
 }
 
 QToolBar::handle:horizontal:hover {
   width: 8px;
-  margin: 3px 3px;
   image: url(qss:images_classic/Hmovetoolbar-white.png);
 }
 
 QToolBar::handle:vertical:hover {
   height: 8px;
-  margin: 3px 3px;
   image: url(qss:images_classic/Vmovetoolbar-white.png);
 }
 
@@ -1278,7 +1276,7 @@ QToolButton {
 }
 
 QToolButton:disabled {
-  background-color: rgba(0, 0, 0, 0.065);
+  /* background-color: rgba(0, 0, 0, 0.065); */
   color: #adadad;
 }
 
