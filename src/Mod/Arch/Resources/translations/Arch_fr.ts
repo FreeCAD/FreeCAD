@@ -434,7 +434,7 @@ Double-cliquez pour modifier. Glissez et déposez pour réorganiser.</translatio
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="48"/>
       <source>Log</source>
-      <translation>Journal</translation>
+      <translation>Log</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="55"/>
@@ -2737,7 +2737,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="../../ArchMaterial.py" line="159"/>
       <source>Create multi-material</source>
-      <translation>Créer un multi-matériau</translation>
+      <translation>Créer un multi-matériaux</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="216"/>
@@ -4059,7 +4059,7 @@ La création du bâtiment est annulée.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="335"/>
       <source>If true, the height value propagates to contained objects if the height of those objects is set to 0</source>
-      <translation type="unfinished">If true, the height value propagates to contained objects if the height of those objects is set to 0</translation>
+      <translation>Si mis à vrai, la valeur de la hauteur se propage aux objets contenus si la hauteur de ces objets est fixée à 0.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="338"/>
@@ -5881,7 +5881,7 @@ La création du bâtiment est annulée.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="512"/>
       <source>The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</source>
-      <translation type="unfinished">The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</translation>
+      <translation>Le texte à afficher. Utilisez $area, $label, $tag, $longname, $description et pour les finitions $floor, $walls, $ceiling pour insérer les données correspondantes.</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="518"/>
@@ -6353,7 +6353,7 @@ La création du bâtiment est annulée.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="152"/>
       <source>Multi-Material</source>
-      <translation>Matériaux multiples</translation>
+      <translation>Multi-matériaux</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="156"/>
@@ -6748,12 +6748,12 @@ La création du bâtiment est annulée.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1505"/>
       <source>Close holes</source>
-      <translation>Fermer les trous</translation>
+      <translation>Boucher les trous</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1508"/>
       <source>Closes holes in open shapes, turning them solids</source>
-      <translation>Ferme les trous de formes ouvertes, les transformant en solides</translation>
+      <translation>Bouche les trous des formes ouvertes les transformant en solides</translation>
     </message>
   </context>
   <context>

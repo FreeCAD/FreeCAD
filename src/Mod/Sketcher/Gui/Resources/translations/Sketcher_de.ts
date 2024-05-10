@@ -471,7 +471,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3080"/>
       <source>Constrain horizontal</source>
-      <translation type="unfinished">Constrain horizontal</translation>
+      <translation>Horizontal festlegen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3081"/>
@@ -525,7 +525,7 @@ für den ausgewählten Knoten</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4223"/>
       <source>Constrain point on object</source>
-      <translation type="unfinished">Constrain point on object</translation>
+      <translation>Punkt auf Objekt festlegen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4224"/>
@@ -565,7 +565,7 @@ and an edge as an interface.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9233"/>
       <source>Constrain symmetric</source>
-      <translation type="unfinished">Constrain symmetric</translation>
+      <translation>Symmetrie festlegen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9234"/>
@@ -580,7 +580,7 @@ in Bezug auf eine Linie oder einen dritten Punkt</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3125"/>
       <source>Constrain vertical</source>
-      <translation type="unfinished">Constrain vertical</translation>
+      <translation>Vertikal festlegen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3126"/>
@@ -619,7 +619,7 @@ in Bezug auf eine Linie oder einen dritten Punkt</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="490"/>
       <source>Create arc by 3 points</source>
-      <translation type="unfinished">Create arc by 3 points</translation>
+      <translation>Kreisbogen durch drei Punkte erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="491"/>
@@ -632,7 +632,7 @@ in Bezug auf eine Linie oder einen dritten Punkt</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1300"/>
       <source>Create circle by 3 points</source>
-      <translation type="unfinished">Create circle by 3 points</translation>
+      <translation>Kreis durch drei Punkte erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1301"/>
@@ -710,7 +710,7 @@ in Bezug auf eine Linie oder einen dritten Punkt</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="638"/>
       <source>Create circle by center</source>
-      <translation type="unfinished">Create circle by center</translation>
+      <translation>Kreis um Mittelpunkt erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="639"/>
@@ -4878,13 +4878,13 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
       <source>Open and non-manifold vertexes</source>
-      <translation>Offene und nicht nicht-vielfältige Knotenpunkte</translation>
+      <translation>Nicht verbundene Punkte und Kreuzungspunkte</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="38"/>
       <source>Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
 This is purely based on topological shape of the sketch and not on its geometry/constrain set.</source>
-      <translation>Markiert offene und nicht-vielfältige Knotenpunkte, die zu Fehlern führen können, wenn die Skizze verwendet wird, um Festkörper zu erstellen.
+      <translation>Markiert nicht verbundene Punkte und Kreuzungspunkte, die zu Fehlern führen können, wenn die Skizze verwendet wird, um Festkörper zu erstellen.
 Dies basiert ausschließlich auf der topologischen Form der Skizze und nicht auf den enthaltenen Geometrien oder Randbedingungen.</translation>
     </message>
     <message>
@@ -6738,7 +6738,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../CommandConstraints.cpp" line="2724"/>
       <source>Constrain horizontal/vertical</source>
-      <translation type="unfinished">Constrain horizontal/vertical</translation>
+      <translation>Horizontal / vertikal festlegen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2725"/>
@@ -6751,7 +6751,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../CommandConstraints.cpp" line="3034"/>
       <source>Constrain horizontal/vertical</source>
-      <translation type="unfinished">Constrain horizontal/vertical</translation>
+      <translation>Horizontal / vertikal festlegen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3035"/>
@@ -6896,42 +6896,42 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="212"/>
       <source>Color of fully constrained normal geometry in edit mode</source>
-      <translation type="unfinished">Color of fully constrained normal geometry in edit mode</translation>
+      <translation>Farbe der vollständig bestimmten normalen Geometrie im Bearbeitungsmodus</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="238"/>
       <source>Color of normal geometry in edit mode</source>
-      <translation type="unfinished">Color of normal geometry in edit mode</translation>
+      <translation>Farbe der normalen Geometrie im Bearbeitungsmodus</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="306"/>
       <source>Color of fully constrained construction geometry in edit mode</source>
-      <translation type="unfinished">Color of fully constrained construction geometry in edit mode</translation>
+      <translation>Farbe der vollständig bestimmten Hilfsgeometrie im Bearbeitungsmodus</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="387"/>
       <source>Internal alignment geometry</source>
-      <translation type="unfinished">Internal alignment geometry</translation>
+      <translation>Interne Ausrichtungsgeometrie</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="400"/>
       <source>Color of fully constrained internal alignment geometry in edit mode</source>
-      <translation type="unfinished">Color of fully constrained internal alignment geometry in edit mode</translation>
+      <translation>Farbe der vollständig bestimmten internen Ausrichtungsgeometrie im Bearbeitungsmodus</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="426"/>
       <source>Color of internal alignment geometry in edit mode</source>
-      <translation type="unfinished">Color of internal alignment geometry in edit mode</translation>
+      <translation>Farbe der internen Ausrichtungsgeometrie im Bearbeitungsmodus</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="555"/>
       <source>Fully constrained sketch</source>
-      <translation type="unfinished">Fully constrained sketch</translation>
+      <translation>Vollständig bestimmte Skizze</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="568"/>
       <source>Color of geometry indicating a fully constrained sketch</source>
-      <translation type="unfinished">Color of geometry indicating a fully constrained sketch</translation>
+      <translation>Farbe der Geometrie, die eine vollständig bestimmte Skizze anzeigt</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="588"/>
@@ -6941,7 +6941,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="672"/>
       <source>Color of dimensional driving constraints in edit mode</source>
-      <translation type="unfinished">Color of dimensional driving constraints in edit mode</translation>
+      <translation>Farbe der festlegenden maßlichen Randbedingungen im Bearbeitungsmodus</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="799"/>
@@ -6951,7 +6951,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="806"/>
       <source>Color of vertices outside edit mode</source>
-      <translation type="unfinished">Color of vertices outside edit mode</translation>
+      <translation>Farbe der Knotenpunkte außerhalb des Bearbeitungsmodus</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="845"/>
@@ -6961,7 +6961,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="852"/>
       <source>Color of edges outside edit mode</source>
-      <translation type="unfinished">Color of edges outside edit mode</translation>
+      <translation>Farbe der Kanten außerhalb des Bearbeitungsmodus</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="199"/>

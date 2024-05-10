@@ -37,12 +37,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="103"/>
       <source>Create Revolute Joint</source>
-      <translation type="unfinished">Create Revolute Joint</translation>
+      <translation>回転ジョイントを作成</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="110"/>
       <source>Create a Revolute Joint: Allows rotation around a single axis between selected parts.</source>
-      <translation type="unfinished">Create a Revolute Joint: Allows rotation around a single axis between selected parts.</translation>
+      <translation>回転ジョイントを作成: 選択した部品間の単一軸を中心に回転できます。</translation>
     </message>
   </context>
   <context>
@@ -50,12 +50,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="131"/>
       <source>Create Cylindrical Joint</source>
-      <translation type="unfinished">Create Cylindrical Joint</translation>
+      <translation>円筒ジョイントを作成</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="138"/>
       <source>Create a Cylindrical Joint: Enables rotation along one axis while permitting movement along the same axis between assembled parts.</source>
-      <translation type="unfinished">Create a Cylindrical Joint: Enables rotation along one axis while permitting movement along the same axis between assembled parts.</translation>
+      <translation>円筒ジョイントの作成: 組み立て部品間で同じ軸に沿って移動を許可しながら、1つの軸に沿って回転できます。</translation>
     </message>
   </context>
   <context>
@@ -63,12 +63,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="157"/>
       <source>Create Slider Joint</source>
-      <translation type="unfinished">Create Slider Joint</translation>
+      <translation>スライダージョイントを作成</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="164"/>
       <source>Create a Slider Joint: Allows linear movement along a single axis but restricts rotation between selected parts.</source>
-      <translation type="unfinished">Create a Slider Joint: Allows linear movement along a single axis but restricts rotation between selected parts.</translation>
+      <translation>スライダージョイントを作成: 1つの軸に沿って線形移動を可能にしますが、選択した部品間の回転は制限されます。</translation>
     </message>
   </context>
   <context>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="183"/>
       <source>Create Ball Joint</source>
-      <translation type="unfinished">Create Ball Joint</translation>
+      <translation>ボールジョイントを作成</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="190"/>
@@ -258,12 +258,12 @@
     <message>
       <location filename="../../../JointObject.py" line="140"/>
       <source>The selected element of the first object</source>
-      <translation type="unfinished">The selected element of the first object</translation>
+      <translation>最初のオブジェクトの選択された要素</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="147"/>
       <source>The selected vertex of the first object</source>
-      <translation type="unfinished">The selected vertex of the first object</translation>
+      <translation>最初のオブジェクトの選択された頂点</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="157"/>

@@ -1054,7 +1054,7 @@
       <location filename="../../DlgBlock.ui" line="48"/>
       <location filename="../../DlgBlock.ui" line="209"/>
       <source>Dimension</source>
-      <translation>Кота</translation>
+      <translation>Мерне јединице</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="53"/>
@@ -1208,7 +1208,7 @@
     <message>
       <location filename="../../Command.cpp" line="1247"/>
       <source>Boolean...</source>
-      <translation>Булова...</translation>
+      <translation>Буловe операције...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1248"/>
@@ -1300,7 +1300,7 @@
     <message>
       <location filename="../../Command.cpp" line="1443"/>
       <source>Chamfer...</source>
-      <translation>Обори ивице...</translation>
+      <translation>Обaрање ивица...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1444"/>
@@ -1446,12 +1446,12 @@
     <message>
       <location filename="../../Command.cpp" line="1499"/>
       <source>Cross-sections...</source>
-      <translation>Попречни пресек...</translation>
+      <translation>Попречни пресеци...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1500"/>
       <source>Cross-sections</source>
-      <translation>Попречни пресек</translation>
+      <translation>Попречни пресеци</translation>
     </message>
   </context>
   <context>
@@ -1543,7 +1543,7 @@
     <message>
       <location filename="../../Command.cpp" line="1011"/>
       <source>Exports to a CAD file</source>
-      <translation>Извози у CAD датотеку</translation>
+      <translation>Извези у CAD датотеку</translation>
     </message>
   </context>
   <context>
@@ -1615,7 +1615,7 @@
     <message>
       <location filename="../../Command.cpp" line="948"/>
       <source>Imports a CAD file</source>
-      <translation>Увози CAD датотеку</translation>
+      <translation>Увези CAD датотеку</translation>
     </message>
   </context>
   <context>
@@ -1646,7 +1646,7 @@
     <message>
       <location filename="../../Command.cpp" line="1567"/>
       <source>Loft...</source>
-      <translation>Кроз пресеке...</translation>
+      <translation>По пресецима...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1568"/>
@@ -1772,7 +1772,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
-      <translation>Направи тачкасти објекат на основу геометрије</translation>
+      <translation>Направи тачкасти објекат од геометрије</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="136"/>
@@ -2194,7 +2194,7 @@ of projection.</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="199"/>
       <source>Loft</source>
-      <translation>Кроз пресеке</translation>
+      <translation>По пресецима</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="263"/>
@@ -2344,7 +2344,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross sections</source>
-      <translation>Попречни пресек</translation>
+      <translation>Попречни пресеци</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
@@ -2397,12 +2397,12 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="14"/>
       <source>Boolean Operation</source>
-      <translation>Булова Операција</translation>
+      <translation>Буловe oперацијe</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="20"/>
       <source>Boolean operation</source>
-      <translation>Булова операција</translation>
+      <translation>Буловe операцијe</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="32"/>
@@ -2509,7 +2509,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1109"/>
       <source>Chamfer Edges</source>
-      <translation>Обори ивице</translation>
+      <translation>Обaрање ивица</translation>
     </message>
   </context>
   <context>
@@ -2940,7 +2940,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="275"/>
       <source>Edges to chamfer</source>
-      <translation>Ивице за обарање</translation>
+      <translation>Ивице које треба оборити</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="912"/>
@@ -3327,7 +3327,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="92"/>
       <source>Direction:</source>
-      <translation type="unfinished">Direction:</translation>
+      <translation>Правац:</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="109"/>
@@ -4101,32 +4101,32 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Ambient shape color</source>
-      <translation type="unfinished">Ambient shape color</translation>
+      <translation>Боја околине</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default ambient color for new shapes</source>
-      <translation type="unfinished">The default ambient color for new shapes</translation>
+      <translation>Подразумевана боја околине за нове облике</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="116"/>
       <source>Emissive shape color</source>
-      <translation type="unfinished">Emissive shape color</translation>
+      <translation>Емитујућа боја</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="123"/>
       <source>The default emissive color for new shapes</source>
-      <translation type="unfinished">The default emissive color for new shapes</translation>
+      <translation>Подразумевана емитујућа боја за нове облике</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="149"/>
       <source>Specular shape color</source>
-      <translation type="unfinished">Specular shape color</translation>
+      <translation>Боја одсјаја</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="156"/>
       <source>The default specular color for new shapes</source>
-      <translation type="unfinished">The default specular color for new shapes</translation>
+      <translation>Подразумевана боја одсјаја за нове облике</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="182"/>
@@ -4141,12 +4141,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="217"/>
       <source>Shape shininess</source>
-      <translation type="unfinished">Shape shininess</translation>
+      <translation>Блиставост облика</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="224"/>
       <source>The default shininess for new shapes</source>
-      <translation type="unfinished">The default shininess for new shapes</translation>
+      <translation>Подразумевана блиставост нових облика</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="255"/>
@@ -4361,7 +4361,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="241"/>
       <source>Loft</source>
-      <translation>Кроз пресеке</translation>
+      <translation>По пресецима</translation>
     </message>
   </context>
   <context>
@@ -5287,7 +5287,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../TaskLoft.ui" line="14"/>
       <source>Loft</source>
-      <translation>Кроз пресеке</translation>
+      <translation>По пресецима</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>
@@ -5953,7 +5953,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
       <source>Create tube</source>
-      <translation>Направи цев</translation>
+      <translation>Цев</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="173"/>
@@ -6001,7 +6001,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>Boolean</source>
-      <translation>Булове</translation>
+      <translation>Буловe операције</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
@@ -6034,7 +6034,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
       <source>Create tube</source>
-      <translation>Направи цев</translation>
+      <translation>Цев</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
@@ -6088,7 +6088,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
       <source>Connect objects</source>
-      <translation>Повежи објекте</translation>
+      <translation>Споји објекте</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
@@ -6608,7 +6608,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>Документ '%1' не постоји.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="254"/>
@@ -6768,7 +6768,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
       <source>Wire is not closed.</source>
-      <translation type="unfinished">Wire is not closed.</translation>
+      <translation>Жица није затворена.</translation>
     </message>
   </context>
 </TS>

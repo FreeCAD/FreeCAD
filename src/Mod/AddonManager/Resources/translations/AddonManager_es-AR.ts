@@ -512,8 +512,8 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../AddonManagerOptions.ui" line="20"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates</translation>
+      <translation>Si se selecciona esta opción, al ejecutar el Administrador de Complementos,
+los complementos instalados se comprobarán si hay actualizaciones disponibles</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="24"/>

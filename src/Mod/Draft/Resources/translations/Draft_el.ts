@@ -1146,7 +1146,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="272"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
-      <translation type="unfinished">The line spacing for multi-line texts and labels (relative to the font size)</translation>
+      <translation>Η απόσταση γραμμών για κείμενα και ετικέτες πολλαπλών γραμμών (σε σχέση με το μέγεθος της γραμματοσειράς)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="279"/>
@@ -1809,7 +1809,7 @@ used for linear dimensions.</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="633"/>
       <source>Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</source>
-      <translation type="unfinished">Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</translation>
+      <translation>Αρχεία γραμματοσειράς (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="585"/>
@@ -3992,7 +3992,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="204"/>
       <source>Autogroup</source>
-      <translation type="unfinished">Autogroup</translation>
+      <translation>Αυτόματη Ομαδοποίηση</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="250"/>
@@ -6440,7 +6440,7 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="209"/>
       <source>Autogroup</source>
-      <translation type="unfinished">Autogroup</translation>
+      <translation>Αυτόματη Ομαδοποίηση</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="212"/>

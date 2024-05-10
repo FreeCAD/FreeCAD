@@ -2431,7 +2431,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
         <location filename="../../ArchGrid.py" line="323"/>
         <location filename="../../ArchIFCView.py" line="56"/>
         <location filename="../../ArchMaterial.py" line="495"/>
-        <location filename="../../ArchMaterial.py" line="789"/>
+        <location filename="../../ArchMaterial.py" line="793"/>
         <location filename="../../ArchReference.py" line="675"/>
         <location filename="../../ArchSchedule.py" line="454"/>
         <location filename="../../ArchSectionPlane.py" line="1198"/>
@@ -2468,8 +2468,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="871"/>
-        <location filename="../../ArchMaterial.py" line="890"/>
+        <location filename="../../ArchMaterial.py" line="875"/>
+        <location filename="../../ArchMaterial.py" line="894"/>
         <location filename="../../ArchWindow.py" line="1813"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
@@ -2482,8 +2482,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="871"/>
-        <location filename="../../ArchMaterial.py" line="890"/>
+        <location filename="../../ArchMaterial.py" line="875"/>
+        <location filename="../../ArchMaterial.py" line="894"/>
         <location filename="../../ArchPanel.py" line="238"/>
         <location filename="../../ArchWindow.py" line="1816"/>
         <source>Thickness</source>
@@ -2673,8 +2673,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
         <location filename="../../ArchMaterial.py" line="58"/>
-        <location filename="../../ArchMaterial.py" line="871"/>
-        <location filename="../../ArchMaterial.py" line="890"/>
+        <location filename="../../ArchMaterial.py" line="875"/>
+        <location filename="../../ArchMaterial.py" line="894"/>
         <source>Material</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2684,17 +2684,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="921"/>
+        <location filename="../../ArchMaterial.py" line="925"/>
         <source>New layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="958"/>
+        <location filename="../../ArchMaterial.py" line="962"/>
         <source>Total thickness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="972"/>
+        <location filename="../../ArchMaterial.py" line="976"/>
         <source>depends on the object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4878,7 +4878,7 @@ Building creation aborted.</source>
     </message>
     <message>
         <location filename="../../ArchMaterial.py" line="296"/>
-        <location filename="../../ArchMaterial.py" line="744"/>
+        <location filename="../../ArchMaterial.py" line="748"/>
         <source>A description for this material</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4903,17 +4903,17 @@ Building creation aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="745"/>
+        <location filename="../../ArchMaterial.py" line="749"/>
         <source>The list of layer names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="746"/>
+        <location filename="../../ArchMaterial.py" line="750"/>
         <source>The list of layer materials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="747"/>
+        <location filename="../../ArchMaterial.py" line="751"/>
         <source>The list of layer thicknesses</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6274,8 +6274,8 @@ Building creation aborted.</source>
 <context>
     <name>Arch_MaterialTools</name>
     <message>
-        <location filename="../../ArchMaterial.py" line="1031"/>
-        <location filename="../../ArchMaterial.py" line="1034"/>
+        <location filename="../../ArchMaterial.py" line="1035"/>
+        <location filename="../../ArchMaterial.py" line="1038"/>
         <source>Material tools</source>
         <translation type="unfinished"></translation>
     </message>
