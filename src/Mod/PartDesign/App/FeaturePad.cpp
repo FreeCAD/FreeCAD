@@ -235,8 +235,7 @@ App::DocumentObjectExecReturn *Pad::execute()
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
-            int solidCount = countSolids(result);
-            if (solidCount > 1) {
+            if (!isSingleSolidRuleSatisfied(result)) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
@@ -244,8 +243,7 @@ App::DocumentObjectExecReturn *Pad::execute()
             this->Shape.setValue(getSolid(solRes));
         }
         else {
-            int solidCount = countSolids(prism);
-            if (solidCount > 1) {
+            if (!isSingleSolidRuleSatisfied(prism)) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 

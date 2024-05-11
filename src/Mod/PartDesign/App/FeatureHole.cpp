@@ -1900,10 +1900,7 @@ App::DocumentObjectExecReturn* Hole::execute()
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
         base = refineShapeIfActive(base);
 
-
-
-        int solidCount = countSolids(base.getShape());
-        if (solidCount > 1) {
+        if (!isSingleSolidRuleSatisfied(base.getShape())) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
         }

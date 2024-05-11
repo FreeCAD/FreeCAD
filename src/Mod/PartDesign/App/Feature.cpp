@@ -151,6 +151,12 @@ int Feature::countSolids(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)
     return result;
 }
 
+bool Feature::isSingleSolidRuleSatisfied(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)
+{
+    int solidCount = countSolids(shape, type);
+
+    return solidCount <= 1;
+}
 
 
 const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
