@@ -94,26 +94,19 @@ def get_default_shape_style():
         "LineWidth":       ("int",      params.get_param_view("DefaultShapeLineWidth")),
         "PointColor":      ("color",    params.get_param_view("DefaultShapeVertexColor")),
         "PointSize":       ("int",      params.get_param_view("DefaultShapePointSize")),
-        "ShapeAppearance": ("material", (get_appearance_material(), ))
+        "ShapeAppearance": ("material", (get_view_material(), ))
     }
 
 
-def get_appearance_material(ret_default=False):
-    """Return a ShapeAppearance material with properties based on the preferences.
-
-    Parameters
-    ----------
-    ret_default: bool, optional
-        Defaults to `False`.
-        If `True`, always use default preference values even if stored values are available.
-    """
+def get_view_material():
+    """Return a ShapeAppearance material with properties based on the preferences."""
     material = App.Material()
-    material.AmbientColor = params.get_param_view("DefaultAmbientColor", ret_default=ret_default)
-    material.DiffuseColor = params.get_param_view("DefaultShapeColor", ret_default=ret_default)
-    material.EmissiveColor = params.get_param_view("DefaultEmissiveColor", ret_default=ret_default)
-    material.Shininess = params.get_param_view("DefaultShapeShininess", ret_default=ret_default) / 100
-    material.SpecularColor = params.get_param_view("DefaultSpecularColor", ret_default=ret_default)
-    material.Transparency = params.get_param_view("DefaultShapeTransparency", ret_default=ret_default) / 100
+    material.AmbientColor  = params.get_param_view("DefaultAmbientColor") & 0xFFFFFF00
+    material.DiffuseColor  = params.get_param_view("DefaultShapeColor") & 0xFFFFFF00
+    material.EmissiveColor = params.get_param_view("DefaultEmissiveColor") & 0xFFFFFF00
+    material.Shininess     = params.get_param_view("DefaultShapeShininess") / 100
+    material.SpecularColor = params.get_param_view("DefaultSpecularColor") & 0xFFFFFF00
+    material.Transparency  = params.get_param_view("DefaultShapeTransparency") / 100
     return material
 
 
