@@ -91,10 +91,17 @@ short Feature::mustExecute() const
 // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
 {
-    if (shape.IsNull())
+    if (shape.IsNull()) {
         Standard_Failure::Raise("Shape is null");
+    }
+
+    // If single solid rule is not enforced  we simply return the shape as is
+    if (singleSolidRuleMode() != Feature::SingleSolidRuleMode::Enforced) {
+        return shape;
+    }
+
     TopExp_Explorer xp;
-    xp.Init(shape,TopAbs_SOLID);
+    xp.Init(shape, TopAbs_SOLID);
     if (xp.More()) {
         return xp.Current();
     }
@@ -107,12 +114,19 @@ TopoShape Feature::getSolid(const TopoShape& shape)
     if (shape.isNull()) {
         throw Part::NullShapeException("Null shape");
     }
+
+    // If single solid rule is not enforced  we simply return the shape as is
+    if (singleSolidRuleMode() != Feature::SingleSolidRuleMode::Enforced) {
+        return shape;
+    }
+
     int count = shape.countSubShapes(TopAbs_SOLID);
-    if(count) {
-        auto res = shape.getSubTopoShape(TopAbs_SOLID,1);
+    if (count) {
+        auto res = shape.getSubTopoShape(TopAbs_SOLID, 1);
         res.fixSolidOrientation();
         return res;
     }
+
     return shape;
 }
 
@@ -153,11 +167,23 @@ int Feature::countSolids(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)
 
 bool Feature::isSingleSolidRuleSatisfied(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)
 {
+    if (singleSolidRuleMode() == Feature::SingleSolidRuleMode::Disabled) {
+        return true;
+    }
+
     int solidCount = countSolids(shape, type);
 
     return solidCount <= 1;
 }
 
+
+Feature::SingleSolidRuleMode Feature::singleSolidRuleMode()
+{
+    auto body = getFeatureBody();
+    auto areCompoundSolidsAllowed = body->AllowCompound.getValue();
+
+    return areCompoundSolidsAllowed ? SingleSolidRuleMode::Disabled : SingleSolidRuleMode::Enforced;
+}
 
 const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
 {
