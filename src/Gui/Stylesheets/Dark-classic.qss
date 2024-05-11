@@ -1578,13 +1578,24 @@ padding: 0px; /* if not reset, it might create problems with QPushButtons and ot
 margin: 0px; /* if not reset, it might create problems with QPushButtons and other elements */
 }
 
+QSint--ActionGroup QGroupBox {
+  border: 1px solid #696969;
+  background-color: transparent;
+  padding-bottom: 3px;
+}
+
+QSint--ActionGroup QGroupBox::title {
+    top: -8px;
+    left: 13px;
+}
+
 /* Separator line */
 QSint--ActionGroup QFrame[height="1"],
-QSint--ActionGroup QFrame[height="2"],
-QSint--ActionGroup QFrame[height="3"],
+QSint--ActionGroup QFrame[height="1"],
+QSint--ActionGroup QFrame[height="1"],
 QSint--ActionGroup QFrame[width="1"],
-QSint--ActionGroup QFrame[width="2"],
-QSint--ActionGroup QFrame[width="3"] {
+QSint--ActionGroup QFrame[width="1"],
+QSint--ActionGroup QFrame[width="1"] {
 border-color: rgba(0,0,0,60);
 }
 
