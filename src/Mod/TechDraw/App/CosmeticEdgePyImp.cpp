@@ -62,59 +62,59 @@ int CosmeticEdgePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 }
 
 //From Part::GeometryPy.cpp
-PyObject* CosmeticEdgePy::clone(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
+// PyObject* CosmeticEdgePy::clone(PyObject *args)
+// {
+//     if (!PyArg_ParseTuple(args, ""))
+//         return nullptr;
 
-    TechDraw::CosmeticEdge* geom = this->getCosmeticEdgePtr();
-    PyTypeObject* type = this->GetType();
-    PyObject* cpy = nullptr;
-    // let the type object decide
-    if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
-    if (!cpy) {
-        PyErr_SetString(PyExc_RuntimeError, "failed to create clone of CosmeticEdge");
-        return nullptr;
-    }
+//     TechDraw::CosmeticEdge* geom = this->getCosmeticEdgePtr();
+//     PyTypeObject* type = this->GetType();
+//     PyObject* cpy = nullptr;
+//     // let the type object decide
+//     if (type->tp_new)
+//         cpy = type->tp_new(type, this, nullptr);
+//     if (!cpy) {
+//         PyErr_SetString(PyExc_RuntimeError, "failed to create clone of CosmeticEdge");
+//         return nullptr;
+//     }
 
-    TechDraw::CosmeticEdgePy* geompy = static_cast<TechDraw::CosmeticEdgePy*>(cpy);
-    // the PyMake function must have created the corresponding instance of the 'CosmeticEdge' subclass
-    // so delete it now to avoid a memory leak
-    if (geompy->_pcTwinPointer) {
-        TechDraw::CosmeticEdge* clone = static_cast<TechDraw::CosmeticEdge*>(geompy->_pcTwinPointer);
-        delete clone;
-    }
-    geompy->_pcTwinPointer = geom->clone();
-    return cpy;
-}
+//     TechDraw::CosmeticEdgePy* geompy = static_cast<TechDraw::CosmeticEdgePy*>(cpy);
+//     // the PyMake function must have created the corresponding instance of the 'CosmeticEdge' subclass
+//     // so delete it now to avoid a memory leak
+//     if (geompy->_pcTwinPointer) {
+//         TechDraw::CosmeticEdge* clone = static_cast<TechDraw::CosmeticEdge*>(geompy->_pcTwinPointer);
+//         delete clone;
+//     }
+//     geompy->_pcTwinPointer = geom->clone();
+//     return cpy;
+// }
 
-PyObject* CosmeticEdgePy::copy(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
+// PyObject* CosmeticEdgePy::copy(PyObject *args)
+// {
+//     if (!PyArg_ParseTuple(args, ""))
+//         return nullptr;
 
-    TechDraw::CosmeticEdge* geom = this->getCosmeticEdgePtr();
-    PyTypeObject* type = this->GetType();
-    PyObject* cpy = nullptr;
-    // let the type object decide
-    if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
-    if (!cpy) {
-        PyErr_SetString(PyExc_RuntimeError, "failed to create copy of CosmeticEdge");
-        return nullptr;
-    }
+//     TechDraw::CosmeticEdge* ce = this->getCosmeticEdgePtr();
+//     PyTypeObject* type = this->GetType();
+//     PyObject* cpy = nullptr;
+//     // let the type object decide
+//     if (type->tp_new)
+//         cpy = type->tp_new(type, this, nullptr);
+//     if (!cpy) {
+//         PyErr_SetString(PyExc_RuntimeError, "failed to create copy of CosmeticEdge");
+//         return nullptr;
+//     }
 
-    TechDraw::CosmeticEdgePy* geompy = static_cast<TechDraw::CosmeticEdgePy*>(cpy);
-    // the PyMake function must have created the corresponding instance of the 'CosmeticEdge' subclass
-    // so delete it now to avoid a memory leak
-    if (geompy->_pcTwinPointer) {
-        TechDraw::CosmeticEdge* copy = static_cast<TechDraw::CosmeticEdge*>(geompy->_pcTwinPointer);
-        delete copy;
-    }
-    geompy->_pcTwinPointer = geom->copy();
-    return cpy;
-}
+//     TechDraw::CosmeticEdgePy* geompy = static_cast<TechDraw::CosmeticEdgePy*>(cpy);
+//     // the PyMake function must have created the corresponding instance of the 'CosmeticEdge' subclass
+//     // so delete it now to avoid a memory leak
+//     if (geompy->_pcTwinPointer) {
+//         TechDraw::CosmeticEdge* copy = static_cast<TechDraw::CosmeticEdge*>(geompy->_pcTwinPointer);
+//         delete copy;
+//     }
+//     geompy->_pcTwinPointer = ce->copy();
+//     return cpy;
+// }
 
 void CosmeticEdgePy::setFormat(Py::Dict arg)
 {
