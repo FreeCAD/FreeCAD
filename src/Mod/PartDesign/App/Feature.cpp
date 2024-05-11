@@ -180,6 +180,12 @@ bool Feature::isSingleSolidRuleSatisfied(const TopoDS_Shape& shape, TopAbs_Shape
 Feature::SingleSolidRuleMode Feature::singleSolidRuleMode()
 {
     auto body = getFeatureBody();
+
+    // When the feature is not part of an body (which should not happen) let's stay with the default
+    if (!body) {
+        return SingleSolidRuleMode::Enforced;
+    }
+
     auto areCompoundSolidsAllowed = body->AllowCompound.getValue();
 
     return areCompoundSolidsAllowed ? SingleSolidRuleMode::Disabled : SingleSolidRuleMode::Enforced;
