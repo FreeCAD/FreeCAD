@@ -259,6 +259,9 @@ class CurtainWall(ArchComponent.Component):
             obj.addProperty("App::PropertyVector","VerticalDirection","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall"))
             obj.VerticalDirection = FreeCAD.Vector(0,0,1)
+        if not "OverrideEdges" in pl:  # PropertyStringList
+            obj.addProperty("App::PropertyStringList","OverrideEdges","CurtainWall",QT_TRANSLATE_NOOP("App::Property","Input are index numbers of edges of Base ArchSketch/Sketch geometries (in Edit mode).  Selected edges are used to create the shape of this Arch Curtain Wall (instead of using all edges by default).  [ENHANCED by ArchSketch] GUI 'Edit Curtain Wall' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges."))
+
         self.Type = "CurtainWall"
 
     def onDocumentRestored(self,obj):
@@ -300,15 +303,41 @@ class CurtainWall(ArchComponent.Component):
                 return
 
         facets = []
-
         faces = []
+        curtainWallBaseShapeEdges = None
+        curtainWallEdges = None
+
         if obj.Base.Shape.Faces:
             faces = obj.Base.Shape.Faces
         elif obj.Height.Value and obj.VerticalDirection.Length:
             ext = FreeCAD.Vector(obj.VerticalDirection)
             ext.normalize()
             ext = ext.multiply(obj.Height.Value)
-            faces = [edge.extrude(ext) for edge in obj.Base.Shape.Edges]
+            # ArchSketch feature :
+            if hasattr(obj.Base, 'Proxy'):
+                if hasattr(obj.Base.Proxy, 'getCurtainWallBaseShapeEdgesInfo'):
+                    curtainWallBaseShapeEdges = obj.Base.Proxy.getCurtainWallBaseShapeEdgesInfo(obj.Base)
+            if curtainWallBaseShapeEdges:  # would be false (none) if SketchArch Add-on is not installed, or base ArchSketch does not have the edges stored / input by user
+                curtainWallEdges = curtainWallBaseShapeEdges.get('curtainWallEdges')
+            elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                skGeomEdges = []
+                skPlacement = obj.Placement  # Get Sketch's placement to restore later
+                if obj.OverrideEdges:
+                    for i in obj.OverrideEdges:
+                        skGeomI = fp.Geometry[i]
+                        # support Line, Arc, Circle at the moment
+                        if isinstance(skGeomI, (Part.LineSegment, Part.Circle, Part.ArcOfCircle)):
+                            skGeomEdgesI = skGeomI.toShape()
+                            skGeomEdges.append(skGeomEdgesI)
+                    for edge in skGeomEdges:
+                        edge.Placement = edge.Placement.multiply(skPlacement)
+                        curtainWallEdges.append(edge)
+            #if not curtainWallEdges:
+            else:
+                curtainWallEdges = obj.Base.Shape.Edges
+            if curtainWallEdges:
+                faces = [edge.extrude(ext) for edge in curtainWallEdges]
+
         if not faces:
             FreeCAD.Console.PrintLog(obj.Label+": unable to build base faces\n")
             return
