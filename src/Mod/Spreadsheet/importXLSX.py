@@ -63,9 +63,6 @@ except ValueError:
 else:
     gui = True
 
-if open.__module__ in ["__builtin__", "io"]:
-    pythonopen = open
-
 
 # The sepToken structure is used in the tokenizer functions isKey and
 # getNextToken.
@@ -391,12 +388,12 @@ def handleWorkBook(theBook, sheetDict, Doc):
         aliasRef = getText(theAlias.childNodes)  # aliasRef can be None
         if aliasRef and "$" in aliasRef:
             refList = aliasRef.split("!$")
-            adressList = refList[1].split("$")
+            addressList = refList[1].split("$")
             # print("aliasRef: ", aliasRef)
             # print('Sheet Name: ', refList[0])
-            # print('Adress: ', adressList[0] + adressList[1])
+            # print('Address: ', addressList[0] + addressList[1])
             actSheet, sheetFile = sheetDict[refList[0]]
-            actSheet.setAlias(adressList[0] + adressList[1], aliasName)
+            actSheet.setAlias(addressList[0] + addressList[1], aliasName)
 
 
 def handleStrings(theStr, sList):

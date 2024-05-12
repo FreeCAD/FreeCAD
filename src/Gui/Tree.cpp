@@ -206,6 +206,7 @@ using DocumentObjectItems = std::set<DocumentObjectItem*>;
 
 class Gui::DocumentObjectData {
 public:
+    bool dirtyFlag {};
     DocumentItem* docItem;
     DocumentObjectItems items;
     ViewProviderDocumentObject* viewObject;
@@ -241,6 +242,24 @@ public:
         itemHidden = !viewObject->showInTree();
         label = viewObject->getObject()->Label.getValue();
         label2 = viewObject->getObject()->Label2.getValue();
+    }
+
+    void insertItem(DocumentObjectItem* item)
+    {
+        items.insert(item);
+        dirtyFlag = true;
+    }
+
+    void removeItem(DocumentObjectItem* item)
+    {
+        auto it = items.find(item);
+        if (it == items.end()) {
+            assert(0);
+        }
+        else {
+            items.erase(it);
+            dirtyFlag = true;
+        }
     }
 
     const char* getTreeName() const {
@@ -907,7 +926,11 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     if (this->contextItem && this->contextItem->type() == DocumentType) {
         auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
-        App::GetApplication().setActiveDocument(doc);
+        
+        // It's better to let user decide whether and how to activate
+        // the current document, such as by double-clicking.
+        // App::GetApplication().setActiveDocument(doc);
+        
         showHiddenAction->setChecked(docitem->showHidden());
         contextMenu.addAction(this->showHiddenAction);
         contextMenu.addAction(this->searchObjectsAction);
@@ -1983,7 +2006,8 @@ TreeWidget::TargetItemInfo TreeWidget::getTargetInfo(QEvent* ev)
     return targetInfo;
 }
 
-bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo, std::vector<std::pair<DocumentObjectItem*, std::vector<std::string> > > items)
+bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
+                                std::vector<TreeWidget::ObjectItemSubname> items)
 {
     std::string errMsg;
     auto da = event->dropAction();
@@ -2142,7 +2166,8 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo, s
                 }
                 else if (da == Qt::MoveAction && obj->getDocument() == targetInfo.targetDoc) {
                     // Moving a object within the document root.
-                    res = obj;
+                    // Do not set 'res' as changing the placement is not desired: #13690
+                    droppedObjs.push_back(obj);
                 }
                 else {
                     // Moving a object from another document.
@@ -2187,7 +2212,8 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo, s
     return touched;
 }
 
-bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo, std::vector<std::pair<DocumentObjectItem*, std::vector<std::string> > > items)
+bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
+                              std::vector<TreeWidget::ObjectItemSubname> items)
 {
     std::string errMsg;
     auto da = event->dropAction();
@@ -2554,7 +2580,7 @@ void TreeWidget::dropEvent(QDropEvent* event)
     }
 
     // filter out the selected items we cannot handle
-    std::vector<std::pair<DocumentObjectItem*, std::vector<std::string> > > items;
+    std::vector<ObjectItemSubname> items;
     items = DropHandler::filterItems(selectedItems(), targetInfo.targetItem);
     if (items.empty()) {
         return; // nothing needs to be done
@@ -2635,7 +2661,7 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
             auto vpA = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(a));
             auto vpB = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(b));
             if (vpA && vpB) {
-                return vpA->TreeRank.getValue() < vpB->TreeRank.getValue();
+                return vpA->getTreeRank() < vpB->getTreeRank();
             }
             return false; // Keep the original order if either vpA or vpB is nullptr
         });
@@ -2643,10 +2669,10 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
         // Then we move dropped objects to their correct position
         sortIntoList(objList);
 
-        // Then we update the TreeRank properties
+        // Then we set the tree rank
         for (size_t i = 0; i < sortedObjList.size(); ++i) {
             auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(sortedObjList[i]));
-            vp->TreeRank.setValue(i);
+            vp->setTreeRank(i);
         }
 
         // Lastly we refresh the tree
@@ -3035,7 +3061,9 @@ void TreeWidget::onItemEntered(QTreeWidgetItem* item)
         Selection().rmvPreselect();
 }
 
-void TreeWidget::leaveEvent(QEvent*) {
+void TreeWidget::leaveEvent(QEvent* event)
+{
+    Q_UNUSED(event)
     if (!updateBlocked && TreeParams::getPreSelection()) {
         preselectTimer->stop();
         Selection().rmvPreselect();
@@ -4053,10 +4081,10 @@ int DocumentItem::findRootIndex(App::DocumentObject* childObj) {
     int first, last;
 
     auto getTreeRank = [](Gui::ViewProviderDocumentObject* vp) -> int {
-        if (vp->TreeRank.getValue() == -1) {
-            vp->TreeRank.setValue(vp->getObject()->getID());
+        if (vp->getTreeRank() == -1) {
+            vp->setTreeRank(vp->getObject()->getID());
         }
-        return vp->TreeRank.getValue();
+        return vp->getTreeRank();
     };
 
     auto vpc = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(childObj));
@@ -4098,7 +4126,7 @@ int DocumentItem::findRootIndex(App::DocumentObject* childObj) {
             if (citem->type() != TreeWidget::ObjectType)
                 continue;
             auto vp = static_cast<DocumentObjectItem*>(citem)->object();
-            if (vp->TreeRank.getValue() < childTreeRank) {
+            if (vp->getTreeRank() < childTreeRank) {
                 first = ++pos;
                 count -= step + 1;
             }
@@ -4130,7 +4158,7 @@ void DocumentItem::sortObjectItems()
 
     std::stable_sort(sortedItems.begin(), sortedItems.end(),
         [](DocumentObjectItem* a, DocumentObjectItem* b) {
-        return a->object()->TreeRank.getValue() < b->object()->TreeRank.getValue();
+        return a->object()->getTreeRank() < b->object()->getTreeRank();
     });
 
     int sortedIndex = 0;
@@ -4544,12 +4572,18 @@ void DocumentItem::clearSelection(DocumentObjectItem* exclude)
     // Block signals here otherwise we get a recursion and quadratic runtime
     bool ok = treeWidget()->blockSignals(true);
     FOREACH_ITEM_ALL(item);
+    _v.second->dirtyFlag = false;
     if (item == exclude) {
         if (item->selected > 0)
             item->selected = -1;
         else
             item->selected = 0;
         updateItemSelection(item);
+        // The set has been changed while calling updateItemSelection
+        // so that the iterator has become invalid -> Abort
+        if (_v.second->dirtyFlag) {
+            break;
+        }
     }
     else {
         item->selected = 0;
@@ -4586,7 +4620,13 @@ void DocumentItem::updateSelection(QTreeWidgetItem* ti, bool unselect) {
         updateSelection(ti->child(i));
 }
 
-void DocumentItem::updateItemSelection(DocumentObjectItem* item) {
+void DocumentItem::updateItemSelection(DocumentObjectItem* item)
+{
+    // Note: In several places of this function the selection is altered and the notification of
+    // the selection observers can trigger a recreation of all DocumentObjectItem so that the
+    // passed 'item' can become a dangling pointer.
+    // Thus,'item' mustn't be accessed any more after altering the selection.
+    // For further details see the bug analsysis of #13107
     bool selected = item->isSelected();
     bool checked = item->checkState(0) == Qt::Checked;
 
@@ -4654,23 +4694,30 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item) {
         Gui::Selection().rmvSelection(docname, objname, subname.c_str());
         return;
     }
+
+    auto vobj = item->object();
     selected = false;
     if (!item->mySubs.empty()) {
         for (auto& sub : item->mySubs) {
-            if (Gui::Selection().addSelection(docname, objname, (subname + sub).c_str()))
+            if (Gui::Selection().addSelection(docname, objname, (subname + sub).c_str())) {
                 selected = true;
+            }
         }
     }
     if (!selected) {
         item->mySubs.clear();
         if (!Gui::Selection().addSelection(docname, objname, subname.c_str())) {
-            item->selected = 0;
-            item->setSelected(false);
-            item->setCheckState(false);
+            // Safely re-access the item
+            DocumentObjectItem* item2 = findItem(vobj->getObject(), subname);
+            if (item2) {
+                item2->selected = 0;
+                item2->setSelected(false);
+                item2->setCheckState(false);
+            }
             return;
         }
     }
-    getTree()->syncView(item->object());
+    getTree()->syncView(vobj);
 }
 
 App::DocumentObject* DocumentItem::getTopParent(App::DocumentObject* obj, std::string& subname) {
@@ -4715,6 +4762,39 @@ App::DocumentObject* DocumentItem::getTopParent(App::DocumentObject* obj, std::s
         << " -> " << topParent->getFullName() << '.' << ss.str());
     subname = ss.str();
     return topParent;
+}
+
+DocumentObjectItem *DocumentItem::findItem(App::DocumentObject* obj, const std::string& subname) const
+{
+    auto it = ObjectMap.find(obj);
+    if (it == ObjectMap.end()) {
+        return nullptr;
+    }
+
+    // There is only one instance in the tree view
+    if (it->second->items.size() == 1) {
+        return *(it->second->items.begin());
+    }
+
+    // If there are multiple instances use the one with the same subname
+    DocumentObjectItem* item {};
+    for (auto jt : it->second->items) {
+        std::ostringstream str;
+        App::DocumentObject* topParent = nullptr;
+        jt->getSubName(str, topParent);
+        if (topParent) {
+            if (!obj->redirectSubName(str, topParent, nullptr)) {
+                str << obj->getNameInDocument() << '.';
+            }
+        }
+
+        if (subname == str.str()) {
+            item = jt;
+            break;
+        }
+    }
+
+    return item;
 }
 
 DocumentObjectItem* DocumentItem::findItemByObject(
@@ -5017,7 +5097,7 @@ DocumentObjectItem::DocumentObjectItem(DocumentItem* ownerDocItem, DocumentObjec
     setFlags(flags() | Qt::ItemIsEditable | Qt::ItemIsUserCheckable);
     setCheckState(false);
 
-    myData->items.insert(this);
+    myData->insertItem(this);
     ++countItems;
     TREE_LOG("Create item: " << countItems << ", " << object()->getObject()->getFullName());
 }
@@ -5026,11 +5106,7 @@ DocumentObjectItem::~DocumentObjectItem()
 {
     --countItems;
     TREE_LOG("Delete item: " << countItems << ", " << object()->getObject()->getFullName());
-    auto it = myData->items.find(this);
-    if (it == myData->items.end())
-        assert(0);
-    else
-        myData->items.erase(it);
+    myData->removeItem(this);
 
     if (myData->rootItem == this)
         myData->rootItem = nullptr;
@@ -5050,7 +5126,7 @@ void DocumentObjectItem::restoreBackground() {
 
 void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
     QFont f = this->font(0);
-    auto highlight = [=](const QColor& col) {
+    auto highlight = [this, set](const QColor& col) {
         if (set)
             this->setBackground(0, col);
         else
@@ -5127,6 +5203,17 @@ void DocumentObjectItem::testStatus(bool resetStatus)
     testStatus(resetStatus, icon, icon2);
 }
 
+namespace {
+enum Status {
+    Visible = 1 << 0,
+    Recompute = 1 << 1,
+    Error = 1 << 2,
+    Hidden = 1 << 3,
+    External = 1 << 4,
+    Freezed = 1 << 5
+};
+}
+
 void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2)
 {
     App::DocumentObject* pObject = object()->getObject();
@@ -5166,8 +5253,8 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     bool freezed = pObject->isFreezed();
 
     int currentStatus =
-        ((freezed ? 0 : 1) << 5) |
-        ((external ? 0 : 1) << 4) |
+        ((freezed ? 1 : 0) << 5) |
+        ((external ? 1 : 0) << 4) |
         ((object()->showInTree() ? 0 : 1) << 3) |
         ((pObject->isError() ? 1 : 0) << 2) |
         ((pObject->isTouched() || pObject->mustExecute() == 1 ? 1 : 0) << 1) |
@@ -5183,7 +5270,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     previousStatus = currentStatus;
 
     QIcon::Mode mode = QIcon::Normal;
-    if (isVisibilityIconEnabled() || (currentStatus & 1)) { // visible
+    if (isVisibilityIconEnabled() || (currentStatus & Status::Visible)) {
         // Note: By default the foreground, i.e. text color is invalid
         // to make use of the default color of the tree widget's palette.
         // If we temporarily set this color to dark and reset to an invalid
@@ -5210,47 +5297,19 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     if (icon.isNull()) {
         Timing(getIcon);
         QPixmap px;
-        if (currentStatus & 4) {
+        if (currentStatus & Status::Error) {
             static QPixmap pxError;
             if (pxError.isNull()) {
                 // object is in error state
-                const char* const feature_error_xpm[] = {
-                    "9 9 3 1",
-                    ". c None",
-                    "# c #ff0000",
-                    "a c #ffffff",
-                    "...###...",
-                    ".##aaa##.",
-                    ".##aaa##.",
-                    "###aaa###",
-                    "###aaa###",
-                    "#########",
-                    ".##aaa##.",
-                    ".##aaa##.",
-                    "...###..." };
-                pxError = QPixmap(feature_error_xpm);
+                pxError = Gui::BitmapFactory().pixmapFromSvg("overlay_error", QSize(10, 10));
             }
             px = pxError;
         }
-        else if (currentStatus & 2) {
+        else if (currentStatus & Status::Recompute) {
             static QPixmap pxRecompute;
             if (pxRecompute.isNull()) {
                 // object must be recomputed
-                const char* const feature_recompute_xpm[] = {
-                    "9 9 3 1",
-                    ". c None",
-                    "# c #0000ff",
-                    "a c #ffffff",
-                    "...###...",
-                    ".######aa",
-                    ".#####aa.",
-                    "#####aa##",
-                    "#aa#aa###",
-                    "#aaaa####",
-                    ".#aa####.",
-                    ".#######.",
-                    "...###..." };
-                pxRecompute = QPixmap(feature_recompute_xpm);
+                pxRecompute = Gui::BitmapFactory().pixmapFromSvg("overlay_recompute", QSize(10, 10));
             }
             px = pxRecompute;
         }
@@ -5280,73 +5339,30 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
             pxOn = icon_org.pixmap(w, w, mode, QIcon::On);
         }
 
-        if (currentStatus & 8) {// hidden item
+        if (currentStatus & Status::Hidden) {
             static QPixmap pxHidden;
             if (pxHidden.isNull()) {
-                const char* const feature_hidden_xpm[] = {
-                    "9 7 3 1",
-                    ". c None",
-                    "# c #000000",
-                    "a c #ffffff",
-                    "...###...",
-                    "..#aaa#..",
-                    ".#a###a#.",
-                    "#aa###aa#",
-                    ".#a###a#.",
-                    "..#aaa#..",
-                    "...###..." };
-                pxHidden = QPixmap(feature_hidden_xpm);
+                pxHidden = Gui::BitmapFactory().pixmapFromSvg("TreeItemVisible", QSize(10, 10));
             }
             pxOff = BitmapFactory().merge(pxOff, pxHidden, BitmapFactoryInst::TopLeft);
             pxOn = BitmapFactory().merge(pxOn, pxHidden, BitmapFactoryInst::TopLeft);
         }
 
-        if (external) {// external item
+        if (currentStatus & Status::External) {
             static QPixmap pxExternal;
             if (pxExternal.isNull()) {
-                const char* const feature_external_xpm[] = {
-                    "7 7 3 1",
-                    ". c None",
-                    "# c #000000",
-                    "a c #ffffff",
-                    "..###..",
-                    ".#aa##.",
-                    "..#aa##",
-                    "..##aa#",
-                    "..#aa##",
-                    ".#aa##.",
-                    "..###.." };
-                pxExternal = QPixmap(feature_external_xpm);
+                pxExternal = Gui::BitmapFactory().pixmapFromSvg("LinkOverlay",
+                                                              QSize(24, 24));
             }
             pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
             pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);
         }
 
-        if (freezed) {
+        if (currentStatus & Status::Freezed) {
             static QPixmap pxFreeze;
             if (pxFreeze.isNull()) {
                 // object is in freezed state
-                const char* const feature_freezed_xpm[] = {
-                                                           "16 16 2 1",
-                                                           " 	c None",
-                                                           ".	c #00EEFF",
-                                                           "      . . .     ",
-                                                           "    .  ...  .   ",
-                                                           "   ..   .   ..  ",
-                                                           "  ....  .  .... ",
-                                                           "     .. . ..    ",
-                                                           " .    . . .    .",
-                                                           "  .    ...    . ",
-                                                           " ...............",
-                                                           "  .    ...    . ",
-                                                           " .    . . .    .",
-                                                           "     .. . ..    ",
-                                                           "  ....  .  .... ",
-                                                           "   ..   .   ..  ",
-                                                           "    .  ...  .   ",
-                                                           "      . . .     ",
-                                                           "                "};
-                pxFreeze = QPixmap(feature_freezed_xpm);
+                pxFreeze = Gui::BitmapFactory().pixmapFromSvg("Std_ToggleFreeze", QSize(16, 16));
             }
             pxOff = BitmapFactory().merge(pxOff, pxFreeze, BitmapFactoryInst::TopLeft);
             pxOn = BitmapFactory().merge(pxOn, pxFreeze, BitmapFactoryInst::TopLeft);
@@ -5377,7 +5393,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
                 QPainter pt;
                 pt.begin(&px);
                 pt.setPen(Qt::NoPen);
-                pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & 1) ? pxVisible : pxInvisible);
+                pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & Status::Visible) ? pxVisible : pxInvisible);
                 pt.drawPixmap(px_org.width(), 0, px_org.width(), px_org.height(), px_org);
                 pt.end();
 

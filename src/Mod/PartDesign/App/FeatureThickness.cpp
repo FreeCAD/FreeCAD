@@ -66,7 +66,7 @@ App::DocumentObjectExecReturn *Thickness::execute()
     // Base shape
     Part::TopoShape TopShape;
     try {
-        TopShape = getBaseShape();
+        TopShape = getBaseTopoShape();
     }
     catch (Base::Exception &e) {
         return new App::DocumentObjectExecReturn(e.what());

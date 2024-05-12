@@ -10,7 +10,6 @@ SET(PreferencePackTemplates_Files
     Path_Colors.cfg
     Shortcuts.cfg
     Sketcher_Colors.cfg
-    Start_Colors.cfg
     TechDraw_Colors.cfg
     View.cfg
     Window_Colors.cfg

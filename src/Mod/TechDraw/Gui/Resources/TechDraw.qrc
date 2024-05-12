@@ -57,6 +57,7 @@
         <file>icons/actions/TechDraw_SurfaceFinishSymbols.svg</file>
         <file>icons/actions/TechDraw_ComplexSection.svg</file>
         <file>icons/actions/TechDraw_CosmeticCircle.svg</file>
+        <file>icons/actions/TechDraw_BrokenView.svg</file>
         <file>icons/arrow-ccw.svg</file>
         <file>icons/arrow-cw.svg</file>
         <file>icons/arrow-down.svg</file>
@@ -86,6 +87,7 @@
         <file>icons/TechDraw_3PtAngleDimension.svg</file>
         <file>icons/TechDraw_AngleDimension.svg</file>
         <file>icons/TechDraw_Balloon.svg</file>
+        <file>icons/TechDraw_CameraOrientation.svg</file>
         <file>icons/TechDraw_DiameterDimension.svg</file>
         <file>icons/TechDraw_Dimension.svg</file>
         <file>icons/TechDraw_DimensionRepair.svg</file>

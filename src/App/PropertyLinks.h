@@ -1169,6 +1169,7 @@ protected:
     std::vector<ShadowSub> _ShadowSubList;
     std::vector<int> _mapped;
     PropertyLinkBase *parentProp;
+    mutable std::string tmpShadow;
 };
 
 

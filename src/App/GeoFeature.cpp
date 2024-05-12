@@ -26,6 +26,7 @@
 #include <App/GeoFeaturePy.h>
 
 #include "ComplexGeoData.h"
+#include "Document.h"
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
 #include "ElementNamingUtils.h"
@@ -87,6 +88,12 @@ GeoFeature::getElementName(const char *name, ElementNameType type) const
     std::pair<std::string,std::string> ret;
     if(!name)
         return ret;
+
+#ifndef FC_USE_TNP_FIX
+    ret.second = name;
+
+    return ret;
+#else
     auto prop = getPropertyOfGeometry();
     if (!prop) {
         return std::make_pair("", name);
@@ -98,6 +105,7 @@ GeoFeature::getElementName(const char *name, ElementNameType type) const
     }
 
     return _getElementName(name, geo->getElementName(name));
+#endif
 }
 
 std::pair<std::string, std::string>
@@ -139,12 +147,22 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         subname = "";
     const char *element = Data::findElementName(subname);
     if(_element) *_element = element;
+#ifdef FC_USE_TNP_FIX
+    elementName.first.clear();
+    elementName.second.clear();
+    auto sobj = obj->getSubObject(std::string(subname, element).c_str());
+    if(!sobj)
+        return nullptr;
+    auto linked = sobj->getLinkedObject(true);
+    auto geo = Base::freecad_dynamic_cast<GeoFeature>(linked);
+#else
     auto sobj = obj->getSubObject(subname);
     if(!sobj)
         return nullptr;
     obj = sobj->getLinkedObject(true);
     auto geo = dynamic_cast<GeoFeature*>(obj);
-    if(geoFeature) 
+#endif
+    if(geoFeature)
         *geoFeature = geo;
     if(!obj || (filter && obj!=filter))
         return nullptr;
@@ -173,3 +191,54 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     return sobj;
 }
 
+App::Material GeoFeature::getMaterialAppearance() const
+{
+    return App::Material(App::Material::DEFAULT);
+}
+
+void GeoFeature::setMaterialAppearance(const App::Material& material)
+{
+    Q_UNUSED(material)
+}
+
+#ifdef FC_USE_TNP_FIX
+bool GeoFeature::hasMissingElement(const char *subname) {
+    return Data::hasMissingElement(subname);
+    if(!subname)
+        return false;
+    auto dot = strrchr(subname,'.');
+    if(!dot)
+        return subname[0]=='?';
+    return dot[1]=='?';
+}
+
+void GeoFeature::updateElementReference() {
+    auto prop = getPropertyOfGeometry();
+    if(!prop) return;
+    auto geo = prop->getComplexData();
+    if(!geo) return;
+    bool reset = false;
+    PropertyLinkBase::updateElementReferences(this,reset);
+}
+
+void GeoFeature::onChanged(const Property *prop) {
+    if(prop==getPropertyOfGeometry()) {
+        if(getDocument() && !getDocument()->testStatus(Document::Restoring)
+            && !getDocument()->isPerformingTransaction())
+        {
+            updateElementReference();
+        }
+    }
+    DocumentObject::onChanged(prop);
+}
+
+
+std::vector<Data::IndexedName>
+GeoFeature::getHigherElements(const char *element, bool silent) const
+{
+    auto prop = getPropertyOfGeometry();
+    if (!prop)
+        return {};
+    return prop->getComplexData()->getHigherElements(element, silent);
+}
+#endif

@@ -734,8 +734,9 @@ QDialogButtonBox::StandardButtons TaskDialogPython::getStandardButtons() const
         if (dlg.hasAttr(std::string("getStandardButtons"))) {
             Py::Callable method(dlg.getAttr(std::string("getStandardButtons")));
             Py::Tuple args;
-            Py::Int ret(method.apply(args));
-            int value = (int)ret;
+            Gui::PythonWrapper wrap;
+            wrap.loadWidgetsModule();
+            int value = wrap.toEnum(method.apply(args));
             return {value};
         }
     }

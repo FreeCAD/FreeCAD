@@ -786,7 +786,11 @@ public:
         for (auto vit = vmap.qbegin(bgi::nearest(p1, INT_MAX)); vit != vmap.qend(); ++vit) {
             auto& vinfo = *vit;
             if (canShowShape()) {
+#if OCC_VERSION_HEX < 0x070800
                 FC_MSG("addcheck " << vinfo.edge().HashCode(INT_MAX));
+#else
+                FC_MSG("addcheck " << std::hash<TopoDS_Edge> {}(vinfo.edge()));
+#endif
             }
             double d1 = vinfo.pt().SquareDistance(p1);
             if (d1 >= tol) {
@@ -1724,9 +1728,7 @@ public:
         if (FC_LOG_INSTANCE.level() <= FC_LOGLEVEL_TRACE) {
             return;
         }
-        int idx = 0;
         for (auto &info : edges) {
-            ++idx;
             if (auto wire = info.wireInfo.get()) {
 
                 // Originally here there was a call to the precompiler macro assertCheck(), which
@@ -2712,7 +2714,12 @@ public:
     {
         FC_MSG("init:");
         for (const auto& shape : sourceEdges) {
+#if OCC_VERSION_HEX < 0x070800
             FC_MSG(shape.getShape().TShape().get() << ", " << shape.getShape().HashCode(INT_MAX));
+#else
+            FC_MSG(shape.getShape().TShape().get()
+                   << ", " << std::hash<TopoDS_Shape> {}(shape.getShape()));
+#endif
         }
         printHistory(aHistory, sourceEdges);
         printHistory(newHistory, inputEdges);
@@ -2726,7 +2733,11 @@ public:
         FC_MSG("final:");
         for (int i = 1; i <= wireData->NbEdges(); ++i) {
             auto shape = wireData->Edge(i);
+#if OCC_VERSION_HEX < 0x070800
             FC_MSG(shape.TShape().get() << ", " << shape.HashCode(INT_MAX));
+#else
+            FC_MSG(shape.TShape().get() << ", " << std::hash<TopoDS_Edge> {}(shape));
+#endif
         }
     }
 
@@ -2786,9 +2797,15 @@ public:
     {
         for (TopTools_ListIteratorOfListOfShape it(hist->Modified(shape.getShape())); it.More();
              it.Next()) {
+#if OCC_VERSION_HEX < 0x070800
             FC_MSG(shape.getShape().TShape().get()
                    << ", " << shape.getShape().HashCode(INT_MAX) << " -> "
                    << it.Value().TShape().get() << ", " << it.Value().HashCode(INT_MAX));
+#else
+            FC_MSG(shape.getShape().TShape().get()
+                   << ", " << std::hash<TopoDS_Shape> {}(shape.getShape()) << " -> "
+                   << it.Value().TShape().get() << ", " << std::hash<TopoDS_Shape> {}(it.Value()));
+#endif
         }
     }
 

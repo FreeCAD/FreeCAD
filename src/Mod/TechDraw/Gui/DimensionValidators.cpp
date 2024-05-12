@@ -151,7 +151,7 @@ DimensionGeometryType TechDraw::validateDimSelection(
     //check for wrong number of geometry
     GeomCountVector foundCounts;
     GeomCountMap minimumCountMap = loadRequiredCounts(acceptableGeometry, minimumCounts);
-    if (!checkGeometryOccurences(subNames, minimumCountMap)) {
+    if (!checkGeometryOccurrences(subNames, minimumCountMap)) {
         //too many or too few geometry descriptors.
         return isInvalid;
     }
@@ -203,7 +203,7 @@ DimensionGeometryType TechDraw::validateDimSelection3d(
 
     //check for wrong number of geometry
     GeomCountMap minimumCountMap = loadRequiredCounts(acceptableGeometry, minimumCounts);
-    if (!checkGeometryOccurences(subNames, minimumCountMap)) {
+    if (!checkGeometryOccurrences(subNames, minimumCountMap)) {
         //too many or too few geometry descriptors.
         return isInvalid;
     }
@@ -235,7 +235,7 @@ bool TechDraw::validateSubnameList(StringVector subNames, GeometrySet acceptable
 }
 
 //count how many of each "Edge", "Vertex, etc and compare totals to required minimum
-bool TechDraw::checkGeometryOccurences(StringVector subNames, GeomCountMap keyedMinimumCounts)
+bool TechDraw::checkGeometryOccurrences(StringVector subNames, GeomCountMap keyedMinimumCounts)
 {
     //how many of each geometry descriptor are input
     GeomCountMap foundCounts;

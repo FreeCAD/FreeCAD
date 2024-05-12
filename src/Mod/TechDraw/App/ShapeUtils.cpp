@@ -63,9 +63,6 @@
 #include <gp_Vec.hxx>
 #endif// #ifndef _PreComp_
 
-#include <algorithm>
-#include <chrono>
-
 #include <Base/Console.h>
 
 #include "DrawUtil.h"
@@ -323,6 +320,48 @@ TopoDS_Shape ShapeUtils::moveShape(const TopoDS_Shape& input, const Base::Vector
     return transShape;
 }
 
+//mirror a shape thru XZ plane for Qt's inverted Y coordinate
+TopoDS_Shape ShapeUtils::invertGeometry(const TopoDS_Shape s)
+{
+    if (s.IsNull()) {
+        return s;
+    }
+
+    gp_Trsf mirrorY;
+    gp_Pnt org(0.0, 0.0, 0.0);
+    gp_Dir Y(0.0, 1.0, 0.0);
+    gp_Ax2 mirrorPlane(org, Y);
+    mirrorY.SetMirror(mirrorPlane);
+    BRepBuilderAPI_Transform mkTrf(s, mirrorY, true);
+    return mkTrf.Shape();
+}
+
+//! transforms a shape defined in invertedY (Qt) coordinates into one defined by
+//! conventional coordinates
+TopoDS_Shape ShapeUtils::fromQt(const TopoDS_Shape& inShape)
+{
+    gp_Ax3  OXYZ;
+    gp_Ax3  Qt;
+    Qt.YReverse();
+    gp_Trsf xFromQt;
+    xFromQt.SetTransformation(Qt, OXYZ);
+    BRepBuilderAPI_Transform mkTrf(inShape, xFromQt);
+    return mkTrf.Shape();
+}
+
+//! transforms a shape defined in conventional coordinates coordinates into one defined by
+//! invertedY (Qt) coordinates
+TopoDS_Shape ShapeUtils::toQt(const TopoDS_Shape& inShape)
+{
+    gp_Ax3  OXYZ;
+    gp_Ax3  Qt;
+    Qt.YReverse();
+    gp_Trsf xFromQt;
+    xFromQt.SetTransformation(OXYZ, Qt);
+    BRepBuilderAPI_Transform mkTrf(inShape, xFromQt);
+    return mkTrf.Shape();
+}
+
 std::pair<Base::Vector3d, Base::Vector3d> ShapeUtils::getEdgeEnds(TopoDS_Edge edge)
 {
     std::pair<Base::Vector3d, Base::Vector3d> result;
@@ -343,5 +382,22 @@ bool  ShapeUtils::isShapeReallyNull(TopoDS_Shape shape)
 {
     // if the shape is null or it has no subshapes, then it is really null
     return shape.IsNull() || !TopoDS_Iterator(shape).More();
+}
+
+bool ShapeUtils::edgesAreParallel(TopoDS_Edge edge0, TopoDS_Edge edge1)
+{
+    std::pair<Base::Vector3d, Base::Vector3d> ends0 = getEdgeEnds(edge0);
+    Base::Vector3d vec0 = ends0.second - ends0.first;
+    vec0.Normalize();
+    std::pair<Base::Vector3d, Base::Vector3d> ends1 = getEdgeEnds(edge1);
+    Base::Vector3d vec1 = ends1.second - ends1.first;
+    vec1.Normalize();
+    double dot = fabs(vec0.Dot(vec1));
+    if (DU::fpCompare(dot, 1.0, EWTOLERANCE)) {
+        // parallel vectors
+        return true;
+    }
+    return false;
+
 }
 

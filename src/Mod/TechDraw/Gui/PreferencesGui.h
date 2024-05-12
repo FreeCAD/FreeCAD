@@ -27,6 +27,14 @@
 
 #include <QColor>
 
+class QColor;
+class QString;
+
+namespace App
+{
+class Color;
+}
+
 class QFont;
 class QString;
 
@@ -57,6 +65,8 @@ static App::Color  dimColor();
 static QColor      dimQColor();
 static App::Color  pageColor();
 static QColor      pageQColor();
+static App::Color  breaklineColor();
+static QColor      breaklineQColor();
 
 static int         dimArrowStyle();
 static double      dimArrowSize();

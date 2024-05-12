@@ -25,15 +25,18 @@
 #ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <Standard_Failure.hxx>
+# include <TopoDS.hxx>
 # include <TopoDS_CompSolid.hxx>
 #endif
 
 #include "OCCError.h"
+#include "PartPyCXX.h"
 
 // inclusion of the generated files (generated out of TopoShapeCompSolidPy.xml)
 #include "TopoShapeCompSolidPy.h"
 #include "TopoShapeCompSolidPy.cpp"
 #include "TopoShapeSolidPy.h"
+#include "TopoShapeOpCode.h"
 
 
 using namespace Part;
@@ -61,10 +64,16 @@ int TopoShapeCompSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    PyObject *pcObj;
-    if (!PyArg_ParseTuple(args, "O", &pcObj))
+    PyObject* pcObj;
+    if (!PyArg_ParseTuple(args, "O", &pcObj)) {
         return -1;
-
+    }
+#ifdef FC_USE_TNP_FIX
+    try {
+        getTopoShapePtr()->makeElementBoolean(Part::OpCodes::Compsolid, getPyShapes(pcObj));
+    }
+    _PY_CATCH_OCC(return (-1))
+#else
     BRep_Builder builder;
     TopoDS_CompSolid Comp;
     builder.MakeCompSolid(Comp);
@@ -73,10 +82,11 @@ int TopoShapeCompSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapeSolidPy::Type))) {
-                const TopoDS_Shape& sh = static_cast<TopoShapePy*>((*it).ptr())->
-                    getTopoShapePtr()->getShape();
-                if (!sh.IsNull())
+                const TopoDS_Shape& sh =
+                    static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->getShape();
+                if (!sh.IsNull()) {
                     builder.Add(Comp, sh);
+                }
             }
         }
     }
@@ -87,35 +97,49 @@ int TopoShapeCompSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     getTopoShapePtr()->setShape(Comp);
+#endif
     return 0;
 }
 
-PyObject*  TopoShapeCompSolidPy::add(PyObject *args)
+PyObject* TopoShapeCompSolidPy::add(PyObject* args)
 {
-    PyObject *obj;
-    if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeSolidPy::Type), &obj))
+    PyObject* obj;
+    if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeSolidPy::Type), &obj)) {
         return nullptr;
+    }
 
     BRep_Builder builder;
     TopoDS_Shape comp = getTopoShapePtr()->getShape();
+    if (comp.IsNull()) {
+        builder.MakeCompSolid(TopoDS::CompSolid(comp));
+    }
+    auto shapes = getPyShapes(obj);
 
     try {
-        const TopoDS_Shape& sh = static_cast<TopoShapePy*>(obj)->
-            getTopoShapePtr()->getShape();
-        if (!sh.IsNull())
-            builder.Add(comp, sh);
-        else
-            Standard_Failure::Raise("Cannot empty shape to compound solid");
+        for (auto& ts : shapes) {
+            if (!ts.isNull()) {
+                builder.Add(comp, ts.getShape());
+            }
+            else {
+                Standard_Failure::Raise("Cannot empty shape to compound solid");
+            }
+        }
+#ifdef FC_USE_TNP_FIX
+        auto& self = *getTopoShapePtr();
+        shapes.push_back(self);
+        TopoShape tmp(self.Tag, self.Hasher, comp);
+        tmp.mapSubElement(shapes);
+        self = tmp;
+#else
+        getTopoShapePtr()->setShape(comp);
+#endif
+        Py_Return;
     }
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return nullptr;
     }
-
-    getTopoShapePtr()->setShape(comp);
-
-    Py_Return;
 }
 
 PyObject *TopoShapeCompSolidPy::getCustomAttributes(const char* /*attr*/) const

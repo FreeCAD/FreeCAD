@@ -41,6 +41,7 @@ namespace Materials
 class Material;
 class MaterialManager;
 class MaterialFilter;
+class MaterialFilterOptions;
 
 class MaterialsExport MaterialLibrary: public LibraryBase,
                                        public std::enable_shared_from_this<MaterialLibrary>
@@ -79,7 +80,8 @@ public:
     std::shared_ptr<Material> addMaterial(const std::shared_ptr<Material>& material,
                                           const QString& path);
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-    getMaterialTree(const MaterialFilter* filter = nullptr) const;
+    getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
+                    const Materials::MaterialFilterOptions& options) const;
 
     bool isReadOnly() const
     {
@@ -99,7 +101,8 @@ protected:
     void updatePaths(const QString& oldPath, const QString& newPath);
     QString getUUIDFromPath(const QString& path) const;
     bool materialInTree(const std::shared_ptr<Material>& material,
-                        const MaterialFilter* filter) const;
+                        const std::shared_ptr<Materials::MaterialFilter>& filter,
+                        const Materials::MaterialFilterOptions& options) const;
 
     bool _readOnly;
     std::unique_ptr<std::map<QString, std::shared_ptr<Material>>> _materialPathMap;

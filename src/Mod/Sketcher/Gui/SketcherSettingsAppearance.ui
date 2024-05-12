@@ -193,69 +193,10 @@
         </property>
        </spacer>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Vertex</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="Gui::PrefColorButton" name="FullyConstraintConstructionPointColor">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Color of fully constrained vertex color in edit mode</string>
-        </property>
-        <property name="color" stdset="0">
-         <color>
-          <red>255</red>
-          <green>149</green>
-          <blue>128</blue>
-         </color>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>FullyConstraintConstructionPointColor</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2">
-       <widget class="Gui::PrefColorButton" name="EditedVertexColor">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Color of vertices being edited</string>
-        </property>
-        <property name="color" stdset="0">
-         <color>
-          <red>255</red>
-          <green>38</green>
-          <blue>0</blue>
-         </color>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>EditedVertexColor</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
-      </item>
       <item row="5" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Edge</string>
+         <string>Geometry</string>
         </property>
        </widget>
       </item>
@@ -268,7 +209,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Color of fully constrained edge color in edit mode</string>
+         <string>Color of fully constrained normal geometry in edit mode</string>
         </property>
         <property name="color" stdset="0">
          <color>
@@ -294,7 +235,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Color of edges being edited</string>
+         <string>Color of normal geometry in edit mode</string>
         </property>
         <property name="color" stdset="0">
          <color>
@@ -362,7 +303,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Color of fully constrained construction edge color in edit mode</string>
+         <string>Color of fully constrained construction geometry in edit mode</string>
         </property>
         <property name="color" stdset="0">
          <color>
@@ -443,7 +384,7 @@
       <item row="8" column="0">
        <widget class="QLabel" name="label_ia">
         <property name="text">
-         <string>Internal alignment edge</string>
+         <string>Internal alignment geometry</string>
         </property>
        </widget>
       </item>
@@ -456,7 +397,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Color of fully constrained internal alignment edge color in edit mode</string>
+         <string>Color of fully constrained internal alignment geometry in edit mode</string>
         </property>
         <property name="color" stdset="0">
          <color>
@@ -482,7 +423,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Color of edges of internal alignment geometry</string>
+         <string>Color of internal alignment geometry in edit mode</string>
         </property>
         <property name="color" stdset="0">
          <color>
@@ -611,7 +552,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Fully constrained Sketch</string>
+         <string>Fully constrained sketch</string>
         </property>
        </widget>
       </item>
@@ -624,7 +565,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Color of fully constrained geometry in edit mode</string>
+         <string>Color of geometry indicating a fully constrained sketch</string>
         </property>
         <property name="color" stdset="0">
          <color>
@@ -644,7 +585,7 @@
       <item row="11" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Invalid Sketch</string>
+         <string>Invalid sketch</string>
         </property>
        </widget>
       </item>
@@ -728,7 +669,7 @@
         <item row="11" column="1">
          <widget class="Gui::PrefColorButton" name="DatumColor">
           <property name="toolTip">
-           <string>Color of dimensional driving constraints</string>
+           <string>Color of dimensional driving constraints in edit mode</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -862,7 +803,7 @@
         <item row="0" column="1">
          <widget class="Gui::PrefColorButton" name="SketchVertexColor">
           <property name="toolTip">
-           <string>Color of vertices</string>
+           <string>Color of vertices outside edit mode</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -908,7 +849,7 @@
         <item row="1" column="1">
          <widget class="Gui::PrefColorButton" name="SketchEdgeColor">
           <property name="toolTip">
-           <string>Color of edges</string>
+           <string>Color of edges outside edit mode</string>
           </property>
           <property name="color" stdset="0">
            <color>

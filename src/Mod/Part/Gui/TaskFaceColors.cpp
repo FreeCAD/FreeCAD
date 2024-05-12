@@ -115,7 +115,7 @@ public:
 
         std::vector<App::Color> current = vp->DiffuseColor.getValues();
         if (current.empty())
-            current.push_back(vp->ShapeColor.getValue());
+            current.push_back(vp->ShapeAppearance.getDiffuseColor());
         perface = current;
         perface.resize(mapOfShape.Extent(), perface.front());
 
@@ -332,7 +332,7 @@ void FaceColors::onBoxSelectionToggled(bool checked)
 
 void FaceColors::onDefaultButtonClicked()
 {
-    std::fill(d->perface.begin(), d->perface.end(), d->vp->ShapeColor.getValue());
+    std::fill(d->perface.begin(), d->perface.end(), d->vp->ShapeAppearance.getDiffuseColor());
     d->vp->DiffuseColor.setValues(d->perface);
 }
 

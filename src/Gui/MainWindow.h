@@ -265,6 +265,7 @@ public Q_SLOTS:
     void statusMessageChanged();
 
     void showMessage (const QString & message, int timeout = 0);
+    void setRightSideMessage(const QString & message);
 
     // Set main window title
     void setWindowTitle(const QString& string);
@@ -307,6 +308,9 @@ private:
     bool updateTaskView(bool show);
     bool updateComboView(bool show);
     bool updateDAGView(bool show);
+
+    void populateToolBarMenu(QMenu *);
+    void populateDockWindowMenu(QMenu *);
 
     static void renderDevBuildWarning(QPainter &painter, const QPoint startPosition, const QSize maxSize);
 

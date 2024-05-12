@@ -1,0 +1,18 @@
+#Inventor V2.1 ascii
+
+
+Separator {
+
+  Separator {
+
+    Translation {
+      translation 0 0.0625 0
+
+    }
+    Cylinder {
+      radius 0.375
+      height 0.125
+
+    }
+  }
+}

@@ -20,10 +20,6 @@ if(BUILD_GUI)
 
     list (APPEND FREECAD_QT_COMPONENTS OpenGL PrintSupport Svg UiTools Widgets LinguistTools)
 
-    if (BUILD_WEB)
-        list (APPEND FREECAD_QT_COMPONENTS WebEngineWidgets)
-    endif()
-
     if(BUILD_DESIGNER_PLUGIN)
         list (APPEND FREECAD_QT_COMPONENTS Designer)
     endif()

@@ -316,13 +316,13 @@ Cette commande ne fonctionne qu'avec un objet "Mesh", pas avec une face ou une s
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation>La déflexion linéaire maximale d'un segment de maillage sera la déviation
-de surface spécifiée multipliée par la longueur du segment de maillage en cours (arête)</translation>
+      <translation>La déviation linéaire maximale d'un segment de maillage sera la déviation de surface
+spécifiée multipliée par la longueur du segment de maillage en cours (arête).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
       <source>Relative surface deviation</source>
-      <translation>Écart relatif de surface</translation>
+      <translation>Déviation relative de surface</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="109"/>
@@ -361,7 +361,7 @@ cette fonction (par exemple le format OBJ).</translation>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
       <source>Maximum edge length:</source>
-      <translation>Longueur maximale d'arêtes:</translation>
+      <translation>Longueur maximale des arêtes :</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="162"/>
@@ -423,7 +423,7 @@ La valeur la plus petite est 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
       <source>Mesh size grading:</source>
-      <translation>Classement par taille de maillage :</translation>
+      <translation>Taille des maillages :</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>
@@ -435,7 +435,7 @@ Une valeur dans la plage de 0.1-1.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
       <source>Elements per edge:</source>
-      <translation>Éléments par arête :</translation>
+      <translation>Nombre d'éléments par arête :</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>
@@ -448,7 +448,7 @@ Une valeur dans la plage de 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
       <source>Elements per curvature radius:</source>
-      <translation>Éléments par rayon de courbure :</translation>
+      <translation>Nombre d'éléments par rayon de courbure :</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>

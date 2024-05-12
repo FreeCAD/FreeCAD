@@ -28,6 +28,7 @@
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
+#include <BRepBndLib.hxx>
 #include <BRepClass_FaceClassifier.hxx>
 #include <BRepGProp.hxx>
 #include <BRepGProp_Face.hxx>
@@ -74,9 +75,12 @@ using Adaptor3d_HSurface = Adaptor3d_Surface;
 using BRepAdaptor_HSurface = BRepAdaptor_Surface;
 #endif
 
+static const App::PropertyFloatConstraint::Constraints scaleConstraint = {0.0, DBL_MAX, 0.1};
+
 PROPERTY_SOURCE(Fem::Constraint, App::DocumentObject)
 
 Constraint::Constraint()
+    : sizeFactor {1}
 {
     ADD_PROPERTY_TYPE(References,
                       (nullptr, nullptr),
@@ -90,10 +94,9 @@ Constraint::Constraint()
                       "Normal direction pointing outside of solid");
     ADD_PROPERTY_TYPE(Scale,
                       (1),
-                      "Base",
-                      App::PropertyType(App::Prop_Output),
-                      "Scale used for drawing constraints");  // OvG: Add scale parameter inherited
-                                                              // by all derived constraints
+                      "Constraint",
+                      App::PropertyType(App::Prop_None),
+                      "Scale used for drawing constraints");
     ADD_PROPERTY_TYPE(Points,
                       (Base::Vector3d()),
                       "Constraint",
@@ -105,10 +108,14 @@ Constraint::Constraint()
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output | App::Prop_Hidden),
                       "Normals where symbols are drawn");
 
+    Scale.setConstraints(&scaleConstraint);
+
     Points.setValues(std::vector<Base::Vector3d>());
     Normals.setValues(std::vector<Base::Vector3d>());
 
     References.setScope(App::LinkScope::Global);
+
+    App::SuppressibleExtension::initExtension(this);
 }
 
 Constraint::~Constraint() = default;
@@ -125,22 +132,19 @@ App::DocumentObjectExecReturn* Constraint::execute()
     }
 }
 
-// OvG: Provide the ability to determine how big to draw constraint arrows etc.
-int Constraint::calcDrawScaleFactor(double lparam) const
+// Provide the ability to determine how big to draw constraint arrows etc.
+// Try to get symbol size equal to 1/5 of the characteristic length of
+// the object. Typical symbol size is 5, so use 1/25 of the characteristic length.
+double Constraint::calcSizeFactor(double characLen) const
 {
-    return (static_cast<int>(round(log(lparam) * log(lparam) * log(lparam) / 10)) > 1)
-        ? (static_cast<int>(round(log(lparam) * log(lparam) * log(lparam) / 10)))
-        : 1;
+    double l = characLen / 25.0;
+    l = ((round(l)) > 1) ? round(l) : l;
+    return (l > Precision::Confusion() ? l : 1);
 }
 
-int Constraint::calcDrawScaleFactor(double lvparam, double luparam) const
+float Constraint::getScaleFactor() const
 {
-    return calcDrawScaleFactor((lvparam + luparam) / 2.0);
-}
-
-int Constraint::calcDrawScaleFactor() const
-{
-    return 1;
+    return Scale.getValue() * sizeFactor;
 }
 
 void setSubShapeLocation(const Part::Feature* feat, TopoDS_Shape& sh)
@@ -198,11 +202,9 @@ void Constraint::onChanged(const App::Property* prop)
 
         std::vector<Base::Vector3d> points;
         std::vector<Base::Vector3d> normals;
-        int scale = 1;
-        if (getPoints(points, normals, &scale)) {
+        if (getPoints(points, normals, &sizeFactor)) {
             Points.setValues(points);
             Normals.setValues(normals);
-            Scale.setValue(scale);
             Points.touch();
         }
     }
@@ -248,9 +250,22 @@ void Constraint::onDocumentRestored()
     App::DocumentObject::onDocumentRestored();
 }
 
+void Constraint::handleChangedPropertyType(Base::XMLReader& reader,
+                                           const char* TypeName,
+                                           App::Property* prop)
+{
+    // Old integer Scale is equal to sizeFactor, now  Scale*sizeFactor is used to scale the symbol
+    if (prop == &Scale && strcmp(TypeName, "App::PropertyInteger") == 0) {
+        Scale.setValue(1.0f);
+    }
+    else {
+        App::DocumentObject::handleChangedPropertyType(reader, TypeName, prop);
+    }
+}
+
 bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
                            std::vector<Base::Vector3d>& normals,
-                           int* scale) const
+                           double* scale) const
 {
     std::vector<App::DocumentObject*> Objects = References.getValues();
     std::vector<std::string> SubElements = References.getSubValues();
@@ -272,42 +287,35 @@ bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
         }
 
         setSubShapeLocation(feat, sh);
+        // Scale by bounding box of the object
+        Bnd_Box box;
+        BRepBndLib::Add(toposhape.getShape(), box);
+        double l = sqrt(box.SquareExtent() / 3.0);
+        *scale = this->calcSizeFactor(l);
 
         if (sh.ShapeType() == TopAbs_VERTEX) {
             const TopoDS_Vertex& vertex = TopoDS::Vertex(sh);
             gp_Pnt p = BRep_Tool::Pnt(vertex);
             points.emplace_back(p.X(), p.Y(), p.Z());
             normals.push_back(NormalDirection.getValue());
-            // OvG: Scale by whole object mass in case of a vertex
-            GProp_GProps props;
-            BRepGProp::VolumeProperties(toposhape.getShape(), props);
-            double lx = props.Mass();
-            // OvG: setup draw scale for constraint
-            *scale = this->calcDrawScaleFactor(sqrt(lx) * 0.5);
         }
         else if (sh.ShapeType() == TopAbs_EDGE) {
             BRepAdaptor_Curve curve(TopoDS::Edge(sh));
             double fp = curve.FirstParameter();
             double lp = curve.LastParameter();
-            GProp_GProps props;
-            BRepGProp::LinearProperties(TopoDS::Edge(sh), props);
-            double l = props.Mass();
             // Create points with 10 units distance, but at least one at the beginning and end of
             // the edge
             int steps;
             // OvG: Increase 10 units distance proportionately to l for larger objects.
             if (l >= 30) {
-                *scale = this->calcDrawScaleFactor(l);  // OvG: setup draw scale for constraint
                 steps = static_cast<int>(round(l / (10 * (*scale))));
                 steps = steps < 3 ? 3 : steps;
             }
             else if (l >= 20) {
                 steps = static_cast<int>(round(l / 10));
-                *scale = this->calcDrawScaleFactor();  // OvG: setup draw scale for constraint
             }
             else {
                 steps = 1;
-                *scale = this->calcDrawScaleFactor();  // OvG: setup draw scale for constraint
             }
 
             // OvG: Place upper limit on number of steps
@@ -385,19 +393,16 @@ bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
             // OvG: Increase 10 units distance proportionately to lv for larger objects.
             int stepsv;
             if (lv >= 30) {
-                *scale = this->calcDrawScaleFactor(lv, lu);  // OvG: setup draw scale for constraint
                 stepsv = static_cast<int>(round(lv / (10 * (*scale))));
                 stepsv = stepsv < 3 ? 3 : stepsv;
             }
             else if (lv >= 20.0) {
                 stepsv = static_cast<int>(round(lv / 10));
-                *scale = this->calcDrawScaleFactor();  // OvG: setup draw scale for constraint
             }
             else {
                 // Minimum of three arrows to ensure (as much as possible) that at
                 // least one is displayed
                 stepsv = 2;
-                *scale = this->calcDrawScaleFactor();  // OvG: setup draw scale for constraint
             }
 
             // OvG: Place upper limit on number of steps
@@ -405,17 +410,14 @@ bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
             int stepsu;
             // OvG: Increase 10 units distance proportionately to lu for larger objects.
             if (lu >= 30) {
-                *scale = this->calcDrawScaleFactor(lv, lu);  // OvG: setup draw scale for constraint
                 stepsu = static_cast<int>(round(lu / (10 * (*scale))));
                 stepsu = stepsu < 3 ? 3 : stepsu;
             }
             else if (lu >= 20.0) {
                 stepsu = static_cast<int>(round(lu / 10));
-                *scale = this->calcDrawScaleFactor();  // OvG: setup draw scale for constraint
             }
             else {
                 stepsu = 2;
-                *scale = this->calcDrawScaleFactor();  // OvG: setup draw scale for constraint
             }
 
             // OvG: Place upper limit on number of steps
@@ -430,7 +432,9 @@ bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
                 if (classifier.State() != TopAbs_OUT) {
                     points.emplace_back(p.X(), p.Y(), p.Z());
                     props.Normal(u, v, center, normal);
-                    normal.Normalize();
+                    if (normal.SquareMagnitude() > 0.0) {
+                        normal.Normalize();
+                    }
                     normals.emplace_back(normal.X(), normal.Y(), normal.Z());
                 }
             };

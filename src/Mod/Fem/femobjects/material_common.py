@@ -56,6 +56,7 @@ class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
                 "Material",
                 "List of material shapes"
             )
+            obj.setPropertyStatus("References", "LockDynamic")
         # Category
         # attribute Category was added in commit 61fb3d429a
         if not hasattr(obj, "Category"):
@@ -65,6 +66,7 @@ class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
                 "Material",
                 "Material type: fluid or solid"
             )
+            obj.setPropertyStatus("Category", "LockDynamic")
             obj.Category = ["Solid", "Fluid"]  # used in TaskPanel
             obj.Category = "Solid"
         """

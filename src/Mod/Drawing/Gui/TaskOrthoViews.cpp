@@ -26,6 +26,7 @@
 #include <QMenu>
 #endif
 
+#include <fmt/printf.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -176,8 +177,8 @@ void orthoview::set_data(int r_x, int r_y)
     rel_x = r_x;
     rel_y = r_y;
 
-    char label[15];
-    sprintf(label, "Ortho_%i_%i", rel_x, rel_y);  // label name for view, based on relative position
+    // label name for view, based on relative position
+    std::string label = fmt::sprintf("Ortho_%i_%i", rel_x, rel_y);
 
     this_view->Label.setValue(label);
     ortho = ((rel_x * rel_y) == 0);

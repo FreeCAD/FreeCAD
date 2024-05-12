@@ -5,8 +5,11 @@ target_sources(
         PRIVATE
             ${CMAKE_CURRENT_SOURCE_DIR}/Application.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Branding.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/Color.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/ComplexGeoData.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Document.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/DocumentObject.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/DocumentObserver.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Expression.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/ExpressionParser.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/ElementMap.cpp

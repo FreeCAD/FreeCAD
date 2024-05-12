@@ -88,11 +88,7 @@ class SimpleEditPanel:
         )
 
     def getStandardButtons(self):
-        return int(
-            QtGui.QDialogButtonBox.Ok
-            | QtGui.QDialogButtonBox.Apply
-            | QtGui.QDialogButtonBox.Cancel
-        )
+        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel
 
     def clicked(self, button):
         # callback for standard buttons

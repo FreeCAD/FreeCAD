@@ -45,7 +45,6 @@ class ReadmeDataType(IntEnum):
 
 
 class ReadmeController(QtCore.QObject):
-
     """A class that can provide README data from an Addon, possibly loading external resources such
     as images"""
 

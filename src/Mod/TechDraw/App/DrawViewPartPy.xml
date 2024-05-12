@@ -18,9 +18,19 @@
         <UserDocu>getVisibleEdges() - get the visible edges in the View as Part::TopoShapeEdges</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getVisibleVertexes">
+      <Documentation>
+        <UserDocu>getVisibleVertexes() - get the visible vertexes as App.Vector in the View's coordinate system.</UserDocu>
+      </Documentation>
+    </Methode>
    <Methode Name="getHiddenEdges">
       <Documentation>
         <UserDocu>getHiddenEdges() - get the hidden edges in the View as Part::TopoShapeEdges</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getHiddenVertexes">
+      <Documentation>
+        <UserDocu>getHiddenVertexes() - get the hidden vertexes as App.Vector in the View's coordinate system.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeCosmeticVertex">
@@ -165,8 +175,12 @@
         result.</UserDocu>
       </Documentation>
     </Methode>
-
-<Methode Name="requestPaint">
+    <Methode Name="getGeometricCenter">
+      <Documentation>
+        <UserDocu>point3d = getGeometricCenter() - returns the geometric center of the source shapes.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="requestPaint">
       <Documentation>
         <UserDocu>requestPaint(). Redraw the graphic for this View.</UserDocu>
       </Documentation>

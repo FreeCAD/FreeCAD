@@ -3609,6 +3609,27 @@ int ExpressionParserlex();
 #include "lex.ExpressionParser.c"
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
+class StringBufferCleaner
+{
+public:
+    explicit StringBufferCleaner(YY_BUFFER_STATE buffer)
+        : my_string_buffer {buffer}
+    {}
+    ~StringBufferCleaner()
+    {
+        // free the scan buffer
+        yy_delete_buffer(my_string_buffer);
+    }
+
+    StringBufferCleaner(const StringBufferCleaner&) = delete;
+    StringBufferCleaner(StringBufferCleaner&&) = delete;
+    StringBufferCleaner& operator=(const StringBufferCleaner&) = delete;
+    StringBufferCleaner& operator=(StringBufferCleaner&&) = delete;
+
+private:
+    YY_BUFFER_STATE my_string_buffer;
+};
+
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #elif defined (__GNUC__)
@@ -3710,6 +3731,7 @@ static void initParser(const App::DocumentObject *owner)
 std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
 {
     ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str.c_str());
+    ExpressionParser::StringBufferCleaner cleaner(buf);
     std::vector<std::tuple<int, int, std::string> > result;
     int token;
 
@@ -3722,7 +3744,6 @@ std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
         // Ignore all exceptions
     }
 
-    ExpressionParser_delete_buffer(buf);
     return result;
 }
 
@@ -3745,14 +3766,12 @@ Expression * App::ExpressionParser::parse(const App::DocumentObject *owner, cons
 {
     // parse from buffer
     ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);
+    ExpressionParser::StringBufferCleaner cleaner(my_string_buffer);
 
     initParser(owner);
 
     // run the parser
     int result = ExpressionParser::ExpressionParser_yyparse ();
-
-    // free the scan buffer
-    ExpressionParser::ExpressionParser_delete_buffer (my_string_buffer);
 
     if (result != 0)
         throw ParserError("Failed to parse expression.");
@@ -3772,14 +3791,12 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
 {
     // parse from buffer
     ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);
+    ExpressionParser::StringBufferCleaner cleaner(my_string_buffer);
 
     initParser(owner);
 
     // run the parser
     int result = ExpressionParser::ExpressionParser_yyparse ();
-
-    // free the scan buffer
-    ExpressionParser::ExpressionParser_delete_buffer (my_string_buffer);
 
     if (result != 0)
         throw ParserError("Failed to parse expression.");
@@ -3823,9 +3840,9 @@ namespace {
 std::tuple<int, int> getTokenAndStatus(const std::string & str)
 {
     ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser::ExpressionParser_scan_string(str.c_str());
+    ExpressionParser::StringBufferCleaner cleaner(buf);
     int token = ExpressionParser::ExpressionParserlex();
     int status = ExpressionParser::ExpressionParserlex();
-    ExpressionParser::ExpressionParser_delete_buffer(buf);
 
     return std::make_tuple(token, status);
 }

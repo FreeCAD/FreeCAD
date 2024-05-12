@@ -89,7 +89,7 @@ bool ListModel::setData(const QModelIndex& index, const QVariant& value, int rol
 {
     Q_UNUSED(role);
 
-    if (index.row() == _valuePtr->size()) {
+    if (newRow(index)) {
         insertRows(index.row(), 1);
     }
     (*_valuePtr)[index.row()] = value;
@@ -126,6 +126,8 @@ bool ListModel::removeRows(int row, int count, const QModelIndex& parent)
     while (count--) {
         _valuePtr->removeAt(row);
     }
+
+    endRemoveRows();
 
     return true;
 }

@@ -71,7 +71,12 @@ def write_step_equation(f, ccxwriter):
     elif ccxwriter.analysis_type == "frequency":
         analysis_type = "*FREQUENCY"
     elif ccxwriter.analysis_type == "thermomech":
-        analysis_type = "*COUPLED TEMPERATURE-DISPLACEMENT"
+        if ccxwriter.solver_obj.ThermoMechType == "coupled":
+            analysis_type = "*COUPLED TEMPERATURE-DISPLACEMENT"
+        elif ccxwriter.solver_obj.ThermoMechType == "uncoupled":
+            analysis_type = "*UNCOUPLED TEMPERATURE-DISPLACEMENT"
+        elif ccxwriter.solver_obj.ThermoMechType == "pure heat transfer":
+            analysis_type = "*HEAT TRANSFER"
     elif ccxwriter.analysis_type == "check":
         analysis_type = "*NO ANALYSIS"
     elif ccxwriter.analysis_type == "buckling":

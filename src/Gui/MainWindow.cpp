@@ -37,6 +37,7 @@
 # include <QLabel>
 # include <QMdiSubWindow>
 # include <QMenu>
+# include <QMenuBar>
 # include <QMessageBox>
 # include <QMimeData>
 # include <QPainter>
@@ -268,6 +269,7 @@ struct MainWindowP
 {
     DimensionWidget* sizeLabel;
     QLabel* actionLabel;
+    QLabel* rightSideLabel;
     QTimer* actionTimer;
     QTimer* statusTimer;
     QTimer* activityTimer;
@@ -444,6 +446,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     // labels and progressbar
     d->status = new StatusBarObserver();
     d->actionLabel = new QLabel(statusBar());
+    d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     // d->actionLabel->setMinimumWidth(120);
 
     d->sizeLabel = new DimensionWidget(statusBar());
@@ -452,6 +455,10 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
     statusBar()->addPermanentWidget(progressBar, 0);
     statusBar()->addPermanentWidget(d->sizeLabel, 0);
+
+    d->rightSideLabel = new QLabel(statusBar());
+    d->rightSideLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    statusBar()->addPermanentWidget(d->rightSideLabel);
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NotificationArea");
 
@@ -463,6 +470,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         notificationArea->setStyleSheet(QStringLiteral("text-align:left;"));
         statusBar()->addPermanentWidget(notificationArea);
     }
+
     // clears the action label
     d->actionTimer = new QTimer( this );
     d->actionTimer->setObjectName(QString::fromLatin1("actionTimer"));
@@ -789,7 +797,19 @@ bool MainWindow::updateDAGView(bool show)
 
 QMenu* MainWindow::createPopupMenu ()
 {
-    QMenu* menu = QMainWindow::createPopupMenu();
+    QMenu *menu = new QMenu(this);
+    populateDockWindowMenu(menu);
+    menu->addSeparator();
+    populateToolBarMenu(menu);
+    QMenu *undockMenu = new QMenu(menu);
+    ToolBarManager::getInstance()->populateUndockMenu(undockMenu);
+    if (undockMenu->actions().isEmpty()) {
+        delete undockMenu;
+    }
+    else {
+        menu->addMenu(undockMenu);
+    }
+    menu->addSeparator();
     Workbench* wb = WorkbenchManager::instance()->active();
     if (wb) {
         MenuItem item;
@@ -830,6 +850,7 @@ void MainWindow::closeActiveWindow ()
 int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckbox) {
     QMessageBox box(parent?parent:this);
     box.setIcon(QMessageBox::Question);
+    box.setWindowFlags(box.windowFlags() | Qt::WindowStaysOnTopHint);
     box.setWindowTitle(QObject::tr("Unsaved document"));
     if(docName)
         box.setText(QObject::tr("Do you want to save your changes to document '%1' before closing?")
@@ -988,32 +1009,16 @@ void MainWindow::whatsThis()
 void MainWindow::showDocumentation(const QString& help)
 {
     Base::PyGILStateLocker lock;
-    PyObject* module = PyImport_ImportModule("Help");
-    if (module) {
-        Py_DECREF(module);
-        Gui::Command::addModule(Gui::Command::Gui,"Help");
-        Gui::Command::doCommand(Gui::Command::Gui,"Help.show(\"%s\")", help.toStdString().c_str());
+    try {
+        PyObject* module = PyImport_ImportModule("Help");
+        if (module) {
+            Py_DECREF(module);
+            Gui::Command::addModule(Gui::Command::Gui,"Help");
+            Gui::Command::doCommand(Gui::Command::Gui,"Help.show(\"%s\")", help.toStdString().c_str());
+        }
     }
-    else {
-        PyErr_Clear();
-        QUrl url(help);
-        if (url.scheme().isEmpty()) {
-            QMessageBox msgBox(getMainWindow());
-            msgBox.setWindowTitle(tr("Help addon needed!"));
-            msgBox.setText(tr("The Help system of %1 is now handled by the \"Help\" addon. "
-               "It can easily be installed via the Addons Manager").arg(QString(qApp->applicationName())));
-            QAbstractButton* pButtonAddonMgr = msgBox.addButton(tr("Open Addon Manager"), QMessageBox::YesRole);
-            msgBox.addButton(QMessageBox::Ok);
-            msgBox.exec();
-            if (msgBox.clickedButton() == pButtonAddonMgr) {
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Addons");
-                hGrp->SetASCII("SelectedAddon", "Help");
-                Gui::Command::doCommand(Gui::Command::Gui,"Gui.runCommand('Std_AddonMgr',0)");
-            }
-        }
-        else {
-            QDesktopServices::openUrl(url);
-        }
+    catch (const Base::Exception& e) {
+        e.ReportException();
     }
 }
 
@@ -1405,26 +1410,41 @@ void MainWindow::onToolBarMenuAboutToShow()
 {
     auto menu = static_cast<QMenu*>(sender());
     menu->clear();
-    QList<QToolBar*> dock = this->findChildren<QToolBar*>();
-    for (const auto & it : dock) {
-        if (it->parentWidget() == this) {
-            QAction* action = it->toggleViewAction();
-            action->setToolTip(tr("Toggles this toolbar"));
-            action->setStatusTip(tr("Toggles this toolbar"));
-            action->setWhatsThis(tr("Toggles this toolbar"));
-            menu->addAction(action);
-        }
-    }
+    populateToolBarMenu(menu);
 
     menu->addSeparator();
 
     Application::Instance->commandManager().getCommandByName("Std_ToggleToolBarLock")->addTo(menu);
 }
 
+void MainWindow::populateToolBarMenu(QMenu *menu)
+{
+    QList<QToolBar*> toolbars = this->findChildren<QToolBar*>();
+    for (const auto & toolbar : toolbars) {
+        if (auto parent = toolbar->parentWidget()) {
+            if (parent == this
+                    || parent == statusBar()
+                    || parent->parentWidget() == statusBar()
+                    || parent->parentWidget() == menuBar()) {
+                QAction* action = toolbar->toggleViewAction();
+                action->setToolTip(tr("Toggles this toolbar"));
+                action->setStatusTip(tr("Toggles this toolbar"));
+                action->setWhatsThis(tr("Toggles this toolbar"));
+                menu->addAction(action);
+            }
+        }
+    }
+}
+
 void MainWindow::onDockWindowMenuAboutToShow()
 {
     auto menu = static_cast<QMenu*>(sender());
     menu->clear();
+    populateDockWindowMenu(menu);
+}
+
+void MainWindow::populateDockWindowMenu(QMenu *menu)
+{
     QList<QDockWidget*> dock = this->findChildren<QDockWidget*>();
     for (auto & it : dock) {
         QAction* action = it->toggleViewAction();
@@ -2416,6 +2436,11 @@ void MainWindow::showMessage(const QString& message, int timeout) {
         d->actionTimer->start(timeout);
     }else
         d->actionTimer->stop();
+}
+
+void MainWindow::setRightSideMessage(const QString& message)
+{
+    d->rightSideLabel->setText(message.simplified());
 }
 
 void MainWindow::showStatus(int type, const QString& message)

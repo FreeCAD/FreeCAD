@@ -734,7 +734,7 @@ def load_texture(filename, size=None, gui=App.GuiUp):
             # else:
             #    p = QtGui.QImage(filename)
             size = coin.SbVec2s(p.width(), p.height())
-            buffersize = p.byteCount()
+            buffersize = p.sizeInBytes()
             width = size[0]
             height = size[1]
             numcomponents = int(buffersize / (width * height))

@@ -99,6 +99,12 @@ public:
 
     void updateData(const App::Property*) override;
 
+    /** @name Restoring view provider from document load */
+    //@{
+    void startRestoring() override;
+    void finishRestoring() override;
+    //@}
+
     /** @name Selection handling
      * This group of methods do the selection handling.
      * Here you can define how the selection for your ViewProfider

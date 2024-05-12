@@ -24,8 +24,6 @@
 
 #include <memory>
 
-#include <QMutex>
-
 #include <boost/filesystem.hpp>
 
 #include <Mod/Material/MaterialGlobal.h>
@@ -34,13 +32,19 @@
 #include "Materials.h"
 
 #include "MaterialLibrary.h"
+#include "MaterialFilter.h"
 
 namespace fs = boost::filesystem;
 
+class QMutex;
+
+namespace App
+{
+class Material;
+}
+
 namespace Materials
 {
-
-class MaterialFilter;
 
 class MaterialsExport MaterialManager: public Base::BaseClass
 {
@@ -50,11 +54,16 @@ public:
     MaterialManager();
     ~MaterialManager() override = default;
 
+    static void cleanup();
+    static std::shared_ptr<Material> defaultMaterial();
+    static QString defaultMaterialUUID();
+
     std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> getMaterials() const
     {
         return _materialMap;
     }
     std::shared_ptr<Material> getMaterial(const QString& uuid) const;
+    static std::shared_ptr<Material> getMaterial(const App::Material& material);
     std::shared_ptr<Material> getMaterialByPath(const QString& path) const;
     std::shared_ptr<Material> getMaterialByPath(const QString& path, const QString& library) const;
     std::shared_ptr<Material> getParent(const std::shared_ptr<Material>& material) const;
@@ -66,9 +75,24 @@ public:
     std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getMaterialLibraries() const;
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
     getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
-                    const MaterialFilter* filter = nullptr) const
+                    const std::shared_ptr<Materials::MaterialFilter>& filter) const
     {
-        return library->getMaterialTree(filter);
+        MaterialFilterOptions options;
+        return library->getMaterialTree(filter, options);
+    }
+    std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
+    getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
+                    const std::shared_ptr<Materials::MaterialFilter>& filter,
+                    const MaterialFilterOptions& options) const
+    {
+        return library->getMaterialTree(filter, options);
+    }
+    std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
+    getMaterialTree(const std::shared_ptr<MaterialLibrary>& library) const
+    {
+        std::shared_ptr<Materials::MaterialFilter> filter;
+        MaterialFilterOptions options;
+        return library->getMaterialTree(filter, options);
     }
     std::shared_ptr<std::list<QString>>
     getMaterialFolders(const std::shared_ptr<MaterialLibrary>& library) const;

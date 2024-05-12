@@ -86,7 +86,6 @@ using DU = DrawUtil;
 bool DimensionAutoCorrect::referencesHaveValidGeometry(std::vector<bool>& referenceState) const
 {
     // Base::Console().Message("DAC::referencesHaveValidGeometry()\n");
-
     ReferenceVector refsAll = getDimension()->getEffectiveReferences();
     const std::vector<Part::TopoShape> savedGeometry = getDimension()->SavedGeometry.getValues();
 
@@ -114,6 +113,7 @@ bool DimensionAutoCorrect::referencesHaveValidGeometry(std::vector<bool>& refere
             result = false;
             referenceState.emplace_back(false);
         }
+        iRef++;
     }
     return result;
 }
@@ -138,16 +138,6 @@ bool DimensionAutoCorrect::autocorrectReferences(std::vector<bool>& referenceSta
         return false;
     }
 
-    std::vector<Part::TopoShape> referenceGeometry;
-    for (auto& entry : refsAll) {
-        if (entry.hasGeometry()) {
-            referenceGeometry.push_back(entry.asTopoShape());
-        }
-        else {
-            referenceGeometry.push_back(Part::TopoShape());
-        }
-    }
-
     size_t iRef {0};
     for (const auto& state : referenceState) {
         if (state) {
@@ -158,7 +148,7 @@ bool DimensionAutoCorrect::autocorrectReferences(std::vector<bool>& referenceSta
             continue;
         }
 
-        Part::TopoShape temp = savedGeometry.at(iRef);
+        const Part::TopoShape& temp = savedGeometry.at(iRef);
         if (temp.isNull()) {
             result = false;
             referenceState.at(iRef) = false;
@@ -170,7 +160,6 @@ bool DimensionAutoCorrect::autocorrectReferences(std::vector<bool>& referenceSta
 
         // this ref does not point to valid geometry or
         // the geometry it points to does not match the saved geometry
-
         ReferenceEntry fixedRef = refsAll.at(iRef);
 
         // first, look for an exact match to the saved geometry
@@ -183,17 +172,17 @@ bool DimensionAutoCorrect::autocorrectReferences(std::vector<bool>& referenceSta
             continue;
         }
 
-        // we did not find an exact match, so check for an Similar match
+        // we did not find an exact match, so check for an similar match
         success = fix1GeomSimilar(fixedRef, savedGeometry.at(iRef).getShape());
         if (success) {
-            // we did find an Similar match
+            // we did find an similar match
             referenceState.at(iRef) = true;
             repairedRefs.push_back(fixedRef);
             iRef++;
             continue;
         }
 
-        // we did not find an Similar match the geometry
+        // we did not find an similar match the geometry
         result = false;
         referenceState.at(iRef) = false;
         repairedRefs.push_back(fixedRef);
@@ -204,60 +193,60 @@ bool DimensionAutoCorrect::autocorrectReferences(std::vector<bool>& referenceSta
     return result;
 }
 
-//! fix a single reference with an exact match to geomToFix
-bool DimensionAutoCorrect::fix1GeomExact(ReferenceEntry& refToFix, TopoDS_Shape geomToFix) const
+//! fix a single reference with an exact match to geomToMatch
+bool DimensionAutoCorrect::fix1GeomExact(ReferenceEntry& refToFix, const TopoDS_Shape &geomToMatch) const
 {
     // Base::Console().Message("DAC::fix1GeomExact()\n");
     ReferenceEntry fixedRef = refToFix;
-    Part::TopoShape topoShapeToFix(geomToFix);
+    Part::TopoShape topoShapeToMatch(geomToMatch);
     bool success {false};
     if (refToFix.is3d()) {
         if (!refToFix.getObject() && m_3dObjectCache.empty()) {
             return false;
         }
-        if (geomToFix.ShapeType() == TopAbs_VERTEX) {
-            success = findExactVertex3d(refToFix, topoShapeToFix);
+        if (geomToMatch.ShapeType() == TopAbs_VERTEX) {
+            success = findExactVertex3d(refToFix, topoShapeToMatch);
         }
         else {
-            success = findExactEdge3d(refToFix, topoShapeToFix);
+            success = findExactEdge3d(refToFix, topoShapeToMatch);
         }
     }
     else {
-        if (geomToFix.ShapeType() == TopAbs_VERTEX) {
-            success = findExactVertex2d(refToFix, topoShapeToFix);
+        if (geomToMatch.ShapeType() == TopAbs_VERTEX) {
+            success = findExactVertex2d(refToFix, topoShapeToMatch);
         }
         else {
-            success = findExactEdge2d(refToFix, topoShapeToFix);
+            success = findExactEdge2d(refToFix, topoShapeToMatch);
         }
     }
     return success;
 }
 
 
-//! fix a single reference with an Similar match to geomToFix
-bool DimensionAutoCorrect::fix1GeomSimilar(ReferenceEntry& refToFix, TopoDS_Shape geomToFix) const
+//! fix a single reference with an Similar match to geomToMatch
+bool DimensionAutoCorrect::fix1GeomSimilar(ReferenceEntry& refToFix, const TopoDS_Shape &geomToMatch) const
 {
     // Base::Console().Message("DAC::fix1GeomSimilar()\n");
-    Part::TopoShape topoShapeToFix(geomToFix);
+    Part::TopoShape topoShapeToMatch(geomToMatch);
     bool success {false};
     if (refToFix.is3d()) {
         if (!refToFix.getObject() && m_3dObjectCache.empty()) {
             // can't fix this. nothing to compare.
             return false;
         }
-        if (geomToFix.ShapeType() == TopAbs_VERTEX) {
-            success = findSimilarVertex3d(refToFix, topoShapeToFix);
+        if (geomToMatch.ShapeType() == TopAbs_VERTEX) {
+            success = findSimilarVertex3d(refToFix, topoShapeToMatch);
         }
         else {
-            success = findSimilarEdge3d(refToFix, topoShapeToFix);
+            success = findSimilarEdge3d(refToFix, topoShapeToMatch);
         }
     }
     else {
-        if (geomToFix.ShapeType() == TopAbs_VERTEX) {
-            success = findSimilarVertex2d(refToFix, topoShapeToFix);
+        if (geomToMatch.ShapeType() == TopAbs_VERTEX) {
+            success = findSimilarVertex2d(refToFix, topoShapeToMatch);
         }
         else {
-            success = findSimilarEdge2d(refToFix, topoShapeToFix);
+            success = findSimilarEdge2d(refToFix, topoShapeToMatch);
         }
     }
     return success;
@@ -267,7 +256,7 @@ bool DimensionAutoCorrect::fix1GeomSimilar(ReferenceEntry& refToFix, TopoDS_Shap
 //! search the view for a 2d vertex that is the same as the saved reference geometry
 //! and return a reference pointing to the matching vertex
 bool DimensionAutoCorrect::findExactVertex2d(ReferenceEntry& refToFix,
-                                             Part::TopoShape refGeom) const
+                                             const Part::TopoShape& refGeom) const
 {
     // Base::Console().Message("DAC::findExactVertex2d()\n");
     getMatcher()->setPointTolerance(EWTOLERANCE);
@@ -284,32 +273,29 @@ bool DimensionAutoCorrect::findExactVertex2d(ReferenceEntry& refToFix,
     return false;
 }
 
-//! search the view for a 2d edge that is the same as the saved reference geometry
+
+//! search the view for a 2d edge that is the same as the saved reference geometry (from DVD::SavedGeometry)
 //! and return a reference pointing to the matching edge.
-bool DimensionAutoCorrect::findExactEdge2d(ReferenceEntry& refToFix, Part::TopoShape refGeom) const
+bool DimensionAutoCorrect::findExactEdge2d(ReferenceEntry& refToFix, const Part::TopoShape& refGeom) const
 {
     // Base::Console().Message("DAC::findExactEdge2d()\n");
-    double scale = getDimension()->getViewPart()->getScale();
-    BaseGeomPtrVector gEdgeAll = getDimension()->getViewPart()->getEdgeGeometry();
-    int iEdge {0};
-    for (auto& edge : gEdgeAll) {
-        Part::TopoShape temp = edge->asTopoShape(scale);
-        bool isSame = getMatcher()->compareGeometry(refGeom, temp);
-        if (isSame) {
-            refToFix.setSubName(std::string("Edge") + std::to_string(iEdge));
+    auto refObj = refToFix.getObject();
+    auto refDvp = dynamic_cast<TechDraw::DrawViewPart*>(refObj);
+    if (refDvp) {
+        ReferenceEntry fixedRef = searchViewForExactEdge(refDvp, refGeom);
+        if (fixedRef.getObject()) {
+            refToFix = fixedRef;
             return true;
         }
-        iEdge++;
     }
-
-    // no match, return the input reference
+    // no match
     return false;
 }
 
 //! search the model for a 3d vertex that is the same as the saved reference geometry
 //! and return a reference pointing to the matching vertex
 bool DimensionAutoCorrect::findExactVertex3d(ReferenceEntry& refToFix,
-                                             Part::TopoShape refGeom) const
+                                             const Part::TopoShape& refGeom) const
 {
     // Base::Console().Message("DAC::findExactVertex3d()\n");
     getMatcher()->setPointTolerance(EWTOLERANCE);
@@ -339,7 +325,7 @@ bool DimensionAutoCorrect::findExactVertex3d(ReferenceEntry& refToFix,
 
 //! search the model for a 3d edge that is the same as the saved reference geometry
 //! and return a reference pointing to the matching edge.
-bool DimensionAutoCorrect::findExactEdge3d(ReferenceEntry& refToFix, Part::TopoShape refGeom) const
+bool DimensionAutoCorrect::findExactEdge3d(ReferenceEntry& refToFix, const Part::TopoShape& refGeom) const
 {
     // Base::Console().Message("DAC::findExactEdge3d() - cache: %d\n", m_3dObjectCache.size());
     // first, try to find a match in the referenced object
@@ -375,24 +361,24 @@ bool DimensionAutoCorrect::findExactEdge3d(ReferenceEntry& refToFix, Part::TopoS
 //! search the view for a vertex that is within a tolerance of the saved reference geometry
 //! and return a reference pointing to the matching vertex
 bool DimensionAutoCorrect::findSimilarVertex2d(ReferenceEntry& refToFix,
-                                               Part::TopoShape refGeom) const
+                                               const Part::TopoShape& refGeom) const
 {
     // Base::Console().Message("DAC::findSimilarVertex2d()\n");
     (void)refToFix;
     (void)refGeom;
-    Base::Console().Message("DAC::findSimilarVertex2d is not implemented yet\n");
+    // Base::Console().Message("DAC::findSimilarVertex2d is not implemented yet\n");
     return false;
 }
 
 //! search the view for a 2d edge that is similar to the saved reference geometry
 //! and return a reference pointing to the similar edge.
 bool DimensionAutoCorrect::findSimilarEdge2d(ReferenceEntry& refToFix,
-                                             Part::TopoShape refGeom) const
+                                             const Part::TopoShape& refGeom) const
 {
     // Base::Console().Message("DAC::findSimilarEdge2d()\n");
     (void)refToFix;
     (void)refGeom;
-    Base::Console().Message("DAC::findSimilarEdge2d is not implemented yet\n");
+    // Base::Console().Message("DAC::findSimilarEdge2d is not implemented yet\n");
     return false;
 }
 
@@ -400,12 +386,12 @@ bool DimensionAutoCorrect::findSimilarEdge2d(ReferenceEntry& refToFix,
 //! a tolerance of the saved reference geometry and return a reference pointing
 //! to the matching vertex
 bool DimensionAutoCorrect::findSimilarVertex3d(ReferenceEntry& refToFix,
-                                               Part::TopoShape refGeom) const
+                                               const Part::TopoShape& refGeom) const
 {
     // Base::Console().Message("DAC::findSimilarVertex3d()\n");
     (void)refToFix;
     (void)refGeom;
-    Base::Console().Message("DAC::findSimilarVertex3d is not implemented yet\n");
+    // Base::Console().Message("DAC::findSimilarVertex3d is not implemented yet\n");
     return false;
 }
 
@@ -413,20 +399,21 @@ bool DimensionAutoCorrect::findSimilarVertex3d(ReferenceEntry& refToFix,
 //! similar to the saved reference geometry and return a reference pointing
 //! to the similar edge
 bool DimensionAutoCorrect::findSimilarEdge3d(ReferenceEntry& refToFix,
-                                             Part::TopoShape refGeom) const
+                                             const Part::TopoShape& refGeom) const
 {
     // Base::Console().Message("DAC::findSimilarEdge3d(%s)\n", refToFix.getObjectName().c_str());
     (void)refToFix;
     (void)refGeom;
-    Base::Console().Message("DAC::findSimilarEdge3d is not implemented yet\n");
+    // Base::Console().Message("DAC::findSimilarEdge3d is not implemented yet\n");
     return false;
 }
 
 //! compare the geometry pointed to by a reference to the corresponding saved geometry
-bool DimensionAutoCorrect::isMatchingGeometry(ReferenceEntry ref,
-                                              Part::TopoShape savedGeometry) const
+bool DimensionAutoCorrect::isMatchingGeometry(const ReferenceEntry& ref,
+                                              const Part::TopoShape& savedGeometry) const
 {
-    Part::TopoShape temp = ref.asTopoShape();
+    // Base::Console().Message("DAC::isMatchingGeometry()\n");
+    Part::TopoShape temp = ref.asCanonicalTopoShape();
     if (temp.isNull()) {
         // this shouldn't happen as we already know that this ref points to valid geometry
         return false;
@@ -443,7 +430,7 @@ bool DimensionAutoCorrect::isMatchingGeometry(ReferenceEntry ref,
 //! an exact match for phase 1 (GeometryMatcher), but in phase 2 (GeometryGuesser)
 //! a similar match will be allowed.
 ReferenceEntry DimensionAutoCorrect::searchObjForVert(App::DocumentObject* obj,
-                                                      Part::TopoShape refVertex,
+                                                      const Part::TopoShape& refVertex,
                                                       bool exact) const
 {
     (void)exact;
@@ -455,7 +442,7 @@ ReferenceEntry DimensionAutoCorrect::searchObjForVert(App::DocumentObject* obj,
     auto vertsAll = getDimension()->getVertexes(shape3d);
     size_t iVert {1};
     for (auto& vert : vertsAll) {
-        bool isSame = getMatcher()->compareGeometry(refVertex, vert);
+        bool isSame = getMatcher()->compareGeometry(vert, refVertex);
         if (isSame) {
             auto newSubname = std::string("Vertex") + std::to_string(iVert);
             return {obj, newSubname, getDimension()->getDocument()};
@@ -469,18 +456,19 @@ ReferenceEntry DimensionAutoCorrect::searchObjForVert(App::DocumentObject* obj,
 //! search View (2d part display) for a match to refVertex.  This can be an
 //! exact or Similar match depending on the setting of exact.
 ReferenceEntry DimensionAutoCorrect::searchViewForVert(DrawViewPart* obj,
-                                                       Part::TopoShape refVertex,
+                                                       const Part::TopoShape& refVertex,
                                                        bool exact) const
 {
+    // Base::Console().Message("DAC::searchViewForVert()\n");
     (void)exact;
-    double scale = getDimension()->getViewPart()->getScale();
     std::vector<TechDraw::VertexPtr> gVertexAll =
         getDimension()->getViewPart()->getVertexGeometry();
     getMatcher()->setPointTolerance(EWTOLERANCE);
     int iVertex = 0;
     for (auto& vert : gVertexAll) {
-        Part::TopoShape temp = vert->asTopoShape(scale);
-        bool isSame = getMatcher()->compareGeometry(refVertex, temp);
+        // vert is in display form - scaled and rotated
+        Part::TopoShape temp = ReferenceEntry::asCanonicalTopoShape(vert->asTopoShape(), *obj);
+        bool isSame = getMatcher()->compareGeometry(temp, refVertex);
         if (isSame) {
             auto newSubname = std::string("Vertex") + std::to_string(iVertex);
             return {obj, newSubname, getDimension()->getDocument()};
@@ -492,14 +480,15 @@ ReferenceEntry DimensionAutoCorrect::searchViewForVert(DrawViewPart* obj,
 
 //! search View (2d part display) for an exact match to refEdge.
 ReferenceEntry DimensionAutoCorrect::searchViewForExactEdge(DrawViewPart* obj,
-                                                            Part::TopoShape refEdge) const
+                                                            const Part::TopoShape& refEdge) const
 {
     // Base::Console().Message("DAC::searchViewForExactEdge()\n");
-    double scale = getDimension()->getViewPart()->getScale();
     auto gEdgeAll = getDimension()->getViewPart()->getEdgeGeometry();
     int iEdge {0};
     for (auto& edge : gEdgeAll) {
-        Part::TopoShape temp = edge->asTopoShape(scale);
+        // edge is scaled and rotated. we need it in the same scale/rotate state as
+        // the reference edge in order to match.
+        Part::TopoShape temp = ReferenceEntry::asCanonicalTopoShape(edge->asTopoShape(), *obj);
         bool isSame = getMatcher()->compareGeometry(refEdge, temp);
         if (isSame) {
             auto newSubname = std::string("Edge") + std::to_string(iEdge);
@@ -513,7 +502,7 @@ ReferenceEntry DimensionAutoCorrect::searchViewForExactEdge(DrawViewPart* obj,
 
 //! search View (2d part display) for an edge that is similar to refEdge
 ReferenceEntry DimensionAutoCorrect::searchViewForSimilarEdge(DrawViewPart* obj,
-                                                              Part::TopoShape refEdge) const
+                                                              const Part::TopoShape& refEdge) const
 {
     // Base::Console().Message("DAC::searchViewForSimilarEdge()\n");
     (void)obj;
@@ -525,7 +514,7 @@ ReferenceEntry DimensionAutoCorrect::searchViewForSimilarEdge(DrawViewPart* obj,
 //! search model for for a 3d edge that is a match to refEdge
 //! note that only the exact match is implemented in phase 1
 ReferenceEntry DimensionAutoCorrect::searchObjForEdge(App::DocumentObject* obj,
-                                                      Part::TopoShape refEdge,
+                                                      const Part::TopoShape& refEdge,
                                                       bool exact) const
 {
     // Base::Console().Message("DAC::searchObjForEdge(%s)\n", obj->Label.getValue());
@@ -533,13 +522,12 @@ ReferenceEntry DimensionAutoCorrect::searchObjForEdge(App::DocumentObject* obj,
     auto shape3d = Part::Feature::getShape(obj);
     if (shape3d.IsNull()) {
         // how to handle this?
-        // Base::Console().Message("DAC::searchObjForEdge - object shape is null\n");
         return {};
     }
     auto edgesAll = getDimension()->getEdges(shape3d);
     size_t iEdge {1};
     for (auto& edge : edgesAll) {
-        bool isSame = getMatcher()->compareGeometry(refEdge, edge);
+        bool isSame = getMatcher()->compareGeometry(edge, refEdge);
         if (isSame) {
             auto newSubname = std::string("Edge") + std::to_string(iEdge);
             return {obj, newSubname, getDimension()->getDocument()};
@@ -563,7 +551,7 @@ bool DimensionAutoCorrect::fixBrokenReferences(ReferenceVector& fixedReferences)
             continue;
         }
         //
-        TopoDS_Shape geomShape = geom.getShape();
+        const TopoDS_Shape& geomShape = geom.getShape();
         for (auto& objectName : m_3dObjectCache) {
             auto object3d = getDimension()->getDocument()->getObject(objectName.c_str());
             if (!object3d) {
@@ -594,3 +582,4 @@ GeometryMatcher* DimensionAutoCorrect::getMatcher() const
 {
     return getDimension()->getMatcher();
 }
+

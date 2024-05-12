@@ -27,6 +27,7 @@
 #include "DocumentObject.h"
 #include "PropertyGeo.h"
 #include "MappedElement.h"
+#include "Material.h"
 
 namespace App
 {
@@ -120,7 +121,40 @@ public:
      * @return Base::Placement The transformation from the global reference coordinate system
      */
     Base::Placement globalPlacement() const;
+    /**
+     * @brief Virtual function to get an App::Material object describing the appearance
+     *
+     * The appearance properties are described by the underlying features material. This can not
+     * be accessed directly from within the Gui module. This virtual function will return a
+     * App::Material object describing the appearance properties of the material.
+     *
+     * @return App::Material the appearance properties of the object material
+     */
+    virtual App::Material getMaterialAppearance() const;
 
+    /**
+     * @brief Virtual function to set the appearance with an App::Material object
+     *
+     * The appearance properties are described by the underlying features material. This cannot
+     * be accessed directly from within the Gui module. This virtual function will set the
+     * appearance from an App::Material object.
+     */
+    virtual void setMaterialAppearance(const App::Material& material);
+#ifdef FC_USE_TNP_FIX
+    static bool hasMissingElement(const char *subname);
+
+    /// Return the object that owns the shape that contains the give element name
+    virtual DocumentObject *getElementOwner(const Data::MappedName & /*name*/) const
+    {return nullptr;}
+
+    /// Return the higher level element names of the given element
+    virtual std::vector<Data::IndexedName> getHigherElements(const char *name, bool silent=false) const;
+
+protected:
+    void onChanged(const Property* prop) override;
+//    void onDocumentRestored() override;
+    void updateElementReference();
+#endif
 protected:
     std::pair<std::string, std::string> _getElementName(const char* name,
                                                         const Data::MappedElement& mapped) const;

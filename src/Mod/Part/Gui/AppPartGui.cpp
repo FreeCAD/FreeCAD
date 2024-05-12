@@ -39,9 +39,7 @@
 #include "PropertyEnumAttacherItem.h"
 #include "DlgSettings3DViewPartImp.h"
 #include "DlgSettingsGeneral.h"
-#include "DlgSettingsMeasure.h"
 #include "DlgSettingsObjectColor.h"
-#include "TaskDimension.h"
 #include "SoBrepEdgeSet.h"
 #include "SoBrepFaceSet.h"
 #include "SoBrepPointSet.h"
@@ -123,6 +121,7 @@ PyMOD_INIT_FUNC(PartGui)
     // load needed modules
     try {
         Base::Interpreter().runString("import Part");
+        Base::Interpreter().runString("import MatGui");
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
@@ -135,7 +134,6 @@ PyMOD_INIT_FUNC(PartGui)
 
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/booleans"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/create"));
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/measure"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/parametric"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/tools"));
 
@@ -211,9 +209,6 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::ViewProviderRuledSurface               ::init();
     PartGui::ViewProviderFace                       ::init();
     PartGui::ViewProviderProjectOnSurface           ::init();
-    PartGui::DimensionLinear                        ::initClass();
-    PartGui::DimensionAngular                       ::initClass();
-    PartGui::ArcEngine                              ::initClass();
 
     PartGui::Workbench                              ::init();
     auto manip = std::make_shared<PartGui::WorkbenchManipulator>();
@@ -237,7 +232,6 @@ PyMOD_INIT_FUNC(PartGui)
     (void)new Gui::PrefPageProducer<PartGui::DlgSettingsGeneral>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
     (void)new Gui::PrefPageProducer<PartGui::DlgSettings3DViewPart>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
     (void)new Gui::PrefPageProducer<PartGui::DlgSettingsObjectColor>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
-    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsMeasure>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
     (void)new Gui::PrefPageProducer<PartGui::DlgImportExportIges>(QT_TRANSLATE_NOOP("QObject", "Import-Export"));
     (void)new Gui::PrefPageProducer<PartGui::DlgImportExportStep>(QT_TRANSLATE_NOOP("QObject", "Import-Export"));
     Gui::ViewProviderBuilder::add(

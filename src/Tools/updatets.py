@@ -173,11 +173,6 @@ directories = [
         "tsdir": "Resources/translations",
     },
     {
-        "tsname": "Web",
-        "workingdir": "./src/Mod/Web/",
-        "tsdir": "Gui/Resources/translations",
-    },
-    {
         "tsname": "Help",
         "workingdir": "./src/Mod/Help/",
         "tsdir": "Resources/translations",
@@ -192,6 +187,17 @@ excluded_files = [
     ("CAM", "refactored_linuxcnc_post.py"),  # lupdate bug causes failure on line 178
     ("CAM", "refactored_mach3_mach4_post.py"),  # lupdate bug causes failure on line 186
     ("CAM", "refactored_test_post.py"),  # lupdate bug causes failure on lines 42 and 179
+]
+
+# HTML entities that lextract creates and we want to "un-create" (because CrowdIn just displays them as plain text,
+# and does not display the entities as their resulting character, so translators see "&quot;" instead of a quote).
+html_entities = [
+    "&apos;",
+    "&quot;",
+]
+
+workbenches_for_html_cleanup = [
+    "CAM",
 ]
 
 QMAKE = ""

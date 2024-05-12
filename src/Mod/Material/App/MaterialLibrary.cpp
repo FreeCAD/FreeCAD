@@ -21,9 +21,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QVector>
 #include <QDirIterator>
 #include <QFileInfo>
+#include <QVector>
 #endif
 
 
@@ -266,7 +266,8 @@ QString MaterialLibrary::getUUIDFromPath(const QString& path) const
 }
 
 bool MaterialLibrary::materialInTree(const std::shared_ptr<Material>& material,
-                                     const MaterialFilter* filter) const
+                                     const std::shared_ptr<Materials::MaterialFilter>& filter,
+                                     const Materials::MaterialFilterOptions& options) const
 {
     if (!filter) {
         // If there's no filter we always include
@@ -274,7 +275,7 @@ bool MaterialLibrary::materialInTree(const std::shared_ptr<Material>& material,
     }
 
     // filter out old format files
-    if (material->isOldFormat() && !filter->includeLegacy()) {
+    if (material->isOldFormat() && !options.includeLegacy()) {
         return false;
     }
 
@@ -283,7 +284,8 @@ bool MaterialLibrary::materialInTree(const std::shared_ptr<Material>& material,
 }
 
 std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-MaterialLibrary::getMaterialTree(const MaterialFilter* filter) const
+MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
+                                 const Materials::MaterialFilterOptions& options) const
 {
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> materialTree =
         std::make_shared<std::map<QString, std::shared_ptr<MaterialTreeNode>>>();
@@ -292,7 +294,7 @@ MaterialLibrary::getMaterialTree(const MaterialFilter* filter) const
         auto filename = it.first;
         auto material = it.second;
 
-        if (materialInTree(material, filter)) {
+        if (materialInTree(material, filter, options)) {
             QStringList list = filename.split(QString::fromStdString("/"));
 
             // Start at the root
@@ -325,7 +327,7 @@ MaterialLibrary::getMaterialTree(const MaterialFilter* filter) const
 
     // Empty folders aren't included in _materialPathMap, so we add them by looking at the file
     // system
-    if (!filter || filter->includeEmptyFolders()) {
+    if (!filter || options.includeEmptyFolders()) {
         auto folderList = MaterialLoader::getMaterialFolders(*this);
         for (auto& folder : *folderList) {
             QStringList list = folder.split(QString::fromStdString("/"));

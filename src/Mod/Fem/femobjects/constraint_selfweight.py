@@ -57,12 +57,14 @@ class ConstraintSelfWeight(base_fempythonobject.BaseFemPythonObject):
                         "GravityAcceleration",
                         "Gravity",
                         "Gravity acceleration")
+        obj.setPropertyStatus("GravityAcceleration", "LockDynamic")
         obj.GravityAcceleration = constants.gravity()
 
         obj.addProperty("App::PropertyVector",
                         "GravityDirection",
                         "Gravity",
                         "Normalized gravity direction")
+        obj.setPropertyStatus("GravityDirection", "LockDynamic")
         obj.GravityDirection = FreeCAD.Vector(0, 0, -1)
 
         obj.setPropertyStatus("NormalDirection", "Hidden")

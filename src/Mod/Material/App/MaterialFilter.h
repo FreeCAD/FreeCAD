@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
+ *   Copyright (c) 2023-2024 David Carter <dcarter@david.carter.ca>        *
  *                                                                         *
  *   This file is part of FreeCAD.                                         *
  *                                                                         *
@@ -24,6 +24,7 @@
 
 #include <memory>
 
+#include <QMetaType>
 #include <QSet>
 #include <QString>
 
@@ -37,6 +38,102 @@ namespace Materials
 class Material;
 
 /*
+ * This class is used to set options for a material tree search
+ *
+ */
+class MaterialsExport MaterialFilterOptions
+{
+
+public:
+    MaterialFilterOptions();
+    virtual ~MaterialFilterOptions() = default;
+
+    /* Indicates if we should show favourite materials
+     *
+     * Default is to show favourite materials
+     */
+    bool includeFavorites() const
+    {
+        return _includeFavorites;
+    }
+    void setIncludeFavorites(bool value)
+    {
+        _includeFavorites = value;
+    }
+
+    /* Indicates if we should show recent materials
+     *
+     * Default is to show recent materials
+     */
+    bool includeRecent() const
+    {
+        return _includeRecent;
+    }
+    void setIncludeRecent(bool value)
+    {
+        _includeRecent = value;
+    }
+
+    /* Indicates if we should include empty folders
+     *
+     * Default is not to include empty folders
+     */
+    bool includeEmptyFolders() const
+    {
+        return _includeFolders;
+    }
+    void setIncludeEmptyFolders(bool value)
+    {
+        _includeFolders = value;
+    }
+
+    /* Indicates if we should include empty libraries
+     *
+     * Default is to include empty libraries
+     */
+    bool includeEmptyLibraries() const
+    {
+        return _includeLibraries;
+    }
+    void setIncludeEmptyLibraries(bool value)
+    {
+        _includeLibraries = value;
+    }
+
+    /* Indicates if we should include materials in the older format
+     *
+     * Default is not to include legacy format materials
+     */
+    bool includeLegacy() const
+    {
+        return _includeLegacy;
+    }
+    void setIncludeLegacy(bool legacy)
+    {
+        _includeLegacy = legacy;
+    }
+
+protected:
+    bool _includeFavorites;
+    bool _includeRecent;
+    bool _includeFolders;
+    bool _includeLibraries;
+    bool _includeLegacy;
+};
+
+/*
+ * The same class initialized with preferences for the MaterialTreeWidget
+ *
+ */
+class MaterialsExport MaterialFilterTreeWidgetOptions: public MaterialFilterOptions
+{
+
+public:
+    MaterialFilterTreeWidgetOptions();
+    ~MaterialFilterTreeWidgetOptions() override = default;
+};
+
+/*
  * This class is used to filter materials during a material tree search
  *
  */
@@ -48,30 +145,17 @@ public:
     MaterialFilter();
     virtual ~MaterialFilter() = default;
 
-    /* Indicates if we should include empty folders
-     *
-     * Default is to include empty folders
+    /*
+     * Filter name when used in a list of filters. The name should be
+     * unique within the list.
      */
-    bool includeEmptyFolders() const
+    QString name() const
     {
-        return _includeFolders;
+        return _name;
     }
-    void setIncludeEmptyFolders(bool include)
+    void setName(const QString& name)
     {
-        _includeFolders = include;
-    }
-
-    /* Indicates if we should include materials in the older format
-     *
-     * Default is to include legacy format materials
-     */
-    bool includeLegacy() const
-    {
-        return _includeLegacy;
-    }
-    void setIncludeLegacy(bool legacy)
-    {
-        _includeLegacy = legacy;
+        _name = name;
     }
 
     /* Sets of model UUIDs that should be included. Optionally, we can
@@ -80,17 +164,34 @@ public:
      * Models only need to be included in one set.
      */
     bool modelIncluded(const std::shared_ptr<Material>& material) const;
+    bool modelIncluded(const QString& uuid) const;
 
+    /* Add model UUIDs for required models, or models that are both required
+     * and complete.
+     */
     void addRequired(const QString& uuid);
     void addRequiredComplete(const QString& uuid);
 
+    /* These functions shouldn't normally be called directly. They are
+     * for use by conversion methods, such as MaterialFilterPy
+     */
+    const QSet<QString>* getRequired() const
+    {
+        return &_required;
+    }
+    const QSet<QString>* getRequiredComplete() const
+    {
+        return &_requiredComplete;
+    }
+
 private:
-    bool _includeFolders;
-    bool _includeLegacy;
+    QString _name;
     QSet<QString> _required;
     QSet<QString> _requiredComplete;
 };
 
 }  // namespace Materials
+
+Q_DECLARE_METATYPE(Materials::MaterialFilter)
 
 #endif  // MATERIAL_MATERIALFILTER_H

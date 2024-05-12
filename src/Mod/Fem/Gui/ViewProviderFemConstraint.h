@@ -31,20 +31,19 @@
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Fem/FemGlobal.h>
 
+#include <Gui/ViewProviderSuppressibleExtension.h>
 
-class SoFontStyle;
-class SoText2;
-class SoBaseColor;
-class SoTranslation;
+
 class SbRotation;
-class SoMaterial;
+class SoMultipleCopy;
 
 namespace FemGui
 {
 
 class TaskFemConstraint;
 
-class FemGuiExport ViewProviderFemConstraint: public Gui::ViewProviderGeometryObject
+class FemGuiExport ViewProviderFemConstraint: public Gui::ViewProviderGeometryObject,
+                                              public Gui::ViewProviderSuppressibleExtension
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraint);
 
@@ -53,19 +52,8 @@ public:
     ViewProviderFemConstraint();
     ~ViewProviderFemConstraint() override;
 
-    // Display properties
-    App::PropertyColor TextColor;
-    App::PropertyColor FaceColor;
-    App::PropertyColor ShapeColor;
-    App::PropertyInteger FontSize;
-    App::PropertyFloat DistFactor;
-    App::PropertyBool Mirror;
-
     void attach(App::DocumentObject*) override;
-    void updateData(const App::Property* prop) override
-    {
-        Gui::ViewProviderGeometryObject::updateData(prop);
-    }
+    void updateData(const App::Property* prop) override;
     std::vector<std::string> getDisplayModes() const override;
     void setDisplayMode(const char* ModeName) override;
 
@@ -78,10 +66,19 @@ public:
     virtual void highlightReferences(const bool /* on */)
     {}
 
-    SoSeparator* getSymbolSeparator() const
-    {
-        return pShapeSep;
-    }
+    SoSeparator* getSymbolSeparator() const;
+    SoSeparator* getExtraSymbolSeparator() const;
+    // Apply rotation on copies of the constraint symbol
+    void setRotateSymbol(bool rotate);
+    bool getRotateSymbol() const;
+
+    /** Load constraint symbol from Open Inventor file
+     * The file structure should be as follows:
+     * A separator containing a separator with the symbol used in multiple
+     * copies at points on the surface and an optional separator with a symbol
+     * excluded from multiple copies.
+     */
+    void loadSymbol(const char* fileName);
 
     static std::string gethideMeshShowPartStr();
     static std::string gethideMeshShowPartStr(const std::string showConstr);
@@ -90,6 +87,13 @@ protected:
     void onChanged(const App::Property* prop) override;
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
+    void handleChangedPropertyName(Base::XMLReader& reader,
+                                   const char* typeName,
+                                   const char* propName) override;
+
+    void updateSymbol();
+    virtual void
+    transformSymbol(const Base::Vector3d& point, const Base::Vector3d& normal, SbMatrix& mat) const;
 
     static void createPlacement(SoSeparator* sep, const SbVec3f& base, const SbRotation& r);
     static void updatePlacement(const SoSeparator* sep,
@@ -153,13 +157,16 @@ protected:
                                const bool gap = false);
 
 private:
-    SoFontStyle* pFont;
-    SoText2* pLabel;
-    SoBaseColor* pTextColor;
-    SoBaseColor* pMaterials;
+    bool rotateSymbol;
 
 protected:
     SoSeparator* pShapeSep;
+    SoSeparator* pSymbol;
+    SoSeparator* pExtraSymbol;
+    SoMultipleCopy* pMultCopy;
+    const char* ivFile;
+
+    static std::string resourceSymbolDir;
 
     // Shaft design wizard integration
 protected:
@@ -171,6 +178,27 @@ protected:
     void checkForWizard();
     static QObject* findChildByName(const QObject* parent, const QString& name);
 };
+
+
+inline SoSeparator* ViewProviderFemConstraint::getSymbolSeparator() const
+{
+    return pSymbol;
+}
+
+inline SoSeparator* ViewProviderFemConstraint::getExtraSymbolSeparator() const
+{
+    return pExtraSymbol;
+}
+
+inline bool ViewProviderFemConstraint::getRotateSymbol() const
+{
+    return rotateSymbol;
+}
+
+inline void ViewProviderFemConstraint::setRotateSymbol(bool rotate)
+{
+    rotateSymbol = rotate;
+}
 
 using ViewProviderFemConstraintPython = Gui::ViewProviderPythonFeatureT<ViewProviderFemConstraint>;
 

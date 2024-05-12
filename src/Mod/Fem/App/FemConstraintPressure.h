@@ -50,7 +50,6 @@ protected:
     void handleChangedPropertyType(Base::XMLReader& reader,
                                    const char* TypeName,
                                    App::Property* prop) override;
-    void onChanged(const App::Property* prop) override;
 };
 
 }  // namespace Fem

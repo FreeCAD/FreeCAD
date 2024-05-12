@@ -18591,6 +18591,9 @@ Evolumes
 9684,S1
 10647,S2
 
+** Physical constants for SI(mm) unit system with Kelvins
+*PHYSICAL CONSTANTS, ABSOLUTE ZERO=0, STEFAN BOLTZMANN=5.670374419e-11
+
 ***********************************************************
 ** Materials
 ** see information about units at file end
@@ -18612,7 +18615,7 @@ TIE_DEPConstraintTie, TIE_INDConstraintTie
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-*STEP, INC=200
+*STEP, INC=2000
 *STATIC
 
 

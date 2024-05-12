@@ -115,15 +115,18 @@ if(BUILD_SPREADSHEET)
 endif(BUILD_SPREADSHEET)
 
 if(BUILD_START)
-  add_subdirectory(Start)
+    add_subdirectory(Start)
 endif(BUILD_START)
 
 if(BUILD_SURFACE)
   add_subdirectory(Surface)
 endif(BUILD_SURFACE)
 
-if(BUILD_TECHDRAW)
+if(BUILD_MEASURE)
     add_subdirectory(Measure)
+endif(BUILD_MEASURE)
+
+if(BUILD_TECHDRAW)
     add_subdirectory(TechDraw)
 endif(BUILD_TECHDRAW)
 
@@ -138,5 +141,5 @@ if(BUILD_TUX)
 endif(BUILD_TUX)
 
 if(BUILD_WEB)
-  add_subdirectory(Web)
+    add_subdirectory(Web)
 endif(BUILD_WEB)

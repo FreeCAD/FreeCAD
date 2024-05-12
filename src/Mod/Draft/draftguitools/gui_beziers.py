@@ -91,27 +91,27 @@ class BezCurve(gui_lines.Line):
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
-        elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
-            (self.point,
-             ctrlPoint, info) = gui_tool_utils.getPoint(self, arg,
-                                                        noTracker=True)
-
+            return
+        if arg["Type"] == "SoLocation2Event":  # mouse movement detection
+            self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             # existing points + this pointer position
-            self.bezcurvetrack.update(self.node + [self.point],
-                                      degree=self.degree)
+            self.bezcurvetrack.update(self.node + [self.point], degree=self.degree)
             gui_tool_utils.redraw3DView()
-        elif (arg["Type"] == "SoMouseButtonEvent"
-              and arg["State"] == "DOWN"
-              and arg["Button"] == "BUTTON1"):  # left click
+            return
+        if arg["Type"] != "SoMouseButtonEvent":
+            return
+        if arg["State"] == "UP":
+            self.obj.ViewObject.Selectable = True
+            return
+        if arg["State"] == "DOWN" and arg["Button"] == "BUTTON1":
+            # Stop self.obj from being selected to avoid its display in the tree:
+            self.obj.ViewObject.Selectable = False
             if arg["Position"] == self.pos:
                 self.finish(cont=None)
                 return
-
             if (not self.node) and (not self.support):  # first point
                 gui_tool_utils.getSupport(arg)
-                (self.point,
-                 ctrlPoint, info) = gui_tool_utils.getPoint(self, arg,
-                                                            noTracker=True)
+                self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             if self.point:
                 self.ui.redraw()
                 self.pos = arg["Position"]
@@ -281,10 +281,9 @@ class CubicBezCurve(gui_lines.Line):
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
-        elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
-            (self.point,
-             ctrlPoint, info) = gui_tool_utils.getPoint(self, arg,
-                                                        noTracker=True)
+            return
+        if arg["Type"] == "SoLocation2Event":  # mouse movement detection
+            self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             if (len(self.node) - 1) % self.degree == 0 and len(self.node) > 2:
                 prevctrl = 2 * self.node[-1] - self.point
                 # Existing points + this pointer position
@@ -297,81 +296,76 @@ class CubicBezCurve(gui_lines.Line):
                 self.bezcurvetrack.update(self.node
                                           + [self.point], degree=self.degree)
             gui_tool_utils.redraw3DView()
-        elif arg["Type"] == "SoMouseButtonEvent":
-            # Press and hold the button
-            if arg["State"] == "DOWN" and arg["Button"] == "BUTTON1":
-                if arg["Position"] == self.pos:
-                    if len(self.node) > 2:
-                        self.node = self.node[0:-2]
-                    else:
-                        self.node = []
-                    return
-                else:
-                    if (not self.node) and (not self.support):  # first point
-                        gui_tool_utils.getSupport(arg)
-                        (self.point,
-                         ctrlPoint,
-                         info) = gui_tool_utils.getPoint(self, arg,
-                                                         noTracker=True)
-                    if self.point:
-                        self.ui.redraw()
-                        self.pos = arg["Position"]
-                        # add point to "clicked list"
-                        self.node.append(self.point)
-                        # sb add a control point,
-                        # if mod(len(cpoints), 2) == 0
-                        # then create 2 handle points?
-                        self.drawUpdate(self.point)
-                        if not self.isWire and len(self.node) == 2:
-                            self.finish(cont=None, closed=False)
-                        # does this make sense for a BCurve?
-                        if len(self.node) > 2:
-                            # add point to "clicked list"
-                            self.node.append(self.point)
-                            self.drawUpdate(self.point)
-                            # DNC: allows to close the curve
-                            # by placing ends close to each other
-                            # with tol = Draft tolerance
-                            # old code has been to insensitive
-                            _diff = (self.point - self.node[0]).Length
-                            if (_diff < utils.tolerance()
-                                    and len(self.node) >= 4):
-                                # self.undolast()
-                                self.node = self.node[0:-2]
-                                # close the curve with a smooth symmetric knot
-                                _sym = 2 * self.node[0] - self.node[1]
-                                self.node.append(_sym)
-                                self.finish(cont=None, closed=True)
-                                _msg(translate("draft",
-                                               "Bézier curve has been closed"))
-
-            # Release the held button
-            if arg["State"] == "UP" and arg["Button"] == "BUTTON1":
-                if arg["Position"] == self.pos:
+            return
+        if arg["Type"] != "SoMouseButtonEvent":
+            return
+        if arg["State"] == "DOWN" and arg["Button"] == "BUTTON1":
+            if arg["Position"] == self.pos:
+                if len(self.node) > 2:
                     self.node = self.node[0:-2]
-                    return
                 else:
-                    if (not self.node) and (not self.support):  # first point
-                        return
-                    if self.point:
-                        self.ui.redraw()
-                        self.pos = arg["Position"]
+                    self.node = []
+                return
+            else:
+                if (not self.node) and (not self.support):  # first point
+                    gui_tool_utils.getSupport(arg)
+                    self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
+                if self.point:
+                    self.ui.redraw()
+                    self.pos = arg["Position"]
+                    # add point to "clicked list"
+                    self.node.append(self.point)
+                    # sb add a control point,
+                    # if mod(len(cpoints), 2) == 0
+                    # then create 2 handle points?
+                    self.drawUpdate(self.point)
+                    if not self.isWire and len(self.node) == 2:
+                        self.finish(cont=None, closed=False)
+                    # does this make sense for a BCurve?
+                    if len(self.node) > 2:
                         # add point to "clicked list"
                         self.node.append(self.point)
-                        # sb add a control point,
-                        # if mod(len(cpoints),2) == 0
-                        # then create 2 handle points?
                         self.drawUpdate(self.point)
-                        if not self.isWire and len(self.node) == 2:
-                            self.finish(cont=None, closed=False)
-                        # Does this make sense for a BCurve?
-                        if len(self.node) > 2:
-                            self.node[-3] = 2 * self.node[-2] - self.node[-1]
-                            self.drawUpdate(self.point)
-                            # DNC: allows to close the curve
-                            # by placing ends close to each other
-                            # with tol = Draft tolerance
-                            # old code has been to insensitive
+                        # DNC: allows to close the curve
+                        # by placing ends close to each other
+                        # with tol = Draft tolerance
+                        # old code has been to insensitive
+                        _diff = (self.point - self.node[0]).Length
+                        if _diff < utils.tolerance() and len(self.node) >= 4:
+                            # self.undolast()
+                            self.node = self.node[0:-2]
+                            # close the curve with a smooth symmetric knot
+                            _sym = 2 * self.node[0] - self.node[1]
+                            self.node.append(_sym)
+                            self.finish(cont=None, closed=True)
+                            _msg(translate("draft", "Bézier curve has been closed"))
+        # Release the held button
+        if arg["State"] == "UP" and arg["Button"] == "BUTTON1":
+            if arg["Position"] == self.pos:
+                self.node = self.node[0:-2]
+                return
+            else:
+                if (not self.node) and (not self.support):  # first point
+                    return
+                if self.point:
+                    self.ui.redraw()
+                    self.pos = arg["Position"]
+                    # add point to "clicked list"
+                    self.node.append(self.point)
+                    # sb add a control point,
+                    # if mod(len(cpoints),2) == 0
+                    # then create 2 handle points?
+                    self.drawUpdate(self.point)
+                    if not self.isWire and len(self.node) == 2:
+                        self.finish(cont=None, closed=False)
+                    # Does this make sense for a BCurve?
+                    if len(self.node) > 2:
+                        self.node[-3] = 2 * self.node[-2] - self.node[-1]
+                        self.drawUpdate(self.point)
+                        # DNC: allows to close the curve
+                        # by placing ends close to each other
+                        # with tol = Draft tolerance
+                        # old code has been to insensitive
 
     def undolast(self):
         """Undo last line segment."""

@@ -85,7 +85,7 @@ ViewProviderDatum::ViewProviderDatum()
     unsigned long shcol = hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 );
 
     App::Color col ( (uint32_t) shcol );
-    ShapeColor.setValue ( col );
+    ShapeAppearance.setDiffuseColor(col);
 
     Transparency.setValue (col.a * 100);
 
@@ -101,6 +101,10 @@ ViewProviderDatum::~ViewProviderDatum()
 
 void ViewProviderDatum::attach(App::DocumentObject *obj)
 {
+    if (auto geo = dynamic_cast<App::GeoFeature*>(obj)) {
+        geo->setMaterialAppearance(ShapeAppearance[0]);
+    }
+
     ViewProviderGeometryObject::attach ( obj );
 
     // TODO remove this field (2015-09-08, Fat-Zer)

@@ -726,7 +726,11 @@ class ToolBitLibrary(object):
         return lib, loc
 
     def columnNames(self):
-        return ["Nr", "Tool", "Shape"]
+        return [
+            "Tn",
+            translate("CAM_ToolBit", "Tool"),
+            translate("CAM_ToolBit", "Shape"),
+        ]
 
     def loadData(self, path=None):
         Path.Log.track(path)

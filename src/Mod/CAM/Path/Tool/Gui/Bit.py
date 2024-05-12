@@ -113,7 +113,7 @@ class ViewProvider(object):
             self.setEdit(vobj)
         else:
             msg = translate(
-                "PathToolBit", "Toolbit cannot be edited: Shapefile not found"
+                "CAM_Toolbit", "Toolbit cannot be edited: Shapefile not found"
             )
             diag = QtGui.QMessageBox(QtGui.QMessageBox.Warning, "Error", msg)
             diag.setWindowModality(QtCore.Qt.ApplicationModal)
@@ -190,12 +190,12 @@ def GetNewToolFile(parent=None):
         parent = QtGui.QApplication.activeWindow()
 
     foo = QtGui.QFileDialog.getSaveFileName(
-        parent, "Tool", Path.Preferences.lastPathToolBit(), "*.fctb"
+        parent, translate("CAM_Toolbit", "Tool"), Path.Preferences.lastPathToolBit(), "*.fctb"
     )
     if foo and foo[0]:
         if not isValidFileName(foo[0]):
             msgBox = QtGui.QMessageBox()
-            msg = translate("Path", "Invalid Filename")
+            msg = translate("CAM_Toolbit", "Invalid Filename")
             msgBox.setText(msg)
             msgBox.exec_()
         else:
@@ -239,7 +239,7 @@ def GetToolShapeFile(parent=None):
         location = Path.Preferences.filePath()
 
     fname = QtGui.QFileDialog.getOpenFileName(
-        parent, "Select Tool Shape", location, "*.fcstd"
+        parent, translate("CAM_Toolbit", "Select Tool Shape"), location, "*.fcstd"
     )
     if fname and fname[0]:
         if fname != location:

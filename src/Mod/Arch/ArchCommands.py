@@ -98,7 +98,7 @@ def addComponents(objectsList,host):
     if hostType in ["Floor","Building","Site","Project","BuildingPart"]:
         for o in objectsList:
             host.addObject(o)
-    elif hostType in ["Wall","Structure","Precast","Window","Roof","Stairs","StructuralSystem","Panel","Component"]:
+    elif hostType in ["Wall","Structure","Precast","Window","Roof","Stairs","StructuralSystem","Panel","Component","Pipe"]:
         import DraftGeomUtils
         a = host.Additions
         if hasattr(host,"Axes"):
@@ -142,7 +142,7 @@ def removeComponents(objectsList,host=None):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     if host:
-        if Draft.getType(host) in ["Wall","Structure","Precast","Window","Roof","Stairs","StructuralSystem","Panel","Component"]:
+        if Draft.getType(host) in ["Wall","Structure","Precast","Window","Roof","Stairs","StructuralSystem","Panel","Component","Pipe"]:
             if hasattr(host,"Tool"):
                 if objectsList[0] == host.Tool:
                     host.Tool = None
@@ -1018,7 +1018,7 @@ class SurveyTaskPanel:
         return True
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def reject(self):
         if hasattr(FreeCAD,"SurveyObserver"):

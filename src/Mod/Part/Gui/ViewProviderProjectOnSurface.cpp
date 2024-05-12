@@ -42,7 +42,7 @@ ViewProviderProjectOnSurface::ViewProviderProjectOnSurface()
 {
     const unsigned int color = 0x8ae23400;
     LineColor.setValue(color);
-    ShapeColor.setValue(color);
+    ShapeAppearance.setDiffuseColor(color);
     PointColor.setValue(color);
     Transparency.setValue(0);
 }

@@ -261,6 +261,13 @@ enum class OpenResult
     allowOpenResult
 };
 
+// See BRepFeat_MakeRevol
+enum class RevolMode {
+    CutFromBase = 0,
+    FuseWithBase = 1,
+    None = 2
+};
+
 /** The representation for a CAD Shape
  */
 // NOLINTNEXTLINE cppcoreguidelines-special-member-functions
@@ -477,7 +484,7 @@ public:
     bool analyze(bool runBopCheck, std::ostream&) const;
     bool isClosed() const;
     bool isCoplanar(const TopoShape& other, double tol = -1) const;
-    bool findPlane(gp_Pln& plane, double tol = -1) const;
+    bool findPlane(gp_Pln& plane, double tol = -1, double atol = -1) const;
     /// Returns true if the expansion of the shape is infinite, false otherwise
     bool isInfinite() const;
     /// Checks whether the shape is a planar face
@@ -1081,7 +1088,6 @@ public:
 
     /** Make revolved shell around a basis shape
      *
-     * @param base: the basis shape
      * @param axis: the revolving axis
      * @param d: rotation angle in degree
      * @param face_maker: optional type name of the the maker used to make a
@@ -1096,6 +1102,67 @@ public:
         return TopoShape(0,Hasher).makeElementRevolve(*this,axis,d,face_maker,op);
     }
 
+
+    /** Make revolved shell around a basis shape
+     *
+     * @param base: the basis shape
+     * @param axis: the revolving axis
+     * @param d: rotation angle in degree
+     * @param face_maker: optional type name of the the maker used to make a
+     *                    face from basis shape
+     * @param supportface:  the bottom face for the revolution, or null
+     * @param uptoface:  the upper limit face for the revolution, or null
+     * @param Mode: the opencascade defined modes
+     * @param Modify: if opencascade should modify existing shapes
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the generated new shape. The TopoShape itself is not modified.
+     */
+    TopoShape& makeElementRevolution(const TopoShape& _base,
+                                     const gp_Ax1& axis,
+                                     double d,
+                                     const TopoDS_Face& supportface,
+                                     const TopoDS_Face& uptoface,
+                                     const char* face_maker = nullptr,
+                                     RevolMode Mode = RevolMode::None,
+                                     Standard_Boolean Modify = Standard_True,
+                                     const char* op = nullptr);
+
+    /** Make revolved shell around a basis shape
+     *
+     * @param axis: the revolving axis
+     * @param d: rotation angle in degree
+     * @param face_maker: optional type name of the the maker used to make a
+     *                    face from basis shape
+     * @param supportface:  the bottom face for the revolution, or null
+     * @param uptoface:  the upper limit face for the revolution, or null
+     * @param Mode: the opencascade defined modes
+     * @param Modify: if opencascade should modify existing shapes
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return Return the generated new shape. The TopoShape itself is not modified.
+     */
+    TopoShape& makeElementRevolution(const gp_Ax1& axis,
+                                     double d,
+                                     const TopoDS_Face& supportface,
+                                     const TopoDS_Face& uptoface,
+                                     const char* face_maker = nullptr,
+                                     RevolMode Mode = RevolMode::None,
+                                     Standard_Boolean Modify = Standard_True,
+                                     const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementRevolution(*this,
+                                                          axis,
+                                                          d,
+                                                          supportface,
+                                                          uptoface,
+                                                          face_maker,
+                                                          Mode,
+                                                          Modify,
+                                                          op);
+    }
 
     /** Make a prism that is a linear sweep of a basis shape
      *
@@ -1153,16 +1220,14 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    // TODO:  This code was transferred in Feb 2024 as part of the toponaming project, but appears to be
-    // unused.  It is potentially useful if debugged.
-//    TopoShape &makeElementPrismUntil(const TopoShape &base,
-//                              const TopoShape& profile,
-//                              const TopoShape& supportFace,
-//                              const TopoShape& upToFace,
-//                              const gp_Dir& direction,
-//                              PrismMode mode,
-//                              Standard_Boolean checkLimits = Standard_True,
-//                              const char *op=nullptr);
+    TopoShape& makeElementPrismUntil(const TopoShape& base,
+                                     const TopoShape& profile,
+                                     const TopoShape& supportFace,
+                                     const TopoShape& upToFace,
+                                     const gp_Dir& direction,
+                                     PrismMode mode,
+                                     Standard_Boolean checkLimits = Standard_True,
+                                     const char* op = nullptr);
 
     /** Make a prism based on this shape that is either depression or protrusion of a profile shape up to a given face
      *
@@ -1181,25 +1246,23 @@ public:
      *
      * @return Return the generated new shape. The TopoShape itself is not modified.
      */
-    // TODO:  This code was transferred in Feb 2024 as part of the toponaming project, but appears to be
-    // unused.  It is potentially useful if debugged.
-//    TopoShape makeElementPrismUntil(const TopoShape& profile,
-//                             const TopoShape& supportFace,
-//                             const TopoShape& upToFace,
-//                             const gp_Dir& direction,
-//                             PrismMode mode,
-//                             Standard_Boolean checkLimits = Standard_True,
-//                             const char *op=nullptr) const
-//    {
-//        return TopoShape(0,Hasher).makeElementPrismUntil(*this,
-//                                                   profile,
-//                                                   supportFace,
-//                                                   upToFace,
-//                                                   direction,
-//                                                   mode,
-//                                                   checkLimits,
-//                                                   op);
-//    }
+    TopoShape makeElementPrismUntil(const TopoShape& profile,
+                                    const TopoShape& supportFace,
+                                    const TopoShape& upToFace,
+                                    const gp_Dir& direction,
+                                    PrismMode mode,
+                                    Standard_Boolean checkLimits = Standard_True,
+                                    const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementPrismUntil(*this,
+                                                          profile,
+                                                          supportFace,
+                                                          upToFace,
+                                                          direction,
+                                                          mode,
+                                                          checkLimits,
+                                                          op);
+    }
 
 
     /* Make a shell or solid by sweeping profile wire along a spine

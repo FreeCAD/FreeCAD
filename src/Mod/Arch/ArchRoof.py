@@ -841,13 +841,39 @@ class _Roof(ArchComponent.Component):
             return None
 
         if obj.Base.Shape.Solids:
-            return obj.Shape
+            # For roof created from Base object as solids:
+            # Not only the solid of the base object itself be subtracted from
+            # a Wall, but all portion of the wall above the roof solid would be
+            # subtracted as well.
+            # 
+            # FC forum discussion : Sketch based Arch_Roof and wall substraction
+            # - https://forum.freecad.org/viewtopic.php?t=84389
+            # 
+            faces = []
+            solids = []
+            for f in obj.Base.Shape.Faces:  # obj.Base.Shape.Solids.Faces
+                p = f.findPlane()  # Curve face (surface) seems return no Plane
+                if p:
+                    if p.Axis[2] < 0:  # z<0, i.e. normal pointing below horizon
+                        faces.append(f)
+                else:
+                    # Not sure if it is pointing towards and/or above horizon
+                    # (upward or downward), or it is curve surface, just add.
+                    faces.append(f)
 
-        # self.sub is auto-generated subvolume for wire-based roof
+                    # Attempt to find normal at non-planar face to verify if
+                    # it is pointing downward, but cannot conclude even all test
+                    # points happens to be pointing upward. So add in any rate.
+
+            for f in faces:
+                solid = f.extrude(Vector(0.0, 0.0, 1000000.0))
+                solids.append(solid)
+            compound = Part.Compound(solids)
+            return compound
+
         sub_field = getattr(self, 'sub', None)
         if not sub_field:
             self.execute(obj)
-
         return self.sub
 
 
@@ -959,7 +985,7 @@ class _RoofTaskPanel:
         return True
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def update(self):
         '''fills the treewidget'''

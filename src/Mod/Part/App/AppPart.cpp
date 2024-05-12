@@ -185,6 +185,8 @@
 #include <ShapeUpgrade/UnifySameDomainPy.h>
 
 #include <OCAF/ImportExportSettings.h>
+#include "MeasureClient.h"
+
 
 namespace Part {
 extern PyObject* initModule();
@@ -200,6 +202,14 @@ PyObject* Part::PartExceptionOCCDimensionError;
 
 PyMOD_INIT_FUNC(Part)
 {
+    // load dependent module
+    try {
+        Base::Interpreter().runString("import Materials");
+    }
+    catch(const Base::Exception& e) {
+        PyErr_SetString(PyExc_ImportError, e.what());
+        PyMOD_Return(nullptr);
+    }
     Base::Console().Log("Module: Part\n");
 
     // This is highly experimental and we should keep an eye on it
@@ -544,10 +554,12 @@ PyMOD_INIT_FUNC(Part)
     Part::Geom2dOffsetCurve       ::init();
     Part::Geom2dTrimmedCurve      ::init();
 
+
     IGESControl_Controller::Init();
     STEPControl_Controller::Init();
 
     OCAF::ImportExportSettings::initialize();
-
+    Part::MeasureClient::initialize();
+    
     PyMOD_Return(partModule);
 }

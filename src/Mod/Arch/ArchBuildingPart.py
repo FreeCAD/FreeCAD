@@ -332,7 +332,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         if not "Height" in pl:
             obj.addProperty("App::PropertyLength","Height","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The height of this object"))
         if not "HeightPropagate" in pl:
-            obj.addProperty("App::PropertyBool","HeightPropagate","Children",QT_TRANSLATE_NOOP("App::Property","If true, the height value propagates to contained objects"))
+            obj.addProperty("App::PropertyBool","HeightPropagate","Children",QT_TRANSLATE_NOOP("App::Property","If true, the height value propagates to contained objects if the height of those objects is set to 0"))
             obj.HeightPropagate = True
         if not "LevelOffset" in pl:
             obj.addProperty("App::PropertyLength","LevelOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The level of the (0,0,0) point of this level"))
@@ -395,24 +395,23 @@ class BuildingPart(ArchIFC.IfcProduct):
                     #print "Rotation",deltar.Axis,deltar.Angle
                     if deltar.Angle < 0.0001:
                         deltar = None
-                    for child in obj.Group:
-                        if ((not hasattr(child,"MoveWithHost")) or child.MoveWithHost) and hasattr(child,"Placement"):
-                            #print "moving ",child.Label
-                            if deltar:
-                                #child.Placement.Rotation = child.Placement.Rotation.multiply(deltar) - not enough, child must also move
-                                # use shape methods to obtain a correct placement
-                                import Part
-                                import math
-                                shape = Part.Shape()
-                                shape.Placement = child.Placement
-                                #print("angle before rotation:",shape.Placement.Rotation.Angle)
-                                #print("rotation angle:",math.degrees(deltar.Angle))
-                                shape.rotate(DraftVecUtils.tup(obj.Placement.Base), DraftVecUtils.tup(deltar.Axis), math.degrees(deltar.Angle))
-                                print("angle after rotation:",shape.Placement.Rotation.Angle)
-                                child.Placement = shape.Placement
-                            if deltap:
-                                print("moving child",child.Label)
-                                child.Placement.move(deltap)
+                    for child in self.getMovableChildren(obj):
+                        #print "moving ",child.Label
+                        if deltar:
+                            #child.Placement.Rotation = child.Placement.Rotation.multiply(deltar) - not enough, child must also move
+                            # use shape methods to obtain a correct placement
+                            import Part
+                            import math
+                            shape = Part.Shape()
+                            shape.Placement = child.Placement
+                            #print("angle before rotation:",shape.Placement.Rotation.Angle)
+                            #print("rotation angle:",math.degrees(deltar.Angle))
+                            shape.rotate(DraftVecUtils.tup(obj.Placement.Base), DraftVecUtils.tup(deltar.Axis), math.degrees(deltar.Angle))
+                            print("angle after rotation:",shape.Placement.Rotation.Angle)
+                            child.Placement = shape.Placement
+                        if deltap:
+                            print("moving child",child.Label)
+                            child.Placement.move(deltap)
 
     def execute(self,obj):
 
@@ -437,6 +436,18 @@ class BuildingPart(ArchIFC.IfcProduct):
         if obj.ViewObject:
             # update the autogroup box if needed
             obj.ViewObject.Proxy.onChanged(obj.ViewObject,"AutoGroupBox")
+
+    def getMovableChildren(self, obj):
+        "recursively get movable children"
+
+        result = []
+        for child in obj.Group:
+            if isinstance(child, "App::DocumentObjectGroup"):
+                result.extend(getMovableChildren(child))
+            if not hasattr(child,"MoveWithHost") or child.MoveWithHost:
+                if hasattr(child,"Placement"):
+                    result.append(child)
+        return result
 
     def getArea(self,obj):
 
@@ -607,7 +618,7 @@ class ViewProviderBuildingPart:
             vobj.addProperty("App::PropertyColor","ChildrenLineColor","Children",QT_TRANSLATE_NOOP("App::Property","The line color of child objects"))
             vobj.ChildrenLineColor = params.get_param_view("DefaultShapeLineColor") & 0xFFFFFF00
         if not "ChildrenShapeColor" in pl:
-            vobj.addProperty("App::PropertyColor","ChildrenShapeColor","Children",QT_TRANSLATE_NOOP("App::Property","The shape color of child objects"))
+            vobj.addProperty("App::PropertyMaterial","ChildrenShapeColor","Children",QT_TRANSLATE_NOOP("App::Property","The shape appearance of child objects"))
             vobj.ChildrenShapeColor = params.get_param_view("DefaultShapeColor") & 0xFFFFFF00
         if not "ChildrenTransparency" in pl:
             vobj.addProperty("App::PropertyPercent","ChildrenTransparency","Children",QT_TRANSLATE_NOOP("App::Property","The transparency of child objects"))

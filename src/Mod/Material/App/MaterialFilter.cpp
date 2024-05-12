@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
+ *   Copyright (c) 2023-2024 David Carter <dcarter@david.carter.ca>        *
  *                                                                         *
  *   This file is part of FreeCAD.                                         *
  *                                                                         *
@@ -25,18 +25,39 @@
 
 #include <App/Application.h>
 
+#include "Exceptions.h"
 #include "MaterialFilter.h"
+#include "MaterialManager.h"
 #include "Materials.h"
 
 
 using namespace Materials;
 
+MaterialFilterOptions::MaterialFilterOptions()
+    : _includeFavorites(true)
+    , _includeRecent(true)
+    , _includeFolders(true)
+    , _includeLibraries(true)
+    , _includeLegacy(false)
+{}
+
+MaterialFilterTreeWidgetOptions::MaterialFilterTreeWidgetOptions()
+{
+    auto param = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/TreeWidget");
+    _includeFavorites = param->GetBool("ShowFavorites", true);
+    _includeRecent = param->GetBool("ShowRecent", true);
+    _includeFolders = param->GetBool("ShowEmptyFolders", false);
+    _includeLibraries = param->GetBool("ShowEmptyLibraries", true);
+    _includeLegacy = param->GetBool("ShowLegacy", false);
+}
+
+//===
+
 TYPESYSTEM_SOURCE(Materials::MaterialFilter, Base::BaseClass)
 
 MaterialFilter::MaterialFilter()
-    : _includeFolders(true)
-    , _includeLegacy(true)
-    , _required()
+    : _required()
     , _requiredComplete()
 {}
 
@@ -54,6 +75,18 @@ bool MaterialFilter::modelIncluded(const std::shared_ptr<Material>& material) co
     }
 
     return true;
+}
+
+bool MaterialFilter::modelIncluded(const QString& uuid) const
+{
+    MaterialManager manager;
+    try {
+        auto material = manager.getMaterial(uuid);
+        return modelIncluded(material);
+    }
+    catch (const MaterialNotFound&) {
+    }
+    return false;
 }
 
 void MaterialFilter::addRequired(const QString& uuid)

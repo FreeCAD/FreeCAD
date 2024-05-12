@@ -31,7 +31,6 @@
 #include "Application.h"
 #include "Command.h"
 #include "MainWindow.h"
-#include "UserSettings.h"
 
 
 using namespace Gui;
@@ -288,8 +287,6 @@ void MenuManager::setup(MenuItem* menuItems) const
         }
     }
 
-    setupMenuBarCornerWidgets();
-
     // hide all menus which we don't need for the moment
     for (QList<QAction*>::Iterator it = actions.begin(); it != actions.end(); ++it) {
         (*it)->setVisible(false);
@@ -363,41 +360,6 @@ void MenuManager::setup(MenuItem* item, QMenu* menu) const
     // remove all menu items which we don't need for the moment
     for (QList<QAction*>::Iterator it = actions.begin(); it != actions.end(); ++it) {
         menu->removeAction(*it);
-    }
-}
-
-void MenuManager::setupMenuBarCornerWidgets() const
-{
-    /*Note: currently only workbench selector uses corner widget.*/
-    QMenuBar* menuBar = getMainWindow()->menuBar();
-    std::string pos = WorkbenchSwitcher::getValue();
-
-    bool showLeftWidget = false;
-    bool showRightWidget = false;
-
-    //Right corner widget
-    if (WorkbenchSwitcher::isRightCorner(pos)) {
-        //add workbench selector to menubar right corner widget.
-        if (!menuBar->cornerWidget(Qt::TopRightCorner)) {
-            Application::Instance->commandManager().addTo("Std_Workbench", menuBar);
-        }
-        showRightWidget = true;
-    }
-    //Left corner widget
-    else if (WorkbenchSwitcher::isLeftCorner(pos)) {
-        //add workbench selector to menubar left corner widget.
-        if (!menuBar->cornerWidget(Qt::TopLeftCorner)) {
-            Application::Instance->commandManager().addTo("Std_Workbench", menuBar);
-        }
-        showLeftWidget = true;
-    }
-
-    // Set visibility of corner widget
-    if (QWidget* right = menuBar->cornerWidget(Qt::TopRightCorner)) {
-        right->setVisible(showRightWidget);
-    }
-    if (QWidget* left = menuBar->cornerWidget(Qt::TopLeftCorner)) {
-        left->setVisible(showLeftWidget);
     }
 }
 

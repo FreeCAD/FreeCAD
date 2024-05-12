@@ -27,6 +27,7 @@ from FreeCAD import Units
 from FreeCAD import Base
 App = FreeCAD
 
+from parttests.BRep_tests import BRepTests
 from parttests.Geom2d_tests import Geom2dTests
 from parttests.regression_tests import RegressionTests
 from parttests.TopoShapeListTest import TopoShapeListTest
@@ -467,7 +468,7 @@ class PartTestRuledSurface(unittest.TestCase):
         self.assertEqual(len(same1), 2)
         self.assertEqual(len(same2), 2)
 
-    def testRuledSurfaceFromOneObjects(self):
+    def testRuledSurfaceFromOneObject(self):
         sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
         sketch.Placement = FreeCAD.Placement(FreeCAD.Vector(0.000000, 0.000000, 0.000000), App.Rotation(0.707107, 0.000000, 0.000000, 0.707107))
         sketch.MapMode = "Deactivated"

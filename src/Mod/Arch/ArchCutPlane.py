@@ -227,7 +227,7 @@ class _CutPlaneTaskPanel:
         return True
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
+        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
 
     def previewCutVolume(self, i):
         cutVolume = ArchCommands.getCutVolume(self.cutter, self.base)

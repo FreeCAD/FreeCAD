@@ -72,7 +72,7 @@ ViewProviderShapeBinder::ViewProviderShapeBinder()
     unsigned long shcol = hGrp->GetUnsigned("DefaultDatumColor", 0xFFD70099);
     App::Color col((uint32_t)shcol);
 
-    ShapeColor.setValue(col);
+    ShapeAppearance.setDiffuseColor(col);
     LineColor.setValue(col);
     PointColor.setValue(col);
     Transparency.setValue(60);
@@ -125,6 +125,14 @@ void ViewProviderShapeBinder::unsetEdit(int ModNum) {
     PartGui::ViewProviderPart::unsetEdit(ModNum);
 }
 
+void ViewProviderShapeBinder::attach(App::DocumentObject *obj)
+{
+    if (auto geo = dynamic_cast<App::GeoFeature*>(obj)) {
+        geo->setMaterialAppearance(ShapeAppearance[0]);
+    }
+    ViewProviderPart::attach(obj);
+}
+
 void ViewProviderShapeBinder::highlightReferences(bool on)
 {
     App::GeoFeature* obj = nullptr;
@@ -155,7 +163,7 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
             TopExp::MapShapes(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_FACE, eMap);
             originalFaceColors = svp->DiffuseColor.getValues();
             std::vector<App::Color> fcolors = originalFaceColors;
-            fcolors.resize(eMap.Extent(), svp->ShapeColor.getValue());
+            fcolors.resize(eMap.Extent(), svp->ShapeAppearance.getDiffuseColor());
 
             for (const std::string& e : subs) {
                 // Note: stoi may throw, but it strictly shouldn't happen
@@ -221,6 +229,9 @@ ViewProviderSubShapeBinder::ViewProviderSubShapeBinder() {
 void ViewProviderSubShapeBinder::attach(App::DocumentObject* obj) {
 
     UseBinderStyle.setValue(boost::istarts_with(obj->getNameInDocument(), "binder"));
+    if (auto geo = dynamic_cast<App::GeoFeature*>(obj)) {
+        geo->setMaterialAppearance(ShapeAppearance[0]);
+    }
     ViewProviderPart::attach(obj);
 }
 
@@ -248,7 +259,7 @@ void ViewProviderSubShapeBinder::onChanged(const App::Property* prop) {
             transparency = Gui::ViewParams::instance()->getDefaultShapeTransparency();
             linewidth = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
         }
-        ShapeColor.setValue(shapeColor);
+        ShapeAppearance.setDiffuseColor(shapeColor);
         LineColor.setValue(lineColor);
         PointColor.setValue(pointColor);
         Transparency.setValue(transparency);

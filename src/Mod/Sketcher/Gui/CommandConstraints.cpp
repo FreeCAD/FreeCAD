@@ -1295,6 +1295,32 @@ public:
     const char* className() const override { return "CmdSketcherCompConstrainTools"; }
 };
 
+// Comp for toggle constraint tools =============================================
+
+class CmdSketcherCompToggleConstraints : public Gui::GroupCommand
+{
+public:
+    CmdSketcherCompToggleConstraints()
+        : GroupCommand("Sketcher_CompToggleConstraints")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Toggle constraints");
+        sToolTipText = QT_TR_NOOP("Toggle constrain tools.");
+        sWhatsThis = "Sketcher_CompToggleConstraints";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("Sketcher_ToggleDrivingConstraint");
+        addCommand("Sketcher_ToggleActiveConstraint");
+
+    }
+    const char* className() const override { return "CmdSketcherCompToggleConstraints"; }
+};
+
 // Dimension tool =======================================================
 
 class GeomSelectionSizes
@@ -2018,45 +2044,51 @@ protected:
         int geoId = selCircleArc[0].GeoId;
         bool reverseOrder = isRadiusDoF(geoId);
 
-        if (availableConstraint == AvailableConstraint::FIRST) {
-            if (!reverseOrder) {
+        if (reverseOrder) {
+            if (availableConstraint == AvailableConstraint::FIRST) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc angle constraint"));
+                createArcAngleConstrain(geoId, onSketchPos);
+                selAllowed = true;
+            }
+            if (availableConstraint == AvailableConstraint::SECOND) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc length constraint"));
+                createArcLengthConstrain(geoId, onSketchPos);
+            }
+            if (availableConstraint == AvailableConstraint::THIRD) {
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius constraint"));
                 createRadiusDiameterConstrain(geoId, onSketchPos, true);
             }
-            else {
-                restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc angle constraint"));
-                createArcAngleConstrain(geoId, onSketchPos);
-            }
-            selAllowed = true;
-        }
-        if (availableConstraint == AvailableConstraint::SECOND) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius constraint"));
-            createRadiusDiameterConstrain(geoId, onSketchPos, reverseOrder);
-            if (!isArcOfCircle(*Obj->getGeometry(geoId))) {
-                //This way if key is pressed again it goes back to FIRST
+            if (availableConstraint == AvailableConstraint::FOURTH) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius constraint"));
+                createRadiusDiameterConstrain(geoId, onSketchPos, false);
                 availableConstraint = AvailableConstraint::RESET;
             }
         }
-        if (availableConstraint == AvailableConstraint::THIRD) {
-            if (!reverseOrder) {
-                restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc angle constraint"));
-                createArcAngleConstrain(geoId, onSketchPos);
+        else {
+            if (availableConstraint == AvailableConstraint::FIRST) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius constraint"));
+                createRadiusDiameterConstrain(geoId, onSketchPos, true);
+                selAllowed = true;
             }
-            else {
+            if (availableConstraint == AvailableConstraint::SECOND) {
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius constraint"));
                 createRadiusDiameterConstrain(geoId, onSketchPos, false);
-            }
-            availableConstraint = AvailableConstraint::RESET;
-        }
-        /*
-            bool firstCstr = true;
-            if (availableConstraint != AvailableConstraint::FIRST) {
-                firstCstr = false;
-                if (!isArcOfCircle(*geom)) {
+                if (!isArcOfCircle(*Obj->getGeometry(geoId))) {
                     //This way if key is pressed again it goes back to FIRST
                     availableConstraint = AvailableConstraint::RESET;
                 }
-            }*/
+            }
+            if (availableConstraint == AvailableConstraint::THIRD) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc angle constraint"));
+                createArcAngleConstrain(geoId, onSketchPos);
+            }
+            if (availableConstraint == AvailableConstraint::FOURTH) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc length constraint"));
+                createArcLengthConstrain(geoId, onSketchPos);
+                availableConstraint = AvailableConstraint::RESET;
+            }
+        }
+
     }
 
     void makeCts_2Circle(bool& selAllowed, Base::Vector2d onSketchPos)
@@ -2429,6 +2461,26 @@ protected:
         moveConstraint(ConStr.size() - 1, onSketchPos);
     }
 
+    void createArcLengthConstrain(int GeoId, Base::Vector2d onSketchPos) {
+        const Part::Geometry* geom = Obj->getGeometry(GeoId);
+        if (isArcOfCircle(*geom)) {
+
+            const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geom);
+            double ActLength = arc->getAngle(false) * arc->getRadius();
+
+            Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Distance',%d,%f))",
+                GeoId, ActLength);
+
+            const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
+            if (isPointOrSegmentFixed(Obj, GeoId) || constraintCreationMode == Reference) {
+                // it is a constraint on a external line, make it non-driving
+                Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size() - 1, "False");
+            }
+            numberOfConstraintsCreated++;
+            moveConstraint(ConStr.size() - 1, onSketchPos);
+        }
+    }
+
     void createArcAngleConstrain(int GeoId, Base::Vector2d onSketchPos) {
         const Part::Geometry* geom = Obj->getGeometry(GeoId);
         if (isArcOfCircle(*geom)) {
@@ -2721,7 +2773,7 @@ public:
     {
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
-        sMenuText = QT_TR_NOOP("Horizontal/Vertical");
+        sMenuText = QT_TR_NOOP("Constrain horizontal/vertical");
         sToolTipText = QT_TR_NOOP("Constrains a single line to either horizontal or vertical.");
         sWhatsThis = "Sketcher_CompHorVer";
         sStatusTip = sToolTipText;
@@ -3031,7 +3083,7 @@ CmdSketcherConstrainHorVer::CmdSketcherConstrainHorVer()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Horizontal/Vertical");
+    sMenuText = QT_TR_NOOP("Constrain horizontal/vertical");
     sToolTipText = QT_TR_NOOP("Constrains a single line to either horizontal or vertical, whichever is closer to current alignment.");
     sWhatsThis = "Sketcher_ConstrainHorVer";
     sStatusTip = sToolTipText;
@@ -3077,7 +3129,7 @@ CmdSketcherConstrainHorizontal::CmdSketcherConstrainHorizontal()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Constrain horizontally");
+    sMenuText = QT_TR_NOOP("Constrain horizontal");
     sToolTipText = QT_TR_NOOP("Create a horizontal constraint on the selected item");
     sWhatsThis = "Sketcher_ConstrainHorizontal";
     sStatusTip = sToolTipText;
@@ -3122,7 +3174,7 @@ CmdSketcherConstrainVertical::CmdSketcherConstrainVertical()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Constrain vertically");
+    sMenuText = QT_TR_NOOP("Constrain vertical");
     sToolTipText = QT_TR_NOOP("Create a vertical constraint on the selected item");
     sWhatsThis = "Sketcher_ConstrainVertical";
     sStatusTip = sToolTipText;
@@ -3664,7 +3716,7 @@ CmdSketcherConstrainCoincidentUnified::CmdSketcherConstrainCoincidentUnified(con
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
-    sAccel = hGrp->GetBool("UnifiedCoincident", false) ? "C" :"C,O";
+    sAccel = hGrp->GetBool("UnifiedCoincident", true) ? "C" :"C,O";
 
     eType = ForEdit;
 
@@ -4176,7 +4228,7 @@ CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
     sPixmap = "Constraint_PointOnPoint";
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
-    sAccel = hGrp->GetBool("UnifiedCoincident", false) ? "C,C" : "C";
+    sAccel = hGrp->GetBool("UnifiedCoincident", true) ? "C,C" : "C";
     eType = ForEdit;
 
     allowedSelSequences = {{SelVertex, SelVertexOrRoot},
@@ -4220,7 +4272,7 @@ CmdSketcherConstrainPointOnObject::CmdSketcherConstrainPointOnObject()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Constrain point onto object");
+    sMenuText = QT_TR_NOOP("Constrain point on object");
     sToolTipText = QT_TR_NOOP("Fix a point onto an object");
     sWhatsThis = "Sketcher_ConstrainPointOnObject";
     sStatusTip = sToolTipText;
@@ -4593,6 +4645,33 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         if (isLineSegment(*geom)) {
             auto lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
             double ActLength = (lineSeg->getEndPoint() - lineSeg->getStartPoint()).Length();
+
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
+            Gui::cmdAppObjectArgs(selection[0].getObject(),
+                "addConstraint(Sketcher.Constraint('Distance',%d,%f))",
+                GeoId1,
+                ActLength);
+
+            // it is a constraint on a external line, make it non-driving
+            if (arebothpointsorsegmentsfixed || GeoId1 <= Sketcher::GeoEnum::RefExt
+                || constraintCreationMode == Reference) {
+                const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
+
+                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                    "setDriving(%d,%s)",
+                    ConStr.size() - 1,
+                    "False");
+                finishDatumConstraint(this, Obj, false);
+            }
+            else {
+                finishDatumConstraint(this, Obj, true);
+            }
+
+            return;
+        }
+        else if (isArcOfCircle(*geom)) {
+            auto arc = static_cast<const Part::GeomArcOfCircle*>(geom);
+            double ActLength = arc->getAngle(false) * arc->getRadius();
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
@@ -9203,7 +9282,7 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Constrain symmetrical");
+    sMenuText = QT_TR_NOOP("Constrain symmetric");
     sToolTipText = QT_TR_NOOP("Create a symmetry constraint "
                               "between two points\n"
                               "with respect to a line or a third point");
@@ -9752,6 +9831,59 @@ bool CmdSketcherConstrainSnellsLaw::isActive()
 }
 
 // ======================================================================================
+DEF_STD_CMD_A(CmdSketcherChangeDimensionConstraint)
+
+CmdSketcherChangeDimensionConstraint::CmdSketcherChangeDimensionConstraint()
+    : Command("Sketcher_ChangeDimensionConstraint")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Change value");
+    sToolTipText = QT_TR_NOOP("Change the value of a dimensional constraint");
+    sWhatsThis = "Sketcher_ChangeDimensionConstraint";
+    sStatusTip = sToolTipText;
+    eType = ForEdit;
+}
+
+void CmdSketcherChangeDimensionConstraint::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    auto getDimConstraint = []() {
+        std::vector<Gui::SelectionObject> selection{getSelection().getSelectionEx()};
+        if (selection.size() != 1 || selection[0].getSubNames().size() != 1) {
+            throw Base::RuntimeError();
+        }
+
+        if (auto sketch = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject())) {
+            std::string subName = selection[0].getSubNames().at(0);
+            if (subName.size() > 10 && subName.substr(0, 10) == "Constraint") {
+                int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(subName);
+                return std::make_tuple(sketch, ConstrId);
+            }
+        }
+
+        throw Base::RuntimeError();
+    };
+
+    try {
+        auto value = getDimConstraint();
+        EditDatumDialog editDatumDialog(std::get<0>(value), std::get<1>(value));
+        editDatumDialog.exec(false);
+    }
+    catch (const Base::RuntimeError&) {
+        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                   QObject::tr("Wrong selection"),
+                                   QObject::tr("Select one dimensional constraint from the sketch."));
+    }
+}
+
+bool CmdSketcherChangeDimensionConstraint::isActive()
+{
+    return isCommandActive(getActiveGuiDocument());
+}
+
+// ======================================================================================
 /*** Creation Mode / Toggle to or from Reference ***/
 DEF_STD_CMD_AU(CmdSketcherToggleDrivingConstraint)
 
@@ -10026,9 +10158,11 @@ void CreateSketcherCommandsConstraints()
     rcCmdMgr.addCommand(new CmdSketcherConstrainPointOnObject());
     rcCmdMgr.addCommand(new CmdSketcherConstrainSymmetric());
     rcCmdMgr.addCommand(new CmdSketcherConstrainSnellsLaw());
+    rcCmdMgr.addCommand(new CmdSketcherChangeDimensionConstraint());
     rcCmdMgr.addCommand(new CmdSketcherToggleDrivingConstraint());
     rcCmdMgr.addCommand(new CmdSketcherToggleActiveConstraint());
     rcCmdMgr.addCommand(new CmdSketcherCompDimensionTools());
     rcCmdMgr.addCommand(new CmdSketcherCompConstrainTools());
+    rcCmdMgr.addCommand(new CmdSketcherCompToggleConstraints());
 }
 // clang-format on

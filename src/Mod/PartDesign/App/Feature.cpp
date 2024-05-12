@@ -66,9 +66,9 @@ Feature::Feature()
 App::DocumentObjectExecReturn* Feature::recompute()
 {
     try {
-        auto baseShape = getBaseShape();
+        auto baseShape = getBaseTopoShape();
         if (Suppressed.getValue()) {
-            this->Shape.setValue(baseShape);
+            this->Shape.setValue(baseShape.getShape());
             return StdReturn;
         }
     }
@@ -87,6 +87,7 @@ short Feature::mustExecute() const
     return Part::Feature::mustExecute();
 }
 
+// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
 {
     if (shape.IsNull())
@@ -98,6 +99,20 @@ TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
     }
 
     return {};
+}
+
+TopoShape Feature::getSolid(const TopoShape& shape)
+{
+    if (shape.isNull()) {
+        throw Part::NullShapeException("Null shape");
+    }
+    int count = shape.countSubShapes(TopAbs_SOLID);
+    if(count) {
+        auto res = shape.getSubTopoShape(TopAbs_SOLID,1);
+        res.fixSolidOrientation();
+        return res;
+    }
+    return shape;
 }
 
 int Feature::countSolids(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)
@@ -176,29 +191,40 @@ const TopoDS_Shape& Feature::getBaseShape() const {
     return result;
 }
 
-Part::TopoShape Feature::getBaseTopoShape(bool silent) const {
+Part::TopoShape Feature::getBaseTopoShape(bool silent) const
+{
     Part::TopoShape result;
 
     const Part::Feature* BaseObject = getBaseObject(silent);
-    if (!BaseObject)
+    if (!BaseObject) {
         return result;
+    }
 
-    if(BaseObject != BaseFeature.getValue()) {
-        if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
-            BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
-        {
-            if(silent)
+    if (BaseObject != BaseFeature.getValue()) {
+        auto body = getFeatureBody();
+        if (!body) {
+            if (silent) {
                 return result;
+            }
+            throw Base::RuntimeError("Missing container body");
+        }
+        if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())
+            || BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())) {
+            if (silent) {
+                return result;
+            }
             throw Base::ValueError("Base shape of shape binder cannot be used");
         }
     }
 
     result = BaseObject->Shape.getShape();
-    if(!silent) {
-        if (result.isNull())
+    if (!silent) {
+        if (result.isNull()) {
             throw Base::ValueError("Base feature's TopoShape is invalid");
-        if (!result.hasSubShape(TopAbs_SOLID))
+        }
+        if (!result.hasSubShape(TopAbs_SOLID)) {
             throw Base::ValueError("Base feature's shape is not a solid");
+        }
     }
     return result;
 }
@@ -231,6 +257,7 @@ gp_Pln Feature::makePlnFromPlane(const App::DocumentObject* obj)
     return gp_Pln(gp_Pnt(pos.x,pos.y,pos.z), gp_Dir(normal.x,normal.y,normal.z));
 }
 
+// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
 {
     BRepBuilderAPI_MakeFace builder(makePlnFromPlane(obj));
@@ -238,6 +265,16 @@ TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
         throw Base::CADKernelError("Feature: Could not create shape from base plane");
 
     return builder.Shape();
+}
+
+TopoShape Feature::makeTopoShapeFromPlane(const App::DocumentObject* obj)
+{
+    BRepBuilderAPI_MakeFace builder(makePlnFromPlane(obj));
+    if (!builder.IsDone()) {
+        throw Base::CADKernelError("Feature: Could not create shape from base plane");
+    }
+
+    return TopoShape(obj->getID(), nullptr, builder.Shape());
 }
 
 Body* Feature::getFeatureBody() const {

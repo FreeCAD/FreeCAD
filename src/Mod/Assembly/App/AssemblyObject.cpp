@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <boost/core/ignore_unused.hpp>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <TopoDS.hxx>
@@ -58,6 +59,7 @@
 #include <OndselSolver/ASMTPart.h>
 #include <OndselSolver/ASMTJoint.h>
 #include <OndselSolver/ASMTFixedJoint.h>
+#include <OndselSolver/ASMTGearJoint.h>
 #include <OndselSolver/ASMTRevoluteJoint.h>
 #include <OndselSolver/ASMTCylindricalJoint.h>
 #include <OndselSolver/ASMTTranslationalJoint.h>
@@ -68,6 +70,10 @@
 #include <OndselSolver/ASMTPlanarJoint.h>
 #include <OndselSolver/ASMTRevCylJoint.h>
 #include <OndselSolver/ASMTCylSphJoint.h>
+#include <OndselSolver/ASMTRackPinionJoint.h>
+#include <OndselSolver/ASMTRotationLimit.h>
+#include <OndselSolver/ASMTTranslationLimit.h>
+#include <OndselSolver/ASMTScrewJoint.h>
 #include <OndselSolver/ASMTSphSphJoint.h>
 #include <OndselSolver/ASMTTime.h>
 #include <OndselSolver/ASMTConstantGravity.h>
@@ -75,11 +81,31 @@
 #include "AssemblyObject.h"
 #include "AssemblyObjectPy.h"
 #include "JointGroup.h"
+#include "ViewGroup.h"
 
 namespace PartApp = Part;
 
 using namespace Assembly;
 using namespace MbD;
+
+void printPlacement(Base::Placement plc, const char* name)
+{
+    Base::Vector3d pos = plc.getPosition();
+    Base::Vector3d axis;
+    double angle;
+    Base::Rotation rot = plc.getRotation();
+    rot.getRawValue(axis, angle);
+    Base::Console().Warning(
+        "placement %s : position (%.1f, %.1f, %.1f) - axis (%.1f, %.1f, %.1f) angle %.1f\n",
+        name,
+        pos.x,
+        pos.y,
+        pos.z,
+        axis.x,
+        axis.y,
+        axis.z,
+        angle);
+}
 
 // ================================ Assembly Object ============================
 
@@ -100,8 +126,19 @@ PyObject* AssemblyObject::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
+App::DocumentObjectExecReturn* AssemblyObject::execute()
+{
+    App::DocumentObjectExecReturn* ret = App::Part::execute();
 
-int AssemblyObject::solve(bool enableRedo)
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Assembly");
+    if (hGrp->GetBool("SolveOnRecompute", true)) {
+        solve();
+    }
+    return ret;
+}
+
+int AssemblyObject::solve(bool enableRedo, bool updateJCS)
 {
     mbdAssembly = makeMbdAssembly();
     objectPartMap.clear();
@@ -112,7 +149,7 @@ int AssemblyObject::solve(bool enableRedo)
         return -6;
     }
 
-    std::vector<App::DocumentObject*> joints = getJoints();
+    std::vector<App::DocumentObject*> joints = getJoints(updateJCS);
 
     removeUnconnectedJoints(joints, groundedObjs);
 
@@ -123,7 +160,7 @@ int AssemblyObject::solve(bool enableRedo)
     }
 
     try {
-        mbdAssembly->solve();
+        mbdAssembly->runPreDrag();  // solve() is causing some issues with limits.
     }
     catch (...) {
         Base::Console().Error("Solve failed\n");
@@ -151,35 +188,42 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
 
 void AssemblyObject::doDragStep()
 {
-    for (auto& mbdPart : dragMbdParts) {
-        App::DocumentObject* part = nullptr;
-        for (auto& pair : objectPartMap) {
-            if (pair.second == mbdPart) {
-                part = pair.first;
-                break;
+    try {
+        for (auto& mbdPart : dragMbdParts) {
+            App::DocumentObject* part = nullptr;
+            for (auto& pair : objectPartMap) {
+                if (pair.second == mbdPart) {
+                    part = pair.first;
+                    break;
+                }
             }
-        }
-        if (!part) {
-            continue;
+            if (!part) {
+                continue;
+            }
+
+            Base::Placement plc = getPlacementFromProp(part, "Placement");
+            Base::Vector3d pos = plc.getPosition();
+            mbdPart->updateMbDFromPosition3D(
+                std::make_shared<FullColumn<double>>(ListD {pos.x, pos.y, pos.z}));
+
+            Base::Rotation rot = plc.getRotation();
+            Base::Matrix4D mat;
+            rot.getValue(mat);
+            Base::Vector3d r0 = mat.getRow(0);
+            Base::Vector3d r1 = mat.getRow(1);
+            Base::Vector3d r2 = mat.getRow(2);
+            mbdPart
+                ->updateMbDFromRotationMatrix(r0.x, r0.y, r0.z, r1.x, r1.y, r1.z, r2.x, r2.y, r2.z);
         }
 
-        Base::Placement plc = getPlacementFromProp(part, "Placement");
-        Base::Vector3d pos = plc.getPosition();
-        mbdPart->setPosition3D(pos.x, pos.y, pos.z);
-
-        Base::Rotation rot = plc.getRotation();
-        Base::Matrix4D mat;
-        rot.getValue(mat);
-        Base::Vector3d r0 = mat.getRow(0);
-        Base::Vector3d r1 = mat.getRow(1);
-        Base::Vector3d r2 = mat.getRow(2);
-        mbdPart->setRotationMatrix(r0.x, r0.y, r0.z, r1.x, r1.y, r1.z, r2.x, r2.y, r2.z);
+        auto dragPartsVec = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>(dragMbdParts);
+        mbdAssembly->runDragStep(dragPartsVec);
+        setNewPlacements();
+        redrawJointPlacements(getJoints());
     }
-
-    auto dragPartsVec = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>(dragMbdParts);
-    mbdAssembly->runDragStep(dragPartsVec);
-    setNewPlacements();
-    redrawJointPlacements(getJoints());
+    catch (...) {
+        // We do nothing if a solve step fails.
+    }
 }
 
 void AssemblyObject::postDrag()
@@ -235,7 +279,7 @@ void AssemblyObject::undoSolve()
     previousPositions.clear();
 
     // update joint placements:
-    getJoints();
+    getJoints(/*updateJCS*/ true, /*delBadJoints*/ false);
 }
 
 void AssemblyObject::clearUndo()
@@ -298,6 +342,7 @@ void AssemblyObject::setNewPlacements()
         Base::Placement newPlacement = Base::Placement(pos, rot);
 
         propPlacement->setValue(newPlacement);
+        obj->purgeTouched();
     }
 }
 
@@ -315,6 +360,7 @@ void AssemblyObject::redrawJointPlacements(std::vector<App::DocumentObject*> joi
         if (propPlacement) {
             propPlacement->setValue(propPlacement->getValue());
         }
+        joint->purgeTouched();
     }
 }
 
@@ -398,7 +444,23 @@ JointGroup* AssemblyObject::getJointGroup()
     return nullptr;
 }
 
-std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS)
+ViewGroup* AssemblyObject::getExplodedViewGroup()
+{
+    App::Document* doc = getDocument();
+
+    std::vector<DocumentObject*> viewGroups = doc->getObjectsOfType(ViewGroup::getClassTypeId());
+    if (viewGroups.empty()) {
+        return nullptr;
+    }
+    for (auto viewGroup : viewGroups) {
+        if (hasObject(viewGroup)) {
+            return dynamic_cast<ViewGroup*>(viewGroup);
+        }
+    }
+    return nullptr;
+}
+
+std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS, bool delBadJoints)
 {
     std::vector<App::DocumentObject*> joints = {};
 
@@ -414,7 +476,19 @@ std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS)
         }
 
         auto* prop = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Activated"));
-        if (prop && !prop->getValue()) {
+        if (!prop || !prop->getValue()) {
+            // Filter grounded joints and deactivated joints.
+            continue;
+        }
+
+        auto* part1 = getLinkObjFromProp(joint, "Part1");
+        auto* part2 = getLinkObjFromProp(joint, "Part2");
+        if (!part1 || !part2 || part1->getFullName() == part2->getFullName()) {
+            // Remove incomplete joints. Left-over when the user delets a part.
+            // Remove incoherent joints (self-pointing joints)
+            if (delBadJoints) {
+                getDocument()->removeObject(joint->getNameInDocument());
+            }
             continue;
         }
 
@@ -424,6 +498,12 @@ std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS)
                 joints.push_back(joint);
             }
         }
+    }
+
+    // add sub assemblies joints.
+    for (auto& assembly : getSubAssemblies()) {
+        auto subJoints = assembly->getJoints(updateJCS);
+        joints.insert(joints.end(), subJoints.begin(), subJoints.end());
     }
 
     // Make sure the joints are up to date.
@@ -564,12 +644,22 @@ void AssemblyObject::fixGroundedPart(App::DocumentObject* obj,
 
 bool AssemblyObject::isJointConnectingPartToGround(App::DocumentObject* joint, const char* propname)
 {
+    if (!isJointTypeConnecting(joint)) {
+        return false;
+    }
 
     auto* propPart = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName(propname));
     if (!propPart) {
         return false;
     }
     App::DocumentObject* part = propPart->getValue();
+
+    // Check if the part is grounded.
+    bool isGrounded = isPartGrounded(part);
+    if (isGrounded) {
+        return false;
+    }
+
     // Check if the part is disconnected even with the joint
     bool isConnected = isPartConnected(part);
     if (!isConnected) {
@@ -602,6 +692,13 @@ bool AssemblyObject::isJointConnectingPartToGround(App::DocumentObject* joint, c
     }
 
     return isConnected;
+}
+
+bool AssemblyObject::isJointTypeConnecting(App::DocumentObject* joint)
+{
+    JointType jointType = getJointType(joint);
+    return jointType != JointType::RackPinion && jointType != JointType::Screw
+        && jointType != JointType::Gears && jointType != JointType::Belt;
 }
 
 void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& joints,
@@ -659,6 +756,10 @@ AssemblyObject::getConnectedParts(App::DocumentObject* part,
 {
     std::vector<App::DocumentObject*> connectedParts;
     for (auto joint : joints) {
+        if (!isJointTypeConnecting(joint)) {
+            continue;
+        }
+
         App::DocumentObject* obj1 = getLinkObjFromProp(joint, "Part1");
         App::DocumentObject* obj2 = getLinkObjFromProp(joint, "Part2");
         if (obj1 == part) {
@@ -745,272 +846,217 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointOfType(App::DocumentObjec
     else if (type == JointType::Distance) {
         return makeMbdJointDistance(joint);
     }
+    else if (type == JointType::RackPinion) {
+        auto mbdJoint = CREATE<ASMTRackPinionJoint>::With();
+        mbdJoint->pitchRadius = getJointDistance(joint);
+        return mbdJoint;
+    }
+    else if (type == JointType::Screw) {
+        int slidingIndex = slidingPartIndex(joint);
+        if (slidingIndex == 0) {  // invalid this joint needs a slider
+            return nullptr;
+        }
+
+        if (slidingIndex != 1) {
+            swapJCS(joint);  // make sure that sliding is first.
+        }
+
+        auto mbdJoint = CREATE<ASMTScrewJoint>::With();
+        mbdJoint->pitch = getJointDistance(joint);
+        return mbdJoint;
+    }
+    else if (type == JointType::Gears) {
+        auto mbdJoint = CREATE<ASMTGearJoint>::With();
+        mbdJoint->radiusI = getJointDistance(joint);
+        mbdJoint->radiusJ = getJointDistance2(joint);
+        return mbdJoint;
+    }
+    else if (type == JointType::Belt) {
+        auto mbdJoint = CREATE<ASMTGearJoint>::With();
+        mbdJoint->radiusI = getJointDistance(joint);
+        mbdJoint->radiusJ = -getJointDistance2(joint);
+        return mbdJoint;
+    }
 
     return nullptr;
 }
 
 std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointDistance(App::DocumentObject* joint)
 {
-    // Depending on the type of element of the JCS, we apply the correct set of constraints.
-    std::string type1 = getElementTypeFromProp(joint, "Element1");
-    std::string type2 = getElementTypeFromProp(joint, "Element2");
+    DistanceType type = getDistanceType(joint);
 
-    if (type1 == "Vertex" && type2 == "Vertex") {
+    const char* elt1 = getElementFromProp(joint, "Element1");
+    const char* elt2 = getElementFromProp(joint, "Element2");
+    auto* obj1 = getLinkedObjFromNameProp(joint, "Object1", "Part1");
+    auto* obj2 = getLinkedObjFromNameProp(joint, "Object2", "Part2");
+
+    if (type == DistanceType::PointPoint) {
         // Point to point distance, or ball joint if distance=0.
+        double distance = getJointDistance(joint);
+        if (distance < Precision::Confusion()) {
+            return CREATE<ASMTSphericalJoint>::With();
+        }
         auto mbdJoint = CREATE<ASMTSphSphJoint>::With();
+        mbdJoint->distanceIJ = distance;
+        return mbdJoint;
+    }
+
+    // Edge - edge cases
+    else if (type == DistanceType::LineLine) {
+        auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
         mbdJoint->distanceIJ = getJointDistance(joint);
         return mbdJoint;
     }
-    else if (type1 == "Edge" && type2 == "Edge") {
-        return makeMbdJointDistanceEdgeEdge(joint);
+    else if (type == DistanceType::LineCircle) {
+        auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
+        mbdJoint->distanceIJ = getJointDistance(joint) + getEdgeRadius(obj2, elt2);
+        return mbdJoint;
     }
-    else if (type1 == "Face" && type2 == "Face") {
-        return makeMbdJointDistanceFaceFace(joint);
+    else if (type == DistanceType::CircleCircle) {
+        auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
+        mbdJoint->distanceIJ =
+            getJointDistance(joint) + getEdgeRadius(obj1, elt1) + getEdgeRadius(obj2, elt2);
+        return mbdJoint;
     }
-    else if ((type1 == "Vertex" && type2 == "Face") || (type1 == "Face" && type2 == "Vertex")) {
-        if (type1 == "Vertex") {  // Make sure face is the first.
-            swapJCS(joint);
-        }
-        return makeMbdJointDistanceFaceVertex(joint);
-    }
-    else if ((type1 == "Edge" && type2 == "Face") || (type1 == "Face" && type2 == "Edge")) {
-        if (type1 == "Edge") {  // Make sure face is the first.
-            swapJCS(joint);
-        }
-        return makeMbdJointDistanceFaceEdge(joint);
-    }
-    else if ((type1 == "Vertex" && type2 == "Edge") || (type1 == "Edge" && type2 == "Vertex")) {
-        if (type1 == "Vertex") {  // Make sure edge is the first.
-            swapJCS(joint);
-        }
-        return makeMbdJointDistanceEdgeVertex(joint);
-    }
+    // TODO : other cases od edge-edge : Ellipse, parabola, hyperbola...
 
-    return nullptr;
-}
-
-std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointDistanceEdgeEdge(App::DocumentObject* joint)
-{
-    const char* elt1 = getElementFromProp(joint, "Element1");
-    const char* elt2 = getElementFromProp(joint, "Element2");
-    auto* obj1 = getLinkedObjFromNameProp(joint, "Object1", "Part1");
-    auto* obj2 = getLinkedObjFromNameProp(joint, "Object2", "Part2");
-
-    if (isEdgeType(obj1, elt1, GeomAbs_Line) || isEdgeType(obj2, elt2, GeomAbs_Line)) {
-        if (!isEdgeType(obj1, elt1, GeomAbs_Line)) {
-            swapJCS(joint);  // make sure that line is first if not 2 lines.
-            std::swap(elt1, elt2);
-            std::swap(obj1, obj2);
-        }
-
-        if (isEdgeType(obj2, elt2, GeomAbs_Line)) {
-            auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
-            mbdJoint->distanceIJ = getJointDistance(joint);
-            return mbdJoint;
-        }
-        else if (isEdgeType(obj2, elt2, GeomAbs_Circle)) {
-            auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
-            mbdJoint->distanceIJ = getJointDistance(joint) + getEdgeRadius(obj2, elt2);
-            return mbdJoint;
-        }
-        // TODO : other cases Ellipse, parabola, hyperbola...
-    }
-
-    else if (isEdgeType(obj1, elt1, GeomAbs_Circle) || isEdgeType(obj2, elt2, GeomAbs_Circle)) {
-        if (!isEdgeType(obj1, elt1, GeomAbs_Circle)) {
-            swapJCS(joint);  // make sure that circle is first if not 2 lines.
-            std::swap(elt1, elt2);
-            std::swap(obj1, obj2);
-        }
-
-        if (isEdgeType(obj2, elt2, GeomAbs_Circle)) {
-            auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
-            mbdJoint->distanceIJ =
-                getJointDistance(joint) + getEdgeRadius(obj1, elt1) + getEdgeRadius(obj2, elt2);
-            return mbdJoint;
-        }
-        // TODO : other cases Ellipse, parabola, hyperbola...
-    }
-
-    // TODO : other cases Ellipse, parabola, hyperbola...
-
-    return nullptr;
-}
-
-std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointDistanceFaceFace(App::DocumentObject* joint)
-{
-    const char* elt1 = getElementFromProp(joint, "Element1");
-    const char* elt2 = getElementFromProp(joint, "Element2");
-    auto* obj1 = getLinkedObjFromNameProp(joint, "Object1", "Part1");
-    auto* obj2 = getLinkedObjFromNameProp(joint, "Object2", "Part2");
-
-    if (isFaceType(obj1, elt1, GeomAbs_Plane) || isFaceType(obj2, elt2, GeomAbs_Plane)) {
-        if (!isFaceType(obj1, elt1, GeomAbs_Plane)) {
-            swapJCS(joint);  // make sure plane is first if its not 2 planes.
-            std::swap(elt1, elt2);
-            std::swap(obj1, obj2);
-        }
-
-        if (isFaceType(obj2, elt2, GeomAbs_Plane)) {
-            auto mbdJoint = CREATE<ASMTPlanarJoint>::With();
-            mbdJoint->offset = getJointDistance(joint);
-            return mbdJoint;
-        }
-        else if (isFaceType(obj2, elt2, GeomAbs_Cylinder)) {
-            auto mbdJoint = CREATE<ASMTLineInPlaneJoint>::With();
-            mbdJoint->offset = getJointDistance(joint) + getFaceRadius(obj2, elt2);
-            return mbdJoint;
-        }
-        else if (isFaceType(obj2, elt2, GeomAbs_Sphere)) {
-            auto mbdJoint = CREATE<ASMTPointInPlaneJoint>::With();
-            mbdJoint->offset = getJointDistance(joint) + getFaceRadius(obj2, elt2);
-            return mbdJoint;
-        }
-        else if (isFaceType(obj2, elt2, GeomAbs_Cone)) {
-            // TODO
-        }
-        else if (isFaceType(obj2, elt2, GeomAbs_Torus)) {
-            auto mbdJoint = CREATE<ASMTPlanarJoint>::With();
-            mbdJoint->offset = getJointDistance(joint);
-            return mbdJoint;
-        }
-    }
-
-    else if (isFaceType(obj1, elt1, GeomAbs_Cylinder) || isFaceType(obj2, elt2, GeomAbs_Cylinder)) {
-        if (!isFaceType(obj1, elt1, GeomAbs_Cylinder)) {
-            swapJCS(joint);  // make sure cylinder is first if its not 2 cylinders.
-            std::swap(elt1, elt2);
-            std::swap(obj1, obj2);
-        }
-
-        if (isFaceType(obj2, elt2, GeomAbs_Cylinder)) {
-            auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
-            mbdJoint->distanceIJ =
-                getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
-            return mbdJoint;
-        }
-        else if (isFaceType(obj2, elt2, GeomAbs_Sphere)) {
-            auto mbdJoint = CREATE<ASMTCylSphJoint>::With();
-            mbdJoint->distanceIJ =
-                getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
-            return mbdJoint;
-        }
-        else if (isFaceType(obj2, elt2, GeomAbs_Cone)) {
-            // TODO
-        }
-        else if (isFaceType(obj2, elt2, GeomAbs_Torus)) {
-            auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
-            mbdJoint->distanceIJ =
-                getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
-            return mbdJoint;
-        }
-    }
-
-    else if (isFaceType(obj1, elt1, GeomAbs_Cone) || isFaceType(obj2, elt2, GeomAbs_Cone)) {
-        if (!isFaceType(obj1, elt1, GeomAbs_Cone)) {
-            swapJCS(joint);  // make sure cone is first if its not 2 cones.
-            std::swap(elt1, elt2);
-            std::swap(obj1, obj2);
-        }
-
-        if (isFaceType(obj2, elt2, GeomAbs_Cone)) {
-            // TODO
-        }
-        else if (isFaceType(obj2, elt2, GeomAbs_Torus)) {
-            // TODO
-        }
-        else if (isFaceType(obj2, elt2, GeomAbs_Sphere)) {
-            // TODO
-        }
-    }
-
-    else if (isFaceType(obj1, elt1, GeomAbs_Torus) || isFaceType(obj2, elt2, GeomAbs_Torus)) {
-        if (!isFaceType(obj1, elt1, GeomAbs_Torus)) {
-            swapJCS(joint);  // make sure torus is first if its not 2 torus.
-            std::swap(elt1, elt2);
-            std::swap(obj1, obj2);
-        }
-
-        if (isFaceType(obj2, elt2, GeomAbs_Torus)) {
-            auto mbdJoint = CREATE<ASMTPlanarJoint>::With();
-            mbdJoint->offset = getJointDistance(joint);
-            return mbdJoint;
-        }
-        else if (isFaceType(obj2, elt2, GeomAbs_Sphere)) {
-            auto mbdJoint = CREATE<ASMTCylSphJoint>::With();
-            mbdJoint->distanceIJ =
-                getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
-            return mbdJoint;
-        }
-    }
-
-    else if (isFaceType(obj1, elt1, GeomAbs_Sphere) || isFaceType(obj2, elt2, GeomAbs_Sphere)) {
-        if (!isFaceType(obj1, elt1, GeomAbs_Sphere)) {
-            swapJCS(joint);  // make sure sphere is first if its not 2 spheres.
-            std::swap(elt1, elt2);
-            std::swap(obj1, obj2);
-        }
-
-        if (isFaceType(obj2, elt2, GeomAbs_Sphere)) {
-            auto mbdJoint = CREATE<ASMTSphSphJoint>::With();
-            mbdJoint->distanceIJ =
-                getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
-            return mbdJoint;
-        }
-    }
-    else {
-        // by default we make a planar joint.
+    // Face - Face cases
+    else if (type == DistanceType::PlanePlane) {
         auto mbdJoint = CREATE<ASMTPlanarJoint>::With();
         mbdJoint->offset = getJointDistance(joint);
         return mbdJoint;
     }
+    else if (type == DistanceType::PlaneCylinder) {
+        auto mbdJoint = CREATE<ASMTLineInPlaneJoint>::With();
+        mbdJoint->offset = getJointDistance(joint) + getFaceRadius(obj2, elt2);
+        return mbdJoint;
+    }
+    else if (type == DistanceType::PlaneSphere) {
+        auto mbdJoint = CREATE<ASMTPointInPlaneJoint>::With();
+        mbdJoint->offset = getJointDistance(joint) + getFaceRadius(obj2, elt2);
+        return mbdJoint;
+    }
+    else if (type == DistanceType::PlaneCone) {
+        // TODO
+    }
+    else if (type == DistanceType::PlaneTorus) {
+        auto mbdJoint = CREATE<ASMTPlanarJoint>::With();
+        mbdJoint->offset = getJointDistance(joint);
+        return mbdJoint;
+    }
+    else if (type == DistanceType::CylinderCylinder) {
+        auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
+        mbdJoint->distanceIJ =
+            getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
+        return mbdJoint;
+    }
+    else if (type == DistanceType::CylinderSphere) {
+        auto mbdJoint = CREATE<ASMTCylSphJoint>::With();
+        mbdJoint->distanceIJ =
+            getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
+        return mbdJoint;
+    }
+    else if (type == DistanceType::CylinderCone) {
+        // TODO
+    }
+    else if (type == DistanceType::CylinderTorus) {
+        auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
+        mbdJoint->distanceIJ =
+            getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
+        return mbdJoint;
+    }
+    else if (type == DistanceType::ConeCone) {
+        // TODO
+    }
+    else if (type == DistanceType::ConeTorus) {
+        // TODO
+    }
+    else if (type == DistanceType::ConeSphere) {
+        // TODO
+    }
+    else if (type == DistanceType::TorusTorus) {
+        auto mbdJoint = CREATE<ASMTPlanarJoint>::With();
+        mbdJoint->offset = getJointDistance(joint);
+        return mbdJoint;
+    }
+    else if (type == DistanceType::TorusSphere) {
+        auto mbdJoint = CREATE<ASMTCylSphJoint>::With();
+        mbdJoint->distanceIJ =
+            getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
+        return mbdJoint;
+    }
+    else if (type == DistanceType::SphereSphere) {
+        auto mbdJoint = CREATE<ASMTSphSphJoint>::With();
+        mbdJoint->distanceIJ =
+            getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
+        return mbdJoint;
+    }
 
-    return nullptr;
-}
-
-std::shared_ptr<ASMTJoint>
-AssemblyObject::makeMbdJointDistanceFaceVertex(App::DocumentObject* joint)
-{
-    const char* elt1 = getElementFromProp(joint, "Element1");
-    auto* obj1 = getLinkedObjFromNameProp(joint, "Object1", "Part1");
-
-    if (isFaceType(obj1, elt1, GeomAbs_Plane)) {
+    // Point - Face cases
+    else if (type == DistanceType::PointPlane) {
         auto mbdJoint = CREATE<ASMTPointInPlaneJoint>::With();
         mbdJoint->offset = getJointDistance(joint);
         return mbdJoint;
     }
-    else if (isFaceType(obj1, elt1, GeomAbs_Cylinder)) {
+    else if (type == DistanceType::PointCylinder) {
         auto mbdJoint = CREATE<ASMTCylSphJoint>::With();
         mbdJoint->distanceIJ = getJointDistance(joint) + getFaceRadius(obj1, elt1);
         return mbdJoint;
     }
-    else if (isFaceType(obj1, elt1, GeomAbs_Sphere)) {
+    else if (type == DistanceType::PointSphere) {
         auto mbdJoint = CREATE<ASMTSphSphJoint>::With();
         mbdJoint->distanceIJ = getJointDistance(joint) + getFaceRadius(obj1, elt1);
         return mbdJoint;
     }
-    /*else if (isFaceType(obj1, elt1, GeomAbs_Cone)) {
+    else if (type == DistanceType::PointCone) {
         // TODO
     }
-    else if (isFaceType(obj1, elt1, GeomAbs_Thorus)) {
+    else if (type == DistanceType::PointTorus) {
         // TODO
-    }*/
+    }
 
-    return nullptr;
-}
+    // Edge - Face cases
+    else if (type == DistanceType::LinePlane) {
+        auto mbdJoint = CREATE<ASMTLineInPlaneJoint>::With();
+        mbdJoint->offset = getJointDistance(joint);
+        return mbdJoint;
+    }
+    else if (type == DistanceType::LineCylinder) {
+        // TODO
+    }
+    else if (type == DistanceType::LineSphere) {
+        // TODO
+    }
+    else if (type == DistanceType::LineCone) {
+        // TODO
+    }
+    else if (type == DistanceType::LineTorus) {
+        // TODO
+    }
 
-std::shared_ptr<ASMTJoint>
-AssemblyObject::makeMbdJointDistanceEdgeVertex(App::DocumentObject* joint)
-{
-    const char* elt1 = getElementFromProp(joint, "Element1");
-    auto* obj1 = getLinkedObjFromNameProp(joint, "Object1", "Part1");
+    else if (type == DistanceType::CurvePlane) {
+        // TODO
+    }
+    else if (type == DistanceType::CurveCylinder) {
+        // TODO
+    }
+    else if (type == DistanceType::CurveSphere) {
+        // TODO
+    }
+    else if (type == DistanceType::CurveCone) {
+        // TODO
+    }
+    else if (type == DistanceType::CurveTorus) {
+        // TODO
+    }
 
-    if (isEdgeType(obj1, elt1, GeomAbs_Line)) {  // Point on line joint.
+    // Point - Edge cases
+    else if (type == DistanceType::PointLine) {
         auto mbdJoint = CREATE<ASMTCylSphJoint>::With();
         mbdJoint->distanceIJ = getJointDistance(joint);
         return mbdJoint;
     }
-    else {
+    else if (type == DistanceType::PointCurve) {
         // For other curves we do a point in plane-of-the-curve.
         // Maybe it would be best tangent / distance to the conic?
         // For arcs and circles we could use ASMTRevSphJoint. But is it better than pointInPlane?
@@ -1019,30 +1065,12 @@ AssemblyObject::makeMbdJointDistanceEdgeVertex(App::DocumentObject* joint)
         return mbdJoint;
     }
 
-    return nullptr;
+
+    // by default we make a planar joint.
+    auto mbdJoint = CREATE<ASMTPlanarJoint>::With();
+    mbdJoint->offset = getJointDistance(joint);
+    return mbdJoint;
 }
-
-std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointDistanceFaceEdge(App::DocumentObject* joint)
-{
-    const char* elt2 = getElementFromProp(joint, "Element2");
-    auto* obj2 = getLinkedObjFromNameProp(joint, "Object2", "Part2");
-
-    if (isEdgeType(obj2, elt2, GeomAbs_Line)) {
-        // Make line in plane joint.
-        auto mbdJoint = CREATE<ASMTLineInPlaneJoint>::With();
-        mbdJoint->offset = getJointDistance(joint);
-        return mbdJoint;
-    }
-    else {
-        // planar joint for other edges.
-        auto mbdJoint = CREATE<ASMTPlanarJoint>::With();
-        mbdJoint->offset = getJointDistance(joint);
-        return mbdJoint;
-    }
-
-    return nullptr;
-}
-
 
 std::vector<std::shared_ptr<MbD::ASMTJoint>>
 AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
@@ -1054,12 +1082,78 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
         return {};
     }
 
-    std::string fullMarkerName1 = handleOneSideOfJoint(joint, "Object1", "Part1", "Placement1");
-    std::string fullMarkerName2 = handleOneSideOfJoint(joint, "Object2", "Part2", "Placement2");
+    std::string fullMarkerNameI, fullMarkerNameJ;
+    if (jointType == JointType::RackPinion) {
+        getRackPinionMarkers(joint, fullMarkerNameI, fullMarkerNameJ);
+    }
+    else {
+        fullMarkerNameI = handleOneSideOfJoint(joint, "Object1", "Part1", "Placement1");
+        fullMarkerNameJ = handleOneSideOfJoint(joint, "Object2", "Part2", "Placement2");
+    }
+    if (fullMarkerNameI == "" || fullMarkerNameJ == "") {
+        return {};
+    }
 
     mbdJoint->setName(joint->getFullName());
-    mbdJoint->setMarkerI(fullMarkerName1);
-    mbdJoint->setMarkerJ(fullMarkerName2);
+    mbdJoint->setMarkerI(fullMarkerNameI);
+    mbdJoint->setMarkerJ(fullMarkerNameJ);
+
+    // Add limits if needed.
+    auto* prop = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("EnableLimits"));
+    if (prop && prop->getValue()) {
+        if (jointType == JointType::Slider || jointType == JointType::Cylindrical) {
+            auto* propLenMin =
+                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("LengthMin"));
+            if (propLenMin) {
+                auto limit = ASMTTranslationLimit::With();
+                limit->setName(joint->getFullName() + "-LimitLenMin");
+                limit->setMarkerI(fullMarkerNameI);
+                limit->setMarkerJ(fullMarkerNameJ);
+                limit->settype("=>");
+                limit->setlimit(std::to_string(propLenMin->getValue()));
+                limit->settol("1.0e-9");
+                mbdAssembly->addLimit(limit);
+            }
+            auto* propLenMax =
+                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("LengthMax"));
+            if (propLenMax) {
+                auto limit = ASMTTranslationLimit::With();
+                limit->setName(joint->getFullName() + "-LimitLenMax");
+                limit->setMarkerI(fullMarkerNameI);
+                limit->setMarkerJ(fullMarkerNameJ);
+                limit->settype("=<");
+                limit->setlimit(std::to_string(propLenMax->getValue()));
+                limit->settol("1.0e-9");
+                mbdAssembly->addLimit(limit);
+            }
+        }
+        if (jointType == JointType::Revolute || jointType == JointType::Cylindrical) {
+            auto* propRotMin =
+                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("AngleMin"));
+            if (propRotMin) {
+                auto limit = ASMTRotationLimit::With();
+                limit->setName(joint->getFullName() + "-LimitRotMin");
+                limit->setMarkerI(fullMarkerNameI);
+                limit->setMarkerJ(fullMarkerNameJ);
+                limit->settype("=>");
+                limit->setlimit(std::to_string(propRotMin->getValue()) + "*pi/180.0");
+                limit->settol("1.0e-9");
+                mbdAssembly->addLimit(limit);
+            }
+            auto* propRotMax =
+                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("AngleMax"));
+            if (propRotMax) {
+                auto limit = ASMTRotationLimit::With();
+                limit->setName(joint->getFullName() + "-LimiRotMax");
+                limit->setMarkerI(fullMarkerNameI);
+                limit->setMarkerJ(fullMarkerNameJ);
+                limit->settype("=<");
+                limit->setlimit(std::to_string(propRotMax->getValue()) + "*pi/180.0");
+                limit->settol("1.0e-9");
+                mbdAssembly->addLimit(limit);
+            }
+        }
+    }
 
     return {mbdJoint};
 }
@@ -1071,6 +1165,13 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
 {
     App::DocumentObject* part = getLinkObjFromProp(joint, propPartName);
     App::DocumentObject* obj = getObjFromNameProp(joint, propObjName, propPartName);
+
+    if (!part) {
+        Base::Console().Warning("The property %s or Joint %s is empty.",
+                                propPartName,
+                                joint->getFullName());
+        return "";
+    }
 
     std::shared_ptr<ASMTPart> mbdPart = getMbDPart(part);
     Base::Placement plc = getPlacementFromProp(joint, propPlcName);
@@ -1093,6 +1194,130 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
     mbdPart->addMarker(mbdMarker);
 
     return "/OndselAssembly/" + mbdPart->name + "/" + markerName;
+}
+
+void AssemblyObject::getRackPinionMarkers(App::DocumentObject* joint,
+                                          std::string& markerNameI,
+                                          std::string& markerNameJ)
+{
+    // ASMT rack pinion joint must get the rack as I and pinion as J.
+    // - rack marker has to have Z axis parallel to pinion Z axis.
+    // - rack marker has to have X axis parallel to the sliding axis.
+    // The user will have selected the sliding marker so we need to transform it.
+    // And we need to detect which marker is the rack.
+
+    int slidingIndex = slidingPartIndex(joint);
+    if (slidingIndex == 0) {
+        return;
+    }
+
+    if (slidingIndex != 1) {
+        swapJCS(joint);  // make sure that rack is first.
+    }
+
+    App::DocumentObject* part1 = getLinkObjFromProp(joint, "Part1");
+    App::DocumentObject* obj1 = getObjFromNameProp(joint, "Object1", "Part1");
+    Base::Placement plc1 = getPlacementFromProp(joint, "Placement1");
+
+    App::DocumentObject* part2 = getLinkObjFromProp(joint, "Part2");
+    App::DocumentObject* obj2 = getObjFromNameProp(joint, "Object2", "Part2");
+    Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
+
+    // For the pinion nothing special needed :
+    markerNameJ = handleOneSideOfJoint(joint, "Object2", "Part2", "Placement2");
+
+    // For the rack we need to change the placement :
+    // make the pinion plc relative to the rack placement.
+    Base::Placement pinion_global_plc = getGlobalPlacement(obj2, part2);
+    plc2 = pinion_global_plc * plc2;
+    Base::Placement rack_global_plc = getGlobalPlacement(obj1, part1);
+    plc2 = rack_global_plc.inverse() * plc2;
+
+    // The rot of the rack placement should be the same as the pinion, but with X axis along the
+    // slider axis.
+    Base::Rotation rot = plc2.getRotation();
+    // the yaw of rot has to be the same as plc1
+    Base::Vector3d currentZAxis = rot.multVec(Base::Vector3d(0, 0, 1));
+    Base::Vector3d currentXAxis = rot.multVec(Base::Vector3d(1, 0, 0));
+    Base::Vector3d targetXAxis = plc1.getRotation().multVec(Base::Vector3d(0, 0, 1));
+
+    // Calculate the angle between the current X axis and the target X axis
+    double yawAdjustment = currentXAxis.GetAngle(targetXAxis);
+
+    // Determine the direction of the yaw adjustment using cross product
+    Base::Vector3d crossProd = currentXAxis.Cross(targetXAxis);
+    if (currentZAxis * crossProd < 0) {  // If cross product is in opposite direction to Z axis
+        yawAdjustment = -yawAdjustment;
+    }
+
+    // Create a yaw rotation around the Z axis
+    Base::Rotation yawRotation(currentZAxis, yawAdjustment);
+
+    // Combine the initial rotation with the yaw adjustment
+    Base::Rotation adjustedRotation = rot * yawRotation;
+    plc1.setRotation(adjustedRotation);
+
+    // Then end of processing similar to handleOneSideOfJoint :
+
+    if (obj1->getNameInDocument() != part1->getNameInDocument()) {
+        plc1 = rack_global_plc * plc1;
+
+        Base::Placement part_global_plc = getGlobalPlacement(part1);
+        plc1 = part_global_plc.inverse() * plc1;
+    }
+
+    std::string markerName = joint->getFullName();
+    auto mbdMarker = makeMbdMarker(markerName, plc1);
+    std::shared_ptr<ASMTPart> mbdPart = getMbDPart(part1);
+    mbdPart->addMarker(mbdMarker);
+
+    markerNameI = "/OndselAssembly/" + mbdPart->name + "/" + markerName;
+}
+
+int AssemblyObject::slidingPartIndex(App::DocumentObject* joint)
+{
+    App::DocumentObject* part1 = getLinkObjFromProp(joint, "Part1");
+    App::DocumentObject* obj1 = getObjFromNameProp(joint, "Object1", "Part1");
+    boost::ignore_unused(obj1);
+    Base::Placement plc1 = getPlacementFromProp(joint, "Placement1");
+
+    App::DocumentObject* part2 = getLinkObjFromProp(joint, "Part2");
+    App::DocumentObject* obj2 = getObjFromNameProp(joint, "Object2", "Part2");
+    boost::ignore_unused(obj2);
+    Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
+
+    int slidingFound = 0;
+    for (auto* jt : getJoints(false, false)) {
+        if (getJointType(jt) == JointType::Slider) {
+            App::DocumentObject* jpart1 = getLinkObjFromProp(jt, "Part1");
+            App::DocumentObject* jpart2 = getLinkObjFromProp(jt, "Part2");
+            int found = 0;
+            Base::Placement plcjt, plci;
+            if (jpart1 == part1 || jpart1 == part2) {
+                found = (jpart1 == part1) ? 1 : 2;
+                plci = (jpart1 == part1) ? plc1 : plc2;
+                plcjt = getPlacementFromProp(jt, "Placement1");
+            }
+            else if (jpart2 == part1 || jpart2 == part2) {
+                found = (jpart2 == part1) ? 1 : 2;
+                plci = (jpart2 == part1) ? plc1 : plc2;
+                plcjt = getPlacementFromProp(jt, "Placement2");
+            }
+
+            if (found != 0) {
+                // check the placements plcjt and (jcs1 or jcs2 depending on found value) Z axis are
+                // colinear ie if their pitch and roll are the same.
+                double y1, p1, r1, y2, p2, r2;
+                plcjt.getRotation().getYawPitchRoll(y1, p1, r1);
+                plci.getRotation().getYawPitchRoll(y2, p2, r2);
+                if (fabs(p1 - p2) < Precision::Confusion()
+                    && fabs(r1 - r2) < Precision::Confusion()) {
+                    slidingFound = found;
+                }
+            }
+        }
+    }
+    return slidingFound;
 }
 
 std::shared_ptr<ASMTPart> AssemblyObject::getMbDPart(App::DocumentObject* obj)
@@ -1296,6 +1521,46 @@ void AssemblyObject::setObjMasses(std::vector<std::pair<App::DocumentObject*, do
     objMasses = objectMasses;
 }
 
+std::vector<AssemblyObject*> AssemblyObject::getSubAssemblies()
+{
+    std::vector<AssemblyObject*> subAssemblies = {};
+
+    App::Document* doc = getDocument();
+
+    std::vector<DocumentObject*> assemblies =
+        doc->getObjectsOfType(Assembly::AssemblyObject::getClassTypeId());
+    for (auto assembly : assemblies) {
+        if (hasObject(assembly)) {
+            subAssemblies.push_back(dynamic_cast<AssemblyObject*>(assembly));
+        }
+    }
+
+    return subAssemblies;
+}
+
+void AssemblyObject::updateGroundedJointsPlacements()
+{
+    std::vector<App::DocumentObject*> groundedJoints = getGroundedJoints();
+
+    for (auto gJoint : groundedJoints) {
+        if (!gJoint) {
+            continue;
+        }
+
+        auto* propObj =
+            dynamic_cast<App::PropertyLink*>(gJoint->getPropertyByName("ObjectToGround"));
+        auto* propPlc =
+            dynamic_cast<App::PropertyPlacement*>(gJoint->getPropertyByName("Placement"));
+
+        if (propObj && propPlc) {
+            App::DocumentObject* obj = propObj->getValue();
+            auto* propObjPlc =
+                dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+            propPlc->setValue(propObjPlc->getValue());
+        }
+    }
+}
+
 // ======================================= Utils ======================================
 
 void AssemblyObject::swapJCS(App::DocumentObject* joint)
@@ -1410,23 +1675,221 @@ double AssemblyObject::getEdgeRadius(App::DocumentObject* obj, const char* elt)
     return 0.0;
 }
 
-void printPlacement(Base::Placement plc, const char* name)
+DistanceType AssemblyObject::getDistanceType(App::DocumentObject* joint)
 {
-    Base::Vector3d pos = plc.getPosition();
-    Base::Vector3d axis;
-    double angle;
-    Base::Rotation rot = plc.getRotation();
-    rot.getRawValue(axis, angle);
-    Base::Console().Warning(
-        "placement %s : position (%.1f, %.1f, %.1f) - axis (%.1f, %.1f, %.1f) angle %.1f\n",
-        name,
-        pos.x,
-        pos.y,
-        pos.z,
-        axis.x,
-        axis.y,
-        axis.z,
-        angle);
+    std::string type1 = getElementTypeFromProp(joint, "Element1");
+    std::string type2 = getElementTypeFromProp(joint, "Element2");
+    const char* elt1 = getElementFromProp(joint, "Element1");
+    const char* elt2 = getElementFromProp(joint, "Element2");
+    auto* obj1 = getLinkedObjFromNameProp(joint, "Object1", "Part1");
+    auto* obj2 = getLinkedObjFromNameProp(joint, "Object2", "Part2");
+
+    if (type1 == "Vertex" && type2 == "Vertex") {
+        return DistanceType::PointPoint;
+    }
+    else if (type1 == "Edge" && type2 == "Edge") {
+        if (isEdgeType(obj1, elt1, GeomAbs_Line) || isEdgeType(obj2, elt2, GeomAbs_Line)) {
+            if (!isEdgeType(obj1, elt1, GeomAbs_Line)) {
+                swapJCS(joint);  // make sure that line is first if not 2 lines.
+                std::swap(elt1, elt2);
+                std::swap(obj1, obj2);
+            }
+
+            if (isEdgeType(obj2, elt2, GeomAbs_Line)) {
+                return DistanceType::LineLine;
+            }
+            else if (isEdgeType(obj2, elt2, GeomAbs_Circle)) {
+                return DistanceType::LineCircle;
+            }
+            // TODO : other cases Ellipse, parabola, hyperbola...
+        }
+
+        else if (isEdgeType(obj1, elt1, GeomAbs_Circle) || isEdgeType(obj2, elt2, GeomAbs_Circle)) {
+            if (!isEdgeType(obj1, elt1, GeomAbs_Circle)) {
+                swapJCS(joint);  // make sure that circle is first if not 2 lines.
+                std::swap(elt1, elt2);
+                std::swap(obj1, obj2);
+            }
+
+            if (isEdgeType(obj2, elt2, GeomAbs_Circle)) {
+                return DistanceType::CircleCircle;
+            }
+            // TODO : other cases Ellipse, parabola, hyperbola...
+        }
+    }
+    else if (type1 == "Face" && type2 == "Face") {
+        if (isFaceType(obj1, elt1, GeomAbs_Plane) || isFaceType(obj2, elt2, GeomAbs_Plane)) {
+            if (!isFaceType(obj1, elt1, GeomAbs_Plane)) {
+                swapJCS(joint);  // make sure plane is first if its not 2 planes.
+                std::swap(elt1, elt2);
+                std::swap(obj1, obj2);
+            }
+
+            if (isFaceType(obj2, elt2, GeomAbs_Plane)) {
+                return DistanceType::PlanePlane;
+            }
+            else if (isFaceType(obj2, elt2, GeomAbs_Cylinder)) {
+                return DistanceType::PlaneCylinder;
+            }
+            else if (isFaceType(obj2, elt2, GeomAbs_Sphere)) {
+                return DistanceType::PlaneSphere;
+            }
+            else if (isFaceType(obj2, elt2, GeomAbs_Cone)) {
+                return DistanceType::PlaneCone;
+            }
+            else if (isFaceType(obj2, elt2, GeomAbs_Torus)) {
+                return DistanceType::PlaneTorus;
+            }
+        }
+
+        else if (isFaceType(obj1, elt1, GeomAbs_Cylinder)
+                 || isFaceType(obj2, elt2, GeomAbs_Cylinder)) {
+            if (!isFaceType(obj1, elt1, GeomAbs_Cylinder)) {
+                swapJCS(joint);  // make sure cylinder is first if its not 2 cylinders.
+                std::swap(elt1, elt2);
+                std::swap(obj1, obj2);
+            }
+
+            if (isFaceType(obj2, elt2, GeomAbs_Cylinder)) {
+                return DistanceType::CylinderCylinder;
+            }
+            else if (isFaceType(obj2, elt2, GeomAbs_Sphere)) {
+                return DistanceType::CylinderSphere;
+            }
+            else if (isFaceType(obj2, elt2, GeomAbs_Cone)) {
+                return DistanceType::CylinderCone;
+            }
+            else if (isFaceType(obj2, elt2, GeomAbs_Torus)) {
+                return DistanceType::CylinderTorus;
+            }
+        }
+
+        else if (isFaceType(obj1, elt1, GeomAbs_Cone) || isFaceType(obj2, elt2, GeomAbs_Cone)) {
+            if (!isFaceType(obj1, elt1, GeomAbs_Cone)) {
+                swapJCS(joint);  // make sure cone is first if its not 2 cones.
+                std::swap(elt1, elt2);
+                std::swap(obj1, obj2);
+            }
+
+            if (isFaceType(obj2, elt2, GeomAbs_Cone)) {
+                return DistanceType::ConeCone;
+            }
+            else if (isFaceType(obj2, elt2, GeomAbs_Torus)) {
+                return DistanceType::ConeTorus;
+            }
+            else if (isFaceType(obj2, elt2, GeomAbs_Sphere)) {
+                return DistanceType::ConeSphere;
+            }
+        }
+
+        else if (isFaceType(obj1, elt1, GeomAbs_Torus) || isFaceType(obj2, elt2, GeomAbs_Torus)) {
+            if (!isFaceType(obj1, elt1, GeomAbs_Torus)) {
+                swapJCS(joint);  // make sure torus is first if its not 2 torus.
+                std::swap(elt1, elt2);
+                std::swap(obj1, obj2);
+            }
+
+            if (isFaceType(obj2, elt2, GeomAbs_Torus)) {
+                return DistanceType::TorusTorus;
+            }
+            else if (isFaceType(obj2, elt2, GeomAbs_Sphere)) {
+                return DistanceType::TorusSphere;
+            }
+        }
+
+        else if (isFaceType(obj1, elt1, GeomAbs_Sphere) || isFaceType(obj2, elt2, GeomAbs_Sphere)) {
+            if (!isFaceType(obj1, elt1, GeomAbs_Sphere)) {
+                swapJCS(joint);  // make sure sphere is first if its not 2 spheres.
+                std::swap(elt1, elt2);
+                std::swap(obj1, obj2);
+            }
+
+            if (isFaceType(obj2, elt2, GeomAbs_Sphere)) {
+                return DistanceType::SphereSphere;
+            }
+        }
+    }
+    else if ((type1 == "Vertex" && type2 == "Face") || (type1 == "Face" && type2 == "Vertex")) {
+        if (type1 == "Vertex") {  // Make sure face is the first.
+            swapJCS(joint);
+            std::swap(elt1, elt2);
+            std::swap(obj1, obj2);
+        }
+        if (isFaceType(obj1, elt1, GeomAbs_Plane)) {
+            return DistanceType::PointPlane;
+        }
+        else if (isFaceType(obj1, elt1, GeomAbs_Cylinder)) {
+            return DistanceType::PointCylinder;
+        }
+        else if (isFaceType(obj1, elt1, GeomAbs_Sphere)) {
+            return DistanceType::PointSphere;
+        }
+        else if (isFaceType(obj1, elt1, GeomAbs_Cone)) {
+            return DistanceType::PointCone;
+        }
+        else if (isFaceType(obj1, elt1, GeomAbs_Torus)) {
+            return DistanceType::PointTorus;
+        }
+    }
+    else if ((type1 == "Edge" && type2 == "Face") || (type1 == "Face" && type2 == "Edge")) {
+        if (type1 == "Edge") {  // Make sure face is the first.
+            swapJCS(joint);
+            std::swap(elt1, elt2);
+            std::swap(obj1, obj2);
+        }
+        if (isEdgeType(obj2, elt2, GeomAbs_Line)) {
+            if (isFaceType(obj1, elt1, GeomAbs_Plane)) {
+                return DistanceType::LinePlane;
+            }
+            else if (isFaceType(obj1, elt1, GeomAbs_Cylinder)) {
+                return DistanceType::LineCylinder;
+            }
+            else if (isFaceType(obj1, elt1, GeomAbs_Sphere)) {
+                return DistanceType::LineSphere;
+            }
+            else if (isFaceType(obj1, elt1, GeomAbs_Cone)) {
+                return DistanceType::LineCone;
+            }
+            else if (isFaceType(obj1, elt1, GeomAbs_Torus)) {
+                return DistanceType::LineTorus;
+            }
+        }
+        else {
+            // For other curves we consider them as planes for now. Can be refined later.
+            if (isFaceType(obj1, elt1, GeomAbs_Plane)) {
+                return DistanceType::CurvePlane;
+            }
+            else if (isFaceType(obj1, elt1, GeomAbs_Cylinder)) {
+                return DistanceType::CurveCylinder;
+            }
+            else if (isFaceType(obj1, elt1, GeomAbs_Sphere)) {
+                return DistanceType::CurveSphere;
+            }
+            else if (isFaceType(obj1, elt1, GeomAbs_Cone)) {
+                return DistanceType::CurveCone;
+            }
+            else if (isFaceType(obj1, elt1, GeomAbs_Torus)) {
+                return DistanceType::CurveTorus;
+            }
+        }
+    }
+    else if ((type1 == "Vertex" && type2 == "Edge") || (type1 == "Edge" && type2 == "Vertex")) {
+        if (type1 == "Vertex") {  // Make sure edge is the first.
+            swapJCS(joint);
+            std::swap(elt1, elt2);
+            std::swap(obj1, obj2);
+        }
+        if (isEdgeType(obj1, elt1, GeomAbs_Line)) {  // Point on line joint.
+            return DistanceType::PointLine;
+        }
+        else {
+            // For other curves we do a point in plane-of-the-curve.
+            // Maybe it would be best tangent / distance to the conic? For arcs and
+            // circles we could use ASMTRevSphJoint. But is it better than pointInPlane?
+            return DistanceType::PointCurve;
+        }
+    }
+    return DistanceType::Other;
 }
 
 void AssemblyObject::setJointActivated(App::DocumentObject* joint, bool val)
@@ -1571,6 +2034,18 @@ double AssemblyObject::getJointDistance(App::DocumentObject* joint)
     double distance = 0.0;
 
     auto* prop = dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("Distance"));
+    if (prop) {
+        distance = prop->getValue();
+    }
+
+    return distance;
+}
+
+double AssemblyObject::getJointDistance2(App::DocumentObject* joint)
+{
+    double distance = 0.0;
+
+    auto* prop = dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("Distance2"));
     if (prop) {
         distance = prop->getValue();
     }

@@ -41,7 +41,7 @@
 #include "SketchObjectSF.h"
 #include "SketchPy.h"
 #include "SolverGeometryExtension.h"
-
+#include "Measure.h"
 
 namespace Sketcher
 {
@@ -94,6 +94,10 @@ PyMOD_INIT_FUNC(Sketcher)
     Sketcher::Sketch ::init();
     Sketcher::Constraint ::init();
     Sketcher::PropertyConstraintList ::init();
+
+    // connect to unified measurement facility
+    Sketcher::Measure ::initialize();
+
 
     Base::Console().Log("Loading Sketcher module... done\n");
 

@@ -36,10 +36,11 @@ import FreeCAD
 from FreeCAD import Console
 
 import Fem
+from builtins import open as pyopen
 
 
 # ********* generic FreeCAD import and export methods *********
-pyopen = open
+
 
 
 def open(

@@ -104,6 +104,7 @@
 #include "ViewProviderFeature.h"
 #include "ViewProviderGeoFeatureGroup.h"
 #include "ViewProviderGeometryObject.h"
+#include "ViewProviderGeometryObjectPy.h"
 #include "ViewProviderGroupExtension.h"
 #include "ViewProviderSuppressibleExtension.h"
 #include "ViewProviderImagePlane.h"
@@ -128,6 +129,7 @@
 #include "WorkbenchManager.h"
 #include "WorkbenchManipulator.h"
 #include "WidgetFactory.h"
+#include "3Dconnexion/navlib/NavlibInterface.h"
 
 
 using namespace Gui;
@@ -468,6 +470,8 @@ Application::Application(bool GUIenabled)
         Base::Interpreter().addType(&ViewProviderPy::Type, module, "ViewProvider");
         Base::Interpreter().addType(
             &ViewProviderDocumentObjectPy::Type, module, "ViewProviderDocumentObject");
+        Base::Interpreter().addType(
+            &ViewProviderGeometryObjectPy::Type, module, "ViewProviderGeometryObject");
         Base::Interpreter().addType(&ViewProviderLinkPy::Type, module, "ViewProviderLink");
     }
 
@@ -512,6 +516,11 @@ Application::Application(bool GUIenabled)
     // instantiate the workbench dictionary
     _pcWorkbenchDictionary = PyDict_New();
 
+#ifdef USE_3DCONNEXION_NAVLIB
+    // Instantiate the 3Dconnexion controller
+    pNavlibInterface = new NavlibInterface();
+#endif
+
     if (GUIenabled) {
         createStandardOperations();
         MacroCommand::load();
@@ -521,6 +530,9 @@ Application::Application(bool GUIenabled)
 Application::~Application()
 {
     Base::Console().Log("Destruct Gui::Application\n");
+#ifdef USE_3DCONNEXION_NAVLIB
+    delete pNavlibInterface;
+#endif
     WorkbenchManager::destruct();
     WorkbenchManipulator::removeAll();
     SelectionSingleton::destruct();
@@ -803,8 +815,7 @@ void Application::createStandardOperations()
 void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
 {
 #ifdef FC_DEBUG
-    std::map<const App::Document*, Gui::Document*>::const_iterator it = d->documents.find(&Doc);
-    assert(it==d->documents.end());
+    assert(d->documents.find(&Doc) == d->documents.end());
 #endif
     auto pDoc = new Gui::Document(const_cast<App::Document*>(&Doc),this);
     d->documents[&Doc] = pDoc;
@@ -2120,6 +2131,10 @@ void Application::runApplication()
     // boot phase reference point
     // https://forum.freecad.org/viewtopic.php?f=10&t=21665
     Gui::getMainWindow()->setProperty("eventLoop", true);
+
+#ifdef USE_3DCONNEXION_NAVLIB
+    Instance->pNavlibInterface->enableNavigation();
+#endif
 
     runEventLoop(mainApp);
 

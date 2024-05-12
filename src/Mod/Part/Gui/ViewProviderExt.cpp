@@ -96,6 +96,19 @@ FC_LOG_LEVEL_INIT("Part", true, true)
 
 using namespace PartGui;
 
+// Helper functions to consistently convert between float and long
+namespace {
+float fromPercent(long value)
+{
+    return static_cast<float>(value) / 100.0F;
+}
+
+long toPercent(float value)
+{
+    return static_cast<long>(100.0 * value + 0.5);
+}
+}
+
 PROPERTY_SOURCE(PartGui::ViewProviderPartExt, Gui::ViewProviderGeometryObject)
 
 
@@ -162,7 +175,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY_TYPE(LineColor, (lmat.diffuseColor), osgroup, App::Prop_None, "Set object line color.");
     ADD_PROPERTY_TYPE(PointColor, (vmat.diffuseColor), osgroup, App::Prop_None, "Set object point color");
     ADD_PROPERTY_TYPE(PointColorArray, (PointColor.getValue()), osgroup, App::Prop_None, "Object point color array.");
-    ADD_PROPERTY_TYPE(DiffuseColor,(ShapeColor.getValue()), osgroup, App::Prop_None, "Object diffuse color.");
+    ADD_PROPERTY_TYPE(DiffuseColor,(ShapeAppearance.getDiffuseColors()), osgroup, App::Prop_None, "Object diffuse color.");
     ADD_PROPERTY_TYPE(LineColorArray,(LineColor.getValue()), osgroup, App::Prop_None, "Object line color array.");
     ADD_PROPERTY_TYPE(LineWidth,(lwidth), osgroup, App::Prop_None, "Set object line width.");
     LineWidth.setConstraints(&sizeRange);
@@ -318,27 +331,31 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     else if (prop == &DiffuseColor) {
         setHighlightedFaces(DiffuseColor.getValues());
     }
-    else if (prop == &ShapeMaterial || prop == &ShapeColor) {
+    else if (prop == &ShapeAppearance) {
         pcFaceBind->value = SoMaterialBinding::OVERALL;
         ViewProviderGeometryObject::onChanged(prop);
-        App::Color c = ShapeColor.getValue();
-        c.a = Transparency.getValue()/100.0f;
-        DiffuseColor.setValue(c);
+        // While restoring a document do not override the
+        // DiffuseColor that has already been restored
+        if (!isRestoring()) {
+            App::Color c = ShapeAppearance.getDiffuseColor();
+            c.a = fromPercent(Transparency.getValue());
+            DiffuseColor.setValue(c);
+        }
     }
     else if (prop == &Transparency) {
-        const App::Material& Mat = ShapeMaterial.getValue();
-        long value = (long)(100*Mat.transparency);
+        const App::Material& Mat = ShapeAppearance[0];
+        long value = toPercent(Mat.transparency);
         if (value != Transparency.getValue()) {
-            float trans = Transparency.getValue()/100.0f;
+            float trans = fromPercent(Transparency.getValue());
             auto colors = DiffuseColor.getValues();
             for (auto &c : colors)
                 c.a = trans;
             DiffuseColor.setValues(colors);
 
-            App::PropertyContainer* parent = ShapeMaterial.getContainer();
-            ShapeMaterial.setContainer(nullptr);
-            ShapeMaterial.setTransparency(trans);
-            ShapeMaterial.setContainer(parent);
+            App::PropertyContainer* parent = ShapeAppearance.getContainer();
+            ShapeAppearance.setContainer(nullptr);
+            ShapeAppearance.setTransparency(trans);
+            ShapeAppearance.setContainer(parent);
         }
     }
     else if (prop == &Lighting) {
@@ -652,7 +669,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
     std::map<std::string,App::Color> ret;
 
     if(!element || !element[0]) {
-        auto color = ShapeColor.getValue();
+        auto color = ShapeAppearance.getDiffuseColor();
         color.a = Transparency.getValue()/100.0f;
         ret["Face"] = color;
         ret["Edge"] = LineColor.getValue();
@@ -663,7 +680,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
     if(boost::starts_with(element,"Face")) {
         auto size = DiffuseColor.getSize();
         if(element[4]=='*') {
-            auto color = ShapeColor.getValue();
+            auto color = ShapeAppearance.getDiffuseColor();
             color.a = Transparency.getValue()/100.0f;
             bool singleColor = true;
             for(int i=0;i<size;++i) {
@@ -682,7 +699,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
             if(idx>0 && idx<=size)
                 ret[element] = DiffuseColor[idx-1];
             else
-                ret[element] = ShapeColor.getValue();
+                ret[element] = ShapeAppearance.getDiffuseColor();
             if(size==1)
                 ret[element].a = Transparency.getValue()/100.0f;
         }
@@ -845,6 +862,21 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
         }
     }
     Gui::ViewProviderGeometryObject::updateData(prop);
+}
+
+void ViewProviderPartExt::startRestoring()
+{
+    Gui::ViewProviderGeometryObject::startRestoring();
+}
+
+void ViewProviderPartExt::finishRestoring()
+{
+    // The ShapeAppearance property is restored after DiffuseColor
+    // and currently sets a single color.
+    // In case DiffuseColor has defined multiple colors they will
+    // be passed to the scene graph now.
+    DiffuseColor.touch();
+    Gui::ViewProviderGeometryObject::finishRestoring();
 }
 
 void ViewProviderPartExt::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

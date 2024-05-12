@@ -58,6 +58,7 @@
 
 #ifdef FC_USE_VTK
 #include <Mod/Fem/App/FemPostPipeline.h>
+#include <Mod/Fem/Gui/ViewProviderFemPostObject.h>
 #endif
 
 
@@ -577,6 +578,9 @@ void CmdFemConstraintHeatflux::activated(int)
               FeatName.c_str());  // OvG: set default not equal to 0
     doCommand(Doc,
               "App.activeDocument().%s.FilmCoef = 10.0",
+              FeatName.c_str());  // OvG: set default not equal to 0
+    doCommand(Doc,
+              "App.activeDocument().%s.Emissivity = 1.0",
               FeatName.c_str());  // OvG: set default not equal to 0
     doCommand(Doc,
               "App.activeDocument().%s.Scale = 1",
@@ -1687,6 +1691,22 @@ void setupFilter(Gui::Command* cmd, std::string Name)
     if (!selectionIsPipeline) {
         femFilter->Input.setValue(selObject);
     }
+
+    femFilter->Data.setValue(static_cast<Fem::FemPostObject*>(selObject)->Data.getValue());
+    auto selObjectView = static_cast<FemGui::ViewProviderFemPostObject*>(
+        Gui::Application::Instance->getViewProvider(selObject));
+
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().ActiveObject.ViewObject.Field = \"%s\"",
+                   selObjectView->Field.getValueAsString());
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().ActiveObject.ViewObject.VectorMode = \"%s\"",
+                   selObjectView->VectorMode.getValueAsString());
+
+    // hide selected filter
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().%s.ViewObject.Visibility = False",
+                   selObject->getNameInDocument());
 
     cmd->updateActive();
     // open the dialog to edit the filter

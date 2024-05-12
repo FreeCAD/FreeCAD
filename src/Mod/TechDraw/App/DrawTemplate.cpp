@@ -100,6 +100,32 @@ DrawPage* DrawTemplate::getParentPage() const
     return page;
 }
 
+// Return the counts related to pages, namely collated page index and total page count
+std::pair<int, int> DrawTemplate::getPageNumbers() const
+{
+    std::vector<DocumentObject *> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    std::vector<QString> pageNames;
+    for (auto page : pages) {
+        if (page->isAttachedToDocument() &&
+            !page->testStatus(App::ObjectStatus::Remove)) {
+            pageNames.push_back(QString::fromUtf8(page->Label.getValue()));
+        }
+    }
+    QCollator collator;
+    std::sort(pageNames.begin(), pageNames.end(), collator);
+
+    int pos = 0;
+    DrawPage *page = getParentPage();
+    if (page) {
+        auto it = std::find(pageNames.begin(), pageNames.end(), QString::fromUtf8(page->Label.getValue()));
+        if (it != pageNames.end()) {
+            pos = it - pageNames.begin() + 1;
+        }
+    }
+
+    return std::pair<int, int>(pos, (int) pageNames.size());
+}
+
 QString DrawTemplate::getAutofillValue(const QString &id) const
 {
     // author
@@ -133,29 +159,22 @@ QString DrawTemplate::getAutofillValue(const QString &id) const
     }
     // sheet
     else if (id.compare(QString::fromUtf8(Autofill::Sheet)) == 0) {
-        std::vector<DocumentObject *> pages = getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-        std::vector<QString> pageNames;
-        for (auto page : pages) {
-            pageNames.push_back(QString::fromUtf8(page->Label.getValue()));
-        }
-
-        QCollator collator;
-        std::sort(pageNames.begin(), pageNames.end(), collator);
-
-        int pos = 0;
-        DrawPage *page = getParentPage();
-        if (page) {
-            auto it = std::find(pageNames.begin(), pageNames.end(), QString::fromUtf8(page->Label.getValue()));
-            if (it != pageNames.end()) {
-                pos = it - pageNames.begin() + 1;
-            }
-        }
-
-        return QString::asprintf("%d / %d", pos, (int) pageNames.size());
+        std::pair<int, int> pageNumbers = getPageNumbers();
+        return QString::asprintf("%d / %d", pageNumbers.first, pageNumbers.second);
     }
     // title
     else if (id.compare(QString::fromUtf8(Autofill::Title)) == 0) {
         return QString::fromUtf8(getDocument()->Label.getValue());
+    }
+    // page number
+    else if (id.compare(QString::fromUtf8(Autofill::PageNumber)) == 0) {
+        std::pair<int, int> pageNumbers = getPageNumbers();
+        return QString::number(pageNumbers.first);
+    }
+    // page total
+    else if (id.compare(QString::fromUtf8(Autofill::PageCount)) == 0) {
+        std::pair<int, int> pageNumbers = getPageNumbers();
+        return QString::number(pageNumbers.second);
     }
 
     return QString();

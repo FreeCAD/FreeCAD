@@ -63,12 +63,3 @@ void ConstraintPressure::handleChangedPropertyType(Base::XMLReader& reader,
         Constraint::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
-
-void ConstraintPressure::onChanged(const App::Property* prop)
-{
-    Constraint::onChanged(prop);
-
-    if (prop == &Reversed) {
-        Points.touch();
-    }
-}

@@ -31,6 +31,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
@@ -99,6 +100,16 @@ bool ViewProviderSheet::setEdit(int ModNum)
 
 bool ViewProviderSheet::doubleClicked()
 {
+    // assure the SpreadSheet workbench
+    if (App::GetApplication()
+            .GetUserParameter()
+            .GetGroup("BaseApp")
+            ->GetGroup("Preferences")
+            ->GetGroup("Mod/Spreadsheet")
+            ->GetBool("SwitchToWB", true)) {
+        Gui::Command::assureWorkbench("SpreadsheetWorkbench");
+    }
+
     if (!this->view) {
         showSpreadsheetView();
         view->viewAll();

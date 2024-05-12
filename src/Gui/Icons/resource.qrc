@@ -12,6 +12,7 @@
         <file>list-add.svg</file>
         <file>freecad.svg</file>
         <file>freecad-doc.png</file>
+        <file>freecad-doc.svg</file>
         <file>bulb.svg</file>
         <file>TextDocument.svg</file>
         <file>button_down.svg</file>
@@ -134,6 +135,7 @@
         <file>view-rotate-right.svg</file>
         <file>view-measurement.svg</file>
         <file>view-measurement-cross.svg</file>
+        <file>umf-measurement.svg</file> 
         <file>Tree_Annotation.svg</file>
         <file>Tree_Dimension.svg</file>
         <file>Tree_Python.svg</file>
@@ -275,6 +277,11 @@
         <file>image-scaling.svg</file>
         <file>VarSet.svg</file>
         <file>Std_ToggleFreeze.svg</file>
+        <file>3dx_pivot.png</file>
+        <file>overlay_recompute.svg</file>
+        <file>overlay_error.svg</file>
+        <file>feature_suppressed.svg</file>
+        <file>forbidden.svg</file>
     </qresource>
     <qresource prefix="/icons/FreeCAD-default">
         <file>index.theme</file>

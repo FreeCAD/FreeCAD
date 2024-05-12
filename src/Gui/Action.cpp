@@ -36,7 +36,6 @@
 # include <QToolBar>
 # include <QToolButton>
 # include <QToolTip>
-# include <QMenuBar>
 #endif
 
 #include <Base/Exception.h>
@@ -55,11 +54,11 @@
 #include "Macro.h"
 #include "MainWindow.h"
 #include "PythonEditor.h"
-#include "UserSettings.h"
 #include "WhatsThis.h"
 #include "Widgets.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
+#include "WorkbenchSelector.h"
 #include "ShortcutManager.h"
 #include "Tools.h"
 
@@ -614,43 +613,6 @@ void ActionGroup::onHovered (QAction *act)
 }
 
 
-// --------------------------------------------------------------------
-
-WorkbenchComboBox::WorkbenchComboBox(QWidget* parent) : QComboBox(parent)
-{
-}
-
-void WorkbenchComboBox::showPopup()
-{
-    int rows = count();
-    if (rows > 0) {
-        int height = view()->sizeHintForRow(0);
-        int maxHeight = QApplication::primaryScreen()->size().height();
-        view()->setMinimumHeight(qMin(height * rows, maxHeight/2));
-    }
-
-    QComboBox::showPopup();
-}
-
-void WorkbenchComboBox::refreshList(QList<QAction*> actionList)
-{
-    clear();
-
-    for (QAction* action : actionList) {
-        QIcon icon = action->icon();
-        if (icon.isNull()) {
-            this->addItem(action->text());
-        }
-        else {
-            this->addItem(icon, action->text());
-        }
-
-        if (action->isChecked()) {
-            this->setCurrentIndex(this->count() - 1);
-        }
-    }
-}
-
 /* TRANSLATOR Gui::WorkbenchGroup */
 WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
   : ActionGroup( pcCmd, parent )
@@ -667,37 +629,23 @@ WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
 
 void WorkbenchGroup::addTo(QWidget *widget)
 {
-    auto setupBox = [&](WorkbenchComboBox* box) {
-        box->setIconSize(QSize(16, 16));
-        box->setToolTip(toolTip());
-        box->setStatusTip(action()->statusTip());
-        box->setWhatsThis(action()->whatsThis());
-        box->refreshList(actions());
-        connect(this, &WorkbenchGroup::workbenchListRefreshed, box, &WorkbenchComboBox::refreshList);
-        connect(groupAction(), &QActionGroup::triggered, box, [this, box](QAction* action) {
-            box->setCurrentIndex(actions().indexOf(action));
-        });
-        connect(box, qOverload<int>(&WorkbenchComboBox::activated), this, [this](int index) {
-            actions()[index]->trigger();
-        });
-    };
     if (widget->inherits("QToolBar")) {
-        auto* box = new WorkbenchComboBox(widget);
-        setupBox(box);
+        ParameterGrp::handle hGrp;
+        hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
+        QWidget* wbSel;
+        if (hGrp->GetInt("WorkbenchSelectorType", 0) == 0) {
+            wbSel = new WorkbenchComboBox(this, widget);
+        }
+        else {
+            wbSel = new WorkbenchTabWidget(this, widget);
+        }
 
-        qobject_cast<QToolBar*>(widget)->addWidget(box);
-    }
-    else if (widget->inherits("QMenuBar")) {
-        auto* box = new WorkbenchComboBox(widget);
-        setupBox(box);
-
-        bool left = WorkbenchSwitcher::isLeftCorner(WorkbenchSwitcher::getValue());
-        qobject_cast<QMenuBar*>(widget)->setCornerWidget(box, left ? Qt::TopLeftCorner : Qt::TopRightCorner);
+        static_cast<QToolBar*>(widget)->addWidget(wbSel);
     }
     else if (widget->inherits("QMenu")) {
         auto menu = qobject_cast<QMenu*>(widget);
         menu = menu->addMenu(action()->text());
-        menu->addActions(actions());
+        menu->addActions(getEnabledWbActions());
 
         connect(this, &WorkbenchGroup::workbenchListRefreshed, this, [menu](QList<QAction*> actions) {
             menu->clear();
@@ -715,11 +663,10 @@ void WorkbenchGroup::refreshWorkbenchList()
         groupAction()->removeAction(action);
         delete action;
     }
+    enabledWbsActions.clear();
+    disabledWbsActions.clear();
 
-    std::string activeWbName = "";
-    Workbench* activeWB = WorkbenchManager::instance()->active();
-    if (activeWB)
-        activeWbName = activeWB->name();
+    std::string activeWbName = WorkbenchManager::instance()->activeName();
 
     // Create action list of enabled wb
     int index = 0;
@@ -741,12 +688,33 @@ void WorkbenchGroup::refreshWorkbenchList()
         if (wbName.toStdString() == activeWbName) {
             action->setChecked(true);
         }
+        enabledWbsActions.push_back(action);
+        index++;
+    }
 
+    // Also create action list of disabled wbs
+    QStringList disabled_wbs_list = DlgSettingsWorkbenchesImp::getDisabledWorkbenches();
+    for (const auto& wbName : disabled_wbs_list) {
+        QString name = Application::Instance->workbenchMenuText(wbName);
+        QPixmap px = Application::Instance->workbenchIcon(wbName);
+        QString tip = Application::Instance->workbenchToolTip(wbName);
+
+        QAction* action = groupAction()->addAction(name);
+        action->setCheckable(true);
+        action->setData(QVariant(index)); // set the index
+        action->setObjectName(wbName);
+        action->setIcon(px);
+        action->setToolTip(tip);
+        action->setStatusTip(tr("Select the '%1' workbench").arg(name));
+        if (wbName.toStdString() == activeWbName) {
+            action->setChecked(true);
+        }
+        disabledWbsActions.push_back(action);
         index++;
     }
 
     // Signal to the widgets (WorkbenchComboBox & menu) to update the wb list
-    workbenchListRefreshed(actions());
+    workbenchListRefreshed(enabledWbsActions);
 }
 
 void WorkbenchGroup::onWorkbenchActivated(const QString& name)
@@ -770,6 +738,16 @@ void WorkbenchGroup::onWorkbenchActivated(const QString& name)
             break;
         }
     }
+}
+
+QList<QAction*> WorkbenchGroup::getEnabledWbActions() const
+{
+    return enabledWbsActions;
+}
+
+QList<QAction*> WorkbenchGroup::getDisabledWbActions() const
+{
+    return disabledWbsActions;
 }
 
 // --------------------------------------------------------------------

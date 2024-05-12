@@ -1217,7 +1217,6 @@ class ViewProviderComponent:
                         if len(obj.Base.ViewObject.DiffuseColor) > 1:
                             obj.ViewObject.DiffuseColor = obj.Base.ViewObject.DiffuseColor
                             obj.ViewObject.update()
-                        #self.onChanged(obj.ViewObject,"ShapeColor")
         elif prop == "CloneOf":
             if obj.CloneOf:
                 mat = None
@@ -1229,7 +1228,6 @@ class ViewProviderComponent:
                         if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
                             obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
                             obj.ViewObject.update()
-                            #self.onChanged(obj.ViewObject,"ShapeColor")
         return
 
     def getIcon(self):
@@ -1662,7 +1660,7 @@ class SelectionTaskPanel:
 
     def getStandardButtons(self):
         """Adds the cancel button."""
-        return int(QtGui.QDialogButtonBox.Cancel)
+        return QtGui.QDialogButtonBox.Cancel
 
     def reject(self):
         """The method run when the user selects the cancel button."""
@@ -1768,7 +1766,7 @@ class ComponentTaskPanel:
     def getStandardButtons(self):
         """Add the standard ok button."""
 
-        return int(QtGui.QDialogButtonBox.Ok)
+        return QtGui.QDialogButtonBox.Ok
 
     def check(self,wid,col):
         """This method is run as the callback when the user selects an item in the tree.

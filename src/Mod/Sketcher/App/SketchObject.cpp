@@ -261,6 +261,20 @@ void SketchObject::buildShape()
         if(GeometryFacade::getConstruction(geo))
             continue;
         if (geo->isDerivedFrom(Part::GeomPoint::getClassTypeId())) {
+#ifdef FC_USE_TNP_FIX
+            Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
+            int idx = getVertexIndexGeoPos(i-1, Sketcher::PointPos::start);
+            std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
+            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
+                                  Data::MappedName::fromRawData(name.c_str()),0L);
+            vertices.push_back(vertex);
+            vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
+        } else {
+            auto indexedName = Data::IndexedName::fromConst("Edge", i);
+            shapes.push_back(getEdge(geo,convertSubName(indexedName, false).c_str()));
+        }
+
+#else
             vertices.emplace_back(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(i-1, PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
@@ -269,6 +283,7 @@ void SketchObject::buildShape()
         } else
             shapes.push_back(getEdge(geo,convertSubName(
                         Data::IndexedName::fromConst("Edge", i), false).c_str()));
+#endif
     }
 
     // FIXME: Commented since ExternalGeometryFacade is not added
@@ -280,11 +295,14 @@ void SketchObject::buildShape()
     //     shapes.push_back(getEdge(geo, convertSubName(
     //                     Data::IndexedName::fromConst("ExternalEdge", i-1), false).c_str()));
     // }
-     if(shapes.empty() && vertices.empty())
-         Shape.setValue(Part::TopoShape());
-     else if (vertices.empty()) {
+    if(shapes.empty() && vertices.empty()) {
+        Shape.setValue(Part::TopoShape());
+        return;
+    }
+    Part::TopoShape result(0, getDocument()->getStringHasher());
+    if (vertices.empty()) {
          // Notice here we supply op code Part::OpCodes::Sketch to makEWires().
-         Shape.setValue(Part::TopoShape().makeElementWires(shapes,Part::OpCodes::Sketch));
+         result.makeElementWires(shapes,Part::OpCodes::Sketch);
      } else {
          std::vector<Part::TopoShape> results;
          if (!shapes.empty()) {
@@ -302,8 +320,10 @@ void SketchObject::buildShape()
                  results.push_back(wire);
          }
          results.insert(results.end(), vertices.begin(), vertices.end());
-         Shape.setValue(Part::TopoShape().makeElementCompound(results, Part::OpCodes::Sketch));
+         result.makeElementCompound(results, Part::OpCodes::Sketch);
      }
+    result.Tag = getID();
+    Shape.setValue(result);
 }
 
 static const char *hasSketchMarker(const char *name) {
@@ -2117,6 +2137,8 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
     Base::Vector3d p1, p2;
     PointPos PosId1 = PointPos::none;
     PointPos PosId2 = PointPos::none;
+    PointPos filletPosId1 = PointPos::none;
+    PointPos filletPosId2 = PointPos::none;
     int filletId;
 
     if (geo1->is<Part::GeomLineSegment>() && geo2->is<Part::GeomLineSegment>()) {
@@ -2146,11 +2168,11 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             return -1;
         }
 
-        p1 = arc->getStartPoint();
-        p2 = arc->getEndPoint();
+        p1 = arc->getStartPoint(/*emulateCCW=*/true);
+        p2 = arc->getEndPoint(/*emulateCCW=*/true);
 
-        dist1.ProjectToLine(arc->getStartPoint(/*emulateCCW=*/true) - intersection, dir1);
-        dist2.ProjectToLine(arc->getStartPoint(/*emulateCCW=*/true) - intersection, dir2);
+        dist1.ProjectToLine(p1 - intersection, dir1);
+        dist2.ProjectToLine(p1 - intersection, dir2);
         filletId = addGeometry(arc.get());
 
         if (trim) {
@@ -2165,6 +2187,19 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
                 delConstraintOnPoint(GeoId2, PosId2, false);
             }
 
+            if (dist1.Length() < dist2.Length()) {
+                filletPosId1 = PointPos::start;
+                filletPosId2 = PointPos::end;
+                movePoint(GeoId1, PosId1, p1, false, true);
+                movePoint(GeoId2, PosId2, p2, false, true);
+            }
+            else {
+                filletPosId1 = PointPos::end;
+                filletPosId2 = PointPos::start;
+                movePoint(GeoId1, PosId1, p2, false, true);
+                movePoint(GeoId2, PosId2, p1, false, true);
+            }
+
             auto tangent1 = std::make_unique<Sketcher::Constraint>();
             auto tangent2 = std::make_unique<Sketcher::Constraint>();
 
@@ -2172,24 +2207,13 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             tangent1->First = GeoId1;
             tangent1->FirstPos = PosId1;
             tangent1->Second = filletId;
+            tangent1->SecondPos = filletPosId1;
 
             tangent2->Type = Sketcher::Tangent;
             tangent2->First = GeoId2;
             tangent2->FirstPos = PosId2;
             tangent2->Second = filletId;
-
-            if (dist1.Length() < dist2.Length()) {
-                tangent1->SecondPos = PointPos::start;
-                tangent2->SecondPos = PointPos::end;
-                movePoint(GeoId1, PosId1, arc->getStartPoint(/*emulateCCW=*/true), false, true);
-                movePoint(GeoId2, PosId2, arc->getEndPoint(/*emulateCCW=*/true), false, true);
-            }
-            else {
-                tangent1->SecondPos = PointPos::end;
-                tangent2->SecondPos = PointPos::start;
-                movePoint(GeoId1, PosId1, arc->getEndPoint(/*emulateCCW=*/true), false, true);
-                movePoint(GeoId2, PosId2, arc->getStartPoint(/*emulateCCW=*/true), false, true);
-            }
+            tangent2->SecondPos = filletPosId2;
 
             addConstraint(std::move(tangent1));
             addConstraint(std::move(tangent2));
@@ -2620,8 +2644,8 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         arc->setCenter(filletcenterpoint.first);
         arc->setRange(startAngle, endAngle, /*emulateCCWXY=*/true);
 
-        p1 = arc->getStartPoint();
-        p2 = arc->getEndPoint();
+        p1 = arc->getStartPoint(true);
+        p2 = arc->getEndPoint(true);
 
         // add arc to sketch geometry
         filletId = addGeometry(arc);
@@ -2655,6 +2679,21 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             delConstraintOnPoint(GeoId1, PosId1, false);
             delConstraintOnPoint(GeoId2, PosId2, false);
 
+            double dist1 = (refp1 - p1).Length();
+            double dist2 = (refp1 - p2).Length();
+
+            if (dist1 < dist2) {
+                filletPosId1 = PointPos::start;
+                filletPosId2 = PointPos::end;
+                movePoint(GeoId1, PosId1, p1, false, true);
+                movePoint(GeoId2, PosId2, p2, false, true);
+            }
+            else {
+                filletPosId1 = PointPos::end;
+                filletPosId2 = PointPos::start;
+                movePoint(GeoId1, PosId1, p2, false, true);
+                movePoint(GeoId2, PosId2, p1, false, true);
+            }
 
             auto* tangent1 = new Sketcher::Constraint();
             auto* tangent2 = new Sketcher::Constraint();
@@ -2663,29 +2702,13 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             tangent1->First = GeoId1;
             tangent1->FirstPos = PosId1;
             tangent1->Second = filletId;
+            tangent1->SecondPos = filletPosId1;
 
             tangent2->Type = Sketcher::Tangent;
             tangent2->First = GeoId2;
             tangent2->FirstPos = PosId2;
             tangent2->Second = filletId;
-
-            double dist1 = (refp1 - arc->getStartPoint(true)).Length();
-            double dist2 = (refp1 - arc->getEndPoint(true)).Length();
-
-            // Base::Console().Log("dists_refpoint_to_arc_sp_ep: (%f);(%f)",dist1,dist2);
-
-            if (dist1 < dist2) {
-                tangent1->SecondPos = PointPos::start;
-                tangent2->SecondPos = PointPos::end;
-                movePoint(GeoId1, PosId1, arc->getStartPoint(true), false, true);
-                movePoint(GeoId2, PosId2, arc->getEndPoint(true), false, true);
-            }
-            else {
-                tangent1->SecondPos = PointPos::end;
-                tangent2->SecondPos = PointPos::start;
-                movePoint(GeoId1, PosId1, arc->getEndPoint(true), false, true);
-                movePoint(GeoId2, PosId2, arc->getStartPoint(true), false, true);
-            }
+            tangent2->SecondPos = filletPosId2;
 
             addConstraint(tangent1);
             addConstraint(tangent2);
@@ -2709,16 +2732,17 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         line->setPoints(p1, p2);
         int lineGeoId = addGeometry(line.get());
 
+
         auto coinc1 = std::make_unique<Sketcher::Constraint>();
         auto coinc2 = std::make_unique<Sketcher::Constraint>();
 
         coinc1->Type = Sketcher::Coincident;
         coinc1->First = lineGeoId;
-        coinc1->FirstPos = PointPos::start;
+        coinc1->FirstPos = filletPosId1;
 
         coinc2->Type = Sketcher::Coincident;
         coinc2->First = lineGeoId;
-        coinc2->FirstPos = PointPos::end;
+        coinc2->FirstPos = filletPosId2;
 
         if (trim) {
             coinc1->Second = GeoId1;
@@ -4486,7 +4510,6 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
     if (refIsLine) {
         const Part::Geometry* georef = getGeometry(refGeoId);
         if (!georef->is<Part::GeomLineSegment>()) {
-            Base::Console().Error("Reference for symmetric is neither a point nor a line.\n");
             return {};
         }
 
@@ -6505,9 +6528,7 @@ bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
         int maxdegree = cdegree - degreedecrement;
         if (maxdegree == 0)
             return false;
-        bool ok = bspline->approximate(Precision::Confusion(), 20, maxdegree, 0);
-        if (!ok)
-            return false;
+        bspline->approximate(Precision::Confusion(), 20, maxdegree, GeomAbs_C0);
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
@@ -7413,6 +7434,7 @@ void SketchObject::validateExternalLinks()
         const std::string SubElement = SubElements[i];
 
         TopoDS_Shape refSubShape;
+        bool removeBadLink = false;
         try {
             if (Obj->isDerivedFrom<Part::Datum>()) {
                 const Part::Datum* datum = static_cast<const Part::Datum*>(Obj);
@@ -7424,7 +7446,15 @@ void SketchObject::validateExternalLinks()
                 refSubShape = refShape.getSubShape(SubElement.c_str());
             }
         }
+        catch ( Base::IndexError& indexError) {
+            removeBadLink = true;
+            Base::Console().Warning(
+                this->getFullLabel(), (indexError.getMessage() + "\n").c_str());
+        }
         catch (Standard_Failure&) {
+            removeBadLink = true;
+        }
+        if ( removeBadLink ) {
             rebuild = true;
             Objects.erase(Objects.begin() + i);
             SubElements.erase(SubElements.begin() + i);

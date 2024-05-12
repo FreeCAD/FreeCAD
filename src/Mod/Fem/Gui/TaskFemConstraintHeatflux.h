@@ -48,6 +48,7 @@ public:
     double getAmbientTemp() const;
     /*double getFaceTemp(void) const;*/
     double getFilmCoef() const;
+    double getEmissivity() const;
     std::string get_constraint_type() const;
     const std::string getReferences() const override;
 
@@ -56,8 +57,10 @@ private Q_SLOTS:
     void onAmbientTempChanged(double val);
     /*void onFaceTempChanged(double val);*/
     void onFilmCoefChanged(double val);
+    void onEmissivityChanged(double val);
     void onHeatFluxChanged(double val);
     void Conv();
+    void Rad();
     void Flux();
     void addToSelection() override;
     void removeFromSelection() override;

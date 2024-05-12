@@ -34,7 +34,7 @@ from draftutils.messages import _wrn
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui, QtSvg
+    from PySide import QtCore, QtGui, QtSvgWidgets
     from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import draftguitools.gui_trackers as DraftTrackers
@@ -426,7 +426,7 @@ class _CommandWindow:
         self.pic.hide()
 
         # SVG display
-        self.im = QtSvg.QSvgWidget(":/ui/ParametersWindowFixed.svg")
+        self.im = QtSvgWidgets.QSvgWidget(":/ui/ParametersWindowFixed.svg")
         self.im.setMaximumWidth(200)
         self.im.setMinimumHeight(120)
         grid.addWidget(self.im,4,0,1,2)
@@ -1503,7 +1503,7 @@ class _ArchWindowTaskPanel:
 
     def getStandardButtons(self):
 
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def check(self,wid,col):
 

@@ -42,6 +42,7 @@ public:
     App::PropertyFloat AmbientTemp;
     /*App::PropertyFloat FaceTemp;*/
     App::PropertyFloat FilmCoef;
+    App::PropertyFloat Emissivity;
     App::PropertyFloat DFlux;
     App::PropertyEnumeration ConstraintType;
 

@@ -1594,15 +1594,19 @@ void OverlayManager::onDockVisibleChange(bool visible)
 void OverlayManager::onDockFeaturesChange(QDockWidget::DockWidgetFeatures features)
 {
     Q_UNUSED(features);
+
     auto dw = qobject_cast<QDockWidget*>(sender());
-    if (!dw)
+
+    if (!dw) {
         return;
+    }
 
     // Rebuild the title widget as it may have a different set of buttons shown.
-    if (QWidget *titleBarWidget = dw->titleBarWidget()) {
+    if (auto *titleBarWidget = qobject_cast<OverlayTitleBar*>(dw->titleBarWidget())) {
         dw->setTitleBarWidget(nullptr);
         delete titleBarWidget;
     }
+
     setupTitleBar(dw);
 }
 
@@ -1787,8 +1791,8 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
             if(!isTreeViewDragging())
                 d->interceptEvent(d->_trackingWidget, ev);
             if(isTreeViewDragging()
-                    || ev->type() == QEvent::MouseButtonRelease
-                    || QApplication::mouseButtons() == Qt::NoButton)
+                    || (ev->type() == QEvent::MouseButtonRelease
+                    && QApplication::mouseButtons() == Qt::NoButton))
             {
                 d->_trackingWidget = nullptr;
                 if (d->_trackingOverlay == grabber

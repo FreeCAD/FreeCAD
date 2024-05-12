@@ -117,7 +117,6 @@ def call_pip(args) -> List[str]:
 
 
 class PythonPackageManager:
-
     """A GUI-based pip interface allowing packages to be updated, either individually or all at
     once."""
 
@@ -292,7 +291,6 @@ class PythonPackageManager:
         # Package    Version
         # ---------- -------
         # gitdb      4.0.9
-        # GitPython  3.1.27
         # setuptools 41.2.0
 
         # Outdated Packages output looks like this:

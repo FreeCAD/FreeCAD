@@ -33,6 +33,11 @@
 
 #include "QGIView.h"
 
+class QColor;
+
+namespace App {
+class Color;
+}
 
 namespace TechDraw {
 class DrawViewPart;
@@ -86,6 +91,7 @@ public:
     virtual void drawAllHighlights();
     virtual void drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b);
     virtual void drawMatting();
+    virtual void drawBreakLines();
     bool showSection;
 
     void draw() override;
@@ -132,6 +138,7 @@ protected:
     void removeDecorations();
     bool prefFaceEdges();
     bool prefPrintCenters();
+    App::Color prefBreaklineColor();
 
     bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
     bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);

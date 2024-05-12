@@ -66,7 +66,7 @@ public:
     const char* getEditorName() const override { return "Gui::PropertyEditor::PropertyIntegerItem"; }
 
     PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    void setPyObject(PyObject* py) override;
 
     void Save (Base::Writer &writer) const override;
     void Restore(Base::XMLReader &reader) override;
@@ -80,8 +80,9 @@ public:
     const boost::any getPathValue(const App::ObjectIdentifier & /*path*/) const override { return _lValue; }
 
     bool isSame(const Property &other) const override {
-        if (&other == this)
+        if (&other == this) {
             return true;
+        }
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
@@ -117,7 +118,7 @@ public:
     const char* getEditorName() const override { return "Gui::PropertyEditor::PropertyPathItem"; }
 
     PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    void setPyObject(PyObject* py) override;
 
     void Save (Base::Writer &writer) const override;
     void Restore(Base::XMLReader &reader) override;
@@ -128,8 +129,9 @@ public:
     unsigned int getMemSize () const override;
 
     bool isSame(const Property &other) const override {
-        if (&other == this)
+        if (&other == this) {
             return true;
+        }
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
@@ -216,7 +218,7 @@ public:
     void setEditorName(const char* name) { _editorTypeName = name; }
 
     PyObject * getPyObject() override;
-    void setPyObject(PyObject *) override;
+    void setPyObject(PyObject* py) override;
 
     void Save(Base::Writer &writer) const override;
     void Restore(Base::XMLReader &reader) override;
@@ -230,8 +232,9 @@ public:
     bool getPyPathValue(const ObjectIdentifier &path, Py::Object &r) const override;
 
     bool isSame(const Property &other) const override {
-        if (&other == this)
+        if (&other == this) {
             return true;
+        }
         return getTypeId() == other.getTypeId()
             && getEnum() == static_cast<decltype(this)>(&other)->getEnum();
     }
@@ -307,7 +310,7 @@ public:
     long getStepSize() const;
 
     const char* getEditorName() const override { return "Gui::PropertyEditor::PropertyIntegerConstraintItem"; }
-    void setPyObject(PyObject *) override;
+    void setPyObject(PyObject* py) override;
 
 protected:
     const Constraints* _ConstStruct{nullptr};
@@ -399,7 +402,7 @@ public:
     const std::set<long> &getValues() const{return _lValueSet;}
 
     PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    void setPyObject(PyObject* py) override;
 
     void Save (Base::Writer &writer) const override;
     void Restore(Base::XMLReader &reader) override;
@@ -409,8 +412,9 @@ public:
     unsigned int getMemSize () const override;
 
     bool isSame(const Property &other) const override {
-        if (&other == this)
+        if (&other == this) {
             return true;
+        }
         return getTypeId() == other.getTypeId()
             && getValues() == static_cast<decltype(this)>(&other)->getValues();
     }
@@ -458,7 +462,7 @@ public:
     //virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyStringListItem"; }
 
     PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    void setPyObject(PyObject* py) override;
 
     void Save (Base::Writer &writer) const override;
     void Restore(Base::XMLReader &reader) override;
@@ -467,10 +471,11 @@ public:
     void Paste(const Property &from) override;
 
     unsigned int getMemSize () const override;
-    
+
     bool isSame(const Property &other) const override {
-        if (&other == this)
+        if (&other == this) {
             return true;
+        }
         return getTypeId() == other.getTypeId()
             && getValues() == static_cast<decltype(this)>(&other)->getValues();
     }
@@ -511,7 +516,7 @@ public:
     const char* getEditorName() const override { return "Gui::PropertyEditor::PropertyFloatItem"; }
 
     PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    void setPyObject(PyObject* py) override;
 
     void Save (Base::Writer &writer) const override;
     void Restore(Base::XMLReader &reader) override;
@@ -525,8 +530,9 @@ public:
     const boost::any getPathValue(const App::ObjectIdentifier &path) const override;
 
     bool isSame(const Property &other) const override {
-        if (&other == this)
+        if (&other == this) {
             return true;
+        }
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
@@ -610,7 +616,7 @@ public:
     const char* getEditorName() const override
     { return "Gui::PropertyEditor::PropertyFloatConstraintItem"; }
 
-    void setPyObject(PyObject *) override;
+    void setPyObject(PyObject* py) override;
 
 protected:
     const Constraints* _ConstStruct{nullptr};
@@ -701,7 +707,7 @@ public:
 
     const char* getEditorName() const override { return "Gui::PropertyEditor::PropertyStringItem"; }
     PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    void setPyObject(PyObject* py) override;
 
     void Save (Base::Writer &writer) const override;
     void Restore(Base::XMLReader &reader) override;
@@ -714,8 +720,9 @@ public:
     const boost::any getPathValue(const App::ObjectIdentifier &path) const override;
 
     bool isSame(const Property &other) const override {
-        if (&other == this)
+        if (&other == this) {
             return true;
+        }
         return getTypeId() == other.getTypeId()
             && getStrValue() == static_cast<decltype(this)>(&other)->getStrValue();
     }
@@ -754,7 +761,7 @@ public:
 
     //virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyStringItem"; }
     PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    void setPyObject(PyObject* py) override;
 
     void Save (Base::Writer &writer) const override;
     void Restore(Base::XMLReader &reader) override;
@@ -764,8 +771,9 @@ public:
     unsigned int getMemSize () const override;
 
     bool isSame(const Property &other) const override {
-        if (&other == this)
+        if (&other == this) {
             return true;
+        }
         return getTypeId() == other.getTypeId()
             && _uuid.getValue() == static_cast<decltype(this)>(&other)->_uuid.getValue();
     }
@@ -788,8 +796,9 @@ public:
     { return "Gui::PropertyEditor::PropertyFontItem"; }
 
     bool isSame(const Property &other) const override {
-        if (&other == this)
+        if (&other == this) {
             return true;
+        }
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
@@ -861,7 +870,7 @@ public:
     const char* getEditorName() const override { return "Gui::PropertyEditor::PropertyBoolItem"; }
 
     PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    void setPyObject(PyObject* py) override;
 
     void Save (Base::Writer &writer) const override;
     void Restore(Base::XMLReader &reader) override;
@@ -875,8 +884,9 @@ public:
     const boost::any getPathValue(const App::ObjectIdentifier &path) const override;
 
     bool isSame(const Property &other) const override {
-        if (&other == this)
+        if (&other == this) {
             return true;
+        }
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
@@ -898,7 +908,7 @@ public:
     ~PropertyBoolList() override;
 
     PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    void setPyObject(PyObject* py) override;
 
     void Save (Base::Writer &writer) const override;
     void Restore(Base::XMLReader &reader) override;
@@ -908,7 +918,7 @@ public:
     unsigned int getMemSize () const override;
 
 protected:
-    bool getPyValue(PyObject *) const override;
+    bool getPyValue(PyObject* py) const override;
 };
 
 
@@ -935,7 +945,7 @@ public:
     /** Sets the property
      */
     void setValue(const Color &col);
-    void setValue(float r, float g, float b, float a=0.0f);
+    void setValue(float r, float g, float b, float a=0.0F);
     void setValue(uint32_t rgba);
 
     /** This method returns a string representation of the property
@@ -945,7 +955,7 @@ public:
     const char* getEditorName() const override { return "Gui::PropertyEditor::PropertyColorItem"; }
 
     PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    void setPyObject(PyObject* py) override;
 
     void Save (Base::Writer &writer) const override;
     void Restore(Base::XMLReader &reader) override;
@@ -954,10 +964,11 @@ public:
     void Paste(const Property &from) override;
 
     unsigned int getMemSize () const override{return sizeof(Color);}
-    
+
     bool isSame(const Property &other) const override {
-        if (&other == this)
+        if (&other == this) {
             return true;
+        }
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
@@ -997,18 +1008,18 @@ public:
     unsigned int getMemSize () const override;
 
 protected:
-    Color getPyValue(PyObject *) const override;
+    Color getPyValue(PyObject* py) const override;
 };
+
 
 /** Material properties
  * This is the father of all properties handling colors.
  */
-class AppExport PropertyMaterial : public Property
+class AppExport PropertyMaterial: public Property
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-
     /**
      * A constructor.
      * A more elaborate description of the constructor.
@@ -1023,34 +1034,56 @@ public:
 
     /** Sets the property
      */
-    void setValue(const Material &mat);
+    void setValue(const Material& mat);
+    void setValue(const Color& col);
+    void setValue(float r, float g, float b, float a = 0.0F);
+    void setValue(uint32_t rgba);
     void setAmbientColor(const Color& col);
+    void setAmbientColor(float r, float g, float b, float a = 0.0F);
+    void setAmbientColor(uint32_t rgba);
     void setDiffuseColor(const Color& col);
+    void setDiffuseColor(float r, float g, float b, float a = 0.0F);
+    void setDiffuseColor(uint32_t rgba);
     void setSpecularColor(const Color& col);
+    void setSpecularColor(float r, float g, float b, float a = 0.0F);
+    void setSpecularColor(uint32_t rgba);
     void setEmissiveColor(const Color& col);
+    void setEmissiveColor(float r, float g, float b, float a = 0.0F);
+    void setEmissiveColor(uint32_t rgba);
     void setShininess(float);
     void setTransparency(float);
 
     /** This method returns a string representation of the property
      */
-    const Material &getValue() const;
+    const Material& getValue() const;
+    const Color& getAmbientColor() const;
+    const Color& getDiffuseColor() const;
+    const Color& getSpecularColor() const;
+    const Color& getEmissiveColor() const;
+    double getShininess() const;
+    double getTransparency() const;
 
-    PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject* py) override;
 
-    void Save (Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
 
     const char* getEditorName() const override;
 
-    Property *Copy() const override;
-    void Paste(const Property &from) override;
+    Property* Copy() const override;
+    void Paste(const Property& from) override;
 
-    unsigned int getMemSize () const override{return sizeof(_cMat);}
-    
-    bool isSame(const Property &other) const override {
-        if (&other == this)
+    unsigned int getMemSize() const override
+    {
+        return sizeof(_cMat);
+    }
+
+    bool isSame(const Property& other) const override
+    {
+        if (&other == this) {
             return true;
+        }
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
@@ -1060,41 +1093,117 @@ private:
 };
 
 /** Material properties
-*/
-class AppExport PropertyMaterialList : public PropertyListsT<Material>
+ */
+class AppExport PropertyMaterialList: public PropertyListsT<Material>
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-
     /**
-    * A constructor.
-    * A more elaborate description of the constructor.
-    */
+     * A constructor.
+     * A more elaborate description of the constructor.
+     */
     PropertyMaterialList();
 
     /**
-    * A destructor.
-    * A more elaborate description of the destructor.
-    */
+     * A destructor.
+     * A more elaborate description of the destructor.
+     */
     ~PropertyMaterialList() override;
 
-    PyObject *getPyObject() override;
+    void setValue();
+    void setValue(const std::vector<App::Material>& materials)
+    {
+        PropertyListsT<Material>::setValue(materials);
+    }
+    void setValue(const Material& mat);
+    void setValue(int index, const Material& mat);
 
-    void Save(Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
+    void setAmbientColor(const Color& col);
+    void setAmbientColor(float r, float g, float b, float a = 0.0F);
+    void setAmbientColor(uint32_t rgba);
+    void setAmbientColor(int index, const Color& col);
+    void setAmbientColor(int index, float r, float g, float b, float a = 0.0F);
+    void setAmbientColor(int index, uint32_t rgba);
 
-    void SaveDocFile(Base::Writer &writer) const override;
-    void RestoreDocFile(Base::Reader &reader) override;
+    void setDiffuseColor(const Color& col);
+    void setDiffuseColor(float r, float g, float b, float a = 0.0F);
+    void setDiffuseColor(uint32_t rgba);
+    void setDiffuseColor(int index, const Color& col);
+    void setDiffuseColor(int index, float r, float g, float b, float a = 0.0F);
+    void setDiffuseColor(int index, uint32_t rgba);
+
+    void setSpecularColor(const Color& col);
+    void setSpecularColor(float r, float g, float b, float a = 0.0F);
+    void setSpecularColor(uint32_t rgba);
+    void setSpecularColor(int index, const Color& col);
+    void setSpecularColor(int index, float r, float g, float b, float a = 0.0F);
+    void setSpecularColor(int index, uint32_t rgba);
+
+    void setEmissiveColor(const Color& col);
+    void setEmissiveColor(float r, float g, float b, float a = 0.0F);
+    void setEmissiveColor(uint32_t rgba);
+    void setEmissiveColor(int index, const Color& col);
+    void setEmissiveColor(int index, float r, float g, float b, float a = 0.0F);
+    void setEmissiveColor(int index, uint32_t rgba);
+
+    void setShininess(float);
+    void setShininess(int index, float);
+
+    void setTransparency(float);
+    void setTransparency(int index, float);
+
+    const Color& getAmbientColor() const;
+    const Color& getAmbientColor(int index) const;
+
+    const Color& getDiffuseColor() const;
+    const Color& getDiffuseColor(int index) const;
+    std::vector<App::Color> getDiffuseColors() const;
+
+    const Color& getSpecularColor() const;
+    const Color& getSpecularColor(int index) const;
+
+    const Color& getEmissiveColor() const;
+    const Color& getEmissiveColor(int index) const;
+
+    float getShininess() const;
+    float getShininess(int index) const;
+
+    float getTransparency() const;
+    float getTransparency(int index) const;
+
+    PyObject* getPyObject() override;
+
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
+
+    void SaveDocFile(Base::Writer& writer) const override;
+    void RestoreDocFile(Base::Reader& reader) override;
 
     const char* getEditorName() const override;
 
-    Property *Copy() const override;
-    void Paste(const Property &from) override;
+    Property* Copy() const override;
+    void Paste(const Property& from) override;
     unsigned int getMemSize() const override;
 
 protected:
-    Material getPyValue(PyObject *) const override;
+    Material getPyValue(PyObject* py) const override;
+
+private:
+    enum Format {
+        Version_0,
+        Version_1,
+        Version_2
+    };
+
+    void RestoreDocFileV0(uint32_t count, Base::Reader& reader);
+    void RestoreDocFileV1(Base::Reader& reader);
+
+    void verifyIndex(int index) const;
+    void setSizeOne();
+    int resizeByOneIfNeeded(int index);
+
+    Format formatVersion {Version_0};
 };
 
 

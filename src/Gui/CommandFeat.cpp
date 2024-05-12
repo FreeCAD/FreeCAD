@@ -104,10 +104,15 @@ void StdCmdRandomColor::activated(int iMsg)
             vpLink->ShapeMaterial.setDiffuseColor(objColor);
         }
         else if (view) {
-            if (auto color = dynamic_cast<App::PropertyColor*>(view->getPropertyByName("ShapeColor"))) {
-                // get the view provider of the selected object and set the shape color
-                color->setValue(objColor);
+            // clang-format off
+            // get the view provider of the selected object and set the shape color
+            if (auto prop = dynamic_cast<App::PropertyMaterialList*>(view->getPropertyByName("ShapeAppearance"))) {
+                prop->setDiffuseColor(objColor);
             }
+            else if (auto prop = dynamic_cast<App::PropertyMaterial*>(view->getPropertyByName("ShapeAppearance"))) {
+                prop->setDiffuseColor(objColor);
+            }
+            // clang-format on
         }
     };
 
@@ -147,7 +152,7 @@ StdCmdToggleFreeze::StdCmdToggleFreeze()
     sGroup = "File";
     sMenuText = QT_TR_NOOP("Toggle freeze");
     static std::string toolTip = std::string("<p>")
-        + QT_TR_NOOP("Toggles freeze state of the selected objects. A freezed object is not recomputed when its parents change.")
+        + QT_TR_NOOP("Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.")
         + "</p>";
     sToolTipText = toolTip.c_str();
     sStatusTip = sToolTipText;

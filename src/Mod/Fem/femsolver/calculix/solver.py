@@ -209,7 +209,7 @@ def add_attributes(obj, ccx_prefs):
             "Fem",
             help_string_IterationsMaximum
         )
-        niter = ccx_prefs.GetInt("AnalysisMaxIterations", 200)
+        niter = ccx_prefs.GetInt("AnalysisMaxIterations", 2000)
         obj.IterationsMaximum = niter
 
     if hasattr(obj, "IterationsThermoMechMaximum"):
@@ -428,6 +428,20 @@ def add_attributes(obj, ccx_prefs):
             "Type of model space"
         )
         obj.ModelSpace = model_space_types
+
+    if not hasattr(obj, "ThermoMechType"):
+        thermomech_types = [
+            "coupled",
+            "uncoupled",
+            "pure heat transfer"
+        ]
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "ThermoMechType",
+            "Fem",
+            "Type of thermomechanical analysis"
+        )
+        obj.ThermoMechType = thermomech_types
 
 """
 Should there be some equation object for Calculix too?

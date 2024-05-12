@@ -22,32 +22,32 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cstdlib>
 #include <QAction>
 #include <QMenu>
+#include <cstdlib>
 
 #include <Inventor/SbBox2s.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/VRMLnodes/SoVRMLGroup.h>
 #include <Inventor/actions/SoToVRML2Action.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
+#include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoPolygonOffset.h>
-#include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoTransform.h>
-#include <Inventor/VRMLnodes/SoVRMLGroup.h>
 #endif
 
 #include <QFuture>
@@ -267,7 +267,7 @@ ViewProviderMesh::ViewProviderMesh()
     pcHighlight->addChild(pcShapeGroup);
 
     pOpenColor = new SoBaseColor();
-    setOpenEdgeColorFrom(ShapeColor.getValue());
+    setOpenEdgeColorFrom(ShapeAppearance.getDiffuseColor());
     pOpenColor->ref();
 
     pcLineStyle = new SoDrawStyle();
@@ -297,12 +297,12 @@ ViewProviderMesh::ViewProviderMesh()
         Gui::WindowParameter::getDefaultParameter()->GetGroup("Mod/Mesh");
 
     // Mesh color
-    App::Color color = ShapeColor.getValue();
+    App::Color color = ShapeAppearance.getDiffuseColor();
     unsigned long current = color.getPackedValue();
     unsigned long setting = hGrp->GetUnsigned("MeshColor", current);
     if (current != setting) {
         color.setPackedValue((uint32_t)setting);
-        ShapeColor.setValue(color);
+        ShapeAppearance.setDiffuseColor(color);
     }
     Transparency.setValue(hGrp->GetInt("MeshTransparency", 0));
 
@@ -353,7 +353,7 @@ ViewProviderMesh::~ViewProviderMesh()
 void ViewProviderMesh::onChanged(const App::Property* prop)
 {
     // we're going to change the number of colors to one
-    if (prop == &ShapeColor || prop == &ShapeMaterial) {
+    if (prop == &ShapeAppearance) {
         pcMatBinding->value = SoMaterialBinding::OVERALL;
     }
     if (prop == &LineTransparency) {
@@ -393,11 +393,8 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
     }
     else {
         // Set the inverse color for open edges
-        if (prop == &ShapeColor) {
-            setOpenEdgeColorFrom(ShapeColor.getValue());
-        }
-        else if (prop == &ShapeMaterial) {
-            setOpenEdgeColorFrom(ShapeMaterial.getValue().diffuseColor);
+        if (prop == &ShapeAppearance) {
+            setOpenEdgeColorFrom(ShapeAppearance.getDiffuseColor());
         }
     }
 
@@ -514,6 +511,14 @@ void ViewProviderMesh::updateData(const App::Property* prop)
     }
 }
 
+void ViewProviderMesh::finishRestoring()
+{
+    if (Coloring.getValue()) {
+        Coloring.touch();
+    }
+    Gui::ViewProviderGeometryObject::finishRestoring();
+}
+
 QIcon ViewProviderMesh::getIcon() const
 {
     static QIcon icon = Gui::BitmapFactory().pixmap("Mesh_Tree");
@@ -597,7 +602,7 @@ void ViewProviderMesh::tryColorPerVertexOrFace(bool on)
     }
     else {
         pcMatBinding->value = SoMaterialBinding::OVERALL;
-        const App::Color& c = ShapeColor.getValue();
+        const App::Color& c = ShapeAppearance.getDiffuseColor();
         pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
         pcShapeMaterial->transparency.setValue(Transparency.getValue() / 100.0f);
     }
@@ -1987,7 +1992,7 @@ void ViewProviderMesh::fillHole(Mesh::FacetIndex uFacet)
 void ViewProviderMesh::setFacetTransparency(const std::vector<float>& facetTransparency)
 {
     if (pcShapeMaterial->diffuseColor.getNum() != int(facetTransparency.size())) {
-        App::Color c = ShapeColor.getValue();
+        App::Color c = ShapeAppearance.getDiffuseColor();
         pcShapeMaterial->diffuseColor.setNum(facetTransparency.size());
         SbColor* cols = pcShapeMaterial->diffuseColor.startEditing();
         for (std::size_t index = 0; index < facetTransparency.size(); ++index) {
@@ -2009,7 +2014,7 @@ void ViewProviderMesh::setFacetTransparency(const std::vector<float>& facetTrans
 void ViewProviderMesh::resetFacetTransparency()
 {
     pcMatBinding->value = SoMaterialBinding::OVERALL;
-    App::Color c = ShapeColor.getValue();
+    App::Color c = ShapeAppearance.getDiffuseColor();
     pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
     pcShapeMaterial->transparency.setValue(0);
 }
@@ -2115,7 +2120,7 @@ void ViewProviderMesh::deselectFacet(Mesh::FacetIndex facet)
             highlightSelection();
         }
         else {
-            App::Color c = ShapeColor.getValue();
+            App::Color c = ShapeAppearance.getDiffuseColor();
             pcShapeMaterial->diffuseColor.set1Value(facet, c.r, c.g, c.b);
         }
     }
@@ -2285,7 +2290,7 @@ void ViewProviderMesh::highlightSelection()
 
     // Colorize the selection
     pcMatBinding->value = SoMaterialBinding::PER_FACE;
-    App::Color c = ShapeColor.getValue();
+    App::Color c = ShapeAppearance.getDiffuseColor();
     int uCtFacets = (int)rMesh.countFacets();
     pcShapeMaterial->diffuseColor.setNum(uCtFacets);
 
@@ -2301,7 +2306,7 @@ void ViewProviderMesh::highlightSelection()
 
 void ViewProviderMesh::unhighlightSelection()
 {
-    App::Color c = ShapeColor.getValue();
+    App::Color c = ShapeAppearance.getDiffuseColor();
     pcMatBinding->value = SoMaterialBinding::OVERALL;
     pcShapeMaterial->diffuseColor.setNum(1);
     pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
@@ -2359,7 +2364,7 @@ void ViewProviderMesh::highlightSegments()
     std::vector<App::Color> colors;
     const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
     unsigned long numSegm = rMesh.countSegments();
-    colors.resize(numSegm, this->ShapeColor.getValue());
+    colors.resize(numSegm, this->ShapeAppearance.getDiffuseColor());
 
     for (unsigned long i = 0; i < numSegm; i++) {
         App::Color col;

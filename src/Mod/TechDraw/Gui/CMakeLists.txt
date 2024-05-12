@@ -335,6 +335,8 @@ SET(TechDrawGuiView_SRCS
     QGIGhostHighlight.h
     PathBuilder.cpp
     PathBuilder.h
+    QGIBreakLine.cpp
+    QGIBreakLine.h
 )
 
 SET(TechDrawGuiNav_SRCS

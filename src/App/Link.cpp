@@ -237,9 +237,13 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
             propEnum->setEnums(enums);
         break;
     }
-    case PropLinkCopyOnChangeTouched:
     case PropLinkCopyOnChangeSource:
     case PropLinkCopyOnChangeGroup:
+        if (auto linkProp = Base::freecad_dynamic_cast<PropertyLinkBase>(prop)) {
+            linkProp->setScope(LinkScope::Global);
+        }
+        // fall through
+    case PropLinkCopyOnChangeTouched:
         prop->setStatus(Property::Hidden, true);
         break;
     case PropLinkTransform:
@@ -261,9 +265,13 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
     case PropLinkedObject:
         // Make ElementList as read-only if we are not a group (i.e. having
         // LinkedObject property), because it is for holding array elements.
-        if(getElementListProperty())
+        if(getElementListProperty()) {
             getElementListProperty()->setStatus(
                 Property::Immutable, getLinkedObjectProperty() != nullptr);
+        }
+        if (auto linkProp = getLinkedObjectProperty()) {
+            linkProp->setScope(LinkScope::Global);
+        }
         break;
     case PropVisibilityList:
         getVisibilityListProperty()->setStatus(Property::Immutable, true);

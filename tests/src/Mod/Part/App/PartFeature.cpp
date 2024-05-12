@@ -2,6 +2,7 @@
 
 #include "gtest/gtest.h"
 
+#include <boost/core/ignore_unused.hpp>
 #include "Mod/Part/App/FeaturePartCommon.h"
 #include <src/App/InitApplication.h>
 #include <BRepBuilderAPI_MakeVertex.hxx>
@@ -132,7 +133,6 @@ TEST_F(FeaturePartTest, create)
 TEST_F(FeaturePartTest, getElementHistory)
 {
     // Arrange
-    const char* name = "Part__Box";
     const char* name2 = "Edge2";  // Edge, Vertex, or Face. will work here.
     // Act
     auto result = Feature::getElementHistory(_boxes[0], name2, true, false);
@@ -156,6 +156,7 @@ TEST_F(FeaturePartTest, getRelatedElements)
     auto label1 = _common->Label.getValue();
     auto label2 = _boxes[1]->Label.getValue();
     const TopoShape& ts = _common->Shape.getShape();
+    boost::ignore_unused(ts);
     auto result = Feature::getRelatedElements(_doc->getObject(label1),
                                               "Edge2",
                                               HistoryTraceType::followTypeChange,
@@ -189,6 +190,9 @@ TEST_F(FeaturePartTest, getElementFromSource)
     auto label1 = _common->Label.getValue();
     auto label2 = _boxes[1]->Label.getValue();
     const TopoShape& ts = _common->Shape.getShape();
+    boost::ignore_unused(label1);
+    boost::ignore_unused(label2);
+    boost::ignore_unused(ts);
     auto element = Feature::getElementFromSource(_common,
                                                  "Part__Box001",  // "Edge1",
                                                  _boxes[0],
@@ -204,7 +208,6 @@ TEST_F(FeaturePartTest, getSubObject)
     _common->Base.setValue(_boxes[0]);
     _common->Tool.setValue(_boxes[1]);
     App::DocumentObject sourceObject;
-    const char* sourceSubElement;
     PyObject* pyObj;
     // Act
     _common->execute();

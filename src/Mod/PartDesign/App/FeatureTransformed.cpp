@@ -178,13 +178,26 @@ App::DocumentObjectExecReturn *Transformed::execute()
 
     this->positionBySupport();
 
+    // Remove suppressed features from the list so the transformations behave as if they are not there
+    {
+        auto eraseIter = std::remove_if(originals.begin(), originals.end(), [](App::DocumentObject const* obj) {
+            auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
+            return feature != nullptr && feature->Suppressed.getValue();
+        });
+        originals.erase(eraseIter, originals.end());
+    }
+
     // get transformations from subclass by calling virtual method
     std::vector<gp_Trsf> transformations;
     try {
         std::list<gp_Trsf> t_list = getTransformations(originals);
         transformations.insert(transformations.end(), t_list.begin(), t_list.end());
-    } catch (Base::Exception& e) {
+    }
+    catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
+    }
+    catch (const Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
     if (transformations.empty())
@@ -260,10 +273,18 @@ App::DocumentObjectExecReturn *Transformed::execute()
             if (fuseShape.isNull() && cutShape.isNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty"));
             gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
+#ifdef FC_USE_TNP_FIX
+            if (!fuseShape.isNull())
+                fuseShape = fuseShape.makeElementTransform(trsf);
+            if (!cutShape.isNull())
+                cutShape = cutShape.makeElementTransform(trsf);
+#else
             if (!fuseShape.isNull())
                 fuseShape = fuseShape.makeTransform(trsf);
             if (!cutShape.isNull())
                 cutShape = cutShape.makeTransform(trsf);
+
+#endif
         }
         else {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Only additive and subtractive features can be transformed"));

@@ -47,6 +47,35 @@ class TopoDS_Solid;
 namespace Fem
 {
 
+enum class ABAQUS_VolumeVariant
+{
+    Standard,
+    Reduced,
+    Incompatible,
+    Modified,
+    Fluid
+};
+enum class ABAQUS_FaceVariant
+{
+    Shell,
+    Shell_Reduced,
+    Membrane,
+    Membrane_Reduced,
+    Stress,
+    Stress_Reduced,
+    Strain,
+    Strain_Reduced,
+    Axisymmetric,
+    Axisymmetric_Reduced
+};
+enum class ABAQUS_EdgeVariant
+{
+    Beam,
+    Beam_Reduced,
+    Truss,
+    Network
+};
+
 using SMESH_HypothesisPtr = std::shared_ptr<SMESH_Hypothesis>;
 
 /** The representation of a FemMesh
@@ -172,7 +201,12 @@ public:
     /// import from files
     void read(const char* FileName);
     void write(const char* FileName) const;
-    void writeABAQUS(const std::string& Filename, int elemParam, bool groupParam) const;
+    void writeABAQUS(const std::string& Filename,
+                     int elemParam,
+                     bool groupParam,
+                     ABAQUS_VolumeVariant volVariant = ABAQUS_VolumeVariant::Standard,
+                     ABAQUS_FaceVariant faceVariant = ABAQUS_FaceVariant::Shell,
+                     ABAQUS_EdgeVariant edgeVariant = ABAQUS_EdgeVariant::Beam) const;
     void writeZ88(const std::string& FileName) const;
 
 private:

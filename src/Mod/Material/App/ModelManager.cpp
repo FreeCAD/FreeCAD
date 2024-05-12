@@ -72,6 +72,21 @@ bool ModelManager::isModel(const QString& file)
     return false;
 }
 
+void ModelManager::cleanup()
+{
+    if (_libraryList) {
+        _libraryList->clear();
+    }
+
+    if (_modelMap) {
+        for (auto& it : *_modelMap) {
+            // This is needed to resolve cyclic dependencies
+            it.second->setLibrary(nullptr);
+        }
+        _modelMap->clear();
+    }
+}
+
 void ModelManager::refresh()
 {
     _modelMap->clear();

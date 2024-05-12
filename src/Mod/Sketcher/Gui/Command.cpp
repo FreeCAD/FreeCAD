@@ -1771,16 +1771,16 @@ void CmdRenderingOrder::updateIcon()
         Gui::BitmapFactory().iconFromTheme("Sketcher_RenderingOrder_Construction");
     static QIcon external = Gui::BitmapFactory().iconFromTheme("Sketcher_RenderingOrder_External");
 
-    auto* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-
-    if (TopElement == ElementType::Normal) {
-        pcAction->setIcon(normal);
-    }
-    else if (TopElement == ElementType::Construction) {
-        pcAction->setIcon(construction);
-    }
-    else if (TopElement == ElementType::External) {
-        pcAction->setIcon(external);
+    if (auto* pcAction = qobject_cast<Gui::ActionGroup*>(getAction())) {
+        if (TopElement == ElementType::Normal) {
+            pcAction->setIcon(normal);
+        }
+        else if (TopElement == ElementType::Construction) {
+            pcAction->setIcon(construction);
+        }
+        else if (TopElement == ElementType::External) {
+            pcAction->setIcon(external);
+        }
     }
 }
 

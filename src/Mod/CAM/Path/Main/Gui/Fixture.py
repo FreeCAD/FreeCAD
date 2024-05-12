@@ -108,7 +108,7 @@ class _ViewProviderFixture:
         vobj.setEditorMode("DisplayMode", mode)
         vobj.setEditorMode("BoundingBox", mode)
         vobj.setEditorMode("Selectable", mode)
-        vobj.setEditorMode("ShapeColor", mode)
+        vobj.setEditorMode("ShapeAppearance", mode)
         vobj.setEditorMode("Transparency", mode)
         vobj.setEditorMode("Visibility", mode)
 
@@ -129,7 +129,7 @@ class _ViewProviderFixture:
         vobj.setEditorMode("DisplayMode", mode)
         vobj.setEditorMode("BoundingBox", mode)
         vobj.setEditorMode("Selectable", mode)
-        vobj.setEditorMode("ShapeColor", mode)
+        vobj.setEditorMode("ShapeAppearance", mode)
         vobj.setEditorMode("Transparency", mode)
         vobj.setEditorMode("Visibility", mode)
 

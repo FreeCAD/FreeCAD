@@ -131,7 +131,7 @@ class DraftTaskPanel:
         else:
             self.form = widget
     def getStandardButtons(self):
-        return int(QtWidgets.QDialogButtonBox.Close)
+        return QtWidgets.QDialogButtonBox.Close
     def accept(self):
         if hasattr(FreeCADGui,"draftToolBar"):
             return FreeCADGui.draftToolBar.validatePoint()
@@ -312,7 +312,6 @@ class DraftToolBar:
         self.promptlabel = self._label("promptlabel", self.layout, hide=task)
         self.cmdlabel = self._label("cmdlabel", self.layout, hide=task)
         boldtxt = QtGui.QFont()
-        boldtxt.setWeight(75)
         boldtxt.setBold(True)
         self.cmdlabel.setFont(boldtxt)
 
@@ -920,7 +919,7 @@ class DraftToolBar:
                     self.form = [extra]
                 self.callback = callback
             def getStandardButtons(self):
-                return int(QtWidgets.QDialogButtonBox.Close)
+                return QtWidgets.QDialogButtonBox.Close
             def reject(self):
                 if self.callback:
                     self.callback()
@@ -1095,10 +1094,13 @@ class DraftToolBar:
         treated as shortcuts
         """
 
-        if txt == "" or txt[0] in "0123456789.,-":
+        if txt == "":
             self.updateSnapper()
-            if txt[0] in "0123456789.,-":
-                self.setMouseMode(False)
+            return
+
+        if txt[0] in "0123456789.,-":
+            self.updateSnapper()
+            self.setMouseMode(False)
             return
 
         txt = txt[0].upper()
@@ -1685,7 +1687,7 @@ class FacebinderTaskPanel:
         return True
 
     def getStandardButtons(self):
-        return int(QtWidgets.QDialogButtonBox.Ok)
+        return QtWidgets.QDialogButtonBox.Ok
 
     def update(self):
         """fills the treewidget"""

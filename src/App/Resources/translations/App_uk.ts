@@ -7,14 +7,13 @@
       <location filename="../../Link.cpp" line="118"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all links
-that reference the same configurable object</translation>
+      <translation>Зберігає останній вибір користувача щодо того, чи застосовувати налаштування CopyOnChange до всіх посилань, які посилаються на той самий об'єкт, що налаштовується</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="448"/>
+      <location filename="../../Application.cpp" line="451"/>
       <source>Unnamed</source>
       <translation>Без назви</translation>
     </message>
@@ -24,12 +23,12 @@ that reference the same configurable object</translation>
     <message>
       <location filename="../../Origin.cpp" line="140"/>
       <source>X-axis</source>
-      <translation type="unfinished">X-axis</translation>
+      <translation>Вісь X</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="141"/>
       <source>Y-axis</source>
-      <translation type="unfinished">Y-axis</translation>
+      <translation>Вісь Y</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="142"/>

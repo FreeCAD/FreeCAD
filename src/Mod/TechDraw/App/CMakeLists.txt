@@ -62,6 +62,7 @@ generate_from_xml(DrawTilePy)
 generate_from_xml(DrawTileWeldPy)
 generate_from_xml(DrawWeldSymbolPy)
 generate_from_xml(CosmeticExtensionPy)
+generate_from_xml(DrawBrokenViewPy)
 
 SET(Draw_SRCS
     DrawPage.cpp
@@ -104,8 +105,6 @@ SET(Draw_SRCS
     DimensionReferences.h
     DimensionFormatter.cpp
     DimensionFormatter.h
-    GeometryMatcher.cpp
-    GeometryMatcher.h
     DimensionAutoCorrect.cpp
     DimensionAutoCorrect.h
     DrawViewBalloon.cpp
@@ -138,7 +137,9 @@ SET(Draw_SRCS
     DrawWeldSymbol.h
     FeatureProjection.cpp
     FeatureProjection.h
-    )
+    DrawBrokenView.cpp
+    DrawBrokenView.h
+)
 
 SET(TechDraw_SRCS
     AppTechDraw.cpp
@@ -198,6 +199,8 @@ SET(Geometry_SRCS
     PropertyCosmeticVertexList.h
     CosmeticExtension.cpp
     CosmeticExtension.h
+    GeometryMatcher.cpp
+    GeometryMatcher.h
 )
 
 SET(Python_SRCS
@@ -253,7 +256,9 @@ SET(Python_SRCS
     DrawWeldSymbolPyImp.cpp
     CosmeticExtensionPy.xml
     CosmeticExtensionPyImp.cpp
-    )
+    DrawBrokenViewPy.xml
+    DrawBrokenViewPyImp.cpp
+)
 
 SOURCE_GROUP("Mod" FILES ${TechDraw_SRCS})
 SOURCE_GROUP("Features" FILES ${Draw_SRCS})

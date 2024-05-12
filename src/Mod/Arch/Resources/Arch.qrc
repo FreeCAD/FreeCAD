@@ -161,5 +161,6 @@
         <file>translations/Arch_ka.qm</file>
         <file>translations/Arch_sr-CS.qm</file>
         <file>translations/Arch_be.qm</file>
+        <file>translations/Arch_da.qm</file>
     </qresource>
 </RCC>

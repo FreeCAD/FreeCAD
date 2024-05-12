@@ -84,6 +84,7 @@
 
 #include "Annotation.h"
 #include "Application.h"
+#include "CleanupProcess.h"
 #include "ComplexGeoData.h"
 #include "DocumentObjectFileIncluded.h"
 #include "DocumentObjectGroup.h"
@@ -102,6 +103,7 @@
 #include "VarSet.h"
 #include "MaterialObject.h"
 #include "MeasureDistance.h"
+#include "MeasureManagerPy.h"
 #include "Origin.h"
 #include "OriginFeature.h"
 #include "OriginGroupExtension.h"
@@ -239,7 +241,6 @@ init_image_module()
 Application::Application(std::map<std::string,std::string> &mConfig)
   : _mConfig(mConfig)
 {
-    //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
     mpcPramManager["User parameter"] = _pcUserParamMngr;
 
@@ -314,6 +315,8 @@ void Application::setupPythonTypes()
 
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
     Base::Interpreter().addType(&App::MetadataPy::Type, pAppModule, "Metadata");
+
+    Base::Interpreter().addType(&App::MeasureManagerPy::Type, pAppModule, "MeasureManager");
 
     Base::Interpreter().addType(&App::StringHasherPy::Type, pAppModule, "StringHasher");
     Base::Interpreter().addType(&App::StringIDPy::Type, pAppModule, "StringID");
@@ -1700,6 +1703,8 @@ void Application::destruct()
     cleanupUnits();
 #endif
 
+    CleanupProcess::callCleanup();
+
     // not initialized or double destruct!
     assert(_pcSingleton);
     delete _pcSingleton;
@@ -1860,7 +1865,6 @@ void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
         throw Base::AccessViolation();
     case EXCEPTION_FLT_DIVIDE_BY_ZERO:
     case EXCEPTION_INT_DIVIDE_BY_ZERO:
-        //throw Base::ZeroDivisionError("Division by zero!");
         Base::Console().Error("SEH exception (%u): Division by zero\n", code);
         return;
     }
@@ -2190,7 +2194,6 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     descr << "Writes " << exe << ".log to the user directory.";
     boost::program_options::options_description config("Configuration");
     config.add_options()
-    //("write-log,l", value<string>(), "write a log file")
     ("write-log,l", descr.str().c_str())
     ("log-file", value<string>(), "Unlike --write-log this allows logging to an arbitrary file")
     ("user-cfg,u", value<string>(),"User config file to load/save user settings")
@@ -2237,11 +2240,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
 #endif
     ;
 
-    // Ignored options, will be safely ignored. Mostly used by underlying libs.
-    //boost::program_options::options_description x11("X11 options");
-    //x11.add_options()
-    //    ("display",  boost::program_options::value< string >(), "set the X-Server")
-    //    ;
+   
     //0000723: improper handling of qt specific command line arguments
     std::vector<std::string> args;
     bool merge=false;
@@ -2387,9 +2386,6 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         int OpenFileCount=0;
         for (const auto & It : files) {
 
-            //cout << "Input files are: "
-            //     << vm["input-file"].as< vector<string> >() << "\n";
-
             std::ostringstream temp;
             temp << "OpenFile" << OpenFileCount;
             mConfig[temp.str()] = It;
@@ -2411,7 +2407,6 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
 
     if (vm.count("write-log")) {
         mConfig["LoggingFile"] = "1";
-        //mConfig["LoggingFileName"] = vm["write-log"].as<string>();
         mConfig["LoggingFileName"] = mConfig["UserAppData"] + mConfig["ExeName"] + ".log";
     }
 
@@ -2439,7 +2434,6 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["TestCase"] = testCase;
         mConfig["RunMode"] = "Internal";
         mConfig["ScriptFileName"] = "FreeCADTest";
-        //sScriptName = FreeCADTest;
     }
 
     if (vm.count("single-instance")) {

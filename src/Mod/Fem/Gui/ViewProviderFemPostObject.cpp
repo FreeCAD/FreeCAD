@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 #include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
@@ -33,7 +34,7 @@
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/nodes/SoDepthBuffer.h>
+#include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransparencyType.h>
 #include <functional>
 
@@ -141,6 +142,8 @@ private:
 
 // ----------------------------------------------------------------------------
 
+App::PropertyFloatConstraint::Constraints ViewProviderFemPostObject::sizeRange = {1.0, 64.0, 1.0};
+
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObject)
 
 ViewProviderFemPostObject::ViewProviderFemPostObject()
@@ -156,7 +159,27 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
                       "Coloring",
                       App::Prop_None,
                       "Select what to show for a vector field");
-    ADD_PROPERTY(Transparency, (0));
+    ADD_PROPERTY_TYPE(Transparency,
+                      (0),
+                      "Object Style",
+                      App::Prop_None,
+                      "Set object transparency.");
+    ADD_PROPERTY_TYPE(EdgeColor,
+                      (0.0f, 0.0f, 0.0f),
+                      "Object Style",
+                      App::Prop_None,
+                      "Set wireframe line color.");
+    ADD_PROPERTY_TYPE(PlainColorEdgeOnSurface,
+                      (false),
+                      "Object Style",
+                      App::Prop_None,
+                      "Use plain color for edges on surface.");
+    ADD_PROPERTY_TYPE(LineWidth, (2), "Object Style", App::Prop_None, "Set wireframe line width.");
+    ADD_PROPERTY_TYPE(PointSize, (3), "Object Style", App::Prop_None, "Set node point size.");
+
+
+    LineWidth.setConstraints(&sizeRange);
+    PointSize.setConstraints(&sizeRange);
 
     sPixmap = "fem-femmesh-from-shape";
 
@@ -174,8 +197,12 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
     m_coordinates->ref();
     m_materialBinding = new SoMaterialBinding();
     m_materialBinding->ref();
+    m_switchMatEdges = new SoSwitch();
+    m_switchMatEdges->ref();
     m_material = new SoMaterial();
     m_material->ref();
+    m_matPlainEdges = new SoMaterial();
+    m_matPlainEdges->ref();
     m_normalBinding = new SoNormalBinding();
     m_normalBinding->ref();
     m_normals = new SoNormal();
@@ -190,8 +217,8 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
     m_lines->ref();
     m_drawStyle = new SoDrawStyle();
     m_drawStyle->ref();
-    m_drawStyle->lineWidth.setValue(2);
-    m_drawStyle->pointSize.setValue(3);
+    m_drawStyle->lineWidth.setValue(LineWidth.getValue());
+    m_drawStyle->pointSize.setValue(PointSize.getValue());
     m_sepMarkerLine = new SoSeparator();
     m_sepMarkerLine->ref();
     m_separator = new SoSeparator();
@@ -245,6 +272,8 @@ ViewProviderFemPostObject::~ViewProviderFemPostObject()
     m_sepMarkerLine->unref();
     m_separator->unref();
     m_material->unref();
+    m_matPlainEdges->unref();
+    m_switchMatEdges->unref();
     m_colorBar->Detach(this);
     m_colorBar->unref();
     m_colorStyle->unref();
@@ -255,12 +284,14 @@ void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
 
+    m_switchMatEdges->addChild(m_material);
+    m_switchMatEdges->addChild(m_matPlainEdges);
     // marker and line nodes
     m_sepMarkerLine->addChild(m_transpType);
     m_sepMarkerLine->addChild(m_depthBuffer);
     m_sepMarkerLine->addChild(m_drawStyle);
     m_sepMarkerLine->addChild(m_materialBinding);
-    m_sepMarkerLine->addChild(m_material);
+    m_sepMarkerLine->addChild(m_switchMatEdges);
     m_sepMarkerLine->addChild(m_coordinates);
     m_sepMarkerLine->addChild(m_markers);
     m_sepMarkerLine->addChild(m_lines);
@@ -338,11 +369,11 @@ std::vector<std::string> ViewProviderFemPostObject::getDisplayModes() const
     std::vector<std::string> StrList;
     StrList.emplace_back("Outline");
     StrList.emplace_back("Nodes");
-    StrList.emplace_back("Nodes (surface only)");
     StrList.emplace_back("Surface");
     StrList.emplace_back("Surface with Edges");
     StrList.emplace_back("Wireframe");
     StrList.emplace_back("Wireframe (surface only)");
+    StrList.emplace_back("Nodes (surface only)");
     return StrList;
 }
 
@@ -638,14 +669,21 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
         setRangeOfColorBar(range[0], range[1]);
     }
 
-    m_material->diffuseColor.setNum(pd->GetNumberOfPoints());
+    vtkIdType numPts = pd->GetNumberOfPoints();
+    m_material->diffuseColor.setNum(numPts);
+    m_matPlainEdges->diffuseColor.setNum(numPts);
     SbColor* diffcol = m_material->diffuseColor.startEditing();
+    SbColor* edgeDiffcol = m_matPlainEdges->diffuseColor.startEditing();
 
     float overallTransp = Transparency.getValue() / 100.0f;
-    m_material->transparency.setNum(pd->GetNumberOfPoints());
+    m_material->transparency.setNum(numPts);
+    m_matPlainEdges->transparency.setNum(numPts);
     float* transp = m_material->transparency.startEditing();
+    float* edgeTransp = m_matPlainEdges->transparency.startEditing();
 
-    for (int i = 0; i < pd->GetNumberOfPoints(); i++) {
+    App::Color c;
+    App::Color cEdge = EdgeColor.getValue();
+    for (int i = 0; i < numPts; i++) {
 
         double value = 0;
         if (component >= 0) {
@@ -659,13 +697,17 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
             value = std::sqrt(value);
         }
 
-        App::Color c = m_colorBar->getColor(value);
+        c = m_colorBar->getColor(value);
         diffcol[i].setValue(c.r, c.g, c.b);
         transp[i] = std::max(c.a, overallTransp);
+        edgeDiffcol[i].setValue(cEdge.r, cEdge.g, cEdge.b);
+        edgeTransp[i] = std::max(cEdge.a, overallTransp);
     }
 
     m_material->diffuseColor.finishEditing();
     m_material->transparency.finishEditing();
+    m_matPlainEdges->diffuseColor.finishEditing();
+    m_matPlainEdges->transparency.finishEditing();
     m_materialBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
 
     // In order to apply the transparency changes the shape nodes must be touched
@@ -677,10 +719,14 @@ void ViewProviderFemPostObject::WriteTransparency()
 {
     float trans = static_cast<float>(Transparency.getValue()) / 100.0;
     float* value = m_material->transparency.startEditing();
+    float* edgeValue = m_matPlainEdges->transparency.startEditing();
+    // m_material and m_matPlainEdges field containers have same size
     for (int i = 0; i < m_material->transparency.getNum(); ++i) {
         value[i] = trans;
+        edgeValue[i] = trans;
     }
     m_material->transparency.finishEditing();
+    m_matPlainEdges->transparency.finishEditing();
 
     if (Transparency.getValue() > 99) {
         m_depthBuffer->test.setValue(false);
@@ -765,11 +811,13 @@ void ViewProviderFemPostObject::filterArtifacts(vtkDataSet* dset)
             m_surface->SetInputData(dset);
         }
     }
+
+    m_blockPropertyChanges = false;
+
     // restore initial vsibility
     if (!visibility) {
         this->Visibility.setValue(visibility);
     }
-    m_blockPropertyChanges = false;
 }
 
 bool ViewProviderFemPostObject::setupPipeline()
@@ -852,6 +900,26 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
     }
     else if (prop == &Transparency) {
         WriteTransparency();
+    }
+    else if (prop == &LineWidth) {
+        m_drawStyle->lineWidth.setValue(LineWidth.getValue());
+    }
+    else if (prop == &PointSize) {
+        m_drawStyle->pointSize.setValue(PointSize.getValue());
+    }
+    else if (prop == &EdgeColor && setupPipeline()) {
+        App::Color c = EdgeColor.getValue();
+        SbColor* edgeColor = m_matPlainEdges->diffuseColor.startEditing();
+        for (int i = 0; i < m_matPlainEdges->diffuseColor.getNum(); ++i) {
+            edgeColor[i].setValue(c.r, c.g, c.b);
+        }
+        m_matPlainEdges->diffuseColor.finishEditing();
+    }
+    else if (prop == &PlainColorEdgeOnSurface || prop == &DisplayMode) {
+        bool plainColor = PlainColorEdgeOnSurface.getValue()
+            && (strcmp("Surface with Edges", DisplayMode.getValueAsString()) == 0);
+        int child = plainColor ? 1 : 0;
+        m_switchMatEdges->whichChild.setValue(child);
     }
 
     ViewProviderDocumentObject::onChanged(prop);
@@ -975,7 +1043,7 @@ void ViewProviderFemPostObject::show()
 
 void ViewProviderFemPostObject::OnChange(Base::Subject<int>& /*rCaller*/, int /*rcReason*/)
 {
-    bool ResetColorBarRange = false;
+    bool ResetColorBarRange = true;
     WriteColorData(ResetColorBarRange);
 }
 

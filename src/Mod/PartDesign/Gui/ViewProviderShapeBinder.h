@@ -44,6 +44,7 @@ public:
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
+    void attach(App::DocumentObject *obj) override;
 
 private:
     std::vector<App::Color> originalLineColors;
@@ -78,7 +79,7 @@ public:
 private:
     enum {
         Synchronize = 0,
-        SelectObject = 1
+        SelectObject = 4  // must be higher than 3 (EditMode::Color)
     };
     void updatePlacement(bool transaction);
 };

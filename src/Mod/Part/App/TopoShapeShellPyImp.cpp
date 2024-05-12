@@ -38,6 +38,7 @@
 #include <Base/VectorPy.h>
 
 #include "OCCError.h"
+#include "PartPyCXX.h"
 #include "Tools.h"
 #include "TopoShapeCompoundPy.h"
 #include "TopoShapeCompoundPy.h"
@@ -45,7 +46,7 @@
 #include "TopoShapeShellPy.h"
 #include "TopoShapeShellPy.cpp"
 #include "TopoShapeSolidPy.h"
-
+#include "TopoShapeOpCode.h"
 
 using namespace Part;
 
@@ -85,6 +86,12 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (!PyArg_ParseTuple(args, "O", &obj))
         return -1;
 
+#ifdef FC_USE_TNP_FIX
+    try {
+        getTopoShapePtr()->makeElementBoolean(Part::OpCodes::Shell, getPyShapes(obj));
+    }
+    _PY_CATCH_OCC(return (-1))
+#else
     BRep_Builder builder;
     TopoDS_Shape shape;
     TopoDS_Shell shell;
@@ -121,6 +128,7 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     getTopoShapePtr()->setShape(shape);
+#endif
     return 0;
 }
 
@@ -132,13 +140,19 @@ PyObject*  TopoShapeShellPy::add(PyObject *args)
 
     BRep_Builder builder;
     TopoDS_Shape shell = getTopoShapePtr()->getShape();
+    if (shell.IsNull()) {
+        builder.MakeShell(TopoDS::Shell(shell));
+    }
 
     try {
-        const TopoDS_Shape& sh = static_cast<TopoShapeFacePy*>(obj)->
-            getTopoShapePtr()->getShape();
+        const TopoShape& shape = *static_cast<TopoShapeFacePy*>(obj)->getTopoShapePtr();
+        const auto &sh = shape.getShape();
         if (!sh.IsNull()) {
             builder.Add(shell, sh);
             BRepCheck_Analyzer check(shell);
+#ifdef FC_USE_TNP_FIX
+            getTopoShapePtr()->mapSubElement(shape);
+#endif
             if (!check.IsValid()) {
                 ShapeUpgrade_ShellSewing sewShell;
                 getTopoShapePtr()->setShape(sewShell.ApplySewing(shell));
@@ -167,7 +181,14 @@ PyObject*  TopoShapeShellPy::getFreeEdges(PyObject *args)
     as.CheckOrientedShells(getTopoShapePtr()->getShape(), Standard_True, Standard_True);
 
     TopoDS_Compound comp = as.FreeEdges();
+#ifdef FC_USE_TNP_FIX
+    TopoShape res;
+    res.setShape(comp);
+    res.mapSubElement(*getTopoShapePtr());
+    return Py::new_reference_to(shape2pyshape(res));
+#else
     return new TopoShapeCompoundPy(new TopoShape(comp));
+#endif
 }
 
 PyObject*  TopoShapeShellPy::getBadEdges(PyObject *args)
@@ -179,7 +200,14 @@ PyObject*  TopoShapeShellPy::getBadEdges(PyObject *args)
     as.CheckOrientedShells(getTopoShapePtr()->getShape(), Standard_True, Standard_True);
 
     TopoDS_Compound comp = as.BadEdges();
+#ifdef FC_USE_TNP_FIX
+    TopoShape res;
+    res.setShape(comp);
+    res.mapSubElement(*getTopoShapePtr());
+    return Py::new_reference_to(shape2pyshape(res));
+#else
     return new TopoShapeCompoundPy(new TopoShape(comp));
+#endif
 }
 
 PyObject* TopoShapeShellPy::makeHalfSpace(PyObject *args)

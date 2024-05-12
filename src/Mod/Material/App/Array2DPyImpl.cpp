@@ -64,17 +64,18 @@ int Array2DPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 Py::List Array2DPy::getArray() const
 {
     Py::List list;
+
     auto array = getMaterial2DArrayPtr()->getArray();
 
     for (auto& row : array) {
-        Py::List* rowList = new Py::List();
+        Py::List rowList;
         for (auto& column : *row) {
             auto quantity =
                 new Base::QuantityPy(new Base::Quantity(column.value<Base::Quantity>()));
-            rowList->append(Py::Object(quantity));
+            rowList.append(Py::asObject(quantity));
         }
 
-        list.append(*rowList);
+        list.append(rowList);
     }
 
     return list;
@@ -104,7 +105,7 @@ PyObject* Array2DPy::getRow(PyObject* args)
         for (auto& column : *arrayRow) {
             auto quantity =
                 new Base::QuantityPy(new Base::Quantity(column.value<Base::Quantity>()));
-            list.append(Py::Object(quantity));
+            list.append(Py::asObject(quantity));
         }
 
         return Py::new_reference_to(list);

@@ -27,7 +27,7 @@ __url__ = "https://www.freecad.org"
 import os
 from pathlib import PurePath
 import sys
-from PySide import QtCore, QtGui, QtSvg
+from PySide import QtCore, QtGui, QtSvgWidgets
 
 import FreeCAD
 import FreeCADGui
@@ -92,11 +92,11 @@ class MaterialEditor:
         treeView = widget.treeView
 
         # create preview svg slots
-        self.widget.PreviewRender = QtSvg.QSvgWidget(self.iconPath + "preview-rendered.svg")
+        self.widget.PreviewRender = QtSvgWidgets.QSvgWidget(self.iconPath + "preview-rendered.svg")
         self.widget.PreviewRender.setMaximumWidth(64)
         self.widget.PreviewRender.setMinimumHeight(64)
         self.widget.topLayout.addWidget(self.widget.PreviewRender)
-        self.widget.PreviewVector = QtSvg.QSvgWidget(self.iconPath + "preview-vector.svg")
+        self.widget.PreviewVector = QtSvgWidgets.QSvgWidget(self.iconPath + "preview-vector.svg")
         self.widget.PreviewVector.setMaximumWidth(64)
         self.widget.PreviewVector.setMinimumHeight(64)
         self.widget.topLayout.addWidget(self.widget.PreviewVector)
@@ -685,9 +685,9 @@ class MaterialEditor:
 
                 from importFCMat import write
                 write(filename, d)
-                import Material
+                import Materials
                 # Load the material
-                manager = Material.MaterialManager()
+                manager = Materials.MaterialManager()
                 manager.getMaterialByPath(filename)
                 self.edited = False
                 self.updateCardsInCombo()

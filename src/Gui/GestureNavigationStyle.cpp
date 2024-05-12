@@ -297,7 +297,8 @@ public:
         //MMB click
         if(ev.isPress(3) && ev.mbstate() == 0x010){
             ev.flags->processed = true;
-            ns.onSetRotationCenter(ev.inventor_event->getPosition());
+            ns.setupPanningPlane(ns.viewer->getCamera());
+            ns.lookAtPoint(ev.inventor_event->getPosition());
             return transit<NS::AwaitingReleaseState>();
         }
 
@@ -314,8 +315,10 @@ public:
             bool press = (kbev->getState() == SoKeyboardEvent::DOWN);
             switch (kbev->getKey()) {
                 case SoKeyboardEvent::H:
-                    if (!press)
-                        ns.onSetRotationCenter(kbev->getPosition());
+                    if (!press) {
+                        ns.setupPanningPlane(ns.viewer->getCamera());
+                        ns.lookAtPoint(kbev->getPosition());
+                    }
                 break;
                 case SoKeyboardEvent::PAGE_UP:
                     if(!press){
@@ -538,7 +541,7 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> PanState\n");
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
-        ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
+        ns.setupPanningPlane(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
     virtual ~PanState() = default;
 
@@ -585,7 +588,7 @@ public:
         if (ns.logging)
             Base::Console().Log(" -> StickyPanState\n");
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
-        ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
+        ns.setupPanningPlane(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
     virtual ~StickyPanState(){
         auto &ns = this->outermost_context().ns;
@@ -631,7 +634,7 @@ public:
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
         if (ns.logging)
             Base::Console().Log(" -> TiltState\n");
-        ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
+        ns.setupPanningPlane(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
     }
     virtual ~TiltState() = default;
 
@@ -681,7 +684,7 @@ public:
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
         if (ns.logging)
             Base::Console().Log(" -> GestureState\n");
-        ns.pan(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
+        ns.setupPanningPlane(ns.viewer->getSoRenderManager()->getCamera());//set up panningplane
         this->ratio = ns.viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
         enableTilt = !(App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/View")->GetBool("DisableTouchTilt",true));
@@ -1004,16 +1007,6 @@ void GestureNavigationStyle::onRollGesture(int direction)
     } catch (...) {
         Base::Console().Error("GestureNavigationStyle::onRollGesture: unknown C++ exception when invoking command %s\n", cmd.c_str());
    }
-
-}
-
-void GestureNavigationStyle::onSetRotationCenter(SbVec2s cursor){
-    SbBool ret = NavigationStyle::lookAtPoint(cursor);
-    if(!ret){
-        this->interactiveCountDec(); //this was in original gesture nav. Not sure what is it needed for --DeepSOIC
-        Base::Console().Log(
-            "No object under cursor! Can't set new center of rotation.\n");
-    }
 
 }
 

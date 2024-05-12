@@ -484,7 +484,8 @@ void ExtrusionHelper::createTaperedPrismOffset(TopoDS_Wire sourceWire,
 
 void ExtrusionHelper::makeElementDraft(const ExtrusionParameters& params,
                                        const TopoShape& _shape,
-                                       std::vector<TopoShape>& drafts)
+                                       std::vector<TopoShape>& drafts,
+                                       App::StringHasherRef hasher)
 {
     double distanceFwd = tan(params.taperAngleFwd) * params.lengthFwd;
     double distanceRev = tan(params.taperAngleRev) * params.lengthRev;
@@ -518,7 +519,7 @@ void ExtrusionHelper::makeElementDraft(const ExtrusionParameters& params,
         }
         else {
             unsigned pos = drafts.size();
-            makeElementDraft(params, outerWire, drafts);
+            makeElementDraft(params, outerWire, drafts, hasher);
             if (drafts.size() != pos + 1) {
                 Standard_Failure::Raise("Failed to make drafted extrusion");
             }
@@ -528,7 +529,7 @@ void ExtrusionHelper::makeElementDraft(const ExtrusionParameters& params,
                 wires,
                 "",
                 TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
-            makeElementDraft(params, innerWires, inner);
+            makeElementDraft(params, innerWires, inner, hasher);
             if (inner.empty()) {
                 Standard_Failure::Raise("Failed to make drafted extrusion with inner hole");
             }
@@ -550,7 +551,7 @@ void ExtrusionHelper::makeElementDraft(const ExtrusionParameters& params,
     }
     else if (shape.shapeType() == TopAbs_COMPOUND) {
         for (auto& s : shape.getSubTopoShapes()) {
-            makeElementDraft(params, s, drafts);
+            makeElementDraft(params, s, drafts, hasher);
         }
     }
     else {
@@ -598,7 +599,7 @@ void ExtrusionHelper::makeElementDraft(const ExtrusionParameters& params,
             }
 
             mkGenerator.Build();
-            drafts.push_back(TopoShape(0).makeElementShape(mkGenerator, list_of_sections));
+            drafts.push_back(TopoShape(0, hasher).makeElementShape(mkGenerator, list_of_sections));
         }
         catch (Standard_Failure&) {
             throw;
