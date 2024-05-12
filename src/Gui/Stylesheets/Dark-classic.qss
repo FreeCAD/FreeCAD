@@ -1955,7 +1955,7 @@ QTabBar::tab, QDockWidget QTabBar::tab {
   background-color: #333333;
 
 }
-
+/*
 QTabBar::tab:top:selected:disabled, QDockWidget QTabBar::tab:top:selected:disabled {
   color: #adadad;
 }
@@ -2004,7 +2004,7 @@ QTabBar::tab:left:!selected, QDockWidget QTabBar::tab:left:!selected {
 
 QTabBar::tab:right:!selected, QDockWidget QTabBar::tab:right:!selected {
   color: #adadad;
-}
+} */
 
 QTabBar::tab:top, QDockWidget QTabBar::tab:top {
   color: white;

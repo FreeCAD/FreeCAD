@@ -936,23 +936,23 @@ QToolBar::handle:vertical {
 
 QToolBar::handle:horizontal:hover {
   width: 8px;
-  image: url(qss:images_classic/Hmovetoolbar-black.png);
+  image: url(qss:images_classic/Hmovetoolbar-darkgray.png);
 }
 
 QToolBar::handle:vertical:hover {
   height: 8px;
-  image: url(qss:images_classic/Vmovetoolbar-black.png);
+  image: url(qss:images_classic/Vmovetoolbar-darkgray.png);
 }
 
 
 QToolBar::separator:horizontal {
   width: 2px;
-  image: url(qss:images_classic/Hsepartoolbar-Darkgray.png);
+  image: url(qss:images_classic/Hsepartoolbar-lightgray.png);
 }
 
 QToolBar::separator:vertical {
   height: 2px;
-  image: url(qss:images_classic/Vsepartoolbar-Darkgray.png);
+  image: url(qss:images_classic/Vsepartoolbar-lightgray.png);
 }
 
 /*The "show more" button  (it can also be stylable with "QToolBarExtension"  icon is not working Qproperty works but breaks when you move the toolbar see also */
@@ -1950,7 +1950,7 @@ QTabBar::close-button:hover, QDockWidget QTabBar::close-button:hover {
 }
 
 QTabBar::close-button:pressed, QDockWidget QTabBar::close-button:pressed {
-  image: url(qss:images_classic/close-DarkRed.png);
+  image: url(qss:images_classic/close-lightRed.png);
 }
 
 QTabBar::tab, QDockWidget QTabBar::tab {
@@ -1960,7 +1960,7 @@ QTabBar::tab, QDockWidget QTabBar::tab {
   background-color: #f0f0f0;
 
 }
-
+/*
 QTabBar::tab:top:selected:disabled, QDockWidget QTabBar::tab:top:selected:disabled {
   color: #adadad;
 }
@@ -2009,18 +2009,18 @@ QTabBar::tab:left:!selected, QDockWidget QTabBar::tab:left:!selected {
 
 QTabBar::tab:right:!selected, QDockWidget QTabBar::tab:right:!selected {
   color: #adadad;
-}
+} */
 
 QTabBar::tab:top, QDockWidget QTabBar::tab:top {
   color: black;
   padding-left: 9px;
   min-width: 5px;
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #fdfdfd, stop:1 #f0f0f0);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #dddddd, stop:1 #e2e2e2);
   margin-top: 3px;
-  border-top: 1px solid #e6e6e6; /* selection color */
+  border-top: 1px solid #ababab; /* selection color */
   border-bottom: 1px solid transparent;
-  border-left: 1px solid #e6e6e6;
-  border-right: 1px solid #e6e6e6;
+  border-left: 1px solid #ababab;
+  border-right: 1px solid #ababab;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
 }
@@ -2028,10 +2028,10 @@ QTabBar::tab:top, QDockWidget QTabBar::tab:top {
 QTabBar::tab:top:selected, QDockWidget QTabBar::tab:top:selected {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #f0f0f0, stop:1 #fdfdfd);
   color: black;
-  border-top: 1px solid #e6e6e6; /* selection color */
+  border-top: 1px solid #ababab; /* selection color */
   border-bottom: 1px solid transparent;
-  border-left: 1px solid #e6e6e6;
-  border-right: 1px solid #e6e6e6;
+  border-left: 1px solid #ababab;
+  border-right: 1px solid #ababab;
   margin-top: 0px;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
@@ -2045,12 +2045,12 @@ QTabBar::tab:bottom, QDockWidget QTabBar::tab:bottom {
   color: black;
   padding-left: 9px;
   min-width: 5px;
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #f0f0f0, stop:1 #fdfdfd);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #dddddd, stop:1 #e2e2e2);
   margin-bottom: 3px;
-  border-bottom: 1px solid #e6e6e6; /* selection color */
+  border-bottom: 1px solid #ababab; /* selection color */
   border-top: 1px solid transparent;
-  border-left: 1px solid #e6e6e6;
-  border-right: 1px solid #e6e6e6;
+  border-left: 1px solid #ababab;
+  border-right: 1px solid #ababab;
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -2058,10 +2058,10 @@ QTabBar::tab:bottom, QDockWidget QTabBar::tab:bottom {
 QTabBar::tab:bottom:selected, QDockWidget QTabBar::tab:bottom:selected {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #fdfdfd, stop:1 #fafafa);
   color: black;
-  border-bottom: 1px solid #e6e6e6; /* selection color */
+  border-bottom: 1px solid #ababab; /* selection color */
   border-top: 1px solid transparent;
-  border-left: 1px solid #e6e6e6;
-  border-right: 1px solid #e6e6e6;
+  border-left: 1px solid #ababab;
+  border-right: 1px solid #ababab;
   margin-bottom: 0px;
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
@@ -2075,12 +2075,12 @@ QTabBar::tab:left, QDockWidget QTabBar::tab:left {
   color: black;
   padding-bottom: 9px;
   min-height: 5px;
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #f0f0f0, stop:1 #fdfdfd);
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #dddddd, stop:1 #e2e2e2);
   margin-right: 3px;
-  border-bottom: 1px solid #e6e6e6; /* selection color */
+  border-bottom: 1px solid #ababab; /* selection color */
   border-right: 1px solid transparent;
-  border-left: 1px solid #e6e6e6;
-  border-top: 1px solid #e6e6e6;
+  border-left: 1px solid #ababab;
+  border-top: 1px solid #ababab;
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
@@ -2088,10 +2088,10 @@ QTabBar::tab:left, QDockWidget QTabBar::tab:left {
 QTabBar::tab:left:selected, QDockWidget QTabBar::tab:left:selected {
   background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #fdfdfd, stop:1 #fafafa);
   color: black;
-  border-bottom: 1px solid #e6e6e6; /* selection color */
+  border-bottom: 1px solid #ababab; /* selection color */
   border-right: 1px solid transparent;
-  border-left: 1px solid #e6e6e6;
-  border-top: 1px solid #e6e6e6;
+  border-left: 1px solid #ababab;
+  border-top: 1px solid #ababab;
   margin-right: 0px;
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
@@ -2106,12 +2106,12 @@ QTabBar::tab:right, QDockWidget QTabBar::tab:right {
   color: black;
   padding-bottom: 9px;
   min-height: 5px;
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #f0f0f0, stop:1 #fdfdfd);
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #dddddd, stop:1 #e2e2e2);
   margin-right: 3px;
-  border-bottom: 1px solid #e6e6e6; /* selection color */
+  border-bottom: 1px solid #ababab; /* selection color */
   border-left: 1px solid transparent;
-  border-right: 1px solid #e6e6e6;
-  border-top: 1px solid #e6e6e6;
+  border-right: 1px solid #ababab;
+  border-top: 1px solid #ababab;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -2119,10 +2119,10 @@ QTabBar::tab:right, QDockWidget QTabBar::tab:right {
 QTabBar::tab:right:selected, QDockWidget QTabBar::tab:right:selected {
   background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #fdfdfd, stop:1 #fafafa);
   color: black;
-  border-bottom: 1px solid #e6e6e6; /* selection color */
+  border-bottom: 1px solid #ababab; /* selection color */
   border-left: 1px solid transparent;
-  border-left: 1px solid #e6e6e6;
-  border-top: 1px solid #e6e6e6;
+  border-left: 1px solid #ababab;
+  border-top: 1px solid #ababab;
   margin-right: 0px;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
