@@ -28,7 +28,9 @@
 #include <boost_signals2.hpp>
 
 #include <QStringList>
+#include <QPointer>
 #include <QTimer>
+#include <QWidget>
 
 #include <FCGlobal.h>
 #include <Base/Parameter.h>
@@ -86,6 +88,25 @@ private:
     QList<ToolBarItem*> _items;
 };
 
+class ToolBarGrip: public QWidget
+{
+    Q_OBJECT
+public:
+    ToolBarGrip(QToolBar *);
+
+    QAction *action() const;
+
+protected:
+    void paintEvent(QPaintEvent*);
+    void mouseMoveEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+
+private:
+    QPointer<QAction> _action;
+};
+
+
 /**
  * The ToolBarManager class is responsible for the creation of toolbars and appending them
  * to the main window.
@@ -123,7 +144,8 @@ public:
     int toolBarIconSize(QWidget *widget=nullptr) const;
     void setupToolBarIconSize();
 
-    void populateUndockMenu(QMenu *menu, ToolBarArea *area = nullptr);
+    ToolBarArea *getToolBarArea(QToolBar *) const;
+    void setToolBarMovable(QToolBar *) const;
 
 protected:
     void setup(ToolBarItem*, QToolBar*) const;

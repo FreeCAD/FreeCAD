@@ -801,14 +801,6 @@ QMenu* MainWindow::createPopupMenu ()
     populateDockWindowMenu(menu);
     menu->addSeparator();
     populateToolBarMenu(menu);
-    QMenu *undockMenu = new QMenu(menu);
-    ToolBarManager::getInstance()->populateUndockMenu(undockMenu);
-    if (undockMenu->actions().isEmpty()) {
-        delete undockMenu;
-    }
-    else {
-        menu->addMenu(undockMenu);
-    }
     menu->addSeparator();
     Workbench* wb = WorkbenchManager::instance()->active();
     if (wb) {

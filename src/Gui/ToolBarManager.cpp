@@ -29,10 +29,12 @@
 # include <QHBoxLayout>
 # include <QMenuBar>
 # include <QMouseEvent>
+# include <QPainter>
 # include <QPointer>
 # include <QStatusBar>
 # include <QToolBar>
 # include <QToolButton>
+# include <QStyleOption>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -188,6 +190,7 @@ public:
     {
         if (_layout->indexOf(w) < 0) {
             _layout->addWidget(w);
+            ToolBarManager::getInstance()->setToolBarMovable(qobject_cast<QToolBar*>(w));
             adjustParent();
             QString name = w->objectName();
             if (!name.isEmpty()) {
@@ -207,6 +210,7 @@ public:
             _layout->removeWidget(w);
         }
         _layout->insertWidget(idx, w);
+        ToolBarManager::getInstance()->setToolBarMovable(qobject_cast<QToolBar*>(w));
         adjustParent();
         saveState();
     }
@@ -221,6 +225,12 @@ public:
     void removeWidget(QWidget *w)
     {
         _layout->removeWidget(w);
+        if (auto tb = qobject_cast<QToolBar*>(w)) {
+            if (auto grip = tb->findChild<ToolBarGrip*>()) {
+                tb->removeAction(grip->action());
+                grip->deleteLater();
+            }
+        }
         QString name = w->objectName();
         if (!name.isEmpty()) {
             Base::ConnectionBlocker block(_conn);
@@ -294,7 +304,134 @@ private:
     boost::signals2::scoped_connection &_conn;
 };
 
+class ToolBar: public QToolBar
+{
+public:
+    void initStyleOption(QStyleOptionToolBar *option) const
+    {
+        QToolBar::initStyleOption(option);
+    }
+};
+
 } // namespace Gui
+
+// -----------------------------------------------------------
+
+ToolBarGrip::ToolBarGrip(QToolBar * parent)
+    :QWidget(parent)
+{
+    QStyle *style = parent->style();
+    QStyleOptionToolBar opt;
+    static_cast<ToolBar*>(parent)->initStyleOption(&opt);
+    opt.features = QStyleOptionToolBar::Movable;
+    int width = style->subElementRect(QStyle::SE_ToolBarHandle, &opt, parent).width();
+    this->setFixedWidth(width+4);
+
+    setCursor(Qt::OpenHandCursor);
+    setMouseTracking(true);
+    auto actions = parent->actions();
+    _action = parent->insertWidget(actions.isEmpty()?nullptr:actions[0], this);
+    setVisible(true);
+}
+
+QAction *ToolBarGrip::action() const
+{
+    return _action;
+}
+
+void ToolBarGrip::paintEvent(QPaintEvent*)
+{
+    QPainter painter(this);
+    if (auto toolbar = qobject_cast<QToolBar*>(parentWidget())) {
+        QStyle *style = toolbar->style();
+        QStyleOptionToolBar opt;
+        static_cast<ToolBar*>(toolbar)->initStyleOption(&opt);
+        opt.features = QStyleOptionToolBar::Movable;
+        // opt.rect = style->subElementRect(QStyle::SE_ToolBarHandle, &opt, toolbar);
+        opt.rect = this->rect();
+        style->drawPrimitive(QStyle::PE_IndicatorToolBarHandle, &opt, &painter, toolbar);
+    }
+    else {
+        painter.setPen(Qt::transparent);
+        painter.setOpacity(0.5);
+        painter.setBrush(QBrush(Qt::black, Qt::Dense6Pattern));
+        QRect rect(this->rect());
+        painter.drawRect(rect);
+    }
+}
+
+void ToolBarGrip::mouseMoveEvent(QMouseEvent *me)
+{
+    auto toolbar = qobject_cast<QToolBar*>(parentWidget());
+    if (!toolbar) {
+        return;
+    }
+    auto area = ToolBarManager::getInstance()->getToolBarArea(toolbar);
+    if (!area)
+        return;
+
+    QPoint pos = me->globalPos();
+    QRect rect(toolbar->mapToGlobal(QPoint(0,0)), toolbar->size());
+    if (rect.contains(pos))
+        return;
+
+    // If mouse is out of the toolbar, remove the toolbar from area and float the
+    // toolbar
+    {
+        QSignalBlocker blocker(toolbar);
+        area->removeWidget(toolbar);
+        getMainWindow()->addToolBar(toolbar);
+        toolbar->setWindowFlags(Qt::Tool
+                | Qt::FramelessWindowHint
+                | Qt::X11BypassWindowManagerHint);
+        toolbar->adjustSize();
+        pos = toolbar->mapFromGlobal(pos);
+        toolbar->move(pos.x()-10, pos.y()-10);
+        toolbar->setVisible(true);
+    }
+    toolbar->topLevelChanged(true);
+
+    // After removing from area, this grip will be deleted. In order to
+    // continue toolbar dragging (because the mouse button is still pressed),
+    // we fake mouse events and send to toolbar. For some reason,
+    // send/postEvent() does not work, only timer works.
+    QPointer tb(toolbar);
+    QTimer::singleShot(0, [tb] {
+        auto modifiers = QApplication::queryKeyboardModifiers();
+        auto buttons = QApplication::mouseButtons();
+        if (buttons != Qt::LeftButton
+                || QWidget::mouseGrabber()
+                || modifiers != Qt::NoModifier
+                || !tb) {
+            return;
+        }
+        QPoint pos(10, 10);
+        QPoint globalPos(tb->mapToGlobal(pos));
+        QMouseEvent mouseEvent(
+                QEvent::MouseButtonPress,
+                pos, globalPos, Qt::LeftButton, buttons, modifiers);
+        QApplication::sendEvent(tb, &mouseEvent);
+
+        // Mose follow the mouse press event with mouse move with some offset
+        // in order to activate toolbar dragging.
+        QPoint offset(30, 30);
+        QMouseEvent mouseMoveEvent(
+                QEvent::MouseMove,
+                pos+offset, globalPos+offset,
+                Qt::LeftButton, buttons, modifiers);
+        QApplication::sendEvent(tb, &mouseMoveEvent);
+    });
+}
+
+void ToolBarGrip::mousePressEvent(QMouseEvent *)
+{
+    setCursor(Qt::ClosedHandCursor);
+}
+
+void ToolBarGrip::mouseReleaseEvent(QMouseEvent *)
+{
+    setCursor(Qt::OpenHandCursor);
+}
 
 // -----------------------------------------------------------
 
@@ -756,6 +893,18 @@ void ToolBarManager::restoreState() const
     menuBarLeftArea->restoreState(mbLeftToolBars);
 }
 
+ToolBarArea *ToolBarManager::getToolBarArea(QToolBar *toolbar) const
+{
+    auto parent = toolbar->parentWidget();
+    if (parent == statusBarArea)
+        return statusBarArea;
+    if (parent == menuBarLeftArea)
+        return menuBarLeftArea;
+    if (parent == menuBarRightArea)
+        return menuBarRightArea;
+    return nullptr;
+}
+
 bool ToolBarManager::addToolBarToArea(QObject *source, QMouseEvent *ev)
 {
     auto statusBar = getMainWindow()->statusBar();
@@ -887,47 +1036,9 @@ bool ToolBarManager::addToolBarToArea(QObject *source, QMouseEvent *ev)
     return false;
 }
 
-void ToolBarManager::populateUndockMenu(QMenu *menu, ToolBarArea *area)
-{
-    menu->setTitle(tr("Undock toolbars"));
-    auto tooltip = QObject::tr("Undock from status bar");
-    auto addMenuUndockItem = [&](QToolBar *toolbar, int, ToolBarArea *area) {
-        auto *action = toolbar->toggleViewAction();
-        auto undockAction = new QAction(menu);
-        undockAction->setText(action->text());
-        undockAction->setToolTip(tooltip);
-        menu->addAction(undockAction);
-        QObject::connect(undockAction, &QAction::triggered, [area, toolbar]() {
-            if (toolbar->parentWidget() == getMainWindow()) {
-                return;
-            }
-            auto pos = toolbar->mapToGlobal(QPoint(0, 0));
-            QSignalBlocker blocker(toolbar);
-            area->removeWidget(toolbar);
-            getMainWindow()->addToolBar(toolbar);
-            toolbar->setWindowFlags(Qt::Tool
-                    | Qt::FramelessWindowHint
-                    | Qt::X11BypassWindowManagerHint);
-            toolbar->move(pos.x(), pos.y()-toolbar->height()-10);
-            toolbar->adjustSize();
-            toolbar->setVisible(true);
-            Q_EMIT toolbar->topLevelChanged(true);
-        });
-    };
-    if (area) {
-        area->foreachToolBar(addMenuUndockItem);
-    }
-    else {
-        statusBarArea->foreachToolBar(addMenuUndockItem);
-        menuBarLeftArea->foreachToolBar(addMenuUndockItem);
-        menuBarRightArea->foreachToolBar(addMenuUndockItem);
-    }
-}
-
 bool ToolBarManager::showContextMenu(QObject *source)
 {
     QMenu menu;
-    QMenu menuUndock;
     QLayout* layout = nullptr;
     ToolBarArea* area = nullptr;
     if (getMainWindow()->statusBar() == source) {
@@ -957,12 +1068,7 @@ bool ToolBarManager::showContextMenu(QObject *source)
     }
 
     area->foreachToolBar(addMenuVisibleItem);
-    populateUndockMenu(&menuUndock, area);
 
-    if (!menuUndock.actions().empty()) {
-        menu.addSeparator();
-        menu.addMenu(&menuUndock);
-    }
     menu.exec(QCursor::pos());
     return true;
 }
@@ -1097,8 +1203,46 @@ void Gui::ToolBarManager::setMovable(bool moveable) const
 {
     for (auto& tb : toolBars()) {
         tb->setMovable(moveable);
+        setToolBarMovable(tb);
     }
 }
+
+void ToolBarManager::setToolBarMovable(QToolBar *toolbar) const
+{
+    if (!toolbar)
+        return;
+
+    bool movable = toolbar->isMovable();
+
+    if (auto area = getToolBarArea(toolbar)) {
+        if (auto grip = toolbar->findChild<ToolBarGrip*>()) {
+            if (!movable) {
+                toolbar->removeAction(grip->action());
+                grip->deleteLater();
+            }
+        }
+        else {
+            new ToolBarGrip(toolbar);
+        }
+        area->adjustParent();
+    }
+    QString name = QStringLiteral("_fc_toolbar_sep_");
+    auto sep = toolbar->findChild<QAction*>(name);
+    if (sep) {
+        if (movable) {
+            toolbar->removeAction(sep);
+            sep->deleteLater();
+        }
+    }
+    else if (!movable) {
+        auto actions = toolbar->actions();
+        if (actions.size()) {
+            sep = toolbar->insertSeparator(actions[0]);
+            sep->setObjectName(name);
+        }
+    }
+}
+
 
 QToolBar* ToolBarManager::findToolBar(const QList<QToolBar*>& toolbars, const QString& item) const
 {
