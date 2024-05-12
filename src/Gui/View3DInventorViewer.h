@@ -414,6 +414,8 @@ public:
      */
     void viewSelection();
 
+    void alignToSelection();
+
     void setGradientBackground(Background);
     Background getGradientBackground() const;
     void setGradientBackgroundColor(const SbColor& fromColor,
