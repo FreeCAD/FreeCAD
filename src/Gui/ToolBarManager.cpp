@@ -633,7 +633,6 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
     }
 
     setMovable(!areToolBarsLocked());
-    restoreState();
 }
 
 void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
