@@ -215,30 +215,18 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         base.Move(invObjLoc);
 
-
-        std::vector<TopoDS_Wire> wires;
-        try {
-            // Iterate over wires in sketch shape.
-            for (TopExp_Explorer explorer(sketchshape, TopAbs_WIRE); explorer.More(); explorer.Next())
-            {
-                const TopoDS_Wire& aWire = TopoDS::Wire(explorer.Current());
-                wires.push_back(aWire);
-            }
-        }
-        catch (const Base::Exception& e) {
-            return new App::DocumentObjectExecReturn(e.what());
-        }
-        TopoDS_Shape result;
-
         // generate the helix path
         TopoDS_Shape path = generateHelixPath();
 
-        TopoDS_Shape face = Part::FaceMakerCheese::makeFace(wires);
+        // generate the pipe
+        TopoDS_Shape face = sketchshape;
         face.Move(invObjLoc);
         BRepOffsetAPI_MakePipe mkPS(TopoDS::Wire(path), face, GeomFill_Trihedron::GeomFill_IsFrenet, Standard_False);
         mkPS.Build();
+        TopoDS_Shape result;
         result = mkPS.Shape();
 
+        // Check pipe orientation
         BRepClass3d_SolidClassifier SC(result);
         SC.PerformInfinitePoint(Precision::Confusion());
         if (SC.State() == TopAbs_IN)
