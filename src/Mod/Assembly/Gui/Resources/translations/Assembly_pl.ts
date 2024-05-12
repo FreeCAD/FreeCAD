@@ -438,7 +438,7 @@ chyba że jest już obiektem typu Część.</translation>
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
       <source>Esc leave edit mode</source>
-      <translation>Naciśnięcie "Esc" opuszcza tryb edycji</translation>
+      <translation>Naciśnij "Esc" aby opuścić tryb edycji</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>

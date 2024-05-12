@@ -4101,12 +4101,12 @@ složeniny (pomalejší ale s podrobnějšími detaily).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Ambient shape color</source>
-      <translation type="unfinished">Ambient shape color</translation>
+      <translation>Barva okolního tvaru</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default ambient color for new shapes</source>
-      <translation type="unfinished">The default ambient color for new shapes</translation>
+      <translation>Výchozí barva prostředí pro nové tvary</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="116"/>

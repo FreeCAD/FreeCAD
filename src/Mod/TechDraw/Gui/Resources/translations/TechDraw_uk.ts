@@ -1940,7 +1940,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Command.cpp" line="426"/>
       <source>Do not show this message again</source>
-      <translation type="unfinished">Do not show this message again</translation>
+      <translation>Більше не показувати це повідомлення</translation>
     </message>
   </context>
   <context>
@@ -7382,7 +7382,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="126"/>
       <source>Spin clock wise</source>
-      <translation type="unfinished">Spin clock wise</translation>
+      <translation>Обертати за годинниковою стрілкою</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="537"/>
@@ -7448,7 +7448,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="174"/>
       <source>Spin counter clock wise</source>
-      <translation type="unfinished">Spin counter clock wise</translation>
+      <translation>Обертати проти годинникової стрілки</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="195"/>
@@ -9542,17 +9542,17 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="922"/>
       <source>X: </source>
-      <translation type="unfinished">X: </translation>
+      <translation>X: </translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="930"/>
       <source>Y: </source>
-      <translation type="unfinished">Y: </translation>
+      <translation>Y: </translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="938"/>
       <source>Z: </source>
-      <translation type="unfinished">Z: </translation>
+      <translation>Z: </translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="954"/>

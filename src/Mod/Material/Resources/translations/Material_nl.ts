@@ -16,7 +16,7 @@
     <message>
       <location filename="../../materials-editor.ui" line="40"/>
       <source>Opens the Product URL of this material in an external browser</source>
-      <translation type="unfinished">Opens the Product URL of this material in an external browser</translation>
+      <translation>Opent de product URL van dit materiaal in een externe browser</translation>
     </message>
     <message>
       <location filename="../../materials-editor.ui" line="56"/>
@@ -69,7 +69,7 @@
     <message>
       <location filename="../../MaterialEditor.py" line="275"/>
       <source>Product URL</source>
-      <translation type="unfinished">Product URL</translation>
+      <translation>Product-URL</translation>
     </message>
     <message>
       <location filename="../../MaterialEditor.py" line="337"/>

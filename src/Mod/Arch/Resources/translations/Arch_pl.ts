@@ -16,7 +16,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="30"/>
       <source>Choose preset...</source>
-      <translation>Użyj szablonu...</translation>
+      <translation>Użyj szablonu ...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="44"/>
@@ -737,7 +737,7 @@ obiekt przyjmie kolor tego materiału. Opcja ta może być nadpisana dla każdeg
     <message>
       <location filename="../ui/preferences-arch.ui" line="248"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
-      <translation>Jeśli opcja jest zaznaczona wynik konwersji jest szybszy, jednak mogą być widoczne ślady trójkątów</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, wynik konwersji jest szybszy, jednak mogą być widoczne ślady trójkątów</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="251"/>
@@ -2234,7 +2234,7 @@ obiekt do wycięcia i obiekt definiujący płaszczyznę cięcia.</translation>
     <message>
       <location filename="../../ArchCutPlane.py" line="245"/>
       <source>Front</source>
-      <translation>Od przodu</translation>
+      <translation>Przed</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="65"/>
@@ -2602,12 +2602,12 @@ obiekt do wycięcia i obiekt definiujący płaszczyznę cięcia.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="1821"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
-      <translation>Jeśli to pole jest zaznaczone, domyślna wartość ramki dla tego okna zostanie dodana do wartości wprowadzonej tutaj</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, domyślna wartość ramki dla tego okna zostanie dodana do wartości wprowadzonej tutaj</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1823"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
-      <translation>Jeśli to pole jest zaznaczone, domyślna wartość odsunięcia tego okna zostanie dodana do wartości wprowadzonej tutaj</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, domyślna wartość odsunięcia tego okna zostanie dodana do wartości wprowadzonej tutaj</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1825"/>
@@ -2752,7 +2752,7 @@ obiekt do wycięcia i obiekt definiujący płaszczyznę cięcia.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="159"/>
       <source>Create multi-material</source>
-      <translation>Utwórz wielowarstwowy materiał</translation>
+      <translation>Tworzy materiał wielowarstwowy</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="216"/>
@@ -3252,7 +3252,7 @@ obiekt do wycięcia i obiekt definiujący płaszczyznę cięcia.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="745"/>
       <source>Schedule</source>
-      <translation>Harmonogram</translation>
+      <translation>Obmiar</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="155"/>
@@ -3682,7 +3682,7 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchWall.py" line="695"/>
       <source>The selected wall contains no subwall to merge</source>
-      <translation>Wybrana ściana nie zawiera żadnej ściany działowej do połączenia</translation>
+      <translation>Wybrana ściana nie zawiera żadnego obiektu ściany podrzędnej do połączenia</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="698"/>
@@ -4074,7 +4074,8 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="335"/>
       <source>If true, the height value propagates to contained objects if the height of those objects is set to 0</source>
-      <translation type="unfinished">If true, the height value propagates to contained objects if the height of those objects is set to 0</translation>
+      <translation>Jeśli opcja jest aktywna, wartość wysokości przechodzi do zawartych obiektów, 
+jeśli wysokość tych obiektów jest ustawiona na 0</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="338"/>
@@ -4546,8 +4547,9 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="315"/>
       <source>An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</source>
-      <translation>Opcjonalny obiekt definiujący objętość do odjęcia od ścian. Jeśli pole jest ustawione, 
-ma pierwszeństwo przed automatycznie generowaną pod objętością.</translation>
+      <translation>Opcjonalny obiekt definiujący objętość do odjęcia od ścian. 
+Jeśli opcja ta jest zaznaczona, 
+ma pierwszeństwo przed automatycznie generowaną objętością podrzędną.</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="95"/>
@@ -5881,7 +5883,7 @@ ma pierwszeństwo przed automatycznie generowaną pod objętością.</translatio
     <message>
       <location filename="../../ArchSpace.py" line="299"/>
       <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
-      <translation>Jeśli parametr ma wartość Prawda, pole Sprzęt Zasilający zostanie automatycznie uzupełnione przez wyposażenie zawarte w tym miejscu</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, pole Sprzęt Zasilający zostanie automatycznie uzupełnione przez wyposażenie zawarte w tym miejscu</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="301"/>
@@ -6225,7 +6227,7 @@ ma pierwszeństwo przed automatycznie generowaną pod objętością.</translatio
     <message>
       <location filename="../../ArchCutPlane.py" line="165"/>
       <source>Cut with plane</source>
-      <translation>Przytnij płaszczyzną</translation>
+      <translation>Przetnij płaszczyzną</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="168"/>
@@ -6737,7 +6739,7 @@ ma pierwszeństwo przed automatycznie generowaną pod objętością.</translatio
     <message>
       <location filename="../../ArchCommands.py" line="1461"/>
       <source>Select non-manifold meshes</source>
-      <translation>Wybierz siatki typu non-manifold</translation>
+      <translation>Zaznacz siatki typu non-manifold</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1464"/>
@@ -6802,7 +6804,7 @@ ma pierwszeństwo przed automatycznie generowaną pod objętością.</translatio
     <message>
       <location filename="../../ArchCommands.py" line="1558"/>
       <source>Toggle IFC Brep flag</source>
-      <translation>Przełącz znacznik IFC Brep</translation>
+      <translation>Przełącz flagę Brep IFC</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1561"/>

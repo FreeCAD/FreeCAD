@@ -602,7 +602,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="26"/>
       <source>Maximum degree</source>
-      <translation type="unfinished">Maximum degree</translation>
+      <translation>Maximale graad</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="37"/>
@@ -682,12 +682,12 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="160"/>
       <source>Torsion</source>
-      <translation type="unfinished">Torsion</translation>
+      <translation>Torsie</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="167"/>
       <source>Curve length</source>
-      <translation type="unfinished">Curve length</translation>
+      <translation>Lengte van de kromme</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="174"/>

@@ -1245,7 +1245,7 @@ for linear dimensions.</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="27"/>
       <source>Pattern files (*.pat *.PAT)</source>
-      <translation type="unfinished">Pattern files (*.pat *.PAT)</translation>
+      <translation>Arquivos de padrão (*.pat *.PAT)</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="34"/>
@@ -2708,7 +2708,7 @@ These lines are thicker than normal grid lines.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="439"/>
       <source>N</source>
-      <translation type="unfinished">N</translation>
+      <translation>N</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="458"/>

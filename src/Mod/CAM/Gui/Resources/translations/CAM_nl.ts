@@ -749,7 +749,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="33"/>
       <source>Feature</source>
-      <translation type="unfinished">Feature</translation>
+      <translation>Kenmerk</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="38"/>

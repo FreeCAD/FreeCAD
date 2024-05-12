@@ -471,7 +471,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3080"/>
       <source>Constrain horizontal</source>
-      <translation type="unfinished">Constrain horizontal</translation>
+      <translation>Contrainte horizontale</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3081"/>
@@ -524,7 +524,7 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4223"/>
       <source>Constrain point on object</source>
-      <translation type="unfinished">Constrain point on object</translation>
+      <translation>Contrainte point sur objet</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4224"/>
@@ -564,7 +564,7 @@ and an edge as an interface.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9233"/>
       <source>Constrain symmetric</source>
-      <translation type="unfinished">Constrain symmetric</translation>
+      <translation>Contrainte de symétrie</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9234"/>
@@ -578,7 +578,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3125"/>
       <source>Constrain vertical</source>
-      <translation type="unfinished">Constrain vertical</translation>
+      <translation>Contrainte verticale</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3126"/>
@@ -617,7 +617,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="490"/>
       <source>Create arc by 3 points</source>
-      <translation type="unfinished">Create arc by 3 points</translation>
+      <translation>Créer un arc par 3 points</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="491"/>
@@ -630,7 +630,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1300"/>
       <source>Create circle by 3 points</source>
-      <translation type="unfinished">Create circle by 3 points</translation>
+      <translation>Créer un cercle par 3 points</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1301"/>
@@ -708,7 +708,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="638"/>
       <source>Create circle by center</source>
-      <translation type="unfinished">Create circle by center</translation>
+      <translation>Créer un cercle par son centre</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="639"/>
@@ -2149,7 +2149,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="374"/>
       <source>Offset</source>
-      <translation>Décaler</translation>
+      <translation>Décalage</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="112"/>
@@ -2524,7 +2524,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="80"/>
       <source>Dimensional constraint</source>
-      <translation>Contraintes de dimension</translation>
+      <translation>Contraintes pilotantes de dimension</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="172"/>
@@ -3286,7 +3286,7 @@ Voir la documentation pour plus de détails.</translation>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="173"/>
       <source>Translate parameters</source>
-      <translation>Paramètres de la matrice</translation>
+      <translation>Paramètres de translation</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="194"/>
@@ -5051,7 +5051,7 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2935"/>
       <source>Invalid sketch</source>
-      <translation>Esquisse non valide</translation>
+      <translation>Esquisses non valides</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2936"/>
@@ -6718,7 +6718,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1668"/>
       <source>Frame (J)</source>
-      <translation>Coins droits (J)</translation>
+      <translation>Cadre (J)</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1671"/>
@@ -6739,7 +6739,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2724"/>
       <source>Constrain horizontal/vertical</source>
-      <translation type="unfinished">Constrain horizontal/vertical</translation>
+      <translation>Contrainte horizontale/verticale</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2725"/>
@@ -6752,7 +6752,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3034"/>
       <source>Constrain horizontal/vertical</source>
-      <translation type="unfinished">Constrain horizontal/vertical</translation>
+      <translation>Contrainte horizontale/verticale</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3035"/>
@@ -6817,7 +6817,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2390"/>
       <source>Polar transform</source>
-      <translation>Créer une transformation polaire</translation>
+      <translation>Pivoter/dupliquer</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2391"/>
@@ -6877,12 +6877,12 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="152"/>
       <source>Constrained</source>
-      <translation>Contrainte</translation>
+      <translation>Contraintes</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="165"/>
       <source>Unconstrained</source>
-      <translation>Non contraint</translation>
+      <translation>Non contraintes</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="172"/>
@@ -6897,77 +6897,77 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="212"/>
       <source>Color of fully constrained normal geometry in edit mode</source>
-      <translation type="unfinished">Color of fully constrained normal geometry in edit mode</translation>
+      <translation>Couleur des géométries entièrement contraintes en mode édition</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="238"/>
       <source>Color of normal geometry in edit mode</source>
-      <translation type="unfinished">Color of normal geometry in edit mode</translation>
+      <translation>Couleur des géométries en mode édition</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="306"/>
       <source>Color of fully constrained construction geometry in edit mode</source>
-      <translation type="unfinished">Color of fully constrained construction geometry in edit mode</translation>
+      <translation>Couleur des géométries de construction entièrement contraintes en mode édition</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="387"/>
       <source>Internal alignment geometry</source>
-      <translation type="unfinished">Internal alignment geometry</translation>
+      <translation>Géométries internes d'alignement</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="400"/>
       <source>Color of fully constrained internal alignment geometry in edit mode</source>
-      <translation type="unfinished">Color of fully constrained internal alignment geometry in edit mode</translation>
+      <translation>Couleur des géométries internes d'alignement entièrement contraintes en mode édition</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="426"/>
       <source>Color of internal alignment geometry in edit mode</source>
-      <translation type="unfinished">Color of internal alignment geometry in edit mode</translation>
+      <translation>Couleur des géométries internes d'alignement en mode édition</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="555"/>
       <source>Fully constrained sketch</source>
-      <translation type="unfinished">Fully constrained sketch</translation>
+      <translation>Esquisses entièrement contraintes</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="568"/>
       <source>Color of geometry indicating a fully constrained sketch</source>
-      <translation type="unfinished">Color of geometry indicating a fully constrained sketch</translation>
+      <translation>Couleur des géométries indiquant les esquisses entièrement contraintes</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="588"/>
       <source>Invalid sketch</source>
-      <translation>Esquisse non valide</translation>
+      <translation>Esquisses non valides</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="672"/>
       <source>Color of dimensional driving constraints in edit mode</source>
-      <translation type="unfinished">Color of dimensional driving constraints in edit mode</translation>
+      <translation>Couleur des contraintes pilotantes de dimension en mode édition</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="799"/>
       <source>Vertex</source>
-      <translation>Sommet</translation>
+      <translation>Sommets</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="806"/>
       <source>Color of vertices outside edit mode</source>
-      <translation type="unfinished">Color of vertices outside edit mode</translation>
+      <translation>Couleur des sommets en dehors du mode édition</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="845"/>
       <source>Edge</source>
-      <translation>Arête</translation>
+      <translation>Arêtes</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="852"/>
       <source>Color of edges outside edit mode</source>
-      <translation type="unfinished">Color of edges outside edit mode</translation>
+      <translation>Couleur des arêtes en dehors du mode édition</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="199"/>
       <source>Geometry</source>
-      <translation>Géométrie</translation>
+      <translation>Géométries</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="258"/>
@@ -6982,7 +6982,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="293"/>
       <source>Construction geometry</source>
-      <translation>Géométrie de construction</translation>
+      <translation>Géométries de construction</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="332"/>
@@ -7012,7 +7012,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="481"/>
       <source>External geometry</source>
-      <translation>Géométrie externe</translation>
+      <translation>Géométries externes</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="494"/>
@@ -7042,7 +7042,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="638"/>
       <source>Constraint symbols</source>
-      <translation>Symboles des contraintes</translation>
+      <translation>Contraintes pilotantes</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="645"/>
@@ -7052,7 +7052,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="665"/>
       <source>Dimensional constraint</source>
-      <translation>Contraintes de dimension</translation>
+      <translation>Contraintes pilotantes de dimension</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="692"/>
@@ -7186,7 +7186,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2458"/>
       <source>Array transform</source>
-      <translation>Dupliquer en matrice</translation>
+      <translation>Déplacer/dupliquer en matrice</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2459"/>
@@ -7405,7 +7405,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="266"/>
       <source>Create Symmetry Constraints (J)</source>
-      <translation>Créer des contraintes symétriques (J)</translation>
+      <translation>Créer des contraintes de symétrie (J)</translation>
     </message>
   </context>
   <context>
@@ -7431,7 +7431,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9790"/>
       <source>Change the value of a dimensional constraint</source>
-      <translation>Changer la valeur d'une contrainte dimensionnelle</translation>
+      <translation>Changer la valeur d'une contrainte de dimension</translation>
     </message>
   </context>
   <context>

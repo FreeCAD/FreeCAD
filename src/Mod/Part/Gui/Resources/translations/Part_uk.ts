@@ -3961,7 +3961,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="290"/>
       <source>Unknown error</source>
-      <translation type="unfinished">Unknown error</translation>
+      <translation>Невідома помилка</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
@@ -6040,7 +6040,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Створити трубу</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>

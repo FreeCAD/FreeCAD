@@ -3002,12 +3002,12 @@ az aktuálisan megjelenített 3D tárgy határolókeret méretével.</translatio
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="28"/>
       <source>Location (read-only):</source>
-      <translation type="unfinished">Location (read-only):</translation>
+      <translation>Hely (csak olvasható):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="42"/>
       <source>Browse cache directory</source>
-      <translation type="unfinished">Browse cache directory</translation>
+      <translation>Böngészés a cache könyvtárban</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="59"/>
@@ -8979,7 +8979,7 @@ az aktuális példány elveszik.
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="95"/>
       <source>Suppressed</source>
-      <translation type="unfinished">Suppressed</translation>
+      <translation>Elnémított</translation>
     </message>
   </context>
   <context>
@@ -13585,13 +13585,13 @@ A teljes hely kitöltéséhez állítsa 0-ra.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3205"/>
       <source>&amp;Measure</source>
-      <translation type="unfinished">&amp;Measure</translation>
+      <translation>&amp;Mérés</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3206"/>
       <location filename="../CommandView.cpp" line="3208"/>
       <source>Measure a feature</source>
-      <translation type="unfinished">Measure a feature</translation>
+      <translation>Egy tulajdonság mérése</translation>
     </message>
   </context>
   <context>
@@ -13599,22 +13599,22 @@ A teljes hely kitöltéséhez állítsa 0-ra.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="51"/>
       <source>Measurement</source>
-      <translation type="unfinished">Measurement</translation>
+      <translation>Méret</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="107"/>
       <source>Annotate</source>
-      <translation type="unfinished">Annotate</translation>
+      <translation>Megjegyzés</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="108"/>
       <source>Press the Annotate button to add measurement to the document.</source>
-      <translation type="unfinished">Press the Annotate button to add measurement to the document.</translation>
+      <translation>Nyomja meg a Megjegyzés gombot a mérés hozzáadásához a dokumentumhoz.</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="115"/>
       <source>Press the Close button to exit.</source>
-      <translation type="unfinished">Press the Close button to exit.</translation>
+      <translation>Nyomd meg a Bezárás gombot a kilépéshez.</translation>
     </message>
   </context>
 </TS>

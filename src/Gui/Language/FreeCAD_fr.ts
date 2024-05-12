@@ -2994,12 +2994,12 @@ la taille de la boîte englobante de l'objet 3D affichée.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="28"/>
       <source>Location (read-only):</source>
-      <translation type="unfinished">Location (read-only):</translation>
+      <translation>Emplacement (lecture seule) :</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="42"/>
       <source>Browse cache directory</source>
-      <translation type="unfinished">Browse cache directory</translation>
+      <translation>Rechercher dans le répertoire de cache</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="59"/>
@@ -4210,7 +4210,7 @@ L’inclinaison à la souris n’est pas désactivée par ce réglage.</translat
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="175"/>
       <source>Right</source>
-      <translation>Droit</translation>
+      <translation>Droite</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="176"/>
@@ -5736,7 +5736,7 @@ Voulez enregistrer les modifications ?</translation>
     <message>
       <location filename="../EditorView.cpp" line="472"/>
       <source>Export PDF</source>
-      <translation>Exporter vers PDF</translation>
+      <translation>Exporter au format PDF</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="473"/>
@@ -7295,7 +7295,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="Translator.cpp" line="179"/>
       <source>Danish</source>
-      <translation type="unfinished">Danish</translation>
+      <translation>Danois</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="152"/>
@@ -7521,7 +7521,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../View3DInventor.cpp" line="246"/>
       <source>Export PDF</source>
-      <translation>Exporter en PDF</translation>
+      <translation>Exporter au format PDF</translation>
     </message>
     <message>
       <location filename="../View3DInventor.cpp" line="247"/>
@@ -7876,7 +7876,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../CommandDoc.cpp" line="961"/>
       <source>Exporting PDF...</source>
-      <translation>Exportation PDF ...</translation>
+      <translation>Exportation au format PDF...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1231"/>
@@ -8959,7 +8959,7 @@ Remarquer que toute modification apportée à la copie en cours sera perdue.</tr
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="95"/>
       <source>Suppressed</source>
-      <translation type="unfinished">Suppressed</translation>
+      <translation>Désactivé</translation>
     </message>
   </context>
   <context>
@@ -9164,7 +9164,7 @@ Remarquer que toute modification apportée à la copie en cours sera perdue.</tr
       <location filename="../CommandDoc.cpp" line="1095"/>
       <location filename="../CommandDoc.cpp" line="1097"/>
       <source>Cut out</source>
-      <translation>Découpe</translation>
+      <translation>Opération de coupe</translation>
     </message>
   </context>
   <context>
@@ -9639,7 +9639,10 @@ Remarquer que toute modification apportée à la copie en cours sera perdue.</tr
     <message>
       <location filename="../CommandLink.cpp" line="211"/>
       <source>A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
-      <translation>Un lien est un objet qui fait référence ou relie à un autre objet dans le même document, ou dans un autre document. Contrairement aux clones, les liens font directement référence à la forme originale. Cela les rend plus efficaces en mémoire et aide à la création d'assemblages complexes.</translation>
+      <translation>Un lien est un objet qui fait référence ou relie à un autre objet dans le même document,
+ou dans un autre document. Contrairement aux clones, les liens font directement
+référence à la forme originale. Cela les rend plus efficaces en mémoire et aide à la
+création d'assemblages complexes.</translation>
     </message>
   </context>
   <context>
@@ -9958,7 +9961,7 @@ Remarquer que toute modification apportée à la copie en cours sera perdue.</tr
     <message>
       <location filename="../CommandStructure.cpp" line="51"/>
       <source>Create part</source>
-      <translation>Créer une pièce</translation>
+      <translation>Créer un objet Part</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="52"/>
@@ -10899,7 +10902,7 @@ Remarquer que toute modification apportée à la copie en cours sera perdue.</tr
     <message>
       <location filename="../CommandView.cpp" line="1398"/>
       <source>Right</source>
-      <translation>Droit</translation>
+      <translation>Droite</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1399"/>
@@ -11686,7 +11689,7 @@ Voulez-vous tout de même continuer ?</translation>
     <message>
       <location filename="../MDIView.cpp" line="257"/>
       <source>Export PDF</source>
-      <translation>Exporter vers PDF</translation>
+      <translation>Exporter au format PDF</translation>
     </message>
     <message>
       <location filename="../MDIView.cpp" line="258"/>
@@ -13468,7 +13471,7 @@ Mettre à zéro pour remplir l'espace.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="829"/>
       <source>Document i&amp;nformation...</source>
-      <translation>&amp;Informations sur les documents...</translation>
+      <translation>&amp;Informations sur le document...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="830"/>
@@ -13528,7 +13531,7 @@ Mettre à zéro pour remplir l'espace.</translation>
     <message>
       <location filename="../CommandFeat.cpp" line="155"/>
       <source>Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</source>
-      <translation type="unfinished">Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</translation>
+      <translation>Active/désactive le figeage des objets sélectionnés. Un objet figé n'est pas recalculé lorsque ses parents changent.</translation>
     </message>
   </context>
   <context>
@@ -13558,13 +13561,13 @@ Mettre à zéro pour remplir l'espace.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3205"/>
       <source>&amp;Measure</source>
-      <translation type="unfinished">&amp;Measure</translation>
+      <translation>&amp;Mesurer</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3206"/>
       <location filename="../CommandView.cpp" line="3208"/>
       <source>Measure a feature</source>
-      <translation type="unfinished">Measure a feature</translation>
+      <translation>Mesurer un élément</translation>
     </message>
   </context>
   <context>
@@ -13572,22 +13575,22 @@ Mettre à zéro pour remplir l'espace.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="51"/>
       <source>Measurement</source>
-      <translation type="unfinished">Measurement</translation>
+      <translation>Mesure</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="107"/>
       <source>Annotate</source>
-      <translation type="unfinished">Annotate</translation>
+      <translation>Annoter</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="108"/>
       <source>Press the Annotate button to add measurement to the document.</source>
-      <translation type="unfinished">Press the Annotate button to add measurement to the document.</translation>
+      <translation>Appuyer sur le bouton Annoter pour ajouter des mesures au document.</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="115"/>
       <source>Press the Close button to exit.</source>
-      <translation type="unfinished">Press the Close button to exit.</translation>
+      <translation>Appuyer sur le bouton Fermer pour quitter.</translation>
     </message>
   </context>
 </TS>

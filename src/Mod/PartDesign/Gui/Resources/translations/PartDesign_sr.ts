@@ -208,7 +208,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2345"/>
       <source>Boolean operation</source>
-      <translation>Булова операција</translation>
+      <translation>Буловe операцијe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2346"/>
@@ -2257,7 +2257,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="70"/>
       <source>Dimension</source>
-      <translation>Кота</translation>
+      <translation>Мерне јединице</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="71"/>
@@ -2290,7 +2290,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="30"/>
       <source>Dimension</source>
-      <translation>Кота</translation>
+      <translation>Мерне јединице</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="38"/>
@@ -2656,7 +2656,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="71"/>
       <source>Dimension</source>
-      <translation>Кота</translation>
+      <translation>Мерне јединице</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="72"/>
@@ -2746,7 +2746,7 @@ measured along the specified direction</source>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="173"/>
       <source>Dimension</source>
-      <translation>Кота</translation>
+      <translation>Мерне јединице</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="42"/>
@@ -4261,7 +4261,7 @@ Only available for holes without thread</source>
       <location filename="../../TaskHoleParameters.ui" line="350"/>
       <location filename="../../TaskHoleParameters.ui" line="404"/>
       <source>Dimension</source>
-      <translation>Кота</translation>
+      <translation>Мерне јединице</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="355"/>
@@ -4588,17 +4588,17 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="153"/>
       <source>Bearing</source>
-      <translation type="unfinished">Bearing</translation>
+      <translation>Лежај</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
       <source>Gear</source>
-      <translation type="unfinished">Gear</translation>
+      <translation>Зупчаник</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="155"/>
       <source>Pulley</source>
-      <translation type="unfinished">Pulley</translation>
+      <translation>Ременица</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="166"/>
@@ -5171,12 +5171,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="442"/>
       <source>Loft: Creating a face from sketch failed</source>
-      <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
+      <translation>Извлачење по пресецима: Прављење странице помоћу скице није успело</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="475"/>
       <source>Loft: Failed to create shell</source>
-      <translation type="unfinished">Loft: Failed to create shell</translation>
+      <translation>Извлачење по пресецима: Није успело прављење љуске</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="105"/>
