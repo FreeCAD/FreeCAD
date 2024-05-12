@@ -836,9 +836,9 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-specific-widgets
 report view
 --------------------------------------------------------------------------- */
 QTextEdit {
-  background-color: #d8d8d8;
+  background-color: #ffffff;
   color: black;
-  border-radius: 1.9px;
+  border-radius: 2px;
   border: 0px solid #ababab;
 }
 
@@ -855,7 +855,7 @@ QTextEdit:selected {
 Python
 --------------------------------------------------------------------------- */
 QPlainTextEdit {
-  background-color: #ededed;
+  background-color: #ffffff;
   color: black;
   border-radius: 1.9px;
   border: 0px solid #ababab;
