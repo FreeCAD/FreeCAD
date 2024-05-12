@@ -48,9 +48,14 @@ void DlgSettingsMaterial::saveSettings()
     ui->cb_show_empty_libraries->onSave();
     ui->cb_show_empty_folders->onSave();
     ui->cb_show_legacy->onSave();
+    ui->cb_show_favorites_editor->onSave();
+    ui->cb_show_recent_editor->onSave();
+    ui->cb_show_empty_libraries_editor->onSave();
+    ui->cb_show_empty_folders_editor->onSave();
+    ui->cb_show_legacy_editor->onSave();
 
     // Temporary for testing
-    ui->cb_legacy_editor->onSave();
+    // ui->cb_legacy_editor->onSave();
 }
 
 void DlgSettingsMaterial::loadSettings()
@@ -67,9 +72,14 @@ void DlgSettingsMaterial::loadSettings()
     ui->cb_show_empty_libraries->onRestore();
     ui->cb_show_empty_folders->onRestore();
     ui->cb_show_legacy->onRestore();
+    ui->cb_show_favorites_editor->onRestore();
+    ui->cb_show_recent_editor->onRestore();
+    ui->cb_show_empty_libraries_editor->onRestore();
+    ui->cb_show_empty_folders_editor->onRestore();
+    ui->cb_show_legacy_editor->onRestore();
 
     // Temporary for testing
-    ui->cb_legacy_editor->onRestore();
+    // ui->cb_legacy_editor->onRestore();
 }
 
 /**
