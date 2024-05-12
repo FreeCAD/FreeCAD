@@ -29,7 +29,9 @@ from draftutils import gui_utils
 from draftutils import utils
 
 
-# View observer code to update the Draft Tray:
+# View observer code to update the Draft_ToggleGrid command button to reflect
+# the grid's visibility status
+# Based on view observer code to update the Draft Tray
 if FreeCAD.GuiUp:
     import PySide.QtCore as QtCore
     import PySide.QtGui as QtGui
