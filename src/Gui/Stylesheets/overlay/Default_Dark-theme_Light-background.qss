@@ -1,11 +1,16 @@
 * {
   /* color: #000000; */
-  alternate-background-color: rgba(255, 255, 255, 0.437);
 }
 
-QTabWidget::pane {
-  background-color: rgba(255, 255, 255, 0.566);
+QTabWidget::pane{
+  background-color: rgba(255, 255, 255, 0.01);
   border: transparent;
+}
+QAbstractItemView {
+  alternate-background-color: rgba(0, 0, 0, 0.119);
+  color: White;
+  border: transparent;
+  padding-right: 5px;
 }
 
 Gui--OverlayTabWidget[transparent="true"] QTreeView::item:disabled {
@@ -14,6 +19,7 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:disabled {
 Gui--OverlayTabWidget[transparent="true"] QTreeView::item {
   color: #000000;
 }
+
 
 
 
