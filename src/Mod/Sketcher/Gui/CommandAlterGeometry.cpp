@@ -92,16 +92,15 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompSlot");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArc");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_Create3PointArc");
-    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateArc");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateEllipseByCenter");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateEllipseBy3Points");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArcOfEllipse");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArcOfHyperbola");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArcOfParabola");
-    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateConic");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateArc");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateCircle");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_Create3PointCircle");
-    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateCircle");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateConic");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateTriangle");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateSquare");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePentagon");

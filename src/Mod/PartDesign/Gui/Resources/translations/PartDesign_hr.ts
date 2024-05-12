@@ -1914,7 +1914,7 @@ kliknite ponovno za završetak odabira</translation>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
       <location filename="../../TaskHelixParameters.cpp" line="197"/>
       <source>Select reference...</source>
-      <translation type="unfinished">Select reference...</translation>
+      <translation>Odaberite referencu...</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="90"/>
@@ -3033,7 +3033,7 @@ kliknite ponovno za završetak odabira</translation>
       <location filename="../../TaskTransformedParameters.cpp" line="387"/>
       <location filename="../../TaskTransformedParameters.cpp" line="423"/>
       <source>Select reference...</source>
-      <translation>Odaberite referencu...</translation>
+      <translation type="unfinished">Select reference...</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="413"/>
@@ -4580,7 +4580,7 @@ preko 90: veći polumjer rupe na dnu</translation>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="165"/>
       <source>None</source>
-      <translation>Nijedan</translation>
+      <translation>Prazno</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="151"/>
@@ -4727,14 +4727,17 @@ preko 90: veći polumjer rupe na dnu</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="138"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="717"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="217"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="716"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="219"/>
       <location filename="../../../App/FeatureHole.cpp" line="1900"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="293"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="311"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="295"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="313"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="526"/>
       <location filename="../../../App/FeaturePad.cpp" line="236"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="399"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="419"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="735"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="755"/>
       <location filename="../../../App/FeaturePocket.cpp" line="222"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="137"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="150"/>
@@ -4757,14 +4760,16 @@ preko 90: veći polumjer rupe na dnu</translation>
       <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
       <location filename="../../../App/FeatureDraft.cpp" line="323"/>
       <location filename="../../../App/FeatureFillet.cpp" line="137"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="224"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="226"/>
       <location filename="../../../App/FeatureHole.cpp" line="1908"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="296"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="314"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="298"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="316"/>
       <location filename="../../../App/FeaturePad.cpp" line="240"/>
       <location filename="../../../App/FeaturePad.cpp" line="249"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="403"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="423"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="739"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="759"/>
       <location filename="../../../App/FeaturePocket.cpp" line="191"/>
       <location filename="../../../App/FeaturePocket.cpp" line="226"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="154"/>
@@ -4821,17 +4826,20 @@ preko 90: veći polumjer rupe na dnu</translation>
       <translation>Nije uspjelo stvaranje zaobljenja</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="87"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="89"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
       <source>Angle of groove too large</source>
       <translation>Kut utora prevelik</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="91"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="93"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="257"/>
       <source>Angle of groove too small</source>
       <translation>Kut utora premali</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="108"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="110"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="276"/>
       <location filename="../../../App/FeatureHole.cpp" line="1669"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
@@ -4843,67 +4851,71 @@ preko 90: veći polumjer rupe na dnu</translation>
   - odabrana skica ne pripada aktivnom tijelu.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="442"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="441"/>
       <source>Length too small</source>
       <translation type="unfinished">Length too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="449"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="448"/>
       <source>Second length too small</source>
       <translation type="unfinished">Second length too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="483"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="482"/>
       <source>Failed to obtain profile shape</source>
       <translation type="unfinished">Failed to obtain profile shape</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="535"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="534"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation type="unfinished">Creation failed because direction is orthogonal to sketch's normal vector</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="554"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="130"/>
-      <location filename="../../../App/FeatureRevolution.cpp" line="126"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="553"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="132"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="293"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
       <source>Creating a face from sketch failed</source>
       <translation>Stvaranje lice od skice nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="616"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="615"/>
       <source>Up to face: Could not get SubShape!</source>
       <translation type="unfinished">Up to face: Could not get SubShape!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="658"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="657"/>
       <source>Magnitude of taper angle matches or exceeds 90 degrees</source>
       <translation type="unfinished">Magnitude of taper angle matches or exceeds 90 degrees</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="669"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="668"/>
       <source>Padding with draft angle failed</source>
       <translation type="unfinished">Padding with draft angle failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="146"/>
-      <location filename="../../../App/FeatureRevolution.cpp" line="142"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="148"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="315"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="158"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Os zaokreta presjeca skicu </translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="212"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="214"/>
       <source>Cut out of base feature failed</source>
       <translation>Izrez baznog elementa nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="202"/>
-      <location filename="../../../App/FeatureRevolution.cpp" line="198"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="204"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="323"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="265"/>
       <source>Could not revolve the sketch!</source>
       <translation>Nije moguće zavrtiti skicu!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="236"/>
-      <location filename="../../../App/FeatureRevolution.cpp" line="208"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="238"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="363"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="277"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Nije moguće napraviti površinu pomoću skice.
@@ -5088,79 +5100,91 @@ Ukrštanje elemenata skice ili više površina u skici nije dozvoljeno za izradu
       <translation>Greška: navoj nije moguće napraviti</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="135"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="137"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="403"/>
       <source>Loft: At least one section is needed</source>
       <translation>Izvuci profil: Potreban je barem jedna presjek.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="140"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="142"/>
       <source>Loft: Could not obtain profile shape</source>
       <translation>Izvučeni oblik presjeka: Nije moguće dobiti oblik profila</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="153"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="155"/>
       <source>Loft: When using points for profile/sections, the sketch should have a single point</source>
       <translation>Izvučeni oblik presjeka: Kada koristite točke za profil/odjeljake, skica bi trebala imati samo jednu točku.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="161"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="163"/>
       <source>Loft: All sections need to be part features</source>
       <translation>Izvučeni oblik presjeka: Svi dijelovi moraju biti dio značajke.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="166"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="168"/>
       <source>Loft: Could not obtain section shape</source>
       <translation>Izvučeni oblik presjeka: Nije moguće dobiti odjeljak profila</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="182"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="184"/>
       <source>Loft: A section doesn't contain any wires nor is a single vertex</source>
       <translation>Izvučeni oblik presjeka: Odjeljak ne sadrži niti jednu žicu niti je pojedinačna tjemena točka.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="184"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="186"/>
       <source>Loft: Only the profile and the last section can be vertices</source>
       <translation>Izvučeni oblik presjeka: Samo profili i zadnje sjecište mogu biti vrhovi</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="186"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="188"/>
       <source>Loft: For closed lofts only the profile can be a vertex</source>
       <translation>Izvučeni oblik presjeka: Za zatvorene izvučene djelove samo profil može biti vrh.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="193"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="195"/>
       <source>Loft: all loft sections need to have the same amount of inner wires</source>
       <translation>Izvučeni oblik presjeka: svi presjeci izvučenog djela trebaju imati isti broj poveznih žica</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="232"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="234"/>
       <source>Loft could not be built</source>
       <translation>Izvučeni oblik presjeka ne može se napraviti</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="265"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="267"/>
       <source>Loft: Result is not a solid</source>
       <translation>Izvučeni oblik presjeka: Rezultat nije volumensko tijelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="278"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="280"/>
       <source>Loft: There is nothing to subtract from</source>
       <translation>Izvučeni oblik presjeka:  nema ničega za oduzimanje od</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="288"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="290"/>
       <source>Loft: Adding the loft failed</source>
       <translation>Izvučeni oblik presjeka: Dodaj izvučeni oblik nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="306"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="308"/>
       <source>Loft: Subtracting the loft failed</source>
       <translation>Izvučeni oblik presjeka: Oduzmi izvučeni oblik nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="330"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="332"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="539"/>
       <source>Loft: A fatal error occurred when making the loft</source>
       <translation>Izvučeni oblik presjeka: Došlo je do fatalne pogreške pri izradi izvučenog oblika</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="442"/>
+      <source>Loft: Creating a face from sketch failed</source>
+      <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="475"/>
+      <source>Loft: Failed to create shell</source>
+      <translation type="unfinished">Loft: Failed to create shell</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="105"/>
@@ -5189,7 +5213,7 @@ izvlačenje: Kreiranje nije uspjelo jer je smjer ortogonalan na normalu vektora 
       <translation>Izvlačenje: Spajanje sa baznom značajkom nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="742"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="741"/>
       <location filename="../../../App/FeaturePad.cpp" line="262"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
@@ -5197,107 +5221,123 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
 Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="172"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="177"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="513"/>
       <source>Pipe: Could not obtain profile shape</source>
       <translation>Izvlačenje po putanji: Nije moguće dobiti oblik profila</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="177"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="182"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="518"/>
       <source>No spine linked</source>
       <translation>Vodilna krivulja nije povezana</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="190"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="195"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="531"/>
       <source>No auxiliary spine linked.</source>
       <translation>Pomoćna vodilna krivulja nije povezana</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="211"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="216"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="552"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
       <translation>Izvlačenje po putanji: Samo jedna izolirana točka je potrebna ako koristite skicu sa izoliranim točkama za sjecište</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="217"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="222"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="558"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
       <translation>Izvlačenje po putanji: Ako koristite tačku za profil onda vam je potreban barem još jedan presjek</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="231"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="236"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="572"/>
       <source>Pipe: All sections need to be part features</source>
       <translation>Cijev:  Svi segmenti moraju biti značajke djela</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="237"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="242"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="578"/>
       <source>Pipe: Could not obtain section shape</source>
       <translation>Izvlačenje po putanji: Nije moguće dobiti oblik po presjeku</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="246"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="251"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="587"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
       <translation>Izvlačenje po putanji:  Samo profili i zadnje sjecište mogu biti vrhovi</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="255"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="260"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="596"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
       <translation>Višesjeci moraju imati isti broj unutarnjih žica kao osnovni odjeljak.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="282"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="287"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="623"/>
       <source>Path must not be a null shape</source>
       <translation>Putanja vodilja ne smije da bude bez elemenata</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="317"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="322"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="658"/>
       <source>Pipe could not be built</source>
       <translation>Izvlačenje po putanji se ne može napraviti</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="363"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="368"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="704"/>
       <source>Result is not a solid</source>
       <translation>Rezultat nije volumensko tijelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="378"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="383"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="719"/>
       <source>Pipe: There is nothing to subtract from</source>
       <translation>Izvlačenje po putanji: nema ničega za oduzimanje od</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="389"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="730"/>
       <source>Adding the pipe failed</source>
       <translation>Nije uspjelo dodati cijev</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="409"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="750"/>
       <source>Subtracting the pipe failed</source>
       <translation>Nije uspjelo oduzeti cijev</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="433"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="438"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="774"/>
       <source>A fatal error occurred when making the pipe</source>
       <translation>Došlo je do fatalne pogreške pri izradi cijevi</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="556"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="898"/>
       <source>Invalid element in spine.</source>
       <translation>Neispravni element u Vodilnoj krivulji</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="559"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="901"/>
       <source>Element in spine is neither an edge nor a wire.</source>
       <translation>Element u Vodilnoj krivulji nije ni rub ni žica</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="572"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="914"/>
       <source>Spine is not connected.</source>
       <translation>Vodilna krivulja nije povezana.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="576"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="918"/>
       <source>Spine is neither an edge nor a wire.</source>
       <translation>Vodilna krivulja nije ni rub ni žica</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="580"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="922"/>
       <source>Invalid spine.</source>
       <translation>Ne važeća vodilna krivulja</translation>
     </message>
@@ -5337,11 +5377,13 @@ Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</trans
       <translation>Nemoguće odrediti razliku primitivnog elementa bez baznog elementa</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="515"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
       <source>Unknown operation type</source>
       <translation type="unfinished">Unknown operation type</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
       <source>Failed to perform boolean operation</source>
       <translation type="unfinished">Failed to perform boolean operation</translation>
@@ -5455,18 +5497,23 @@ Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</trans
       <translation>delta x2 od klina je negativna</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="87"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="89"/>
       <source>Angle of revolution too large</source>
       <translation>Kut zakretanja prevelik</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="91"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="95"/>
       <source>Angle of revolution too small</source>
       <translation>Kut zakretanja premali</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="710"/>
-      <location filename="../../../App/FeatureRevolution.cpp" line="190"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="133"/>
+      <source>Reference axis is invalid</source>
+      <translation type="unfinished">Reference axis is invalid</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureExtrude.cpp" line="709"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="254"/>
       <source>Fusion with base feature failed</source>
       <translation>Spajanje sa baznom značajkom nije uspjelo</translation>
     </message>

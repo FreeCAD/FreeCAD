@@ -173,11 +173,6 @@ directories = [
         "tsdir": "Resources/translations",
     },
     {
-        "tsname": "Web",
-        "workingdir": "./src/Mod/Web/",
-        "tsdir": "Gui/Resources/translations",
-    },
-    {
         "tsname": "Help",
         "workingdir": "./src/Mod/Help/",
         "tsdir": "Resources/translations",

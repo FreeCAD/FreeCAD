@@ -637,6 +637,11 @@ unsigned int ComplexGeoData::getMemSize() const
     return 0;
 }
 
+std::vector<IndexedName> ComplexGeoData::getHigherElements(const char *, bool) const
+{
+    return {};
+}
+
 void ComplexGeoData::setMappedChildElements(const std::vector<Data::ElementMap::MappedChildElements> & children)
 {
     // DO NOT reset element map if there is one. Because we allow mixing child
@@ -676,5 +681,20 @@ bool ComplexGeoData::hasChildElementMap() const
     return _elementMap && _elementMap->hasChildElementMap();
 }
 
+void ComplexGeoData::dumpElementMap(std::ostream& stream) const
+{
+    auto map = getElementMap();
+    std::sort(map.begin(), map.end());
+    for ( auto& element : map ) {
+        stream << element.index << " : " << element.name << std::endl;
+    }
+}
+
+const std::string ComplexGeoData::dumpElementMap() const
+{
+    std::stringstream ss;
+    dumpElementMap(ss);
+    return ss.str();
+}
 
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)

@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <Standard_Failure.hxx>
+# include <TopoDS.hxx>
 # include <TopoDS_CompSolid.hxx>
 #endif
 
@@ -109,6 +110,9 @@ PyObject* TopoShapeCompSolidPy::add(PyObject* args)
 
     BRep_Builder builder;
     TopoDS_Shape comp = getTopoShapePtr()->getShape();
+    if (comp.IsNull()) {
+        builder.MakeCompSolid(TopoDS::CompSolid(comp));
+    }
     auto shapes = getPyShapes(obj);
 
     try {

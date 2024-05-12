@@ -996,7 +996,6 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                         geoId2);
                 } break;
                 case Sketcher::Symmetric: {
-                    Sketcher::PointPos posId2 = cstr.PosId;
                     Gui::cmdAppObjectArgs(
                         sketchgui->getObject(),
                         "addConstraint(Sketcher.Constraint('Symmetric',%d,1,%d,2,%d,%d)) ",

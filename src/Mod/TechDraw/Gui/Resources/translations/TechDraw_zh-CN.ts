@@ -88,12 +88,12 @@
   <context>
     <name>CmdTechDrawActiveView</name>
     <message>
-      <location filename="../../Command.cpp" line="564"/>
+      <location filename="../../Command.cpp" line="650"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="565"/>
+      <location filename="../../Command.cpp" line="651"/>
       <source>Insert Active View (3D View)</source>
       <translation>插入活动视图 (三维视图)</translation>
     </message>
@@ -127,17 +127,17 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1532"/>
+      <location filename="../../Command.cpp" line="1601"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1533"/>
+      <location filename="../../Command.cpp" line="1602"/>
       <source>Insert Arch Workbench Object</source>
       <translation>插入 Arch 工作台对象</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1534"/>
+      <location filename="../../Command.cpp" line="1603"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
       <translation>从 Arch Workbench 插入剖面的视图</translation>
     </message>
@@ -145,12 +145,12 @@
   <context>
     <name>CmdTechDrawBalloon</name>
     <message>
-      <location filename="../../Command.cpp" line="1157"/>
+      <location filename="../../Command.cpp" line="1227"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1158"/>
+      <location filename="../../Command.cpp" line="1228"/>
       <source>Insert Balloon Annotation</source>
       <translation>插入气球批注</translation>
     </message>
@@ -176,12 +176,12 @@
   <context>
     <name>CmdTechDrawClipGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1221"/>
+      <location filename="../../Command.cpp" line="1291"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1222"/>
+      <location filename="../../Command.cpp" line="1292"/>
       <source>Insert Clip Group</source>
       <translation>插入剪辑组</translation>
     </message>
@@ -189,12 +189,12 @@
   <context>
     <name>CmdTechDrawClipGroupAdd</name>
     <message>
-      <location filename="../../Command.cpp" line="1258"/>
+      <location filename="../../Command.cpp" line="1328"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1259"/>
+      <location filename="../../Command.cpp" line="1329"/>
       <source>Add View to Clip Group</source>
       <translation>添加视图到剪辑组</translation>
     </message>
@@ -202,12 +202,12 @@
   <context>
     <name>CmdTechDrawClipGroupRemove</name>
     <message>
-      <location filename="../../Command.cpp" line="1342"/>
+      <location filename="../../Command.cpp" line="1412"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1343"/>
+      <location filename="../../Command.cpp" line="1413"/>
       <source>Remove View from Clip Group</source>
       <translation>从剪辑组中删除视图</translation>
     </message>
@@ -215,17 +215,17 @@
   <context>
     <name>CmdTechDrawComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="749"/>
+      <location filename="../../Command.cpp" line="835"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="750"/>
+      <location filename="../../Command.cpp" line="836"/>
       <source>Insert Complex Section</source>
       <translation type="unfinished">Insert Complex Section</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="751"/>
+      <location filename="../../Command.cpp" line="837"/>
       <source>Insert a Complex Section</source>
       <translation type="unfinished">Insert a Complex Section</translation>
     </message>
@@ -295,12 +295,12 @@
   <context>
     <name>CmdTechDrawDetailView</name>
     <message>
-      <location filename="../../Command.cpp" line="875"/>
+      <location filename="../../Command.cpp" line="961"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="876"/>
+      <location filename="../../Command.cpp" line="962"/>
       <source>Insert Detail View</source>
       <translation>插入局部视图</translation>
     </message>
@@ -334,17 +334,17 @@
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="1468"/>
+      <location filename="../../Command.cpp" line="1538"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1469"/>
+      <location filename="../../Command.cpp" line="1539"/>
       <source>Insert Draft Workbench Object</source>
       <translation>插入草稿工作台对象</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1470"/>
+      <location filename="../../Command.cpp" line="1540"/>
       <source>Insert a View of a Draft Workbench object</source>
       <translation>插入底图工作台对象视图</translation>
     </message>
@@ -352,22 +352,22 @@
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1708"/>
+      <location filename="../../Command.cpp" line="1777"/>
       <source>File</source>
       <translation>文件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1709"/>
+      <location filename="../../Command.cpp" line="1778"/>
       <source>Export Page as DXF</source>
       <translation>以DXF格式导出页面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1743"/>
+      <location filename="../../Command.cpp" line="1812"/>
       <source>Save DXF file</source>
       <translation>保存为 Dxf 文件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1744"/>
+      <location filename="../../Command.cpp" line="1813"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
@@ -375,12 +375,12 @@
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1667"/>
+      <location filename="../../Command.cpp" line="1736"/>
       <source>File</source>
       <translation>文件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1668"/>
+      <location filename="../../Command.cpp" line="1737"/>
       <source>Export Page as SVG</source>
       <translation>以SVG格式导出页面</translation>
     </message>
@@ -1554,12 +1554,12 @@
   <context>
     <name>CmdTechDrawPageDefault</name>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="105"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Insert Default Page</source>
       <translation>插入默认页</translation>
     </message>
@@ -1567,22 +1567,22 @@
   <context>
     <name>CmdTechDrawPageTemplate</name>
     <message>
-      <location filename="../../Command.cpp" line="164"/>
+      <location filename="../../Command.cpp" line="166"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="165"/>
+      <location filename="../../Command.cpp" line="167"/>
       <source>Insert Page using Template</source>
       <translation>使用模板插入页面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="178"/>
+      <location filename="../../Command.cpp" line="180"/>
       <source>Select a Template File</source>
       <translation>选择模板文件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="179"/>
+      <location filename="../../Command.cpp" line="181"/>
       <source>Template (*.svg)</source>
       <translation>模板 (*.svg)</translation>
     </message>
@@ -1590,12 +1590,12 @@
   <context>
     <name>CmdTechDrawPrintAll</name>
     <message>
-      <location filename="../../Command.cpp" line="270"/>
+      <location filename="../../Command.cpp" line="272"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="271"/>
+      <location filename="../../Command.cpp" line="273"/>
       <source>Print All Pages</source>
       <translation type="unfinished">Print All Pages</translation>
     </message>
@@ -1603,12 +1603,12 @@
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1771"/>
+      <location filename="../../Command.cpp" line="1840"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1772"/>
+      <location filename="../../Command.cpp" line="1841"/>
       <source>Project shape...</source>
       <translation>投影形体...</translation>
     </message>
@@ -1616,17 +1616,17 @@
   <context>
     <name>CmdTechDrawProjectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="919"/>
+      <location filename="../../Command.cpp" line="1005"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="920"/>
+      <location filename="../../Command.cpp" line="1006"/>
       <source>Insert Projection Group</source>
       <translation>插入投影组</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="921"/>
+      <location filename="../../Command.cpp" line="1007"/>
       <source>Insert multiple linked views of drawable object(s)</source>
       <translation>插入可绘制对象的多个关联视图</translation>
     </message>
@@ -1660,12 +1660,12 @@
   <context>
     <name>CmdTechDrawRedrawPage</name>
     <message>
-      <location filename="../../Command.cpp" line="234"/>
+      <location filename="../../Command.cpp" line="236"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../Command.cpp" line="237"/>
       <source>Redraw Page</source>
       <translation>重绘页面</translation>
     </message>
@@ -1686,22 +1686,22 @@
   <context>
     <name>CmdTechDrawSectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="594"/>
+      <location filename="../../Command.cpp" line="680"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="595"/>
+      <location filename="../../Command.cpp" line="681"/>
       <source>Insert a simple or complex Section View</source>
       <translation type="unfinished">Insert a simple or complex Section View</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="660"/>
+      <location filename="../../Command.cpp" line="746"/>
       <source>Section View</source>
       <translation>截面视图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="664"/>
+      <location filename="../../Command.cpp" line="750"/>
       <source>Complex Section</source>
       <translation type="unfinished">Complex Section</translation>
     </message>
@@ -1709,12 +1709,12 @@
   <context>
     <name>CmdTechDrawSectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="686"/>
+      <location filename="../../Command.cpp" line="772"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="687"/>
+      <location filename="../../Command.cpp" line="773"/>
       <source>Insert Section View</source>
       <translation>插入剖面图</translation>
     </message>
@@ -1735,17 +1735,17 @@
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1603"/>
+      <location filename="../../Command.cpp" line="1672"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1604"/>
+      <location filename="../../Command.cpp" line="1673"/>
       <source>Insert Spreadsheet View</source>
       <translation>插入数据表视图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1605"/>
+      <location filename="../../Command.cpp" line="1674"/>
       <source>Insert View to a spreadsheet</source>
       <translation>将视图插入数据表</translation>
     </message>
@@ -1856,17 +1856,17 @@
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="1415"/>
+      <location filename="../../Command.cpp" line="1485"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1416"/>
+      <location filename="../../Command.cpp" line="1486"/>
       <source>Insert SVG Symbol</source>
       <translation>插入 SVG 符号</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1417"/>
+      <location filename="../../Command.cpp" line="1487"/>
       <source>Insert symbol from an SVG file</source>
       <translation>从 SVG 文件插入符号</translation>
     </message>
@@ -1914,19 +1914,33 @@
   <context>
     <name>CmdTechDrawView</name>
     <message>
-      <location filename="../../Command.cpp" line="295"/>
+      <location filename="../../Command.cpp" line="297"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="296"/>
+      <location filename="../../Command.cpp" line="298"/>
       <source>Insert View</source>
       <translation>插入视图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="297"/>
-      <source>Insert a View</source>
-      <translation>插入视图</translation>
+      <location filename="../../Command.cpp" line="299"/>
+      <source>Insert a View in current page.
+Selected objects, spreadsheets or Arch WB section planes will be added.
+Without a selection, a file browser lets you select a SVG or image file.</source>
+      <translation type="unfinished">Insert a View in current page.
+Selected objects, spreadsheets or Arch WB section planes will be added.
+Without a selection, a file browser lets you select a SVG or image file.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="425"/>
+      <source>If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</source>
+      <translation type="unfinished">If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="426"/>
+      <source>Do not show this message again</source>
+      <translation type="unfinished">Do not show this message again</translation>
     </message>
   </context>
   <context>
@@ -1945,63 +1959,66 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="119"/>
-      <location filename="../../Command.cpp" line="189"/>
+      <location filename="../../Command.cpp" line="121"/>
+      <location filename="../../Command.cpp" line="191"/>
       <source>Drawing create page</source>
       <translation>图纸创建页面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="382"/>
+      <location filename="../../Command.cpp" line="481"/>
       <source>Create view</source>
       <translation>创建视图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
+      <location filename="../../Command.cpp" line="597"/>
       <source>Create broken view</source>
       <translation type="unfinished">Create broken view</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1003"/>
+      <location filename="../../Command.cpp" line="1089"/>
       <source>Create Projection Group</source>
       <translation>创建投影组</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1239"/>
+      <location filename="../../Command.cpp" line="1309"/>
       <source>Create Clip</source>
       <translation>创建剪辑</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1311"/>
+      <location filename="../../Command.cpp" line="1381"/>
       <source>ClipGroupAdd</source>
       <translation>添加剪辑组</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1382"/>
+      <location filename="../../Command.cpp" line="1452"/>
       <source>ClipGroupRemove</source>
       <translation>移除剪辑组</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1441"/>
+      <location filename="../../Command.cpp" line="448"/>
+      <location filename="../../Command.cpp" line="1511"/>
       <source>Create Symbol</source>
       <translation>创建符号</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1505"/>
+      <location filename="../../Command.cpp" line="1574"/>
       <source>Create DraftView</source>
       <translation>创建草稿视图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1579"/>
+      <location filename="../../Command.cpp" line="359"/>
+      <location filename="../../Command.cpp" line="1648"/>
       <source>Create ArchView</source>
       <translation>创建拱门视图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1629"/>
+      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="1698"/>
       <source>Create spreadsheet view</source>
       <translation>创建电子表格视图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1751"/>
+      <location filename="../../Command.cpp" line="1820"/>
       <location filename="../../PagePrinter.cpp" line="388"/>
       <source>Save page to dxf</source>
       <translation>保存页面到 dxf</translation>
@@ -2048,6 +2065,7 @@
       <translation>创建 GeomHatch</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="463"/>
       <location filename="../../CommandDecorate.cpp" line="267"/>
       <source>Create Image</source>
       <translation>创建图像</translation>
@@ -2691,25 +2709,24 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="368"/>
-      <location filename="../../Command.cpp" line="495"/>
-      <location filename="../../Command.cpp" line="505"/>
-      <location filename="../../Command.cpp" line="723"/>
-      <location filename="../../Command.cpp" line="840"/>
-      <location filename="../../Command.cpp" line="847"/>
-      <location filename="../../Command.cpp" line="852"/>
-      <location filename="../../Command.cpp" line="890"/>
-      <location filename="../../Command.cpp" line="989"/>
-      <location filename="../../Command.cpp" line="1271"/>
-      <location filename="../../Command.cpp" line="1288"/>
-      <location filename="../../Command.cpp" line="1293"/>
-      <location filename="../../Command.cpp" line="1302"/>
-      <location filename="../../Command.cpp" line="1355"/>
-      <location filename="../../Command.cpp" line="1374"/>
-      <location filename="../../Command.cpp" line="1484"/>
-      <location filename="../../Command.cpp" line="1560"/>
-      <location filename="../../Command.cpp" line="1566"/>
-      <location filename="../../Command.cpp" line="1617"/>
+      <location filename="../../Command.cpp" line="581"/>
+      <location filename="../../Command.cpp" line="591"/>
+      <location filename="../../Command.cpp" line="809"/>
+      <location filename="../../Command.cpp" line="926"/>
+      <location filename="../../Command.cpp" line="933"/>
+      <location filename="../../Command.cpp" line="938"/>
+      <location filename="../../Command.cpp" line="976"/>
+      <location filename="../../Command.cpp" line="1075"/>
+      <location filename="../../Command.cpp" line="1341"/>
+      <location filename="../../Command.cpp" line="1358"/>
+      <location filename="../../Command.cpp" line="1363"/>
+      <location filename="../../Command.cpp" line="1372"/>
+      <location filename="../../Command.cpp" line="1425"/>
+      <location filename="../../Command.cpp" line="1444"/>
+      <location filename="../../Command.cpp" line="1554"/>
+      <location filename="../../Command.cpp" line="1629"/>
+      <location filename="../../Command.cpp" line="1635"/>
+      <location filename="../../Command.cpp" line="1686"/>
       <location filename="../../CommandAnnotate.cpp" line="319"/>
       <location filename="../../CommandAnnotate.cpp" line="420"/>
       <location filename="../../CommandAnnotate.cpp" line="1309"/>
@@ -2724,53 +2741,62 @@
       <translation>选择错误</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="369"/>
-      <location filename="../../Command.cpp" line="506"/>
-      <location filename="../../Command.cpp" line="990"/>
+      <location filename="../../Command.cpp" line="592"/>
+      <location filename="../../Command.cpp" line="1076"/>
       <source>No Shapes, Groups or Links in this selection</source>
       <translation type="unfinished">No Shapes, Groups or Links in this selection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="478"/>
+      <location filename="../../Command.cpp" line="564"/>
       <source>Empty selection</source>
       <translation type="unfinished">Empty selection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="479"/>
+      <location filename="../../Command.cpp" line="439"/>
+      <source>Select a SVG or Image file to open</source>
+      <translation type="unfinished">Select a SVG or Image file to open</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="441"/>
+      <source>SVG or Image files</source>
+      <translation type="unfinished">SVG or Image files</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="565"/>
       <source>Please select objects to break or a base view and break definition objects.</source>
       <translation type="unfinished">Please select objects to break or a base view and break definition objects.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="496"/>
+      <location filename="../../Command.cpp" line="582"/>
       <source>No Break objects found in this selection</source>
       <translation type="unfinished">No Break objects found in this selection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="724"/>
-      <location filename="../../Command.cpp" line="891"/>
+      <location filename="../../Command.cpp" line="810"/>
+      <location filename="../../Command.cpp" line="977"/>
       <source>Select at least 1 DrawViewPart object as Base.</source>
       <translation>选中至少1个绘制视图零件对象作为基准。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="841"/>
+      <location filename="../../Command.cpp" line="927"/>
       <source>I do not know what base view to use.</source>
       <translation type="unfinished">I do not know what base view to use.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="848"/>
+      <location filename="../../Command.cpp" line="934"/>
       <source>No Base View, Shapes, Groups or Links in this selection</source>
       <translation type="unfinished">No Base View, Shapes, Groups or Links in this selection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="853"/>
+      <location filename="../../Command.cpp" line="939"/>
       <source>No profile object found in selection</source>
       <translation type="unfinished">No profile object found in selection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1073"/>
-      <location filename="../../Command.cpp" line="1080"/>
-      <location filename="../../Command.cpp" line="1088"/>
-      <location filename="../../Command.cpp" line="1100"/>
+      <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../Command.cpp" line="1150"/>
+      <location filename="../../Command.cpp" line="1158"/>
+      <location filename="../../Command.cpp" line="1170"/>
       <location filename="../../CommandCreateDims.cpp" line="166"/>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
       <location filename="../../CommandCreateDims.cpp" line="410"/>
@@ -2791,25 +2817,25 @@
       <translation>选择错误</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1074"/>
+      <location filename="../../Command.cpp" line="1144"/>
       <location filename="../../CommandCreateDims.cpp" line="1426"/>
       <source>Select an object first</source>
       <translation>首先选择对象</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1081"/>
+      <location filename="../../Command.cpp" line="1151"/>
       <location filename="../../CommandCreateDims.cpp" line="1434"/>
       <source>Too many objects selected</source>
       <translation>选择的对象过多</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1089"/>
+      <location filename="../../Command.cpp" line="1159"/>
       <location filename="../../CommandCreateDims.cpp" line="1443"/>
       <source>Create a page first.</source>
       <translation>首先创建一个页面。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1101"/>
+      <location filename="../../Command.cpp" line="1171"/>
       <location filename="../../CommandCreateDims.cpp" line="167"/>
       <location filename="../../CommandCreateDims.cpp" line="289"/>
       <location filename="../../CommandCreateDims.cpp" line="411"/>
@@ -2822,87 +2848,88 @@
       <translation>没有选择中零件的视图。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1272"/>
+      <location filename="../../Command.cpp" line="1342"/>
       <source>Select one Clip group and one View.</source>
       <translation>选择一个剪辑组和一个视图。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1289"/>
+      <location filename="../../Command.cpp" line="1359"/>
       <source>Select exactly one View to add to group.</source>
       <translation>仅选择一个视图添加到组。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1294"/>
+      <location filename="../../Command.cpp" line="1364"/>
       <source>Select exactly one Clip group.</source>
       <translation>仅选择一个剪辑组。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1303"/>
+      <location filename="../../Command.cpp" line="1373"/>
       <source>Clip and View must be from same Page.</source>
       <translation>剪辑和视图必须来自同一页。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1356"/>
+      <location filename="../../Command.cpp" line="1426"/>
       <source>Select exactly one View to remove from Group.</source>
       <translation>仅选择一个视图从组中移除。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1375"/>
+      <location filename="../../Command.cpp" line="1445"/>
       <source>View does not belong to a Clip</source>
       <translation>视图不属于剪辑</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1434"/>
+      <location filename="../../Command.cpp" line="1504"/>
       <source>Choose an SVG file to open</source>
       <translation>选择一个SVG文件打开</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1436"/>
+      <location filename="../../Command.cpp" line="1506"/>
       <source>Scalable Vector Graphic</source>
       <translation>可缩放矢量图形</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1436"/>
+      <location filename="../../Command.cpp" line="441"/>
+      <location filename="../../Command.cpp" line="1506"/>
       <source>All Files</source>
       <translation>所有文件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1485"/>
+      <location filename="../../Command.cpp" line="1555"/>
       <source>Select at least one object.</source>
       <translation>请至少选择一个对象。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1561"/>
+      <location filename="../../Command.cpp" line="1630"/>
       <source>Please select only 1 Arch Section.</source>
       <translation type="unfinished">Please select only 1 Arch Section.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1567"/>
+      <location filename="../../Command.cpp" line="1636"/>
       <source>No Arch Sections in selection.</source>
       <translation type="unfinished">No Arch Sections in selection.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1618"/>
+      <location filename="../../Command.cpp" line="1687"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>选择一个电子表格对象。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1692"/>
+      <location filename="../../Command.cpp" line="1761"/>
       <source>No Drawing View</source>
       <translation>无绘图视图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1693"/>
+      <location filename="../../Command.cpp" line="1762"/>
       <source>Open Drawing View before attempting export to SVG.</source>
       <translation>在尝试导出到 SVG 之前打开绘图视图。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1728"/>
+      <location filename="../../Command.cpp" line="1797"/>
       <source>Can not export selection</source>
       <translation>无法导出所选对象</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1729"/>
+      <location filename="../../Command.cpp" line="1798"/>
       <source>Page contains DrawViewArch which will not be exported. Continue?</source>
       <translation type="unfinished">Page contains DrawViewArch which will not be exported. Continue?</translation>
     </message>
@@ -3081,9 +3108,9 @@
       <translation type="unfinished">Select 2 point objects and 1 View. (2)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="606"/>
-      <location filename="../../Command.cpp" line="699"/>
-      <location filename="../../Command.cpp" line="762"/>
+      <location filename="../../Command.cpp" line="692"/>
+      <location filename="../../Command.cpp" line="785"/>
+      <location filename="../../Command.cpp" line="848"/>
       <location filename="../../CommandAnnotate.cpp" line="107"/>
       <location filename="../../CommandAnnotate.cpp" line="168"/>
       <location filename="../../CommandAnnotate.cpp" line="220"/>
@@ -3131,9 +3158,9 @@
       <translation>任务正在进行</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="607"/>
-      <location filename="../../Command.cpp" line="700"/>
-      <location filename="../../Command.cpp" line="763"/>
+      <location filename="../../Command.cpp" line="693"/>
+      <location filename="../../Command.cpp" line="786"/>
+      <location filename="../../Command.cpp" line="849"/>
       <location filename="../../CommandAnnotate.cpp" line="108"/>
       <location filename="../../CommandAnnotate.cpp" line="169"/>
       <location filename="../../CommandAnnotate.cpp" line="221"/>
@@ -3886,6 +3913,16 @@ thick: %4</translation>
       <source>Document Name:</source>
       <translation type="unfinished">Document Name:</translation>
     </message>
+    <message>
+      <location filename="../../TaskProjGroup.cpp" line="164"/>
+      <source>Projection Group</source>
+      <translation>投影组</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.cpp" line="174"/>
+      <source>Part View</source>
+      <translation type="unfinished">Part View</translation>
+    </message>
   </context>
   <context>
     <name>Std_Delete</name>
@@ -3896,7 +3933,7 @@ it has a weld symbol that would become broken.</source>
       <translation>指引线</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="355"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="362"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>您不能删除此视图，因为它有一个或多个依赖的视图会被损坏。</translation>
     </message>
@@ -3905,33 +3942,33 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderPage.cpp" line="215"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="148"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="157"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="155"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="164"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="172"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="180"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="358"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="365"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>对象依赖关系</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="145"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="152"/>
       <source>You cannot delete the anchor view of a projection group.</source>
       <translation type="unfinished">You cannot delete the anchor view of a projection group.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="161"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
       <translation type="unfinished">You cannot delete this view because it has a section view that would become broken.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="162"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="169"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
       <translation type="unfinished">You cannot delete this view because it has a detail view that would become broken.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="170"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="177"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
       <translation>您不能删除此视图，因为它有一个指引线会被损坏。</translation>
     </message>
@@ -7337,228 +7374,233 @@ You can pick further points to get line segments.</translation>
       <translation>投影组</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="34"/>
+      <location filename="../../TaskProjGroup.ui" line="120"/>
+      <source>Direction</source>
+      <translation>方向</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.ui" line="126"/>
+      <source>Spin clock wise</source>
+      <translation type="unfinished">Spin clock wise</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.ui" line="537"/>
       <source>Projection</source>
       <translation>投影</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="41"/>
+      <location filename="../../TaskProjGroup.ui" line="544"/>
       <source>First or Third Angle</source>
       <translation>第一或第三视角</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="45"/>
+      <location filename="../../TaskProjGroup.ui" line="548"/>
       <source>First Angle</source>
       <translation>第一视角投影法</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="50"/>
+      <location filename="../../TaskProjGroup.ui" line="553"/>
       <source>Third Angle</source>
       <translation>第三视角投影法</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="55"/>
-      <location filename="../../TaskProjGroup.ui" line="78"/>
+      <location filename="../../TaskProjGroup.ui" line="45"/>
+      <location filename="../../TaskProjGroup.ui" line="558"/>
       <source>Page</source>
       <translation>页</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="67"/>
+      <location filename="../../TaskProjGroup.ui" line="34"/>
       <source>Scale</source>
       <translation>缩放</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="74"/>
+      <location filename="../../TaskProjGroup.ui" line="41"/>
       <source>Scale Page/Auto/Custom</source>
       <translation>缩放页面/自动/自定义</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="83"/>
+      <location filename="../../TaskProjGroup.ui" line="50"/>
       <source>Automatic</source>
       <translation>自动</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="88"/>
+      <location filename="../../TaskProjGroup.ui" line="55"/>
       <source>Custom</source>
       <translation>自定义</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="100"/>
-      <source>Custom Scale</source>
-      <translation>自定义比例</translation>
-    </message>
-    <message>
-      <location filename="../../TaskProjGroup.ui" line="120"/>
+      <location filename="../../TaskProjGroup.ui" line="76"/>
       <source>Scale Numerator</source>
       <translation>缩放分子</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="143"/>
+      <location filename="../../TaskProjGroup.ui" line="99"/>
       <source>Scale Denominator</source>
       <translation>缩放分母</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="179"/>
-      <source>Adjust Primary Direction</source>
-      <translation>调整主方向</translation>
-    </message>
-    <message>
-      <location filename="../../TaskProjGroup.ui" line="205"/>
+      <location filename="../../TaskProjGroup.ui" line="153"/>
       <source>Rotate up</source>
       <translation>向上旋转</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="226"/>
+      <location filename="../../TaskProjGroup.ui" line="174"/>
+      <source>Spin counter clock wise</source>
+      <translation type="unfinished">Spin counter clock wise</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.ui" line="195"/>
       <source>Rotate left</source>
       <translation>向左旋转</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="261"/>
+      <location filename="../../TaskProjGroup.ui" line="224"/>
       <source>Current primary view direction</source>
       <translation>当前主视图方向</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="274"/>
+      <location filename="../../TaskProjGroup.ui" line="231"/>
       <source>Rotate right</source>
       <translation>向右旋转</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="308"/>
+      <location filename="../../TaskProjGroup.ui" line="252"/>
+      <source>Set document front view as primary direction.</source>
+      <translation type="unfinished">Set document front view as primary direction.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.ui" line="273"/>
       <source>Rotate down</source>
       <translation>向下旋转</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="353"/>
+      <location filename="../../TaskProjGroup.ui" line="294"/>
+      <source>Set direction of the camera, or selected face if any, as primary direction.</source>
+      <translation type="unfinished">Set direction of the camera, or selected face if any, as primary direction.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.ui" line="318"/>
       <source>Secondary Projections</source>
       <translation>第二投影方向</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="367"/>
+      <location filename="../../TaskProjGroup.ui" line="324"/>
       <source>LeftFrontTop</source>
       <translation>左前方顶部</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="390"/>
-      <location filename="../../TaskProjGroup.cpp" line="392"/>
-      <location filename="../../TaskProjGroup.cpp" line="399"/>
+      <location filename="../../TaskProjGroup.ui" line="347"/>
+      <location filename="../../TaskProjGroup.cpp" line="643"/>
+      <location filename="../../TaskProjGroup.cpp" line="650"/>
       <source>Top</source>
       <translation>俯视</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="407"/>
+      <location filename="../../TaskProjGroup.ui" line="364"/>
       <source>RightFrontTop</source>
       <translation>右前方顶部</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="437"/>
-      <location filename="../../TaskProjGroup.cpp" line="394"/>
-      <location filename="../../TaskProjGroup.cpp" line="396"/>
+      <location filename="../../TaskProjGroup.ui" line="394"/>
+      <location filename="../../TaskProjGroup.cpp" line="645"/>
+      <location filename="../../TaskProjGroup.cpp" line="647"/>
       <source>Left</source>
       <translation>左视</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="457"/>
+      <location filename="../../TaskProjGroup.ui" line="414"/>
       <source>Primary</source>
       <translation>主要</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="477"/>
-      <location filename="../../TaskProjGroup.cpp" line="394"/>
-      <location filename="../../TaskProjGroup.cpp" line="396"/>
+      <location filename="../../TaskProjGroup.ui" line="434"/>
+      <location filename="../../TaskProjGroup.cpp" line="645"/>
+      <location filename="../../TaskProjGroup.cpp" line="647"/>
       <source>Right</source>
       <translation>右视</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="494"/>
-      <location filename="../../TaskProjGroup.cpp" line="397"/>
+      <location filename="../../TaskProjGroup.ui" line="451"/>
+      <location filename="../../TaskProjGroup.cpp" line="648"/>
       <source>Rear</source>
       <translation>后视</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="524"/>
+      <location filename="../../TaskProjGroup.ui" line="481"/>
       <source>LeftFrontBottom</source>
       <translation>左前方底部</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="544"/>
-      <location filename="../../TaskProjGroup.cpp" line="392"/>
-      <location filename="../../TaskProjGroup.cpp" line="399"/>
+      <location filename="../../TaskProjGroup.ui" line="501"/>
+      <location filename="../../TaskProjGroup.cpp" line="643"/>
+      <location filename="../../TaskProjGroup.cpp" line="650"/>
       <source>Bottom</source>
       <translation>底视</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="561"/>
+      <location filename="../../TaskProjGroup.ui" line="518"/>
       <source>RightFrontBottom</source>
       <translation>右前方底部</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="595"/>
-      <source>Spin CW</source>
-      <translation>顺时针旋转</translation>
-    </message>
-    <message>
-      <location filename="../../TaskProjGroup.ui" line="623"/>
-      <source>Spin CCW</source>
-      <translation>逆时针旋转</translation>
-    </message>
-    <message>
-      <location filename="../../TaskProjGroup.ui" line="653"/>
+      <location filename="../../TaskProjGroup.ui" line="568"/>
       <source>Distributes projections automatically
 using the given X/Y Spacing</source>
       <translation type="unfinished">Distributes projections automatically
 using the given X/Y Spacing</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="657"/>
+      <location filename="../../TaskProjGroup.ui" line="572"/>
       <source>Auto Distribute</source>
       <translation type="unfinished">Auto Distribute</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="678"/>
+      <location filename="../../TaskProjGroup.ui" line="593"/>
       <source>X Spacing</source>
       <translation type="unfinished">X Spacing</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="710"/>
+      <location filename="../../TaskProjGroup.ui" line="625"/>
       <source>Horizontal space between border of projections</source>
       <translation type="unfinished">Horizontal space between border of projections</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="738"/>
+      <location filename="../../TaskProjGroup.ui" line="653"/>
       <source>Y Spacing</source>
       <translation type="unfinished">Y Spacing</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="757"/>
+      <location filename="../../TaskProjGroup.ui" line="672"/>
       <source>Vertical space between border of projections</source>
       <translation type="unfinished">Vertical space between border of projections</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="391"/>
-      <location filename="../../TaskProjGroup.cpp" line="400"/>
+      <location filename="../../TaskProjGroup.cpp" line="642"/>
+      <location filename="../../TaskProjGroup.cpp" line="651"/>
       <source>FrontTopLeft</source>
       <translation type="unfinished">FrontTopLeft</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="391"/>
-      <location filename="../../TaskProjGroup.cpp" line="400"/>
+      <location filename="../../TaskProjGroup.cpp" line="642"/>
+      <location filename="../../TaskProjGroup.cpp" line="651"/>
       <source>FrontBottomRight</source>
       <translation type="unfinished">FrontBottomRight</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="393"/>
-      <location filename="../../TaskProjGroup.cpp" line="398"/>
+      <location filename="../../TaskProjGroup.cpp" line="644"/>
+      <location filename="../../TaskProjGroup.cpp" line="649"/>
       <source>FrontTopRight</source>
       <translation type="unfinished">FrontTopRight</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="393"/>
-      <location filename="../../TaskProjGroup.cpp" line="398"/>
+      <location filename="../../TaskProjGroup.cpp" line="644"/>
+      <location filename="../../TaskProjGroup.cpp" line="649"/>
       <source>FrontBottomLeft</source>
       <translation type="unfinished">FrontBottomLeft</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="395"/>
+      <location filename="../../TaskProjGroup.cpp" line="646"/>
       <source>Front</source>
       <translation>前视</translation>
     </message>
@@ -8184,7 +8226,7 @@ using the given X/Y Spacing</translation>
   <context>
     <name>TechDraw_ComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="666"/>
+      <location filename="../../Command.cpp" line="752"/>
       <source>Insert complex Section View</source>
       <translation type="unfinished">Insert complex Section View</translation>
     </message>
@@ -8245,7 +8287,7 @@ using the given X/Y Spacing</translation>
   <context>
     <name>TechDraw_SectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="661"/>
+      <location filename="../../Command.cpp" line="747"/>
       <source>Insert simple Section View</source>
       <translation type="unfinished">Insert simple Section View</translation>
     </message>
@@ -9475,15 +9517,53 @@ there is an open task dialog.</translation>
   <context>
     <name>CmdTechDrawBrokenView</name>
     <message>
-      <location filename="../../Command.cpp" line="439"/>
+      <location filename="../../Command.cpp" line="525"/>
       <source>TechDraw</source>
       <translation>工程图</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="440"/>
-      <location filename="../../Command.cpp" line="441"/>
+      <location filename="../../Command.cpp" line="526"/>
+      <location filename="../../Command.cpp" line="527"/>
       <source>Insert Broken View</source>
       <translation type="unfinished">Insert Broken View</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::DirectionEditDialog</name>
+    <message>
+      <location filename="../../TaskProjGroup.cpp" line="917"/>
+      <source>Direction</source>
+      <translation>方向</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.cpp" line="922"/>
+      <source>X: </source>
+      <translation type="unfinished">X: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.cpp" line="930"/>
+      <source>Y: </source>
+      <translation type="unfinished">Y: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.cpp" line="938"/>
+      <source>Z: </source>
+      <translation type="unfinished">Z: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.cpp" line="954"/>
+      <source>OK</source>
+      <translation>确定</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.cpp" line="955"/>
+      <source>Cancel</source>
+      <translation>取消</translation>
+    </message>
+    <message>
+      <location filename="../../TaskProjGroup.cpp" line="961"/>
+      <source>Rotate by</source>
+      <translation type="unfinished">Rotate by</translation>
     </message>
   </context>
 </TS>

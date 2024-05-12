@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="612"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Паліганальная сетка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="613"/>

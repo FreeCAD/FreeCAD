@@ -431,7 +431,6 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
     bool makeface = options.testFlag(ExtrudeOption::MakeFace);
     bool fuse = options.testFlag(ExtrudeOption::MakeFuse);
     bool legacyPocket = options.testFlag(ExtrudeOption::LegacyPocket);
-    bool inverseDirection = options.testFlag(ExtrudeOption::InverseDirection);
 
     std::string method(Type.getValueAsString());
 

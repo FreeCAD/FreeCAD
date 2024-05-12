@@ -294,14 +294,14 @@
       <translation>Error: o totes les formes han de ser 2D o totes les formes han de ser 3D</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Unsupported Function</source>
       <translation>Funció no suportada</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Press OK</source>
       <translation>Premeu OK</translation>
     </message>

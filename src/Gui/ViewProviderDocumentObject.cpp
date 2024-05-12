@@ -77,8 +77,6 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
             "Element: On top only if some sub-element of the object is selected");
     OnTopWhenSelected.setEnums(OnTopEnum);
 
-    ADD_PROPERTY_TYPE(TreeRank, (-1), dogroup, App::Prop_Hidden, "Tree view item ordering key");
-
     sPixmap = "Feature";
 }
 

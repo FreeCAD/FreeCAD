@@ -1967,38 +1967,38 @@ unit to work with when opening the file.</source>
       <translation>სამშენებლო დეტალის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="913"/>
+      <location filename="../../ArchBuildingPart.py" line="924"/>
       <source>Deactivate</source>
       <translation>დეაქტივაცია</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="915"/>
+      <location filename="../../ArchBuildingPart.py" line="926"/>
       <source>Activate</source>
       <translation>აქტივაცია</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="923"/>
+      <location filename="../../ArchBuildingPart.py" line="934"/>
       <source>Set working plane</source>
       <translation>სამუშაო სიბრტყის დაყენება</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="931"/>
+      <location filename="../../ArchBuildingPart.py" line="942"/>
       <source>Write camera position</source>
       <translation>კამერის პოზიციის ჩაწერა</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="938"/>
+      <location filename="../../ArchBuildingPart.py" line="949"/>
       <source>Create group...</source>
       <translation>ჯგუფის შექმნა...</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="945"/>
+      <location filename="../../ArchBuildingPart.py" line="956"/>
       <location filename="../../ArchMaterial.py" line="223"/>
       <source>Reorder children alphabetically</source>
       <translation>შვილების ანბანის მიხედვით დალაგება</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="952"/>
+      <location filename="../../ArchBuildingPart.py" line="963"/>
       <source>Clone level up</source>
       <translation>დონის მაღლა კლონირება</translation>
     </message>
@@ -2255,13 +2255,13 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReference.py" line="738"/>
       <source>Unable to get lightWeight node for object referenced in</source>
-      <translation type="unfinished">Unable to get lightWeight node for object referenced in</translation>
+      <translation>ვერ მივიღე მსუბუქი კვანძი ობიექტის მიმართვისთვის</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="746"/>
       <location filename="../../ArchReference.py" line="750"/>
       <source>Invalid lightWeight node for object referenced in</source>
-      <translation type="unfinished">Invalid lightWeight node for object referenced in</translation>
+      <translation>არასწორი მსუბუქი კვანძი ობიექტის მიმართვისთვის</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="759"/>
@@ -2494,7 +2494,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchMaterial.py" line="495"/>
       <location filename="../../ArchMaterial.py" line="789"/>
       <location filename="../../ArchReference.py" line="675"/>
-      <location filename="../../ArchSchedule.py" line="453"/>
+      <location filename="../../ArchSchedule.py" line="454"/>
       <location filename="../../ArchSectionPlane.py" line="1198"/>
       <location filename="../../ArchSite.py" line="932"/>
       <location filename="../../ArchWindow.py" line="1807"/>
@@ -2636,7 +2636,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../importJSON.py" line="61"/>
       <location filename="../../importOBJ.py" line="261"/>
       <location filename="../../importOBJ.py" line="285"/>
-      <location filename="../../importWebGL.py" line="874"/>
+      <location filename="../../importWebGL.py" line="875"/>
       <source>Successfully written</source>
       <translation>წარმატებით ჩაიწერა</translation>
     </message>
@@ -2760,13 +2760,13 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>დამოკიდებულია ობიექტზე</translation>
     </message>
     <message>
-      <location filename="../../importGBXML.py" line="46"/>
-      <location filename="../../importGBXML.py" line="50"/>
+      <location filename="../../importGBXML.py" line="47"/>
+      <location filename="../../importGBXML.py" line="51"/>
       <source>This exporter can currently only export one site object</source>
       <translation>გამტანს ახლა მხოლოდ ერთი ადგილის ობიექტის გატანა შეუძლია</translation>
     </message>
     <message>
-      <location filename="../../importGBXML.py" line="92"/>
+      <location filename="../../importGBXML.py" line="93"/>
       <source>Error: Space '%s' has no Zone. Aborting.</source>
       <translation>შეცდომა: სივრცეს '%s' არ აქვს ზონა. შეწყვეტა.</translation>
     </message>
@@ -3166,27 +3166,27 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>დამატებულია თვისება 'Schedule'</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="362"/>
+      <location filename="../../ArchSchedule.py" line="363"/>
       <source>Unable to retrieve value from object</source>
       <translation>ობიექტიდან მნიშვნელობის ამოღება შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="462"/>
+      <location filename="../../ArchSchedule.py" line="463"/>
       <source>Remove spreadsheet</source>
       <translation>ცხრილის წაშლა</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="464"/>
+      <location filename="../../ArchSchedule.py" line="465"/>
       <source>Attach spreadsheet</source>
       <translation>ელცხრილის მიმაგრება</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="589"/>
+      <location filename="../../ArchSchedule.py" line="590"/>
       <source>Import CSV file</source>
       <translation>CSV ფაილის შემოტანა</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="622"/>
+      <location filename="../../ArchSchedule.py" line="623"/>
       <source>Export CSV file</source>
       <translation>CSV ფაილის გატანა</translation>
     </message>
@@ -3196,34 +3196,34 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>CSV ფაილის გატანა</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="643"/>
+      <location filename="../../ArchSchedule.py" line="644"/>
       <source>Unable to recognize that file type</source>
       <translation>უცნობი ფაილის ტიპი</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1010"/>
-      <location filename="../../ArchSchedule.py" line="665"/>
-      <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchSchedule.py" line="666"/>
+      <location filename="../../ArchSchedule.py" line="684"/>
       <source>Description</source>
       <translation>აღწერა</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1631"/>
       <location filename="../../ArchComponent.py" line="2009"/>
-      <location filename="../../ArchSchedule.py" line="665"/>
-      <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchSchedule.py" line="666"/>
+      <location filename="../../ArchSchedule.py" line="684"/>
       <source>Value</source>
       <translation>მნიშვნელობა</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1632"/>
-      <location filename="../../ArchSchedule.py" line="665"/>
-      <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchSchedule.py" line="666"/>
+      <location filename="../../ArchSchedule.py" line="684"/>
       <source>Unit</source>
       <translation>საზომი ერთეულები</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="744"/>
+      <location filename="../../ArchSchedule.py" line="745"/>
       <source>Schedule</source>
       <translation>დაგეგმვა</translation>
     </message>
@@ -4046,8 +4046,8 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="335"/>
-      <source>If true, the height value propagates to contained objects</source>
-      <translation>თუ ჩართულია, სიმაღლის მნიშვნელობა ვრცელდება შემავალ ობიექტებზეც</translation>
+      <source>If true, the height value propagates to contained objects if the height of those objects is set to 0</source>
+      <translation type="unfinished">If true, the height value propagates to contained objects if the height of those objects is set to 0</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="338"/>
@@ -4094,148 +4094,148 @@ Building creation aborted.</source>
       <translation>MaterialName:SolidIndexesList რუკა, რომელიც აკავშირებს მასალის სახელებს მყარ ინდექსებთან, რომლებიც გამოყენებული იქნება ამ ობიექტზე სხვა ფაილებიდან მიბმისას</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="553"/>
+      <location filename="../../ArchBuildingPart.py" line="564"/>
       <location filename="../../ArchSectionPlane.py" line="963"/>
       <source>The line width of this object</source>
       <translation>ამ ობიექტის ხაზის სიგანე</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="556"/>
+      <location filename="../../ArchBuildingPart.py" line="567"/>
       <source>An optional unit to express levels</source>
       <translation>სართულების აღწერის არასავალდებული საზომი ერთეული</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="558"/>
+      <location filename="../../ArchBuildingPart.py" line="569"/>
       <source>A transformation to apply to the level mark</source>
       <translation>სართულზე გადასატარებელი გარდაქმნის არჩევა</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="561"/>
+      <location filename="../../ArchBuildingPart.py" line="572"/>
       <source>If true, show the level</source>
       <translation>ჩართვის შემთხვევაში, სართულის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="564"/>
+      <location filename="../../ArchBuildingPart.py" line="575"/>
       <source>If true, show the unit on the level tag</source>
       <translation>ჩართვის შემთხვევაში სართულის საზომი ერთეულის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="566"/>
+      <location filename="../../ArchBuildingPart.py" line="577"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>ჩართვის შემთხვევაში ჩვენების წანაცვლებას გავლენა ათვლის წერტილზეც ექნება</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="568"/>
+      <location filename="../../ArchBuildingPart.py" line="579"/>
       <source>If true, the object's label is displayed</source>
       <translation>ჩართვის შემთხვევაში ობიექტის ჭდე ხილული იქნება</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="571"/>
+      <location filename="../../ArchBuildingPart.py" line="582"/>
       <source>The font to be used for texts</source>
       <translation>ტექსტებისთვის გამოყენებული ფონტი</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="574"/>
+      <location filename="../../ArchBuildingPart.py" line="585"/>
       <source>The font size of texts</source>
       <translation>ტექსტების ფონტის ზომა</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="577"/>
+      <location filename="../../ArchBuildingPart.py" line="588"/>
       <source>The individual face colors</source>
       <translation>ზედაპირის ინდივიდუალური ფერები</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="581"/>
+      <location filename="../../ArchBuildingPart.py" line="592"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>ჩართვის შემთხვევაში აქტივაციისას სამუშაო სიბრტყე ავტომატურად ადაპტირდება მიმდინარე სართულთან</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="584"/>
+      <location filename="../../ArchBuildingPart.py" line="595"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>ჩართვის შემთხვევაში სამუშაო სიბრტყე ავტომატურ რეჟიმში იქნება</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="586"/>
+      <location filename="../../ArchBuildingPart.py" line="597"/>
       <source>Camera position data associated with this object</source>
       <translation>ობიექტთან ასოცირებული კამერის მდებარეობის მონაცემები</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="589"/>
+      <location filename="../../ArchBuildingPart.py" line="600"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>ჩართვის შემთხვევაში ობიექტში დამახსოვრებული ხედი ორმაგი წკაპით აღდგება</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="591"/>
+      <location filename="../../ArchBuildingPart.py" line="602"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>ჩართვის შემთხვევაში ხეზე მდებარე ობიექტების ორმაგი წკაპი მას ააქტიურებს</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="595"/>
+      <location filename="../../ArchBuildingPart.py" line="606"/>
       <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>თუ ჩართულია, ამ ობიექტის გამომგონებლის წარმოდგენა შეინახება FreeCAD ფაილში, რაც საშუალებას მისცემს მას მიმართოს სხვა ფაილებში მსუბუქი რეჟიმით.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="597"/>
+      <location filename="../../ArchBuildingPart.py" line="608"/>
       <source>A slot to save the inventor representation of this object, if enabled</source>
       <translation>ობიექტის ინვენტარის გამოსახვის შესანახი სლოტი, თუ ჩართულია</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="602"/>
+      <location filename="../../ArchBuildingPart.py" line="613"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>თუ ჩართულია, შენობის ამ ნაწილში შემავალი ობიექტები მიიღებენ ამ ხაზის, ფერის და გამჭირვალობის მნიშვნელობებს</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="604"/>
+      <location filename="../../ArchBuildingPart.py" line="615"/>
       <source>The line width of child objects</source>
       <translation>ქვეობიექტების ხაზების სიგანე</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="607"/>
+      <location filename="../../ArchBuildingPart.py" line="618"/>
       <source>The line color of child objects</source>
       <translation>ქვეობიექტების ხაზების ფერი</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="610"/>
+      <location filename="../../ArchBuildingPart.py" line="621"/>
       <source>The shape appearance of child objects</source>
       <translation>შვილი ობიექტების მოხაზულობის გარეგნობა</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="613"/>
+      <location filename="../../ArchBuildingPart.py" line="624"/>
       <source>The transparency of child objects</source>
       <translation>ქვეობიექტების გამჭვირვალობა</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="618"/>
+      <location filename="../../ArchBuildingPart.py" line="629"/>
       <source>Cut the view above this level</source>
       <translation>ხედის ამ დონის ზემოთ კვეთა</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="620"/>
+      <location filename="../../ArchBuildingPart.py" line="631"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>მანძილი სართულის სიბრტყესა და კვეთის ხაზს შორის</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="623"/>
+      <location filename="../../ArchBuildingPart.py" line="634"/>
       <source>Turn cutting on when activating this level</source>
       <translation>ამ დონის აქტივაციისას ჭრის ჩართვა</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="627"/>
+      <location filename="../../ArchBuildingPart.py" line="638"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>ახლად შექმნილი ობიექტების გადაღების ველი გამოხატულია როგორც [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="629"/>
+      <location filename="../../ArchBuildingPart.py" line="640"/>
       <source>Turns auto group box on/off</source>
       <translation>ავტომატური დაჯგუფების ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="631"/>
+      <location filename="../../ArchBuildingPart.py" line="642"/>
       <source>Automatically set size from contents</source>
       <translation>ზომის ავტომატურად დაყენება შიგთავსიდან</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="633"/>
+      <location filename="../../ArchBuildingPart.py" line="644"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>ზღვარი, რომელიც გამოიყენება ავტომატური ზომის ჩართვისას</translation>
     </message>
@@ -5874,7 +5874,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSpace.py" line="512"/>
       <source>The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</source>
-      <translation type="unfinished">The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</translation>
+      <translation>საჩვენებელი ტექსტი. გამოიყენეთ ცვლადები $area, $label, $tag, $longname, $description და დასრულებისთვის $floor, $walls და $ceiling შესაბამისი მონაცემების ჩასასმელად</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="518"/>
@@ -6048,7 +6048,7 @@ Building creation aborted.</source>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="996"/>
+      <location filename="../../ArchBuildingPart.py" line="1007"/>
       <source>Writing camera position</source>
       <translation>კამერის პოზიციის ჩაწერა</translation>
     </message>

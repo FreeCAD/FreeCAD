@@ -7434,6 +7434,7 @@ void SketchObject::validateExternalLinks()
         const std::string SubElement = SubElements[i];
 
         TopoDS_Shape refSubShape;
+        bool removeBadLink = false;
         try {
             if (Obj->isDerivedFrom<Part::Datum>()) {
                 const Part::Datum* datum = static_cast<const Part::Datum*>(Obj);
@@ -7445,7 +7446,15 @@ void SketchObject::validateExternalLinks()
                 refSubShape = refShape.getSubShape(SubElement.c_str());
             }
         }
+        catch ( Base::IndexError& indexError) {
+            removeBadLink = true;
+            Base::Console().Warning(
+                this->getFullLabel(), (indexError.getMessage() + "\n").c_str());
+        }
         catch (Standard_Failure&) {
+            removeBadLink = true;
+        }
+        if ( removeBadLink ) {
             rebuild = true;
             Objects.erase(Objects.begin() + i);
             SubElements.erase(SubElements.begin() + i);

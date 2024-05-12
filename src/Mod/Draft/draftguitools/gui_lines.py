@@ -77,6 +77,7 @@ class Line(gui_base_original.Creator):
 
         self.obj = self.doc.addObject("Part::Feature", self.featureName)
         gui_utils.format_object(self.obj)
+        self.obj.ViewObject.ShowInTree = False
 
         self.call = self.view.addEventCallback("SoEvent", self.action)
         _toolmsg(translate("draft", "Pick first point"))
@@ -92,21 +93,28 @@ class Line(gui_base_original.Creator):
             Dictionary with strings that indicates the type of event received
             from the 3D view.
         """
-        if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
-            self.finish()
-        elif arg["Type"] == "SoLocation2Event":
+        if arg["Type"] == "SoKeyboardEvent":
+            if arg["Key"] == "ESCAPE":
+                self.finish()
+            return
+        if arg["Type"] == "SoLocation2Event":
             self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
             gui_tool_utils.redraw3DView()
-        elif (arg["Type"] == "SoMouseButtonEvent"
-              and arg["State"] == "DOWN"
-              and arg["Button"] == "BUTTON1"):
+            return
+        if arg["Type"] != "SoMouseButtonEvent":
+            return
+        if arg["State"] == "UP":
+            self.obj.ViewObject.Selectable = True
+            return
+        if arg["State"] == "DOWN" and arg["Button"] == "BUTTON1":
+            # Stop self.obj from being selected to avoid its display in the tree:
+            self.obj.ViewObject.Selectable = False
             if arg["Position"] == self.pos:
                 self.finish(cont=None)
                 return
             if (not self.node) and (not self.support):
                 gui_tool_utils.getSupport(arg)
-                (self.point,
-                 ctrlPoint, info) = gui_tool_utils.getPoint(self, arg)
+                self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
             if self.point:
                 self.ui.redraw()
                 self.pos = arg["Position"]

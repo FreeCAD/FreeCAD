@@ -96,14 +96,16 @@ using DU = DrawUtil;
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(TechDraw::DrawViewPart, TechDraw::DrawView)
 
-DrawViewPart::DrawViewPart(void)
-    : geometryObject(nullptr), m_tempGeometryObject(nullptr), m_waitingForFaces(false),
+DrawViewPart::DrawViewPart()
+    : geometryObject(nullptr),
+      m_tempGeometryObject(nullptr),
+      m_handleFaces(false),
+      nowUnsetting(false),
+      m_waitingForFaces(false),
       m_waitingForHlr(false)
 {
     static const char* group = "Projection";
     static const char* sgroup = "HLR Parameters";
-    nowUnsetting = false;
-    m_handleFaces = false;
 
     CosmeticExtension::initExtension(this);
 
@@ -203,14 +205,14 @@ std::vector<App::DocumentObject*> DrawViewPart::getAllSources() const
 
 //! pick vertex objects out of the Source properties and
 //! add them directly to the geometry without going through HLR
-void DrawViewPart::addPoints(void)
+void DrawViewPart::addPoints()
 {
 //    Base::Console().Message("DVP::addPoints()\n");
     // get all the 2d shapes in the sources, then pick through them for vertices.
-    std::vector<TopoDS_Shape> shapes = ShapeExtractor::getShapes2d(getAllSources());
-    for (auto& s : shapes) {
-        if (s.ShapeType() == TopAbs_VERTEX) {
-            gp_Pnt gp = BRep_Tool::Pnt(TopoDS::Vertex(s));
+    std::vector<TopoDS_Shape> shapesAll = ShapeExtractor::getShapes2d(getAllSources());
+    for (auto& shape : shapesAll) {
+        if (shape.ShapeType() == TopAbs_VERTEX) {
+            gp_Pnt gp = BRep_Tool::Pnt(TopoDS::Vertex(shape));
             Base::Vector3d vp(gp.X(), gp.Y(), gp.Z());
             vp = vp - m_saveCentroid;
             //need to offset the point to match the big projection
@@ -221,9 +223,9 @@ void DrawViewPart::addPoints(void)
     }
 }
 
-App::DocumentObjectExecReturn* DrawViewPart::execute(void)
+App::DocumentObjectExecReturn* DrawViewPart::execute()
 {
-    //    Base::Console().Message("DVP::execute() - %s\n", getNameInDocument());
+    // Base::Console().Message("DVP::execute() - %s\n", getNameInDocument());
     if (!keepUpdated()) {
         return DrawView::execute();
     }
@@ -375,7 +377,7 @@ TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shap
 }
 
 //! continue processing after hlr thread completes
-void DrawViewPart::onHlrFinished(void)
+void DrawViewPart::onHlrFinished()
 {
     //    Base::Console().Message("DVP::onHlrFinished() - %s\n", getNameInDocument());
 
@@ -423,9 +425,9 @@ void DrawViewPart::onHlrFinished(void)
 }
 
 //! run any tasks that need to been done after geometry is available
-void DrawViewPart::postHlrTasks(void)
+void DrawViewPart::postHlrTasks()
 {
-    //    Base::Console().Message("DVP::postHlrTasks() - %s\n", getNameInDocument());
+    // Base::Console().Message("DVP::postHlrTasks() - %s\n", getNameInDocument());
     //add geometry that doesn't come from HLR
     addCosmeticVertexesToGeom();
     addCosmeticEdgesToGeom();
@@ -434,15 +436,15 @@ void DrawViewPart::postHlrTasks(void)
 
     //balloons need to be recomputed here because their
     //references will be invalid until the geometry exists
-    std::vector<TechDraw::DrawViewBalloon*> bals = getBalloons();
-    for (auto& b : bals) {
-        b->recomputeFeature();
+    std::vector<TechDraw::DrawViewBalloon*> balloonsAll = getBalloons();
+    for (auto& balloon : balloonsAll) {
+        balloon->recomputeFeature();
     }
     // Dimensions need to be recomputed now if face finding is not going to take place.
     if (!handleFaces() || CoarseView.getValue()) {
-        std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
-        for (auto& d : dims) {
-            d->recomputeFeature();
+        std::vector<TechDraw::DrawViewDimension*> dimsAll = getDimensions();
+        for (auto& dim : dimsAll) {
+            dim->recomputeFeature();
         }
     }
 
@@ -460,16 +462,17 @@ void DrawViewPart::postHlrTasks(void)
 }
 
 // Run any tasks that need to be done after faces are available
-void DrawViewPart::postFaceExtractionTasks(void)
+void DrawViewPart::postFaceExtractionTasks()
 {
+    // Base::Console().Message("DVP::postFaceExtractionTasks() - %s\n", getNameInDocument());
     // Some centerlines depend on faces so we could not add CL geometry before now
     addCenterLinesToGeom();
 
     // Dimensions need to be recomputed because their references will be invalid
     //  until all the geometry (including centerlines dependent on faces) exists.
-    std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
-    for (auto& d : dims) {
-        d->recomputeFeature();
+    std::vector<TechDraw::DrawViewDimension*> dimsAll = getDimensions();
+    for (auto& dim : dimsAll) {
+        dim->recomputeFeature();
     }
 
     requestPaint();
@@ -529,10 +532,10 @@ void DrawViewPart::findFacesNew(const std::vector<BaseGeomPtr> &goEdges)
     geometryObject->clearFaceGeom();
 
     std::vector<TopoDS_Wire> closedWires;
-    for (auto& e : closedEdges) {
-        BRepBuilderAPI_MakeWire mkWire(e);
-        TopoDS_Wire w = mkWire.Wire();
-        closedWires.push_back(w);
+    for (auto& edge : closedEdges) {
+        BRepBuilderAPI_MakeWire mkWire(edge);
+        TopoDS_Wire wire = mkWire.Wire();
+        closedWires.push_back(wire);
     }
     if (!closedWires.empty()) {
         sortedWires.insert(sortedWires.end(), closedWires.begin(), closedWires.end());
@@ -548,7 +551,7 @@ void DrawViewPart::findFacesNew(const std::vector<BaseGeomPtr> &goEdges)
     }
     else {
         constexpr double minWireArea = 0.000001;//arbitrary very small face size
-        std::vector<TopoDS_Wire>::iterator itWire = sortedWires.begin();
+        auto itWire = sortedWires.begin();
         for (; itWire != sortedWires.end(); itWire++) {
             if (!BRep_Tool::IsClosed(*itWire)) {
                 continue;//can not make a face from open wire
@@ -559,17 +562,18 @@ void DrawViewPart::findFacesNew(const std::vector<BaseGeomPtr> &goEdges)
                 continue;//can not make a face from wire with no area
             }
 
-            TechDraw::FacePtr f(std::make_shared<TechDraw::Face>());
+            TechDraw::FacePtr face(std::make_shared<TechDraw::Face>());
             const TopoDS_Wire& wire = (*itWire);
-            f->wires.push_back(new TechDraw::Wire(wire));
+            face->wires.push_back(new TechDraw::Wire(wire));
             if (geometryObject) {
-                geometryObject->addFaceGeom(f);
+                geometryObject->addFaceGeom(face);
             }
         }
     }
 }
 
-// original face finding method
+// original face finding method.  This is retained only to produce the same face geometry in older
+// documents.
 void DrawViewPart::findFacesOld(const std::vector<BaseGeomPtr> &goEdges)
 {
     //make a copy of the input edges so the loose tolerances of face finding are
@@ -685,7 +689,7 @@ void DrawViewPart::findFacesOld(const std::vector<BaseGeomPtr> &goEdges)
 }
 
 //continue processing after extractFaces thread completes
-void DrawViewPart::onFacesFinished(void)
+void DrawViewPart::onFacesFinished()
 {
     //    Base::Console().Message("DVP::onFacesFinished() - %s\n", getNameInDocument());
     waitingForFaces(false);
@@ -1025,24 +1029,15 @@ bool DrawViewPart::waitingForResult() const
     return false;
 }
 
-bool DrawViewPart::hasGeometry(void) const
+bool DrawViewPart::hasGeometry() const
 {
     if (!geometryObject) {
         return false;
     }
 
-    if (waitingForHlr()) {
-        return false;
-    }
     const std::vector<TechDraw::VertexPtr>& verts = getVertexGeometry();
     const std::vector<TechDraw::BaseGeomPtr>& edges = getEdgeGeometry();
-    if (verts.empty() && edges.empty()) {
-        return false;
-    }
-    else {
-        return true;
-    }
-    return false;
+    return !(verts.empty() && edges.empty());
 }
 
 //convert a vector in local XY coords into a coordinate system in global
@@ -1165,7 +1160,7 @@ bool DrawViewPart::handleFaces()
     return Preferences::getPreferenceGroup("General")->GetBool("HandleFaces", true);
 }
 
-bool DrawViewPart::newFaceFinder(void)
+bool DrawViewPart::newFaceFinder()
 {
     return Preferences::getPreferenceGroup("General")->GetBool("NewFaceFinder", false);
 }
@@ -1442,6 +1437,7 @@ void DrawViewPart::removeReferenceVertex(std::string tag)
     resetReferenceVerts();
 }
 
+//! remove reference vertexes from the view geometry
 void DrawViewPart::removeAllReferencesFromGeom()
 {
     //    Base::Console().Message("DVP::removeAllReferencesFromGeom()\n");

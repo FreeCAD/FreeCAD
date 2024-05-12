@@ -142,7 +142,6 @@ void GeometryObject::clear()
 
 void GeometryObject::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& viewAxis)
 {
-//    Base::Console().Message("GO::projectShape()\n");
     clear();
 
     Handle(HLRBRep_Algo) brep_hlr;
@@ -286,21 +285,6 @@ void GeometryObject::makeTDGeometry()
     }
 }
 
-//mirror a shape thru XZ plane for Qt's inverted Y coordinate
-TopoDS_Shape ShapeUtils::invertGeometry(const TopoDS_Shape s)
-{
-    if (s.IsNull()) {
-        return s;
-    }
-
-    gp_Trsf mirrorY;
-    gp_Pnt org(0.0, 0.0, 0.0);
-    gp_Dir Y(0.0, 1.0, 0.0);
-    gp_Ax2 mirrorPlane(org, Y);
-    mirrorY.SetMirror(mirrorPlane);
-    BRepBuilderAPI_Transform mkTrf(s, mirrorY, true);
-    return mkTrf.Shape();
-}
 
 //!set up a hidden line remover and project a shape with it
 void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, const gp_Ax2& viewAxis)

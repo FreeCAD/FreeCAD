@@ -512,8 +512,8 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
       <location filename="../../AddonManagerOptions.ui" line="20"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates</translation>
+      <translation>Wenn diese Option ausgewählt ist, werden beim Starten des Addon-Managers
+installierte Addons auf verfügbare Updates überprüft</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="24"/>

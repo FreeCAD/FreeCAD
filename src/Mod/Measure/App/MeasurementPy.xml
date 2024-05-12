@@ -40,6 +40,26 @@
         <UserDocu>measure the length of the references</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="volume">
+      <Documentation>
+        <UserDocu>measure the volume of the references</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="area">
+      <Documentation>
+        <UserDocu>measure the area of the references</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="lineLineDistance">
+      <Documentation>
+        <UserDocu>measure the line-Line Distance of the references. Returns 0 if references are not 2 lines.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="planePlaneDistance">
+      <Documentation>
+        <UserDocu>measure the plane-plane distance of the references. Returns 0 if references are not 2 planes.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="angle">
         <Documentation>
             <UserDocu>measure the angle between two edges</UserDocu>

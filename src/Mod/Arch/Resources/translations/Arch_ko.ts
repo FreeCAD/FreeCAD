@@ -1966,38 +1966,38 @@ IFC 파일은 "항상" 메트릭 단위로 작성됩니다. 임페리얼 단위�
       <translation>빌딩 부품 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="913"/>
+      <location filename="../../ArchBuildingPart.py" line="924"/>
       <source>Deactivate</source>
       <translation>비활성화</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="915"/>
+      <location filename="../../ArchBuildingPart.py" line="926"/>
       <source>Activate</source>
       <translation>활성화</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="923"/>
+      <location filename="../../ArchBuildingPart.py" line="934"/>
       <source>Set working plane</source>
       <translation>작업면 설정</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="931"/>
+      <location filename="../../ArchBuildingPart.py" line="942"/>
       <source>Write camera position</source>
       <translation>카메라 위치 쓰기</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="938"/>
+      <location filename="../../ArchBuildingPart.py" line="949"/>
       <source>Create group...</source>
       <translation>그룹 만들기...</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="945"/>
+      <location filename="../../ArchBuildingPart.py" line="956"/>
       <location filename="../../ArchMaterial.py" line="223"/>
       <source>Reorder children alphabetically</source>
       <translation>Children 알파벳 순으로 재정렬</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="952"/>
+      <location filename="../../ArchBuildingPart.py" line="963"/>
       <source>Clone level up</source>
       <translation>클론 레벨업</translation>
     </message>
@@ -2494,7 +2494,7 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <location filename="../../ArchMaterial.py" line="495"/>
       <location filename="../../ArchMaterial.py" line="789"/>
       <location filename="../../ArchReference.py" line="675"/>
-      <location filename="../../ArchSchedule.py" line="453"/>
+      <location filename="../../ArchSchedule.py" line="454"/>
       <location filename="../../ArchSectionPlane.py" line="1198"/>
       <location filename="../../ArchSite.py" line="932"/>
       <location filename="../../ArchWindow.py" line="1807"/>
@@ -2636,7 +2636,7 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <location filename="../../importJSON.py" line="61"/>
       <location filename="../../importOBJ.py" line="261"/>
       <location filename="../../importOBJ.py" line="285"/>
-      <location filename="../../importWebGL.py" line="874"/>
+      <location filename="../../importWebGL.py" line="875"/>
       <source>Successfully written</source>
       <translation>작성을 성공했습니다</translation>
     </message>
@@ -2760,13 +2760,13 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>객체에 따라 다릅니다</translation>
     </message>
     <message>
-      <location filename="../../importGBXML.py" line="46"/>
-      <location filename="../../importGBXML.py" line="50"/>
+      <location filename="../../importGBXML.py" line="47"/>
+      <location filename="../../importGBXML.py" line="51"/>
       <source>This exporter can currently only export one site object</source>
       <translation>이 내보내기 주체는 현재 하나의 사이트 객체만 내보낼 수 있습니다</translation>
     </message>
     <message>
-      <location filename="../../importGBXML.py" line="92"/>
+      <location filename="../../importGBXML.py" line="93"/>
       <source>Error: Space '%s' has no Zone. Aborting.</source>
       <translation>오류: '%s' 공간에 영역이 없습니다. 중단 중입니다.</translation>
     </message>
@@ -3166,27 +3166,27 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>속성 'Schedule'을 추가했습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="362"/>
+      <location filename="../../ArchSchedule.py" line="363"/>
       <source>Unable to retrieve value from object</source>
       <translation>객체에서 값을 얻을 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="462"/>
+      <location filename="../../ArchSchedule.py" line="463"/>
       <source>Remove spreadsheet</source>
       <translation>스프레드시트 삭제</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="464"/>
+      <location filename="../../ArchSchedule.py" line="465"/>
       <source>Attach spreadsheet</source>
       <translation>스프레드시트 첨부</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="589"/>
+      <location filename="../../ArchSchedule.py" line="590"/>
       <source>Import CSV file</source>
       <translation>CSV 파일 가져오기</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="622"/>
+      <location filename="../../ArchSchedule.py" line="623"/>
       <source>Export CSV file</source>
       <translation>CSV 파일로 내보내기</translation>
     </message>
@@ -3196,34 +3196,34 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>CSV 파일로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="643"/>
+      <location filename="../../ArchSchedule.py" line="644"/>
       <source>Unable to recognize that file type</source>
       <translation>해당 파일 형식을 인식할 수 없음</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1010"/>
-      <location filename="../../ArchSchedule.py" line="665"/>
-      <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchSchedule.py" line="666"/>
+      <location filename="../../ArchSchedule.py" line="684"/>
       <source>Description</source>
       <translation>설명</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1631"/>
       <location filename="../../ArchComponent.py" line="2009"/>
-      <location filename="../../ArchSchedule.py" line="665"/>
-      <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchSchedule.py" line="666"/>
+      <location filename="../../ArchSchedule.py" line="684"/>
       <source>Value</source>
       <translation>값</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1632"/>
-      <location filename="../../ArchSchedule.py" line="665"/>
-      <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchSchedule.py" line="666"/>
+      <location filename="../../ArchSchedule.py" line="684"/>
       <source>Unit</source>
       <translation>단위</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="744"/>
+      <location filename="../../ArchSchedule.py" line="745"/>
       <source>Schedule</source>
       <translation>일정</translation>
     </message>
@@ -4046,8 +4046,8 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="335"/>
-      <source>If true, the height value propagates to contained objects</source>
-      <translation>참이면 높이 값이 포함된 객체로 전파됩니다</translation>
+      <source>If true, the height value propagates to contained objects if the height of those objects is set to 0</source>
+      <translation type="unfinished">If true, the height value propagates to contained objects if the height of those objects is set to 0</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="338"/>
@@ -4094,148 +4094,148 @@ Building creation aborted.</source>
       <translation>재료 이름:SolidIndexesList 다른 파일에서 이 개체를 참조할 때 사용할 솔리드 인덱스와 재료 이름을 연관시키는 맵</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="553"/>
+      <location filename="../../ArchBuildingPart.py" line="564"/>
       <location filename="../../ArchSectionPlane.py" line="963"/>
       <source>The line width of this object</source>
       <translation>이 객체의 선 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="556"/>
+      <location filename="../../ArchBuildingPart.py" line="567"/>
       <source>An optional unit to express levels</source>
       <translation>레벨들을 나타내는 추가적인 단위들</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="558"/>
+      <location filename="../../ArchBuildingPart.py" line="569"/>
       <source>A transformation to apply to the level mark</source>
       <translation>레벨 표시에 적용할 변환</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="561"/>
+      <location filename="../../ArchBuildingPart.py" line="572"/>
       <source>If true, show the level</source>
       <translation>참이면 레벨을 표시합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="564"/>
+      <location filename="../../ArchBuildingPart.py" line="575"/>
       <source>If true, show the unit on the level tag</source>
       <translation>참일 경우 레벨 태그에 단위를 표시합니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="566"/>
+      <location filename="../../ArchBuildingPart.py" line="577"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>참일 경우 디스플레이 오프셋이 원점 표시에도 영향을 미칩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="568"/>
+      <location filename="../../ArchBuildingPart.py" line="579"/>
       <source>If true, the object's label is displayed</source>
       <translation>참이면 객체의 레이블이 표시됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="571"/>
+      <location filename="../../ArchBuildingPart.py" line="582"/>
       <source>The font to be used for texts</source>
       <translation>문자열에 사용할 폰트</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="574"/>
+      <location filename="../../ArchBuildingPart.py" line="585"/>
       <source>The font size of texts</source>
       <translation>글자의 글꼴 크기</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="577"/>
+      <location filename="../../ArchBuildingPart.py" line="588"/>
       <source>The individual face colors</source>
       <translation>각각의 표면 색상</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="581"/>
+      <location filename="../../ArchBuildingPart.py" line="592"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>참일 경우, 활성화되면 작업 평면이 자동으로 이 레벨에 맞춰집니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="584"/>
+      <location filename="../../ArchBuildingPart.py" line="595"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>True로 설정하면 작업 평면이 자동 모드로 유지됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="586"/>
+      <location filename="../../ArchBuildingPart.py" line="597"/>
       <source>Camera position data associated with this object</source>
       <translation>이 객체와 연관된 카메라 위치 데이터</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="589"/>
+      <location filename="../../ArchBuildingPart.py" line="600"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>설정된 경우 이 객체에 저장된 보기가 더블 클릭으로 복원됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="591"/>
+      <location filename="../../ArchBuildingPart.py" line="602"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>True인 경우 트리에서 이 객체를 두 번 클릭하면 활성화됩니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="595"/>
+      <location filename="../../ArchBuildingPart.py" line="606"/>
       <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>이 옵션을 활성화하면 이 객체의 발명자 표현이 FreeCAD 파일에 저장되어 경량 모드로 다른 파일에서 참조할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="597"/>
+      <location filename="../../ArchBuildingPart.py" line="608"/>
       <source>A slot to save the inventor representation of this object, if enabled</source>
       <translation>활성화된 경우 이 객체의 발명자 표현을 저장하는 슬롯</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="602"/>
+      <location filename="../../ArchBuildingPart.py" line="613"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>참일 경우, 이 빌딩 파트에 포함된 객체가 선, 색상 및 투명도 설정을 채택할 것임을 보여줍니다</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="604"/>
+      <location filename="../../ArchBuildingPart.py" line="615"/>
       <source>The line width of child objects</source>
       <translation>이 객체의 선 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="607"/>
+      <location filename="../../ArchBuildingPart.py" line="618"/>
       <source>The line color of child objects</source>
       <translation>자식 객체의 선 두께</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="610"/>
+      <location filename="../../ArchBuildingPart.py" line="621"/>
       <source>The shape appearance of child objects</source>
       <translation type="unfinished">The shape appearance of child objects</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="613"/>
+      <location filename="../../ArchBuildingPart.py" line="624"/>
       <source>The transparency of child objects</source>
       <translation>자식 객체의 투명도</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="618"/>
+      <location filename="../../ArchBuildingPart.py" line="629"/>
       <source>Cut the view above this level</source>
       <translation>이 레벨 위의 뷰 잘라내기</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="620"/>
+      <location filename="../../ArchBuildingPart.py" line="631"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>레벨 평면과 절단선 사이의 거리</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="623"/>
+      <location filename="../../ArchBuildingPart.py" line="634"/>
       <source>Turn cutting on when activating this level</source>
       <translation>이 레벨을 활성화할 때 컷팅을 켜십시오</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="627"/>
+      <location filename="../../ArchBuildingPart.py" line="638"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>[XMin,YMin,ZMin,XMax,YMax,ZMax]로 표현되는 새로 생성된 객체의 캡처 박스</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="629"/>
+      <location filename="../../ArchBuildingPart.py" line="640"/>
       <source>Turns auto group box on/off</source>
       <translation>자동 그룹 박스 켜기/끄기</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="631"/>
+      <location filename="../../ArchBuildingPart.py" line="642"/>
       <source>Automatically set size from contents</source>
       <translation>내용에서 자동으로 크기 설정</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="633"/>
+      <location filename="../../ArchBuildingPart.py" line="644"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>자동 크기 설정 시 사용할 여유</translation>
     </message>
@@ -6042,7 +6042,7 @@ Building creation aborted.</source>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="996"/>
+      <location filename="../../ArchBuildingPart.py" line="1007"/>
       <source>Writing camera position</source>
       <translation>카메라 위치 쓰기</translation>
     </message>

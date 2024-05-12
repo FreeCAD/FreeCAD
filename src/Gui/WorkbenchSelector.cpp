@@ -27,7 +27,9 @@
 # include <QAbstractItemView>
 # include <QActionGroup>
 # include <QApplication>
+# include <QMenuBar>
 # include <QScreen>
+# include <QStatusBar>
 # include <QToolBar>
 #endif
 
@@ -208,15 +210,30 @@ void WorkbenchTabWidget::refreshList(QList<QAction*> actionList)
 
 void WorkbenchTabWidget::updateLayoutAndTabOrientation(bool floating)
 {
-    if (!parentWidget()->inherits("QToolBar") || floating) {
+    auto parent = parentWidget();
+    if (!parent || !parent->inherits("QToolBar")) {
         return;
     }
 
     ParameterGrp::handle hGrp = App::GetApplication()
         .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
 
-    QToolBar* tb = qobject_cast<QToolBar*>(parentWidget());
-    Qt::ToolBarArea area = getMainWindow()->toolBarArea(tb);
+    Qt::ToolBarArea area;
+    parent = parent->parentWidget();
+
+    if (floating) {
+        area = Qt::TopToolBarArea;
+    }
+    else if (parent && parent->parentWidget() == getMainWindow()->statusBar()) {
+        area = Qt::BottomToolBarArea;
+    }
+    else if (parent && parent->parentWidget() == getMainWindow()->menuBar()) {
+        area = Qt::TopToolBarArea;
+    }
+    else {
+        QToolBar* tb = qobject_cast<QToolBar*>(parentWidget());
+        area = getMainWindow()->toolBarArea(tb);
+    }
 
     if (area == Qt::LeftToolBarArea || area == Qt::RightToolBarArea) {
         setShape(area == Qt::LeftToolBarArea ? QTabBar::RoundedWest : QTabBar::RoundedEast);

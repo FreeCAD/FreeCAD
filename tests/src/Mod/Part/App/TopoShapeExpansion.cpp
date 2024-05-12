@@ -1803,6 +1803,7 @@ TEST_F(TopoShapeExpansionTest, makeElementThickSolid)
     std::vector<TopoShape> shapes = {subFaces[0], subFaces[1]};
     // Act
     TopoShape& result = cube1TS.makeElementThickSolid(cube1TS, shapes, 0.1, 1e-07);
+    (void)result;
     auto elements = elementMap(cube1TS);
     // Assert
     EXPECT_EQ(cube1TS.countSubElements("Wire"), 16);
@@ -2793,37 +2794,34 @@ TEST_F(TopoShapeExpansionTest, makeElementPrism)
     EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0.0, 0.0, 0.0, 0.75, 1.0, 1.0)));
     EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0.75);
     // Assert elementMap is correct
-    EXPECT_TRUE(elementsMatch(
-        result,
-        {
-            "Edge1;:G;XTR;:H2:7,F",
-            "Edge1;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E",
-            "Edge1;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E;:L(Edge2;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E|Edge3;:G;"
-            "XTR;:H2:7,F;:U;XTR;:H2:7,E|Edge4;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E);XTR;:H2:74,F",
-            "Edge1;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E;:U2;XTR;:H2:8,V",
-            "Edge1;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E;:U;XTR;:H2:7,V",
-            "Edge1;:H2,E",
-            "Edge2;:G;XTR;:H2:7,F",
-            "Edge2;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E",
-            "Edge2;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E;:U;XTR;:H2:7,V",
-            "Edge2;:H2,E",
-            "Edge3;:G;XTR;:H2:7,F",
-            "Edge3;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E",
-            "Edge3;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E;:U2;XTR;:H2:8,V",
-            "Edge3;:H2,E",
-            "Edge4;:G;XTR;:H2:7,F",
-            "Edge4;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E",
-            "Edge4;:H2,E",
-            "Face1;:H2,F",
-            "Vertex1;:G;XTR;:H2:7,E",
-            "Vertex1;:H2,V",
-            "Vertex2;:G;XTR;:H2:7,E",
-            "Vertex2;:H2,V",
-            "Vertex3;:G;XTR;:H2:7,E",
-            "Vertex3;:H2,V",
-            "Vertex4;:G;XTR;:H2:7,E",
-            "Vertex4;:H2,V",
-        }));
+    EXPECT_TRUE(elementsMatch(result,
+                              {
+                                  "Edge1;:G;XTR;:H2:7,F",
+                                  "Edge1;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E",
+                                  "Edge1;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E;:U2;XTR;:H2:8,V",
+                                  "Edge1;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E;:U;XTR;:H2:7,V",
+                                  "Edge1;:H2,E",
+                                  "Edge2;:G;XTR;:H2:7,F",
+                                  "Edge2;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E",
+                                  "Edge2;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E;:U;XTR;:H2:7,V",
+                                  "Edge2;:H2,E",
+                                  "Edge3;:G;XTR;:H2:7,F",
+                                  "Edge3;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E",
+                                  "Edge3;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E;:U2;XTR;:H2:8,V",
+                                  "Edge3;:H2,E",
+                                  "Edge4;:G;XTR;:H2:7,F",
+                                  "Edge4;:G;XTR;:H2:7,F;:U;XTR;:H2:7,E",
+                                  "Edge4;:H2,E",
+                                  "Face1;:H2,F",
+                                  "Vertex1;:G;XTR;:H2:7,E",
+                                  "Vertex1;:H2,V",
+                                  "Vertex2;:G;XTR;:H2:7,E",
+                                  "Vertex2;:H2,V",
+                                  "Vertex3;:G;XTR;:H2:7,E",
+                                  "Vertex3;:H2,V",
+                                  "Vertex4;:G;XTR;:H2:7,E",
+                                  "Vertex4;:H2,V",
+                              }));
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementPrismUntil)

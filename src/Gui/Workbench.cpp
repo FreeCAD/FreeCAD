@@ -41,7 +41,6 @@
 #include "Selection.h"
 #include "ToolBarManager.h"
 #include "ToolBoxManager.h"
-#include "UserSettings.h"
 #include "Window.h"
 
 #include <App/Application.h>
@@ -728,6 +727,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ProjectUtil"
           << "Separator"
           << "Std_MeasureDistance"
+          << "Std_Measure"
           << "Separator"
           << "Std_TextDocument"
           << "Separator"
@@ -797,11 +797,9 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     *clipboard << "Std_Cut" << "Std_Copy" << "Std_Paste";
 
     // Workbench switcher
-    if (WorkbenchSwitcher::isToolbar(WorkbenchSwitcher::getValue())) {
-        auto wb = new ToolBarItem(root);
-        wb->setCommand("Workbench");
-        *wb << "Std_Workbench";
-    }
+    auto wb = new ToolBarItem(root);
+    wb->setCommand("Workbench");
+    *wb << "Std_Workbench";
 
     // Macro
     auto macro = new ToolBarItem( root, ToolBarItem::DefaultVisibility::Hidden);

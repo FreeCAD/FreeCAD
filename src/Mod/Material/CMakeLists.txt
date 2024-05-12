@@ -238,6 +238,7 @@ SET(MaterialModel_Files
     Resources/Models/Legacy/MaterialStandard.yml
     Resources/Models/Mechanical/ArrudaBoyce.yml
     Resources/Models/Mechanical/Density.yml
+    Resources/Models/Mechanical/Hardness.yml
     Resources/Models/Mechanical/IsotropicLinearElastic.yml
     Resources/Models/Mechanical/LinearElastic.yml
     Resources/Models/Mechanical/MooneyRivlin.yml
@@ -284,6 +285,7 @@ set(MaterialTest_Files
     materialtests/__init__.py
     materialtests/TestModels.py
     materialtests/TestMaterials.py
+    materialtests/TestMaterialCreation.py
 )
 
 ADD_CUSTOM_TARGET(MaterialTest ALL

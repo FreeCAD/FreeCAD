@@ -39,8 +39,7 @@ namespace App {
 
 
     void MeasureManager::addMeasureHandler(const char* module, MeasureTypeMethod typeCb) {
-        auto item = new MeasureHandler{module, typeCb};
-        _mMeasureHandlers.push_back(*item);
+        _mMeasureHandlers.emplace_back(MeasureHandler{module, typeCb});
     }
 
     bool MeasureManager::hasMeasureHandler(const char* module) {

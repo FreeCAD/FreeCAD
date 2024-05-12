@@ -163,9 +163,7 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent * const ev)
             this->button3down = press;
             if (press) {
                 this->centerTime = ev->getTime();
-                float ratio = vp.getViewportAspectRatio();
-                SbViewVolume vv = viewer->getSoRenderManager()->getCamera()->getViewVolume(ratio);
-                this->panningplane = vv.getPlane(viewer->getSoRenderManager()->getCamera()->focalDistance.getValue());
+                setupPanningPlane(getCamera());
             }
             else if (curmode == NavigationStyle::PANNING) {
                 newmode = NavigationStyle::IDLE;

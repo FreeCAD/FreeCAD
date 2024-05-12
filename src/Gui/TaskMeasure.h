@@ -60,14 +60,11 @@ public:
     void setMeasureObject(Measure::MeasureBase* obj);
 
 private:
-    QColumnView* dialog{nullptr};
-
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
     Measure::MeasureBase *_mMeasureObject = nullptr;
 
     QLineEdit* valueResult{nullptr};
-    QLabel* labelResult{nullptr};
     QComboBox* modeSwitch{nullptr};
 
     void removeObject();

@@ -32,7 +32,7 @@ measureType : Measure.MeasureBasePython
     The actual measure type.</UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="getMeasureTypes" Static="true">
+        <Methode Name="getMeasureTypes" Static="true" NoArgs="true">
             <Documentation>
                 <UserDocu>getMeasureTypes() -> List[(id, label, pythonMeasureType)]
 

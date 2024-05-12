@@ -172,9 +172,7 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
         case SoMouseButtonEvent::BUTTON3:
             if (press) {
                 this->centerTime = ev->getTime();
-                float ratio = vp.getViewportAspectRatio();
-                SbViewVolume vv = viewer->getSoRenderManager()->getCamera()->getViewVolume(ratio);
-                this->panningplane = vv.getPlane(viewer->getSoRenderManager()->getCamera()->focalDistance.getValue());
+                setupPanningPlane(getCamera());
                 this->lockrecenter = false;
             }
             else {
@@ -182,10 +180,7 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
                 float dci = (float)QApplication::doubleClickInterval()/1000.0f;
                 // is it just a middle click?
                 if (tmp.getValue() < dci && !this->lockrecenter) {
-                    if (!this->lookAtPoint(pos)) {
-                        panToCenter(panningplane, posn);
-                        this->interactiveCountDec();
-                    }
+                    lookAtPoint(pos);
                     processed = true;
                 }
             }

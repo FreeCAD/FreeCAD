@@ -106,6 +106,7 @@
 #include <App/ElementNamingUtils.h>
 #include <ShapeAnalysis_FreeBoundsProperties.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
+#include <BRepFeat_MakeRevol.hxx>
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
@@ -1312,7 +1313,7 @@ void checkForParallelOrCoplanar(const TopoDS_Shape& newShape,
                                 const ShapeInfo& newInfo,
                                 std::vector<TopoDS_Shape>& newShapes,
                                 const gp_Pln& pln,
-                                int parallelFace,
+                                int& parallelFace,
                                 int& coplanarFace,
                                 int& checkParallel)
 {
@@ -4436,6 +4437,51 @@ TopoShape& TopoShape::makeElementRevolve(const TopoShape& _base,
         base = base.makeElementFace(nullptr, face_maker, nullptr);
     }
     BRepPrimAPI_MakeRevol mkRevol(base.getShape(), axis, d);
+    return makeElementShape(mkRevol, base, op);
+}
+
+TopoShape& TopoShape::makeElementRevolution(const TopoShape& _base,
+                                            const gp_Ax1& axis,
+                                            double d,
+                                            const TopoDS_Face& supportface,
+                                            const TopoDS_Face& uptoface,
+                                            const char* face_maker,
+                                            RevolMode Mode,
+                                            Standard_Boolean Modify,
+                                            const char* op)
+{
+    if (!op) {
+        op = Part::OpCodes::Revolve;
+    }
+
+    TopoShape base(_base);
+    if (base.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+    if (face_maker && !base.hasSubShape(TopAbs_FACE)) {
+        if (!base.hasSubShape(TopAbs_WIRE)) {
+            base = base.makeElementWires();
+        }
+        base = base.makeElementFace(nullptr, face_maker, nullptr);
+    }
+
+    BRepFeat_MakeRevol mkRevol;
+    for (TopExp_Explorer xp(base.getShape(), TopAbs_FACE); xp.More(); xp.Next()) {
+        mkRevol.Init(_base.getShape(),
+                     xp.Current(),
+                     supportface,
+                     axis,
+                     static_cast<int>(Mode),
+                     Modify);
+        mkRevol.Perform(uptoface);
+        if (!mkRevol.IsDone()) {
+            throw Base::RuntimeError("Revolution: Up to face: Could not revolve the sketch!");
+        }
+        base = mkRevol.Shape();
+        if (Mode == RevolMode::None) {
+            Mode = RevolMode::FuseWithBase;
+        }
+    }
     return makeElementShape(mkRevol, base, op);
 }
 
