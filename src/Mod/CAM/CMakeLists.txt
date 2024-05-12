@@ -276,8 +276,9 @@ SET(Tools_Library_SRCS
 SET(Tools_Shape_SRCS
     Tools/Shape/ballend.fcstd
     Tools/Shape/bullnose.fcstd
-    Tools/Shape/drill.fcstd
     Tools/Shape/chamfer.fcstd
+    Tools/Shape/dovetail.fcstd
+    Tools/Shape/drill.fcstd
     Tools/Shape/endmill.fcstd
     Tools/Shape/probe.fcstd
     Tools/Shape/slittingsaw.fcstd
