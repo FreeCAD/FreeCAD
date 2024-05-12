@@ -1362,4 +1362,4 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
     def tearDown(self):
         """ Close our test document """
-        # App.closeDocument("PartDesignTestTNP")
+        App.closeDocument("PartDesignTestTNP")
