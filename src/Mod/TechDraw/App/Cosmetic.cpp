@@ -332,20 +332,12 @@ void CosmeticEdge::assignTag(const TechDraw::CosmeticEdge* ce)
         throw Base::TypeError("CosmeticEdge tag can not be assigned as types do not match.");
 }
 
-CosmeticEdge* CosmeticEdge::copy() const
-{
-//    Base::Console().Message("CE::copy()\n");
-    CosmeticEdge* newCE = new CosmeticEdge();
-    TechDraw::BaseGeomPtr newGeom = m_geometry->copy();
-    newCE->m_geometry = newGeom;
-    newCE->m_format = m_format;
-    return newCE;
-}
-
 CosmeticEdge* CosmeticEdge::clone() const
 {
-//    Base::Console().Message("CE::clone()\n");
-    CosmeticEdge* cpy = this->copy();
+    Base::Console().Message("CE::clone()\n");
+    CosmeticEdge* cpy = new CosmeticEdge();
+    cpy->m_geometry = m_geometry->copy();
+    cpy->m_format = m_format;
     cpy->tag = this->tag;
     return cpy;
 }

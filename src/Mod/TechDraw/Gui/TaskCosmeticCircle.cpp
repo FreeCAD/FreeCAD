@@ -192,7 +192,7 @@ void TaskCosmeticCircle::createCosmeticCircle(void)
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Cosmetic Circle"));
 
-    // point from Gui is conventional coordinates (Y+ up), unscaled, unrotated, but centered (Csriz)
+    // point from Page/View is conventional coordinates (Y+ up), unscaled, unrotated, but centered (Csriz)
     // this is Canonical form with out inversion.
     // point from 3d is OXYZ and needs to be projected.
     double x = ui->qsbCenterX->value().getValue();
@@ -217,6 +217,7 @@ void TaskCosmeticCircle::createCosmeticCircle(void)
     // after all the calculations are done, we invert the geometry
     m_tag = m_partFeat->addCosmeticEdge(bg->inverted());
     m_ce = m_partFeat->getCosmeticEdge(m_tag);
+    m_ce->setFormat(LineFormat::getCurrentLineFormat());
 
     Gui::Command::commitCommand();
 }

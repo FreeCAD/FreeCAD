@@ -60,6 +60,9 @@ public:
     static TechDraw::BaseGeomPtr makeCanonicalLine(DrawViewPart* dvp, Base::Vector3d start, Base::Vector3d end);
     static TechDraw::BaseGeomPtr makeLineFromCanonicalPoints(Base::Vector3d start, Base::Vector3d end);
 
+    LineFormat format() const { return m_format; }
+    void setFormat(LineFormat newFormat) { m_format = newFormat; }
+
     std::string toString() const override;
     void dump(const char* title) const;
 
@@ -69,7 +72,6 @@ public:
     void Restore(Base::XMLReader &/*reader*/) override;
 
     PyObject *getPyObject() override;
-    CosmeticEdge* copy() const;
     CosmeticEdge* clone() const;
 
     Base::Vector3d permaStart;         //persistent unscaled start/end points in View coords

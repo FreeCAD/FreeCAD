@@ -200,6 +200,7 @@ void TaskCosmeticLine::createCosmeticLine()
     }
     m_tag = m_partFeat->addCosmeticEdge(p0, p1);
     m_ce = m_partFeat->getCosmeticEdge(m_tag);
+    m_ce->setFormat(LineFormat::getCurrentLineFormat());
 
     Gui::Command::commitCommand();
 }

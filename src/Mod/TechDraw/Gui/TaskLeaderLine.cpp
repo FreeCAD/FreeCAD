@@ -490,8 +490,8 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
         return;
     }
 
-    if ( (m_pbTrackerState == TrackerAction::SAVE) &&
-         (getCreateMode())  ){
+    if ( m_pbTrackerState == TrackerAction::SAVE &&
+         getCreateMode() ){
         if (m_tracker) {
             m_tracker->terminateDrawing();
         }
@@ -504,8 +504,8 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
         return;
     }
 
-    if ( (m_pbTrackerState == TRACKERSAVE) &&
-                 (!getCreateMode()) ) {                //edit mode
+    if ( m_pbTrackerState == TrackerAction::SAVE &&
+         !getCreateMode() ) {                //edit mode
         if (m_qgLeader) {
             m_qgLeader->closeEdit();
         }
