@@ -351,7 +351,7 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="52"/>
       <source>Offset</source>
-      <translation>Décaler</translation>
+      <translation>Décalage</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="76"/>

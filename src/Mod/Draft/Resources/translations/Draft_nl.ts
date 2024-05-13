@@ -6658,7 +6658,7 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="490"/>
       <source>Bézier tools</source>
-      <translation type="unfinished">Bézier tools</translation>
+      <translation>Bézier-gereedschappen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="493"/>

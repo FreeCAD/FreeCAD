@@ -4310,7 +4310,7 @@ For possible variables, see the description box below.</translation>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="301"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="327"/>
       <source>Fixed</source>
-      <translation>Fixo</translation>
+      <translation>Afixado</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="126"/>
@@ -4538,7 +4538,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="100"/>
       <source>N</source>
-      <translation type="unfinished">N</translation>
+      <translation>N</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="117"/>
@@ -4631,7 +4631,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="168"/>
       <source>1 </source>
-      <translation type="unfinished">1 </translation>
+      <translation>1 </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="222"/>

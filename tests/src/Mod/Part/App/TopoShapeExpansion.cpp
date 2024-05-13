@@ -2103,7 +2103,7 @@ TEST_F(TopoShapeExpansionTest, makeElementChamfer)
     TopoShape cube1TS {cube1, 1L};
     auto edges = cube1TS.getSubTopoShapes(TopAbs_EDGE);
     // Act
-    cube1TS.makeElementChamfer({cube1TS}, edges, .05, .05);
+    cube1TS.makeElementChamfer({cube1TS}, edges, Part::ChamferType::equalDistance, .05, .05);
     auto elements = elementMap(cube1TS);
     // Assert shape is correct
     EXPECT_EQ(cube1TS.countSubElements("Wire"), 26);

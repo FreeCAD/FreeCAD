@@ -152,13 +152,23 @@ public:
     create(const TopoShape& shape, const char* name = nullptr, App::Document* document = nullptr);
 
     static bool isElementMappingDisabled(App::PropertyContainer *container);
+#ifdef FC_USE_TNP_FIX
 
+    const std::vector<std::string>& searchElementCache(const std::string &element,
+                                                       Data::SearchOptions options = Data::SearchOptions::CheckGeometry,
+                                                       double tol = 1e-7,
+                                                       double atol = 1e-10) const override;
+#endif
 protected:
     /// recompute only this object
     App::DocumentObjectExecReturn *recompute() override;
     /// recalculate the feature
     App::DocumentObjectExecReturn *execute() override;
+    void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
+
+    void registerElementCache(const std::string &prefix, PropertyPartShape *prop);
+
     /**
      * Build a history of changes
      * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common
@@ -169,6 +179,10 @@ protected:
     ShapeHistory buildHistory(BRepBuilderAPI_MakeShape&, TopAbs_ShapeEnum type,
         const TopoDS_Shape& newS, const TopoDS_Shape& oldS);
     ShapeHistory joinHistory(const ShapeHistory&, const ShapeHistory&);
+private:
+    struct ElementCache;
+    std::map<std::string, ElementCache> _elementCache;
+    std::vector<std::pair<std::string, PropertyPartShape*>> _elementCachePrefixMap;
 };
 
 class FilletBase : public Part::Feature

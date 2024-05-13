@@ -194,7 +194,7 @@ Any values of the SetupSheet that are changed from their default are preselected
       <translation>Włącz, aby uwzględnić wartości Arkusza Ustawień w szablonie.
 
 Wszystkie wartości Arkusza Ustawień, które zostały zmienione w stosunku do wartości domyślnych, są wstępnie zaznaczone.
- Jeśli to pole nie jest zaznaczone, aktualny Arkusz Ustawień nie zostanie zmodyfikowany.</translation>
+Jeśli opcja ta nie est zaznaczona, aktualny Arkusz Ustawień nie zostanie zmodyfikowany.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="84"/>
@@ -2501,7 +2501,7 @@ Zobacz zasady zapisywania plików poniżej, aby dowiedzieć się, jak radzić so
 If left empty the macro directory is used.</source>
       <translation>Ścieżka przeszukiwania dla szablonów, postprocesorów, tabel narzędzi i innych plików zewnętrznych.
 
-Jeśli pole pozostanie puste, używany jest katalog makrodefinicji.</translation>
+Jeśli opcja ta nie jest zaznaczona, używany jest katalog makrodefinicji.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="74"/>
@@ -2514,7 +2514,7 @@ If left empty no template will be preselected.</source>
 
 Może to być pomocne, gdy prawie wszystkie zadania będą przetwarzane przez tę samą maszynę z podobną konfiguracją.
 
-Jeśli pole pozostanie puste, żaden szablon nie zostanie wstępnie wybrany.</translation>
+Jeśli opcja ta nie jest zaznaczona, żaden szablon nie zostanie wstępnie wybrany.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="247"/>

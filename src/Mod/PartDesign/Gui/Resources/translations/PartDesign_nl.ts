@@ -177,7 +177,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1230"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Trek de geselecteerde schets langs een pad of naar andere profielen</translation>
+      <translation>Veeg de geselecteerde schets langs een pad of naar andere profielen</translation>
     </message>
   </context>
   <context>
@@ -690,7 +690,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1509"/>
       <source>Subtractive helix</source>
-      <translation>Subtractieve helix</translation>
+      <translation>Verwijderende helix</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1510"/>
@@ -708,12 +708,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1382"/>
       <source>Subtractive loft</source>
-      <translation>Substractieve loft</translation>
+      <translation>Verwijderende loft</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1383"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Loft een geselecteerd profiel door een andere profiel secties en trek dit van het lichaam af</translation>
+      <translation>Loft een geselecteerd profiel door andere profiel secties en verwijder het van het lichaam</translation>
     </message>
   </context>
   <context>
@@ -726,12 +726,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1280"/>
       <source>Subtractive pipe</source>
-      <translation>Subtractieve pijp</translation>
+      <translation>Verwijderende pijp</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1281"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>Veeg een selecteerde schets langs een pad of naar andere profielen en trek dit van het lichaam af</translation>
+      <translation>Veeg een selecteerde schets langs een pad of naar andere profielen en verwijder dit van het lichaam</translation>
     </message>
   </context>
   <context>
@@ -763,7 +763,7 @@ so that self intersection is avoided.</translation>
       <location filename="../../CommandPrimitive.cpp" line="69"/>
       <location filename="../../CommandPrimitive.cpp" line="70"/>
       <source>Create an additive primitive</source>
-      <translation>Toevoegen van een primitief</translation>
+      <translation>Maak een toevoegende basisvorm</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="199"/>
@@ -817,12 +817,12 @@ so that self intersection is avoided.</translation>
       <location filename="../../CommandPrimitive.cpp" line="244"/>
       <location filename="../../CommandPrimitive.cpp" line="245"/>
       <source>Create a subtractive primitive</source>
-      <translation>Maak een aftrekkende primitieve</translation>
+      <translation>Maak een verwijderende basisvorm</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="355"/>
       <source>Subtractive Box</source>
-      <translation>Substractieve Kubus</translation>
+      <translation>Verwijderende Kubus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="359"/>
@@ -832,17 +832,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="363"/>
       <source>Subtractive Sphere</source>
-      <translation>Substractieve bol</translation>
+      <translation>Verwijderende Bol</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="367"/>
       <source>Subtractive Cone</source>
-      <translation>Substractieve kebel</translation>
+      <translation>Verwijderende Kegel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="371"/>
       <source>Subtractive Ellipsoid</source>
-      <translation>Subtractieve ellipsoïde</translation>
+      <translation>Verwijderende Ellipsoïde</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="375"/>
@@ -3213,42 +3213,42 @@ klik nogmaals om de selectie te beëindigen</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="356"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation>Maak een Subtractieve box door de breedte, hoogte en lengte</translation>
+      <translation>Maak een verwijderende box door middel van de breedte, hoogte en lengte</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="360"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation>Maak een Subtractieve cilinder door de straal, hoogte en hoek</translation>
+      <translation>Maak een verwijderende cilinder door middel van de straal, hoogte en hoek</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="364"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation>Maak een Subtractieve bol met de straal en diverse hoeken</translation>
+      <translation>Maak een verwijderende bol door middel van de straal en diverse hoeken</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="368"/>
       <source>Create a subtractive cone</source>
-      <translation>Maak een Subtractieve kegel</translation>
+      <translation>Maak een verwijderende kegel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="372"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation>Maak een Subtractieve ellipsoïde</translation>
+      <translation>Maak een verwijderende ellipsoïde</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="376"/>
       <source>Create a subtractive torus</source>
-      <translation>Maak een Subtractieve torus</translation>
+      <translation>Maak een verwijderende torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="380"/>
       <source>Create a subtractive prism</source>
-      <translation>Maak een Subtractieve prisma</translation>
+      <translation>Maak een verwijderend prisma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="384"/>
       <source>Create a subtractive wedge</source>
-      <translation>Maak een Subtractieve wig</translation>
+      <translation>Maak een verwijderende wig</translation>
     </message>
   </context>
   <context>
@@ -3395,7 +3395,7 @@ klik nogmaals om de selectie te beëindigen</translation>
     <message>
       <location filename="../../Command.cpp" line="793"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
-      <translation>Zorg ervoor dat het lichaam een eigenschap heeft voordat je een aftrekkend commando probeert.</translation>
+      <translation>Zorg ervoor dat het lichaam een eigenschap heeft voordat je een verwijderend commando probeert.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="814"/>
@@ -3648,7 +3648,7 @@ Dit kan tot onverwachte resultaten leiden.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="270"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation>Het is niet mogelijk om een aftrekkende functie maken zonder dat een basis functie beschikbaar is</translation>
+      <translation>Het is niet mogelijk om een verwijderende functie te maken zonder dat een basis functie beschikbaar is</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
@@ -4421,7 +4421,7 @@ boven de 90: groter gat straal aan de onderkant</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Create a subtractive feature</source>
-      <translation>Maak een aftrekkende functie</translation>
+      <translation>Maak een verwijderende functie</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
@@ -5529,12 +5529,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="274"/>
       <source>Shape of additive/subtractive feature is empty</source>
-      <translation type="unfinished">Shape of additive/subtractive feature is empty</translation>
+      <translation>Vorm van toevoegende/verwijderende functie is leeg</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="290"/>
       <source>Only additive and subtractive features can be transformed</source>
-      <translation type="unfinished">Only additive and subtractive features can be transformed</translation>
+      <translation>Alleen toevoegende en verwijderende functies kunnen getransformeerd worden</translation>
     </message>
   </context>
   <context>

@@ -19,12 +19,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="68"/>
       <source>Create a Fixed Joint</source>
-      <translation>Направи фиксни зглоб</translation>
+      <translation>Направи фиксни пар</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="75"/>
       <source>1 - If an assembly is active : Create a joint permanently locking two parts together, preventing any movement or rotation.</source>
-      <translation>1 - Ако је активан склоп: Направи зглоб који заједно спаја два дела, спречавајуцћи било какво кретање или ротацију.</translation>
+      <translation>1 - Ако је активан склоп: Направи кинематски који заједно спаја два дела, спречавајуцћи било какво кретање или ротацију.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="81"/>
@@ -37,12 +37,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="103"/>
       <source>Create Revolute Joint</source>
-      <translation>Направи ротациони зглоб</translation>
+      <translation>Направи ротациони пар</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="110"/>
       <source>Create a Revolute Joint: Allows rotation around a single axis between selected parts.</source>
-      <translation>Направи ротациони зглоб (Кинематски пар V класе) између изабраних делова: Дозвољава ротацију око једне осе.</translation>
+      <translation>Направи ротациони пар (Кинематски пар V класе) између изабраних делова: Дозвољава ротацију око једне осе.</translation>
     </message>
   </context>
   <context>
@@ -50,12 +50,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="131"/>
       <source>Create Cylindrical Joint</source>
-      <translation>Направи цилиндрични зглоб</translation>
+      <translation>Направи цилиндрични пар</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="138"/>
       <source>Create a Cylindrical Joint: Enables rotation along one axis while permitting movement along the same axis between assembled parts.</source>
-      <translation>Направи цилиндрични зглоб (Кинематски пар IV класе) измеђи изабраних делова: Дозвољава ротацију око једне осе и транслацију по истој оси.</translation>
+      <translation>Направи цилиндрични пар (Кинематски пар IV класе) измеђи изабраних делова: Дозвољава ротацију око једне осе и транслацију по истој оси.</translation>
     </message>
   </context>
   <context>
@@ -63,12 +63,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="157"/>
       <source>Create Slider Joint</source>
-      <translation>Направи транслаторни зглоб</translation>
+      <translation>Направи транслаторни пар</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="164"/>
       <source>Create a Slider Joint: Allows linear movement along a single axis but restricts rotation between selected parts.</source>
-      <translation>Направи транслаторни зглоб (Кинематски пар V класе) између изабраних делова: Дозвољава једну транслацију.</translation>
+      <translation>Направи транслаторни пар (Кинематски пар V класе) између изабраних делова: Дозвољава једну транслацију.</translation>
     </message>
   </context>
   <context>
@@ -76,12 +76,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="183"/>
       <source>Create Ball Joint</source>
-      <translation>Направи кугласти зглоб</translation>
+      <translation>Направи кугласти пар</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="190"/>
       <source>Create a Ball Joint: Connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact.</source>
-      <translation>Направи кугласти зглоб (Кинематски пар III класе) између изабраних делова: Дозвољава ротацију око све три осе.</translation>
+      <translation>Направи кугласти пар (Кинематски пар III класе) између изабраних делова: Дозвољава ротацију око све три осе.</translation>
     </message>
   </context>
   <context>
@@ -89,12 +89,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="209"/>
       <source>Create Distance Joint</source>
-      <translation>Направи равански зглоб</translation>
+      <translation>Направи равански пар</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="216"/>
       <source>Create a Distance Joint: Fix the distance between the selected objects.</source>
-      <translation>Направи равански зглоб (кинематски пар III класе) између изабаних делова: Дозвољава ротацију око једне осе и транслацију по две осе.</translation>
+      <translation>Направи равански пар (кинематски пар III класе) између изабаних делова: Дозвољава ротацију око једне осе и транслацију по две осе.</translation>
     </message>
   </context>
   <context>
@@ -182,7 +182,7 @@
     <message>
       <location filename="../../../InitGui.py" line="99"/>
       <source>Assembly Joints</source>
-      <translation>Зглобови склопа</translation>
+      <translation>Кинематски парови склопа</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="102"/>
@@ -243,17 +243,17 @@
     <message>
       <location filename="../../../JointObject.py" line="116"/>
       <source>The type of the joint</source>
-      <translation>Врста зглоба</translation>
+      <translation>Врста кинематског пара</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="126"/>
       <source>The first object of the joint</source>
-      <translation>Први објекат зглоба</translation>
+      <translation>Први објекат пара</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="133"/>
       <source>The first part of the joint</source>
-      <translation>Први део зглоба</translation>
+      <translation>Први део пара</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="140"/>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../../JointObject.py" line="157"/>
       <source>This is the local coordinate system within object1 that will be used for the joint.</source>
-      <translation>Ово је локални координатни систем унутар object1 који ће се користити у зглобу.</translation>
+      <translation>Ово је локални координатни систем унутар object1 који ће се користити у кинематском пару.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="167"/>
@@ -278,12 +278,12 @@
     <message>
       <location filename="../../../JointObject.py" line="175"/>
       <source>The second object of the joint</source>
-      <translation>Други објекат зглоба</translation>
+      <translation>Други објекат пара</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="182"/>
       <source>The second part of the joint</source>
-      <translation>Други део зглоба</translation>
+      <translation>Други део пара</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="189"/>
@@ -298,7 +298,7 @@
     <message>
       <location filename="../../../JointObject.py" line="206"/>
       <source>This is the local coordinate system within object2 that will be used for the joint.</source>
-      <translation>Ово је локални координатни систем унутар object2 који ће се користити у зглобу.</translation>
+      <translation>Ово је локални координатни систем унутар object2 који ће се користити у кинематском пару.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="216"/>
@@ -313,17 +313,17 @@
     <message>
       <location filename="../../../JointObject.py" line="236"/>
       <source>This is the rotation of the joint.</source>
-      <translation>Ротација зглоба.</translation>
+      <translation>Ротација пара.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="246"/>
       <source>This is the offset vector of the joint.</source>
-      <translation>Вектор одмака зглоба.</translation>
+      <translation>Вектор одмака пара.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="256"/>
       <source>This indicates if the joint is active.</source>
-      <translation>Ово показује да ли је зглоб активан.</translation>
+      <translation>Ово показује да ли је пар активан.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="889"/>
@@ -341,7 +341,7 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="14"/>
       <source>Create Joint</source>
-      <translation>Направи зглоб</translation>
+      <translation>Направи кинематски пар</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="28"/>
@@ -435,17 +435,17 @@
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="136"/>
       <source>Delete associated joints</source>
-      <translation>Обриши придружене зглобове</translation>
+      <translation>Обриши придружене кинематске парове</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="148"/>
       <source>The object is associated to one or more joints.</source>
-      <translation>Објекту су придружени један или више зглобова.</translation>
+      <translation>Објекту су придружени један или више кинематских парова.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="150"/>
       <source>Do you want to move the object and delete associated joints?</source>
-      <translation>Да ли желиш померити објекат и обрисати придружене зглобове?</translation>
+      <translation>Да ли желиш померити објекат и обрисати придружене кинематске парове?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="651"/>

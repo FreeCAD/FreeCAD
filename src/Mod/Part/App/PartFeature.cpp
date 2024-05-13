@@ -72,6 +72,7 @@
 #include "PartFeaturePy.h"
 #include "PartPyCXX.h"
 #include "TopoShapePy.h"
+#include "Base/Tools.h"
 
 using namespace Part;
 namespace sp = std::placeholders;
@@ -872,6 +873,7 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
 
             std::set<std::string> nextHiddens = hiddens;
             const App::DocumentObject* nextLink = lastLink;
+            // Todo: This might belong.
             // Toponaming project March 2024:  This appears to be a non toponaming feature:
 //            if (!checkLinkVisibility(nextHiddens, true, nextLink, owner, sub.c_str())) {
 //                cacheable = false;
@@ -967,6 +969,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
     const App::DocumentObject* lastLink = 0;
     std::set<std::string> hiddens;
     // Toponaming project March 2024:  This appears to be a non toponaming feature:
+    // Todo is this a cause behind #13886 ?
 //    if (!checkLinkVisibility(hiddens, false, lastLink, obj, subname)) {
 //        return TopoShape();
 //    }
@@ -1068,11 +1071,132 @@ App::DocumentObject *Feature::getShapeOwner(const App::DocumentObject *obj, cons
     return owner;
 }
 
+struct Feature::ElementCache
+{
+    TopoShape shape;
+    mutable std::vector<std::string> names;
+    mutable bool searched;
+};
+
+void Feature::registerElementCache(const std::string& prefix, PropertyPartShape* prop)
+{
+    if (prop) {
+        _elementCachePrefixMap.emplace_back(prefix, prop);
+        return;
+    }
+    for (auto it = _elementCachePrefixMap.begin(); it != _elementCachePrefixMap.end();) {
+        if (it->first == prefix) {
+            _elementCachePrefixMap.erase(it);
+            break;
+        }
+    }
+}
+
+void Feature::onBeforeChange(const App::Property* prop)
+{
+    PropertyPartShape* propShape = nullptr;
+    const std::string* prefix = nullptr;
+    if (prop == &Shape) {
+        propShape = &Shape;
+    }
+    else {
+        for (const auto& v : _elementCachePrefixMap) {
+            if (prop == v.second) {
+                prefix = &v.first;
+                propShape = v.second;
+            }
+        }
+    }
+    if (propShape) {
+        if (_elementCachePrefixMap.empty()) {
+            _elementCache.clear();
+        }
+        else {
+            for (auto it = _elementCache.begin(); it != _elementCache.end();) {
+                bool remove;
+                if (prefix) {
+                    remove = boost::starts_with(it->first, *prefix);
+                }
+                else {
+                    remove = true;
+                    for (const auto& v : _elementCache) {
+                        if (boost::starts_with(it->first, v.first)) {
+                            remove = false;
+                            break;
+                        }
+                    }
+                }
+                if (remove) {
+                    it = _elementCache.erase(it);
+                }
+                else {
+                    ++it;
+                }
+            }
+        }
+        if (getDocument() && !getDocument()->testStatus(App::Document::Restoring)
+            && !getDocument()->isPerformingTransaction()) {
+            std::vector<App::DocumentObject*> objs;
+            std::vector<std::string> subs;
+            for (auto prop : App::PropertyLinkBase::getElementReferences(this)) {
+                if (!prop->getContainer()) {
+                    continue;
+                }
+                objs.clear();
+                subs.clear();
+                prop->getLinks(objs, true, &subs, false);
+                for (auto& sub : subs) {
+                    auto element = Data::findElementName(sub.c_str());
+                    if (!element || !element[0] || Data::hasMissingElement(element)) {
+                        continue;
+                    }
+                    if (prefix) {
+                        if (!boost::starts_with(element, *prefix)) {
+                            continue;
+                        }
+                    }
+                    else {
+                        bool found = false;
+                        for (const auto& v : _elementCachePrefixMap) {
+                            if (boost::starts_with(element, v.first)) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (found) {
+                            continue;
+                        }
+                    }
+                    auto res =
+                        _elementCache.insert(std::make_pair(std::string(element), ElementCache()));
+                    if (res.second) {
+                        res.first->second.searched = false;
+                        res.first->second.shape = propShape->getShape().getSubTopoShape(
+                            element + (prefix ? prefix->size() : 0),
+                            true);
+                    }
+                }
+            }
+        }
+    }
+    GeoFeature::onBeforeChange(prop);
+}
+
 void Feature::onChanged(const App::Property* prop)
 {
     // if the placement has changed apply the change to the point data as well
     if (prop == &this->Placement) {
+#ifdef FC_USE_TNP_FIX
+        TopoShape shape = this->Shape.getShape();
+        shape.setTransform(this->Placement.getValue().toMatrix());
+        Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
+            App::Property::NoRecompute,
+            &this->Shape);
+        this->Shape.setValue(shape);
+
+#else
         this->Shape.setTransform(this->Placement.getValue().toMatrix());
+#endif
     }
     // if the point data has changed check and adjust the transformation as well
     else if (prop == &this->Shape) {
@@ -1085,8 +1209,9 @@ void Feature::onChanged(const App::Property* prop)
             if (!this->Shape.getValue().IsNull()) {
                 try {
                     p.fromMatrix(this->Shape.getShape().getTransform());
-                    if (p != this->Placement.getValue())
+                    if (p != this->Placement.getValue()) {
                         this->Placement.setValue(p);
+                    }
                 }
                 catch (const Base::ValueError&) {
                 }
@@ -1097,6 +1222,51 @@ void Feature::onChanged(const App::Property* prop)
     GeoFeature::onChanged(prop);
 }
 
+#ifdef FC_USE_TNP_FIX
+
+const std::vector<std::string>& Feature::searchElementCache(const std::string& element,
+                                                            Data::SearchOptions options,
+                                                            double tol,
+                                                            double atol) const
+{
+    static std::vector<std::string> none;
+    if (element.empty()) {
+        return none;
+    }
+    auto it = _elementCache.find(element);
+    if (it == _elementCache.end() || it->second.shape.isNull()) {
+        return none;
+    }
+    if (!it->second.searched) {
+        auto propShape = &Shape;
+        const std::string* prefix = nullptr;
+        for (const auto& v : _elementCachePrefixMap) {
+            if (boost::starts_with(element, v.first)) {
+                propShape = v.second;
+                prefix = &v.first;
+                break;
+            }
+        }
+        it->second.searched = true;
+        propShape->getShape().findSubShapesWithSharedVertex(it->second.shape,
+                                                            &it->second.names,
+                                                            static_cast<CheckGeometry>(options),
+                                                            tol,
+                                                            atol);
+        if (prefix) {
+            for (auto& name : it->second.names) {
+                if (auto dot = strrchr(name.c_str(), '.')) {
+                    name.insert(dot + 1 - name.c_str(), *prefix);
+                }
+                else {
+                    name.insert(0, *prefix);
+                }
+            }
+        }
+    }
+    return it->second.names;
+}
+#endif
 TopLoc_Location Feature::getLocation() const
 {
     Base::Placement pl = this->Placement.getValue();
@@ -1702,6 +1872,5 @@ std::pair<std::string, std::string> Feature::getElementName(const char* name,
             }
         }
     }
-
-    return App::GeoFeature::getElementName(name, type);
+    return App::GeoFeature::_getElementName(name, mapped);
 }
