@@ -43,7 +43,7 @@ class BIM_Project:
 
     def Activated(self):
         from nativeifc import ifc_tools
-        project = ifc_tools.create_document_object(FreeCAD.ActiveDocument)
+        project = ifc_tools.create_document(FreeCAD.ActiveDocument)
         project.Modified = True
         FreeCAD.ActiveDocument.recompute()
 

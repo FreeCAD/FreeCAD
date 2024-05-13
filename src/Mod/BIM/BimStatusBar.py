@@ -213,6 +213,7 @@ def setStatusIcons(show=True):
                 gnudge.triggered.connect(setNudge)
                 statuswidget.nudgeLabelsI = nudgeLabelsI
                 statuswidget.nudgeLabelsM = nudgeLabelsM
+                statuswidget.show()
 
         else:
             if statuswidget is None:
