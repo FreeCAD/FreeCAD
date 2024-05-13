@@ -107,6 +107,7 @@ protected:
     QString getAdditionalLicenseInformation() const;
     void showLibraryInformation();
     void showCollectionInformation();
+    void showPrivacyPolicy();
     void showOrHideImage(const QRect& rect);
 
 protected:

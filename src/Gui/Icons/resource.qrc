@@ -291,5 +291,6 @@
     </qresource>
     <qresource prefix="/doc">
         <file alias="CONTRIBUTORS">../../Doc/CONTRIBUTORS</file>
+        <file alias="PRIVACY_POLICY">../../../PRIVACY_POLICY.md</file>
     </qresource>
 </RCC>
