@@ -26,6 +26,9 @@ __author__ = "Ajinkya Dahale"
 __url__ = "https://www.freecadweb.org"
 
 
+import FreeCAD
+
+
 def get_analysis_types():
     return "all"    # write for all analysis types
 
@@ -56,33 +59,42 @@ def get_after_write_constraint():
 
 def write_constraint(f, femobj, rb_obj, ccxwriter):
 
-    # floats read from ccx should use {:.13G}, see comment in writer module
-    is_ref_bc_defined = any((rb_obj.xDisplacement,
-                             rb_obj.yDisplacement,
-                             rb_obj.zDisplacement,
-                             rb_obj.xForce,
-                             rb_obj.yForce,
-                             rb_obj.zForce))
+    rb_obj_idx = ccxwriter.analysis.Group.index(rb_obj)
+    node_count = ccxwriter.mesh_object.FemMesh.NodeCount
+    # factor 2 is to prevent conflict with other rigid body constraint
+    ref_node_idx = node_count + 2*rb_obj_idx + 1
+    rot_node_idx = node_count + 2*rb_obj_idx + 2
 
-    is_rot_bc_defined = any((rb_obj.xRotation,
-                             rb_obj.yRotation,
-                             rb_obj.zRotation,
-                             rb_obj.xMoment,
-                             rb_obj.yMoment,
-                             rb_obj.zMoment))
+    def write_mode(mode, node, dof, constraint, load):
+        if mode == "Constraint":
+            f.write("*BOUNDARY\n")
+            f.write("{},{},{},{:.13G}\n".format(node, dof, dof, constraint))
+        elif mode == "Load":
+            f.write("*CLOAD\n")
+            f.write("{},{},{:.13G}\n".format(node, dof, load))
 
-    # FIXME: This needs to be implemented
-    ref_node_idx = 10000000
-    rot_node_idx = 20000000
+    mode = [rb_obj.TranslationalModeX, rb_obj.TranslationalModeY, rb_obj.TranslationalModeZ]
+    constraint = rb_obj.Displacement
+    load = [rb_obj.ForceX, rb_obj.ForceY, rb_obj.ForceZ]
+
+    for i in range(3):
+        write_mode(mode[i], ref_node_idx, i + 1, constraint[i], load[i].getValueAs("N").Value)
 
 
-    # TODO: Displacement definitions need fixing
-    f.write("*CLOAD\n")
-    f.write("{},1,{}\n".format(ref_node_idx, rb_obj.xForce))
-    f.write("{},2,{}\n".format(ref_node_idx, rb_obj.yForce))
-    f.write("{},3,{}\n".format(ref_node_idx, rb_obj.zForce))
+    mode = [rb_obj.RotationalModeX, rb_obj.RotationalModeY, rb_obj.RotationalModeZ]
+    load = [rb_obj.MomentX,rb_obj.MomentY, rb_obj.MomentZ]
 
-    f.write("*CLOAD\n")
-    f.write("{},1,{}\n".format(rot_node_idx, rb_obj.xMoment))
-    f.write("{},2,{}\n".format(rot_node_idx, rb_obj.yMoment))
-    f.write("{},3,{}\n".format(rot_node_idx, rb_obj.zMoment))
+    # write rotation components according to rotational mode
+    rot = rb_obj.Rotation
+    proj_axis = [rot.Axis[i] if mode[i] == "Constraint" else 0 for i in range(3)]
+    # proj_axis could be null
+    try:
+        constraint = FreeCAD.Vector(proj_axis).normalize() * rot.Angle
+    except:
+        constraint = FreeCAD.Vector(0, 0, 0)
+
+    for i in range(3):
+        write_mode(mode[i], rot_node_idx, i + 1, constraint[i], load[i].getValueAs("N*mm").Value)
+
+
+    f.write("\n")
