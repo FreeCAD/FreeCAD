@@ -167,11 +167,13 @@ QList<ToolBarItem*> ToolBarItem::getItems() const
 
 namespace Gui {
 
-class ToolBarArea : public QWidget
+class ToolBarAreaWidget : public QWidget
 {
     using inherited = QWidget;
+
 public:
-    ToolBarArea(QWidget *parent,
+    ToolBarAreaWidget(QWidget *parent,
+                ToolBarArea area,
                 const ParameterGrp::handle& hParam,
                 boost::signals2::scoped_connection &conn,
                 QTimer *timer = nullptr)
@@ -179,34 +181,45 @@ public:
         , _sizingTimer(timer)
         , _hParam(hParam)
         , _conn(conn)
+        , _area(area)
     {
         _layout = new QHBoxLayout(this);
         _layout->setContentsMargins(QMargins());
     }
 
-    void addWidget(QWidget *w)
+    void addWidget(QWidget *widget)
     {
-        if (_layout->indexOf(w) < 0) {
-            _layout->addWidget(w);
-            adjustParent();
-            QString name = w->objectName();
-            if (!name.isEmpty()) {
-                Base::ConnectionBlocker block(_conn);
-                _hParam->SetInt(w->objectName().toUtf8().constData(), _layout->count()-1);
-            }
+        if (_layout->indexOf(widget) > 0) {
+            return;
+        }
+
+        _layout->addWidget(widget);
+        adjustParent();
+
+        QString name = widget->objectName();
+
+        if (!name.isEmpty()) {
+            Base::ConnectionBlocker block(_conn);
+            _hParam->SetInt(widget->objectName().toUtf8().constData(), _layout->count() - 1);
         }
     }
 
-    void insertWidget(int idx, QWidget *w)
+    void insertWidget(int index, QWidget *widget)
     {
-        int index = _layout->indexOf(w);
-        if (index == idx) {
+        int currentIndex = _layout->indexOf(widget);
+
+        // we are inserting widget at the same place, this is no-op
+        if (currentIndex == index) {
             return;
         }
-        if (index > 0) {
-            _layout->removeWidget(w);
+
+        // widget already exists in the area, we need to first remove it and then recreate
+        if (currentIndex > 0) {
+            _layout->removeWidget(widget);
         }
-        _layout->insertWidget(idx, w);
+
+        _layout->insertWidget(index, widget);
+
         adjustParent();
         saveState();
     }
@@ -218,20 +231,23 @@ public:
         }
     }
 
-    void removeWidget(QWidget *w)
+    void removeWidget(QWidget *widget)
     {
-        _layout->removeWidget(w);
-        QString name = w->objectName();
+        _layout->removeWidget(widget);
+
+        QString name = widget->objectName();
         if (!name.isEmpty()) {
             Base::ConnectionBlocker block(_conn);
             _hParam->RemoveInt(name.toUtf8().constData());
         }
+
         adjustParent();
     }
 
     QWidget *widgetAt(int index) const
     {
         auto item = _layout->itemAt(index);
+
         return item ? item->widget() : nullptr;
     }
 
@@ -240,9 +256,14 @@ public:
         return _layout->count();
     }
 
-    int indexOf(QWidget *w) const
+    int indexOf(QWidget *widget) const
     {
-        return _layout->indexOf(w);
+        return _layout->indexOf(widget);
+    }
+
+    ToolBarArea area() const
+    {
+        return _area;
     }
 
     template<class FuncT>
@@ -250,10 +271,12 @@ public:
     {
         for (int i = 0, c = _layout->count(); i < c; ++i) {
             auto toolbar = qobject_cast<QToolBar*>(widgetAt(i));
+
             if (!toolbar || toolbar->objectName().isEmpty()
                          || toolbar->objectName().startsWith(QStringLiteral("*"))) {
                 continue;
             }
+
             func(toolbar, i, this);
         }
     }
@@ -261,10 +284,12 @@ public:
     void saveState()
     {
         Base::ConnectionBlocker block(_conn);
+
         for (auto &v : _hParam->GetIntMap()) {
             _hParam->RemoveInt(v.first.c_str());
         }
-        foreachToolBar([this](QToolBar *toolbar, int idx, ToolBarArea*) {
+
+        foreachToolBar([this](QToolBar *toolbar, int idx, ToolBarAreaWidget*) {
             _hParam->SetInt(toolbar->objectName().toUtf8().constData(), idx);
         });
     }
@@ -281,17 +306,19 @@ public:
 
         for (const auto &[name, visible] : _hParam->GetBoolMap()) {
             auto widget = findChild<QWidget*>(QString::fromUtf8(name.c_str()));
+
             if (widget) {
                 widget->setVisible(visible);
             }
         }
-    }
+    };
 
 private:
     QHBoxLayout *_layout;
     QPointer<QTimer> _sizingTimer;
     ParameterGrp::handle _hParam;
     boost::signals2::scoped_connection &_conn;
+    ToolBarArea _area;
 };
 
 } // namespace Gui
@@ -343,10 +370,10 @@ void ToolBarManager::setupStatusBar()
 {
     if (auto sb = getMainWindow()->statusBar()) {
         sb->installEventFilter(this);
-        statusBarArea = new ToolBarArea(sb, hStatusBar, connParam);
-        statusBarArea->setObjectName(QStringLiteral("StatusBarArea"));
-        sb->insertPermanentWidget(2, statusBarArea);
-        statusBarArea->show();
+        statusBarAreaWidget = new ToolBarAreaWidget(sb, ToolBarArea::StatusBarToolBarArea, hStatusBar, connParam);
+        statusBarAreaWidget->setObjectName(QStringLiteral("StatusBarArea"));
+        sb->insertPermanentWidget(2, statusBarAreaWidget);
+        statusBarAreaWidget->show();
     }
 }
 
@@ -354,14 +381,14 @@ void ToolBarManager::setupMenuBar()
 {
     if (auto mb = getMainWindow()->menuBar()) {
         mb->installEventFilter(this);
-        menuBarLeftArea = new ToolBarArea(mb, hMenuBarLeft, connParam, &menuBarTimer);
-        menuBarLeftArea->setObjectName(QStringLiteral("MenuBarLeftArea"));
-        mb->setCornerWidget(menuBarLeftArea, Qt::TopLeftCorner);
-        menuBarLeftArea->show();
-        menuBarRightArea = new ToolBarArea(mb, hMenuBarRight, connParam, &menuBarTimer);
-        menuBarRightArea->setObjectName(QStringLiteral("MenuBarRightArea"));
-        mb->setCornerWidget(menuBarRightArea, Qt::TopRightCorner);
-        menuBarRightArea->show();
+        menuBarLeftAreaWidget = new ToolBarAreaWidget(mb, ToolBarArea::LeftMenuToolBarArea, hMenuBarLeft, connParam, &menuBarTimer);
+        menuBarLeftAreaWidget->setObjectName(QStringLiteral("MenuBarLeftArea"));
+        mb->setCornerWidget(menuBarLeftAreaWidget, Qt::TopLeftCorner);
+        menuBarLeftAreaWidget->show();
+        menuBarRightAreaWidget = new ToolBarAreaWidget(mb, ToolBarArea::RightMenuToolBarArea, hMenuBarRight, connParam, &menuBarTimer);
+        menuBarRightAreaWidget->setObjectName(QStringLiteral("MenuBarRightArea"));
+        mb->setCornerWidget(menuBarRightAreaWidget, Qt::TopRightCorner);
+        menuBarRightAreaWidget->show();
     }
 }
 
@@ -440,6 +467,38 @@ void ToolBarManager::setupMenuBarTimer()
     });
 }
 
+ToolBarArea ToolBarManager::toolBarArea(QWidget *widget) const
+{
+    if (auto toolBar = qobject_cast<QToolBar*>(widget)) {
+        if (toolBar->isFloating()) {
+            return ToolBarArea::NoToolBarArea;
+        }
+
+        auto qtToolBarArea = getMainWindow()->toolBarArea(toolBar);
+        switch (qtToolBarArea) {
+            case Qt::LeftToolBarArea:
+                return ToolBarArea::LeftToolBarArea;
+            case Qt::RightToolBarArea:
+                return ToolBarArea::RightToolBarArea;
+            case Qt::TopToolBarArea:
+                return ToolBarArea::TopToolBarArea;
+            case Qt::BottomToolBarArea:
+                return ToolBarArea::BottomToolBarArea;
+            default:
+                // no-op
+                break;
+        }
+    }
+
+    for (auto &areaWidget : { statusBarAreaWidget, menuBarLeftAreaWidget, menuBarRightAreaWidget }) {
+        if (areaWidget->indexOf(widget) >= 0) {
+            return areaWidget->area();
+        }
+    }
+
+    return ToolBarArea::NoToolBarArea;
+}
+
 namespace {
 QPointer<QWidget> createActionWidget()
 {
@@ -470,7 +529,7 @@ int ToolBarManager::toolBarIconSize(QWidget *widget) const
 {
     int s = _toolBarIconSize;
     if (widget) {
-        if (widget->parentWidget() == statusBarArea) {
+        if (widget->parentWidget() == statusBarAreaWidget) {
             if (_statusBarIconSize > 0) {
                 s = _statusBarIconSize;
             }
@@ -478,8 +537,8 @@ int ToolBarManager::toolBarIconSize(QWidget *widget) const
                 s *= 0.6;
             }
         }
-        else if (widget->parentWidget() == menuBarLeftArea
-                || widget->parentWidget() == menuBarRightArea) {
+        else if (widget->parentWidget() == menuBarLeftAreaWidget
+                || widget->parentWidget() == menuBarRightAreaWidget) {
             if (_menuBarIconSize > 0) {
                 s = _menuBarIconSize;
             }
@@ -508,11 +567,11 @@ void ToolBarManager::setToolBarIconSize(QToolBar *toolbar)
 {
     int s = toolBarIconSize(toolbar);
     toolbar->setIconSize(QSize(s, s));
-    if (toolbar->parentWidget() == menuBarLeftArea) {
-        menuBarLeftArea->adjustParent();
+    if (toolbar->parentWidget() == menuBarLeftAreaWidget) {
+        menuBarLeftAreaWidget->adjustParent();
     }
-    else if (toolbar->parentWidget() == menuBarRightArea) {
-        menuBarRightArea->adjustParent();
+    else if (toolbar->parentWidget() == menuBarRightAreaWidget) {
+        menuBarRightAreaWidget->adjustParent();
     }
 }
 
@@ -750,9 +809,9 @@ void ToolBarManager::restoreState() const
 
     setMovable(!areToolBarsLocked());
 
-    statusBarArea->restoreState(sbToolBars);
-    menuBarRightArea->restoreState(mbRightToolBars);
-    menuBarLeftArea->restoreState(mbLeftToolBars);
+    statusBarAreaWidget->restoreState(sbToolBars);
+    menuBarRightAreaWidget->restoreState(mbRightToolBars);
+    menuBarLeftAreaWidget->restoreState(mbLeftToolBars);
 }
 
 bool ToolBarManager::addToolBarToArea(QObject *source, QMouseEvent *ev)
@@ -776,7 +835,7 @@ bool ToolBarManager::addToolBarToArea(QObject *source, QMouseEvent *ev)
     }
 
     static QPointer<OverlayDragFrame> tbPlaceholder;
-    static QPointer<ToolBarArea> lastArea;
+    static QPointer<ToolBarAreaWidget> lastArea;
     static int tbIndex = -1;
     if (ev->type() == QEvent::MouseMove) {
         if (tb->orientation() != Qt::Horizontal
@@ -798,11 +857,11 @@ bool ToolBarManager::addToolBarToArea(QObject *source, QMouseEvent *ev)
     }
 
     QPoint pos = QCursor::pos();
-    ToolBarArea *area = nullptr;
+    ToolBarAreaWidget *area = nullptr;
     if (statusBar) {
         QRect rect(statusBar->mapToGlobal(QPoint(0,0)), statusBar->size());
         if (rect.contains(pos)) {
-            area = statusBarArea;
+            area = statusBarAreaWidget;
         }
     }
     if (!area) {
@@ -812,10 +871,10 @@ bool ToolBarManager::addToolBarToArea(QObject *source, QMouseEvent *ev)
         QRect rect(menuBar->mapToGlobal(QPoint(0,0)), menuBar->size());
         if (rect.contains(pos)) {
             if (pos.x() - rect.left() < menuBar->width()/2) {
-                area = menuBarLeftArea;
+                area = menuBarLeftAreaWidget;
             }
             else {
-                area = menuBarRightArea;
+                area = menuBarRightAreaWidget;
             }
         }
         else {
@@ -833,11 +892,11 @@ bool ToolBarManager::addToolBarToArea(QObject *source, QMouseEvent *ev)
 
     int idx = 0;
     for (int c = area->count(); idx < c ;++idx) {
-        auto w = area->widgetAt(idx);
-        if (!w || w->isHidden()) {
+        auto widget = area->widgetAt(idx);
+        if (!widget || widget->isHidden()) {
             continue;
         }
-        int p = w->mapToGlobal(w->rect().center()).x();
+        int p = widget->mapToGlobal(widget->rect().center()).x();
         if (pos.x() < p) {
             break;
         }
@@ -886,40 +945,60 @@ bool ToolBarManager::addToolBarToArea(QObject *source, QMouseEvent *ev)
     return false;
 }
 
-void ToolBarManager::populateUndockMenu(QMenu *menu, ToolBarArea *area)
+void ToolBarManager::populateUndockMenu(QMenu *menu, ToolBarAreaWidget *area)
 {
     menu->setTitle(tr("Undock toolbars"));
-    auto tooltip = QObject::tr("Undock from status bar");
-    auto addMenuUndockItem = [&](QToolBar *toolbar, int, ToolBarArea *area) {
-        auto *action = toolbar->toggleViewAction();
+    auto tooltip = QObject::tr("Undock from toolbar area");
+
+    auto addMenuUndockItem = [&](QToolBar *toolbar, int, ToolBarAreaWidget *area) {
+        auto toggleViewAction = toolbar->toggleViewAction();
         auto undockAction = new QAction(menu);
-        undockAction->setText(action->text());
+
+        undockAction->setText(toggleViewAction->text());
         undockAction->setToolTip(tooltip);
+
         menu->addAction(undockAction);
         QObject::connect(undockAction, &QAction::triggered, [area, toolbar]() {
             if (toolbar->parentWidget() == getMainWindow()) {
                 return;
             }
+
             auto pos = toolbar->mapToGlobal(QPoint(0, 0));
-            QSignalBlocker blocker(toolbar);
-            area->removeWidget(toolbar);
-            getMainWindow()->addToolBar(toolbar);
-            toolbar->setWindowFlags(Qt::Tool
-                    | Qt::FramelessWindowHint
-                    | Qt::X11BypassWindowManagerHint);
-            toolbar->move(pos.x(), pos.y()-toolbar->height()-10);
-            toolbar->adjustSize();
-            toolbar->setVisible(true);
+            auto yOffset = toolbar->height();
+
+            // if widget is on the bottom move it up instead
+            if (area->area() == Gui::ToolBarArea::StatusBarToolBarArea) {
+                yOffset *= -1;
+            }
+
+            {
+                // Block signals caused by manually floating the widget
+                QSignalBlocker blocker(toolbar);
+
+                area->removeWidget(toolbar);
+                getMainWindow()->addToolBar(toolbar);
+
+                // this will make toolbar floating, there is no better way to do that.
+                toolbar->setWindowFlags(Qt::Tool
+                        | Qt::FramelessWindowHint
+                        | Qt::X11BypassWindowManagerHint);
+                toolbar->move(pos.x(), pos.y() + yOffset);
+                toolbar->adjustSize();
+                toolbar->setVisible(true);
+            }
+
+            // but don't block actual information about widget being floated
             Q_EMIT toolbar->topLevelChanged(true);
         });
     };
-    if (area) {
+
+    if (area) { 
         area->foreachToolBar(addMenuUndockItem);
     }
     else {
-        statusBarArea->foreachToolBar(addMenuUndockItem);
-        menuBarLeftArea->foreachToolBar(addMenuUndockItem);
-        menuBarRightArea->foreachToolBar(addMenuUndockItem);
+        statusBarAreaWidget->foreachToolBar(addMenuUndockItem);
+        menuBarLeftAreaWidget->foreachToolBar(addMenuUndockItem);
+        menuBarRightAreaWidget->foreachToolBar(addMenuUndockItem);
     }
 }
 
@@ -928,13 +1007,13 @@ bool ToolBarManager::showContextMenu(QObject *source)
     QMenu menu;
     QMenu menuUndock;
     QLayout* layout = nullptr;
-    ToolBarArea* area = nullptr;
+    ToolBarAreaWidget* area = nullptr;
     if (getMainWindow()->statusBar() == source) {
-        area = statusBarArea;
+        area = statusBarAreaWidget;
         layout = findLayoutOfObject(source, area);
     }
     else if (getMainWindow()->menuBar() == source) {
-        area = findToolBarArea();
+        area = findToolBarAreaWidget();
         if (!area) {
             return false;
         }
@@ -943,7 +1022,7 @@ bool ToolBarManager::showContextMenu(QObject *source)
         return false;
     }
 
-    auto addMenuVisibleItem = [&](QToolBar *toolbar, int, ToolBarArea *) {
+    auto addMenuVisibleItem = [&](QToolBar *toolbar, int, ToolBarAreaWidget *) {
         auto action = toolbar->toggleViewAction();
         if ((action->isVisible() || toolbar->isVisible()) && action->text().size()) {
             action->setVisible(true);
@@ -979,18 +1058,19 @@ QLayout* ToolBarManager::findLayoutOfObject(QObject* source, QWidget* area) cons
     return layout;
 }
 
-ToolBarArea* ToolBarManager::findToolBarArea() const
+ToolBarAreaWidget* ToolBarManager::findToolBarAreaWidget() const
 {
-    ToolBarArea* area = nullptr;
+    ToolBarAreaWidget* area = nullptr;
+
     QPoint pos = QCursor::pos();
-    QRect rect(menuBarLeftArea->mapToGlobal(QPoint(0,0)), menuBarLeftArea->size());
+    QRect rect(menuBarLeftAreaWidget->mapToGlobal(QPoint(0,0)), menuBarLeftAreaWidget->size());
     if (rect.contains(pos)) {
-        area = menuBarLeftArea;
+        area = menuBarLeftAreaWidget;
     }
     else {
-        rect = QRect(menuBarRightArea->mapToGlobal(QPoint(0,0)), menuBarRightArea->size());
+        rect = QRect(menuBarRightAreaWidget->mapToGlobal(QPoint(0,0)), menuBarRightAreaWidget->size());
         if (rect.contains(pos)) {
-            area = menuBarRightArea;
+            area = menuBarRightAreaWidget;
         }
     }
 
@@ -1042,7 +1122,7 @@ bool ToolBarManager::eventFilter(QObject *source, QEvent *ev)
     case QEvent::Hide:
         if (auto toolbar = qobject_cast<QToolBar*>(source)) {
             auto parent = toolbar->parentWidget();
-            if (parent == menuBarLeftArea || parent == menuBarRightArea) {
+            if (parent == menuBarLeftAreaWidget || parent == menuBarRightAreaWidget) {
                 menuBarTimer.start(10);
             }
         }
@@ -1130,9 +1210,9 @@ QList<QToolBar*> ToolBarManager::toolBars() const
         auto parent = it->parentWidget();
         if (parent == mw
                 || parent == mw->statusBar()
-                || parent == statusBarArea
-                || parent == menuBarLeftArea
-                || parent == menuBarRightArea) {
+                || parent == statusBarAreaWidget
+                || parent == menuBarLeftAreaWidget
+                || parent == menuBarRightAreaWidget) {
             tb.push_back(it);
             it->installEventFilter(const_cast<ToolBarManager*>(this));
         }
