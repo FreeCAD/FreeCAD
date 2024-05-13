@@ -314,15 +314,14 @@ PyObject* DrawViewPartPy::removeCosmeticVertex(PyObject *args)
     }
 
     if (PySequence_Check(pDelList))  {
-        Py_ssize_t nSize = PySequence_Size(pDelList);
-        for (Py_ssize_t i=0; i < nSize; i++) {
-            PyObject* item = PySequence_GetItem(pDelList, i);
-            if (!PyObject_TypeCheck(item, &(TechDraw::CosmeticVertexPy::Type)))  {
+        Py::Sequence sequence(pDelList);
+        for (const auto& item : sequence) {
+            if (!PyObject_TypeCheck(item.ptr(), &(TechDraw::CosmeticVertexPy::Type)))  {
                 PyErr_Format(PyExc_TypeError ,"Types in sequence must be 'CosmeticVertex', not %s",
-                    Py_TYPE(item)->tp_name);
+                    Py_TYPE(item.ptr())->tp_name);
                 return nullptr;
             }
-            TechDraw::CosmeticVertexPy* cvPy = static_cast<TechDraw::CosmeticVertexPy*>(item);
+            TechDraw::CosmeticVertexPy* cvPy = static_cast<TechDraw::CosmeticVertexPy*>(item.ptr());
             TechDraw::CosmeticVertex* cv = cvPy->getCosmeticVertexPtr();
             dvp->removeCosmeticVertex(cv->getTagAsString());
         }

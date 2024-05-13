@@ -146,7 +146,7 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         void sourceIndex(int si) { m_sourceIndex = si; }
         std::string getCosmeticTag() { return cosmeticTag; }
         void setCosmeticTag(std::string t) { cosmeticTag = t; }
-        Part::TopoShape asTopoShape(double scale);
+        Part::TopoShape asTopoShape(double scale = 1.0);
 
         virtual double getStartAngle() { return 0.0; }
         virtual double getEndAngle() { return 0.0; }
@@ -348,6 +348,7 @@ class TechDrawExport Face
         TopoDS_Face toOccFace() const;
         std::vector<Wire *> wires;
 
+        double getArea() const;
         Base::Vector3d getCenter() const;
 };
 using FacePtr = std::shared_ptr<Face>;
@@ -391,7 +392,7 @@ class TechDrawExport Vertex
         bool isReference() { return m_reference; }
         void isReference(bool state) { m_reference = state; }
 
-        Part::TopoShape asTopoShape(double scale);
+        Part::TopoShape asTopoShape(double scale = 1.0);
 
     protected:
         //Uniqueness

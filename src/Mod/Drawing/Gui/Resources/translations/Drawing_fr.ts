@@ -285,7 +285,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="482"/>
       <source>Export PDF</source>
-      <translation>Exporter vers PDF</translation>
+      <translation>Exporter au format PDF</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="483"/>

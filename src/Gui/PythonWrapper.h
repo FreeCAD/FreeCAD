@@ -54,6 +54,8 @@ public:
 
     bool toCString(const Py::Object&, std::string&);
     QObject* toQObject(const Py::Object&);
+    qsizetype toEnum(PyObject* pyPtr);
+    qsizetype toEnum(const Py::Object& pyobject);
     QGraphicsItem* toQGraphicsItem(PyObject* ptr);
     QGraphicsItem* toQGraphicsItem(const Py::Object& pyObject);
     QGraphicsObject* toQGraphicsObject(PyObject* pyPtr);

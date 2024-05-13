@@ -1503,7 +1503,7 @@ class _ArchWindowTaskPanel:
 
     def getStandardButtons(self):
 
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def check(self,wid,col):
 

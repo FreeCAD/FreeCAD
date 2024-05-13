@@ -401,6 +401,9 @@ def findToolController(obj, proxy, name=None):
 def findParentJob(obj):
     """retrieves a parent job object for an operation or other Path object"""
     Path.Log.track()
+    if hasattr(obj, "Proxy") and isinstance(obj.Proxy, PathJob.ObjectJob):
+        return obj
+
     for i in obj.InList:
         if hasattr(i, "Proxy") and isinstance(i.Proxy, PathJob.ObjectJob):
             return i

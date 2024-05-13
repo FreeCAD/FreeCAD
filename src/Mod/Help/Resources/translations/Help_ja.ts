@@ -40,7 +40,7 @@ the default location ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="123"/>
       <source>FreeCAD Wiki (online)</source>
-      <translation type="unfinished">FreeCAD Wiki (online)</translation>
+      <translation>FreeCAD Wiki (オンライン)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
@@ -52,7 +52,7 @@ This is currently not available...</translation>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="33"/>
       <source>GitHub (online)</source>
-      <translation type="unfinished">GitHub (online)</translation>
+      <translation>GitHub (オンライン)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="72"/>
@@ -82,7 +82,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="145"/>
       <source>Markdown version (online)</source>
-      <translation type="unfinished">Markdown version (online)</translation>
+      <translation>Markdown バージョン (オンライン)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="164"/>
@@ -155,8 +155,8 @@ Markdown version above.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="78"/>
-      <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the Web module</source>
-      <translation type="unfinished">PySide QtWebEngineWidgets module is not available. Help rendering is done with the Web module</translation>
+      <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
+      <translation type="unfinished">PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="82"/>
@@ -172,7 +172,7 @@ Markdown version above.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="394"/>
+      <location filename="../../Help.py" line="393"/>
       <source>General</source>
       <translation>標準</translation>
     </message>

@@ -215,7 +215,7 @@
     <message>
       <location filename="../../../JointObject.py" line="52"/>
       <source>Ball</source>
-      <translation type="unfinished">Ball</translation>
+      <translation>Bal</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="53"/>
@@ -379,12 +379,12 @@
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="20"/>
       <source>Search parts...</source>
-      <translation type="unfinished">Search parts...</translation>
+      <translation>Onderdelen zoeken...</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="32"/>
       <source>Don't find your part? </source>
-      <translation type="unfinished">Don't find your part? </translation>
+      <translation>Vind je je deel niet? </translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
@@ -399,7 +399,7 @@
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="51"/>
       <source>Insert as part</source>
-      <translation type="unfinished">Insert as part</translation>
+      <translation>Als onderdeel invoegen</translation>
     </message>
   </context>
   <context>
@@ -450,7 +450,7 @@
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="651"/>
       <source>Move part</source>
-      <translation type="unfinished">Move part</translation>
+      <translation>Onderdeel verplaatsen</translation>
     </message>
   </context>
 </TS>

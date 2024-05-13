@@ -70,6 +70,14 @@ Pocket::Pocket()
 
 App::DocumentObjectExecReturn *Pocket::execute()
 {
+#ifdef FC_USE_TNP_FIX
+    // MakeFace|MakeFuse: because we want a solid.
+    // InverseDirection: to inverse the auto detected extrusion direction for
+    // backward compatibility to upstream
+    ExtrudeOptions options(ExtrudeOption::MakeFace | ExtrudeOption::MakeFuse
+                           | ExtrudeOption::InverseDirection);
+    return buildExtrusion(options);
+#else
     // Handle legacy features, these typically have Type set to 3 (previously NULL, now UpToFace),
     // empty FaceName (because it didn't exist) and a value for Length
     if (std::string(Type.getValueAsString()) == "UpToFace" &&
@@ -248,4 +256,5 @@ App::DocumentObjectExecReturn *Pocket::execute()
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
+#endif
 }

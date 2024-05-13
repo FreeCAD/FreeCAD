@@ -844,17 +844,18 @@ void PropertyIntegerSet::setPyObject(PyObject *value)
 {
     if (PySequence_Check(value)) {
 
-        Py_ssize_t nSize = PySequence_Length(value);
+        Py::Sequence sequence(value);
+        Py_ssize_t nSize = sequence.size();
         std::set<long> values;
 
         for (Py_ssize_t i=0; i<nSize;++i) {
-            PyObject* item = PySequence_GetItem(value, i);
-            if (!PyLong_Check(item)) {
+            Py::Object item = sequence.getItem(i);
+            if (!PyLong_Check(item.ptr())) {
                 std::string error = std::string("type in list must be int, not ");
-                error += item->ob_type->tp_name;
+                error += item.ptr()->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
-            values.insert(PyLong_AsLong(item));
+            values.insert(PyLong_AsLong(item.ptr()));
         }
 
         setValues(values);
@@ -3072,7 +3073,8 @@ void PropertyMaterialList::Save(Base::Writer& writer) const
 {
     if (!writer.isForceXML()) {
         writer.Stream() << writer.ind() << "<MaterialList file=\""
-                        << (getSize() ? writer.addFile(getName(), this) : "") << "\"/>"
+                        << (getSize() ? writer.addFile(getName(), this) : "") << "\""
+                        << " version=\"2\"/>"
                         << std::endl;
     }
 }
@@ -3082,6 +3084,9 @@ void PropertyMaterialList::Restore(Base::XMLReader& reader)
     reader.readElement("MaterialList");
     if (reader.hasAttribute("file")) {
         std::string file(reader.getAttribute("file"));
+        if (reader.hasAttribute("version")) {
+            formatVersion = static_cast<Format>(reader.getAttributeAsInteger("version"));
+        }
 
         if (!file.empty()) {
             // initiate a file read
@@ -3093,10 +3098,6 @@ void PropertyMaterialList::Restore(Base::XMLReader& reader)
 void PropertyMaterialList::SaveDocFile(Base::Writer& writer) const
 {
     Base::OutputStream str(writer.Stream());
-    // Write the version. Versions should be negative. A non-negative value is a count
-    // and should be processed as a V0
-    int32_t version = -1;
-    str << version;
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
     for (const auto& it : _lValueList) {
@@ -3113,14 +3114,22 @@ void PropertyMaterialList::SaveDocFile(Base::Writer& writer) const
 void PropertyMaterialList::RestoreDocFile(Base::Reader& reader)
 {
     Base::InputStream str(reader);
-    int32_t version;
-    str >> version;
-    if (version < 0) {
-        RestoreDocFileV1(reader);
+    if (formatVersion == Version_2) {
+        // V2 is same as V0
+        uint32_t count = 0;
+        str >> count;
+        RestoreDocFileV0(count, reader);
     }
     else {
-        uint32_t uCt = static_cast<uint32_t>(version);
-        RestoreDocFileV0(uCt, reader);
+        int32_t version;
+        str >> version;
+        if (version < 0) {
+            RestoreDocFileV1(reader);
+        }
+        else {
+            uint32_t uCt = static_cast<uint32_t>(version);
+            RestoreDocFileV0(uCt, reader);
+        }
     }
 }
 
@@ -3128,8 +3137,8 @@ void PropertyMaterialList::RestoreDocFileV0(uint32_t count, Base::Reader& reader
 {
     Base::InputStream str(reader);
     std::vector<Material> values(count);
-    uint32_t value;  // must be 32 bit long
-    float valueF;
+    uint32_t value {};  // must be 32 bit long
+    float valueF {};
     for (auto& it : values) {
         str >> value;
         it.ambientColor.setPackedValue(value);
@@ -3153,8 +3162,8 @@ void PropertyMaterialList::RestoreDocFileV1(Base::Reader& reader)
     uint32_t count = 0;
     str >> count;
     std::vector<Material> values(count);
-    uint32_t value;  // must be 32 bit long
-    float valueF;
+    uint32_t value {};  // must be 32 bit long
+    float valueF {};
     for (auto& it : values) {
         str >> value;
         it.ambientColor.setPackedValue(value);

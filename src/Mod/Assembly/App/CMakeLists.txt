@@ -19,12 +19,15 @@ set(Assembly_LIBS
 
 generate_from_xml(AssemblyObjectPy)
 generate_from_xml(JointGroupPy)
+generate_from_xml(ViewGroupPy)
 
 SET(Python_SRCS
     AssemblyObjectPy.xml
     AssemblyObjectPyImp.cpp
     JointGroupPy.xml
     JointGroupPyImp.cpp
+    ViewGroupPy.xml
+    ViewGroupPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -41,6 +44,8 @@ SET(Assembly_SRCS
     AssemblyObject.h
     JointGroup.cpp
     JointGroup.h
+    ViewGroup.cpp
+    ViewGroup.h
     ${Module_SRCS}
     ${Python_SRCS}
 )

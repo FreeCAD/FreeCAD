@@ -97,19 +97,20 @@ void PropertyCosmeticVertexList::setPyObject(PyObject *value)
     // check container of this property to notify about changes
 
     if (PySequence_Check(value)) {
-        Py_ssize_t nSize = PySequence_Size(value);
+        Py::Sequence sequence(value);
+        Py_ssize_t nSize = sequence.size();
         std::vector<CosmeticVertex*> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i < nSize; ++i) {
-            PyObject* item = PySequence_GetItem(value, i);
-            if (!PyObject_TypeCheck(item, &(CosmeticVertexPy::Type))) {
+            Py::Object item = sequence.getItem(i);
+            if (!PyObject_TypeCheck(item.ptr(), &(CosmeticVertexPy::Type))) {
                 std::string error = std::string("types in list must be 'CosmeticVertex', not ");
-                error += item->ob_type->tp_name;
+                error += item.ptr()->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
 
-            values[i] = static_cast<CosmeticVertexPy*>(item)->getCosmeticVertexPtr();
+            values[i] = static_cast<CosmeticVertexPy*>(item.ptr())->getCosmeticVertexPtr();
         }
 
         setValues(values);

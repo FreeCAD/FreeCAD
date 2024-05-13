@@ -110,6 +110,9 @@ public:
     static bool isShapeReallyNull(TopoDS_Shape shape);
 
     static bool edgesAreParallel(TopoDS_Edge edge0, TopoDS_Edge edge1);
+
+    static TopoDS_Shape fromQt(const TopoDS_Shape& inShape);
+    static TopoDS_Shape toQt(const TopoDS_Shape& inShape);
 };
 
 }

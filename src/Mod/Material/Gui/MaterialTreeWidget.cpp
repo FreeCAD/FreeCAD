@@ -709,3 +709,34 @@ void MaterialTreeWidget::saveMaterialTreeChildren(const Base::Reference<Paramete
         }
     }
 }
+
+// --------------------------------------------------------------------
+
+PrefMaterialTreeWidget::PrefMaterialTreeWidget(QWidget* parent)
+    : MaterialTreeWidget(parent)
+    , PrefWidget()
+{}
+
+PrefMaterialTreeWidget::~PrefMaterialTreeWidget() = default;
+
+void PrefMaterialTreeWidget::restorePreferences()
+{
+    if (getWindowParameter().isNull()) {
+        failedToRestore(objectName());
+        return;
+    }
+
+    const char* defaultUuid = "7f9fd73b-50c9-41d8-b7b2-575a030c1eeb";
+    QString uuid = QString::fromStdString(getWindowParameter()->GetASCII(entryName(), defaultUuid));
+    setMaterial(uuid);
+}
+
+void PrefMaterialTreeWidget::savePreferences()
+{
+    if (getWindowParameter().isNull()) {
+        failedToSave(objectName());
+        return;
+    }
+
+    getWindowParameter()->SetASCII(entryName(), getMaterialUUID().toStdString());
+}

@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-from Path.Post.Processor import PostProcessor
+from Path.Post.Processor import PostProcessorFactory  # PostProcessor,
 from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
@@ -112,7 +112,9 @@ class ObjectJob:
             "App::PropertyFile",
             "PostProcessorOutputFile",
             "Output",
-            QT_TRANSLATE_NOOP("App::Property", "The G-code output file for this project"),
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The G-code output file for this project"
+            ),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -549,7 +551,7 @@ class ObjectJob:
 
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
-            processor = PostProcessor.load(obj.PostProcessor)
+            processor = PostProcessorFactory.get_post_processor(obj, obj.PostProcessor)
             self.tooltip = processor.tooltip
             self.tooltipArgs = processor.tooltipArgs
 

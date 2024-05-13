@@ -16,7 +16,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="30"/>
       <source>Choose preset...</source>
-      <translation>Użyj szablonu...</translation>
+      <translation>Użyj szablonu ...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="44"/>
@@ -737,7 +737,7 @@ obiekt przyjmie kolor tego materiału. Opcja ta może być nadpisana dla każdeg
     <message>
       <location filename="../ui/preferences-arch.ui" line="248"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
-      <translation>Jeśli opcja jest zaznaczona wynik konwersji jest szybszy, jednak mogą być widoczne ślady trójkątów</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, wynik konwersji jest szybszy, jednak mogą być widoczne ślady trójkątów</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="251"/>
@@ -1066,7 +1066,7 @@ Jeden obiekt jest obiektem bazowym, pozostałe są klonami.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="75"/>
       <source>Create clones when objects have shared geometry</source>
-      <translation>Tworzy klony kiedy obiekty dzielą geometrię</translation>
+      <translation>Twórz klony, kiedy obiekty dzielą geometrię</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="99"/>
@@ -1476,7 +1476,7 @@ Użyj tej opcji aby wymusić eksportowanie obiektów jako geometrii BREP.</trans
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="115"/>
       <source>Force export as Brep</source>
-      <translation>Wymuszony eksport jako Brep</translation>
+      <translation>Wymuś eksport do Brep</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="128"/>
@@ -1486,7 +1486,7 @@ Użyj tej opcji aby wymusić eksportowanie obiektów jako geometrii BREP.</trans
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="131"/>
       <source>Use DAE triangulation options</source>
-      <translation>Używaj opcji triangulacji DAE</translation>
+      <translation>Użyj opcji triangulacji DAE</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="144"/>
@@ -1597,7 +1597,7 @@ jako standardowe przypadki.</translation>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="283"/>
       <source>Auto-detect and export as standard cases when applicable</source>
-      <translation>Automatyczne wykrywanie i eksport jako standardowe działania w stosownych przypadkach</translation>
+      <translation>Wykrywanie automatyczne i eksport jako standardowe działania w stosownych przypadkach</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="296"/>
@@ -1994,38 +1994,38 @@ które pozwalają na wybór systemu miar przy otwieraniu pliku.</translation>
       <translation>Utwórz Część budynku</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="913"/>
+      <location filename="../../ArchBuildingPart.py" line="924"/>
       <source>Deactivate</source>
       <translation>Dezaktywuj</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="915"/>
+      <location filename="../../ArchBuildingPart.py" line="926"/>
       <source>Activate</source>
       <translation>Aktywuj</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="923"/>
+      <location filename="../../ArchBuildingPart.py" line="934"/>
       <source>Set working plane</source>
       <translation>Ustaw płaszczyznę roboczą</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="931"/>
+      <location filename="../../ArchBuildingPart.py" line="942"/>
       <source>Write camera position</source>
       <translation>Zapisz pozycję ujęcia widoku</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="938"/>
+      <location filename="../../ArchBuildingPart.py" line="949"/>
       <source>Create group...</source>
       <translation>Utwórz grupę ...</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="945"/>
+      <location filename="../../ArchBuildingPart.py" line="956"/>
       <location filename="../../ArchMaterial.py" line="223"/>
       <source>Reorder children alphabetically</source>
       <translation>Zmień kolejność podrzędnych alfabetycznie</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="952"/>
+      <location filename="../../ArchBuildingPart.py" line="963"/>
       <source>Clone level up</source>
       <translation>Sklonuj poziom wyżej</translation>
     </message>
@@ -2234,7 +2234,7 @@ obiekt do wycięcia i obiekt definiujący płaszczyznę cięcia.</translation>
     <message>
       <location filename="../../ArchCutPlane.py" line="245"/>
       <source>Front</source>
-      <translation>Od przodu</translation>
+      <translation>Przed</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="65"/>
@@ -2521,7 +2521,7 @@ obiekt do wycięcia i obiekt definiujący płaszczyznę cięcia.</translation>
       <location filename="../../ArchMaterial.py" line="495"/>
       <location filename="../../ArchMaterial.py" line="789"/>
       <location filename="../../ArchReference.py" line="675"/>
-      <location filename="../../ArchSchedule.py" line="453"/>
+      <location filename="../../ArchSchedule.py" line="454"/>
       <location filename="../../ArchSectionPlane.py" line="1198"/>
       <location filename="../../ArchSite.py" line="932"/>
       <location filename="../../ArchWindow.py" line="1807"/>
@@ -2602,12 +2602,12 @@ obiekt do wycięcia i obiekt definiujący płaszczyznę cięcia.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="1821"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
-      <translation>Jeśli to pole jest zaznaczone, domyślna wartość ramki dla tego okna zostanie dodana do wartości wprowadzonej tutaj</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, domyślna wartość ramki dla tego okna zostanie dodana do wartości wprowadzonej tutaj</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1823"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
-      <translation>Jeśli to pole jest zaznaczone, domyślna wartość odsunięcia tego okna zostanie dodana do wartości wprowadzonej tutaj</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, domyślna wartość odsunięcia tego okna zostanie dodana do wartości wprowadzonej tutaj</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1825"/>
@@ -2663,7 +2663,7 @@ obiekt do wycięcia i obiekt definiujący płaszczyznę cięcia.</translation>
       <location filename="../../importJSON.py" line="61"/>
       <location filename="../../importOBJ.py" line="261"/>
       <location filename="../../importOBJ.py" line="285"/>
-      <location filename="../../importWebGL.py" line="874"/>
+      <location filename="../../importWebGL.py" line="875"/>
       <source>Successfully written</source>
       <translation>Zapisano pomyślnie</translation>
     </message>
@@ -2752,7 +2752,7 @@ obiekt do wycięcia i obiekt definiujący płaszczyznę cięcia.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="159"/>
       <source>Create multi-material</source>
-      <translation>Utwórz wielowarstwowy materiał</translation>
+      <translation>Tworzy materiał wielowarstwowy</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="216"/>
@@ -2787,13 +2787,13 @@ obiekt do wycięcia i obiekt definiujący płaszczyznę cięcia.</translation>
       <translation>Zależy od obiektu</translation>
     </message>
     <message>
-      <location filename="../../importGBXML.py" line="46"/>
-      <location filename="../../importGBXML.py" line="50"/>
+      <location filename="../../importGBXML.py" line="47"/>
+      <location filename="../../importGBXML.py" line="51"/>
       <source>This exporter can currently only export one site object</source>
       <translation>Ten eksporter może obecnie eksportować tylko jeden obiekt terenu budowy</translation>
     </message>
     <message>
-      <location filename="../../importGBXML.py" line="92"/>
+      <location filename="../../importGBXML.py" line="93"/>
       <source>Error: Space '%s' has no Zone. Aborting.</source>
       <translation>Błąd: Przestrzeń '%s' nie ma strefy. Przerwano.</translation>
     </message>
@@ -3193,27 +3193,27 @@ obiekt do wycięcia i obiekt definiujący płaszczyznę cięcia.</translation>
       <translation>dodano właściwość "Harmonogram"</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="362"/>
+      <location filename="../../ArchSchedule.py" line="363"/>
       <source>Unable to retrieve value from object</source>
       <translation>Nie można pobrać wartości z obiektu</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="462"/>
+      <location filename="../../ArchSchedule.py" line="463"/>
       <source>Remove spreadsheet</source>
       <translation>Usuń Arkusz Kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="464"/>
+      <location filename="../../ArchSchedule.py" line="465"/>
       <source>Attach spreadsheet</source>
       <translation>Dołącz arkusz kalkulacyjny</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="589"/>
+      <location filename="../../ArchSchedule.py" line="590"/>
       <source>Import CSV file</source>
       <translation>Importuj plik CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="622"/>
+      <location filename="../../ArchSchedule.py" line="623"/>
       <source>Export CSV file</source>
       <translation>Eksportuj do pliku CSV</translation>
     </message>
@@ -3223,36 +3223,36 @@ obiekt do wycięcia i obiekt definiujący płaszczyznę cięcia.</translation>
       <translation>Eksportuj plik CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="643"/>
+      <location filename="../../ArchSchedule.py" line="644"/>
       <source>Unable to recognize that file type</source>
       <translation>Nie można rozpoznać typu pliku</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1010"/>
-      <location filename="../../ArchSchedule.py" line="665"/>
-      <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchSchedule.py" line="666"/>
+      <location filename="../../ArchSchedule.py" line="684"/>
       <source>Description</source>
       <translation>Opis</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1631"/>
       <location filename="../../ArchComponent.py" line="2009"/>
-      <location filename="../../ArchSchedule.py" line="665"/>
-      <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchSchedule.py" line="666"/>
+      <location filename="../../ArchSchedule.py" line="684"/>
       <source>Value</source>
       <translation>Wartość</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1632"/>
-      <location filename="../../ArchSchedule.py" line="665"/>
-      <location filename="../../ArchSchedule.py" line="683"/>
+      <location filename="../../ArchSchedule.py" line="666"/>
+      <location filename="../../ArchSchedule.py" line="684"/>
       <source>Unit</source>
       <translation>Jednostka</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="744"/>
+      <location filename="../../ArchSchedule.py" line="745"/>
       <source>Schedule</source>
-      <translation>Harmonogram</translation>
+      <translation>Obmiar</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="155"/>
@@ -3682,7 +3682,7 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchWall.py" line="695"/>
       <source>The selected wall contains no subwall to merge</source>
-      <translation>Wybrana ściana nie zawiera żadnej ściany działowej do połączenia</translation>
+      <translation>Wybrana ściana nie zawiera żadnego obiektu ściany podrzędnej do połączenia</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="698"/>
@@ -4073,8 +4073,9 @@ Tworzenie budynku zostało przerwane.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="335"/>
-      <source>If true, the height value propagates to contained objects</source>
-      <translation>Jeśli prawda, wartość wysokości rozszerza się na zamknięte obiekty</translation>
+      <source>If true, the height value propagates to contained objects if the height of those objects is set to 0</source>
+      <translation>Jeśli opcja jest aktywna, wartość wysokości przechodzi do zawartych obiektów, 
+jeśli wysokość tych obiektów jest ustawiona na 0</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="338"/>
@@ -4121,148 +4122,148 @@ Tworzenie budynku zostało przerwane.</translation>
       <translation>Mapowanie MaterialName:SolidIndexesList wiążące nazwy materiałów z indeksami brył, które zostanie zastosowane przy tworzeniu odniesień do tego obiektu w innych plikach</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="553"/>
+      <location filename="../../ArchBuildingPart.py" line="564"/>
       <location filename="../../ArchSectionPlane.py" line="963"/>
       <source>The line width of this object</source>
       <translation>Szerokość linii tego obiektu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="556"/>
+      <location filename="../../ArchBuildingPart.py" line="567"/>
       <source>An optional unit to express levels</source>
       <translation>Opcjonalna jednostka do określania kondygnacji</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="558"/>
+      <location filename="../../ArchBuildingPart.py" line="569"/>
       <source>A transformation to apply to the level mark</source>
       <translation>Transformacja, która ma być zastosowana do znacznika kondygnacji</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="561"/>
+      <location filename="../../ArchBuildingPart.py" line="572"/>
       <source>If true, show the level</source>
       <translation>Jeżeli prawda, pokaż kondygnację</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="564"/>
+      <location filename="../../ArchBuildingPart.py" line="575"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Jeśli parametr ma wartość prawda, pokaż jednostkę na znaczniku poziomu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="566"/>
+      <location filename="../../ArchBuildingPart.py" line="577"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>Jeśli prawda, przesunięcie wyświetlania zostanie zastosowane również do znacznika odniesienia</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="568"/>
+      <location filename="../../ArchBuildingPart.py" line="579"/>
       <source>If true, the object's label is displayed</source>
       <translation>Jeśli prawda, etykieta obiektu jest wyświetlana</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="571"/>
+      <location filename="../../ArchBuildingPart.py" line="582"/>
       <source>The font to be used for texts</source>
       <translation>Czcionka dla tekstów</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="574"/>
+      <location filename="../../ArchBuildingPart.py" line="585"/>
       <source>The font size of texts</source>
       <translation>Rozmiar czcionki dla tekstów</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="577"/>
+      <location filename="../../ArchBuildingPart.py" line="588"/>
       <source>The individual face colors</source>
       <translation>Kolory poszczególnych ścian</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="581"/>
+      <location filename="../../ArchBuildingPart.py" line="592"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Jeśli parametr ma wartość prawda, po włączeniu tej opcji płaszczyzna robocza dopasuje się do tej kondygnacji</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="584"/>
+      <location filename="../../ArchBuildingPart.py" line="595"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Przy ustawieniu Prawda płaszczyzna robocza pozostanie w trybie automatycznego dopasowania</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="586"/>
+      <location filename="../../ArchBuildingPart.py" line="597"/>
       <source>Camera position data associated with this object</source>
       <translation>Pozycja kamery związana z tym obiektem</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="589"/>
+      <location filename="../../ArchBuildingPart.py" line="600"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Jeśli ustawiona, widok zapisany w tym obiekcie zostanie przywrócony po dwukrotnym kliknięciu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="591"/>
+      <location filename="../../ArchBuildingPart.py" line="602"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>Jeśli parametr ma wartość Prawda, podwójne kliknięcie tego obiektu w drzewie aktywuje go</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="595"/>
+      <location filename="../../ArchBuildingPart.py" line="606"/>
       <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>Jeśli ta opcja jest włączona, reprezentacja twórcy tego obiektu zostanie zapisana w pliku FreeCAD, umożliwiając odniesienie do niego w innych plikach w trybie uproszczonym.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="597"/>
+      <location filename="../../ArchBuildingPart.py" line="608"/>
       <source>A slot to save the inventor representation of this object, if enabled</source>
       <translation>Miejsce do zapisania reprezentacji wynalazcy tego obiektu, jeśli jest włączone</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="602"/>
+      <location filename="../../ArchBuildingPart.py" line="613"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Jeśli parametr ma wartość Prawda, pokazane obiekty zawarte w tej części budynku przyjmą te ustawienia dla linii, koloru i przezroczystości</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="604"/>
+      <location filename="../../ArchBuildingPart.py" line="615"/>
       <source>The line width of child objects</source>
       <translation>Szerokość linii obiektów podrzędnych</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="607"/>
+      <location filename="../../ArchBuildingPart.py" line="618"/>
       <source>The line color of child objects</source>
       <translation>Kolor linii obiektów podrzędnych</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="610"/>
+      <location filename="../../ArchBuildingPart.py" line="621"/>
       <source>The shape appearance of child objects</source>
       <translation>Wygląd kształtu obiektów podrzędnych</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="613"/>
+      <location filename="../../ArchBuildingPart.py" line="624"/>
       <source>The transparency of child objects</source>
       <translation>Przezroczystość obiektów podrzędnych</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="618"/>
+      <location filename="../../ArchBuildingPart.py" line="629"/>
       <source>Cut the view above this level</source>
       <translation>Wytnij widok powyżej tego poziomu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="620"/>
+      <location filename="../../ArchBuildingPart.py" line="631"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>Odległość między płaszczyzną poziomą a linią cięcia</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="623"/>
+      <location filename="../../ArchBuildingPart.py" line="634"/>
       <source>Turn cutting on when activating this level</source>
       <translation>Włącz cięcie podczas aktywacji tego poziomu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="627"/>
+      <location filename="../../ArchBuildingPart.py" line="638"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>Pole przechwytywania nowo utworzonych obiektów wyrażone jako [XMin, YMin, ZMin, XMax, YMax, ZMax]</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="629"/>
+      <location filename="../../ArchBuildingPart.py" line="640"/>
       <source>Turns auto group box on/off</source>
       <translation>Włącza / wyłącza pole automatycznego grupowania</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="631"/>
+      <location filename="../../ArchBuildingPart.py" line="642"/>
       <source>Automatically set size from contents</source>
       <translation>Ustaw rozmiar automatycznie, na podstawie zawartości</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="633"/>
+      <location filename="../../ArchBuildingPart.py" line="644"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>Margines do użycia, gdy automatyczny rozmiar jest włączony</translation>
     </message>
@@ -4546,8 +4547,9 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="315"/>
       <source>An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume</source>
-      <translation>Opcjonalny obiekt definiujący objętość do odjęcia od ścian. Jeśli pole jest ustawione, 
-ma pierwszeństwo przed automatycznie generowaną pod objętością.</translation>
+      <translation>Opcjonalny obiekt definiujący objętość do odjęcia od ścian. 
+Jeśli opcja ta jest zaznaczona, 
+ma pierwszeństwo przed automatycznie generowaną objętością podrzędną.</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="95"/>
@@ -5881,7 +5883,7 @@ ma pierwszeństwo przed automatycznie generowaną pod objętością.</translatio
     <message>
       <location filename="../../ArchSpace.py" line="299"/>
       <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
-      <translation>Jeśli parametr ma wartość Prawda, pole Sprzęt Zasilający zostanie automatycznie uzupełnione przez wyposażenie zawarte w tym miejscu</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, pole Sprzęt Zasilający zostanie automatycznie uzupełnione przez wyposażenie zawarte w tym miejscu</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="301"/>
@@ -5896,7 +5898,7 @@ ma pierwszeństwo przed automatycznie generowaną pod objętością.</translatio
     <message>
       <location filename="../../ArchSpace.py" line="512"/>
       <source>The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</source>
-      <translation type="unfinished">The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</translation>
+      <translation>Tekst do wyświetlenia. Użyj zapisu $area, $label, $tag, $longname, $description i dla wykończeń $floor, $walls, $ceiling, aby wstawić odpowiednie dane.</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="518"/>
@@ -6070,7 +6072,7 @@ ma pierwszeństwo przed automatycznie generowaną pod objętością.</translatio
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="996"/>
+      <location filename="../../ArchBuildingPart.py" line="1007"/>
       <source>Writing camera position</source>
       <translation>Zapisywanie pozycji kamery</translation>
     </message>
@@ -6225,7 +6227,7 @@ ma pierwszeństwo przed automatycznie generowaną pod objętością.</translatio
     <message>
       <location filename="../../ArchCutPlane.py" line="165"/>
       <source>Cut with plane</source>
-      <translation>Przytnij płaszczyzną</translation>
+      <translation>Przetnij płaszczyzną</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="168"/>
@@ -6737,7 +6739,7 @@ ma pierwszeństwo przed automatycznie generowaną pod objętością.</translatio
     <message>
       <location filename="../../ArchCommands.py" line="1461"/>
       <source>Select non-manifold meshes</source>
-      <translation>Wybierz siatki typu non-manifold</translation>
+      <translation>Zaznacz siatki typu non-manifold</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1464"/>
@@ -6802,7 +6804,7 @@ ma pierwszeństwo przed automatycznie generowaną pod objętością.</translatio
     <message>
       <location filename="../../ArchCommands.py" line="1558"/>
       <source>Toggle IFC Brep flag</source>
-      <translation>Przełącz znacznik IFC Brep</translation>
+      <translation>Przełącz flagę Brep IFC</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1561"/>

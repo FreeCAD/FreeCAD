@@ -28,11 +28,23 @@
       </Documentation>
       <Parameter Name="MaterialStandard" Type="String"/>
     </Attribute>
+    <Attribute Name="ArrudaBoyce" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Mechanical/ArrudaBoyce</UserDocu>
+      </Documentation>
+      <Parameter Name="ArrudaBoyce" Type="String"/>
+    </Attribute>
     <Attribute Name="Density" ReadOnly="true">
       <Documentation>
         <UserDocu>UUID for model System:Mechanical/Density</UserDocu>
       </Documentation>
       <Parameter Name="Density" Type="String"/>
+    </Attribute>
+    <Attribute Name="Hardness" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Mechanical/Hardness</UserDocu>
+      </Documentation>
+      <Parameter Name="Hardness" Type="String"/>
     </Attribute>
     <Attribute Name="IsotropicLinearElastic" ReadOnly="true">
       <Documentation>
@@ -46,6 +58,36 @@
       </Documentation>
       <Parameter Name="LinearElastic" Type="String"/>
     </Attribute>
+    <Attribute Name="MooneyRivlin" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Mechanical/MooneyRivlin</UserDocu>
+      </Documentation>
+      <Parameter Name="MooneyRivlin" Type="String"/>
+    </Attribute>
+    <Attribute Name="NeoHooke" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Mechanical/NeoHooke</UserDocu>
+      </Documentation>
+      <Parameter Name="NeoHooke" Type="String"/>
+    </Attribute>
+    <Attribute Name="OgdenN1" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Mechanical/OgdenN1</UserDocu>
+      </Documentation>
+      <Parameter Name="OgdenN1" Type="String"/>
+    </Attribute>
+    <Attribute Name="OgdenN2" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Mechanical/OgdenN2</UserDocu>
+      </Documentation>
+      <Parameter Name="OgdenN2" Type="String"/>
+    </Attribute>
+    <Attribute Name="OgdenN3" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Mechanical/OgdenN3</UserDocu>
+      </Documentation>
+      <Parameter Name="OgdenN3" Type="String"/>
+    </Attribute>
     <Attribute Name="OgdenYld2004p18" ReadOnly="true">
       <Documentation>
         <UserDocu>UUID for model System:Mechanical/OgdenYld2004p18</UserDocu>
@@ -57,6 +99,48 @@
         <UserDocu>UUID for model System:Mechanical/OrthotropicLinearElastic</UserDocu>
       </Documentation>
       <Parameter Name="OrthotropicLinearElastic" Type="String"/>
+    </Attribute>
+    <Attribute Name="PolynomialN1" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Mechanical/PolynomialN1</UserDocu>
+      </Documentation>
+      <Parameter Name="PolynomialN1" Type="String"/>
+    </Attribute>
+    <Attribute Name="PolynomialN2" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Mechanical/PolynomialN2</UserDocu>
+      </Documentation>
+      <Parameter Name="PolynomialN2" Type="String"/>
+    </Attribute>
+    <Attribute Name="PolynomialN3" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Mechanical/PolynomialN3</UserDocu>
+      </Documentation>
+      <Parameter Name="PolynomialN3" Type="String"/>
+    </Attribute>
+    <Attribute Name="ReducedPolynomialN1" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Mechanical/ReducedPolynomialN1</UserDocu>
+      </Documentation>
+      <Parameter Name="ReducedPolynomialN1" Type="String"/>
+    </Attribute>
+    <Attribute Name="ReducedPolynomialN2" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Mechanical/ReducedPolynomialN2</UserDocu>
+      </Documentation>
+      <Parameter Name="ReducedPolynomialN2" Type="String"/>
+    </Attribute>
+    <Attribute Name="ReducedPolynomialN3" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Mechanical/ReducedPolynomialN3</UserDocu>
+      </Documentation>
+      <Parameter Name="ReducedPolynomialN3" Type="String"/>
+    </Attribute>
+    <Attribute Name="Yeoh" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Mechanical/Yeoh</UserDocu>
+      </Documentation>
+      <Parameter Name="Yeoh" Type="String"/>
     </Attribute>
     <Attribute Name="Fluid" ReadOnly="true">
       <Documentation>

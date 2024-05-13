@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="48"/>
       <source>Create Assembly</source>
-      <translation type="unfinished">Create Assembly</translation>
+      <translation>Montaj Oluştur</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="53"/>
@@ -450,7 +450,7 @@
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="651"/>
       <source>Move part</source>
-      <translation type="unfinished">Move part</translation>
+      <translation>Parçayı taşı</translation>
     </message>
   </context>
 </TS>

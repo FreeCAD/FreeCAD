@@ -75,6 +75,7 @@ class CAMWorkbench(Workbench):
         import Path.GuiInit
 
         from Path.Main.Gui import JobCmd as PathJobCmd
+        from Path.Main.Gui import SanityCmd as SanityCmd
         from Path.Tool.Gui import BitCmd as PathToolBitCmd
         from Path.Tool.Gui import BitLibraryCmd as PathToolBitLibraryCmd
 

@@ -150,8 +150,8 @@ Markdown Version ausgewählt haben.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="78"/>
-      <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the Web module</source>
-      <translation>PySide QtWebEngineWidgets Modul ist nicht verfügbar. Hilfe Rendering erfolgt mit dem Web-Modul</translation>
+      <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
+      <translation>PySide QtWebEngineWidgets Modul ist nicht verfügbar. Die Hilfe wird über den System-Browser aufgerufen</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="82"/>
@@ -167,7 +167,7 @@ Markdown Version ausgewählt haben.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="394"/>
+      <location filename="../../Help.py" line="393"/>
       <source>General</source>
       <translation>Allgemein</translation>
     </message>

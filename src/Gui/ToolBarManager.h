@@ -25,13 +25,36 @@
 #define GUI_TOOLBARMANAGER_H
 
 #include <string>
+#include <boost_signals2.hpp>
+
 #include <QStringList>
+#include <QTimer>
+
 #include <FCGlobal.h>
+#include <Base/Parameter.h>
 
 class QAction;
+class QLayout;
+class QMenu;
+class QMouseEvent;
 class QToolBar;
 
 namespace Gui {
+
+// Qt treats area as Flag so in theory toolbar could be in multiple areas at once.
+// We don't do that here so simple enum should suffice.
+enum GuiExport ToolBarArea {
+    NoToolBarArea,
+    LeftToolBarArea,
+    RightToolBarArea,
+    TopToolBarArea,
+    BottomToolBarArea,
+    LeftMenuToolBarArea,
+    RightMenuToolBarArea,
+    StatusBarToolBarArea,
+};
+
+class ToolBarAreaWidget;
 
 class GuiExport ToolBarItem
 {
@@ -83,8 +106,9 @@ private:
  * @see MenuManager
  * @author Werner Mayer
  */
-class GuiExport ToolBarManager
+class GuiExport ToolBarManager : public QObject
 {
+    Q_OBJECT
 public:
 
     enum class State {
@@ -109,6 +133,13 @@ public:
     void setState(const QList<QString>& names, State state);
     void setState(const QString& name, State state);
     
+    int toolBarIconSize(QWidget *widget=nullptr) const;
+    void setupToolBarIconSize();
+
+    void populateUndockMenu(QMenu *menu, ToolBarAreaWidget *area = nullptr);
+
+    ToolBarArea toolBarArea(QWidget* toolBar) const;
+
 protected:
     void setup(ToolBarItem*, QToolBar*) const;
 
@@ -116,16 +147,55 @@ protected:
 
     ToolBarItem::DefaultVisibility getToolbarPolicy(const QToolBar *) const;
 
+    bool addToolBarToArea(QObject *source, QMouseEvent *ev);
+    bool showContextMenu(QObject *source);
+    void onToggleStatusBarWidget(QWidget *widget, bool visible);
+    void setToolBarIconSize(QToolBar *toolbar);
+    void onTimer();
+
+    bool eventFilter(QObject *source, QEvent *ev) override;
+
     /** Returns a list of all currently existing toolbars. */
     QList<QToolBar*> toolBars() const;
     QToolBar* findToolBar(const QList<QToolBar*>&, const QString&) const;
     QAction* findAction(const QList<QAction*>&, const QString&) const;
     ToolBarManager();
-    ~ToolBarManager();
+    ~ToolBarManager() override;
+
+private:
+    void setupParameters();
+    void setupStatusBar();
+    void setupMenuBar();
+    void setupConnection();
+    void setupTimer();
+    void setupSizeTimer();
+    void setupResizeTimer();
+    void setupMenuBarTimer();
+    void addToMenu(QLayout* layout, QWidget* area, QMenu* menu);
+    QLayout* findLayoutOfObject(QObject* source, QWidget* area) const;
+    ToolBarAreaWidget* findToolBarAreaWidget() const;
 
 private:
     QStringList toolbarNames;
     static ToolBarManager* _instance;
+
+    QTimer timer;
+    QTimer menuBarTimer;
+    QTimer sizeTimer;
+    QTimer resizeTimer;
+    boost::signals2::scoped_connection connParam;
+    ToolBarAreaWidget *statusBarAreaWidget = nullptr;
+    ToolBarAreaWidget *menuBarLeftAreaWidget = nullptr;
+    ToolBarAreaWidget *menuBarRightAreaWidget = nullptr;
+    ParameterGrp::handle hGeneral;
+    ParameterGrp::handle hPref;
+    ParameterGrp::handle hStatusBar;
+    ParameterGrp::handle hMenuBarLeft;
+    ParameterGrp::handle hMenuBarRight;
+    std::map<QToolBar*, QPointer<QToolBar>> resizingToolbars;
+    int _toolBarIconSize = 0;
+    int _statusBarIconSize = 0;
+    int _menuBarIconSize = 0;
 };
 
 } // namespace Gui

@@ -238,6 +238,7 @@ SET(MaterialModel_Files
     Resources/Models/Legacy/MaterialStandard.yml
     Resources/Models/Mechanical/ArrudaBoyce.yml
     Resources/Models/Mechanical/Density.yml
+    Resources/Models/Mechanical/Hardness.yml
     Resources/Models/Mechanical/IsotropicLinearElastic.yml
     Resources/Models/Mechanical/LinearElastic.yml
     Resources/Models/Mechanical/MooneyRivlin.yml
@@ -284,6 +285,7 @@ set(MaterialTest_Files
     materialtests/__init__.py
     materialtests/TestModels.py
     materialtests/TestMaterials.py
+    materialtests/TestMaterialCreation.py
 )
 
 ADD_CUSTOM_TARGET(MaterialTest ALL
@@ -294,6 +296,23 @@ fc_target_copy_resource(MaterialTest
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Material
     ${MaterialTest_Files})
+
+set(MaterialTestData_Files
+    materialtests/Materials/TestAcrylicLegacy.FCMat
+    materialtests/Materials/TestAluminumAppearance.FCMat
+    materialtests/Materials/TestAluminumMixed.FCMat
+    materialtests/Materials/TestAluminumPhysical.FCMat
+    materialtests/Materials/TestBrassAppearance.FCMat
+)
+
+ADD_CUSTOM_TARGET(MaterialTestData ALL
+    SOURCES ${MaterialTestData_Files}
+)
+
+fc_target_copy_resource(MaterialTestData
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Material
+    ${MaterialTestData_Files})
 
 ADD_CUSTOM_TARGET(MaterialScripts ALL
     SOURCES ${MaterialScripts_Files} ${Material_Ui_Files} ${Material_QRC_SRCS}

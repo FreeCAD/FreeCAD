@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2014 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,29 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_USERSETTINGS_H
-#define GUI_USERSETTINGS_H
 
-#include <FCGlobal.h>
-#include <string>
-#include <QVector>
+#include "PreCompiled.h"
 
-namespace Gui {
+// inclusion of the generated files (generated out of ViewGroup.xml)
+#include "ViewGroupPy.h"
+#include "ViewGroupPy.cpp"
 
-class GuiExport WorkbenchSwitcher
+using namespace Assembly;
+
+// returns a string which represents the object e.g. when printed in python
+std::string ViewGroupPy::representation() const
 {
-public:
-    static bool isLeftCorner(const std::string&);
-    static bool isRightCorner(const std::string&);
-    static bool isToolbar(const std::string&);
-    static std::string getValue();
-    static int getIndex();
-    static void setIndex(int);
+    return {"<Exploded View Group>"};
+}
 
-private:
-    static QVector<std::string> values();
-};
+PyObject* ViewGroupPy::getCustomAttributes(const char* /*attr*/) const
+{
+    return nullptr;
+}
 
-} // namespace Gui
-
-#endif // GUI_USERSETTINGS_H
+int ViewGroupPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+{
+    return 0;
+}

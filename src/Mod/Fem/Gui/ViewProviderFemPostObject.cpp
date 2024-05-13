@@ -811,11 +811,13 @@ void ViewProviderFemPostObject::filterArtifacts(vtkDataSet* dset)
             m_surface->SetInputData(dset);
         }
     }
+
+    m_blockPropertyChanges = false;
+
     // restore initial vsibility
     if (!visibility) {
         this->Visibility.setValue(visibility);
     }
-    m_blockPropertyChanges = false;
 }
 
 bool ViewProviderFemPostObject::setupPipeline()
@@ -1041,7 +1043,7 @@ void ViewProviderFemPostObject::show()
 
 void ViewProviderFemPostObject::OnChange(Base::Subject<int>& /*rCaller*/, int /*rcReason*/)
 {
-    bool ResetColorBarRange = false;
+    bool ResetColorBarRange = true;
     WriteColorData(ResetColorBarRange);
 }
 

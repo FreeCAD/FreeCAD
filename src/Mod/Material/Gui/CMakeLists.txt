@@ -49,6 +49,7 @@ set(MatGui_UIC_SRCS
     Array3D.ui
     DlgDisplayProperties.ui
     DlgMaterial.ui
+    DlgSettingsDefaultMaterial.ui
     DlgSettingsMaterial.ui
     ImageEdit.ui
     ListEdit.ui
@@ -87,6 +88,9 @@ SET(MatGui_SRCS
     DlgMaterialImp.cpp
     DlgMaterialImp.h
     DlgMaterial.ui
+    DlgSettingsDefaultMaterial.cpp
+    DlgSettingsDefaultMaterial.h
+    DlgSettingsDefaultMaterial.ui
     DlgSettingsMaterial.cpp
     DlgSettingsMaterial.h
     DlgSettingsMaterial.ui

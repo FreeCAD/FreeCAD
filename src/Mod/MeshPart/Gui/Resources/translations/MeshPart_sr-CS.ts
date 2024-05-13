@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="281"/>
       <source>Cross-sections...</source>
-      <translation>Poprečni presek...</translation>
+      <translation>Poprečni preseci...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="282"/>
       <source>Cross-sections</source>
-      <translation>Poprečni presek</translation>
+      <translation>Poprečni preseci</translation>
     </message>
   </context>
   <context>
@@ -112,7 +112,7 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross sections</source>
-      <translation>Poprečni presek</translation>
+      <translation>Poprečni preseci</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>

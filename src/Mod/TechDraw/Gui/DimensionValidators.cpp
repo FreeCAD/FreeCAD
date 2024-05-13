@@ -116,7 +116,7 @@ DimensionGeometryType TechDraw::validateDimSelection(
     StringVector subNames;
     TechDraw::DrawViewPart* dvpSave(nullptr);
     for (auto& ref : references) {
-        TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(ref.getObject());
+        auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(ref.getObject());
         if (dvp) {
             dvpSave = dvp;
             if (!ref.getSubName().empty()) {
@@ -295,6 +295,10 @@ DimensionGeometryType TechDraw::getGeometryConfiguration(ReferenceVector valid2d
     if (config > isInvalid) {
         return config;
     }
+    config = isValidSingleFace(valid2dReferences.front());
+    if (config > isInvalid) {
+        return config;
+    }
 
     // no valid configuration found
     return isInvalid;
@@ -333,6 +337,10 @@ DimensionGeometryType TechDraw::getGeometryConfiguration3d(DrawViewPart* dvp,
         return config;
     }
     config = isValidSingleEdge3d(dvp, valid3dReferences.front());
+    if (config > isInvalid) {
+        return config;
+    }
+    config = isValidSingleFace3d(dvp, valid3dReferences.front());
     if (config > isInvalid) {
         return config;
     }
@@ -459,6 +467,47 @@ DimensionGeometryType TechDraw::isValidSingleEdge3d(DrawViewPart* dvp, Reference
     }
 
     return isInvalid;
+}
+
+//! verify that Selection contains a valid Geometry for a single Edge Dimension
+DimensionGeometryType TechDraw::isValidSingleFace(ReferenceEntry ref)
+{
+    auto objFeat(dynamic_cast<TechDraw::DrawViewPart*>(ref.getObject()));
+    if (!objFeat) {
+        return isInvalid;
+    }
+
+    //the Name starts with "Edge"
+    std::string geomName = DrawUtil::getGeomTypeFromName(ref.getSubName());
+    if (geomName != "Face") {
+        return isInvalid;
+    }
+
+    auto geom = objFeat->getFace(ref.getSubName());
+    if (!geom) {
+        return isInvalid;
+    }
+
+    return isFace;
+}
+
+//! verify that Selection contains a valid Geometry for a single Edge Dimension
+DimensionGeometryType TechDraw::isValidSingleFace3d(DrawViewPart* dvp, ReferenceEntry ref)
+{
+    (void)dvp;
+    //the Name starts with "Edge"
+    std::string geomName = DrawUtil::getGeomTypeFromName(ref.getSubName());
+    if (geomName != "Face") {
+        return isInvalid;
+    }
+
+    TopoDS_Shape refShape = ref.getGeometry();
+    if (refShape.IsNull() || refShape.ShapeType() != TopAbs_FACE) {
+        Base::Console().Warning("Geometry for reference is not a face.\n");
+        return isInvalid;
+    }
+
+    return isFace;
 }
 
 //! verify that the edge references can make a dimension. Currently only extent
