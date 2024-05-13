@@ -53,6 +53,12 @@ namespace Data
 {
 
 //struct MappedChildElements;
+/// Option for App::GeoFeature::searchElementCache()
+enum class SearchOptions {
+    /// Whether to compare shape geometry
+    CheckGeometry = 1,
+    SingleResult = 2,
+};
 
 /** Segments
  *  Sub-element type of the ComplexGeoData type

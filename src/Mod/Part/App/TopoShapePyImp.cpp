@@ -1856,6 +1856,7 @@ PyObject* TopoShapePy::makeFillet(PyObject *args)
     return nullptr;
 }
 
+// TODO:  Should this python interface support all three chamfer methods and not just two?
 PyObject* TopoShapePy::makeChamfer(PyObject *args)
 {
     // use two radii for all edges
@@ -1876,7 +1877,7 @@ PyObject* TopoShapePy::makeChamfer(PyObject *args)
     PY_TRY
     {
         return Py::new_reference_to(shape2pyshape(
-            getTopoShapePtr()->makeElementChamfer(getPyShapes(obj), radius1, radius2)));
+            getTopoShapePtr()->makeElementChamfer(getPyShapes(obj), Part::ChamferType::twoDistances, radius1, radius2)));
     }
     PY_CATCH_OCC
 #else
@@ -1910,6 +1911,7 @@ PyObject* TopoShapePy::makeChamfer(PyObject *args)
 #endif
     PyErr_Clear();
     // use one radius for all edges
+    // TODO: Should this be using makeElementChamfer to support Toponaming fixes?
     double radius;
     if (PyArg_ParseTuple(args, "dO", &radius, &obj)) {
         try {

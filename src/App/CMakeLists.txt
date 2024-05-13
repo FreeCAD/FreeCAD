@@ -317,7 +317,15 @@ SET(FreeCADApp_HPP_SRCS
     StringHasher.h
 )
 
+# auto-generate resource file with all available translations
+set (FreeCADApp_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/App_translation.qrc)
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${FreeCADApp_TR_QRC} ${QM_SRCS})
+qt_add_resources(FreeCADApp_QRC_SRCS ${FreeCADApp_TR_QRC})
+
 SET(FreeCADApp_SRCS
+    ${FreeCADApp_QRC_SRCS}
     ${FreeCADApp_CPP_SRCS}
     ${FreeCADApp_HPP_SRCS}
     ${FreeCADApp_XML_SRCS}

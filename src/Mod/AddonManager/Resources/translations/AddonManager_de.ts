@@ -6,12 +6,12 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="14"/>
       <source>Custom repository</source>
-      <translation>Eigenes Projektarchiv</translation>
+      <translation>Nutzerdefiniertes Projektarchiv</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="20"/>
       <source>Repository URL</source>
-      <translation>URL des Projektarchivs</translation>
+      <translation>Projektarchiv Internetadresse</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
@@ -53,7 +53,7 @@
     <message>
       <location filename="../../compact_view.ui" line="102"/>
       <source>UpdateAvailable</source>
-      <translation>Update verfügbar</translation>
+      <translation>AktualisierungVerfügbar</translation>
     </message>
   </context>
   <context>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
       <source>Optional?</source>
-      <translation>Optional?</translation>
+      <translation>Wahlweise?</translation>
     </message>
   </context>
   <context>
@@ -92,14 +92,14 @@
       <source>This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
 
 Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</source>
-      <translation>Diese Erweiterung hat die folgenden erforderlichen bzw. optionalen Abhängigkeiten. Sie müssen installiert werden, bevor dieses Addon verwendet werden kann.
+      <translation>Diese Erweiterung hat die folgenden erforderlichen bzw. optionalen Abhängigkeiten. Du must diese installieren, bevor diese Erweiterung verwendet werden kann.
 
-Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wählen, um die Erweiterung zu installieren, ohne die Abhängigkeiten zu installieren.</translation>
+Möchtest Du das der Erweiterungsverwalter sie automatisch installiert? Wähle &quot;Ignorieren&quot;, um die Erweiterung zu installieren, ohne die Abhängigkeiten zu installieren.</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
       <source>FreeCAD Addons</source>
-      <translation>FreeCAD-Addons</translation>
+      <translation>FreeCAD Erweiterungen</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
@@ -117,12 +117,12 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="14"/>
       <source>Addon Developer Tools</source>
-      <translation>Addon-Entwicklungswerkzeuge</translation>
+      <translation>Werkzeuge für Erweiterungsentwickler</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation>Pfad zum Addon</translation>
+      <translation>Pfad zur Erweiterung</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
@@ -144,7 +144,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation>Erläuterung dessen, was dieses Addon zur Verfügung stellt. Wird im Addon-Manager angezeigt. Es ist nicht notwendig anzugeben, dass dies ein FreeCAD-Addon ist.</translation>
+      <translation>Erläuterung, was diese Erweiterung bietet. Wird im Erweiterungsverwalter angezeigt. Der Hinweis, dass es sich um eine FreeCAD Erweiterung  handelt, ist nicht notwendig.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -393,7 +393,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
       <location filename="../../expanded_view.py" line="131"/>
       <location filename="../../expanded_view.ui" line="178"/>
       <source>Maintainer</source>
-      <translation>Maintainer</translation>
+      <translation>Instandhalter</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="134"/>
@@ -506,7 +506,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../AddonManagerOptions.ui" line="14"/>
       <source>Addon manager options</source>
-      <translation>Addon-Manager-Optionen</translation>
+      <translation>Auswahlmöglichkeiten Erweiterungsverwalter</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="20"/>
@@ -623,7 +623,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="393"/>
       <source>Advanced Options</source>
-      <translation>Erweiterte Optionen</translation>
+      <translation>Erweiterte Wahlmöglichkeiten</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="399"/>
@@ -2347,7 +2347,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
       <location filename="../../AddonManagerOptions.py" line="262"/>
       <source>Repository URL</source>
       <comment>Preferences header for custom repositories</comment>
-      <translation>URL des Projektarchivs</translation>
+      <translation>Projektarchiv Internetadresse</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.py" line="268"/>

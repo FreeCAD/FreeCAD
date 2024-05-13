@@ -68,13 +68,13 @@
     <message>
       <location filename="../../Command.cpp" line="961"/>
       <source>Cross-sections...</source>
-      <translation>Poprečni presek...</translation>
+      <translation>Poprečni preseci...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="962"/>
       <location filename="../../Command.cpp" line="963"/>
       <source>Cross-sections</source>
-      <translation>Poprečni presek</translation>
+      <translation>Poprečni preseci</translation>
     </message>
   </context>
   <context>
@@ -2347,7 +2347,7 @@ Poseti http://www.openscad.org/index.html da instaliraš.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Boolean</source>
-      <translation>Bulove</translation>
+      <translation>Bulove operacije</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>

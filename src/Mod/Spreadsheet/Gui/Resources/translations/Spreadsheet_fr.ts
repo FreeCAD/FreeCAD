@@ -1129,7 +1129,7 @@ Par défaut : %V = %A
     <message>
       <location filename="../../SpreadsheetView.cpp" line="294"/>
       <source>Export PDF</source>
-      <translation>Exporter en PDF</translation>
+      <translation>Exporter au format PDF</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="296"/>

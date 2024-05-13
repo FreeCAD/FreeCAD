@@ -2090,7 +2090,7 @@ click again to end selection</source>
       <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
       <location filename="../../TaskLinearPatternParameters.ui" line="131"/>
       <source>Offset</source>
-      <translation>Décaler</translation>
+      <translation>Décalage</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="93"/>
@@ -2707,7 +2707,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="137"/>
       <source>Offset</source>
-      <translation>Décaler</translation>
+      <translation>Décalage</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="168"/>
@@ -3470,7 +3470,7 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandBody.cpp" line="69"/>
       <source>Failed to create a part object.</source>
-      <translation>Impossible de créer un objet pièce.</translation>
+      <translation>Impossible de créer un objet part.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="116"/>
@@ -4344,7 +4344,7 @@ account for the depth of blind holes</source>
 90 degree: straight hole
 under 90: smaller hole radius at the bottom
 over 90: larger hole radius at the bottom</source>
-      <translation>Angle de conicité pour le trou :
+      <translation>Angle de dépouille pour le trou :
 - 90 degrés : trou droit
 - moins de 90 : rayon du trou plus petit au fond
 - plus de 90 : rayon du trou plus grand à la base</translation>
@@ -4825,22 +4825,22 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="441"/>
       <source>Length too small</source>
-      <translation type="unfinished">Length too small</translation>
+      <translation>Longueur trop petite</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="448"/>
       <source>Second length too small</source>
-      <translation type="unfinished">Second length too small</translation>
+      <translation>La deuxième longueur est trop petite</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="482"/>
       <source>Failed to obtain profile shape</source>
-      <translation type="unfinished">Failed to obtain profile shape</translation>
+      <translation>Impossible d'obtenir la forme du profil</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="534"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation type="unfinished">Creation failed because direction is orthogonal to sketch's normal vector</translation>
+      <translation>La création a échoué car la direction est orthogonale au vecteur normal de l'esquisse.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="553"/>
@@ -4853,17 +4853,17 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="615"/>
       <source>Up to face: Could not get SubShape!</source>
-      <translation type="unfinished">Up to face: Could not get SubShape!</translation>
+      <translation>Jusqu'à la face : impossible d'obtenir la sous-forme !</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="657"/>
       <source>Magnitude of taper angle matches or exceeds 90 degrees</source>
-      <translation type="unfinished">Magnitude of taper angle matches or exceeds 90 degrees</translation>
+      <translation>La valeur de l'angle de dépouille est égale ou supérieure à 90 degrés</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="668"/>
       <source>Padding with draft angle failed</source>
-      <translation type="unfinished">Padding with draft angle failed</translation>
+      <translation>La protrusion avec l'angle de dépouille a échoué.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="148"/>
@@ -5074,7 +5074,7 @@ L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'e
       <location filename="../../../App/FeatureLoft.cpp" line="137"/>
       <location filename="../../../App/FeatureLoft.cpp" line="403"/>
       <source>Loft: At least one section is needed</source>
-      <translation>Lissage : Au moins une section est nécessaire</translation>
+      <translation>Lissage : au moins une section est nécessaire</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="142"/>
@@ -5089,7 +5089,7 @@ L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'e
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="163"/>
       <source>Loft: All sections need to be part features</source>
-      <translation>Lissage : toutes les sections doivent être des fonctions de Part</translation>
+      <translation>Lissage : toutes les sections doivent être des fonctions de la pièce</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="168"/>
@@ -5150,12 +5150,12 @@ L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'e
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="442"/>
       <source>Loft: Creating a face from sketch failed</source>
-      <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
+      <translation>Lissage : la création d'une face à partir de l'esquisse a échoué</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="475"/>
       <source>Loft: Failed to create shell</source>
-      <translation type="unfinished">Loft: Failed to create shell</translation>
+      <translation>Lissage : impossible de créer la coque</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="105"/>
@@ -5350,13 +5350,13 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
       <location filename="../../../App/FeatureLoft.cpp" line="515"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
       <source>Unknown operation type</source>
-      <translation type="unfinished">Unknown operation type</translation>
+      <translation>Type d'opération inconnu</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
       <source>Failed to perform boolean operation</source>
-      <translation type="unfinished">Failed to perform boolean operation</translation>
+      <translation>Impossible d'effectuer l'opération booléenne</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="145"/>
@@ -5479,7 +5479,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="133"/>
       <source>Reference axis is invalid</source>
-      <translation type="unfinished">Reference axis is invalid</translation>
+      <translation>L'axe de référence n'est pas valide</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="709"/>

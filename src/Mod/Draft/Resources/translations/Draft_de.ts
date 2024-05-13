@@ -412,7 +412,7 @@ Change the direction of the axis itself in the property editor.</source>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="228"/>
       <source>Reset the coordinates of the center of rotation.</source>
-      <translation>Die Koordinaten des Rotationszentrums zurücksetzen.</translation>
+      <translation>Setzt die Koordinaten des Drehmittelpunktes zurück.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="231"/>
@@ -641,7 +641,7 @@ Change the direction of the axis itself in the property editor.</source>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="190"/>
       <source>Reset the coordinates of the center of rotation.</source>
-      <translation>Die Koordinaten des Rotationszentrums zurücksetzen.</translation>
+      <translation>Setzt die Koordinaten des Drehmittelpunktes zurück.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="193"/>
@@ -4577,7 +4577,7 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
       <location filename="../../drafttaskpanels/task_polararray.py" line="94"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="257"/>
       <source>Polar array</source>
-      <translation>Polare Reihe</translation>
+      <translation>Polare Anordnung</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="206"/>

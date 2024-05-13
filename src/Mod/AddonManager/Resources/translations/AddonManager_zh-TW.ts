@@ -512,8 +512,8 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../AddonManagerOptions.ui" line="20"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates</translation>
+      <translation>如果選擇此選項, 則啟動插件管理器時,
+將檢查已安裝的插件是否有可用更新</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="24"/>

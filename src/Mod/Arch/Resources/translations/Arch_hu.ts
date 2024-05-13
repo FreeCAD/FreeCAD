@@ -4064,7 +4064,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="335"/>
       <source>If true, the height value propagates to contained objects if the height of those objects is set to 0</source>
-      <translation type="unfinished">If true, the height value propagates to contained objects if the height of those objects is set to 0</translation>
+      <translation>Ha igaz, a magasság értéke átterjed a benne lévő tárgyakra, ha a tárgyak magassága 0-ra van állítva</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="338"/>

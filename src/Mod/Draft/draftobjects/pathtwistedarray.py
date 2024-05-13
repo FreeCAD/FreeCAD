@@ -134,11 +134,11 @@ class PathTwistedArray(DraftLink):
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
-        # Fuse property was added in v0.22, obj should be OK if it is present:
+        # Fuse property was added in v1.0, obj should be OK if it is present:
         if hasattr(obj, "Fuse"):
             return
         self.set_properties(obj)
-        _wrn("v0.22, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
+        _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
 
     def execute(self, obj):
         """Execute when the object is created or recomputed."""
