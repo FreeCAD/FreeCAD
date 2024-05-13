@@ -28,78 +28,91 @@ using namespace MillSim;
 
 EndMill::EndMill(int toolid, float diameter)
 {
-	mRadius = diameter / 2;
-	mToolId = toolid;
+    mRadius = diameter / 2;
+    mToolId = toolid;
 }
 
 MillSim::EndMill::EndMill(const float* toolProfile, int numPoints, int toolid, float diameter)
-	: EndMill(toolid, diameter)
+    : EndMill(toolid, diameter)
 {
-	mNPoints = numPoints;
-	int srcBuffSize = numPoints * 2;
+    mNPoints = numPoints;
+    int srcBuffSize = numPoints * 2;
 
-	// make sure last point is at 0,0 else, add it
-	bool missingCenterPoint = fabs(toolProfile[numPoints * 2 - 2]) > 0.0001f;
-	if (missingCenterPoint)
-		mNPoints++;
+    // make sure last point is at 0,0 else, add it
+    bool missingCenterPoint = fabs(toolProfile[numPoints * 2 - 2]) > 0.0001f;
+    if (missingCenterPoint) {
+        mNPoints++;
+    }
 
-	int buffSize = PROFILE_BUFFER_SIZE(mNPoints);
-	mProfPoints = new float[buffSize];
-	if (mProfPoints == nullptr)
-		return;
+    int buffSize = PROFILE_BUFFER_SIZE(mNPoints);
+    mProfPoints = new float[buffSize];
+    if (mProfPoints == nullptr) {
+        return;
+    }
 
-	// copy profile points
-	mHandleAllocation = true;
-	for (int i = 0; i < srcBuffSize; i++)
-		mProfPoints[i] = toolProfile[i] + 0.01f; // add some width to reduce simulation artifacts
-	if (missingCenterPoint)
-		mProfPoints[srcBuffSize] = mProfPoints[srcBuffSize + 1] = 0.0f;
+    // copy profile points
+    mHandleAllocation = true;
+    for (int i = 0; i < srcBuffSize; i++) {
+        mProfPoints[i] = toolProfile[i] + 0.01f;  // add some width to reduce simulation artifacts
+    }
+    if (missingCenterPoint) {
+        mProfPoints[srcBuffSize] = mProfPoints[srcBuffSize + 1] = 0.0f;
+    }
 
-	MirrorPointBuffer();
+    MirrorPointBuffer();
 }
 
 EndMill::~EndMill()
 {
-	mToolShape.FreeResources();
-	mHToolShape.FreeResources();
-	mPathShape.FreeResources();
-	if (mHandleAllocation)
-		delete[] mProfPoints;
+    mToolShape.FreeResources();
+    mHToolShape.FreeResources();
+    mPathShape.FreeResources();
+    if (mHandleAllocation) {
+        delete[] mProfPoints;
+    }
 }
 
 void EndMill::GenerateDisplayLists(float quality)
 {
-	// calculate number of slices based on quality.
-	int nslices = 16;
-	if (quality < 3)
-		nslices = 4;
-	else if (quality < 7)
-		nslices = 8;
+    // calculate number of slices based on quality.
+    int nslices = 16;
+    if (quality < 3) {
+        nslices = 4;
+    }
+    else if (quality < 7) {
+        nslices = 8;
+    }
 
-	// full tool
-	mToolShape.RotateProfile(mProfPoints, mNPoints, 0, 0, nslices, false);
+    // full tool
+    mToolShape.RotateProfile(mProfPoints, mNPoints, 0, 0, nslices, false);
 
-	// half tool
-	mHToolShape.RotateProfile(mProfPoints, mNPoints, 0, 0, nslices / 2, true);
+    // half tool
+    mHToolShape.RotateProfile(mProfPoints, mNPoints, 0, 0, nslices / 2, true);
 
-	// unit path
-	int nFullPoints = PROFILE_BUFFER_POINTS(mNPoints);
-	mPathShape.ExtrudeProfileLinear(mProfPoints, nFullPoints, 0, 1, 0, 0, true, false);
+    // unit path
+    int nFullPoints = PROFILE_BUFFER_POINTS(mNPoints);
+    mPathShape.ExtrudeProfileLinear(mProfPoints, nFullPoints, 0, 1, 0, 0, true, false);
 }
 
-unsigned int EndMill::GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape* retShape)
+unsigned int
+EndMill::GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape* retShape)
 {
-	int nFullPoints = PROFILE_BUFFER_POINTS(mNPoints);
-	retShape->ExtrudeProfileRadial(mProfPoints, PROFILE_BUFFER_POINTS(mNPoints), radius, angleRad, zShift, true, true);
-	return 0;
+    int nFullPoints = PROFILE_BUFFER_POINTS(mNPoints);
+    retShape->ExtrudeProfileRadial(mProfPoints,
+                                   PROFILE_BUFFER_POINTS(mNPoints),
+                                   radius,
+                                   angleRad,
+                                   zShift,
+                                   true,
+                                   true);
+    return 0;
 }
 
 void EndMill::MirrorPointBuffer()
 {
-	int endpoint = PROFILE_BUFFER_POINTS(mNPoints) - 1;
-	for (int i = 0, j = endpoint * 2; i < (mNPoints - 1) * 2; i += 2, j -= 2)
-	{
-		mProfPoints[j] = -mProfPoints[i];
-		mProfPoints[j + 1] = mProfPoints[i + 1];
-	}
+    int endpoint = PROFILE_BUFFER_POINTS(mNPoints) - 1;
+    for (int i = 0, j = endpoint * 2; i < (mNPoints - 1) * 2; i += 2, j -= 2) {
+        mProfPoints[j] = -mProfPoints[i];
+        mProfPoints[j + 1] = mProfPoints[i + 1];
+    }
 }

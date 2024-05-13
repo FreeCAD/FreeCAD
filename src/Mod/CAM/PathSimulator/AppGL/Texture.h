@@ -27,29 +27,33 @@
 namespace MillSim
 {
 
-	class Texture
-	{
-	public:
-		Texture() {}
-		~Texture();
-		bool LoadImage(unsigned int* image, int x, int y);
-		bool Activate();
-		bool unbind();
-		float getTexX(int imgX) { return (float)imgX / (float)mWidth; }
-		float getTexY(int imgY) { return (float)imgY / (float)mHeight; }
+class Texture
+{
+public:
+    Texture()
+    {}
+    ~Texture();
+    bool LoadImage(unsigned int* image, int x, int y);
+    bool Activate();
+    bool unbind();
+    float getTexX(int imgX)
+    {
+        return (float)imgX / (float)mWidth;
+    }
+    float getTexY(int imgY)
+    {
+        return (float)imgY / (float)mHeight;
+    }
 
-	public:
-		int mWidth = 0, mHeight = 0;
+public:
+    int mWidth = 0, mHeight = 0;
 
 
-	protected:
-		unsigned int mTextureId = -1;
+protected:
+    unsigned int mTextureId = -1;
+};
 
 
-	};
+}  // namespace MillSim
 
-
-}
-
-#endif // !__texture_h__
-
+#endif  // !__texture_h__

@@ -39,9 +39,9 @@ MillSim::StockObject::~StockObject()
 
 void MillSim::StockObject::render()
 {
-    //glCallList(mDisplayListId);
-    //UpdateObjColor(color);
-    mShape.Render(modelMat, modelMat); // model is not rotated hence both are identity matrix
+    // glCallList(mDisplayListId);
+    // UpdateObjColor(color);
+    mShape.Render(modelMat, modelMat);  // model is not rotated hence both are identity matrix
 }
 
 void MillSim::StockObject::SetPosition(vec3 position)

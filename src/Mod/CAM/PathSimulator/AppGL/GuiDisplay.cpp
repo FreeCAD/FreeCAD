@@ -153,289 +153,301 @@ static const char* Char4Img =
 
 
 GuiItem guiItems[] = {
-	{ SliderImg, 0, 0, 1, 36, 0, 0, 360, 554, 0 },
-	{ ThumbImg, 0, 0, 1, 1, 0, 0, 448, 540, 1 },
-	{ PauseImg, 0, 0, 70, 1, 0, 0, 170, 540, 'P', true },
-	{ PlayImg, 0, 0, 100, 1, 0, 0, 170, 540, 'S', false },
-	{ SingleStepImg, 0, 0, 134, 1, 0, 0, 210, 540, 'T' },
-	{ FasterImg, 0, 0, 172, 1, 0, 0, 250, 540, 'F' },
-	{ RotateImg, 0, 0, 210, 1, 0, 0, 290, 540, ' ' },
-	{ CharXImg, 0, 0, 2, 50, 0, 0, 620, 540, 0, false, 0},
-	{ Char0Img, 0, 0, 70, 50, 0, 0, 660, 540, 0, false, 0 },
-	{ Char1Img, 0, 0, 27, 50, 0, 0, 645, 540, 0, false, 0 },
-	{ Char4Img, 0, 0, 44, 50, 0, 0, 640, 540, 0, true, 0 },
+    {SliderImg, 0, 0, 1, 36, 0, 0, 360, 554, 0},
+    {ThumbImg, 0, 0, 1, 1, 0, 0, 448, 540, 1},
+    {PauseImg, 0, 0, 70, 1, 0, 0, 170, 540, 'P', true},
+    {PlayImg, 0, 0, 100, 1, 0, 0, 170, 540, 'S', false},
+    {SingleStepImg, 0, 0, 134, 1, 0, 0, 210, 540, 'T'},
+    {FasterImg, 0, 0, 172, 1, 0, 0, 250, 540, 'F'},
+    {RotateImg, 0, 0, 210, 1, 0, 0, 290, 540, ' '},
+    {CharXImg, 0, 0, 2, 50, 0, 0, 620, 540, 0, false, 0},
+    {Char0Img, 0, 0, 70, 50, 0, 0, 660, 540, 0, false, 0},
+    {Char1Img, 0, 0, 27, 50, 0, 0, 645, 540, 0, false, 0},
+    {Char4Img, 0, 0, 44, 50, 0, 0, 640, 540, 0, true, 0},
 };
 
 #define NUM_GUI_ITEMS (sizeof(guiItems) / sizeof(GuiItem))
 #define TEX_SIZE 256
 
 // parse compressed image into a texture buffer
-bool GuiDisplay::ParseImage(GuiItem *guiItem, unsigned int* buffPos, int stride)
+bool GuiDisplay::ParseImage(GuiItem* guiItem, unsigned int* buffPos, int stride)
 {
-	mPixPos = guiItem->imageData;
-	int width = ReadNextVal();
-	if (width < 0)
-		return false;
-	int height = ReadNextVal();
-	if (height < 0)
-		return false;
-	int buffLen = width * height;
-	buffPos += stride * guiItem->ty + guiItem->tx;
-	int x = 0;
-	unsigned int pixVal;
-	int amount;
-	while (ReadNextPixel(&pixVal, &amount))
-	{
-		while (x + amount > width)
-		{
-			int len = width - x;
-			for (int i = x; i < width; i++)
-				buffPos[i] = pixVal;
-			amount -= len;
-			x = 0;
-			buffPos += stride;
-		}
-		int end = x + amount;
-		for (; x < end; x++)
-			buffPos[x] = pixVal;
-		if (x >= width)
-		{
-			x = 0;
-			buffPos += stride;
-		}
-	}
-	guiItem->w = width;
-	guiItem->h = height;
-	return true;
+    mPixPos = guiItem->imageData;
+    int width = ReadNextVal();
+    if (width < 0) {
+        return false;
+    }
+    int height = ReadNextVal();
+    if (height < 0) {
+        return false;
+    }
+    int buffLen = width * height;
+    buffPos += stride * guiItem->ty + guiItem->tx;
+    int x = 0;
+    unsigned int pixVal;
+    int amount;
+    while (ReadNextPixel(&pixVal, &amount)) {
+        while (x + amount > width) {
+            int len = width - x;
+            for (int i = x; i < width; i++) {
+                buffPos[i] = pixVal;
+            }
+            amount -= len;
+            x = 0;
+            buffPos += stride;
+        }
+        int end = x + amount;
+        for (; x < end; x++) {
+            buffPos[x] = pixVal;
+        }
+        if (x >= width) {
+            x = 0;
+            buffPos += stride;
+        }
+    }
+    guiItem->w = width;
+    guiItem->h = height;
+    return true;
 }
 
 bool GuiDisplay::GenerateGlItem(GuiItem* guiItem)
 {
-	Vertex2D verts[4];
-	int x = guiItem->tx;
-	int y = guiItem->ty;
-	int w = guiItem->w;
-	int h = guiItem->h;
+    Vertex2D verts[4];
+    int x = guiItem->tx;
+    int y = guiItem->ty;
+    int w = guiItem->w;
+    int h = guiItem->h;
 
-	verts[0] = { 0, (float)h, mTexture.getTexX(x), mTexture.getTexY(y + h) };
-	verts[1] = { (float)w, (float)h,  mTexture.getTexX(x + w), mTexture.getTexY(y + h) };
-	verts[2] = { 0, 0, mTexture.getTexX(x), mTexture.getTexY(y) };
-	verts[3] = { (float)w, 0,  mTexture.getTexX(x + w), mTexture.getTexY(y) };
+    verts[0] = {0, (float)h, mTexture.getTexX(x), mTexture.getTexY(y + h)};
+    verts[1] = {(float)w, (float)h, mTexture.getTexX(x + w), mTexture.getTexY(y + h)};
+    verts[2] = {0, 0, mTexture.getTexX(x), mTexture.getTexY(y)};
+    verts[3] = {(float)w, 0, mTexture.getTexX(x + w), mTexture.getTexY(y)};
 
-	// vertex buffer
-	glGenBuffers(1, &(guiItem->vbo));
-	glBindBuffer(GL_ARRAY_BUFFER, guiItem->vbo);
-	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex2D), verts, GL_STATIC_DRAW);
+    // vertex buffer
+    glGenBuffers(1, &(guiItem->vbo));
+    glBindBuffer(GL_ARRAY_BUFFER, guiItem->vbo);
+    glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex2D), verts, GL_STATIC_DRAW);
 
-	//glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_SHORT, nullptr);
-	// vertex array
-	glGenVertexArrays(1, &(guiItem->vao));
-	glBindVertexArray(guiItem->vao);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, x));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, tx));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
-	glBindVertexArray(0);
+    // glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_SHORT, nullptr);
+    //  vertex array
+    glGenVertexArrays(1, &(guiItem->vao));
+    glBindVertexArray(guiItem->vao);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, x));
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1,
+                          2,
+                          GL_FLOAT,
+                          GL_FALSE,
+                          sizeof(Vertex2D),
+                          (void*)offsetof(Vertex2D, tx));
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
+    glBindVertexArray(0);
 
-	return true;
+    return true;
 }
 
 bool GuiDisplay::InutGui()
 {
-	// index buffer		
-	glGenBuffers(1, &mIbo);
-	GLshort indices[6] = { 0, 2, 3, 0, 3, 1 };
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(GLushort), indices, GL_STATIC_DRAW);
+    // index buffer
+    glGenBuffers(1, &mIbo);
+    GLshort indices[6] = {0, 2, 3, 0, 3, 1};
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(GLushort), indices, GL_STATIC_DRAW);
 
-	int buffsize = TEX_SIZE * TEX_SIZE * sizeof(unsigned int);
-	unsigned int* buffer = (unsigned int*)malloc(buffsize);
-	if (buffer == nullptr)
-		return false;
-	memset(buffer, 0, buffsize);
-	for (int i = 0; i < NUM_GUI_ITEMS; i++)
-		ParseImage(&(guiItems[i]), buffer, TEX_SIZE);
-	mTexture.LoadImage(buffer, TEX_SIZE, TEX_SIZE);
-	free(buffer);
-	for (int i = 0; i < NUM_GUI_ITEMS; i++)
-		GenerateGlItem(&(guiItems[i]));
+    int buffsize = TEX_SIZE * TEX_SIZE * sizeof(unsigned int);
+    unsigned int* buffer = (unsigned int*)malloc(buffsize);
+    if (buffer == nullptr) {
+        return false;
+    }
+    memset(buffer, 0, buffsize);
+    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
+        ParseImage(&(guiItems[i]), buffer, TEX_SIZE);
+    }
+    mTexture.LoadImage(buffer, TEX_SIZE, TEX_SIZE);
+    free(buffer);
+    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
+        GenerateGlItem(&(guiItems[i]));
+    }
 
-	mThumbStartX = guiItems[eGuiItemSlider].sx - guiItems[eGuiItemThumb].w / 2;
-	mThumbMaxMotion = (float)guiItems[eGuiItemSlider].w;
+    mThumbStartX = guiItems[eGuiItemSlider].sx - guiItems[eGuiItemThumb].w / 2;
+    mThumbMaxMotion = (float)guiItems[eGuiItemSlider].w;
 
-	UpdateSimSpeed(1);
+    UpdateSimSpeed(1);
 
-	// shader
-	mat4x4 projmat;
-	//mat4x4 viewmat;
-	mat4x4_ortho(projmat, 0, 800, 600, 0, -1, 1);
-	mShader.CompileShader((char*)VertShader2DTex, (char*)FragShader2dTex);
-	mShader.UpdateTextureSlot(0);
-	mShader.UpdateProjectionMat(projmat);
-	return true;
+    // shader
+    mat4x4 projmat;
+    // mat4x4 viewmat;
+    mat4x4_ortho(projmat, 0, 800, 600, 0, -1, 1);
+    mShader.CompileShader((char*)VertShader2DTex, (char*)FragShader2dTex);
+    mShader.UpdateTextureSlot(0);
+    mShader.UpdateProjectionMat(projmat);
+    return true;
 }
 
 void GuiDisplay::RenderItem(int itemId)
 {
-	GuiItem* item = &(guiItems[itemId]);
-	if (item->hidden)
-		return;
-	mat4x4 model;
-	mat4x4_translate(model, (float)item->sx, (float)item->sy, 0);
-	mShader.UpdateModelMat(model, nullptr);
-	if (itemId == mPressedItem)
-		mShader.UpdateObjColor(mPressedColor);
-	else if (item->mouseOver)
-		mShader.UpdateObjColor(mHighlightColor);
-	else if (itemId > 1 && item->actionKey == 0)
-		mShader.UpdateObjColor(mTextColor);
-	else
-		mShader.UpdateObjColor(mStdColor);
+    GuiItem* item = &(guiItems[itemId]);
+    if (item->hidden) {
+        return;
+    }
+    mat4x4 model;
+    mat4x4_translate(model, (float)item->sx, (float)item->sy, 0);
+    mShader.UpdateModelMat(model, nullptr);
+    if (itemId == mPressedItem) {
+        mShader.UpdateObjColor(mPressedColor);
+    }
+    else if (item->mouseOver) {
+        mShader.UpdateObjColor(mHighlightColor);
+    }
+    else if (itemId > 1 && item->actionKey == 0) {
+        mShader.UpdateObjColor(mTextColor);
+    }
+    else {
+        mShader.UpdateObjColor(mStdColor);
+    }
 
-	glBindVertexArray(item->vao);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
+    glBindVertexArray(item->vao);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
 }
 
 void GuiDisplay::MouseCursorPos(int x, int y)
 {
-	for (int i = 0; i < NUM_GUI_ITEMS; i++)
-	{
-		GuiItem* g = &(guiItems[i]);
-		if (g->actionKey == 0)
-			continue;
-		g->mouseOver = (x > g->sx && y > g->sy && x < (g->sx + g->w) && y < (g->sy + g->h));
-	}
-
+    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
+        GuiItem* g = &(guiItems[i]);
+        if (g->actionKey == 0) {
+            continue;
+        }
+        g->mouseOver = (x > g->sx && y > g->sy && x < (g->sx + g->w) && y < (g->sy + g->h));
+    }
 }
 
 void GuiDisplay::MousePressed(int button, bool isPressed, bool isSimRunning)
 {
-	if (button == MS_MOUSE_LEFT)
-	{
-		if (isPressed)
-		{
-			mPressedItem = eGuiItemMax;
-			for (int i = 1; i < NUM_GUI_ITEMS; i++)
-			{
-				GuiItem* g = &(guiItems[i]);
-				if (g->mouseOver && !g->hidden)
-				{
-					mPressedItem = (eGuiItems)i;
-					break;
-				}
-			}
-			if (mPressedItem != eGuiItemMax)
-			{
-				GuiItem* g = &(guiItems[mPressedItem]);
-				if (g->actionKey >= 32)
-					mMillSim->HandleKeyPress(g->actionKey);
-			}
-		}
-		else // button released
-		{
-			UpdatePlayState(isSimRunning);
-			mPressedItem = eGuiItemMax;
-		}
-	}
+    if (button == MS_MOUSE_LEFT) {
+        if (isPressed) {
+            mPressedItem = eGuiItemMax;
+            for (int i = 1; i < NUM_GUI_ITEMS; i++) {
+                GuiItem* g = &(guiItems[i]);
+                if (g->mouseOver && !g->hidden) {
+                    mPressedItem = (eGuiItems)i;
+                    break;
+                }
+            }
+            if (mPressedItem != eGuiItemMax) {
+                GuiItem* g = &(guiItems[mPressedItem]);
+                if (g->actionKey >= 32) {
+                    mMillSim->HandleKeyPress(g->actionKey);
+                }
+            }
+        }
+        else  // button released
+        {
+            UpdatePlayState(isSimRunning);
+            mPressedItem = eGuiItemMax;
+        }
+    }
 }
 
 void GuiDisplay::MouseDrag(int buttons, int dx, int dy)
 {
-	if (mPressedItem == eGuiItemThumb)
-	{
-		GuiItem* g = &(guiItems[eGuiItemThumb]);
-		int newx = g->sx + dx;
-		if (newx < mThumbStartX)
-			newx = mThumbStartX;
-		if (newx > ((int)mThumbMaxMotion + mThumbStartX))
-			newx = (int)mThumbMaxMotion + mThumbStartX;
-		if (newx != g->sx)
-		{
-			mMillSim->SetSimulationStage((float)(newx - mThumbStartX) / mThumbMaxMotion);
-			g->sx = newx;
-		}
-	}
+    if (mPressedItem == eGuiItemThumb) {
+        GuiItem* g = &(guiItems[eGuiItemThumb]);
+        int newx = g->sx + dx;
+        if (newx < mThumbStartX) {
+            newx = mThumbStartX;
+        }
+        if (newx > ((int)mThumbMaxMotion + mThumbStartX)) {
+            newx = (int)mThumbMaxMotion + mThumbStartX;
+        }
+        if (newx != g->sx) {
+            mMillSim->SetSimulationStage((float)(newx - mThumbStartX) / mThumbMaxMotion);
+            g->sx = newx;
+        }
+    }
 }
 
 void GuiDisplay::UpdatePlayState(bool isRunning)
 {
-	guiItems[eGuiItemPause].hidden = !isRunning;
-	guiItems[eGuiItemPlay].hidden = isRunning;
+    guiItems[eGuiItemPause].hidden = !isRunning;
+    guiItems[eGuiItemPlay].hidden = isRunning;
 }
 
 void MillSim::GuiDisplay::UpdateSimSpeed(int speed)
 {
-	guiItems[eGuiItemChar0Img].hidden = speed == 1;
-	guiItems[eGuiItemChar1Img].hidden = speed == 40;
-	guiItems[eGuiItemChar4Img].hidden = speed != 40;
-
+    guiItems[eGuiItemChar0Img].hidden = speed == 1;
+    guiItems[eGuiItemChar1Img].hidden = speed == 40;
+    guiItems[eGuiItemChar4Img].hidden = speed != 40;
 }
 
 void GuiDisplay::Render(float progress)
 {
-	if (mPressedItem != eGuiItemThumb)
-		guiItems[eGuiItemThumb].sx = (int)(mThumbMaxMotion * progress) + mThumbStartX;
-	glDisable(GL_CULL_FACE);
-	glDisable(GL_DEPTH_TEST);
-	mTexture.Activate();
-	mShader.Activate();
-	mShader.UpdateTextureSlot(0);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	for (int i = 0; i < NUM_GUI_ITEMS; i++)
-		RenderItem(i);
+    if (mPressedItem != eGuiItemThumb) {
+        guiItems[eGuiItemThumb].sx = (int)(mThumbMaxMotion * progress) + mThumbStartX;
+    }
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_DEPTH_TEST);
+    mTexture.Activate();
+    mShader.Activate();
+    mShader.UpdateTextureSlot(0);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
+        RenderItem(i);
+    }
 
-	//mat4x4 model;
-	//mat4x4_translate(model, 100, 100, 0);
-	//mShader.UpdateModelMat(model, nullptr);
-	//glBindVertexArray(guiItems[0].vao);
-	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
+    // mat4x4 model;
+    // mat4x4_translate(model, 100, 100, 0);
+    // mShader.UpdateModelMat(model, nullptr);
+    // glBindVertexArray(guiItems[0].vao);
+    // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
 }
 
 int GuiDisplay::ReadNextVal()
 {
-	int val = 0;
-	for (int i = 0; i < 2; i++)
-	{
-		val *= 16;
-		int c = *mPixPos++;
-		if (c == 0)
-			return -1;
-		if (c <= '9')
-			val += c - '0';
-		else
-			val += c - 'A' + 10;
-	}
-	return val;
+    int val = 0;
+    for (int i = 0; i < 2; i++) {
+        val *= 16;
+        int c = *mPixPos++;
+        if (c == 0) {
+            return -1;
+        }
+        if (c <= '9') {
+            val += c - '0';
+        }
+        else {
+            val += c - 'A' + 10;
+        }
+    }
+    return val;
 }
 
 bool GuiDisplay::ReadNextPixel(unsigned int* pix, int* amount)
 {
-	if (*mPixPos == 0)
-		return false;
+    if (*mPixPos == 0) {
+        return false;
+    }
 
-	*amount = 1;
-	int val = ReadNextVal();
-	if (val < 0)
-		return false;
-	if (val < 128)
-	{
-		*amount = val;
-		val = ReadNextVal();
-		if (val < 128)
-			return false;
-	}
-	if (val < 192)
-	{
-		val = (val - 128) * 4;
-		*pix = 0xFF000000 | (val << 16) | (val << 8) | val;
-	}
-	else
-	{
-		val = (val - 192) * 4;
-		*pix = val<<24;
-	}
+    *amount = 1;
+    int val = ReadNextVal();
+    if (val < 0) {
+        return false;
+    }
+    if (val < 128) {
+        *amount = val;
+        val = ReadNextVal();
+        if (val < 128) {
+            return false;
+        }
+    }
+    if (val < 192) {
+        val = (val - 128) * 4;
+        *pix = 0xFF000000 | (val << 16) | (val << 8) | val;
+    }
+    else {
+        val = (val - 192) * 4;
+        *pix = val << 24;
+    }
 
-	return true;
+    return true;
 }

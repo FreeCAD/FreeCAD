@@ -66,6 +66,6 @@ extern QOpenGLContext* gOpenGlContext;
 #define glTexParameteri gSimWindow->glTexParameteri
 #define glTexImage2D gSimWindow->glTexImage2D
 #define glDeleteTextures gSimWindow->glDeleteTextures
-#endif // HAVE_OPENGL_EXT
+#endif  // HAVE_OPENGL_EXT
 
-#endif // !__openglwrapper_h__
+#endif  // !__openglwrapper_h__

@@ -27,32 +27,33 @@
 
 namespace MillSim
 {
-	struct GCToken
-	{
-		char letter;
-		float fval;
-		int ival;
-	};
+struct GCToken
+{
+    char letter;
+    float fval;
+    int ival;
+};
 
-	class GCodeParser
-	{
-	public:
-		GCodeParser() {}
-		virtual ~GCodeParser();
-		bool Parse(const char* filename);
-		bool AddLine(const char* ptr);
+class GCodeParser
+{
+public:
+    GCodeParser()
+    {}
+    virtual ~GCodeParser();
+    bool Parse(const char* filename);
+    bool AddLine(const char* ptr);
 
-	public:
-		std::vector<MillMotion> Operations;
-		MillMotion lastState = { eNop };
-		MillMotion lastLastState = { eNop };
+public:
+    std::vector<MillMotion> Operations;
+    MillMotion lastState = {eNop};
+    MillMotion lastLastState = {eNop};
 
-	protected:
-		const char* GetNextToken(const char* ptr, GCToken* token);
-		bool IsValidTok(char tok);
-		const char* ParseFloat(const char* ptr, float* retFloat);
-		bool ParseLine(const char* ptr);
-		int lastTool = -1;
-	};
-}
+protected:
+    const char* GetNextToken(const char* ptr, GCToken* token);
+    bool IsValidTok(char tok);
+    const char* ParseFloat(const char* ptr, float* retFloat);
+    bool ParseLine(const char* ptr);
+    int lastTool = -1;
+};
+}  // namespace MillSim
 #endif
