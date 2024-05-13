@@ -203,14 +203,15 @@ ADD_CUSTOM_TARGET(BIM ALL
             ${importers_SRCS}
             ${bimcommands_SRCS}
             ${nativeifc_SRCS}
+            ${BIMGuiIcon_SVG}
 )
 
-fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/Arch" ${Arch_SRCS})
-fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/Arch" ${Dice3DS_SRCS})
-fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/Arch" ${importers_SRCS})
-fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/Arch" ${bimcommands_SRCS})
-fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/Arch" ${nativeifc_SRCS})
-fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Arch" ${BIMGuiIcon_SVG})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${Arch_SRCS})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${Dice3DS_SRCS})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${importers_SRCS})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${bimcommands_SRCS})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${nativeifc_SRCS})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM" ${BIMGuiIcon_SVG})
 
 fc_target_copy_resource(BIM
     ${CMAKE_SOURCE_DIR}/src/Mod/BIM
