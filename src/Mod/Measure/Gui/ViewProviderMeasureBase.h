@@ -128,6 +128,7 @@ private:
     boost::signals2::connection _mVisibilityChangedConnection;
 };
 
+
 //NOLINTBEGIN
 class MeasureGuiExport ViewProviderMeasure : public MeasureGui::ViewProviderMeasureBase
 {
@@ -152,6 +153,51 @@ private:
     SoCoordinate3    * pCoords;
     SoIndexedLineSet * pLines;
 };
+
+
+class ViewProviderMeasureArea : public ViewProviderMeasure
+{
+    PROPERTY_HEADER(MeasureGui::ViewProviderMeasureArea);
+
+public:
+    ViewProviderMeasureArea() {
+        sPixmap = "Measurement-Area";
+    }
+};
+
+
+class ViewProviderMeasureLength : public ViewProviderMeasure
+{
+    PROPERTY_HEADER(MeasureGui::ViewProviderMeasureLength);
+
+public:
+    ViewProviderMeasureLength() {
+        sPixmap = "Measurement-Distance";
+    }
+};
+
+
+class ViewProviderMeasurePosition : public ViewProviderMeasure
+{
+    PROPERTY_HEADER(MeasureGui::ViewProviderMeasurePosition);
+
+public:
+    ViewProviderMeasurePosition() {
+        sPixmap = "Measurement-Position";
+    }
+};
+
+
+class ViewProviderMeasureRadius : public ViewProviderMeasure
+{
+    PROPERTY_HEADER(MeasureGui::ViewProviderMeasureRadius);
+
+public:
+    ViewProviderMeasureRadius() {
+        sPixmap = "Measurement-Radius";
+    }
+};
+
 
 } // namespace Gui
 

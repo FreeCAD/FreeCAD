@@ -268,7 +268,11 @@ void ViewProviderMeasureBase::positionAnno(const Measure::MeasureBase* measureOb
 void ViewProviderMeasureBase::attach(App::DocumentObject *pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
-    positionAnno(static_cast<MeasureBase*>(pcObj));
+    auto measureObj = static_cast<MeasureBase*>(pcObj);
+    positionAnno(measureObj);
+
+    // Set the icon
+    pLabel->setIcon(Gui::BitmapFactory().pixmapFromSvg(sPixmap, QSize(20, 20)));
 }
 
 
@@ -595,3 +599,9 @@ void ViewProviderMeasureBase::show()
         ViewProviderDocumentObject::show();
     }
 }
+
+
+PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureArea, MeasureGui::ViewProviderMeasure)
+PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureLength, MeasureGui::ViewProviderMeasure)
+PROPERTY_SOURCE(MeasureGui::ViewProviderMeasurePosition, MeasureGui::ViewProviderMeasure)
+PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureRadius, MeasureGui::ViewProviderMeasure)

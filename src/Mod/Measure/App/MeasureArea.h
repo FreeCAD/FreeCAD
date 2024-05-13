@@ -58,7 +58,7 @@ public:
     void recalculateArea();
 
     const char* getViewProviderName() const override {
-        return "MeasureGui::ViewProviderMeasure";
+        return "MeasureGui::ViewProviderMeasureArea";
     }
 
     static bool isValidSelection(const App::MeasureSelection& selection);
