@@ -78,7 +78,7 @@ void TechDrawHandler::deactivate()
     // The context menu event of MDIViewPage comes after the tool is deactivated.
     // So to prevent the menu from appearing when the tool is cleared by right mouse click
     // we set a small timer.
-    QTimer::singleShot(100, [this]() { // 100 milliseconds delay
+    QTimer::singleShot(100, []() { // 100 milliseconds delay
         auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
         if (!mdi) {
             return;
