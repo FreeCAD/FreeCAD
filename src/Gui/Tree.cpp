@@ -22,6 +22,7 @@
 
 
 #include "PreCompiled.h"
+#include "qdebug.h"
 
 #ifndef _PreComp_
 # include <QAction>
@@ -429,7 +430,7 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
 
     // If the second column is not shown, we'll trim the color background when
     // rendering as transparent overlay.
-    bool trimBG = TreeParams::getHideColumn();
+    bool trimBG = TreeParams::getHideColumn() || !TreeParams::getShowInternalNames();
     QRect rect = opt.rect;
 
     if (index.column() == 0) {
@@ -456,7 +457,15 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
             } else if (!opt.state.testFlag(QStyle::State_Selected))
                 painter->fillRect(rect, _TreeItemBackground);
         }
-
+    }
+    else if (index.column() == 2) {
+        auto ti = static_cast<QTreeWidgetItem*>(index.internalPointer());
+        if (ti->type() == TreeWidget::ObjectType)
+        {
+            auto item = static_cast<DocumentObjectItem*>(ti);
+            App::DocumentObject* obj = item->object()->getObject();
+            painter->drawText(rect, Qt::AlignLeft | Qt::AlignVCenter, QString::fromUtf8(obj->getNameInDocument()));
+        }
     }
 
     style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, tree);
@@ -534,7 +543,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
     this->setDragDropMode(QTreeWidget::InternalMove);
-    this->setColumnCount(2);
+    this->setColumnCount(3);
     this->setItemDelegate(new TreeWidgetItemDelegate(this));
 
     this->showHiddenAction = new QAction(this);
@@ -615,9 +624,12 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     setupResizableColumn(this);
     this->header()->setStretchLastSection(false);
     QObject::connect(this->header(), &QHeaderView::sectionResized, [](int idx, int, int newSize) {
-        if (idx)
+        if (idx == 1)
             TreeParams::setColumnSize2(newSize);
         else
+            if (idx == 2)
+            TreeParams::setColumnSize3(newSize);
+	else
             TreeParams::setColumnSize1(newSize);
     });
 
@@ -656,7 +668,8 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
         documentPartialPixmap = std::make_unique<QPixmap>(icon.pixmap(documentPixmap->size(), QIcon::Disabled));
     }
     setColumnHidden(1, TreeParams::getHideColumn());
-    header()->setVisible(!TreeParams::getHideColumn());
+    setColumnHidden(2, !TreeParams::getShowInternalNames());
+    header()->setVisible((!TreeParams::getHideColumn() || TreeParams::getShowInternalNames()));
 }
 
 TreeWidget::~TreeWidget()
@@ -1048,6 +1061,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     contextMenu.addMenu(&settingsMenu);
 
     QAction* action = new QAction(tr("Show description column"), this);
+    QAction* internalNameAction = new QAction(tr("Show internal name"), this);
     action->setStatusTip(tr("Show an extra tree view column for item description. The item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property."));
     action->setCheckable(true);
 
@@ -1055,11 +1069,26 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     action->setChecked(!hGrp->GetBool("HideColumn", true));
 
     settingsMenu.addAction(action);
-    QObject::connect(action, &QAction::triggered, this, [this, action, hGrp]() {
+    QObject::connect(action, &QAction::triggered, this, [this, action, internalNameAction, hGrp]() {
         bool show = action->isChecked();
         hGrp->SetBool("HideColumn", !show);
         setColumnHidden(1, !show);
-        header()->setVisible(show);
+        header()->setVisible(action->isChecked()||internalNameAction->isChecked());
+    });
+
+
+    internalNameAction->setStatusTip(tr("Show an internal name column for items."));
+    internalNameAction->setCheckable(true);
+
+    internalNameAction->setChecked(hGrp->GetBool("ShowInternalNames", true));
+
+    settingsMenu.addAction(internalNameAction);
+
+    QObject::connect(internalNameAction, &QAction::triggered, this, [this, action, internalNameAction, hGrp]() {
+        bool show = internalNameAction->isChecked();
+        hGrp->SetBool("ShowInternalNames", show);
+        setColumnHidden(2, !show);
+        header()->setVisible(action->isChecked()||internalNameAction->isChecked());
     });
 
     if (contextMenu.actions().count() > 0) {
@@ -1373,12 +1402,15 @@ void TreeWidget::setupResizableColumn(TreeWidget *tree) {
         if(!tree || tree==inst) {
             inst->header()->setSectionResizeMode(0, mode);
             inst->header()->setSectionResizeMode(1, mode);
+            inst->header()->setSectionResizeMode(2, mode);
             if (TreeParams::getResizableColumn()) {
                 QSignalBlocker blocker(inst);
                 if (TreeParams::getColumnSize1() > 0)
                     inst->header()->resizeSection(0, TreeParams::getColumnSize1());
                 if (TreeParams::getColumnSize2() > 0)
                     inst->header()->resizeSection(1, TreeParams::getColumnSize2());
+               if (TreeParams::getColumnSize3() > 0)
+                    inst->header()->resizeSection(2, TreeParams::getColumnSize3());
             }
         }
     }
@@ -3193,6 +3225,7 @@ void TreeWidget::setupText()
 {
     this->headerItem()->setText(0, tr("Labels & Attributes"));
     this->headerItem()->setText(1, tr("Description"));
+    this->headerItem()->setText(2, tr("Internal name"));
 
     this->showHiddenAction->setText(tr("Show items hidden in tree view"));
     this->showHiddenAction->setStatusTip(tr("Show items that are marked as 'hidden' in the tree view"));

@@ -72,11 +72,13 @@ public:
     unsigned long ItemBackground;
     long ItemBackgroundPadding;
     bool HideColumn;
+    bool ShowInternalNames;
     bool HideScrollBar;
     bool HideHeaderView;
     bool ResizableColumn;
     long ColumnSize1;
     long ColumnSize2;
+    long ColumnSize3;
     bool TreeToolTipIcon;
     bool VisibilityIcon;
 
@@ -145,6 +147,8 @@ public:
         funcs["ItemBackgroundPadding"] = &TreeParamsP::updateItemBackgroundPadding;
         HideColumn = handle->GetBool("HideColumn", true);
         funcs["HideColumn"] = &TreeParamsP::updateHideColumn;
+        ShowInternalNames = handle->GetBool("ShowInternalNames", true);
+        funcs["ShowInternalNames"] = &TreeParamsP::updateShowInternalNames;
         HideScrollBar = handle->GetBool("HideScrollBar", true);
         funcs["HideScrollBar"] = &TreeParamsP::updateHideScrollBar;
         HideHeaderView = handle->GetBool("HideHeaderView", true);
@@ -155,6 +159,8 @@ public:
         funcs["ColumnSize1"] = &TreeParamsP::updateColumnSize1;
         ColumnSize2 = handle->GetInt("ColumnSize2", 0);
         funcs["ColumnSize2"] = &TreeParamsP::updateColumnSize2;
+        ColumnSize3 = handle->GetInt("ColumnSize3", 0);
+        funcs["ColumnSize3"] = &TreeParamsP::updateColumnSize3;
         TreeToolTipIcon = handle->GetBool("TreeToolTipIcon", false);
         funcs["TreeToolTipIcon"] = &TreeParamsP::updateTreeToolTipIcon;
         VisibilityIcon = handle->GetBool("VisibilityIcon", false);
@@ -365,6 +371,14 @@ public:
             TreeParams::onHideColumnChanged();
         }
     }
+    // Auto generated code (Tools/params_utils.py:296)
+    static void updateShowInternalNames(TreeParamsP *self) {
+        auto v = self->handle->GetBool("ShowInternalNames", true);
+        if (self->ShowInternalNames != v) {
+            self->ShowInternalNames = v;
+            TreeParams::onShowInternalNamesChanged();
+        }
+    }
     // Auto generated code (Tools/params_utils.py:288)
     static void updateHideScrollBar(TreeParamsP *self) {
         self->HideScrollBar = self->handle->GetBool("HideScrollBar", true);
@@ -388,6 +402,10 @@ public:
     // Auto generated code (Tools/params_utils.py:288)
     static void updateColumnSize2(TreeParamsP *self) {
         self->ColumnSize2 = self->handle->GetInt("ColumnSize2", 0);
+    }
+    // Auto generated code (Tools/params_utils.py:288)
+    static void updateColumnSize3(TreeParamsP *self) {
+        self->ColumnSize3 = self->handle->GetInt("ColumnSize3", 0);
     }
     // Auto generated code (Tools/params_utils.py:288)
     static void updateTreeToolTipIcon(TreeParamsP *self) {
@@ -1230,6 +1248,34 @@ void TreeParams::removeHideColumn() {
 }
 
 // Auto generated code (Tools/params_utils.py:350)
+const char *TreeParams::docShowInternalNames() {
+    return QT_TRANSLATE_NOOP("TreeParams",
+"Show Internal Names column.");
+}
+
+// Auto generated code (Tools/params_utils.py:358)
+const bool & TreeParams::getShowInternalNames() {
+    return instance()->ShowInternalNames;
+}
+
+// Auto generated code (Tools/params_utils.py:366)
+const bool & TreeParams::defaultShowInternalNames() {
+    const static bool def = true;
+    return def;
+}
+
+// Auto generated code (Tools/params_utils.py:375)
+void TreeParams::setShowInternalNames(const bool &v) {
+    instance()->handle->SetBool("ShowInternalNames",v);
+    instance()->ShowInternalNames = v;
+}
+
+// Auto generated code (Tools/params_utils.py:384)
+void TreeParams::removeShowInternalNames() {
+    instance()->handle->RemoveBool("ShowInternalNames");
+}
+
+// Auto generated code (Tools/params_utils.py:350)
 const char *TreeParams::docHideScrollBar() {
     return QT_TRANSLATE_NOOP("TreeParams",
 "Hide tree view scroll bar in dock overlay.");
@@ -1365,6 +1411,33 @@ void TreeParams::setColumnSize2(const long &v) {
 // Auto generated code (Tools/params_utils.py:384)
 void TreeParams::removeColumnSize2() {
     instance()->handle->RemoveInt("ColumnSize2");
+}
+
+// Auto generated code (Tools/params_utils.py:350)
+const char *TreeParams::docColumnSize3() {
+    return "";
+}
+
+// Auto generated code (Tools/params_utils.py:358)
+const long & TreeParams::getColumnSize3() {
+    return instance()->ColumnSize3;
+}
+
+// Auto generated code (Tools/params_utils.py:366)
+const long & TreeParams::defaultColumnSize3() {
+    const static long def = 0;
+    return def;
+}
+
+// Auto generated code (Tools/params_utils.py:375)
+void TreeParams::setColumnSize3(const long &v) {
+    instance()->handle->SetInt("ColumnSize3",v);
+    instance()->ColumnSize3 = v;
+}
+
+// Auto generated code (Tools/params_utils.py:384)
+void TreeParams::removeColumnSize3() {
+    instance()->handle->RemoveInt("ColumnSize3");
 }
 
 // Auto generated code (Tools/params_utils.py:350)
@@ -1521,6 +1594,12 @@ void TreeParams::onHideColumnChanged()
 {
     for(auto tree : TreeWidget::Instances)
         tree->setColumnHidden(1, TreeParams::getHideColumn());
+}
+
+void TreeParams::onShowInternalNamesChanged()
+{
+    for(auto tree : TreeWidget::Instances)
+    tree->setColumnHidden(2, TreeParams::getShowInternalNames());
 }
 
 void TreeParams::onVisibilityIconChanged()

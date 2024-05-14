@@ -393,6 +393,19 @@ public:
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
+    /// Accessor for parameter ShowInternalNames
+    ///
+    /// Show Internal Names column.
+    static const bool & getShowInternalNames();
+    static const bool & defaultShowInternalNames();
+    static void removeShowInternalNames();
+    static void setShowInternalNames(const bool &v);
+    static const char *docShowInternalNames();
+    static void onShowInternalNamesChanged();
+    //@}
+
+    // Auto generated code (Tools/params_utils.py:138)
+    //@{
     /// Accessor for parameter HideScrollBar
     ///
     /// Hide tree view scroll bar in dock overlay.
@@ -446,6 +459,16 @@ public:
     static void removeColumnSize2();
     static void setColumnSize2(const long &v);
     static const char *docColumnSize2();
+    //@}
+
+    // Auto generated code (Tools/params_utils.py:138)
+    //@{
+    /// Accessor for parameter ColumnSize3
+    static const long & getColumnSize3();
+    static const long & defaultColumnSize3();
+    static void removeColumnSize3();
+    static void setColumnSize3(const long &v);
+    static const char *docColumnSize3();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
