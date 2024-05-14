@@ -1819,7 +1819,7 @@ if FreeCAD.GuiUp:
             _view_observer_active = False
 
 
-# Compatibility function (V0.22, 2023):
+# Compatibility function (v1.0, 2023):
 def getPlacementFromPoints(points):
     """Return a placement from a list of 3 or 4 points. The 4th point is no longer used.
 
@@ -1829,7 +1829,7 @@ def getPlacementFromPoints(points):
     return DraftGeomUtils.placement_from_points(*points[:3])
 
 
-# Compatibility function (V0.22, 2023):
+# Compatibility function (v1.0, 2023):
 def getPlacementFromFace(face, rotated=False):
     """Return a placement from a face.
 

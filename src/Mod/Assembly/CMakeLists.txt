@@ -10,6 +10,7 @@ set(Assembly_Scripts
     CommandInsertLink.py
     CommandSolveAssembly.py
     CommandCreateJoint.py
+    CommandCreateView.py
     CommandExportASMT.py
     TestAssemblyWorkbench.py
     JointObject.py

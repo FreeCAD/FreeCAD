@@ -145,8 +145,9 @@ Markdown version above.</source>
     </message>
     <message>
       <location filename="../../Help.py" line="78"/>
-      <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the Web module</source>
-      <translation>Moduł PySide2 QtWebEngineWidgets nie jest dostępny. Renderowanie Pomocy odbywa się za pomocą modułu Web</translation>
+      <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
+      <translation>Moduł PySide2 QtWebEngineWidgets nie jest dostępny.
+Renderowanie Pomocy odbywa się za pomocą przeglądarki z twojego systemu.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="82"/>
@@ -162,7 +163,7 @@ Markdown version above.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="394"/>
+      <location filename="../../Help.py" line="393"/>
       <source>General</source>
       <translation>Ogólne</translation>
     </message>

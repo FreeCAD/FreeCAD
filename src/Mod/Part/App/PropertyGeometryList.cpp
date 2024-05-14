@@ -118,10 +118,11 @@ void PropertyGeometryList::set1Value(int idx, std::unique_ptr<Geometry> &&lValue
 
 PyObject *PropertyGeometryList::getPyObject()
 {
-    PyObject* list = PyList_New(getSize());
-    for (int i = 0; i < getSize(); i++)
-        PyList_SetItem( list, i, _lValueList[i]->getPyObject());
-    return list;
+    Py::List list;
+    for (int i = 0; i < getSize(); i++) {
+        list.append(Py::asObject(_lValueList[i]->getPyObject()));
+    }
+    return Py::new_reference_to(list);
 }
 
 void PropertyGeometryList::setPyObject(PyObject *value)
@@ -130,30 +131,33 @@ void PropertyGeometryList::setPyObject(PyObject *value)
     Part2DObject* part2d = dynamic_cast<Part2DObject*>(this->getContainer());
 
     if (PySequence_Check(value)) {
-        Py_ssize_t nSize = PySequence_Size(value);
+        Py::Sequence sequence(value);
+        Py_ssize_t nSize = sequence.size();
         std::vector<Geometry*> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i < nSize; ++i) {
-            PyObject* item = PySequence_GetItem(value, i);
-            if (!PyObject_TypeCheck(item, &(GeometryPy::Type))) {
+            Py::Object item = sequence.getItem(i);
+            if (!PyObject_TypeCheck(item.ptr(), &(GeometryPy::Type))) {
                 std::string error = std::string("types in list must be 'Geometry', not ");
-                error += item->ob_type->tp_name;
+                error += item.ptr()->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
 
-            values[i] = static_cast<GeometryPy*>(item)->getGeometryPtr();
+            values[i] = static_cast<GeometryPy*>(item.ptr())->getGeometryPtr();
         }
 
         setValues(values);
-        if (part2d)
+        if (part2d) {
             part2d->acceptGeometry();
+        }
     }
     else if (PyObject_TypeCheck(value, &(GeometryPy::Type))) {
         GeometryPy  *pcObject = static_cast<GeometryPy*>(value);
         setValue(pcObject->getGeometryPtr());
-        if (part2d)
+        if (part2d) {
             part2d->acceptGeometry();
+        }
     }
     else {
         std::string error = std::string("type must be 'Geometry' or list of 'Geometry', not ");

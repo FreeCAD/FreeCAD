@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2023 Pierre-Louis Boyer <development@Ondsel.com>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,67 +20,42 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
+#ifndef MEASUREGUI_QUICKMEASURE_H
+#define MEASUREGUI_QUICKMEASURE_H
 
-#include "UserSettings.h"
-#include <App/Application.h>
+#include <QObject>
 
+#include <Mod/Measure/MeasureGlobal.h>
 
-using namespace Gui;
+#include <Gui/Selection.h>
+namespace Measure {
+    class Measurement;
+}
 
-namespace {
+namespace MeasureGui {
 
-ParameterGrp::handle getWSParameter()
+class QuickMeasure : public QObject, Gui::SelectionObserver
 {
-    return App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
-}
+    Q_OBJECT
 
-}
+public:
+    explicit QuickMeasure(QObject* parent = nullptr);
+    ~QuickMeasure() override;
 
-std::string WorkbenchSwitcher::getValue()
-{
-    return getWSParameter()->GetASCII("WSPosition", "WSToolbar");
-}
+private:
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void tryMeasureSelection(const Gui::SelectionChanges& msg);
 
-bool WorkbenchSwitcher::isLeftCorner(const std::string& value)
-{
-    return (value == "WSLeftCorner");
-}
+    bool canMeasureSelection(const Gui::SelectionChanges& msg) const;
+    void addSelectionToMeasurement();
+    void printResult();
+    void print(const QString& message);
 
-bool WorkbenchSwitcher::isRightCorner(const std::string& value)
-{
-    return (value == "WSRightCorner");
-}
+    Measure::Measurement* measurement;
 
-bool WorkbenchSwitcher::isToolbar(const std::string& value)
-{
-    return (value == "WSToolbar");
-}
+};
 
-QVector<std::string> WorkbenchSwitcher::values()
-{
-    QVector<std::string> wsPositions;
-    wsPositions << "WSToolbar" << "WSLeftCorner" << "WSRightCorner";
-    return wsPositions;
-}
+} //namespace MeasureGui
 
-int WorkbenchSwitcher::getIndex()
-{
-    auto hGrp = getWSParameter();
-    std::string pos = hGrp->GetASCII("WSPosition", "WSToolbar");
-    auto wsPositions = values();
-    int index = std::max(0, static_cast<int>(wsPositions.indexOf(pos)));
-    return index;
-}
-
-void WorkbenchSwitcher::setIndex(int index)
-{
-    auto wsPositions = values();
-    auto hGrp = getWSParameter();
-    if (index >= 0 && index < wsPositions.size()) {
-        hGrp->SetASCII("WSPosition", wsPositions[index].c_str());
-    }
-}
+#endif // MEASUREGUI_QUICKMEASURE_H

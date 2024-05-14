@@ -97,6 +97,31 @@ PyObject* AssemblyObjectPy::isPartConnected(PyObject* args)
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
+PyObject* AssemblyObjectPy::isPartGrounded(PyObject* args)
+{
+    PyObject* pyobj;
+
+    if (!PyArg_ParseTuple(args, "O", &pyobj)) {
+        return nullptr;
+    }
+    auto* obj = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
+    bool ok = this->getAssemblyObjectPtr()->isPartGrounded(obj);
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
+PyObject* AssemblyObjectPy::isJointConnectingPartToGround(PyObject* args)
+{
+    PyObject* pyobj;
+    char* pname;
+
+    if (!PyArg_ParseTuple(args, "Os", &pyobj, &pname)) {
+        return nullptr;
+    }
+    auto* obj = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
+    bool ok = this->getAssemblyObjectPtr()->isJointConnectingPartToGround(obj, pname);
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
 PyObject* AssemblyObjectPy::exportAsASMT(PyObject* args)
 {
     char* utf8Name;

@@ -125,11 +125,11 @@ PyMOD_INIT_FUNC(TechDrawGui)
 
     // instantiating the commands
     CreateTechDrawCommands();
-    CreateTechDrawCommandsDims();
     CreateTechDrawCommandsDecorate();
     CreateTechDrawCommandsAnnotate();
     CreateTechDrawCommandsExtensionDims();
     CreateTechDrawCommandsExtensions();
+    CreateTechDrawCommandsDims();
     CreateTechDrawCommandsStack();
 
     TechDrawGui::Workbench::init();

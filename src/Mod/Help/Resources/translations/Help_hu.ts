@@ -149,8 +149,8 @@ Markdown fenti verziót választotta.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="78"/>
-      <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the Web module</source>
-      <translation>A PySide QtWebEngineWidgets modul nem elérhető. A súgó renderelése a Web modullal történik</translation>
+      <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
+      <translation>A PySide QtWebEngineWidgets modul nem elérhető. A súgó megjelenítése a rendszer böngészőjével történik</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="82"/>
@@ -166,7 +166,7 @@ Markdown fenti verziót választotta.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="394"/>
+      <location filename="../../Help.py" line="393"/>
       <source>General</source>
       <translation>Általános</translation>
     </message>

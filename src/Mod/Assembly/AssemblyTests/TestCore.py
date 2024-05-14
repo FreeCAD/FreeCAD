@@ -160,7 +160,7 @@ class TestCore(unittest.TestCase):
 
         # Step 2 : box with placement. Edge + Vertex
         plc = joint.Proxy.findPlacement(joint, box.Name, box, "Edge8", "Vertex8")
-        targetPlc = App.Placement(App.Vector(L, W, 0), App.Rotation(0, 0, -90))
+        targetPlc = App.Placement(App.Vector(L, W, 0), App.Rotation(0, -90, 270))
         self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 2".format(operation))
 
         # Step 3 : box with placement. Vertex

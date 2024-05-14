@@ -126,6 +126,50 @@ PyObject* MeasurementPy::length(PyObject *args)
     return Py::new_reference_to(length);
 }
 
+PyObject* MeasurementPy::lineLineDistance(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    Py::Float length;
+    length = this->getMeasurementPtr()->lineLineDistance();
+
+    return Py::new_reference_to(length);
+}
+
+PyObject* MeasurementPy::planePlaneDistance(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    Py::Float length;
+    length = this->getMeasurementPtr()->planePlaneDistance();
+
+    return Py::new_reference_to(length);
+}
+
+PyObject* MeasurementPy::volume(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    Py::Float length;
+    length = this->getMeasurementPtr()->volume();
+
+    return Py::new_reference_to(length);
+}
+
+PyObject* MeasurementPy::area(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    Py::Float length;
+    length = this->getMeasurementPtr()->area();
+
+    return Py::new_reference_to(length);
+}
+
 PyObject* MeasurementPy::radius(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))

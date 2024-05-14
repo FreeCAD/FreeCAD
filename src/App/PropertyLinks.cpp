@@ -218,6 +218,19 @@ static std::string propertyName(const Property *prop) {
     return prop->getFullName();
 }
 
+const std::unordered_set<PropertyLinkBase*>&
+PropertyLinkBase::getElementReferences(DocumentObject* feature)
+{
+    static std::unordered_set<PropertyLinkBase*> none;
+
+    auto it = _ElementRefMap.find(feature);
+    if (it == _ElementRefMap.end()) {
+        return none;
+    }
+
+    return it->second;
+}
+
 void PropertyLinkBase::updateElementReferences(DocumentObject *feature, bool reverse) {
 #ifdef FC_USE_TNP_FIX
     if (!feature || !feature->getNameInDocument()) {
@@ -394,15 +407,15 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
         }
     }
 
-    bool missing = Data::hasMissingElement(elementName.second.c_str());
+    bool missing = GeoFeature::hasMissingElement(elementName.second.c_str());
     if (feature == geo && (missing || reverse)) {
         // If the referenced element is missing, or we are generating element
         // map for the first time, or we are re-generating the element map due
         // to version change, i.e. 'reverse', try search by geometry first
         const char* oldElement = Data::findElementName(shadow.second.c_str());
         if (!Data::hasMissingElement(oldElement)) {
-            //            const auto& names = geo->searchElementCache(oldElement);
-            std::vector<std::string> names;  // searchElementCache isn't implemented.
+            const auto& names = geo->searchElementCache(oldElement);
+//        std::vector<std::string> names;  // searchElementCache isn't implemented.
             if (names.size()) {
                 missing = false;
                 std::string newsub(subname, strlen(subname) - strlen(element));
@@ -502,11 +515,18 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
 }
 
 std::pair<DocumentObject*, std::string>
-PropertyLinkBase::tryReplaceLink(const PropertyContainer *owner, DocumentObject *obj,
-    const DocumentObject *parent, DocumentObject *oldObj, DocumentObject *newObj, const char *subname)
+PropertyLinkBase::tryReplaceLink(const PropertyContainer* owner,
+                                 DocumentObject* obj,
+                                 const DocumentObject* parent,
+                                 DocumentObject* oldObj,
+                                 DocumentObject* newObj,
+                                 const char* subname)
 {
     std::pair<DocumentObject*, std::string> res;
     res.first = 0;
+    if (!obj) {
+        return res;
+    }
 
     if (oldObj == obj) {
         if (owner == parent) {
@@ -536,6 +556,9 @@ PropertyLinkBase::tryReplaceLink(const PropertyContainer *owner, DocumentObject 
     for (auto pos = sub.find('.'); pos != std::string::npos; pos = sub.find('.', pos)) {
         ++pos;
         char c = sub[pos];
+        if (c == '.') {
+            continue;
+        }
         sub[pos] = 0;
         auto sobj = obj->getSubObject(sub.c_str());
         sub[pos] = c;
@@ -577,6 +600,8 @@ PropertyLinkBase::tryReplaceLinkSubs(const PropertyContainer *owner,
 {
     std::pair<DocumentObject*,std::vector<std::string> > res;
     res.first = 0;
+    if (!obj)
+        return res;
 
     auto r = tryReplaceLink(owner,obj,parent,oldObj,newObj);
     if(r.first) {
@@ -1545,8 +1570,12 @@ std::string PropertyLinkBase::tryImportSubName(const App::DocumentObject *obj, c
 #define ATTR_SHADOW "shadow"
 #define ATTR_MAPPED "mapped"
 
+#ifdef FC_USE_TNP_FIX
+#define IGNORE_SHADOW false
+#else
 // We do not have topo naming yet, ignore shadow sub for now
 #define IGNORE_SHADOW true
+#endif
 
 void PropertyLinkSub::Save (Base::Writer &writer) const
 {

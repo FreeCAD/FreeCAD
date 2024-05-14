@@ -50,6 +50,10 @@ bool LibraryBase::operator==(const LibraryBase& library) const
 QString LibraryBase::getLocalPath(const QString& path) const
 {
     QString filePath = getDirectoryPath();
+    if (!(filePath.endsWith(QLatin1String("/")) || filePath.endsWith(QLatin1String("\\")))) {
+        filePath += QLatin1String("/");
+    }
+
     QString cleanPath = QDir::cleanPath(path);
     QString prefix = QString::fromStdString("/") + getName();
     if (cleanPath.startsWith(prefix)) {

@@ -51,7 +51,21 @@ TranslatedJointTypes = [
     translate("Assembly", "Slider"),
     translate("Assembly", "Ball"),
     translate("Assembly", "Distance"),
+    translate("Assembly", "RackPinion"),
+    translate("Assembly", "Screw"),
+    translate("Assembly", "Gears"),
+    translate("Assembly", "Belt"),
 ]
+
+TranslatedJointTypesNoExperimental = [
+    translate("Assembly", "Fixed"),
+    translate("Assembly", "Revolute"),
+    translate("Assembly", "Cylindrical"),
+    translate("Assembly", "Slider"),
+    translate("Assembly", "Ball"),
+    translate("Assembly", "Distance"),
+]
+
 
 JointTypes = [
     "Fixed",
@@ -60,10 +74,30 @@ JointTypes = [
     "Slider",
     "Ball",
     "Distance",
+    "RackPinion",
+    "Screw",
+    "Gears",
+    "Belt",
 ]
 
 JointUsingDistance = [
     "Distance",
+    "RackPinion",
+    "Screw",
+    "Gears",
+    "Belt",
+]
+
+JointUsingDistance2 = [
+    "Gears",
+    "Belt",
+]
+
+JointNoNegativeDistance = [
+    "RackPinion",
+    "Screw",
+    "Gears",
+    "Belt",
 ]
 
 JointUsingOffset = [
@@ -84,12 +118,35 @@ JointUsingReverse = [
     "Distance",
 ]
 
+JointUsingLimitLength = [
+    "Cylindrical",
+    "Slider",
+]
+
+JointUsingLimitAngle = [
+    "Revolute",
+    "Cylindrical",
+]
+
 
 def solveIfAllowed(assembly, storePrev=False):
     if assembly.Type == "Assembly" and Preferences.preferences().GetBool(
         "SolveInJointCreation", True
     ):
         assembly.solve(storePrev)
+
+
+def get_camera_height(gui_doc):
+    camera = gui_doc.ActiveView.getCameraNode()
+
+    # Check if the camera is a perspective camera
+    if isinstance(camera, coin.SoPerspectiveCamera):
+        return camera.focalDistance.getValue()
+    elif isinstance(camera, coin.SoOrthographicCamera):
+        return camera.height.getValue()
+    else:
+        # Default value if camera type is unknown
+        return 200
 
 
 # The joint object consists of 2 JCS (joint coordinate systems) and a Joint Type.
@@ -118,155 +175,248 @@ class Joint:
         joint.JointType = JointTypes  # sets the list
         joint.JointType = JointTypes[type_index]  # set the initial value
 
-        # First Joint Connector
-        joint.addProperty(
-            "App::PropertyString",  # Not PropertyLink because they don't support external objects
-            "Object1",
-            "Joint Connector 1",
-            QT_TRANSLATE_NOOP("App::Property", "The first object of the joint"),
-        )
-
-        joint.addProperty(
-            "App::PropertyLink",
-            "Part1",
-            "Joint Connector 1",
-            QT_TRANSLATE_NOOP("App::Property", "The first part of the joint"),
-        )
-
-        joint.addProperty(
-            "App::PropertyString",
-            "Element1",
-            "Joint Connector 1",
-            QT_TRANSLATE_NOOP("App::Property", "The selected element of the first object"),
-        )
-
-        joint.addProperty(
-            "App::PropertyString",
-            "Vertex1",
-            "Joint Connector 1",
-            QT_TRANSLATE_NOOP("App::Property", "The selected vertex of the first object"),
-        )
-
-        joint.addProperty(
-            "App::PropertyPlacement",
-            "Placement1",
-            "Joint Connector 1",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This is the local coordinate system within object1 that will be used for the joint.",
-            ),
-        )
-
-        joint.addProperty(
-            "App::PropertyBool",
-            "Detach1",
-            "Joint Connector 1",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This prevents Placement1 from recomputing, enabling custom positioning of the placement.",
-            ),
-        )
-
-        # Second Joint Connector
-        joint.addProperty(
-            "App::PropertyString",
-            "Object2",
-            "Joint Connector 2",
-            QT_TRANSLATE_NOOP("App::Property", "The second object of the joint"),
-        )
-
-        joint.addProperty(
-            "App::PropertyLink",
-            "Part2",
-            "Joint Connector 2",
-            QT_TRANSLATE_NOOP("App::Property", "The second part of the joint"),
-        )
-
-        joint.addProperty(
-            "App::PropertyString",
-            "Element2",
-            "Joint Connector 2",
-            QT_TRANSLATE_NOOP("App::Property", "The selected element of the second object"),
-        )
-
-        joint.addProperty(
-            "App::PropertyString",
-            "Vertex2",
-            "Joint Connector 2",
-            QT_TRANSLATE_NOOP("App::Property", "The selected vertex of the second object"),
-        )
-
-        joint.addProperty(
-            "App::PropertyPlacement",
-            "Placement2",
-            "Joint Connector 2",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This is the local coordinate system within object2 that will be used for the joint.",
-            ),
-        )
-
-        joint.addProperty(
-            "App::PropertyBool",
-            "Detach2",
-            "Joint Connector 2",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This prevents Placement2 from recomputing, enabling custom positioning of the placement.",
-            ),
-        )
-
-        joint.addProperty(
-            "App::PropertyFloat",
-            "Distance",
-            "Joint",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This is the distance of the joint. It is used only by the distance joint.",
-            ),
-        )
-
-        joint.addProperty(
-            "App::PropertyFloat",
-            "Rotation",
-            "Joint",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This is the rotation of the joint.",
-            ),
-        )
-
-        joint.addProperty(
-            "App::PropertyVector",
-            "Offset",
-            "Joint",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This is the offset vector of the joint.",
-            ),
-        )
-
-        joint.addProperty(
-            "App::PropertyBool",
-            "Activated",
-            "Joint",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This indicates if the joint is active.",
-            ),
-        )
-        joint.Activated = True
+        self.createProperties(joint)
 
         self.setJointConnectors(joint, [])
+
+    def onDocumentRestored(self, joint):
+        self.createProperties(joint)
+
+    def createProperties(self, joint):
+        # First Joint Connector
+        if not hasattr(joint, "Object1"):
+            joint.addProperty(
+                "App::PropertyString",  # Not PropertyLink because they don't support external objects
+                "Object1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP("App::Property", "The first object of the joint"),
+            )
+
+        if not hasattr(joint, "Part1"):
+            joint.addProperty(
+                "App::PropertyLink",
+                "Part1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP("App::Property", "The first part of the joint"),
+            )
+
+        if not hasattr(joint, "Element1"):
+            joint.addProperty(
+                "App::PropertyString",
+                "Element1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP("App::Property", "The selected element of the first object"),
+            )
+
+        if not hasattr(joint, "Vertex1"):
+            joint.addProperty(
+                "App::PropertyString",
+                "Vertex1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP("App::Property", "The selected vertex of the first object"),
+            )
+
+        if not hasattr(joint, "Placement1"):
+            joint.addProperty(
+                "App::PropertyPlacement",
+                "Placement1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the local coordinate system within object1 that will be used for the joint.",
+                ),
+            )
+
+        if not hasattr(joint, "Detach1"):
+            joint.addProperty(
+                "App::PropertyBool",
+                "Detach1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This prevents Placement1 from recomputing, enabling custom positioning of the placement.",
+                ),
+            )
+
+        # Second Joint Connector
+        if not hasattr(joint, "Object2"):
+            joint.addProperty(
+                "App::PropertyString",
+                "Object2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP("App::Property", "The second object of the joint"),
+            )
+
+        if not hasattr(joint, "Part2"):
+            joint.addProperty(
+                "App::PropertyLink",
+                "Part2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP("App::Property", "The second part of the joint"),
+            )
+
+        if not hasattr(joint, "Element2"):
+            joint.addProperty(
+                "App::PropertyString",
+                "Element2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP("App::Property", "The selected element of the second object"),
+            )
+
+        if not hasattr(joint, "Vertex2"):
+            joint.addProperty(
+                "App::PropertyString",
+                "Vertex2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP("App::Property", "The selected vertex of the second object"),
+            )
+
+        if not hasattr(joint, "Placement2"):
+            joint.addProperty(
+                "App::PropertyPlacement",
+                "Placement2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the local coordinate system within object2 that will be used for the joint.",
+                ),
+            )
+
+        if not hasattr(joint, "Detach2"):
+            joint.addProperty(
+                "App::PropertyBool",
+                "Detach2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This prevents Placement2 from recomputing, enabling custom positioning of the placement.",
+                ),
+            )
+
+        if not hasattr(joint, "Distance"):
+            joint.addProperty(
+                "App::PropertyFloat",
+                "Distance",
+                "Joint",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the distance of the joint. It is used only by the distance joint and by RackPinion (pitch radius), Screw and Gears and Belt(radius1)",
+                ),
+            )
+
+        if not hasattr(joint, "Distance2"):
+            joint.addProperty(
+                "App::PropertyFloat",
+                "Distance2",
+                "Joint",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the second distance of the joint. It is used only by the gear joint to store the second radius.",
+                ),
+            )
+
+        if not hasattr(joint, "Rotation"):
+            joint.addProperty(
+                "App::PropertyFloat",
+                "Rotation",
+                "Joint",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the rotation of the joint.",
+                ),
+            )
+
+        if not hasattr(joint, "Offset"):
+            joint.addProperty(
+                "App::PropertyVector",
+                "Offset",
+                "Joint",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the offset vector of the joint.",
+                ),
+            )
+
+        if not hasattr(joint, "Activated"):
+            joint.addProperty(
+                "App::PropertyBool",
+                "Activated",
+                "Joint",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This indicates if the joint is active.",
+                ),
+            )
+            joint.Activated = True
+
+        if not hasattr(joint, "EnableLimits"):
+            joint.addProperty(
+                "App::PropertyBool",
+                "EnableLimits",
+                "Limits",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Is this joint using limits.",
+                ),
+            )
+            joint.EnableLimits = False
+
+        if not hasattr(joint, "LengthMin"):
+            joint.addProperty(
+                "App::PropertyFloat",
+                "LengthMin",
+                "Limits",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the minimum limit for the length between both coordinate systems (along their Z axis).",
+                ),
+            )
+
+        if not hasattr(joint, "LengthMax"):
+            joint.addProperty(
+                "App::PropertyFloat",
+                "LengthMax",
+                "Limits",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the maximum limit for the length between both coordinate systems (along their Z axis).",
+                ),
+            )
+
+        if not hasattr(joint, "AngleMin"):
+            joint.addProperty(
+                "App::PropertyFloat",
+                "AngleMin",
+                "Limits",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the minimum limit for the angle between both coordinate systems (between their X axis).",
+                ),
+            )
+
+        if not hasattr(joint, "AngleMax"):
+            joint.addProperty(
+                "App::PropertyFloat",
+                "AngleMax",
+                "Limits",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the maximum limit for the angle between both coordinate systems (between their X axis).",
+                ),
+            )
 
     def dumps(self):
         return None
 
     def loads(self, state):
+
         return None
 
     def getAssembly(self, joint):
-        return joint.InList[0]
+        for obj in joint.InList:
+            if obj.isDerivedFrom("Assembly::AssemblyObject"):
+                return obj
+        return None
 
     def setJointType(self, joint, jointType):
         joint.JointType = jointType
@@ -276,12 +426,15 @@ class Joint:
         """Do something when a property has changed"""
         # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
 
-        if prop == "Rotation" or prop == "Offset" or prop == "Distance":
+        if prop == "Rotation" or prop == "Offset":
             # during loading the onchanged may be triggered before full init.
             if hasattr(joint, "Vertex1"):  # so we check Vertex1
                 self.updateJCSPlacements(joint)
                 obj1 = UtilsAssembly.getObjectInPart(joint.Object1, joint.Part1)
                 obj2 = UtilsAssembly.getObjectInPart(joint.Object2, joint.Part2)
+                if obj1 is None or obj2 is None:
+                    return
+
                 presolved = self.preSolve(
                     joint,
                     obj1,
@@ -297,6 +450,11 @@ class Joint:
                 else:
                     self.updateJCSPlacements(joint)
 
+        if prop == "Distance" and joint.JointType == "Distance":
+            # during loading the onchanged may be triggered before full init.
+            if hasattr(joint, "Vertex1"):  # so we check Vertex1
+                solveIfAllowed(self.getAssembly(joint))
+
     def execute(self, fp):
         """Do something when doing a recomputation, this method is mandatory"""
         # App.Console.PrintMessage("Recompute Python Box feature\n")
@@ -308,12 +466,6 @@ class Joint:
         isAssembly = assembly.Type == "Assembly"
 
         if len(current_selection) >= 1:
-            joint.Part1 = None
-            if isAssembly:
-                self.part1Connected = assembly.isPartConnected(current_selection[0]["part"])
-            else:
-                self.part1Connected = True
-
             joint.Object1 = current_selection[0]["object"].Name
             joint.Part1 = current_selection[0]["part"]
             joint.Element1 = current_selection[0]["element_name"]
@@ -330,12 +482,6 @@ class Joint:
             self.partMovedByPresolved = None
 
         if len(current_selection) >= 2:
-            joint.Part2 = None
-            if isAssembly:
-                self.part2Connected = assembly.isPartConnected(current_selection[1]["part"])
-            else:
-                self.part2Connected = False
-
             joint.Object2 = current_selection[1]["object"].Name
             joint.Part2 = current_selection[1]["part"]
             joint.Element2 = current_selection[1]["element_name"]
@@ -343,13 +489,15 @@ class Joint:
             joint.Placement2 = self.findPlacement(
                 joint, joint.Object2, joint.Part2, joint.Element2, joint.Vertex2, True
             )
-            self.preSolve(
-                joint,
-                current_selection[0]["object"],
-                joint.Part1,
-                current_selection[1]["object"],
-                joint.Part2,
-            )
+            if joint.JointType != "Distance":
+                self.preSolve(
+                    joint,
+                    current_selection[0]["object"],
+                    joint.Part1,
+                    current_selection[1]["object"],
+                    joint.Part2,
+                )
+
             if isAssembly:
                 solveIfAllowed(assembly, True)
             else:
@@ -363,7 +511,7 @@ class Joint:
             joint.Placement2 = App.Placement()
             if isAssembly:
                 assembly.undoSolve()
-            self.undoPreSolve()
+            self.undoPreSolve(joint)
 
     def updateJCSPlacements(self, joint):
         if not joint.Detach1:
@@ -391,184 +539,45 @@ class Joint:
             return App.Placement()
 
         obj = UtilsAssembly.getObjectInPart(objName, part)
-        plc = App.Placement()
 
-        if not obj:
-            return App.Placement()
-
-        if not elt or not vtx:
-            # case of whole parts such as PartDesign::Body or PartDesign::CordinateSystem/Point/Line/Plane.
-            return App.Placement()
-
-        elt_type, elt_index = UtilsAssembly.extract_type_and_number(elt)
-        vtx_type, vtx_index = UtilsAssembly.extract_type_and_number(vtx)
-
-        isLine = False
-
-        if elt_type == "Vertex":
-            vertex = obj.Shape.Vertexes[elt_index - 1]
-            plc.Base = (vertex.X, vertex.Y, vertex.Z)
-        elif elt_type == "Edge":
-            edge = obj.Shape.Edges[elt_index - 1]
-            curve = edge.Curve
-
-            # First we find the translation
-            if vtx_type == "Edge" or joint.JointType == "Distance":
-                # In this case the wanted vertex is the center.
-                if curve.TypeId == "Part::GeomCircle":
-                    center_point = curve.Location
-                    plc.Base = (center_point.x, center_point.y, center_point.z)
-                elif curve.TypeId == "Part::GeomLine":
-                    edge_points = UtilsAssembly.getPointsFromVertexes(edge.Vertexes)
-                    line_middle = (edge_points[0] + edge_points[1]) * 0.5
-                    plc.Base = line_middle
-            else:
-                vertex = obj.Shape.Vertexes[vtx_index - 1]
-                plc.Base = (vertex.X, vertex.Y, vertex.Z)
-
-            # Then we find the Rotation
-            if curve.TypeId == "Part::GeomCircle":
-                plc.Rotation = App.Rotation(curve.Rotation)
-
-            if curve.TypeId == "Part::GeomLine":
-                isLine = True
-                plane_normal = curve.Direction
-                plane_origin = App.Vector(0, 0, 0)
-                plane = Part.Plane(plane_origin, plane_normal)
-                plc.Rotation = App.Rotation(plane.Rotation)
-        elif elt_type == "Face":
-            face = obj.Shape.Faces[elt_index - 1]
-            surface = face.Surface
-
-            # First we find the translation
-            if vtx_type == "Face" or joint.JointType == "Distance":
-                if surface.TypeId == "Part::GeomCylinder" or surface.TypeId == "Part::GeomCone":
-                    centerOfG = face.CenterOfGravity - surface.Center
-                    centerPoint = surface.Center + centerOfG
-                    centerPoint = centerPoint + App.Vector().projectToLine(centerOfG, surface.Axis)
-                    plc.Base = centerPoint
-                elif surface.TypeId == "Part::GeomTorus" or surface.TypeId == "Part::GeomSphere":
-                    plc.Base = surface.Center
-                else:
-                    plc.Base = face.CenterOfGravity
-            elif vtx_type == "Edge":
-                # In this case the edge is a circle/arc and the wanted vertex is its center.
-                edge = face.Edges[vtx_index - 1]
-                curve = edge.Curve
-                if curve.TypeId == "Part::GeomCircle":
-                    center_point = curve.Location
-                    plc.Base = (center_point.x, center_point.y, center_point.z)
-
-                elif (
-                    surface.TypeId == "Part::GeomCylinder"
-                    and curve.TypeId == "Part::GeomBSplineCurve"
-                ):
-                    # handle special case of 2 cylinder intersecting.
-                    plc.Base = self.findCylindersIntersection(obj, surface, edge, elt_index)
-
-            else:
-                vertex = obj.Shape.Vertexes[vtx_index - 1]
-                plc.Base = (vertex.X, vertex.Y, vertex.Z)
-
-            # Then we find the Rotation
-            if surface.TypeId == "Part::GeomPlane":
-                plc.Rotation = App.Rotation(surface.Rotation)
-            else:
-                plc.Rotation = surface.Rotation
-
-        # Now plc is the placement relative to the origin determined by the object placement.
-        # But it does not take into account Part placements. So if the solid is in a part and
-        # if the part has a placement then plc is wrong.
-
-        # change plc to be relative to the object placement.
-        plc = obj.Placement.inverse() * plc
-
-        # post-process of plc for some special cases
-        if elt_type == "Vertex":
-            plc.Rotation = App.Rotation()
-        elif isLine:
-            plane_normal = plc.Rotation.multVec(App.Vector(0, 0, 1))
-            plane_origin = App.Vector(0, 0, 0)
-            plane = Part.Plane(plane_origin, plane_normal)
-            plc.Rotation = App.Rotation(plane.Rotation)
-
-        # change plc to be relative to the origin of the document.
-        # global_plc = UtilsAssembly.getGlobalPlacement(obj, part)
-        # plc = global_plc * plc
-
-        # change plc to be relative to the assembly.
-        # assembly = self.getAssembly(joint)
-        # plc = assembly.Placement.inverse() * plc
+        ignoreVertex = joint.JointType == "Distance"
+        plc = UtilsAssembly.findPlacement(obj, part, elt, vtx, ignoreVertex)
 
         # We apply rotation / reverse / offset it necessary, but only to the second JCS.
         if isSecond:
             if joint.Offset.Length != 0.0:
-                plc = self.applyOffsetToPlacement(plc, joint.Offset)
+                plc = UtilsAssembly.applyOffsetToPlacement(plc, joint.Offset)
             if joint.Rotation != 0.0:
-                plc = self.applyRotationToPlacement(plc, joint.Rotation)
+                plc = UtilsAssembly.applyRotationToPlacement(plc, joint.Rotation)
 
         return plc
-
-    def applyOffsetToPlacement(self, plc, offset):
-        plc.Base = plc.Base + plc.Rotation.multVec(offset)
-        return plc
-
-    def applyRotationToPlacement(self, plc, angle):
-        return self.applyRotationToPlacementAlongAxis(plc, angle, App.Vector(0, 0, 1))
-
-    def applyRotationToPlacementAlongAxis(self, plc, angle, axis):
-        rot = plc.Rotation
-        zRotation = App.Rotation(axis, angle)
-        plc.Rotation = rot * zRotation
-        return plc
-
-    def flipPlacement(self, plc):
-        return self.applyRotationToPlacementAlongAxis(plc, 180, App.Vector(1, 0, 0))
 
     def flipOnePart(self, joint):
-        if hasattr(self, "part2Connected") and not self.part2Connected:
+        assembly = self.getAssembly(joint)
+        part2ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part2")
+        part1Grounded = assembly.isPartGrounded(joint.Part1)
+        part2Grounded = assembly.isPartGrounded(joint.Part2)
+        if part2ConnectedByJoint and not part2Grounded:
             jcsPlc = UtilsAssembly.getJcsPlcRelativeToPart(
                 joint.Placement2, joint.Object2, joint.Part2
             )
             globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(
                 joint.Placement2, joint.Object2, joint.Part2
             )
-            jcsPlc = self.flipPlacement(jcsPlc)
+            jcsPlc = UtilsAssembly.flipPlacement(jcsPlc)
             joint.Part2.Placement = globalJcsPlc * jcsPlc.inverse()
 
-        else:
+        elif not part1Grounded:
             jcsPlc = UtilsAssembly.getJcsPlcRelativeToPart(
                 joint.Placement1, joint.Object1, joint.Part1
             )
             globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(
                 joint.Placement1, joint.Object1, joint.Part1
             )
-            jcsPlc = self.flipPlacement(jcsPlc)
+            jcsPlc = UtilsAssembly.flipPlacement(jcsPlc)
             joint.Part1.Placement = globalJcsPlc * jcsPlc.inverse()
 
         solveIfAllowed(self.getAssembly(joint))
-
-    def findCylindersIntersection(self, obj, surface, edge, elt_index):
-        for j, facej in enumerate(obj.Shape.Faces):
-            surfacej = facej.Surface
-            if (elt_index - 1) == j or surfacej.TypeId != "Part::GeomCylinder":
-                continue
-
-            for edgej in facej.Edges:
-                if (
-                    edgej.Curve.TypeId == "Part::GeomBSplineCurve"
-                    and edgej.CenterOfGravity == edge.CenterOfGravity
-                    and edgej.Length == edge.Length
-                ):
-                    # we need intersection between the 2 cylinder axis.
-                    line1 = Part.Line(surface.Center, surface.Center + surface.Axis)
-                    line2 = Part.Line(surfacej.Center, surfacej.Center + surfacej.Axis)
-
-                    res = line1.intersect(line2, Part.Precision.confusion())
-
-                    if res:
-                        return App.Vector(res[0].X, res[0].Y, res[0].Z)
-        return surface.Center
 
     def preSolve(self, joint, obj1, part1, obj2, part2, savePlc=True):
         # The goal of this is to put the part in the correct position to avoid wrong placement by the solve.
@@ -576,8 +585,16 @@ class Joint:
         # we actually don't want to match perfectly the JCS, it is best to match them
         # in the current closest direction, ie either matched or flipped.
         sameDir = self.areJcsSameDir(joint)
+        assembly = self.getAssembly(joint)
+        isAssembly = assembly.Type == "Assembly"
+        if isAssembly:
+            part1ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part1")
+            part2ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part2")
+        else:
+            part1ConnectedByJoint = False
+            part2ConnectedByJoint = True
 
-        if hasattr(self, "part2Connected") and not self.part2Connected:
+        if part2ConnectedByJoint:
             if savePlc:
                 self.partMovedByPresolved = joint.Part2
                 self.presolveBackupPlc = joint.Part2.Placement
@@ -589,11 +606,11 @@ class Joint:
                 joint.Placement2, joint.Object2, joint.Part2
             )
             if not sameDir:
-                jcsPlc2 = self.flipPlacement(jcsPlc2)
+                jcsPlc2 = UtilsAssembly.flipPlacement(jcsPlc2)
             joint.Part2.Placement = globalJcsPlc1 * jcsPlc2.inverse()
             return True
 
-        elif hasattr(self, "part1Connected") and not self.part1Connected:
+        elif part1ConnectedByJoint:
             if savePlc:
                 self.partMovedByPresolved = joint.Part1
                 self.presolveBackupPlc = joint.Part1.Placement
@@ -605,23 +622,23 @@ class Joint:
                 joint.Placement1, joint.Object1, joint.Part1
             )
             if not sameDir:
-                jcsPlc1 = self.flipPlacement(jcsPlc1)
+                jcsPlc1 = UtilsAssembly.flipPlacement(jcsPlc1)
             joint.Part1.Placement = globalJcsPlc2 * jcsPlc1.inverse()
             return True
         return False
 
-    def undoPreSolve(self):
-        if self.partMovedByPresolved:
+    def undoPreSolve(self, joint):
+        if hasattr(self, "partMovedByPresolved") and self.partMovedByPresolved:
             self.partMovedByPresolved.Placement = self.presolveBackupPlc
             self.partMovedByPresolved = None
+
+            joint.Placement1 = joint.Placement1  # Make sure plc1 is redrawn
 
     def areJcsSameDir(self, joint):
         globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Object1, joint.Part1)
         globalJcsPlc2 = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Object2, joint.Part2)
 
-        zAxis1 = globalJcsPlc1.Rotation.multVec(App.Vector(0, 0, 1))
-        zAxis2 = globalJcsPlc2.Rotation.multVec(App.Vector(0, 0, 1))
-        return zAxis1.dot(zAxis2) > 0
+        return UtilsAssembly.arePlacementSameDir(globalJcsPlc1, globalJcsPlc2)
 
 
 class ViewProviderJoint:
@@ -646,14 +663,15 @@ class ViewProviderJoint:
         self.z_axis_so_color = coin.SoBaseColor()
         self.z_axis_so_color.rgb.setValue(UtilsAssembly.color_from_unsigned(param_z_axis_color))
 
-        camera = Gui.ActiveDocument.ActiveView.getCameraNode()
+        self.app_obj = vobj.Object
+        app_doc = self.app_obj.Document
+        self.gui_doc = Gui.getDocument(app_doc)
+        camera = self.gui_doc.ActiveView.getCameraNode()
         self.cameraSensor = coin.SoFieldSensor(self.camera_callback, camera)
         if isinstance(camera, coin.SoPerspectiveCamera):
             self.cameraSensor.attach(camera.focalDistance)
         elif isinstance(camera, coin.SoOrthographicCamera):
             self.cameraSensor.attach(camera.height)
-
-        self.app_obj = vobj.Object
 
         self.transform1 = coin.SoTransform()
         self.transform2 = coin.SoTransform()
@@ -753,18 +771,7 @@ class ViewProviderJoint:
         return face_sep
 
     def get_JCS_size(self):
-        camera = Gui.ActiveDocument.ActiveView.getCameraNode()
-
-        # Check if the camera is a perspective camera
-        if isinstance(camera, coin.SoPerspectiveCamera):
-            return camera.focalDistance.getValue() / 20
-        elif isinstance(camera, coin.SoOrthographicCamera):
-            return camera.height.getValue() / 20
-        else:
-            # Default value if camera type is unknown
-            return 10
-
-        return camera.height.getValue() / 20
+        return get_camera_height(self.gui_doc) / 20
 
     def set_JCS_placement(self, soTransform, placement, objName, part):
         # change plc to be relative to the origin of the document.
@@ -851,6 +858,14 @@ class ViewProviderJoint:
             return ":/icons/Assembly_CreateJointBall.svg"
         elif self.app_obj.JointType == "Distance":
             return ":/icons/Assembly_CreateJointDistance.svg"
+        elif self.app_obj.JointType == "RackPinion":
+            return ":/icons/Assembly_CreateJointRackPinion.svg"
+        elif self.app_obj.JointType == "Screw":
+            return ":/icons/Assembly_CreateJointScrew.svg"
+        elif self.app_obj.JointType == "Gears":
+            return ":/icons/Assembly_CreateJointGears.svg"
+        elif self.app_obj.JointType == "Belt":
+            return ":/icons/Assembly_CreateJointPulleys.svg"
 
         return ":/icons/Assembly_CreateJoint.svg"
 
@@ -866,12 +881,22 @@ class ViewProviderJoint:
         return None
 
     def doubleClicked(self, vobj):
-        assembly = vobj.Object.InList[0]
+        task = Gui.Control.activeTaskDialog()
+        if task:
+            task.reject()
+
+        assembly = vobj.Object.Proxy.getAssembly(vobj.Object)
+
+        if assembly is None:
+            return False
+
         if UtilsAssembly.activeAssembly() != assembly:
-            Gui.ActiveDocument.setEdit(assembly)
+            self.gui_doc.setEdit(assembly)
 
         panel = TaskAssemblyCreateJoint(0, vobj.Object)
         Gui.Control.showDialog(panel)
+
+        return True
 
 
 ################ Grounded Joint object #################
@@ -925,14 +950,127 @@ class ViewProviderGroundedJoint:
         """Set this object to the proxy object of the actual view provider"""
         obj.Proxy = self
 
-    def attach(self, obj):
+    def attach(self, vobj):
         """Setup the scene sub-graph of the view provider, this method is mandatory"""
-        pass
+        app_obj = vobj.Object
+        if app_obj is None:
+            return
+        groundedObj = app_obj.ObjectToGround
+        if groundedObj is None:
+            return
+
+        lockpadColorInt = Preferences.preferences().GetUnsigned("AssemblyConstraints", 0xCC333300)
+        self.lockpadColor = coin.SoBaseColor()
+        self.lockpadColor.rgb.setValue(UtilsAssembly.color_from_unsigned(lockpadColorInt))
+
+        self.app_obj = vobj.Object
+        app_doc = self.app_obj.Document
+        self.gui_doc = Gui.getDocument(app_doc)
+        camera = self.gui_doc.ActiveView.getCameraNode()
+        self.cameraSensor = coin.SoFieldSensor(self.camera_callback, camera)
+        if isinstance(camera, coin.SoPerspectiveCamera):
+            self.cameraSensor.attach(camera.focalDistance)
+        elif isinstance(camera, coin.SoOrthographicCamera):
+            self.cameraSensor.attach(camera.height)
+
+        self.cameraSensorRot = coin.SoFieldSensor(self.camera_callback_rotation, camera)
+        self.cameraSensorRot.attach(camera.orientation)
+
+        factor = self.get_lock_factor()
+        self.scale = coin.SoScale()
+        self.scale.scaleFactor.setValue(factor, factor, factor)
+
+        self.draw_style = coin.SoDrawStyle()
+        self.draw_style.lineWidth = 5
+
+        # Create transformation (position and orientation)
+        self.transform = coin.SoTransform()
+        self.set_lock_position(groundedObj)
+        self.set_lock_rotation()
+
+        # Create the 2D components of the lockpad: a square and two arcs
+        # Creating a square
+        squareCoords = [
+            (-5, -4, 0),
+            (5, -4, 0),
+            (5, 4, 0),
+            (-5, 4, 0),
+        ]  # Simple square, adjust size as needed
+        self.square = coin.SoAnnotation()
+        squareVertices = coin.SoCoordinate3()
+        squareVertices.point.setValues(0, 4, squareCoords)
+        squareFace = coin.SoFaceSet()
+        squareFace.numVertices.setValue(4)
+        self.square.addChild(squareVertices)
+        self.square.addChild(squareFace)
+
+        # Creating the arcs (approximated with line segments)
+        self.arc = self.create_arc(0, 4, 3.5, 0, 180)
+
+        self.pick = coin.SoPickStyle()
+        self.pick.style.setValue(coin.SoPickStyle.SHAPE_ON_TOP)
+
+        # Assemble the parts into a scenegraph
+        self.lockpadSeparator = coin.SoAnnotation()
+        self.lockpadSeparator.addChild(self.pick)
+        self.lockpadSeparator.addChild(self.transform)
+        self.lockpadSeparator.addChild(self.scale)
+        self.lockpadSeparator.addChild(self.lockpadColor)
+        self.lockpadSeparator.addChild(self.square)
+        self.lockpadSeparator.addChild(self.arc)
+
+        # Attach the scenegraph to the view provider
+        vobj.addDisplayMode(self.lockpadSeparator, "Wireframe")
+
+    def create_arc(self, centerX, centerY, radius, startAngle, endAngle):
+        arc = coin.SoAnnotation()
+        coords = coin.SoCoordinate3()
+        points = []
+        for angle in range(startAngle, endAngle + 1):  # Increment can be adjusted for smoother arcs
+            rad = math.radians(angle)
+            x = centerX + math.cos(rad) * radius
+            y = centerY + math.sin(rad) * radius
+            points.append((x, y, 0))
+        coords.point.setValues(0, len(points), points)
+        line = coin.SoLineSet()
+        line.numVertices.setValue(len(points))
+        arc.addChild(coords)
+        arc.addChild(self.draw_style)
+        arc.addChild(line)
+        return arc
+
+    def camera_callback(self, *args):
+        factor = self.get_lock_factor()
+        self.scale.scaleFactor.setValue(factor, factor, factor)
+
+    def camera_callback_rotation(self, *args):
+        self.set_lock_rotation()
+
+    def set_lock_rotation(self):
+        camera = self.gui_doc.ActiveView.getCameraNode()
+        rotation = camera.orientation.getValue()
+
+        q = rotation.getValue()
+        self.transform.rotation.setValue(q[0], q[1], q[2], q[3])
+
+    def get_lock_factor(self):
+        return get_camera_height(self.gui_doc) / 300
+
+    def set_lock_position(self, groundedObj):
+        bBox = groundedObj.ViewObject.getBoundingBox()
+        if bBox.isValid():
+            pos = bBox.Center
+        else:
+            pos = groundedObj.Placement.Base
+
+        self.transform.translation.setValue(pos.x, pos.y, pos.z)
 
     def updateData(self, fp, prop):
         """If a property of the handled feature has changed we have the chance to handle this here"""
         # fp is the handled feature, prop is the name of the property that has changed
-        pass
+
+        if prop == "Placement" and fp.ObjectToGround:
+            self.set_lock_position(fp.ObjectToGround)
 
     def getDisplayModes(self, obj):
         """Return a list of display modes."""
@@ -948,17 +1086,19 @@ class ViewProviderGroundedJoint:
         # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
         pass
 
-    def onDelete(self, feature, subelements):  # subelements is a tuple of strings
-        # Remove grounded tag.
-        if hasattr(feature.Object, "ObjectToGround"):
-            obj = feature.Object.ObjectToGround
-            if obj is not None and obj.Label.endswith(" 🔒"):
-                obj.Label = obj.Label[:-2]
-
-        return True  # If False is returned the object won't be deleted
-
     def getIcon(self):
         return ":/icons/Assembly_ToggleGrounded.svg"
+
+    def dumps(self):
+        """When saving the document this object gets stored using Python's json module.\
+                Since we have some un-serializable parts here -- the Coin stuff -- we must define this method\
+                to return a tuple of all serializable objects or None."""
+        return None
+
+    def loads(self, state):
+        """When restoring the serialized object from document we have the chance to set some internals here.\
+                Since no data were serialized nothing needs to be done here."""
+        return None
 
 
 class MakeJointSelGate:
@@ -987,6 +1127,18 @@ class MakeJointSelGate:
         full_obj_name = ".".join(objs_names)
         full_element_name = full_obj_name + "." + element_name
         selected_object = UtilsAssembly.getObject(full_element_name)
+
+        if not (
+            selected_object.isDerivedFrom("Part::Feature")
+            or selected_object.isDerivedFrom("App::Part")
+        ):
+            if selected_object.isDerivedFrom("App::Link"):
+                linked = selected_object.getLinkedObject()
+
+                if not (linked.isDerivedFrom("Part::Feature") or linked.isDerivedFrom("App::Part")):
+                    return False
+            else:
+                return False
 
         part_containing_selected_object = UtilsAssembly.getContainingPart(
             full_element_name, selected_object, self.assembly
@@ -1017,8 +1169,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         else:
             self.activeType = "Assembly"
 
-        self.view = Gui.activeDocument().activeView()
-        self.doc = App.ActiveDocument
+        self.doc = self.assembly.Document
+        self.gui_doc = Gui.getDocument(self.doc)
+
+        self.view = self.gui_doc.activeView()
 
         if not self.assembly or not self.view or not self.doc:
             return
@@ -1031,14 +1185,29 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         if self.activeType == "Part":
             self.form.setWindowTitle("Match parts")
             self.form.jointType.hide()
-        self.form.jointType.addItems(TranslatedJointTypes)
+
+        if Preferences.preferences().GetBool("ExperimentalFeatures", True):
+            self.form.jointType.addItems(TranslatedJointTypes)
+        else:
+            self.form.jointType.addItems(TranslatedJointTypesNoExperimental)
+
         self.form.jointType.setCurrentIndex(jointTypeIndex)
         self.form.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
 
         self.form.distanceSpinbox.valueChanged.connect(self.onDistanceChanged)
+        self.form.distanceSpinbox2.valueChanged.connect(self.onDistance2Changed)
         self.form.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
         self.form.rotationSpinbox.valueChanged.connect(self.onRotationChanged)
         self.form.PushButtonReverse.clicked.connect(self.onReverseClicked)
+        self.form.LimitCheckbox.stateChanged.connect(self.adaptUi)
+        self.form.limitLenMinSpinbox.valueChanged.connect(self.onLimitLenMinChanged)
+        self.form.limitLenMaxSpinbox.valueChanged.connect(self.onLimitLenMaxChanged)
+        self.form.limitRotMinSpinbox.valueChanged.connect(self.onLimitRotMinChanged)
+        self.form.limitRotMaxSpinbox.valueChanged.connect(self.onLimitRotMaxChanged)
+
+        jType = JointTypes[self.form.jointType.currentIndex()]
+        self.form.reverseRotCheckbox.setChecked(jType == "Gears")
+        self.form.reverseRotCheckbox.stateChanged.connect(self.reverseRotToggled)
 
         if jointObj:
             Gui.Selection.clearSelection()
@@ -1066,10 +1235,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.visibilityBackup = False
             self.handleInitialSelection()
 
-        self.toggleDistanceVisibility()
-        self.toggleOffsetVisibility()
-        self.toggleRotationVisibility()
-        self.toggleReverseVisibility()
+        self.adaptUi()
 
         self.setJointsPickableState(False)
 
@@ -1081,6 +1247,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         self.callbackMove = self.view.addEventCallback("SoLocation2Event", self.moveMouse)
         self.callbackKey = self.view.addEventCallback("SoKeyboardEvent", self.KeyboardEvent)
+
+        self.form.featureList.installEventFilter(self)
 
     def accept(self):
         if len(self.current_selection) != 2:
@@ -1200,15 +1368,14 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         ViewProviderJoint(self.joint.ViewObject)
 
     def onJointTypeChanged(self, index):
-
         self.joint.Proxy.setJointType(self.joint, JointTypes[self.form.jointType.currentIndex()])
-        self.toggleDistanceVisibility()
-        self.toggleOffsetVisibility()
-        self.toggleRotationVisibility()
-        self.toggleReverseVisibility()
+        self.adaptUi()
 
     def onDistanceChanged(self, quantity):
         self.joint.Distance = self.form.distanceSpinbox.property("rawValue")
+
+    def onDistance2Changed(self, quantity):
+        self.joint.Distance2 = self.form.distanceSpinbox2.property("rawValue")
 
     def onOffsetChanged(self, quantity):
         self.joint.Offset = App.Vector(0, 0, self.form.offsetSpinbox.property("rawValue"))
@@ -1216,38 +1383,120 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def onRotationChanged(self, quantity):
         self.joint.Rotation = self.form.rotationSpinbox.property("rawValue")
 
+    def onLimitLenMinChanged(self, quantity):
+        self.joint.LengthMin = self.form.limitLenMinSpinbox.property("rawValue")
+
+    def onLimitLenMaxChanged(self, quantity):
+        self.joint.LengthMax = self.form.limitLenMaxSpinbox.property("rawValue")
+
+    def onLimitRotMinChanged(self, quantity):
+        self.joint.AngleMin = self.form.limitRotMinSpinbox.property("rawValue")
+
+    def onLimitRotMaxChanged(self, quantity):
+        self.joint.AngleMax = self.form.limitRotMaxSpinbox.property("rawValue")
+
     def onReverseClicked(self):
         self.joint.Proxy.flipOnePart(self.joint)
 
-    def toggleDistanceVisibility(self):
-        if JointTypes[self.form.jointType.currentIndex()] in JointUsingDistance:
+    def reverseRotToggled(self, val):
+        if val:
+            self.form.jointType.setCurrentIndex(8)
+        else:
+            self.form.jointType.setCurrentIndex(9)
+
+    def adaptUi(self):
+        jType = JointTypes[self.form.jointType.currentIndex()]
+
+        if jType in JointUsingDistance:
             self.form.distanceLabel.show()
             self.form.distanceSpinbox.show()
+            if jType == "Distance":
+                self.form.distanceLabel.setText("Distance")
+            elif jType == "Gears" or jType == "Belt":
+                self.form.distanceLabel.setText("Radius 1")
+            else:
+                self.form.distanceLabel.setText("Pitch radius")
         else:
             self.form.distanceLabel.hide()
             self.form.distanceSpinbox.hide()
 
-    def toggleOffsetVisibility(self):
-        if JointTypes[self.form.jointType.currentIndex()] in JointUsingOffset:
+        if jType in JointUsingDistance2:
+            self.form.distanceLabel2.show()
+            self.form.distanceSpinbox2.show()
+            self.form.reverseRotCheckbox.show()
+
+        else:
+            self.form.distanceLabel2.hide()
+            self.form.distanceSpinbox2.hide()
+            self.form.reverseRotCheckbox.hide()
+
+        if jType in JointNoNegativeDistance:
+            # Setting minimum to 0.01 to prevent 0 and negative values
+            self.form.distanceSpinbox.setProperty("minimum", 1e-7)
+            if self.form.distanceSpinbox.property("rawValue") == 0.0:
+                self.form.distanceSpinbox.setProperty("rawValue", 1.0)
+
+            if jType == "Gears" or jType == "Belt":
+                self.form.distanceSpinbox2.setProperty("minimum", 1e-7)
+                if self.form.distanceSpinbox2.property("rawValue") == 0.0:
+                    self.form.distanceSpinbox2.setProperty("rawValue", 1.0)
+        else:
+            self.form.distanceSpinbox.setProperty("minimum", float("-inf"))
+            self.form.distanceSpinbox2.setProperty("minimum", float("-inf"))
+
+        if jType in JointUsingOffset:
             self.form.offsetLabel.show()
             self.form.offsetSpinbox.show()
         else:
             self.form.offsetLabel.hide()
             self.form.offsetSpinbox.hide()
 
-    def toggleRotationVisibility(self):
-        if JointTypes[self.form.jointType.currentIndex()] in JointUsingRotation:
+        if jType in JointUsingRotation:
             self.form.rotationLabel.show()
             self.form.rotationSpinbox.show()
         else:
             self.form.rotationLabel.hide()
             self.form.rotationSpinbox.hide()
 
-    def toggleReverseVisibility(self):
-        if JointTypes[self.form.jointType.currentIndex()] in JointUsingReverse:
+        if jType in JointUsingReverse:
             self.form.PushButtonReverse.show()
         else:
             self.form.PushButtonReverse.hide()
+
+        needLengthLimits = jType in JointUsingLimitLength
+        needAngleLimits = jType in JointUsingLimitAngle
+
+        showLimits = False
+        if needLengthLimits or needAngleLimits:
+            self.form.LimitCheckbox.show()
+            showLimits = True
+        else:
+            self.form.LimitCheckbox.hide()
+
+        showLimits = showLimits and self.form.LimitCheckbox.isChecked()
+        self.joint.EnableLimits = showLimits
+
+        if needLengthLimits and showLimits:
+            self.form.limitLenMinSpinboxLabel.show()
+            self.form.limitLenMaxSpinboxLabel.show()
+            self.form.limitLenMinSpinbox.show()
+            self.form.limitLenMaxSpinbox.show()
+        else:
+            self.form.limitLenMinSpinboxLabel.hide()
+            self.form.limitLenMaxSpinboxLabel.hide()
+            self.form.limitLenMinSpinbox.hide()
+            self.form.limitLenMaxSpinbox.hide()
+
+        if needAngleLimits and showLimits:
+            self.form.limitRotMinSpinboxLabel.show()
+            self.form.limitRotMaxSpinboxLabel.show()
+            self.form.limitRotMinSpinbox.show()
+            self.form.limitRotMaxSpinbox.show()
+        else:
+            self.form.limitRotMinSpinboxLabel.hide()
+            self.form.limitRotMaxSpinboxLabel.hide()
+            self.form.limitRotMinSpinbox.hide()
+            self.form.limitRotMaxSpinbox.hide()
 
     def updateTaskboxFromJoint(self):
         self.current_selection = []
@@ -1285,8 +1534,15 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         Gui.Selection.addSelection(self.doc.Name, self.joint.Part2.Name, elName)
 
         self.form.distanceSpinbox.setProperty("rawValue", self.joint.Distance)
+        self.form.distanceSpinbox2.setProperty("rawValue", self.joint.Distance2)
         self.form.offsetSpinbox.setProperty("rawValue", self.joint.Offset.z)
         self.form.rotationSpinbox.setProperty("rawValue", self.joint.Rotation)
+
+        self.form.LimitCheckbox.setChecked(self.joint.EnableLimits)
+        self.form.limitLenMinSpinbox.setProperty("rawValue", self.joint.LengthMin)
+        self.form.limitLenMaxSpinbox.setProperty("rawValue", self.joint.LengthMax)
+        self.form.limitRotMinSpinbox.setProperty("rawValue", self.joint.AngleMin)
+        self.form.limitRotMaxSpinbox.setProperty("rawValue", self.joint.AngleMax)
 
         self.form.jointType.setCurrentIndex(JointTypes.index(self.joint.JointType))
         self.updateJointList()
@@ -1338,7 +1594,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         # First we build the listwidget
         self.updateJointList()
 
-        # Then we pass the new list to the join object
+        # Then we pass the new list to the joint object
         self.joint.Proxy.setJointConnectors(self.joint, self.current_selection)
 
     def updateJointList(self):
@@ -1410,6 +1666,33 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         if info["State"] == "UP" and info["Key"] == "RETURN":
             self.accept()
 
+    def eventFilter(self, watched, event):
+        if self.form is not None and watched == self.form.featureList:
+            if event.type() == QtCore.QEvent.ShortcutOverride:
+                if event.key() == QtCore.Qt.Key_Delete:
+                    event.accept()  # Accept the event only if the key is Delete
+                    return True  # Indicate that the event has been handled
+                return False
+
+            elif event.type() == QtCore.QEvent.KeyPress:
+                if event.key() == QtCore.Qt.Key_Delete:
+                    selected_indexes = self.form.featureList.selectedIndexes()
+
+                    for index in selected_indexes:
+                        row = index.row()
+                        if row < len(self.current_selection):
+                            selection_dict = self.current_selection[row]
+                            elName = self.getSubnameForSelection(
+                                selection_dict["object"],
+                                selection_dict["part"],
+                                selection_dict["element_name"],
+                            )
+                            Gui.Selection.removeSelection(selection_dict["object"], elName)
+
+                    return True  # Consume the event
+
+        return super().eventFilter(watched, event)
+
     def getContainingPart(self, full_element_name, obj):
         return UtilsAssembly.getContainingPart(full_element_name, obj, self.assembly)
 
@@ -1447,14 +1730,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         part_containing_selected_object = self.getContainingPart(full_element_name, selected_object)
 
         # Find and remove the corresponding dictionary from the combined list
-        selection_dict_to_remove = None
         for selection_dict in self.current_selection:
             if selection_dict["part"] == part_containing_selected_object:
-                selection_dict_to_remove = selection_dict
+                self.current_selection.remove(selection_dict)
                 break
-
-        if selection_dict_to_remove is not None:
-            self.current_selection.remove(selection_dict_to_remove)
 
         self.updateJoint()
 

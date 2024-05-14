@@ -67,17 +67,17 @@ Py::List Array3DPy::getArray() const
     auto array = getMaterial3DArrayPtr()->getArray();
 
     for (auto& depth : array) {
-        Py::List* depthList = new Py::List();
+        Py::List depthList;
         for (auto& row : *std::get<1>(depth)) {
-            Py::List* rowList = new Py::List();
+            Py::List rowList;
             for (auto& column : *row) {
                 auto quantity = new Base::QuantityPy(new Base::Quantity(column));
-                rowList->append(Py::Object(quantity));
+                rowList.append(Py::asObject(quantity));
             }
 
-            depthList->append(*rowList);
+            depthList.append(rowList);
         }
-        list.append(*depthList);
+        list.append(depthList);
     }
 
     return list;

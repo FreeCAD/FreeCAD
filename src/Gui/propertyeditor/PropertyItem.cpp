@@ -134,7 +134,7 @@ void PropertyItem::reset()
 void PropertyItem::onChange()
 {
     if (hasExpression()) {
-        for(auto child : qAsConst(childItems)) {
+        for(auto child : std::as_const(childItems)) {
             if(child && child->hasExpression()) {
                 child->setExpression(std::shared_ptr<App::Expression>());
             }
@@ -309,7 +309,7 @@ int PropertyItem::columnCount() const
 void PropertyItem::setReadOnly(bool ro)
 {
     readonly = ro;
-    for (auto it : qAsConst(childItems)) {
+    for (auto it : std::as_const(childItems)) {
         it->setReadOnly(ro);
     }
 }
@@ -322,7 +322,7 @@ bool PropertyItem::isReadOnly() const
 void PropertyItem::setLinked(bool value)
 {
     linked = value;
-    for (auto it : qAsConst(childItems)) {
+    for (auto it : std::as_const(childItems)) {
         it->setLinked(value);
     }
 }

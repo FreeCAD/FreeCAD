@@ -45,11 +45,25 @@ public:
     static const QString ModelUUID_Legacy_Father;
     static const QString ModelUUID_Legacy_MaterialStandard;
 
+    static const QString ModelUUID_Mechanical_ArrudaBoyce;
     static const QString ModelUUID_Mechanical_Density;
+    static const QString ModelUUID_Mechanical_Hardness;
     static const QString ModelUUID_Mechanical_IsotropicLinearElastic;
     static const QString ModelUUID_Mechanical_LinearElastic;
+    static const QString ModelUUID_Mechanical_MooneyRivlin;
+    static const QString ModelUUID_Mechanical_NeoHooke;
+    static const QString ModelUUID_Mechanical_OgdenN1;
+    static const QString ModelUUID_Mechanical_OgdenN2;
+    static const QString ModelUUID_Mechanical_OgdenN3;
     static const QString ModelUUID_Mechanical_OgdenYld2004p18;
     static const QString ModelUUID_Mechanical_OrthotropicLinearElastic;
+    static const QString ModelUUID_Mechanical_PolynomialN1;
+    static const QString ModelUUID_Mechanical_PolynomialN2;
+    static const QString ModelUUID_Mechanical_PolynomialN3;
+    static const QString ModelUUID_Mechanical_ReducedPolynomialN1;
+    static const QString ModelUUID_Mechanical_ReducedPolynomialN2;
+    static const QString ModelUUID_Mechanical_ReducedPolynomialN3;
+    static const QString ModelUUID_Mechanical_Yeoh;
 
     static const QString ModelUUID_Fluid_Default;
 

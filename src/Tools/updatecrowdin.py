@@ -215,11 +215,6 @@ locations = [
         "../Mod/TechDraw/Gui/Resources/TechDraw.qrc",
     ],
     ["Tux", "../Mod/Tux/Resources/translations", "../Mod/Tux/Resources/Tux.qrc"],
-    [
-        "Web",
-        "../Mod/Web/Gui/Resources/translations",
-        "../Mod/Web/Gui/Resources/Web.qrc",
-    ],
 ]
 
 THRESHOLD = 25  # how many % must be translated for the translation to be included in FreeCAD
@@ -404,7 +399,7 @@ def updateTranslatorCpp(lncode):
 
     cppfile = os.path.join(os.path.dirname(__file__), "..", "Gui", "Language", "Translator.cpp")
     l = QtCore.QLocale(lncode)
-    lnname = l.languageToString(l.language())
+    lnname = QtCore.QLocale.languageToString(l.language())
 
     # read file contents
     f = open(cppfile, "r")

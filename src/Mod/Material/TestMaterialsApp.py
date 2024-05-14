@@ -28,3 +28,4 @@ import Materials
 
 from materialtests.TestModels import ModelTestCases
 from materialtests.TestMaterials import MaterialTestCases
+from materialtests.TestMaterialCreation import MaterialCreationTestCases
