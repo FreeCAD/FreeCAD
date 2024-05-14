@@ -36,7 +36,7 @@ if FreeCAD.GuiUp:
     import Arch_rc
 
 
-params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
+PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 
 
 def open(filename):
@@ -78,7 +78,7 @@ def insert(
     except:
         document = FreeCAD.newDocument()
     if singledoc is None:
-        singledoc = params.GetBool("SingleDoc", False)
+        singledoc = PARAMS.GetBool("SingleDoc", False)
     if singledoc:
         prj_obj = ifc_tools.convert_document(document, filename, shapemode, strategy)
         QtCore.QTimer.singleShot(100, toggle_lock_on)
@@ -87,17 +87,17 @@ def insert(
             document, filename, shapemode, strategy
         )
         QtCore.QTimer.singleShot(100, toggle_lock_off)
-    if params.GetBool("LoadOrphans", True):
+    if PARAMS.GetBool("LoadOrphans", True):
         ifc_tools.load_orphans(prj_obj)
-    if not silent and params.GetBool("LoadMaterials", False):
+    if not silent and PARAMS.GetBool("LoadMaterials", False):
         ifc_materials.load_materials(prj_obj)
-    if params.GetBool("LoadLayers", False):
+    if PARAMS.GetBool("LoadLayers", False):
         ifc_layers.load_layers(prj_obj)
-    if params.GetBool("LoadPsets", False):
+    if PARAMS.GetBool("LoadPsets", False):
         ifc_psets.load_psets(prj_obj)
     document.recompute()
     # print a reference to the IFC file on the console
-    if FreeCAD.GuiUp and params.GetBool("IfcFileToConsole", False):
+    if FreeCAD.GuiUp and PARAMS.GetBool("IfcFileToConsole", False):
         if isinstance(prj_obj, FreeCAD.DocumentObject):
             pstr = "FreeCAD.getDocument('{}').{}.Proxy.ifcfile"
             pstr = pstr.format(prj_obj.Document.Name, prj_obj.Name)
@@ -128,19 +128,19 @@ def get_options(strategy=None, shapemode=None, switchwb=None, silent=False):
                2 = all children
     """
 
-    psets = params.GetBool("LoadPsets", False)
-    materials = params.GetBool("LoadMaterials", False)
-    layers = params.GetBool("LoadLayers", False)
-    singledoc = params.GetBool("SingleDoc", False)
+    psets = PARAMS.GetBool("LoadPsets", False)
+    materials = PARAMS.GetBool("LoadMaterials", False)
+    layers = PARAMS.GetBool("LoadLayers", False)
+    singledoc = PARAMS.GetBool("SingleDoc", False)
     if strategy is None:
-        strategy = params.GetInt("ImportStrategy", 0)
+        strategy = PARAMS.GetInt("ImportStrategy", 0)
     if shapemode is None:
-        shapemode = params.GetInt("ShapeMode", 0)
+        shapemode = PARAMS.GetInt("ShapeMode", 0)
     if switchwb is None:
-        switchwb = params.GetBool("SwitchWB", True)
+        switchwb = PARAMS.GetBool("SwitchWB", True)
     if silent:
         return strategy, shapemode, switchwb
-    ask = params.GetBool("AskAgain", False)
+    ask = PARAMS.GetBool("AskAgain", False)
     if ask and FreeCAD.GuiUp:
         import FreeCADGui
         from PySide import QtGui
@@ -166,22 +166,22 @@ def get_options(strategy=None, shapemode=None, switchwb=None, silent=False):
         materials = dlg.checkLoadMaterials.isChecked()
         layers = dlg.checkLoadLayers.isChecked()
         singledoc = dlg.comboSingleDoc.currentIndex()
-        params.SetInt("ImportStrategy", strategy)
-        params.SetInt("ShapeMode", shapemode)
-        params.SetBool("SwitchWB", switchwb)
-        params.SetBool("AskAgain", ask)
-        params.SetBool("LoadPsets", psets)
-        params.SetBool("LoadMaterials", materials)
-        params.SetBool("LoadLayers", layers)
-        params.SetBool("SingleDoc", bool(1 - singledoc))
+        PARAMS.SetInt("ImportStrategy", strategy)
+        PARAMS.SetInt("ShapeMode", shapemode)
+        PARAMS.SetBool("SwitchWB", switchwb)
+        PARAMS.SetBool("AskAgain", ask)
+        PARAMS.SetBool("LoadPsets", psets)
+        PARAMS.SetBool("LoadMaterials", materials)
+        PARAMS.SetBool("LoadLayers", layers)
+        PARAMS.SetBool("SingleDoc", bool(1 - singledoc))
     return strategy, shapemode, switchwb
 
 
 def get_project_type(silent=False):
     """Gets the type of project to make"""
 
-    ask = params.GetBool("ProjectAskAgain", True)
-    ptype = params.GetBool("ProjectFull", False)
+    ask = PARAMS.GetBool("ProjectAskAgain", True)
+    ptype = PARAMS.GetBool("ProjectFull", False)
     if silent:
         return ptype
     if ask and FreeCAD.GuiUp:
@@ -192,8 +192,8 @@ def get_project_type(silent=False):
         result = dlg.exec_()
         ask = not (dlg.checkBox.isChecked())
         ptype = bool(result)
-        params.SetBool("ProjectAskAgain", ask)
-        params.SetBool("ProjectFull", ptype)
+        PARAMS.SetBool("ProjectAskAgain", ask)
+        PARAMS.SetBool("ProjectFull", ptype)
     return ptype
 
 
@@ -201,11 +201,11 @@ def get_project_type(silent=False):
 
 def toggle_lock_on():
 
-    ifc_status.toggle_lock(True)
+    ifc_status.on_toggle_lock(True, noconvert=True, setchecked=True)
 
 def toggle_lock_off():
 
-    ifc_status.toggle_lock(False)
+    ifc_status.on_toggle_lock(False, noconvert=True, setchecked=True)
 
 def unset_modified():
 

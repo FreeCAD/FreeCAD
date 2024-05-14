@@ -45,6 +45,7 @@ from nativeifc import ifc_objects
 from nativeifc import ifc_viewproviders
 from nativeifc import ifc_import
 from nativeifc import ifc_layers
+from nativeifc import ifc_status
 
 SCALE = 1000.0  # IfcOpenShell works in meters, FreeCAD works in mm
 SHORT = False  # If True, only Step ID attribute is created
@@ -55,7 +56,7 @@ PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 
 def create_document(document, filename=None, shapemode=0, strategy=0, silent=False):
     """Creates a IFC document object in the given FreeCAD document or converts that
-    document into an IFC document, depending on the value of SingleDoc preference.
+    document into an IFC document, depending on the state of the statusbar lock button.
 
     filename:  If not given, a blank IFC document is created
     shapemode: 0 = full shape
@@ -66,7 +67,7 @@ def create_document(document, filename=None, shapemode=0, strategy=0, silent=Fal
                2 = all children
     """
 
-    if PARAMS.GetBool("SingleDoc", False):
+    if ifc_status.get_lock_status():
         return convert_document(document, filename, shapemode, strategy, silent)
     else:
         return create_document_object(document, filename, shapemode, strategy, silent)

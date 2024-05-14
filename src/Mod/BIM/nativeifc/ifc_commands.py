@@ -190,9 +190,8 @@ class IFC_Save:
 
     def IsActive(self):
         doc = FreeCAD.ActiveDocument
-        if getattr(doc, "IfcFilePath", None):
-            if getattr(getattr(doc, "Proxy", None), "ifcfile", None):
-                return True
+        if hasattr(doc, "IfcFilePath"):
+            return True
         return False
 
     def Activated(self):
@@ -223,9 +222,8 @@ class IFC_SaveAs:
 
     def IsActive(self):
         doc = FreeCAD.ActiveDocument
-        if getattr(doc, "IfcFilePath", None):
-            if getattr(getattr(doc, "Proxy", None), "ifcfile", None):
-                return True
+        if hasattr(doc, "IfcFilePath"):
+            return True
         return False
 
     def Activated(self):
