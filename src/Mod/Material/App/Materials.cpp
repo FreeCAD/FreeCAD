@@ -448,7 +448,10 @@ Material::Material()
     : _dereferenced(false)
     , _oldFormat(false)
     , _editState(ModelEdit_None)
-{}
+{
+    // Create an initial UUID
+    newUuid();
+}
 
 Material::Material(const std::shared_ptr<MaterialLibrary>& library,
                    const QString& directory,
@@ -1439,7 +1442,6 @@ void Material::save(QTextStream& stream, bool overwrite, bool saveAsCopy, bool s
         if (materialManager.exists(_uuid) && !overwrite) {
             // Make a new version based on the current
             setParentUUID(_uuid);
-            // newUuid();
         }
     }
 
