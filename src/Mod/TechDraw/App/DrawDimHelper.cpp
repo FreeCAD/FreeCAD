@@ -65,9 +65,9 @@ DrawDimHelper::makeExtentDim(DrawViewPart* dvp, std::vector<std::string> edgeNam
 {
     //    Base::Console().Message("DDH::makeExtentDim() - dvp: %s edgeNames: %d\n",
     //                            dvp->Label.getValue(), edgeNames.size());
-    //if (!dvp) {
-    //    return;
-    //}
+    if (!dvp) {
+        return nullptr;
+    }
 
     std::string dimType = "DistanceX";
     int dimNum = 0;

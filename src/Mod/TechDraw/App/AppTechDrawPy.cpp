@@ -872,6 +872,9 @@ private:
         DrawDimHelper::makeExtentDim(dvp,
                                      edgeList,
                                      direction);
+        if (!dvde) {
+            return Py::None();
+        }
         PyObject* dvdePy = dvde->getPyObject();
         return Py::asObject(dvdePy);
     }
