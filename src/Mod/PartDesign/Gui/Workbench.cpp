@@ -564,6 +564,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Separator"
           << dressups
           << "Separator"
+          << "Materials_InspectAppearance"
+          << "Materials_InspectMaterial"
+          << "Separator"
           << "PartDesign_Boolean"
           << "Separator"
           << "Part_CheckGeometry"
