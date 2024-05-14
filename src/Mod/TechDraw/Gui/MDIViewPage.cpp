@@ -807,10 +807,10 @@ void MDIViewPage::setTreeToSceneSelect()
             auto* vert = dynamic_cast<QGIVertex*>(scene);
             auto* face = dynamic_cast<QGIFace*>(scene);
             if (edge || vert || face) {
-                const char* ssn = getSceneSubName(scene).c_str();
+                std::string ssn = getSceneSubName(scene);
 
-                Gui::Selection().addSelection(doc_name, obj_name, ssn);
-                showStatusMsg(doc_name, obj_name, ssn);
+                Gui::Selection().addSelection(doc_name, obj_name, ssn.c_str());
+                showStatusMsg(doc_name, obj_name, ssn.c_str());
                 return;
             }
             else if (dynamic_cast<QGIDatumLabel*>(scene) || dynamic_cast<QGMText*>(scene)) {
@@ -846,8 +846,6 @@ std::string MDIViewPage::getSceneSubName(QGraphicsItem* scene)
     if (edge || vert || face) {
         auto* viewItem = dynamic_cast<QGIView*>(scene->parentItem());
         if (viewItem) {
-            TechDraw::DrawView* viewObj = viewItem->getViewObject();
-
             std::stringstream ss;
             if (edge) { ss << "Edge" << edge->getProjIndex(); }
             else if (vert) { ss << "Vertex" << vert->getProjIndex(); }
@@ -860,7 +858,7 @@ std::string MDIViewPage::getSceneSubName(QGraphicsItem* scene)
 }
 
 // adds scene to core selection if it's not in already.
-void MDIViewPage::addSceneToTreeSel(QGraphicsItem* sn, std::vector<Gui::SelectionObject> treeSel)
+void MDIViewPage::addSceneToTreeSel(QGraphicsItem* sn, [[maybe_unused]]std::vector<Gui::SelectionObject> treeSel)
 {
     auto* itemView = dynamic_cast<QGIView*>(sn);
     if (!itemView) {
@@ -955,7 +953,6 @@ void MDIViewPage::removeSelFromTreeSel(QList<QGraphicsItem*> sceneSel, Gui::Sele
                 TechDraw::DrawView* viewObj = itemView->getViewObject();
                 if (viewObj && !viewObj->isRemoving()) {
                     const char* doc_name = viewObj->getDocument()->getName();
-                    const char* obj_name = viewObj->getNameInDocument();
 
                     if (selDocName == doc_name && selObj == viewObj) {
                         found = true;
