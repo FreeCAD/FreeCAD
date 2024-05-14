@@ -31,6 +31,7 @@
 #include <Base/Parameter.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/SoTextLabel.h>
+#include <Gui/ViewProviderDocumentObjectGroup.h>
 
 #include <Mod/Measure/App/MeasureBase.h>
 
@@ -48,6 +49,24 @@ class SoTranslate2Dragger;
 
 
 namespace MeasureGui {
+
+
+class MeasureGuiExport ViewProviderMeasureGroup : public Gui::ViewProviderDocumentObjectGroup
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(MeasureGui::ViewProviderMeasureGroup);
+
+public:
+    ViewProviderMeasureGroup();
+    ~ViewProviderMeasureGroup() override;
+
+    bool allowOverride(const App::DocumentObject &) const override {
+        return true;
+    }
+
+    QIcon getIcon() const override;
+};
+
+
 
 //NOLINTBEGIN
 class MeasureGuiExport ViewProviderMeasureBase :public Gui::ViewProviderDocumentObject

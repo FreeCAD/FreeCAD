@@ -41,6 +41,7 @@
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/ViewParams.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
@@ -50,9 +51,23 @@
 #include <Mod/Measure/App/Preferences.h>
 #include "ViewProviderMeasureBase.h"
 
-
 using namespace MeasureGui;
 using namespace Measure;
+
+
+PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureGroup, Gui::ViewProviderDocumentObjectGroup)
+
+ViewProviderMeasureGroup::ViewProviderMeasureGroup()
+{}
+
+ViewProviderMeasureGroup::~ViewProviderMeasureGroup() = default;
+
+QIcon ViewProviderMeasureGroup::getIcon() const
+{
+    return Gui::BitmapFactory().pixmap("Measurement-Group.svg");
+}
+
+
 
 //NOLINTBEGIN
 PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureBase, Gui::ViewProviderDocumentObject)

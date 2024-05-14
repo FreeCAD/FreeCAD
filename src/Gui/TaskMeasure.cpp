@@ -259,7 +259,7 @@ void ensureGroup(Measure::MeasureBase* measurement) {
     App::Document* doc = App::GetApplication().getActiveDocument();
     App::DocumentObject* obj = doc->getObject(measurementGroupName);
     if (!obj || !obj->isValid()) {
-        obj = doc->addObject("App::DocumentObjectGroup", measurementGroupName);
+        obj = doc->addObject("App::DocumentObjectGroup", measurementGroupName, true, "MeasureGui::ViewProviderMeasureGroup");
     }
 
     auto group = static_cast<App::DocumentObjectGroup*>(obj);
