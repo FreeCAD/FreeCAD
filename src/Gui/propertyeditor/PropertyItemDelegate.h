@@ -25,6 +25,7 @@
 #define PROPERTYITEMDELEGATE_H
 
 #include <QItemDelegate>
+#include <QPointer>
 
 namespace Gui {
 namespace PropertyEditor {
@@ -49,10 +50,10 @@ public:
 protected:
     bool eventFilter(QObject *, QEvent *) override;
 
-public Q_SLOTS:
     void valueChanged();
 
 private:
+    mutable QPointer<QWidget> propertyEditor;
     mutable QWidget *expressionEditor;
     mutable PropertyEditorWidget *userEditor = nullptr;
     mutable bool pressed;
