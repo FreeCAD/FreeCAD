@@ -102,7 +102,7 @@ QVariant PropertyItemAttorney::toString(PropertyItem* item, const QVariant& valu
 
 // ----------------------------------------------------
 
-Q_DECLARE_METATYPE(Py::Object)
+Q_DECLARE_METATYPE(Py::Object)  // NOLINT
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyItem)
 
@@ -843,7 +843,7 @@ void PropertyStringItem::setValue(const QVariant& value)
             return;
         }
         QString val = value.toString();
-        val = QString::fromUtf8(Base::Interpreter().strToPython(val.toUtf8()).c_str());
+        val = QString::fromUtf8(Base::InterpreterSingleton::strToPython(val.toUtf8()).c_str());
         QString data = QString::fromLatin1("\"%1\"").arg(val);
         setPropertyValue(data);
     }
@@ -3000,7 +3000,7 @@ void PropertyEnumItem::setValue(const QVariant& value)
             text.replace(QString::fromUtf8("'"),QString::fromUtf8("\\'"));
 
             std::string pystr = Base::Tools::escapedUnicodeFromUtf8(text.toUtf8());
-            pystr = Base::Interpreter().strToPython(pystr.c_str());
+            pystr = Base::InterpreterSingleton::strToPython(pystr.c_str());
             str << "u\"" << pystr.c_str() << "\", ";
         }
         str << "]";
@@ -3264,7 +3264,7 @@ void PropertyStringListItem::setValue(const QVariant& value)
     str << "[";
     for (const auto & it : values) {
         QString text(it);
-        std::string pystr = Base::Interpreter().strToPython(text.toUtf8().constData());
+        std::string pystr = Base::InterpreterSingleton::strToPython(text.toUtf8().constData());
         str << "\"" << QString::fromUtf8(pystr.c_str()) << "\", ";
     }
     str << "]";
@@ -3507,7 +3507,7 @@ namespace Gui::PropertyEditor {
     };
 }
 
-Q_DECLARE_METATYPE(Gui::PropertyEditor::Material)
+Q_DECLARE_METATYPE(Gui::PropertyEditor::Material)  // NOLINT
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyMaterialItem)
 
@@ -4533,7 +4533,8 @@ QVariant PropertyTransientFileItem::editorData(QWidget *editor) const
 
 // ---------------------------------------------------------------
 
-LinkSelection::LinkSelection(const App::SubObjectT &link) : link(link)
+LinkSelection::LinkSelection(App::SubObjectT link)
+    : link(std::move(link))
 {
 }
 

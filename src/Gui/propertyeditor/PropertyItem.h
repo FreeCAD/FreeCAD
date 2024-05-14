@@ -1179,7 +1179,7 @@ class LinkSelection : public QObject
     Q_OBJECT
 
 public:
-    explicit LinkSelection(const App::SubObjectT &);
+    explicit LinkSelection(App::SubObjectT);
     ~LinkSelection() override;
 
 public Q_SLOTS:
