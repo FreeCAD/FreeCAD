@@ -1048,8 +1048,8 @@ void execDrawCosmCircle3Points(Gui::Command* cmd)
         Base::Vector3d circleCenter = _circleCenter(vertexPoints[0],
                                                     vertexPoints[1],
                                                     vertexPoints[2]);
-        circleCenter = CosmeticVertex::makeCanonicalPointInverted(objFeat, circleCenter);
         double circleRadius = (vertexPoints[0] - circleCenter).Length() / objFeat->getScale();
+        circleCenter = CosmeticVertex::makeCanonicalPointInverted(objFeat, circleCenter);
         TechDraw::BaseGeomPtr theCircle =
             std::make_shared<TechDraw::Circle>(circleCenter, circleRadius);
         std::string circleTag = objFeat->addCosmeticEdge(theCircle);
