@@ -25,6 +25,7 @@
 
 import FreeCAD
 import FreeCADGui
+from nativeifc import ifc_openshell
 
 translate = FreeCAD.Qt.translate
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -243,7 +244,7 @@ class IFC_SaveAs:
 def get_commands():
     """Returns a list of IFC commands"""
 
-    return ["IFC_Diff", "IFC_Expand", "IFC_MakeProject"]
+    return ["IFC_Diff", "IFC_Expand", "IFC_MakeProject", "IFC_UpdateIOS"]
 
 
 # initialize commands

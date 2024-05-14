@@ -186,6 +186,7 @@ SET(nativeifc_SRCS
     nativeifc/ifc_tree.py
     nativeifc/ifc_viewproviders.py
     nativeifc/__init__.py
+    nativeifc/ifc_openshell.py
 )
 
 SOURCE_GROUP("" FILES ${Arch_SRCS})
