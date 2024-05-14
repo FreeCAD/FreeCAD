@@ -32,14 +32,16 @@ params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 def add_observer():
     """Adds an observer to the running FreeCAD instance"""
 
-    observer = ifc_observer()
-    FreeCAD.addDocumentObserver(observer)
+    FreeCAD.BIMobserver = ifc_observer()
+    FreeCAD.addDocumentObserver(FreeCAD.BIMobserver)
 
 
 def remove_observer():
     """Removes this observer if present"""
     
-    pass # TODO implement this!!
+    if hasattr(FreeCAD, "BIMobserver"):
+        FreeCAD.removeDocumentObserver(FreeCAD.BIMobserver)
+        del FreeCAD.BIMobserver
 
 
 class ifc_observer:
@@ -99,9 +101,6 @@ class ifc_observer:
                         ]
                         if len(child) == 1:
                             child[0].StepId = new_id
-                ifc_status.toggle_lock(True)
-            else:
-                ifc_status.toggle_lock(False)
 
     def slotCreatedObject(self, obj):
         """If this is an IFC document, turn the object into IFC"""
@@ -119,16 +118,9 @@ class ifc_observer:
     def slotActivateDocument(self, doc):
         """Check if we need to lock"""
 
-        from PySide2 import QtCore  # lazy loading
         from nativeifc import ifc_status
+        ifc_status.on_activate()
 
-        if hasattr(doc, "IfcFilePath"):
-            ifc_status.toggle_lock(True)
-        else:
-            ifc_status.toggle_lock(False)
-        if not hasattr(doc, "Proxy"):
-            # this is a new file, wait a bit to make sure all components are populated
-            QtCore.QTimer.singleShot(1000, self.propose_conversion)
 
     # implementation methods
 
@@ -206,68 +198,4 @@ class ifc_observer:
 
             newobj = ifc_tools.aggregate(obj, doc)
             ifc_geometry.add_geom_properties(newobj)
-            doc.recompute()
-
-    def propose_conversion(self):
-        """Propose a conversion of the current document"""
-
-        from nativeifc import ifc_status  # lazy loading
-
-        doc = FreeCAD.ActiveDocument
-        if not getattr(FreeCAD, "IsOpeningIFC", False):
-            if not hasattr(doc, "Proxy"):
-                if not getattr(doc, "Objects", True):
-                    if not doc.FileName:
-                        if not hasattr(doc, "IfcFilePath"):
-                            # this is really a new, empty document
-                            import FreeCADGui
-                            import Arch_rc
-                            from PySide import QtCore, QtGui  # lazy loading
-
-                            if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
-                                return
-                            if not params.GetBool("SingleDocAskAgain", True):
-                                if params.GetBool("SingleDoc", True):
-                                    self.full = params.GetBool("ProjectFull", False)
-                                    QtCore.QTimer.singleShot(
-                                        1000, self.convert_document
-                                    )
-                                    return
-                                else:
-                                    ifc_status.toggle_lock(False)
-                                    return
-                            d = os.path.dirname(__file__)
-                            dlg = FreeCADGui.PySideUic.loadUi(
-                                os.path.join(d, "ui", "dialogConvertDocument.ui")
-                            )
-                            dlg.checkStructure.setChecked(
-                                params.GetBool("ProjectFull", False)
-                            )
-                            result = dlg.exec_()
-                            self.full = dlg.checkStructure.isChecked()
-                            params.SetBool(
-                                "SingleDocAskAgain", not dlg.checkAskAgain.isChecked()
-                            )
-                            if result:
-                                params.SetBool("SingleDoc", True)
-                                params.SetBool("ProjectFull", self.full)
-                                QtCore.QTimer.singleShot(1000, self.convert_document)
-                            else:
-                                params.SetBool("SingleDoc", False)
-
-    def convert_document(self):
-        """Converts the active document"""
-
-        from nativeifc import ifc_tools  # lazy loading
-        from nativeifc import ifc_status
-
-        doc = FreeCAD.ActiveDocument
-        ifc_tools.convert_document(doc, strategy=2, silent=True)
-        if self.full:
-            import Arch
-
-            site = ifc_tools.aggregate(Arch.makeSite(), doc)
-            building = ifc_tools.aggregate(Arch.makeBuilding(), site)
-            storey = ifc_tools.aggregate(Arch.makeFloor(), building)
-            ifc_status.toggle_lock(True)
             doc.recompute()

@@ -46,20 +46,63 @@ def set_status_widget(statuswidget):
     lock_button.setIcon(icon)
     lock_button.setCheckable(True)
     doc = FreeCAD.ActiveDocument
+    statuswidget.addAction(lock_button)
+    statuswidget.lock_button = lock_button
     if doc and "IfcFilePath" in doc.PropertiesList:
         checked = True
     else:
-        checked = params.GetBool("SingleDoc", False)
-    toggle_lock(checked)
-    set_button(lock_button, checked)
-    lock_button.triggered.connect(do_lock)
-    lock_button.triggered.connect(toggle_lock)
-    statuswidget.addAction(lock_button)
-    statuswidget.lock_button = lock_button
+        checked = False
+    # set the button first, without converting the document
+    lock_button.setChecked(checked)
+    on_toggle_lock(checked, noconvert=True)
+    lock_button.triggered.connect(on_toggle_lock)
 
 
-def toggle_lock(checked=False):
-    """Sets the lock button on/off"""
+def on_toggle_lock(checked=None, noconvert=False, setchecked=False):
+    """When the toolbar button is pressed"""
+
+    if checked is None:
+        checked = get_lock_status()
+    set_menu(checked)
+    set_button(checked, setchecked)
+    if not noconvert:
+        if checked:
+            lock_document()
+        else:
+            unlock_document()
+
+
+def on_open():
+    """What happens when opening an existing document"""
+
+    pass # TODO implement
+
+
+def on_activate():
+    """What happens when activating a document"""
+
+    from PySide import QtGui  # lazy import
+
+    doc = FreeCAD.ActiveDocument
+    if doc and "IfcFilePath" in doc.PropertiesList:
+        checked = True
+    else:
+        checked = False
+    mw = FreeCADGui.getMainWindow()
+    statuswidget = mw.findChild(QtGui.QToolBar, "BIMStatusWidget")
+    if hasattr(statuswidget, "lock_button"):
+        statuswidget.lock_button.setChecked(checked)
+    on_toggle_lock(checked, noconvert=True)
+
+
+def on_new():
+    """What happens when creating a new document"""
+
+    pass # TODO implement
+
+
+def set_menu(locked=False):
+    """Sets the File menu items"""
 
     from PySide import QtCore, QtGui  # lazy loading
 
@@ -67,7 +110,7 @@ def toggle_lock(checked=False):
     mw = FreeCADGui.getMainWindow()
     wb = FreeCADGui.activeWorkbench()
     save_action = mw.findChild(QtGui.QAction, "Std_Save")
-    if checked and "IFC_Save" in FreeCADGui.listCommands():
+    if locked and "IFC_Save" in FreeCADGui.listCommands():
         if not hasattr(FreeCADGui,"IFC_WBManipulator"):
             FreeCADGui.IFC_WBManipulator = IFC_WBManipulator()
         # we need to void the shortcut otherwise it keeps active
@@ -84,40 +127,33 @@ def toggle_lock(checked=False):
             FreeCADGui.removeWorkbenchManipulator(FreeCADGui.IFC_WBManipulator)
             del FreeCADGui.IFC_WBManipulator
         wb.reloadActive()
-    # set the lock button
-    statuswidget = mw.findChild(QtGui.QToolBar, "BIMStatusWidget")
-    if hasattr(statuswidget, "lock_button"):
-        set_button(statuswidget.lock_button, checked)
 
 
-def set_button(lock_button, checked):
+def set_button(checked=False, setchecked=False):
     """Sets the lock button"""
 
     from PySide import QtGui  # lazy loading
 
-    if checked:
-        lock_button.setChecked(True)
-        lock_button.setToolTip(text_on)
-        icon = QtGui.QIcon(":/icons/IFC.svg")
-        lock_button.setIcon(icon)
-    else:
-        lock_button.setChecked(False)
-        lock_button.setToolTip(text_off)
-        image = QtGui.QImage(":/icons/IFC.svg")
-        grayscale = image.convertToFormat(QtGui.QImage.Format_Grayscale8)
-        grayscale = grayscale.convertToFormat(image.format())
-        grayscale.setAlphaChannel(image)
-        icon = QtGui.QIcon(QtGui.QPixmap.fromImage(grayscale))
-        lock_button.setIcon(icon)
-
-
-def do_lock(checked):
-    """Locks or unlocks the document"""
-
-    if checked:
-        lock_document()
-    else:
-        unlock_document()
+    mw = FreeCADGui.getMainWindow()
+    statuswidget = mw.findChild(QtGui.QToolBar, "BIMStatusWidget")
+    if hasattr(statuswidget, "lock_button"):
+        lock_button = statuswidget.lock_button
+        if checked:
+            lock_button.setToolTip(text_on)
+            icon = QtGui.QIcon(":/icons/IFC.svg")
+            lock_button.setIcon(icon)
+            if setchecked:
+                lock_button.setChecked(True)
+        else:
+            lock_button.setToolTip(text_off)
+            image = QtGui.QImage(":/icons/IFC.svg")
+            grayscale = image.convertToFormat(QtGui.QImage.Format_Grayscale8)
+            grayscale = grayscale.convertToFormat(image.format())
+            grayscale.setAlphaChannel(image)
+            icon = QtGui.QIcon(QtGui.QPixmap.fromImage(grayscale))
+            lock_button.setIcon(icon)
+            if setchecked:
+                lock_button.setChecked(False)
 
 
 def unlock_document():
@@ -203,7 +239,7 @@ def lock_document():
             FreeCAD.Console.PrintError(
                 "Unable to lock this document because it contains several IFC documents\n"
             )
-            QtCore.QTimer.singleShot(100, toggle_lock)
+            QtCore.QTimer.singleShot(100, on_toggle_lock)
         elif doc.Objects:
             # 3 there is no project but objects
             doc.openTransaction("Lock document")
@@ -220,7 +256,10 @@ def lock_document():
             doc.recompute()
         else:
             # 4 this is an empty document
-            ifc_tools.convert_document(doc, silent=True)
+            doc.openTransaction("Create IFC document")
+            ifc_tools.convert_document(doc)
+            doc.commitTransaction()
+            doc.recompute()
 
 
 def find_toplevel(objs):
@@ -246,6 +285,20 @@ def find_toplevel(objs):
         else:
             nobjs.append(obj)
     return nobjs
+
+
+def get_lock_status():
+    """Returns the status of the IFC lock button"""
+
+    if not FreeCAD.GuiUp:
+        return PARAMS.GetBool("SingleDoc")
+    from PySide import QtGui
+    mw = FreeCADGui.getMainWindow()
+    statuswidget = mw.findChild(QtGui.QToolBar, "BIMStatusWidget")
+    if hasattr(statuswidget, "lock_button"):
+        return statuswidget.lock_button.isChecked()
+    else:
+        return False
 
 
 # add entry to File menu

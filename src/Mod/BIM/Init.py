@@ -22,8 +22,8 @@
 
 # add import/export types
 
-FreeCAD.addImportType("Industry Foundation Classes (*.ifc)","importers.exportIFC")
-# FreeCAD.addExportType("Industry Foundation Classes (*.ifc)","importIFC")
+FreeCAD.addExportType("Industry Foundation Classes (*.ifc)","importers.exportIFC")
+# FreeCAD.addImportType("Industry Foundation Classes (*.ifc)","importIFC")
 FreeCAD.addImportType("Industry Foundation Classes (*.ifc)", "nativeifc.ifc_import")
 FreeCAD.addExportType("Industry Foundation Classes - IFCJSON (*.ifcJSON)","importers.exportIFC")
 FreeCAD.addImportType("Wavefront OBJ - Arch module (*.obj *.OBJ)","importers.importOBJ")

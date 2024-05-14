@@ -41,6 +41,9 @@ class BIM_Project:
                                          "Create an empty NativeIFC project"),
         }
 
+    def IsActive(self):
+        return not hasattr(FreeCAD.ActiveDocument, "IfcFilePath")
+
     def Activated(self):
         from nativeifc import ifc_tools
         project = ifc_tools.create_document(FreeCAD.ActiveDocument)
