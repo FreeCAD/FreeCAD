@@ -35,6 +35,26 @@
          offset="1"
          id="stop4140" />
     </linearGradient>
+    <linearGradient
+       gradientTransform="matrix(1.9992772,0,0,1.9992772,-0.23550294,-1052.047)"
+       xlink:href="#linearGradient4136-0"
+       id="linearGradient4146-0"
+       x1="3.2922609"
+       y1="1048.2958"
+       x2="7.3351092"
+       y2="1045.6942"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       id="linearGradient4136-0">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop4138-8" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0"
+         offset="1"
+         id="stop4140-7" />
+    </linearGradient>
   </defs>
   <metadata
      id="metadata7">
@@ -49,10 +69,10 @@
   </metadata>
   <g
      id="layer1"
-     transform="translate(0,-1020.3622)">
+     transform="matrix(2.6825842,0,0,2.6825749,-11.215812,-2760.3708)">
     <path
-       style="display:inline;fill:url(#linearGradient4146);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 10,1024.362 10e-7,49.1834 14.823091,-11.0273 10.246458,17.2591 10.558044,-4.2637 -11.216503,-18.4935 19.004455,-0.5453 z"
+       style="fill:url(#linearGradient4146-0);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 9.9393899,1030.4959 6e-7,18.5201 4.2134615,-4.1523 2.912554,6.4989 3.001123,-1.6055 -3.18829,-6.9637 5.402014,-0.2053 z"
        id="path4134" />
   </g>
 </svg>

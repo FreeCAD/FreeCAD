@@ -382,8 +382,8 @@
     <linearGradient
        xlink:href="#linearGradient19"
        id="linearGradient20"
-       x1="342.33884"
-       y1="504.50803"
+       x1="160.55373"
+       y1="327.68301"
        x2="633.7428"
        y2="619.53943"
        gradientUnits="userSpaceOnUse" />
@@ -446,12 +446,12 @@
        d="M 732.85846,229.4153 H 312.59179 l 72.53334,-108.8 c 8.53333,-12.8 21.33333,-19.20001 36.26666,-19.20001 h 204.8 c 14.93334,0 27.73334,6.40001 36.26667,19.20001 z"
        fill="#512da8"
        id="path1"
-       style="display:inline;fill:url(#linearGradient20);stroke:#2e3436;stroke-width:32.92189995;stroke-dasharray:none;stroke-opacity:1;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dashoffset:0;-inkscape-stroke:none;marker:none;marker-start:none;marker-mid:none;marker-end:none;stop-color:#000000;stop-opacity:1" />
+       style="display:inline;fill:#d3d7cf;stroke:#2e3436;stroke-width:32.92189995;stroke-dasharray:none;stroke-opacity:1;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dashoffset:0;-inkscape-stroke:none;marker:none;marker-start:none;marker-mid:none;marker-end:none;stop-color:#000000;stop-opacity:1" />
     <path
        d="m 298.66667,224.56528 h -128 v -38.4 c 0,-14.93334 10.66666,-25.6 25.6,-25.6 h 76.8 c 14.93333,0 25.6,10.66666 25.6,25.6 z"
        fill="#8667c4"
        id="path2"
-       style="font-variation-settings:normal;display:inline;opacity:1;vector-effect:none;fill:url(#linearGradient21);fill-opacity:1;stroke:#2e3436;stroke-width:32.9219;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;marker:none;marker-start:none;marker-mid:none;marker-end:none;stop-color:#000000;stop-opacity:1" />
+       style="font-variation-settings:normal;display:inline;opacity:1;vector-effect:none;fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:32.9219;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;marker:none;marker-start:none;marker-mid:none;marker-end:none;stop-color:#000000;stop-opacity:1" />
     <rect
        style="font-variation-settings:normal;display:inline;opacity:1;vector-effect:none;fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:32.9219;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;marker:none;marker-start:none;marker-mid:none;marker-end:none;stop-color:#000000;stop-opacity:1"
        id="rect3"
