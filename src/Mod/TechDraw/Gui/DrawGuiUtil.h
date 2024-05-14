@@ -45,6 +45,7 @@ class Feature;
 
 namespace TechDraw {
 class DrawPage;
+class DrawView;
 class LineGenerator;
 }
 namespace Gui {
@@ -83,6 +84,7 @@ class TechDrawGuiExport DrawGuiUtil {
 
     static Base::Vector3d fromSceneCoords(const Base::Vector3d& sceneCoord, bool invert = true);
     static Base::Vector3d toSceneCoords(const Base::Vector3d& pageCoord, bool invert = true);
+    static Base::Vector3d toGuiPoint(TechDraw::DrawView* obj, const Base::Vector3d& toConvert);
 };
 
 } //end namespace TechDrawGui

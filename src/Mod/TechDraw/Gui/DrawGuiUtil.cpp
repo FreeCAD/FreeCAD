@@ -596,3 +596,19 @@ Base::Vector3d DrawGuiUtil::toSceneCoords(const Base::Vector3d& pageCoord, bool 
     }
     return result;
 }
+
+//! convert unscaled, unrotated point to scaled, rotated view coordinates
+Base::Vector3d DrawGuiUtil::toGuiPoint(DrawView* obj, const Base::Vector3d& toConvert)
+{
+    Base::Vector3d result{toConvert};
+    auto rotDegrees = obj->Rotation.getValue();
+    if (rotDegrees != 0.0) {
+        result.RotateZ(Base::toRadians(rotDegrees));
+    }
+    result *= obj->getScale();
+    result = DU::invertY(result);
+    result = Rez::guiX(result);
+
+    return result;
+}
+
