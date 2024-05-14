@@ -342,21 +342,6 @@ App::DocumentObjectExecReturn* AttachExtension::extensionExecute()
     }
     return App::DocumentObjectExtension::extensionExecute();
 }
-void dumpAttacher(std::string name, App::PropertyLinkSubList& a)
-{
-    std::cerr << name << ": ";
-    for (auto& sh : a.getShadowSubs()) {
-        std::cerr << "(" << sh.first << " : " << sh.second << ")";
-    }
-    for (auto& v : a.getValues()) {
-        std::cerr << v->getNameInDocument();
-    }
-    for (auto& sv : a.getSubValues()) {
-        std::cerr << "[" << sv << "]";
-    }
-    std::cerr << std::endl;
-}
-
 
 void AttachExtension::extensionOnChanged(const App::Property* prop)
 {
@@ -375,7 +360,6 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
                     App::Property::User3,
                     &Support);
                 Support.Paste(AttachmentSupport);
-                dumpAttacher("PasteSupport", AttachmentSupport);
             }
             _active = -1;
             updateAttacherVals(/*base*/ false);
@@ -472,7 +456,6 @@ void AttachExtension::updateAttacherVals(bool base) const
     if (!props.attachment) {
         return;
     }
-    dumpAttacher("updateAttacherVals", *props.attachment);
     attacher(base).setUp(*props.attachment,
                          eMapMode(props.mapMode->getValue()),
                          props.mapReversed->getValue(),
