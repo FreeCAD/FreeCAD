@@ -25,8 +25,10 @@
 
 import FreeCAD
 import FreeCADGui
+import os
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+translate = FreeCAD.Qt.translate
 
 
 class BIM_Classification:
@@ -52,7 +54,7 @@ class BIM_Classification:
     def Activated(self):
         import Draft
         from PySide import QtCore, QtGui
-        import BimMaterial
+        from bimcommands import BimMaterial
 
         # init checks
         if not hasattr(self, "Classes"):
@@ -60,16 +62,8 @@ class BIM_Classification:
         self.isEditing = None
 
         # load the form and set the tree model up
-        self.form = FreeCADGui.PySideUic.loadUi(
-            os.path.join(os.path.dirname(__file__), "dialogClassification.ui")
-        )
-        self.form.setWindowIcon(
-            QtGui.QIcon(
-                os.path.join(
-                    os.path.dirname(__file__), "icons", "BIM_Classification.svg"
-                )
-            )
-        )
+        self.form = FreeCADGui.PySideUic.loadUi(":/ui/dialogClassification.ui")
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/BIM_Classification.svg"))
 
         # restore saved values
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")

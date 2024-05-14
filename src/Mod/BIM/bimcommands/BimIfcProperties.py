@@ -140,7 +140,7 @@ class BIM_IfcProperties:
         )
 
         # connect signals
-        self.form.tree.selectionModel.selectionChanged.connect(self.updateProperties)
+        self.form.tree.selectionModel().selectionChanged.connect(self.updateProperties)
         self.form.groupMode.currentIndexChanged.connect(self.update)
         self.form.onlyVisible.stateChanged.connect(self.onVisible)
         self.form.onlySelected.stateChanged.connect(self.onSelected)
