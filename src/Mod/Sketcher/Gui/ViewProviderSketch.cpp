@@ -3225,6 +3225,13 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         selection.reset();
         this->detachSelection();
 
+        ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/View");
+
+        auto headlightIntensityExisting = hGrpView->GetInt("HeadlightIntensityExisting", 100);
+        hGrpView->SetInt("HeadlightIntensity", headlightIntensityExisting);
+        hGrpView->RemoveInt("HeadlightIntensityExisting");
+
         App::AutoTransaction trans("Sketch recompute");
         try {
             // and update the sketch
@@ -3294,6 +3301,20 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
                 e.what());
         }
     }
+
+    ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View");
+
+    // This should not be needed but just incase
+    auto sketcherEditLastExit = hGrpView->GetInt("HeadlightIntensityExisting", 101);
+    if (sketcherEditLastExit != 101) {
+        // must mean a seg fault or abnormal exit last time
+        hGrpView->SetInt("HeadlightIntensity", sketcherEditLastExit);
+    }
+    auto headlightIntensityExisting = hGrpView->GetInt("HeadlightIntensity", 100);
+    auto headlightIntensityTemp = 50;
+    hGrpView->SetInt("HeadlightIntensity", headlightIntensityTemp);
+    hGrpView->SetInt("HeadlightIntensityExisting", headlightIntensityExisting);
 
     auto editDoc = Gui::Application::Instance->editDocument();
     editDocName.clear();
