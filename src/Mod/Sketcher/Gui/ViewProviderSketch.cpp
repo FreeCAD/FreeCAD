@@ -3306,8 +3306,9 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
         "User parameter:BaseApp/Preferences/View");
 
     // This should not be needed but just incase
-    auto sketcherEditLastExit = hGrpView->GetInt("HeadlightIntensityExisting", 101);
-    if (sketcherEditLastExit != 101) {
+    int overMaxHeadlightIntensity = 101;
+    int sketcherEditLastExit = hGrpView->GetInt("HeadlightIntensityExisting", overMaxHeadlightIntensity);
+    if (sketcherEditLastExit != overMaxHeadlightIntensity) {
         // must mean a seg fault or abnormal exit last time
         hGrpView->SetInt("HeadlightIntensity", sketcherEditLastExit);
     }
