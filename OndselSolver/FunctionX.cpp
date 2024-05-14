@@ -6,6 +6,8 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
 
+#include <algorithm>
+
 #include "FunctionX.h"
 #include "Constant.h"
 #include "Sum.h"

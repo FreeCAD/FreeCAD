@@ -9,6 +9,7 @@
 #include "corecrt_math_defines.h"
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
 
 #include "SymbolicParser.h"
 #include "BasicUserFunction.h"
