@@ -93,6 +93,7 @@ PyMOD_INIT_FUNC(Measure)
     Measure::Measurement            ::init();
 
     // umf classes
+    Measure::MeasureDistanceType    ::init();
     Measure::MeasureBase            ::init();
     Measure::MeasurePython          ::init();
     Measure::MeasureAngle           ::init();

@@ -38,6 +38,17 @@
 namespace Measure
 {
 
+class MeasureDistanceType: public Base::BaseClass
+{
+public:
+    static Base::Type getClassTypeId();
+    Base::Type getTypeId() const override;
+    static void init();
+    static void* create();
+
+private:
+    static Base::Type classTypeId;
+};
 
 
 class MeasureExport MeasureDistance : public Measure::MeasureBaseExtendable<Part::MeasureDistanceInfo>
@@ -115,6 +126,9 @@ public:
     // Return the object we are measuring
     std::vector<App::DocumentObject*> getSubject() const override;
 
+    void handleChangedPropertyName(Base::XMLReader &reader,
+                                                const char * TypeName,
+                                                const char *PropName) override;
 
 private:
     void onChanged(const App::Property* prop) override;

@@ -291,3 +291,43 @@ std::vector<App::DocumentObject*> MeasureDistanceDetached::getSubject() const
 }
 
 
+
+Base::Type MeasureDistanceType::getClassTypeId()
+{
+    return Base::Type::badType();
+}
+
+Base::Type MeasureDistanceType::getTypeId() const
+{
+    return Base::Type::badType();
+}
+
+void MeasureDistanceType::init()
+{
+    initSubclass(MeasureDistanceType::classTypeId,
+                 "App::MeasureDistance",
+                 "App::DocumentObject",
+                 &(MeasureDistanceType::create));
+}
+
+void* MeasureDistanceType::create()
+{
+    return new MeasureDistanceDetached();
+}
+
+Base::Type MeasureDistanceType::classTypeId = Base::Type::badType();
+
+
+
+// Migrate old MeasureDistance Type
+void MeasureDistanceDetached::handleChangedPropertyName(Base::XMLReader &reader,
+                                                const char * TypeName,
+                                                const char *PropName)
+{
+    if (strcmp(PropName, "P1") == 0 && strcmp(TypeName, "App::PropertyVector") == 0) {
+        Position1.Restore(reader);
+    }
+    else if (strcmp(PropName, "P2") == 0 && strcmp(TypeName, "App::PropertyVector") == 0) {
+        Position2.Restore(reader);
+    }
+}
