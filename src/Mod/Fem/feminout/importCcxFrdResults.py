@@ -311,6 +311,7 @@ def read_frd_result(
     mode_strain = {}
     mode_peeq = {}
     mode_temp = {}
+    mode_heatflux = {}
     mode_massflow = {}
     mode_networkpressure = {}
 
@@ -322,6 +323,7 @@ def read_frd_result(
     mode_strain_found = False
     mode_peeq_found = False
     mode_temp_found = False
+    mode_heatflux_found = False
     mode_massflow_found = False
     mode_networkpressure_found = False
     end_of_section_found = False
@@ -641,6 +643,19 @@ def read_frd_result(
             temperature = float(line[13:25])
             mode_temp[elem] = (temperature)
 
+        # Check if we found heat flux section
+        if line[5:9] == "FLUX":
+            mode_heatflux_found = True
+        if mode_heatflux_found and (line[1:3] == "-1"):
+            # we found a heat_flux line
+            elem = int(line[4:13])
+            mode_heatflux_x = float(line[13:25])
+            mode_heatflux_y = float(line[25:37])
+            mode_heatflux_z = float(line[37:49])
+            mode_heatflux[elem] = FreeCAD.Vector(mode_heatflux_x, mode_heatflux_y, mode_heatflux_z)
+
+
+
         # Check if we found a mass flow section
         if line[5:11] == "MAFLOW":
             mode_massflow_found = True
@@ -711,6 +726,12 @@ def read_frd_result(
                 mode_results["temp"] = mode_temp
                 mode_temp = {}
                 mode_temp_found = False
+                node_element_section = False
+
+            if mode_heatflux_found:
+                mode_results["heatflux"] = mode_heatflux
+                mode_heatflux = {}
+                mode_heatflux_found = False
                 node_element_section = False
 
             if mode_massflow_found:
