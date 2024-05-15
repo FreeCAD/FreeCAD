@@ -75,6 +75,7 @@ short FeatureExtrude::mustExecute() const
 
 Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVector, bool inverse)
 {
+    (void) inverse;
     Base::Vector3d extrudeDirection;
 
     if (!UseCustomVector.getValue()) {
@@ -90,7 +91,14 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
             Base::Vector3d base;
             Base::Vector3d dir;
             getAxis(pcReferenceAxis, subReferenceAxis, base, dir, ForbiddenAxis::NotPerpendicularWithNormal);
-            extrudeDirection = inverse ? -dir : dir;
+            switch (addSubType) {
+                case Type::Additive:
+                    extrudeDirection = dir;
+                    break;
+                case Type::Subtractive:
+                    extrudeDirection = -dir;
+                    break;
+            }
         }
     }
     else {

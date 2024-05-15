@@ -75,7 +75,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
     // InverseDirection: to inverse the auto detected extrusion direction for
     // backward compatibility to upstream
     ExtrudeOptions options(ExtrudeOption::MakeFace | ExtrudeOption::MakeFuse
-                           | ExtrudeOption::InverseDirection);  // ExtrudeOption::LegacyPocket
+                           | ExtrudeOption::InverseDirection);
     return buildExtrusion(options);
 #else
     // Handle legacy features, these typically have Type set to 3 (previously NULL, now UpToFace),
@@ -119,7 +119,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
 
         base.move(invObjLoc);
 
-        Base::Vector3d pocketDirection = computeDirection(SketchVector);
+        Base::Vector3d pocketDirection = computeDirection(SketchVector, false);
 
         // create vector in pocketing direction with length 1
         gp_Dir dir(pocketDirection.x, pocketDirection.y, pocketDirection.z);
@@ -263,5 +263,9 @@ Base::Vector3d Pocket::getProfileNormal() const
 {
     auto res = FeatureExtrude::getProfileNormal();
     // turn around for pockets
+#ifdef FC_USE_TNP_FIX
     return res * -1;
+#else
+    return res;
+#endif
 }

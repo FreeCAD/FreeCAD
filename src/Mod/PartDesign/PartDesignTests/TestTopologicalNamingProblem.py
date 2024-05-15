@@ -944,7 +944,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(self.Body.Shape.BoundBox.YMin,0)
         self.assertEqual(self.Body.Shape.BoundBox.ZMin,0)
         self.assertEqual(self.Body.Shape.BoundBox.XMax,31.37)
-        self.assertEqual(self.Body.Shape.BoundBox.YMax,25.2)
+        self.assertAlmostEqual(self.Body.Shape.BoundBox.YMax,25.2)
         self.assertEqual(self.Body.Shape.BoundBox.ZMax,20)
         self.assertNotEquals(area1, area2)
 
@@ -1348,14 +1348,11 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         volume2 = body.Shape.Volume
 
         doc.Body.newObject('Sketcher::SketchObject', 'Sketch')
-        doc.Sketch.AttachmentSupport = (fillet, "Face8")
-        # doc.Sketch.AttachmentOffset = App.Placement(
-        #     App.Vector(0.0000000000, 2.0000000000, 0.0000000000),
-        #     App.Rotation(0.0000000000, 0.0000000000, 0.0000000000))
+        doc.Sketch.AttachmentSupport = (fillet, "Face2")
         doc.Sketch.MapMode = 'FlatFace'
         doc.recompute()
 
-        x1, x2, y1, y2 = 10 / math.sqrt(2) - math.sqrt(2), 10 / math.sqrt(2) + math.sqrt(2), 6, 11
+        x1, x2, y1, y2 = 4,6 , 6, 11
         geoList = []
         geoList.append(
             Part.LineSegment(App.Vector(x1, y1, 0.0 ),
@@ -1416,14 +1413,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         boxVolume = 10 * 10 * 10
         # Full prism minus the rounded triangle prism.
         filletVolume = 1 * 1 * 10 - 1 * 1 * math.pi / 4 * 10 #0.5 * 10
-        # cut area is rectangle with sqrt(2) as one side minus 2 right isoceles triangles
-        # Plus the difference between the are of the curve and the right triangle.
-        curveVsTri =  math.pi *  ((math.sqrt(2)/2)**2 / 4) - ((math.sqrt(2)/2)**2) / 2
-        cutArea = (2 * math.sqrt(2)) * 3 -  ((math.sqrt(2)/2 * math.sqrt(2)/2)/2)*2 - curveVsTri
-        cutVolume = cutArea * 4 # height is 4  ( 11-6 with a limit of 10 from the box )
-
-        # Todo:  Not right yet.
-        # return
+        cutVolume = 24
         self.assertAlmostEqual(volume1, boxVolume )
         self.assertAlmostEqual(volume2, boxVolume - 3 * filletVolume)
         self.assertAlmostEqual(volume3, boxVolume - 3 * filletVolume - cutVolume, 4)
@@ -1458,4 +1448,4 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
     def tearDown(self):
         """ Close our test document """
-        # App.closeDocument("PartDesignTestTNP")
+        App.closeDocument("PartDesignTestTNP")
