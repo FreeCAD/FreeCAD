@@ -51,10 +51,13 @@ def write_step_output(f, ccxwriter):
         f.write("U\n")
     if not ccxwriter.member.geos_fluidsection:
         f.write("*EL FILE\n")
+        variables = "S, E"
+        if ccxwriter.analysis_type == "thermomech":
+            variables += ", HFL"
         if ccxwriter.solver_obj.MaterialNonlinearity == "nonlinear":
-            f.write("S, E, PEEQ\n")
-        else:
-            f.write("S, E\n")
+            variables += ", PEEQ"
+
+        f.write(variables + "\n")
 
         # dat file
         # reaction forces: freecad.org/tracker/view.php?id=2934
