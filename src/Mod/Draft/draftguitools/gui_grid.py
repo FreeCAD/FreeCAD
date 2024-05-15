@@ -64,7 +64,7 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Draft_ToggleGrid", "Toggles the Draft grid on and off."
             ),
-            'Checkable': False,
+            "Checkable": False,
         }
 
     def Activated(self, index = 0):
