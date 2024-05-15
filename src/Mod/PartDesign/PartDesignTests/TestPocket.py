@@ -48,8 +48,11 @@ class TestPocket(unittest.TestCase):
         self.Body.addObject(self.Pocket)
         self.Pocket.Profile = self.PocketSketch
         self.Pocket.Length = 1
+        print("PointA")
         self.Doc.recompute()
+        print(self.Pocket.Shape.Volume)
         self.assertAlmostEqual(self.Pocket.Shape.Volume, 75.0)
+        print("PointC")
 
     def testPocketThroughAllCase(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -165,5 +168,5 @@ class TestPocket(unittest.TestCase):
 
     def tearDown(self):
         #closing doc
-        FreeCAD.closeDocument("PartDesignTestPocket")
-        #print ("omit closing document for debugging")
+        # FreeCAD.closeDocument("PartDesignTestPocket")
+        print ("omit closing document for debugging")

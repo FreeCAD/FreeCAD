@@ -1258,9 +1258,6 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
         doc.Body.newObject('Sketcher::SketchObject', 'Sketch')
         doc.Sketch.AttachmentSupport = (chamfer, "Face8")
-        # doc.Sketch.AttachmentOffset = App.Placement(
-        #     App.Vector(0.0000000000, 2.0000000000, 0.0000000000),
-        #     App.Rotation(0.0000000000, 0.0000000000, 0.0000000000))
         doc.Sketch.MapMode = 'FlatFace'
         doc.recompute()
 
@@ -1296,11 +1293,9 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
         pocket = self.Doc.addObject('PartDesign::Pocket', 'Pocket')
         pocket.Type = "Length"
-        # pocket.Length2 = 2
         pocket.Length = 3
         pocket.Direction = App.Vector(-0.710000000,0.7100000000, 0.0000000000)
         pocket.Profile = doc.Sketch
-        pocket.Reversed = True
         body.addObject(pocket)
         self.Doc.recompute()
         volume3 = body.Shape.Volume
@@ -1392,11 +1387,10 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
         pocket = self.Doc.addObject('PartDesign::Pocket', 'Pocket')
         pocket.Type = "Length"
-        # pocket.Length2 = 2
         pocket.Length = 3
         pocket.Direction = App.Vector(-0.710000000,0.7100000000, 0.0000000000)
         pocket.Profile = doc.Sketch
-        pocket.Reversed = True
+        # pocket.Reversed = False
         body.addObject(pocket)
         self.Doc.recompute()
         volume3 = body.Shape.Volume
@@ -1429,7 +1423,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         cutVolume = cutArea * 4 # height is 4  ( 11-6 with a limit of 10 from the box )
 
         # Todo:  Not right yet.
-        return
+        # return
         self.assertAlmostEqual(volume1, boxVolume )
         self.assertAlmostEqual(volume2, boxVolume - 3 * filletVolume)
         self.assertAlmostEqual(volume3, boxVolume - 3 * filletVolume - cutVolume, 4)
@@ -1464,4 +1458,4 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
     def tearDown(self):
         """ Close our test document """
-        App.closeDocument("PartDesignTestTNP")
+        # App.closeDocument("PartDesignTestTNP")

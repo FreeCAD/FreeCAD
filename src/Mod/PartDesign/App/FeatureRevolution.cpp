@@ -161,7 +161,7 @@ App::DocumentObjectExecReturn* Revolution::execute()
 
         // Create a fresh support even when base exists so that it can be used for patterns
 #ifdef FC_USE_TNP_FIX
-        TopoShape result;
+        TopoShape result(0);
 #else
         TopoDS_Shape result;
 #endif
@@ -375,6 +375,7 @@ void Revolution::generateRevolution(TopoDS_Shape& revol,
 
 #ifdef FC_USE_TNP_FIX
         revol = TopoShape(from).makeElementRevolve(revolAx,angleTotal);
+        revol.Tag = -getID();
 #else
         // revolve the face to a solid
         // BRepPrimAPI is the only option that allows use of this shape for patterns.
