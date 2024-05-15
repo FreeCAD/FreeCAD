@@ -4394,7 +4394,7 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="101"/>
       <source>Dimension</source>
-      <translation>Kota</translation>
+      <translation>Merne jedinice</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="224"/>
@@ -5997,7 +5997,7 @@ obezbeđivati informacija oznaci.</translation>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="54"/>
       <source>Join</source>
-      <translation>Spoji</translation>
+      <translation>Spajanje objekata</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="57"/>
@@ -6840,7 +6840,7 @@ Ovo je namenjeno da se koristi sa zatvorenim oblicima i punim telima i nema utic
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="85"/>
       <source>Dimension</source>
-      <translation>Kota</translation>
+      <translation>Merne jedinice</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="88"/>

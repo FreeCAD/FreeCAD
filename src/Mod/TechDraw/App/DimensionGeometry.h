@@ -156,6 +156,24 @@ public:
     bool arcCW;
 };
 
+//a convenient container for area dimension
+class TechDrawExport areaPoint
+{
+public:
+    areaPoint();
+    areaPoint(const areaPoint& ap) = default;
+
+    areaPoint& operator= (const areaPoint& ap);
+
+    void move(const Base::Vector3d& offset);
+    void project(const DrawViewPart* dvp);
+    void dump(const std::string& text) const;
+
+//TODO: setters and getters
+    double area;
+    Base::Vector3d center;
+};
+
 }   //end namespace TechDraw
 
 #endif

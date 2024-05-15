@@ -155,7 +155,7 @@ de mai sus.</translation>
     <message>
       <location filename="../../Help.py" line="78"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
-      <translation type="unfinished">PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</translation>
+      <translation>Modulul PySide QtWebEngineWidgets nu este disponibil. Ajutor de redare este făcut cu browser-ul de sistem</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="82"/>

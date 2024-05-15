@@ -102,7 +102,7 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
     action->setChecked(state);
     ui->manualUpdate->addAction(action);
 
-    QObject::connect(qAsConst(ui->manualUpdate)->actions()[0],
+    QObject::connect(std::as_const(ui->manualUpdate)->actions()[0],
                      &QAction::changed,
                      this,
                      &TaskSketcherMessages::onAutoUpdateStateChanged);
@@ -175,7 +175,7 @@ void TaskSketcherMessages::onLabelConstrainStatusLinkClicked(const QString& str)
 
 void TaskSketcherMessages::onAutoUpdateStateChanged()
 {
-    bool state = qAsConst(ui->manualUpdate)->actions()[0]->isChecked();
+    bool state = std::as_const(ui->manualUpdate)->actions()[0]->isChecked();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");

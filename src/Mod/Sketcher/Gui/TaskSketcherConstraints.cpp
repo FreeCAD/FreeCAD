@@ -833,7 +833,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
     QWidgetAction* action = new QWidgetAction(this);
     filterList = new ConstraintFilterList(this);
     action->setDefaultWidget(filterList);
-    qAsConst(ui->filterButton)->addAction(action);
+    std::as_const(ui->filterButton)->addAction(action);
 
     // Create local settings menu
     // FIXME there is probably a smarter way to handle this menu
@@ -862,7 +862,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
     }
     hGrp->Attach(this);
 
-    auto settingsBut = qAsConst(ui->settingsButton);
+    auto settingsBut = std::as_const(ui->settingsButton);
 
     settingsBut->addAction(action1);
     settingsBut->addAction(action2);
@@ -1040,8 +1040,8 @@ void TaskSketcherConstraints::onChangedSketchView(const Gui::ViewProvider& vp,
 {
     if (sketchView == &vp) {
         if (&sketchView->Autoconstraints == &prop) {
-            QSignalBlocker block(qAsConst(ui->settingsButton)->actions()[0]);
-            qAsConst(ui->settingsButton)
+            QSignalBlocker block(std::as_const(ui->settingsButton)->actions()[0]);
+            std::as_const(ui->settingsButton)
                 ->actions()[0]
                 ->setChecked(sketchView->Autoconstraints.getValue());
         }
@@ -1425,7 +1425,7 @@ void TaskSketcherConstraints::OnChange(Base::Subject<const char*>& rCaller, cons
     }
     if (actNum >= 0) {
         assert(actNum < static_cast<int>(ui->settingsButton->actions().size()));
-        qAsConst(ui->settingsButton)->actions()[actNum]->setChecked(hGrp->GetBool(rcReason, false));
+        std::as_const(ui->settingsButton)->actions()[actNum]->setChecked(hGrp->GetBool(rcReason, false));
     }
 }
 

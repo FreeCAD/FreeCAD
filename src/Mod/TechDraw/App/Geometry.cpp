@@ -168,6 +168,13 @@ Base::Vector3d Face::getCenter() const {
     return DrawUtil::toVector3d(faceProps.CentreOfMass());
 }
 
+double Face::getArea() const {
+    GProp_GProps faceProps;
+    BRepGProp::SurfaceProperties(toOccFace(), faceProps);
+
+    return faceProps.Mass();
+}
+
 Face::~Face()
 {
     for(auto it : wires) {

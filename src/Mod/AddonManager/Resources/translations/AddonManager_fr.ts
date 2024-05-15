@@ -512,8 +512,8 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
       <location filename="../../AddonManagerOptions.ui" line="20"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates</translation>
+      <translation>Si cette option est sélectionnée, lors du lancement du gestionnaire des extensions,
+les extensions installées seront vérifiées pour les mises à jour disponibles.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="24"/>

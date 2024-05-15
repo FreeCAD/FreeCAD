@@ -756,7 +756,7 @@ Lasciare vuoto per utilizzare tutti gli oggetti del documento</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="61"/>
       <source>Remove external geometry of base sketches if needed</source>
-      <translation type="unfinished">Remove external geometry of base sketches if needed</translation>
+      <translation>Rimuovi la geometria esterna degli schizzi di base se necessario</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="144"/>
@@ -5065,7 +5065,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="288"/>
       <source>The groove depth of this element</source>
-      <translation type="unfinished">The groove depth of this element</translation>
+      <translation>La profondità della scanalatura di questo elemento</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="290"/>
@@ -5075,12 +5075,12 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="292"/>
       <source>The spacing between the grooves of this element</source>
-      <translation type="unfinished">The spacing between the grooves of this element</translation>
+      <translation>La spaziatura tra le scanalature di questo elemento</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="294"/>
       <source>The number of grooves of this element</source>
-      <translation type="unfinished">The number of grooves of this element</translation>
+      <translation>Il numero di scanalature in questo elemento</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="429"/>

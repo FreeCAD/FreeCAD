@@ -2979,7 +2979,7 @@ Wenn Länge = 0 dann wird die Länge so berechnet, dass die Höhe gleich dem rel
     <message>
       <location filename="../../ArchPanel.py" line="85"/>
       <source>Panel</source>
-      <translation>Paneel</translation>
+      <translation>Platte</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="107"/>
@@ -2995,7 +2995,7 @@ Wenn Länge = 0 dann wird die Länge so berechnet, dass die Höhe gleich dem rel
       <location filename="../../ArchPanel.py" line="158"/>
       <location filename="../../ArchPanel.py" line="187"/>
       <source>Create Panel</source>
-      <translation>Erzeuge Paneel</translation>
+      <translation>Platte erstellt</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="210"/>
@@ -3010,12 +3010,12 @@ Wenn Länge = 0 dann wird die Länge so berechnet, dass die Höhe gleich dem rel
     <message>
       <location filename="../../ArchPanel.py" line="332"/>
       <source>Create Panel Cut</source>
-      <translation>Plattenzuschnitt erstellen</translation>
+      <translation>Plattenzuschnitt erstellt</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="358"/>
       <source>Create Panel Sheet</source>
-      <translation>Plattenzeichnung erstellen</translation>
+      <translation>Plattenzeichnung erstellt</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="726"/>
@@ -4029,7 +4029,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="335"/>
       <source>If true, the height value propagates to contained objects if the height of those objects is set to 0</source>
-      <translation type="unfinished">If true, the height value propagates to contained objects if the height of those objects is set to 0</translation>
+      <translation>Falls aktiviert, wird der Höhenwert an enthaltene Objekte weitergegeben, wenn die Höhe dieser Objekte auf 0 gesetzt ist</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="338"/>
@@ -6417,12 +6417,12 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="137"/>
       <source>Panel</source>
-      <translation>Paneel</translation>
+      <translation>Platte</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="141"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation>Erstellt ein Paneel von Grund auf neu oder auf Basis eines ausgewählten Objekts (Skizze, Kantenzug, Fläche oder Volumenkörper)</translation>
+      <translation>Erstellt ein Plattenobjekt von Grund auf oder auf Basis eines ausgewählten Objekts (Skizze, Kantenzug, Fläche oder Festkörper)</translation>
     </message>
   </context>
   <context>

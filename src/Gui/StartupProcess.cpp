@@ -446,7 +446,7 @@ void StartupPostProcess::showMainWindow()
     // stop splash screen and set immediately the active window that may be of interest
     // for scripts using Python binding for Qt
     mainWindow->stopSplasher();
-    qtApp->setActiveWindow(mainWindow);
+    mainWindow->activateWindow();
 }
 
 void StartupPostProcess::activateWorkbench()

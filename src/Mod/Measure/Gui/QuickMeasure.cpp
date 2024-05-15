@@ -23,11 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Shape.hxx>
 #include <cmath>
 #include <vector>
 #endif
@@ -51,9 +46,10 @@
 using namespace Measure;
 using namespace MeasureGui;
 
-QuickMeasure::QuickMeasure(QObject* parent) : QObject(parent)
+QuickMeasure::QuickMeasure(QObject* parent)
+    : QObject(parent)
+    , measurement{new Measure::Measurement()}
 {
-    measurement = new Measure::Measurement();
 }
 
 QuickMeasure::~QuickMeasure()
@@ -61,21 +57,42 @@ QuickMeasure::~QuickMeasure()
     delete measurement;
 }
 
-
 void QuickMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (msg.Type == Gui::SelectionChanges::SetPreselect || msg.Type == Gui::SelectionChanges::RmvPreselect) {
-        return;
+    try {
+        tryMeasureSelection(msg);
     }
-    
+    catch (const Base::IndexError&) {
+        // ignore this exception because it can be caused by trying to access a non-existing
+        // sub-element e.g. when selecting a construction geometry in sketcher
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
+}
+
+void QuickMeasure::tryMeasureSelection(const Gui::SelectionChanges& msg)
+{
+    if (canMeasureSelection(msg)) {
+        measurement->clear();
+        addSelectionToMeasurement();
+        printResult();
+    }
+}
+
+bool QuickMeasure::canMeasureSelection(const Gui::SelectionChanges& msg) const
+{
+    if (msg.Type == Gui::SelectionChanges::SetPreselect ||
+        msg.Type == Gui::SelectionChanges::RmvPreselect) {
+        return false;
+    }
+
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (!doc) { return; }
+    return doc != nullptr;
+}
 
-    measurement->clear();
-
-    std::vector<Part::TopoShape> subShapes;
-
-    std::vector<App::DocumentObject*> docsToMove;
+void QuickMeasure::addSelectionToMeasurement()
+{
     for (auto& selObj : Gui::Selection().getSelectionEx()) {
         App::DocumentObject* obj = selObj.getObject();
         const std::vector<std::string> subNames = selObj.getSubNames();
@@ -88,7 +105,10 @@ void QuickMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
         }
     }
+}
 
+void QuickMeasure::printResult()
+{
     MeasureType mtype = measurement->getType();
     if (mtype == MeasureType::Surfaces) {
         Base::Quantity area(measurement->area(), Base::Unit::Area);
@@ -112,7 +132,7 @@ void QuickMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
     else if (mtype == MeasureType::Cylinder || mtype == MeasureType::Sphere || mtype == MeasureType::Torus) {
         Base::Quantity area(measurement->area(), Base::Unit::Area);
         Base::Quantity rad(measurement->radius(), Base::Unit::Length);
-        print(tr("Area: %1, Radius: %2").arg(area.getSafeUserString()).arg(rad.getSafeUserString()));
+        print(tr("Area: %1, Radius: %2").arg(area.getSafeUserString(), rad.getSafeUserString()));
     }
     else if (mtype == MeasureType::Edges) {
         Base::Quantity dist(measurement->length(), Base::Unit::Length);
@@ -125,7 +145,7 @@ void QuickMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
     else if (mtype == MeasureType::TwoLines) {
         Base::Quantity angle(measurement->angle(), Base::Unit::Length);
         Base::Quantity dist(measurement->length(), Base::Unit::Length);
-        print(tr("Angle: %1, Total length: %2").arg(angle.getSafeUserString()).arg(dist.getSafeUserString()));
+        print(tr("Angle: %1, Total length: %2").arg(angle.getSafeUserString(), dist.getSafeUserString()));
     }
     else if (mtype == MeasureType::Line) {
         Base::Quantity dist(measurement->length(), Base::Unit::Length);
@@ -146,7 +166,6 @@ void QuickMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
     else {
         print(QString::fromLatin1(""));
     }
-
 }
 
 void QuickMeasure::print(const QString& message)

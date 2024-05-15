@@ -27,11 +27,21 @@
 #include <QComboBox>
 #include <QTabBar>
 #include <QMenu>
+#include <QToolButton>
+#include <QLayout>
 #include <FCGlobal.h>
+#include <Gui/ToolBarManager.h>
+#include <map>
 
 namespace Gui
 {
 class WorkbenchGroup;
+
+enum WorkbenchItemStyle {
+    IconAndText = 0,
+    IconOnly = 1,
+    TextOnly = 2
+};
 
 class GuiExport WorkbenchComboBox : public QComboBox
 {
@@ -49,22 +59,55 @@ private:
 };
 
 
-class GuiExport WorkbenchTabWidget : public QTabBar
+class GuiExport WorkbenchTabWidget : public QWidget
 {
     Q_OBJECT
+    Q_PROPERTY(Qt::LayoutDirection direction READ direction WRITE setDirection NOTIFY directionChanged)
+
+    int addWorkbenchTab(QAction* workbenchActivateAction, int index = -1);
+
+    void setTemporaryWorkbenchTab(QAction* workbenchActivateAction);
+    int temporaryWorkbenchTabIndex() const;
+
+    QAction* workbenchActivateActionByTabIndex(int tabIndex) const;
+    int tabIndexForWorkbenchActivateAction(QAction* workbenchActivateAction) const;
 
 public:
     explicit WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent = nullptr);
     
-    void updateLayoutAndTabOrientation(bool);
+    void setToolBarArea(Gui::ToolBarArea area);
     void buildPrefMenu();
 
+    Qt::LayoutDirection direction() const;
+    void setDirection(Qt::LayoutDirection direction);
+
+    void adjustSize();
+
 public Q_SLOTS:
-    void refreshList(QList<QAction*>);
+    void handleWorkbenchSelection(QAction* selectedWorkbenchAction);
+    void handleTabChange(int selectedTabIndex);
+
+    void updateLayout();
+    void updateWorkbenchList();
+
+Q_SIGNALS:
+    void directionChanged(const Qt::LayoutDirection&);
 
 private:
+    bool isInitializing = false;
+
     WorkbenchGroup* wbActionGroup;
-    QMenu* menu;
+    QToolButton* moreButton;
+    QTabBar* tabBar;
+    QBoxLayout* layout;
+
+    Qt::LayoutDirection _direction = Qt::LeftToRight;
+
+    // this action is used for workbenches that are typically disabled
+    QAction* temporaryWorkbenchAction = nullptr;
+
+    std::map<QAction*, int> actionToTabIndex;
+    std::map<int, QAction*> tabIndexToAction;
 };
 
 

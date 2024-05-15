@@ -167,7 +167,7 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="137"/>
       <source>Theme</source>
-      <translation type="unfinished">Theme</translation>
+      <translation>Tema</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="138"/>

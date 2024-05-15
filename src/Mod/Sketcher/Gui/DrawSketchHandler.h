@@ -31,6 +31,7 @@
 #include <Base/Parameter.h>
 #include <Base/Tools2D.h>
 #include <Gui/Selection.h>
+#include <Gui/ToolHandler.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/Constraint.h>
 
@@ -137,26 +138,28 @@ private:
  * implemented in DrawSketchHandler and used from its derived classes by virtue of the inheritance.
  * This promotes a concentrating the coupling in a single point (and code reuse).
  */
-class SketcherGuiExport DrawSketchHandler
+class SketcherGuiExport DrawSketchHandler: public Gui::ToolHandler
 {
 public:
     DrawSketchHandler();
     virtual ~DrawSketchHandler();
 
     void activate(ViewProviderSketch*);
-    void deactivate();
+    void deactivate() override;
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) = 0;
-    virtual bool pressButton(Base::Vector2d onSketchPos) = 0;
-    virtual bool releaseButton(Base::Vector2d onSketchPos) = 0;
+    virtual void mouseMove(Base::Vector2d pos) = 0;
+    virtual bool pressButton(Base::Vector2d pos) = 0;
+    virtual bool releaseButton(Base::Vector2d pos) = 0;
+
+    virtual void registerPressedKey(bool pressed, int key);
+    virtual void pressRightButton(Base::Vector2d pos);
+
     virtual bool onSelectionChanged(const Gui::SelectionChanges&)
     {
         return false;
     }
-    virtual void registerPressedKey(bool pressed, int key);
-    virtual void pressRightButton(Base::Vector2d onSketchPos);
 
-    virtual void quit();
+    void quit() override;
 
     friend class ViewProviderSketch;
 
@@ -215,19 +218,12 @@ public:
     //@}
 
 private:  // NVI
-    virtual void preActivated();
-    virtual void activated()
-    {}
-    virtual void deactivated()
-    {}
-    virtual void postDeactivated()
-    {}
+    void preActivated() override;
     virtual void onWidgetChanged()
     {}
 
 protected:  // NVI requiring base implementation
     virtual std::string getToolName() const;
-    virtual QString getCrosshairCursorSVGName() const;
 
     virtual std::unique_ptr<QWidget> createWidget() const;
     virtual bool isWidgetVisible() const;
@@ -235,37 +231,6 @@ protected:  // NVI requiring base implementation
     virtual QString getToolWidgetText() const;
 
 protected:
-    // helpers
-    /**
-     * Sets a cursor for 3D inventor view.
-     * pixmap as a cursor image in device independent pixels.
-     *
-     * \param autoScale - set this to false if pixmap already scaled for HiDPI
-     **/
-
-    /** @name Icon helpers */
-    //@{
-    void setCursor(const QPixmap& pixmap, int x, int y, bool autoScale = true);
-
-    /// updates the actCursor with the icon by calling getCrosshairCursorSVGName(),
-    /// enabling to set data member dependent icons (i.e. for different construction methods)
-    void updateCursor();
-
-    /// restitutes the cursor that was in use at the moment of starting the DrawSketchHandler (i.e.
-    /// oldCursor)
-    void unsetCursor();
-
-    /// restitutes the DSH cached cursor (e.g. without any tail due to autoconstraints, ...)
-    void applyCursor();
-
-    /// returns the color to be used for the crosshair (configurable as a parameter)
-    unsigned long getCrosshairColor();
-
-    /// functions to set the cursor to a given svgName (to be migrated to NVI style)
-
-    qreal devicePixelRatio();
-    //@}
-
     void drawEdit(const std::vector<Base::Vector2d>& EditCurve) const;
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list) const;
     void drawEdit(const std::vector<Part::Geometry*>& geometries) const;
@@ -300,22 +265,6 @@ protected:
 
     void signalToolChanged() const;
 
-    Gui::View3DInventorViewer* getViewer();
-
-private:
-    void setSvgCursor(const QString& svgName,
-                      int x,
-                      int y,
-                      const std::map<unsigned long, unsigned long>& colorMapping =
-                          std::map<unsigned long, unsigned long>());
-
-    void addCursorTail(std::vector<QPixmap>& pixmaps);
-
-    void applyCursor(QCursor& newCursor);
-
-    void setCrosshairCursor(const QString& svgName);
-    void setCrosshairCursor(const char* svgName);
-
 
 protected:
     /**
@@ -325,9 +274,6 @@ protected:
     suggestedConstraintsPixmaps(std::vector<AutoConstraint>& suggestedConstraints);
 
     ViewProviderSketch* sketchgui;
-    QCursor oldCursor;
-    QCursor actCursor;
-    QPixmap actCursorPixmap;
 
     QWidget* toolwidget;
 };
