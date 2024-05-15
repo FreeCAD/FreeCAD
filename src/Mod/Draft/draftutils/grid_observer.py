@@ -22,10 +22,8 @@
 # ***************************************************************************
 """Provide the grid observer and background color change for the Draft Workbench.
 """
-import lazy_loader.lazy_loader as lz
 
 import FreeCAD
-import FreeCADGui
 from draftutils import gui_utils
 from draftutils import utils
 
@@ -34,8 +32,7 @@ from draftutils import utils
 # the grid's visibility status
 # Based on view observer code to update the Draft Tray
 if FreeCAD.GuiUp:
-    import PySide.QtCore as QtCore
-    import PySide.QtGui as QtGui
+    import FreeCADGui
     from PySide import QtWidgets
     from draftutils.todo import ToDo
 
