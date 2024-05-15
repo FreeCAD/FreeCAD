@@ -218,7 +218,7 @@ Major lines are thicker than minor grid lines.</string>
          <string>The number of squares in the grid</string>
         </property>
         <property name="suffix">
-         <string> lines</string>
+         <string> squares</string>
         </property>
         <property name="maximum">
          <number>9999</number>
