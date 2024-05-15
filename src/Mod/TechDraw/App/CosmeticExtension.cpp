@@ -62,6 +62,35 @@ TechDraw::DrawViewPart*  CosmeticExtension::getOwner()
     return static_cast<TechDraw::DrawViewPart*>(getExtendedObject());
 }
 
+//! remove cosmetic elements for a list of subelement names
+void CosmeticExtension::deleteCosmeticElements(std::vector<std::string> removables)
+{
+    // Base::Console().Message("CEx::deleteCosmeticElements(%d removables)\n", removables.size());
+    for (auto& name : removables) {
+        if (DU::getGeomTypeFromName(name) == "Vertex" &&
+         DU::isCosmeticVertex(getOwner(), name)) {
+         CosmeticVertex* vert = getCosmeticVertexBySelection(name);
+         removeCosmeticVertex(vert->getTagAsString());
+         continue;
+        }
+        if (DU::getGeomTypeFromName(name) == "Edge" &&
+         ( DU::isCosmeticEdge(getOwner(), name)  ||
+           DU::isCenterLine(getOwner(), name) ) ) {
+             CosmeticEdge* edge = getCosmeticEdgeBySelection(name);
+             if (edge) {
+                 // if not edge, something has gone very wrong!
+                 removeCosmeticEdge(edge->getTagAsString());
+                 continue;
+             }
+             CenterLine* line = getCenterLineBySelection(name);
+             if (line) {
+                 removeCenterLine(line->getTagAsString());
+                 continue;
+             }
+        }
+    }
+}
+
 //==============================================================================
 //CosmeticVertex x, y are stored as unscaled, but mirrored (inverted Y) values.
 //if you are creating a CV based on calculations of scaled geometry, you need to
@@ -398,6 +427,8 @@ void CosmeticExtension::removeCosmeticEdge(const std::string& delTag)
 /// remove the cosmetic edges with the given tags from the list property
 void CosmeticExtension::removeCosmeticEdge(const std::vector<std::string>& delTags)
 {
+    // Base::Console().Message("DVP::removeCE(%d tages)\n", delTags.size());
+    std::vector<CosmeticEdge*> cEdges = CosmeticEdges.getValues();
     for (auto& t: delTags) {
         removeCosmeticEdge(t);
     }

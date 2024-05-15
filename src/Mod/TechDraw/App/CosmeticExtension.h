@@ -95,6 +95,8 @@ public:
     virtual void            removeGeomFormat(const std::string& tag);
     virtual void            clearGeomFormats();
 
+    void deleteCosmeticElements(std::vector<std::string> removables);
+
     TechDraw::DrawViewPart* getOwner();
 
     PyObject* getExtensionPyObject() override;

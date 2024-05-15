@@ -138,45 +138,25 @@ bool QGIViewPart::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
 bool QGIViewPart::removeSelectedCosmetic() const
 {
     // Base::Console().Message("QGIVP::removeSelectedCosmetic()\n");
+    auto dvp(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
+    if (!dvp) {
+        throw Base::RuntimeError("Graphic has no feature!");
+    }
     char* defaultDocument{nullptr};
     std::vector<Gui::SelectionObject> selectionAll = Gui::Selection().getSelectionEx(
-        defaultDocument, TechDraw::DrawViewPart::getClassTypeId(), Gui::ResolveMode::NoResolve);
+        defaultDocument, TechDraw::DrawViewPart::getClassTypeId(), Gui::ResolveMode::OldStyleElement);
     if (selectionAll.empty()) {
         return false;
     }
-    Gui::SelectionObject firstSelection = selectionAll.front();
-    App::DocumentObject* firstObject = selectionAll.front().getObject();
     std::vector<std::string> subElements = selectionAll.front().getSubNames();
     if (subElements.empty()) {
         return false;
     }
-    auto dvp = static_cast<TechDraw::DrawViewPart*>(firstObject);
-    auto subelement = subElements.front();
-    std::string geomName = DU::getGeomTypeFromName(subelement);
-    int index = DU::getIndexFromName(subelement);
-    if (geomName == "Edge") {
-        TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(index);
-        if (!base || base->getCosmeticTag().empty()) {
-            return false;
-        }
-        if (base->source() == COSMETICEDGE) {
-            dvp->removeCosmeticEdge(base->getCosmeticTag());
-            dvp->refreshCEGeoms();
-        } else if (base->source() == CENTERLINE) {
-            dvp->removeCenterLine(base->getCosmeticTag());
-            dvp->refreshCLGeoms();
-        } else {
-            Base::Console().Message("QGIVP::removeSelectedCosmetic - not a CE or a CL\n");
-            return false;
-        }
-    } else if (geomName == "Vertex") {
-        VertexPtr vert = dvp->getProjVertexByIndex(index);
-        if (!vert || vert->getCosmeticTag().empty() )  {
-            return false;
-        }
-        dvp->removeCosmeticVertex(vert->getCosmeticTag());
-        dvp->refreshCVGeoms();
-    }
+
+    dvp->deleteCosmeticElements(subElements);
+    dvp->refreshCEGeoms();
+    dvp->refreshCLGeoms();
+    dvp->refreshCVGeoms();
 
     return true;
 }
