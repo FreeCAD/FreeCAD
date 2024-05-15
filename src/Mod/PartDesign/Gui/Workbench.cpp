@@ -54,7 +54,7 @@ namespace sp = std::placeholders;
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Face tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Edge tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Boolean tools");
-    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Part Design Helper tools");
+    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Helper tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Modeling tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Create Geometry");
     //
@@ -321,7 +321,7 @@ void Workbench::activated()
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Body COUNT 1",
         Body,
-        "Part Design Helper tools",
+        "Helper tools",
         "PartDesign_Body"
     ));
 
@@ -345,7 +345,7 @@ void Workbench::activated()
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT App::Plane COUNT 1",
         Plane1,
-        "Part Design Helper tools",
+        "Helper tools",
         "PartDesign_Body"
     ));
     const char* Plane2[] = {
@@ -358,7 +358,7 @@ void Workbench::activated()
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Plane COUNT 1",
         Plane2,
-        "Part Design Helper tools",
+        "Helper tools",
         "PartDesign_Body"
     ));
 
@@ -370,7 +370,7 @@ void Workbench::activated()
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Line COUNT 1",
         Line,
-        "Part Design Helper tools",
+        "Helper tools",
         "PartDesign_Body"
     ));
 
@@ -383,7 +383,7 @@ void Workbench::activated()
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Point COUNT 1",
         Point,
-        "Part Design Helper tools",
+        "Helper tools",
         "PartDesign_Body"
     ));
 
@@ -392,7 +392,7 @@ void Workbench::activated()
         nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptySelection(
         NoSel,
-        "Part Design Helper tools",
+        "Helper tools",
         "PartDesign_Body"
     ));
 
