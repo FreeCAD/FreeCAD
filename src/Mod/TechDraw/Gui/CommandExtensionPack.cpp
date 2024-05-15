@@ -1532,6 +1532,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                         std::vector<std::string> toDelete;
                         toDelete.push_back(uniTag);
                         if (baseGeo->source() == 1) {
+                            // cosmetic edge
                             auto cosEdge = objFeat->getCosmeticEdge(uniTag);
                             oldStyle = cosEdge->m_format.getLineNumber();
                             oldWeight = cosEdge->m_format.getWidth();
@@ -1539,6 +1540,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                             objFeat->removeCosmeticEdge(toDelete);
                         }
                         else if (baseGeo->source() == 2) {
+                            // centerline
                             isCenterLine = true;
                             centerEdge = objFeat->getCenterLine(uniTag);
                         }
@@ -1546,17 +1548,23 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                         Base::Vector3d delta = direction * activeDimAttributes.getLineStretch();
                         Base::Vector3d startPt, endPt;
                         if (extend) {
+                            // make it longer
                             startPt = P0 - delta;
                             endPt = P1 + delta;
                         }
                         else {
+                            // make it shorter
                             startPt = P0 + delta;
                             endPt = P1 - delta;
                         }
                         // startPt.y = -startPt.y;
                         // endPt.y = -endPt.y;
                         if (isCenterLine) {
-                            centerEdge->m_extendBy += activeDimAttributes.getLineStretch();
+                            if (extend) {
+                                centerEdge->m_extendBy += activeDimAttributes.getLineStretch();
+                            } else {
+                                centerEdge->m_extendBy -= activeDimAttributes.getLineStretch();
+                            }
                             objFeat->refreshCLGeoms();
                         }
                         else {
