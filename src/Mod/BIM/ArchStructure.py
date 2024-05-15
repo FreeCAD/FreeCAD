@@ -24,6 +24,7 @@ import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
 from FreeCAD import Vector
 import ArchProfile
 from draftutils import params
+from draftutils import gui_utils
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -342,7 +343,7 @@ class _CommandStructure:
             self.bpoint = point
             FreeCADGui.Snapper.getPoint(last=point,callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=translate("Arch","Next point")+":",mode="line")
             return
-        self.tracker.finalize()
+        self.tracker.off()
         FreeCAD.activeDraftCommand = None
         FreeCADGui.Snapper.off()
         horiz = True # determines the type of rotation to apply to the final object
@@ -410,6 +411,8 @@ class _CommandStructure:
         FreeCADGui.doCommand("Draft.autogroup(s)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+        gui_utils.end_all_events()
+        self.tracker.finalize()
         if self.continueCmd:
             self.Activated()
 

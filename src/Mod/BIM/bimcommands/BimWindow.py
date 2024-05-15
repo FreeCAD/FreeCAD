@@ -152,8 +152,9 @@ class Arch_Window:
         "this function is called by the snapper when it has a 3D point"
 
         import Draft
-        self.tracker.finalize()
+        from draftutils import gui_utils
         from ArchWindowPresets import WindowPresets
+        self.tracker.off()
         if point is None:
             return
         # if something was selected, override the underlying object
@@ -221,6 +222,8 @@ class Arch_Window:
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+        gui_utils.end_all_events()
+        self.tracker.finalize()
         return
 
     def update(self,point,info):

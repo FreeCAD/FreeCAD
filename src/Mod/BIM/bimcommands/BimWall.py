@@ -133,6 +133,7 @@ class Arch_Wall:
 
         import Draft
         import Part
+        from draftutils import gui_utils
         if obj:
             if Draft.getType(obj) == "Wall":
                 if not obj in self.existing:
@@ -156,7 +157,7 @@ class Arch_Wall:
         elif len(self.points) == 2:
             l = Part.LineSegment(self.wp.get_local_coords(self.points[0]),
                                  self.wp.get_local_coords(self.points[1]))
-            self.tracker.finalize()
+            self.tracker.off()
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
@@ -187,6 +188,8 @@ class Arch_Wall:
                         FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+self.existing[0].Name+')')
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
+            gui_utils.end_all_events()
+            self.tracker.finalize()
             if self.continueCmd:
                 self.Activated()
 
