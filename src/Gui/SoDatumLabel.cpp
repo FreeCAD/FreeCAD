@@ -997,6 +997,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     //Set General OpenGL Properties
     glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
     glDisable(GL_LIGHTING);
+    glDisable(GL_CULL_FACE);
 
     //Enable Anti-alias
     if (action->isSmoothing()) {
