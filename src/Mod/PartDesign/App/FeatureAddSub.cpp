@@ -111,21 +111,25 @@ App::DocumentObjectExecReturn* FeatureAddSub::addSubOp(const TopoDS_Shape &baseS
     AddSubShape.setValue(primitiveShape);
 
     TopoShape boolOp(0);
+    TopoShape workingShape = opShape;
 
     const char* maker;
-    switch (getAddSubType()) {
-        case Additive:
-            maker = Part::OpCodes::Fuse;
-            break;
-        case Subtractive:
+    if ( isAdditive() ) {
+        maker = Part::OpCodes::Fuse;
+    } else if ( isSubtractive() ) {
+        if (Outside.getValue()) {
             maker = Part::OpCodes::Cut;
-            break;
-        default:
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Unknown operation type"));
+            workingShape = opShape.Reversed();
+        }
+        else {
+            maker = Part::OpCodes::Cut;
+        }
+    } else {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Unknown operation type"));
     }
     try {
-        boolOp.makeElementBoolean(maker, {base, primitiveShape});
+        boolOp.makeElementBoolean(maker, {baseShape, workingShape});
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(
