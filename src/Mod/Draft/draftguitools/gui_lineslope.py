@@ -38,14 +38,10 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Draft_rc
-import draftutils.utils as utils
-import draftguitools.gui_base as gui_base
-
+from draftguitools import gui_base
+from draftutils import params
+from draftutils import utils
 from draftutils.translate import translate
-
-# The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
 
 
 class LineSlope(gui_base.GuiCommandNeedsSelection):
@@ -61,18 +57,18 @@ class LineSlope(gui_base.GuiCommandNeedsSelection):
     """
 
     def __init__(self):
-        super(LineSlope, self).__init__(name=translate("draft","Change slope"))
+        super().__init__(name=translate("draft", "Change slope"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_Slope',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Slope", "Set slope"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Slope", "Sets the slope of the selected line by changing the value of the Z value of one of its points.\nIf a polyline is selected, it will apply the slope transformation to each of its segments.\n\nThe slope will always change the Z value, therefore this command only works well for\nstraight Draft lines that are drawn in the XY plane. Selected objects that aren't single lines will be ignored.")}
+        return {"Pixmap": "Draft_Slope",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Slope", "Set slope"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Slope", "Sets the slope of the selected line by changing the value of the Z value of one of its points.\nIf a polyline is selected, it will apply the slope transformation to each of its segments.\n\nThe slope will always change the Z value, therefore this command only works well for\nstraight Draft lines that are drawn in the XY plane. Selected objects that aren't single lines will be ignored.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(LineSlope, self).Activated()
+        super().Activated()
 
         # for obj in Gui.Selection.getSelection():
         #     if utils.get_type(obj) != "Wire":
@@ -91,9 +87,11 @@ class LineSlope(gui_base.GuiCommandNeedsSelection):
         label.setText(translate("Draft", "Slope")+":")
         layout.addWidget(label)
         self.spinbox = QtWidgets.QDoubleSpinBox(w)
+        self.spinbox.setDecimals(params.get_param("Decimals", path="Units"))
         self.spinbox.setMinimum(-9999.99)
         self.spinbox.setMaximum(9999.99)
         self.spinbox.setSingleStep(0.01)
+
         _tip = ("New slope of the selected lines.\n"
                 "This is the tangent of the horizontal angle:\n"
                 "0 = horizontal\n"
