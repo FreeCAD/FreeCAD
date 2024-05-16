@@ -13,9 +13,3 @@ if (BUILD_ASSEMBLY AND NOT FREECAD_USE_EXTERNAL_ONDSELSOLVER)
     endif()
     add_subdirectory(OndselSolver)
 endif()
-
-# not allow to use external quarter, because currently
-# Quarter is quite different from upstream
-if (BUILD_GUI)
-    add_subdirectory(Quarter)
-endif()
