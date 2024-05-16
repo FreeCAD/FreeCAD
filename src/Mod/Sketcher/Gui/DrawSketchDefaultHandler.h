@@ -638,8 +638,8 @@ protected:
     bool onModeChanged() override
     {
         angleSnappingControl();
-        return !finish();  // internally checks that state is SelectMode::End, and only finishes
-                           // then.
+        // internally checks that state is SelectMode::End, and only finishes then.
+        return !finish();
     };
     //@}
 
