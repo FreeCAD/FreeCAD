@@ -1118,8 +1118,8 @@
       <location filename="../../CommandExtensionDims.cpp" line="311"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Insérer un symbole "⌀" au début du texte de cote :
-- Sélectionner une ou plusieurs cotes
-- Cliquer sur cet outil</translation>
+- sélectionner une ou plusieurs cotes
+- cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1140,8 +1140,8 @@
       <location filename="../../CommandExtensionDims.cpp" line="399"/>
       <source>Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Insérer un symbole "□" au début du texte de la cote :
-- Sélectionner une ou plusieurs cotes
-- Cliquer sur cet outil</translation>
+- sélectionner une ou plusieurs cotes
+- cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1472,9 +1472,9 @@
       <location filename="../../CommandExtensionPack.cpp" line="684"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Ajouter un corps de taraudage à la vue latérale d'un trou :
-- Spécifier les attributs de ligne (facultatif)
-- Sélectionner deux lignes parallèles
-- Cliquer sur cet outil</translation>
+- spécifier les attributs de ligne (facultatif)
+- sélectionner deux lignes parallèles
+- cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1493,9 +1493,9 @@
       <location filename="../../CommandExtensionPack.cpp" line="601"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Ajouter un corps de taraudage à la vue latérale d'un trou :
-- Spécifier les attributs de ligne (facultatif)
-- Sélectionner deux lignes parallèles
-- Cliquer sur cet outil</translation>
+- spécifier les attributs de ligne (facultatif)
+- sélectionner deux lignes parallèles
+- cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1999,9 +1999,9 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1611"/>
       <source>Select a view&lt;br&gt;    - click this button&lt;br&gt;    - select surface finish symbol attributes in opened panel</source>
-      <translation>Sélectionnez une vue
-- Cliquez sur ce bouton
-- Sélectionnez les attributs du symbole d'état de surface dans le panneau ouvert</translation>
+      <translation>- sélectionner une vue
+- cliquer sur ce bouton
+- sélectionner les attributs du symbole d'état de surface dans le panneau ouvert</translation>
     </message>
   </context>
   <context>
@@ -2079,19 +2079,19 @@
       <source>Insert a View in current page.
 Selected objects, spreadsheets or Arch WB section planes will be added.
 Without a selection, a file browser lets you select a SVG or image file.</source>
-      <translation type="unfinished">Insert a View in current page.
-Selected objects, spreadsheets or Arch WB section planes will be added.
-Without a selection, a file browser lets you select a SVG or image file.</translation>
+      <translation>Insérer une vue dans la page actuelle.
+Les objets sélectionnés, les feuilles de calcul ou les plans de coupe de l'atelier Arch WB ajoutés.
+En l'absence de sélection, un navigateur de fichiers vous permet de sélectionner un fichier SVG ou un fichier image.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="425"/>
       <source>If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</source>
-      <translation type="unfinished">If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</translation>
+      <translation>Si vous souhaitez insérer une vue à partir d'objets existants, sélectionnez les avant d'utiliser cet outil. En l'absence de sélection, un navigateur de fichiers s'ouvrira pour insérer un fichier SVG ou une image.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="426"/>
       <source>Do not show this message again</source>
-      <translation type="unfinished">Do not show this message again</translation>
+      <translation>Ne plus afficher ce message</translation>
     </message>
   </context>
   <context>
@@ -2149,7 +2149,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../Command.cpp" line="448"/>
       <location filename="../../Command.cpp" line="1511"/>
       <source>Create Symbol</source>
-      <translation>Créer un Symbole</translation>
+      <translation>Créer un symbole</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1574"/>
@@ -2591,7 +2591,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="369"/>
       <source>Surface Finish Symbols</source>
-      <translation>Symboles de finition de surface</translation>
+      <translation>Symboles d'état de surface</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="239"/>
@@ -2905,12 +2905,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Command.cpp" line="439"/>
       <source>Select a SVG or Image file to open</source>
-      <translation type="unfinished">Select a SVG or Image file to open</translation>
+      <translation>Sélectionnez un fichier SVG ou fichier image à ouvrir</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>SVG or Image files</source>
-      <translation type="unfinished">SVG or Image files</translation>
+      <translation>Fichiers SVG ou image</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="565"/>
@@ -3486,7 +3486,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1318"/>
       <source>At least 1 object in selection is not a part view</source>
-      <translation>Au moins 1 objet dans la sélection n'est pas une vue de pièce</translation>
+      <translation>Au moins 1 objet dans la sélection n'est pas une vue partielle</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1365"/>
@@ -3526,12 +3526,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1639"/>
       <source>Selected object is not a part view, nor a leader line</source>
-      <translation>L'objet sélectionné n'est pas une vue de la pièce, ni une ligne de référence.</translation>
+      <translation>L'objet sélectionné n'est pas une vue partielle, ni une ligne de référence.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1712"/>
       <source>No Part View in Selection</source>
-      <translation>Pas de vue de la pièce dans la sélection</translation>
+      <translation>Pas de vue partielle dans cette sélection</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1725"/>
@@ -4072,7 +4072,7 @@ thick: %4</source>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="174"/>
       <source>Part View</source>
-      <translation type="unfinished">Part View</translation>
+      <translation>Vue partielle</translation>
     </message>
   </context>
   <context>
@@ -4154,8 +4154,7 @@ de référence suivants pourraient être perdus :</translation>
       <location filename="../../ViewProviderWeld.cpp" line="142"/>
       <source>You cannot delete this weld symbol because
 it has a tile weld that would become broken.</source>
-      <translation>Vous ne pouvez pas supprimer ce symbole de soudure car
- il comporte un symbole qui sera cassé.</translation>
+      <translation>Vous ne pouvez pas supprimer ce symbole de soudure car il comporte un symbole qui sera cassé.</translation>
     </message>
   </context>
   <context>
@@ -5777,7 +5776,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="106"/>
       <source>Export PDF</source>
-      <translation>Exporter vers PDF</translation>
+      <translation>Exporter au format PDF</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="109"/>
@@ -5847,17 +5846,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../SymbolChooser.ui" line="17"/>
       <source>Symbol Chooser</source>
-      <translation>Sélecteur de Symboles</translation>
+      <translation>Sélecteur de symboles</translation>
     </message>
     <message>
       <location filename="../../SymbolChooser.ui" line="26"/>
       <source>Select a symbol that should be used</source>
-      <translation>Sélectionnez un symbole qui devrait être utilisé</translation>
+      <translation>Sélectionner un symbole qui devrait être utilisé</translation>
     </message>
     <message>
       <location filename="../../SymbolChooser.ui" line="48"/>
       <source>Symbol Dir</source>
-      <translation>Dossier de symboles</translation>
+      <translation>Répertoire des symboles</translation>
     </message>
     <message>
       <location filename="../../SymbolChooser.ui" line="55"/>
@@ -7526,7 +7525,7 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
     <message>
       <location filename="../../TaskProjGroup.ui" line="126"/>
       <source>Spin clock wise</source>
-      <translation type="unfinished">Spin clock wise</translation>
+      <translation>Sens horaire</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="537"/>
@@ -7592,7 +7591,7 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
     <message>
       <location filename="../../TaskProjGroup.ui" line="174"/>
       <source>Spin counter clock wise</source>
-      <translation type="unfinished">Spin counter clock wise</translation>
+      <translation>Sens anti-horaire</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="195"/>
@@ -7612,7 +7611,7 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
     <message>
       <location filename="../../TaskProjGroup.ui" line="252"/>
       <source>Set document front view as primary direction.</source>
-      <translation type="unfinished">Set document front view as primary direction.</translation>
+      <translation>Définir la vue de face du document comme direction principale.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="273"/>
@@ -7622,7 +7621,7 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
     <message>
       <location filename="../../TaskProjGroup.ui" line="294"/>
       <source>Set direction of the camera, or selected face if any, as primary direction.</source>
-      <translation type="unfinished">Set direction of the camera, or selected face if any, as primary direction.</translation>
+      <translation>Définir la direction de la vue ou de la face sélectionnée le cas échéant comme direction principale.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="318"/>
@@ -7663,7 +7662,7 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
       <location filename="../../TaskProjGroup.cpp" line="645"/>
       <location filename="../../TaskProjGroup.cpp" line="647"/>
       <source>Right</source>
-      <translation>Droit</translation>
+      <translation>Droite</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="451"/>
@@ -8170,7 +8169,7 @@ Peut être lent pour les modèles complexes.</translation>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="26"/>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="230"/>
       <source>Surface Finish Symbols</source>
-      <translation>Symboles de finition de surface</translation>
+      <translation>Symboles d'état de surface</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="34"/>
@@ -8397,8 +8396,8 @@ Peut être lent pour les modèles complexes.</translation>
       <location filename="../../CommandExtensionDims.cpp" line="413"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Supprimer les symboles de préfixe au début du texte de la cote :
-- Sélectionner une ou plusieurs cotes
-- Cliquer sur cet outil</translation>
+- sélectionner une ou plusieurs cotes
+- cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -8843,7 +8842,7 @@ Peut être lent pour les modèles complexes.</translation>
 - click the tool button, a panel opens
 - select shaft fit / hole fit
 - select the desired ISO 286 fit field using the combo box</source>
-      <translation>Ajouter un trou ou un arbre à une dimension
+      <translation>Ajouter une tolérance à un trou ou à un arbre :
 - sélectionner une dimension de longueur ou de diamètre
 - cliquer sur le bouton de l'outil, un panneau s'ouvre
 - sélectionner l'ajustement de l'arbre/l'ajustement du trou
@@ -8877,7 +8876,7 @@ Peut être lent pour les modèles complexes.</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="92"/>
       <source>Hole / Shaft Fit ISO 286</source>
-      <translation>Tolérance ISO 286 de trou/d'arbre</translation>
+      <translation>Tolérance ISO 286 pour trou/arbre</translation>
     </message>
   </context>
   <context>
@@ -8938,7 +8937,7 @@ Peut être lent pour les modèles complexes.</translation>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="46"/>
       <source>Right</source>
-      <translation>Droit</translation>
+      <translation>Droite</translation>
     </message>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="47"/>
@@ -9688,17 +9687,17 @@ il y a une boîte de dialogue ouverte.</translation>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="922"/>
       <source>X: </source>
-      <translation type="unfinished">X: </translation>
+      <translation>X : </translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="930"/>
       <source>Y: </source>
-      <translation type="unfinished">Y: </translation>
+      <translation>Y : </translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="938"/>
       <source>Z: </source>
-      <translation type="unfinished">Z: </translation>
+      <translation>Z: </translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="954"/>
@@ -9713,7 +9712,7 @@ il y a une boîte de dialogue ouverte.</translation>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="961"/>
       <source>Rotate by</source>
-      <translation type="unfinished">Rotate by</translation>
+      <translation>Tourner par</translation>
     </message>
   </context>
 </TS>

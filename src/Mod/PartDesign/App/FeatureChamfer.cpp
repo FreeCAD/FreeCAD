@@ -114,6 +114,17 @@ App::DocumentObjectExecReturn *Chamfer::execute()
         return new App::DocumentObjectExecReturn(e.what());
     }
 
+#ifdef FC_USE_TNP_FIX
+    TopShape.setTransform(Base::Matrix4D());
+
+    auto edges = UseAllEdges.getValue() ? TopShape.getSubTopoShapes(TopAbs_EDGE)
+                                        : getContinuousEdges(TopShape);
+
+    if (edges.empty()) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "No edges specified"));
+    }
+#else
     std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
 
     if (UseAllEdges.getValue()){
@@ -130,10 +141,10 @@ App::DocumentObjectExecReturn *Chamfer::execute()
     std::vector<std::string> FaceNames;
 
     getContinuousEdges(TopShape, SubNames, FaceNames);
-
+#endif
     const int chamferType = ChamferType.getValue();
     const double size = Size.getValue();
-    const double size2 = Size2.getValue();
+    double size2 = Size2.getValue();
     const double angle = Angle.getValue();
     const bool flipDirection = FlipDirection.getValue();
 
@@ -144,16 +155,57 @@ App::DocumentObjectExecReturn *Chamfer::execute()
 
     this->positionByBaseFeature();
 
+#ifdef FC_USE_TNP_FIX
+    if ( static_cast<Part::ChamferType>(chamferType) == Part::ChamferType::distanceAngle ) {
+        size2 = angle;
+    }
+#else
     //If no element is selected, then we use a copy of previous feature.
     if (SubNames.empty()) {
         this->Shape.setValue(TopShape);
         return App::DocumentObject::StdReturn;
     }
-
     // create an untransformed copy of the basefeature shape
     Part::TopoShape baseShape(TopShape);
     baseShape.setTransform(Base::Matrix4D());
+#endif
     try {
+#ifdef FC_USE_TNP_FIX
+        TopoShape shape(0);
+        shape.makeElementChamfer(TopShape,
+                                 edges,
+                                 static_cast<Part::ChamferType>(chamferType),
+                                 size,
+                                 size2,
+                                 nullptr,
+                                 flipDirection ? Part::Flip::flip : Part::Flip::none);
+        if (shape.isNull()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Failed to create chamfer"));
+        }
+
+        TopTools_ListOfShape aLarg;
+        aLarg.Append(TopShape.getShape());
+        bool failed = false;
+        if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
+            ShapeFix_ShapeTolerance aSFT;
+            aSFT.LimitTolerance(shape.getShape(),
+                                Precision::Confusion(),
+                                Precision::Confusion(),
+                                TopAbs_SHAPE);
+        }
+        if (!failed) {
+            shape = refineShapeIfActive(shape);
+            shape = getSolid(shape);
+        }
+        this->Shape.setValue(shape);
+        if (failed) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Resulting shape is invalid"));
+        }
+        return App::DocumentObject::StdReturn;
+
+#else
         BRepFilletAPI_MakeChamfer mkChamfer(baseShape.getShape());
 
         TopTools_IndexedDataMapOfShapeListOfShape mapEdgeFace;
@@ -225,6 +277,7 @@ App::DocumentObjectExecReturn *Chamfer::execute()
         shape = refineShapeIfActive(shape);
         this->Shape.setValue(getSolid(shape));
         return App::DocumentObject::StdReturn;
+#endif
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

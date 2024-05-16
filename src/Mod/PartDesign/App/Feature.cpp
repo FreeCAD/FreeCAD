@@ -32,7 +32,8 @@
 # include <TopoDS.hxx>
 #endif
 
-#include "App/DocumentObject.h"
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/ElementNamingUtils.h>
 #include "App/OriginFeature.h"
@@ -113,6 +114,28 @@ TopoShape Feature::getSolid(const TopoShape& shape)
         return res;
     }
     return shape;
+}
+
+void Feature::onChanged(const App::Property *prop)
+{
+    if (!this->isRestoring()
+        && this->getDocument()
+        && !this->getDocument()->isPerformingTransaction()) {
+        if (prop == &Visibility || prop == &BaseFeature) {
+            auto body = Body::findBodyOf(this);
+            if (body) {
+                if (prop == &BaseFeature && BaseFeature.getValue()) {
+                    int idx = -1;
+                    body->Group.find(this->getNameInDocument(), &idx);
+                    int baseidx = -1;
+                    body->Group.find(BaseFeature.getValue()->getNameInDocument(), &idx);
+                    if (idx >= 0 && baseidx >= 0 && baseidx+1 != idx)
+                        body->insertObject(BaseFeature.getValue(), this);
+                }
+            }
+        }
+    }
+    Part::Feature::onChanged(prop);
 }
 
 int Feature::countSolids(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)

@@ -257,6 +257,11 @@ void AttachEngine::setUp(const AttachEngine &another)
     this->attachmentOffset = another.attachmentOffset;
 }
 
+void AttachEngine::setOffset(const Base::Placement &offset)
+{
+    this->attachmentOffset = offset;
+}
+
 Base::Placement AttachEngine::placementFactory(const gp_Dir &ZAxis,
                                         gp_Vec XAxis,
                                         gp_Pnt Origin,

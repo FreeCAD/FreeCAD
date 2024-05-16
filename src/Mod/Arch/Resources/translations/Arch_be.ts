@@ -4072,7 +4072,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="335"/>
       <source>If true, the height value propagates to contained objects if the height of those objects is set to 0</source>
-      <translation type="unfinished">If true, the height value propagates to contained objects if the height of those objects is set to 0</translation>
+      <translation>Калі true, значэнне вышыні распаўсюджваецца аб'екты, якія ў ім змяшчаюцца, калі вышыня гэтых аб'ектаў зададзена значэнне 0</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="338"/>

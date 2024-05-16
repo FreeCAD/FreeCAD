@@ -151,7 +151,8 @@ Markdown version above.</source>
     <message>
       <location filename="../../Help.py" line="78"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
-      <translation type="unfinished">PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</translation>
+      <translation>Модуль Pyside QtWebEngineWidgets недаступны.
+Візуалізацыя даведкі выконваецца з дапамогай сістэмнага інтэрнэт-аглядальніка</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="82"/>

@@ -102,6 +102,7 @@ SET(TechDrawGui_SRCS
     CommandDecorate.cpp
     CommandAnnotate.cpp
     CommandExtensionDims.cpp
+    CommandExtensionDims.h
     CommandExtensionPack.cpp
     CommandStack.cpp
     DimensionValidators.cpp
@@ -223,6 +224,8 @@ SET(TechDrawGui_SRCS
     TaskCosmeticCircle.cpp
     TaskCosmeticCircle.h
     TaskCosmeticCircle.ui
+    TechDrawHandler.cpp
+    TechDrawHandler.h
     Widgets/CompassDialWidget.cpp
     Widgets/CompassDialWidget.h
     Widgets/CompassWidget.cpp

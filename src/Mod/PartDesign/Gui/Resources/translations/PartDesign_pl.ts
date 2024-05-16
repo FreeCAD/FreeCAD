@@ -5095,27 +5095,27 @@ Przecinające się elementy szkicu lub wiele ścian w szkicu nie są dozwolone p
       <location filename="../../../App/FeatureLoft.cpp" line="137"/>
       <location filename="../../../App/FeatureLoft.cpp" line="403"/>
       <source>Loft: At least one section is needed</source>
-      <translation>Wyciągnięcie po profilach: Wymagany jest co najmniej jeden przekrój</translation>
+      <translation>Wyciągnięcie przez profile: Wymagany jest co najmniej jeden przekrój</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="142"/>
       <source>Loft: Could not obtain profile shape</source>
-      <translation>Wyciągnięcie po profilach: Nie można uzyskać kształtu profilu</translation>
+      <translation>Wyciągnięcie przez profile: Nie można uzyskać kształtu profilu</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="155"/>
       <source>Loft: When using points for profile/sections, the sketch should have a single point</source>
-      <translation>Wyciągnięcie po profilach: Przy używaniu punktów dla profilu/przekroju, szkic powinien mieć jeden punkt</translation>
+      <translation>Wyciągnięcie przez profile: Przy używaniu punktów dla profilu / przekroju, szkic powinien mieć jeden punkt</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="163"/>
       <source>Loft: All sections need to be part features</source>
-      <translation>Wyciągnięcie po profilach: Wszystkie przekroje muszą być cechami części</translation>
+      <translation>Wyciągnięcie przez profile: Wszystkie przekroje muszą być cechami części</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="168"/>
       <source>Loft: Could not obtain section shape</source>
-      <translation>Wyciągnięcie po profilach: Nie można uzyskać kształtu przekroju</translation>
+      <translation>Wyciągnięcie przez profile: Nie można uzyskać kształtu przekroju</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="184"/>
@@ -5125,7 +5125,7 @@ Przecinające się elementy szkicu lub wiele ścian w szkicu nie są dozwolone p
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="186"/>
       <source>Loft: Only the profile and the last section can be vertices</source>
-      <translation>Wyciągnięcie przez profile: Tylko profil i ostatni przekrój mogą być wierzchołkami</translation>
+      <translation>Wyciągnięcie przez profile: Tylko pierwszy i ostatni profil mogą być wierzchołkami</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="188"/>
@@ -5145,22 +5145,22 @@ Przecinające się elementy szkicu lub wiele ścian w szkicu nie są dozwolone p
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="267"/>
       <source>Loft: Result is not a solid</source>
-      <translation>Wyciągnięcie przez profile: Wynik nie jest bryłą</translation>
+      <translation>Wyciągnięcie przez profile: Obiekt wynikowy nie jest bryłą</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="280"/>
       <source>Loft: There is nothing to subtract from</source>
-      <translation>Wyciągnięcie przez profile: Nie ma od czego odjąć</translation>
+      <translation>Wyciągnięcie przez profile: Nie ma nic do odejmowania</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="290"/>
       <source>Loft: Adding the loft failed</source>
-      <translation>Wyciągnięcie przez profile: Dodawanie wyciągnięcia przez profile nie powiodło się</translation>
+      <translation>Wyciągnięcie przez profile: Uzupełnianie wyciągnięciem przez profile nie powiodło się</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="308"/>
       <source>Loft: Subtracting the loft failed</source>
-      <translation>Wyciągnięcie przez profile: Odejmowanie wyciągnięcia przez profile nie powiodło się</translation>
+      <translation>Wyciągnięcie przez profile: Odejmowanie wyciągnięciem przez profile nie powiodło się</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="332"/>
@@ -5171,12 +5171,12 @@ Przecinające się elementy szkicu lub wiele ścian w szkicu nie są dozwolone p
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="442"/>
       <source>Loft: Creating a face from sketch failed</source>
-      <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
+      <translation>Wyciągnięcie przez profile: Tworzenie ściany ze szkicu nie powiodło się</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="475"/>
       <source>Loft: Failed to create shell</source>
-      <translation type="unfinished">Loft: Failed to create shell</translation>
+      <translation>Wyciągnięcie przez profile: Nie udało się utworzyć powłoki</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="105"/>
@@ -5500,7 +5500,7 @@ Przecinające się elementy szkicu lub wiele ścian w szkicu nie są dozwolone.<
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="133"/>
       <source>Reference axis is invalid</source>
-      <translation type="unfinished">Reference axis is invalid</translation>
+      <translation>Oś odniesienia jest nieprawidłowa</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="709"/>

@@ -469,7 +469,7 @@ public:
 
     ~NotificationsAction() override
     {
-        for (auto* item : qAsConst(pushedItems)) {
+        for (auto* item : std::as_const(pushedItems)) {
             if (item) {
                 delete item; // NOLINT
             }
@@ -683,7 +683,7 @@ protected:
                 QMenu menu;
 
                 QAction* del = menu.addAction(tr("Delete"), this, [&]() {
-                    for (auto it : qAsConst(selectedItems)) {
+                    for (auto it : std::as_const(selectedItems)) {
                         delete it;
                     }
                 });

@@ -26,6 +26,7 @@
 # python which could complicate things further.
 
 import Measure
+import MeasureGui
 from MeasureCOM import makeMeasureCOM, MeasureCOM
 
 
@@ -40,6 +41,3 @@ FreeCAD.MeasureManager.addMeasureType(
         "Center of Mass",
         MeasureCOM,
 )
-
-import MeasureGui
-MeasureGui.QuickMeasure()

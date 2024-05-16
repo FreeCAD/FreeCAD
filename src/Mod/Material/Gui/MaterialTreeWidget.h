@@ -37,6 +37,7 @@
 #include <FCGlobal.h>
 
 #include <Base/Parameter.h>
+#include <Gui/PrefWidgets.h>
 #include <Gui/WidgetFactory.h>
 
 
@@ -248,6 +249,28 @@ protected:
     bool hasMultipleFilters() const {
         return (_filterList && _filterList->size() > 1);
     }
+};
+
+/**
+ * The PrefColorButton class.
+ */
+class MatGuiExport PrefMaterialTreeWidget: public MaterialTreeWidget, public Gui::PrefWidget
+{
+    Q_OBJECT
+
+    Q_PROPERTY(QByteArray prefEntry READ entryName WRITE
+                   setEntryName)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QByteArray prefPath READ paramGrpPath WRITE
+                   setParamGrpPath)  // clazy:exclude=qproperty-without-notify
+
+public:
+    explicit PrefMaterialTreeWidget(QWidget* parent = nullptr);
+    ~PrefMaterialTreeWidget() override;
+
+protected:
+    // restore from/save to parameters
+    void restorePreferences() override;
+    void savePreferences() override;
 };
 
 }  // namespace MatGui

@@ -48,6 +48,10 @@ class TechDrawExport DrawDimHelper {
     static TechDraw::DrawViewDimExtent* makeExtentDim(DrawViewPart* dvp,
                               std::vector<std::string> edgeNames,
                               int direction);
+
+    static void makeExtentDim3d(DrawViewPart* dvp,
+                                const std::string& dimType,
+                                ReferenceVector references2d);
     static void makeExtentDim3d(DrawViewPart* dvp,
                                 ReferenceVector references,
                                 int direction);
@@ -56,7 +60,7 @@ class TechDrawExport DrawDimHelper {
                                    TopoDS_Edge& boundary);
 
 
-    static TechDraw::DrawViewDimension* makeDistDim(DrawViewPart* dvp,
+    static DrawViewDimension* makeDistDim(DrawViewPart* dvp,
                                                     std::string dimType,
                                                     Base::Vector3d refMin,
                                                     Base::Vector3d refMax,

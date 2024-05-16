@@ -524,7 +524,7 @@ QString Material::getAuthorAndLicense() const
 
 void Material::addModel(const QString& uuid)
 {
-    for (const auto& modelUUID : qAsConst(_allUuids)) {
+    for (const auto& modelUUID : std::as_const(_allUuids)) {
         if (modelUUID == uuid) {
             return;
         }

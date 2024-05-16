@@ -75,8 +75,12 @@ DrawDimHelper::makeExtentDim(DrawViewPart* dvp, std::vector<std::string> edgeNam
         dimType = "DistanceY";
         dimNum = 1;
     }
+    else if (direction == LENGTH) {
+        dimType = "Distance";
+        dimNum = 2;
+    }
 
-    TechDraw::DrawPage* page = dvp->findParentPage();
+    DrawPage* page = dvp->findParentPage();
     std::string pageName = page->getNameInDocument();
 
     App::Document* doc = dvp->getDocument();
@@ -90,8 +94,7 @@ DrawDimHelper::makeExtentDim(DrawViewPart* dvp, std::vector<std::string> edgeNam
     Base::Interpreter().runStringArg(
         "App.activeDocument().%s.DirExtent = %d", dimName.c_str(), dimNum);
 
-    TechDraw::DrawViewDimExtent* dimExt =
-        dynamic_cast<TechDraw::DrawViewDimExtent*>(doc->getObject(dimName.c_str()));
+    auto* dimExt = dynamic_cast<DrawViewDimExtent*>(doc->getObject(dimName.c_str()));
     if (!dimExt) {
         throw Base::TypeError("Dim extent not found");
     }
@@ -132,7 +135,7 @@ void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp, ReferenceVector reference
         dimNum = 1;
     }
 
-    TechDraw::DrawPage* page = dvp->findParentPage();
+    DrawPage* page = dvp->findParentPage();
     std::string pageName = page->getNameInDocument();
 
     App::Document* doc = dvp->getDocument();
@@ -146,8 +149,7 @@ void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp, ReferenceVector reference
     Base::Interpreter().runStringArg(
         "App.activeDocument().%s.DirExtent = %d", dimName.c_str(), dimNum);
 
-    TechDraw::DrawViewDimExtent* dimExt =
-        dynamic_cast<TechDraw::DrawViewDimExtent*>(doc->getObject(dimName.c_str()));
+    auto* dimExt = dynamic_cast<DrawViewDimExtent*>(doc->getObject(dimName.c_str()));
     if (!dimExt) {
         throw Base::TypeError("Dim extent not found");
     }

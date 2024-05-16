@@ -361,3 +361,35 @@ void arcPoints::dump(const std::string& text) const
                             DrawUtil::formatVector(arcEnds.second()).c_str());
     Base::Console().Message("arcPoints - midArc: %s\n", DrawUtil::formatVector(midArc).c_str());
 }
+
+
+areaPoint::areaPoint() :
+    area(0.0),
+    center(Base::Vector3d())
+{
+}
+
+areaPoint& areaPoint::operator=(const areaPoint& ap)
+{
+    area = ap.area;
+    center = ap.center;
+    return *this;
+}
+
+void areaPoint::move(const Base::Vector3d& offset)
+{
+    center = center - offset;
+}
+
+void areaPoint::project(const DrawViewPart* dvp)
+{
+    area = area * dvp->getScale();
+    center = dvp->projectPoint(center) * dvp->getScale();
+}
+
+void areaPoint::dump(const std::string& text) const
+{
+    Base::Console().Message("areaPoint - %s\n", text.c_str());
+    Base::Console().Message("areaPoint - area: %.3f center: %s\n", area,
+        DrawUtil::formatVector(center).c_str());
+}

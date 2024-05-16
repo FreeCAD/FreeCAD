@@ -132,7 +132,7 @@ class PointArray(DraftLink):
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
-        # Fuse property was added in v0.22, obj should be OK if it is present:
+        # Fuse property was added in v1.0, obj should be OK if it is present:
         if hasattr(obj, "Fuse"):
             return
         if not hasattr(obj, "ExtraPlacement"):
@@ -142,7 +142,7 @@ class PointArray(DraftLink):
             _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'PointList' property to 'PointObject'"))
             obj.PointObject = obj.PointList
             obj.removeProperty("PointList")
-        _wrn("v0.22, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
+        _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
 
 
 def remove_equal_vecs (vec_list):

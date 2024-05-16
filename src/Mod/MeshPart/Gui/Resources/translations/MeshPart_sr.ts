@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="281"/>
       <source>Cross-sections...</source>
-      <translation>Попречни пресек...</translation>
+      <translation>Попречни пресеци...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="282"/>
       <source>Cross-sections</source>
-      <translation>Попречни пресек</translation>
+      <translation>Попречни пресеци</translation>
     </message>
   </context>
   <context>
@@ -112,7 +112,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross sections</source>
-      <translation>Попречни пресек</translation>
+      <translation>Попречни пресеци</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>

@@ -63,6 +63,7 @@
 #include "QGVNavStyleTouchpad.h"
 #include "QGVPage.h"
 #include "Rez.h"
+#include "TechDrawHandler.h"
 #include "ViewProviderPage.h"
 
 
@@ -167,7 +168,7 @@ public:
 QGVPage::QGVPage(ViewProviderPage* vpPage, QGSPage* scenePage, QWidget* parent)
     : QGraphicsView(parent), m_renderer(Native), drawBkg(true), m_vpPage(nullptr),
       m_scene(scenePage), balloonPlacing(false), m_showGrid(false),
-      m_navStyle(nullptr), d(new Private(this))
+      m_navStyle(nullptr), d(new Private(this)), toolHandler(nullptr)
 {
     assert(vpPage);
     m_vpPage = vpPage;
@@ -278,6 +279,31 @@ void QGVPage::setNavigationStyle(std::string navParm)
     }
     else {
         m_navStyle = new QGVNavStyle(this);
+    }
+}
+
+
+void QGVPage::activateHandler(TechDrawHandler* newHandler)
+{
+    if (toolHandler) {
+        toolHandler->deactivate();
+    }
+
+    toolHandler = std::unique_ptr<TechDrawHandler>(newHandler);
+    toolHandler->activate(this);
+
+    // make sure receiver has focus so immediately pressing Escape will be handled by
+    // ViewProviderSketch::keyPressed() and dismiss the active handler, and not the entire
+    // sketcher editor
+    //Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+    //mdi->setFocus();
+}
+
+void QGVPage::deactivateHandler()
+{
+    if (toolHandler) {
+        toolHandler->deactivate();
+        toolHandler = nullptr;
     }
 }
 
@@ -421,7 +447,12 @@ void QGVPage::wheelEvent(QWheelEvent* event)
 
 void QGVPage::keyPressEvent(QKeyEvent* event)
 {
-    m_navStyle->handleKeyPressEvent(event);
+    if (toolHandler) {
+        toolHandler->keyPressEvent(event);
+    }
+    else {
+        m_navStyle->handleKeyPressEvent(event);
+    }
     if (!event->isAccepted()) {
         QGraphicsView::keyPressEvent(event);
     }
@@ -429,7 +460,12 @@ void QGVPage::keyPressEvent(QKeyEvent* event)
 
 void QGVPage::keyReleaseEvent(QKeyEvent* event)
 {
-    m_navStyle->handleKeyReleaseEvent(event);
+    if (toolHandler) {
+        toolHandler->keyReleaseEvent(event);
+    }
+    else {
+        m_navStyle->handleKeyReleaseEvent(event);
+    }
     if (!event->isAccepted()) {
         QGraphicsView::keyReleaseEvent(event);
     }
@@ -465,6 +501,11 @@ void QGVPage::enterEvent(QEvent* event)
 void QGVPage::enterEvent(QEnterEvent* event)
 #endif
 {
+    if (toolHandler) {
+        // if the user interacted with another widget than the mdi, the cursor got unset.
+        // So we reapply it.
+        toolHandler->updateCursor();
+    }
     QGraphicsView::enterEvent(event);
     m_navStyle->handleEnterEvent(event);
     QGraphicsView::enterEvent(event);
@@ -478,21 +519,37 @@ void QGVPage::leaveEvent(QEvent* event)
 
 void QGVPage::mousePressEvent(QMouseEvent* event)
 {
-    m_navStyle->handleMousePressEvent(event);
+    if (toolHandler && (event->button() != Qt::MiddleButton)) {
+        toolHandler->mousePressEvent(event);
+    }
+    else {
+        m_navStyle->handleMousePressEvent(event);
+    }
     QGraphicsView::mousePressEvent(event);
 }
 
 void QGVPage::mouseMoveEvent(QMouseEvent* event)
 {
-    m_navStyle->handleMouseMoveEvent(event);
+    if (toolHandler) {
+        toolHandler->mouseMoveEvent(event);
+    }
+    else {
+        m_navStyle->handleMouseMoveEvent(event);
+    }
     QGraphicsView::mouseMoveEvent(event);
 }
 
 void QGVPage::mouseReleaseEvent(QMouseEvent* event)
 {
-    m_navStyle->handleMouseReleaseEvent(event);
-    QGraphicsView::mouseReleaseEvent(event);
-    resetCursor();
+    if (toolHandler && (event->button() != Qt::MiddleButton)) {
+        QGraphicsView::mouseReleaseEvent(event);
+        toolHandler->mouseReleaseEvent(event);
+    }
+    else {
+        m_navStyle->handleMouseReleaseEvent(event);
+        QGraphicsView::mouseReleaseEvent(event);
+        resetCursor();
+    }
 }
 
 TechDraw::DrawPage* QGVPage::getDrawPage() { return m_vpPage->getDrawPage(); }
@@ -553,8 +610,7 @@ void QGVPage::activateCursor(QCursor cursor)
 
 void QGVPage::resetCursor()
 {
-    this->setCursor(Qt::ArrowCursor);
-    viewport()->setCursor(Qt::ArrowCursor);
+    activateCursor(Qt::ArrowCursor);
 }
 
 void QGVPage::setPanCursor() { activateCursor(panCursor); }
