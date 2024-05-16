@@ -379,7 +379,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
         AddSubShape.setValue(result); // Converts result to a TopoShape, but no tag.
 
         if (base.isNull()) {
-            if (getAddSubType() == FeatureAddSub::Subtractive)
+            if ( isSubtractive() )
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Pipe: There is nothing to subtract from"));
 
@@ -390,7 +390,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
             return App::DocumentObject::StdReturn;
         }
 
-        if (getAddSubType() == FeatureAddSub::Additive) {
+        if ( isAdditive() ) {
 
             FCBRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
             if (!mkFuse.IsDone())
@@ -412,7 +412,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
         }
-        else if (getAddSubType() == FeatureAddSub::Subtractive) {
+        else if ( isSubtractive() ) {
 
             FCBRepAlgoAPI_Cut mkCut(base.getShape(), result);
             if (!mkCut.IsDone())
