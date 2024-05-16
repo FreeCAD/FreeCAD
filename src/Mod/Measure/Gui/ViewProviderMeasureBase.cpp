@@ -436,10 +436,13 @@ bool ViewProviderMeasureBase::isSubjectVisible()
     }
 
     // we need these things to proceed
-    if (!getMeasureObject() ||
-        getMeasureObject()->getSubject().empty() ||
-        !guiDoc ) {
+    if (!getMeasureObject() || !guiDoc ) {
         return false;
+    }
+
+    // Show the measurement if it doesn't track any subjects
+    if (getMeasureObject()->getSubject().empty()) {
+        return true;
     }
 
     for (auto & obj : getMeasureObject()->getSubject()) {
