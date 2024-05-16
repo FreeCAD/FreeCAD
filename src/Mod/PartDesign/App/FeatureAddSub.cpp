@@ -34,6 +34,7 @@
 # include <BRepAlgoAPI_Fuse.hxx>
 
 #include <Mod/Part/App/modelRefine.h>
+#include "Mod/Part/App/TopoShapeOpCode.h"
 
 #include "FeatureAddSub.h"
 #include "FeaturePy.h"
@@ -118,10 +119,10 @@ TopoDS_Shape FeatureAddSub::subtractiveOp(const TopoDS_Shape &baseShape, const T
     Outside.setStatus(App::Property::Hidden, ! isSubtractive());    // Set this after creation, like here.
     TopoDS_Shape result;
     if (  Outside.getValue() ) {
-        BRepAlgoAPI_Common mkCom(baseShape, opShape);
-        if (!mkCom.IsDone())
-            throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Intersection of base feature failed"));
-        result = mkCom.Shape();
+        BRepAlgoAPI_Fuse mkFuse(baseShape, opShape.Reversed());
+        if (!mkFuse.IsDone())
+            throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Outside out of base feature failed"));
+        result = mkFuse.Shape();
     } else {
         BRepAlgoAPI_Cut mkCut(baseShape, opShape);
         if (!mkCut.IsDone())
@@ -134,24 +135,28 @@ TopoDS_Shape FeatureAddSub::subtractiveOp(const TopoDS_Shape &baseShape, const T
 App::DocumentObjectExecReturn* FeatureAddSub::addSubOp(const TopoDS_Shape &baseShape, const TopoDS_Shape &opShape)
 {
 #ifdef FC_USE_TNP_FIX
-    AddSubShape.setValue(primitiveShape);
+    AddSubShape.setValue(opShape);
 
     TopoShape boolOp(0);
+    TopoShape workingShape = opShape;
 
     const char* maker;
-    switch (getAddSubType()) {
-        case Additive:
+    if ( isAdditive() ) {
+        maker = Part::OpCodes::Fuse;
+    } else if ( isSubtractive() ) {
+        if (Outside.getValue()) {
             maker = Part::OpCodes::Fuse;
-            break;
-        case Subtractive:
+            workingShape = opShape.Reversed();
+        }
+        else {
             maker = Part::OpCodes::Cut;
-            break;
-        default:
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Unknown operation type"));
+        }
+    } else {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Unknown operation type"));
     }
     try {
-        boolOp.makeElementBoolean(maker, {base, primitiveShape});
+        boolOp.makeElementBoolean(maker, {baseShape, workingShape});
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(
@@ -182,53 +187,22 @@ App::DocumentObjectExecReturn* FeatureAddSub::addSubOp(const TopoDS_Shape &baseS
         }
     }
     else if (addSubType == FeatureAddSub::Subtractive) {
-
-        BRepAlgoAPI_Cut mkCut(baseShape, opShape);
-        if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Subtracting the primitive failed"));
-            // we have to get the solids (fuse sometimes creates compounds)
-        boolOp = this->getSolid(mkCut.Shape());
-        // lets check if the result is a solid
+        TopoDS_Shape boolOp = subtractiveOp(baseShape, opShape);
         if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-
-            int solidCount = countSolids(boolOp);
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
+        int solidCount = countSolids(boolOp);
         if (solidCount > 1) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
         }
+        boolOp = refineShapeIfActive(boolOp);
+        Shape.setValue(getSolid(boolOp));
+        AddSubShape.setValue(boolOp);
+
     }
 #endif
     boolOp = refineShapeIfActive(boolOp);
     Shape.setValue(getSolid(boolOp));
     AddSubShape.setValue(opShape);
-
-//    if (addSubType == Additive) {
-//        BRepAlgoAPI_Fuse mkFuse(baseShape, opShape);
-//        if (!mkFuse.IsDone())
-//            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the object failed"));
-//        // we have to get the solids (fuse sometimes creates compounds)
-//        TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
-//        if (boolOp.IsNull())
-//            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
-//        int solidCount = countSolids(boolOp);
-//        if (solidCount > 1) {
-//            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
-//        }
-//        boolOp = refineShapeIfActive(boolOp);
-//        Shape.setValue(getSolid(boolOp));
-//    }
-//    else if (addSubType == Subtractive) {
-//        TopoDS_Shape boolOp = subtractiveOp(baseShape, opShape);
-//        if (boolOp.IsNull())
-//            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
-//        int solidCount = countSolids(boolOp);
-//        if (solidCount > 1) {
-//            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
-//        }
-//        boolOp = refineShapeIfActive(boolOp);
-//        Shape.setValue(getSolid(boolOp));
-//        AddSubShape.setValue(boolOp);
-//    }
     return App::DocumentObject::StdReturn;
 }
 

@@ -106,7 +106,11 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
 
              return  App::DocumentObject::StdReturn;
         }
+#ifdef FC_USE_TNP_FIX
+        return FeatureAddSub::addSubOp(base.getShape(), primitiveShape.getShape());
+#else
         return FeatureAddSub::addSubOp(base, primitiveShape);
+#endif
     }
     catch (Standard_Failure& e) {
 

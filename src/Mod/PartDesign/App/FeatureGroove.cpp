@@ -327,15 +327,10 @@ App::DocumentObjectExecReturn *Groove::execute()
 
         try {
             const char *maker;
-            switch (getAddSubType()) {
-                case Additive:
-                    maker = Part::OpCodes::Fuse;
-                    break;
-//                case Intersecting:
-//                    maker = Part::OpCodes::Common;
-//                    break;
-                default:
-                    maker = Part::OpCodes::Cut;
+            if ( isAdditive() ) {
+                maker = Part::OpCodes::Fuse;
+            } else {
+                maker = Part::OpCodes::Cut;
             }
 //            this->fixShape(result);
             boolOp.makeElementBoolean(maker, {base,result});

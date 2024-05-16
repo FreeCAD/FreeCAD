@@ -638,7 +638,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                         QT_TRANSLATE_NOOP("Exception", "Up to face: Could not get SubShape!"));
                 }
 
-                if (getAddSubType() == Additive) {
+                if ( isAdditive() ) {
                     prism = base.makeElementFuse(this->AddSubShape.getShape());
                 }
                 else {
@@ -718,12 +718,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             TopoShape result(0, getDocument()->getStringHasher());
             try {
                 const char* maker;
-                switch (getAddSubType()) {
-                    case Subtractive:
-                        maker = Part::OpCodes::Cut;
-                        break;
-                    default:
-                        maker = Part::OpCodes::Fuse;
+                if ( isSubtractive() ) {
+                    maker = Part::OpCodes::Cut;
+                } else {
+                    maker = Part::OpCodes::Fuse;
                 }
                 result.makeElementBoolean(maker, {base, prism});
             }
