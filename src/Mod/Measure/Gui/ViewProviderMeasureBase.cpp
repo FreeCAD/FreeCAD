@@ -282,6 +282,10 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
         return;
     }
 
+    if (strcmp(prop->getName(), "Label") == 0) {
+        doUpdate = true;
+    }
+
     // Check if one of the input properties has been changed
     auto inputProps = obj->getInputProps();
     if (std::find(inputProps.begin(), inputProps.end(), std::string(prop->getName())) != inputProps.end()) {
@@ -299,6 +303,11 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
 
     if (doUpdate) {
         redrawAnnotation();
+
+        // Update label
+        std::string userLabel(obj->Label.getValue());
+        std::string name = userLabel.substr(0, userLabel.find(":"));
+        obj->Label.setValue((name + ": ") + obj->getResultString().toStdString());
     }
 
     ViewProviderDocumentObject::updateData(prop);

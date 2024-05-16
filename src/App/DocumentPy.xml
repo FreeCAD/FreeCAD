@@ -291,6 +291,12 @@ sort: whether to topologically sort the return list
       </Documentation>
       <Parameter Name="RootObjects" Type="List" />
     </Attribute>
+    <Attribute Name="RootObjectsIgnoreLinks" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The list of root objects in this document ignoring references from links.</UserDocu>
+      </Documentation>
+      <Parameter Name="RootObjectsIgnoreLinks" Type="List" />
+    </Attribute>
     <Attribute Name="UndoMode" ReadOnly="false">
       <Documentation>
         <UserDocu>The Undo mode of the Document (0 = no Undo, 1 = Undo/Redo)</UserDocu>

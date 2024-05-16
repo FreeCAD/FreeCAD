@@ -52,35 +52,18 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <layout class="QGridLayout" name="gridLayout_5" columnstretch="1,1">
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_4">
+       <layout class="QGridLayout" name="gridLayout_5" columnstretch="2,1">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
           <property name="text">
-           <string>Distance Factor</string>
+           <string>Text size</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Text color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="Gui::PrefColorButton" name="cbText">
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultTextColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Measure/Appearance</cstring>
+           <string>Line color</string>
           </property>
          </widget>
         </item>
@@ -103,6 +86,30 @@
           </property>
          </widget>
         </item>
+        <item row="3" column="1">
+         <widget class="Gui::PrefColorButton" name="cbBackground">
+          <property name="color" stdset="0">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DefaultTextBackgroundColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Measure/Appearance</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Background color</string>
+          </property>
+         </widget>
+        </item>
         <item row="2" column="1">
          <widget class="Gui::PrefColorButton" name="cbLine">
           <property name="sizePolicy">
@@ -111,7 +118,7 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>60</red>
             <green>240</green>
@@ -126,59 +133,16 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Text size</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsbDistFactor">
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultDistFactor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Measure/Appearance</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Line color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="Gui::PrefCheckBox" name="cbMirror">
-          <property name="text">
-           <string>Mirror</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultMirror</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Measure/Appearance</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
+        <item row="1" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Background color</string>
+           <string>Text color</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
-         <widget class="Gui::PrefColorButton" name="cbBackground">
-          <property name="color">
+        <item row="1" column="1">
+         <widget class="Gui::PrefColorButton" name="cbText">
+          <property name="color" stdset="0">
            <color>
             <red>60</red>
             <green>240</green>
@@ -186,7 +150,7 @@
            </color>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>DefaultTextBackgroundColor</cstring>
+           <cstring>DefaultTextColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Measure/Appearance</cstring>
@@ -227,16 +191,6 @@
   <customwidget>
    <class>Gui::PrefColorButton</class>
    <extends>Gui::ColorButton</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

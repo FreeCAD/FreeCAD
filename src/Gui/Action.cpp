@@ -627,20 +627,29 @@ WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
         this, &WorkbenchGroup::onWorkbenchActivated);
 }
 
+QAction* WorkbenchGroup::getOrCreateAction(const QString& wbName) {
+    if (!actionByWorkbenchName.contains(wbName)) {
+        actionByWorkbenchName[wbName] = new QAction;
+    }
+
+    return actionByWorkbenchName[wbName];
+}
+
 void WorkbenchGroup::addTo(QWidget *widget)
 {
     if (widget->inherits("QToolBar")) {
         ParameterGrp::handle hGrp;
         hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
-        QWidget* wbSel;
+
+        QWidget* workbenchSelectorWidget;
         if (hGrp->GetInt("WorkbenchSelectorType", 0) == 0) {
-            wbSel = new WorkbenchComboBox(this, widget);
+            workbenchSelectorWidget = new WorkbenchComboBox(this, widget);
         }
         else {
-            wbSel = new WorkbenchTabWidget(this, widget);
+            workbenchSelectorWidget = new WorkbenchTabWidget(this, widget);
         }
 
-        static_cast<QToolBar*>(widget)->addWidget(wbSel);
+        static_cast<QToolBar*>(widget)->addWidget(workbenchSelectorWidget);
     }
     else if (widget->inherits("QMenu")) {
         auto menu = qobject_cast<QMenu*>(widget);
@@ -656,13 +665,13 @@ void WorkbenchGroup::addTo(QWidget *widget)
 
 void WorkbenchGroup::refreshWorkbenchList()
 {
-    QStringList enabled_wbs_list = DlgSettingsWorkbenchesImp::getEnabledWorkbenches();
+    QStringList enabledWbNames = DlgSettingsWorkbenchesImp::getEnabledWorkbenches();
 
     // Clear the actions.
     for (QAction* action : actions()) {
         groupAction()->removeAction(action);
-        delete action;
     }
+
     enabledWbsActions.clear();
     disabledWbsActions.clear();
 
@@ -670,12 +679,16 @@ void WorkbenchGroup::refreshWorkbenchList()
 
     // Create action list of enabled wb
     int index = 0;
-    for (const auto& wbName : enabled_wbs_list) {
+    for (const auto& wbName : enabledWbNames) {
         QString name = Application::Instance->workbenchMenuText(wbName);
         QPixmap px = Application::Instance->workbenchIcon(wbName);
         QString tip = Application::Instance->workbenchToolTip(wbName);
 
-        QAction* action = groupAction()->addAction(name);
+        QAction* action = getOrCreateAction(wbName);
+        
+        groupAction()->addAction(action);
+
+        action->setText(name);
         action->setCheckable(true);
         action->setData(QVariant(index)); // set the index
         action->setObjectName(wbName);
@@ -693,13 +706,17 @@ void WorkbenchGroup::refreshWorkbenchList()
     }
 
     // Also create action list of disabled wbs
-    QStringList disabled_wbs_list = DlgSettingsWorkbenchesImp::getDisabledWorkbenches();
-    for (const auto& wbName : disabled_wbs_list) {
+    QStringList disabledWbNames = DlgSettingsWorkbenchesImp::getDisabledWorkbenches();
+    for (const auto& wbName : disabledWbNames) {
         QString name = Application::Instance->workbenchMenuText(wbName);
         QPixmap px = Application::Instance->workbenchIcon(wbName);
         QString tip = Application::Instance->workbenchToolTip(wbName);
 
-        QAction* action = groupAction()->addAction(name);
+        QAction* action = getOrCreateAction(wbName);
+
+        groupAction()->addAction(action);
+
+        action->setText(name);
         action->setCheckable(true);
         action->setData(QVariant(index)); // set the index
         action->setObjectName(wbName);

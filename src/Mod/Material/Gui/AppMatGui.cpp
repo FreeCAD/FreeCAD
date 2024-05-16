@@ -31,6 +31,7 @@
 #include <Gui/Language/Translator.h>
 #include <Gui/WidgetFactory.h>
 
+#include "DlgSettingsDefaultMaterial.h"
 #include "DlgSettingsMaterial.h"
 #include "Workbench.h"
 #include "WorkbenchManipulator.h"
@@ -104,6 +105,8 @@ PyMOD_INIT_FUNC(MatGui)
                                                  "Material",
                                                  QObject::tr("Material workbench"));
     new Gui::PrefPageProducer<MatGui::DlgSettingsMaterial>(
+        QT_TRANSLATE_NOOP("QObject", "Material"));
+    new Gui::PrefPageProducer<MatGui::DlgSettingsDefaultMaterial>(
         QT_TRANSLATE_NOOP("QObject", "Material"));
 
     // add resources and reloads the translators

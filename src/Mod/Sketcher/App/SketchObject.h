@@ -699,6 +699,9 @@ public:
         return convertSubName(subname.c_str(), postfix);
     }
 
+    static const std::string& internalPrefix();
+    static const char* convertInternalName(const char* name);
+
     std::string convertSubName(const Data::IndexedName&, bool postfix = true) const;
 
     std::pair<std::string, std::string> getElementName(const char* name,

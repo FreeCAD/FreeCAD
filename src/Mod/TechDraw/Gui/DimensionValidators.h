@@ -60,6 +60,7 @@ enum DimensionGeometryEnum {
         isMultiEdge,
         isZLimited,
         isHybrid,
+        isFace,
         isViewReference         //never needs to be specified in the acceptable list
     };
 
@@ -89,11 +90,13 @@ bool checkGeometryOccurrences(StringVector subNames, GeomCountMap keyedMinimumCo
 DimensionGeometryType isValidVertexes(ReferenceVector refs);
 DimensionGeometryType isValidMultiEdge(ReferenceVector refs);
 DimensionGeometryType isValidSingleEdge(ReferenceEntry ref);
+DimensionGeometryType isValidSingleFace(ReferenceEntry ref);
 DimensionGeometryType isValidHybrid(ReferenceVector refs);
 
 DimensionGeometryType isValidVertexes3d(DrawViewPart* dvp, ReferenceVector refs);
 DimensionGeometryType isValidMultiEdge3d(DrawViewPart* dvp, ReferenceVector refs);
 DimensionGeometryType isValidSingleEdge3d(DrawViewPart* dvp, ReferenceEntry ref);
+DimensionGeometryType isValidSingleFace3d(DrawViewPart* dvp, ReferenceEntry ref);
 DimensionGeometryType isValidHybrid3d(DrawViewPart* dvp, ReferenceVector refs);
 
 long int mapGeometryTypeToDimType(long int dimType, DimensionGeometryType geometry2d,
