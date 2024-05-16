@@ -340,18 +340,17 @@ App::DocumentObjectExecReturn* Loft::execute()
         result.Tag = -getID();
         TopoShape boolOp(0, getDocument()->getStringHasher());
 
-        const char* maker;
-        switch (getAddSubType()) {
-            case Additive:
-                maker = Part::OpCodes::Fuse;
-                break;
-            case Subtractive:
-                maker = Part::OpCodes::Cut;
-                break;
-            default:
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Unknown operation type")
-                );
+        const char *maker;
+        if (isAdditive()) {
+            maker = Part::OpCodes::Fuse;
+        }
+        else if (isSubtractive()) {
+            maker = Part::OpCodes::Cut;
+        }
+        else {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Unknown operation type")
+            );
         }
         try {
             boolOp.makeElementBoolean(maker, {base, result});

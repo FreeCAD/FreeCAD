@@ -759,12 +759,11 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             TopoShape result(0, getDocument()->getStringHasher());
             try {
                 const char* maker;
-                switch (getAddSubType()) {
-                    case Subtractive:
-                        maker = Part::OpCodes::Cut;
-                        break;
-                    default:
-                        maker = Part::OpCodes::Fuse;
+                if (isSubtractive()) {
+                    maker = Part::OpCodes::Cut;
+                }
+                else {
+                    maker = Part::OpCodes::Fuse;
                 }
                 result.makeElementBoolean(maker, {base, prism});
             }
