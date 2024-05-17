@@ -499,6 +499,9 @@ can be a performance penalty in complex models.</string>
           <property name="prefix">
            <string/>
           </property>
+          <property name="value">
+           <number>1</number>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>ScrubCount</cstring>
           </property>

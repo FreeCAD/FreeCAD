@@ -185,7 +185,6 @@ void TaskHatch::apply(bool forceUpdate)
 
     if (m_dvp) {
         //only need requestPaint to hatch the face
-//        m_dvp->requestPaint();
         //need a recompute in order to claimChildren in tree
         m_dvp->recomputeFeature();
     }
@@ -199,16 +198,10 @@ void TaskHatch::createHatch()
     // TODO: the structured label for Hatch (and GeomHatch) should be retired.
     const std::string objectName("Hatch");
     std::string FeatName = doc->getUniqueObjectName(objectName.c_str());
-//    std::string generatedSuffix {FeatName.substr(objectName.length())};
-//    std::string translatedObjectName{tr(objectName.c_str()).toStdString()};
-//    std::stringstream featLabel;
-//    featLabel << translatedObjectName << generatedSuffix << "F" <<
-//                    TechDraw::DrawUtil::getIndexFromName(m_subs.at(0)); //use 1st face# for label
 
     Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Hatch"));
 
     Command::doCommand(Command::Doc, "App.activeDocument().addObject('TechDraw::DrawHatch', '%s')", FeatName.c_str());
-//    Command::doCommand(Command::Doc, "App.activeDocument().%s.Label = '%s'", FeatName.c_str(), featLabel.str().c_str());
     Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawHatch', 'Hatch', '%s')",
               FeatName.c_str(), FeatName.c_str());
 
