@@ -14,17 +14,24 @@ import Preferences
 import Part
 
 class ContextCreationSystem:
-    COPYABLE_OBJECT_TYPES = ["Body", "Part", "LinkedObject", "DocumentObject", "Feature"]
+    COPYABLE_OBJECT_TYPES = ["Body", "Part", "LinkedObject", "DocumentObject", "Feature"] # may not be used anymore
 
     def __init__(self, editPart, assembly):
-        self.mainDocumentFileName = App.ActiveDocument.FileName
+        self.mainDocumentFileName = App.ActiveDocument.FileName # get the assembly document name
         pass
 
-    def getObjFromRefString(self, objName, location):
+    def errorMessage(self, message): # this is to show errors, this will be turned into a backup in case the notification area is disabled on the user's end
+        class errorBox(QtGui.QMessageBox):
+            def __init__(self):
+                super(errorBox, self).information(None, "Error", message)
+        
+        errorBox()
+
+    def getObjFromRefString(self, objName, location): # get the object the assembly context references
         document = App.openDocument(location)
         return document.getObject(objName)
 
-    def getLinkedDoc(self, obj):
+    def getLinkedDoc(self, obj): # get where the assembly context comes from
         document = None
         
         if hasattr(obj, "LinkedObject"):
@@ -60,7 +67,7 @@ class ContextCreationSystem:
                 objects.append(obj)
         return objects
     
-    def restartDocument(self, doc):
+    def restartDocument(self, doc):  # this saves, closes, and re-opens a document (this is necessary because of bugs in the sub-shape binder)
         docFileName = doc.FileName
         doc.save()
         App.closeDocument(doc.Name)
@@ -106,7 +113,7 @@ class ContextCreationSystem:
                 copiedObj.addProperty("App::PropertyString")
     '''
 
-    def createCopy(self, objects, edit_obj):
+    def createCopy(self, objects, edit_obj): # create a viable "Feature" object with the shape of the original in the assembly
         copiedObjects = []
         for obj in objects:
             if(obj is edit_obj):
@@ -118,6 +125,7 @@ class ContextCreationSystem:
                 copiedObj.Shape = obj.Shape
             except:
                 print("error while copying Shape attributes")
+                continue
             copiedObj.ViewObject.Transparency = transparency_level
             copiedObj.addProperty("App::PropertyString", "RefObj")
             copiedObj.addProperty("App::PropertyString", "RefObjLocation")
@@ -153,20 +161,27 @@ class ContextCreationSystem:
         pass
 
 
-    def createContext(self, linkedObj, target_document, normalObjects, linked_placement, edit_selection):
-        Gui.setActiveDocument(target_document.Name)
-        objects = self.createCopy(normalObjects, edit_selection)
-        self.addOffsets(objects, linkedObj, linked_placement)
-        createdGroupName = self.createGroup(objects, target_document, linkedObj, edit_selection)
-        #self.restartDocument(App.ActiveDocument)
-        if experimental_mode:
-            self.redoShapes(createdGroupName)
+    def createContext(self, linkedObj, target_document, normalObjects, linked_placement, edit_selection): # strings the methods together to make an assembly context
+        if App.ActiveDocument == linkedObj.Document:
+            errorMsg =  "Cannot create an assembly context in assembly! \n(The part you selected is linked to a part that was created in this assembly document)"
+            print(errorMsg)
+            #App.Console.PrintWarning(errorMsg)
+            self.errorMessage(errorMsg)
+        else:
+            Gui.setActiveDocument(target_document.Name)
+            objects = self.createCopy(normalObjects, edit_selection)
+            self.addOffsets(objects, linkedObj, linked_placement)
+            createdGroupName = self.createGroup(objects, target_document, linkedObj, edit_selection)
+            #self.restartDocument(App.ActiveDocument)
+            if experimental_mode:
+                #self.redoShapes(createdGroupName)
+                pass
 
-    def _copy_selection_test(self):
+    def _copy_selection_test(self): # from the original assembly context macro
         objects = App.ActiveDocument.copyObject(Gui.Selection.getSelection(), True)
         self.createGroup(objects)
         
-    def updateShape(self, obj, refObj):
+    def updateShape(self, obj, refObj): # not used, but should be eventually
         print("Updating Shape....")
         solid = Part.Solid(refObj.Shape)
         obj.Shape = solid
@@ -174,7 +189,7 @@ class ContextCreationSystem:
         App.ActiveDocument=App.ActiveDocument
         documentFileName = App.ActiveDocument.FileName
         
-    def move_group_to_doc(self, dest_doc, group, deleteOriginal):
+    def move_group_to_doc(self, dest_doc, group, deleteOriginal): # move assembly context group to the part's document
         # Get the source and destination documents
         source_doc = App.ActiveDocument
 
@@ -196,7 +211,7 @@ class ContextCreationSystem:
 
         return new_obj.Name
 
-    def getPartParent(self, obj):
+    def getPartParent(self, obj): # get the parent of a part that can be used (not used)
         final_obj = None
         
         if type(obj).__name__ == "Part":
@@ -209,10 +224,10 @@ class ContextCreationSystem:
                 print(type(parent).__name__)
         return final_obj
     
-    def getSubShapeBinders(self, document):
+    def getSubShapeBinders(self, document): # used to recompute all subshape binders
         return [obj for obj in document.Objects if obj.isDerivedFrom("PartDesign::SubShapeBinder")]
 
-    def UpdateContext(self):
+    def UpdateContext(self): # method to update the assembly context
         selection = Gui.Selection.getSelection()[0]
         if "EditedPart" in selection.PropertiesList:
             self.editedPart = App.ActiveDocument.getObject(selection.EditedPart)
@@ -247,4 +262,5 @@ class ContextCreationSystem:
                     binder.recompute()
                 App.ActiveDocument.recompute()
         else:
-            App.Console.PrintWarning("The selection is not an assembly context!")
+            self.errorMessage("The selection is not an assembly context!")
+
