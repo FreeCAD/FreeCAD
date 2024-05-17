@@ -84,6 +84,7 @@ public:
         return "PartDesignGui::ViewProvider";
     }
 
+    void onChanged(const App::Property* prop) override;
 
     App::DocumentObject *getSubObject(const char *subname, 
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const override;

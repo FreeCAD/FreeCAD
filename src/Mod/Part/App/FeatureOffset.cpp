@@ -97,7 +97,7 @@ App::DocumentObjectExecReturn *Offset::execute()
     if(shape.isNull())
         return new App::DocumentObjectExecReturn("Invalid source link");
     auto join = static_cast<JoinType>(Join.getValue());
-    this->Shape.setValue(TopoShape(0, getDocument()->getStringHasher()).makeElementOffset(
+    this->Shape.setValue(TopoShape(0).makeElementOffset(
         shape,offset,tol,inter,self,mode,join,fill ? FillType::fill : FillType::noFill));
 #endif
     return App::DocumentObject::StdReturn;

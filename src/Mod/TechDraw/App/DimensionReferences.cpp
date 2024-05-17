@@ -86,6 +86,12 @@ ReferenceEntry& ReferenceEntry::operator=(const ReferenceEntry& otherRef)
 }
 
 
+bool ReferenceEntry::operator==(const ReferenceEntry& otherRef) const
+{
+    return getObjectName() == otherRef.getObjectName() && getSubName() == otherRef.getSubName();
+}
+
+
 TopoDS_Shape ReferenceEntry::getGeometry() const
 {
     // Base::Console().Message("RE::getGeometry() - objectName: %s  sub: **%s**\n",
@@ -206,6 +212,10 @@ Part::TopoShape ReferenceEntry::asTopoShape() const
         TopoDS_Edge edge = TopoDS::Edge(geom);
         return asTopoShapeEdge(edge);
     }
+    if (geom.ShapeType() == TopAbs_FACE) {
+        TopoDS_Face face = TopoDS::Face(geom);
+        return asTopoShapeFace(face);
+    }
     throw Base::RuntimeError("Dimension Reference has unsupported geometry");
 }
 
@@ -253,10 +263,28 @@ Part::TopoShape ReferenceEntry::asTopoShapeEdge(const TopoDS_Edge &edge)
     return { edge };
 }
 
+Part::TopoShape ReferenceEntry::asTopoShapeFace(const TopoDS_Face &face)
+{
+    return { face };
+}
+
 std::string ReferenceEntry::geomType() const
 {
     // Base::Console().Message("RE::geomType() - subName: **%s**\n", getSubName().c_str());
     return DrawUtil::getGeomTypeFromName(getSubName());
+}
+
+GeomType ReferenceEntry::geomEdgeType() const
+{
+    int geoId = TechDraw::DrawUtil::getIndexFromName(getSubName());
+    auto dvp = static_cast<TechDraw::DrawViewPart*>(getObject());
+    BaseGeomPtr geom = dvp->getGeomByIndex(geoId);
+
+    if (geomType() == "Edge" && geom) {
+        return geom->getGeomType();
+    }
+
+    return GeomType::NOTDEF;
 }
 
 bool ReferenceEntry::isWholeObject() const
@@ -314,9 +342,16 @@ bool ReferenceEntry::hasGeometry2d() const
         if (vert) {
             return true;
         }
-    } else if (gType == "Edge") {
+    }
+    else if (gType == "Edge") {
         auto edge = dvp->getGeomByIndex(geomNumber);
         if (edge) {
+            return true;
+        }
+    }
+    else if (gType == "Face") {
+        auto face = dvp->getFace(getSubName());
+        if (face) {
             return true;
         }
     }

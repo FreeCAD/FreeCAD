@@ -173,14 +173,15 @@ class LayerManager:
                     changed = True
                 obj = Draft.make_layer(name=None, line_color=None, shape_color=None,
                                        line_width=None, draw_style=None, transparency=None)
+            vobj = obj.ViewObject
 
             # visibility
             checked = True if self.model.item(row,0).checkState() == QtCore.Qt.Checked else False
-            if checked != obj.ViewObject.Visibility:
+            if checked != vobj.Visibility:
                 if not changed:
                     FreeCAD.ActiveDocument.openTransaction("Layers change")
                     changed = True
-                obj.ViewObject.Visibility = checked
+                vobj.Visibility = checked
 
             # label
             label = self.model.item(row,1).text()
@@ -194,60 +195,60 @@ class LayerManager:
             # line width
             width = self.model.item(row,2).data(QtCore.Qt.DisplayRole)
             if width:
-                if obj.ViewObject.LineWidth != width:
+                if vobj.LineWidth != width:
                     if not changed:
                         FreeCAD.ActiveDocument.openTransaction("Layers change")
                         changed = True
-                    obj.ViewObject.LineWidth = width
+                    vobj.LineWidth = width
 
             # draw style
             style = self.model.item(row,3).text()
             if style:
-                if obj.ViewObject.DrawStyle != style:
+                if vobj.DrawStyle != style:
                     if not changed:
                         FreeCAD.ActiveDocument.openTransaction("Layers change")
                         changed = True
-                    obj.ViewObject.DrawStyle = style
+                    vobj.DrawStyle = style
 
             # line color
             color = self.model.item(row,4).data(QtCore.Qt.UserRole)
             if color:
-                if obj.ViewObject.LineColor[3:] != color:
+                if vobj.LineColor[:3] != color:
                     if not changed:
                         FreeCAD.ActiveDocument.openTransaction("Layers change")
                         changed = True
-                    obj.ViewObject.LineColor = color
+                    vobj.LineColor = color
 
             # shape color
             color = self.model.item(row,5).data(QtCore.Qt.UserRole)
             if color:
-                if obj.ViewObject.ShapeColor[3:] != color:
+                if vobj.ShapeColor[:3] != color:
                     if not changed:
                         FreeCAD.ActiveDocument.openTransaction("Layers change")
                         changed = True
-                    obj.ViewObject.ShapeColor = color
+                    vobj.ShapeColor = color
 
             # transparency
             transparency = self.model.item(row,6).data(QtCore.Qt.DisplayRole)
             if transparency:
-                if obj.ViewObject.Transparency != transparency:
+                if vobj.Transparency != transparency:
                     if not changed:
                         FreeCAD.ActiveDocument.openTransaction("Layers change")
                         changed = True
-                    obj.ViewObject.Transparency = transparency
+                    vobj.Transparency = transparency
 
             # line print color
             color = self.model.item(row,7).data(QtCore.Qt.UserRole)
             if color:
-                if not "LinePrintColor" in obj.ViewObject.PropertiesList:
-                    if hasattr(obj.ViewObject.Proxy,"set_properties"):
-                        obj.ViewObject.Proxy.set_properties(obj.ViewObject)
-                if "LinePrintColor" in obj.ViewObject.PropertiesList:
-                    if obj.ViewObject.LinePrintColor[3:] != color:
+                if not "LinePrintColor" in vobj.PropertiesList:
+                    if hasattr(vobj.Proxy,"set_properties"):
+                        vobj.Proxy.set_properties(vobj)
+                if "LinePrintColor" in vobj.PropertiesList:
+                    if vobj.LinePrintColor[:3] != color:
                         if not changed:
                             FreeCAD.ActiveDocument.openTransaction("Layers change")
                             changed = True
-                        obj.ViewObject.LinePrintColor = color
+                        vobj.LinePrintColor = color
 
         # recompute
         if changed:
@@ -329,16 +330,17 @@ class LayerManager:
 
         # populate with object data
         if obj:
-            onItem.setCheckState(QtCore.Qt.Checked if obj.ViewObject.Visibility else QtCore.Qt.Unchecked)
+            vobj = obj.ViewObject
+            onItem.setCheckState(QtCore.Qt.Checked if vobj.Visibility else QtCore.Qt.Unchecked)
             nameItem.setText(obj.Label)
             nameItem.setToolTip(obj.Name)
-            widthItem.setData(obj.ViewObject.LineWidth,QtCore.Qt.DisplayRole)
-            styleItem.setText(obj.ViewObject.DrawStyle)
-            lineColorItem.setData(obj.ViewObject.LineColor[:3],QtCore.Qt.UserRole)
-            shapeColorItem.setData(obj.ViewObject.ShapeColor[:3],QtCore.Qt.UserRole)
-            transparencyItem.setData(obj.ViewObject.Transparency,QtCore.Qt.DisplayRole)
-            if hasattr(obj.ViewObject,"LinePrintColor"):
-                linePrintColorItem.setData(obj.ViewObject.LinePrintColor[:3],QtCore.Qt.UserRole)
+            widthItem.setData(vobj.LineWidth,QtCore.Qt.DisplayRole)
+            styleItem.setText(vobj.DrawStyle)
+            lineColorItem.setData(vobj.LineColor[:3],QtCore.Qt.UserRole)
+            shapeColorItem.setData(vobj.ShapeColor[:3],QtCore.Qt.UserRole)
+            transparencyItem.setData(vobj.Transparency,QtCore.Qt.DisplayRole)
+            if hasattr(vobj,"LinePrintColor"):
+                linePrintColorItem.setData(vobj.LinePrintColor[:3],QtCore.Qt.UserRole)
         lineColorItem.setIcon(getColorIcon(lineColorItem.data(QtCore.Qt.UserRole)))
         shapeColorItem.setIcon(getColorIcon(shapeColorItem.data(QtCore.Qt.UserRole)))
         linePrintColorItem.setIcon(getColorIcon(linePrintColorItem.data(QtCore.Qt.UserRole)))

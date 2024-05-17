@@ -13584,7 +13584,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3205"/>
       <source>&amp;Measure</source>
-      <translation type="unfinished">&amp;Measure</translation>
+      <translation>&amp;Вимірювання</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3206"/>
@@ -13598,7 +13598,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="51"/>
       <source>Measurement</source>
-      <translation type="unfinished">Measurement</translation>
+      <translation>Вимірювання</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="107"/>

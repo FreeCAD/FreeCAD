@@ -844,17 +844,18 @@ void PropertyIntegerSet::setPyObject(PyObject *value)
 {
     if (PySequence_Check(value)) {
 
-        Py_ssize_t nSize = PySequence_Length(value);
+        Py::Sequence sequence(value);
+        Py_ssize_t nSize = sequence.size();
         std::set<long> values;
 
         for (Py_ssize_t i=0; i<nSize;++i) {
-            PyObject* item = PySequence_GetItem(value, i);
-            if (!PyLong_Check(item)) {
+            Py::Object item = sequence.getItem(i);
+            if (!PyLong_Check(item.ptr())) {
                 std::string error = std::string("type in list must be int, not ");
-                error += item->ob_type->tp_name;
+                error += item.ptr()->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
-            values.insert(PyLong_AsLong(item));
+            values.insert(PyLong_AsLong(item.ptr()));
         }
 
         setValues(values);

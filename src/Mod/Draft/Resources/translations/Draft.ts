@@ -1521,7 +1521,7 @@ pattern definitions to be added to the standard patterns</source>
         <location filename="../ui/preferences-drafttexts.ui" line="540"/>
         <location filename="../ui/preferences-drafttexts.ui" line="569"/>
         <location filename="../ui/preferences-drafttexts.ui" line="598"/>
-        <location filename="../ui/preferences-dxf.ui" line="544"/>
+        <location filename="../ui/preferences-dxf.ui" line="588"/>
         <location filename="../ui/preferences-svg.ui" line="209"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
@@ -1893,143 +1893,133 @@ This value is the maximum segment length.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="51"/>
+        <location filename="../ui/preferences-dxf.ui" line="54"/>
         <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="55"/>
+        <location filename="../ui/preferences-dxf.ui" line="58"/>
         <source>Use legacy python importer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="71"/>
+        <location filename="../ui/preferences-dxf.ui" line="74"/>
         <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="75"/>
+        <location filename="../ui/preferences-dxf.ui" line="78"/>
         <source>Use legacy python exporter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="88"/>
-        <source>Automatic update (legacy importer only)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/preferences-dxf.ui" line="96"/>
+        <location filename="../ui/preferences-dxf.ui" line="99"/>
         <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the &quot;dxf_library&quot; workbench
 from the Addon Manager.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="101"/>
+        <location filename="../ui/preferences-dxf.ui" line="104"/>
         <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="119"/>
+        <location filename="../ui/preferences-dxf.ui" line="122"/>
         <location filename="../ui/preferences-oca.ui" line="26"/>
         <location filename="../ui/preferences-svg.ui" line="26"/>
         <source>Import options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="140"/>
-        <source>Note: Not all the options below are used by the new importer yet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/preferences-dxf.ui" line="149"/>
+        <location filename="../ui/preferences-dxf.ui" line="157"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="156"/>
+        <location filename="../ui/preferences-dxf.ui" line="164"/>
         <source>If unchecked, texts and mtexts won&apos;t be imported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="159"/>
+        <location filename="../ui/preferences-dxf.ui" line="167"/>
         <source>texts and dimensions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="172"/>
+        <location filename="../ui/preferences-dxf.ui" line="180"/>
         <source>If unchecked, points won&apos;t be imported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="175"/>
+        <location filename="../ui/preferences-dxf.ui" line="183"/>
         <source>points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="188"/>
+        <location filename="../ui/preferences-dxf.ui" line="196"/>
         <source>If checked, paper space objects will be imported too</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="191"/>
+        <location filename="../ui/preferences-dxf.ui" line="199"/>
         <source>layouts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="204"/>
+        <location filename="../ui/preferences-dxf.ui" line="212"/>
         <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="207"/>
+        <location filename="../ui/preferences-dxf.ui" line="215"/>
         <source>*blocks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="224"/>
+        <location filename="../ui/preferences-dxf.ui" line="235"/>
         <source>Create</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="231"/>
+        <location filename="../ui/preferences-dxf.ui" line="245"/>
         <source>Only standard Part objects will be created (fastest)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="234"/>
+        <location filename="../ui/preferences-dxf.ui" line="248"/>
         <source>simple Part shapes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="250"/>
+        <location filename="../ui/preferences-dxf.ui" line="267"/>
         <source>Parametric Draft objects will be created whenever possible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="253"/>
+        <location filename="../ui/preferences-dxf.ui" line="270"/>
         <source>Draft objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="266"/>
+        <location filename="../ui/preferences-dxf.ui" line="286"/>
         <source>Sketches will be created whenever possible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="269"/>
+        <location filename="../ui/preferences-dxf.ui" line="289"/>
         <source>Sketches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="289"/>
+        <location filename="../ui/preferences-dxf.ui" line="309"/>
         <source>Scale factor to apply to imported files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="309"/>
+        <location filename="../ui/preferences-dxf.ui" line="329"/>
         <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -2037,135 +2027,150 @@ Example: for files in millimeters: 1, in centimeters: 10,
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="380"/>
+        <location filename="../ui/preferences-dxf.ui" line="403"/>
         <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="448"/>
-        <source>Import hatch boundaries as wires (legacy importer only)</source>
+        <location filename="../ui/preferences-dxf.ui" line="664"/>
+        <source>Project exported objects along current view direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="469"/>
-        <source>Render polylines with width (legacy importer only)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/preferences-dxf.ui" line="570"/>
-        <source>Export 3D objects as polyface meshes (legacy exporter only)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/preferences-dxf.ui" line="614"/>
-        <source>Project exported objects along current view direction (legacy exporter only)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/preferences-dxf.ui" line="359"/>
+        <location filename="../ui/preferences-dxf.ui" line="382"/>
         <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="338"/>
+        <location filename="../ui/preferences-dxf.ui" line="358"/>
         <source>Colors will set as specified in the DXF file whenever possible.
 Otherwise default colors will be applied.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="342"/>
+        <location filename="../ui/preferences-dxf.ui" line="91"/>
+        <source>Automatic update (legacy importer/exporter only)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-dxf.ui" line="148"/>
+        <source>Some options are not yet available for the new importer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-dxf.ui" line="362"/>
         <source>Use colors from the DXF file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="363"/>
+        <location filename="../ui/preferences-dxf.ui" line="386"/>
         <source>Join geometry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="384"/>
+        <location filename="../ui/preferences-dxf.ui" line="407"/>
         <source>Group layers into blocks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="401"/>
+        <location filename="../ui/preferences-dxf.ui" line="427"/>
         <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="405"/>
+        <location filename="../ui/preferences-dxf.ui" line="431"/>
         <source>Use standard font size for texts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="422"/>
+        <location filename="../ui/preferences-dxf.ui" line="448"/>
         <source>If this is checked, DXF layers will be imported as Draft Layers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="425"/>
-        <source>Use Layers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/preferences-dxf.ui" line="445"/>
+        <location filename="../ui/preferences-dxf.ui" line="474"/>
         <source>Hatches will be converted into simple wires</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="465"/>
+        <location filename="../ui/preferences-dxf.ui" line="477"/>
+        <source>Import hatch boundaries as wires</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-dxf.ui" line="497"/>
         <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="495"/>
+        <location filename="../ui/preferences-dxf.ui" line="501"/>
+        <source>Render polylines with width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-dxf.ui" line="530"/>
+        <source>Some options are not yet available for the new exporter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-dxf.ui" line="539"/>
         <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="498"/>
+        <location filename="../ui/preferences-dxf.ui" line="542"/>
         <source>Treat ellipses and splines as polylines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="527"/>
+        <location filename="../ui/preferences-dxf.ui" line="571"/>
         <source>Max Spline Segment:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="537"/>
+        <location filename="../ui/preferences-dxf.ui" line="581"/>
         <source>Maximum length of each of the polyline segments.
 If it is set to &apos;0&apos; the whole spline is treated as a straight segment.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="487"/>
+        <location filename="../ui/preferences-dxf.ui" line="519"/>
         <location filename="../ui/preferences-svg.ui" line="107"/>
         <source>Export options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="567"/>
+        <location filename="../ui/preferences-dxf.ui" line="451"/>
+        <source>Use layers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-dxf.ui" line="614"/>
         <source>All objects containing faces will be exported as 3D polyfaces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="587"/>
+        <location filename="../ui/preferences-dxf.ui" line="617"/>
+        <source>Export 3D objects as polyface meshes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-dxf.ui" line="634"/>
         <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="591"/>
+        <location filename="../ui/preferences-dxf.ui" line="638"/>
         <source>Export TechDraw Views as blocks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-dxf.ui" line="611"/>
+        <location filename="../ui/preferences-dxf.ui" line="661"/>
         <source>Exported objects will be projected to reflect the current view direction</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3514,40 +3519,40 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_lines.py" line="163"/>
+        <location filename="../../draftguitools/gui_lines.py" line="170"/>
         <source>Create Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_lines.py" line="185"/>
+        <location filename="../../draftguitools/gui_lines.py" line="192"/>
         <source>Create Wire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_lines.py" line="356"/>
+        <location filename="../../draftguitools/gui_lines.py" line="363"/>
         <source>Polyline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftguitools/gui_beziers.py" line="151"/>
         <location filename="../../draftguitools/gui_beziers.py" line="154"/>
-        <location filename="../../draftguitools/gui_lines.py" line="218"/>
-        <location filename="../../draftguitools/gui_lines.py" line="226"/>
+        <location filename="../../draftguitools/gui_lines.py" line="225"/>
         <location filename="../../draftguitools/gui_lines.py" line="233"/>
-        <location filename="../../draftguitools/gui_lines.py" line="241"/>
-        <location filename="../../draftguitools/gui_lines.py" line="251"/>
-        <location filename="../../draftguitools/gui_splines.py" line="140"/>
-        <location filename="../../draftguitools/gui_splines.py" line="145"/>
+        <location filename="../../draftguitools/gui_lines.py" line="240"/>
+        <location filename="../../draftguitools/gui_lines.py" line="248"/>
+        <location filename="../../draftguitools/gui_lines.py" line="258"/>
+        <location filename="../../draftguitools/gui_splines.py" line="142"/>
+        <location filename="../../draftguitools/gui_splines.py" line="147"/>
         <source>Pick next point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_lines.py" line="323"/>
+        <location filename="../../draftguitools/gui_lines.py" line="330"/>
         <source>Unable to create a Wire from selected objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_lines.py" line="348"/>
+        <location filename="../../draftguitools/gui_lines.py" line="355"/>
         <source>Convert to Wire</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4034,19 +4039,19 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_splines.py" line="120"/>
+        <location filename="../../draftguitools/gui_splines.py" line="122"/>
         <source>Spline has been closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftguitools/gui_beziers.py" line="143"/>
-        <location filename="../../draftguitools/gui_beziers.py" line="382"/>
-        <location filename="../../draftguitools/gui_splines.py" line="131"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="376"/>
+        <location filename="../../draftguitools/gui_splines.py" line="133"/>
         <source>Last point has been removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_splines.py" line="183"/>
+        <location filename="../../draftguitools/gui_splines.py" line="185"/>
         <source>Create B-spline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4181,13 +4186,13 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
         <location filename="../../draftguitools/gui_beziers.py" line="135"/>
-        <location filename="../../draftguitools/gui_beziers.py" line="346"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="341"/>
         <source>Bézier curve has been closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftguitools/gui_beziers.py" line="213"/>
-        <location filename="../../draftguitools/gui_beziers.py" line="466"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="460"/>
         <source>Create BezCurve</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4197,8 +4202,8 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_beziers.py" line="390"/>
-        <location filename="../../draftguitools/gui_beziers.py" line="394"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="384"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="388"/>
         <source>Click and drag to define next knot</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5866,12 +5871,12 @@ will be used to provide information to the label.</source>
 <context>
     <name>Draft_Wire</name>
     <message>
-        <location filename="../../draftguitools/gui_lines.py" line="299"/>
+        <location filename="../../draftguitools/gui_lines.py" line="306"/>
         <source>Polyline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_lines.py" line="302"/>
+        <location filename="../../draftguitools/gui_lines.py" line="309"/>
         <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6530,12 +6535,12 @@ CTRL to snap, SHIFT to constrain.</source>
 <context>
     <name>Draft_BezierTools</name>
     <message>
-        <location filename="../../draftguitools/gui_beziers.py" line="490"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="484"/>
         <source>Bézier tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_beziers.py" line="493"/>
+        <location filename="../../draftguitools/gui_beziers.py" line="487"/>
         <source>Create various types of Bézier curves.</source>
         <translation type="unfinished"></translation>
     </message>

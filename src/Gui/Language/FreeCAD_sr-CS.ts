@@ -2385,12 +2385,12 @@ Navedi neku drugu fasciklu.</translation>
     <message>
       <location filename="../DlgProjectInformation.ui" line="142"/>
       <source>Unit System:</source>
-      <translation type="unfinished">Unit System:</translation>
+      <translation>Sistem mernih jedinica:</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="152"/>
       <source>Unit system for this file</source>
-      <translation type="unfinished">Unit system for this file</translation>
+      <translation>Sistem mernih jedinica ove datoteke</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="159"/>
@@ -2831,7 +2831,7 @@ but slower response to any scene changes.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
       <source>MSAA 6x</source>
-      <translation type="unfinished">MSAA 6x</translation>
+      <translation>MSAA 6x</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="133"/>
@@ -3006,12 +3006,12 @@ veličinom graničnog okvira 3D objekta koji je trenutno prikazan.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="28"/>
       <source>Location (read-only):</source>
-      <translation type="unfinished">Location (read-only):</translation>
+      <translation>Lokacija (samo za čitanje):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="42"/>
       <source>Browse cache directory</source>
-      <translation type="unfinished">Browse cache directory</translation>
+      <translation>Pregledajte keš fasciklu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="59"/>
@@ -5072,17 +5072,17 @@ Kolona „Status“ pokazuje da li se dokument može oporaviti.</translation>
     <message>
       <location filename="../DlgParameterImp.cpp" line="672"/>
       <source>New float item</source>
-      <translation type="unfinished">New float item</translation>
+      <translation>Nova stavka sa pokretnim zarezom</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="673"/>
       <source>New integer item</source>
-      <translation type="unfinished">New integer item</translation>
+      <translation>Nova brojčana stavka</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="674"/>
       <source>New unsigned item</source>
-      <translation type="unfinished">New unsigned item</translation>
+      <translation>Nova neoznačena stavka</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="675"/>
@@ -6105,7 +6105,7 @@ Da li želiš da sačuvaš promene?</translation>
     <message>
       <location filename="../InputVector.cpp" line="102"/>
       <source>Direction:</source>
-      <translation type="unfinished">Direction:</translation>
+      <translation>Pravac:</translation>
     </message>
   </context>
   <context>
@@ -6132,7 +6132,7 @@ Da li želiš da sačuvaš promene?</translation>
       <location filename="../MainWindow.cpp" line="168"/>
       <location filename="../MainWindow.cpp" line="2364"/>
       <source>Dimension</source>
-      <translation>Kota</translation>
+      <translation>Merne jedinice</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="510"/>
@@ -6883,7 +6883,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskDlgRelocation.cpp" line="42"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Položaj</translation>
     </message>
   </context>
   <context>
@@ -7315,7 +7315,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="Translator.cpp" line="179"/>
       <source>Danish</source>
-      <translation type="unfinished">Danish</translation>
+      <translation>Danski</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="152"/>
@@ -7709,7 +7709,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../DlgLocationPos.ui" line="162"/>
       <source>5 m</source>
-      <translation type="unfinished">5 m</translation>
+      <translation>5 m</translation>
     </message>
   </context>
   <context>
@@ -8099,7 +8099,7 @@ Da li želiš da nastaviš?</translation>
       <location filename="../DlgParameterImp.cpp" line="804"/>
       <location filename="../DlgParameterImp.cpp" line="820"/>
       <source>New integer item</source>
-      <translation type="unfinished">New integer item</translation>
+      <translation>Nova brojčana stavka</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="820"/>
@@ -8115,13 +8115,13 @@ Da li želiš da nastaviš?</translation>
       <location filename="../DlgParameterImp.cpp" line="834"/>
       <location filename="../DlgParameterImp.cpp" line="851"/>
       <source>New unsigned item</source>
-      <translation type="unfinished">New unsigned item</translation>
+      <translation>Nova neoznačena stavka</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="870"/>
       <location filename="../DlgParameterImp.cpp" line="886"/>
       <source>New float item</source>
-      <translation type="unfinished">New float item</translation>
+      <translation>Nova stavka sa pokretnim zarezom</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="899"/>
@@ -8483,7 +8483,7 @@ Otvori pregledač i ukucaj: http://localhost:%1.</translation>
     <message>
       <location filename="../TaskView/TaskDialog.cpp" line="92"/>
       <source>Do you want to close this dialog?</source>
-      <translation type="unfinished">Do you want to close this dialog?</translation>
+      <translation>Da li želiš da zatvoriš ovaj dijalog?</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="836"/>
@@ -8727,7 +8727,7 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderLink.cpp" line="2575"/>
       <source>Toggle array elements</source>
-      <translation type="unfinished">Toggle array elements</translation>
+      <translation>Uključi/Isključi umnožene elemente</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2584"/>
@@ -8790,7 +8790,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="530"/>
       <source>UI</source>
-      <translation type="unfinished">UI</translation>
+      <translation>UI</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="531"/>
@@ -8985,7 +8985,7 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="95"/>
       <source>Suppressed</source>
-      <translation type="unfinished">Suppressed</translation>
+      <translation>Potisnuto</translation>
     </message>
   </context>
   <context>
@@ -11902,17 +11902,17 @@ nakon pokretanja FreeCAD-a</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="97"/>
       <source>Workbench selector type:</source>
-      <translation type="unfinished">Workbench selector type:</translation>
+      <translation>Vrsta birača radnog okruženja:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="104"/>
       <source>Choose the workbench selector widget type (restart required).</source>
-      <translation type="unfinished">Choose the workbench selector widget type (restart required).</translation>
+      <translation>Izaberi vrstu birača radnog okruženja (potrebno je ponovno pokretanje).</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="130"/>
       <source>Workbench selector position:</source>
-      <translation type="unfinished">Workbench selector position:</translation>
+      <translation>Položaj birača radnog okruženja:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="137"/>
@@ -11930,12 +11930,12 @@ nakon pokretanja FreeCAD-a</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="167"/>
       <source>Workbench selector items style:</source>
-      <translation type="unfinished">Workbench selector items style:</translation>
+      <translation>Izgled birača radnog okruženja:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="174"/>
       <source>Customize how the items are displayed.</source>
-      <translation type="unfinished">Customize how the items are displayed.</translation>
+      <translation>Prilagodi način na koji se stavke prikazuju.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="183"/>
@@ -12172,7 +12172,7 @@ nakon pokretanja FreeCAD-a</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="550"/>
       <source>Icon &amp; Text</source>
-      <translation type="unfinished">Icon &amp; Text</translation>
+      <translation>Ikone i tekst</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="551"/>
@@ -13586,13 +13586,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3205"/>
       <source>&amp;Measure</source>
-      <translation type="unfinished">&amp;Measure</translation>
+      <translation>&amp;Izmeri</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3206"/>
       <location filename="../CommandView.cpp" line="3208"/>
       <source>Measure a feature</source>
-      <translation type="unfinished">Measure a feature</translation>
+      <translation>Izmeri nešto</translation>
     </message>
   </context>
   <context>
@@ -13615,7 +13615,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="115"/>
       <source>Press the Close button to exit.</source>
-      <translation type="unfinished">Press the Close button to exit.</translation>
+      <translation>Pritisni dugme Zatvori da izađeš.</translation>
     </message>
   </context>
 </TS>
