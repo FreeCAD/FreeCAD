@@ -64,7 +64,6 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Draft_ToggleGrid", "Toggles the Draft grid on and off."
             ),
-            "Checkable": False,
         }
 
     def Activated(self, index = 0):
@@ -91,7 +90,7 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
             WorkingPlane.get_working_plane()
             grid.show_always = True
 
-        grid_observer._update_gridgui()
+        grid_observer._update_grid_gui()
 
 Gui.addCommand("Draft_ToggleGrid", ToggleGrid())
 
