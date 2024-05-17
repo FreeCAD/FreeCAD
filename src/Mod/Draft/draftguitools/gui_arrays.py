@@ -30,7 +30,8 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
-import Draft_rc
+from draftutils import gui_utils
+
 import draftguitools.gui_circulararray
 import draftguitools.gui_orthoarray
 import draftguitools.gui_patharray
@@ -39,12 +40,12 @@ import draftguitools.gui_polararray
 import draftguitools.gui_pathtwistedarray
 
 # The module is used to prevent complaints from code checkers (flake8)
-bool(Draft_rc.__name__)
 bool(draftguitools.gui_circulararray.__name__)
 bool(draftguitools.gui_orthoarray.__name__)
 bool(draftguitools.gui_patharray.__name__)
 bool(draftguitools.gui_pointarray.__name__)
 bool(draftguitools.gui_polararray.__name__)
+bool(draftguitools.gui_pathtwistedarray.__name__)
 
 
 class ArrayGroup:
@@ -61,16 +62,13 @@ class ArrayGroup:
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_Array',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_ArrayTools", "Array tools"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_ArrayTools", "Create various types of arrays, including rectangular, polar, circular, path, and point")}
+        return {"Pixmap": "Draft_Array",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_ArrayTools", "Array tools"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_ArrayTools", "Create various types of arrays, including rectangular, polar, circular, path, and point")}
 
     def IsActive(self):
         """Return True when this command should be available."""
-        if Gui.activeDocument():
-            return True
-        else:
-            return False
+        return bool(gui_utils.get_3d_view())
 
 
 Gui.addCommand('Draft_ArrayTools', ArrayGroup())
