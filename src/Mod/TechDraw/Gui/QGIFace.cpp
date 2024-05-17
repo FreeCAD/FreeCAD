@@ -524,6 +524,7 @@ bool QGIFace::exporting() const
     if (!tdScene) {
         return false;
     }
-    return tdScene->getExportingSvg();
+    return tdScene->getExportingSvg() ||
+           tdScene->getExportingPdf();
 }
 
