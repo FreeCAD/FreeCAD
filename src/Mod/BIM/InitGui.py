@@ -222,7 +222,8 @@ class BIMWorkbench(Workbench):
             "BIM_Rewire",
             "BIM_Glue",
             "BIM_Reextrude",
-            "BIM_PanelTools"
+            "Arch_PanelTools",
+            "Arch_StructureTools",
         ]
 
         nudge = [
