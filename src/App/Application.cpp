@@ -2027,6 +2027,7 @@ void Application::initTypes()
     App::PropertyMagneticFluxDensity        ::init();
     App::PropertyMagnetization              ::init();
     App::PropertyMass                       ::init();
+    App::PropertyMoment                     ::init();
     App::PropertyPressure                   ::init();
     App::PropertyPower                      ::init();
     App::PropertyShearModulus               ::init();
