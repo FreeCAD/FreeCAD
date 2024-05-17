@@ -132,6 +132,10 @@ public:
 
     void setExportingSvg(bool enable);
     bool getExportingSvg() { return m_exportingSvg; }
+
+    void setExportingPdf(bool enable) { m_exportingPdf = enable; };
+    bool getExportingPdf() const { return m_exportingPdf; }
+
     virtual void refreshViews();
 
     /// Renders the page to SVG with filename.
@@ -153,6 +157,7 @@ private:
     ViewProviderPage* m_vpPage;
 
     bool m_exportingSvg{false};
+    bool m_exportingPdf{false};
 };
 
 }// namespace TechDrawGui
