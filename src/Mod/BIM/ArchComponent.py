@@ -1994,7 +1994,7 @@ class ComponentTaskPanel:
                     self.psetdefs[row[0]] = row[1:]
         self.psetkeys = [''.join(map(lambda x: x if x.islower() else " "+x, t[5:]))[1:] for t in self.psetdefs.keys()]
         self.psetkeys.sort()
-        self.ifcEditor = FreeCADGui.PySideUic.loadUi(":/ui/DialogIfcProperties.ui")
+        self.ifcEditor = FreeCADGui.PySideUic.loadUi(":/ui/dialogIfcPropertiesRedux.ui")
 
         # center the dialog over FreeCAD window
         mw = FreeCADGui.getMainWindow()
