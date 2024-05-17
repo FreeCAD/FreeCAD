@@ -164,7 +164,6 @@
         <file>ui/BimServerTaskPanel.ui</file>
         <file>ui/DialogBimServerLogin.ui</file>
         <file>ui/DialogDisplayText.ui</file>
-        <file>ui/DialogIfcProperties.ui</file>
         <file>ui/GitTaskPanel.ui</file>
         <file>ui/ParametersBeam.svg</file>
         <file>ui/ParametersDent.svg</file>
@@ -189,6 +188,7 @@
         <file>ui/dialogExport.ui</file>
         <file>ui/dialogIfcElements.ui</file>
         <file>ui/dialogIfcProperties.ui</file>
+        <file>ui/dialogIfcPropertiesRedux.ui</file>
         <file>ui/dialogIfcQuantities.ui</file>
         <file>ui/dialogImport.ui</file>
         <file>ui/dialogLayers.ui</file>
