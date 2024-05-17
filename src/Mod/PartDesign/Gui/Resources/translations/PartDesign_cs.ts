@@ -1008,17 +1008,17 @@ aby se zabránilo sebe.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Edge tools</source>
-      <translation type="unfinished">Edge tools</translation>
+      <translation>Nástroje hrany</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>Start boolean</source>
-      <translation type="unfinished">Start boolean</translation>
+      <translation>Spustit logickou hodnotu</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>Start part</source>
-      <translation type="unfinished">Start part</translation>
+      <translation>Úvodní část</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
@@ -4588,17 +4588,17 @@ nad 90: větší poloměr díry ve spodní části</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="153"/>
       <source>Bearing</source>
-      <translation type="unfinished">Bearing</translation>
+      <translation>Ložisko</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
       <source>Gear</source>
-      <translation type="unfinished">Gear</translation>
+      <translation>Ozubené kolo</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="155"/>
       <source>Pulley</source>
-      <translation type="unfinished">Pulley</translation>
+      <translation>Kladka</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="166"/>
@@ -4884,7 +4884,7 @@ nad 90: větší poloměr díry ve spodní části</translation>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="668"/>
       <source>Padding with draft angle failed</source>
-      <translation type="unfinished">Padding with draft angle failed</translation>
+      <translation>Připojení s konceptem úhlu se nezdařilo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="148"/>
@@ -5171,12 +5171,12 @@ Protínání entit náčrtu nebo několika ploch v náčrtu není povoleno pro v
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="442"/>
       <source>Loft: Creating a face from sketch failed</source>
-      <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
+      <translation>Vytvoření plochy z náčrtu selhalo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="475"/>
       <source>Loft: Failed to create shell</source>
-      <translation type="unfinished">Loft: Failed to create shell</translation>
+      <translation>Nepodařilo se vytvořit obal</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="105"/>
@@ -5500,7 +5500,7 @@ Nejsou povoleny protínající se prvky náčrtu nebo více ploch v náčrtu.</t
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="133"/>
       <source>Reference axis is invalid</source>
-      <translation type="unfinished">Reference axis is invalid</translation>
+      <translation>Vztažná osa je neplatná</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="709"/>

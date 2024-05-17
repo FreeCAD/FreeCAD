@@ -33,6 +33,7 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Gui/Selection.h>
 #include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/LineGenerator.h>
 
@@ -214,7 +215,8 @@ bool PreferencesGui::showGrid()
 
 bool PreferencesGui::multiSelection()
 {
-  return Preferences::getPreferenceGroup("General")->GetBool("multiSelection", false);
+    bool greedy = Gui::Selection().getSelectionStyle() == Gui::SelectionSingleton::SelectionStyle::GreedySelection;
+    return greedy || Preferences::getPreferenceGroup("General")->GetBool("multiSelection", false);
 }
 
 App::Color PreferencesGui::pageColor()

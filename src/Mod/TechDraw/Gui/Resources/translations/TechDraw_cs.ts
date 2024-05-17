@@ -1324,13 +1324,13 @@
       <location filename="../../CommandExtensionPack.cpp" line="409"/>
       <location filename="../../CommandExtensionPack.cpp" line="682"/>
       <source>Add Cosmetic Thread Hole Side View</source>
-      <translation type="unfinished">Add Cosmetic Thread Hole Side View</translation>
+      <translation>Přidat kosmetický závitový otvor boční pohled</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="410"/>
       <location filename="../../CommandExtensionPack.cpp" line="684"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</translation>
+      <translation>Přidání kosmetického závitu do bočního pohledu na otvor:&lt;br&gt;- Zadejte atributy čáry (volitelné)&lt;br&gt;- Vyberte dvě rovnoběžné čáry&lt;br&gt;- Klikněte na tento nástroj.</translation>
     </message>
   </context>
   <context>
@@ -1343,12 +1343,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="600"/>
       <source>Add Cosmetic Thread Hole Side View</source>
-      <translation type="unfinished">Add Cosmetic Thread Hole Side View</translation>
+      <translation>Přidat kosmetický závitový otvor boční pohled</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="601"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</translation>
+      <translation>Přidání kosmetického závitu do bočního pohledu na otvor:&lt;br&gt;- Zadejte atributy čáry (volitelné)&lt;br&gt;- Vyberte dvě rovnoběžné čáry&lt;br&gt;- Klikněte na tento nástroj.</translation>
     </message>
   </context>
   <context>
@@ -1361,12 +1361,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="835"/>
       <source>Add Cosmetic Intersection Vertex(es)</source>
-      <translation type="unfinished">Add Cosmetic Intersection Vertex(es)</translation>
+      <translation>Přidání kosmetického průsečíku vrcholu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="837"/>
       <source>Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges&lt;br&gt;- Click this tool</translation>
+      <translation>Přidání kosmetického vrcholu (vrcholů) v průsečíku (průsečících) vybraných hran:&lt;br&gt;- Vyberte dvě hrany&lt;br&gt;- Klikněte na tento nástroj.</translation>
     </message>
   </context>
   <context>
@@ -1483,7 +1483,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="260"/>
       <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation type="unfinished">Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</translation>
+      <translation>Obrázkové soubory (*.jpg *.jpeg *.png *.bmp);;Všechny soubory (*)</translation>
     </message>
   </context>
   <context>
@@ -1584,7 +1584,7 @@
     <message>
       <location filename="../../Command.cpp" line="181"/>
       <source>Template (*.svg)</source>
-      <translation type="unfinished">Template (*.svg)</translation>
+      <translation>Šablona (*.svg)</translation>
     </message>
   </context>
   <context>
@@ -1597,7 +1597,7 @@
     <message>
       <location filename="../../Command.cpp" line="273"/>
       <source>Print All Pages</source>
-      <translation type="unfinished">Print All Pages</translation>
+      <translation>Tisknout všechny stránky</translation>
     </message>
   </context>
   <context>
@@ -1693,7 +1693,7 @@
     <message>
       <location filename="../../Command.cpp" line="681"/>
       <source>Insert a simple or complex Section View</source>
-      <translation type="unfinished">Insert a simple or complex Section View</translation>
+      <translation>Vložení jednoduchého nebo složitého zobrazení oddílu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="746"/>
@@ -1703,7 +1703,7 @@
     <message>
       <location filename="../../Command.cpp" line="750"/>
       <source>Complex Section</source>
-      <translation type="unfinished">Complex Section</translation>
+      <translation>Komplexní sekce</translation>
     </message>
   </context>
   <context>
@@ -1760,7 +1760,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="238"/>
       <source>Move view to bottom of stack</source>
-      <translation type="unfinished">Move view to bottom of stack</translation>
+      <translation>Přesunutí zobrazení na konec zásobníku</translation>
     </message>
   </context>
   <context>
@@ -1773,7 +1773,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="358"/>
       <source>Move view down one level</source>
-      <translation type="unfinished">Move view down one level</translation>
+      <translation>Přesunutí zobrazení o jednu úroveň dolů</translation>
     </message>
   </context>
   <context>
@@ -1786,27 +1786,27 @@
     <message>
       <location filename="../../CommandStack.cpp" line="65"/>
       <source>Adjust stacking order of views</source>
-      <translation type="unfinished">Adjust stacking order of views</translation>
+      <translation>Úprava pořadí skládání pohledů</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="143"/>
       <source>Stack Top</source>
-      <translation type="unfinished">Stack Top</translation>
+      <translation>Horní část zásobníku</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="147"/>
       <source>Stack Bottom</source>
-      <translation type="unfinished">Stack Bottom</translation>
+      <translation>Spodní část zásobníku</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="151"/>
       <source>Stack Up</source>
-      <translation type="unfinished">Stack Up</translation>
+      <translation>Horní část zásobníku</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="155"/>
       <source>Stack Down</source>
-      <translation type="unfinished">Stack Down</translation>
+      <translation>Dolní část zásobníku</translation>
     </message>
   </context>
   <context>
@@ -1819,7 +1819,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="178"/>
       <source>Move view to top of stack</source>
-      <translation type="unfinished">Move view to top of stack</translation>
+      <translation>Přesunutí zobrazení na začátek zásobníku</translation>
     </message>
   </context>
   <context>
@@ -1832,7 +1832,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="298"/>
       <source>Move view up one level</source>
-      <translation type="unfinished">Move view up one level</translation>
+      <translation>Přesunutí zobrazení o jednu úroveň výš</translation>
     </message>
   </context>
   <context>
@@ -1845,12 +1845,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1610"/>
       <source>Create a Surface Finish Symbol</source>
-      <translation type="unfinished">Create a Surface Finish Symbol</translation>
+      <translation>Vytvoření symbolu Povrchová úprava</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1611"/>
       <source>Select a view&lt;br&gt;    - click this button&lt;br&gt;    - select surface finish symbol attributes in opened panel</source>
-      <translation type="unfinished">Select a view&lt;br&gt;    - click this button&lt;br&gt;    - select surface finish symbol attributes in opened panel</translation>
+      <translation>Výběr zobrazení&lt;br&gt; - klikněte na toto tlačítko&lt;br&gt; - v otevřeném panelu vyberte atributy symbolu povrchové úpravy</translation>
     </message>
   </context>
   <context>
@@ -1928,19 +1928,19 @@
       <source>Insert a View in current page.
 Selected objects, spreadsheets or Arch WB section planes will be added.
 Without a selection, a file browser lets you select a SVG or image file.</source>
-      <translation type="unfinished">Insert a View in current page.
-Selected objects, spreadsheets or Arch WB section planes will be added.
-Without a selection, a file browser lets you select a SVG or image file.</translation>
+      <translation>Vložení zobrazení na aktuální stránku.
+Přidají se vybrané objekty, tabulky nebo roviny sekce Arch WB.
+Bez výběru umožňuje prohlížeč souborů vybrat soubor SVG nebo obrázek.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="425"/>
       <source>If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</source>
-      <translation type="unfinished">If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</translation>
+      <translation>Pokud chcete vložit pohled z existujících objektů, vyberte je před vyvoláním tohoto nástroje. Bez výběru se otevře prohlížeč souborů pro vložení souboru SVG nebo obrázku.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="426"/>
       <source>Do not show this message again</source>
-      <translation type="unfinished">Do not show this message again</translation>
+      <translation>Tuto zprávu již nezobrazovat</translation>
     </message>
   </context>
   <context>
@@ -1972,7 +1972,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Command.cpp" line="597"/>
       <source>Create broken view</source>
-      <translation type="unfinished">Create broken view</translation>
+      <translation>Vytvoření nefunkčního zobrazení</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1089"/>
@@ -2052,12 +2052,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../TaskHatch.cpp" line="244"/>
       <source>Update Hatch</source>
-      <translation type="unfinished">Update Hatch</translation>
+      <translation>Aktualizace šrafování</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="119"/>
       <source>Remove old Hatch</source>
-      <translation type="unfinished">Remove old Hatch</translation>
+      <translation>Odstranění starého šrafování</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="198"/>
@@ -2104,7 +2104,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="230"/>
       <source>Update CosmeticCircle</source>
-      <translation type="unfinished">Update CosmeticCircle</translation>
+      <translation>Aktualizovat kosmetické kruh</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="241"/>
@@ -2149,13 +2149,13 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../TaskComplexSection.cpp" line="560"/>
       <source>Create ComplexSection</source>
-      <translation type="unfinished">Create ComplexSection</translation>
+      <translation>Vytvořit komplexní sekci</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="653"/>
       <location filename="../../TaskSectionView.cpp" line="586"/>
       <source>Edit SectionView</source>
-      <translation type="unfinished">Edit SectionView</translation>
+      <translation>Upravit zobrazení sekce</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="561"/>
@@ -2175,17 +2175,17 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="106"/>
       <source>TechDraw Insert Prefix</source>
-      <translation type="unfinished">TechDraw Insert Prefix</translation>
+      <translation>TechDraw Vložte předponu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="132"/>
       <source>Insert Prefix</source>
-      <translation type="unfinished">Insert Prefix</translation>
+      <translation>Vložte předponu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="248"/>
       <source>TechDraw Remove Prefix</source>
-      <translation type="unfinished">TechDraw Remove Prefix</translation>
+      <translation>TechDraw Odstranění předpony</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="252"/>
@@ -2195,37 +2195,37 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="438"/>
       <source>Increase/Decrease Decimal</source>
-      <translation type="unfinished">Increase/Decrease Decimal</translation>
+      <translation>Zvýšení/snížení desetinného čísla</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="633"/>
       <source>Pos Horiz Chain Dim</source>
-      <translation type="unfinished">Pos Horiz Chain Dim</translation>
+      <translation>Pozice horizontálního řezu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="694"/>
       <source>Pos Vert Chain Dim</source>
-      <translation type="unfinished">Pos Vert Chain Dim</translation>
+      <translation>Pozice vertikálního řezu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="756"/>
       <source>Pos Oblique Chain Dim</source>
-      <translation type="unfinished">Pos Oblique Chain Dim</translation>
+      <translation>Pozice šikmého řezu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="942"/>
       <source>Cascade Horiz Dim</source>
-      <translation type="unfinished">Cascade Horiz Dim</translation>
+      <translation>Horizontální kaskáda</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1008"/>
       <source>Cascade Vert Dim</source>
-      <translation type="unfinished">Cascade Vert Dim</translation>
+      <translation>Vertikální kaskáda</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1075"/>
       <source>Cascade Oblique Dim</source>
-      <translation type="unfinished">Cascade Oblique Dim</translation>
+      <translation>Kaskádové šikmé provedení</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1274"/>
@@ -5248,12 +5248,12 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="451"/>
       <source>ANSI</source>
-      <translation type="unfinished">ANSI</translation>
+      <translation>ANSI</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="456"/>
       <source>ISO</source>
-      <translation type="unfinished">ISO</translation>
+      <translation>ISO</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="469"/>
@@ -5634,7 +5634,7 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="109"/>
       <source>Print All Pages</source>
-      <translation type="unfinished">Print All Pages</translation>
+      <translation>Tisknout všechny stránky</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="405"/>
@@ -6001,7 +6001,7 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="20"/>
       <source>Complex Section</source>
-      <translation type="unfinished">Complex Section</translation>
+      <translation>Komplexní sekce</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="36"/>
@@ -6510,7 +6510,7 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="573"/>
       <source>Plus - Minus</source>
-      <translation type="unfinished">Plus - Minus</translation>
+      <translation>Plus - Minus</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="583"/>
@@ -8081,7 +8081,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="118"/>
       <source>ISO</source>
-      <translation type="unfinished">ISO</translation>
+      <translation>ISO</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="131"/>
@@ -8300,7 +8300,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../CommandStack.cpp" line="148"/>
       <source>Move view to bottom of stack</source>
-      <translation type="unfinished">Move view to bottom of stack</translation>
+      <translation>Přesunutí zobrazení na konec zásobníku</translation>
     </message>
   </context>
   <context>
@@ -8308,7 +8308,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../CommandStack.cpp" line="156"/>
       <source>Move view down one level</source>
-      <translation type="unfinished">Move view down one level</translation>
+      <translation>Přesunutí zobrazení o jednu úroveň dolů</translation>
     </message>
   </context>
   <context>
@@ -8316,7 +8316,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../CommandStack.cpp" line="144"/>
       <source>Move view to top of stack</source>
-      <translation type="unfinished">Move view to top of stack</translation>
+      <translation>Přesunutí zobrazení na začátek zásobníku</translation>
     </message>
   </context>
   <context>
@@ -8324,7 +8324,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../CommandStack.cpp" line="152"/>
       <source>Move view up one level</source>
-      <translation type="unfinished">Move view up one level</translation>
+      <translation>Přesunutí zobrazení o jednu úroveň výš</translation>
     </message>
   </context>
   <context>

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="103"/>
       <source>Welcome to %1</source>
-      <translation type="unfinished">Welcome to %1</translation>
+      <translation>Welkom bij %1</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="106"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="107"/>
       <source>These options (and many more) can be changed later in Preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in Preferences.</translation>
+      <translation>Deze opties (en nog veel meer) kunnen later worden gewijzigd in Voorkeuren.</translation>
     </message>
   </context>
   <context>
@@ -29,17 +29,17 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="209"/>
       <source>Language</source>
-      <translation type="unfinished">Language</translation>
+      <translation>Taal</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="210"/>
       <source>Unit System</source>
-      <translation type="unfinished">Unit System</translation>
+      <translation>Eenheidsstelsel</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="223"/>
       <source>Navigation Style</source>
-      <translation type="unfinished">Navigation Style</translation>
+      <translation>Navigatiestijl</translation>
     </message>
   </context>
   <context>
@@ -61,22 +61,22 @@
     <message>
       <location filename="../../StartView.cpp" line="178"/>
       <source>Empty file</source>
-      <translation type="unfinished">Empty file</translation>
+      <translation>Leeg bestand</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="179"/>
       <source>Create a new empty FreeCAD file</source>
-      <translation type="unfinished">Create a new empty FreeCAD file</translation>
+      <translation>Maak een nieuw leeg FreeCAD-bestand</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="181"/>
       <source>Open File</source>
-      <translation type="unfinished">Open File</translation>
+      <translation>Bestand openen</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="182"/>
       <source>Open an existing CAD file or 3D model</source>
-      <translation type="unfinished">Open an existing CAD file or 3D model</translation>
+      <translation>Open een bestaand CAD-bestand of 3D-model</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="184"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../StartView.cpp" line="190"/>
       <source>2D Draft</source>
-      <translation type="unfinished">2D Draft</translation>
+      <translation>2D schets</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="191"/>
@@ -116,27 +116,27 @@
     <message>
       <location filename="../../StartView.cpp" line="194"/>
       <source>Create an architectural project</source>
-      <translation type="unfinished">Create an architectural project</translation>
+      <translation>Maak een bouwkundig project</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="434"/>
       <source>New File</source>
-      <translation type="unfinished">New File</translation>
+      <translation>Nieuw bestand</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="435"/>
       <source>Examples</source>
-      <translation type="unfinished">Examples</translation>
+      <translation>Voorbeelden</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="436"/>
       <source>Recent Files</source>
-      <translation type="unfinished">Recent Files</translation>
+      <translation>Recente bestanden</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="440"/>
       <source>Don't show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Don't show this Start page again (start with blank screen)</translation>
+      <translation>Laat deze startpagina niet meer zien (start met een leeg scherm)</translation>
     </message>
   </context>
   <context>
@@ -157,12 +157,12 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
       <source>Light</source>
-      <translation type="unfinished">Light</translation>
+      <translation>Licht</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
       <source>Dark</source>
-      <translation type="unfinished">Dark</translation>
+      <translation>Donker</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="137"/>
@@ -184,13 +184,13 @@
       <location filename="../../ThemeSelectorWidget.cpp" line="140"/>
       <source>Light</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Light</translation>
+      <translation>Licht</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="141"/>
       <source>Dark</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Dark</translation>
+      <translation>Donker</translation>
     </message>
   </context>
 </TS>

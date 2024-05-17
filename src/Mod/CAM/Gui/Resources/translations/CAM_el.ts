@@ -1113,13 +1113,13 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageOpDeburrEdit.ui" line="148"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="98"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>CW (Δεξιόστροφα)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="153"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="103"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>CCW (Αριστερόστροφα)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="195"/>
@@ -4165,12 +4165,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="184"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>CW (Δεξιόστροφα)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="185"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>CCW (Αριστερόστροφα)</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Command.py" line="561"/>
@@ -5777,12 +5777,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="196"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>CW (Δεξιόστροφα)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="197"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>CCW (Αριστερόστροφα)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="200"/>
@@ -6728,7 +6728,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="898"/>
       <source>RampEntry</source>
-      <translation type="unfinished">RampEntry</translation>
+      <translation>Ράμπα Εισόδου</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="902"/>
@@ -7581,12 +7581,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Helix.py" line="71"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>CW (Δεξιόστροφα)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="72"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>CCW (Αριστερόστροφα)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Helix.py" line="112"/>

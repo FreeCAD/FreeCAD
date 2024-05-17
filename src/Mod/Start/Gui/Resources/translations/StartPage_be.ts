@@ -11,17 +11,17 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="103"/>
       <source>Welcome to %1</source>
-      <translation type="unfinished">Welcome to %1</translation>
+      <translation>Вітаем у %1</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="106"/>
       <source>To get started, set your basic configuration options below.</source>
-      <translation type="unfinished">To get started, set your basic configuration options below.</translation>
+      <translation>Каб пачаць працу, задайце свае асноўныя параметры канфігурацыі, якія прыведзеныя ніжэй.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="107"/>
       <source>These options (and many more) can be changed later in Preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in Preferences.</translation>
+      <translation>Гэтыя налады (і многія іншыя) могуць быць змененыя пазней у Перавагах.</translation>
     </message>
   </context>
   <context>
@@ -29,17 +29,17 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="209"/>
       <source>Language</source>
-      <translation type="unfinished">Language</translation>
+      <translation>Мова</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="210"/>
       <source>Unit System</source>
-      <translation type="unfinished">Unit System</translation>
+      <translation>Сістэма адзінак вымярэння</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="223"/>
       <source>Navigation Style</source>
-      <translation type="unfinished">Navigation Style</translation>
+      <translation>Стыль навігацыі</translation>
     </message>
   </context>
   <context>
@@ -53,7 +53,7 @@
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
       <source>Displays the Start in an MDI view</source>
-      <translation type="unfinished">Displays the Start in an MDI view</translation>
+      <translation>Адлюстроўвае пачатак у рэжыме MDI</translation>
     </message>
   </context>
   <context>
@@ -61,82 +61,82 @@
     <message>
       <location filename="../../StartView.cpp" line="178"/>
       <source>Empty file</source>
-      <translation type="unfinished">Empty file</translation>
+      <translation>Пусты файл</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="179"/>
       <source>Create a new empty FreeCAD file</source>
-      <translation type="unfinished">Create a new empty FreeCAD file</translation>
+      <translation>Стварыць новы пусты файл FreeCAD</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="181"/>
       <source>Open File</source>
-      <translation type="unfinished">Open File</translation>
+      <translation>Адчыніць файл</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="182"/>
       <source>Open an existing CAD file or 3D model</source>
-      <translation type="unfinished">Open an existing CAD file or 3D model</translation>
+      <translation>Адчыніць файл CAD, які існуе, ці трохмерную мадэль</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="184"/>
       <source>Parametric Part</source>
-      <translation type="unfinished">Parametric Part</translation>
+      <translation>Параметрычная дэталь</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="185"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation type="unfinished">Create a part with the Part Design workbench</translation>
+      <translation>Стварыць дэталь з дапамогай варштату Праектавання дэталі</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="187"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Зборка</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="188"/>
       <source>Create an assembly project</source>
-      <translation type="unfinished">Create an assembly project</translation>
+      <translation>Стварыць праект зборкі</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="190"/>
       <source>2D Draft</source>
-      <translation type="unfinished">2D Draft</translation>
+      <translation>Двухмерны чарнавік</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="191"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation type="unfinished">Create a 2D Draft with the Draft workbench</translation>
+      <translation>Стварыць двухмерны чарнавік з дапамогай варштату Чарнавік</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="193"/>
       <source>BIM/Architecture</source>
-      <translation type="unfinished">BIM/Architecture</translation>
+      <translation>BIM/Архітэктура</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="194"/>
       <source>Create an architectural project</source>
-      <translation type="unfinished">Create an architectural project</translation>
+      <translation>Стварыць архітэктурны праект</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="434"/>
       <source>New File</source>
-      <translation type="unfinished">New File</translation>
+      <translation>Новы файл</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="435"/>
       <source>Examples</source>
-      <translation type="unfinished">Examples</translation>
+      <translation>Прыклады</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="436"/>
       <source>Recent Files</source>
-      <translation type="unfinished">Recent Files</translation>
+      <translation>Апошнія файлы</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="440"/>
       <source>Don't show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Don't show this Start page again (start with blank screen)</translation>
+      <translation>Больш не паказваць гэтую стартавую старонку (пачаць з пустога экрану)</translation>
     </message>
   </context>
   <context>
@@ -157,12 +157,12 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
       <source>Light</source>
-      <translation type="unfinished">Light</translation>
+      <translation>Светлая</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
       <source>Dark</source>
-      <translation type="unfinished">Dark</translation>
+      <translation>Цёмная</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="137"/>
@@ -172,7 +172,7 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="138"/>
       <source>More themes are available online using the Addon Manager</source>
-      <translation type="unfinished">More themes are available online using the Addon Manager</translation>
+      <translation>Дадатковыя тэмы даступныя анлайн з дапамогай Кіравання дадаткамі</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="139"/>
@@ -184,13 +184,13 @@
       <location filename="../../ThemeSelectorWidget.cpp" line="140"/>
       <source>Light</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Light</translation>
+      <translation>Светлая</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="141"/>
       <source>Dark</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Dark</translation>
+      <translation>Цёмная</translation>
     </message>
   </context>
 </TS>

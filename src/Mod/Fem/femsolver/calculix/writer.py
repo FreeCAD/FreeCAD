@@ -45,6 +45,8 @@ from . import write_constraint_heatflux as con_heatflux
 from . import write_constraint_initialtemperature as con_itemp
 from . import write_constraint_planerotation as con_planerotation
 from . import write_constraint_pressure as con_pressure
+from . import write_constraint_rigidbody as con_rigidbody
+from . import write_constraint_rigidbody_step as con_rigidbody_step
 from . import write_constraint_sectionprint as con_sectionprint
 from . import write_constraint_selfweight as con_selfweight
 from . import write_constraint_temperature as con_temperature
@@ -161,6 +163,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         # node sets
         self.write_constraints_meshsets(inpfile, self.member.cons_fixed, con_fixed)
+        self.write_constraints_meshsets(inpfile, self.member.cons_rigidbody, con_rigidbody)
         self.write_constraints_meshsets(inpfile, self.member.cons_displacement, con_displacement)
         self.write_constraints_meshsets(inpfile, self.member.cons_planerotation, con_planerotation)
         self.write_constraints_meshsets(inpfile, self.member.cons_transform, con_transform)
@@ -181,12 +184,14 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_propdata(inpfile, self.member.cons_contact, con_contact)
         self.write_constraints_propdata(inpfile, self.member.cons_tie, con_tie)
         self.write_constraints_propdata(inpfile, self.member.cons_transform, con_transform)
+        self.write_constraints_propdata(inpfile, self.member.cons_rigidbody, con_rigidbody)
 
         # step equation
         write_step_equation.write_step_equation(inpfile, self)
 
         # constraints dependent from steps
         self.write_constraints_propdata(inpfile, self.member.cons_fixed, con_fixed)
+        self.write_constraints_propdata(inpfile, self.member.cons_rigidbody_step, con_rigidbody_step)
         self.write_constraints_propdata(inpfile, self.member.cons_displacement, con_displacement)
         self.write_constraints_propdata(inpfile, self.member.cons_sectionprint, con_sectionprint)
         self.write_constraints_propdata(inpfile, self.member.cons_selfweight, con_selfweight)

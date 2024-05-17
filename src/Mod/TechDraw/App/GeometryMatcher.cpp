@@ -26,6 +26,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <BRepGProp.hxx>
+#include <GProp_GProps.hxx>
 #endif
 
 #include <BRepAdaptor_Curve.hxx>
@@ -75,8 +77,12 @@ bool GeometryMatcher::compareGeometry(const Part::TopoShape &shape1, const Part:
     if (geom1.ShapeType() == TopAbs_EDGE) {
         return compareEdges(geom1, geom2);
     }
+    if (geom1.ShapeType() == TopAbs_FACE) {
+        return compareFaces(geom1, geom2);
+    }
     return false;
 }
+
 
 bool GeometryMatcher::comparePoints(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2)
 {
@@ -90,6 +96,27 @@ bool GeometryMatcher::comparePoints(const TopoDS_Shape& shape1, const TopoDS_Sha
     auto vert2 = TopoDS::Vertex(shape2);
     Base::Vector3d point2 = DU::toVector3d(BRep_Tool::Pnt(vert2));
     return point1.IsEqual(point2, EWTOLERANCE);
+}
+
+bool GeometryMatcher::compareFaces(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2)
+{
+    //    Base::Console().Message("GM::compareFaces()\n");
+
+    if (shape1.ShapeType() != TopAbs_FACE || shape2.ShapeType() != TopAbs_FACE) {
+        // can not compare these shapes
+        return false;
+    }
+    TopoDS_Face face1 = TopoDS::Face(shape1);
+    TopoDS_Face face2 = TopoDS::Face(shape2);
+
+    //Note: face1.IsSame(face2) and face1.IsEqual(face2) do not work.
+
+    GProp_GProps props1, props2;
+    BRepGProp::SurfaceProperties(face1, props1);
+    BRepGProp::SurfaceProperties(face2, props2);
+
+    // Check if areas are approximately equal
+    return fabs(props1.Mass() - props2.Mass()) < 1e-5;
 }
 
 bool GeometryMatcher::compareEdges(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2)

@@ -124,6 +124,7 @@ private:
     int _recentMax;
     QIcon _warningIcon;
     std::shared_ptr<Materials::MaterialFilter> _filter;
+    Materials::MaterialFilterOptions _filterOptions;
 
     void setup();
 
@@ -179,6 +180,62 @@ private:
         const QIcon& folderIcon,
         const QIcon& icon,
         const Base::Reference<ParameterGrp>& param);
+
+    /* Indicates if we should show favourite materials
+     */
+    bool includeFavorites() const
+    {
+        return _filterOptions.includeFavorites();
+    }
+    void setIncludeFavorites(bool value)
+    {
+        _filterOptions.setIncludeFavorites(value);
+    }
+
+    /* Indicates if we should show recent materials
+     */
+    bool includeRecent() const
+    {
+        return _filterOptions.includeRecent();
+    }
+    void setIncludeRecent(bool value)
+    {
+        _filterOptions.setIncludeRecent(value);
+    }
+
+    /* Indicates if we should include empty folders
+     */
+    bool includeEmptyFolders() const
+    {
+        return _filterOptions.includeEmptyFolders();
+    }
+    void setIncludeEmptyFolders(bool value)
+    {
+        _filterOptions.setIncludeEmptyFolders(value);
+    }
+
+    /* Indicates if we should include empty libraries
+     */
+    bool includeEmptyLibraries() const
+    {
+        return _filterOptions.includeEmptyLibraries();
+    }
+    void setIncludeEmptyLibraries(bool value)
+    {
+        Base::Console().Log("setIncludeEmptyLibraries(%s)\n", (value ? "true" : "false"));
+        _filterOptions.setIncludeEmptyLibraries(value);
+    }
+
+    /* Indicates if we should include materials in the older format
+     */
+    bool includeLegacy() const
+    {
+        return _filterOptions.includeLegacy();
+    }
+    void setIncludeLegacy(bool legacy)
+    {
+        _filterOptions.setIncludeLegacy(legacy);
+    }
 };
 
 }  // namespace MatGui

@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="48"/>
       <source>Create Assembly</source>
-      <translation type="unfinished">Create Assembly</translation>
+      <translation>Δημιουργία Συναρμολόγησης</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="53"/>
@@ -200,12 +200,12 @@
     <message>
       <location filename="../../../JointObject.py" line="49"/>
       <source>Revolute</source>
-      <translation type="unfinished">Revolute</translation>
+      <translation>Περιστροφή</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="50"/>
       <source>Cylindrical</source>
-      <translation type="unfinished">Cylindrical</translation>
+      <translation>Κυλινδρικό</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
@@ -215,7 +215,7 @@
     <message>
       <location filename="../../../JointObject.py" line="52"/>
       <source>Ball</source>
-      <translation type="unfinished">Ball</translation>
+      <translation>Μπάλα</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="53"/>
@@ -225,17 +225,17 @@
     <message>
       <location filename="../../../Preferences.py" line="47"/>
       <source>Ask</source>
-      <translation type="unfinished">Ask</translation>
+      <translation>Ερώτηση</translation>
     </message>
     <message>
       <location filename="../../../Preferences.py" line="48"/>
       <source>Always</source>
-      <translation type="unfinished">Always</translation>
+      <translation>Πάντοτε</translation>
     </message>
     <message>
       <location filename="../../../Preferences.py" line="49"/>
       <source>Never</source>
-      <translation type="unfinished">Never</translation>
+      <translation>Ποτέ</translation>
     </message>
   </context>
   <context>
@@ -283,7 +283,7 @@
     <message>
       <location filename="../../../JointObject.py" line="182"/>
       <source>The second part of the joint</source>
-      <translation type="unfinished">The second part of the joint</translation>
+      <translation>Το δεύτερο μέρος της άρθρωσης</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="189"/>
@@ -313,7 +313,7 @@
     <message>
       <location filename="../../../JointObject.py" line="236"/>
       <source>This is the rotation of the joint.</source>
-      <translation type="unfinished">This is the rotation of the joint.</translation>
+      <translation>Αυτή είναι η περιστροφή της άρθρωσης.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="246"/>
@@ -323,17 +323,17 @@
     <message>
       <location filename="../../../JointObject.py" line="256"/>
       <source>This indicates if the joint is active.</source>
-      <translation type="unfinished">This indicates if the joint is active.</translation>
+      <translation>Αυτό υποδεικνύει εάν η άρθρωση είναι ενεργή.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="889"/>
       <source>The object to ground</source>
-      <translation type="unfinished">The object to ground</translation>
+      <translation>Το αντικείμενο στο έδαφος</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="901"/>
       <source>This is where the part is grounded.</source>
-      <translation type="unfinished">This is where the part is grounded.</translation>
+      <translation>Εδώ είναι όπου το εξάρτημα γειώνεται.</translation>
     </message>
   </context>
   <context>
@@ -341,12 +341,12 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="14"/>
       <source>Create Joint</source>
-      <translation type="unfinished">Create Joint</translation>
+      <translation>Δημιουργία Σημείου</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="28"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Απόσταση</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="52"/>
@@ -356,12 +356,12 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="76"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Περιστροφή</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="104"/>
       <source>Reverse the direction of the joint.</source>
-      <translation type="unfinished">Reverse the direction of the joint.</translation>
+      <translation>Αντίστροφη κατεύθυνση της άρθρωσης.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="107"/>
@@ -374,17 +374,17 @@
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="14"/>
       <source>Insert Link</source>
-      <translation type="unfinished">Insert Link</translation>
+      <translation>Εισάγετε σύνδεσμο</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="20"/>
       <source>Search parts...</source>
-      <translation type="unfinished">Search parts...</translation>
+      <translation>Αναζήτηση τμημάτων...</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="32"/>
       <source>Don't find your part? </source>
-      <translation type="unfinished">Don't find your part? </translation>
+      <translation>Δεν βρίσκεις το μέρος; </translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
@@ -394,12 +394,12 @@
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="48"/>
       <source>If checked, the selected object will be inserted inside a Part container, unless it is already a Part.</source>
-      <translation type="unfinished">If checked, the selected object will be inserted inside a Part container, unless it is already a Part.</translation>
+      <translation>Αν ενεργοποιηθεί, το επιλεγμένο αντικείμενο θα εισαχθεί μέσα σε ένα εμπορευματοκιβώτιο Εξαρτήματος, εκτός αν είναι ήδη ένα Μέρος.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="51"/>
       <source>Insert as part</source>
-      <translation type="unfinished">Insert as part</translation>
+      <translation>Εισαγωγή ως αντικείμενο</translation>
     </message>
   </context>
   <context>
@@ -412,7 +412,7 @@
     <message>
       <location filename="../preferences/Assembly.ui" line="20"/>
       <source>Allow to leave edit mode when pressing Esc button</source>
-      <translation type="unfinished">Allow to leave edit mode when pressing Esc button</translation>
+      <translation>Έξοδο από την επεξεργασίας σχεδίου όταν πατάτε το κουμπί Esc</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
@@ -422,7 +422,7 @@
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>
       <source>Ground first part:</source>
-      <translation type="unfinished">Ground first part:</translation>
+      <translation>Πρώτο μέρος εδάφους:</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="46"/>
@@ -450,7 +450,7 @@
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="651"/>
       <source>Move part</source>
-      <translation type="unfinished">Move part</translation>
+      <translation>Μετακίνηση εξαρτήματος</translation>
     </message>
   </context>
 </TS>

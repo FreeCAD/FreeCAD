@@ -150,7 +150,7 @@ Markdown fenti verziót választotta.</translation>
     <message>
       <location filename="../../Help.py" line="78"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
-      <translation type="unfinished">PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</translation>
+      <translation>A PySide QtWebEngineWidgets modul nem elérhető. A súgó megjelenítése a rendszer böngészőjével történik</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="82"/>
