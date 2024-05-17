@@ -211,7 +211,9 @@ bool ImportOCAF2::getColor(const TopoDS_Shape& shape, Info& info, bool check, bo
             info.edgeColor = options.defaultEdgeColor;
         }
     }
-    elseif (!noDefault && !info.hasFaceColor && aColorTool->GetColor(shape, XCAFDoc_ColorGen, aColor)) {
+    elseif(!noDefault && !info.hasFaceColor
+           && aColorTool->GetColor(shape, XCAFDoc_ColorGen, aColor))
+    {
         App::Color c = Tools::convertColor(aColor);
         if (info.faceColor != c) {
             info.faceColor = c;
@@ -219,7 +221,8 @@ bool ImportOCAF2::getColor(const TopoDS_Shape& shape, Info& info, bool check, bo
             ret = true;
         }
     }
-    elseif (aColorTool->GetColor(shape, XCAFDoc_ColorCurv, aColor)) {
+    elseif(aColorTool->GetColor(shape, XCAFDoc_ColorCurv, aColor))
+    {
         App::Color c = Tools::convertColor(aColor);
         if (info.faceColor != c) {
             info.faceColor = c;
