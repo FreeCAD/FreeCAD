@@ -61,14 +61,13 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
                 "MenuText": QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggle grid"),
                 "ToolTip": QT_TRANSLATE_NOOP("Draft_ToggleGrid",
                                              "Toggles the Draft grid on and off."),
-                "CmdType": "ForEdit",
-                "Checkable": False,}
+                "CmdType": "ForEdit"}
 
     def IsActive(self):
         """Return True when this command should be available."""
         return bool(gui_utils.get_3d_view())
 
-    def Activated(self):
+    def Activated(self, index = 0):
         """Execute when the command is called."""
         super().Activated()
 
@@ -92,7 +91,7 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
             WorkingPlane.get_working_plane()
             grid.show_always = True
 
-        grid_observer._update_gridgui()
+        grid_observer._update_grid_gui()
 
 Gui.addCommand("Draft_ToggleGrid", ToggleGrid())
 
