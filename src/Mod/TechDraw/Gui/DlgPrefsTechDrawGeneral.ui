@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>499</width>
-    <height>768</height>
+    <height>897</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -462,7 +462,7 @@ for ProjectionGroups</string>
          <widget class="QLabel" name="label_13">
           <property name="font">
            <font>
-            <italic>true</italic>
+            <italic>false</italic>
            </font>
           </property>
           <property name="text">
@@ -494,17 +494,73 @@ for ProjectionGroups</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
-       <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,0,2">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
+       <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,0,0">
+        <item row="1" column="1" rowspan="2">
+         <spacer name="horizontalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>22</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_9">
           <property name="minimumSize">
            <size>
             <width>0</width>
             <height>0</height>
            </size>
           </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>Default Template</string>
+           <string>PAT File</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="Gui::PrefFileChooser" name="pfc_HatchFile">
+          <property name="minimumSize">
+           <size>
+            <width>191</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Preferred SVG or bitmap file for hatching.  This value will also control the initial directory for choosing hatch patterns.  You can use this to get hatch files from a local directory.</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>FileHatch</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Files</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="Gui::PrefFileChooser" name="pfc_LineGroup">
+          <property name="minimumSize">
+           <size>
+            <width>191</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Alternate file for personal LineGroup definition</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>LineGroupFile</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Files</cstring>
           </property>
          </widget>
         </item>
@@ -533,128 +589,6 @@ for ProjectionGroups</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Template Directory</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1" rowspan="2">
-         <spacer name="horizontalSpacer_7">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>22</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_DefDir">
-          <property name="minimumSize">
-           <size>
-            <width>191</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Starting directory for menu 'Insert Page using Template'</string>
-          </property>
-          <property name="mode">
-           <enum>Gui::FileChooser::Directory</enum>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>TemplateDir</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Files</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="lbl_Hatch">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Hatch Pattern File</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_HatchFile">
-          <property name="minimumSize">
-           <size>
-            <width>191</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Default SVG or bitmap file for hatching</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>FileHatch</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Files</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_10">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Line Group File</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_LineGroup">
-          <property name="minimumSize">
-           <size>
-            <width>191</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Alternate file for personal LineGroup definition</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>LineGroupFile</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Files</cstring>
-          </property>
-         </widget>
-        </item>
         <item row="4" column="0">
          <widget class="QLabel" name="label_11">
           <property name="minimumSize">
@@ -670,6 +604,25 @@ for ProjectionGroups</string>
           </property>
           <property name="text">
            <string>Welding Directory</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="Gui::PrefFileChooser" name="pfc_FilePattern">
+          <property name="minimumSize">
+           <size>
+            <width>191</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Default PAT pattern definition file for geometric hatching</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>FilePattern</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/PAT</cstring>
           </property>
          </widget>
         </item>
@@ -695,26 +648,8 @@ for ProjectionGroups</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_9">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>PAT File</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_FilePattern">
+        <item row="1" column="2">
+         <widget class="Gui::PrefFileChooser" name="pfc_DefDir">
           <property name="minimumSize">
            <size>
             <width>191</width>
@@ -722,18 +657,50 @@ for ProjectionGroups</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Default PAT pattern definition file for geometric hatching</string>
+           <string>Starting directory for menu 'Insert Page using Template'</string>
+          </property>
+          <property name="mode">
+           <enum>Gui::FileChooser::Directory</enum>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>FilePattern</cstring>
+           <cstring>TemplateDir</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/PAT</cstring>
+           <cstring>/Mod/TechDraw/Files</cstring>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_8">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Template Directory</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="2">
+         <widget class="Gui::PrefFileChooser" name="fcSymbolDir">
+          <property name="toolTip">
+           <string>Alternate directory to search for Svg symbol files.</string>
+          </property>
+          <property name="mode">
+           <enum>Gui::FileChooser::Directory</enum>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DirSymbol</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Files</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl_Hatch">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -746,7 +713,32 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="text">
-           <string>Pattern Name</string>
+           <string>Hatch Pattern File</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Default Template</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Symbol Directory</string>
           </property>
          </widget>
         </item>
@@ -778,6 +770,42 @@ for ProjectionGroups</string>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/PAT</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_10">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Line Group File</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Pattern Name</string>
           </property>
          </widget>
         </item>
