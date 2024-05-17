@@ -331,8 +331,14 @@ def assign_groups(children):
 
     for child in children:
         if child.is_a("IfcGroup"):
+            mode = "IsGroupedBy"
+        elif child.is_a("IfcElementAssembly"):
+            mode = "IsDecomposedBy"
+        else:
+            mode = None
+        if mode:
             grobj = get_object(child)
-            for rel in child.IsGroupedBy:
+            for rel in getattr(child, mode):
                 for elem in rel.RelatedObjects:
                     elobj = get_object(elem)
                     if elobj:
