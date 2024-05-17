@@ -59,7 +59,5 @@
         <file>icons/PartDesign_SubtractiveWedge.svg</file>
         <file>icons/PartDesign_Thickness.svg</file>
         <file>icons/PartDesignWorkbench.svg</file>
-        <file>icons/Tree_PartDesign_Pad.svg</file>
-        <file>icons/Tree_PartDesign_Revolution.svg</file>
     </qresource>
 </RCC>
