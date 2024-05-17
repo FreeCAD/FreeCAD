@@ -1747,12 +1747,6 @@ int getTimeout()
     const int timeout = 5000;
     return timeout;
 }
-
-bool waitForReadAccess(const Base::FileInfo& file)
-{
-    QLockFile lock(getLockFile(file));
-    return lock.tryLock(getTimeout());
-}
 }  // namespace
 
 //**************************************************************************
@@ -1774,7 +1768,8 @@ int ParameterManager::LoadDocument(const char* sFileName)
 {
     try {
         Base::FileInfo file(sFileName);
-        if (!waitForReadAccess(file)) {
+        QLockFile lock(getLockFile(file));
+        if (!lock.tryLock(getTimeout())) {
             // Continue with empty config
             CreateDocument();
             SetIgnoreSave(true);
