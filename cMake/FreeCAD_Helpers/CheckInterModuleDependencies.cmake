@@ -17,7 +17,7 @@ macro(CheckInterModuleDependencies)
         endif(${dependent})
     endfunction(REQUIRES_MODS)
 
-    REQUIRES_MODS(BUILD_ARCH               BUILD_PART BUILD_MESH BUILD_DRAFT)
+    REQUIRES_MODS(BUILD_BIM                BUILD_PART BUILD_MESH BUILD_DRAFT)
     REQUIRES_MODS(BUILD_DRAFT              BUILD_SKETCHER)
     REQUIRES_MODS(BUILD_DRAWING            BUILD_PART BUILD_SPREADSHEET)
     REQUIRES_MODS(BUILD_FEM                BUILD_PART)
