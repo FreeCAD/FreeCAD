@@ -11,7 +11,7 @@
     <message>
       <location filename="../../materials-editor.ui" line="22"/>
       <source>Material card</source>
-      <translation>Jeu de paramètres du matériau</translation>
+      <translation>Type de matériau</translation>
     </message>
     <message>
       <location filename="../../materials-editor.ui" line="40"/>
