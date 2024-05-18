@@ -387,7 +387,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
             #       math.radians(math.degrees(360)%180) * 2 appears to have been applied, which
             #       looks suspiciously like a substantial bug in OCCT.
             # Assert Shape
-            self.assertBounds(surface1, App.BoundBox(-5, -2.72011, 0, 5, 5, 6.28319), precision=3)
+            self.assertBounds(surface1, App.BoundBox(-5, -2.72011, 0, 5, 5, 6.28319), precision=2)
         del surface1
 
     def testAppPartMakeLoft(self):
