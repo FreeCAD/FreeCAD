@@ -1450,9 +1450,13 @@ void Feature::onChanged(const App::Property* prop)
             if (!this->Shape.getValue().IsNull()) {
                 try {
                     p.fromMatrix(this->Shape.getShape().getTransform());
+#ifdef FC_USE_TNP_FIX
+                    this->Placement.setValueIfChanged(p);
+#else
                     if (p != this->Placement.getValue()) {
                         this->Placement.setValue(p);
                     }
+#endif
                 }
                 catch (const Base::ValueError&) {
                 }

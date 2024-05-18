@@ -165,12 +165,14 @@ void PagePrinter::printPdf(std::string file)
     QPainter painter(&pdfWriter);
 
     // render the page
+    m_scene->setExportingPdf(true);
     QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
     double dpmm = pdfWriter.resolution() / mmPerInch;
     int twide = int(std::round(width * dpmm));
     int thigh = int(std::round(height * dpmm));
     QRect targetRect(0, 0, twide, thigh);
     renderPage(m_vpPage, painter, sourceRect, targetRect);
+    m_scene->setExportingPdf(false);
 }
 
 
@@ -291,6 +293,10 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         if (!vpp) {
             continue;// can't print this one
         }
+
+        auto scene = vpp->getQGSPage();
+        scene->setExportingPdf(true);
+
         auto dPage = static_cast<TechDraw::DrawPage*>(obj);
         double width{0};
         double height{0};
@@ -304,6 +310,7 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
         QRect targetRect(0, 0, width * dpmm, height * dpmm);
         renderPage(vpp, painter, sourceRect, targetRect);
+        scene->setExportingPdf(false);
     }
 }
 

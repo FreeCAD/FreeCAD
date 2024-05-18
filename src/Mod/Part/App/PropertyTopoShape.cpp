@@ -79,6 +79,9 @@ void PropertyPartShape::setValue(const TopoShape& sh)
             _Shape.Hasher = obj->getDocument()->getStringHasher();
             _Shape.hashChildMaps();
         }
+        if ( ! _Shape.isNull() && ! _Shape.isValid() ) {
+            _Shape.fix();
+        }
     }
     hasSetValue();
     _Ver.clear();
