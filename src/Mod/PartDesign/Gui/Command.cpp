@@ -1877,14 +1877,6 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
 {
     std::string FeatName = cmd->getUniqueObjectName(which.c_str(), pcActiveBody);
 
-    auto accepter = [=](std::vector<App::DocumentObject*> features) -> bool {
-
-        if (features.empty())
-            return false;
-
-        return true;
-    };
-
     auto worker = [=](std::vector<App::DocumentObject*> features) {
         std::stringstream str;
         str << cmd->getObjectCmd(FeatName.c_str(), pcActiveBody->getDocument()) << ".Originals = [";
@@ -1903,6 +1895,10 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
         Gui::Command::doCommand(Gui::Command::Doc, str.str().c_str());
 
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
+
+        if (features.empty()) {
+            FCMD_OBJ_CMD(Feat,"TransformMode = \"Transform body\"");
+        }
 
         // TODO What is this function supposed to do? (2015-08-05, Fat-Zer)
         func(Feat, features);
@@ -1943,6 +1939,9 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
                 Gui::Control().closeDialog();
 
             Gui::Selection().clearSelection();
+            auto accepter = [](std::vector<App::DocumentObject*>) -> bool {
+                return true;
+            };
             Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(features, status, accepter, worker, false));
             return;
         } else if (features.empty()) {
@@ -1999,24 +1998,17 @@ void CmdPartDesignMirrored::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
-
-        if (features.empty())
-            return;
-
+    auto worker = [cmd, pcActiveBody](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
         bool direction = false;
-        if (features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
-            Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
+        if (!features.empty() && features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+            Part::Part2DObject* sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch) {
                 FCMD_OBJ_CMD(Feat,"MirrorPlane = ("<<getObjectCmd(sketch)<<", ['V_Axis'])");
                 direction = true;
             }
         }
         if (!direction) {
-            auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
-            if (body) {
-                FCMD_OBJ_CMD(Feat,"MirrorPlane = ("<<getObjectCmd(body->getOrigin()->getXY())<<", [''])");
-            }
+            FCMD_OBJ_CMD(Feat,"MirrorPlane = ("<<getObjectCmd(pcActiveBody->getOrigin()->getXY())<<", [''])");
         }
 
         finishTransformed(cmd, Feat);
@@ -2061,13 +2053,9 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
-
-        if (!Feat || features.empty())
-            return;
-
+    auto worker = [cmd, pcActiveBody](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
         bool direction = false;
-        if (features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+        if (!features.empty() && features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch) {
                 FCMD_OBJ_CMD(Feat,"Direction = ("<<Gui::Command::getObjectCmd(sketch)<<", ['H_Axis'])");
@@ -2075,10 +2063,7 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
             }
         }
         if (!direction) {
-            auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
-            if (body) {
-                FCMD_OBJ_CMD(Feat,"Direction = ("<<Gui::Command::getObjectCmd(body->getOrigin()->getX())<<",[''])");
-            }
+            FCMD_OBJ_CMD(Feat,"Direction = ("<<Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getX())<<",[''])");
         }
         FCMD_OBJ_CMD(Feat,"Length = 100");
         FCMD_OBJ_CMD(Feat,"Occurrences = 2");
@@ -2125,13 +2110,10 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
-
-        if (!Feat || features.empty())
-            return;
+    auto worker = [cmd, pcActiveBody](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
 
         bool direction = false;
-        if (features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+        if (!features.empty() && features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch) {
                 FCMD_OBJ_CMD(Feat,"Axis = ("<<Gui::Command::getObjectCmd(sketch)<<",['N_Axis'])");
@@ -2139,10 +2121,7 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
             }
         }
         if (!direction) {
-            auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
-            if (body) {
-                FCMD_OBJ_CMD(Feat,"Axis = ("<<Gui::Command::getObjectCmd(body->getOrigin()->getZ())<<",[''])");
-            }
+            FCMD_OBJ_CMD(Feat,"Axis = ("<<Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getZ())<<",[''])");
         }
 
         FCMD_OBJ_CMD(Feat,"Angle = 360");
@@ -2189,11 +2168,7 @@ void CmdPartDesignScaled::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
-
-        if (!Feat || features.empty())
-            return;
-
+    auto worker = [cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> /*features*/) {
         FCMD_OBJ_CMD(Feat,"Factor = 2");
         FCMD_OBJ_CMD(Feat,"Occurrences = 2");
 
@@ -2307,11 +2282,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
     } else {
 
         Gui::Command* cmd = this;
-        auto worker = [cmd, pcActiveBody](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
-
-            if (!Feat || features.empty())
-                return;
-
+        auto worker = [cmd, pcActiveBody](App::DocumentObject *Feat, std::vector<App::DocumentObject*> /*features*/) {
             // Make sure the user isn't presented with an empty screen because no transformations are defined yet...
             App::DocumentObject* prevSolid = pcActiveBody->Tip.getValue();
             if (prevSolid) {
