@@ -116,7 +116,7 @@ App::DocumentObjectExecReturn *Pad::execute()
 
         base.Move(invObjLoc);
 
-        Base::Vector3d paddingDirection = computeDirection(SketchVector);
+        Base::Vector3d paddingDirection = computeDirection(SketchVector, false);
 
         // create vector in padding direction with length 1
         gp_Dir dir(paddingDirection.x, paddingDirection.y, paddingDirection.z);

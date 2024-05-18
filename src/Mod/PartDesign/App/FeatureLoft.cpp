@@ -394,6 +394,8 @@ App::DocumentObjectExecReturn *Loft::execute(void)
     } catch (const Base::Exception&) {
     }
 
+    auto hasher = getDocument()->getStringHasher();
+
     try {
         //setup the location
         this->positionByPrevious();
@@ -417,7 +419,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
                 wiresections[i++].push_back(s);
         }
 
-        TopoShape result(0);
+        TopoShape result(0,hasher);
         std::vector<TopoShape> shapes;
 
 //        if (SplitProfile.getValue()) {
@@ -433,14 +435,14 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             for (auto &wires : wiresections) {
                 for(auto& wire : wires)
                     wire.move(invObjLoc);
-                shells.push_back(TopoShape(0).makeElementLoft(
+                shells.push_back(TopoShape(0, hasher).makeElementLoft(
                     wires, Part::IsSolid::notSolid, Ruled.getValue()? Part::IsRuled::ruled : Part::IsRuled::notRuled, Closed.getValue() ? Part::IsClosed::closed : Part::IsClosed::notClosed));
 //            }
 
             //build the top and bottom face, sew the shell and build the final solid
             TopoShape front;
             if (wiresections[0].front().shapeType() != TopAbs_VERTEX) {
-                front = getVerifiedFace();
+                front = getTopoShapeVerifiedFace();
                 if (front.isNull())
                     return new App::DocumentObjectExecReturn(
                         QT_TRANSLATE_NOOP("Exception", "Loft: Creating a face from sketch failed"));

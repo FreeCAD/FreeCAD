@@ -53,7 +53,9 @@ public:
     const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderPocket";
     }
-    //@}
+
+    Base::Vector3d getProfileNormal() const override;
+
 private:
     static const char* TypeEnums[];
 };

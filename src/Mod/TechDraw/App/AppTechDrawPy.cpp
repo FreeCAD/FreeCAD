@@ -867,10 +867,15 @@ private:
             throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());
         }
 
+        DrawViewDimension* dvde =
         DrawDimHelper::makeExtentDim(dvp,
                                      edgeList,
                                      direction);
-        return Py::None();
+        if (!dvde){
+            return Py::None();
+        }
+        PyObject* dvdePy = dvde->getPyObject();
+        return Py::asObject(dvdePy);
     }
 
     Py::Object makeDistanceDim(const Py::Tuple& args)
