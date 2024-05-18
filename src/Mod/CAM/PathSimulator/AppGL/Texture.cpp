@@ -30,10 +30,10 @@ Texture::~Texture()
     glDeleteTextures(1, &mTextureId);
 }
 
-bool Texture::LoadImage(unsigned int* image, int width, int height)
+bool Texture::LoadImage(unsigned int* image, int _width, int _height)
 {
-    mWidth = width;
-    mHeight = height;
+    width = _width;
+    height = _height;
     glGenTextures(1, &mTextureId);
     glBindTexture(GL_TEXTURE_2D, mTextureId);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

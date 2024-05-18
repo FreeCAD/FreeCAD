@@ -25,10 +25,27 @@
 #include "OpenGlWrapper.h"
 #include "Texture.h"
 #include "Shader.h"
+#include "TextureLoader.h"
 
 namespace MillSim
 {
 class MillSimulation;
+
+struct GuiItem
+{
+    unsigned int vbo, vao;
+    int sx, sy;     // screen location
+    int actionKey;  // action key when item pressed
+    bool hidden;    // is item hidden
+    bool mouseOver;
+    TextureItem texItem;
+};
+
+struct Vertex2D
+{
+    float x, y;
+    float tx, ty;
+};
 
 enum eGuiItems
 {
@@ -46,23 +63,6 @@ enum eGuiItems
     eGuiItemMax
 };
 
-struct GuiItem
-{
-    const char* imageData;
-    unsigned int vbo, vao;
-    int tx, ty;     // texture location
-    int w, h;       // item size
-    int sx, sy;     // screen location
-    int actionKey;  // action key when item pressed
-    bool hidden;    // is item hidden
-    bool mouseOver;
-};
-
-struct Vertex2D
-{
-    float x, y;
-    float tx, ty;
-};
 
 class GuiDisplay
 {
@@ -81,10 +81,7 @@ public:
     void UpdateSimSpeed(int speed);
 
 private:
-    bool ParseImage(GuiItem* guiItem, unsigned int* buffPos, int stride);
     bool GenerateGlItem(GuiItem* guiItem);
-    int ReadNextVal();
-    bool ReadNextPixel(unsigned int* pix, int* amount);
     void RenderItem(int itemId);
 
     vec3 mStdColor = {0.8f, 0.8f, 0.4f};
@@ -92,9 +89,6 @@ private:
     vec3 mPressedColor = {1.0f, 0.5f, 0.0f};
     vec3 mTextColor = {1.0f, 0.5f, 0.0f};
 
-
-private:
-    const char* mPixPos;
     Shader mShader;
     Texture mTexture;
     eGuiItems mPressedItem = eGuiItemMax;

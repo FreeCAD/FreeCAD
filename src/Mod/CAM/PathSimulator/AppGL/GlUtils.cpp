@@ -23,10 +23,6 @@
 #include "GlUtils.h"
 #include <iostream>
 
-#define ASSERT(X)                                                                                  \
-    if (!(X))                                                                                      \
-    __debugbreak()
-
 namespace MillSim
 {
 
@@ -42,11 +38,12 @@ void GLClearError()
 
 bool GLLogError()
 {
+    bool isError = false;
     while (GLenum err = glGetError()) {
         std::cout << "[Opengl Error] (" << err << ")" << std::endl;
-        return false;
+        isError = true;
     }
-    return true;
+    return isError;
 }
 
 

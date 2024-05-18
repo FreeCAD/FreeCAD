@@ -61,12 +61,12 @@ namespace CAMSimulator
 			~CAMSim();
 
 			void BeginSimulation(Part::TopoShape * stock, float resolution);
-            void ResetSimulation();
-            void AddTool(const float* toolProfilePoints, int numPoints, int toolNumber, float diameter, float resolution);
+            void resetSimulation();
+            void addTool(const float* toolProfilePoints, int numPoints, int toolNumber, float diameter, float resolution);
             void AddCommand(Command* cmd);
 
 		public:
-			std::unique_ptr<cStock> m_stock;
+			std::unique_ptr<SimStock> m_stock;
 	};
 
 } //namespace CAMSimulator

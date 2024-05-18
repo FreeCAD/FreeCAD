@@ -43,28 +43,16 @@ namespace MillSim
 namespace CAMSimulator
 {
 
-    class cStock
+    struct SimStock
     {
     public:
-        cStock(float px, float py, float pz, float lx, float ly, float lz, float res);
-        ~cStock();
+        SimStock(float px, float py, float pz, float lx, float ly, float lz, float res);
+        ~SimStock();
 
     public:
         float mPx, mPy, mPz;  // stock zero position
         float mLx, mLy, mLz;  // stock dimensions
     };
-
-    class cTool
-    {
-    public:
-        cTool()
-        {}
-        ~cTool()
-        {}
-
-    private:
-    };
-
 
     class DlgCAMSimulator: public QWindow, public QOpenGLExtraFunctions
     {
@@ -83,15 +71,15 @@ namespace CAMSimulator
     public:  //slots:
         void renderLater();
         void renderNow();
-        void StartSimulation(const cStock *stock, float quality);
-        void ResetSimulation();
-        void AddGcodeCommand(const char* cmd);
-        void AddTool(const float *toolProfilePoints, int numPoints, int toolNumber, float diameter, float resolution);
+        void startSimulation(const SimStock *stock, float quality);
+        void resetSimulation();
+        void addGcodeCommand(const char* cmd);
+        void addTool(const float *toolProfilePoints, int numPoints, int toolNumber, float diameter, float resolution);
 
     protected:
         bool event(QEvent* event) override;
 
-        void CheckInitialization();
+        void checkInitialization();
         void exposeEvent(QExposeEvent* event) override;
         void mouseMoveEvent(QMouseEvent* ev) override;
         void mousePressEvent(QMouseEvent* ev) override;
@@ -107,7 +95,7 @@ namespace CAMSimulator
         QOpenGLPaintDevice* mDevice = nullptr;
         MillSim::MillSimulation* mMillSimulator = nullptr;
         static DlgCAMSimulator* mInstance;
-        cStock mStock = {0, 0, 0, 1, 1, 1, 1};
+        SimStock mStock = {0, 0, 0, 1, 1, 1, 1};
         float mQuality = 10;
     };
 

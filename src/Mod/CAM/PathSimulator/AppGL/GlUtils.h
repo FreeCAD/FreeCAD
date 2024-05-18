@@ -38,7 +38,7 @@ constexpr auto EPSILON = 0.00001f;
     {                                                                                              \
         GLClearError();                                                                            \
         x;                                                                                         \
-        if (!GLLogError())                                                                         \
+        if (GLLogError())                                                                         \
             __debugbreak();                                                                        \
     }
 #define RadToDeg(x) (x * 180.0f / PI)

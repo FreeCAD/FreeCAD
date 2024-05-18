@@ -20,33 +20,39 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __stock_object_h__
-#define __stock_object_h__
-#include "SimShapes.h"
-#include "linmath.h"
+#ifndef __texture_loader_h__
+#define __texture_loader_h__
+#include <string>
+#include <vector>
 
 namespace MillSim
 {
 
-class StockObject
+struct TextureItem
+{
+    const char* imageData;
+    int tx, ty;  // texture location
+    int w, h;    // item size
+};
+
+class TextureLoader
 {
 public:
-    StockObject();
-    virtual ~StockObject();
+    TextureLoader(std::string imgFolder, std::vector<std::string> fileNames, int textureSize);
+    ~TextureLoader();
+    unsigned int* GetRawData();
+    TextureItem* GetTextureItem(int i);
 
+protected:
+    int ReadNextVal();
+    bool ReadNextPixel(unsigned int* pix, int* amount);
+    bool ParseImage(TextureItem* guiItem, unsigned int* buffPos, int stride);
 
-    /// Calls the display list.
-    virtual void render();
-    Shape shape;
-    void SetPosition(vec3 position);
-    void GenerateBoxStock(float x, float y, float z, float l, float w, float h);
-    vec3 center = {};
-    vec3 size = {};
-
-private:
-    float mProfile[8] = {};
-    mat4x4 mModelMat;
+protected:
+    unsigned int* mRawData = nullptr;
+    const char* mPixPos = 0;
+    std::string mImageFolder;
 };
-}  // namespace MillSim
 
-#endif
+}  // namespace MillSim
+#endif  // !__texture_loader_h__

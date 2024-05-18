@@ -77,7 +77,7 @@ const char* GCodeParser::GetNextToken(const char* ptr, GCToken* token)
             break;
         }
 
-        if (IsValidTok(letter)) {
+        if (IsValidToken(letter)) {
             ptr = ParseFloat(ptr, &tokval);
             token->letter = letter;
             token->fval = tokval;
@@ -88,7 +88,7 @@ const char* GCodeParser::GetNextToken(const char* ptr, GCToken* token)
     return ptr;
 }
 
-bool GCodeParser::IsValidTok(char tok)
+bool GCodeParser::IsValidToken(char tok)
 {
     int len = (int)strlen(TokTypes);
     for (int i = 0; i < len; i++) {

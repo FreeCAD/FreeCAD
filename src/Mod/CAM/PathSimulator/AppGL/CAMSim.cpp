@@ -44,25 +44,25 @@ CAMSim::~CAMSim()
 void CAMSim::BeginSimulation(Part::TopoShape * stock, float quality)
 {
 	Base::BoundBox3d bbox = stock->getBoundBox();
-    cStock stk = {(float)bbox.MinX, (float)bbox.MinY, (float)bbox.MinZ, 
+    SimStock stk = {(float)bbox.MinX, (float)bbox.MinY, (float)bbox.MinZ, 
 		(float)bbox.LengthX(), (float)bbox.LengthY(), (float)bbox.LengthZ(), quality};
-    DlgCAMSimulator::GetInstance()->StartSimulation(&stk, quality);
+    DlgCAMSimulator::GetInstance()->startSimulation(&stk, quality);
 }
 
-void CAMSimulator::CAMSim::ResetSimulation()
+void CAMSimulator::CAMSim::resetSimulation()
 {
-    DlgCAMSimulator::GetInstance()->ResetSimulation();
+    DlgCAMSimulator::GetInstance()->resetSimulation();
 }
 
-void CAMSim::AddTool(const float *toolProfilePoints, int numPoints, int toolNumber, float diameter, float resolution)
+void CAMSim::addTool(const float *toolProfilePoints, int numPoints, int toolNumber, float diameter, float resolution)
 {
-    DlgCAMSimulator::GetInstance()->AddTool(toolProfilePoints, numPoints, toolNumber, diameter, resolution);
+    DlgCAMSimulator::GetInstance()->addTool(toolProfilePoints, numPoints, toolNumber, diameter, resolution);
 }
 
 void CAMSim::AddCommand(Command * cmd)
 {
     std::string gline = cmd->toGCode();
-    DlgCAMSimulator::GetInstance()->AddGcodeCommand(gline.c_str());
+    DlgCAMSimulator::GetInstance()->addGcodeCommand(gline.c_str());
 }
 
 

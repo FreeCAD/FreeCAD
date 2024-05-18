@@ -104,17 +104,17 @@ namespace CAMSimulator
         mMillSimulator->MouseScroll((float)ev->angleDelta().y() / 120.0f);
     }
 
-    void DlgCAMSimulator::ResetSimulation()
+    void DlgCAMSimulator::resetSimulation()
     {
         mMillSimulator->Clear();
     }
 
-    void DlgCAMSimulator::AddGcodeCommand(const char* cmd)
+    void DlgCAMSimulator::addGcodeCommand(const char* cmd)
     {
         mMillSimulator->AddGcodeLine(cmd);
     }
 
-    void DlgCAMSimulator::AddTool(const float* toolProfilePoints, int numPoints, int toolNumber, float diameter, float resolution)
+    void DlgCAMSimulator::addTool(const float* toolProfilePoints, int numPoints, int toolNumber, float diameter, float resolution)
     {
         std::string toolCmd = "T" + std::to_string(toolNumber);
         mMillSimulator->AddGcodeLine(toolCmd.c_str());
@@ -127,7 +127,7 @@ namespace CAMSimulator
         mAnimating = false;
     }
 
-    void DlgCAMSimulator::StartSimulation(const cStock* stock, float quality)
+    void DlgCAMSimulator::startSimulation(const SimStock* stock, float quality)
     {
         mStock = *stock;
         mQuality = quality;
@@ -145,7 +145,7 @@ namespace CAMSimulator
         glViewport(0, 0, width() * retinaScale, height() * retinaScale);
     }
 
-    void DlgCAMSimulator::CheckInitialization()
+    void DlgCAMSimulator::checkInitialization()
     {
         if (!mContext) {
             mContext = new QOpenGLContext(this);
@@ -173,7 +173,7 @@ namespace CAMSimulator
             return;
         }
 
-        CheckInitialization();
+        checkInitialization();
 
         frameCount++;
         unsigned int curtime = QDateTime::currentMSecsSinceEpoch();
@@ -222,11 +222,11 @@ namespace CAMSimulator
     //************************************************************************************************************
     // stock
     //************************************************************************************************************
-    cStock::cStock(float px, float py, float pz, float lx, float ly, float lz, float res)
+    SimStock::SimStock(float px, float py, float pz, float lx, float ly, float lz, float res)
         : mPx(px), mPy(py), mPz(pz + 0.005 * lz), mLx(lx), mLy(ly), mLz(1.01 * lz)
     {}
 
-    cStock::~cStock()
+    SimStock::~SimStock()
     {}
 
 }  // namespace CAMSimulator

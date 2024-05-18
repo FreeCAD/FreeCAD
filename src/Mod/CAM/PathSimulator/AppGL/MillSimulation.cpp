@@ -105,7 +105,7 @@ namespace MillSim {
     {
         for (int i = 0; i < mToolTable.size(); i++)
         {
-            if (mToolTable[i]->mToolId == toolId)
+            if (mToolTable[i]->toolId == toolId)
             {
                 return mToolTable[i];
             }
@@ -128,7 +128,7 @@ namespace MillSim {
     void MillSimulation::AddTool(EndMill* tool)
     {
         // if we have another tool with same id, remove it
-        RemoveTool(tool->mToolId);
+        RemoveTool(tool->toolId);
         mToolTable.push_back(tool);
     }
 
@@ -260,7 +260,7 @@ namespace MillSim {
         mat4x4_translate_in_place(matLookAt, mEyeX * mEyeXZFactor, 0, mEyeZ * mEyeXZFactor);
         mat4x4_rotate_X(matLookAt, matLookAt, mEyeInclination);
         mat4x4_rotate_Z(matLookAt, matLookAt, mEyeRoration);
-        mat4x4_translate_in_place(matLookAt, -mStockObject.mCenter[0], -mStockObject.mCenter[1], -mStockObject.mCenter[2]);
+        mat4x4_translate_in_place(matLookAt, -mStockObject.center[0], -mStockObject.center[1], -mStockObject.center[2]);
 
         shaderFlat.Activate();
         shaderFlat.UpdateViewMat(matLookAt);
@@ -322,7 +322,7 @@ namespace MillSim {
             //mat4x4_translate(tmat, toolPos.x, toolPos.y, toolPos.z);
             shader3D.Activate();
             shader3D.UpdateObjColor(toolColor);
-            p->mEndmill->mToolShape.Render(tmat, identityMat);
+            p->endmill->toolShape.Render(tmat, identityMat);
         }
 
         shaderFlat.Activate();

@@ -66,6 +66,8 @@ SET(CAMSimulator_SRCS_Core
 	StockObject.h
 	Texture.cpp
 	Texture.h
+	TextureLoader.cpp
+	TextureLoader.h
 )
 
 

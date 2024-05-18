@@ -50,7 +50,7 @@ public:
 
 protected:
     const char* GetNextToken(const char* ptr, GCToken* token);
-    bool IsValidTok(char tok);
+    bool IsValidToken(char tok);
     const char* ParseFloat(const char* ptr, float* retFloat);
     bool ParseLine(const char* ptr);
     int lastTool = -1;

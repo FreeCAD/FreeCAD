@@ -46,9 +46,9 @@ class MillPathSegment
 {
 public:
     /// <summary>
-    /// Create a flat mill primitive
+    /// Create a mill path segment primitive
     /// </summary>
-    /// <param name="diam">Mill diameter</param>
+    /// <param name="endmill">Mill object</param>
     /// <param name="from">Start point</param>
     /// <param name="to">End point</param>
     MillPathSegment(EndMill* endmill, MillMotion* from, MillMotion* to);
@@ -61,7 +61,7 @@ public:
     static float SetQuality(float quality, float maxStockDimension);  // 1 minimum, 10 maximum
 
 public:
-    EndMill* mEndmill = nullptr;
+    EndMill* endmill = nullptr;
     bool isMultyPart;
     int numSimSteps;
     int indexInArray;
@@ -69,9 +69,6 @@ public:
 
 protected:
     mat4x4 mShearMat;
-
-
-protected:
     Shape mShape;
     float mXYDistance;
     float mXYZDistance;

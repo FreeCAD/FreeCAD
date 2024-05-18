@@ -38,15 +38,16 @@ public:
     bool unbind();
     float getTexX(int imgX)
     {
-        return (float)imgX / (float)mWidth;
+        return (float)imgX / (float)width;
     }
     float getTexY(int imgY)
     {
-        return (float)imgY / (float)mHeight;
+        return (float)imgY / (float)height;
     }
 
 public:
-    int mWidth = 0, mHeight = 0;
+    int width = 0;
+    int height = 0;
 
 
 protected:

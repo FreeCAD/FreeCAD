@@ -34,17 +34,14 @@ namespace MillSim
 	class EndMill
 	{
 	public:
-		float* mProfPoints = nullptr;
-		float mRadius;
-		int mNPoints = 0;
-		int mToolId = -1;
-		//unsigned int mPathDisplayId;
-		//unsigned int mHToolDisplayId;
-		//unsigned int mToolDisplayId;
+		float* profilePoints = nullptr;
+		float radius;
+		int nPoints = 0;
+		int toolId = -1;
 
-		Shape mPathShape;
-		Shape mHToolShape;
-		Shape mToolShape;
+		Shape pathShape;
+		Shape halfToolShape;
+		Shape toolShape;
 
 	public:
 		EndMill(int toolid, float diameter);

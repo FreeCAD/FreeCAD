@@ -55,7 +55,7 @@ bool IsArcMotion(MillMotion* m)
 float MillPathSegment::mResolution = 1;
 float MillPathSegment::mSmallRadStep = (PI / 8);
 
-MillPathSegment::MillPathSegment(EndMill* endmill, MillMotion* from, MillMotion* to)
+MillPathSegment::MillPathSegment(EndMill* _endmill, MillMotion* from, MillMotion* to)
     : mShearMat {1.0f,
                  0.0f,
                  0.0f,
@@ -81,12 +81,12 @@ MillPathSegment::MillPathSegment(EndMill* endmill, MillMotion* from, MillMotion*
     mZDistance = fabsf(mDiff[PY]);
     mXYZDistance = sqrtf(mXYDistance * mXYDistance + mDiff[PZ] * mDiff[PZ]);
     mXYAngle = atan2f(mDiff[PY], mDiff[PX]);
-    mEndmill = endmill;
+    endmill = _endmill;
     mStartAngRad = mStepAngRad = 0;
     if (IsArcMotion(to)) {
         mMotionType = MTCurved;
         mRadius = sqrtf(to->j * to->j + to->i * to->i);
-        mSmallRad = mRadius <= mEndmill->mRadius;
+        mSmallRad = mRadius <= endmill->radius;
 
         if (mSmallRad) {
             mStepAngRad = mSmallRadStep;
@@ -115,10 +115,10 @@ MillPathSegment::MillPathSegment(EndMill* endmill, MillMotion* from, MillMotion*
         mStepAngRad = mArcDir * mSweepAng / numSimSteps;
         if (mSmallRad) {
             // when the radius is too small, we just use the tool itself to carve the stock
-            mShape = mEndmill->mToolShape;
+            mShape = endmill->toolShape;
         }
         else {
-            mEndmill->GenerateArcSegmentDL(mRadius,
+            endmill->GenerateArcSegmentDL(mRadius,
                                            mStepAngRad * SWEEP_ARC_PAD,
                                            mDiff[PZ] / numSimSteps,
                                            &mShape);
@@ -171,7 +171,7 @@ void MillPathSegment::render(int step)
 
         if (mSmallRad || step == numSimSteps) {
             mat4x4_translate_in_place(mat, 0, mRadius, 0);
-            mEndmill->mToolShape.Render(mat, rmat);
+            endmill->toolShape.Render(mat, rmat);
         }
         else {
             mShape.Render(mat, rmat);
@@ -188,7 +188,7 @@ void MillPathSegment::render(int step)
                                           mStartPos[PY],
                                           mStartPos[PZ] + mStepNumber * mStepLength[PZ]);
             }
-            mEndmill->mToolShape.Render(mat, rmat);
+            endmill->toolShape.Render(mat, rmat);
         }
         else {
             float renderDist = step * mStepDistance;
@@ -200,9 +200,9 @@ void MillPathSegment::render(int step)
                 mat4x4_mul(mat2, mat2, mShearMat);
             }
             mat4x4_scale_aniso(mat2, mat2, renderDist, 1, 1);
-            mEndmill->mPathShape.Render(mat2, rmat);
+            endmill->pathShape.Render(mat2, rmat);
             mat4x4_translate_in_place(mat, renderDist, 0, mDiff[PZ]);
-            mEndmill->mHToolShape.Render(mat, rmat);
+            endmill->halfToolShape.Render(mat, rmat);
         }
     }
 }

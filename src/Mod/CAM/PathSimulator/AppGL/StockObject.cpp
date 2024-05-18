@@ -28,25 +28,25 @@
 
 MillSim::StockObject::StockObject()
 {
-    mat4x4_identity(modelMat);
-    vec3_set(mCenter, 0, 0, 0);
+    mat4x4_identity(mModelMat);
+    vec3_set(center, 0, 0, 0);
 }
 
 MillSim::StockObject::~StockObject()
 {
-    mShape.FreeResources();
+    shape.FreeResources();
 }
 
 void MillSim::StockObject::render()
 {
     // glCallList(mDisplayListId);
     // UpdateObjColor(color);
-    mShape.Render(modelMat, modelMat);  // model is not rotated hence both are identity matrix
+    shape.Render(mModelMat, mModelMat);  // model is not rotated hence both are identity matrix
 }
 
 void MillSim::StockObject::SetPosition(vec3 position)
 {
-    mat4x4_translate(modelMat, position[0], position[1], position[2]);
+    mat4x4_translate(mModelMat, position[0], position[1], position[2]);
 }
 
 void MillSim::StockObject::GenerateBoxStock(float x, float y, float z, float l, float w, float h)
@@ -57,8 +57,8 @@ void MillSim::StockObject::GenerateBoxStock(float x, float y, float z, float l, 
     SET_DUAL(mProfile, idx, y, z);
     SET_DUAL(mProfile, idx, y, z + h);
 
-    vec3_set(mCenter, x + l / 2, y + w / 2, z + h / 2);
-    vec3_set(mSize, l, w, h);
+    vec3_set(center, x + l / 2, y + w / 2, z + h / 2);
+    vec3_set(size, l, w, h);
 
-    mShape.ExtrudeProfileLinear(mProfile, NUM_PROFILE_POINTS, x, x + l, 0, 0, true, true);
+    shape.ExtrudeProfileLinear(mProfile, NUM_PROFILE_POINTS, x, x + l, 0, 0, true, true);
 }

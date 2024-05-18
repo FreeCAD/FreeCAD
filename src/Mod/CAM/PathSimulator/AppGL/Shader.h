@@ -51,15 +51,15 @@ public:
 
 
 protected:
-    int modelPos = -1;
-    int normalRotPos = -1;
-    int projectionPos = -1;
-    int viewPos = -1;
-    int lightPosPos = -1;
-    int lightColorPos = -1;
-    int ambientPos = -1;
-    int objectColorPos = -1;
-    int texSlotPos = -1;
+    int mModelPos = -1;
+    int mNormalRotPos = -1;
+    int mProjectionPos = -1;
+    int mViewPos = -1;
+    int mLightPosPos = -1;
+    int mLightColorPos = -1;
+    int mAmbientPos = -1;
+    int mObjectColorPos = -1;
+    int mTexSlotPos = -1;
 
     const char* vertShader = nullptr;
     const char* fragShader = nullptr;
