@@ -173,6 +173,16 @@ def makeConstraintFixed(
     return obj
 
 
+def makeConstraintRigidBody(
+    doc,
+    name="ConstraintRigidBody"
+):
+    """makeConstraintRigidBody(document, [name]):
+    makes a Fem ConstraintRigidBody object"""
+    obj = doc.addObject("Fem::ConstraintRigidBody", name)
+    return obj
+
+
 def makeConstraintFlowVelocity(
     doc,
     name="ConstraintFlowVelocity"

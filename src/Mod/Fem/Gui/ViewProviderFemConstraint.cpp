@@ -33,6 +33,7 @@
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoTranslation.h>
 #include <QAction>
 #include <QDockWidget>
@@ -61,6 +62,7 @@ ViewProviderFemConstraint::ViewProviderFemConstraint()
     : rotateSymbol(true)
     , pSymbol(nullptr)
     , pExtraSymbol(nullptr)
+    , pExtraTrans(nullptr)
     , ivFile(nullptr)
     , wizardWidget(nullptr)
     , wizardSubLayout(nullptr)
@@ -70,6 +72,8 @@ ViewProviderFemConstraint::ViewProviderFemConstraint()
     pShapeSep->ref();
     pMultCopy = new SoMultipleCopy();
     pMultCopy->ref();
+    pExtraTrans = new SoTransform();
+    pExtraTrans->ref();
 
     ShapeAppearance.setDiffuseColor(1.0f, 0.0f, 0.2f);
     ShapeAppearance.setSpecularColor(0.0f, 0.0f, 0.0f);
@@ -80,6 +84,7 @@ ViewProviderFemConstraint::ViewProviderFemConstraint()
 ViewProviderFemConstraint::~ViewProviderFemConstraint()
 {
     pMultCopy->unref();
+    pExtraTrans->unref();
     pShapeSep->unref();
 }
 
@@ -129,6 +134,7 @@ void ViewProviderFemConstraint::loadSymbol(const char* fileName)
     if (nodes->getNumChildren() == 2) {
         pExtraSymbol = dynamic_cast<SoSeparator*>(nodes->getChild(1));
         if (pExtraSymbol) {
+            pShapeSep->addChild(pExtraTrans);
             pShapeSep->addChild(pExtraSymbol);
         }
     }
@@ -221,6 +227,8 @@ void ViewProviderFemConstraint::updateSymbol()
     }
 
     pMultCopy->matrix.finishEditing();
+
+    transformExtraSymbol();
 }
 
 void ViewProviderFemConstraint::transformSymbol(const Base::Vector3d& point,
@@ -237,6 +245,17 @@ void ViewProviderFemConstraint::transformSymbol(const Base::Vector3d& point,
                 static_cast<float>(point.y),
                 static_cast<float>(point.z));
     mat.setTransform(tra, rot, scale);
+}
+
+void ViewProviderFemConstraint::transformExtraSymbol() const
+{
+    if (pExtraTrans) {
+        auto obj = static_cast<const Fem::Constraint*>(this->getObject());
+        float s = obj->getScaleFactor();
+        SbMatrix mat;
+        mat.setScale(s);
+        pExtraTrans->setMatrix(mat);
+    }
 }
 
 

@@ -337,7 +337,6 @@ void QGIViewPart::drawAllFaces(void)
             if (fHatch->isSvgHatch()) {
                 // svg tile hatch
                 newFace->setFillMode(QGIFace::SvgFill);
-                newFace->hideSvg(false);
             } else {
                 //bitmap hatch
                 newFace->setFillMode(QGIFace::BitmapFill);

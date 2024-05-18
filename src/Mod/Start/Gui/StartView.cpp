@@ -192,7 +192,7 @@ void StartView::configureNewFileButtons(QLayout* layout) const
                                   QLatin1String(":/icons/DraftWorkbench.svg")});
     auto arch = createNewButton({tr("BIM/Architecture"),
                                  tr("Create an architectural project"),
-                                 QLatin1String(":/icons/ArchWorkbench.svg")});
+                                 QLatin1String(":/icons/BIMWorkbench.svg")});
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
