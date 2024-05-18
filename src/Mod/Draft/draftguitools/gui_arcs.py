@@ -35,20 +35,17 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
-import Draft_rc
 import DraftVecUtils
 from FreeCAD import Units as U
 from draftguitools import gui_base
 from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
 from draftguitools import gui_trackers as trackers
+from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
 from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
-
-# The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
 
 
 class Arc(gui_base_original.Creator):
@@ -61,10 +58,10 @@ class Arc(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {'Pixmap': 'Draft_Arc',
-                'Accel': "A, R",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Arc", "Arc"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Arc", "Creates a circular arc by a center point and a radius.\nCTRL to snap, SHIFT to constrain.")}
+        return {"Pixmap": "Draft_Arc",
+                "Accel": "A, R",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Arc", "Arc"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc", "Creates a circular arc by a center point and a radius.\nCTRL to snap, SHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -475,10 +472,10 @@ class Arc_3Points(gui_base.GuiCommandBase):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {'Pixmap': "Draft_Arc_3Points",
-                'Accel': "A,T",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Arc by 3 points"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates a circular arc by picking 3 points.\nCTRL to snap, SHIFT to constrain.")}
+        return {"Pixmap": "Draft_Arc_3Points",
+                "Accel": "A,T",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Arc by 3 points"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates a circular arc by picking 3 points.\nCTRL to snap, SHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -611,22 +608,16 @@ class ArcGroup:
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {'MenuText': QT_TRANSLATE_NOOP("Draft_ArcTools", "Arc tools"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_ArcTools", "Create various types of circular arcs.")}
+        return {"MenuText": QT_TRANSLATE_NOOP("Draft_ArcTools", "Arc tools"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_ArcTools", "Create various types of circular arcs.")}
 
     def GetCommands(self):
         """Return a tuple of commands in the group."""
         return ('Draft_Arc', 'Draft_Arc_3Points')
 
     def IsActive(self):
-        """Return True when this command should be available.
-
-        It is `True` when there is a document.
-        """
-        if Gui.ActiveDocument:
-            return True
-        else:
-            return False
+        """Return True when this command should be available."""
+        return bool(gui_utils.get_3d_view())
 
 
 Gui.addCommand('Draft_ArcTools', ArcGroup())

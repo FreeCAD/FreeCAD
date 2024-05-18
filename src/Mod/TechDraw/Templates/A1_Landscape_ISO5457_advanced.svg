@@ -189,24 +189,24 @@
     <text id="part_material_label" x="651.5" y="527.6">Part Material:</text>
   </g>
   <g id="title_block_data_fields" style="font-size:5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
-    <text id="legal_owner_1_data_field" x="811" y="545.1" freecad:editable="legal_owner_1" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan/></text>
+    <text id="legal_owner_1_data_field" x="811" y="545.1" freecad:editable="legal_owner_1" freecad:autofill="organization" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan/></text>
     <text id="legal_owner_2_data_field" x="811" y="549.1" freecad:editable="legal_owner_2" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan/></text>
     <text id="legal_owner_3_data_field" x="811" y="553.1" freecad:editable="legal_owner_3" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan/></text>
     <text id="legal_owner_4_data_field" x="811" y="557.1" freecad:editable="legal_owner_4" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan/></text>
     <text id="identification_number_data_field" x="732" y="569.2" freecad:editable="drawing_number"><tspan>DN</tspan></text>
     <text id="revision_index_data_field" x="801" y="581.2" freecad:editable="revision_index" style="text-align:center;text-anchor:middle"><tspan>AAA</tspan></text>
-    <text id="date_of_issue_data_field" x="752" y="581.2" freecad:editable="date_of_issue"><tspan>YYYY-MM-DD</tspan></text>
-    <text id="sheet_number_data_field" x="821" y="581.2" freecad:editable="sheet_number" style="text-align:center;text-anchor:middle"><tspan>X / Y</tspan></text>
+    <text id="date_of_issue_data_field" x="752" y="581.2" freecad:editable="date_of_issue" freecad:autofill="date"><tspan>YYYY-MM-DD</tspan></text>
+    <text id="sheet_number_data_field" x="821" y="581.2" freecad:editable="sheet_number" freecad:autofill="sheet" style="text-align:center;text-anchor:middle"><tspan>X / Y</tspan></text>
     <text id="language_data_field" x="741" y="581.2" freecad:editable="language_code" style="text-align:center;text-anchor:middle"><tspan>EN</tspan></text>
-    <text id="title_data_field" x="652" y="545.2" freecad:editable="title"><tspan>ISO 7200 titleblock</tspan></text>
+    <text id="title_data_field" x="652" y="545.2" freecad:editable="title" freecad:autofill="title"><tspan>ISO 7200 titleblock</tspan></text>
     <text id="supplementary_title_1_data_field" x="652" y="551.2" freecad:editable="supplementary_title_1"><tspan>ST1</tspan></text>
     <text id="supplementary_title_2_data_field" x="652" y="557.2" freecad:editable="supplementary_title_2"><tspan>ST2</tspan></text>
     <text id="responsible_department_data_field" x="792" y="569.2" freecad:editable="responsible_department"><tspan>RD</tspan></text>
     <text id="approval_person_data_field" x="732" y="557.2" freecad:editable="approval_person"><tspan>B. Hecate</tspan></text>
-    <text id="creator_data_field" x="732" y="545.2" freecad:editable="creator"><tspan>A. Nemesis</tspan></text>
+    <text id="creator_data_field" x="732" y="545.2" freecad:editable="creator" freecad:autofill="author"><tspan>A. Nemesis</tspan></text>
     <text id="document_type_data_field" x="652" y="569.2" freecad:editable="document_type"><tspan>Assembly Drawing</tspan></text>
     <text id="document_status_data_field" x="652" y="581.2" freecad:editable="document_status"><tspan>In preparation</tspan></text>
-    <text id="sheet_scale_data_field" x="781" y="533.2" style="text-align:center;text-anchor:middle" freecad:editable="sheet_scale"><tspan>1 : 1</tspan></text>
+    <text id="sheet_scale_data_field" x="781" y="533.2" freecad:editable="sheet_scale" freecad:autofill="scale" style="text-align:center;text-anchor:middle"><tspan>1 : 1</tspan></text>
     <text id="general_tolerances_data_field" x="732" y="533.2" freecad:editable="general_tolerances"><tspan>ISO 2768-m</tspan></text>
     <text id="part_material_data_field" x="652" y="533.2" freecad:editable="part_material"><tspan>Stainless steel Mat.No. 1.4301</tspan></text>
   </g>
