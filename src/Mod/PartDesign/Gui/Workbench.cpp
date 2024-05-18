@@ -279,7 +279,7 @@ void Workbench::activated()
         "SELECT Part::Feature SUBELEMENT Vertex COUNT 1..",
         Vertex,
         "Vertex tools",
-        "Part_Box"
+        "Part_Box_Parametric"
     ));
 
     const char* Edge[] = {
@@ -294,7 +294,7 @@ void Workbench::activated()
         "SELECT Part::Feature SUBELEMENT Edge COUNT 1..",
         Edge,
         "Edge tools",
-        "Part_Box"
+        "Part_Box_Parametric"
     ));
 
     const char* Face[] = {
@@ -312,7 +312,7 @@ void Workbench::activated()
         "SELECT Part::Feature SUBELEMENT Face COUNT 1",
         Face,
         "Face tools",
-        "Part_Box"
+        "Part_Box_Parametric"
     ));
 
     const char* Body[] = {
@@ -322,7 +322,7 @@ void Workbench::activated()
         "SELECT PartDesign::Body COUNT 1",
         Body,
         "Start Body",
-        "Part_Box"
+        "Part_Box_Parametric"
     ));
 
     const char* Body2[] = {
@@ -332,7 +332,7 @@ void Workbench::activated()
         "SELECT PartDesign::Body COUNT 1..",
         Body2,
         "Start Boolean",
-        "Part_Box"
+        "Part_Box_Parametric"
     ));
 
     const char* Plane1[] = {
@@ -346,7 +346,7 @@ void Workbench::activated()
         "SELECT App::Plane COUNT 1",
         Plane1,
         "Start Part",
-        "Part_Box"
+        "Part_Box_Parametric"
     ));
     const char* Plane2[] = {
         "PartDesign_NewSketch",
@@ -359,7 +359,7 @@ void Workbench::activated()
         "SELECT PartDesign::Plane COUNT 1",
         Plane2,
         "Start Part",
-        "Part_Box"
+        "Part_Box_Parametric"
     ));
 
     const char* Line[] = {
@@ -371,7 +371,7 @@ void Workbench::activated()
         "SELECT PartDesign::Line COUNT 1",
         Line,
         "Start Part",
-        "Part_Box"
+        "Part_Box_Parametric"
     ));
 
     const char* Point[] = {
@@ -384,7 +384,7 @@ void Workbench::activated()
         "SELECT PartDesign::Point COUNT 1",
         Point,
         "Start Part",
-        "Part_Box"
+        "Part_Box_Parametric"
     ));
 
     const char* NoSel[] = {
@@ -393,7 +393,7 @@ void Workbench::activated()
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptySelection(
         NoSel,
         "Start Part",
-        "Part_Box"
+        "Part_Box_Parametric"
     ));
 
     const char* Faces[] = {
@@ -406,7 +406,7 @@ void Workbench::activated()
         "SELECT Part::Feature SUBELEMENT Face COUNT 2..",
         Faces,
         "Face tools",
-        "Part_Box"
+        "Part_Box_Parametric"
     ));
 
     const char* Sketch[] = {
@@ -427,7 +427,7 @@ void Workbench::activated()
         "SELECT Sketcher::SketchObject COUNT 1",
         Sketch,
         "Sketch tools",
-        "Part_Box"
+        "Part_Box_Parametric"
     ));
 
     const char* Transformed[] = {
