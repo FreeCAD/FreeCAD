@@ -386,7 +386,7 @@
       <location filename="../../AttacherTexts.cpp" line="233"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Zarovnejte vektor N Frenetova-Serretova souřadnicového systému zakřivené hrany. Zde je definovaný připojený vrchol.</translation>
+      <translation>Zarovnat k vektoru N Frenet-Serretova souřadnicového systému zakřivené hrany. Volitelný odkaz na vrchol definuje kde.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="235"/>
@@ -398,7 +398,7 @@
       <location filename="../../AttacherTexts.cpp" line="236"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Zarovnejte vektor B Frenetova-Serretova souřadnicového systému zakřivené hrany. Zde je definovaný připojený vrchol.</translation>
+      <translation>Zarovnat k vektoru B Frenet-Serretova souřadnicového systému zakřivené hrany. Volitelný odkaz na vrchol definuje kde.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="238"/>
@@ -614,7 +614,7 @@
       <location filename="../../AttacherTexts.cpp" line="158"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Zarovnejte k Frenetovu-Serretovu souřadnicovému systému zakřivené hrany. Zde je definovaný připojený vrchol.</translation>
+      <translation>Zarovnat k Frenet-Serretovu souřadnicovému systému zakřivené hrany. Volitelný odkaz na vrchol definuje kde.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="154"/>
@@ -632,7 +632,7 @@
       <location filename="../../AttacherTexts.cpp" line="160"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Spistředný</translation>
+      <translation>Soustředný</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="161"/>
@@ -811,7 +811,7 @@
       <location filename="../../AttacherTexts.cpp" line="83"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Zarovnejte k Frenetovu-Serretovu souřadnicovému systému zakřivené hrany. Zde je definovaný připojený vrchol.</translation>
+      <translation>Zarovnat k Frenet-Serretovu souřadnicovému systému zakřivené hrany. Volitelný odkaz na vrchol definuje kde.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="79"/>
@@ -829,7 +829,7 @@
       <location filename="../../AttacherTexts.cpp" line="85"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Spistředný</translation>
+      <translation>Soustředný</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="86"/>
@@ -3655,7 +3655,7 @@ složeniny (pomalejší ale s podrobnějšími detaily).</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1802"/>
       <source>Coordinate system:</source>
-      <translation>Systém souřadnic:</translation>
+      <translation>Souřadnicový systém:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1810"/>
@@ -4111,22 +4111,22 @@ složeniny (pomalejší ale s podrobnějšími detaily).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="116"/>
       <source>Emissive shape color</source>
-      <translation type="unfinished">Emissive shape color</translation>
+      <translation>Barva emise tvaru</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="123"/>
       <source>The default emissive color for new shapes</source>
-      <translation type="unfinished">The default emissive color for new shapes</translation>
+      <translation>Výchozí emisní barva pro nové tvary</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="149"/>
       <source>Specular shape color</source>
-      <translation type="unfinished">Specular shape color</translation>
+      <translation>Barva zrcadlení tvaru</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="156"/>
       <source>The default specular color for new shapes</source>
-      <translation type="unfinished">The default specular color for new shapes</translation>
+      <translation>Výchozí barva zrcadlení pro nové tvary</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="182"/>
@@ -4141,12 +4141,12 @@ složeniny (pomalejší ale s podrobnějšími detaily).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="217"/>
       <source>Shape shininess</source>
-      <translation type="unfinished">Shape shininess</translation>
+      <translation>Odlesky tvaru</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="224"/>
       <source>The default shininess for new shapes</source>
-      <translation type="unfinished">The default shininess for new shapes</translation>
+      <translation>Výchozí odlesky pro nové tvary</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="255"/>
@@ -4298,7 +4298,7 @@ bude použit normálový vektor roviny náčrtu</translation>
     <message>
       <location filename="../../Location.ui" line="125"/>
       <source>x-component of direction vector</source>
-      <translation>X složka vektoru směru</translation>
+      <translation>X složka směrového vektoru</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="147"/>
@@ -4308,7 +4308,7 @@ bude použit normálový vektor roviny náčrtu</translation>
     <message>
       <location filename="../../Location.ui" line="154"/>
       <source>y-component of direction vector</source>
-      <translation>Y složka vektoru směru</translation>
+      <translation>Y složka směrového vektoru</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="176"/>
@@ -4318,7 +4318,7 @@ bude použit normálový vektor roviny náčrtu</translation>
     <message>
       <location filename="../../Location.ui" line="183"/>
       <source>z-component of direction vector</source>
-      <translation>Z složka vektoru směru</translation>
+      <translation>Z složka směrového vektoru</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="208"/>
@@ -6606,7 +6606,7 @@ K extrakci zbývajících částí může být použitý 'Filtr složenin'.</tra
     <message>
       <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>Dokument '%1' neexistuje.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="254"/>
