@@ -645,6 +645,7 @@ Base::Matrix4D TopoShape::getTransform() const
 {
     Base::Matrix4D mtrx;
     gp_Trsf Trf = _Shape.Location().Transformation();
+    Trf.SetScaleFactor(1.0);
     convertToMatrix(Trf, mtrx);
     return mtrx;
 }
@@ -3034,9 +3035,10 @@ TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf, bool copy)
     mat.SetValue(1,4,rclTrf[0][3]);
     mat.SetValue(2,4,rclTrf[1][3]);
     mat.SetValue(3,4,rclTrf[2][3]);
-
+    // this copy step seems to eliminate Part.OCCError: gp_GTrsf::Trsf() - non-orthogonal GTrsf
+    BRepBuilderAPI_Copy copier(this->_Shape);
     // geometric transformation
-    BRepBuilderAPI_GTransform mkTrf(this->_Shape, mat, copy);
+    BRepBuilderAPI_GTransform mkTrf(copier.Shape(), mat, copy);
     return mkTrf.Shape();
 }
 
