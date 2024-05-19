@@ -29,6 +29,7 @@ import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+translate = FreeCAD.Qt.translate
 
 
 class BIM_ProjectManager:
@@ -36,11 +37,14 @@ class BIM_ProjectManager:
         return {
             "Pixmap": "BIM_Project",
             "MenuText": QT_TRANSLATE_NOOP("BIM_ProjectManager", "Manage project..."),
-            "ToolTip": QT_TRANSLATE_NOOP("BIM_ProjectManager", "Setup your BIM project"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "BIM_ProjectManager", "Setup your BIM project"
+            ),
         }
 
     def Activated(self):
         import FreeCADGui
+
         # load dialog
         from PySide import QtCore, QtGui
 
@@ -55,12 +59,10 @@ class BIM_ProjectManager:
         )
 
         # set things up
-        import Arch
+        import ArchBuildingPart
 
-        self.form.buildingUse.addItems(Arch.BuildingTypes)
-        self.form.setWindowIcon(
-            QtGui.QIcon(":/icons/BIM_Project.svg")
-        )
+        self.form.buildingUse.addItems(ArchBuildingPart.BuildingTypes)
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/BIM_Project.svg"))
         QtCore.QObject.connect(
             self.form.buttonAdd, QtCore.SIGNAL("clicked()"), self.addGroup
         )
