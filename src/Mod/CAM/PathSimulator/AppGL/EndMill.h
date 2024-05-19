@@ -32,31 +32,31 @@
 
 namespace MillSim
 {
-	class EndMill
-	{
-	public:
-		float* profilePoints = nullptr;
-		float radius;
-		int nPoints = 0;
-		int toolId = -1;
+class EndMill
+{
+public:
+    float* profilePoints = nullptr;
+    float radius;
+    int nPoints = 0;
+    int toolId = -1;
 
-		Shape pathShape;
-		Shape halfToolShape;
-		Shape toolShape;
+    Shape pathShape;
+    Shape halfToolShape;
+    Shape toolShape;
 
-	public:
-		EndMill(int toolid, float diameter);
-        EndMill(const std::vector<float>& toolProfile, int toolid, float diameter);
-		virtual ~EndMill();
-		void GenerateDisplayLists(float quality);
-		unsigned int GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape* retShape);
+public:
+    EndMill(int toolid, float diameter);
+    EndMill(const std::vector<float>& toolProfile, int toolid, float diameter);
+    virtual ~EndMill();
+    void GenerateDisplayLists(float quality);
+    unsigned int GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape* retShape);
 
-	protected:
-		void MirrorPointBuffer();
+protected:
+    void MirrorPointBuffer();
 
-	private:
-		bool mHandleAllocation = false;
-	};
-}
+private:
+    bool mHandleAllocation = false;
+};
+}  // namespace MillSim
 
 #endif

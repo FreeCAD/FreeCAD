@@ -1,24 +1,24 @@
 /**************************************************************************
-*   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
-*                                                                         *
-*   This file is part of the FreeCAD CAx development system.              *
-*                                                                         *
-*   This library is free software; you can redistribute it and/or         *
-*   modify it under the terms of the GNU Library General Public           *
-*   License as published by the Free Software Foundation; either          *
-*   version 2 of the License, or (at your option) any later version.      *
-*                                                                         *
-*   This library  is distributed in the hope that it will be useful,      *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU Library General Public License for more details.                  *
-*                                                                         *
-*   You should have received a copy of the GNU Library General Public     *
-*   License along with this library; see the file COPYING.LIB. If not,    *
-*   write to the Free Software Foundation, Inc., 59 Temple Place,         *
-*   Suite 330, Boston, MA  02111-1307, USA                                *
-*                                                                         *
-***************************************************************************/
+ *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
 
 #include "PreCompiled.h"
 
@@ -42,7 +42,7 @@ std::string CAMSimPy::representation() const
     return std::string("<CAMSim object>");
 }
 
-PyObject *CAMSimPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* CAMSimPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of CAMSimPy and the Twin object
     return new CAMSimPy(new CAMSim);
@@ -68,13 +68,8 @@ PyObject* CAMSimPy::BeginSimulation(PyObject* args, PyObject* kwds)
     static const std::array<const char*, 3> kwlist {"stock", "resolution", nullptr};
     PyObject* pObjStock;
     float resolution;
-    if (!Base::Wrapped_ParseTupleAndKeywords(args,
-                                             kwds,
-                                             "O!f",
-                                             kwlist,
-                                             &(Part::TopoShapePy::Type),
-                                             &pObjStock,
-                                             &resolution)) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds,"O!f",
+        kwlist, &(Part::TopoShapePy::Type), &pObjStock, &resolution)) {
         return nullptr;
     }
     CAMSim* sim = getCAMSimPtr();
@@ -86,16 +81,17 @@ PyObject* CAMSimPy::BeginSimulation(PyObject* args, PyObject* kwds)
 
 PyObject* CAMSimPy::AddTool(PyObject* args, PyObject* kwds)
 {
-    static const std::array<const char*, 5> kwlist {"shape", "toolnumber", "diameter", "resolution", nullptr};
+    static const std::array<const char*, 5> kwlist {
+        "shape", "toolnumber", "diameter", "resolution", nullptr};
     PyObject* pObjToolShape;
     int toolNumber;
-	float resolution;
+    float resolution;
     float diameter;
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "Oiff", kwlist,
-                                             &pObjToolShape, &toolNumber, &diameter, &resolution)) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "Oiff", kwlist, &pObjToolShape,
+         &toolNumber, &diameter, &resolution)) {
         return nullptr;
     }
-    // The tool shape is defined by a list of 2d points that represents the tool revolving profile 
+    // The tool shape is defined by a list of 2d points that represents the tool revolving profile
     Py_ssize_t num_floats = PyList_Size(pObjToolShape);
     std::vector<float> toolProfile;
     for (Py_ssize_t i = 0; i < num_floats; ++i) {
@@ -103,7 +99,7 @@ PyObject* CAMSimPy::AddTool(PyObject* args, PyObject* kwds)
         toolProfile.push_back(static_cast<float>(PyFloat_AsDouble(item)));
     }
 
-	CAMSim *sim = getCAMSimPtr();
+    CAMSim* sim = getCAMSimPtr();
     sim->addTool(toolProfile, toolNumber, diameter, resolution);
 
     return Py_None;
@@ -111,17 +107,17 @@ PyObject* CAMSimPy::AddTool(PyObject* args, PyObject* kwds)
 
 PyObject* CAMSimPy::AddCommand(PyObject* args)
 {
-	PyObject *pObjCmd;
+    PyObject* pObjCmd;
     if (!PyArg_ParseTuple(args, "O!", &(Path::CommandPy::Type), &pObjCmd)) {
         return nullptr;
     }
     CAMSim* sim = getCAMSimPtr();
-	Path::Command *cmd = static_cast<Path::CommandPy*>(pObjCmd)->getCommandPtr();
+    Path::Command* cmd = static_cast<Path::CommandPy*>(pObjCmd)->getCommandPtr();
     sim->AddCommand(cmd);
     return Py_None;
 }
 
-PyObject *CAMSimPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* CAMSimPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
@@ -130,5 +126,3 @@ int CAMSimPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
-
-

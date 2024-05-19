@@ -172,9 +172,9 @@ const char* VertShader3DNorm =
 
     "void main(void)  \n"
     "{  \n"
-    "	gl_Position = projection * view * model * vec4(aPosition, 1.0);  \n"
-    "	FragPos = vec3(model * vec4(aPosition, 1.0));  \n"
-    "	Normal = vec3(normalRot * vec4(aNormal, 1.0));  \n"
+    "   gl_Position = projection * view * model * vec4(aPosition, 1.0);  \n"
+    "   FragPos = vec3(model * vec4(aPosition, 1.0));  \n"
+    "   Normal = vec3(normalRot * vec4(aNormal, 1.0));  \n"
     "}  \n";
 
 const char* VertShader3DInvNorm =
@@ -193,76 +193,80 @@ const char* VertShader3DInvNorm =
 
     "void main(void)  \n"
     "{  \n"
-    "	gl_Position = projection * view * model * vec4(aPosition, 1.0);  \n"
-    "	FragPos = vec3(model * vec4(aPosition, 1.0));  \n"
-    "	Normal = -vec3(normalRot * vec4(aNormal, 1.0));  \n"
+    "    gl_Position = projection * view * model * vec4(aPosition, 1.0);  \n"
+    "    FragPos = vec3(model * vec4(aPosition, 1.0));  \n"
+    "    Normal = -vec3(normalRot * vec4(aNormal, 1.0));  \n"
     "}  \n";
 
 
-const char* VertShader2DTex = "#version 330 core  \n"
+const char* VertShader2DTex =
+    "#version 330 core  \n"  // ----->   add long remark for a uniform auto formatting
 
-                              "layout(location = 0) in vec2 aPosition;  \n"
-                              "layout(location = 1) in vec2 aTexCoord;  \n"
+    "layout(location = 0) in vec2 aPosition;  \n"
+    "layout(location = 1) in vec2 aTexCoord;  \n"
 
-                              "out vec2 texCoord;  \n"
+    "out vec2 texCoord;  \n"
 
-                              "uniform mat4 projection;  \n"
-                              "uniform mat4 model;  \n"
+    "uniform mat4 projection;  \n"
+    "uniform mat4 model;  \n"
 
-                              "void main(void)  \n"
-                              "{  \n"
-                              "	gl_Position = projection * model * vec4(aPosition, 0.0, 1.0);  \n"
-                              "	texCoord = aTexCoord;  \n"
-                              "}  \n";
+    "void main(void)  \n"
+    "{  \n"
+    "    gl_Position = projection * model * vec4(aPosition, 0.0, 1.0);  \n"
+    "    texCoord = aTexCoord;  \n"
+    "}  \n";
 
-const char* FragShader2dTex = "#version 330\n"
+const char* FragShader2dTex =
+    "#version 330\n"  // ----->   add long remark for a uniform auto formatting
 
-                              "out vec4 FragColor;  \n"
-                              "in vec2 texCoord;  \n"
+    "out vec4 FragColor;  \n"
+    "in vec2 texCoord;  \n"
 
-                              "uniform vec3 objectColor;  \n"
-                              "uniform sampler2D texSlot;  \n"
+    "uniform vec3 objectColor;  \n"
+    "uniform sampler2D texSlot;  \n"
 
-                              "void main()  \n"
-                              "{  \n"
-                              "   vec4 texColor = texture(texSlot, texCoord);  \n"
-                              "	FragColor = vec4(objectColor, 1.0) * texColor;  \n"
-                              "}  \n";
+    "void main()  \n"
+    "{  \n"
+    "    vec4 texColor = texture(texSlot, texCoord);  \n"
+    "    FragColor = vec4(objectColor, 1.0) * texColor;  \n"
+    "}  \n";
 
 
-const char* FragShaderNorm = "#version 330\n"
+const char* FragShaderNorm =
+    "#version 330\n"  // ----->   add long remark for a uniform auto formatting
 
-                             "out vec4 FragColor;  \n"
+    "out vec4 FragColor;  \n"
 
-                             "in vec3 Normal;  \n"
-                             "in vec3 FragPos;  \n"
+    "in vec3 Normal;  \n"
+    "in vec3 FragPos;  \n"
 
-                             "uniform vec3 lightPos;  \n"
-                             "uniform vec3 lightColor;  \n"
-                             "uniform vec3 objectColor;  \n"
-                             "uniform vec3 ambient;  \n"
+    "uniform vec3 lightPos;  \n"
+    "uniform vec3 lightColor;  \n"
+    "uniform vec3 objectColor;  \n"
+    "uniform vec3 ambient;  \n"
 
-                             "void main()  \n"
-                             "{  \n"
-                             "   vec3 norm = normalize(Normal);  \n"
-                             "   vec3 lightDir = normalize(lightPos - FragPos);  \n"
-                             "   float diff = max(dot(norm, lightDir), 0.0);  \n"
-                             "	vec3 diffuse = diff * lightColor;  \n"
-                             "	vec3 result = (ambient + diffuse) * objectColor;  \n"
-                             "	FragColor = vec4(result, 1.0);  \n"
-                             "}  \n";
+    "void main()  \n"
+    "{  \n"
+    "    vec3 norm = normalize(Normal);  \n"
+    "    vec3 lightDir = normalize(lightPos - FragPos);  \n"
+    "    float diff = max(dot(norm, lightDir), 0.0);  \n"
+    "    vec3 diffuse = diff * lightColor;  \n"
+    "    vec3 result = (ambient + diffuse) * objectColor;  \n"
+    "    FragColor = vec4(result, 1.0);  \n"
+    "}  \n";
 
-const char* FragShaderFlat = "#version 330\n"
+const char* FragShaderFlat =
+    "#version 330\n"  // ----->   add long remark for a uniform auto formatting
 
-                             "out vec4 FragColor;  \n"
+    "out vec4 FragColor;  \n"
 
-                             "in vec3 Normal;  \n"
-                             "in vec3 FragPos;  \n"
-                             "uniform vec3 objectColor;  \n"
+    "in vec3 Normal;  \n"
+    "in vec3 FragPos;  \n"
+    "uniform vec3 objectColor;  \n"
 
-                             "void main()  \n"
-                             "{  \n"
-                             "	FragColor = vec4(objectColor, 1.0);  \n"
-                             "}  \n";
+    "void main()  \n"
+    "{  \n"
+    "    FragColor = vec4(objectColor, 1.0);  \n"
+    "}  \n";
 
 }  // namespace MillSim

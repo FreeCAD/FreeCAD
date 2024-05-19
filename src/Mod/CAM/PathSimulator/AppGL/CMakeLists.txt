@@ -21,8 +21,8 @@ set(CAMSimulator_LIBS
     Mesh
     FreeCADApp
     FreeCADGui
-	${QtOpenGL_LIBRARIES}
-	${OPENGL_gl_LIBRARY}
+    ${QtOpenGL_LIBRARIES}
+    ${OPENGL_gl_LIBRARY}
 )
 
 SET(CAMSimulator_SRCS_Python
@@ -32,10 +32,10 @@ SET(CAMSimulator_SRCS_Python
 
 
 SET(CAMSimulator_SRCS_Module
-	AppCAMSimulator.cpp
-	CAMSim.cpp
-	CAMSim.h
-	CAMSimPyImp.cpp
+    AppCAMSimulator.cpp
+    CAMSim.cpp
+    CAMSim.h
+    CAMSimPyImp.cpp
     DlgCAMSimulator.cpp
     DlgCAMSimulator.h
     PreCompiled.cpp
@@ -44,30 +44,30 @@ SET(CAMSimulator_SRCS_Module
 
 SET(CAMSimulator_SRCS_Core
     EndMill.cpp
-	EndMill.h
-	GCodeParser.cpp
-	GCodeParser.h
-	GlUtils.cpp
-	GlUtils.h
-	GuiDisplay.cpp
-	GuiDisplay.h
-	linmath.h
-	MillMotion.h
-	MillPathSegment.cpp
-	MillPathSegment.h
-	MillSimulation.cpp
-	MillSimulation.h
-	OpenGlWrapper.h
-	Shader.cpp
-	Shader.h
-	SimShapes.cpp
-	SimShapes.h
-	StockObject.cpp
-	StockObject.h
-	Texture.cpp
-	Texture.h
-	TextureLoader.cpp
-	TextureLoader.h
+    EndMill.h
+    GCodeParser.cpp
+    GCodeParser.h
+    GlUtils.cpp
+    GlUtils.h
+    GuiDisplay.cpp
+    GuiDisplay.h
+    linmath.h
+    MillMotion.h
+    MillPathSegment.cpp
+    MillPathSegment.h
+    MillSimulation.cpp
+    MillSimulation.h
+    OpenGlWrapper.h
+    Shader.cpp
+    Shader.h
+    SimShapes.cpp
+    SimShapes.h
+    StockObject.cpp
+    StockObject.h
+    Texture.cpp
+    Texture.h
+    TextureLoader.cpp
+    TextureLoader.h
 )
 
 
@@ -85,7 +85,7 @@ SET(CAMSimulator_SRCS_precomp
 
 SET(CAMSimulator_SRCS
     ${CAMSimulator_SRCS_precomp}
-	${CAMSimulator_SRCS_Core}
+    ${CAMSimulator_SRCS_Core}
 )
 
 if(FREECAD_USE_PCH)

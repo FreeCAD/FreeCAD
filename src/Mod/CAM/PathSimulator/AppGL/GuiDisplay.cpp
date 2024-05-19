@@ -240,10 +240,4 @@ void GuiDisplay::Render(float progress)
     for (int i = 0; i < NUM_GUI_ITEMS; i++) {
         RenderItem(i);
     }
-
-    // mat4x4 model;
-    // mat4x4_translate(model, 100, 100, 0);
-    // mShader.UpdateModelMat(model, nullptr);
-    // glBindVertexArray(guiItems[0].vao);
-    // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
 }

@@ -14,7 +14,7 @@
     <Documentation>
       <Author Licence="LGPL" Name="Shai Seger" EMail="shaise_at_g-mail" />
       <UserDocu>
-	  FreeCAD python wrapper of CAMSimulator
+      FreeCAD python wrapper of CAMSimulator
 
       CAMSimulator.CAMSim():
 
@@ -41,11 +41,11 @@
     </Methode>
     <Methode Name="AddTool" Keyword='true'>
       <Documentation>
-          <UserDocu>
-		      SetToolShape(shape, toolnumber, diameter, resolution):
+        <UserDocu>
+          SetToolShape(shape, toolnumber, diameter, resolution):
 
           Set the shape of the tool to be used for simulation
-		      </UserDocu>
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="AddCommand">

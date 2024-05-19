@@ -94,5 +94,5 @@ unsigned int* MillSim::TextureLoader::GetRawData()
 
 TextureItem* MillSim::TextureLoader::GetTextureItem(int i)
 {
-    return &(texItems[i]);
+    return texItems + i;
 }

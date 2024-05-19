@@ -124,17 +124,17 @@
         <file>panels/TaskPathSimulator.ui</file>
         <file>panels/TaskCAMSimulator.ui</file>
         <file>panels/ZCorrectEdit.ui</file>
-		<file>gl_simulator/0.png</file>
-		<file>gl_simulator/1.png</file>
-		<file>gl_simulator/4.png</file>
-		<file>gl_simulator/X.png</file>
-		<file>gl_simulator/Faster.png</file>
-		<file>gl_simulator/Pause.png</file>
-		<file>gl_simulator/Play.png</file>
-		<file>gl_simulator/Rotate.png</file>
-		<file>gl_simulator/SingleStep.png</file>
-		<file>gl_simulator/Slider.png</file>
-		<file>gl_simulator/Thumb.png</file>
+        <file>gl_simulator/0.png</file>
+        <file>gl_simulator/1.png</file>
+        <file>gl_simulator/4.png</file>
+        <file>gl_simulator/X.png</file>
+        <file>gl_simulator/Faster.png</file>
+        <file>gl_simulator/Pause.png</file>
+        <file>gl_simulator/Play.png</file>
+        <file>gl_simulator/Rotate.png</file>
+        <file>gl_simulator/SingleStep.png</file>
+        <file>gl_simulator/Slider.png</file>
+        <file>gl_simulator/Thumb.png</file>
         <file>preferences/Advanced.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>
         <file>preferences/PathJob.ui</file>
