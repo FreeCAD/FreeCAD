@@ -4394,7 +4394,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="101"/>
       <source>Dimension</source>
-      <translation>Кота</translation>
+      <translation>Мерне јединице</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="224"/>
@@ -6840,7 +6840,7 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="85"/>
       <source>Dimension</source>
-      <translation>Кота</translation>
+      <translation>Мерне јединице</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="88"/>

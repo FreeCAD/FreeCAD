@@ -3654,27 +3654,27 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="632"/>
       <source>Displacement boundary condition</source>
-      <translation type="unfinished">Displacement boundary condition</translation>
+      <translation>Condizione limite di dislocamento</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="286"/>
       <source>Fixed boundary condition</source>
-      <translation type="unfinished">Fixed boundary condition</translation>
+      <translation>Condizione limite fissata</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1001"/>
       <source>Fluid boundary condition</source>
-      <translation type="unfinished">Fluid boundary condition</translation>
+      <translation>Condizione di contorno fluido</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="433"/>
       <source>Force load</source>
-      <translation type="unfinished">Force load</translation>
+      <translation>Forza carico</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="511"/>
       <source>Heat flux load</source>
-      <translation type="unfinished">Heat flux load</translation>
+      <translation>Carico di flusso termico</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="312"/>
@@ -3684,17 +3684,17 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="302"/>
       <source>Pressure load</source>
-      <translation type="unfinished">Pressure load</translation>
+      <translation>Carico di pressione</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="366"/>
       <source>Temperature boundary condition</source>
-      <translation type="unfinished">Temperature boundary condition</translation>
+      <translation>Condizione di temperatura al contorno</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="591"/>
       <source>Local coordinate system</source>
-      <translation type="unfinished">Local coordinate system</translation>
+      <translation>Sistema di coordinate locali</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="163"/>
@@ -4595,7 +4595,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="75"/>
       <source>Surface Radiation</source>
-      <translation type="unfinished">Surface Radiation</translation>
+      <translation>Radiazione di superficie</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="82"/>
@@ -4628,12 +4628,12 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="161"/>
       <source>Emissivity</source>
-      <translation type="unfinished">Emissivity</translation>
+      <translation>Emissività</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="168"/>
       <source>1 </source>
-      <translation type="unfinished">1 </translation>
+      <translation>1 </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="222"/>

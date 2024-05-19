@@ -3694,7 +3694,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="591"/>
       <source>Local coordinate system</source>
-      <translation type="unfinished">Local coordinate system</translation>
+      <translation>Локальна система координат</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="163"/>
@@ -4595,7 +4595,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="75"/>
       <source>Surface Radiation</source>
-      <translation type="unfinished">Surface Radiation</translation>
+      <translation>Випромінювання з поверхні</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="82"/>
@@ -4628,12 +4628,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="161"/>
       <source>Emissivity</source>
-      <translation type="unfinished">Emissivity</translation>
+      <translation>Коефіцієнт випромінювання</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="168"/>
       <source>1 </source>
-      <translation type="unfinished">1 </translation>
+      <translation>1 </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="222"/>
@@ -5345,7 +5345,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../Workbench.cpp" line="74"/>
       <source>Filter functions</source>
-      <translation type="unfinished">Filter functions</translation>
+      <translation>Функції фільтрування</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="75"/>

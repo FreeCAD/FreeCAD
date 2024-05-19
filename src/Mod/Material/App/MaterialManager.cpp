@@ -79,8 +79,11 @@ void MaterialManager::initLibraries()
 
 void MaterialManager::cleanup()
 {
+    QMutexLocker locker(&_mutex);
+
     if (_libraryList) {
         _libraryList->clear();
+        _libraryList = nullptr;
     }
 
     if (_materialMap) {
@@ -89,7 +92,15 @@ void MaterialManager::cleanup()
             it.second->setLibrary(nullptr);
         }
         _materialMap->clear();
+        _materialMap = nullptr;
     }
+}
+
+void MaterialManager::refresh()
+{
+    // This is very expensive and can be improved using observers?
+    cleanup();
+    initLibraries();
 }
 
 void MaterialManager::saveMaterial(const std::shared_ptr<MaterialLibrary>& library,
@@ -166,6 +177,9 @@ std::shared_ptr<Material> MaterialManager::defaultMaterial()
     long initialShininess = hGrp->GetInt("DefaultShapeShininess", 90);
 
     auto material = manager.getMaterial(defaultMaterialUUID());
+    if (!material) {
+        material = manager.getMaterial(QLatin1String("7f9fd73b-50c9-41d8-b7b2-575a030c1eeb"));
+    }
     if (material->hasAppearanceModel(ModelUUIDs::ModelUUID_Rendering_Basic)) {
         material->getAppearanceProperty(QString::fromLatin1("DiffuseColor"))
             ->setColor(mat.diffuseColor);
@@ -187,7 +201,10 @@ std::shared_ptr<Material> MaterialManager::defaultMaterial()
 QString MaterialManager::defaultMaterialUUID()
 {
     // Make this a preference
-    return QString::fromLatin1("7f9fd73b-50c9-41d8-b7b2-575a030c1eeb");
+    auto param = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material");
+    auto uuid = param->GetASCII("DefaultMaterial", "7f9fd73b-50c9-41d8-b7b2-575a030c1eeb");
+    return QString::fromStdString(uuid);
 }
 
 std::shared_ptr<Material> MaterialManager::getMaterial(const QString& uuid) const

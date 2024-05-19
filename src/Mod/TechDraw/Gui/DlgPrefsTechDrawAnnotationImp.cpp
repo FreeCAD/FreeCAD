@@ -90,6 +90,9 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
     ui->pcbMatting->onSave();
     ui->pdsbBalloonKink->onSave();
     ui->cbCutSurface->onSave();
+    ui->cb_ShowSectionLine->onSave();
+    ui->cb_IncludeCutLine->onSave();
+
 
     // don't save invalid parameter values
     // the comboboxes are properly loaded.
@@ -152,7 +155,8 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     ui->cbCutSurface->onRestore();
     ui->pcbDetailMatting->onRestore();
     ui->pcbDetailHighlight->onRestore();
-
+    ui->cb_ShowSectionLine->onRestore();
+    ui->cb_IncludeCutLine->onRestore();
 
     ui->pcbBalloonArrow->onRestore();
     DrawGuiUtil::loadArrowBox(ui->pcbBalloonArrow);

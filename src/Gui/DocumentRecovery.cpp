@@ -727,7 +727,7 @@ void DocumentRecoveryCleaner::subtractFiles(QStringList& files)
 void DocumentRecoveryCleaner::subtractDirs(QFileInfoList& dirs)
 {
     if (!ignoreDirs.isEmpty() && !dirs.isEmpty()) {
-        for (const auto& it : qAsConst(ignoreDirs)) {
+        for (const auto& it : std::as_const(ignoreDirs)) {
             dirs.removeOne(it);
         }
     }

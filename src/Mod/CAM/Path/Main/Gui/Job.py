@@ -126,7 +126,7 @@ class ViewProvider:
         self.sep = coin.SoSeparator()
         self.axs = coin.SoType.fromName("SoAxisCrossKit").createInstance()
 
-        #Adjust the axis heads if needed, the scale here is just for the head
+        # Adjust the axis heads if needed, the scale here is just for the head
         self.axs.set("xHead.transform", "scaleFactor 1.5 1.5 1")
         self.axs.set("yHead.transform", "scaleFactor 1.5 1.5 1")
         self.axs.set("zHead.transform", "scaleFactor 1.5 1.5 1")
@@ -171,7 +171,6 @@ class ViewProvider:
         for base in self.obj.Model.Group:
             Path.Log.debug(f"{base.Name}: {base.ViewObject.Visibility}")
 
-
     def onChanged(self, vobj, prop):
         if prop == "Visibility":
             self.showOriginAxis(vobj.Visibility)
@@ -202,10 +201,10 @@ class ViewProvider:
 
     def RestoreBaseVisibility(self):
         Path.Log.debug("RestoreBaseVisibility")
-        for base in self.obj.Model.Group:
-            base.ViewObject.Visibility = self.visibilitystate[base.Name]
-        Path.Log.debug(self.visibilitystate)
-
+        if hasattr(self, "visibilitystate"):
+            for base in self.obj.Model.Group:
+                base.ViewObject.Visibility = self.visibilitystate[base.Name]
+            Path.Log.debug(self.visibilitystate)
 
     def showOriginAxis(self, yes):
         sw = coin.SO_SWITCH_ALL if yes else coin.SO_SWITCH_NONE

@@ -5163,12 +5163,12 @@ A vázlatelemek vagy több felület metszése egy vázlatban nem engedélyezett 
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="442"/>
       <source>Loft: Creating a face from sketch failed</source>
-      <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
+      <translation>Formázás: Felület létrehozása vázlatból sikertelen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="475"/>
       <source>Loft: Failed to create shell</source>
-      <translation type="unfinished">Loft: Failed to create shell</translation>
+      <translation>Formázás: hiba a héj létrehozásakor</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="105"/>
@@ -5492,7 +5492,7 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="133"/>
       <source>Reference axis is invalid</source>
-      <translation type="unfinished">Reference axis is invalid</translation>
+      <translation>A referencia tengely érvénytelen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="709"/>

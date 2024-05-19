@@ -1940,7 +1940,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Command.cpp" line="426"/>
       <source>Do not show this message again</source>
-      <translation type="unfinished">Do not show this message again</translation>
+      <translation>Не приказуј ову поруку поново</translation>
     </message>
   </context>
   <context>
@@ -2754,12 +2754,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Command.cpp" line="439"/>
       <source>Select a SVG or Image file to open</source>
-      <translation type="unfinished">Select a SVG or Image file to open</translation>
+      <translation>Изабери SVG или сликовну датотеку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>SVG or Image files</source>
-      <translation type="unfinished">SVG or Image files</translation>
+      <translation>SVG или сликовна датотека</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="565"/>
@@ -3921,7 +3921,7 @@ thick: %4</translation>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="174"/>
       <source>Part View</source>
-      <translation type="unfinished">Part View</translation>
+      <translation>Главни и основни погледи</translation>
     </message>
   </context>
   <context>
@@ -4812,7 +4812,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="567"/>
       <source>Dimension</source>
-      <translation>Кота</translation>
+      <translation>Мерне јединице</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="282"/>
@@ -6701,7 +6701,7 @@ Custom: custom scale factor is used</source>
     <message>
       <location filename="../../TaskDimension.ui" line="14"/>
       <source>Dimension</source>
-      <translation>Кота</translation>
+      <translation>Мерне јединице</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="20"/>
@@ -7379,7 +7379,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskProjGroup.ui" line="126"/>
       <source>Spin clock wise</source>
-      <translation type="unfinished">Spin clock wise</translation>
+      <translation>Окрени у смеру казаљке на сату</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="537"/>
@@ -7445,7 +7445,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskProjGroup.ui" line="174"/>
       <source>Spin counter clock wise</source>
-      <translation type="unfinished">Spin counter clock wise</translation>
+      <translation>Окрени у смеру супротном од смера казаљке на сату</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="195"/>
@@ -7465,7 +7465,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskProjGroup.ui" line="252"/>
       <source>Set document front view as primary direction.</source>
-      <translation type="unfinished">Set document front view as primary direction.</translation>
+      <translation>Задај да главни поглед буде поглед спреда документа.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="273"/>
@@ -7475,7 +7475,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskProjGroup.ui" line="294"/>
       <source>Set direction of the camera, or selected face if any, as primary direction.</source>
-      <translation type="unfinished">Set direction of the camera, or selected face if any, as primary direction.</translation>
+      <translation>Задај да главни поглед буде правац камере или правац нормале на страницу (ако је нека изабрана).</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="318"/>
@@ -8567,7 +8567,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskDimRepair.ui" line="20"/>
       <source>Dimension</source>
-      <translation>Кота</translation>
+      <translation>Мерне јединице</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="28"/>
@@ -8967,7 +8967,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>Dimension</source>
-      <translation>Кота</translation>
+      <translation>Мерне јединице</translation>
     </message>
   </context>
   <context>
@@ -9391,7 +9391,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="71"/>
       <source>Dimension</source>
-      <translation>Кота</translation>
+      <translation>Мерне јединице</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="72"/>
@@ -9537,17 +9537,17 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="922"/>
       <source>X: </source>
-      <translation type="unfinished">X: </translation>
+      <translation>X: </translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="930"/>
       <source>Y: </source>
-      <translation type="unfinished">Y: </translation>
+      <translation>Y: </translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="938"/>
       <source>Z: </source>
-      <translation type="unfinished">Z: </translation>
+      <translation>Z: </translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="954"/>

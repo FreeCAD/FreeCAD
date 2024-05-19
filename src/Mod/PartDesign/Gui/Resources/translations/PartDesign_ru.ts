@@ -5166,12 +5166,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="442"/>
       <source>Loft: Creating a face from sketch failed</source>
-      <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
+      <translation>Лофт: не удалось создать грань по эскизу</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="475"/>
       <source>Loft: Failed to create shell</source>
-      <translation type="unfinished">Loft: Failed to create shell</translation>
+      <translation>Лофт: не удалось создать оболочку</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="105"/>
@@ -5495,7 +5495,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="133"/>
       <source>Reference axis is invalid</source>
-      <translation type="unfinished">Reference axis is invalid</translation>
+      <translation>Базовая ось недействительна</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="709"/>

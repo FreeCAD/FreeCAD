@@ -109,6 +109,9 @@ public:
     void setScene(QGSPage* scene, QGVPage* view);
     void fixSceneDependencies();
 
+    void setDimensionsSelectability(bool val);
+    void enableContextualMenu(bool val) { isContextualMenuEnabled = val; }
+
 public Q_SLOTS:
     void viewAll() override;
     void saveSVG();
@@ -127,6 +130,9 @@ protected:
     void onDeleteObject(const App::DocumentObject& obj);
 
     bool compareSelections(std::vector<Gui::SelectionObject> treeSel, QList<QGraphicsItem*> sceneSel);
+    void addSceneToTreeSel(QGraphicsItem* scene, std::vector<Gui::SelectionObject> treeSel);
+    void removeSelFromTreeSel(QList<QGraphicsItem*> sceneSel, Gui::SelectionObject& sel);
+    std::string getSceneSubName(QGraphicsItem* scene);
     void setTreeToSceneSelect();
     void sceneSelectionManager();
 
@@ -144,6 +150,7 @@ private:
     std::string m_objectName;
     std::string m_documentName;
     bool isSelectionBlocked;
+    bool isContextualMenuEnabled;
     QPointer<QGSPage> m_scene;
 
     QString m_currentPath;

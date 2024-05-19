@@ -831,27 +831,39 @@ void MaterialsEditor::fillMaterialTree()
     auto tree = ui->treeMaterials;
     auto model = dynamic_cast<QStandardItemModel*>(tree->model());
 
-    auto lib = new QStandardItem(tr("Favorites"));
-    lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
-    addExpanded(tree, model, lib, param);
-    addFavorites(lib);
+    if (_filterOptions.includeFavorites()) {
+        auto lib = new QStandardItem(tr("Favorites"));
+        lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+        addExpanded(tree, model, lib, param);
+        addFavorites(lib);
+    }
 
-    lib = new QStandardItem(tr("Recent"));
-    lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
-    addExpanded(tree, model, lib, param);
-    addRecents(lib);
+    if (_filterOptions.includeRecent()) {
+        auto lib = new QStandardItem(tr("Recent"));
+        lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+        addExpanded(tree, model, lib, param);
+        addRecents(lib);
+    }
 
     auto libraries = getMaterialManager().getMaterialLibraries();
     for (const auto& library : *libraries) {
-        lib = new QStandardItem(library->getName());
-        lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
-        addExpanded(tree, model, lib, param);
-
-        QIcon icon(library->getIconPath());
-        QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
-
         auto modelTree = getMaterialManager().getMaterialTree(library);
-        addMaterials(*lib, modelTree, folderIcon, icon, param);
+
+        bool showLibraries = _filterOptions.includeEmptyLibraries();
+        if (!_filterOptions.includeEmptyLibraries() && modelTree->size() > 0) {
+            showLibraries = true;
+        }
+
+        if (showLibraries) {
+            auto lib = new QStandardItem(library->getName());
+            lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+            addExpanded(tree, model, lib, param);
+
+            QIcon icon(library->getIconPath());
+            QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
+
+            addMaterials(*lib, modelTree, folderIcon, icon, param);
+        }
     }
 }
 

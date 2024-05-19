@@ -208,7 +208,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2345"/>
       <source>Boolean operation</source>
-      <translation>Bulova Operacija</translation>
+      <translation>Bulove operacije</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2346"/>
@@ -2257,7 +2257,7 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="70"/>
       <source>Dimension</source>
-      <translation>Kota</translation>
+      <translation>Merne jedinice</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="71"/>
@@ -2290,7 +2290,7 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="30"/>
       <source>Dimension</source>
-      <translation>Kota</translation>
+      <translation>Merne jedinice</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="38"/>
@@ -2585,7 +2585,7 @@ merena duž zadatog pravca</translation>
       <location filename="../../TaskPipeParameters.cpp" line="422"/>
       <location filename="../../TaskPipeParameters.cpp" line="520"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Greška pri unosu</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="422"/>
@@ -2656,7 +2656,7 @@ merena duž zadatog pravca</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="71"/>
       <source>Dimension</source>
-      <translation>Kota</translation>
+      <translation>Merne jedinice</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="72"/>
@@ -2746,7 +2746,7 @@ merena duž zadatog pravca</translation>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="173"/>
       <source>Dimension</source>
-      <translation>Kota</translation>
+      <translation>Merne jedinice</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="42"/>
@@ -2997,7 +2997,7 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="359"/>
       <source>Normal sketch axis</source>
-      <translation type="unfinished">Normal sketch axis</translation>
+      <translation>Osa normalna na skicu</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="360"/>
@@ -4129,7 +4129,7 @@ Mada moći ćeš Part Design da migriraš u bilo kom trenutku kasnije pomoću 'P
     <message>
       <location filename="../../TaskHoleParameters.ui" line="39"/>
       <source>Profile</source>
-      <translation>Presek</translation>
+      <translation>Profil</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="62"/>
@@ -4261,7 +4261,7 @@ Dostupno samo za rupe bez navoja</translation>
       <location filename="../../TaskHoleParameters.ui" line="350"/>
       <location filename="../../TaskHoleParameters.ui" line="404"/>
       <source>Dimension</source>
-      <translation>Kota</translation>
+      <translation>Merne jedinice</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="355"/>
@@ -4588,17 +4588,17 @@ iznad 90: veći poluprečnik rupe na dnu</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="153"/>
       <source>Bearing</source>
-      <translation type="unfinished">Bearing</translation>
+      <translation>Ležaj</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
       <source>Gear</source>
-      <translation type="unfinished">Gear</translation>
+      <translation>Zupčanik</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="155"/>
       <source>Pulley</source>
-      <translation type="unfinished">Pulley</translation>
+      <translation>Remenica</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="166"/>
@@ -5171,12 +5171,12 @@ Ukrštanje elemenata skice ili više stranica u skici nije dozvoljeno za pravlje
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="442"/>
       <source>Loft: Creating a face from sketch failed</source>
-      <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
+      <translation>Izvlačenje po presecima: Pravljenje stranice pomoću skice nije uspelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="475"/>
       <source>Loft: Failed to create shell</source>
-      <translation type="unfinished">Loft: Failed to create shell</translation>
+      <translation>Izvlačenje po presecima: Nije uspelo pravljenje ljuske</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="105"/>

@@ -45,6 +45,7 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
@@ -55,6 +56,7 @@
 
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 //internal functions
 bool _checkSelectionHatch(Gui::Command* cmd);
@@ -256,7 +258,7 @@ void CmdTechDrawImage::activated(int iMsg)
     // Reading an image
     QString fileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
         QString::fromUtf8(QT_TR_NOOP("Select an Image File")),
-        QString(),
+        Preferences::defaultSymbolDir(),
         QString::fromUtf8(QT_TR_NOOP("Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)")));
     if (fileName.isEmpty()) {
         return;

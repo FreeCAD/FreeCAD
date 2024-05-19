@@ -31,6 +31,8 @@
 #include <QString>
 #include <QStringList>
 
+#include <BRepGProp.hxx>
+#include <GProp_GProps.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
@@ -93,6 +95,7 @@ const char* DrawViewDimension::TypeEnums[] = {"Distance",
                                               "Diameter",
                                               "Angle",
                                               "Angle3Pt",
+                                              "Area",
                                               nullptr};
 
 const char* DrawViewDimension::MeasureTypeEnums[] = {"True", "Projected", nullptr};
@@ -228,7 +231,7 @@ DrawViewDimension::DrawViewDimension()
     resetAngular();
     resetArc();
     m_hasGeometry = false;
-    m_matcher = new GeometryMatcher(this);
+    m_matcher = new GeometryMatcher();
     m_referencesCorrect = true;
     m_corrector = new DimensionAutoCorrect(this);
 }
@@ -265,6 +268,12 @@ void DrawViewDimension::resetArc()
     m_arcPoints.arcEnds.second(Base::Vector3d(0, 0, 0));
     m_arcPoints.midArc = Base::Vector3d(0, 0, 0);
     m_arcPoints.arcCW = false;
+}
+
+void DrawViewDimension::resetArea()
+{
+    m_areaPoint.center = Base::Vector3d(0, 0, 0);
+    m_areaPoint.area = 0.0;
 }
 
 void DrawViewDimension::onChanged(const App::Property* prop)
@@ -461,6 +470,7 @@ App::DocumentObjectExecReturn* DrawViewDimension::execute()
     resetLinear();
     resetAngular();
     resetArc();
+    resetArea();
 
     // we have either or both valid References3D and References2D
     ReferenceVector references = getEffectiveReferences();
@@ -497,6 +507,13 @@ App::DocumentObjectExecReturn* DrawViewDimension::execute()
             throw Base::RuntimeError("3 point angle dimension has non-vertex references");
         }
         m_anglePoints = getAnglePointsThreeVerts(references);
+        m_hasGeometry = true;
+    }
+    else if (Type.isValue("Area")) {
+        if (getRefType() != oneFace) {
+            throw Base::RuntimeError("area dimension has non-face references");
+        }
+        m_areaPoint = getAreaParameters(references);
         m_hasGeometry = true;
     }
 
@@ -679,6 +696,9 @@ double DrawViewDimension::getTrueDimValue() const
     else if (Type.isValue("Angle") || Type.isValue("Angle3Pt")) {
         result = measurement->angle();
     }
+    else if (Type.isValue("Area")) {
+        result = measurement->area();
+    }
     else {  // tarfu
         throw Base::ValueError("getDimValue() - Unknown Dimension Type (3)");
     }
@@ -721,9 +741,8 @@ double DrawViewDimension::getProjectedDimValue() const
         }
     }
     else if (Type.isValue("Radius")) {
-        arcPoints pts = m_arcPoints;
-        result =
-            pts.radius / getViewPart()->getScale();  // Projected BaseGeom is scaled for drawing
+        // Projected BaseGeom is scaled for drawing
+        result = m_arcPoints.radius / getViewPart()->getScale();
     }
     else if (Type.isValue("Diameter")) {
         arcPoints pts = m_arcPoints;
@@ -737,6 +756,9 @@ double DrawViewDimension::getProjectedDimValue() const
         Base::Vector3d leg1 = pts.second() - vertex;
         double legAngle = Base::toDegrees(leg0.GetAngle(leg1));
         result = legAngle;
+    }
+    else if (Type.isValue("Area")) {
+        result = m_areaPoint.area / getViewPart()->getScale();
     }
 
     return result;
@@ -927,7 +949,7 @@ arcPoints DrawViewDimension::getArcParameters(ReferenceVector references)
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (4)";
             throw Base::RuntimeError(ssMessage.str());
         }
-        return arcPointsFromBaseGeom(getViewPart()->getGeomByIndex(iSubelement));
+        return arcPointsFromBaseGeom(geom);
     }
 
     // this is a 3d reference
@@ -1324,6 +1346,40 @@ anglePoints DrawViewDimension::getAnglePointsThreeVerts(ReferenceVector referenc
     return pts;
 }
 
+areaPoint DrawViewDimension::getAreaParameters(ReferenceVector references)
+{
+    areaPoint pts;
+
+    App::DocumentObject* refObject = references.front().getObject();
+    if (refObject->isDerivedFrom<DrawViewPart>() && !references[0].getSubName().empty()) {
+        // this is a 2d object (a DVP + subelements)
+        TechDraw::FacePtr face = getViewPart()->getFace(references[0].getSubName());
+        if (!face) {
+            std::stringstream ssMessage;
+            ssMessage << getNameInDocument() << " can not find geometry for 2d reference (4)";
+            throw Base::RuntimeError(ssMessage.str());
+        }
+
+        pts.area = face->getArea();
+        pts.center = face->getCenter();
+    }
+    else {
+        // this is a 3d reference
+        TopoDS_Shape geometry = references[0].getGeometry();
+        if (geometry.IsNull() || geometry.ShapeType() != TopAbs_FACE) {
+            throw Base::RuntimeError("Geometry for dimension reference is null.");
+        }
+        const TopoDS_Face& face = TopoDS::Face(geometry);
+
+        GProp_GProps props;
+        BRepGProp::SurfaceProperties(face, props);
+        pts.area = props.Mass();
+        pts.center = DrawUtil::toVector3d(props.CentreOfMass());
+    }
+
+    return pts;
+}
+
 DrawViewPart* DrawViewDimension::getViewPart() const
 {
     if (References2D.getValues().empty()) {
@@ -1411,6 +1467,7 @@ int DrawViewDimension::getRefTypeSubElements(const std::vector<std::string>& sub
     int refType = invalidRef;
     int refEdges{0};
     int refVertices{0};
+    int refFaces{0};
 
     for (const auto& se : subElements) {
         if (DrawUtil::getGeomTypeFromName(se) == "Vertex") {
@@ -1419,22 +1476,28 @@ int DrawViewDimension::getRefTypeSubElements(const std::vector<std::string>& sub
         if (DrawUtil::getGeomTypeFromName(se) == "Edge") {
             refEdges++;
         }
+        if (DrawUtil::getGeomTypeFromName(se) == "Face") {
+            refFaces++;
+        }
     }
 
-    if (refEdges == 0 && refVertices == 2) {
+    if (refEdges == 0 && refVertices == 2 && refFaces == 0) {
         refType = twoVertex;
     }
-    if (refEdges == 0 && refVertices == 3) {
+    if (refEdges == 0 && refVertices == 3 && refFaces == 0) {
         refType = threeVertex;
     }
-    if (refEdges == 1 && refVertices == 0) {
+    if (refEdges == 1 && refVertices == 0 && refFaces == 0) {
         refType = oneEdge;
     }
-    if (refEdges == 1 && refVertices == 1) {
+    if (refEdges == 1 && refVertices == 1 && refFaces == 0) {
         refType = vertexEdge;
     }
-    if (refEdges == 2 && refVertices == 0) {
+    if (refEdges == 2 && refVertices == 0 && refFaces == 0) {
         refType = twoEdge;
+    }
+    if (refEdges == 0 && refVertices == 0 && refFaces == 1) {
+        refType = oneFace;
     }
 
     return refType;
@@ -1747,6 +1810,17 @@ bool DrawViewDimension::validateReferenceForm() const
         std::string subGeom1 = DrawUtil::getGeomTypeFromName(references.at(1).getSubName());
         std::string subGeom2 = DrawUtil::getGeomTypeFromName(references.at(2).getSubName());
         return (subGeom0 == "Vertex" &&  subGeom1 == "Vertex" && subGeom2 == "Vertex");
+    }
+
+    if (Type.isValue("Area")) {
+        if (references.size() != 1) {
+            return false;
+        }
+        std::string subGeom = DrawUtil::getGeomTypeFromName(references.front().getSubName());
+        if (subGeom != "Face") {
+            return false;
+        }
+        return true;
     }
 
     return false;

@@ -2281,7 +2281,7 @@ QListView::item:selected:!active,
 QTableView::item:selected:!active,
 QColumnView::item:selected:!active {
   color: black;
-  background-color: #BABABA;
+  background-color: @ThemeAccentColor1;
 }
 
 QTreeView::item:!selected:hover,

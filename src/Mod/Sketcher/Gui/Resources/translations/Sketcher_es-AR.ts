@@ -471,7 +471,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3080"/>
       <source>Constrain horizontal</source>
-      <translation type="unfinished">Constrain horizontal</translation>
+      <translation>Restricción horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3081"/>
@@ -525,7 +525,7 @@ en el vértice seleccionado</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4223"/>
       <source>Constrain point on object</source>
-      <translation type="unfinished">Constrain point on object</translation>
+      <translation>Restricción de punto en el objeto</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4224"/>
@@ -566,7 +566,7 @@ y un borde como interfaz.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9233"/>
       <source>Constrain symmetric</source>
-      <translation type="unfinished">Constrain symmetric</translation>
+      <translation>Restricción simétrica</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9234"/>
@@ -581,7 +581,7 @@ con respecto a una línea o un tercer punto</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3125"/>
       <source>Constrain vertical</source>
-      <translation type="unfinished">Constrain vertical</translation>
+      <translation>Restricción vertical</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3126"/>
@@ -620,7 +620,7 @@ con respecto a una línea o un tercer punto</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="490"/>
       <source>Create arc by 3 points</source>
-      <translation type="unfinished">Create arc by 3 points</translation>
+      <translation>Crear arco por 3 puntos</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="491"/>
@@ -633,7 +633,7 @@ con respecto a una línea o un tercer punto</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1300"/>
       <source>Create circle by 3 points</source>
-      <translation type="unfinished">Create circle by 3 points</translation>
+      <translation>Crear círculo por 3 puntos</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1301"/>
@@ -711,7 +711,7 @@ con respecto a una línea o un tercer punto</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="638"/>
       <source>Create circle by center</source>
-      <translation type="unfinished">Create circle by center</translation>
+      <translation>Crear círculo por centro</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="639"/>
@@ -6732,7 +6732,7 @@ Al hacer clic izquierdo en el espacio vacío validará la restricción actual. A
     <message>
       <location filename="../../TaskSketcherTool.cpp" line="48"/>
       <source>Tool parameters</source>
-      <translation>Parámetros de la herramienta</translation>
+      <translation>Parámetros de herramienta</translation>
     </message>
   </context>
   <context>
@@ -6740,7 +6740,7 @@ Al hacer clic izquierdo en el espacio vacío validará la restricción actual. A
     <message>
       <location filename="../../CommandConstraints.cpp" line="2724"/>
       <source>Constrain horizontal/vertical</source>
-      <translation type="unfinished">Constrain horizontal/vertical</translation>
+      <translation>Restricción horizontal/vertical</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2725"/>
@@ -6753,7 +6753,7 @@ Al hacer clic izquierdo en el espacio vacío validará la restricción actual. A
     <message>
       <location filename="../../CommandConstraints.cpp" line="3034"/>
       <source>Constrain horizontal/vertical</source>
-      <translation type="unfinished">Constrain horizontal/vertical</translation>
+      <translation>Restricción horizontal/vertical</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3035"/>
@@ -6898,42 +6898,42 @@ Al hacer clic izquierdo en el espacio vacío validará la restricción actual. A
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="212"/>
       <source>Color of fully constrained normal geometry in edit mode</source>
-      <translation type="unfinished">Color of fully constrained normal geometry in edit mode</translation>
+      <translation>Color de la geometría normal completamente restringida en modo edición</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="238"/>
       <source>Color of normal geometry in edit mode</source>
-      <translation type="unfinished">Color of normal geometry in edit mode</translation>
+      <translation>Color de la geometría normal en modo edición</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="306"/>
       <source>Color of fully constrained construction geometry in edit mode</source>
-      <translation type="unfinished">Color of fully constrained construction geometry in edit mode</translation>
+      <translation>Color de la geometría de construcción completamente restringida en modo edición</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="387"/>
       <source>Internal alignment geometry</source>
-      <translation type="unfinished">Internal alignment geometry</translation>
+      <translation>Geometría de alineación interna</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="400"/>
       <source>Color of fully constrained internal alignment geometry in edit mode</source>
-      <translation type="unfinished">Color of fully constrained internal alignment geometry in edit mode</translation>
+      <translation>Color de la geometría de alineamiento interno completamente restringida en modo edición</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="426"/>
       <source>Color of internal alignment geometry in edit mode</source>
-      <translation type="unfinished">Color of internal alignment geometry in edit mode</translation>
+      <translation>Color de la geometría interna del alineamiento en modo edición</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="555"/>
       <source>Fully constrained sketch</source>
-      <translation type="unfinished">Fully constrained sketch</translation>
+      <translation>Croquis totalmente restringido</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="568"/>
       <source>Color of geometry indicating a fully constrained sketch</source>
-      <translation type="unfinished">Color of geometry indicating a fully constrained sketch</translation>
+      <translation>Color de la geometría que indica un croquis completamente restringido</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="588"/>

@@ -127,7 +127,7 @@ public:
     // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
     TopoShape getTopoShapeSupportFace() const;
 
-    Base::Vector3d getProfileNormal() const;
+    virtual Base::Vector3d getProfileNormal() const;
 
     TopoShape getProfileShape() const;
 

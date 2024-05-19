@@ -6,12 +6,12 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
       <source>Standard (mm, kg, s, °)</source>
-      <translation type="unfinished">Standard (mm, kg, s, °)</translation>
+      <translation>Στάνταρ (mm, kg, s, ")</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
       <source>MKS (m, kg, s, °)</source>
-      <translation type="unfinished">MKS (m, kg, s, °)</translation>
+      <translation>MKS (m, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="73"/>
@@ -36,12 +36,12 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="81"/>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation>Μετρικά μικρά μέρη &amp; CNC(mm, mm/min)</translation>
+      <translation>Μετρικό σύστημα μικρών εξαρτημάτων &amp; CNC (χιλιοστά mm, χιλιοστά/λεπτά mm/min)  </translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>
       <source>Imperial for Civil Eng (ft, ft/s)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, ft/s)</translation>
+      <translation>Αγγλοσαξονικό σύστημά (ft, ft/sec) </translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="85"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="87"/>
       <source>Meter decimal (m, m², m³)</source>
-      <translation type="unfinished">Meter decimal (m, m², m³)</translation>
+      <translation>Δεκαδικό μέτρο (m, m2, m3)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="89"/>
