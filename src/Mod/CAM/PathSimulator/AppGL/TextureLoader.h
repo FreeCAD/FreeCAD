@@ -24,13 +24,13 @@
 #define __texture_loader_h__
 #include <string>
 #include <vector>
+#include <QImage>
 
 namespace MillSim
 {
 
 struct TextureItem
 {
-    const char* imageData;
     int tx, ty;  // texture location
     int w, h;    // item size
 };
@@ -44,13 +44,10 @@ public:
     TextureItem* GetTextureItem(int i);
 
 protected:
-    int ReadNextVal();
-    bool ReadNextPixel(unsigned int* pix, int* amount);
-    bool ParseImage(TextureItem* guiItem, unsigned int* buffPos, int stride);
+    bool AddImage(TextureItem* guiItem, QImage& pixmap, unsigned int* buffPos, int stride);
 
 protected:
     unsigned int* mRawData = nullptr;
-    const char* mPixPos = 0;
     std::string mImageFolder;
 };
 

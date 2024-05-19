@@ -55,7 +55,7 @@ int CAMSimPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 }
 
 
-PyObject* CAMSimPy::resetSimulation(PyObject* args)
+PyObject* CAMSimPy::ResetSimulation(PyObject* args)
 {
     CAMSim* sim = getCAMSimPtr();
     sim->resetSimulation();
@@ -84,7 +84,7 @@ PyObject* CAMSimPy::BeginSimulation(PyObject* args, PyObject* kwds)
     return Py_None;
 }
 
-PyObject* CAMSimPy::addTool(PyObject* args, PyObject* kwds)
+PyObject* CAMSimPy::AddTool(PyObject* args, PyObject* kwds)
 {
     static const std::array<const char*, 5> kwlist {"shape", "toolnumber", "diameter", "resolution", nullptr};
     PyObject* pObjToolShape;

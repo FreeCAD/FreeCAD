@@ -348,8 +348,8 @@ namespace MillSim {
     void MillSimulation::ProcessSim(unsigned int time_ms) {
 
         static int ancient = 0;
-        static int last = 0;
-        static int msec = 0;
+        static unsigned int last = 0;
+        static unsigned int msec = 0;
         static int fps = 0;
         static int renderTime = 0;
 

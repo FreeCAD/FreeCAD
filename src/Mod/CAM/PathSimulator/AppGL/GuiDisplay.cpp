@@ -102,7 +102,7 @@ bool GuiDisplay::InutGui()
     GLshort indices[6] = {0, 2, 3, 0, 3, 1};
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(GLushort), indices, GL_STATIC_DRAW);
-    TextureLoader tLoader(":/MillSimGL/", guiFileNames, TEX_SIZE);
+    TextureLoader tLoader(":/gl_simulator/", guiFileNames, TEX_SIZE);
     unsigned int* buffer = tLoader.GetRawData();
     if (buffer == nullptr) {
         return false;
@@ -151,6 +151,7 @@ void GuiDisplay::RenderItem(int itemId)
     }
 
     glBindVertexArray(item->vao);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
 }
 
