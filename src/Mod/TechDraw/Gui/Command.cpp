@@ -435,13 +435,14 @@ void CmdTechDrawView::activated(int iMsg)
                 }
             }
 
-            QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), 
-                QObject::tr("Select a SVG or Image file to open"), QString(),
+            QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
+                QObject::tr("Select a SVG or Image file to open"),
+                Preferences::defaultSymbolDir(),
                 QString::fromLatin1("%1 (*.svg *.svgz *.jpg *.jpeg *.png *.bmp);;%2 (*.*)")
                 .arg(QObject::tr("SVG or Image files"), QObject::tr("All Files")));
 
             if (!filename.isEmpty()) {
-                if (filename.endsWith(QString::fromLatin1(".svg"), Qt::CaseInsensitive) 
+                if (filename.endsWith(QString::fromLatin1(".svg"), Qt::CaseInsensitive)
                     || filename.endsWith(QString::fromLatin1(".svgz"), Qt::CaseInsensitive)) {
                     std::string FeatName = getUniqueObjectName("Symbol");
                     filename = Base::Tools::escapeEncodeFilename(filename);
@@ -1501,7 +1502,8 @@ void CmdTechDrawSymbol::activated(int iMsg)
 
     // Reading an image
     QString filename = Gui::FileDialog::getOpenFileName(
-        Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"), QString(),
+        Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"),
+        Preferences::defaultSymbolDir(),
         QString::fromLatin1("%1 (*.svg *.svgz);;%2 (*.*)")
             .arg(QObject::tr("Scalable Vector Graphic"), QObject::tr("All Files")));
 
