@@ -14,7 +14,6 @@
         <file>icons/PartDesign_BaseFeature.svg</file>
         <file>icons/PartDesign_Body.svg</file>
         <file alias="icons/PartDesign_Body_Create_New.svg">icons/PartDesign_Body.svg</file>
-        <file>icons/PartDesign_Body_Tree.svg</file>
         <file>icons/PartDesign_Boolean.svg</file>
         <file>icons/PartDesign_Chamfer.svg</file>
         <file>icons/PartDesign_Clone.svg</file>
