@@ -33,6 +33,7 @@
 #include <App/Document.h>
 #include <App/Origin.h>
 #include <App/Part.h>
+#include <App/VarSet.h>
 #include <Base/Console.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
@@ -495,6 +496,9 @@ bool ViewProviderBody::canDropObjects() const
 
 bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 {
+    if (obj->isDerivedFrom<App::VarSet>()) {
+        return true;
+    }
     if (!obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
         return false;
     }

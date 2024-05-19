@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include <App/Document.h>
+#include <App/VarSet.h>
 #include <App/Origin.h>
 #include <Base/Placement.h>
 
@@ -227,10 +228,12 @@ bool Body::isAllowed(const App::DocumentObject *obj)
             // TODO Shouldn't we replace it with Sketcher::SketchObject? (2015-08-13, Fat-Zer)
             obj->isDerivedFrom<Part::Part2DObject>() ||
             obj->isDerivedFrom<PartDesign::ShapeBinder>() ||
-            obj->isDerivedFrom<PartDesign::SubShapeBinder>()
+            obj->isDerivedFrom<PartDesign::SubShapeBinder>() ||
             // TODO Why this lines was here? why should we allow anything of those? (2015-08-13, Fat-Zer)
             //obj->isDerivedFrom<Part::FeaturePython>() // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
             //obj->isDerivedFrom<Part::Feature>()
+            // allow VarSets for parameterization
+            obj->isDerivedFrom<App::VarSet>()
             );
 }
 
