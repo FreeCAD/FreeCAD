@@ -634,7 +634,7 @@ void PropertyEditor::removeProperty(const App::Property& prop)
 
 enum MenuAction {
     MA_AutoExpand,
-    MA_ShowAll,
+    MA_ShowHidden,
     MA_Expression,
     MA_RemoveProp,
     MA_AddProp,
@@ -672,15 +672,13 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     }
 
     // add property
-    if(!props.empty()) {
-        menu.addAction(tr("Add property"))->setData(QVariant(MA_AddProp));
-        if (std::all_of(props.begin(), props.end(), [](auto prop) {
-            return prop->testStatus(App::Property::PropDynamic)
-                && !boost::starts_with(prop->getName(),prop->getGroup());
-        }))
-        {
-            menu.addAction(tr("Rename property group"))->setData(QVariant(MA_EditPropGroup));
-        }
+    menu.addAction(tr("Add property"))->setData(QVariant(MA_AddProp));
+    if (!props.empty() && std::all_of(props.begin(), props.end(), [](auto prop) {
+        return prop->testStatus(App::Property::PropDynamic)
+            && !boost::starts_with(prop->getName(),prop->getGroup());
+    }))
+    {
+        menu.addAction(tr("Rename property group"))->setData(QVariant(MA_EditPropGroup));
     }
 
     // remove property
@@ -700,71 +698,72 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
         menu.addAction(tr("Remove property"))->setData(QVariant(MA_RemoveProp));
 
     // add a separator between adding/removing properties and the rest
-    if (!props.empty() || canRemove) {
-        menu.addSeparator();
-    }
+    menu.addSeparator();
 
     // show all
-    QAction *showAll = menu.addAction(tr("Show all"));
-    showAll->setCheckable(true);
-    showAll->setChecked(PropertyView::showAll());
-    showAll->setData(QVariant(MA_ShowAll));
+    QAction *showHidden = menu.addAction(tr("Show hidden"));
+    showHidden->setCheckable(true);
+    showHidden->setChecked(PropertyView::showAll());
+    showHidden->setData(QVariant(MA_ShowHidden));
 
-    if(PropertyView::showAll()) {
-        // auto expand
-        autoExpand = menu.addAction(tr("Auto expand"));
-        autoExpand->setCheckable(true);
-        autoExpand->setChecked(autoexpand);
-        autoExpand->setData(QVariant(MA_AutoExpand));
+    // auto expand
+    autoExpand = menu.addAction(tr("Auto expand"));
+    autoExpand->setCheckable(true);
+    autoExpand->setChecked(autoexpand);
+    autoExpand->setData(QVariant(MA_AutoExpand));
 
-        // expression
-        if(props.size() == 1) {
-            auto item = static_cast<PropertyItem*>(contextIndex.internalPointer());
-            auto prop = *props.begin();
-            if(item->isBound() 
-               && !prop->isDerivedFrom(App::PropertyExpressionEngine::getClassTypeId())
-               && !prop->isReadOnly() 
-               && !prop->testStatus(App::Property::Immutable)
-               && !(prop->getType() & App::Prop_ReadOnly))
-            {
-                contextIndex = propertyModel->buddy(contextIndex);
-                setCurrentIndex(contextIndex);
-                // menu.addSeparator();
-                menu.addAction(tr("Expression..."))->setData(QVariant(MA_Expression));
-            }
+    // expression
+    if(props.size() == 1) {
+        auto item = static_cast<PropertyItem*>(contextIndex.internalPointer());
+        auto prop = *props.begin();
+        if(item->isBound()
+           && !prop->isDerivedFrom(App::PropertyExpressionEngine::getClassTypeId())
+           && !prop->isReadOnly()
+           && !prop->testStatus(App::Property::Immutable)
+           && !(prop->getType() & App::Prop_ReadOnly))
+        {
+            contextIndex = propertyModel->buddy(contextIndex);
+            setCurrentIndex(contextIndex);
+            // menu.addSeparator();
+            menu.addAction(tr("Expression..."))->setData(QVariant(MA_Expression));
         }
+    }
 
-        // the various flags
-        if(!props.empty()) {
-            menu.addSeparator();
+    // the various flags
+    if(!props.empty()) {
+        menu.addSeparator();
 
-            QAction *action;
-            QString text;
-#define _ACTION_SETUP(_name) do {\
-                text = tr(#_name);\
-                action = menu.addAction(text);\
-                action->setData(QVariant(MA_##_name));\
-                action->setCheckable(true);\
-                if(propStatus & (1<<App::Property::_name))\
-                    action->setChecked(true);\
-            }while(0)
-#define ACTION_SETUP(_name) do {\
-                _ACTION_SETUP(_name);\
-                if(propType & App::Prop_##_name) {\
-                    action->setText(text + QString::fromLatin1(" *"));\
-                    action->setChecked(true);\
-                }\
-            }while(0)
+        // the subMenu is allocated on the heap but managed by menu.
+        auto subMenu = new QMenu(QString::fromLatin1("Status"), &menu);
 
-            ACTION_SETUP(Hidden);
-            ACTION_SETUP(Output);
-            ACTION_SETUP(NoRecompute);
-            ACTION_SETUP(ReadOnly);
-            ACTION_SETUP(Transient);
-            _ACTION_SETUP(Touched);
-            _ACTION_SETUP(EvalOnRestore);
-            _ACTION_SETUP(CopyOnChange);
-        }
+        QAction *action;
+        QString text;
+#define _ACTION_SETUP(_name) do {                       \
+            text = tr(#_name);                          \
+            action = subMenu->addAction(text);           \
+            action->setData(QVariant(MA_##_name));      \
+            action->setCheckable(true);                 \
+            if(propStatus & (1<<App::Property::_name))  \
+                action->setChecked(true);               \
+        }while(0)
+#define ACTION_SETUP(_name) do {                                        \
+            _ACTION_SETUP(_name);                                       \
+            if(propType & App::Prop_##_name) {                          \
+                action->setText(text + QString::fromLatin1(" *"));      \
+                action->setChecked(true);                               \
+            }                                                           \
+        }while(0)
+
+        ACTION_SETUP(Hidden);
+        ACTION_SETUP(Output);
+        ACTION_SETUP(NoRecompute);
+        ACTION_SETUP(ReadOnly);
+        ACTION_SETUP(Transient);
+        _ACTION_SETUP(Touched);
+        _ACTION_SETUP(EvalOnRestore);
+        _ACTION_SETUP(CopyOnChange);
+
+        menu.addMenu(subMenu);
     }
 
     auto action = menu.exec(QCursor::pos());
@@ -782,7 +781,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
                 expandAll();
         }
         return;
-    case MA_ShowAll:
+    case MA_ShowHidden:
         PropertyView::setShowAll(action->isChecked());
         return;
 #define ACTION_CHECK(_name) \
