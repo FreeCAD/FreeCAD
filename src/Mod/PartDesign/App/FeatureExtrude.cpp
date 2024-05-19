@@ -24,16 +24,21 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepAdaptor_Surface.hxx>
 # include <BRep_Builder.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepFeat_MakePrism.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <gp_Dir.hxx>
+# include <gp_Pln.hxx>
 # include <Precision.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Shape.hxx>
+# include <TopoDS.hxx>
 #endif
 
 #include <App/Document.h>
@@ -124,6 +129,22 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
     Direction.setValue(extrudeDirection);
     return extrudeDirection;
 }
+
+void FeatureExtrude::extendFace(TopoDS_Face& face, const TopoDS_Shape bounds) {
+    if ( ! face.IsNull() ) {
+        BRepAdaptor_Surface adapt = BRepAdaptor_Surface(face);
+        // adapt.Initialize(face);
+        TopoDS_Face plane = BRepBuilderAPI_MakeFace(adapt.Plane());
+        if ( ! bounds.IsNull() ) {
+            BRepAlgoAPI_Common mkCom(bounds, plane);
+            // Protect if a compound with one entry is returned
+            TopExp_Explorer xp = TopExp_Explorer(mkCom.Shape(),TopAbs_FACE);
+            face = TopoDS::Face(xp.Current());
+        } else
+            face = TopoDS::Face(plane);
+    }
+}
+
 
 bool FeatureExtrude::hasTaperedAngle() const
 {
@@ -617,7 +638,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                         QT_TRANSLATE_NOOP("Exception", "Up to face: Could not get SubShape!"));
                 }
 
-                if (getAddSubType() == Additive) {
+                if ( isAdditive() ) {
                     prism = base.makeElementFuse(this->AddSubShape.getShape());
                 }
                 else {
@@ -697,12 +718,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             TopoShape result(0, getDocument()->getStringHasher());
             try {
                 const char* maker;
-                switch (getAddSubType()) {
-                    case Subtractive:
-                        maker = Part::OpCodes::Cut;
-                        break;
-                    default:
-                        maker = Part::OpCodes::Fuse;
+                if ( isSubtractive() ) {
+                    maker = Part::OpCodes::Cut;
+                } else {
+                    maker = Part::OpCodes::Fuse;
                 }
                 result.makeElementBoolean(maker, {base, prism});
             }

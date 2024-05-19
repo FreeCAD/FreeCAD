@@ -276,51 +276,13 @@ App::DocumentObjectExecReturn *Loft::execute()
         AddSubShape.setValue(result);
 
         if (base.IsNull()) {
-            if (getAddSubType() == FeatureAddSub::Subtractive)
+            if (isSubtractive())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: There is nothing to subtract from"));
 
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
-
-        if (getAddSubType() == FeatureAddSub::Additive) {
-
-            BRepAlgoAPI_Fuse mkFuse(base, result);
-            if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Adding the loft failed"));
-            // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
-            // lets check if the result is a solid
-            if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-            int solidCount = countSolids(boolOp);
-            if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
-            }
-
-            boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(getSolid(boolOp));
-        }
-        else if (getAddSubType() == FeatureAddSub::Subtractive) {
-
-            BRepAlgoAPI_Cut mkCut(base, result);
-            if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Subtracting the loft failed"));
-            // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape boolOp = this->getSolid(mkCut.Shape());
-            // lets check if the result is a solid
-            if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-            int solidCount = countSolids(boolOp);
-            if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
-            }
-
-            boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(getSolid(boolOp));
-        }
-
-        return App::DocumentObject::StdReturn;
+        return FeatureAddSub::addSubOp(base, result);
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
@@ -503,18 +465,12 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         TopoShape boolOp(0,getDocument()->getStringHasher());
 
         const char *maker;
-        switch(getAddSubType()) {
-            case Additive:
-                maker = Part::OpCodes::Fuse;
-                break;
-            case Subtractive:
-                maker = Part::OpCodes::Cut;
-                break;
-//            case Intersecting:
-//                maker = Part::OpCodes::Common;
-//                break;
-            default:
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Unknown operation type"));
+        if ( isAdditive() ) {
+            maker = Part::OpCodes::Fuse;
+        } else if ( isSubtractive() ) {
+            maker = Part::OpCodes::Cut;
+        } else {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Unknown operation type"));
         }
         try {
             boolOp.makeElementBoolean(maker, {base,result});

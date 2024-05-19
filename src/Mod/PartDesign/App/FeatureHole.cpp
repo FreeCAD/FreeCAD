@@ -1892,9 +1892,6 @@ App::DocumentObjectExecReturn* Hole::execute()
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
         }
         TopoDS_Shape result = mkBool.Shape();
-
-
-        // We have to get the solids (fuse sometimes creates compounds)
         base = getSolid(result);
         if (base.isNull())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));

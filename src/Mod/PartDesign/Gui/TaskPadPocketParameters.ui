@@ -364,6 +364,16 @@ measured along the specified direction</string>
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkBoxOutside">
+     <property name="text">
+      <string>Remove outside of profile</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QCheckBox" name="checkBoxUpdateView">
      <property name="text">
       <string>Update view</string>
