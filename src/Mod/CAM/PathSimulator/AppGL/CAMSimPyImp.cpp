@@ -97,16 +97,15 @@ PyObject* CAMSimPy::AddTool(PyObject* args, PyObject* kwds)
     }
     // The tool shape is defined by a list of 2d points that represents the tool revolving profile 
     Py_ssize_t num_floats = PyList_Size(pObjToolShape);
-    float* toolProfile = new float[num_floats];
+    std::vector<float> toolProfile;
     for (Py_ssize_t i = 0; i < num_floats; ++i) {
         PyObject* item = PyList_GetItem(pObjToolShape, i);
-        toolProfile[i] = static_cast<float>(PyFloat_AsDouble(item));
+        toolProfile.push_back(static_cast<float>(PyFloat_AsDouble(item)));
     }
 
 	CAMSim *sim = getCAMSimPtr();
-    sim->addTool(toolProfile, num_floats / 2, toolNumber, diameter, resolution);
+    sim->addTool(toolProfile, toolNumber, diameter, resolution);
 
-    delete[] toolProfile;
     return Py_None;
 }
 

@@ -132,11 +132,12 @@ namespace MillSim {
         mToolTable.push_back(tool);
     }
 
-    void MillSimulation::AddTool(const float* toolProfile, int numPoints, int toolid, float diameter)
+    void
+    MillSimulation::AddTool(const std::vector<float>& toolProfile, int toolid, float diameter)
     {
         // if we have another tool with same id, remove it
         RemoveTool(toolid);
-        EndMill* tool = new EndMill(toolProfile, numPoints, toolid, diameter);
+        EndMill* tool = new EndMill(toolProfile, toolid, diameter);
         mToolTable.push_back(tool);
     }
 
@@ -348,8 +349,8 @@ namespace MillSim {
     void MillSimulation::ProcessSim(unsigned int time_ms) {
 
         static int ancient = 0;
-        static unsigned int last = 0;
-        static unsigned int msec = 0;
+        static int last = 0;
+        static int msec = 0;
         static int fps = 0;
         static int renderTime = 0;
 

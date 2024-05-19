@@ -39,37 +39,39 @@ using namespace Path;
 namespace CAMSimulator
 {
 
-    /** The representation of a CNC Toolpath Simulator */
+/** The representation of a CNC Toolpath Simulator */
 
-	class CAMSimulatorExport CAMSim: public Base::BaseClass
-    {
-        //TYPESYSTEM_HEADER();
+class CAMSimulatorExport CAMSim: public Base::BaseClass
+{
+    // TYPESYSTEM_HEADER();
 
-    public:
-        static Base::Type getClassTypeId(void);
-        virtual Base::Type getTypeId(void) const;
-        static void init(void);
-        static void* create(void);
+public:
+    static Base::Type getClassTypeId(void);
+    virtual Base::Type getTypeId(void) const;
+    static void init(void);
+    static void* create(void);
 
-    private:
-        static Base::Type classTypeId;
-
-
-
-        public:
-			CAMSim();
-			~CAMSim();
-
-			void BeginSimulation(Part::TopoShape * stock, float resolution);
-            void resetSimulation();
-            void addTool(const float* toolProfilePoints, int numPoints, int toolNumber, float diameter, float resolution);
-            void AddCommand(Command* cmd);
-
-		public:
-			std::unique_ptr<SimStock> m_stock;
-	};
-
-} //namespace CAMSimulator
+private:
+    static Base::Type classTypeId;
 
 
-#endif // CAMSimulator_CAMSim_H
+public:
+    CAMSim();
+    ~CAMSim();
+
+    void BeginSimulation(Part::TopoShape* stock, float resolution);
+    void resetSimulation();
+    void addTool(const std::vector<float> toolProfilePoints,
+                 int toolNumber,
+                 float diameter,
+                 float resolution);
+    void AddCommand(Command* cmd);
+
+public:
+    std::unique_ptr<SimStock> m_stock;
+};
+
+}  // namespace CAMSimulator
+
+
+#endif  // CAMSimulator_CAMSim_H

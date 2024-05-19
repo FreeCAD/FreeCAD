@@ -29,23 +29,26 @@
 using namespace Base;
 using namespace CAMSimulator;
 
-TYPESYSTEM_SOURCE(CAMSimulator::CAMSim , Base::BaseClass);
+TYPESYSTEM_SOURCE(CAMSimulator::CAMSim, Base::BaseClass);
 
 #define MAX_GCODE_LINE_LEN 120
 
 CAMSim::CAMSim()
-{
-}
+{}
 
 CAMSim::~CAMSim()
-{
-}
+{}
 
-void CAMSim::BeginSimulation(Part::TopoShape * stock, float quality)
+void CAMSim::BeginSimulation(Part::TopoShape* stock, float quality)
 {
-	Base::BoundBox3d bbox = stock->getBoundBox();
-    SimStock stk = {(float)bbox.MinX, (float)bbox.MinY, (float)bbox.MinZ, 
-		(float)bbox.LengthX(), (float)bbox.LengthY(), (float)bbox.LengthZ(), quality};
+    Base::BoundBox3d bbox = stock->getBoundBox();
+    SimStock stk = {(float)bbox.MinX,
+                    (float)bbox.MinY,
+                    (float)bbox.MinZ,
+                    (float)bbox.LengthX(),
+                    (float)bbox.LengthY(),
+                    (float)bbox.LengthZ(),
+                    quality};
     DlgCAMSimulator::GetInstance()->startSimulation(&stk, quality);
 }
 
@@ -54,19 +57,16 @@ void CAMSimulator::CAMSim::resetSimulation()
     DlgCAMSimulator::GetInstance()->resetSimulation();
 }
 
-void CAMSim::addTool(const float *toolProfilePoints, int numPoints, int toolNumber, float diameter, float resolution)
+void CAMSim::addTool(const std::vector<float> toolProfilePoints,
+                     int toolNumber,
+                     float diameter,
+                     float resolution)
 {
-    DlgCAMSimulator::GetInstance()->addTool(toolProfilePoints, numPoints, toolNumber, diameter, resolution);
+    DlgCAMSimulator::GetInstance()->addTool(toolProfilePoints, toolNumber, diameter, resolution);
 }
 
-void CAMSim::AddCommand(Command * cmd)
+void CAMSim::AddCommand(Command* cmd)
 {
     std::string gline = cmd->toGCode();
     DlgCAMSimulator::GetInstance()->addGcodeCommand(gline.c_str());
 }
-
-
-
-
-
-
