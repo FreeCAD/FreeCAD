@@ -14,7 +14,6 @@
         <file>icons/PartDesign_BaseFeature.svg</file>
         <file>icons/PartDesign_Body.svg</file>
         <file alias="icons/PartDesign_Body_Create_New.svg">icons/PartDesign_Body.svg</file>
-        <file>icons/PartDesign_Body_old.svg</file>
         <file>icons/PartDesign_Body_Tree.svg</file>
         <file>icons/PartDesign_Boolean.svg</file>
         <file>icons/PartDesign_Chamfer.svg</file>
@@ -26,7 +25,6 @@
         <file>icons/PartDesign_Groove.svg</file>
         <file>icons/PartDesign_Hole.svg</file>
         <file>icons/PartDesign_InternalExternalGear.svg</file>
-        <file>icons/PartDesign_InvoluteGear.svg</file>
         <file>icons/PartDesign_Line.svg</file>
         <file>icons/PartDesign_LinearPattern.svg</file>
         <file>icons/PartDesign_Migrate.svg</file>
