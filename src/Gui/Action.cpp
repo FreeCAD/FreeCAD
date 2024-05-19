@@ -627,9 +627,10 @@ WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
         this, &WorkbenchGroup::onWorkbenchActivated);
 }
 
-QAction* WorkbenchGroup::getOrCreateAction(const QString& wbName) {
+QAction* WorkbenchGroup::getOrCreateAction(const QString& wbName)
+{
     if (!actionByWorkbenchName.contains(wbName)) {
-        actionByWorkbenchName[wbName] = new QAction;
+        actionByWorkbenchName[wbName] = new QAction(QApplication::instance());
     }
 
     return actionByWorkbenchName[wbName];

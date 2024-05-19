@@ -109,13 +109,15 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(CenterScale, (defScale), dgroup, App::Prop_None, "Center mark size adjustment, if enabled");
 
     //properties that affect Section Line
-    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,sgroup, App::Prop_None, "Show/hide section line if applicable");
+    ADD_PROPERTY_TYPE(ShowSectionLine ,(Preferences::showSectionLine()), sgroup, App::Prop_None, "Show/hide section line if applicable");
+    ADD_PROPERTY_TYPE(IncludeCutLine ,(Preferences::includeCutLine()), sgroup, App::Prop_None, "Show/hide section cut line if applicable");
     ADD_PROPERTY_TYPE(SectionLineStyle, (Preferences::SectionLineStyle()), sgroup, App::Prop_None,
                         "Set section line style if applicable");
     ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), sgroup, App::Prop_None,
                         "Set section line color if applicable");
 
-     bool marksDefault  = Preferences::sectionLineConvention() == 1 ? true : false;
+    // Assumption: ASME does not use change marks and ISO does use change marks
+    bool marksDefault  = Preferences::sectionLineConvention() == 1 ? true : false;
     ADD_PROPERTY_TYPE(SectionLineMarks, (marksDefault), sgroup, App::Prop_None,
                         "Show marks at direction changes for ComplexSection");
 
@@ -176,6 +178,7 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
         prop == &(SectionLineStyle) ||
         prop == &(SectionLineColor) ||
         prop == &(SectionLineMarks) ||
+        prop == &(IncludeCutLine)  ||
         prop == &(HighlightLineStyle) ||
         prop == &(HighlightLineColor) ||
         prop == &(HorizCenterLine) ||
