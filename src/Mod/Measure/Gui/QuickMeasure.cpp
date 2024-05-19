@@ -66,6 +66,10 @@ void QuickMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
         // ignore this exception because it can be caused by trying to access a non-existing
         // sub-element e.g. when selecting a construction geometry in sketcher
     }
+    catch (const Base::ValueError&) {
+        // ignore this exception because it can be caused by trying to access a non-existing
+        // sub-element e.g. when selecting a constraint in sketcher
+    }
     catch (const Base::Exception& e) {
         e.ReportException();
     }

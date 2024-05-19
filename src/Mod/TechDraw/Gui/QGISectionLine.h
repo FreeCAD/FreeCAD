@@ -64,6 +64,7 @@ public:
     void setFont(QFont f, double fsize);
     void setSectionColor(QColor c);
     void setPathMode(bool mode) { m_pathMode = mode; }
+    void setShowLine(bool state) { m_showLine = state; }
     bool pathMode() { return m_pathMode; }
     void setChangePoints(TechDraw::ChangePointVector changePoints);
     void clearChangePoints();
@@ -123,6 +124,8 @@ private:
     QPointF            m_arrowPos2;
     std::vector<QGraphicsPathItem*> m_changePointMarks;
     TechDraw::ChangePointVector m_changePointData;
+
+    bool m_showLine{true};
 };
 
 }

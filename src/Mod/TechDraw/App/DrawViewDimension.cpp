@@ -231,7 +231,7 @@ DrawViewDimension::DrawViewDimension()
     resetAngular();
     resetArc();
     m_hasGeometry = false;
-    m_matcher = new GeometryMatcher(this);
+    m_matcher = new GeometryMatcher();
     m_referencesCorrect = true;
     m_corrector = new DimensionAutoCorrect(this);
 }

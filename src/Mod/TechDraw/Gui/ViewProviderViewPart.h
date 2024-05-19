@@ -53,6 +53,7 @@ public:
     App::PropertyBool   HorizCenterLine;
     App::PropertyBool   VertCenterLine;
     App::PropertyBool   ShowSectionLine;
+    App::PropertyBool   IncludeCutLine;
     App::PropertyEnumeration   SectionLineStyle;
     App::PropertyColor  SectionLineColor;
     App::PropertyBool   SectionLineMarks;

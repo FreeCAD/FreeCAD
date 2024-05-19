@@ -36,6 +36,7 @@
 
 class SbRotation;
 class SoMultipleCopy;
+class SoTransform;
 
 namespace FemGui
 {
@@ -68,6 +69,7 @@ public:
 
     SoSeparator* getSymbolSeparator() const;
     SoSeparator* getExtraSymbolSeparator() const;
+    SoTransform* getExtraSymbolTransform() const;
     // Apply rotation on copies of the constraint symbol
     void setRotateSymbol(bool rotate);
     bool getRotateSymbol() const;
@@ -94,6 +96,7 @@ protected:
     void updateSymbol();
     virtual void
     transformSymbol(const Base::Vector3d& point, const Base::Vector3d& normal, SbMatrix& mat) const;
+    virtual void transformExtraSymbol() const;
 
     static void createPlacement(SoSeparator* sep, const SbVec3f& base, const SbRotation& r);
     static void updatePlacement(const SoSeparator* sep,
@@ -163,6 +166,7 @@ protected:
     SoSeparator* pShapeSep;
     SoSeparator* pSymbol;
     SoSeparator* pExtraSymbol;
+    SoTransform* pExtraTrans;
     SoMultipleCopy* pMultCopy;
     const char* ivFile;
 
@@ -188,6 +192,11 @@ inline SoSeparator* ViewProviderFemConstraint::getSymbolSeparator() const
 inline SoSeparator* ViewProviderFemConstraint::getExtraSymbolSeparator() const
 {
     return pExtraSymbol;
+}
+
+inline SoTransform* ViewProviderFemConstraint::getExtraSymbolTransform() const
+{
+    return pExtraTrans;
 }
 
 inline bool ViewProviderFemConstraint::getRotateSymbol() const

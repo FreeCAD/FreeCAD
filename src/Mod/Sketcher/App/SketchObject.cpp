@@ -265,8 +265,8 @@ void SketchObject::buildShape()
             Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(i-1, Sketcher::PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
-            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
-                                  Data::MappedName::fromRawData(name.c_str()),0L);
+//            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
+//                                  Data::MappedName::fromRawData(name.c_str()),0L);
             vertices.push_back(vertex);
             vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
         } else {
@@ -9569,7 +9569,8 @@ std::pair<std::string,std::string> SketchObject::getElementName(
 {
     //  Todo: Toponaming Project March 2024:  This method override breaks the sketcher - selection and deletion
     //          of constraints ceases to work.  See #13169.  We need to prove that this works before
-    //          enabling it.  This appears to be okay now.
+    //          enabling it.
+    return Part2DObject::getElementName(name,type);
 #ifndef FC_USE_TNP_FIX
     return Part2DObject::getElementName(name,type);
 #endif
