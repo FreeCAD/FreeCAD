@@ -31,8 +31,8 @@
 # @{
 import FreeCAD as App
 import FreeCADGui as Gui
-import draftutils.todo as todo
-
+from draftutils import gui_utils
+from draftutils import todo
 from draftutils.messages import _toolmsg, _log
 
 
@@ -86,14 +86,8 @@ class GuiCommandSimplest:
         self.doc = doc
 
     def IsActive(self):
-        """Return True when this command should be available.
-
-        It is `True` when there is a document.
-        """
-        if App.activeDocument():
-            return True
-        else:
-            return False
+        """Return True when this command should be available."""
+        return bool(App.activeDocument())
 
     def Activated(self):
         """Execute when the command is called.
@@ -119,14 +113,8 @@ class GuiCommandNeedsSelection(GuiCommandSimplest):
     """
 
     def IsActive(self):
-        """Return True when this command should be available.
-
-        It is `True` when there is a selection.
-        """
-        if App.activeDocument() and Gui.Selection.getSelection():
-            return True
-        else:
-            return False
+        """Return True when this command should be available."""
+        return bool(Gui.Selection.getSelection())
 
 
 class GuiCommandBase:
@@ -175,10 +163,7 @@ class GuiCommandBase:
 
     def IsActive(self):
         """Return True when this command should be available."""
-        if App.ActiveDocument:
-            return True
-        else:
-            return False
+        return bool(gui_utils.get_3d_view())
 
     def finish(self):
         """Terminate the active command by committing the list of commands.

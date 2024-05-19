@@ -580,7 +580,8 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Doc.recompute()
         # Assert
         self.assertEqual(len(body.Shape.childShapes()), 1)
-        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 26)
+        # The next size can vary based on tOCCT version (26 or 30), so we accept having entries.
+        self.assertGreaterEqual(body.Shape.childShapes()[0].ElementMapSize, 26)
 
     def testPartDesignElementMapPocket(self):
         pass  # TODO

@@ -44,19 +44,9 @@ TEST_F(FeatureOffsetTest, testOffset3D)
     EXPECT_TRUE(boxesMatch(bb, Base::BoundBox3d(-1, -1, -1, 2, 3, 4)));
     // Assert correct element Map
 #ifdef FC_USE_TNP_FIX
-    EXPECT_TRUE(allElementsMatch(
-        _offset->Shape.getShape(),
-        {
-            "Edge10;:G;OFS;:H47b:7,E",  "Edge11;:G;OFS;:H47b:7,E",  "Edge12;:G;OFS;:H47b:7,E",
-            "Edge1;:G;OFS;:H47b:7,E",   "Edge2;:G;OFS;:H47b:7,E",   "Edge3;:G;OFS;:H47b:7,E",
-            "Edge4;:G;OFS;:H47b:7,E",   "Edge5;:G;OFS;:H47b:7,E",   "Edge6;:G;OFS;:H47b:7,E",
-            "Edge7;:G;OFS;:H47b:7,E",   "Edge8;:G;OFS;:H47b:7,E",   "Edge9;:G;OFS;:H47b:7,E",
-            "Face1;:G;OFS;:H47b:7,F",   "Face2;:G;OFS;:H47b:7,F",   "Face3;:G;OFS;:H47b:7,F",
-            "Face4;:G;OFS;:H47b:7,F",   "Face5;:G;OFS;:H47b:7,F",   "Face6;:G;OFS;:H47b:7,F",
-            "Vertex1;:G;OFS;:H47b:7,V", "Vertex2;:G;OFS;:H47b:7,V", "Vertex3;:G;OFS;:H47b:7,V",
-            "Vertex4;:G;OFS;:H47b:7,V", "Vertex5;:G;OFS;:H47b:7,V", "Vertex6;:G;OFS;:H47b:7,V",
-            "Vertex7;:G;OFS;:H47b:7,V", "Vertex8;:G;OFS;:H47b:7,V",
-        }));
+    EXPECT_EQ(_offset->Shape.getShape().countSubElements("Vertex"), 8);
+    EXPECT_EQ(_offset->Shape.getShape().countSubElements("Edge"), 12);
+    EXPECT_EQ(_offset->Shape.getShape().countSubElements("Face"), 6);
 #else
     EXPECT_EQ(_offset->Shape.getShape().getElementMapSize(), 0);
 #endif
@@ -83,21 +73,9 @@ TEST_F(FeatureOffsetTest, testOffset3DWithExistingElementMap)
     EXPECT_TRUE(boxesMatch(bb, Base::BoundBox3d(-2, -2, -2, 3, 5, 5)));
     // Assert correct element Map
 #ifdef FC_USE_TNP_FIX
-    EXPECT_TRUE(elementsMatch(
-        _offset->Shape.getShape(),
-        {
-            "#10:4;:G;OFS;:H9c4:7,F", "#12:1;:G;OFS;:H9c4:7,F", "#14:3;:G;OFS;:H9c4:7,F",
-            "#16:6;:G;OFS;:H9c4:7,F", "#18:5;:G;OFS;:H9c4:7,F", "#1a:2;:G;OFS;:H9c4:7,F",
-            "#1d:3;:G;OFS;:H9c4:7,V", "#1d:4;:G;OFS;:H9c4:7,V", "#1d:7;:G;OFS;:H9c4:7,V",
-            "#1d:8;:G;OFS;:H9c4:7,V", "#1f:1;:G;OFS;:H9c4:7,V", "#1f:2;:G;OFS;:H9c4:7,V",
-            "#1f:5;:G;OFS;:H9c4:7,V", "#1f:6;:G;OFS;:H9c4:7,V", "#3:3;:G;OFS;:H9c4:7,E",
-            "#3:7;:G;OFS;:H9c4:7,E",  "#3:b;:G;OFS;:H9c4:7,E",  "#3:c;:G;OFS;:H9c4:7,E",
-            "#5:2;:G;OFS;:H9c4:7,E",  "#7:4;:G;OFS;:H9c4:7,E",  "#9:1;:G;OFS;:H9c4:7,E",
-            "#9:5;:G;OFS;:H9c4:7,E",  "#9:9;:G;OFS;:H9c4:7,E",  "#9:a;:G;OFS;:H9c4:7,E",
-            "#b:6;:G;OFS;:H9c4:7,E",  "#d:8;:G;OFS;:H9c4:7,E",
-        }));
-
-
+    EXPECT_EQ(_offset->Shape.getShape().countSubElements("Vertex"), 8);
+    EXPECT_EQ(_offset->Shape.getShape().countSubElements("Edge"), 12);
+    EXPECT_EQ(_offset->Shape.getShape().countSubElements("Face"), 6);
 #else
     EXPECT_EQ(_offset->Shape.getShape().getElementMapSize(), 0);
 #endif

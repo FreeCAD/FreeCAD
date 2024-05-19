@@ -155,6 +155,7 @@ public:
     static const Unit Force;
     static const Unit Work;
     static const Unit Power;
+    static const Unit Moment;
 
     static const Unit SpecificEnergy;
     static const Unit ThermalConductivity;
