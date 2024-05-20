@@ -42,6 +42,10 @@
 # include <BRepTools.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeEllipse.hxx>
+#include <GC_MakeCircle.hxx>
+#include <Geom_TrimmedCurve.hxx>
+#include <Geom_Circle.hxx>
+
 # include <gce_MakeCirc.hxx>
 # include <GCPnts_AbscissaPoint.hxx>
 # include <GProp_GProps.hxx>
@@ -75,6 +79,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 #include <Base/Writer.h>
 
 #include <Mod/Part/App/Geometry.h>
@@ -1579,112 +1584,39 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
     return isCircle;
 }
 
-// make a circle or arc of circle Edge from BSpline Edge
-TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge occEdge, bool& arc)
+//! make a circle or arc of circle Edge from BSpline Edge
+//! assumes the spline is generally circular but does not check
+TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge splineEdge, bool& arc)
 {
-    TopoDS_Edge result;
-    BRepAdaptor_Curve c(occEdge);
+    BRepAdaptor_Curve curveAdapt(splineEdge);
 
-    // find the two ends
-    Handle(Geom_Curve) curve = c.Curve().Curve();
-    double f = c.FirstParameter();
-    double l = c.LastParameter();
-    gp_Pnt s = c.Value(f);
-    gp_Pnt e = c.Value(l);
+    // find the ends of the edge from the underlying curve
+    Handle(Geom_Curve) curve = curveAdapt.Curve().Curve();
+    double firstParam = curveAdapt.FirstParameter();
+    double lastParam = curveAdapt.LastParameter();
+    gp_Pnt startPoint = curveAdapt.Value(firstParam);
+    gp_Pnt endPoint = curveAdapt.Value(lastParam);
 
-    if (s.IsEqual(e, 0.001)) {    //more reliable
+    arc = true;
+    if (startPoint.IsEqual(endPoint, 0.001)) {    //more reliable than IsClosed flag
         arc = false;
-    } else {
-        arc = true;
     }
-    //    arc  = !c.IsClosed();    //reliable?
+    double midRange = (lastParam + firstParam) / 2;
+    gp_Pnt midPoint = curveAdapt.Value(midRange);
+    Handle_Geom_Circle circle3Points = GC_MakeCircle(startPoint, midPoint, endPoint);
 
-    Handle(Geom_BSplineCurve) spline = c.BSpline();
-
-    if (spline->NbPoles() < 5) {    //need 5 poles (s-p1-pm-p2-e) for algo
-        return result;              //how to do with fewer poles?
+    if (circle3Points.IsNull()) {
+        return {};
     }
 
-    try {
-        // get three points on curve (non extreme poles)
-        int nb_poles = spline->NbPoles();
-        gp_Pnt p1 = spline->Pole(2);          //OCC numbering starts at 1!!
-        gp_Pnt p2 = spline->Pole(nb_poles-1);
-        gp_Pnt pm;
-        if (nb_poles == 5) {
-            pm = spline->Pole(3);   //5 poles => 2.5 => 2
-        } else {
-            pm = spline->Pole(nb_poles / 2);
-        }
-
-        // project three poles onto the curve
-        GeomAPI_ProjectPointOnCurve proj1;
-        GeomAPI_ProjectPointOnCurve proj2;
-        GeomAPI_ProjectPointOnCurve projm;
-        proj1.Init(p1, curve, f, l);
-        proj1.Perform(p1);
-        proj2.Init(p2, curve, f, l);
-        proj2.Perform(p2);
-        projm.Init(pm, curve, f, l);
-        projm.Perform(pm);
-        if ( (proj1.NbPoints() == 0) ||
-            (proj2.NbPoints() == 0) ||
-            (projm.NbPoints() == 0) ) {
-            return result;
-        }
-        gp_Pnt pc1, pc2, pcm;
-
-        // get projected points
-        pc1 = proj1.NearestPoint();
-        pc2 = proj2.NearestPoint();
-        pcm = projm.NearestPoint();
-
-        // make 2 circles and find their radii
-        gce_MakeCirc gce_circ1 = gce_MakeCirc(s, pc1, pcm);   //3 point circle
-        if (gce_circ1.Status() != gce_Done) {
-            return result;
-        }
-        gp_Circ circle1 = gce_circ1.Value();
-        double radius1 = circle1.Radius();
-        gp_Pnt center1 = circle1.Location();
-        Base::Vector3d vc1 = DrawUtil::toVector3d(center1);
-
-        gce_MakeCirc gce_circ2 = gce_MakeCirc(pcm, pc2, e);
-        if (gce_circ2.Status() != gce_Done) {
-            return result;
-        }
-        gp_Circ circle2 = gce_circ2.Value();
-        double radius2 = circle2.Radius();
-        gp_Pnt center2 = circle2.Location();
-        Base::Vector3d vc2 = DrawUtil::toVector3d(center2);
-
-        // compare radii & centers
-        double allowError = 0.001;           //mm^-3 good enough for printing
-        double radius;
-        Base::Vector3d center;
-        if ( (DrawUtil::fpCompare(radius2, radius1, allowError)) &&
-            (vc1.IsEqual(vc2, allowError)) ) {
-            if (arc) {
-                GC_MakeArcOfCircle makeArc(s, pcm, e);
-                Handle(Geom_TrimmedCurve) tCurve = makeArc.Value();
-                BRepBuilderAPI_MakeEdge mkEdge(tCurve);
-                result = mkEdge.Edge();
-            } else {
-                radius = (radius1 + radius2) / 2.0;
-                center = (vc1 + vc2) / 2.0;
-                gp_Pnt gCenter(center.x, center.y, center.z);
-                gp_Ax2 stdZ(gCenter, gp_Dir(0, 0, 1));
-                gp_Circ newCirc(stdZ, radius);
-                BRepBuilderAPI_MakeEdge mkEdge(newCirc);
-                result = mkEdge.Edge();
-            }
-        }
+    if (!arc) {
+        // whole circle
+        return BRepBuilderAPI_MakeEdge(circle3Points);
     }
-    catch (...) {
-        // return null shape to indicate that we could not make a circle from this bspline
-        return TopoDS_Edge();
-    }
-    return result;
+
+    Handle_Geom_TrimmedCurve circleArc =
+                                GC_MakeArcOfCircle (startPoint, midPoint, endPoint);
+    return BRepBuilderAPI_MakeEdge(circleArc);
 }
 
 bool GeometryUtils::isLine(TopoDS_Edge occEdge)
