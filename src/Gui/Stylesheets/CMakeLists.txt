@@ -9,6 +9,7 @@ SET(Stylesheets_Files
     "Dark-modern.qss"
     "Light-modern.qss"
     "Dark-classic.qss"
+	"Light-classic.qss"
 )
 
 SET(Overlay_Stylesheets_Files

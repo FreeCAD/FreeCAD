@@ -838,7 +838,7 @@ report view
 QTextEdit {
   background-color: #444444;
   color: White;
-  border-radius: 1.9px;
+  border-radius: 2px;
   border: 0px solid #020202;
 }
 
@@ -1936,7 +1936,7 @@ QTabBar::close-button, QDockWidget QTabBar::close-button {
   border: 0;
   margin: 3px;
   padding: 0px;
-  image: url(qss:images_classic/close-white.png);
+  image: url(qss:images_classic/Close-lightgray.png);
 }
 
 QTabBar::close-button:hover, QDockWidget QTabBar::close-button:hover {

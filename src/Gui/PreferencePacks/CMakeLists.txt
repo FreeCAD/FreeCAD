@@ -13,6 +13,8 @@ SET(PreferencePacks_Directories
 "ProDark"
 "Light"
 "Light modern"
+"Classic light"
+"Classic dark"
 )
 
 ADD_CUSTOM_TARGET(PreferencePacks_data ALL

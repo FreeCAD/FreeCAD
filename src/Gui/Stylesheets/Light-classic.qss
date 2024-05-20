@@ -1941,7 +1941,7 @@ QTabBar::close-button, QDockWidget QTabBar::close-button {
   border: 0;
   margin: 3px;
   padding: 0px;
-  image: url(qss:images_classic/close-black.png);
+  image: url(qss:images_classic/close-darkgray.png);
 }
 
 QTabBar::close-button:hover, QDockWidget QTabBar::close-button:hover {
@@ -2751,7 +2751,7 @@ Gui--NotificationLabel {
 
 Gui--OverlayToolButton:!hover{
   background-color: transparent;
-  image: url(qss:overlay/close_light.svg);
+  image: url(qss:overlay/close_lightgray.svg);
 }
 
 Gui--OverlayToolButton:hover {
