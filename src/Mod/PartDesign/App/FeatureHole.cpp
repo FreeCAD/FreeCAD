@@ -1654,7 +1654,7 @@ App::DocumentObjectExecReturn* Hole::execute()
 {
      TopoShape profileshape;
     try {
-        profileshape = getVerifiedFace();
+        profileshape = getTopoShapeVerifiedFace();
     }
     catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
