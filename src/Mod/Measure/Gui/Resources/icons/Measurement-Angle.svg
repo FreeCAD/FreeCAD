@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   id="svg2869"
+   version="1.1"
+   viewBox="0 0 64 64"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2871" />
+  <metadata
+     id="metadata2874">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[maxwxyz]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date>2024</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     style="color:#000000;fill:#000000;fill-rule:evenodd;stroke-linecap:round;-inkscape-stroke:none;fill-opacity:1"
+     d="m 26.417969,18.126953 a 3.000005,3.000005 0 0 0 1.396484,1.822266 c 6.489209,3.746546 11.878454,9.133837 15.625,15.623047 a 3.000005,3.000005 0 0 0 4.097656,1.097656 3.000005,3.000005 0 0 0 1.097657,-4.097656 C 44.361762,25.171205 38.215513,19.024957 30.814453,14.751953 a 3.000005,3.000005 0 0 0 -4.097656,1.097656 3.000005,3.000005 0 0 0 -0.298828,2.277344 z"
+     id="path18" />
+  <path
+     id="path16"
+     style="color:#000000;fill:#000000;fill-rule:evenodd;-inkscape-stroke:none;fill-opacity:1"
+     d="M 54.240234 26.121094 L 35.050781 37.201172 L 54.228516 48.261719 L 54.240234 26.121094 z " />
+  <path
+     id="path13"
+     style="color:#000000;fill:#000000;fill-rule:evenodd;-inkscape-stroke:none;fill-opacity:1"
+     d="M 37.265625 9.1464844 L 15.126953 9.1582031 L 26.185547 28.337891 L 37.265625 9.1464844 z " />
+  <path
+     style="color:#000000;fill:#000000;fill-rule:evenodd;stroke-linecap:round;-inkscape-stroke:none;fill-opacity:1"
+     d="M 58.632812,47.757812 6.8046875,53.900391 a 3,3 0 0 0 -2.625,3.332031 3,3 0 0 0 3.3320312,2.626953 L 59.339844,53.716797 a 3,3 0 0 0 2.625,-3.332031 3,3 0 0 0 -3.332032,-2.626954 z"
+     id="path2-1" />
+  <path
+     style="color:#000000;fill:#000000;fill-rule:evenodd;stroke-linecap:round;-inkscape-stroke:none;fill-opacity:1"
+     d="M 12.900391,1.9882812 A 3,3 0 0 0 9.6054688,4.6601562 L 4.2539062,55.810547 a 3,3 0 0 0 2.671875,3.294922 3,3 0 0 0 3.2949218,-2.671875 L 15.572266,5.2851562 a 3,3 0 0 0 -2.671875,-3.296875 z"
+     id="path3" />
+</svg>

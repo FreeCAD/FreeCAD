@@ -56,7 +56,7 @@ public:
     void recalculatePosition();
 
     const char* getViewProviderName() const override {
-        return "MeasureGui::ViewProviderMeasure";
+        return "MeasureGui::ViewProviderMeasurePosition";
     }
 
     static bool isValidSelection(const App::MeasureSelection& selection);
