@@ -152,6 +152,8 @@ public:
     create(const TopoShape& shape, const char* name = nullptr, App::Document* document = nullptr);
 
     static bool isElementMappingDisabled(App::PropertyContainer *container);
+
+    bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;
 #ifdef FC_USE_TNP_FIX
 
     const std::vector<std::string>& searchElementCache(const std::string &element,

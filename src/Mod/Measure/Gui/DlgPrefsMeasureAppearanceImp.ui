@@ -120,9 +120,9 @@
           </property>
           <property name="color" stdset="0">
            <color>
-            <red>60</red>
-            <green>240</green>
-            <blue>0</blue>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
@@ -144,9 +144,9 @@
          <widget class="Gui::PrefColorButton" name="cbText">
           <property name="color" stdset="0">
            <color>
-            <red>60</red>
-            <green>240</green>
-            <blue>0</blue>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">

@@ -2188,6 +2188,7 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     }
 
     mw->setProperty("fc_currentStyleSheet", qssFile);
+    mw->setProperty("fc_tiledBackground", tiledBackground);
 
     if (!qssFile.isEmpty()) {
         // Search for stylesheet in user-defined search paths.

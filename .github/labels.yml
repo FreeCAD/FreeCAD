@@ -18,9 +18,9 @@ Materials:
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Material/**/*']
 
-WB Arch:
+WB BIM:
 - changed-files:
-  - any-glob-to-any-file:  ['src/Mod/Arch/**/*']
+  - any-glob-to-any-file:  ['src/Mod/BIM/**/*']
 
 WB Assembly:
 - changed-files:

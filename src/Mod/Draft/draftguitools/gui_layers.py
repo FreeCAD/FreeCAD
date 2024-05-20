@@ -31,7 +31,7 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import os
-import FreeCAD
+import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
 import Draft_rc
@@ -60,20 +60,20 @@ class Layer(gui_base.GuiCommandSimplest):
     """GuiCommand to create a Layer object in the document."""
 
     def __init__(self):
-        super(Layer, self).__init__(name=translate("draft","Layer"))
+        super().__init__(name=translate("draft", "Layer"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {'Pixmap': 'Draft_Layer',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Layer", "Layer"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Layer", "Adds a layer to the document.\nObjects added to this layer can share the same visual properties such as line color, line width, and shape color.")}
+        return {"Pixmap": "Draft_Layer",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Layer", "Layer"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Layer", "Adds a layer to the document.\nObjects added to this layer can share the same visual properties.")}
 
     def Activated(self):
         """Execute when the command is called.
 
         It calls the `finish(False)` method of the active Draft command.
         """
-        super(Layer, self).Activated()
+        super().Activated()
 
         self.doc.openTransaction("Create Layer")
         Gui.addModule("Draft")
@@ -88,9 +88,13 @@ class LayerManager:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Draft_LayerManager',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_LayerManager", "Manage layers..."),
-                'ToolTip' : QT_TRANSLATE_NOOP("Draft_LayerManager", "Set/modify the different layers of this document")}
+        return {"Pixmap"  : "Draft_LayerManager",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_LayerManager", "Manage layers..."),
+                "ToolTip" : QT_TRANSLATE_NOOP("Draft_LayerManager", "Set/modify the different layers of this document")}
+
+    def IsActive(self):
+        """Return True when this command should be available."""
+        return bool(App.activeDocument())
 
     def Activated(self):
 
@@ -150,14 +154,15 @@ class LayerManager:
 
         "when OK button is pressed"
 
+        doc = App.ActiveDocument
         changed = False
 
         # delete layers
         for name in self.deleteList:
             if not changed:
-                FreeCAD.ActiveDocument.openTransaction("Layers change")
+                doc.openTransaction("Layers change")
                 changed = True
-            FreeCAD.ActiveDocument.removeObject(name)
+            doc.removeObject(name)
 
         # apply changes
         for row in range(self.model.rowCount()):
@@ -166,10 +171,10 @@ class LayerManager:
             name = self.model.item(row,1).toolTip()
             obj = None
             if name:
-                obj = FreeCAD.ActiveDocument.getObject(name)
+                obj = doc.getObject(name)
             if not obj:
                 if not changed:
-                    FreeCAD.ActiveDocument.openTransaction("Layers change")
+                    doc.openTransaction("Layers change")
                     changed = True
                 obj = Draft.make_layer(name=None, line_color=None, shape_color=None,
                                        line_width=None, draw_style=None, transparency=None)
@@ -179,7 +184,7 @@ class LayerManager:
             checked = True if self.model.item(row,0).checkState() == QtCore.Qt.Checked else False
             if checked != vobj.Visibility:
                 if not changed:
-                    FreeCAD.ActiveDocument.openTransaction("Layers change")
+                    doc.openTransaction("Layers change")
                     changed = True
                 vobj.Visibility = checked
 
@@ -188,7 +193,7 @@ class LayerManager:
             if label:
                 if obj.Label != label:
                     if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
+                        doc.openTransaction("Layers change")
                         changed = True
                     obj.Label = label
 
@@ -197,7 +202,7 @@ class LayerManager:
             if width:
                 if vobj.LineWidth != width:
                     if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
+                        doc.openTransaction("Layers change")
                         changed = True
                     vobj.LineWidth = width
 
@@ -206,7 +211,7 @@ class LayerManager:
             if style:
                 if vobj.DrawStyle != style:
                     if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
+                        doc.openTransaction("Layers change")
                         changed = True
                     vobj.DrawStyle = style
 
@@ -215,7 +220,7 @@ class LayerManager:
             if color:
                 if vobj.LineColor[:3] != color:
                     if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
+                        doc.openTransaction("Layers change")
                         changed = True
                     vobj.LineColor = color
 
@@ -224,7 +229,7 @@ class LayerManager:
             if color:
                 if vobj.ShapeColor[:3] != color:
                     if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
+                        doc.openTransaction("Layers change")
                         changed = True
                     vobj.ShapeColor = color
 
@@ -233,7 +238,7 @@ class LayerManager:
             if transparency:
                 if vobj.Transparency != transparency:
                     if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
+                        doc.openTransaction("Layers change")
                         changed = True
                     vobj.Transparency = transparency
 
@@ -246,14 +251,14 @@ class LayerManager:
                 if "LinePrintColor" in vobj.PropertiesList:
                     if vobj.LinePrintColor[:3] != color:
                         if not changed:
-                            FreeCAD.ActiveDocument.openTransaction("Layers change")
+                            doc.openTransaction("Layers change")
                             changed = True
                         vobj.LinePrintColor = color
 
         # recompute
         if changed:
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
+            doc.commitTransaction()
+            doc.recompute()
 
         # exit
         self.dialog.reject()
@@ -288,7 +293,7 @@ class LayerManager:
         self.dialog.tree.setColumnWidth(1,128) # name column
 
         # populate
-        objs = [obj for obj in FreeCAD.ActiveDocument.Objects if Draft.getType(obj) == "Layer"]
+        objs = [obj for obj in App.ActiveDocument.Objects if Draft.getType(obj) == "Layer"]
         objs.sort(key=lambda o:o.Label)
         for obj in objs:
             self.addItem(obj)
@@ -409,7 +414,7 @@ class LayerManager:
                 self.model.item(row,0).setCheckState(QtCore.Qt.Unchecked)
 
 
-if FreeCAD.GuiUp:
+if App.GuiUp:
 
     from PySide import QtCore, QtGui, QtWidgets
 
@@ -505,8 +510,6 @@ if FreeCAD.GuiUp:
             elif index.column() == 7: # Line prin color
                 model.setData(index,eval(editor.text()),QtCore.Qt.UserRole)
                 model.itemFromIndex(index).setIcon(getColorIcon(eval(editor.text())))
-
-
 
 
 Gui.addCommand('Draft_Layer', Layer())

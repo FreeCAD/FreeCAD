@@ -85,6 +85,8 @@ public:
     static std::string svgFile();
     static std::string patFile();
 
+    static QString defaultSymbolDir();
+
     static std::string bitmapFill();
 
     static double GapISO();
@@ -126,6 +128,8 @@ public:
     static std::string currentElementDefFile();
 
     static int sectionLineConvention();
+    static bool showSectionLine();
+    static bool includeCutLine();
 
     static bool useExactMatchOnDims();
 };

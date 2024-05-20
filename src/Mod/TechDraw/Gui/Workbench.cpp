@@ -311,7 +311,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/TechDraw/dimensioning");
-    bool separatedTools = hGrp->GetBool("SeparatedDimensioningTools", true);
+    bool separatedTools = hGrp->GetBool("SeparatedDimensioningTools", false);
     if (hGrp->GetBool("SingleDimensioningTool", true)) {
         if (separatedTools) {
             *dims << "TechDraw_Dimension";

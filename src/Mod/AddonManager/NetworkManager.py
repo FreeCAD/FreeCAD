@@ -104,7 +104,17 @@ if HAVE_QTNETWORK:
 
     # Added in Qt 5.15
     if hasattr(QtNetwork.QNetworkRequest, "DefaultTransferTimeoutConstant"):
-        default_timeout = QtNetwork.QNetworkRequest.DefaultTransferTimeoutConstant
+        timeoutConstant = QtNetwork.QNetworkRequest.DefaultTransferTimeoutConstant
+        if hasattr(timeoutConstant, "value"):
+            # Qt 6 changed the timeout constant to have a 'value' attribute.
+            # The function setTransferTimeout does not accept
+            # DefaultTransferTimeoutConstant of type
+            # QtNetwork.QNetworkRequest.TransferTimeoutConstant any
+            # longer but only an int.
+            default_timeout = timeoutConstant.value
+        else:
+            # In Qt 5.15 we can use the timeoutConstant as is.
+            default_timeout = timeoutConstant
     else:
         default_timeout = 30000
 
@@ -428,6 +438,11 @@ if HAVE_QTNETWORK:
             )
             if hasattr(request, "setTransferTimeout"):
                 # Added in Qt 5.15
+                # In Qt 5, the function setTransferTimeout seems to accept
+                # DefaultTransferTimeoutConstant of type
+                # PySide2.QtNetwork.QNetworkRequest.TransferTimeoutConstant,
+                # whereas in Qt 6, the function seems to only accept an
+                # integer.
                 request.setTransferTimeout(timeout_ms)
             return request
 

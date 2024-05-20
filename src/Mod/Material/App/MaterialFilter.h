@@ -184,6 +184,8 @@ public:
         return &_requiredComplete;
     }
 
+    void clear();
+
 private:
     QString _name;
     QSet<QString> _required;

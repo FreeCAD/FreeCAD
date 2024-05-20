@@ -60,6 +60,7 @@
 #include "FeatureSketchBased.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
+#include "Mod/Part/App/Geometry.h"
 
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true);
@@ -1472,6 +1473,86 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
         Base::Placement SketchPos = obj->Placement.getValue();
         Base::Rotation SketchOrientation = SketchPos.getRotation();
         SketchOrientation.multVec(SketchVector, SketchVector);
+#ifdef FC_USE_TNP_FIX
+        return SketchVector;
+    }
+
+    // For newer version, do not do fitting, as it may flip the face normal for
+    // some reason.
+    TopoShape shape = getVerifiedFace(true);  //, _ProfileBasedVersion.getValue() <= 0);
+
+    gp_Pln pln;
+    if (shape.findPlane(pln)) {
+        gp_Dir dir = pln.Axis().Direction();
+        return Base::Vector3d(dir.X(), dir.Y(), dir.Z());
+    }
+
+    if (shape.hasSubShape(TopAbs_EDGE)) {
+        // Find the first planar face that contains the edge, and return the plane normal
+        TopoShape objShape = Part::Feature::getTopoShape(obj);
+        for (int idx : objShape.findAncestors(shape.getSubShape(TopAbs_EDGE, 1), TopAbs_FACE)) {
+            if (objShape.getSubTopoShape(TopAbs_FACE, idx).findPlane(pln)) {
+                gp_Dir dir = pln.Axis().Direction();
+                return Base::Vector3d(dir.X(), dir.Y(), dir.Z());
+            }
+        }
+    }
+
+    // If no planar face, try to use the normal of the center of the first face.
+    if (shape.hasSubShape(TopAbs_FACE)) {
+        TopoDS_Face face = TopoDS::Face(shape.getSubShape(TopAbs_FACE, 1));
+        BRepAdaptor_Surface adapt(face);
+        double u =
+            adapt.FirstUParameter() + (adapt.LastUParameter() - adapt.FirstUParameter()) / 2.;
+        double v =
+            adapt.FirstVParameter() + (adapt.LastVParameter() - adapt.FirstVParameter()) / 2.;
+        BRepLProp_SLProps prop(adapt, u, v, 2, Precision::Confusion());
+        if (prop.IsNormalDefined()) {
+            gp_Pnt pnt;
+            gp_Vec vec;
+            // handles the orientation state of the shape
+            BRepGProp_Face(face).Normal(u, v, pnt, vec);
+            return Base::Vector3d(vec.X(), vec.Y(), vec.Z());
+        }
+    }
+
+    if (!shape.hasSubShape(TopAbs_EDGE)) {
+        return SketchVector;
+    }
+
+    // If the shape is a line, then return an arbitrary direction that is perpendicular to the line
+    auto geom = Part::Geometry::fromShape(shape.getSubShape(TopAbs_EDGE, 1), true);
+    auto geomLine = Base::freecad_dynamic_cast<Part::GeomLine>(geom.get());
+    if (geomLine) {
+        Base::Vector3d dir = geomLine->getDir();
+        double x = std::fabs(dir.x);
+        double y = std::fabs(dir.y);
+        double z = std::fabs(dir.z);
+        if (x > y && x > z && x > 1e-7) {
+            if (y + z < 1e-7) {
+                return Base::Vector3d(0, 0, 1);
+            }
+            dir.x = -(dir.z + dir.y) / dir.x;
+        }
+        else if (y > x && y > z && y > 1e-7) {
+            if (x + z < 1e-7) {
+                return Base::Vector3d(0, 0, 1);
+            }
+            dir.y = -(dir.z + dir.x) / dir.y;
+        }
+        else if (z > 1e-7) {
+            if (x + y < 1e-7) {
+                return Base::Vector3d(1, 0, 0);
+            }
+            dir.z = -(dir.x + dir.y) / dir.z;
+        }
+        else {
+            return SketchVector;
+        }
+        return dir.Normalize();
+    }
+
+#else
     }
     else {
         TopoDS_Shape shape = getVerifiedFace(true);
@@ -1494,7 +1575,7 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
             }
         }
     }
-
+#endif
     return SketchVector;
 }
 

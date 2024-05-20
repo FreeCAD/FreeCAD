@@ -89,10 +89,16 @@ PyMOD_INIT_FUNC(MeasureGui)
     // instantiating the commands
     CreateMeasureCommands();
 
+    MeasureGui::ViewProviderMeasureGroup               ::init();
     MeasureGui::ViewProviderMeasureBase                ::init();
     MeasureGui::ViewProviderMeasure                    ::init();
     MeasureGui::ViewProviderMeasureAngle               ::init();
     MeasureGui::ViewProviderMeasureDistance            ::init();
+
+    MeasureGui::ViewProviderMeasureArea                ::init();
+    MeasureGui::ViewProviderMeasureLength              ::init();
+    MeasureGui::ViewProviderMeasurePosition            ::init();
+    MeasureGui::ViewProviderMeasureRadius              ::init();
 
     // register preferences pages
     new Gui::PrefPageProducer<MeasureGui::DlgPrefsMeasureAppearanceImp>(QT_TRANSLATE_NOOP("QObject", "Measure"));

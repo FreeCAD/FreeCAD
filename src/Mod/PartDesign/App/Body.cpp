@@ -40,7 +40,17 @@ using namespace PartDesign;
 PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
 Body::Body() {
-    _GroupTouched.setStatus(App::Property::Output,true);
+    ADD_PROPERTY_TYPE(AllowCompound, (false), "Experimental", App::Prop_None, "Allow multiple solids in Body (experimental)");
+
+    _GroupTouched.setStatus(App::Property::Output, true);
+
+    static Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+        .GetUserParameter()
+        .GetGroup("BaseApp/Preferences/Mod/PartDesign");
+
+    auto allowCompoundDefaultValue = hGrp->GetBool("AllowCompoundDefault", false);
+
+    ADD_PROPERTY(AllowCompound, (allowCompoundDefaultValue));
 }
 
 /*
@@ -428,7 +438,7 @@ void Body::onSettingDocument() {
     Part::BodyBase::onSettingDocument();
 }
 
-void Body::onChanged (const App::Property* prop) {
+void Body::onChanged(const App::Property* prop) {
     // we neither load a project nor perform undo/redo
     if (!this->isRestoring()
             && this->getDocument()
@@ -438,7 +448,6 @@ void Body::onChanged (const App::Property* prop) {
             auto first = Group.getValues().empty() ? nullptr : Group.getValues().front();
 
             if (BaseFeature.getValue()) {
-
                 //setup the FeatureBase if needed
                 if (!first || !first->isDerivedFrom(FeatureBase::getClassTypeId())) {
                     bf = static_cast<FeatureBase*>(getDocument()->addObject("PartDesign::FeatureBase", "BaseFeature"));
@@ -452,15 +461,24 @@ void Body::onChanged (const App::Property* prop) {
                 }
             }
 
-            if (bf && (bf->BaseFeature.getValue() != BaseFeature.getValue()))
+            if (bf && (bf->BaseFeature.getValue() != BaseFeature.getValue())) {
                 bf->BaseFeature.setValue(BaseFeature.getValue());
+            }
         }
-        else if( prop == &Group ) {
-
+        else if (prop == &Group) {
             //if the FeatureBase was deleted we set the BaseFeature link to nullptr
             if (BaseFeature.getValue() &&
                (Group.getValues().empty() || !Group.getValues().front()->isDerivedFrom(FeatureBase::getClassTypeId()))) {
                     BaseFeature.setValue(nullptr);
+            }
+        }
+        else if (prop == &AllowCompound) {
+            // As disallowing compounds can break the model we need to recompute the whole tree.
+            // This will inform user about first place where there is more than one solid.
+            if (!AllowCompound.getValue()) {
+                for (auto feature : getFullModel()) {
+                    feature->enforceRecompute();
+                }
             }
         }
     }
