@@ -1668,14 +1668,8 @@ void setupFilter(Gui::Command* cmd, std::string Name)
 
     auto selObject = Gui::Selection().getSelection()[0].pObject;
 
-    // issue error if no post object
-    if (!((selObject->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline"))
-          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostClipFilter"))
-          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostContoursFilter"))
-          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostCutFilter"))
-          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostDataAlongLineFilter"))
-          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostScalarClipFilter"))
-          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostWarpVectorFilter")))) {
+    // issue error if no filter object
+    if (!(selObject->isDerivedFrom<Fem::FemPostObject>())) {
         QMessageBox::warning(
             Gui::getMainWindow(),
             qApp->translate("setupFilter", "Error: no post processing object selected."),
@@ -1689,7 +1683,7 @@ void setupFilter(Gui::Command* cmd, std::string Name)
     // (which can be a pipeline itself)
     bool selectionIsPipeline = false;
     Fem::FemPostPipeline* pipeline = nullptr;
-    if (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline")) {
+    if (selObject->isDerivedFrom<Fem::FemPostPipeline>()) {
         pipeline = static_cast<Fem::FemPostPipeline*>(selObject);
         selectionIsPipeline = true;
     }
@@ -1697,7 +1691,7 @@ void setupFilter(Gui::Command* cmd, std::string Name)
         auto parents = selObject->getInList();
         if (!parents.empty()) {
             for (auto parentObject : parents) {
-                if (parentObject->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline")) {
+                if (parentObject->isDerivedFrom<Fem::FemPostPipeline>()) {
                     pipeline = static_cast<Fem::FemPostPipeline*>(parentObject);
                 }
             }
@@ -1756,9 +1750,12 @@ void setupFilter(Gui::Command* cmd, std::string Name)
                    selObjectView->VectorMode.getValueAsString());
 
     // hide selected filter
-    cmd->doCommand(Gui::Command::Doc,
-                   "App.activeDocument().%s.ViewObject.Visibility = False",
-                   selObject->getNameInDocument());
+    if (!femFilter->isDerivedFrom<Fem::FemPostDataAlongLineFilter>()
+        && !femFilter->isDerivedFrom<Fem::FemPostDataAtPointFilter>()) {
+        cmd->doCommand(Gui::Command::Doc,
+                       "App.activeDocument().%s.ViewObject.Visibility = False",
+                       selObject->getNameInDocument());
+    }
 
     cmd->updateActive();
     // open the dialog to edit the filter
