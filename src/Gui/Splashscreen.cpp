@@ -341,6 +341,7 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
     showLicenseInformation();
     showLibraryInformation();
     showCollectionInformation();
+    showPrivacyPolicy();
     showOrHideImage(rect);
 }
 
@@ -765,6 +766,31 @@ void AboutDialog::showCollectionInformation()
     textField->setOpenExternalLinks(true);
     hlayout->addWidget(textField);
     textField->setSource(path);
+}
+
+void AboutDialog::showPrivacyPolicy()
+{
+    auto policyFileURL = QLatin1String(":/doc/PRIVACY_POLICY");
+    QFile policyFile(policyFileURL);
+
+    if (!policyFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+    auto text = QString::fromUtf8(policyFile.readAll());
+    auto tabPrivacyPolicy = new QWidget();
+    tabPrivacyPolicy->setObjectName(QString::fromLatin1("tabPrivacyPolicy"));
+    ui->tabWidget->addTab(tabPrivacyPolicy, tr("Privacy Policy"));
+    auto hLayout = new QVBoxLayout(tabPrivacyPolicy);
+    auto textField = new QTextBrowser(tabPrivacyPolicy);
+    textField->setOpenExternalLinks(true);
+    hLayout->addWidget(textField);
+
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    // We can't actually render the markdown, so just display it as text
+    textField->setText(text);
+#else
+    textField->setMarkdown(text);
+#endif
 }
 
 void AboutDialog::linkActivated(const QUrl& link)
