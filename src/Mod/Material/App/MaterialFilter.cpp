@@ -108,3 +108,9 @@ void MaterialFilter::addRequiredComplete(const QString& uuid)
     }
     _requiredComplete.insert(uuid);
 }
+
+void MaterialFilter::clear()
+{
+    _required.clear();
+    _requiredComplete.clear();
+}

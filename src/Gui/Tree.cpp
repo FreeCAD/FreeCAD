@@ -5287,14 +5287,18 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
         // to black which will lead to unreadable text if the system background
         // hss already a dark color.
         // However, it works if we set the appropriate role to an empty QVariant().
-        this->setData(0, Qt::ForegroundRole, QVariant());
+        for (int column = 0; column < this->columnCount(); ++column) {
+            this->setData(column, Qt::ForegroundRole, QVariant());
+        }
     }
     else { // invisible
         QStyleOptionViewItem opt;
         // it can happen that a tree item is not attached to the tree widget (#0003025)
         if (this->treeWidget())
             opt.initFrom(this->treeWidget());
-        this->setForeground(0, opt.palette.color(QPalette::Disabled, QPalette::Text));
+        for (int column = 0; column < this->columnCount(); ++column) {
+            this->setForeground(column, opt.palette.color(QPalette::Disabled, QPalette::Text));
+        }
         mode = QIcon::Disabled;
     }
 

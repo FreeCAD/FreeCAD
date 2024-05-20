@@ -159,19 +159,26 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
 
     FC_LOG("create editor " << index.row() << "," << index.column());
 
-    QWidget* editor;
+    QWidget* editor = nullptr;
     expressionEditor = nullptr;
     userEditor = nullptr;
     if (parentEditor && parentEditor->isBinding()) {
-        expressionEditor = editor = childItem->createExpressionEditor(parent, this, SLOT(valueChanged()));
+        expressionEditor = editor = childItem->createExpressionEditor(parent, [this]() {
+            const_cast<PropertyItemDelegate*>(this)->valueChanged();  // NOLINT
+        });
+        propertyEditor = editor;
     }
     else {
         const auto &props = childItem->getPropertyData();
         if (!props.empty() && props[0]->testStatus(App::Property::UserEdit)) {
             editor = userEditor = childItem->createPropertyEditorWidget(parent);
+            propertyEditor = editor;
         }
         else {
-            editor = childItem->createEditor(parent, this, SLOT(valueChanged()));
+            editor = childItem->createEditor(parent, [this]() {
+                const_cast<PropertyItemDelegate*>(this)->valueChanged();  // NOLINT
+            });
+            propertyEditor = editor;
         }
     }
     if (editor) {
@@ -208,10 +215,9 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
 
 void PropertyItemDelegate::valueChanged()
 {
-    QWidget* editor = qobject_cast<QWidget*>(sender());
-    if (editor) {
+    if (propertyEditor) {
         Base::FlagToggler<> flag(changed);
-        Q_EMIT commitData(editor);
+        Q_EMIT commitData(propertyEditor);
     }
 }
 

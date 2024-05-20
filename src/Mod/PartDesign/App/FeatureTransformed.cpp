@@ -327,8 +327,7 @@ App::DocumentObjectExecReturn *Transformed::execute()
 
     support = refineShapeIfActive(support);
 
-    int solidCount = countSolids(support);
-    if (solidCount > 1) {
+    if (!isSingleSolidRuleSatisfied(support)) {
         Base::Console().Warning("Transformed: Result has multiple solids. Only keeping the first.\n");
     }
 
