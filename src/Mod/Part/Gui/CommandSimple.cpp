@@ -57,7 +57,7 @@ CmdPartSimpleCylinder::CmdPartSimpleCylinder()
     sToolTipText  = QT_TR_NOOP("Create a Cylinder");
     sWhatsThis    = "Part_SimpleCylinder";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Cylinder";
+    sPixmap       = "Part_Cylinder_Parametric";
 }
 
 void CmdPartSimpleCylinder::activated(int iMsg)
