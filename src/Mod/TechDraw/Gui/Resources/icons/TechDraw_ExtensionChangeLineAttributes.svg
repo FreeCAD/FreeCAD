@@ -16,6 +16,17 @@
   <defs
      id="defs4248">
     <linearGradient
+       id="linearGradient2">
+      <stop
+         style="stop-color:#888a85;stop-opacity:1;"
+         offset="0"
+         id="stop1" />
+      <stop
+         style="stop-color:#babdb6;stop-opacity:1"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
        id="linearGradient6">
       <stop
          style="stop-color:#302b00;stop-opacity:1;"
@@ -57,6 +68,14 @@
        fx="5.9958477"
        fy="291.33447"
        r="5.7443604" />
+    <linearGradient
+       xlink:href="#linearGradient2"
+       id="linearGradient1"
+       x1="1.729965"
+       y1="282.41202"
+       x2="11.106658"
+       y2="295.57031"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <metadata
      id="metadata4251">
@@ -81,18 +100,42 @@
          height="14.529403"
          width="10.910062"
          id="rect4914"
-         style="opacity:1;fill:url(#radialGradient4);fill-opacity:1;fill-rule:nonzero;stroke:#555753;stroke-width:0.57865893;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10.1537;stroke-opacity:1" />
+         style="display:inline;opacity:1;fill:#d3d7cf;fill-opacity:1;fill-rule:nonzero;stroke:#555753;stroke-width:0.578659;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10.1537;stroke-opacity:1" />
       <path
          y="281.54428"
          x="0.84302974"
          height="14.529403"
          width="10.910062"
          id="rect4"
-         style="opacity:1;fill:url(#radialGradient5);fill-opacity:1;fill-rule:nonzero;stroke:#d3d7cf;stroke-width:0.578659;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10.1537;stroke-opacity:1"
+         style="display:inline;opacity:1;fill:url(#linearGradient1);fill-opacity:1;fill-rule:nonzero;stroke:#d3d7cf;stroke-width:0.578659;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10.1537;stroke-opacity:1"
          d="m 1.421875,282.12305 h 9.753906 v 13.37304 H 1.421875 Z" />
       <g
          transform="translate(-0.53453903,1.7540756)"
          id="g4939">
+        <g
+           id="g7"
+           transform="matrix(1.1307459,0,0,1.0575364,-0.40838847,282.01847)">
+          <path
+             style="fill:none;stroke:#fce94f;stroke-width:0.529167;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0"
+             d="m 3.1647244,-0.24319527 6.0820025,-0.0205508"
+             id="path2" />
+          <path
+             style="display:inline;fill:none;stroke:#fce94f;stroke-width:0.529167;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:1.05833, 1.05833, 0.264583, 1.05833, 0.264583, 1.05833;stroke-dashoffset:0"
+             d="M 3.1647244,1.7932138 9.2467269,1.772663"
+             id="path4" />
+          <path
+             style="display:inline;fill:none;stroke:#fce94f;stroke-width:0.529167;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:1.05833, 1.05833, 0.264583, 1.05833;stroke-dashoffset:0"
+             d="M 3.1647244,3.5659221 9.2467269,3.5453713"
+             id="path5" />
+          <path
+             style="display:inline;fill:none;stroke:#fce94f;stroke-width:0.52916668;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:1.0583334,1.0583334;stroke-dashoffset:0"
+             d="M 3.1438904,5.6041423 7.4997625,5.5779789"
+             id="path6" />
+          <path
+             style="display:inline;fill:none;stroke:#fce94f;stroke-width:0.52916667;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:0.26458335,1.0583334;stroke-dashoffset:0"
+             d="M 3.104547,7.6430106 6.4097103,7.6151319"
+             id="path7" />
+        </g>
         <rect
            style="opacity:1;fill:#fce94f;fill-opacity:1;fill-rule:nonzero;stroke:#302b00;stroke-width:0.57870906;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10.1537;stroke-opacity:1"
            id="rect4916"
