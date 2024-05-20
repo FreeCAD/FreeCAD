@@ -101,6 +101,7 @@
 #include "FaceMaker.h"
 #include "Geometry.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
+#include "Base/Tools.h"
 
 #include <App/ElementMap.h>
 #include <App/ElementNamingUtils.h>
@@ -4006,11 +4007,11 @@ TopoShape& TopoShape::makeElementFillet(const TopoShape& shape,
 
 TopoShape& TopoShape::makeElementChamfer(const TopoShape& shape,
                                          const std::vector<TopoShape>& edges,
+                                         ChamferType chamferType,
                                          double radius1,
                                          double radius2,
                                          const char* op,
-                                         Flip flipDirection,
-                                         AsAngle asAngle)
+                                         Flip flipDirection)
 {
     if (!op) {
         op = Part::OpCodes::Chamfer;
@@ -4038,11 +4039,19 @@ TopoShape& TopoShape::makeElementChamfer(const TopoShape& shape,
         else {
             face = shape.findAncestorShape(edge, TopAbs_FACE);
         }
-        if (asAngle == AsAngle::yes) {
-            mkChamfer.AddDA(radius1, radius2, TopoDS::Edge(edge), TopoDS::Face(face));
-        }
-        else {
-            mkChamfer.Add(radius1, radius2, TopoDS::Edge(edge), TopoDS::Face(face));
+        switch (chamferType) {
+            case ChamferType::equalDistance:  // Equal distance
+                mkChamfer.Add(radius1, radius1, TopoDS::Edge(edge), TopoDS::Face(face));
+                break;
+            case ChamferType::twoDistances:  // Two distances
+                mkChamfer.Add(radius1, radius2, TopoDS::Edge(edge), TopoDS::Face(face));
+                break;
+            case ChamferType::distanceAngle:  // Distance and angle
+                mkChamfer.AddDA(radius1,
+                                Base::toRadians(radius2),
+                                TopoDS::Edge(edge),
+                                TopoDS::Face(face));
+                break;
         }
     }
     return makeElementShape(mkChamfer, shape, op);

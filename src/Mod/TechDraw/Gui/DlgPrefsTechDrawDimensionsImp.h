@@ -45,6 +45,7 @@ protected:
     void saveSettings() override;
     void loadSettings() override;
     void changeEvent(QEvent *e) override;
+    void dimensioningModeChanged(int index);
 
     int prefArrowStyle() const;
 

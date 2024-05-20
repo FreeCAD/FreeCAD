@@ -36,6 +36,7 @@
 #include <Base/BoundBox.h>
 #include <Base/Vector3D.h>
 
+#include "TreeItemMode.h"
 
 class SbVec2s;
 class SbVec3f;
@@ -359,6 +360,8 @@ public:
     boost::signals2::signal<void (const QString&)> signalChangeToolTip;
     /// signal on status tip change
     boost::signals2::signal<void (const QString&)> signalChangeStatusTip;
+    /// signal on highlight change
+    boost::signals2::signal<void (bool, Gui::HighlightMode)> signalChangeHighlight;
     //@}
 
     /** update the content of the ViewProvider

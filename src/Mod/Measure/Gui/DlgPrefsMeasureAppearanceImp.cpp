@@ -40,8 +40,6 @@ DlgPrefsMeasureAppearanceImp::~DlgPrefsMeasureAppearanceImp()
 
 void DlgPrefsMeasureAppearanceImp::saveSettings()
 {
-    ui->cbMirror->onSave();
-    ui->dsbDistFactor->onSave();
     ui->sbFontSize->onSave();
     ui->cbText->onSave();
     ui->cbLine->onSave();
@@ -54,8 +52,6 @@ void DlgPrefsMeasureAppearanceImp::loadSettings()
     ui->cbText->onRestore();
     ui->cbBackground->onRestore();
     ui->cbLine->onRestore();
-    ui->cbMirror->onRestore();
-    ui->dsbDistFactor->onRestore();
 }
 
 /**

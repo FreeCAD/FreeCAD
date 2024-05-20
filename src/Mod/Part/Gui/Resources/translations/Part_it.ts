@@ -4099,32 +4099,32 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Ambient shape color</source>
-      <translation type="unfinished">Ambient shape color</translation>
+      <translation>Colore ambiente della forma</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default ambient color for new shapes</source>
-      <translation type="unfinished">The default ambient color for new shapes</translation>
+      <translation>Il colore ambientale predefinito per le nuove forme</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="116"/>
       <source>Emissive shape color</source>
-      <translation type="unfinished">Emissive shape color</translation>
+      <translation>Colore emissione della forma</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="123"/>
       <source>The default emissive color for new shapes</source>
-      <translation type="unfinished">The default emissive color for new shapes</translation>
+      <translation>Il colore emissivo predefinito per le nuove forme</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="149"/>
       <source>Specular shape color</source>
-      <translation type="unfinished">Specular shape color</translation>
+      <translation>Colore speculare della forma</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="156"/>
       <source>The default specular color for new shapes</source>
-      <translation type="unfinished">The default specular color for new shapes</translation>
+      <translation>Il colore speculare predefinito per le nuove forme</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="182"/>
@@ -4139,12 +4139,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="217"/>
       <source>Shape shininess</source>
-      <translation type="unfinished">Shape shininess</translation>
+      <translation>Lucentezza della forma</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="224"/>
       <source>The default shininess for new shapes</source>
-      <translation type="unfinished">The default shininess for new shapes</translation>
+      <translation>La lucentezza predefinita per le nuove forme</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="255"/>

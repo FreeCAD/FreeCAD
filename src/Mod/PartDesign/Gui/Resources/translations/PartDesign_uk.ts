@@ -2826,7 +2826,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="175"/>
       <source>To last</source>
-      <translation type="unfinished">To last</translation>
+      <translation>До останнього</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="178"/>

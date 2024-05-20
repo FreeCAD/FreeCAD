@@ -1314,7 +1314,7 @@ lub gdy punkty na płaskich powierzchniach są wybierane podczas wykonywania pol
       <location filename="../ui/preferences-draft.ui" line="112"/>
       <source>If checked, a widget indicating the current working
 plane orientation appears when picking points</source>
-      <translation>Jeśli to pole jest zaznaczone, przy wskazywaniu punktów pojawia się widżet wskazujący aktualną orientację płaszczyzny roboczej</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, przy wskazywaniu punktów pojawia się widżet wskazujący aktualną orientację płaszczyzny roboczej</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="116"/>
@@ -1352,7 +1352,7 @@ Obiekty mogą być automatycznie dodawane do grup.</translation>
       <location filename="../ui/preferences-draft.ui" line="171"/>
       <source>If checked, Length input, instead of the X coordinate, will have the initial focus.
 This allows to indicate a direction and then type a distance.</source>
-      <translation>Jeśli to pole jest zaznaczone, aktywne będzie pole Długość, zamiast współrzędnej X.
+      <translation>Jeśli opcja ta jest zaznaczona, aktywne będzie pole Długość, zamiast współrzędnej X.
 Umożliwia to wskazanie kierunku, a następnie wpisanie odległości.</translation>
     </message>
     <message>
@@ -2013,7 +2013,7 @@ z Menedżera dodatków.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="156"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
-      <translation>Jeśli to pole nie jest zaznaczone, teksty / meta teksty nie zostaną zaimportowane</translation>
+      <translation>Jeśli opcja ta nie jest zaznaczona, teksty / meta teksty nie zostaną zaimportowane</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="159"/>
@@ -2023,7 +2023,7 @@ z Menedżera dodatków.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="172"/>
       <source>If unchecked, points won't be imported</source>
-      <translation>Jeśli to pole nie jest zaznaczone, punkty nie zostaną zaimportowane</translation>
+      <translation>Jeśli opcja ta nie jest zaznaczona, punkty nie zostaną zaimportowane</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="175"/>
@@ -3089,7 +3089,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="../../DraftGui.py" line="561"/>
       <source>If checked, command will not finish until you press the command button again</source>
-      <translation>Jeśli opcja jest zaznaczona, komenda nie zakończy się, dopóki nie naciśniesz ponownie przycisku polecenia</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, komenda nie zakończy się, dopóki nie naciśniesz ponownie przycisku polecenia</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="566"/>

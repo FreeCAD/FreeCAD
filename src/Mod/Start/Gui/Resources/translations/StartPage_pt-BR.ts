@@ -48,7 +48,7 @@
       <location filename="../../Manipulator.cpp" line="47"/>
       <location filename="../../Manipulator.cpp" line="48"/>
       <source>Start</source>
-      <translation>Começar</translation>
+      <translation>Iniciar</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
@@ -162,7 +162,7 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
       <source>Dark</source>
-      <translation type="unfinished">Dark</translation>
+      <translation>Escuro</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="137"/>
@@ -190,7 +190,7 @@
       <location filename="../../ThemeSelectorWidget.cpp" line="141"/>
       <source>Dark</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Dark</translation>
+      <translation>Escuro</translation>
     </message>
   </context>
 </TS>

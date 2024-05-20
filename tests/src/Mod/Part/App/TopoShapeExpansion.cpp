@@ -1815,7 +1815,7 @@ TEST_F(TopoShapeExpansionTest, makeElementThickSolid)
 
     // Note:  Cannot do an elementsMatch here because the oldest OCCT treats ThickSolid a little
     // differently.  So, just mae sure the size is right, and something has a THK in it.
-    for (auto element : elements) {
+    for (auto& element : elements) {
         if (element.second.find("THK") > 0) {
             EXPECT_TRUE(1);
             break;
@@ -2103,7 +2103,7 @@ TEST_F(TopoShapeExpansionTest, makeElementChamfer)
     TopoShape cube1TS {cube1, 1L};
     auto edges = cube1TS.getSubTopoShapes(TopAbs_EDGE);
     // Act
-    cube1TS.makeElementChamfer({cube1TS}, edges, .05, .05);
+    cube1TS.makeElementChamfer({cube1TS}, edges, Part::ChamferType::equalDistance, .05, .05);
     auto elements = elementMap(cube1TS);
     // Assert shape is correct
     EXPECT_EQ(cube1TS.countSubElements("Wire"), 26);

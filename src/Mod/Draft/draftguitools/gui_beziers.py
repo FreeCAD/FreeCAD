@@ -43,6 +43,7 @@ from draftguitools import gui_base_original
 from draftguitools import gui_lines
 from draftguitools import gui_tool_utils
 from draftguitools import gui_trackers as trackers
+from draftutils import gui_utils
 from draftutils import params
 from draftutils import todo
 from draftutils import utils
@@ -54,7 +55,7 @@ class BezCurve(gui_lines.Line):
     """Gui command for the Bézier Curve tool."""
 
     def __init__(self):
-        super(BezCurve, self).__init__(wiremode=True)
+        super().__init__(wiremode=True)
         self.degree = None
 
     def GetResources(self):
@@ -70,9 +71,9 @@ class BezCurve(gui_lines.Line):
 
         Activate the specific Bézier curve tracker.
         """
-        super(BezCurve, self).Activated(name="BezCurve",
-                                        icon="Draft_BezCurve",
-                                        task_title=translate("draft","Bézier curve"))
+        super().Activated(name="BezCurve",
+                          icon="Draft_BezCurve",
+                          task_title=translate("draft", "Bézier curve"))
         if self.doc:
             self.bezcurvetrack = trackers.bezcurveTracker()
 
@@ -240,7 +241,7 @@ class CubicBezCurve(gui_lines.Line):
     """
 
     def __init__(self):
-        super(CubicBezCurve, self).__init__(wiremode=True)
+        super().__init__(wiremode=True)
         self.degree = 3
         self.old_EnableSelection = True
 
@@ -260,9 +261,9 @@ class CubicBezCurve(gui_lines.Line):
         self.old_EnableSelection = params.get_param_view("EnableSelection")
         params.set_param_view("EnableSelection", False)
 
-        super(CubicBezCurve, self).Activated(name="CubicBezCurve",
-                                             icon="Draft_CubicBezCurve",
-                                             task_title=translate("draft","Cubic Bézier curve"))
+        super().Activated(name="CubicBezCurve",
+                          icon="Draft_CubicBezCurve",
+                          task_title=translate("draft", "Cubic Bézier curve"))
         if self.doc:
             self.bezcurvetrack = trackers.bezcurveTracker()
 
@@ -489,14 +490,8 @@ class BezierGroup:
         return ('Draft_CubicBezCurve', 'Draft_BezCurve')
 
     def IsActive(self):
-        """Return True when this command should be available.
-
-        It is `True` when there is a document.
-        """
-        if Gui.ActiveDocument:
-            return True
-        else:
-            return False
+        """Return True when this command should be available."""
+        return bool(gui_utils.get_3d_view())
 
 
 Gui.addCommand('Draft_BezierTools', BezierGroup())

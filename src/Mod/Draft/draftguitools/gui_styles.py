@@ -49,7 +49,7 @@ class ApplyStyle(gui_base_original.Modifier):
         }
 
     def IsActive(self):
-        return bool(Gui.ActiveDocument and Gui.Selection.getSelection())
+        return bool(Gui.Selection.getSelection())
 
     def Activated(self):
         """Execute when the command is called."""

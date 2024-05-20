@@ -207,31 +207,6 @@ If unchecked, they will be sorted by their name.</string>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="gb_materials_testing">
-     <property name="title">
-      <string>Testing</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
-      <item>
-       <widget class="Gui::PrefCheckBox" name="cb_legacy_editor">
-        <property name="text">
-         <string>Use legacy editor</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>LegacyEditor</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Material/Cards</cstring>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <widget class="QGroupBox" name="gbMaterialSelector">
      <property name="title">
       <string>Material Selector</string>
@@ -308,6 +283,92 @@ If unchecked, they will be sorted by their name.</string>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Material/TreeWidget</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Material Editor</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="cb_show_favorites_editor">
+        <property name="text">
+         <string>Show favorites</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowFavorites</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/Editor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="cb_show_recent_editor">
+        <property name="text">
+         <string>Show recent</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowRecent</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/Editor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="cb_show_empty_libraries_editor">
+        <property name="text">
+         <string>Show empty libraries</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowEmptyLibraries</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/Editor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="cb_show_empty_folders_editor">
+        <property name="text">
+         <string>Show empty folders</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowEmptyFolders</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/Editor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="cb_show_legacy_editor">
+        <property name="text">
+         <string>Show legacy files</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowLegacy</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/Editor</cstring>
         </property>
        </widget>
       </item>

@@ -297,7 +297,7 @@ def getGlobalPlacement(targetObj, container=None):
         return App.Placement()
 
     inContainerBranch = container is None
-    for rootObj in App.activeDocument().RootObjects:
+    for rootObj in App.activeDocument().RootObjectsIgnoreLinks:
         foundPlacement = getTargetPlacementRelativeTo(
             targetObj, rootObj, container, inContainerBranch
         )
@@ -308,7 +308,7 @@ def getGlobalPlacement(targetObj, container=None):
 
 
 def isThereOneRootAssembly():
-    for part in App.activeDocument().RootObjects:
+    for part in App.activeDocument().RootObjectsIgnoreLinks:
         if part.TypeId == "Assembly::AssemblyObject":
             return True
     return False

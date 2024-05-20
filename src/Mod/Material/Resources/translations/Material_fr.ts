@@ -6,7 +6,7 @@
     <message>
       <location filename="../../materials-editor.ui" line="14"/>
       <source>Material Editor</source>
-      <translation>Editeur de matériaux</translation>
+      <translation>Éditeur de matériaux</translation>
     </message>
     <message>
       <location filename="../../materials-editor.ui" line="22"/>
@@ -16,17 +16,17 @@
     <message>
       <location filename="../../materials-editor.ui" line="40"/>
       <source>Opens the Product URL of this material in an external browser</source>
-      <translation type="unfinished">Opens the Product URL of this material in an external browser</translation>
+      <translation>Ouvre l'URL du produit de ce matériau dans un navigateur externe.</translation>
     </message>
     <message>
       <location filename="../../materials-editor.ui" line="56"/>
       <source>Existing material cards</source>
-      <translation type="unfinished">Existing material cards</translation>
+      <translation>Jeux de paramètres des matériaux existants</translation>
     </message>
     <message>
       <location filename="../../materials-editor.ui" line="67"/>
       <source>Opens an existing material card</source>
-      <translation type="unfinished">Opens an existing material card</translation>
+      <translation>Ouvrir un jeu de paramètres d'un matériau existant</translation>
     </message>
     <message>
       <location filename="../../materials-editor.ui" line="70"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../../materials-editor.ui" line="77"/>
       <source>Saves this material as a card</source>
-      <translation type="unfinished">Saves this material as a card</translation>
+      <translation>Enregistrer ce matériau en tant que jeu de paramètres</translation>
     </message>
     <message>
       <location filename="../../materials-editor.ui" line="80"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../../materials-editor.ui" line="96"/>
       <source>Material parameter</source>
-      <translation>Paramètres matière</translation>
+      <translation>Paramètres du matériau</translation>
     </message>
     <message>
       <location filename="../../materials-editor.ui" line="115"/>

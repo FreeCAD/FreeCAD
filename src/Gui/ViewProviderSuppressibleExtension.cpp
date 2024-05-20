@@ -62,7 +62,7 @@ void ViewProviderSuppressibleExtension::extensionUpdateData(const App::Property*
         //update the tree item
         bool suppressed = ext->Suppressed.getValue();
         setSuppressedIcon(suppressed);
-        vp->getDocument()->signalHighlightObject(*vp, Gui::HighlightMode::StrikeOut, suppressed, owner, 0);
+        getExtendedViewProvider()->signalChangeHighlight(suppressed, Gui::HighlightMode::StrikeOut);
     }
 }
 

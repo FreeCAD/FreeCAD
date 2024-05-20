@@ -2996,7 +2996,7 @@ de begrenzingsvakgrootte van het 3D-object dat op dat moment wordt weergegeven.<
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="28"/>
       <source>Location (read-only):</source>
-      <translation type="unfinished">Location (read-only):</translation>
+      <translation>Locatie (alleen lezen):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="42"/>
@@ -8949,7 +8949,7 @@ de huidige kopie verloren gaat.
     <message>
       <location filename="../ViewProviderPart.cpp" line="73"/>
       <source>Active object</source>
-      <translation type="unfinished">Active object</translation>
+      <translation>Actief object</translation>
     </message>
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="95"/>
@@ -11592,7 +11592,7 @@ Wilt u toch doorgaan?</translation>
     <message>
       <location filename="../Workbench.cpp" line="541"/>
       <source>Individual views</source>
-      <translation type="unfinished">Individual views</translation>
+      <translation>Individuele weergaven</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="542"/>
@@ -12140,7 +12140,7 @@ nadat FreeCAD opgestart is</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="550"/>
       <source>Icon &amp; Text</source>
-      <translation type="unfinished">Icon &amp; Text</translation>
+      <translation>Pictogram &amp; tekst</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="551"/>
@@ -13076,17 +13076,17 @@ van de Python-console naar het rapportweergavepaneel</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="14"/>
       <source>Light Sources</source>
-      <translation type="unfinished">Light Sources</translation>
+      <translation>Lichtbronnen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="20"/>
       <source>Light sources</source>
-      <translation type="unfinished">Light sources</translation>
+      <translation>Lichtbronnen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="26"/>
       <source>Light source</source>
-      <translation type="unfinished">Light source</translation>
+      <translation>Lichtbron</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="72"/>
@@ -13412,7 +13412,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="861"/>
       <source>Hide on edit</source>
-      <translation type="unfinished">Hide on edit</translation>
+      <translation>Verberg bij bewerken</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="862"/>
@@ -13422,7 +13422,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="863"/>
       <source>Show on edit</source>
-      <translation type="unfinished">Show on edit</translation>
+      <translation>Toon bij bewerken</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="864"/>
@@ -13537,7 +13537,7 @@ the region are non-opaque.</translation>
       <location filename="../CommandView.cpp" line="1629"/>
       <location filename="../CommandView.cpp" line="1630"/>
       <source>Change to a standard view</source>
-      <translation type="unfinished">Change to a standard view</translation>
+      <translation>Verander naar een standaardweergave</translation>
     </message>
   </context>
   <context>
@@ -13559,7 +13559,7 @@ the region are non-opaque.</translation>
       <location filename="../CommandView.cpp" line="3206"/>
       <location filename="../CommandView.cpp" line="3208"/>
       <source>Measure a feature</source>
-      <translation type="unfinished">Measure a feature</translation>
+      <translation>Een functie meten</translation>
     </message>
   </context>
   <context>
@@ -13567,12 +13567,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="51"/>
       <source>Measurement</source>
-      <translation type="unfinished">Measurement</translation>
+      <translation>Meting</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="107"/>
       <source>Annotate</source>
-      <translation type="unfinished">Annotate</translation>
+      <translation>Annoteren</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="108"/>
