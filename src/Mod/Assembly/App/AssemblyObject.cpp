@@ -1223,6 +1223,13 @@ void AssemblyObject::getRackPinionMarkers(App::DocumentObject* joint,
     App::DocumentObject* obj2 = getObjFromNameProp(joint, "Object2", "Part2");
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
 
+    if (!part1 || !obj1) {
+        Base::Console().Warning("The property %s of Joint %s is empty.",
+                                obj1 ? "Part1" : "Object1",
+                                joint->getFullName());
+        return;
+    }
+
     // For the pinion nothing special needed :
     markerNameJ = handleOneSideOfJoint(joint, "Object2", "Part2", "Placement2");
 
