@@ -199,6 +199,8 @@ public:
 
     App::Range getRange(const char* name, bool silent = false) const;
 
+    std::tuple<App::CellAddress, App::CellAddress> getUsedRange() const;
+
     std::map<int, int> getColumnWidths() const;
 
     std::map<int, int> getRowHeights() const;

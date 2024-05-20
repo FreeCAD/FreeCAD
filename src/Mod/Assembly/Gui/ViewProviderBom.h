@@ -21,49 +21,31 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#ifndef ASSEMBLYGUI_VIEWPROVIDER_ViewProviderBom_H
+#define ASSEMBLYGUI_VIEWPROVIDER_ViewProviderBom_H
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
+#include <Mod/Assembly/AssemblyGlobal.h>
 
-#include "ViewProviderAssembly.h"
-#include "ViewProviderBom.h"
-#include "ViewProviderBomGroup.h"
-#include "ViewProviderJointGroup.h"
-#include "ViewProviderViewGroup.h"
+#include <Mod/Spreadsheet/Gui/ViewProviderSpreadsheet.h>
 
 
 namespace AssemblyGui
 {
-extern PyObject* initModule();
-}
 
-/* Python entry */
-PyMOD_INIT_FUNC(AssemblyGui)
+class AssemblyGuiExport ViewProviderBom: public SpreadsheetGui::ViewProviderSheet
 {
-    // load dependent module
-    try {
-        Base::Interpreter().runString("import SpreadsheetGui");
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
-
-    PyObject* mod = AssemblyGui::initModule();
-    Base::Console().Log("Loading AssemblyGui module... done\n");
+    PROPERTY_HEADER_WITH_OVERRIDE(AssemblyGui::ViewProviderBom);
 
 
-    // NOTE: To finish the initialization of our own type objects we must
-    // call PyType_Ready, otherwise we run into a segmentation fault, later on.
-    // This function is responsible for adding inherited slots from a type's base class.
+public:
+    ViewProviderBom();
+    ~ViewProviderBom() override;
 
-    AssemblyGui::ViewProviderAssembly::init();
-    AssemblyGui::ViewProviderBom::init();
-    AssemblyGui::ViewProviderBomGroup::init();
-    AssemblyGui::ViewProviderJointGroup::init();
-    AssemblyGui::ViewProviderViewGroup::init();
+    QIcon getIcon() const override;
 
-    PyMOD_Return(mod);
-}
+    bool doubleClicked() override;
+};
+
+}  // namespace AssemblyGui
+
+#endif  // ASSEMBLYGUI_VIEWPROVIDER_ViewProviderBom_H

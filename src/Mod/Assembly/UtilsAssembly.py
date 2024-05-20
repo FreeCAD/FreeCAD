@@ -607,6 +607,20 @@ def color_from_unsigned(c):
     ]
 
 
+def getBomGroup(assembly):
+    bom_group = None
+
+    for obj in assembly.OutList:
+        if obj.TypeId == "Assembly::BomGroup":
+            bom_group = obj
+            break
+
+    if not bom_group:
+        bom_group = assembly.newObject("Assembly::BomGroup", "Bills of Materials")
+
+    return bom_group
+
+
 def getJointGroup(assembly):
     joint_group = None
 

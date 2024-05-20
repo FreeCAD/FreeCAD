@@ -10,6 +10,8 @@ set(AssemblyGui_LIBS
     Assembly
     PartDesign
     PartGui
+    Spreadsheet
+    SpreadsheetGui
     FreeCADGui
 )
 
@@ -38,6 +40,10 @@ SET(AssemblyGui_SRCS_Module
     PreCompiled.h
     ViewProviderAssembly.cpp
     ViewProviderAssembly.h
+    ViewProviderBom.cpp
+    ViewProviderBom.h
+    ViewProviderBomGroup.cpp
+    ViewProviderBomGroup.h
     ViewProviderJointGroup.cpp
     ViewProviderJointGroup.h
     ViewProviderViewGroup.cpp
