@@ -4,204 +4,96 @@
 <svg
    width="64"
    height="64"
-   id="svg4198"
+   id="svg249"
    version="1.1"
-   sodipodi:docname="Arch_Project_IFC.svg"
-   inkscape:version="1.3.2 (1:1.3.2+202311252150+091e20ef0f)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <sodipodi:namedview
-     id="namedview1"
-     pagecolor="#ffffff"
-     bordercolor="#999999"
-     borderopacity="1"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="5.6568542"
-     inkscape:cx="4.7729708"
-     inkscape:cy="36.327611"
-     inkscape:window-width="1920"
-     inkscape:window-height="1011"
-     inkscape:window-x="0"
-     inkscape:window-y="32"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer2" />
   <defs
-     id="defs4200">
+     id="defs3">
     <linearGradient
-       id="linearGradient15218">
+       id="linearGradient3815">
       <stop
-         style="stop-color:#f0f0ef;stop-opacity:1.0000000;"
-         offset="0.0000000"
-         id="stop15220" />
-      <stop
-         id="stop2269"
-         offset="0.59928656"
-         style="stop-color:#e8e8e8;stop-opacity:1;" />
-      <stop
-         id="stop2267"
-         offset="0.82758623"
-         style="stop-color:#ffffff;stop-opacity:1;" />
-      <stop
-         style="stop-color:#d8d8d3;stop-opacity:1.0000000;"
-         offset="1.0000000"
-         id="stop15222" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient2259">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
+         id="stop3817"
          offset="0"
-         id="stop2261" />
+         style="stop-color:#d3d7cf;stop-opacity:1;" />
       <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
+         id="stop3819"
          offset="1"
-         id="stop2263" />
+         style="stop-color:#ffffff;stop-opacity:1" />
     </linearGradient>
     <linearGradient
-       id="linearGradient2224">
-      <stop
-         style="stop-color:#7c7c7c;stop-opacity:1;"
-         offset="0"
-         id="stop2226" />
-      <stop
-         style="stop-color:#b8b8b8;stop-opacity:1;"
-         offset="1"
-         id="stop2228" />
-    </linearGradient>
-    <linearGradient
-       xlink:href="#linearGradient2224"
-       id="linearGradient2230"
-       x1="35.996582"
-       y1="40.458221"
-       x2="33.664921"
-       y2="37.770721"
+       xlink:href="#linearGradient3815"
+       id="linearGradient3771"
+       x1="98"
+       y1="1047.3622"
+       x2="81"
+       y2="993.36218"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.3547377,0,0,1.3874274,-0.30011719,-1.9731051)" />
-    <linearGradient
-       id="linearGradient2251">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop2253" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0;"
-         offset="1"
-         id="stop2255" />
-    </linearGradient>
-    <linearGradient
-       xlink:href="#linearGradient2251"
-       id="linearGradient2257"
-       x1="33.396004"
-       y1="36.921333"
-       x2="34.170048"
-       y2="38.070381"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.3547377,0,0,1.3874274,-0.30011719,-2.4933904)" />
-    <linearGradient
-       xlink:href="#linearGradient2259"
-       id="linearGradient13651"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.3539535,0,0,1.3874274,-0.53112306,-1.9731051)"
-       x1="26.076092"
-       y1="26.696676"
-       x2="30.811172"
-       y2="42.007351" />
-    <linearGradient
-       xlink:href="#linearGradient15218"
-       id="linearGradient13653"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.4458249,0,0,1.3725487,-2.6982089,-1.9705855)"
-       x1="9.4743204"
-       y1="6.5357137"
-       x2="35.411072"
-       y2="40.050007" />
+       gradientTransform="translate(-60,-988.36218)" />
   </defs>
   <metadata
-     id="metadata4203">
+     id="metadata4">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:date>2005-10-15</dc:date>
-        <dc:creator>
+        <dc:rights>
           <cc:Agent>
-            <dc:title>Andreas Nilsson</dc:title>
+            <dc:title>FreeCAD LGPL2+</dc:title>
           </cc:Agent>
-        </dc:creator>
-        <dc:subject>
-          <rdf:Bag>
-            <rdf:li>edit</rdf:li>
-            <rdf:li>copy</rdf:li>
-          </rdf:Bag>
-        </dc:subject>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <cc:license
-           rdf:resource="http://creativecommons.org/licenses/by-sa/2.0/" />
-        <dc:contributor>
-          <cc:Agent>
-            <dc:title>Jakub Steiner</dc:title>
-          </cc:Agent>
-        </dc:contributor>
+           rdf:resource="http://creativecommons.org/licenses/by-sa/4.0/" />
       </cc:Work>
       <cc:License
-         rdf:about="http://creativecommons.org/licenses/by-sa/2.0/">
+         rdf:about="http://creativecommons.org/licenses/by-sa/4.0/">
         <cc:permits
-           rdf:resource="http://web.resource.org/cc/Reproduction" />
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
         <cc:permits
-           rdf:resource="http://web.resource.org/cc/Distribution" />
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
         <cc:requires
-           rdf:resource="http://web.resource.org/cc/Notice" />
+           rdf:resource="http://creativecommons.org/ns#Notice" />
         <cc:requires
-           rdf:resource="http://web.resource.org/cc/Attribution" />
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
         <cc:permits
-           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
         <cc:requires
-           rdf:resource="http://web.resource.org/cc/ShareAlike" />
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
       </cc:License>
     </rdf:RDF>
   </metadata>
   <g
-     inkscape:groupmode="layer"
-     id="layer2"
-     inkscape:label="base"
-     style="display:inline;stroke-width:2;stroke-dasharray:none">
+     id="layer1"
+     style="display:inline">
     <path
-       style="fill:url(#linearGradient13653);fill-opacity:1;fill-rule:evenodd;stroke:#888a85;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="M 55,5 V 47 L 42,59 H 9 V 5 Z"
-       id="rect12413"
-       sodipodi:nodetypes="cccccc" />
+       style="display:inline;fill:url(#linearGradient3771);fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       d="m 11,3 v 58.00002 h 42 v -48 L 43,3 Z"
+       id="path2991" />
     <path
-       id="rect15244"
-       style="opacity:1;fill:none;fill-rule:evenodd;stroke:url(#linearGradient13651);stroke-width:2"
-       d="M 11,57 H 53 V 7 H 11 Z"
-       sodipodi:nodetypes="ccccc" />
+       style="display:inline;fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 13,5 V 59.00002 H 51 V 13.81392 L 41.99741,5 Z"
+       id="path3763" />
     <path
-       id="path2210"
-       d="m 42,59 c 6.907432,0 13,-6.045411 13,-12 -1.467658,2.329801 -8.369738,2.213222 -12.01284,2.213222 0,0 0.725482,8.797985 -0.98716,9.786778 z"
-       style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:1;fill:url(#linearGradient2230);fill-opacity:1;fill-rule:evenodd;stroke:#868a84;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none"
-       sodipodi:nodetypes="cccc" />
-    <path
-       id="path2247"
-       style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:0.369318;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:url(#linearGradient2257);stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none"
-       d="m 45.099609,51.203125 c 0.07896,1.77321 0.107022,3.558447 -0.121093,5.322266 3.027576,-0.923865 5.744039,-3.038385 7.146484,-5.90625 -1.852591,0.37951 -3.405702,0.552554 -7.025391,0.583984 z"
-       sodipodi:nodetypes="cccc" />
+       style="display:inline;fill:#2e3436;fill-opacity:0.392157;stroke:#2e3436;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       d="M 43,3 V 13.00002 H 53 Z"
+       id="path2993" />
   </g>
   <g
-     inkscape:groupmode="layer"
-     id="layer1"
-     inkscape:label="IFC"
+     id="layer1-5"
      style="display:inline;stroke-width:0.831209"
-     transform="matrix(1.2061426,0,0,1.2,3.9725422,3.0000004)">
+     transform="matrix(1.2061426,0,0,1.2,3.9725422,7.0000004)">
     <path
        class="cls-4"
        d="m 25.934197,25.041075 3.273166,-3.294778 0.01555,0.01555 2.496781,-2.510183 -0.464448,-0.462725 a 2.9115436,2.9115548 0 0 0 -4.117378,0.0134 l -3.718173,3.74281 z"

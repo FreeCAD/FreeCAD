@@ -318,8 +318,7 @@ App::DocumentObjectExecReturn *Draft::execute()
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is null"));
 
-        int solidCount = countSolids(shape);
-        if (solidCount > 1) {
+        if (!isSingleSolidRuleSatisfied(shape)) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
         }
 

@@ -57,7 +57,7 @@ class MaterialCreationTestCases(unittest.TestCase):
 
     def checkNewMaterial(self, material):
         """ Check the state of a newly created material """
-        self.assertEqual(len(material.UUID), 0)
+        self.assertEqual(len(material.UUID), 36)
         self.assertEqual(len(material.Name), 0)
         self.assertEqual(len(material.Author), 0)
         self.assertEqual(len(material.License), 0)
@@ -79,8 +79,9 @@ class MaterialCreationTestCases(unittest.TestCase):
         material.URL = "https://www.example.com"
         material.Reference = "ISBN 978-1673287882"
 
-        # UUID isn't valid until the file is saved
-        self.assertEqual(material.UUID, '')
+        # Ensure a valid UUID
+        self.assertEqual(len(material.UUID), 36)
+        uuid = material.UUID
 
         self.assertEqual(material.Name, "Frankenstein")
         self.assertEqual(material.Author, "Mary Shelley")
@@ -127,11 +128,24 @@ class MaterialCreationTestCases(unittest.TestCase):
         self.assertEqual(material.getPhysicalValue("Density").UserString, parseQuantity("99.90 kg/m^3").UserString)
 
         # MaterialManager is unaware of the material until it is saved
-        self.MaterialManager.save("User", material, "Example/Frakenstein.FCMat")
+        #
+        # When initially creating the material, setting overwrite=True preserves the UUID. This should not
+        # be used when saving after properties have been edited as this could adversely affect other
+        # documents or parts using the same material. Setting overwrite=False, or omitting it, will change
+        # the UUID. It will also fail if the material file already exists.
+        #
+        # Similarly, saveAsCopy=True preserves the UUID and should be used carefully. It will save an
+        # identical copy of the original but in a different location.
+        #
+        # The third optional parameter is saveInherited. When set to true it will mark models and properties
+        # as inherited without duplicating them. When false, they will be copied as uninherited. Avoid
+        # self-inheritance as this creates an invalid model. It will have a different UUID than the original.
+        #
+        self.MaterialManager.save("User", material, "Example/Frakenstein.FCMat", overwrite=True)
 
         # Now the UUID is valid
-        uuid = material.UUID
         self.assertEqual(len(material.UUID), 36)
+        self.assertEqual(material.UUID, uuid)
         self.assertIn(uuid, self.MaterialManager.Materials)
         self.assertIsNotNone(self.MaterialManager.getMaterialByPath("Example/Frakenstein.FCMat", "User"))
         self.assertIsNotNone(self.MaterialManager.getMaterial(uuid))

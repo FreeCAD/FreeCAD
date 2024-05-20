@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   id="svg2869"
+   version="1.1"
+   sodipodi:docname="Measurement-Area.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   viewBox="0 0 64 64"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="false"
+     inkscape:deskcolor="#d1d1d1"
+     showguides="true"
+     showgrid="true"
+     inkscape:zoom="7.9999996"
+     inkscape:cx="74.312503"
+     inkscape:cy="10.9375"
+     inkscape:window-width="1983"
+     inkscape:window-height="1321"
+     inkscape:window-x="2940"
+     inkscape:window-y="32"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2869"
+     inkscape:lockguides="true">
+    <inkscape:grid
+       id="grid2"
+       units="px"
+       originx="0"
+       originy="0"
+       spacingx="1"
+       spacingy="1"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="2"
+       dotted="false"
+       gridanglex="30"
+       gridanglez="30"
+       visible="true" />
+    <sodipodi:guide
+       position="4,50"
+       orientation="1,0"
+       id="guide8"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="64,64"
+       orientation="0.70710678,-0.70710678"
+       id="guide9"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="60,5.384631"
+       orientation="1,0"
+       id="guide10"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="9,60"
+       orientation="0,-1"
+       id="guide11"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="62,4"
+       orientation="0,-1"
+       id="guide12"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="64,0"
+       orientation="-0.70710678,-0.70710678"
+       id="guide13"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="32,32"
+       orientation="1,0"
+       id="guide18"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="32,32"
+       orientation="0,-1"
+       id="guide19"
+       inkscape:locked="true" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2871">
+    <linearGradient
+       id="linearGradient5"
+       inkscape:swatch="gradient">
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1;"
+         offset="0"
+         id="stop19" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:0;"
+         offset="1"
+         id="stop20" />
+    </linearGradient>
+    <linearGradient
+       id="swatch18"
+       inkscape:swatch="solid"
+       inkscape:label="point-stroke-inner">
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1;"
+         offset="0"
+         id="stop18" />
+    </linearGradient>
+    <linearGradient
+       id="swatch15"
+       inkscape:swatch="solid"
+       inkscape:label="point-stroke-outer">
+      <stop
+         style="stop-color:#3d0000;stop-opacity:1;"
+         offset="0"
+         id="stop15" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5-1"
+       inkscape:swatch="gradient">
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1;"
+         offset="0"
+         id="stop5" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:0;"
+         offset="1"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3836-9"
+       inkscape:swatch="gradient"
+       inkscape:label="point-fill">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop3838-8" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1"
+         offset="1"
+         id="stop3840-1" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata2874">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[maxwxyz]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date>2024</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     style="color:#000000;fill:#000000;fill-rule:evenodd;stroke-width:0.936609;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
+     d="m 25.761602,12.152805 a 2.3098518,3.8971459 59.344632 0 0 -4.739876,2.808183 L 2.3734909,49.037843 A 2.3098518,3.8971459 59.344632 0 0 4.0389265,51.84774 H 38.238146 A 2.3098518,3.8971459 59.344632 0 0 42.97896,49.037843 L 61.627195,14.960988 a 2.3098518,3.8971459 59.344632 0 0 -1.666374,-2.808183 z m 0.128684,5.61808 H 53.683255 L 38.110399,46.227946 H 10.31743 Z"
+     id="rect32" />
+</svg>

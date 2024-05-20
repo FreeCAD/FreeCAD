@@ -35,6 +35,7 @@
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
 # include <BRepGProp.hxx>
+# include <BRepGProp_Face.hxx>
 # include <BRepIntCurveSurface_Inter.hxx>
 # include <gce_MakeDir.hxx>
 # include <gce_MakeLin.hxx>
@@ -68,6 +69,7 @@
 #include <Base/Stream.h>
 #include <Mod/Material/App/MaterialManager.h>
 
+#include "Geometry.h"
 #include "PartFeature.h"
 #include "PartFeaturePy.h"
 #include "PartPyCXX.h"
@@ -1653,6 +1655,44 @@ bool Feature::isElementMappingDisabled(App::PropertyContainer* container)
 //        }
 //    }
 //    return false;
+}
+
+bool Feature::getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const
+{
+    const auto topoShape = getTopoShape(this, subname, true);
+
+    if (topoShape.isNull()) {
+        return false;
+    }
+
+    // Face normal
+    if (topoShape.isPlanar()) {
+        try {
+            const auto face = TopoDS::Face(topoShape.getShape());
+            gp_Pnt point;
+            gp_Vec vector;
+            BRepGProp_Face(face).Normal(0, 0, point, vector);
+            direction = Base::Vector3d(vector.X(), vector.Y(), vector.Z()).Normalize();
+            return true;
+        }
+        catch (Standard_TypeMismatch&) {
+            // Shape is not a face, do nothing
+        }
+    }
+
+    // Edge direction
+    const size_t edgeCount = topoShape.countSubShapes(TopAbs_EDGE);
+    if (edgeCount == 1 && topoShape.isLinearEdge()) {
+        if (const std::unique_ptr<Geometry> geometry = Geometry::fromShape(topoShape.getSubShape(TopAbs_EDGE, 1), true)) {
+            const std::unique_ptr<GeomLine> geomLine(static_cast<GeomCurve*>(geometry.get())->toLine());
+            if (geomLine) {
+                direction = geomLine->getDir().Normalize();
+                return true;
+            }
+        }
+    }
+
+    return GeoFeature::getCameraAlignmentDirection(direction, subname);
 }
 
 // ---------------------------------------------------------

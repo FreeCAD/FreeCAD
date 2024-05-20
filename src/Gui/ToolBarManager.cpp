@@ -189,7 +189,8 @@ public:
 
     void addWidget(QWidget *widget)
     {
-        if (_layout->indexOf(widget) > 0) {
+        // if widget already exist don't do anything
+        if (_layout->indexOf(widget) >= 0) {
             return;
         }
 
@@ -311,7 +312,7 @@ public:
                 widget->setVisible(visible);
             }
         }
-    };
+    }
 
 private:
     QHBoxLayout *_layout;

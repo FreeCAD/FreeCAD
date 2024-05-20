@@ -64,8 +64,16 @@ def write_constraint(f, femobj, sectionprint_obj, ccxwriter):
 
     # floats read from ccx should use {:.13G}, see comment in writer module
 
+    variable = sectionprint_obj.Variable
+    if variable == "Section Force":
+        key = "SOF, SOM, SOAREA"
+    elif variable == "Heat Flux":
+        key = "FLUX"
+    elif variable == "Drag Stress":
+        key = "DRAG"
+
     f.write(
         "*SECTION PRINT, SURFACE=SECTIONFACE{}, NAME=SECTIONPRINT{}\n"
         .format(sectionprint_obj.Name, sectionprint_obj.Name)
     )
-    f.write("SOF, SOM, SOAREA\n")
+    f.write(key + "\n")

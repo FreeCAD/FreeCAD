@@ -3341,6 +3341,39 @@ void View3DInventorViewer::viewSelection()
     }
 }
 
+void View3DInventorViewer::alignToSelection()
+{
+    if (!getCamera()) {
+        return;
+    }
+
+    const auto selection = Selection().getSelection();
+
+    // Empty selection
+    if (selection.empty()) {
+        return;
+    }
+
+    // Too much selections
+    if (selection.size() > 1) {
+        return;
+    }
+
+    // Get the geo feature
+    App::GeoFeature* geoFeature = nullptr;
+    std::pair<std::string, std::string> elementName;
+    App::GeoFeature::resolveElement(selection[0].pObject, selection[0].SubName, elementName, false, App::GeoFeature::ElementNameType::Normal, nullptr, nullptr, &geoFeature);
+    if (!geoFeature) {
+        return;
+    }
+
+    Base::Vector3d direction;
+    if (geoFeature->getCameraAlignmentDirection(direction, selection[0].SubName)) {
+        const auto orientation = SbRotation(SbVec3f(0, 0, 1), Base::convertTo<SbVec3f>(direction));
+        setCameraOrientation(orientation);
+    }
+}
+
 /**
  * @brief Decide if it should be possible to start any animation
  *

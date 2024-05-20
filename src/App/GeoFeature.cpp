@@ -209,6 +209,13 @@ void GeoFeature::setMaterialAppearance(const App::Material& material)
     Q_UNUSED(material)
 }
 
+bool GeoFeature::getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const
+{
+    Q_UNUSED(subname)
+    Q_UNUSED(direction)
+    return false;
+}
+
 #ifdef FC_USE_TNP_FIX
 bool GeoFeature::hasMissingElement(const char* subname)
 {

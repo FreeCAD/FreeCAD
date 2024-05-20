@@ -2394,6 +2394,65 @@ bool CmdPartDesignBoolean::isActive()
         return false;
 }
 
+// Command group for datums =============================================
+
+class CmdPartDesignCompDatums: public Gui::GroupCommand
+{
+public:
+    CmdPartDesignCompDatums()
+        : GroupCommand("PartDesign_CompDatums")
+    {
+        sAppModule = "PartDesign";
+        sGroup = "PartDesign";
+        sMenuText = QT_TR_NOOP("Create datum");
+        sToolTipText = QT_TR_NOOP("Create a datum object or local coordinate system");
+        sWhatsThis = "PartDesign_CompDatums";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+
+        addCommand("PartDesign_Plane");
+        addCommand("PartDesign_Line");
+        addCommand("PartDesign_Point");
+        addCommand("PartDesign_CoordinateSystem");
+    }
+
+    const char* className() const override
+    {
+        return "CmdPartDesignCompDatums";
+    }
+};
+
+// Command group for datums =============================================
+
+class CmdPartDesignCompSketches: public Gui::GroupCommand
+{
+public:
+    CmdPartDesignCompSketches()
+        : GroupCommand("PartDesign_CompSketches")
+    {
+        sAppModule = "PartDesign";
+        sGroup = "PartDesign";
+        sMenuText = QT_TR_NOOP("Create datum");
+        sToolTipText = QT_TR_NOOP("Create a datum object or local coordinate system");
+        sWhatsThis = "PartDesign_CompDatums";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("PartDesign_NewSketch");
+        addCommand("Sketcher_MapSketch");
+        addCommand("Sketcher_EditSketch");
+    }
+
+    const char* className() const override
+    {
+        return "CmdPartDesignCompSketches";
+    }
+};
 
 //===========================================================================
 // Initialization
@@ -2437,4 +2496,6 @@ void CreatePartDesignCommands()
     rcCmdMgr.addCommand(new CmdPartDesignMultiTransform());
 
     rcCmdMgr.addCommand(new CmdPartDesignBoolean());
+    rcCmdMgr.addCommand(new CmdPartDesignCompDatums());
+    rcCmdMgr.addCommand(new CmdPartDesignCompSketches());
 }

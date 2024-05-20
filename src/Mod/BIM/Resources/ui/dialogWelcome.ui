@@ -114,16 +114,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_9">
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The BIM workbench is a work-in-progress and will change quite often. Make sure you update it regularly via menu &lt;span style=&quot; font-weight:600;&quot;&gt;Tools -&amp;gt; Addon Manager&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
