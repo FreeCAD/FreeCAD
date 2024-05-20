@@ -170,7 +170,7 @@ App::DocumentObjectExecReturn* Helix::execute()
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: unsupported mode"));
     }
 
-    TopoDS_Shape sketchshape;
+    TopoDS_Shape sketchshape;   // Fixme: Should this be TopoShape here and below?
     try {
         sketchshape = getVerifiedFace();
     }

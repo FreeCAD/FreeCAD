@@ -108,6 +108,28 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         else:
             self.assertTrue(self.Pad2.isValid())    # TNP problem is not present with ElementMaps
 
+    def testPartDesignElementMapSketch(self):
+        """ Test that creating a sketch results in a correct element map.  """
+        # Arrange
+        body = self.Doc.addObject('PartDesign::Body', 'Body')
+        sketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        body.addObject(sketch)
+        TestSketcherApp.CreateRectangleSketch(sketch, (0, 0), (1, 1))
+        # Act
+        self.Doc.recompute()
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+            return
+        reverseMap = sketch.Shape.ElementReverseMap
+        faces = [name for name in reverseMap.keys() if name.startswith("Face")]
+        edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
+        vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
+        # Assert
+        self.assertEqual(sketch.Shape.ElementMapSize,9)
+        self.assertEqual(len(reverseMap),9)
+        self.assertEqual(len(faces),1)
+        self.assertEqual(len(edges),4)
+        self.assertEqual(len(vertexes),4)
+
     def testPartDesignElementMapPad(self):
         """ Test that padding a sketch results in a correct element map.  Note that comprehensive testing
             of the geometric functionality of the Pad is in TestPad.py """

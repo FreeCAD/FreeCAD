@@ -260,7 +260,7 @@ App::DocumentObjectExecReturn *Groove::execute()
 
     TopoShape sketchshape;
     try {
-        sketchshape = getVerifiedFace();
+        sketchshape = getTopoShapeVerifiedFace();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
