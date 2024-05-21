@@ -62,9 +62,6 @@ Feature::Feature()
     BaseFeature.setStatus(App::Property::Hidden, true);
 
     App::SuppressibleExtension::initExtension(this);
-#ifndef FC_USE_TNP_FIX
-    Suppressed.setStatus(App::Property::Status::Hidden, true);
-#endif
 }
 
 App::DocumentObjectExecReturn* Feature::recompute()

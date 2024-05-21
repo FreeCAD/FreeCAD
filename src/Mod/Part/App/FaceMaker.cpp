@@ -216,7 +216,6 @@ void Part::FaceMaker::postBuild() {
 
         std::vector<Data::MappedName> names;
         Data::ElementIDRefs sids;
-#ifdef FC_USE_TNP_FIX
         // To avoid name collision, we keep track of any used names to make sure
         // to use at least 'minElementNames' number of unused element names to
         // generate the face name.
@@ -229,12 +228,6 @@ void Part::FaceMaker::postBuild() {
                     break;
             }
         }
-#else
-        // We just use the first source element name to make the face name more
-        // stable
-        names.push_back(edgeNames.begin()->name);
-        sids = edgeNames.begin()->sids;
-#endif
         this->myTopoShape.setElementComboName(
                 Data::IndexedName::fromConst("Face",index),names,op,nullptr,&sids);
     }

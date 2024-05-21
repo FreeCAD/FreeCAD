@@ -325,9 +325,7 @@ void SketchObject::buildShape() {
         if(GeometryFacade::getConstruction(geo)) {
             continue;
         }
-        if (geo->isDerivedFrom<Part::GeomPoint>())
-#ifdef FC_USE_TNP_FIX
-        {
+        if (geo->isDerivedFrom<Part::GeomPoint>()) {
             Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(geoId -1, Sketcher::PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
@@ -346,17 +344,6 @@ void SketchObject::buildShape() {
                 FC_WARN("Edge too small: " << indexedName);
             }
         }
-
-#else
-        {
-            vertices.emplace_back(TopoDS::Vertex(geo->toShape()));
-            int idx = getVertexIndexGeoPos(i-1, PointPos::start);
-            std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
-        }
-        else
-            shapes.push_back(getEdge(geo,convertSubName(
-                        Data::IndexedName::fromConst("Edge", i), false).c_str()));
-#endif
     }
 
     for(int i=2;i<ExternalGeo.getSize();++i) {
@@ -11366,13 +11353,6 @@ const char *SketchObject::convertInternalName(const char *name)
 App::ElementNamePair SketchObject::getElementName(
         const char *name, ElementNameType type) const
 {
-    //  Todo: Toponaming Project March 2024:  This method override breaks the sketcher - selection and deletion
-    //          of constraints ceases to work.  See #13169.  We need to prove that this works before
-    //          enabling it.
-//    return Part2DObject::getElementName(name,type);
-#ifndef FC_USE_TNP_FIX
-    return Part2DObject::getElementName(name,type);
-#endif
     App::ElementNamePair ret;
     if(!name) return ret;
 
