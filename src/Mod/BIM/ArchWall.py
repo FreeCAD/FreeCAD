@@ -476,7 +476,7 @@ class _Wall(ArchComponent.Component):
                                 if Draft.getType(obj.Base) == "Wire":
                                     #print "modifying p2"
                                     obj.Base.End = p2
-                                elif Draft.getType(obj.Base) == "Sketcher::SketchObject":
+                                elif Draft.getType(obj.Base) in ["Sketcher::SketchObject", "ArchSketch"]:
                                     try:
                                         obj.Base.recompute() # Fix for the 'GeoId index out range' error.
                                         obj.Base.movePoint(0, 2, obj.Base.Placement.inverse().multVec(p2))
