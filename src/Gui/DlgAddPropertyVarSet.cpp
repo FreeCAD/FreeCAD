@@ -213,7 +213,9 @@ static PropertyEditor::PropertyItem *createPropertyItem(App::Property *prop)
 
 void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem, std::string& /*type*/)
 {
-    editor.reset(propertyItem->createEditor(this, this, SLOT(valueChanged())));
+    editor.reset(propertyItem->createEditor(this, [this]() {
+        this->valueChanged();
+    }));
     editor->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     editor->setObjectName(QString::fromUtf8("editor"));
     auto formLayout = qobject_cast<QFormLayout*>(layout());
@@ -351,10 +353,8 @@ void DlgAddPropertyVarSet::onTypePropertyDetermined()
 
 void DlgAddPropertyVarSet::valueChanged()
 {
-    QWidget* editor = qobject_cast<QWidget*>(sender());
     QVariant data;
-    data = propertyItem->editorData(editor);
-
+    data = propertyItem->editorData(editor.get());
     propertyItem->setData(data);
 }
 
