@@ -1603,7 +1603,7 @@ TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge splineEdge, bool& arc)
     }
     double midRange = (lastParam + firstParam) / 2;
     gp_Pnt midPoint = curveAdapt.Value(midRange);
-    Handle_Geom_Circle circle3Points = GC_MakeCircle(startPoint, midPoint, endPoint);
+    Handle(Geom_Circle) circle3Points = GC_MakeCircle(startPoint, midPoint, endPoint);
 
     if (circle3Points.IsNull()) {
         return {};
@@ -1614,7 +1614,7 @@ TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge splineEdge, bool& arc)
         return BRepBuilderAPI_MakeEdge(circle3Points);
     }
 
-    Handle_Geom_TrimmedCurve circleArc =
+    Handle(Geom_TrimmedCurve) circleArc =
                                 GC_MakeArcOfCircle (startPoint, midPoint, endPoint);
     return BRepBuilderAPI_MakeEdge(circleArc);
 }
