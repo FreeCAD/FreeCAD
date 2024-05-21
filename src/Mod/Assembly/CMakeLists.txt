@@ -13,6 +13,7 @@ set(Assembly_Scripts
     CommandCreateView.py
     CommandUpdateAssemblyContext.py
     CommandCreateAssemblyContext.py
+    CommandIsolateMode.py
     ContextCreatorLibrary.py
     CommandExportASMT.py
     TestAssemblyWorkbench.py
