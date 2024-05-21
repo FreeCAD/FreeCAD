@@ -130,29 +130,6 @@ App::DocumentObjectExecReturn* Boolean::execute()
                 return new App::DocumentObjectExecReturn("Resulting shape is invalid");
             }
         }
-#ifndef FC_USE_TNP_FIX
-        std::vector<ShapeHistory> history;
-        history.push_back(buildHistory(*mkBool, TopAbs_FACE, resShape, BaseShape));
-        history.push_back(buildHistory(*mkBool, TopAbs_FACE, resShape, ToolShape));
-
-        if (this->Refine.getValue()) {
-            try {
-                TopoDS_Shape oldShape = resShape;
-                BRepBuilderAPI_RefineModel mkRefine(oldShape);
-                resShape = mkRefine.Shape();
-                ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
-                history[0] = joinHistory(history[0], hist);
-                history[1] = joinHistory(history[1], hist);
-            }
-            catch (Standard_Failure&) {
-                // do nothing
-            }
-        }
-
-        this->Shape.setValue(resShape);
-        this->History.setValues(history);
-        return App::DocumentObject::StdReturn;
-#else
         TopoShape res(0);
         res.makeElementShape(*mkBool, shapes, opCode());
         if (this->Refine.getValue()) {
@@ -160,7 +137,6 @@ App::DocumentObjectExecReturn* Boolean::execute()
         }
         this->Shape.setValue(res);
         return Part::Feature::execute();
-#endif
     }
     catch (...) {
         return new App::DocumentObjectExecReturn(

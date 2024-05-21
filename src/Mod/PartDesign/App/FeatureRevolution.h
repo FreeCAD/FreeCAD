@@ -95,11 +95,7 @@ protected:
     /**
      * Generates a revolution of the input sketchshape and stores it in the given \a revol.
      */
-#ifdef FC_USE_TNP_FIX
     void generateRevolution(TopoShape& revol,
-#else
-    void generateRevolution(TopoDS_Shape& revol,
-#endif
                             const TopoDS_Shape& sketchshape,
                             const gp_Ax1& ax1,
                             const double angle,
