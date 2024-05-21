@@ -156,4 +156,3 @@ App::DocumentObjectExecReturn* FemMeshShapeObject::execute()
 
     return App::DocumentObject::StdReturn;
 }
-
