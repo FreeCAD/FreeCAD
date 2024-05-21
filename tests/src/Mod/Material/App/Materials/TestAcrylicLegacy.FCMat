@@ -10,3 +10,4 @@ KindOfMaterial = Solid
 
 [Mechanical]
 Density = 1190.0 kg/m^3
+Hardness = 10

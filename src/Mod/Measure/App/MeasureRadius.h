@@ -54,7 +54,7 @@ public:
 
     App::DocumentObjectExecReturn *execute() override;
     const char* getViewProviderName() const override {
-        return "MeasureGui::ViewProviderMeasure";
+        return "MeasureGui::ViewProviderMeasureRadius";
     }
 
     void recalculateRadius();

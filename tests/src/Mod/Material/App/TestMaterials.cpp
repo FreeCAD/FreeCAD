@@ -32,6 +32,7 @@
 
 #include <App/Application.h>
 #include <Base/Quantity.h>
+#include <Base/Interpreter.h>
 #include <Gui/MetaTypes.h>
 #include <src/App/InitApplication.h>
 
@@ -55,6 +56,7 @@ class TestMaterial : public ::testing::Test {
   }
 
   void SetUp() override {
+    Base::Interpreter().runString("import Part");
     _modelManager = new Materials::ModelManager();
     _materialManager = new Materials::MaterialManager();
   }

@@ -146,7 +146,7 @@
    <item>
     <widget class="QCheckBox" name="checkAskAgain">
      <property name="toolTip">
-      <string>If this is unchecked, these settings will be applied automatically next time. You can chenge this later under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; Native IFC</string>
+      <string>If this is unchecked, these settings will be applied automatically next time. You can change this later under menu Edit -&gt; Preferences -&gt; Import/Export -&gt; Native IFC</string>
      </property>
      <property name="text">
       <string>Ask me again next time</string>

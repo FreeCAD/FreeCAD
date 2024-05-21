@@ -169,121 +169,6 @@ Part::Feature* ProfileBased::getVerifiedObject(bool silent) const {
 
     return static_cast<Part::Feature*>(result);
 }
-
-#ifdef FC_USE_TNP_FIX
-TopoShape ProfileBased::getProfileShape() const
-{
-    TopoShape shape;
-    const auto& subs = Profile.getSubValues();
-    auto profile = Profile.getValue();
-    if (subs.empty()) {
-        shape = Part::Feature::getTopoShape(profile);
-    }
-    else {
-        std::vector<TopoShape> shapes;
-        for (auto& sub : subs) {
-            shapes.push_back(
-                Part::Feature::getTopoShape(profile, sub.c_str(), /* needSubElement */ true));
-        }
-        shape = TopoShape(shape.Tag).makeElementCompound(shapes);
-    }
-    if (shape.isNull()) {
-        throw Part::NullShapeException("Linked shape object is empty");
-    }
-    return shape;
-}
-#else
-Part::TopoShape ProfileBased::getProfileShape() const
-{
-    auto shape = getTopoShape(Profile.getValue());
-    if (!shape.isNull() && !Profile.getSubValues().empty()) {
-        std::vector<Part::TopoShape> shapes;
-        for (auto& sub : Profile.getSubValues(true))
-            shapes.emplace_back(shape.getSubShape(sub.c_str()));
-        shape = Part::TopoShape().makeCompound(shapes);
-    }
-    return shape;
-}
-#endif
-// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
-TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
-
-    App::DocumentObject* result = Profile.getValue();
-    const char* err = nullptr;
-    std::string _err;
-
-    if (!result) {
-        err = "No profile linked";
-    }
-    else if (AllowMultiFace.getValue()) {
-        try {
-            auto shape = getProfileShape();
-            if (shape.isNull())
-                err = "Linked shape object is empty";
-            else {
-                auto faces = shape.getSubTopoShapes(TopAbs_FACE);
-                if (faces.empty()) {
-                    if (!shape.hasSubShape(TopAbs_WIRE))
-                        shape = shape.makeWires();
-                    if (shape.hasSubShape(TopAbs_WIRE))
-                        shape = shape.makeFace(nullptr, "Part::FaceMakerBullseye");
-                    else
-                        err = "Cannot make face from profile";
-                }
-                else if (faces.size() == 1)
-                    shape = faces.front();
-                else
-                    shape = TopoShape().makeCompound(faces);
-            }
-            if (!err)
-                return shape.getShape();
-        }
-        catch (Standard_Failure& e) {
-            _err = e.GetMessageString();
-            err = _err.c_str();
-        }
-    }
-    else {
-        if (result->isDerivedFrom<Part::Part2DObject>()) {
-
-            auto wires = getProfileWires();
-            return Part::FaceMakerCheese::makeFace(wires);
-        }
-        else if (result->isDerivedFrom<Part::Feature>()) {
-            if (Profile.getSubValues().empty())
-                err = "Linked object has no subshape specified";
-            else {
-
-                const Part::TopoShape& shape = Profile.getValue<Part::Feature*>()->Shape.getShape();
-                TopoDS_Shape sub = shape.getSubShape(Profile.getSubValues()[0].c_str());
-                if (sub.ShapeType() == TopAbs_FACE)
-                    return TopoDS::Face(sub);
-                else if (sub.ShapeType() == TopAbs_WIRE) {
-
-                    auto wire = TopoDS::Wire(sub);
-                    if (!wire.Closed())
-                        err = "Linked wire is not closed";
-                    else {
-                        BRepBuilderAPI_MakeFace mk(wire);
-                        mk.Build();
-                        return TopoDS::Face(mk.Shape());
-                    }
-                }
-                else
-                    err = "Linked Subshape cannot be used";
-            }
-        }
-        else
-            err = "Linked object is neither Sketch, Part2DObject or Part::Feature";
-    }
-
-    if (!silent && err) {
-        throw Base::RuntimeError(err);
-    }
-
-    return TopoDS_Face();
-}
-
 TopoShape ProfileBased::getTopoShapeVerifiedFace(bool silent,
                                                  [[maybe_unused]]bool doFit, // TODO: Remove parameter
                                                  bool allowOpen,
@@ -400,17 +285,17 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(bool silent,
         }
 
         //  Toponaming April 2024:  This appears to be new feature, not TNP:
-        //        if (doFit && (std::abs(Fit.getValue()) > Precision::Confusion()
-        //                      || std::abs(InnerFit.getValue()) > Precision::Confusion())) {
-        //
-        //            if (!shape.isNull())
-        //                shape = shape.makEOffsetFace(Fit.getValue(),
-        //                                             InnerFit.getValue(),
-        //                                             static_cast<Part::TopoShape::JoinType>(FitJoin.getValue()),
-        //                                             static_cast<Part::TopoShape::JoinType>(InnerFitJoin.getValue()));
-        //            if (!openshape.isNull())
-        //                openshape.makEOffset2D(Fit.getValue());
-        //        }
+//                if (doFit && (std::abs(Fit.getValue()) > Precision::Confusion()
+//                              || std::abs(InnerFit.getValue()) > Precision::Confusion())) {
+//
+//                    if (!shape.isNull())
+//                        shape = shape.makeElementOffsetFace(Fit.getValue(),
+//                                                     InnerFit.getValue(),
+//                                                     static_cast<Part::TopoShape::JoinType>(FitJoin.getValue()),
+//                                                     static_cast<Part::TopoShape::JoinType>(InnerFitJoin.getValue()));
+//                    if (!openshape.isNull())
+//                        openshape.makeElementOffset2D(Fit.getValue());
+//                }
 
         if (!openshape.isNull()) {
             if (shape.isNull()) {
@@ -442,6 +327,121 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(bool silent,
         throw;
     }
 }
+
+// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
+TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
+
+    App::DocumentObject* result = Profile.getValue();
+    const char* err = nullptr;
+    std::string _err;
+
+    if (!result) {
+        err = "No profile linked";
+    }
+    else if (AllowMultiFace.getValue()) {
+        try {
+            auto shape = getProfileShape();
+            if (shape.isNull())
+                err = "Linked shape object is empty";
+            else {
+                auto faces = shape.getSubTopoShapes(TopAbs_FACE);
+                if (faces.empty()) {
+                    if (!shape.hasSubShape(TopAbs_WIRE))
+                        shape = shape.makeWires();
+                    if (shape.hasSubShape(TopAbs_WIRE))
+                        shape = shape.makeFace(nullptr, "Part::FaceMakerBullseye");
+                    else
+                        err = "Cannot make face from profile";
+                }
+                else if (faces.size() == 1)
+                    shape = faces.front();
+                else
+                    shape = TopoShape().makeCompound(faces);
+            }
+            if (!err)
+                return shape.getShape();
+        }
+        catch (Standard_Failure& e) {
+            _err = e.GetMessageString();
+            err = _err.c_str();
+        }
+    }
+    else {
+        if (result->isDerivedFrom<Part::Part2DObject>()) {
+
+            auto wires = getProfileWires();
+            return Part::FaceMakerCheese::makeFace(wires);
+        }
+        else if (result->isDerivedFrom<Part::Feature>()) {
+            if (Profile.getSubValues().empty())
+                err = "Linked object has no subshape specified";
+            else {
+
+                const Part::TopoShape& shape = Profile.getValue<Part::Feature*>()->Shape.getShape();
+                TopoDS_Shape sub = shape.getSubShape(Profile.getSubValues()[0].c_str());
+                if (sub.ShapeType() == TopAbs_FACE)
+                    return TopoDS::Face(sub);
+                else if (sub.ShapeType() == TopAbs_WIRE) {
+
+                    auto wire = TopoDS::Wire(sub);
+                    if (!wire.Closed())
+                        err = "Linked wire is not closed";
+                    else {
+                        BRepBuilderAPI_MakeFace mk(wire);
+                        mk.Build();
+                        return TopoDS::Face(mk.Shape());
+                    }
+                }
+                else
+                    err = "Linked Subshape cannot be used";
+            }
+        }
+        else
+            err = "Linked object is neither Sketch, Part2DObject or Part::Feature";
+    }
+
+    if (!silent && err) {
+        throw Base::RuntimeError(err);
+    }
+
+    return TopoDS_Face();
+}
+
+#ifdef FC_USE_TNP_FIX
+TopoShape ProfileBased::getProfileShape() const
+{
+    TopoShape shape;
+    const auto& subs = Profile.getSubValues();
+    auto profile = Profile.getValue();
+    if (subs.empty()) {
+        shape = Part::Feature::getTopoShape(profile);
+    }
+    else {
+        std::vector<TopoShape> shapes;
+        for (auto& sub : subs) {
+            shapes.push_back(
+                Part::Feature::getTopoShape(profile, sub.c_str(), /* needSubElement */ true));
+        }
+        shape = TopoShape(shape.Tag).makeElementCompound(shapes);
+    }
+    if (shape.isNull()) {
+        throw Part::NullShapeException("Linked shape object is empty");
+    }
+    return shape;
+}
+#else
+Part::TopoShape ProfileBased::getProfileShape() const
+{
+    auto shape = getTopoShape(Profile.getValue());
+    if (!shape.isNull() && !Profile.getSubValues().empty()) {
+        std::vector<Part::TopoShape> shapes;
+        for (auto& sub : Profile.getSubValues(true))
+            shapes.emplace_back(shape.getSubShape(sub.c_str()));
+        shape = Part::TopoShape().makeCompound(shapes);
+    }
+    return shape;
+}
+#endif
 
 
 // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
@@ -920,13 +920,13 @@ void ProfileBased::addOffsetToFace(TopoShape& upToFace, const gp_Dir& dir, doubl
 
 double ProfileBased::getThroughAllLength() const
 {
-    TopoDS_Shape profileshape;
+    TopoShape profileshape;
     TopoShape base;
-    profileshape = getVerifiedFace();
+    profileshape = getTopoShapeVerifiedFace();
     base = getBaseTopoShape();
     Bnd_Box box;
     BRepBndLib::Add(base.getShape(), box);
-    BRepBndLib::Add(profileshape, box);
+    BRepBndLib::Add(profileshape.getShape(), box);
     box.SetGap(0.0);
     // The diagonal of the bounding box, plus 1%  extra to eliminate risk of
     // co-planar issues, gives a length that is guaranteed to go through all.
@@ -1297,11 +1297,11 @@ double ProfileBased::getReversedAngle(const Base::Vector3d & b, const Base::Vect
 {
     try {
         Part::Feature* obj = getVerifiedObject();
-        TopoDS_Shape sketchshape = getVerifiedFace();
+        TopoShape sketchshape = getTopoShapeVerifiedFace();
 
         // get centre of gravity of the sketch face
         GProp_GProps props;
-        BRepGProp::SurfaceProperties(sketchshape, props);
+        BRepGProp::SurfaceProperties(sketchshape.getShape(), props);
         gp_Pnt cog = props.CentreOfMass();
         Base::Vector3d p_cog(cog.X(), cog.Y(), cog.Z());
         // get direction to cog from its projection on the revolve axis
@@ -1479,7 +1479,7 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
 
     // For newer version, do not do fitting, as it may flip the face normal for
     // some reason.
-    TopoShape shape = getVerifiedFace(true);  //, _ProfileBasedVersion.getValue() <= 0);
+    TopoShape shape = getTopoShapeVerifiedFace(true);  //, _ProfileBasedVersion.getValue() <= 0);
 
     gp_Pln pln;
     if (shape.findPlane(pln)) {

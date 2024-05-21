@@ -66,7 +66,7 @@ ViewProviderBody::ViewProviderBody()
     ADD_PROPERTY(DisplayModeBody,((long)0));
     DisplayModeBody.setEnums(BodyModeEnum);
 
-    sPixmap = "PartDesign_Body_Tree.svg";
+    sPixmap = "PartDesign_Body.svg";
 
     Gui::ViewProviderOriginGroupExtension::initExtension(this);
 }

@@ -659,6 +659,7 @@ std::map<std::string, std::string> _getFreeCADMechResultVectorProperties()
     resFCVecProp["PS1Vector"] = "Major Principal Stress Vector";
     resFCVecProp["PS2Vector"] = "Intermediate Principal Stress Vector";
     resFCVecProp["PS3Vector"] = "Minor Principal Stress Vector";
+    resFCVecProp["HeatFlux"] = "Heat Flux";
 
     return resFCVecProp;
 }

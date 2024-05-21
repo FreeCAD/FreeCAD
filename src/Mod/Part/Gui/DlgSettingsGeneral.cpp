@@ -60,6 +60,7 @@ void DlgSettingsGeneral::saveSettings()
     ui->checkBooleanRefine->onSave();
     ui->checkSketchBaseRefine->onSave();
     ui->checkObjectNaming->onSave();
+    ui->checkAllowCompoundBody->onSave();
 }
 
 void DlgSettingsGeneral::loadSettings()
@@ -68,6 +69,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkBooleanRefine->onRestore();
     ui->checkSketchBaseRefine->onRestore();
     ui->checkObjectNaming->onRestore();
+    ui->checkAllowCompoundBody->onRestore();
 }
 
 /**

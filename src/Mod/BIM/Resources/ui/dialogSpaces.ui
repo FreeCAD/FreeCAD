@@ -183,7 +183,7 @@
       <item row="1" column="1">
        <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>Levelname</string>
+         <string>Level name</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

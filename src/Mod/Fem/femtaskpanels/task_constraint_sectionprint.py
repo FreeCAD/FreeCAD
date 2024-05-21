@@ -29,6 +29,7 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief task panel for constraint section print object
 
+from PySide import QtCore
 from PySide import QtGui
 
 import FreeCAD
@@ -52,6 +53,14 @@ class _TaskPanel:
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ConstraintSectionPrint.ui"
         )
 
+        self.init_parameter_widget()
+
+        QtCore.QObject.connect(
+            self.parameterWidget.cb_variable,
+            QtCore.SIGNAL("currentIndexChanged(int)"),
+            self.variable_changed
+        )
+
         # geometry selection widget
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
             obj.References,
@@ -61,15 +70,11 @@ class _TaskPanel:
         )
 
         # form made from param and selection widget
-        self.form = [self.parameterWidget, self.selectionWidget]
+        self.form = [self.selectionWidget, self.parameterWidget]
 
     def accept(self):
         # check values
         items = len(self.selectionWidget.references)
-        FreeCAD.Console.PrintMessage(
-            "Task panel: found references: {}\n{}\n"
-            .format(items, self.selectionWidget.references)
-        )
 
         if items != 1:
             msgBox = QtGui.QMessageBox()
@@ -87,6 +92,8 @@ class _TaskPanel:
                 return False
             elif msgBox.clickedButton() == ignoreButton:
                 pass
+
+        self.obj.Variable = self.variable
         self.obj.References = self.selectionWidget.references
         self.recompute_and_set_back_all()
         return True
@@ -102,3 +109,13 @@ class _TaskPanel:
         if self.selectionWidget.sel_server:
             FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
         doc.resetEdit()
+
+    def init_parameter_widget(self):
+        self.variable = self.obj.Variable
+        self.variable_enum = self.obj.getEnumerationsOfProperty("Variable")
+        self.parameterWidget.cb_variable.addItems(self.variable_enum)
+        index = self.variable_enum.index(self.variable)
+        self.parameterWidget.cb_variable.setCurrentIndex(index)
+
+    def variable_changed(self, index):
+        self.variable = self.variable_enum[index]

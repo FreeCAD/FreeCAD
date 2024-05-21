@@ -156,7 +156,8 @@ def getPreferences():
         'IFC_UNIT': u,
         'SCALE_FACTOR': f,
         'GET_STANDARD': params.get_param_arch("getStandardType"),
-        'EXPORT_MODEL': ['arch', 'struct', 'hybrid'][params.get_param_arch("ifcExportModel")]
+        'EXPORT_MODEL': ['arch', 'struct', 'hybrid'][params.get_param_arch("ifcExportModel")],
+        'GROUPS_AS_ASSEMBLIES': params.get_param_arch("IfcGroupsAsAssemblies"),
     }
 
     # get ifcopenshell version
@@ -380,13 +381,15 @@ def export(exportList, filename, colors=None, preferences=None):
         ifctype = getIfcTypeFromObj(obj)
         # print(ifctype)
 
-        if ifctype == "IfcGroup":
-            groups[obj.Name] = [o.Name for o in obj.Group]
-            continue
-
         # handle assemblies (arrays, app::parts, references, etc...)
 
         assemblyElements = []
+        assemblyTypes = ["IfcApp::Part","IfcPart::Compound","IfcElementAssembly"]
+        is_nested_group = False
+        if preferences['GROUPS_AS_ASSEMBLIES'] and ifctype == "IfcGroup":
+            for p in obj.InListRecursive:
+                if not p.isDerivedFrom("App::DocumentObjectGroup"):
+                    is_nested_group = True
 
         if ifctype == "IfcArray":
             clonedeltas = []
@@ -424,6 +427,7 @@ def export(exportList, filename, colors=None, preferences=None):
                         representation,
                         preferences
                     )
+                    products[obj.Base.Name] = subproduct
                     assemblyElements.append(subproduct)
                     exportIFCHelper.writeQuantities(ifcfile,
                                                     obj.Base,
@@ -432,7 +436,7 @@ def export(exportList, filename, colors=None, preferences=None):
                                                     preferences['SCALE_FACTOR']
                     )
 
-        elif ifctype in ["IfcApp::Part","IfcPart::Compound","IfcElementAssembly"]:
+        elif ifctype in assemblyTypes or is_nested_group:
             if hasattr(obj,"Group"):
                 group = obj.Group
             elif hasattr(obj,"Links"):
@@ -462,7 +466,7 @@ def export(exportList, filename, colors=None, preferences=None):
                         placement,
                         representation,
                         preferences)
-                    products[obj.Name] = subproduct
+                    products[subobj.Name] = subproduct
                 assemblyElements.append(subproduct)
             ifctype = "IfcElementAssembly"
 
@@ -528,6 +532,12 @@ def export(exportList, filename, colors=None, preferences=None):
                 if preferences["DEBUG"]: print("Warning! Axis system object '{}' only contains one set of axis but at least two are needed for a IfcGrid to be added to IFC.".format(obj.Label))
             continue
 
+        # gather groups
+
+        if ifctype == "IfcGroup":
+            groups[obj.Name] = [o.Name for o in obj.Group]
+            continue
+
         if ifctype not in ArchIFCSchema.IfcProducts:
             ifctype = "IfcBuildingElementProxy"
 
@@ -581,10 +591,14 @@ def export(exportList, filename, colors=None, preferences=None):
         # gather assembly subelements
 
         if assemblyElements:
+            if is_nested_group:
+                aname = "FreeCADGroup"
+            else:
+                aname = "Assembly"
             ifcfile.createIfcRelAggregates(
                 ifcopenshell.guid.new(),
                 history,
-                'Assembly',
+                aname,
                 '',
                 products[obj.Name],
                 assemblyElements

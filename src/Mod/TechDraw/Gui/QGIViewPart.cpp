@@ -413,17 +413,18 @@ void QGIViewPart::drawAllEdges()
                 item->setWidth(Rez::guiX(gf->m_format.m_weight));
                 showItem = gf->m_format.m_visible;
             } else {
-                // unformatted line, draw as continuous line
-                item->setLinePen(m_dashedLineGenerator->getLinePen(1, vp->LineWidth.getValue()));
-                item->setWidth(Rez::guiX(vp->LineWidth.getValue()));
+                if (!(*itGeom)->getHlrVisible()) {
+                    // hidden line without a format
+                    item->setLinePen(m_dashedLineGenerator->getLinePen(Preferences::HiddenLineStyle(),
+                                                                       vp->LineWidth.getValue()));
+                     item->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));   //thin
+                     item->setZValue(ZVALUE::HIDEDGE);
+                } else {
+                    // unformatted visible line, draw as continuous line
+                    item->setLinePen(m_dashedLineGenerator->getLinePen(1, vp->LineWidth.getValue()));
+                    item->setWidth(Rez::guiX(vp->LineWidth.getValue()));
+                }
             }
-        }
-
-        if (!(*itGeom)->getHlrVisible()) {
-            item->setLinePen(m_dashedLineGenerator->getLinePen(Preferences::HiddenLineStyle(),
-                                                               vp->LineWidth.getValue()));
-            item->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));   //thin
-            item->setZValue(ZVALUE::HIDEDGE);
         }
 
         if ((*itGeom)->getClassOfEdge()  == ecUVISO) {

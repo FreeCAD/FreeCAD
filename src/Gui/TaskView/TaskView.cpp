@@ -27,6 +27,7 @@
 # include <QActionEvent>
 # include <QApplication>
 # include <QCursor>
+# include <QDockWidget>
 # include <QLineEdit>
 # include <QPointer>
 # include <QPushButton>
@@ -558,6 +559,7 @@ void TaskView::showDialog(TaskDialog *dlg)
 
     ActiveDialog->open();
 
+    saveCurrentWidth();
     getMainWindow()->updateActions();
 
     triggerMinimumSizeHint();
@@ -602,6 +604,7 @@ void TaskView::removeDialog()
         delete remove;
     }
 
+    tryRestoreWidth();
     triggerMinimumSizeHint();
 }
 
@@ -711,6 +714,34 @@ void TaskView::addTaskWatcher()
 #endif
 
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+}
+
+void TaskView::saveCurrentWidth()
+{
+    if (shouldRestoreWidth()) {
+        if (auto parent = qobject_cast<QDockWidget*>(parentWidget())) {
+            currentWidth = parent->width();
+        }
+    }
+}
+
+void TaskView::tryRestoreWidth()
+{
+    if (shouldRestoreWidth()) {
+        if (auto parent = qobject_cast<QDockWidget*>(parentWidget())) {
+            Gui::getMainWindow()->resizeDocks({parent}, {currentWidth}, Qt::Horizontal);
+        }
+    }
+}
+
+void TaskView::setRestoreWidth(bool on)
+{
+    restoreWidth = on;
+}
+
+bool TaskView::shouldRestoreWidth() const
+{
+    return restoreWidth;
 }
 
 void TaskView::removeTaskWatcher()
