@@ -22,6 +22,7 @@
 
 
 #include "PreCompiled.h"
+#include "qdebug.h"
 
 #ifndef _PreComp_
 # include <QAction>
@@ -463,16 +464,7 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
         {
             auto item = static_cast<DocumentObjectItem*>(ti);
             App::DocumentObject* obj = item->object()->getObject();
-            QString text = QString::fromUtf8(obj->getNameInDocument());
-
-            if (opt.state & QStyle::State_Selected) {
-                painter->fillRect(rect, opt.palette.highlight());
-                painter->setPen(opt.palette.highlightedText().color());
-            } else {
-                painter->setPen(opt.palette.text().color());
-            }
-            painter->drawText(rect, Qt::AlignLeft | Qt::AlignVCenter, text);
-            return;
+            painter->drawText(rect, Qt::AlignLeft | Qt::AlignVCenter, QString::fromUtf8(obj->getNameInDocument()));
         }
     }
 
@@ -677,7 +669,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     }
     setColumnHidden(1, TreeParams::getHideColumn());
     setColumnHidden(2, !TreeParams::getShowInternalNames());
-    header()->setVisible(!(TreeParams::getHideColumn() || !TreeParams::getShowInternalNames()));
+    header()->setVisible((!TreeParams::getHideColumn() || TreeParams::getShowInternalNames()));
 }
 
 TreeWidget::~TreeWidget()
@@ -2730,27 +2722,20 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
 
 void TreeWidget::drawRow(QPainter* painter, const QStyleOptionViewItem& options, const QModelIndex& index) const
 {
-    // QTreeWidget::drawRow(painter, options, index);
+    QTreeWidget::drawRow(painter, options, index);
     // Set the text and highlighted text color of a hidden object to a dark
-    QTreeWidgetItem * item = itemFromIndex(index);
-    if (!isVisibilityIconEnabled() && item->type() == ObjectType && !(static_cast<DocumentObjectItem*>(item)->previousStatus & 1)) {
-       QStyleOptionViewItem opt(options);
-       opt.state ^= QStyle::State_Enabled;
-       // Set color for all states, not just Inactive
-       QColor c = opt.palette.color(QPalette::Disabled, QPalette::Dark);
-       opt.palette.setColor(QPalette::Disabled, QPalette::Text, c);
-       opt.palette.setColor(QPalette::Disabled, QPalette::HighlightedText, c);
-
-       // Optionally, set colors for Active and Inactive states
-       opt.palette.setColor(QPalette::Inactive, QPalette::Text, c);
-       opt.palette.setColor(QPalette::Inactive, QPalette::HighlightedText, c);
-       opt.palette.setColor(QPalette::Active, QPalette::Text, c);
-       opt.palette.setColor(QPalette::Active, QPalette::HighlightedText, c);
-       QTreeWidget::drawRow(painter, opt, index);
-    }
-    else {
-       QTreeWidget::drawRow(painter, options, index);
-    }
+    //QTreeWidgetItem * item = itemFromIndex(index);
+    //if (item->type() == ObjectType && !(static_cast<DocumentObjectItem*>(item)->previousStatus & 1)) {
+    //    QStyleOptionViewItem opt(options);
+    //    opt.state ^= QStyle::State_Enabled;
+    //    QColor c = opt.palette.color(QPalette::Inactive, QPalette::Dark);
+    //    opt.palette.setColor(QPalette::Inactive, QPalette::Text, c);
+    //    opt.palette.setColor(QPalette::Inactive, QPalette::HighlightedText, c);
+    //    QTreeWidget::drawRow(painter, opt, index);
+    //}
+    //else {
+    //    QTreeWidget::drawRow(painter, options, index);
+    //}
 }
 
 void TreeWidget::slotNewDocument(const Gui::Document& Doc, bool isMainDoc)
