@@ -152,6 +152,11 @@ public:
     {
         return "CmdSketcherCompLine";
     }
+
+    bool isActive() override
+    {
+        return isCommandActive(getActiveGuiDocument());
+    }
 };
 
 // Line ================================================================
@@ -574,6 +579,10 @@ public:
     {
         return "CmdSketcherCompCreateArc";
     }
+    bool isActive() override
+    {
+        return isCommandActive(getActiveGuiDocument());
+    }
 };
 
 // ======================================================================================
@@ -821,6 +830,10 @@ public:
     const char* className() const override
     {
         return "CmdSketcherCompCreateConic";
+    }
+    bool isActive() override
+    {
+        return isCommandActive(getActiveGuiDocument());
     }
 };
 
@@ -1268,6 +1281,11 @@ public:
     {
         return "CmdSketcherCompCreateFillets";
     }
+
+    bool isActive() override
+    {
+        return isCommandActive(getActiveGuiDocument());
+    }
 };
 
 
@@ -1389,6 +1407,11 @@ public:
     {
         return "CmdSketcherCompCurveEdition";
     }
+
+    bool isActive() override
+    {
+        return isCommandActive(getActiveGuiDocument());
+    }
 };
 
 // ======================================================================================
@@ -1499,6 +1522,11 @@ public:
     const char* className() const override
     {
         return "CmdSketcherCompSlot";
+    }
+
+    bool isActive() override
+    {
+        return isCommandActive(getActiveGuiDocument());
     }
 };
 
