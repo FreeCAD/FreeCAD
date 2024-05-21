@@ -439,10 +439,11 @@ class BIMWorkbench(Workbench):
         def QT_TRANSLATE_NOOP(context, text):
             return text
 
-        t1 = QT_TRANSLATE_NOOP("QObject", "Arch")
+        t1 = QT_TRANSLATE_NOOP("QObject", "BIM")
         t2 = QT_TRANSLATE_NOOP("QObject", "Draft")
         FreeCADGui.addPreferencePage(":/ui/preferences-arch.ui", t1)
         FreeCADGui.addPreferencePage(":/ui/preferences-archdefaults.ui", t1)
+        FreeCADGui.addPreferencePage(":/ui/preferencesNativeIFC.ui", t1)
         if hasattr(FreeCADGui, "draftToolBar"):
             if hasattr(FreeCADGui.draftToolBar, "loadedPreferences"):
                 return
@@ -667,7 +668,6 @@ t = QT_TRANSLATE_NOOP("QObject", "Import-Export")
 FreeCADGui.addPreferencePage(":/ui/preferences-ifc.ui", t)
 FreeCADGui.addPreferencePage(":/ui/preferences-ifc-export.ui", t)
 FreeCADGui.addPreferencePage(":/ui/preferences-dae.ui", t)
-FreeCADGui.addPreferencePage(":/ui/preferencesNativeIFC.ui", t)
 
 # Add unit tests
 FreeCAD.__unit_test__ += ["TestArch"]

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>427</width>
-    <height>688</height>
+    <width>412</width>
+    <height>789</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,7 +16,19 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="image">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
+      <size>
+       <width>400</width>
+       <height>178</height>
+      </size>
+     </property>
+     <property name="baseSize">
       <size>
        <width>400</width>
        <height>178</height>
@@ -24,6 +36,12 @@
      </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../Arch.qrc">:/icons/banner.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -92,9 +110,9 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_6">
+    <widget class="QLabel" name="label_8">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You might also want to start from an existing floor plan or 3D model made in another application. Under menu &lt;span style=&quot; font-weight:600;&quot;&gt;File -&amp;gt; Import&lt;/span&gt;, you will find a wide range of file formats that can be imported into FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>There is no mandatory behaviour here though, and you can also start creating walls and columns directly, and care about organizing things in levels later.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -102,14 +120,12 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_8">
-     <property name="font">
-      <font>
-       <pointsize>16</pointsize>
-      </font>
-     </property>
+    <widget class="QLabel" name="label_6">
      <property name="text">
-      <string>Keep updated!</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You might also want to start from an existing floor plan or 3D model made in another application. Under menu &lt;span style=&quot; font-weight:600;&quot;&gt;File -&amp;gt; Import&lt;/span&gt;, you will find a wide range of file formats that can be imported into FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -125,7 +141,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../Arch.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>
