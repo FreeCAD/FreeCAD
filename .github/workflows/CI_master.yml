@@ -63,6 +63,12 @@ jobs:
     with:
       artifactBasename: Ubuntu_22-04_Conda-${{ github.run_id }}
 
+  Ubuntu_22-04_Conda_Qt6:
+    needs: [Prepare]
+    uses: ./.github/workflows/sub_buildUbuntu2204CondaQt6.yml
+    with:
+      artifactBasename: Ubuntu_22-04_Conda-Qt6-${{ github.run_id }}
+
   Windows:
     needs: [Prepare]
     uses: ./.github/workflows/sub_buildWindows.yml
