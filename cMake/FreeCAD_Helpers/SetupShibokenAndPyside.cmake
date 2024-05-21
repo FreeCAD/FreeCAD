@@ -37,6 +37,8 @@ macro(SetupShibokenAndPyside)
             message(STATUS "PYTHON_CONFIG_SUFFIX: ${PYTHON_CONFIG_SUFFIX}")
             find_package(Shiboken${SHIBOKEN_MAJOR_VERSION} QUIET)
         endif()
+
+        set_target_properties(Shiboken6::libshiboken PROPERTIES INTERFACE_COMPILE_DEFINITIONS "NDEBUG")
     endif()
 
     # pyside2 changed its cmake files, this is the dance we have
