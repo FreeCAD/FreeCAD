@@ -14,22 +14,6 @@
    <string>Isolate a Part</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Ok</set>
-     </property>
-     <property name="centerButtons">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="0" colspan="2">
     <widget class="QFrame" name="frame">
      <property name="sizePolicy">
@@ -49,9 +33,19 @@
        <rect>
         <x>0</x>
         <y>30</y>
-        <width>251</width>
+        <width>321</width>
         <height>16</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="value">
+       <number>50</number>
       </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -60,9 +54,9 @@
      <widget class="QLineEdit" name="transparencyBox">
       <property name="geometry">
        <rect>
-        <x>260</x>
+        <x>330</x>
         <y>25</y>
-        <width>111</width>
+        <width>41</width>
         <height>27</height>
        </rect>
       </property>
@@ -71,6 +65,9 @@
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="text">
+       <string>50</string>
       </property>
       <property name="maxLength">
        <number>100</number>
@@ -82,24 +79,37 @@
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>111</x>
+        <x>120</x>
         <y>0</y>
-        <width>151</width>
+        <width>131</width>
         <height>19</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-        <underline>true</underline>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
        </font>
       </property>
       <property name="text">
-       <string>Isolate a part</string>
+       <string>Transparency</string>
       </property>
      </widget>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="doneButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Done</string>
+     </property>
     </widget>
    </item>
   </layout>

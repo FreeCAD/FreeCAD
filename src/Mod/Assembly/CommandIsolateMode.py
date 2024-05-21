@@ -1,6 +1,6 @@
 import FreeCAD as App
 
-from PySide.QtCore import QT_TRANSLATE_NOOP
+from PySide.QtCore import QT_TRANSLATE_NOOP, QEvent
 from ContextCreatorLibrary import ContextCreationSystem
 
 if App.GuiUp:
@@ -18,30 +18,103 @@ __title__ = "Isolate Mode"
 __author__ = "drwho495"
 __url__ = "https://github.com/drwho495/FreeCAD-Context-Fork"
 
-class IsolateManager():
+class IsolateManager(QtWidgets.QMainWindow):
+    def __init__(self, part, assembly, allParts):
+        super().__init__()
+
+        if part == None:
+            self.error("You need to select a part!")
+            return False
+        if assembly == None:
+            self.error("You need to select an assembly as active!")
+            return False
+
+        self.partToKeep = part
+        self.assembly = assembly
+        self.allParts = allParts
+        # TODO: This only works on my machine!
+        self.isolateUI = Gui.PySideUic.loadUi("/home/hypocritical/Documents/GitHub/FreeCAD-daily/FreeCAD/src/Mod/Assembly/Gui/Resources/panels/TaskAssemblyIsolateMode.ui")
+        #self.isolateUI.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        self.isolateUI.transparencySlider.valueChanged.connect(self.sliderChanged)
+        self.isolateUI.transparencyBox.textChanged.connect(self.onLabelChanged)
+        self.isolateUI.doneButton.clicked.connect(self.isolateDone)
+        self.isolateUI.installEventFilter(self)
+        self.isolateUI.setFixedSize(392, 116)
+        self.isolateUI.show()
+
+        # do not isolate the part to keep!
+        for part in self.allParts:
+           if self.partToKeep.Name == part.Name:
+               self.allParts.remove(part)
+        
+        self.setTransparency(50)
+
+    def eventFilter(self, target, event):
+        if event.type() == QEvent.Close:
+            print("window closing...")
+            self.setTransparency(0)
+            return True
+        else:
+            # event.ignore()
+            return False
+
+    def sliderChanged(self):
+        self.isolateUI.transparencyBox.setText(str(self.isolateUI.transparencySlider.sliderPosition()))
+
+    def setTransparency(self, transp):
+        for part in self.allParts:
+            if transp >= 99:
+                part.Visibility = False
+            else:
+                part.Visibility = True
+
+            try:
+                if not hasattr(part.ViewObject, "Transparency"):
+                    for item in part.OutList:
+                        if hasattr(item.ViewObject, "Transparency"):
+                            item.ViewObject.Transparency = transp
+                            break
+                else:
+                    part.ViewObject.Transparency = transp
+            except:
+                print(part.Label) # for debugging
+
+    def isInt(self, number):
+        try:
+            int(number)
+            return True
+        except ValueError:
+            return False
+    
+    def isolateDone(self):
+        self.isolateUI.close()
+        pass
+
+    def onLabelChanged(self):
+        newValue = self.isolateUI.transparencyBox.text()
+        if newValue == "":
+            newValue = "0"
+            self.isolateUI.transparencyBox.setText(newValue)
+
+        if self.isInt(newValue) == False:
+            newValue = "50"
+            self.isolateUI.transparencyBox.setText(newValue)
+
+        if int(newValue) > 100:
+            self.isolateUI.transparencyBox.setText("100")
+        if int(newValue) < 0:
+            self.isolateUI.transparencyBox.setText("0")
+
+        # TODO: set slider value here
+        self.isolateUI.transparencySlider.setSliderPosition(int(newValue))
+        self.setTransparency(int(newValue))
+
     def error(self, message):
         class errorBox(QtGui.QMessageBox):
             def __init__(self):
                 super(errorBox, self).information(None, "Error", message)
         
         errorBox()
-
-    def __init__(self, part, assembly):
-        if part == None:
-            self.error("You need to select a part!")
-            return
-        if assembly == None:
-            self.error("You need to select an assembly as active!")
-            return
-
-        self.partToIsolate = part
-        self.assembly = assembly
-
-        self.isolateUI = Gui.PySideUic.loadUi(":/panels/TaskAssemblyIsolateMode.ui")
-        self.isolateUI.show()
-    
-    def closeMenu():
-        pass
 
 class IsolateGuiManager(QtCore.QObject):
     def __init__(self, assembly, view):
@@ -99,7 +172,7 @@ class IsolateGuiManager(QtCore.QObject):
     def accept(self, resetEdit=True):
         print("Creating isolation...")
         Gui.Control.closeDialog()
-        self.isolateManager = IsolateManager(self.selectedPart, UtilsAssembly.activeAssembly())
+        self.isolateManager = IsolateManager(self.selectedPart, UtilsAssembly.activeAssembly(), self.allParts)
         
 class CommandCreateAssemblyIsolation:
     def __init__(self):
