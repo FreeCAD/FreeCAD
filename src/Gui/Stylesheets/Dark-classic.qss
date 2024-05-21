@@ -2010,10 +2010,10 @@ QTabBar::tab:top, QDockWidget QTabBar::tab:top {
   color: white;
   padding-left: 9px;
   min-width: 5px;
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #252525, stop:1 #333333);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:0.6 #252525, stop:1 #252525);
   margin-top: 3px;
   border-top: 1px solid #202020; /* selection color */
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid #202020;
   border-left: 1px solid #202020;
   border-right: 1px solid #202020;
   border-top-left-radius: 2px;
@@ -2021,10 +2021,10 @@ QTabBar::tab:top, QDockWidget QTabBar::tab:top {
 }
 
 QTabBar::tab:top:selected, QDockWidget QTabBar::tab:top:selected {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #252525, stop:1 #202020);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #444444, stop:0.6 #444444, stop:1 #333333);
   color: white;
   border-top: 1px solid #202020; /* selection color */
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid #333333;
   border-left: 1px solid #202020;
   border-right: 1px solid #202020;
   margin-top: 0px;
@@ -2034,6 +2034,7 @@ QTabBar::tab:top:selected, QDockWidget QTabBar::tab:top:selected {
 
 QTabBar::tab:top:!selected:hover, QDockWidget QTabBar::tab:top:!selected:hover {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:1 #444444);
+  margin-top: 0px;
 }
 
 QTabBar::tab:bottom, QDockWidget QTabBar::tab:bottom {
@@ -2043,7 +2044,7 @@ QTabBar::tab:bottom, QDockWidget QTabBar::tab:bottom {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:1 #252525);
   margin-bottom: 3px;
   border-bottom: 1px solid #202020; /* selection color */
-  border-top: 1px solid transparent;
+  border-top: 1px solid #202020;
   border-left: 1px solid #202020;
   border-right: 1px solid #202020;
   border-bottom-left-radius: 2px;
@@ -2054,7 +2055,7 @@ QTabBar::tab:bottom:selected, QDockWidget QTabBar::tab:bottom:selected {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #252525, stop:1 #202020);
   color: white;
   border-bottom: 1px solid #202020; /* selection color */
-  border-top: 1px solid transparent;
+  border-top: 1px solid #333333;
   border-left: 1px solid #202020;
   border-right: 1px solid #202020;
   margin-bottom: 0px;
@@ -2073,7 +2074,7 @@ QTabBar::tab:left, QDockWidget QTabBar::tab:left {
   background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #333333, stop:1 #252525);
   margin-right: 3px;
   border-bottom: 1px solid #202020; /* selection color */
-  border-right: 1px solid transparent;
+  border-right: 1px solid #202020;
   border-left: 1px solid #202020;
   border-top: 1px solid #202020;
   border-top-left-radius: 2px;
@@ -2084,7 +2085,7 @@ QTabBar::tab:left:selected, QDockWidget QTabBar::tab:left:selected {
   background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #252525, stop:1 #202020);
   color: white;
   border-bottom: 1px solid #202020; /* selection color */
-  border-right: 1px solid transparent;
+  border-right: 1px solid #333333;
   border-left: 1px solid #202020;
   border-top: 1px solid #202020;
   margin-right: 0px;
@@ -2104,7 +2105,7 @@ QTabBar::tab:right, QDockWidget QTabBar::tab:right {
   background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #333333, stop:1 #252525);
   margin-right: 3px;
   border-bottom: 1px solid #202020; /* selection color */
-  border-left: 1px solid transparent;
+  border-left: 1px solid #202020;
   border-right: 1px solid #202020;
   border-top: 1px solid #202020;
   border-top-right-radius: 2px;
@@ -2115,7 +2116,7 @@ QTabBar::tab:right:selected, QDockWidget QTabBar::tab:right:selected {
   background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #252525, stop:1 #202020);
   color: white;
   border-bottom: 1px solid #202020; /* selection color */
-  border-left: 1px solid transparent;
+  border-left: 1px solid #333333;
   border-left: 1px solid #202020;
   border-top: 1px solid #202020;
   margin-right: 0px;
