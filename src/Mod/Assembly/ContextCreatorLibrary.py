@@ -76,7 +76,7 @@ class ContextCreationSystem:
         App.open(docFileName)
 
 
-    def addOffsets(self, objects,linked_obj, linked_placement):
+    def addOffset(self,linked_obj, linked_placement):
         linked_obj.Placement = linked_placement
 
     def createGroup(self, objects, target_document, linked_obj, edit_selection):
@@ -170,7 +170,7 @@ class ContextCreationSystem:
         else:
             Gui.setActiveDocument(target_document.Name)
             objects = self.createCopy(normalObjects, edit_selection)
-            self.addOffsets(objects, linkedObj, linked_placement)
+            self.addOffset(linkedObj, linked_placement)
             createdGroupName = self.createGroup(objects, target_document, linkedObj, edit_selection)
             #self.restartDocument(App.ActiveDocument)
             if experimental_mode:
@@ -181,7 +181,7 @@ class ContextCreationSystem:
         objects = App.ActiveDocument.copyObject(Gui.Selection.getSelection(), True)
         self.createGroup(objects)
         
-    def updateShape(self, obj, refObj): # not used, but should be eventually
+    def updateShape(self, obj, refObj):
         print("Updating Shape....")
         solid = Part.Solid(refObj.Shape)
         obj.Shape = solid
@@ -210,6 +210,9 @@ class ContextCreationSystem:
             source_doc.removeObject(group.Name)
 
         return new_obj.Name
+    
+    def moveObjectsToGroup(self, assemblyDoc, group):
+        destDoc = App.ActiveDocument
 
     def getPartParent(self, obj): # get the parent of a part that can be used (not used)
         final_obj = None
@@ -228,6 +231,7 @@ class ContextCreationSystem:
         return [obj for obj in document.Objects if obj.isDerivedFrom("PartDesign::SubShapeBinder")]
 
     def UpdateContext(self): # method to update the assembly context
+        originalDocument = App.ActiveDocument.FileName
         selection = Gui.Selection.getSelection()[0]
         if "EditedPart" in selection.PropertiesList:
             self.editedPart = App.ActiveDocument.getObject(selection.EditedPart)
@@ -235,11 +239,21 @@ class ContextCreationSystem:
                 
             EditedPartLink = self.getObjFromRefString(selection.EditedPartLink, selection.EditedPartLinkLocation)
             self.editedPart.Placement = EditedPartLink.Placement
+
+            assemblyObj = None
+            assemblyDocument = None
+            referenceObjectsNames = []
                 
             for obj in self.objectToUpdate:
                 if "RefObj" in obj.PropertiesList:
                     refObj = self.getObjFromRefString(obj.RefObj, obj.RefObjLocation)
-                    assemblyDocument = refObj.Document
+                    referenceObjectsNames.append(refObj.Name)
+                    assemblyDoc = refObj.Document
+                    if assemblyDocument == None:
+                        self.mainDocumentFileName = assemblyDoc.FileName
+                        assemblyDocument = assemblyDoc
+                    if assemblyObj == None:
+                        assemblyObj = refObj.InList[0]
                         
                     try:
                         obj.Placement = refObj.Placement
@@ -248,8 +262,33 @@ class ContextCreationSystem:
                         #App.ActiveDocument.recompute()
                     except:
                         print("could not update object: " + refObj.Label)
-            current_doc = App.open(self.mainDocumentFileName)
-            current_doc_filename = current_doc.FileName
+            App.open(originalDocument)
+            # current_doc = App.open(self.mainDocumentFileName)
+            # current_doc_filename = current_doc.FileName
+
+            # Add new parts
+            allParts = assemblyObj.OutList
+            partsToAdd = []
+            for part in allParts:
+                if part.Name not in referenceObjectsNames and part.Name != selection.EditedPartLink:
+                    print("Adding part: " + part.Name + " (if possible)")
+                    if hasattr(part, "Placement") and hasattr(part, "Shape"):
+                        # Add part...
+                        partsToAdd.append(part)
+                else:
+                    print(part.Name)
+                    print(assemblyObj.Name)
+                    print(assemblyObj.Label)
+                    print(referenceObjectsNames)
+                    print(allParts)
+                    print(part.Name != selection.EditedPartLink)
+            
+            if partsToAdd != None:
+                objects = self.createCopy(partsToAdd, None)
+                for obj in objects:
+                    selection.addObject(obj)
+                    
+
             
             # App.ActiveDocument.recompute()
             self.restartDocument(App.ActiveDocument)
