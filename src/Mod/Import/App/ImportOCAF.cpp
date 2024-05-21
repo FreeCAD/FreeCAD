@@ -540,7 +540,6 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
             xp.Next();
         }
 
-        bool found_face_color = false;
         std::vector<App::Color> faceColors;
         faceColors.resize(faces.Extent(), partColor);
         xp.Init(shape, TopAbs_FACE);
@@ -549,7 +548,6 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
             if (jt != myColorMap.end()) {
                 int index = faces.FindIndex(xp.Current());
                 faceColors[index - 1] = convertColor(jt->second);
-                found_face_color = true;
             }
             xp.Next();
         }
