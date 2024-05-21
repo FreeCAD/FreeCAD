@@ -2041,7 +2041,7 @@ QTabBar::tab:bottom, QDockWidget QTabBar::tab:bottom {
   color: white;
   padding-left: 9px;
   min-width: 5px;
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:1 #252525);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:0.6 #252525, stop:1 #252525);
   margin-bottom: 3px;
   border-bottom: 1px solid #202020; /* selection color */
   border-top: 1px solid #202020;
@@ -2052,7 +2052,7 @@ QTabBar::tab:bottom, QDockWidget QTabBar::tab:bottom {
 }
 
 QTabBar::tab:bottom:selected, QDockWidget QTabBar::tab:bottom:selected {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #252525, stop:1 #202020);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #444444, stop:0.6 #444444, stop:1 #333333);
   color: white;
   border-bottom: 1px solid #202020; /* selection color */
   border-top: 1px solid #333333;
@@ -2071,7 +2071,7 @@ QTabBar::tab:left, QDockWidget QTabBar::tab:left {
   color: white;
   padding-bottom: 9px;
   min-height: 5px;
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #333333, stop:1 #252525);
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #333333, stop:0.6 #252525, stop:1 #252525);
   margin-right: 3px;
   border-bottom: 1px solid #202020; /* selection color */
   border-right: 1px solid #202020;
@@ -2082,7 +2082,7 @@ QTabBar::tab:left, QDockWidget QTabBar::tab:left {
 }
 
 QTabBar::tab:left:selected, QDockWidget QTabBar::tab:left:selected {
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #252525, stop:1 #202020);
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #444444, stop:0.6 #444444, stop:1 #333333);
   color: white;
   border-bottom: 1px solid #202020; /* selection color */
   border-right: 1px solid #333333;
@@ -2102,7 +2102,7 @@ QTabBar::tab:right, QDockWidget QTabBar::tab:right {
   color: white;
   padding-bottom: 9px;
   min-height: 5px;
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #333333, stop:1 #252525);
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #333333, stop:0.6 #252525, stop:1 #252525);
   margin-right: 3px;
   border-bottom: 1px solid #202020; /* selection color */
   border-left: 1px solid #202020;
@@ -2113,7 +2113,7 @@ QTabBar::tab:right, QDockWidget QTabBar::tab:right {
 }
 
 QTabBar::tab:right:selected, QDockWidget QTabBar::tab:right:selected {
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #252525, stop:1 #202020);
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #444444, stop:0.6 #444444, stop:1 #333333);
   color: white;
   border-bottom: 1px solid #202020; /* selection color */
   border-left: 1px solid #333333;
