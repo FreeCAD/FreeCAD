@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>555</width>
-    <height>689</height>
+    <height>729</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -473,6 +473,13 @@ are placed in a 'Group' instead.
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Check also NativeIFC-specific preferences under BIM -&gt; NativeIFC</string>
         </property>
        </widget>
       </item>
