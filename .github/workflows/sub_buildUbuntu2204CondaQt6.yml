@@ -83,6 +83,12 @@ jobs:
         env:
           CONDA_VERBOSITY: 2
         run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            libegl1                                       \
+            libgl1                                        \
+            libglx0                                       \
+            libopengl0
           ./conda/setup-environment.sh
       - name: Set Environment Variables
         run: |
