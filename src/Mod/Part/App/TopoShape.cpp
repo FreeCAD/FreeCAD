@@ -3981,7 +3981,6 @@ TopoShape &TopoShape::makeRefine(const TopoShape &shape, const char *op, RefineF
     return *this;
 }
 
-#ifdef FC_USE_TNP_FIX
 bool TopoShape::findPlane(gp_Pln& pln, double tol, double atol) const
 {
     if (_Shape.IsNull()) {
@@ -4103,55 +4102,6 @@ bool TopoShape::findPlane(gp_Pln& pln, double tol, double atol) const
         return false;
     }
 }
-#else
-bool TopoShape::findPlane(gp_Pln &pln, double tol, double atol) const {
-    (void)atol;
-    if(_Shape.IsNull())
-        return false;
-    TopoDS_Shape shape = _Shape;
-    TopExp_Explorer exp(_Shape,TopAbs_EDGE);
-    if(exp.More()) {
-        TopoDS_Shape edge = exp.Current();
-        exp.Next();
-        if (!exp.More()) {
-            // To deal with OCCT bug of wrong edge transformation
-            shape = BRepBuilderAPI_Copy(_Shape).Shape();
-        }
-    }
-    try {
-        BRepLib_FindSurface finder(shape,tol,Standard_True);
-        if (!finder.Found())
-            return false;
-        pln = GeomAdaptor_Surface(finder.Surface()).Plane();
-
-        // To make the returned plane normal more stable, if the shape has any
-        // face, use the normal of the first face.
-        TopExp_Explorer exp(shape, TopAbs_FACE);
-        if(exp.More()) {
-            BRepAdaptor_Surface adapt(TopoDS::Face(exp.Current()));
-            double u = adapt.FirstUParameter()
-                + (adapt.LastUParameter() - adapt.FirstUParameter())/2.;
-            double v = adapt.FirstVParameter()
-                + (adapt.LastVParameter() - adapt.FirstVParameter())/2.;
-            BRepLProp_SLProps prop(adapt,u,v,2,Precision::Confusion());
-            if(prop.IsNormalDefined()) {
-                gp_Pnt pnt; gp_Vec vec;
-                // handles the orientation state of the shape
-                BRepGProp_Face(TopoDS::Face(exp.Current())).Normal(u,v,pnt,vec);
-                pln = gp_Pln(pnt, gp_Dir(vec));
-            }
-        }
-        return true;
-    }catch (Standard_Failure &e) {
-        // For some reason the above BRepBuilderAPI_Copy failed to copy
-        // the geometry of some edge, causing exception with message
-        // BRepAdaptor_Curve::No geometry. However, without the above
-        // copy, circular edges often have the wrong transformation!
-        FC_LOG("failed to find surface: " << e.GetMessageString());
-        return false;
-    }
-}
-#endif
 
 bool TopoShape::isInfinite() const
 {
