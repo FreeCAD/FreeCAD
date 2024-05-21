@@ -18,10 +18,10 @@
     <filter
        style="color-interpolation-filters:sRGB"
        id="filter1958"
-       x="-0.11522507"
-       y="-0.093127402"
-       width="1.2304501"
-       height="1.1862548">
+       x="-0.071428812"
+       y="-0.09313091"
+       width="1.1428603"
+       height="1.1862584">
       <feBlend
          mode="exclusion"
          in2="BackgroundImage"
@@ -40,35 +40,28 @@
     </rdf:RDF>
   </metadata>
   <rect
-     style="enable-background:new;display:inline;fill:#fce94f;stroke:#302b00;stroke-width:0.529167;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     style="display:inline;fill:#fce94f;stroke:#302b00;stroke-width:0.530771;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;enable-background:new"
      id="rect10"
-     width="1.0583334"
-     height="12.106468"
-     x="-4.0433626"
-     y="1.5875002"
-     transform="rotate(-90)" />
-  <rect
-     style="display:inline;fill:#fce94f;stroke:none;stroke-width:0.374178;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;enable-background:new"
-     id="rect6"
-     width="0.52916664"
-     height="12.106468"
-     x="-3.778779"
-     y="1.3229166"
+     width="1.0567291"
+     height="6.0338626"
+     x="-4.0675354"
+     y="3.4653604"
      transform="rotate(-90)" />
   <g
      id="g5"
-     transform="translate(-0.40851664)">
+     transform="translate(-4.8376416,-0.68168449)"
+     style="display:inline">
     <rect
-       style="display:inline;fill:#fce94f;stroke:#302b00;stroke-width:0.529167;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;enable-background:new"
+       style="display:inline;fill:#fce94f;stroke:#302b00;stroke-width:0.529295;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;enable-background:new"
        id="rect7"
-       width="1.0576845"
-       height="13.658038"
-       x="7.2188921"
-       y="1.5878245" />
+       width="1.0582052"
+       height="13.65791"
+       x="7.218956"
+       y="1.4754986" />
     <g
        id="g7"
        style="enable-background:new"
-       transform="translate(-6.4979017,-10.004425)">
+       transform="translate(-6.4979017,-9.3227409)">
       <circle
          style="fill:#fce94f;stroke:#302b00;stroke-width:0.529167;stroke-dasharray:none"
          id="path3"
@@ -83,18 +76,18 @@
   </g>
   <g
      id="g6"
-     transform="translate(-0.13229162)">
+     transform="translate(-2.2489582,-0.68168449)">
     <rect
-       style="display:inline;fill:#fce94f;stroke:#302b00;stroke-width:0.529217;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;enable-background:new"
+       style="display:inline;fill:#fce94f;stroke:#302b00;stroke-width:0.529612;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;enable-background:new"
        id="rect2"
-       width="1.0582831"
-       height="13.758027"
-       x="10.96039"
-       y="1.5876528" />
+       width="1.057888"
+       height="5.276968"
+       x="10.967713"
+       y="1.4756571" />
     <g
        id="g4"
        style="enable-background:new"
-       transform="translate(-2.7564288,-10.004425)">
+       transform="translate(-2.7492851,-9.3227409)">
       <circle
          style="fill:#fce94f;stroke:#302b00;stroke-width:0.529167;stroke-dasharray:none"
          id="circle2"
@@ -109,22 +102,20 @@
   </g>
   <g
      id="g2"
-     style="enable-background:new"
-     transform="matrix(1.0000031,0,0,1.0000048,-0.71771796,-0.84672513)">
+     style="display:inline;enable-background:new"
+     transform="matrix(1.0000024,0,0,1.0000152,-0.71771143,-0.63159787)">
     <path
        style="display:inline;fill:none;stroke:#babdb6;stroke-width:1.5875;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none;filter:url(#filter1958);enable-background:new"
-       d="m 14.944196,295.67336 h -3.380884 l -3.5078078,3.04733 v 5.47594"
-       id="path2"
-       transform="translate(0,-288.53331)" />
+       d="m 14.740589,7.14005 -5.0270675,1.894e-4 -6.0853981,4.0250456 2.4e-6,4.498035"
+       id="path2" />
     <path
-       style="display:inline;fill:none;stroke:#555753;stroke-width:0.529167;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;filter:url(#filter1958);enable-background:new"
-       d="m 15.473362,295.67336 h -3.91005 l -3.5078078,3.04733 v 5.97864"
-       id="path1"
-       transform="translate(0,-288.53331)" />
+       style="display:inline;fill:none;stroke:#555753;stroke-width:0.529165;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none;filter:url(#filter1958);enable-background:new"
+       d="M 15.269754,7.1402394 H 9.7135215 l -6.0853981,4.0250456 2.4e-6,5.027196"
+       id="path1" />
   </g>
   <g
      id="g15"
-     transform="translate(-6.9064183,-4.2582045)"
+     transform="translate(-4.9982433,-6.7452878)"
      style="display:inline;stroke-width:0.529167;stroke-dasharray:none;enable-background:new">
     <circle
        style="fill:#d3d7cf;stroke:#555753;stroke-width:0.529167;stroke-dasharray:none"
@@ -139,7 +130,7 @@
   </g>
   <g
      id="g8"
-     transform="translate(-2.8887203,-7.2781587)"
+     transform="translate(-11.335543,-3.1998711)"
      style="display:inline;stroke-width:0.529167;stroke-dasharray:none;enable-background:new">
     <circle
        style="fill:#d3d7cf;stroke:#555753;stroke-width:0.529167;stroke-dasharray:none"
