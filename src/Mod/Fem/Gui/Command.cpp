@@ -395,8 +395,8 @@ CmdFemConstraintRigidBody::CmdFemConstraintRigidBody()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Constraint rigid body");
-    sToolTipText = QT_TR_NOOP("Creates a FEM constraint for a rigid body");
+    sMenuText = QT_TR_NOOP("Rigid body constraint");
+    sToolTipText = QT_TR_NOOP("Creates a rigid body constraint for a geometric entity");
     sWhatsThis = "FEM_ConstraintRigidBody";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_ConstraintRigidBody";
@@ -412,7 +412,7 @@ void CmdFemConstraintRigidBody::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintRigidBody");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint fixed geometry"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make rigid body constraint"));
     doCommand(Doc,
               "App.activeDocument().addObject(\"Fem::ConstraintRigidBody\",\"%s\")",
               FeatName.c_str());
