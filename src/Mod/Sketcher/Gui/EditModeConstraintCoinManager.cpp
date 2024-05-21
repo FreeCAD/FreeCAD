@@ -944,12 +944,11 @@ Restart:
                     }
 
                     // Check if arc helpers are needed
-                    if (Constr->Second != GeoEnum::GeoUndef
-                        && Constr->SecondPos == Sketcher::PointPos::none) {
+                    if (Constr->Second != GeoEnum::GeoUndef) {
                         auto geo1 = geolistfacade.getGeometryFromGeoId(Constr->First);
                         auto geo2 = geolistfacade.getGeometryFromGeoId(Constr->Second);
 
-                        if (isArcOfCircle(*geo1)) {
+                        if (isArcOfCircle(*geo1) && Constr->FirstPos == Sketcher::PointPos::none) {
                             auto arc = static_cast<const Part::GeomArcOfCircle*>(geo1);  // NOLINT
                             radius1 = arc->getRadius();
                             center1 = arc->getCenter();
@@ -976,7 +975,7 @@ Restart:
                                 numPoints++;
                             }
                         }
-                        if (isArcOfCircle(*geo2)) {
+                        if (isArcOfCircle(*geo2) && Constr->SecondPos == Sketcher::PointPos::none) {
                             auto arc = static_cast<const Part::GeomArcOfCircle*>(geo2);  // NOLINT
                             radius2 = arc->getRadius();
                             center2 = arc->getCenter();

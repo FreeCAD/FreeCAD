@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Create a defautl structure (IfcProject, IfcSite, IfcBuilding and IfcBuildingStorey)? Replying &quot;No&quot; will only create an IfcProject. You can then add the structure manually later.</string>
+      <string>Create a default structure (IfcProject, IfcSite, IfcBuilding and IfcBuildingStorey)? Replying &quot;No&quot; will only create an IfcProject. You can then add the structure manually later.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

@@ -230,6 +230,16 @@ class ResultMechanical(base_fempythonobject.BaseFemPythonObject):
             "Temperature field",
             True
         )
+        obj.addProperty(
+            "App::PropertyVectorList",
+            "HeatFlux",
+            "NodeData",
+            "List of heat flux vectors",
+            True
+        )
+        obj.setPropertyStatus("HeatFlux", "LockDynamic")
+
+
         obj.setPropertyStatus("Temperature", "LockDynamic")
         obj.addProperty(
             "App::PropertyFloatList",

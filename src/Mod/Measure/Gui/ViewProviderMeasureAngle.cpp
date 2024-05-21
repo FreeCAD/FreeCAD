@@ -243,7 +243,7 @@ PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureAngle, MeasureGui::ViewProviderMe
 
 ViewProviderMeasureAngle::ViewProviderMeasureAngle()
 {
-    sPixmap = "umf-measurement";
+    sPixmap = "Measurement-Angle";
 
     // Primary Arc
     Gui::ArcEngine *arcEngine = new Gui::ArcEngine();

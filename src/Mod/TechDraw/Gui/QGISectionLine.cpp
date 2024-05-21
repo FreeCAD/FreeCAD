@@ -122,8 +122,10 @@ void QGISectionLine::makeExtensionLine()
 void QGISectionLine::makeSectionLine()
 {
     QPainterPath pp;
-    pp.moveTo(m_start);
-    pp.lineTo(m_end);
+    if (m_showLine) {
+        pp.moveTo(m_start);
+        pp.lineTo(m_end);
+    }
     m_line->setPath(pp);
 }
 

@@ -1405,7 +1405,7 @@ CmdTechDrawDimension::CmdTechDrawDimension()
     sMenuText = QT_TR_NOOP("Insert Dimension");
     sToolTipText = QT_TR_NOOP("Dimension contextually based on your selection.\n"
         "Depending on your selection you might have several dimensions available. You can cycle through them using the M key.\n"
-        "Left clicking on empty space will validate the current Dimensiont. Right clicking or pressing Esc will cancel.");
+        "Left clicking on empty space will validate the current Dimension. Right clicking or pressing Esc will cancel.");
     sWhatsThis = "TechDraw_Dimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_Dimension";

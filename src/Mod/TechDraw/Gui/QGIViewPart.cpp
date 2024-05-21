@@ -413,17 +413,18 @@ void QGIViewPart::drawAllEdges()
                 item->setWidth(Rez::guiX(gf->m_format.m_weight));
                 showItem = gf->m_format.m_visible;
             } else {
-                // unformatted line, draw as continuous line
-                item->setLinePen(m_dashedLineGenerator->getLinePen(1, vp->LineWidth.getValue()));
-                item->setWidth(Rez::guiX(vp->LineWidth.getValue()));
+                if (!(*itGeom)->getHlrVisible()) {
+                    // hidden line without a format
+                    item->setLinePen(m_dashedLineGenerator->getLinePen(Preferences::HiddenLineStyle(),
+                                                                       vp->LineWidth.getValue()));
+                     item->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));   //thin
+                     item->setZValue(ZVALUE::HIDEDGE);
+                } else {
+                    // unformatted visible line, draw as continuous line
+                    item->setLinePen(m_dashedLineGenerator->getLinePen(1, vp->LineWidth.getValue()));
+                    item->setWidth(Rez::guiX(vp->LineWidth.getValue()));
+                }
             }
-        }
-
-        if (!(*itGeom)->getHlrVisible()) {
-            item->setLinePen(m_dashedLineGenerator->getLinePen(Preferences::HiddenLineStyle(),
-                                                               vp->LineWidth.getValue()));
-            item->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));   //thin
-            item->setZValue(ZVALUE::HIDEDGE);
         }
 
         if ((*itGeom)->getClassOfEdge()  == ecUVISO) {
@@ -697,8 +698,10 @@ void QGIViewPart::drawAllSectionLines()
         return;
 
     auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
-    if (!vp)
+    if (!vp) {
         return;
+    }
+
     if (vp->ShowSectionLine.getValue()) {
         auto refs = viewPart->getSectionRefs();
         for (auto& r : refs) {
@@ -776,11 +779,18 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
 
         //set the general parameters
         sectionLine->setPos(0.0, 0.0);
-        // sectionLines are typically ISO 8 (long dash, short dash) or ISO 4 (long dash, dot)
-        sectionLine->setLinePen(
-                m_dashedLineGenerator->getLinePen((size_t)vp->SectionLineStyle.getValue(),
-                                                    vp->HiddenWidth.getValue()));
-        sectionLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
+
+        if (vp->IncludeCutLine.getValue()) {
+            sectionLine->setShowLine(true);
+            // sectionLines are typically ISO 8 (long dash, short dash) or ISO 4 (long dash, dot)
+            sectionLine->setLinePen(
+                    m_dashedLineGenerator->getLinePen((size_t)vp->SectionLineStyle.getValue(),
+                                                        vp->HiddenWidth.getValue()));
+            sectionLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
+        } else {
+            sectionLine->setShowLine(false);
+        }
+
         double fontSize = Preferences::dimFontSizeMM();
         sectionLine->setFont(getFont(), fontSize);
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
@@ -857,11 +867,18 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
 
     //set the general parameters
     sectionLine->setPos(0.0, 0.0);
-    // sectionLines are typically ISO 8 (long dash, short dash) or ISO 4 (long dash, dot)
-    sectionLine->setLinePen(
-                            m_dashedLineGenerator->getLinePen((size_t)vp->SectionLineStyle.getValue(),
-                                 vp->HiddenWidth.getValue()));
-    sectionLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
+
+    if (vp->IncludeCutLine.getValue()) {
+        sectionLine->setShowLine(true);
+        // sectionLines are typically ISO 8 (long dash, short dash) or ISO 4 (long dash, dot)
+        sectionLine->setLinePen(
+                m_dashedLineGenerator->getLinePen((size_t)vp->SectionLineStyle.getValue(),
+                                                    vp->HiddenWidth.getValue()));
+        sectionLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
+    } else {
+        sectionLine->setShowLine(false);
+    }
+
     double fontSize = Preferences::dimFontSizeMM();
     sectionLine->setFont(getFont(), fontSize);
     sectionLine->setZValue(ZVALUE::SECTIONLINE);

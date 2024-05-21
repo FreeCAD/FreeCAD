@@ -30,7 +30,7 @@ class TaskWatcherFilter:
         self.commands = ["Sketcher_NewSketch", "PartDesign_Fillet", "PartDesign_Chamfer"]
         self.filter = "SELECT Part::Feature SUBELEMENT Face COUNT 1"
         self.title = "Face tools"
-        self.icon = "Part_Box"
+        self.icon = "Part_Box_Parametric"
 
 class TaskPanel:
     def __init__(self):

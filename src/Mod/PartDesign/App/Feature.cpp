@@ -61,7 +61,9 @@ Feature::Feature()
     BaseFeature.setStatus(App::Property::Hidden, true);
 
     App::SuppressibleExtension::initExtension(this);
-    Suppressed.setStatus(App::Property::Status::Hidden, true); //Todo: remove when TNP fixed
+#ifndef FC_USE_TNP_FIX
+    Suppressed.setStatus(App::Property::Status::Hidden, true);
+#endif
 }
 
 App::DocumentObjectExecReturn* Feature::recompute()
@@ -91,10 +93,17 @@ short Feature::mustExecute() const
 // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
 {
-    if (shape.IsNull())
+    if (shape.IsNull()) {
         Standard_Failure::Raise("Shape is null");
+    }
+
+    // If single solid rule is not enforced  we simply return the shape as is
+    if (singleSolidRuleMode() != Feature::SingleSolidRuleMode::Enforced) {
+        return shape;
+    }
+
     TopExp_Explorer xp;
-    xp.Init(shape,TopAbs_SOLID);
+    xp.Init(shape, TopAbs_SOLID);
     if (xp.More()) {
         return xp.Current();
     }
@@ -107,12 +116,19 @@ TopoShape Feature::getSolid(const TopoShape& shape)
     if (shape.isNull()) {
         throw Part::NullShapeException("Null shape");
     }
+
+    // If single solid rule is not enforced  we simply return the shape as is
+    if (singleSolidRuleMode() != Feature::SingleSolidRuleMode::Enforced) {
+        return shape;
+    }
+
     int count = shape.countSubShapes(TopAbs_SOLID);
-    if(count) {
-        auto res = shape.getSubTopoShape(TopAbs_SOLID,1);
+    if (count) {
+        auto res = shape.getSubTopoShape(TopAbs_SOLID, 1);
         res.fixSolidOrientation();
         return res;
     }
+
     return shape;
 }
 
@@ -151,7 +167,31 @@ int Feature::countSolids(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)
     return result;
 }
 
+bool Feature::isSingleSolidRuleSatisfied(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)
+{
+    if (singleSolidRuleMode() == Feature::SingleSolidRuleMode::Disabled) {
+        return true;
+    }
 
+    int solidCount = countSolids(shape, type);
+
+    return solidCount <= 1;
+}
+
+
+Feature::SingleSolidRuleMode Feature::singleSolidRuleMode()
+{
+    auto body = getFeatureBody();
+
+    // When the feature is not part of an body (which should not happen) let's stay with the default
+    if (!body) {
+        return SingleSolidRuleMode::Enforced;
+    }
+
+    auto areCompoundSolidsAllowed = body->AllowCompound.getValue();
+
+    return areCompoundSolidsAllowed ? SingleSolidRuleMode::Disabled : SingleSolidRuleMode::Enforced;
+}
 
 const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
 {

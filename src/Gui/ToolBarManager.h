@@ -43,7 +43,7 @@ namespace Gui {
 
 // Qt treats area as Flag so in theory toolbar could be in multiple areas at once.
 // We don't do that here so simple enum should suffice.
-enum GuiExport ToolBarArea {
+enum class ToolBarArea {
     NoToolBarArea,
     LeftToolBarArea,
     RightToolBarArea,

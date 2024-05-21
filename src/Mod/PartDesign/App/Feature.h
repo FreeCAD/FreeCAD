@@ -52,6 +52,8 @@ class PartDesignExport Feature : public Part::Feature, public App::SuppressibleE
 public:
     Feature();
 
+    enum SingleSolidRuleMode { Disabled = 0, Enforced = 1 };
+
     /// Base feature which this feature will be fused into or cut out of
     App::PropertyLink   BaseFeature;
     App::PropertyLinkHidden _Body;
@@ -96,9 +98,15 @@ protected:
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
     // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
-    static TopoDS_Shape getSolid(const TopoDS_Shape&);
+    TopoDS_Shape getSolid(const TopoDS_Shape&);
     TopoShape getSolid(const TopoShape&);
     static int countSolids(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID);
+
+    /**
+     * Checks if the single-solid body rule is fulfilled.
+     */
+    bool isSingleSolidRuleSatisfied(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID);
+    SingleSolidRuleMode singleSolidRuleMode();
 
     /// Grab any point from the given face
     static const gp_Pnt getPointFromFace(const TopoDS_Face& f);
