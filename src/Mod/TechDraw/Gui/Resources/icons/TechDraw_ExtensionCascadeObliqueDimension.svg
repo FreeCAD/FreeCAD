@@ -193,14 +193,14 @@
        id="g14"
        transform="matrix(0.82120262,-1.7499241e-8,-1.7499241e-8,0.82120262,1.7903198,2.188557)">
       <rect
-         style="fill:#fce94f;fill-opacity:1;stroke:none;stroke-width:0.64438;stroke-linecap:square;stroke-dasharray:none;enable-background:new"
+         style="display:none;fill:#fce94f;fill-opacity:1;stroke:none;stroke-width:0.64438;stroke-linecap:square;stroke-dasharray:none;enable-background:new"
          id="rect13"
          width="2.1158729"
          height="1.5292916"
          x="5.9637084"
          y="11.475509" />
       <path
-         style="fill:none;stroke:#302b00;stroke-width:0.64438;stroke-linecap:square;stroke-dasharray:none"
+         style="fill:none;stroke:#cc0000;stroke-width:0.64438;stroke-linecap:square;stroke-dasharray:none"
          d="m 6.3031111,11.740092 h 1.5866277 m -1.5866277,1 h 1.5866277"
          id="path7-9"
          transform="translate(-0.07481921)" />
@@ -209,14 +209,14 @@
        id="g1"
        transform="matrix(0.82120262,-1.7499241e-8,-1.7499241e-8,0.82120262,5.41984,2.188557)">
       <rect
-         style="fill:#fce94f;fill-opacity:1;stroke:none;stroke-width:0.64438;stroke-linecap:square;stroke-dasharray:none;enable-background:new"
+         style="display:none;fill:#fce94f;fill-opacity:1;stroke:none;stroke-width:0.64438;stroke-linecap:square;stroke-dasharray:none;enable-background:new"
          id="rect1"
          width="2.1158729"
          height="1.5292916"
          x="5.9637084"
          y="11.475509" />
       <path
-         style="fill:none;stroke:#302b00;stroke-width:0.64438;stroke-linecap:square;stroke-dasharray:none"
+         style="fill:none;stroke:#cc0000;stroke-width:0.64438;stroke-linecap:square;stroke-dasharray:none"
          d="m 6.3031111,11.740092 h 1.5866277 m -1.5866277,1 h 1.5866277"
          id="path1"
          transform="translate(-0.07481921)" />

@@ -107,7 +107,6 @@
             <dc:title>[WandererFan]</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:title>TechDraw_Dimension_Diameter</dc:title>
         <dc:date>2016-04-27</dc:date>
         <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -141,7 +140,7 @@
      id="layer1">
     <path
        style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#fce94f;fill-opacity:1;fill-rule:nonzero;stroke:#302b00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;enable-background:accumulate"
-       d="m 43,25.000003 v 4 H 21.000001 v -4 c -3,3 -6,5 -8,6 l -2,1 2,0.999997 c 2,1 5,3 8,6 V 35 H 43 v 4 c 3,-3 6,-5 8,-6 l 2,-0.999997 -2,-1 c -2,-1 -5,-3 -8,-6 z"
+       d="m 43,25.000003 v 4 H 21.000001 v -4 l -10,7 10,6.999997 V 35 H 43 v 4 l 10,-6.999997 z"
        id="path3770-1" />
     <circle
        style="display:inline;fill:none;stroke:#302b00;stroke-width:9.23077;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
