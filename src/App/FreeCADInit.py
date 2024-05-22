@@ -956,7 +956,25 @@ class ReturnType(IntEnum):
 
 App.ReturnType = ReturnType
 
+def TrySetupTabCompletion():
+    """Tries to setup readline-based tab-completion
+
+    Call this function only if you are in a tty-based REPL environment.
+    """
+    try:
+        import readline
+        import rlcompleter
+        readline.parse_and_bind("tab: complete")
+    except ImportError as exc:
+        # Note: As there is no readline on Windows, we just ignore import errors here
+        pass
+
+# Note: just checking whether stdin is a TTY is not enough, as the GUI is set up only aftert this
+# script has run. And checking only the RunMode is not enough, as we are maybe not interactive.
+if App.ConfigGet('RunMode') == 'Cmd' and hasattr(sys.stdin, 'isatty') and sys.stdin.isatty():
+    TrySetupTabCompletion()
+
 # clean up namespace
-del(InitApplications)
+del InitApplications, TrySetupTabCompletion
 
 Log ('Init: App::FreeCADInit.py done\n')
