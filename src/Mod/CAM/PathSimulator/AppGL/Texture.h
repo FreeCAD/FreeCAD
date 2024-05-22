@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,46 +20,41 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#ifndef __texture_h__
+#define __texture_h__
+#include "OpenGlWrapper.h"
 
-#ifndef PATH_GLOBAL_H
-#define PATH_GLOBAL_H
+namespace MillSim
+{
+
+class Texture
+{
+public:
+    Texture()
+    {}
+    ~Texture();
+    bool LoadImage(unsigned int* image, int x, int y);
+    bool Activate();
+    bool unbind();
+    float getTexX(int imgX)
+    {
+        return (float)imgX / (float)width;
+    }
+    float getTexY(int imgY)
+    {
+        return (float)imgY / (float)height;
+    }
+
+public:
+    int width = 0;
+    int height = 0;
 
 
-// Path
-#ifndef PathExport
-#ifdef Path_EXPORTS
-#  define PathExport      FREECAD_DECL_EXPORT
-#else
-#  define PathExport      FREECAD_DECL_IMPORT
-#endif
-#endif
+protected:
+    unsigned int mTextureId = -1;
+};
 
-// PathGui
-#ifndef PathGuiExport
-#ifdef PathGui_EXPORTS
-#  define PathGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define PathGuiExport   FREECAD_DECL_IMPORT
-#endif
-#endif
 
-// PathSimulator
-#ifndef PathSimulatorExport
-#ifdef PathSimulator_EXPORTS
-#define PathSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define PathSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
+}  // namespace MillSim
 
-// CAMSimulator (new GL simulator)
-#ifndef CAMSimulatorExport
-#ifdef CAMSimulator_EXPORTS
-#define CAMSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define CAMSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
-
-#endif //PATH_GLOBAL_H
+#endif  // !__texture_h__

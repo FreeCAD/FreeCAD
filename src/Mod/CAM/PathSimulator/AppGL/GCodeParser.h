@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,46 +20,40 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#ifndef __csgcodeparser_h__
+#define __csgcodeparser_h__
+#include "MillMotion.h"
+#include <vector>
 
-#ifndef PATH_GLOBAL_H
-#define PATH_GLOBAL_H
+namespace MillSim
+{
+struct GCToken
+{
+    char letter;
+    float fval;
+    int ival;
+};
 
+class GCodeParser
+{
+public:
+    GCodeParser()
+    {}
+    virtual ~GCodeParser();
+    bool Parse(const char* filename);
+    bool AddLine(const char* ptr);
 
-// Path
-#ifndef PathExport
-#ifdef Path_EXPORTS
-#  define PathExport      FREECAD_DECL_EXPORT
-#else
-#  define PathExport      FREECAD_DECL_IMPORT
-#endif
-#endif
+public:
+    std::vector<MillMotion> Operations;
+    MillMotion lastState = {eNop};
+    MillMotion lastLastState = {eNop};
 
-// PathGui
-#ifndef PathGuiExport
-#ifdef PathGui_EXPORTS
-#  define PathGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define PathGuiExport   FREECAD_DECL_IMPORT
+protected:
+    const char* GetNextToken(const char* ptr, GCToken* token);
+    bool IsValidToken(char tok);
+    const char* ParseFloat(const char* ptr, float* retFloat);
+    bool ParseLine(const char* ptr);
+    int lastTool = -1;
+};
+}  // namespace MillSim
 #endif
-#endif
-
-// PathSimulator
-#ifndef PathSimulatorExport
-#ifdef PathSimulator_EXPORTS
-#define PathSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define PathSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
-
-// CAMSimulator (new GL simulator)
-#ifndef CAMSimulatorExport
-#ifdef CAMSimulator_EXPORTS
-#define CAMSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define CAMSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
-
-#endif //PATH_GLOBAL_H

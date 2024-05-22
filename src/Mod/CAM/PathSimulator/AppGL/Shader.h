@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,46 +20,58 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#ifndef __shader_h__
+#define __shader_h__
 
-#ifndef PATH_GLOBAL_H
-#define PATH_GLOBAL_H
+#include "OpenGlWrapper.h"
+#include "linmath.h"
+
+namespace MillSim
+{
+class Shader
+{
+public:
+    Shader()
+    {}
+
+public:
+    unsigned int shaderId = 0;
+    void UpdateModelMat(mat4x4 transformMat, mat4x4 normalMat);
+    void UpdateProjectionMat(mat4x4 mat);
+    void UpdateViewMat(mat4x4 mat);
+    void UpdateEnvColor(vec3 lightPos, vec3 lightColor, vec3 ambient);
+    void UpdateObjColor(vec3 objColor);
+    void UpdateTextureSlot(int slot);
+    unsigned int CompileShader(char* vertShader, char* fragShader);
+    void Activate();
+    bool IsValid()
+    {
+        return shaderId > 0;
+    }
 
 
-// Path
-#ifndef PathExport
-#ifdef Path_EXPORTS
-#  define PathExport      FREECAD_DECL_EXPORT
-#else
-#  define PathExport      FREECAD_DECL_IMPORT
-#endif
-#endif
+protected:
+    int mModelPos = -1;
+    int mNormalRotPos = -1;
+    int mProjectionPos = -1;
+    int mViewPos = -1;
+    int mLightPosPos = -1;
+    int mLightColorPos = -1;
+    int mAmbientPos = -1;
+    int mObjectColorPos = -1;
+    int mTexSlotPos = -1;
 
-// PathGui
-#ifndef PathGuiExport
-#ifdef PathGui_EXPORTS
-#  define PathGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define PathGuiExport   FREECAD_DECL_IMPORT
-#endif
-#endif
+    const char* vertShader = nullptr;
+    const char* fragShader = nullptr;
+};
 
-// PathSimulator
-#ifndef PathSimulatorExport
-#ifdef PathSimulator_EXPORTS
-#define PathSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define PathSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
+extern Shader* CurrentShader;
 
-// CAMSimulator (new GL simulator)
-#ifndef CAMSimulatorExport
-#ifdef CAMSimulator_EXPORTS
-#define CAMSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define CAMSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
-
-#endif //PATH_GLOBAL_H
+extern const char* FragShaderNorm;
+extern const char* FragShaderFlat;
+extern const char* VertShader3DNorm;
+extern const char* VertShader3DInvNorm;
+extern const char* VertShader2DTex;
+extern const char* FragShader2dTex;
+}  // namespace MillSim
+#endif  // !__shader_h__

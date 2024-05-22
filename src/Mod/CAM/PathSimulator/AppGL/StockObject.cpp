@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,46 +20,45 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#include "StockObject.h"
+#include "Shader.h"
+#include <stdlib.h>
 
-#ifndef PATH_GLOBAL_H
-#define PATH_GLOBAL_H
+#define NUM_PROFILE_POINTS 4
 
+MillSim::StockObject::StockObject()
+{
+    mat4x4_identity(mModelMat);
+    vec3_set(center, 0, 0, 0);
+}
 
-// Path
-#ifndef PathExport
-#ifdef Path_EXPORTS
-#  define PathExport      FREECAD_DECL_EXPORT
-#else
-#  define PathExport      FREECAD_DECL_IMPORT
-#endif
-#endif
+MillSim::StockObject::~StockObject()
+{
+    shape.FreeResources();
+}
 
-// PathGui
-#ifndef PathGuiExport
-#ifdef PathGui_EXPORTS
-#  define PathGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define PathGuiExport   FREECAD_DECL_IMPORT
-#endif
-#endif
+void MillSim::StockObject::render()
+{
+    // glCallList(mDisplayListId);
+    // UpdateObjColor(color);
+    shape.Render(mModelMat, mModelMat);  // model is not rotated hence both are identity matrix
+}
 
-// PathSimulator
-#ifndef PathSimulatorExport
-#ifdef PathSimulator_EXPORTS
-#define PathSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define PathSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
+void MillSim::StockObject::SetPosition(vec3 position)
+{
+    mat4x4_translate(mModelMat, position[0], position[1], position[2]);
+}
 
-// CAMSimulator (new GL simulator)
-#ifndef CAMSimulatorExport
-#ifdef CAMSimulator_EXPORTS
-#define CAMSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define CAMSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
+void MillSim::StockObject::GenerateBoxStock(float x, float y, float z, float l, float w, float h)
+{
+    int idx = 0;
+    SET_DUAL(mProfile, idx, y + w, z + h);
+    SET_DUAL(mProfile, idx, y + w, z);
+    SET_DUAL(mProfile, idx, y, z);
+    SET_DUAL(mProfile, idx, y, z + h);
 
-#endif //PATH_GLOBAL_H
+    vec3_set(center, x + l / 2, y + w / 2, z + h / 2);
+    vec3_set(size, l, w, h);
+
+    shape.ExtrudeProfileLinear(mProfile, NUM_PROFILE_POINTS, x, x + l, 0, 0, true, true);
+}

@@ -96,6 +96,7 @@ SET(PathPythonMainGui_SRCS
     Path/Main/Gui/PreferencesJob.py
     Path/Main/Gui/SanityCmd.py
     Path/Main/Gui/Simulator.py
+    Path/Main/Gui/SimulatorGL.py
 )
 
 SET(PathPythonMainSanity_SRCS

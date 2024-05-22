@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,46 +20,66 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#include "PreCompiled.h"
 
-#ifndef PATH_GLOBAL_H
-#define PATH_GLOBAL_H
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
+
+#include "CAMSim.h"
+#include "CAMSimPy.h"
 
 
-// Path
-#ifndef PathExport
-#ifdef Path_EXPORTS
-#  define PathExport      FREECAD_DECL_EXPORT
-#else
-#  define PathExport      FREECAD_DECL_IMPORT
-#endif
-#endif
+namespace CAMSimulator
+{
+class Module: public Py::ExtensionModule<Module>
+{
+public:
+    Module()
+        : Py::ExtensionModule<Module>("CAMSimulator")
+    {
+        initialize("This module is the CAMSimulator module.");  // register with Python
+    }
 
-// PathGui
-#ifndef PathGuiExport
-#ifdef PathGui_EXPORTS
-#  define PathGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define PathGuiExport   FREECAD_DECL_IMPORT
-#endif
-#endif
+    ~Module() override
+    {}
 
-// PathSimulator
-#ifndef PathSimulatorExport
-#ifdef PathSimulator_EXPORTS
-#define PathSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define PathSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
+private:
+};
 
-// CAMSimulator (new GL simulator)
-#ifndef CAMSimulatorExport
-#ifdef CAMSimulator_EXPORTS
-#define CAMSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define CAMSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
+PyObject* initModule()
+{
+    return Base::Interpreter().addModule(new Module);
+}
 
-#endif //PATH_GLOBAL_H
+
+}  // namespace CAMSimulator
+
+
+/* Python entry */
+PyMOD_INIT_FUNC(CAMSimulator)
+{
+    // load dependent module
+    try {
+        Base::Interpreter().runString("import Part");
+        Base::Interpreter().runString("import Path");
+        Base::Interpreter().runString("import Mesh");
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_ImportError, e.what());
+        PyMOD_Return(nullptr);
+    }
+
+    //
+    PyObject* mod = CAMSimulator::initModule();
+    Base::Console().Log("Loading CAMSimulator module.... done\n");
+
+    // Add Types to module
+    Base::Interpreter().addType(&CAMSimulator::CAMSimPy::Type, mod, "PathSim");
+
+    // NOTE: To finish the initialization of our own type objects we must
+    // call PyType_Ready, otherwise we run into a segmentation fault, later on.
+    // This function is responsible for adding inherited slots from a type's base class.
+    CAMSimulator::CAMSim::init();
+
+    PyMOD_Return(mod);
+}

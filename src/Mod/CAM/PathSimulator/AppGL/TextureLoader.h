@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,46 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#ifndef __texture_loader_h__
+#define __texture_loader_h__
+#include <string>
+#include <vector>
+#include <QImage>
 
-#ifndef PATH_GLOBAL_H
-#define PATH_GLOBAL_H
+namespace MillSim
+{
 
+struct TextureItem
+{
+    int tx, ty;  // texture location
+    int w, h;    // item size
+};
 
-// Path
-#ifndef PathExport
-#ifdef Path_EXPORTS
-#  define PathExport      FREECAD_DECL_EXPORT
-#else
-#  define PathExport      FREECAD_DECL_IMPORT
-#endif
-#endif
+class TextureLoader
+{
+public:
+    TextureLoader(std::string imgFolder, std::vector<std::string> fileNames, int textureSize);
+    ~TextureLoader();
+    unsigned int* GetRawData();
+    TextureItem* GetTextureItem(int i);
 
-// PathGui
-#ifndef PathGuiExport
-#ifdef PathGui_EXPORTS
-#  define PathGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define PathGuiExport   FREECAD_DECL_IMPORT
-#endif
-#endif
+protected:
+    bool AddImage(TextureItem* guiItem, QImage& pixmap, unsigned int* buffPos, int stride);
 
-// PathSimulator
-#ifndef PathSimulatorExport
-#ifdef PathSimulator_EXPORTS
-#define PathSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define PathSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
+protected:
+    unsigned int* mRawData = nullptr;
+    std::string mImageFolder;
+};
 
-// CAMSimulator (new GL simulator)
-#ifndef CAMSimulatorExport
-#ifdef CAMSimulator_EXPORTS
-#define CAMSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define CAMSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
-
-#endif //PATH_GLOBAL_H
+}  // namespace MillSim
+#endif  // !__texture_loader_h__

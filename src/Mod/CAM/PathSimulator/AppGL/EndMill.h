@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,46 +20,43 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#ifndef __end_mill_h__
+#define __end_mill_h__
 
-#ifndef PATH_GLOBAL_H
-#define PATH_GLOBAL_H
+#include "SimShapes.h"
+#include <vector>
 
+#define PROFILE_BUFFER_POINTS(npoints) ((npoints) * 2 - 1)
+#define PROFILE_BUFFER_SIZE(npoints) (PROFILE_BUFFER_POINTS(npoints) * 2)
+#define MILL_HEIGHT 10
 
-// Path
-#ifndef PathExport
-#ifdef Path_EXPORTS
-#  define PathExport      FREECAD_DECL_EXPORT
-#else
-#  define PathExport      FREECAD_DECL_IMPORT
-#endif
-#endif
+namespace MillSim
+{
+class EndMill
+{
+public:
+    float* profilePoints = nullptr;
+    float radius;
+    int nPoints = 0;
+    int toolId = -1;
 
-// PathGui
-#ifndef PathGuiExport
-#ifdef PathGui_EXPORTS
-#  define PathGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define PathGuiExport   FREECAD_DECL_IMPORT
-#endif
-#endif
+    Shape pathShape;
+    Shape halfToolShape;
+    Shape toolShape;
 
-// PathSimulator
-#ifndef PathSimulatorExport
-#ifdef PathSimulator_EXPORTS
-#define PathSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define PathSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
+public:
+    EndMill(int toolid, float diameter);
+    EndMill(const std::vector<float>& toolProfile, int toolid, float diameter);
+    virtual ~EndMill();
+    void GenerateDisplayLists(float quality);
+    unsigned int GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape* retShape);
 
-// CAMSimulator (new GL simulator)
-#ifndef CAMSimulatorExport
-#ifdef CAMSimulator_EXPORTS
-#define CAMSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define CAMSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
+protected:
+    void MirrorPointBuffer();
 
-#endif //PATH_GLOBAL_H
+private:
+    bool mHandleAllocation = false;
+};
+}  // namespace MillSim
+
+#endif

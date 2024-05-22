@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,46 +20,53 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#include "PreCompiled.h"
+#include "CAMSim.h"
+#include "DlgCAMSimulator.h"
+#include <stdio.h>
 
-#ifndef PATH_GLOBAL_H
-#define PATH_GLOBAL_H
 
+using namespace Base;
+using namespace CAMSimulator;
 
-// Path
-#ifndef PathExport
-#ifdef Path_EXPORTS
-#  define PathExport      FREECAD_DECL_EXPORT
-#else
-#  define PathExport      FREECAD_DECL_IMPORT
-#endif
-#endif
+TYPESYSTEM_SOURCE(CAMSimulator::CAMSim, Base::BaseClass);
 
-// PathGui
-#ifndef PathGuiExport
-#ifdef PathGui_EXPORTS
-#  define PathGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define PathGuiExport   FREECAD_DECL_IMPORT
-#endif
-#endif
+#define MAX_GCODE_LINE_LEN 120
 
-// PathSimulator
-#ifndef PathSimulatorExport
-#ifdef PathSimulator_EXPORTS
-#define PathSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define PathSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
+CAMSim::CAMSim()
+{}
 
-// CAMSimulator (new GL simulator)
-#ifndef CAMSimulatorExport
-#ifdef CAMSimulator_EXPORTS
-#define CAMSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define CAMSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
+CAMSim::~CAMSim()
+{}
 
-#endif //PATH_GLOBAL_H
+void CAMSim::BeginSimulation(Part::TopoShape* stock, float quality)
+{
+    Base::BoundBox3d bbox = stock->getBoundBox();
+    SimStock stk = {(float)bbox.MinX,
+                    (float)bbox.MinY,
+                    (float)bbox.MinZ,
+                    (float)bbox.LengthX(),
+                    (float)bbox.LengthY(),
+                    (float)bbox.LengthZ(),
+                    quality};
+    DlgCAMSimulator::GetInstance()->startSimulation(&stk, quality);
+}
+
+void CAMSimulator::CAMSim::resetSimulation()
+{
+    DlgCAMSimulator::GetInstance()->resetSimulation();
+}
+
+void CAMSim::addTool(const std::vector<float> toolProfilePoints,
+                     int toolNumber,
+                     float diameter,
+                     float resolution)
+{
+    DlgCAMSimulator::GetInstance()->addTool(toolProfilePoints, toolNumber, diameter, resolution);
+}
+
+void CAMSim::AddCommand(Command* cmd)
+{
+    std::string gline = cmd->toGCode();
+    DlgCAMSimulator::GetInstance()->addGcodeCommand(gline.c_str());
+}

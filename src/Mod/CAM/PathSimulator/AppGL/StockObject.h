@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,46 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#ifndef __stock_object_h__
+#define __stock_object_h__
+#include "SimShapes.h"
+#include "linmath.h"
 
-#ifndef PATH_GLOBAL_H
-#define PATH_GLOBAL_H
+namespace MillSim
+{
+
+class StockObject
+{
+public:
+    StockObject();
+    virtual ~StockObject();
 
 
-// Path
-#ifndef PathExport
-#ifdef Path_EXPORTS
-#  define PathExport      FREECAD_DECL_EXPORT
-#else
-#  define PathExport      FREECAD_DECL_IMPORT
-#endif
-#endif
+    /// Calls the display list.
+    virtual void render();
+    Shape shape;
+    void SetPosition(vec3 position);
+    void GenerateBoxStock(float x, float y, float z, float l, float w, float h);
+    vec3 center = {};
+    vec3 size = {};
 
-// PathGui
-#ifndef PathGuiExport
-#ifdef PathGui_EXPORTS
-#  define PathGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define PathGuiExport   FREECAD_DECL_IMPORT
-#endif
-#endif
+private:
+    float mProfile[8] = {};
+    mat4x4 mModelMat;
+};
+}  // namespace MillSim
 
-// PathSimulator
-#ifndef PathSimulatorExport
-#ifdef PathSimulator_EXPORTS
-#define PathSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define PathSimulatorExport FREECAD_DECL_IMPORT
 #endif
-#endif
-
-// CAMSimulator (new GL simulator)
-#ifndef CAMSimulatorExport
-#ifdef CAMSimulator_EXPORTS
-#define CAMSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define CAMSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
-
-#endif //PATH_GLOBAL_H

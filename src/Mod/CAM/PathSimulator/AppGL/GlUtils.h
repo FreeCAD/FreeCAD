@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,46 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#ifndef __glutils_h__
+#define __glutils_h__
+#include "OpenGlWrapper.h"
+#include "linmath.h"
 
-#ifndef PATH_GLOBAL_H
-#define PATH_GLOBAL_H
+#define PI 3.14159265f
+#define PI2 (PI * 2)
 
+constexpr auto EPSILON = 0.00001f;
+#define EQ_FLOAT(x, y) (fabs((x) - (y)) < EPSILON)
 
-// Path
-#ifndef PathExport
-#ifdef Path_EXPORTS
-#  define PathExport      FREECAD_DECL_EXPORT
-#else
-#  define PathExport      FREECAD_DECL_IMPORT
-#endif
-#endif
+#define MS_MOUSE_LEFT 1
+#define MS_MOUSE_RIGHT 2
+#define MS_MOUSE_MID 4
+#define GL(x)                                                                                      \
+    {                                                                                              \
+        GLClearError();                                                                            \
+        x;                                                                                         \
+        if (GLLogError())                                                                         \
+            __debugbreak();                                                                        \
+    }
+#define RadToDeg(x) (x * 180.0f / PI)
 
-// PathGui
-#ifndef PathGuiExport
-#ifdef PathGui_EXPORTS
-#  define PathGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define PathGuiExport   FREECAD_DECL_IMPORT
-#endif
-#endif
-
-// PathSimulator
-#ifndef PathSimulatorExport
-#ifdef PathSimulator_EXPORTS
-#define PathSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define PathSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
-
-// CAMSimulator (new GL simulator)
-#ifndef CAMSimulatorExport
-#ifdef CAMSimulator_EXPORTS
-#define CAMSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define CAMSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
-
-#endif //PATH_GLOBAL_H
+namespace MillSim
+{
+void GLClearError();
+bool GLLogError();
+extern mat4x4 identityMat;
+extern int gDebug;
+}  // namespace MillSim
+#endif  // !__glutils_h__

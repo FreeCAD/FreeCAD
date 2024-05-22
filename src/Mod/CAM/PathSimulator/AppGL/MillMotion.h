@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,46 +20,46 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#ifndef __mill_operation_h__
+#define __mill_operation_h__
+// #include <math.h>
+#include "EndMill.h"
+#include "linmath.h"
+namespace MillSim
+{
 
-#ifndef PATH_GLOBAL_H
-#define PATH_GLOBAL_H
+enum eEndMillType
+{
+    eEndmillFlat,
+    eEndmillV,
+    eEndmillBall,
+    eEndmillFillet
+};
 
+enum eCmdType
+{
+    eNop,
+    eMoveLiner,
+    eRotateCW,
+    eRotateCCW,
+    eDril,
+    eChangeTool
+};
 
-// Path
-#ifndef PathExport
-#ifdef Path_EXPORTS
-#  define PathExport      FREECAD_DECL_EXPORT
-#else
-#  define PathExport      FREECAD_DECL_IMPORT
-#endif
-#endif
+struct MillMotion
+{
+    eCmdType cmd;
+    int tool;
+    float x, y, z;
+    float i, j, k;
+    float r;
+};
 
-// PathGui
-#ifndef PathGuiExport
-#ifdef PathGui_EXPORTS
-#  define PathGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define PathGuiExport   FREECAD_DECL_IMPORT
+static inline void MotionPosToVec(vec3 vec, const MillMotion* motion)
+{
+    vec[0] = motion->x;
+    vec[1] = motion->y;
+    vec[2] = motion->z;
+}
+}  // namespace MillSim
 #endif
-#endif
-
-// PathSimulator
-#ifndef PathSimulatorExport
-#ifdef PathSimulator_EXPORTS
-#define PathSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define PathSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
-
-// CAMSimulator (new GL simulator)
-#ifndef CAMSimulatorExport
-#ifdef CAMSimulator_EXPORTS
-#define CAMSimulatorExport FREECAD_DECL_EXPORT
-#else
-#define CAMSimulatorExport FREECAD_DECL_IMPORT
-#endif
-#endif
-
-#endif //PATH_GLOBAL_H
