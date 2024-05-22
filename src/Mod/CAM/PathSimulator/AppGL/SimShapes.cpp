@@ -33,11 +33,6 @@ using namespace MillSim;
 static float* sinTable = nullptr;
 static float* cosTable = nullptr;
 static int lastNumSlices = 0;
-static int lastNumSectionIndices = 0;
-static GLshort quadIndices[] = { 0, 2, 3, 0, 3, 1 };
-static GLshort quadIndicesReversed[] = { 0, 3, 2, 0, 1, 3 };
-static GLshort* sectionIndicesQuad = nullptr;
-static GLshort* sectionIndicesTri = nullptr;
 
 static bool GenerateSinTable(int nSlices)
 {
@@ -71,7 +66,7 @@ static bool GenerateSinTable(int nSlices)
 }
 
 
-void MillSim::Shape::RotateProfile(float* profPoints, int nPoints, float distance, float deltaHeight, int nSlices, bool isHalfTurn)
+void MillSim::Shape::RotateProfile(float* profPoints, int nPoints, float distance,  int nSlices, bool isHalfTurn)
 {
     int vidx = 0;
     int iidx = 0;
