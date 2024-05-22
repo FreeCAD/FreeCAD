@@ -43,7 +43,7 @@ BORDERLINE = 6
 
 # There is a bug in logging library. To enable debugging - set True also in Gui/Vcarve.py
 
-if True:
+if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
