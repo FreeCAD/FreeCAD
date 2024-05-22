@@ -41,10 +41,8 @@ class BIM_Box:
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument:
-            return True
-        else:
-            return False
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         import draftguitools.gui_trackers as DraftTrackers

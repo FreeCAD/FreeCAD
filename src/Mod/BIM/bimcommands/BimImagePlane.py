@@ -42,10 +42,8 @@ class BIM_ImagePlane:
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument:
-            return True
-        else:
-            return False
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         import FreeCADGui

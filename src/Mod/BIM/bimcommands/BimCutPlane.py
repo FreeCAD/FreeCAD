@@ -43,7 +43,8 @@ class Arch_CutPlane:
                "ToolTip": QT_TRANSLATE_NOOP("Arch_CutPlane", "Cut an object with a plane")}
 
     def IsActive(self):
-        return len(FreeCADGui.Selection.getSelection()) > 1
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v and len(FreeCADGui.Selection.getSelection()) > 1
 
     def Activated(self):
         import  ArchCutPlane
