@@ -638,7 +638,8 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             subs.erase(none);
         for (const auto& sub : subs) {
             try {
-                auto shape = Part::Feature::getTopoShape(obj, sub.c_str(), true);
+                auto name = Data::oldElementName(sub.c_str()).c_str();
+                auto shape = Part::Feature::getTopoShape(obj, name, true);
                 if (!shape.isNull()) {
                     shapes.push_back(shape);
                     shapeMats.push_back(&res.first->second);
