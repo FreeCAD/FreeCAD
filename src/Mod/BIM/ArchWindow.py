@@ -61,7 +61,6 @@ __url__    = "https://www.freecad.org"
 
 # presets
 WindowPartTypes = ["Frame","Solid panel","Glass panel","Louvre"]
-AllowedHosts =    ["Wall","Structure","Roof"]
 WindowOpeningModes = ["None","Arc 90","Arc 90 inv","Arc 45","Arc 45 inv","Arc 180",
                       "Arc 180 inv","Triangle","Triangle inv","Sliding","Sliding inv"]
 WindowPresets = ArchWindowPresets.WindowPresets
