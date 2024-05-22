@@ -11,6 +11,7 @@ import UtilsAssembly
 import Preferences
 
 transparency_level = 75
+skipTask = False
 
 # translate = App.Qt.translate
 
@@ -22,6 +23,10 @@ class IsolateManager(QtWidgets.QMainWindow):
     def __init__(self, part, assembly, allParts):
         super().__init__()
 
+        if Gui.Control.activeDialog():
+            Gui.Control.closeDialog()
+            print("Closed Dialog")
+
         if part == None:
             self.error("You need to select a part!")
             return False
@@ -32,8 +37,8 @@ class IsolateManager(QtWidgets.QMainWindow):
         self.partToKeep = part
         self.assembly = assembly
         self.allParts = allParts
-        # TODO: This only works on my machine!
-        self.isolateUI = Gui.PySideUic.loadUi("/home/hypocritical/Documents/GitHub/FreeCAD-daily/FreeCAD/src/Mod/Assembly/Gui/Resources/panels/TaskAssemblyIsolateMode.ui")
+        
+        self.isolateUI = Gui.PySideUic.loadUi(":/panels/TaskAssemblyIsolateMode.ui")
         #self.isolateUI.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.isolateUI.transparencySlider.valueChanged.connect(self.sliderChanged)
         self.isolateUI.transparencyBox.textChanged.connect(self.onLabelChanged)
@@ -123,16 +128,8 @@ class IsolateGuiManager(QtCore.QObject):
         self.assembly = assembly
         self.view = view
         self.doc = App.ActiveDocument
-
-        self.form = Gui.PySideUic.loadUi(":/panels/TaskAssemblySelectIsolateMode.ui")
-        self.form.installEventFilter(self)
-        self.form.partList.installEventFilter(self)
-
         pref = Preferences.preferences()
-        # Actions
-        self.form.partList.itemClicked.connect(self.onItemClicked)
-        self.form.filterPartList.textChanged.connect(self.onFilterChange)
-
+        self.keepTaskPanel = False
         self.allParts = []
         self.translation = 0
         self.selectedPart = None
@@ -140,11 +137,43 @@ class IsolateGuiManager(QtCore.QObject):
         self.totalTranslation = App.Vector()
         self.groundedObj = None
 
+        self.form = Gui.PySideUic.loadUi(":/panels/TaskAssemblySelectIsolateMode.ui")
+        self.form.installEventFilter(self)
+        self.form.partList.installEventFilter(self)
+        # Actions
+        self.form.partList.itemClicked.connect(self.onItemClicked)
+        self.form.filterPartList.textChanged.connect(self.onFilterChange)
+
         self.insertionStack = []  # used to handle cancellation of insertions.
-
         self.buildPartList()
+        selection = Gui.Selection.getSelection()
 
-        App.setActiveTransaction("Isolate Parts")
+        if len(selection) != 0:
+            if self.getPartFromSelection(selection) != None:
+                self.form = None
+                self.selectedPart = self.getPartFromSelection(selection)
+                print("Selected Part: " + self.selectedPart.Label)
+                self.accept()
+                self.keepTaskPanel = True
+        else:
+            self.keepTaskPanel = False
+            App.setActiveTransaction("Isolate Parts")
+
+    def getPartFromSelection(self, sel):
+        selPart = sel[0]
+        part = None
+
+        for item in selPart.InListRecursive:
+            if item.TypeId == "App::Part":
+                part = item
+                break
+            elif item.TypeId == "App::Link" and hasattr(item, "Placement") and hasattr(item, "Shape") and item.InList[0].TypeId != "App::Part":
+                print(item.InList[0].TypeId != "App::Part")
+                part = item # ^^^ Checks if the link can be used and if a App::Part is not its parent ^^^ #
+                break
+
+        print(part.TypeId)
+        return part
 
     def onItemClicked(self, item):
         for selected in self.form.partList.selectedIndexes():
@@ -171,7 +200,7 @@ class IsolateGuiManager(QtCore.QObject):
     
     def accept(self, resetEdit=True):
         print("Creating isolation...")
-        Gui.Control.closeDialog()
+        Gui.Selection.clearSelection()
         self.isolateManager = IsolateManager(self.selectedPart, UtilsAssembly.activeAssembly(), self.allParts)
         
 class CommandCreateAssemblyIsolation:
@@ -210,7 +239,10 @@ class CommandCreateAssemblyIsolation:
             if Gui.Control.activeDialog() != False:
                 App.Console.PrintWarning("The task menu is already being used!")
             else:
-                Gui.Control.showDialog(self.panel)
+                if self.panel.keepTaskPanel == False:
+                    Gui.Control.showDialog(self.panel)
+                else:
+                    Gui.Control.closeDialog()
         else:
             App.Console.PrintWarning("You need to have an assembly as your active body!")
     
