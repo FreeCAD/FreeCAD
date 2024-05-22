@@ -102,7 +102,7 @@ def _caller():
 def _log(level, module_line_func, msg):
     """internal function to do the logging"""
     module, line, func = module_line_func
-    
+
     if getLevel(module) >= level:
         message = "%s.%s: %s" % (module, Level.toString(level), msg)
         if _useConsole:
@@ -124,7 +124,7 @@ def _log(level, module_line_func, msg):
 def debug(msg):
     """(message)"""
     caller_info = _caller()
-    _, line,_ = caller_info
+    _, line, _ = caller_info
     msg = "({}) - {}".format(line, msg)
     return _log(Level.DEBUG, caller_info, msg)
 
