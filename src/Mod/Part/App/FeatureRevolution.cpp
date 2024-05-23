@@ -156,40 +156,6 @@ App::DocumentObjectExecReturn *Revolution::execute()
             TopLoc_Location loc(mov);
             sourceShape.setShape(sourceShape.getShape().Moved(loc));
         }
-#ifndef FC_USE_TNP_FIX
-        //"make solid" processing: make faces from wires.
-        Standard_Boolean makeSolid = Solid.getValue() ? Standard_True : Standard_False;
-        if (makeSolid){
-            //test if we need to make faces from wires. If there are faces - we don't.
-            TopExp_Explorer xp(sourceShape.getShape(), TopAbs_FACE);
-            if (xp.More())
-                //source shape has faces. Just revolve as-is.
-                makeSolid = Standard_False;
-        }
-        if (makeSolid && strlen(this->FaceMakerClass.getValue())>0){
-            //new facemaking behavior: use facemaker class
-            std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(this->FaceMakerClass.getValue());
-
-            TopoDS_Shape myShape = sourceShape.getShape();
-            if(myShape.ShapeType() == TopAbs_COMPOUND)
-                mkFace->useCompound(TopoDS::Compound(myShape));
-            else
-                mkFace->addShape(myShape);
-            mkFace->Build();
-            myShape = mkFace->Shape();
-            sourceShape = TopoShape(myShape);
-
-            makeSolid = Standard_False;//don't ask TopoShape::revolve to make solid, as we've made faces...
-        }
-
-        // actual revolution!
-        TopoDS_Shape revolve = sourceShape.revolve(revAx, angle, makeSolid);
-
-        if (revolve.IsNull())
-            return new App::DocumentObjectExecReturn("Resulting shape is null");
-        this->Shape.setValue(revolve);
-        return App::DocumentObject::StdReturn;
-#else
         TopoShape revolve(0);
         revolve.makeElementRevolve(sourceShape,
                                    revAx,
@@ -200,7 +166,6 @@ App::DocumentObjectExecReturn *Revolution::execute()
         }
         this->Shape.setValue(revolve);
         return Part::Feature::execute();
-#endif
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

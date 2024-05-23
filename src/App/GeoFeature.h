@@ -150,7 +150,6 @@ public:
      * @return bool whether or not a direction is found.
      */
     virtual bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname = nullptr) const;
-#ifdef FC_USE_TNP_FIX
     /** Search sub element using internal cached geometry
      *
      * @param element: element name
@@ -186,7 +185,6 @@ protected:
     void onChanged(const Property* prop) override;
 //    void onDocumentRestored() override;
     void updateElementReference();
-#endif
 protected:
     std::pair<std::string, std::string> _getElementName(const char* name,
                                                         const Data::MappedElement& mapped) const;

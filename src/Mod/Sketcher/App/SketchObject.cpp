@@ -261,7 +261,6 @@ void SketchObject::buildShape()
         if(GeometryFacade::getConstruction(geo))
             continue;
         if (geo->isDerivedFrom(Part::GeomPoint::getClassTypeId())) {
-#ifdef FC_USE_TNP_FIX
             Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(i-1, Sketcher::PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
@@ -273,17 +272,6 @@ void SketchObject::buildShape()
             auto indexedName = Data::IndexedName::fromConst("Edge", i);
             shapes.push_back(getEdge(geo,convertSubName(indexedName, false).c_str()));
         }
-
-#else
-            vertices.emplace_back(TopoDS::Vertex(geo->toShape()));
-            int idx = getVertexIndexGeoPos(i-1, PointPos::start);
-            std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
-            // vertices.back().setElementName(Data::IndexedName::fromConst("Vertex", 1),
-            //                                Data::MappedName::fromRawData(name.c_str()));
-        } else
-            shapes.push_back(getEdge(geo,convertSubName(
-                        Data::IndexedName::fromConst("Edge", i), false).c_str()));
-#endif
     }
 
     // FIXME: Commented since ExternalGeometryFacade is not added
@@ -9571,9 +9559,7 @@ std::pair<std::string,std::string> SketchObject::getElementName(
     //          of constraints ceases to work.  See #13169.  We need to prove that this works before
     //          enabling it.
     return Part2DObject::getElementName(name,type);
-#ifndef FC_USE_TNP_FIX
-    return Part2DObject::getElementName(name,type);
-#endif
+
     std::pair<std::string, std::string> ret;
     if(!name) return ret;
 

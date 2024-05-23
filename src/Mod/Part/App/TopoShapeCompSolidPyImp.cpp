@@ -68,36 +68,10 @@ int TopoShapeCompSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (!PyArg_ParseTuple(args, "O", &pcObj)) {
         return -1;
     }
-#ifdef FC_USE_TNP_FIX
     try {
         getTopoShapePtr()->makeElementBoolean(Part::OpCodes::Compsolid, getPyShapes(pcObj));
     }
     _PY_CATCH_OCC(return (-1))
-#else
-    BRep_Builder builder;
-    TopoDS_CompSolid Comp;
-    builder.MakeCompSolid(Comp);
-
-    try {
-        Py::Sequence list(pcObj);
-        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-            if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapeSolidPy::Type))) {
-                const TopoDS_Shape& sh =
-                    static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->getShape();
-                if (!sh.IsNull()) {
-                    builder.Add(Comp, sh);
-                }
-            }
-        }
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return -1;
-    }
-
-    getTopoShapePtr()->setShape(Comp);
-#endif
     return 0;
 }
 
@@ -124,15 +98,11 @@ PyObject* TopoShapeCompSolidPy::add(PyObject* args)
                 Standard_Failure::Raise("Cannot empty shape to compound solid");
             }
         }
-#ifdef FC_USE_TNP_FIX
         auto& self = *getTopoShapePtr();
         shapes.push_back(self);
         TopoShape tmp(self.Tag, self.Hasher, comp);
         tmp.mapSubElement(shapes);
         self = tmp;
-#else
-        getTopoShapePtr()->setShape(comp);
-#endif
         Py_Return;
     }
     catch (Standard_Failure& e) {

@@ -325,11 +325,7 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                 baseShape.move(base->getLocation().Inverted());
                 if (base->getAddSubType() == Additive) {
                     if(!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID))
-#ifdef FC_USE_TNP_FIX
                         shapes.emplace_back(shape.makeElementCut(baseShape.getShape()));
-#else
-                        shapes.emplace_back(shape.cut(baseShape.getShape()));
-#endif
                     else
                         shapes.push_back(shape);
                 } else {
@@ -339,35 +335,22 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                     // push an empty compound to indicate null additive shape
                     shapes.emplace_back(comp);
                     if(!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID))
-#ifdef FC_USE_TNP_FIX
                         shapes.emplace_back(baseShape.makeElementCut(shape.getShape()));
-#else
-                        shapes.emplace_back(baseShape.cut(shape.getShape()));
-#endif
                     else
                         shapes.push_back(shape);
                 }
             } else {
                 baseShape = getBaseTopoShape();
                 baseShape.move(getLocation().Inverted());
-#ifdef FC_USE_TNP_FIX
                 shapes.emplace_back(shape.makeElementCut(baseShape.getShape()));
                 shapes.emplace_back(baseShape.makeElementCut(shape.getShape()));
-#else
-                shapes.emplace_back(shape.cut(baseShape.getShape()));
-                shapes.emplace_back(baseShape.cut(shape.getShape()));
-#endif
             }
 
             // Make a compound to contain both additive and subtractive shape,
             // bceause a dressing (e.g. a fillet) can either be additive or
             // subtractive. And the dressup feature can contain mixture of both.
-#ifdef FC_USE_TNP_FIX
             AddSubShape.setValue(Part::TopoShape().makeElementCompound(shapes));
 
-#else
-            AddSubShape.setValue(Part::TopoShape().makeCompound(shapes));
-#endif
         } catch (Standard_Failure &e) {
             FC_THROWM(Base::CADKernelError, "Failed to calculate AddSub shape: "
                     << e.GetMessageString());
