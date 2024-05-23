@@ -50,6 +50,7 @@ ParamGroup = (
         'ResizableColumn',
         'VisibilityIcon',
         'HideColumn',
+	'HideInternalNames',
         'HideScrollBar',
         'HideHeaderView',
         'IconSize',

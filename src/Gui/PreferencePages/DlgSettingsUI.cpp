@@ -107,42 +107,49 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
     HideColumn->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
+    HideInternalNames = new Gui::PrefCheckBox(this);
+    layoutTreeview->addWidget(HideInternalNames, 5, 0);
+    HideInternalNames->setChecked(Gui::TreeParams::defaultHideInternalNames());
+    HideInternalNames->setEntryName("HideInternalNames");
+    HideInternalNames->setParamGrpPath("TreeView");
+
+    // Auto generated code (Tools/params_utils.py:433)
     HideScrollBar = new Gui::PrefCheckBox(this);
-    layoutTreeview->addWidget(HideScrollBar, 5, 0);
+    layoutTreeview->addWidget(HideScrollBar, 6, 0);
     HideScrollBar->setChecked(Gui::TreeParams::defaultHideScrollBar());
     HideScrollBar->setEntryName("HideScrollBar");
     HideScrollBar->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
     HideHeaderView = new Gui::PrefCheckBox(this);
-    layoutTreeview->addWidget(HideHeaderView, 6, 0);
+    layoutTreeview->addWidget(HideHeaderView, 7, 0);
     HideHeaderView->setChecked(Gui::TreeParams::defaultHideHeaderView());
     HideHeaderView->setEntryName("HideHeaderView");
     HideHeaderView->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
     labelIconSize = new QLabel(this);
-    layoutTreeview->addWidget(labelIconSize, 7, 0);
+    layoutTreeview->addWidget(labelIconSize, 8, 0);
     IconSize = new Gui::PrefSpinBox(this);
-    layoutTreeview->addWidget(IconSize, 7, 1);
+    layoutTreeview->addWidget(IconSize, 8, 1);
     IconSize->setValue(Gui::TreeParams::defaultIconSize());
     IconSize->setEntryName("IconSize");
     IconSize->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
     labelFontSize = new QLabel(this);
-    layoutTreeview->addWidget(labelFontSize, 8, 0);
+    layoutTreeview->addWidget(labelFontSize, 9, 0);
     FontSize = new Gui::PrefSpinBox(this);
-    layoutTreeview->addWidget(FontSize, 8, 1);
+    layoutTreeview->addWidget(FontSize, 9, 1);
     FontSize->setValue(Gui::TreeParams::defaultFontSize());
     FontSize->setEntryName("FontSize");
     FontSize->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
     labelItemSpacing = new QLabel(this);
-    layoutTreeview->addWidget(labelItemSpacing, 9, 0);
+    layoutTreeview->addWidget(labelItemSpacing, 10, 0);
     ItemSpacing = new Gui::PrefSpinBox(this);
-    layoutTreeview->addWidget(ItemSpacing, 9, 1);
+    layoutTreeview->addWidget(ItemSpacing, 10, 1);
     ItemSpacing->setValue(Gui::TreeParams::defaultItemSpacing());
     ItemSpacing->setEntryName("ItemSpacing");
     ItemSpacing->setParamGrpPath("TreeView");
@@ -451,6 +458,7 @@ void DlgSettingsUI::saveSettings()
     ResizableColumn->onSave();
     VisibilityIcon->onSave();
     HideColumn->onSave();
+    HideInternalNames->onSave();
     HideScrollBar->onSave();
     HideHeaderView->onSave();
     IconSize->onSave();
@@ -492,6 +500,7 @@ void DlgSettingsUI::loadSettings()
     ResizableColumn->onRestore();
     VisibilityIcon->onRestore();
     HideColumn->onRestore();
+    HideInternalNames->onRestore();
     HideScrollBar->onRestore();
     HideHeaderView->onRestore();
     IconSize->onRestore();
@@ -541,6 +550,8 @@ void DlgSettingsUI::retranslateUi()
     VisibilityIcon->setText(QObject::tr("Show visibility icon"));
     HideColumn->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docHideColumn()));
     HideColumn->setText(QObject::tr("Hide extra column"));
+    HideInternalNames->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docHideInternalNames()));
+    HideInternalNames->setText(QObject::tr("Hide Internal Names"));
     HideScrollBar->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docHideScrollBar()));
     HideScrollBar->setText(QObject::tr("Hide scroll bar"));
     HideHeaderView->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docHideHeaderView()));
