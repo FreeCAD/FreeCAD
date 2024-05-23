@@ -1878,13 +1878,6 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
     std::string FeatName = cmd->getUniqueObjectName(which.c_str(), pcActiveBody);
 
     auto worker = [=](std::vector<App::DocumentObject*> features) {
-        std::stringstream str;
-        str << cmd->getObjectCmd(FeatName.c_str(), pcActiveBody->getDocument()) << ".Originals = [";
-        for (auto feature : features) {
-            str << cmd->getObjectCmd(feature) << ",";
-        }
-        str << "]";
-
         std::string msg("Make ");
         msg += which;
         Gui::Command::openCommand(msg.c_str());
@@ -1892,12 +1885,19 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
         // FIXME: There seems to be kind of a race condition here, leading to sporadic errors like
         // Exception (Thu Sep  6 11:52:01 2012): 'App.Document' object has no attribute 'Mirrored'
         Gui::Command::updateActive(); // Helps to ensure that the object already exists when the next command comes up
-        Gui::Command::doCommand(Gui::Command::Doc, str.str().c_str());
 
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
 
         if (features.empty()) {
-            FCMD_OBJ_CMD(Feat,"TransformMode = \"Transform body\"");
+            FCMD_OBJ_CMD(Feat, "TransformMode = \"Transform body\"");
+        } else {
+            std::stringstream str;
+            str << "Originals = [";
+            for (auto feature : features) {
+                str << cmd->getObjectCmd(feature) << ",";
+            }
+            str << "]";
+            FCMD_OBJ_CMD(Feat, str.str().c_str());
         }
 
         // TODO What is this function supposed to do? (2015-08-05, Fat-Zer)
@@ -1909,47 +1909,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
     };
 
     // Get a valid original from the user
-    // First check selections
     std::vector<App::DocumentObject*> features = cmd->getSelection().getObjectsOfType(PartDesign::Feature::getClassTypeId());
-    // Next create a list of all eligible objects
-    if (features.empty()) {
-        features = cmd->getDocument()->getObjectsOfType(PartDesign::Feature::getClassTypeId());
-        // If there is more than one selected or eligible object, show dialog and let user pick one
-        if (features.size() > 1) {
-            std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
-            for (unsigned i = 0; i < features.size(); i++)
-                status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
-
-            Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-            PartDesignGui::TaskDlgFeaturePick* pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick*>(dlg);
-            if (dlg && !pickDlg) {
-                QMessageBox msgBox;
-                msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-                msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-                msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-                msgBox.setDefaultButton(QMessageBox::Yes);
-                int ret = msgBox.exec();
-                if (ret == QMessageBox::Yes)
-                    Gui::Control().closeDialog();
-                else
-                    return;
-            }
-
-            if (dlg)
-                Gui::Control().closeDialog();
-
-            Gui::Selection().clearSelection();
-            auto accepter = [](std::vector<App::DocumentObject*>) -> bool {
-                return true;
-            };
-            Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(features, status, accepter, worker, false));
-            return;
-        } else if (features.empty()) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
-                QObject::tr("Please create a feature first."));
-            return;
-        }
-    }
 
     PartDesign::Body* activeBody = PartDesignGui::getBody(true);
     for (auto feature : features) {
