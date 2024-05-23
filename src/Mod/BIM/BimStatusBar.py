@@ -74,9 +74,7 @@ def setStatusIcons(show=True):
         utext = action.text().replace("&", "")
         if utext == nudgeLabelsM[0]:
             # load dialog
-            form = FreeCADGui.PySideUic.loadUi(
-                os.path.join(os.path.dirname(__file__), "dialogNudgeValue.ui")
-            )
+            form = FreeCADGui.PySideUic.loadUi(":/ui/dialogNudgeValue.ui")
             # center the dialog over FreeCAD window
             mw = FreeCADGui.getMainWindow()
             form.move(
