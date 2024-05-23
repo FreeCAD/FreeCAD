@@ -47,6 +47,8 @@ public:
     CosmeticVertex(const Base::Vector3d& loc);
     ~CosmeticVertex() override = default;
 
+    Base::Vector3d point() const  { return permaPoint; };
+    void point(Base::Vector3d newPoint) { permaPoint = newPoint; }
     void move(const Base::Vector3d& newPos);
     void moveRelative(const Base::Vector3d& movement);
 
@@ -56,6 +58,7 @@ public:
     Base::Vector3d rotatedAndScaled(const double scale, const double rotDegrees);
 
     static Base::Vector3d makeCanonicalPoint(DrawViewPart* dvp, Base::Vector3d point, bool unscale = true);
+    static Base::Vector3d makeCanonicalPointInverted(DrawViewPart* dvp, Base::Vector3d invertedPoint, bool unscale = true);
     static bool restoreCosmetic();
 
     // Persistence implementer ---------------------
@@ -67,13 +70,13 @@ public:
     CosmeticVertex* copy() const;
     CosmeticVertex* clone() const;
 
-    Base::Vector3d permaPoint;           //permanent, unscaled value
-    int            linkGeom;             //connection to corresponding "geom" Vertex (fragile - index based!)
+    Base::Vector3d permaPoint{Base::Vector3d()};           //permanent, unscaled value
+    int            linkGeom{-1};             //connection to corresponding "geom" Vertex (fragile - index based!)
                                          //better to do reverse search for CosmeticTag in vertex geometry
-    App::Color     color;
-    double         size;
-    int            style;
-    bool           visible;              //base class vertex also has visible property
+    App::Color     color{App::Color()};
+    double         size{1.0};
+    int            style{1};
+    bool           visible{true};              //base class vertex also has visible property
 
     boost::uuids::uuid getTag() const;
     std::string getTagAsString() const override;

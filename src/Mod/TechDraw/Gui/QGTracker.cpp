@@ -107,7 +107,7 @@ void QGTracker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QPointF myScenePos = event->scenePos();
     if (!m_sleep) {
-        double someLimit = Rez::guiX(10.0);
+        double someLimit = Rez::guiX(1.0);
         QPointF manhat = myScenePos - m_lastClick;
 //        Base::Console().Message("QGT::mousePressEvent - scenePos: (%.3f, %.3f) lastClick:(%.3f, %.3f)\n",
 //                                myScenePos.x(), myScenePos.y(), m_lastClick.x(), m_lastClick.y());
@@ -170,6 +170,8 @@ void QGTracker::keyPressEvent(QKeyEvent * event)
     QGIPrimPath::keyPressEvent(event);
 }
 
+
+// ?? why does this method exist? and why isn't it called changeCursor?
 void QGTracker::sleep(bool b)
 {
     m_sleep = b;
