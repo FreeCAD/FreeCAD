@@ -107,10 +107,10 @@ jobs:
           -DFREECAD_USE_PCH=OFF
           -DFREECAD_RELEASE_PDB=OFF
           -DFREECAD_LIBPACK_DIR="${{ env.libpackdir }}"
-          -DPYTHON_DEBUG_LIBRARY="${{ env.libpackdir }}bin/libs/python38_d.lib"
+          -DPYTHON_DEBUG_LIBRARY="${{ env.libpackdir }}bin/libs/python39_d.lib"
           -DPYTHON_EXECUTABLE="${{ env.libpackdir }}bin/python.exe"
           -DPYTHON_INCLUDE_DIR="${{ env.libpackdir }}bin/include"
-          -DPYTHON_LIBRARY="${{ env.libpackdir }}bin/libs/python38.lib"
+          -DPYTHON_LIBRARY="${{ env.libpackdir }}bin/libs/python39.lib"
           -DXercesC_INCLUDE_DIR="${{ env.libpackdir }}include"
           -DXercesC_LIBRARY_RELEASE="${{ env.libpackdir }}lib/xerces-c_3.lib"
           -DXercesC_LIBRARY_DEBUG="${{ env.libpackdir }}lib/xerces-c_3D.lib"
