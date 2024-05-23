@@ -341,9 +341,7 @@ class BIM_Material:
             if item:
                 oldmat = FreeCAD.ActiveDocument.getObject(item.toolTip())
                 # load dialog
-                form = FreeCADGui.PySideUic.loadUi(
-                    os.path.join(os.path.dirname(__file__), "dialogListWidget.ui")
-                )
+                form = FreeCADGui.PySideUic.loadUi(":/ui/dialogListWidget.ui")
                 # center the dialog over FreeCAD window
                 mw = FreeCADGui.getMainWindow()
                 form.move(

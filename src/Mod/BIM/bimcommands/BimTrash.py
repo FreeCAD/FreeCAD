@@ -78,7 +78,7 @@ FreeCADGui.addCommand("BIM_Trash", BIM_Trash())
 class BIM_EmptyTrash:
     def GetResources(self):
         return {
-            "Pixmap": os.path.join(os.path.dirname(__file__), "icons", "BIM_Trash.svg"),
+            "Pixmap": "BIM_Trash",
             "MenuText": QT_TRANSLATE_NOOP("BIM_EmptyTrash", "Clean Trash"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_EmptyTrash",
