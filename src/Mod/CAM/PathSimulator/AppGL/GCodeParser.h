@@ -45,8 +45,8 @@ public:
 
 public:
     std::vector<MillMotion> Operations;
-    MillMotion lastState = {eNop};
-    MillMotion lastLastState = {eNop};
+    MillMotion lastState = {eNop, 0, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F};
+    MillMotion lastLastState = {eNop, 0, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F};
 
 protected:
     const char* GetNextToken(const char* ptr, GCToken* token);

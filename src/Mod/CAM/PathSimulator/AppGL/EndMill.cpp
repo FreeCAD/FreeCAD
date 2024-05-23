@@ -45,7 +45,7 @@ EndMill::EndMill(const std::vector<float>& toolProfile, int toolid, float diamet
     }
 
     // make sure last point is at 0,0 else, add it
-    bool missingCenterPoint = fabs(toolProfile[nPoints * 2 - 2]) > 0.0001f;
+    bool missingCenterPoint = fabs(toolProfile[nPoints * 2 - 2]) > 0.0001F;
     if (missingCenterPoint) {
         nPoints++;
     }
@@ -59,10 +59,10 @@ EndMill::EndMill(const std::vector<float>& toolProfile, int toolid, float diamet
     // copy profile points
     mHandleAllocation = true;
     for (int i = 0; i < srcBuffSize; i++) {
-        profilePoints[i] = toolProfile[i] + 0.01f;  // add some width to reduce simulation artifacts
+        profilePoints[i] = toolProfile[i] + 0.01F;  // add some width to reduce simulation artifacts
     }
     if (missingCenterPoint) {
-        profilePoints[srcBuffSize] = profilePoints[srcBuffSize + 1] = 0.0f;
+        profilePoints[srcBuffSize] = profilePoints[srcBuffSize + 1] = 0.0F;
     }
 
     MirrorPointBuffer();
@@ -105,7 +105,7 @@ EndMill::GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape*
 {
     int nFullPoints = PROFILE_BUFFER_POINTS(nPoints);
     retShape->ExtrudeProfileRadial(profilePoints,
-                                   PROFILE_BUFFER_POINTS(nPoints),
+                                   nFullPoints,
                                    radius,
                                    angleRad,
                                    zShift,

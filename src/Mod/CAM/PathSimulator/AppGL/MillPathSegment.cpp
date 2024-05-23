@@ -56,24 +56,11 @@ float MillPathSegment::mResolution = 1;
 float MillPathSegment::mSmallRadStep = (PI / 8);
 
 MillPathSegment::MillPathSegment(EndMill* _endmill, MillMotion* from, MillMotion* to)
-    : mShearMat {1.0f,
-                 0.0f,
-                 0.0f,
-                 0.0f,
-                 0.0f,
-                 1.0f,
-                 0.0f,
-                 0.0f,
-                 0.0f,
-                 0.0f,
-                 1.0f,
-                 0.0f,
-                 0.0f,
-                 0.0f,
-                 0.0f,
-                 1.0f}
+    : mShearMat {{1.0F, 0.0F, 0.0F, 0.0F},
+                 {0.0F, 1.0F, 0.0F, 0.0F},
+                 {0.0F, 0.0F, 1.0F, 0.0F},
+                 {0.0F, 0.0F, 0.0F, 1.0F}}
 {
-
     MotionPosToVec(mStartPos, from);
     MotionPosToVec(mDiff, to);
     vec3_sub(mDiff, mDiff, mStartPos);

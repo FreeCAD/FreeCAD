@@ -43,7 +43,7 @@ GCodeParser::~GCodeParser()
 bool GCodeParser::Parse(const char* filename)
 {
     Operations.clear();
-    lastState = {eNop, -1, 0, 0, 0, 0, 0, 0};
+    lastState = {eNop, -1, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F};
     lastTool = -1;
 
     FILE* fl;

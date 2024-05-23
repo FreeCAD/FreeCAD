@@ -30,7 +30,7 @@
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="ResetSimulation">
+    <Methode Name="ResetSimulation" NoArgs="true">
       <Documentation>
         <UserDocu>
           ResetSimulation():

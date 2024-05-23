@@ -29,7 +29,7 @@ namespace MillSim {
 
     MillSimulation::MillSimulation()
     {
-        mCurMotion = { eNop, -1, 0, 0,  0, 0, 0, 0 };
+        mCurMotion = { eNop, -1, 0.0F, 0.0F,  0.0F, 0.0F, 0.0F, 0.0F, 0.0F };
         guiDisplay.SetMillSimulator(this);
     }
 
@@ -38,16 +38,18 @@ namespace MillSim {
         //    MillSim::MillPathSegment* p = *i;
         //    delete p;
         //}
-        for (int i = 0; i < MillPathSegments.size(); i++)
+        for (std::size_t i = 0; i < MillPathSegments.size(); i++) {
             delete MillPathSegments[i];
+        }
         MillPathSegments.clear();
     }
 
     void MillSimulation::Clear()
     {
         mCodeParser.Operations.clear();
-        for (int i = 0; i < mToolTable.size(); i++)
+        for (std::size_t i = 0; i < mToolTable.size(); i++) {
             delete mToolTable[i];
+        }
         mToolTable.clear();
         mCurStep = 0;
         mPathStep = -1;
@@ -103,7 +105,7 @@ namespace MillSim {
 
     EndMill* MillSimulation::GetTool(int toolId)
     {
-        for (int i = 0; i < mToolTable.size(); i++)
+        for (std::size_t i = 0; i < mToolTable.size(); i++)
         {
             if (mToolTable[i]->toolId == toolId)
             {
@@ -495,8 +497,9 @@ namespace MillSim {
 
         // setup light object and generate tools
         mlightObject.GenerateBoxStock(-0.5f, -0.5f, -0.5f, 1, 1, 1);
-        for (int i = 0; i < mToolTable.size(); i++)
+        for (std::size_t i = 0; i < mToolTable.size(); i++) {
             mToolTable[i]->GenerateDisplayLists(quality);
+        }
 
         // init gui elements
         guiDisplay.InutGui();

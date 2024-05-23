@@ -52,7 +52,7 @@ TextureLoader::TextureLoader(std::string imgFolder, std::vector<std::string> fil
         return;
     }
     memset(mRawData, 0x80, buffsize);
-    for (int i = 0; i < fileNames.size(); i++) {
+    for (std::size_t i = 0; i < fileNames.size(); i++) {
         QImage pixmap((imgFolder + fileNames[i]).c_str());
         AddImage(&(texItems[i]), pixmap, mRawData, textureSize);
     }
@@ -66,7 +66,6 @@ bool TextureLoader::AddImage(TextureItem* texItem,
 {
     int width = pixmap.width();
     int height = pixmap.height();
-    int buffLen = width * height;
     buffPos += stride * texItem->ty + texItem->tx;
     for (int i = 0; i < height; i++) {
         unsigned int* line = reinterpret_cast<unsigned int *>(pixmap.scanLine(i));
