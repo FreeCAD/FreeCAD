@@ -52,6 +52,8 @@
 #define M_2PI ((M_PI)*2.0)
 #endif
 
+constexpr double DegreesHalfCircle{180.0};
+
 #define VERTEXTOLERANCE (2.0 * Precision::Confusion())
 #define VECTORTOLERANCE (Precision::Confusion())
 

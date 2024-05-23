@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>534</width>
-    <height>691</height>
+    <height>718</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -368,6 +368,13 @@ unit to work with when opening the file.</string>
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Check also NativeIFC-specific preferences under BIM -&gt; NativeIFC</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

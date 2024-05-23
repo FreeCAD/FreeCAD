@@ -21,6 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
+//! CosmeticVertex point is stored in unscaled, unrotated form
+
 #include "PreCompiled.h"
 #ifndef _PreComp_
     #include <boost/uuid/uuid_generators.hpp>
@@ -46,14 +48,9 @@ TYPESYSTEM_SOURCE(TechDraw::CosmeticVertex, Base::Persistence)
 
 CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
 {
-    point(Base::Vector3d(0.0, 0.0, 0.0));
-    permaPoint = Base::Vector3d(0.0, 0.0, 0.0);
-    linkGeom = -1;
     color = Preferences::vertexColor();
     size  = Preferences::vertexScale() *
             LineGroup::getDefaultWidth("Thin");
-    style = 1;
-    visible = true;
     hlrVisible = true;
     cosmetic = true;
 
@@ -76,7 +73,6 @@ CosmeticVertex::CosmeticVertex(const TechDraw::CosmeticVertex* cv) : TechDraw::V
 
 CosmeticVertex::CosmeticVertex(const Base::Vector3d& loc) : TechDraw::Vertex(loc)
 {
-//    Base::Console().Message("CV::CV(%s)\n", DU::formatVector(loc).c_str());
     permaPoint = loc;
     linkGeom = -1;
     color = Preferences::vertexColor();
@@ -93,21 +89,17 @@ CosmeticVertex::CosmeticVertex(const Base::Vector3d& loc) : TechDraw::Vertex(loc
 
 void CosmeticVertex::move(const Base::Vector3d& newPos)
 {
-    permaPoint = newPos;
+    point(newPos);
 }
 
 void CosmeticVertex::moveRelative(const Base::Vector3d& movement)
 {
-    permaPoint += movement;
+    point( point() += movement);
 }
 
 std::string CosmeticVertex::toString() const
 {
     std::stringstream ss;
-    ss << permaPoint.x << ", " <<
-          permaPoint.y << ", " <<
-          permaPoint.z << ", " <<
-          " / ";
     ss << point().x << ", " <<
           point().y << ", " <<
           point().z << ", " <<
@@ -181,13 +173,15 @@ Base::Vector3d CosmeticVertex::scaled(const double factor)
     return permaPoint * factor;
 }
 
+//! returns a transformed version of our coordinates (permaPoint)
 Base::Vector3d CosmeticVertex::rotatedAndScaled(const double scale, const double rotDegrees)
 {
     Base::Vector3d scaledPoint = scaled(scale);
     if (rotDegrees != 0.0) {
         // invert the Y coordinate so the rotation math works out
+        // the stored point is inverted
         scaledPoint = DU::invertY(scaledPoint);
-        scaledPoint.RotateZ(rotDegrees * M_PI / 180.0);
+        scaledPoint.RotateZ(rotDegrees * M_PI / DegreesHalfCircle);
         scaledPoint = DU::invertY(scaledPoint);
     }
     return scaledPoint;
@@ -198,13 +192,12 @@ Base::Vector3d CosmeticVertex::rotatedAndScaled(const double scale, const double
 //! inverted back on return.
 Base::Vector3d CosmeticVertex::makeCanonicalPoint(DrawViewPart* dvp, Base::Vector3d point, bool unscale)
 {
-    // Base::Console().Message("CV::makeCanonicalPoint(%s)\n", DU::formatVector(point).c_str());
     double rotDeg = dvp->Rotation.getValue();
 
     Base::Vector3d result = point;
     if (rotDeg != 0.0) {
         // unrotate the point
-        double rotRad = rotDeg * M_PI / 180.0;
+        double rotRad = rotDeg * M_PI / DegreesHalfCircle;
         // we always rotate around the origin.
         result.RotateZ(-rotRad);
     }
@@ -218,6 +211,16 @@ Base::Vector3d CosmeticVertex::makeCanonicalPoint(DrawViewPart* dvp, Base::Vecto
     // return the unrotated version of input point without unscaling
     return result;
 }
+
+//! a version of makeCanonicalPoint that accepts and returns an invertedPoint.
+Base::Vector3d CosmeticVertex::makeCanonicalPointInverted(DrawViewPart* dvp, Base::Vector3d invertedPoint, bool unscale)
+{
+    Base::Vector3d result = makeCanonicalPoint(dvp,
+                                               DU::invertY(invertedPoint),
+                                               unscale);
+    return DU::invertY(result);
+}
+
 
 boost::uuids::uuid CosmeticVertex::getTag() const
 {

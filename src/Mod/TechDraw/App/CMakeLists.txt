@@ -174,6 +174,8 @@ SET(TechDraw_SRCS
     XMLQuery.h
     LineGenerator.cpp
     LineGenerator.h
+    LineFormat.cpp
+    LineFormat.h
 )
 
 SET(Geometry_SRCS

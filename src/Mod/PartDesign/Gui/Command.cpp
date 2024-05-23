@@ -2422,6 +2422,11 @@ public:
     {
         return "CmdPartDesignCompDatums";
     }
+
+    bool isActive() override
+    {
+        return hasActiveDocument();
+    }
 };
 
 // Command group for datums =============================================
@@ -2451,6 +2456,11 @@ public:
     const char* className() const override
     {
         return "CmdPartDesignCompSketches";
+    }
+
+    bool isActive() override
+    {
+        return hasActiveDocument();
     }
 };
 

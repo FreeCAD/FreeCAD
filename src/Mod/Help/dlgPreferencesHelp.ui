@@ -209,7 +209,7 @@ custom stylesheet below and can look nicer than the wiki option. The 'Markdown' 
         </property>
         <property name="toolTip">
          <string>The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open whlle working in the 3D view. This requires the PySide QtWebengineWidgets component</string>
+which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</string>
         </property>
         <property name="text">
          <string>In a separate, embeddable dialog</string>

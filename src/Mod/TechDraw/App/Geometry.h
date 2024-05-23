@@ -113,7 +113,7 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         static bool validateEdge(TopoDS_Edge edge);
         static TopoDS_Edge completeEdge(const TopoDS_Edge &edge);
         bool closed();
-        BaseGeomPtr copy();
+        virtual BaseGeomPtr copy();
         std::string dump();
         virtual std::string toString() const;
         std::vector<Base::Vector3d> intersection(TechDraw::BaseGeomPtr geom2);
@@ -241,6 +241,7 @@ class TechDrawExport AOC: public Circle
         ~AOC() override = default;
 
     public:
+        BaseGeomPtr copy() override;
         double getStartAngle() override { return startAngle; }
         double getEndAngle() override { return endAngle; }
         bool clockwiseAngle() override { return cw; }
@@ -445,7 +446,7 @@ class TechDrawExport GeometryUtils
 
         static bool isCircle(TopoDS_Edge occEdge);
         static bool getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Vector3d& center, bool& isArc);
-        static TopoDS_Edge asCircle(TopoDS_Edge occEdge, bool& arc);
+        static TopoDS_Edge asCircle(TopoDS_Edge splineEdge, bool& arc);
         static bool isLine(TopoDS_Edge occEdge);
         static TopoDS_Edge asLine(TopoDS_Edge occEdge);
 

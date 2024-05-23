@@ -969,7 +969,7 @@ StdCmdReloadStyleSheet::StdCmdReloadStyleSheet()
     sWhatsThis    = "Std_ReloadStyleSheet";
 }
 
-void StdCmdReloadStyleSheet::activated(int iMsg)
+void StdCmdReloadStyleSheet::activated(int )
 {
     auto mw = getMainWindow();
 

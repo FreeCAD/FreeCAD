@@ -529,9 +529,6 @@ void DownloadItem::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 
 void DownloadItem::updateInfoLabel()
 {
-    //if (m_reply->error() == QNetworkReply::NoError)
-    //    return;
-
     qint64 bytesTotal = progressBar->maximum();
     bool running = !downloadedSuccessfully();
 

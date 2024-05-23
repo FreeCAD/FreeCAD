@@ -79,10 +79,11 @@ class BIM_Setup:
             import RebarTools
         except ImportError:
             m.append("Reinforcement")
-        try:
-            import BIMServer
-        except ImportError:
-            m.append("WebTools")
+        # disabled as WebTools can currentyl not be installed because of WebGui dependency
+        #try:
+        #    import BIMServer
+        #except ImportError:
+        #    m.append("WebTools")
         if sys.version_info.major < 3:
             try:
                 import CommandsFrame
@@ -253,18 +254,6 @@ class BIM_Setup:
         FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document").SetString(
             "prefLicenseUrl", ""
         )  # TODO - set correct license URL
-        bimdefault = self.form.settingWorkbench.currentIndex()
-        if bimdefault == 1:
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").SetString(
-                "AutoloadModule", "BIMWorkbench"
-            )
-        elif bimdefault == 2:
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").SetString(
-                "AutoloadModule", "StartWorkbench"
-            )
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").SetString(
-                "AutoloadModule", "BIMWorkbench"
-            )
         newdoc = self.form.settingNewdocument.isChecked()
         FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document").SetBool(
             "CreateNewDoc", newdoc
@@ -531,21 +520,6 @@ class BIM_Setup:
             lic = [0, 1, 2, 1, 3, 4, 1, 0, 0, 0][
                 lic
             ]  # less choices in our simplified dialog
-            bimdefault = FreeCAD.ParamGet(
-                "User parameter:BaseApp/Preferences/General"
-            ).GetString("AutoloadModule", "")
-            if bimdefault == "BIMWorkbench":
-                bimdefault = 1
-            elif (
-                bimdefault == "StartWorkbench"
-                and FreeCAD.ParamGet(
-                    "User parameter:BaseApp/Preferences/Mod/Start"
-                ).GetString("AutoloadModule", "")
-                == "BIMWorkbench"
-            ):
-                bimdefault = 2
-            else:
-                bimdefault = 0
             newdoc = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Document"
             ).GetBool("CreateNewDoc", False)
@@ -604,8 +578,6 @@ class BIM_Setup:
             self.form.settingAuthor.setText(author)
         if lic != None:
             self.form.settingLicense.setCurrentIndex(lic)
-        if bimdefault != None:
-            self.form.settingWorkbench.setCurrentIndex(bimdefault)
         if newdoc != None:
             self.form.settingNewdocument.setChecked(newdoc)
         if bkp != None:

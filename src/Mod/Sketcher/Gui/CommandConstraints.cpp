@@ -1318,7 +1318,14 @@ public:
         addCommand("Sketcher_ToggleActiveConstraint");
 
     }
-    const char* className() const override { return "CmdSketcherCompToggleConstraints"; }
+    const char* className() const override
+    {
+        return "CmdSketcherCompToggleConstraints";
+    }
+    bool isActive() override
+    {
+        return isCommandActive(getActiveGuiDocument());
+    }
 };
 
 // Dimension tool =======================================================
@@ -2790,7 +2797,15 @@ public:
         addCommand("Sketcher_ConstrainVertical");
     }
 
-    const char* className() const override { return "CmdSketcherCompHorizontalVertical"; }
+    const char* className() const override
+    {
+        return "CmdSketcherCompHorizontalVertical";
+    }
+
+    bool isActive() override
+    {
+        return isCommandActive(getActiveGuiDocument());
+    }
 };
 
 // ============================================================================
