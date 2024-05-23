@@ -122,6 +122,7 @@ QByteArray PythonOnlineHelp::invoke(const std::function<std::string(Py::Module&)
     catch (const Py::Exception&) {
         // load the error page
         Base::PyException e;
+        e.ReportException();
         return loadFailed(QString::fromUtf8(e.what()));
     }
 }
