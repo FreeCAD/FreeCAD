@@ -85,6 +85,7 @@ void Shader::UpdateTextureSlot(int slot)
 bool CheckCompileResult(int shader)
 {
 #ifdef QT_OPENGL_LIB
+    (void)shader;
     return false;
 #else
     char log[1024];

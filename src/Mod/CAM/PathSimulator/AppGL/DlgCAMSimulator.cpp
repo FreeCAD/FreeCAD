@@ -119,6 +119,7 @@ void DlgCAMSimulator::addTool(const std::vector<float> toolProfilePoints,
                               float diameter,
                               float resolution)
 {
+    Q_UNUSED(resolution)
     std::string toolCmd = "T" + std::to_string(toolNumber);
     mMillSimulator->AddGcodeLine(toolCmd.c_str());
     if (!mMillSimulator->ToolExists(toolNumber)) {
@@ -128,6 +129,7 @@ void DlgCAMSimulator::addTool(const std::vector<float> toolProfilePoints,
 
 void DlgCAMSimulator::hideEvent(QHideEvent* ev)
 {
+    Q_UNUSED(ev)
     mAnimating = false;
 }
 
@@ -194,6 +196,7 @@ void DlgCAMSimulator::renderNow()
     if (mAnimating) {
         renderLater();
     }
+    (void)fps;
 }
 
 void DlgCAMSimulator::setAnimating(bool animating)
@@ -232,7 +235,9 @@ SimStock::SimStock(float px, float py, float pz, float lx, float ly, float lz, f
     , mLx(lx)
     , mLy(ly)
     , mLz(1.01 * lz)
-{}
+{
+    (void)res;
+}
 
 SimStock::~SimStock()
 {}

@@ -30,17 +30,17 @@
 using namespace MillSim;
 
 GuiItem guiItems[] = {
-    {0, 0, 360, 554, 0},
-    {0, 0, 448, 540, 1},
-    {0, 0, 170, 540, 'P', true},
-    {0, 0, 170, 540, 'S', false},
-    {0, 0, 210, 540, 'T'},
-    {0, 0, 250, 540, 'F'},
-    {0, 0, 290, 540, ' '},
-    {0, 0, 620, 540, 0, false, 0},
-    {0, 0, 660, 540, 0, false, 0},
-    {0, 0, 645, 540, 0, false, 0},
-    {0, 0, 640, 540, 0, true, 0},
+    {0, 0, 360, 554, 0, false, false, {}},
+    {0, 0, 448, 540, 1, false, false, {}},
+    {0, 0, 170, 540, 'P', true, false, {}},
+    {0, 0, 170, 540, 'S', false, false, {}},
+    {0, 0, 210, 540, 'T', false, false, {}},
+    {0, 0, 250, 540, 'F', false, false, {}},
+    {0, 0, 290, 540, ' ', false, false, {}},
+    {0, 0, 620, 540, 0, false, false, {}},
+    {0, 0, 660, 540, 0, false, false, {}},
+    {0, 0, 645, 540, 0, false, false, {}},
+    {0, 0, 640, 540, 0, true, false, {}},
 };
 
 #define NUM_GUI_ITEMS (sizeof(guiItems) / sizeof(GuiItem))
@@ -108,7 +108,7 @@ bool GuiDisplay::InutGui()
         return false;
     }
     mTexture.LoadImage(buffer, TEX_SIZE, TEX_SIZE);
-    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
+    for (unsigned long i = 0; i < NUM_GUI_ITEMS; i++) {
         guiItems[i].texItem = *tLoader.GetTextureItem(i);
         GenerateGlItem(&(guiItems[i]));
     }
@@ -157,7 +157,7 @@ void GuiDisplay::RenderItem(int itemId)
 
 void GuiDisplay::MouseCursorPos(int x, int y)
 {
-    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
+    for (unsigned long i = 0; i < NUM_GUI_ITEMS; i++) {
         GuiItem* g = &(guiItems[i]);
         if (g->actionKey == 0) {
             continue;
@@ -172,7 +172,7 @@ void GuiDisplay::MousePressed(int button, bool isPressed, bool isSimRunning)
     if (button == MS_MOUSE_LEFT) {
         if (isPressed) {
             mPressedItem = eGuiItemMax;
-            for (int i = 1; i < NUM_GUI_ITEMS; i++) {
+            for (unsigned long i = 1; i < NUM_GUI_ITEMS; i++) {
                 GuiItem* g = &(guiItems[i]);
                 if (g->mouseOver && !g->hidden) {
                     mPressedItem = (eGuiItems)i;
@@ -196,6 +196,8 @@ void GuiDisplay::MousePressed(int button, bool isPressed, bool isSimRunning)
 
 void GuiDisplay::MouseDrag(int buttons, int dx, int dy)
 {
+    (void)buttons;
+    (void)dy;
     if (mPressedItem == eGuiItemThumb) {
         GuiItem* g = &(guiItems[eGuiItemThumb]);
         int newx = g->sx + dx;
@@ -237,7 +239,7 @@ void GuiDisplay::Render(float progress)
     mShader.UpdateTextureSlot(0);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
+    for (unsigned long i = 0; i < NUM_GUI_ITEMS; i++) {
         RenderItem(i);
     }
 }

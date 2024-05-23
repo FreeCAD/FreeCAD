@@ -55,7 +55,7 @@ int CAMSimPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 }
 
 
-PyObject* CAMSimPy::ResetSimulation(PyObject* args)
+PyObject* CAMSimPy::ResetSimulation()
 {
     CAMSim* sim = getCAMSimPtr();
     sim->resetSimulation();
