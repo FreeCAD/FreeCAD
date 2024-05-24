@@ -24,19 +24,18 @@
    and stores them into a pset_dfinitions.xml files in the current directory. Warning, this can take
    a certain time (there are more than 400 definitions to retrieve)"""
 
-from __future__ import print_function
-
-import re, urllib2, os
+import codecs, os, re
+from urllib.request import urlopen
 
 MAXTRIES = 3
 IFC_DOCS_ROOT_URL = "https://standards.buildingsmart.org/IFC/DEV/IFC4_2/FINAL/HTML/"
 
 # read the pset list
 print("Getting psets list...")
-u = urllib2.urlopen(
+u = urlopen(
     IFC_DOCS_ROOT_URL + "annex/annex-b/alphabeticalorder_psets.htm"
 )
-p = u.read()
+p = u.read().decode('utf-8')
 u.close()
 psets = re.findall(">Pset_(.*?)</a>", p)
 
@@ -47,12 +46,12 @@ for i, pset in enumerate(psets):
     print(i + 1, "/", len(psets), ": Retrieving Pset", pset)
     for j in range(MAXTRIES):
         try:
-            u = urllib2.urlopen(
+            u = urlopen(
                 IFC_DOCS_ROOT_URL + "psd/Pset_"
                 + pset
                 + ".xml"
             )
-            p = u.read()
+            p = u.read().decode('utf-8')
             u.close()
         except:
             print("    Connection failed. trying one more time...")
@@ -65,7 +64,7 @@ for i, pset in enumerate(psets):
 psetdefs = psetdefs.replace('<?xml version="1.0" encoding="utf-8"?>', "")
 psetdefs = '<?xml version="1.0" encoding="utf-8"?>\n<Root>\n' + psetdefs + "</Root>"
 
-f = open("pset_definitions.xml", "wb")
+f = codecs.open("pset_definitions.xml", "wb", "utf-8")
 f.write(psetdefs)
 f.close()
 print(
