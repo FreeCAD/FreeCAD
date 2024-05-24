@@ -96,7 +96,7 @@ public:
   vtkCellLinks* GetLinks()
   {
 #ifdef VTK_CELL_ARRAY_V2
-    return static_cast<vtkCellLinks*>(GetCellLinks());
+    return static_cast<vtkCellLinks*>(GetLinks());
 #else
     return Links;
 #endif
