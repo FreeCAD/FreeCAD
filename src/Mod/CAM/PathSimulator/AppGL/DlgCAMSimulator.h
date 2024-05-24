@@ -32,7 +32,6 @@
 #include <QtGui/qwindow.h>
 #include <QOpenGLExtraFunctions>
 #include <QtGui/qpainter.h>
-#include <QtGui/qopenglpaintdevice.h>
 
 
 namespace MillSim
@@ -96,7 +95,6 @@ private:
     bool mNeedsInitialize = false;
 
     QOpenGLContext* mContext = nullptr;
-    QOpenGLPaintDevice* mDevice = nullptr;
     MillSim::MillSimulation* mMillSimulator = nullptr;
     static DlgCAMSimulator* mInstance;
     SimStock mStock = {0, 0, 0, 1, 1, 1, 1};
