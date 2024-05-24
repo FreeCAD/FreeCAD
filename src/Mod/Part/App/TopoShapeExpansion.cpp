@@ -4454,7 +4454,6 @@ TopoShape& TopoShape::makeElementRevolve(const TopoShape& _base,
 
 TopoShape& TopoShape::makeElementRevolution(const TopoShape& _base,
                                             const gp_Ax1& axis,
-                                            double d,
                                             const TopoDS_Face& supportface,
                                             const TopoDS_Face& uptoface,
                                             const char* face_maker,
