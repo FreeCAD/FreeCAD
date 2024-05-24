@@ -29,11 +29,12 @@ from __future__ import print_function
 import re, urllib2, os
 
 MAXTRIES = 3
+IFC_DOCS_ROOT_URL = "https://standards.buildingsmart.org/IFC/DEV/IFC4_2/FINAL/HTML/"
 
 # read the pset list
 print("Getting psets list...")
 u = urllib2.urlopen(
-    "http://www.buildingsmart-tech.org/ifc/IFC4/Add2/html/annex/annex-b/alphabeticalorder_psets.htm"
+    IFC_DOCS_ROOT_URL + "annex/annex-b/alphabeticalorder_psets.htm"
 )
 p = u.read()
 u.close()
@@ -47,7 +48,7 @@ for i, pset in enumerate(psets):
     for j in range(MAXTRIES):
         try:
             u = urllib2.urlopen(
-                "http://www.buildingsmart-tech.org/ifc/IFC4/Add2/html/psd/Pset_"
+                IFC_DOCS_ROOT_URL + "psd/Pset_"
                 + pset
                 + ".xml"
             )
