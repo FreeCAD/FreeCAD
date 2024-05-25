@@ -2014,7 +2014,7 @@ bool Adaptive2d::FindEntryPoint(TPaths &progressPaths, const Paths &toolBoundPat
 	}
 
 	if (!found)
-		cerr << "Start point not found!" << endl;
+		cerr << "Start point not found! Tool diameter is most likely too big for this operation and selected geometry features." << endl;
 	if (found)
 	{
 		// visualize/progress for helix

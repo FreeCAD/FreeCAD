@@ -222,6 +222,7 @@ class ViewProvider:
     def setEdit(self, vobj=None, mode=0):
         Path.Log.track(mode)
         if 0 == mode:
+
             job = self.vobj.Object
             if not job.Proxy.integrityCheck(job):
                 return False
@@ -229,12 +230,13 @@ class ViewProvider:
         return True
 
     def openTaskPanel(self, activate=None):
+        self.deleteOnReject = False
         self.taskPanel = TaskPanel(self.vobj, self.deleteObjectsOnReject())
-        FreeCADGui.Control.closeDialog()
+      #  FreeCADGui.Control.closeDialog()
         FreeCADGui.Control.showDialog(self.taskPanel)
         self.taskPanel.setupUi(activate)
         self.showOriginAxis(True)
-        self.deleteOnReject = False
+        
 
     def resetTaskPanel(self):
         self.showOriginAxis(False)
