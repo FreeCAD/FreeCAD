@@ -70,7 +70,7 @@ int View3DSettings::stopAnimatingIfDeactivated() const
 void View3DSettings::applySettings()
 {
     // Check if Sketcher Edit Mode exited cleanly
-    int overMaxHeadlightIntensity = 101;
+    const int overMaxHeadlightIntensity = 101;
     int sketcherEditLastExit = hGrp->GetInt("HeadlightIntensityExisting", overMaxHeadlightIntensity);
     if (sketcherEditLastExit != overMaxHeadlightIntensity) {
         // must mean a seg fault or abnormal exit last time
