@@ -27,53 +27,6 @@
          id="stop40" />
     </linearGradient>
     <linearGradient
-       id="linearGradient5">
-      <stop
-         style="stop-color:#ef2929;stop-opacity:1;"
-         offset="0"
-         id="stop19" />
-      <stop
-         style="stop-color:#ef2929;stop-opacity:0;"
-         offset="1"
-         id="stop20" />
-    </linearGradient>
-    <linearGradient
-       id="swatch18">
-      <stop
-         style="stop-color:#ef2929;stop-opacity:1;"
-         offset="0"
-         id="stop18" />
-    </linearGradient>
-    <linearGradient
-       id="swatch15">
-      <stop
-         style="stop-color:#3d0000;stop-opacity:1;"
-         offset="0"
-         id="stop15" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5-1">
-      <stop
-         style="stop-color:#ef2929;stop-opacity:1;"
-         offset="0"
-         id="stop5" />
-      <stop
-         style="stop-color:#ef2929;stop-opacity:0;"
-         offset="1"
-         id="stop6" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3836-9">
-      <stop
-         style="stop-color:#a40000;stop-opacity:1"
-         offset="0"
-         id="stop3838-8" />
-      <stop
-         style="stop-color:#ef2929;stop-opacity:1"
-         offset="1"
-         id="stop3840-1" />
-    </linearGradient>
-    <linearGradient
        xlink:href="#linearGradient39"
        id="linearGradient40"
        x1="32"
@@ -144,10 +97,6 @@
          style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#555753;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;paint-order:normal"
          d="M 32,24 V 53"
          id="path42" />
-      <path
-         style="fill:#ef2929;stroke:#a40000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
-         d="m 20.499981,44.223921 7.390586,-7.390586 -7.390586,-7.390588 4.109432,-4.109433 7.390588,7.390587 7.390586,-7.390587 4.109434,4.109433 -7.390588,7.390588 7.390588,7.390586 -4.109434,4.109434 -7.390586,-7.390588 -7.390588,7.390588 z"
-         id="path25" />
     </g>
   </g>
 </svg>
