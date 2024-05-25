@@ -630,5 +630,4 @@ LINMATH_H_FUNC void mat4x4_arcball(mat4x4 R, mat4x4 const M, vec2 const _a, vec2
     float const angle = acosf(vec3_mul_inner(a_, b_)) * s;
     mat4x4_rotate(R, M, c_[0], c_[1], c_[2], angle);
 }
-
 #endif

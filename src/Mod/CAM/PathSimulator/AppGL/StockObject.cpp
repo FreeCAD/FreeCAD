@@ -57,6 +57,7 @@ void MillSim::StockObject::GenerateBoxStock(float x, float y, float z, float l, 
     SET_DUAL(mProfile, idx, y, z);
     SET_DUAL(mProfile, idx, y, z + h);
 
+    vec3_set(position, x, y, z);
     vec3_set(center, x + l / 2, y + w / 2, z + h / 2);
     vec3_set(size, l, w, h);
 

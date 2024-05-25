@@ -22,9 +22,7 @@
 
 #ifndef __openglwrapper_h__
 #define __openglwrapper_h__
-#ifdef CAM_SIM_USE_GLEW
-#include "GL/glew.h"
-#else
+
 #include "DlgCAMSimulator.h"
 extern QOpenGLContext* gOpenGlContext;
 #define gSimWindow CAMSimulator::DlgCAMSimulator::GetInstance()
@@ -66,6 +64,18 @@ extern QOpenGLContext* gOpenGlContext;
 #define glTexParameteri gSimWindow->glTexParameteri
 #define glTexImage2D gSimWindow->glTexImage2D
 #define glDeleteTextures gSimWindow->glDeleteTextures
-#endif  // HAVE_OPENGL_EXT
+
+#define glBindFramebuffer gSimWindow->glBindFramebuffer
+#define glUniform1f gSimWindow->glUniform1f
+#define glGenFramebuffers gSimWindow->glGenFramebuffers
+#define glFramebufferTexture2D gSimWindow->glFramebufferTexture2D
+#define glDrawBuffers gSimWindow->glDrawBuffers
+#define glGenRenderbuffers gSimWindow->glGenRenderbuffers
+#define glBindRenderbuffer gSimWindow->glBindRenderbuffer
+#define glRenderbufferStorage gSimWindow->glRenderbufferStorage
+#define glFramebufferRenderbuffer gSimWindow->glFramebufferRenderbuffer
+#define glCheckFramebufferStatus gSimWindow->glCheckFramebufferStatus
+#define glDeleteFramebuffers gSimWindow->glDeleteFramebuffers
+#define glDeleteRenderbuffers gSimWindow->glDeleteRenderbuffers
 
 #endif  // !__openglwrapper_h__

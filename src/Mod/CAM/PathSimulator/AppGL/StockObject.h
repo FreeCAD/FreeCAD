@@ -42,6 +42,7 @@ public:
     void GenerateBoxStock(float x, float y, float z, float l, float w, float h);
     vec3 center = {};
     vec3 size = {};
+    vec3 position = {};
 
 private:
     float mProfile[8] = {};

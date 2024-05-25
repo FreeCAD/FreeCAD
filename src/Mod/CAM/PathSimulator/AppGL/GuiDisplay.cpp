@@ -30,17 +30,17 @@
 using namespace MillSim;
 
 GuiItem guiItems[] = {
-    {0, 0, 360, 554, 0, false, false, {}},
-    {0, 0, 448, 540, 1, false, false, {}},
-    {0, 0, 170, 540, 'P', true, false, {}},
-    {0, 0, 170, 540, 'S', false, false, {}},
-    {0, 0, 210, 540, 'T', false, false, {}},
-    {0, 0, 250, 540, 'F', false, false, {}},
-    {0, 0, 290, 540, ' ', false, false, {}},
-    {0, 0, 620, 540, 0, false, false, {}},
-    {0, 0, 660, 540, 0, false, false, {}},
-    {0, 0, 645, 540, 0, false, false, {}},
-    {0, 0, 640, 540, 0, true, false, {}},
+    {0, 0, 360, 554, 0},
+    {0, 0, 448, 540, 1},
+    {0, 0, 170, 540, 'P', true},
+    {0, 0, 170, 540, 'S', false},
+    {0, 0, 210, 540, 'T'},
+    {0, 0, 250, 540, 'F'},
+    {0, 0, 290, 540, ' '},
+    {0, 0, 620, 540, 0, false, 0},
+    {0, 0, 660, 540, 0, false, 0},
+    {0, 0, 645, 540, 0, false, 0},
+    {0, 0, 640, 540, 0, true, 0},
 };
 
 #define NUM_GUI_ITEMS (sizeof(guiItems) / sizeof(GuiItem))
@@ -97,6 +97,9 @@ bool GuiDisplay::GenerateGlItem(GuiItem* guiItem)
 
 bool GuiDisplay::InutGui()
 {
+    if (guiInitiated) {
+        return true;
+    }
     // index buffer
     glGenBuffers(1, &mIbo);
     GLshort indices[6] = {0, 2, 3, 0, 3, 1};
@@ -108,7 +111,7 @@ bool GuiDisplay::InutGui()
         return false;
     }
     mTexture.LoadImage(buffer, TEX_SIZE, TEX_SIZE);
-    for (unsigned long i = 0; i < NUM_GUI_ITEMS; i++) {
+    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
         guiItems[i].texItem = *tLoader.GetTextureItem(i);
         GenerateGlItem(&(guiItems[i]));
     }
@@ -121,10 +124,11 @@ bool GuiDisplay::InutGui()
     // shader
     mat4x4 projmat;
     // mat4x4 viewmat;
-    mat4x4_ortho(projmat, 0, 800, 600, 0, -1, 1);
+    mat4x4_ortho(projmat, 0, WINDSIZE_W, WINDSIZE_H, 0, -1, 1);
     mShader.CompileShader((char*)VertShader2DTex, (char*)FragShader2dTex);
     mShader.UpdateTextureSlot(0);
     mShader.UpdateProjectionMat(projmat);
+    guiInitiated = true;
     return true;
 }
 
@@ -157,7 +161,7 @@ void GuiDisplay::RenderItem(int itemId)
 
 void GuiDisplay::MouseCursorPos(int x, int y)
 {
-    for (unsigned long i = 0; i < NUM_GUI_ITEMS; i++) {
+    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
         GuiItem* g = &(guiItems[i]);
         if (g->actionKey == 0) {
             continue;
@@ -172,7 +176,7 @@ void GuiDisplay::MousePressed(int button, bool isPressed, bool isSimRunning)
     if (button == MS_MOUSE_LEFT) {
         if (isPressed) {
             mPressedItem = eGuiItemMax;
-            for (unsigned long i = 1; i < NUM_GUI_ITEMS; i++) {
+            for (int i = 1; i < NUM_GUI_ITEMS; i++) {
                 GuiItem* g = &(guiItems[i]);
                 if (g->mouseOver && !g->hidden) {
                     mPressedItem = (eGuiItems)i;
@@ -196,8 +200,6 @@ void GuiDisplay::MousePressed(int button, bool isPressed, bool isSimRunning)
 
 void GuiDisplay::MouseDrag(int buttons, int dx, int dy)
 {
-    (void)buttons;
-    (void)dy;
     if (mPressedItem == eGuiItemThumb) {
         GuiItem* g = &(guiItems[eGuiItemThumb]);
         int newx = g->sx + dx;
@@ -234,12 +236,13 @@ void GuiDisplay::Render(float progress)
     }
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
+
     mTexture.Activate();
     mShader.Activate();
     mShader.UpdateTextureSlot(0);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    for (unsigned long i = 0; i < NUM_GUI_ITEMS; i++) {
+    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
         RenderItem(i);
     }
 }

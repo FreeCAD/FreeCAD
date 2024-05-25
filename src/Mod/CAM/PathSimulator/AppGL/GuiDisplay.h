@@ -80,6 +80,9 @@ public:
     void UpdatePlayState(bool isRunning);
     void UpdateSimSpeed(int speed);
 
+public:
+    bool guiInitiated = false;
+
 private:
     bool GenerateGlItem(GuiItem* guiItem);
     void RenderItem(int itemId);

@@ -60,6 +60,8 @@ SET(CAMSimulator_SRCS_Core
     OpenGlWrapper.h
     Shader.cpp
     Shader.h
+    SimDisplay.cpp
+    SimDisplay.h
     SimShapes.cpp
     SimShapes.h
     StockObject.cpp
