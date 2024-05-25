@@ -80,13 +80,10 @@ gsl::owner<QPushButton*> createNewButton(const NewButton& newButton)
     iconLabel->setPixmap(baseIcon.pixmap(newFileIconSize, newFileIconSize));
 
     auto textLayout = gsl::owner<QVBoxLayout*>(new QVBoxLayout);
-    auto textLabelLine1 = gsl::owner<QLabel*>(new QLabel(button));
-    textLabelLine1->setText(QLatin1String("<b>") + newButton.heading + QLatin1String("</b>"));
-    auto textLabelLine2 = gsl::owner<QLabel*>(new QLabel(button));
-    textLabelLine2->setText(newButton.description);
-    textLabelLine2->setWordWrap(true);
-    textLayout->addWidget(textLabelLine1);
-    textLayout->addWidget(textLabelLine2);
+    auto textLabelLine = gsl::owner<QLabel*>(new QLabel(button));
+    textLabelLine->setText(newButton.description);
+    textLabelLine->setWordWrap(true);
+    textLayout->addWidget(textLabelLine);
     textLayout->setSpacing(0);
     mainLayout->addItem(textLayout);
 
@@ -224,7 +221,10 @@ void StartView::configureNewFileButtons(QLayout* layout) const
 
 QString StartView::fileCardStyle() const
 {
-    if (!qApp->styleSheet().isEmpty()) {
+    auto hGrpView = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
+    auto qssFile = hGrpView->GetASCII("StyleSheet", "");
+    if (!qssFile.empty()) {
         return {};
     }
 
@@ -256,6 +256,10 @@ QString StartView::fileCardStyle() const
                                "}"
                                "QPushButton:pressed {"
                                " border: 2px solid rgb(%7, %8, %9);"
+                               "}"
+                               "QLabel {"
+                               " font-size: 12px;"
+                               " font-weight: bold;"
                                "}")
         .arg(background.red())
         .arg(background.green())
