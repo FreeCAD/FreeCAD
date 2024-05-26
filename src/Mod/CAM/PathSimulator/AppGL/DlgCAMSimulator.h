@@ -32,7 +32,7 @@
 #include <QtGui/qwindow.h>
 #include <QOpenGLExtraFunctions>
 #include <QtGui/qpainter.h>
-#include <QtGui/qopenglpaintdevice.h>
+#include <QOpenGLPaintDevice>
 
 
 namespace MillSim
