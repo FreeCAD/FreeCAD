@@ -551,6 +551,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Separator"
           << datums
           << "PartDesign_CoordinateSystem"
+          << "PartDesign_ShapeBinder"
           << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone"
           << "Separator"
