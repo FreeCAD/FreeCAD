@@ -47,6 +47,7 @@
 
 #include <Mod/Material/App/Exceptions.h>
 #include <Mod/Material/App/ModelManager.h>
+#include <Mod/Material/App/ModelUuids.h>
 
 #include "MaterialDelegate.h"
 #include "MaterialSave.h"
@@ -425,6 +426,13 @@ void MaterialsEditor::onAppearanceAdd(bool checked)
     if (dialog.exec() == QDialog::Accepted) {
         QString selected = dialog.selectedModel();
         _material->addAppearance(selected);
+        auto model = getModelManager().getModel(selected);
+        if (selected == Materials::ModelUUIDs::ModelUUID_Rendering_Basic
+            || model->inherits(Materials::ModelUUIDs::ModelUUID_Rendering_Basic)) {
+            // Add default appearance properties
+            *_material = *(getMaterialManager().defaultAppearance());
+        }
+
         updateMaterial();
     }
     else {
@@ -1008,6 +1016,7 @@ void MaterialsEditor::updateMaterialAppearance()
                     auto valueItem = new QStandardItem(_material->getAppearanceValueString(key));
                     valueItem->setToolTip(itp->second.getDescription());
                     QVariant variant;
+                    // variant.setValue(_material->getAppearanceValueString(key));
                     variant.setValue(_material);
                     valueItem->setData(variant);
                     items.append(valueItem);
