@@ -42,6 +42,8 @@
 #include <map>
 #include <QPen>
 
+#include <map>
+
 namespace TechDraw {
 
 class TechDrawExport LineGenerator {
