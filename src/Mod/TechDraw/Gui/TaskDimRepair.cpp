@@ -90,7 +90,6 @@ void TaskDimRepair::saveDimState()
 {
     m_saveMeasureType = m_dim->MeasureType.getValue();
     m_saveDimType = m_dim->Type.getValue();
-    m_dimType = m_dim->Type.getValue();
     m_saveRefs3d = m_dim->getReferences3d();
     m_saveRefs2d = m_dim->getReferences2d();
     m_saveDvp = m_dim->getViewPart();
@@ -152,7 +151,6 @@ void TaskDimRepair::slotUseSelection()
         }
     }
 
-    m_dimType = mapGeometryTypeToDimType(m_dim->Type.getValue(), geometryRefs2d, geometryRefs3d);
     m_toApply2d = references2d;
     if (references3d.empty()) {
         m_toApply3d.clear();
@@ -238,7 +236,6 @@ bool TaskDimRepair::accept()
 
     Gui::Command::openCommand(Base::Tools::toStdString(tr("Repair Dimension")).c_str());
     replaceReferences();
-    m_dim->Type.setValue(m_dimType);
     Gui::Command::commitCommand();
 
     m_dim->recomputeFeature();
