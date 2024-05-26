@@ -6599,17 +6599,17 @@ Do you want to exit without saving your data?</source>
 <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-        <location filename="../Action.cpp" line="850"/>
+        <location filename="../Action.cpp" line="868"/>
         <source>Open file %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Action.cpp" line="894"/>
+        <location filename="../Action.cpp" line="912"/>
         <source>File not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Action.cpp" line="894"/>
+        <location filename="../Action.cpp" line="912"/>
         <source>The file &apos;%1&apos; cannot be opened.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6617,22 +6617,22 @@ Do you want to exit without saving your data?</source>
 <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-        <location filename="../Action.cpp" line="1020"/>
+        <location filename="../Action.cpp" line="1038"/>
         <source>none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Action.cpp" line="1035"/>
+        <location filename="../Action.cpp" line="1053"/>
         <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Action.cpp" line="1093"/>
+        <location filename="../Action.cpp" line="1111"/>
         <source>File not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Action.cpp" line="1093"/>
+        <location filename="../Action.cpp" line="1111"/>
         <source>The file &apos;%1&apos; cannot be opened.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7223,7 +7223,7 @@ Do you want to specify another directory?</source>
 <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-        <location filename="../Tree.cpp" line="3563"/>
+        <location filename="../Tree.cpp" line="3571"/>
         <source>Tree view</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7231,7 +7231,7 @@ Do you want to specify another directory?</source>
 <context>
     <name>Gui::TreePanel</name>
     <message>
-        <location filename="../Tree.cpp" line="3491"/>
+        <location filename="../Tree.cpp" line="3499"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7239,183 +7239,183 @@ Do you want to specify another directory?</source>
 <context>
     <name>Gui::TreeWidget</name>
     <message>
-        <location filename="../Tree.cpp" line="586"/>
+        <location filename="../Tree.cpp" line="594"/>
         <source>Search...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="587"/>
+        <location filename="../Tree.cpp" line="595"/>
         <source>Search for objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="1019"/>
+        <location filename="../Tree.cpp" line="1027"/>
         <source>Activate document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="1026"/>
+        <location filename="../Tree.cpp" line="1034"/>
         <source>Activate document %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="1038"/>
+        <location filename="../Tree.cpp" line="1046"/>
         <source>Tree settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="1042"/>
+        <location filename="../Tree.cpp" line="1050"/>
         <source>Show description column</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="1043"/>
+        <location filename="../Tree.cpp" line="1051"/>
         <source>Show an extra tree view column for item description. The item&apos;s description can be set by pressing F2 (or your OS&apos;s edit button) or by editing the &apos;label2&apos; property.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="1084"/>
+        <location filename="../Tree.cpp" line="1092"/>
         <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3186"/>
+        <location filename="../Tree.cpp" line="3194"/>
         <source>Labels &amp; Attributes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3187"/>
+        <location filename="../Tree.cpp" line="3195"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3189"/>
+        <location filename="../Tree.cpp" line="3197"/>
         <source>Show items hidden in tree view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3190"/>
+        <location filename="../Tree.cpp" line="3198"/>
         <source>Show items that are marked as &apos;hidden&apos; in the tree view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3192"/>
+        <location filename="../Tree.cpp" line="3200"/>
         <source>Toggle visibility in tree view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3193"/>
+        <location filename="../Tree.cpp" line="3201"/>
         <source>Toggles the visibility of selected items in the tree view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3195"/>
+        <location filename="../Tree.cpp" line="3203"/>
         <source>Create group...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3196"/>
+        <location filename="../Tree.cpp" line="3204"/>
         <source>Create a group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3198"/>
-        <location filename="../Tree.cpp" line="5446"/>
+        <location filename="../Tree.cpp" line="3206"/>
+        <location filename="../Tree.cpp" line="5454"/>
         <source>Rename</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3199"/>
+        <location filename="../Tree.cpp" line="3207"/>
         <source>Rename object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3201"/>
+        <location filename="../Tree.cpp" line="3209"/>
         <source>Finish editing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3202"/>
+        <location filename="../Tree.cpp" line="3210"/>
         <source>Finish editing object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3204"/>
+        <location filename="../Tree.cpp" line="3212"/>
         <source>Add dependent objects to selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3205"/>
+        <location filename="../Tree.cpp" line="3213"/>
         <source>Adds all dependent objects to the selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3207"/>
+        <location filename="../Tree.cpp" line="3215"/>
         <source>Close document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3208"/>
+        <location filename="../Tree.cpp" line="3216"/>
         <source>Close the document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3210"/>
+        <location filename="../Tree.cpp" line="3218"/>
         <source>Reload document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3211"/>
+        <location filename="../Tree.cpp" line="3219"/>
         <source>Reload a partially loaded document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3213"/>
+        <location filename="../Tree.cpp" line="3221"/>
         <source>Skip recomputes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3214"/>
+        <location filename="../Tree.cpp" line="3222"/>
         <source>Enable or disable recomputations of document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3216"/>
+        <location filename="../Tree.cpp" line="3224"/>
         <source>Allow partial recomputes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3218"/>
+        <location filename="../Tree.cpp" line="3226"/>
         <source>Enable or disable recomputating editing object when &apos;skip recomputation&apos; is enabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3220"/>
+        <location filename="../Tree.cpp" line="3228"/>
         <source>Mark to recompute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3221"/>
+        <location filename="../Tree.cpp" line="3229"/>
         <source>Mark this object to be recomputed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3224"/>
+        <location filename="../Tree.cpp" line="3232"/>
         <source>Recompute object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="3225"/>
+        <location filename="../Tree.cpp" line="3233"/>
         <source>Recompute the selected object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="5417"/>
+        <location filename="../Tree.cpp" line="5425"/>
         <source> (but must be executed)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="5419"/>
+        <location filename="../Tree.cpp" line="5427"/>
         <source>%1, Internal name: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7459,8 +7459,8 @@ Do you want to specify another directory?</source>
 <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-        <location filename="../Action.cpp" line="684"/>
-        <location filename="../Action.cpp" line="708"/>
+        <location filename="../Action.cpp" line="698"/>
+        <location filename="../Action.cpp" line="726"/>
         <source>Select the &apos;%1&apos; workbench</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8524,8 +8524,8 @@ underscore, and must not start with a digit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2209"/>
-        <location filename="../Tree.cpp" line="2566"/>
+        <location filename="../Tree.cpp" line="2217"/>
+        <location filename="../Tree.cpp" line="2574"/>
         <source>Drag &amp; drop failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8864,8 +8864,8 @@ the current copy will be lost.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ToolBarManager.cpp" line="893"/>
-        <source>Undock from status bar</source>
+        <location filename="../ToolBarManager.cpp" line="951"/>
+        <source>Undock from toolbar area</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -13395,7 +13395,7 @@ the region are non-opaque.</source>
 <context>
     <name>Gui::WorkbenchTabWidget</name>
     <message>
-        <location filename="../WorkbenchSelector.cpp" line="257"/>
+        <location filename="../WorkbenchSelector.cpp" line="411"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13422,18 +13422,33 @@ the region are non-opaque.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../TaskMeasure.cpp" line="77"/>
+        <source>Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TaskMeasure.cpp" line="78"/>
+        <source>Result:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../TaskMeasure.cpp" line="107"/>
-        <source>Annotate</source>
+        <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../TaskMeasure.cpp" line="108"/>
-        <source>Press the Annotate button to add measurement to the document.</source>
+        <source>Save the measurement in the active document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../TaskMeasure.cpp" line="114"/>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../TaskMeasure.cpp" line="115"/>
-        <source>Press the Close button to exit.</source>
+        <source>Close the measurement task.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -13448,7 +13463,7 @@ the region are non-opaque.</source>
 <context>
     <name>Gui::ToolBarManager</name>
     <message>
-        <location filename="../ToolBarManager.cpp" line="892"/>
+        <location filename="../ToolBarManager.cpp" line="950"/>
         <source>Undock toolbars</source>
         <translation type="unfinished"></translation>
     </message>

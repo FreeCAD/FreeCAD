@@ -442,7 +442,7 @@ def getTreeViewItem(obj):
             lvHStr = FreeCAD.Units.Quantity(
                 obj.Elevation, FreeCAD.Units.Length
             ).UserString
-    lvH = round(float(lvHStr.split(" ")[0]), 2)
+    lvH = round(float(lvHStr.replace(",",".").split(" ")[0]), 2)
     it = QtGui.QTreeWidgetItem([obj.Label, lvHStr])
     it.setFlags(it.flags() | QtCore.Qt.ItemIsEditable)
     it.setToolTip(0, obj.Name)

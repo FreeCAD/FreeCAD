@@ -193,7 +193,7 @@ Möchtest Du das der Erweiterungsverwalter sie automatisch installiert? Wähle &
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
       <source>README URL</source>
-      <translation>LIESMICH-URL</translation>
+      <translation>LIESMICH URL</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
@@ -203,22 +203,22 @@ Möchtest Du das der Erweiterungsverwalter sie automatisch installiert? Wähle &
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation>URL des Projektarchivs</translation>
+      <translation>Projektarchiv Internetadresse</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
       <source>Website URL</source>
-      <translation>URL der Webseite</translation>
+      <translation>Internetadresse der Webseite</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="211"/>
       <source>Documentation URL</source>
-      <translation>URL der Dokumentation</translation>
+      <translation>Internetadresse der Dokumentation</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
       <source>Addon Name</source>
-      <translation>Addon-Name</translation>
+      <translation>Erweiterungsname</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
@@ -248,7 +248,7 @@ Möchtest Du das der Erweiterungsverwalter sie automatisch installiert? Wähle &
     <message>
       <location filename="../../developer_mode.ui" line="277"/>
       <source>Addon Contents</source>
-      <translation>Addon-Inhalte</translation>
+      <translation>Ereiterungsinhalte</translation>
     </message>
   </context>
   <context>
@@ -266,27 +266,27 @@ Möchtest Du das der Erweiterungsverwalter sie automatisch installiert? Wähle &
     <message>
       <location filename="../../developer_mode_tags.ui" line="20"/>
       <source>Comma-separated list of tags describing this item:</source>
-      <translation>Durch Kommas getrennte Liste von Tags, die dieses Element beschreiben:</translation>
+      <translation>Durch Kommas getrennte Liste von Schlagwörtern, die dieses Element beschreiben:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
       <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
-      <translation>HInweis: Gängige Tags einschließlich &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot; usw.</translation>
+      <translation>HInweis: Gängige Schlagwörter einschließlich &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot; usw.</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="17"/>
       <source>Welcome to the Addon Manager</source>
-      <translation>Willkommen beim Addon-Manager</translation>
+      <translation>Willkommen beim Erweiterungsverwalter</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="23"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation>Die Addons, die hier installiert werden können, sind nicht offiziell Teil von FreeCAD und werden nicht vom FreeCAD Team überprüft. Man sollte sich sicher sein, dass man weiß, was man installiert!</translation>
+      <translation>Die Erweiterungen, die hier installiert werden können, sind formell nicht Teil von FreeCAD und werden nicht vom FreeCAD Team überprüft. Stelle sicher, dass Du weist, was Du installierst!</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="46"/>
       <source>Download Settings</source>
-      <translation>Herunterladeeinstellungen</translation>
+      <translation>Einstellungen fürs Herunterladen</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="53"/>
@@ -316,7 +316,7 @@ Möchtest Du das der Erweiterungsverwalter sie automatisch installiert? Wähle &
     <message>
       <location filename="../../first_run.ui" line="93"/>
       <source>These and other settings are available in the FreeCAD Preferences window.</source>
-      <translation>Diese und andere Einstellungen sind im FreeCAD Einstellungs-Fenster verfügbar.</translation>
+      <translation>Diese und andere Einstellungen sind im FreeCAD Einstellungsfenster verfügbar.</translation>
     </message>
   </context>
   <context>

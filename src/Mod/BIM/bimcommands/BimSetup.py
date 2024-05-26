@@ -186,10 +186,9 @@ class BIM_Setup:
         FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
         ).SetString(
-            "GridSize", str(grid)
+            "GridSize", grid
         )  # Also set sketcher grid
-        grid = FreeCAD.Units.Quantity(grid).Value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetFloat(
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetString(
             "gridSpacing", grid
         )
         squares = self.form.settingSquares.value()
@@ -483,8 +482,8 @@ class BIM_Setup:
             ).GetInt("Decimals", 2)
             grid = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Mod/Draft"
-            ).GetFloat("gridSpacing", 10)
-            grid = FreeCAD.Units.Quantity(grid, FreeCAD.Units.Length).UserString
+            ).GetString("gridSpacing", "1 cm")
+            grid = FreeCAD.Units.Quantity(grid).UserString
             squares = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Mod/Draft"
             ).GetInt("gridEvery", 10)

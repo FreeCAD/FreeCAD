@@ -473,13 +473,13 @@
     <message>
       <location filename="../../Command.cpp" line="1136"/>
       <source>Remove components...</source>
-      <translation>Odebrat součásti...</translation>
+      <translation>Odstranit komponenty...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1137"/>
       <location filename="../../Command.cpp" line="1139"/>
       <source>Remove topologic independent components from the mesh</source>
-      <translation>Odebrat ze sítě topologicky nezávislé součásti</translation>
+      <translation>Odebrat ze sítě topologicky nezávislé komponenty</translation>
     </message>
   </context>
   <context>
@@ -782,34 +782,34 @@
       <translation>Smazat výběr</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="955"/>
-      <location filename="../../ViewProvider.cpp" line="1016"/>
+      <location filename="../../ViewProvider.cpp" line="963"/>
+      <location filename="../../ViewProvider.cpp" line="1024"/>
       <source>Cut</source>
       <translation>Řezat</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="965"/>
-      <location filename="../../ViewProvider.cpp" line="1086"/>
+      <location filename="../../ViewProvider.cpp" line="973"/>
+      <location filename="../../ViewProvider.cpp" line="1094"/>
       <source>Trim</source>
       <translation>Oříznout</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1173"/>
+      <location filename="../../ViewProvider.cpp" line="1181"/>
       <source>Split</source>
       <translation>Rozdělit</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1246"/>
+      <location filename="../../ViewProvider.cpp" line="1254"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1848"/>
+      <location filename="../../ViewProvider.cpp" line="1856"/>
       <source>Delete</source>
       <translation>Odstranit</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1977"/>
+      <location filename="../../ViewProvider.cpp" line="1985"/>
       <source>Fill hole</source>
       <translation>Vyplnit otvor</translation>
     </message>
@@ -1680,12 +1680,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
+      <translation>Přesíťovat přes Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
       <source>Remeshing Parameter</source>
-      <translation type="unfinished">Remeshing Parameter</translation>
+      <translation>Parametr přesíťování</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
@@ -1738,7 +1738,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="14"/>
       <source>Remove components</source>
-      <translation>Odebrat součásti</translation>
+      <translation>Odstranit komponenty</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="20"/>
@@ -1777,7 +1777,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="96"/>
       <source>Select whole component</source>
-      <translation>Vybrat celý díl</translation>
+      <translation>Vybrat celou komponentu</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="106"/>
@@ -1792,7 +1792,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="182"/>
       <source>Deselect whole component</source>
-      <translation>Od vybrat celý komponent</translation>
+      <translation>Zrušit výběr celé komponenty</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="192"/>
@@ -2285,48 +2285,48 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
       <translation>[Body: %1, Hrany: %2, Plochy: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="801"/>
+      <location filename="../../ViewProvider.cpp" line="809"/>
       <source>Display components</source>
-      <translation>Zobrazit součásti</translation>
+      <translation>Zobrazit komponenty</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="809"/>
+      <location filename="../../ViewProvider.cpp" line="817"/>
       <source>Display segments</source>
       <translation>Zobrazit segmenty</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="817"/>
+      <location filename="../../ViewProvider.cpp" line="825"/>
       <source>Display colors</source>
       <translation type="unfinished">Display colors</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1679"/>
+      <location filename="../../ViewProvider.cpp" line="1687"/>
       <location filename="../../ViewProviderCurvature.cpp" line="522"/>
       <source>Leave info mode</source>
       <translation>Opustit info režim</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1746"/>
+      <location filename="../../ViewProvider.cpp" line="1754"/>
       <source>Index: %1</source>
       <translation>Index: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1772"/>
+      <location filename="../../ViewProvider.cpp" line="1780"/>
       <source>Leave hole-filling mode</source>
       <translation>Opustit režim výplně děr</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1822"/>
+      <location filename="../../ViewProvider.cpp" line="1830"/>
       <source>Leave removal mode</source>
       <translation>Opustit režim odstranění</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1823"/>
+      <location filename="../../ViewProvider.cpp" line="1831"/>
       <source>Delete selected faces</source>
       <translation>Odstranit vybrané plochy</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1824"/>
+      <location filename="../../ViewProvider.cpp" line="1832"/>
       <source>Clear selected faces</source>
       <translation>Smazat vybrané plochy</translation>
     </message>
