@@ -1005,6 +1005,7 @@ SET(Inventor_CPP_SRCS
     SoFCSelectionAction.cpp
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
+    So3DAnnotation.cpp
     SoAxisCrossKit.cpp
     SoTextLabel.cpp
     SoDatumLabel.cpp
