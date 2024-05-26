@@ -445,21 +445,18 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
     }
 }
 
-
 void SketchAnalysis::makeMissingPointOnPointCoincident(bool onebyone)
 {
     int status, dofs;
     std::vector<Sketcher::Constraint*> constr;
 
-    for (std::vector<Sketcher::ConstraintIds>::iterator it = vertexConstraints.begin();
-         it != vertexConstraints.end();
-         ++it) {
+    for (const auto& it : vertexConstraints) {
         Sketcher::Constraint* c = new Sketcher::Constraint();
-        c->Type = it->Type;
-        c->First = it->First;
-        c->Second = it->Second;
-        c->FirstPos = it->FirstPos;
-        c->SecondPos = it->SecondPos;
+        c->Type = it.Type;
+        c->First = it.First;
+        c->Second = it.Second;
+        c->FirstPos = it.FirstPos;
+        c->SecondPos = it.SecondPos;
 
         if (onebyone) {
             // addConstraint() creates a clone
@@ -492,9 +489,8 @@ void SketchAnalysis::makeMissingPointOnPointCoincident(bool onebyone)
 
     vertexConstraints.clear();
 
-    for (std::vector<Sketcher::Constraint*>::iterator it = constr.begin(); it != constr.end();
-         ++it) {
-        delete *it;
+    for (auto it : constr) {
+        delete it;
     }
 }
 
