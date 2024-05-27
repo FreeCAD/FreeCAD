@@ -323,9 +323,18 @@ public:
 
         handler->updateCursor();
 
-        handler->reset();  // reset of handler to restart.
+        if (resetOnConstructionMethodeChanged()) {
+            handler->reset();  // reset of handler to restart.
+        }
 
         handler->mouseMove(prevCursorPosition);
+    }
+    //@}
+
+    /** function that define if the handler should be reset on construction methode change */
+    virtual bool resetOnConstructionMethodeChanged()
+    {
+        return true;
     }
     //@}
 
