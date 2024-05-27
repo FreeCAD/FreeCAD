@@ -465,9 +465,9 @@ public:
 
     void refreshIcons()
     {
-        _actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/icon/float.svg"));
-        _actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/icon/overlay.svg"));
-        _actClose.setIcon(BitmapFactory().pixmap("qss:overlay/icon/close.svg"));
+        _actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/icons/float.svg"));
+        _actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/icons/overlay.svg"));
+        _actClose.setIcon(BitmapFactory().pixmap("qss:overlay/icons/close.svg"));
         for (OverlayTabWidget *tabWidget : _Overlays) {
             tabWidget->refreshIcons();
             for (auto handle : tabWidget->findChildren<OverlaySplitterHandle*>())

@@ -440,13 +440,13 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
 
 void OverlayTabWidget::refreshIcons()
 {
-    actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/icon/overlay.svg"));
-    actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icon/mode.svg"));
-    actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icon/taskshow.svg"));
-    actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icon/editshow.svg"));
-    actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icon/edithide.svg"));
-    actTransparent.setIcon(BitmapFactory().pixmap("qss:overlay/icon/transparent.svg"));
-    QPixmap pxAutoHide = BitmapFactory().pixmap("qss:overlay/icon/autohide.svg");
+    actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/icons/overlay.svg"));
+    actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode.svg"));
+    actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow.svg"));
+    actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow.svg"));
+    actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide.svg"));
+    actTransparent.setIcon(BitmapFactory().pixmap("qss:overlay/icons/transparent.svg"));
+    QPixmap pxAutoHide = BitmapFactory().pixmap("qss:overlay/icons/autohide.svg");
     switch(dockArea) {
     case Qt::LeftDockWidgetArea:
         actAutoHide.setIcon(pxAutoHide);
@@ -2103,7 +2103,7 @@ OverlaySplitterHandle::OverlaySplitterHandle(Qt::Orientation orientation, QSplit
 
 void OverlaySplitterHandle::refreshIcons()
 {
-    actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/icon/float.svg"));
+    actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/icons/float.svg"));
 }
 
 void OverlaySplitterHandle::onTimer()

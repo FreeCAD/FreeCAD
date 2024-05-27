@@ -3854,7 +3854,7 @@ StdCmdDockOverlayToggleLeft::StdCmdDockOverlayToggleLeft()
     sWhatsThis    = "Std_DockOverlayToggleLeft";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Left";
-    sPixmap       = "qss:overlay/icon/close.svg";
+    sPixmap       = "qss:overlay/icons/close.svg";
     eType         = 0;
 }
 
@@ -3879,7 +3879,7 @@ StdCmdDockOverlayToggleRight::StdCmdDockOverlayToggleRight()
     sWhatsThis    = "Std_DockOverlayToggleRight";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Right";
-    sPixmap       = "qss:overlay/icon/close.svg";
+    sPixmap       = "qss:overlay/icons/close.svg";
     eType         = 0;
 }
 
@@ -3904,7 +3904,7 @@ StdCmdDockOverlayToggleTop::StdCmdDockOverlayToggleTop()
     sWhatsThis    = "Std_DockOverlayToggleTop";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Up";
-    sPixmap       = "qss:overlay/icon/close.svg";
+    sPixmap       = "qss:overlay/icons/close.svg";
     eType         = 0;
 }
 
@@ -3929,7 +3929,7 @@ StdCmdDockOverlayToggleBottom::StdCmdDockOverlayToggleBottom()
     sWhatsThis    = "Std_DockOverlayToggleBottom";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Down";
-    sPixmap       = "qss:overlay/icon/close.svg";
+    sPixmap       = "qss:overlay/icons/close.svg";
     eType         = 0;
 }
 
