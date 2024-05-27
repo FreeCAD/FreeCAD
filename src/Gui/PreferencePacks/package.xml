@@ -18,23 +18,21 @@
       <tag>no stylesheet</tag>
       <tag>classic theme</tag>
     </preferencepack>
-	<name>Classic light</name>
+	<name>Light theme</name>
       <type>Theme</type>
-      <description>Applies the classic purple/gray background. Uses Opentheme colors.</description>
+      <description>Applies a basic light theme.</description>
       <version>0.1.0</version>
       <tag>built-in</tag>
       <tag>background</tag>
 	  <tag>light</tag>
-      <tag>classic theme</tag>
     </preferencepack>
-	<name>Classic dark</name>
+	<name>Dark theme</name>
       <type>Theme</type>
-      <description>Applies the classic purple/gray background. Uses Opentheme colors.</description>
+      <description>Applies a basic dark theme.</description>
       <version>1.0.0</version>
       <tag>built-in</tag>
       <tag>background</tag>
 	  <tag>dark</tag>
-      <tag>classic theme</tag>
     </preferencepack>
 	<preferencepack>
       <name>Dark</name>
