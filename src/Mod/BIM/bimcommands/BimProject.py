@@ -42,7 +42,8 @@ class BIM_Project:
         }
 
     def IsActive(self):
-        return not hasattr(FreeCAD.ActiveDocument, "IfcFilePath")
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v and not hasattr(FreeCAD.ActiveDocument, "IfcFilePath")
 
     def Activated(self):
         from nativeifc import ifc_tools

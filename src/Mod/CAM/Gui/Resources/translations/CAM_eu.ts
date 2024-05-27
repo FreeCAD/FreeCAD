@@ -4050,60 +4050,60 @@ Balio lehenetsia: 3 mm</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="185"/>
+      <location filename="../../../InitGui.py" line="186"/>
       <source>Project Setup</source>
       <translation>Proiektuaren konfigurazioa</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="186"/>
+      <location filename="../../../InitGui.py" line="187"/>
       <source>Tool Commands</source>
       <translation>Tresna-komandoak</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="188"/>
+      <location filename="../../../InitGui.py" line="189"/>
       <source>New Operations</source>
       <translation>Eragiketa berriak</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="192"/>
-      <location filename="../../../InitGui.py" line="229"/>
+      <location filename="../../../InitGui.py" line="193"/>
+      <location filename="../../../InitGui.py" line="230"/>
       <source>Path Modification</source>
       <translation>Bidearen aldaketa</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="196"/>
+      <location filename="../../../InitGui.py" line="197"/>
       <source>Helpful Tools</source>
       <translation>Tresna lagungarriak</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="200"/>
-      <location filename="../../../InitGui.py" line="214"/>
-      <location filename="../../../InitGui.py" line="221"/>
-      <location filename="../../../InitGui.py" line="228"/>
-      <location filename="../../../InitGui.py" line="236"/>
-      <location filename="../../../InitGui.py" line="242"/>
-      <location filename="../../../InitGui.py" line="244"/>
-      <location filename="../../../InitGui.py" line="247"/>
+      <location filename="../../../InitGui.py" line="201"/>
+      <location filename="../../../InitGui.py" line="215"/>
+      <location filename="../../../InitGui.py" line="222"/>
+      <location filename="../../../InitGui.py" line="229"/>
+      <location filename="../../../InitGui.py" line="237"/>
+      <location filename="../../../InitGui.py" line="243"/>
+      <location filename="../../../InitGui.py" line="245"/>
+      <location filename="../../../InitGui.py" line="248"/>
       <source>&amp;CAM</source>
       <translation type="unfinished">&amp;CAM</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="215"/>
+      <location filename="../../../InitGui.py" line="216"/>
       <source>Path Dressup</source>
       <translation>Bidearen jantzia</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="222"/>
+      <location filename="../../../InitGui.py" line="223"/>
       <source>Supplemental Commands</source>
       <translation>Komando osagarriak</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="237"/>
+      <location filename="../../../InitGui.py" line="238"/>
       <source>Specialty Operations</source>
       <translation>Eragiketa bereziak</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="248"/>
+      <location filename="../../../InitGui.py" line="249"/>
       <source>Utils</source>
       <translation>Utilitateak</translation>
     </message>
@@ -4131,34 +4131,34 @@ Balio lehenetsia: 3 mm</translation>
       <translation>Camotics proiektua (*.camotics)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="627"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="688"/>
       <source>H</source>
       <comment>H is horizontal feed rate. Must be as short as possible</comment>
       <translation>H</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="632"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="693"/>
       <source>V</source>
       <comment>V is vertical feed rate. Must be as short as possible</comment>
       <translation>V</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="637"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="698"/>
       <source>Tool number</source>
       <translation>Tresna-zenbakia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="640"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="701"/>
       <source>Horizontal feedrate</source>
       <translation>Elikatze-tasa horizontala</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="643"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="704"/>
       <source>Vertical feedrate</source>
       <translation>Elikatze-tasa bertikala</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="646"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="707"/>
       <source>Spindle RPM</source>
       <translation>Haxaren RPMa</translation>
     </message>
@@ -4173,25 +4173,29 @@ Balio lehenetsia: 3 mm</translation>
       <translation>erlojuaren noranzkoaren aurka</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="561"/>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
       <source>Choose a Path Job</source>
       <translation>Aukeratu bide-lan bat</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="545"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="548"/>
       <source>Selected tool is not a drill</source>
       <translation>Hautatutako tresna ez da zulagailua</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="553"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="556"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0° and &lt;=180°</source>
       <translation>Mozte-ertzaren angelu baliogabea (%.2f), &gt;0° and &lt;=180° artekoa izan behar du</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="565"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="568"/>
       <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
       <translation>Mozte-ertzaren angeluak (%.2f) tresna-puntaren luzera negatiboa ematen du</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="75"/>
+      <source>Save Sanity Check Report</source>
+      <translation type="unfinished">Save Sanity Check Report</translation>
     </message>
   </context>
   <context>
@@ -4514,98 +4518,98 @@ Balio lehenetsia: 3 mm</translation>
       <translation>Zatitu segmentuak luzera honetako segmentu txikiagoetan.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="115"/>
+      <location filename="../../../Path/Main/Job.py" line="117"/>
       <source>The G-code output file for this project</source>
       <translation>Proiektu honen G-code irteera-fitxategia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="121"/>
+      <location filename="../../../Path/Main/Job.py" line="123"/>
       <source>Select the Post Processor</source>
       <translation>Hautatu post-prozesadorea</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="130"/>
+      <location filename="../../../Path/Main/Job.py" line="132"/>
       <source>Arguments for the Post Processor (specific to the script)</source>
       <translation>Post-prozesadorerako argumentuak (script-erako espezifikoak)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="136"/>
-      <location filename="../../../Path/Main/Job.py" line="143"/>
+      <location filename="../../../Path/Main/Job.py" line="138"/>
+      <location filename="../../../Path/Main/Job.py" line="145"/>
       <source>Last Time the Job was post processed</source>
       <translation>Lana post-prozesatu zen azken aldia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="151"/>
+      <location filename="../../../Path/Main/Job.py" line="153"/>
       <source>An optional description for this job</source>
       <translation>Lan honentzako aukerako deskribapen bat</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="157"/>
+      <location filename="../../../Path/Main/Job.py" line="159"/>
       <source>Job Cycle Time Estimation</source>
       <translation>Lanaren ziklo-denboraren kalkulua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="167"/>
+      <location filename="../../../Path/Main/Job.py" line="169"/>
       <source>For computing Paths; smaller increases accuracy, but slows down computation</source>
       <translation>Bideak kalkulatzeko; txikiagoak zehaztasuna handitzen du, baina kalkulua moteltzen du</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="174"/>
+      <location filename="../../../Path/Main/Job.py" line="176"/>
       <source>Solid object to be used as stock.</source>
       <translation>Pieza gordin gisa erabiliko de objektu solidoa.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="183"/>
+      <location filename="../../../Path/Main/Job.py" line="185"/>
       <source>Compound path of all operations in the order they are processed.</source>
       <translation>Eragiketa guztien bide konposatua, prozesatuak diren ordenan.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="190"/>
+      <location filename="../../../Path/Main/Job.py" line="192"/>
       <source>Select the Type of Job</source>
       <translation>Hautatu lan mota</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="200"/>
-      <location filename="../../../Path/Main/Job.py" line="534"/>
+      <location filename="../../../Path/Main/Job.py" line="202"/>
+      <location filename="../../../Path/Main/Job.py" line="536"/>
       <source>Split output into multiple G-code files</source>
       <translation>Zatitu irteera G-code fitxategi anitzetan</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="208"/>
-      <location filename="../../../Path/Main/Job.py" line="523"/>
+      <location filename="../../../Path/Main/Job.py" line="210"/>
+      <location filename="../../../Path/Main/Job.py" line="525"/>
       <source>If multiple WCS, order the output this way</source>
       <translation>WCS anitz badaude, ordenatu irteera modu honetan</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="216"/>
-      <location filename="../../../Path/Main/Job.py" line="512"/>
+      <location filename="../../../Path/Main/Job.py" line="218"/>
+      <location filename="../../../Path/Main/Job.py" line="514"/>
       <source>The Work Coordinate Systems for the Job</source>
       <translation>Laneko koordenatu-sistema (WCS) lanerako</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="304"/>
+      <location filename="../../../Path/Main/Job.py" line="306"/>
       <source>SetupSheet holding the settings for this job</source>
       <translation>Lan honen ezarpenak biltzen dituen konfigurazio-orria</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="327"/>
+      <location filename="../../../Path/Main/Job.py" line="329"/>
       <source>The base objects for all operations</source>
       <translation>Eragiketa guztien oinarri-objektuak</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="363"/>
+      <location filename="../../../Path/Main/Job.py" line="365"/>
       <source>Collection of all tool controllers for the job</source>
       <translation>Lanerako tresna-kontrolagailu guztien bilduma</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="501"/>
+      <location filename="../../../Path/Main/Job.py" line="503"/>
       <location filename="../../../Path/Op/Base.py" line="192"/>
       <location filename="../../../Path/Op/Base.py" line="463"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>Eragiketen ziklo-denboraren kalkulua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="543"/>
+      <location filename="../../../Path/Main/Job.py" line="545"/>
       <source>Select the type of Job</source>
       <translation>Hautatu lan mota</translation>
     </message>
@@ -5699,12 +5703,12 @@ Balio lehenetsia: 3 mm</translation>
   <context>
     <name>PathJob</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Boundary.py" line="167"/>
+      <location filename="../../../Path/Dressup/Gui/Boundary.py" line="163"/>
       <source>Unsupported stock object %s</source>
       <translation>Onartzen ez den %s objektu gordina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Boundary.py" line="183"/>
+      <location filename="../../../Path/Dressup/Gui/Boundary.py" line="179"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>Onartzen ez den %s objektu gordina (%d)</translation>
     </message>
@@ -6240,20 +6244,20 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <translation>Desegin AreaOp eragiketa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1346"/>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1347"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1342"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1343"/>
       <source>Pick Start Point</source>
       <translation>Aukeratu hasiera-puntua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1390"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1386"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
       <translation>Ez da tresna-kontrolagailu egokirik aurkitu.
 Aukeren sorrera abortatzen</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1396"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1392"/>
       <source>No tool controller, aborting op creation</source>
       <translation>Ez dago tresna-kontrolagailurik, aukeren sorrera abortatzen</translation>
     </message>
@@ -6305,9 +6309,9 @@ Aukeren sorrera abortatzen</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../../InitGui.py" line="87"/>
-      <location filename="../../../InitGui.py" line="90"/>
-      <location filename="../../../InitGui.py" line="265"/>
+      <location filename="../../../InitGui.py" line="88"/>
+      <location filename="../../../InitGui.py" line="91"/>
+      <location filename="../../../InitGui.py" line="266"/>
       <location filename="../../AppPathGui.cpp" line="90"/>
       <source>CAM</source>
       <translation type="unfinished">CAM</translation>
@@ -6316,7 +6320,7 @@ Aukeren sorrera abortatzen</translation>
   <context>
     <name>CAM_EngraveTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="141"/>
+      <location filename="../../../InitGui.py" line="142"/>
       <source>Engraving Operations</source>
       <translation>Grabatze-eragiketak</translation>
     </message>
@@ -6324,7 +6328,7 @@ Aukeren sorrera abortatzen</translation>
   <context>
     <name>CAM_3dTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="178"/>
+      <location filename="../../../InitGui.py" line="179"/>
       <source>3D Operations</source>
       <translation>3D eragiketak</translation>
     </message>
@@ -6528,17 +6532,17 @@ Aukeren sorrera abortatzen</translation>
       <translation>Hautatutako objektua ez da bide bat</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Boundary.py" line="263"/>
+      <location filename="../../../Path/Dressup/Gui/Boundary.py" line="259"/>
       <source>Boundary</source>
       <translation>Muga</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Boundary.py" line="267"/>
+      <location filename="../../../Path/Dressup/Gui/Boundary.py" line="263"/>
       <source>Creates a Boundary Dress-up from a selected toolpath</source>
       <translation type="unfinished">Creates a Boundary Dress-up from a selected toolpath</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Boundary.py" line="283"/>
+      <location filename="../../../Path/Dressup/Gui/Boundary.py" line="279"/>
       <source>Please select one toolpath object</source>
       <translation type="unfinished">Please select one toolpath object</translation>
     </message>
@@ -6566,17 +6570,17 @@ Aukeren sorrera abortatzen</translation>
       <translation>Euste-etiketa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="566"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="562"/>
       <source>Tag</source>
       <translation>Etiketa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="569"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="565"/>
       <source>Creates a Tag Dress-up object from a selected toolpath</source>
       <translation type="unfinished">Creates a Tag Dress-up object from a selected toolpath</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="584"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="580"/>
       <source>Please select one toolpath object</source>
       <translation type="unfinished">Please select one toolpath object</translation>
     </message>
@@ -6795,105 +6799,105 @@ Aukeren sorrera abortatzen</translation>
   <context>
     <name>CAM_Job</name>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="255"/>
+      <location filename="../../../Path/Main/Job.py" line="257"/>
       <source>Fixture</source>
       <translation>Finkapena</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="256"/>
+      <location filename="../../../Path/Main/Job.py" line="258"/>
       <source>Tool</source>
       <translation>Tresna</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="257"/>
+      <location filename="../../../Path/Main/Job.py" line="259"/>
       <source>Operation</source>
       <translation>Eragiketa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="260"/>
+      <location filename="../../../Path/Main/Job.py" line="262"/>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="89"/>
       <source>2D</source>
       <translation>2D</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="261"/>
+      <location filename="../../../Path/Main/Job.py" line="263"/>
       <source>2.5D</source>
       <translation>2.5D</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="262"/>
+      <location filename="../../../Path/Main/Job.py" line="264"/>
       <source>Lathe</source>
       <translation>Tornua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="263"/>
+      <location filename="../../../Path/Main/Job.py" line="265"/>
       <source>Multiaxis</source>
       <translation>Ardatz anitzekoa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="283"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="344"/>
       <source>Edit</source>
       <translation>Editatu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="526"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="587"/>
       <source>Stock not a cylinder!</source>
       <translation>Pieza gordina ez da zilindroa!</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="943"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1004"/>
       <source>Select Output File</source>
       <translation>Hautatu irteerako fitxategia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="945"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1006"/>
       <source>All Files (*.*)</source>
       <translation>Fitxategi guztiak (*.*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1326"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1387"/>
       <source>Unsupported stock object %s</source>
       <translation>Onartzen ez den %s objektu gordina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1342"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1403"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>Onartzen ez den %s objektu gordina (%d)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1433"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1494"/>
       <source>Model Selection</source>
       <translation>Ereduaren hautapena</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1621"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1682"/>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="71"/>
       <source>Warning</source>
       <translation>Abisua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1622"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1683"/>
       <source>Please add one.</source>
       <translation>Gehitu bat.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1623"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1684"/>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="76"/>
       <source>Ok</source>
       <translation>Ados</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1625"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1686"/>
       <source>Add</source>
       <translation>Gehitu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1636"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1697"/>
       <source>This job has no base model.</source>
       <translation>Lan honek ez du oinarri-eredurik.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1643"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1704"/>
       <source>This job has no tool.</source>
       <translation>Lan honek ez du tresnarik.</translation>
     </message>
@@ -7054,316 +7058,305 @@ For example:
   <context>
     <name>CAM_Sanity</name>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="126"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="130"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="55"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="59"/>
       <source>Check the CAM job for common errors</source>
       <translation type="unfinished">Check the CAM job for common errors</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="215"/>
-      <source>Setup Report for FreeCAD Job</source>
-      <translation>Txosten-konfigurazioa FreeCAD lanerako</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="216"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="88"/>
       <source>Table of Contents</source>
       <translation>Edukien aurkibidea</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="217"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="78"/>
       <source>Part Information</source>
       <translation>Zatiaren informazioa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="218"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="83"/>
       <source>Run Summary</source>
       <translation>Exekutatu laburpena</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="219"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="82"/>
       <source>Rough Stock</source>
       <translation>Pieza gordin zimurra</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="220"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="90"/>
       <source>Tool Data</source>
       <translation>Tresna-datuak</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="221"/>
-      <source>Output</source>
-      <translation>Irteera</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="222"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="62"/>
       <source>Fixtures</source>
       <translation>Finkapenak</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="224"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="86"/>
       <source>Squawks</source>
       <translation>Irrintziak</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="225"/>
-      <source>Base Object(s)</source>
-      <translation>Oinarri-objektua(k)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="226"/>
-      <source>Job Sequence</source>
-      <translation>Lan-sekuentzia</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="227"/>
-      <source>Job Description</source>
-      <translation>Lanaren deskribapena</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="228"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="102"/>
       <source>Job Type</source>
       <translation>Lan mota</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="229"/>
-      <source>CAD File Name</source>
-      <translation>CAD fitxategiaren izena</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="230"/>
-      <source>Last Save Date</source>
-      <translation>Azken gordetze-data</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="231"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="105"/>
       <source>Customer</source>
       <translation>Bezeroa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="233"/>
-      <source>Designer</source>
-      <translation>Diseinatzailea</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="238"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="514"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="74"/>
       <source>Operation</source>
       <translation>Eragiketa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="239"/>
-      <source>Minimum Z Height</source>
-      <translation>Z altuera minimoa</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="240"/>
-      <source>Maximum Z Height</source>
-      <translation>Z altuera maximoa</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="242"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="99"/>
       <source>Cycle Time</source>
       <translation>Ziklo-denbora</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="243"/>
-      <source>Coolant</source>
-      <translation>Hozgarria</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="244"/>
-      <source>TOTAL JOB</source>
-      <translation>LAN OSOA</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="246"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="91"/>
       <source>Tool Number</source>
       <translation>Tresna-zenbakia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="509"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="58"/>
       <source>Description</source>
       <translation>Deskribapena</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="510"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="70"/>
       <source>Manufacturer</source>
       <translation>Fabrikatzailea</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="511"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
       <source>Part Number</source>
       <translation>Pieza-zenbakia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="512"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="92"/>
       <source>URL</source>
       <translation>URLa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="513"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="66"/>
       <source>Inspection Notes</source>
       <translation>Ikuskatze-oharrak</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="515"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
       <source>Tool Controller</source>
       <translation>Tresna-kontrolagailua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="516"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="60"/>
       <source>Feed Rate</source>
       <translation>Elikatze-tasa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="517"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="85"/>
       <source>Spindle Speed</source>
       <translation>Hax-abiadura</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="518"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="84"/>
       <source>Tool Shape</source>
       <translation>Tresna-forma</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="520"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="59"/>
       <source>Tool Diameter</source>
       <translation>Tresna-diametroa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="521"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="65"/>
+      <source>Setup Report for CAM Job</source>
+      <translation type="unfinished">Setup Report for CAM Job</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
+      <source>Output (Gcode)</source>
+      <translation type="unfinished">Output (Gcode)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="93"/>
       <source>X Size</source>
       <translation>X tamaina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="522"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="94"/>
       <source>Y Size</source>
       <translation>Y tamaina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="523"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="95"/>
       <source>Z Size</source>
       <translation>Z tamaina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="525"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="96"/>
+      <source>Minimum Z</source>
+      <translation type="unfinished">Minimum Z</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="97"/>
+      <source>Maximum Z</source>
+      <translation type="unfinished">Maximum Z</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="98"/>
+      <source>Coolant Mode</source>
+      <translation>Hozgarri-modua</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="100"/>
+      <source>Part</source>
+      <translation>Pieza</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="101"/>
+      <source>Sequence</source>
+      <translation type="unfinished">Sequence</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="103"/>
+      <source>CAD File</source>
+      <translation type="unfinished">CAD File</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="104"/>
+      <source>Last Save</source>
+      <translation type="unfinished">Last Save</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="71"/>
       <source>Material</source>
       <translation>Materiala</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="526"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="73"/>
       <source>Work Offsets</source>
       <translation>Laneko desplazamenduak</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="527"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="76"/>
       <source>Order By</source>
       <translation>Ordenatu honen arabera:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="529"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="57"/>
       <source>Part Datum</source>
       <translation>Piezaren zero puntua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="530"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="64"/>
       <source>G-code File</source>
       <translation>G-code fitxategia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="531"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="67"/>
       <source>Last Post Process Date</source>
       <translation>Post-prozesatzearen azken data</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="532"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="87"/>
       <source>Stops</source>
       <translation>Geldiuneak</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="533"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="81"/>
       <source>Programmer</source>
       <translation>Programatzailea</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="534"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="69"/>
       <source>Machine</source>
       <translation>Makina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="535"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="80"/>
       <source>Postprocessor</source>
       <translation>Post-prozesatzailea</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="536"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="63"/>
       <source>Post Processor Flags</source>
       <translation>Post-prozesatzailearen banderak</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="537"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="61"/>
       <source>File Size (kB)</source>
       <translation>Fitxategi tamaina (kB)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="539"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="68"/>
       <source>Line Count</source>
       <translation>Lerro kopurua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="540"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="72"/>
       <source>Note</source>
       <translation>Oharra</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="541"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="75"/>
       <source>Operator</source>
       <translation>Eragilea</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="543"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="56"/>
       <source>Date</source>
       <translation>Data</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1334"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not 
-                        supported by Path-Sanity</source>
-      <translation>{} zenbakidun tresna zaharra da. Path-Sanity tresnak 
-                        ez ditu tresna zaharrak onartzen</translation>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="236"/>
+      <source>The Job's last post-processed file is missing</source>
+      <translation type="unfinished">The Job's last post-processed file is missing</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1345"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="363"/>
+      <source>Tool number {} is a legacy tool. Legacy tools not 
+                    supported by Path-Sanity</source>
+      <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not 
+                    supported by Path-Sanity</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="377"/>
       <source>Tool number {} used by multiple tools</source>
       <translation>Tresna batek baino gehiagok erabiltzen du {} zenbakidun tresna </translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1366"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="400"/>
       <source>Toolbit Shape for TC: {} not found</source>
       <translation type="unfinished">Toolbit Shape for TC: {} not found</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1376"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="420"/>
       <source>Tool Controller '{}' has no feedrate</source>
       <translation type="unfinished">Tool Controller '{}' has no feedrate</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1386"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="432"/>
       <source>Tool Controller '{}' has no spindlespeed</source>
       <translation type="unfinished">Tool Controller '{}' has no spindlespeed</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1415"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="457"/>
       <source>Tool Controller '{}' is not used</source>
       <translation type="unfinished">Tool Controller '{}' is not used</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1512"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="334"/>
       <source>Consider Specifying the Stock Material</source>
       <translation>Kontuan hartu pieza gordina zehaztu daitekeela</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="1603"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="220"/>
       <source>The Job has not been post-processed</source>
       <translation>Lana ez da post-prozesatu</translation>
     </message>
@@ -7535,6 +7528,11 @@ For example:
       <location filename="../../../Path/Tool/Gui/Controller.py" line="116"/>
       <source>Edit</source>
       <translation>Editatu</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/generic_post.py" line="44"/>
+      <source>Generic post processor</source>
+      <translation type="unfinished">Generic post processor</translation>
     </message>
   </context>
   <context>
@@ -8303,12 +8301,12 @@ For example:
   <context>
     <name>CAM_Post</name>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="472"/>
+      <location filename="../../../Path/Post/Command.py" line="113"/>
       <source>Post Process</source>
       <translation>Post-prozesua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="474"/>
+      <location filename="../../../Path/Post/Command.py" line="115"/>
       <source>Post Process the selected Job</source>
       <translation>Post-prozesatu hautatutako lana</translation>
     </message>

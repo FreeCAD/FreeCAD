@@ -43,6 +43,7 @@
 #include "MainWindow.h"
 #include "Language/Translator.h"
 #include <App/Application.h>
+#include <Base/Console.h>
 
 
 using namespace Gui;
@@ -233,6 +234,7 @@ void StartupPostProcess::execute()
     setBranding();
     showMainWindow();
     activateWorkbench();
+    checkParameters();
 }
 
 void StartupPostProcess::setWindowTitle()
@@ -543,5 +545,17 @@ void StartupPostProcess::autoloadModules(const QStringList& wb)
         if (wb.contains(QString::fromLatin1(workbench.c_str()))) {
             guiApp.activateWorkbench(workbench.c_str());
         }
+    }
+}
+
+void StartupPostProcess::checkParameters()
+{
+    if (App::GetApplication().GetSystemParameter().IgnoreSave()) {
+        Base::Console().Warning("System parameter file couldn't be opened.\n"
+                                "Continue with an empty configuration that won't be saved.\n");
+    }
+    if (App::GetApplication().GetUserParameter().IgnoreSave()) {
+        Base::Console().Warning("User parameter file couldn't be opened.\n"
+                                "Continue with an empty configuration that won't be saved.\n");
     }
 }

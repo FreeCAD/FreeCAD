@@ -39,7 +39,7 @@
 #define DASHEDLINEGENERATOR_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
-
+#include <map>
 #include <QPen>
 
 namespace TechDraw {

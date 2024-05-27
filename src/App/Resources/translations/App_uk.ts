@@ -33,22 +33,22 @@ that reference the same configurable object</source>
     <message>
       <location filename="../../Origin.cpp" line="142"/>
       <source>Z-axis</source>
-      <translation type="unfinished">Z-axis</translation>
+      <translation>Вісь z</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="143"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>Площина XY</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="144"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>Площина XZ</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="145"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>Площина YZ</translation>
     </message>
   </context>
   <context>

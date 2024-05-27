@@ -73,7 +73,7 @@ class IFC_UpdateIOS:
             text = translate("BIM", "Your version of IfcOpenShell is already up to date")
             buttons = QtGui.QMessageBox.Ok
         elif mode == "install":
-            text = tranlate("BIM", "No existing IfcOpenShell installation found on this system.")
+            text = translate("BIM", "No existing IfcOpenShell installation found on this system.")
             text += " "
             text += translate("BIM", "Would you like to install the most recent version?")
             text += " (" + version + ") " + note

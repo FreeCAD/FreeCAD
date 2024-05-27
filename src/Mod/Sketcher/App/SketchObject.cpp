@@ -9837,6 +9837,16 @@ void SketchObject::makeMissingEquality(bool onebyone)
         analyser->makeMissingEquality(onebyone);
 }
 
+int SketchObject::detectDegeneratedGeometries(double tolerance)
+{
+    return analyser->detectDegeneratedGeometries(tolerance);
+}
+
+int SketchObject::removeDegeneratedGeometries(double tolerance)
+{
+    return analyser->removeDegeneratedGeometries(tolerance);
+}
+
 int SketchObject::autoRemoveRedundants(bool updategeo)
 {
     auto redundants = getLastRedundant();

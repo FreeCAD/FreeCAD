@@ -55,7 +55,8 @@ class Arch_Wall:
 
     def IsActive(self):
 
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         """Executed when Arch Wall is called.

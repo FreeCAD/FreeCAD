@@ -491,27 +491,27 @@ Arvo välillä 0,2-10.</translation>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="235"/>
-      <location filename="../../Tessellation.cpp" line="241"/>
+      <location filename="../../Tessellation.cpp" line="237"/>
+      <location filename="../../Tessellation.cpp" line="243"/>
       <source>No active document</source>
       <translation>Ei aktiivista dokumenttia</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="272"/>
+      <location filename="../../Tessellation.cpp" line="273"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation type="unfinished">You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="278"/>
+      <location filename="../../Tessellation.cpp" line="279"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation type="unfinished">You have selected a shape without faces.
 Select a different shape, please.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="282"/>
+      <location filename="../../Tessellation.cpp" line="283"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Valitse ensin muoto verkkoihin.</translation>
     </message>

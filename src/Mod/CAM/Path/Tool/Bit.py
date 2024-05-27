@@ -344,7 +344,15 @@ class ToolBit(object):
         Path.Log.track(obj.Label)
 
         activeDoc = FreeCAD.ActiveDocument
-        (doc, docOpened) = self._loadBitBody(obj, path)
+        try:
+            (doc, docOpened) = self._loadBitBody(obj, path)
+        except FileNotFoundError:
+            Path.Log.error(
+                "Could not find shape file {} for tool bit {}".format(
+                    obj.BitShape, obj.Label
+                )
+            )
+            return
 
         obj.Label = doc.RootObjects[0].Label
         self._deleteBitSetup(obj)
