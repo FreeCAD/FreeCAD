@@ -80,6 +80,9 @@ class TestSketchValidateCoincidents(unittest.TestCase):
         self.assertEqual(sketch.removeDegeneratedGeometries(tol), 1)
         self.assertEqual(sketch.detectDegeneratedGeometries(tol), 0)
         self.assertEqual(sketch.ConstraintCount, 0)
+        del v0, v1, v2
+        del geo0, geo1
+        del sketch
 
     def testDeleteConstraintsToExternalCase(self):
         box = self.Doc.addObject("Part::Box", "Box")
@@ -97,6 +100,33 @@ class TestSketchValidateCoincidents(unittest.TestCase):
         sketch.delConstraintsToExternal()
         self.Doc.recompute()
         self.assertEqual(sketch.ConstraintCount, 1)
+        del v0, v1
+        del geo0
+        del sketch
+        del box
+
+    def testValidateConstraintsCase(self):
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        v0 = Vector(-47.680691, 18.824165000000004, 0.0)
+        v1 = Vector(-47.680691, -27.346279, 0.0)
+        v2 = Vector(51.132679, -27.346279, 0.0)
+        geo0 = sketch.addGeometry(Part.LineSegment(v0, v1))
+        geo1 = sketch.addGeometry(Part.LineSegment(v1, v2))
+        sketch.addConstraint(Sketcher.Constraint("Coincident", geo0, 2, geo1, 1))
+
+        c = sketch.Constraints[0]
+        c.First = 2
+        sketch.Constraints = [c]
+        self.assertEqual(sketch.ConstraintCount, 1)
+        self.assertFalse(sketch.evaluateConstraints())
+
+        sketch.validateConstraints()
+
+        self.assertEqual(sketch.ConstraintCount, 0)
+        self.assertTrue(sketch.evaluateConstraints())
+        del v0, v1, v2
+        del geo0, geo1
+        del sketch, c
 
     def tearDown(self):
         # closing doc

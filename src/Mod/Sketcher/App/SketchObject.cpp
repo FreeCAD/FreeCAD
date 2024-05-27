@@ -8620,20 +8620,23 @@ bool SketchObject::evaluateConstraints() const
 
     std::vector<Part::Geometry*> geometry = getCompleteGeometry();
     const std::vector<Sketcher::Constraint*>& constraints = Constraints.getValuesForce();
-    if (static_cast<int>(geometry.size()) != extGeoCount + intGeoCount)
+    if (static_cast<int>(geometry.size()) != extGeoCount + intGeoCount) {
         return false;
-    if (geometry.size() < 2)
+    }
+    if (geometry.size() < 2) {
         return false;
+    }
 
-    std::vector<Sketcher::Constraint*>::const_iterator it;
-    for (it = constraints.begin(); it != constraints.end(); ++it) {
-        if (!evaluateConstraint(*it))
+    for (auto it : constraints) {
+        if (!evaluateConstraint(it)) {
             return false;
+        }
     }
 
     if (!constraints.empty()) {
-        if (!Constraints.scanGeometry(geometry))
+        if (!Constraints.scanGeometry(geometry)) {
             return false;
+        }
     }
 
     return true;
@@ -8652,8 +8655,9 @@ void SketchObject::validateConstraints()
     std::vector<Sketcher::Constraint*>::const_iterator it;
     for (it = constraints.begin(); it != constraints.end(); ++it) {
         bool valid = evaluateConstraint(*it);
-        if (valid)
+        if (valid) {
             newConstraints.push_back(*it);
+        }
     }
 
     if (newConstraints.size() != constraints.size()) {
