@@ -78,7 +78,7 @@ static inline OverlayTabWidget *findTabWidget(QWidget *widget=nullptr, bool filt
         widget = qApp->focusWidget();
     for(auto w=widget; w; w=w->parentWidget()) {
         auto tabWidget = qobject_cast<OverlayTabWidget*>(w);
-        if(tabWidget) 
+        if(tabWidget)
             return tabWidget;
         auto proxy = qobject_cast<OverlayProxyWidget*>(w);
         if(proxy)
@@ -95,7 +95,7 @@ public:
     OverlayStyleSheet() {
         handle = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/MainWindow");
-        
+
         update();
 
         handle->Attach(this);
@@ -157,7 +157,7 @@ private:
         else if (!overlayStyleSheet.isEmpty() && !QFile::exists(overlayStyleSheet)) {
             // User did choose one of predefined stylesheets, we need to qualify it with namespace
             overlayStyleSheet = QStringLiteral("overlay:%1").arg(overlayStyleSheet);
-        } 
+        }
 
         return overlayStyleSheet;
     }
@@ -270,7 +270,7 @@ struct OverlayInfo {
                 if (hGrp == Param && Name && !tabWidget->isSaving()) {
                     // This will prevent saving settings which will mess up the
                     // just restored ones
-                    tabWidget->restore(nullptr); 
+                    tabWidget->restore(nullptr);
                     OverlayManager::instance()->reload();
                 }
             });
@@ -411,7 +411,7 @@ public:
         ,_overlayInfos({&_left,&_right,&_top,&_bottom})
         ,_actions({&_actOverlay,&_actFloat,&_actClose})
     {
-        _Overlays = {OverlayTabWidget::_LeftOverlay, 
+        _Overlays = {OverlayTabWidget::_LeftOverlay,
                      OverlayTabWidget::_RightOverlay,
                      OverlayTabWidget::_TopOverlay,
                      OverlayTabWidget::_BottomOverlay};
@@ -465,9 +465,9 @@ public:
 
     void refreshIcons()
     {
-        _actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/float.svg"));
-        _actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/overlay.svg"));
-        _actClose.setIcon(BitmapFactory().pixmap("qss:overlay/close.svg"));
+        _actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/icon/float.svg"));
+        _actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/icon/overlay.svg"));
+        _actClose.setIcon(BitmapFactory().pixmap("qss:overlay/icon/close.svg"));
         for (OverlayTabWidget *tabWidget : _Overlays) {
             tabWidget->refreshIcons();
             for (auto handle : tabWidget->findChildren<OverlaySplitterHandle*>())
@@ -610,7 +610,7 @@ public:
                     updateFocus = true;
                 else if(o->tabWidget == active)
                     updateActive = true;
-                else 
+                else
                     o->tabWidget->setOverlayMode(true);
             }
             if(!o->tabWidget->getRevealTime().isNull()) {
@@ -628,12 +628,12 @@ public:
                 focus->raise();
                 if(reveal == focus)
                     reveal = nullptr;
-            } else 
+            } else
                 focus->updateSplitterHandles();
         }
 
         if(active) {
-            if(active != focus && (active->isOverlaid(OverlayTabWidget::QueryOption::TransparencyChanged) || updateActive)) 
+            if(active != focus && (active->isOverlaid(OverlayTabWidget::QueryOption::TransparencyChanged) || updateActive))
                 active->setOverlayMode(false);
             active->raise();
             if(reveal == active)
@@ -646,7 +646,7 @@ public:
         }
 
         for(auto o : _overlayInfos) {
-            if(o->tabWidget != focus 
+            if(o->tabWidget != focus
                     && o->tabWidget != active
                     && o->tabWidget != reveal
                     && o->tabWidget->count()
@@ -703,7 +703,7 @@ public:
         _bottom.tabWidget->setRect(QRect(ofs.width(),h-rect.height(),bw,rect.height()));
 
         if (_bottom.tabWidget->count()
-                && _bottom.tabWidget->isVisible() 
+                && _bottom.tabWidget->isVisible()
                 && _bottom.tabWidget->getState() <= OverlayTabWidget::State::Normal)
             rectBottom = _bottom.tabWidget->getRect();
 
@@ -722,7 +722,7 @@ public:
         _left.tabWidget->setRect(QRect(ofs.height(),ofs.width(),rect.width(),lh));
 
         if (_left.tabWidget->count()
-                && _left.tabWidget->isVisible() 
+                && _left.tabWidget->isVisible()
                 && _left.tabWidget->getState() <= OverlayTabWidget::State::Normal)
             rectLeft = _left.tabWidget->getRect();
 
@@ -742,7 +742,7 @@ public:
         _right.tabWidget->setRect(QRect(w-rect.width(),ofs.width(),rect.width(),rh));
 
         if (_right.tabWidget->count()
-                && _right.tabWidget->isVisible() 
+                && _right.tabWidget->isVisible()
                 && _right.tabWidget->getState() <= OverlayTabWidget::State::Normal)
             rectRight = _right.tabWidget->getRect();
 
@@ -1030,7 +1030,7 @@ public:
                         dock->show();
                         dock->setFloating(true);
                         refresh();
-                    } else 
+                    } else
                         dock->setFloating(!dock->isFloating());
                 }
                 return;
@@ -1220,7 +1220,7 @@ public:
                                 resizeOffset = -1;
                                 ++i;
                             }
-                            else 
+                            else
                                 rect.setHeight(size/2);
                         }
                         else if (pos.x() > pt.x() + size/2) {
@@ -1480,7 +1480,7 @@ public:
 
     void unregisterDockWidget(const QString &name, OverlayTabWidget *widget) {
         auto it = _dockWidgetNameMap.find(name);
-        if (it != _dockWidgetNameMap.end() && it->second == widget) 
+        if (it != _dockWidgetNameMap.end() && it->second == widget)
             _dockWidgetNameMap.erase(it);
     }
 
@@ -2024,7 +2024,7 @@ void OverlayManager::Private::interceptEvent(QWidget *widget, QEvent *ev)
     case QEvent::ContextMenu: {
         auto ce = static_cast<QContextMenuEvent*>(ev);
         lastIntercept = getChildAt(widget, ce->globalPos());
-        QContextMenuEvent contextMenuEvent(ce->reason(), 
+        QContextMenuEvent contextMenuEvent(ce->reason(),
                                            lastIntercept->mapFromGlobal(ce->globalPos()),
                                            ce->globalPos());
         QApplication::sendEvent(lastIntercept, &contextMenuEvent);

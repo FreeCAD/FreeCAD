@@ -13,19 +13,10 @@ SET(Stylesheets_Files
 )
 
 SET(Overlay_Stylesheets_Files
-    "overlay/Dark.qss"
-    "overlay/Default_Dark-theme_dark-background.qss"
-    "overlay/Default_Dark-theme_Light-background.qss"
-    "overlay/Default_Light-theme_dark-background.qss"
-    "overlay/Default_Light-theme_light-background.qss"
-    "overlay/Light.qss"
-    "overlay/Dark-Outline.qss"
-    "overlay/Light-Outline.qss"
-    "overlay/Darker_overlay.qss"
-    "overlay/Dark_overlay.qss"
-    "overlay/Dark-Modern_overlay.qss"
-    "overlay/Light-Modern_overlay.qss"
-    "overlay/Light_overlay.qss"
+    "overlay/Dark Theme + Dark Background.qss"
+    "overlay/Dark Theme + Light Background.qss"
+    "overlay/Light Theme + Dark Background.qss"
+    "overlay/Light Theme + Light Background.qss"
     "overlay/close.svg"
     "overlay/overlay.svg"
     "overlay/float.svg"
@@ -47,7 +38,6 @@ SET(Overlay_Stylesheets_Files
     "overlay/float_light.svg"
     "overlay/transparent_lighter.svg"
     "overlay/close_red.svg"
-
 )
 
 # Find all the image files
