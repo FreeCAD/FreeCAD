@@ -52,5 +52,15 @@
         <UserDocu>Save the material in the specified library</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="filterMaterials" Keyword="true">
+      <Documentation>
+        <UserDocu>Returns a filtered material list</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="refresh">
+      <Documentation>
+        <UserDocu>Refreshes the material tree. Use sparingly as this is an expensive operation.</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateMaterial>
