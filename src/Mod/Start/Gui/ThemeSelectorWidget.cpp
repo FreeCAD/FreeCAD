@@ -56,8 +56,8 @@ void ThemeSelectorWidget::setupButtons(QBoxLayout* layout)
         return;
     }
     std::map<Theme, QString> themeMap {{Theme::Classic, tr("Classic")},
-                                       {Theme::Light, tr("Light")},
-                                       {Theme::Dark, tr("Dark")}};
+                                       {Theme::Light, tr("Light theme")},
+                                       {Theme::Dark, tr("Dark theme")}};
     std::map<Theme, QIcon> iconMap {
         {Theme::Classic, QIcon(QLatin1String(":/thumbnails/Classic512.png"))},
         {Theme::Light, QIcon(QLatin1String(":/thumbnails/OpenLight512.png"))},

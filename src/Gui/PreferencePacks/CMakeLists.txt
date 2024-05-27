@@ -5,14 +5,8 @@ SET(PreferencePacks_Files
 
 SET(PreferencePacks_Directories
 "Classic"
-"Dark"
-"Darker"
-"Dark modern"
 "Dark behave"
-"Dark contrast"
 "ProDark"
-"Light"
-"Light modern"
 "Light theme"
 "Dark theme"
 )
