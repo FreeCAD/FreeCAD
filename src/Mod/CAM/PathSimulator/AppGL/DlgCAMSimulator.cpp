@@ -24,8 +24,8 @@
 
 #include "DlgCAMSimulator.h"
 #include "MillSimulation.h"
-#include <QtGui/QMatrix4x4>
-#include <QtGui/qscreen.h>
+#include <QMatrix4x4>
+#include <QScreen>
 #include <QDateTime>
 #include <QSurfaceFormat>
 #include <QMouseEvent>
