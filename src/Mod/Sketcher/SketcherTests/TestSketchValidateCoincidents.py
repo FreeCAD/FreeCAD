@@ -25,29 +25,68 @@ from FreeCAD import Vector
 
 App = FreeCAD
 
+
 class TestSketchValidateCoincidents(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("SketchValidateCoincidentsTest")
 
     def testSingleMissingCoincidentCase(self):
-        self.Sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
-        geo0 = self.Sketch.addGeometry(Part.LineSegment(Vector (-47.680691, 18.824165000000004, 0.0), Vector (-47.680691, -27.346279, 0.0)))
-        geo1 = self.Sketch.addGeometry(Part.LineSegment(Vector (-47.680691, -27.346279, 0.0), Vector (51.132679, -27.346279, 0.0)))
-        geo2 = self.Sketch.addGeometry(Part.LineSegment(Vector (51.132679, -27.346279, 0.0), Vector (51.132679, 18.824165000000004, 0.0)))
-        geo3 = self.Sketch.addGeometry(Part.LineSegment(Vector (51.132679, 18.824165, 0.0), Vector (-47.680691, 18.824165, 0.0)))
-        self.Sketch.addConstraint(Sketcher.Constraint('Coincident', geo0, 2, geo1, 1))
-        self.Sketch.addConstraint(Sketcher.Constraint('Coincident', geo1, 2, geo2, 1))
-        self.Sketch.addConstraint(Sketcher.Constraint('Vertical', geo0))
-        self.Sketch.addConstraint(Sketcher.Constraint('Vertical', geo2))
-        self.Sketch.addConstraint(Sketcher.Constraint('Horizontal', geo1))
-        self.Sketch.addConstraint(Sketcher.Constraint('Coincident', geo3, 1, geo2, 2))
-        self.Sketch.addConstraint(Sketcher.Constraint('Horizontal', geo3))
+        # create geometry of a rectangle with no dimensional constraints
+        # replicating a user importing a dxf file
+        self.Sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        geo0 = self.Sketch.addGeometry(
+            Part.LineSegment(
+                Vector(-47.680691, 18.824165000000004, 0.0),
+                Vector(-47.680691, -27.346279, 0.0),
+            )
+        )
+        geo1 = self.Sketch.addGeometry(
+            Part.LineSegment(
+                Vector(-47.680691, -27.346279, 0.0), Vector(51.132679, -27.346279, 0.0)
+            )
+        )
+        geo2 = self.Sketch.addGeometry(
+            Part.LineSegment(
+                Vector(51.132679, -27.346279, 0.0),
+                Vector(51.132679, 18.824165000000004, 0.0),
+            )
+        )
+        geo3 = self.Sketch.addGeometry(
+            Part.LineSegment(
+                Vector(51.132679, 18.824165, 0.0), Vector(-47.680691, 18.824165, 0.0)
+            )
+        )
+        self.Sketch.addConstraint(Sketcher.Constraint("Coincident", geo0, 2, geo1, 1))
+        self.Sketch.addConstraint(Sketcher.Constraint("Coincident", geo1, 2, geo2, 1))
+        self.Sketch.addConstraint(Sketcher.Constraint("Vertical", geo0))
+        self.Sketch.addConstraint(Sketcher.Constraint("Vertical", geo2))
+        self.Sketch.addConstraint(Sketcher.Constraint("Horizontal", geo1))
+        self.Sketch.addConstraint(Sketcher.Constraint("Coincident", geo3, 1, geo2, 2))
+        self.Sketch.addConstraint(Sketcher.Constraint("Horizontal", geo3))
         self.Sketch.ViewObject.DiffuseColor = [(0.44, 0.91, 1.00, 0.00)]
         self.Doc.recompute()
-        self.assertTrue(self.Sketch.ConstraintCount == 7)
-        self.Sketch.makeMissingPointOnPointCoincident()
-        self.Doc.recompute()
-        self.assertTrue(self.Sketch.ConstraintCount == 8)
+        if self.assertTrue(self.Sketch.ConstraintCount == 7):
+            FreeCAD.Console.PrintError(
+                "TestSketchValidateCoincidents: The rectangle geometry"
+                "  has not been created correctly\n"
+            )
+            self.assertTrue(self.Sketch.ConstraintCount == 7)
+        else:
+            if self.assertTrue(self.Sketch.detectMissingPointOnPointConstraints() == 1):
+                FreeCAD.Console.PrintError(
+                    "TestSketchValidateCoincidents: The single missing"
+                    " coincident constraint has not been detected\n"
+                )
+                self.assertTrue(self.Sketch.detectMissingPointOnPointConstraints() == 1)
+            else:
+                self.Sketch.makeMissingPointOnPointCoincident()
+                self.Doc.recompute()
+                if self.assertTrue(self.Sketch.ConstraintCount == 8):
+                    FreeCAD.Console.PrintError(
+                        "TestSketchValidateCoincidents: The single missing"
+                        " coincident constraint has not been fixed\n"
+                    )
+                    self.assertTrue(self.Sketch.ConstraintCount == 8)
 
     def tearDown(self):
         # closing doc
