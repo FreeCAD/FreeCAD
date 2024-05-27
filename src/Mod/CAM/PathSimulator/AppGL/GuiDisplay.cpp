@@ -95,7 +95,13 @@ bool GuiDisplay::GenerateGlItem(GuiItem* guiItem)
     return true;
 }
 
-bool GuiDisplay::InutGui()
+void MillSim::GuiDisplay::DestroyGlItem(GuiItem* guiItem)
+{
+    GLDELETE_BUFFER((guiItem->vbo));
+    GLDELETE_VERTEXARRAY((guiItem->vao));
+}
+
+bool GuiDisplay::InitGui()
 {
     if (guiInitiated) {
         return true;
@@ -130,6 +136,17 @@ bool GuiDisplay::InutGui()
     mShader.UpdateProjectionMat(projmat);
     guiInitiated = true;
     return true;
+}
+
+void GuiDisplay::ResetGui()
+{
+    mShader.Destroy();
+    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
+        DestroyGlItem(&(guiItems[i]));
+    }
+    mTexture.DestroyTexture();
+    GLDELETE_BUFFER(mIbo);
+    guiInitiated = false;
 }
 
 void GuiDisplay::RenderItem(int itemId)

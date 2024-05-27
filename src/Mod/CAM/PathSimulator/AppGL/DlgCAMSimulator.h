@@ -81,8 +81,8 @@ public:  // slots:
 
 protected:
     bool event(QEvent* event) override;
-
     void checkInitialization();
+    void doGlCleanup();
     void exposeEvent(QExposeEvent* event) override;
     void mouseMoveEvent(QMouseEvent* ev) override;
     void mousePressEvent(QMouseEvent* ev) override;
@@ -95,6 +95,7 @@ private:
     bool mNeedsInitialize = false;
 
     QOpenGLContext* mContext = nullptr;
+    QOpenGLContext* mLastContext = nullptr;
     MillSim::MillSimulation* mMillSimulator = nullptr;
     static DlgCAMSimulator* mInstance;
     SimStock mStock = {0, 0, 0, 1, 1, 1, 1};

@@ -33,6 +33,7 @@ class Shader
 public:
     Shader()
     {}
+    ~Shader();
 
 public:
     unsigned int shaderId = 0;
@@ -51,6 +52,7 @@ public:
     void UpdateKernelVals(int nVals, float *vals);
     unsigned int CompileShader(const char* vertShader, const char* fragShader);
     void Activate();
+    void Destroy();
     bool IsValid()
     {
         return shaderId > 0;

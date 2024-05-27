@@ -25,31 +25,32 @@
 #include <stdlib.h>
 
 #define NUM_PROFILE_POINTS 4
+using namespace MillSim;
 
-MillSim::StockObject::StockObject()
+StockObject::StockObject()
 {
     mat4x4_identity(mModelMat);
     vec3_set(center, 0, 0, 0);
 }
 
-MillSim::StockObject::~StockObject()
+StockObject::~StockObject()
 {
     shape.FreeResources();
 }
 
-void MillSim::StockObject::render()
+void StockObject::render()
 {
     // glCallList(mDisplayListId);
     // UpdateObjColor(color);
     shape.Render(mModelMat, mModelMat);  // model is not rotated hence both are identity matrix
 }
 
-void MillSim::StockObject::SetPosition(vec3 position)
+void StockObject::SetPosition(vec3 position)
 {
     mat4x4_translate(mModelMat, position[0], position[1], position[2]);
 }
 
-void MillSim::StockObject::GenerateBoxStock(float x, float y, float z, float l, float w, float h)
+void StockObject::GenerateBoxStock(float x, float y, float z, float l, float w, float h)
 {
     int idx = 0;
     SET_DUAL(mProfile, idx, y + w, z + h);

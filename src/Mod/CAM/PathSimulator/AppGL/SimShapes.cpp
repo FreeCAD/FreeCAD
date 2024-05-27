@@ -34,35 +34,37 @@ static float* sinTable = nullptr;
 static float* cosTable = nullptr;
 static int lastNumSlices = 0;
 static int lastNumSectionIndices = 0;
-static GLshort quadIndices[] = { 0, 2, 3, 0, 3, 1 };
-static GLshort quadIndicesReversed[] = { 0, 3, 2, 0, 1, 3 };
+static GLshort quadIndices[] = {0, 2, 3, 0, 3, 1};
+static GLshort quadIndicesReversed[] = {0, 3, 2, 0, 1, 3};
 static GLshort* sectionIndicesQuad = nullptr;
 static GLshort* sectionIndicesTri = nullptr;
 
 static bool GenerateSinTable(int nSlices)
 {
-    if (nSlices == lastNumSlices)
+    if (nSlices == lastNumSlices) {
         return true;
-    if (sinTable != nullptr)
+    }
+    if (sinTable != nullptr) {
         free(sinTable);
-    if (cosTable != nullptr)
+    }
+    if (cosTable != nullptr) {
         free(cosTable);
+    }
     sinTable = cosTable = nullptr;
 
     float slice = (float)(2 * PI / nSlices);
     int nvals = nSlices + 1;
     sinTable = (float*)malloc(nvals * sizeof(float));
-    if (sinTable == nullptr)
+    if (sinTable == nullptr) {
         return false;
+    }
     cosTable = (float*)malloc(nvals * sizeof(float));
-    if (cosTable == nullptr)
-    {
+    if (cosTable == nullptr) {
         free(sinTable);
         sinTable = nullptr;
         return false;
     }
-    for (int i = 0; i < nvals; i++)
-    {
+    for (int i = 0; i < nvals; i++) {
         sinTable[i] = sinf(slice * i);
         cosTable[i] = cosf(slice * i);
     }
@@ -71,7 +73,12 @@ static bool GenerateSinTable(int nSlices)
 }
 
 
-void MillSim::Shape::RotateProfile(float* profPoints, int nPoints, float distance, float deltaHeight, int nSlices, bool isHalfTurn)
+void Shape::RotateProfile(float* profPoints,
+                          int nPoints,
+                          float distance,
+                          float deltaHeight,
+                          int nSlices,
+                          bool isHalfTurn)
 {
     int vidx = 0;
     int iidx = 0;
@@ -82,26 +89,25 @@ void MillSim::Shape::RotateProfile(float* profPoints, int nPoints, float distanc
     numIndices = (nPoints - 1) * nSlices * 6;
 
     float* vbuffer = (float*)malloc(numVerts * sizeof(Vertex));
-    if (vbuffer == nullptr)
+    if (vbuffer == nullptr) {
         return;
+    }
     GLushort* ibuffer = (GLushort*)malloc(numIndices * sizeof(GLushort));
-    if (ibuffer == nullptr)
-    {
+    if (ibuffer == nullptr) {
         free(vbuffer);
         return;
     }
     int nsinvals = nSlices;
-    if (isHalfTurn)
+    if (isHalfTurn) {
         nsinvals *= 2;
-    if (GenerateSinTable(nsinvals) == false)
-    {
+    }
+    if (GenerateSinTable(nsinvals) == false) {
         free(vbuffer);
         free(ibuffer);
         return;
     }
 
-    for (int i = 0; i < nPoints; i++)
-    {
+    for (int i = 0; i < nPoints; i++) {
         int i2 = i * 2;
 
         float prevy = i > 0 ? profPoints[i2 - 2] : 0;
@@ -115,8 +121,7 @@ void MillSim::Shape::RotateProfile(float* profPoints, int nPoints, float distanc
         float nz = diffy / len;
         vstart = i * 2 * (nSlices + 1);
 
-        for (int j = 0; j <= nSlices; j++)
-        {
+        for (int j = 0; j <= nSlices; j++) {
             // generate vertices
             float sx = sinTable[j];
             float sy = cosTable[j];
@@ -135,14 +140,15 @@ void MillSim::Shape::RotateProfile(float* profPoints, int nPoints, float distanc
             SET_TRIPLE(vbuffer, vidx, x2, y2, z2);
             SET_TRIPLE(vbuffer, vidx, nx, ny, nz);
 
-            if (j != nSlices)
-            {
+            if (j != nSlices) {
                 // generate indices { 0, 3, 1, 0, 2, 3 }
                 int pos = vstart + 2 * j;
-                if (i < (nPoints - 1))
+                if (i < (nPoints - 1)) {
                     SET_TRIPLE(ibuffer, iidx, pos, pos + 3, pos + 1);
-                if (i > 0)
+                }
+                if (i > 0) {
                     SET_TRIPLE(ibuffer, iidx, pos, pos + 2, pos + 3);
+                }
             }
         }
     }
@@ -153,20 +159,25 @@ void MillSim::Shape::RotateProfile(float* profPoints, int nPoints, float distanc
     free(ibuffer);
 }
 
-void MillSim::Shape::CalculateExtrudeBufferSizes(int nProfilePoints, bool capStart, bool capEnd,
-    int* numVerts, int* numIndices, int* vc1idx, int* vc2idx, int* ic1idx, int* ic2idx)
+void Shape::CalculateExtrudeBufferSizes(int nProfilePoints,
+                                        bool capStart,
+                                        bool capEnd,
+                                        int* numVerts,
+                                        int* numIndices,
+                                        int* vc1idx,
+                                        int* vc2idx,
+                                        int* ic1idx,
+                                        int* ic2idx)
 {
-    *numVerts = nProfilePoints * 4; // one face per profile point times 4 vertex per face
-    *numIndices = nProfilePoints * 2 * 3; // 2 triangles per face times 3 indices per triangle
-    if (capStart)
-    {
+    *numVerts = nProfilePoints * 4;        // one face per profile point times 4 vertex per face
+    *numIndices = nProfilePoints * 2 * 3;  // 2 triangles per face times 3 indices per triangle
+    if (capStart) {
         *vc1idx = *numVerts * 6;
         *numVerts += nProfilePoints;
         *ic1idx = *numIndices;
         *numIndices += (nProfilePoints - 2) * 3;
     }
-    if (capEnd)
-    {
+    if (capEnd) {
         *vc2idx = *numVerts * 6;
         *numVerts += nProfilePoints;
         *ic2idx = *numIndices;
@@ -174,22 +185,36 @@ void MillSim::Shape::CalculateExtrudeBufferSizes(int nProfilePoints, bool capSta
     }
 }
 
-void MillSim::Shape::ExtrudeProfileRadial(float* profPoints, int nPoints, float radius, float angleRad, float deltaHeight, bool capStart, bool capEnd)
+void Shape::ExtrudeProfileRadial(float* profPoints,
+                                 int nPoints,
+                                 float radius,
+                                 float angleRad,
+                                 float deltaHeight,
+                                 bool capStart,
+                                 bool capEnd)
 {
     int vidx = 0, vc1idx, vc2idx;
     int iidx = 0, ic1idx, ic2idx;
     int numVerts, numIndices;
 
-    CalculateExtrudeBufferSizes(nPoints, capStart, capEnd, &numVerts, &numIndices, &vc1idx, &vc2idx, &ic1idx, &ic2idx);
+    CalculateExtrudeBufferSizes(nPoints,
+                                capStart,
+                                capEnd,
+                                &numVerts,
+                                &numIndices,
+                                &vc1idx,
+                                &vc2idx,
+                                &ic1idx,
+                                &ic2idx);
     int vc1start = vc1idx / 6;
     int vc2start = vc2idx / 6;
 
     float* vbuffer = (float*)malloc(numVerts * sizeof(Vertex));
-    if (!vbuffer)
+    if (!vbuffer) {
         return;
+    }
     GLushort* ibuffer = (GLushort*)malloc(numIndices * sizeof(GLushort));
-    if (!ibuffer)
-    {
+    if (!ibuffer) {
         free(vbuffer);
         return;
     }
@@ -202,8 +227,7 @@ void MillSim::Shape::ExtrudeProfileRadial(float* profPoints, int nPoints, float 
 
     float cosAng = cosf(angleRad);
     float sinAng = sinf(angleRad);
-    for (int i = 0; i < nPoints; i++)
-    {
+    for (int i = 0; i < nPoints; i++) {
         int p1 = i * 2;
         float y1 = profPoints[p1] + radius;
         float z1 = profPoints[p1 + 1];
@@ -229,8 +253,9 @@ void MillSim::Shape::ExtrudeProfileRadial(float* profPoints, int nPoints, float 
         if (capStart) {
             SET_TRIPLE(vbuffer, vc1idx, 0, y1, z1);
             SET_TRIPLE(vbuffer, vc1idx, -1 * dir, 0, 0);
-            if (i > 1)
+            if (i > 1) {
                 SET_TRIPLE(ibuffer, ic1idx, vc1start, vc1start + i + offs1, vc1start + i + offs2);
+            }
         }
 
         float x1 = y1 * sinAng * dir;
@@ -246,23 +271,21 @@ void MillSim::Shape::ExtrudeProfileRadial(float* profPoints, int nPoints, float 
 
         // face have 2 triangles { 0, 2, 3, 0, 3, 1 };
         GLushort vistart = i * 4;
-        if (is_clockwise)
-        {
+        if (is_clockwise) {
             SET_TRIPLE(ibuffer, iidx, vistart, vistart + 2, vistart + 3);
             SET_TRIPLE(ibuffer, iidx, vistart, vistart + 3, vistart + 1);
         }
-        else
-        {
+        else {
             SET_TRIPLE(ibuffer, iidx, vistart, vistart + 3, vistart + 2);
             SET_TRIPLE(ibuffer, iidx, vistart, vistart + 1, vistart + 3);
         }
 
-        if (capEnd)
-        {
+        if (capEnd) {
             SET_TRIPLE(vbuffer, vc2idx, x1, y1, z1);
             SET_TRIPLE(vbuffer, vc2idx, cosAng * dir, -sinAng, 0);
-            if (i > 1)
+            if (i > 1) {
                 SET_TRIPLE(ibuffer, ic2idx, vc2start, vc2start + i + offs2, vc2start + i + offs1);
+            }
         }
     }
 
@@ -272,28 +295,42 @@ void MillSim::Shape::ExtrudeProfileRadial(float* profPoints, int nPoints, float 
     free(ibuffer);
 }
 
-void MillSim::Shape::ExtrudeProfileLinear(float* profPoints, int nPoints, float fromX, float toX, float fromZ, float toZ, bool capStart, bool capEnd)
+void Shape::ExtrudeProfileLinear(float* profPoints,
+                                 int nPoints,
+                                 float fromX,
+                                 float toX,
+                                 float fromZ,
+                                 float toZ,
+                                 bool capStart,
+                                 bool capEnd)
 {
     int vidx = 0, vc1idx, vc2idx;
     int iidx = 0, ic1idx, ic2idx;
     int numVerts, numIndices;
 
-    CalculateExtrudeBufferSizes(nPoints, capStart, capEnd, &numVerts, &numIndices, &vc1idx, &vc2idx, &ic1idx, &ic2idx);
+    CalculateExtrudeBufferSizes(nPoints,
+                                capStart,
+                                capEnd,
+                                &numVerts,
+                                &numIndices,
+                                &vc1idx,
+                                &vc2idx,
+                                &ic1idx,
+                                &ic2idx);
     int vc1start = vc1idx / 6;
     int vc2start = vc2idx / 6;
 
     float* vbuffer = (float*)malloc(numVerts * sizeof(Vertex));
-    if (!vbuffer)
+    if (!vbuffer) {
         return;
+    }
     GLushort* ibuffer = (GLushort*)malloc(numIndices * sizeof(GLushort));
-    if (!ibuffer)
-    {
+    if (!ibuffer) {
         free(vbuffer);
         return;
     }
 
-    for (int i = 0; i < nPoints; i++)
-    {
+    for (int i = 0; i < nPoints; i++) {
         // hollow pipe verts
         int p1 = i * 2;
         float y1 = profPoints[p1];
@@ -323,19 +360,19 @@ void MillSim::Shape::ExtrudeProfileLinear(float* profPoints, int nPoints, float 
         SET_TRIPLE(ibuffer, iidx, vistart, vistart + 2, vistart + 3);
         SET_TRIPLE(ibuffer, iidx, vistart, vistart + 3, vistart + 1);
 
-        if (capStart)
-        {
+        if (capStart) {
             SET_TRIPLE(vbuffer, vc1idx, fromX, profPoints[p1], profPoints[p1 + 1] + fromZ);
             SET_TRIPLE(vbuffer, vc1idx, -1, 0, 0);
-            if (i > 1)
+            if (i > 1) {
                 SET_TRIPLE(ibuffer, ic1idx, vc1start, vc1start + i - 1, vc1start + i);
+            }
         }
-        if (capEnd)
-        {
+        if (capEnd) {
             SET_TRIPLE(vbuffer, vc2idx, toX, profPoints[p1], profPoints[p1 + 1] + toZ);
             SET_TRIPLE(vbuffer, vc2idx, 1, 0, 0);
-            if (i > 1)
+            if (i > 1) {
                 SET_TRIPLE(ibuffer, ic2idx, vc2start, vc2start + i, vc2start + i - 1);
+            }
         }
     }
 
@@ -345,9 +382,9 @@ void MillSim::Shape::ExtrudeProfileLinear(float* profPoints, int nPoints, float 
     free(ibuffer);
 }
 
-void MillSim::Shape::GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int nIndices)
+void Shape::GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int nIndices)
 {
-    //GLuint vbo, ibo, vao;
+    // GLuint vbo, ibo, vao;
 
     // vertex buffer
     glGenBuffers(1, &vbo);
@@ -368,36 +405,32 @@ void MillSim::Shape::GenerateModel(float* vbuffer, GLushort* ibuffer, int numVer
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, x));
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, nx));
-    
+
     numIndices = nIndices;
 }
 
-void MillSim::Shape::Render()
+void Shape::Render()
 {
     glBindVertexArray(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_SHORT, nullptr);
 }
 
-void MillSim::Shape::Render(mat4x4 modelMat, mat4x4 normallMat) // normals are rotated only
+void Shape::Render(mat4x4 modelMat, mat4x4 normallMat)  // normals are rotated only
 {
     CurrentShader->UpdateModelMat(modelMat, normallMat);
     Render();
 }
 
-void MillSim::Shape::FreeResources()
+void Shape::FreeResources()
 {
-    if (vao > 0)
-    {
-        glBindVertexArray(vao);
-        if (vbo > 0) glDeleteBuffers(1, &vbo);
-        if (ibo > 0) glDeleteBuffers(1, &ibo);
-        glDeleteVertexArrays(1, &vao);
-        vbo = ibo = vao = 0;
-    }
+    glBindVertexArray(0);
+    GLDELETE_BUFFER(vbo);
+    GLDELETE_BUFFER(ibo);
+    GLDELETE_VERTEXARRAY(vao);
 }
 
-MillSim::Shape::~Shape()
+Shape::~Shape()
 {
     FreeResources();
 }

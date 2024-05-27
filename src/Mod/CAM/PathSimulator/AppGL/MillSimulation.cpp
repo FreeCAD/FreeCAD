@@ -36,15 +36,11 @@ MillSimulation::MillSimulation()
 
 MillSimulation::~MillSimulation()
 {
+    Clear();
 }
 
 void MillSimulation::ClearMillPathSegments()
 {
-    // for (std::vector<MillPathSegment*>::const_iterator i = MillPathSegments.begin(); i !=
-    // MillPathSegments.end(); ++i) {
-    //     MillSim::MillPathSegment* p = *i;
-    //     delete p;
-    // }
     for (int i = 0; i < MillPathSegments.size(); i++) {
         delete MillPathSegments[i];
     }
@@ -57,7 +53,11 @@ void MillSimulation::Clear()
     for (int i = 0; i < mToolTable.size(); i++) {
         delete mToolTable[i];
     }
+    ClearMillPathSegments();
+    mStockObject.~StockObject();
     mToolTable.clear();
+    guiDisplay.ResetGui();
+    simDisplay.CleanGL();
     mCurStep = 0;
     mPathStep = -1;
     mNTotalSteps = 0;
@@ -78,6 +78,7 @@ void MillSimulation::SimNext()
     if (mCurStep < mNTotalSteps) {
         mCurStep += mSimSpeed;
         CalcSegmentPositions();
+        simDisplay.updateDisplay = true;
     }
 }
 
@@ -90,6 +91,9 @@ void MillSimulation::InitSimulation(float quality)
     mCurStep = 0;
     mPathStep = -1;
     mNTotalSteps = 0;
+    mIsRotate = false;
+    mSimPlaying = false;
+    mSimSpeed = 1;
     MillPathSegment::SetQuality(quality, simDisplay.maxFar);
     int nOperations = (int)mCodeParser.Operations.size();
     ;
@@ -322,7 +326,7 @@ void MillSimulation::RenderSimulation()
 void MillSimulation::Render()
 {
     // set background
-    glClearColor(0.6f, 0.8f, 1.0f, 1.0f);
+    glClearColor(bgndColor[0], bgndColor[1], bgndColor[2], 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     simDisplay.PrepareDisplay(mStockObject.center);
 
@@ -448,7 +452,7 @@ void MillSimulation::InitDisplay(float quality)
     simDisplay.InitGL();
 
     // init gui elements
-    guiDisplay.InutGui();
+    guiDisplay.InitGui();
 }
 
 void MillSimulation::SetBoxStock(float x, float y, float z, float l, float w, float h)

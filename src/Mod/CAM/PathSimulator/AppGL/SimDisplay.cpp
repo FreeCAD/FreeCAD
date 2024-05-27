@@ -201,7 +201,7 @@ void SimDisplay::CreateSsaoFbos()
         vec3_set(sample,
                  randomFloats(generator) * 2.0f - 1.0f,
                  randomFloats(generator) * 2.0f - 1.0f,
-                 randomFloats(generator));
+                 randomFloats(generator) * 2.0f - 1.0f);
         vec3_norm(sample, sample);
         vec3_scale(sample, sample, randomFloats(generator));
         float scale = float(i) / 64.0f;
@@ -236,24 +236,7 @@ void SimDisplay::CreateSsaoFbos()
 
 SimDisplay::~SimDisplay()
 {
-    glDeleteFramebuffers(1, &mFbo);
-    glDeleteFramebuffers(1, &mSsaoFbo);
-    glDeleteFramebuffers(1, &mSsaoBlurFbo);
-    glDeleteTextures(1, &mFboColTexture);
-    glDeleteTextures(1, &mFboPosTexture);
-    glDeleteTextures(1, &mFboNormTexture);
-    glDeleteTextures(1, &mFboNormTexture);
-    glDeleteTextures(1, &mFboNormTexture);
-    glDeleteTextures(1, &mFboNormTexture);
-    glDeleteTextures(1, &mFboNormTexture);
-    glDeleteTextures(1, &mFboSsaoTexture);
-    glDeleteTextures(1, &mFboSsaoBlurTexture);
-    glDeleteTextures(1, &mFboSsaoNoiseTexture);
-
-    glDeleteVertexArrays(1, &mFboQuadVAO);
-    glDeleteVertexArrays(1, &mFboQuadVAO);
-
-    glDeleteRenderbuffers(1, &mFboQuadVBO);
+    CleanGL();
 }
 
 void SimDisplay::InitGL()
@@ -272,6 +255,39 @@ void SimDisplay::InitGL()
 
     UpdateProjection();
     displayInitiated = true;
+}
+
+void SimDisplay::CleanGL()
+{
+    // cleanup frame buffers
+    GLDELETE_FRAMEBUFFER(mFbo);
+    GLDELETE_FRAMEBUFFER(mSsaoFbo);
+    GLDELETE_FRAMEBUFFER(mSsaoBlurFbo);
+
+    // cleanup textures;
+    GLDELETE_TEXTURE(mFboColTexture);
+    GLDELETE_TEXTURE(mFboPosTexture);
+    GLDELETE_TEXTURE(mFboNormTexture);
+    GLDELETE_TEXTURE(mFboSsaoTexture);
+    GLDELETE_TEXTURE(mFboSsaoBlurTexture);
+    GLDELETE_TEXTURE(mFboSsaoNoiseTexture);
+
+    // cleanup geometry
+    GLDELETE_VERTEXARRAY(mFboQuadVAO);
+    GLDELETE_RENDERBUFFER(mFboQuadVBO);
+
+    // cleanup shaders
+    shader3D.Destroy();
+    shaderInv3D.Destroy();
+    shaderFlat.Destroy();
+    shaderSimFbo.Destroy();
+    shaderGeom.Destroy();
+    shaderSSAO.Destroy();
+    shaderLighting.Destroy();
+    shaderSSAOLighting.Destroy();
+    shaderSSAOBlur.Destroy();
+
+    displayInitiated = false;
 }
 
 void SimDisplay::PrepareDisplay(vec3 objCenter)
@@ -380,8 +396,8 @@ void SimDisplay::RenderResultSSAO()
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     // lighting pass: deferred Blinn-Phong lighting with added screen-space ambient occlusion
-    glClearColor(0.6f, 0.8f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //glClearColor(0.6f, 0.8f, 1.0f, 1.0f);
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     shaderSSAOLighting.Activate();
     shaderSSAOLighting.UpdateAlbedoTexSlot(0);
     shaderSSAOLighting.UpdatePositionTexSlot(1);

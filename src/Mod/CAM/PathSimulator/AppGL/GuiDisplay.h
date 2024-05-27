@@ -68,7 +68,8 @@ class GuiDisplay
 {
 public:
     // GuiDisplay() {};
-    bool InutGui();
+    bool InitGui();
+    void ResetGui();
     void Render(float progress);
     void MouseCursorPos(int x, int y);
     void MousePressed(int button, bool isPressed, bool isRunning);
@@ -85,6 +86,7 @@ public:
 
 private:
     bool GenerateGlItem(GuiItem* guiItem);
+    void DestroyGlItem(GuiItem* guiItem);
     void RenderItem(int itemId);
 
     vec3 mStdColor = {0.8f, 0.8f, 0.4f};

@@ -29,6 +29,11 @@ namespace MillSim
 
 Shader* CurrentShader = nullptr;
 
+Shader::~Shader()
+{
+    Destroy();
+}
+
 void Shader::UpdateModelMat(mat4x4 tmat, mat4x4 nmat)
 {
     if (mModelPos >= 0) {
@@ -162,6 +167,7 @@ unsigned int Shader::CompileShader(const char* _vertShader, const char* _fragSha
     glShaderSource(vertex_shader, 1, &vertShader, NULL);
     glCompileShader(vertex_shader);
     if (CheckCompileResult(vertex_shader)) {
+        glDeleteShader(vertex_shader);
         return 0xdeadbeef;
     }
 
@@ -169,6 +175,8 @@ unsigned int Shader::CompileShader(const char* _vertShader, const char* _fragSha
     glShaderSource(fragment_shader, 1, &fragShader, NULL);
     glCompileShader(fragment_shader);
     if (CheckCompileResult(fragment_shader)) {
+        glDeleteShader(fragment_shader);
+        glDeleteShader(vertex_shader);
         return 0xdeadbeef;
     }
 
@@ -179,6 +187,7 @@ unsigned int Shader::CompileShader(const char* _vertShader, const char* _fragSha
 
     glGetProgramiv(shaderId, GL_LINK_STATUS, &res);
     if (res == 0) {
+        Destroy();
         return 0xdeadbeef;
     }
 
@@ -211,6 +220,15 @@ void Shader::Activate()
         glUseProgram(shaderId);
     }
     CurrentShader = this;
+}
+
+void Shader::Destroy()
+{
+    if (shaderId == 0) {
+        return;
+    }
+    glDeleteProgram(shaderId);
+    shaderId = 0;
 }
 
 

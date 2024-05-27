@@ -35,6 +35,8 @@ extern QOpenGLContext* gOpenGlContext;
 #define glVertexAttribPointer gSimWindow->glVertexAttribPointer
 #define glShaderSource gSimWindow->glShaderSource
 #define glCompileShader gSimWindow->glCompileShader
+#define glDeleteShader gSimWindow->glDeleteShader
+#define glDeleteProgram gSimWindow->glDeleteProgram
 #define glAttachShader gSimWindow->glAttachShader
 #define glLinkProgram gSimWindow->glLinkProgram
 #define glGetProgramiv gSimWindow->glGetProgramiv

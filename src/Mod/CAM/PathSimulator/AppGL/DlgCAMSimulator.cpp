@@ -71,8 +71,9 @@ bool DlgCAMSimulator::event(QEvent* event)
             renderNow();
             return true;
         default:
-            return QWindow::event(event);
+            break;
     }
+    return QWindow::event(event);
 }
 
 void DlgCAMSimulator::exposeEvent(QExposeEvent* event)
@@ -106,7 +107,6 @@ void DlgCAMSimulator::wheelEvent(QWheelEvent* ev)
 
 void DlgCAMSimulator::resetSimulation()
 {
-    mMillSimulator->Clear();
 }
 
 void DlgCAMSimulator::addGcodeCommand(const char* cmd)
@@ -129,8 +129,12 @@ void DlgCAMSimulator::addTool(const std::vector<float> toolProfilePoints,
 
 void DlgCAMSimulator::hideEvent(QHideEvent* ev)
 {
-    Q_UNUSED(ev)
+    mMillSimulator->Clear();
+    doGlCleanup();
     mAnimating = false;
+    QWindow::hideEvent(ev);
+    close();
+    mInstance = nullptr;
 }
 
 void DlgCAMSimulator::startSimulation(const SimStock* stock, float quality)
@@ -150,14 +154,20 @@ void DlgCAMSimulator::initialize()
 
     const qreal retinaScale = devicePixelRatio();
     glViewport(0, 0, width() * retinaScale, height() * retinaScale);
+    glEnable(GL_MULTISAMPLE);
 }
 
 void DlgCAMSimulator::checkInitialization()
 {
     if (!mContext) {
+        mLastContext = QOpenGLContext::currentContext();
         mContext = new QOpenGLContext(this);
         mContext->setFormat(requestedFormat());
         mContext->create();
+        QSurfaceFormat format;
+        format.setSamples(16);
+        format.setSwapInterval(2);
+        mContext->setFormat(format);
         gOpenGlContext = mContext;
         mNeedsInitialize = true;
     }
@@ -168,6 +178,18 @@ void DlgCAMSimulator::checkInitialization()
         initializeOpenGLFunctions();
         initialize();
         mNeedsInitialize = false;
+    }
+}
+
+void DlgCAMSimulator::doGlCleanup()
+{
+    if (mLastContext != nullptr) {
+        mLastContext->makeCurrent(this);
+    }
+    if (mContext != nullptr)
+    {
+        mContext->deleteLater();
+        mContext = nullptr;
     }
 }
 
@@ -218,7 +240,6 @@ DlgCAMSimulator* DlgCAMSimulator::GetInstance()
         mInstance->setFormat(format);
         mInstance->resize(800, 600);
         mInstance->setModality(Qt::ApplicationModal);
-        mInstance->show();
     }
     return mInstance;
 }
