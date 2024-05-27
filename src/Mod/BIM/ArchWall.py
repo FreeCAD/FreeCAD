@@ -856,7 +856,7 @@ class _Wall(ArchComponent.Component):
                             face = None
 
                             curAligns = aligns[0]
-                            off = obj.Offset.Value
+                            #off = obj.Offset.Value  # off is no longer used
 
                             if curAligns == "Left":
 
@@ -864,7 +864,8 @@ class _Wall(ArchComponent.Component):
                                     curWidth = []
                                     for n in range(edgeNum):
                                         curWidth.append(abs(layers[i]))
-                                    off = off+layeroffset
+                                    #off = off+layeroffset  # off is no longer used
+                                    offsets = [x+layeroffset for x in offsets]
                                     dvec.multiply(curWidth[0])
                                     layeroffset += abs(curWidth[0])
                                 else:
@@ -908,7 +909,8 @@ class _Wall(ArchComponent.Component):
                                     curWidth = []
                                     for n in range(edgeNum):
                                         curWidth.append(abs(layers[i]))
-                                    off = off+layeroffset
+                                    #off = off+layeroffset  # off is no longer used
+                                    offsets = [x+layeroffset for x in offsets]
                                     dvec.multiply(curWidth[0])
                                     layeroffset += abs(curWidth[0])
                                 else:
