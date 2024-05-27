@@ -198,6 +198,9 @@ App::DocumentObjectExecReturn *Chamfer::execute()
             shape = refineShapeIfActive(shape);
             shape = getSolid(shape);
         }
+        if (!isSingleSolidRuleSatisfied(shape.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+        }
         this->Shape.setValue(shape);
         if (failed) {
             return new App::DocumentObjectExecReturn(
