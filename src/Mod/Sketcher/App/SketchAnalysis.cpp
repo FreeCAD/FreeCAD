@@ -972,30 +972,7 @@ std::vector<Base::Vector3d> SketchAnalysis::getOpenVertices() const
     return points;
 }
 
-int SketchAnalysis::detectDegeneratedGeometries(double tolerance)
-{
-    int countDegenerated = 0;
-    const std::vector<Part::Geometry*>& geom = sketch->getInternalGeometry();
-    for (std::size_t i = 0; i < geom.size(); i++) {
-        auto gf = GeometryFacade::getFacade(geom[i]);
-
-        if (gf->getConstruction()) {
-            continue;
-        }
-
-        if (gf->getGeometry()->isDerivedFrom<Part::GeomCurve>()) {
-            Part::GeomCurve* curve = static_cast<Part::GeomCurve*>(gf->getGeometry());
-            double len = curve->length(curve->getFirstParameter(), curve->getLastParameter());
-            if (len < tolerance) {
-                countDegenerated++;
-            }
-        }
-    }
-
-    return countDegenerated;
-}
-
-int SketchAnalysis::removeDegeneratedGeometries(double tolerance)
+std::set<int> SketchAnalysis::getDegeneratedGeometries(double tolerance) const
 {
     std::set<int> delInternalGeometries;
     const std::vector<Part::Geometry*>& geom = sketch->getInternalGeometry();
@@ -1006,8 +983,7 @@ int SketchAnalysis::removeDegeneratedGeometries(double tolerance)
             continue;
         }
 
-        if (gf->getGeometry()->isDerivedFrom<Part::GeomCurve>()) {
-            Part::GeomCurve* curve = static_cast<Part::GeomCurve*>(gf->getGeometry());
+        if (auto curve = dynamic_cast<Part::GeomCurve*>(gf->getGeometry())) {
             double len = curve->length(curve->getFirstParameter(), curve->getLastParameter());
             if (len < tolerance) {
                 delInternalGeometries.insert(static_cast<int>(i));
@@ -1015,9 +991,20 @@ int SketchAnalysis::removeDegeneratedGeometries(double tolerance)
         }
     }
 
+    return delInternalGeometries;
+}
+
+int SketchAnalysis::detectDegeneratedGeometries(double tolerance) const
+{
+    std::set<int> delInternalGeometries = getDegeneratedGeometries(tolerance);
+    return static_cast<int>(delInternalGeometries.size());
+}
+
+int SketchAnalysis::removeDegeneratedGeometries(double tolerance)
+{
+    std::set<int> delInternalGeometries = getDegeneratedGeometries(tolerance);
     for (auto it = delInternalGeometries.rbegin(); it != delInternalGeometries.rend(); ++it) {
         sketch->delGeometry(*it);
     }
-
     return static_cast<int>(delInternalGeometries.size());
 }

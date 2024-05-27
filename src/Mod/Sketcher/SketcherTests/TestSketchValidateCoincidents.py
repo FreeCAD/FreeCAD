@@ -64,6 +64,23 @@ class TestSketchValidateCoincidents(unittest.TestCase):
         del geo0, geo1, geo2, geo3
         del sketch
 
+    def testDegenratedGeometryCase(self):
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        v0 = Vector(-47.680691, 18.824165000000004, 0.0)
+        v1 = Vector(-47.680691, -27.346279, 0.0)
+        v2 = Vector(-47.680691, -27.34627900001, 0.0)
+
+        geo0 = sketch.addGeometry(Part.LineSegment(v0, v1))
+        geo1 = sketch.addGeometry(Part.LineSegment(v1, v2))
+        sketch.addConstraint(Sketcher.Constraint("Coincident", geo0, 2, geo1, 1))
+        self.Doc.recompute()
+        tol = 1.0e-8
+        self.assertEqual(sketch.ConstraintCount, 1)
+        self.assertEqual(sketch.detectDegeneratedGeometries(tol), 1)
+        self.assertEqual(sketch.removeDegeneratedGeometries(tol), 1)
+        self.assertEqual(sketch.detectDegeneratedGeometries(tol), 0)
+        self.assertEqual(sketch.ConstraintCount, 0)
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument(self.Doc.Name)
