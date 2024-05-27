@@ -1166,9 +1166,9 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
     App::DocumentObject* part = getLinkObjFromProp(joint, propPartName);
     App::DocumentObject* obj = getObjFromNameProp(joint, propObjName, propPartName);
 
-    if (!part) {
-        Base::Console().Warning("The property %s or Joint %s is empty.",
-                                propPartName,
+    if (!part || !obj) {
+        Base::Console().Warning("The property %s of Joint %s is empty.",
+                                obj ? propPartName : propObjName,
                                 joint->getFullName());
         return "";
     }
@@ -1222,6 +1222,13 @@ void AssemblyObject::getRackPinionMarkers(App::DocumentObject* joint,
     App::DocumentObject* part2 = getLinkObjFromProp(joint, "Part2");
     App::DocumentObject* obj2 = getObjFromNameProp(joint, "Object2", "Part2");
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
+
+    if (!part1 || !obj1) {
+        Base::Console().Warning("The property %s of Joint %s is empty.",
+                                obj1 ? "Part1" : "Object1",
+                                joint->getFullName());
+        return;
+    }
 
     // For the pinion nothing special needed :
     markerNameJ = handleOneSideOfJoint(joint, "Object2", "Part2", "Placement2");
