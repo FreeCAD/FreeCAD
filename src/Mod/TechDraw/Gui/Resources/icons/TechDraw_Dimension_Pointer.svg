@@ -30,14 +30,6 @@
     </linearGradient>
   </defs>
   <g
-     id="crosshair"
-     style="display:inline;stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter"
-     transform="translate(-0.4111349)">
-    <path
-       d="m 16,3 v 9 m 0,8 v 9 M 3,16 h 9 m 8,0 h 9"
-       id="path9" />
-  </g>
-  <g
      id="g1123"
      transform="matrix(0.90298863,0,0,0.92683158,6.1981069,7.4234452)">
     <g
@@ -108,5 +100,18 @@
          d="M 40.879356,12.483498 14.021683,28.964296"
          id="path6-2" />
     </g>
+  </g>
+  <g
+     id="crosshair"
+     style="display:inline;stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter"
+     transform="translate(-0.4111349)">
+    <path
+       d="m 16,3 v 9 m 0,8 v 9 M 3,16 h 9 m 8,0 h 9"
+       id="path9"
+       style="stroke:#555753;stroke-width:4;stroke-dasharray:none" />
+    <path
+       d="m 16,3 v 9 m 0,8 v 9 M 3,16 h 9 m 8,0 h 9"
+       id="path7"
+       style="stroke:#d3d7cf;stroke-width:2;stroke-dasharray:none" />
   </g>
 </svg>
