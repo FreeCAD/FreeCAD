@@ -72,7 +72,7 @@ class CommandCreateBom:
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateView",
-                "Create a bill of materials of the current assembly.",
+                "Create a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.",
             )
             + "</p><p>"
             + QT_TRANSLATE_NOOP(
@@ -89,16 +89,9 @@ class CommandCreateBom:
         }
 
     def IsActive(self):
-        return (
-            UtilsAssembly.isAssemblyCommandActive()
-            and UtilsAssembly.assembly_has_at_least_n_parts(1)
-        )
+        return True
 
     def Activated(self):
-        assembly = UtilsAssembly.activeAssembly()
-        if not assembly:
-            return
-
         self.panel = TaskAssemblyCreateBom()
         Gui.Control.showDialog(self.panel)
 
@@ -124,8 +117,6 @@ class TaskAssemblyCreateBom(QtCore.QObject):
 
         self.form.btnAddColumn.clicked.connect(self.addColumn)
         self.form.btnExport.clicked.connect(self.export)
-
-        self.assembly = UtilsAssembly.activeAssembly()
 
         pref = Preferences.preferences()
 
@@ -266,8 +257,12 @@ class TaskAssemblyCreateBom(QtCore.QObject):
         return False
 
     def createBomObject(self):
-        bom_group = UtilsAssembly.getBomGroup(self.assembly)
-        self.bomObj = bom_group.newObject("Assembly::BomObject", "Bill of Materials")
+        assembly = UtilsAssembly.activeAssembly()
+        if assembly is not None:
+            bom_group = UtilsAssembly.getBomGroup(assembly)
+            self.bomObj = bom_group.newObject("Assembly::BomObject", "Bill of Materials")
+        else:
+            self.bomObj = App.activeDocument().addObject("Assembly::BomObject", "Bill of Materials")
 
     def export(self):
         self.bomObj.recompute()

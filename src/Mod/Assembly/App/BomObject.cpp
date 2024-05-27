@@ -151,10 +151,18 @@ void BomObject::generateBOM()
     }
     ++row;
 
-    addObjectChildrenToBom(getAssembly(), row, "");
+    auto* assembly = getAssembly();
+    if (assembly) {
+        addObjectChildrenToBom(assembly->getOutList(), row, "");
+    }
+    else {
+        addObjectChildrenToBom(getDocument()->getRootObjectsIgnoreLinks(), row, "");
+    }
 }
 
-void BomObject::addObjectChildrenToBom(App::DocumentObject* obj, size_t& row, std::string index)
+void BomObject::addObjectChildrenToBom(std::vector<App::DocumentObject*> objs,
+                                       size_t& row,
+                                       std::string index)
 {
     int nameColIndex = getColumnIndex("Name");
     int quantityColIndex = getColumnIndex("Quantity");
@@ -168,7 +176,7 @@ void BomObject::addObjectChildrenToBom(App::DocumentObject* obj, size_t& row, st
 
     size_t sub_i = 1;
 
-    for (auto* child : obj->getOutList()) {
+    for (auto* child : objs) {
         if (child->isDerivedFrom<App::Link>()) {
             child = static_cast<App::Link*>(child)->getLinkedObject();
         }
@@ -211,7 +219,7 @@ void BomObject::addObjectChildrenToBom(App::DocumentObject* obj, size_t& row, st
             if (child->isDerivedFrom<App::DocumentObjectGroup>()
                 || (child->isDerivedFrom<AssemblyObject>() && detailSubAssemblies.getValue())
                 || (child->isDerivedFrom<App::Part>() && detailParts.getValue())) {
-                addObjectChildrenToBom(child, row, sub_index);
+                addObjectChildrenToBom(child->getOutList(), row, sub_index);
             }
         }
     }

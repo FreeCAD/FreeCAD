@@ -77,7 +77,8 @@ public:
 
     void generateBOM();
     void addObjectToBom(App::DocumentObject* obj, size_t row, std::string index);
-    void addObjectChildrenToBom(App::DocumentObject* obj, size_t& row, std::string index);
+    void
+    addObjectChildrenToBom(std::vector<App::DocumentObject*> objs, size_t& row, std::string index);
     void saveCustomColumnData();
 
     AssemblyObject* getAssembly();
