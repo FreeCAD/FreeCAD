@@ -1565,12 +1565,13 @@ Gui--PropertyEditor--PropertyEditor {
   qproperty-groupTextColor: white;
   qproperty-groupBackground: #3c3c3c;
   border: 0px solid #020202;
+  border: 0px solid #595963;
+  border: 0px solid #333365;
 }
 
 /* Action group */
 QFrame[class="panel"] {
-background-color: qlineargradient(x1:0, y1:0, x2:0, y2:0.3,stop:0 #595963 stop:1 #333365);
-
+background-color: rgba(60, 60, 60, 0.50);
 }
 
 QSint--ActionGroup {
@@ -1716,7 +1717,7 @@ QSint--ActionGroup QFrame[class="content"] QToolButton {
   color: white;
   text-align: center;
   background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #333333, stop:1 #252525);
-  border: 0px solid #adadad;
+  border: 1px solid #adadad;
   padding: 1px 1px; /* different than regular QPushButton */
   margin: 0px; /* different than regular QPushButton */
   min-height: 16px; /* same as QTabBar QPushButton min-width */

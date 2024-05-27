@@ -19,7 +19,7 @@
       <tag>classic theme</tag>
     </preferencepack>
 	<preferencepack>
-	<name>Light theme</name>
+	  <name>Light theme</name>
       <type>Theme</type>
       <description>Applies a basic light theme.</description>
       <version>0.1.0</version>
@@ -28,7 +28,7 @@
 	  <tag>light</tag>
     </preferencepack>
 	<preferencepack>
-	<name>Dark theme</name>
+	  <name>Dark theme</name>
       <type>Theme</type>
       <description>Applies a basic dark theme.</description>
       <version>1.0.0</version>
@@ -37,7 +37,6 @@
 	  <tag>dark</tag>
     </preferencepack>
     <preferencepack>
-     <preferencepack>
       <name>ProDark</name>
       <type>Theme</type>
       <description>Applies a dark background and a darker stylesheet.</description>
@@ -46,7 +45,6 @@
       <tag>dark</tag>
       <tag>background</tag>
       <tag>stylesheet</tag>
-      <tag>theme</tag>
     </preferencepack>
     <preferencepack>
       <name>Dark behave</name>
@@ -57,7 +55,6 @@
       <tag>dark</tag>
       <tag>background</tag>
       <tag>stylesheet</tag>
-      <tag>theme</tag>
     </preferencepack>
   </content>
 

@@ -55,13 +55,15 @@ void ThemeSelectorWidget::setupButtons(QBoxLayout* layout)
     if (!layout) {
         return;
     }
-    std::map<Theme, QString> themeMap {{Theme::Classic, tr("Classic")},
-                                       {Theme::Light, tr("Light theme")},
-                                       {Theme::Dark, tr("Dark theme")}};
+    std::map<Theme, QString> themeMap {
+                                       {Theme::Classic, tr("Classic")},
+                                       {Theme::Dark, tr("Dark theme")},
+                                       {Theme::Light, tr("Light theme")}
+                                       };
     std::map<Theme, QIcon> iconMap {
-        {Theme::Classic, QIcon(QLatin1String(":/thumbnails/Classic512.png"))},
-        {Theme::Light, QIcon(QLatin1String(":/thumbnails/OpenLight512.png"))},
-        {Theme::Dark, QIcon(QLatin1String(":/thumbnails/OpenDark512.png"))}};
+        {Theme::Classic, QIcon(QLatin1String(":/thumbnails/Classic418.png"))},
+        {Theme::Light, QIcon(QLatin1String(":/thumbnails/Light_theme418.png"))},
+        {Theme::Dark, QIcon(QLatin1String(":/thumbnails/Dark_theme418.png"))}};
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/MainWindow");
     auto styleSheetName = QString::fromStdString(hGrp->GetASCII("StyleSheet"));
@@ -77,12 +79,12 @@ void ThemeSelectorWidget::setupButtons(QBoxLayout* layout)
             button->setChecked(true);
         }
         else if (theme.first == Theme::Light
-                 && styleSheetName.contains(QLatin1String("light"),
+                 && styleSheetName.contains(QLatin1String("Light theme"),
                                             Qt::CaseSensitivity::CaseInsensitive)) {
             button->setChecked(true);
         }
         else if (theme.first == Theme::Dark
-                 && styleSheetName.contains(QLatin1String("dark"),
+                 && styleSheetName.contains(QLatin1String("Dark theme"),
                                             Qt::CaseSensitivity::CaseInsensitive)) {
             button->setChecked(true);
         }
@@ -116,10 +118,10 @@ void ThemeSelectorWidget::themeChanged(Theme newTheme)
             prefPackManager->apply("Classic");
             break;
         case Theme::Dark:
-            prefPackManager->apply("Dark");
+            prefPackManager->apply("Dark theme");
             break;
         case Theme::Light:
-            prefPackManager->apply("Light");
+            prefPackManager->apply("Light theme");
             break;
     }
 }
@@ -136,7 +138,7 @@ void ThemeSelectorWidget::retranslateUi()
 {
     _titleLabel->setText(QLatin1String("<h2>") + tr("Theme") + QLatin1String("</h2>"));
     _descriptionLabel->setText(tr("More themes are available online using the Addon Manager"));
+    _buttons[static_cast<int>(Theme::Dark)]->setText(tr("Dark theme", "Visual theme name"));
+    _buttons[static_cast<int>(Theme::Light)]->setText(tr("Light theme", "Visual theme name"));
     _buttons[static_cast<int>(Theme::Classic)]->setText(tr("Classic", "Visual theme name"));
-    _buttons[static_cast<int>(Theme::Light)]->setText(tr("Light", "Visual theme name"));
-    _buttons[static_cast<int>(Theme::Dark)]->setText(tr("Dark", "Visual theme name"));
-}
+ }

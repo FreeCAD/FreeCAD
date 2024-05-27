@@ -137,37 +137,37 @@ QFrame {
 }
 
 Gui--OverlayToolButton[objectName="OBTN Transparent"] {
-  image: url(qss:overlay/icon/transparent_dark.svg);
+  image: url(qss:overlay/icons/transparent_dark.svg);
 }
 
 Gui--OverlayToolButton[objectName="OBTN Transparent"]:hover {
-  image: url(qss:overlay/icon/transparent_light.svg);
+  image: url(qss:overlay/icons/transparent_light.svg);
 }
 
 Gui--OverlayToolButton[objectName="OBTN Overlay"] {
-  image: url(qss:overlay/icon/overlay_dark.svg);
+  image: url(qss:overlay/icons/overlay_dark.svg);
 }
 
 Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
-  image: url(qss:overlay/icon/overlay_light.svg);
+  image: url(qss:overlay/icons/overlay_light.svg);
 }
 
 Gui--OverlayToolButton[objectName="OBTN AutoMode"] {
-  image: url(qss:overlay/icon/mode_dark.svg);
+  image: url(qss:overlay/icons/mode_dark.svg);
 }
 
 Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
-  image: url(qss:overlay/icon/mode_light.svg);
+  image: url(qss:overlay/icons/mode_light.svg);
 }
 
 Gui--OverlaySplitterHandle Gui--OverlayToolButton,
 Gui--OverlayToolButton[objectName="OBTN Float"] {
-  image: url(qss:overlay/icon/float_dark.svg);
+  image: url(qss:overlay/icons/float_dark.svg);
 }
 
 Gui--OverlaySplitterHandle Gui--OverlayToolButton:hover,
 Gui--OverlayToolButton[objectName="OBTN Float"]:hover {
-  image: url(qss:overlay/icon/float_light.svg);
+  image: url(qss:overlay/icons/float_light.svg);
 }
 
 Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:has-siblings:!adjoins-item {

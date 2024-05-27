@@ -36,9 +36,9 @@ namespace StartGui
 
 enum class Theme
 {
-    Classic,
+    Dark,
     Light,
-    Dark
+    Classic
 };
 
 /// A widget to allow selection of the UI theme (color scheme).

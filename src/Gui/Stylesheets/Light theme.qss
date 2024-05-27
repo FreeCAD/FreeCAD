@@ -1576,7 +1576,7 @@ Gui--PropertyEditor--PropertyEditor {
 
 /* Action group */
 QFrame[class="panel"] {
-background-color: qlineargradient(x1:0, y1:0, x2:0, y2:0.3,stop:0 #ababc1 stop:1 #333365);
+background-color: rgba(237, 237, 237, 0.5);
 
 }
 
@@ -1603,14 +1603,16 @@ QSint--ActionGroup QFrame[height="1"],
 QSint--ActionGroup QFrame[width="1"],
 QSint--ActionGroup QFrame[width="1"],
 QSint--ActionGroup QFrame[width="1"] {
-border-color: rgba(0,0,0,60);
+/* border-color: #ababab; */
+border-top: #ababab;
+border-left: #ababab;
 }
 
 /* Panel header */
 QSint--ActionGroup QFrame[class="header"] {
 border: 1px solid #ffffff;
 /*background-color: #d4d4d4; /* Task Panel Header background color */
-background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop:0 #ffffff stop:1 #c6d3f7);
+background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop:0 #e8f2fb, stop:1 #418FDE);
 border-top-left-radius: 3px;
 border-top-right-radius: 3px;
 border-bottom-left-radius: 0px;
@@ -1622,7 +1624,7 @@ color: #215dc6;
 
 QSint--ActionGroup QFrame[class="header"]:hover {
   /* background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop:0 #ffffff stop:1 #313d61); */
-  color: #428eff;
+  color: #418FDE;
 }
 
 QSint--ActionGroup QToolButton[class="header"] {
@@ -1667,7 +1669,7 @@ image: url(qss:images_classic/FoldOver_Blue1.png) ;
 }
 
 QSint--ActionGroup QFrame[class="content"] {
-background-color: #d6dff7; /* Task Panel background color */
+background-color: #c7def5; /* Task Panel background color */
 margin: 0px;
 padding: 0px;
 border-bottom: 1px solid #ffffff;
@@ -1680,7 +1682,7 @@ border-bottom-right-radius: 3px;
 }
 
 QSint--ActionGroup QFrame[class="content"] > QWidget {
-background-color: #c6d3f7; /* Task Panel background color */
+background-color: #c7def5; /* Task Panel background color */
 }
 
 /* Fixs for tabs inside Task Panel */
