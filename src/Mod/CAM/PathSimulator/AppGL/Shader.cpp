@@ -473,7 +473,7 @@ const char* FragShaderSSAO =
                                                                         // sample
 
     // range check & accumulate
-    "        float rangeCheck = smoothstep(0.0, 1.0, radius * 0.1f / abs(fragPos.z - sampleDepth));  \n"
+    "        float rangeCheck = smoothstep(0.0, 1.0, radius * 0.1f / abs(sampleDepth - fragPos.z));  \n"
     "        occlusion += (sampleDepth >= samplePos.z + bias ? 1.0 : 0.0) * rangeCheck;  \n"
     "    }  \n"
     "    occlusion = 1.0 - (occlusion / kernelSize);  \n"
@@ -519,7 +519,7 @@ const char* FragShaderSSAOLighting =
     // attenuation
     "    float distance = length(lightPos - FragPos);  \n"
     "    float attenuation = 1.0 / (1.0 + lightLinear * distance);  \n"
-    "    lighting += (diffuse + specular) * attenuation;  \n"
+    "    lighting += (diffuse + specular * 0.3) * attenuation;  \n"
 
     "    FragColor = vec4(lighting, DiffuseA.a);  \n"
     "}  \n";
@@ -560,7 +560,7 @@ const char* FragShaderStdLighting =
     // attenuation
     "    float distance = length(lightPos - FragPos);  \n"
     "    float attenuation = 1.0 / (1.0 + lightLinear * distance);  \n"
-    "    lighting += (diffuse + specular) * attenuation;  \n"
+    "    lighting += (diffuse + specular * 0.3) * attenuation;  \n"
 
     "    FragColor = vec4(lighting, DiffuseA.a);  \n"
     "}  \n";

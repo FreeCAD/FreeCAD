@@ -201,7 +201,7 @@ void SimDisplay::CreateSsaoFbos()
         vec3_set(sample,
                  randomFloats(generator) * 2.0f - 1.0f,
                  randomFloats(generator) * 2.0f - 1.0f,
-                 randomFloats(generator) * 2.0f - 1.0f);
+                 randomFloats(generator));// * 2.0f - 1.0f);
         vec3_norm(sample, sample);
         vec3_scale(sample, sample, randomFloats(generator));
         float scale = float(i) / 64.0f;
