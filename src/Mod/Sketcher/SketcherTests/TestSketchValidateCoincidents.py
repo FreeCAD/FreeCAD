@@ -81,6 +81,23 @@ class TestSketchValidateCoincidents(unittest.TestCase):
         self.assertEqual(sketch.detectDegeneratedGeometries(tol), 0)
         self.assertEqual(sketch.ConstraintCount, 0)
 
+    def testDeleteConstraintsToExternalCase(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        self.Doc.recompute()
+        sketch.addExternal("Box", "Edge12")
+
+        v0 = Vector(-47.680691, 18.824165000000004, 0.0)
+        v1 = Vector(-47.680691, -27.346279, 0.0)
+        geo0 = sketch.addGeometry(Part.LineSegment(v0, v1))
+        sketch.addConstraint(Sketcher.Constraint("Horizontal", geo0))
+        sketch.addConstraint(Sketcher.Constraint("Equal", -3, geo0))
+        self.Doc.recompute()
+        self.assertEqual(sketch.ConstraintCount, 2)
+        sketch.delConstraintsToExternal()
+        self.Doc.recompute()
+        self.assertEqual(sketch.ConstraintCount, 1)
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument(self.Doc.Name)
