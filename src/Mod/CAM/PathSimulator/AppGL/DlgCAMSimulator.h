@@ -23,16 +23,10 @@
 #ifndef PATHSIMULATOR_CAMSimulatorGui_H
 #define PATHSIMULATOR_CAMSimulatorGui_H
 
-// #include <memory>
-// #include <TopoDS_Shape.hxx>
-
-// #include <Mod/CAM/App/Command.h>
-// #include <Mod/Part/App/TopoShape.h>
-// #include <Mod/CAM/PathGlobal.h>
-#include <QtGui/qwindow.h>
+#include <QWindow>
 #include <QOpenGLExtraFunctions>
-#include <QtGui/qpainter.h>
-#include <QtGui/qopenglpaintdevice.h>
+#include <QPainter>
+#include <QOpenGLPaintDevice>
 
 
 namespace MillSim
@@ -59,8 +53,7 @@ class DlgCAMSimulator: public QWindow, public QOpenGLExtraFunctions
     Q_OBJECT
 public:
     explicit DlgCAMSimulator(QWindow* parent = nullptr);
-    ~DlgCAMSimulator()
-    {}
+    ~DlgCAMSimulator() override = default;
 
     virtual void render(QPainter* painter);
     virtual void render();
