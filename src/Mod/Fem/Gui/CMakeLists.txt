@@ -366,6 +366,7 @@ SET(FemGuiSymbol_IV
     Resources/symbols/ConstraintSectionPrint.iv
     Resources/symbols/ConstraintSpring.iv
     Resources/symbols/ConstraintTemperature.iv
+    Resources/symbols/ConstraintTransform.iv
     Resources/symbols/ConstraintTie.iv
 )
 
