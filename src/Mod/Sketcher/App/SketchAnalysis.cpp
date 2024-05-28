@@ -142,14 +142,121 @@ struct Edge_EqualTo
     {}
     bool operator()(const EdgeIds& x, const EdgeIds& y) const
     {
-        if (fabs(x.l - y.l) <= tolerance) {
-            return true;
-        }
-        return false;
+        return (fabs(x.l - y.l) <= tolerance);
     }
 
 private:
     double tolerance;
+};
+
+struct PointConstraints
+{
+    explicit PointConstraints(std::vector<VertexIds>& vertexIds)
+        : vertexIds {vertexIds}
+    {}
+
+    void addGeometry(const Part::Geometry* geo, int index)
+    {
+        if (const auto* segm = dynamic_cast<const Part::GeomLineSegment*>(geo)) {
+            addLineSegment(segm, index);
+        }
+        else if (const auto* segm = dynamic_cast<const Part::GeomArcOfCircle*>(geo)) {
+            addArcOfCircle(segm, index);
+        }
+        else if (const auto* segm = dynamic_cast<const Part::GeomArcOfEllipse*>(geo)) {
+            addArcOfEllipse(segm, index);
+        }
+        else if (const auto* segm = dynamic_cast<const Part::GeomArcOfHyperbola*>(geo)) {
+            addArcOfHyperbola(segm, index);
+        }
+        else if (const auto* segm = dynamic_cast<const Part::GeomArcOfParabola*>(geo)) {
+            addArcOfParabola(segm, index);
+        }
+        else if (const auto* segm = dynamic_cast<const Part::GeomBSplineCurve*>(geo)) {
+            addBSplineCurve(segm, index);
+        }
+    }
+
+    void addLineSegment(const Part::GeomLineSegment* segm, int index)
+    {
+        VertexIds id;
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::start;
+        id.v = segm->getStartPoint();
+        vertexIds.push_back(id);
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::end;
+        id.v = segm->getEndPoint();
+        vertexIds.push_back(id);
+    }
+
+    void addArcOfCircle(const Part::GeomArcOfCircle* segm, int index)
+    {
+        VertexIds id;
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::start;
+        id.v = segm->getStartPoint(/*emulateCCW=*/true);
+        vertexIds.push_back(id);
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::end;
+        id.v = segm->getEndPoint(/*emulateCCW=*/true);
+        vertexIds.push_back(id);
+    }
+
+    void addArcOfEllipse(const Part::GeomArcOfEllipse* segm, int index)
+    {
+        VertexIds id;
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::start;
+        id.v = segm->getStartPoint(/*emulateCCW=*/true);
+        vertexIds.push_back(id);
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::end;
+        id.v = segm->getEndPoint(/*emulateCCW=*/true);
+        vertexIds.push_back(id);
+    }
+
+    void addArcOfHyperbola(const Part::GeomArcOfHyperbola* segm, int index)
+    {
+        VertexIds id;
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::start;
+        id.v = segm->getStartPoint();
+        vertexIds.push_back(id);
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::end;
+        id.v = segm->getEndPoint();
+        vertexIds.push_back(id);
+    }
+
+    void addArcOfParabola(const Part::GeomArcOfParabola* segm, int index)
+    {
+        VertexIds id;
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::start;
+        id.v = segm->getStartPoint();
+        vertexIds.push_back(id);
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::end;
+        id.v = segm->getEndPoint();
+        vertexIds.push_back(id);
+    }
+
+    void addBSplineCurve(const Part::GeomBSplineCurve* segm, int index)
+    {
+        VertexIds id;
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::start;
+        id.v = segm->getStartPoint();
+        vertexIds.push_back(id);
+        id.GeoId = index;
+        id.PosId = Sketcher::PointPos::end;
+        id.v = segm->getEndPoint();
+        vertexIds.push_back(id);
+    }
+
+private:
+    std::vector<VertexIds>& vertexIds;
 };
 
 }  // namespace
@@ -158,6 +265,7 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
                                                          bool includeconstruction /*=true*/)
 {
     std::vector<VertexIds> vertexIds;  // Holds a list of all vertices in the sketch
+    PointConstraints pointConstr(vertexIds);
 
     // Build the list of sketch vertices
     const std::vector<Part::Geometry*>& geom = sketch->getInternalGeometry();
@@ -168,84 +276,7 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
             continue;
         }
 
-        if (gf->getGeometry()->is<Part::GeomLineSegment>()) {
-            const Part::GeomLineSegment* segm =
-                static_cast<const Part::GeomLineSegment*>(gf->getGeometry());
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::start;
-            id.v = segm->getStartPoint();
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::end;
-            id.v = segm->getEndPoint();
-            vertexIds.push_back(id);
-        }
-        else if (gf->getGeometry()->is<Part::GeomArcOfCircle>()) {
-            const Part::GeomArcOfCircle* segm =
-                static_cast<const Part::GeomArcOfCircle*>(gf->getGeometry());
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::start;
-            id.v = segm->getStartPoint(/*emulateCCW=*/true);
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::end;
-            id.v = segm->getEndPoint(/*emulateCCW=*/true);
-            vertexIds.push_back(id);
-        }
-        else if (gf->getGeometry()->is<Part::GeomArcOfEllipse>()) {
-            const Part::GeomArcOfEllipse* segm =
-                static_cast<const Part::GeomArcOfEllipse*>(gf->getGeometry());
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::start;
-            id.v = segm->getStartPoint(/*emulateCCW=*/true);
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::end;
-            id.v = segm->getEndPoint(/*emulateCCW=*/true);
-            vertexIds.push_back(id);
-        }
-        else if (gf->getGeometry()->is<Part::GeomArcOfHyperbola>()) {
-            const Part::GeomArcOfHyperbola* segm =
-                static_cast<const Part::GeomArcOfHyperbola*>(gf->getGeometry());
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::start;
-            id.v = segm->getStartPoint();
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::end;
-            id.v = segm->getEndPoint();
-            vertexIds.push_back(id);
-        }
-        else if (gf->getGeometry()->is<Part::GeomArcOfParabola>()) {
-            const Part::GeomArcOfParabola* segm =
-                static_cast<const Part::GeomArcOfParabola*>(gf->getGeometry());
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::start;
-            id.v = segm->getStartPoint();
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::end;
-            id.v = segm->getEndPoint();
-            vertexIds.push_back(id);
-        }
-        else if (gf->getGeometry()->is<Part::GeomBSplineCurve>()) {
-            const Part::GeomBSplineCurve* segm =
-                static_cast<const Part::GeomBSplineCurve*>(gf->getGeometry());
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::start;
-            id.v = segm->getStartPoint();
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::PointPos::end;
-            id.v = segm->getEndPoint();
-            vertexIds.push_back(id);
-        }
+        pointConstr.addGeometry(gf->getGeometry(), int(i));
         // TODO take into account single vertices ?
     }
 
@@ -257,10 +288,13 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
     std::vector<Sketcher::Constraint*> coincidences = sketch->Constraints.getValues();
 
     for (auto& constraint : sketch->Constraints.getValues()) {
-        if (constraint->Type == Sketcher::Coincident || constraint->Type == Sketcher::Tangent
-            || constraint->Type == Sketcher::Perpendicular) {
+        // clang-format off
+        if (constraint->Type == Sketcher::Coincident ||
+            constraint->Type == Sketcher::Tangent ||
+            constraint->Type == Sketcher::Perpendicular) {
             coincidences.push_back(constraint);
         }
+        // clang-format on
         // TODO optimizing by removing constraints not applying on vertices ?
     }
 
@@ -295,7 +329,8 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
             // Decompose the group of adjacent vertices into groups of coincident vertices
             // Going through existent coincidences
             for (auto& coincidence : coincidences) {
-                VertexIds v1, v2;
+                VertexIds v1;
+                VertexIds v2;
                 v1.GeoId = coincidence->First;
                 v1.PosId = coincidence->FirstPos;
                 v2.GeoId = coincidence->Second;
@@ -407,10 +442,8 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
 
             if (geo1->is<Part::GeomLineSegment>() && geo2->is<Part::GeomLineSegment>()) {
 
-                const Part::GeomLineSegment* segm1 =
-                    static_cast<const Part::GeomLineSegment*>(geo1);
-                const Part::GeomLineSegment* segm2 =
-                    static_cast<const Part::GeomLineSegment*>(geo2);
+                const auto* segm1 = static_cast<const Part::GeomLineSegment*>(geo1);
+                const auto* segm2 = static_cast<const Part::GeomLineSegment*>(geo2);
 
                 Base::Vector3d dir1 = segm1->getEndPoint() - segm1->getStartPoint();
                 Base::Vector3d dir2 = segm2->getEndPoint() - segm2->getStartPoint();
@@ -424,7 +457,8 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
             }
 
             try {
-                double u1, u2;
+                double u1;
+                double u2;
 
                 curve1->closestParameter(vc.v, u1);
                 curve2->closestParameter(vc.v, u2);
