@@ -190,7 +190,7 @@ class BIM_Views:
 
         vm = findWidget()
         if vm and FreeCAD.ActiveDocument:
-            if vm.isVisible() and (vm.tree.state().name != "EditingState"):
+            if vm.isVisible() and (vm.tree.state() != vm.tree.State.EditingState):
                 vm.tree.clear()
                 import Draft
 
