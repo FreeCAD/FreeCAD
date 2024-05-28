@@ -591,56 +591,17 @@ int SketchAnalysis::detectMissingVerticalHorizontalConstraints(double anglepreci
     return verthorizConstraints.size();
 }
 
-void SketchAnalysis::makeMissingVerticalHorizontal(bool onebyone)
+void SketchAnalysis::makeMissingVerticalHorizontal()
 {
-    int status, dofs;
-    std::vector<Sketcher::Constraint*> constr;
+    makeConstraints(verthorizConstraints);
+}
 
-    for (std::vector<Sketcher::ConstraintIds>::iterator it = verthorizConstraints.begin();
-         it != verthorizConstraints.end();
-         ++it) {
-        Sketcher::Constraint* c = new Sketcher::Constraint();
-        c->Type = it->Type;
-        c->First = it->First;
-        c->Second = it->Second;
-        c->FirstPos = it->FirstPos;
-        c->SecondPos = it->SecondPos;
-
-        if (onebyone) {
-            // addConstraint() creates a clone
-            sketch->addConstraint(c);
-            delete c;
-
-            solvesketch(status, dofs, true);
-
-            if (status == -2) {  // redundant constraints
-                sketch->autoRemoveRedundants(false);
-
-                solvesketch(status, dofs, false);
-            }
-
-            if (status) {
-                THROWMT(Base::RuntimeError,
-                        QT_TRANSLATE_NOOP("Exceptions",
-                                          "Autoconstrain error: Unsolvable sketch while applying "
-                                          "vertical/horizontal constraints."));
-            }
-        }
-        else {
-            constr.push_back(c);
-        }
-    }
-
-    if (!onebyone) {
-        sketch->addConstraints(constr);
-    }
-
-    verthorizConstraints.clear();
-
-    for (std::vector<Sketcher::Constraint*>::iterator it = constr.begin(); it != constr.end();
-         ++it) {
-        delete *it;
-    }
+void SketchAnalysis::makeMissingVerticalHorizontalOneByOne()
+{
+    makeConstraintsOneByOne(verthorizConstraints,
+                            QT_TRANSLATE_NOOP("Exceptions",
+                                              "Autoconstrain error: Unsolvable sketch while "
+                                              "applying vertical/horizontal constraints."));
 }
 
 bool SketchAnalysis::checkVertical(Base::Vector3d dir, double angleprecision)

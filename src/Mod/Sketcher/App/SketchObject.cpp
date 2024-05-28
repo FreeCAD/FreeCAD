@@ -9833,8 +9833,10 @@ void SketchObject::makeMissingPointOnPointCoincident(bool onebyone)
 
 void SketchObject::makeMissingVerticalHorizontal(bool onebyone)
 {
-    if (analyser)
-        analyser->makeMissingVerticalHorizontal(onebyone);
+    if (analyser) {
+        onebyone ? analyser->makeMissingVerticalHorizontalOneByOne()
+                 : analyser->makeMissingVerticalHorizontal();
+    }
 }
 
 void SketchObject::makeMissingEquality(bool onebyone)

@@ -116,7 +116,8 @@ public:
         verthorizConstraints = cl;
     }
     /// Vertical/Horizontal constraints simple routine Make step (see constructor)
-    void makeMissingVerticalHorizontal(bool onebyone = false);
+    void makeMissingVerticalHorizontal();
+    void makeMissingVerticalHorizontalOneByOne();
 
     /// Equality constraints simple routine Detect step (see constructor)
     int detectMissingEqualityConstraints(double precision);
