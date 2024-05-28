@@ -259,6 +259,122 @@ private:
     std::vector<VertexIds>& vertexIds;
 };
 
+struct EqualityConstraints
+{
+    void addGeometry(const Part::Geometry* geo, int index)
+    {
+        if (const auto* segm = dynamic_cast<const Part::GeomLineSegment*>(geo)) {
+            addLineSegment(segm, index);
+        }
+        else if (const auto* segm = dynamic_cast<const Part::GeomArcOfCircle*>(geo)) {
+            addArcOfCircle(segm, index);
+        }
+        else if (const auto* segm = dynamic_cast<const Part::GeomCircle*>(geo)) {
+            addCircle(segm, index);
+        }
+    }
+
+    void addLineSegment(const Part::GeomLineSegment* segm, int index)
+    {
+        EdgeIds id;
+        id.GeoId = index;
+        id.l = (segm->getEndPoint() - segm->getStartPoint()).Length();
+        lineedgeIds.push_back(id);
+    }
+
+    void addArcOfCircle(const Part::GeomArcOfCircle* segm, int index)
+    {
+        EdgeIds id;
+        id.GeoId = index;
+        id.l = segm->getRadius();
+        radiusedgeIds.push_back(id);
+    }
+
+    void addCircle(const Part::GeomCircle* segm, int index)
+    {
+        EdgeIds id;
+        id.GeoId = index;
+        id.l = segm->getRadius();
+        radiusedgeIds.push_back(id);
+    }
+
+    std::list<ConstraintIds> getEqualLines(double precision)
+    {
+        std::sort(lineedgeIds.begin(), lineedgeIds.end(), Edge_Less(precision));
+        auto vt = lineedgeIds.begin();
+        Edge_EqualTo pred(precision);
+
+        std::list<ConstraintIds> equallines;
+        // Make a list of constraint we expect for coincident vertexes
+        while (vt < lineedgeIds.end()) {
+            // get first item whose adjacent element has the same vertex coordinates
+            vt = std::adjacent_find(vt, lineedgeIds.end(), pred);
+            if (vt < lineedgeIds.end()) {
+                std::vector<EdgeIds>::iterator vn;
+                for (vn = vt + 1; vn != lineedgeIds.end(); ++vn) {
+                    if (pred(*vt, *vn)) {
+                        ConstraintIds id;
+                        id.Type = Equal;
+                        id.v.x = vt->l;
+                        id.First = vt->GeoId;
+                        id.FirstPos = Sketcher::PointPos::none;
+                        id.Second = vn->GeoId;
+                        id.SecondPos = Sketcher::PointPos::none;
+                        equallines.push_back(id);
+                    }
+                    else {
+                        break;
+                    }
+                }
+
+                vt = vn;
+            }
+        }
+
+        return equallines;
+    }
+
+    std::list<ConstraintIds> getEqualRadius(double precision)
+    {
+        std::sort(radiusedgeIds.begin(), radiusedgeIds.end(), Edge_Less(precision));
+        auto vt = radiusedgeIds.begin();
+        Edge_EqualTo pred(precision);
+
+        std::list<ConstraintIds> equalradius;
+        // Make a list of constraint we expect for coincident vertexes
+        while (vt < radiusedgeIds.end()) {
+            // get first item whose adjacent element has the same vertex coordinates
+            vt = std::adjacent_find(vt, radiusedgeIds.end(), pred);
+            if (vt < radiusedgeIds.end()) {
+                std::vector<EdgeIds>::iterator vn;
+                for (vn = vt + 1; vn != radiusedgeIds.end(); ++vn) {
+                    if (pred(*vt, *vn)) {
+                        ConstraintIds id;
+                        id.Type = Equal;
+                        id.v.x = vt->l;
+                        id.First = vt->GeoId;
+                        id.FirstPos = Sketcher::PointPos::none;
+                        id.Second = vn->GeoId;
+                        id.SecondPos = Sketcher::PointPos::none;
+                        equalradius.push_back(id);
+                    }
+                    else {
+                        break;
+                    }
+                }
+
+                vt = vn;
+            }
+        }
+
+        return equalradius;
+    }
+
+private:
+    std::vector<EdgeIds> lineedgeIds;
+    std::vector<EdgeIds> radiusedgeIds;
+};
+
 }  // namespace
 
 int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
@@ -614,94 +730,16 @@ bool SketchAnalysis::checkHorizontal(Base::Vector3d dir, double angleprecision)
 
 int SketchAnalysis::detectMissingEqualityConstraints(double precision)
 {
-    std::vector<EdgeIds> lineedgeIds;
-    std::vector<EdgeIds> radiusedgeIds;
+    EqualityConstraints equalConstr;
 
     const std::vector<Part::Geometry*>& geom = sketch->getInternalGeometry();
     for (std::size_t i = 0; i < geom.size(); i++) {
         Part::Geometry* g = geom[i];
-
-        if (const auto* segm = dynamic_cast<const Part::GeomLineSegment*>(g)) {
-            EdgeIds id;
-            id.GeoId = (int)i;
-            id.l = (segm->getEndPoint() - segm->getStartPoint()).Length();
-            lineedgeIds.push_back(id);
-        }
-        else if (const auto* segm = dynamic_cast<const Part::GeomArcOfCircle*>(g)) {
-            EdgeIds id;
-            id.GeoId = (int)i;
-            id.l = segm->getRadius();
-            radiusedgeIds.push_back(id);
-        }
-        else if (const auto* segm = dynamic_cast<const Part::GeomCircle*>(g)) {
-            EdgeIds id;
-            id.GeoId = (int)i;
-            id.l = segm->getRadius();
-            radiusedgeIds.push_back(id);
-        }
+        equalConstr.addGeometry(g, int(i));
     }
 
-    std::sort(lineedgeIds.begin(), lineedgeIds.end(), Edge_Less(precision));
-    auto vt = lineedgeIds.begin();
-    Edge_EqualTo pred(precision);
-
-    std::list<ConstraintIds> equallines;
-    // Make a list of constraint we expect for coincident vertexes
-    while (vt < lineedgeIds.end()) {
-        // get first item whose adjacent element has the same vertex coordinates
-        vt = std::adjacent_find(vt, lineedgeIds.end(), pred);
-        if (vt < lineedgeIds.end()) {
-            std::vector<EdgeIds>::iterator vn;
-            for (vn = vt + 1; vn != lineedgeIds.end(); ++vn) {
-                if (pred(*vt, *vn)) {
-                    ConstraintIds id;
-                    id.Type = Equal;
-                    id.v.x = vt->l;
-                    id.First = vt->GeoId;
-                    id.FirstPos = Sketcher::PointPos::none;
-                    id.Second = vn->GeoId;
-                    id.SecondPos = Sketcher::PointPos::none;
-                    equallines.push_back(id);
-                }
-                else {
-                    break;
-                }
-            }
-
-            vt = vn;
-        }
-    }
-
-    std::sort(radiusedgeIds.begin(), radiusedgeIds.end(), Edge_Less(precision));
-    vt = radiusedgeIds.begin();
-
-    std::list<ConstraintIds> equalradius;
-    // Make a list of constraint we expect for coincident vertexes
-    while (vt < radiusedgeIds.end()) {
-        // get first item whose adjacent element has the same vertex coordinates
-        vt = std::adjacent_find(vt, radiusedgeIds.end(), pred);
-        if (vt < radiusedgeIds.end()) {
-            std::vector<EdgeIds>::iterator vn;
-            for (vn = vt + 1; vn != radiusedgeIds.end(); ++vn) {
-                if (pred(*vt, *vn)) {
-                    ConstraintIds id;
-                    id.Type = Equal;
-                    id.v.x = vt->l;
-                    id.First = vt->GeoId;
-                    id.FirstPos = Sketcher::PointPos::none;
-                    id.Second = vn->GeoId;
-                    id.SecondPos = Sketcher::PointPos::none;
-                    equalradius.push_back(id);
-                }
-                else {
-                    break;
-                }
-            }
-
-            vt = vn;
-        }
-    }
-
+    std::list<ConstraintIds> equallines = equalConstr.getEqualLines(precision);
+    std::list<ConstraintIds> equalradius = equalConstr.getEqualRadius(precision);
 
     // Go through the available 'Coincident', 'Tangent' or 'Perpendicular' constraints
     // and check which of them is forcing two vertexes to be coincident.
