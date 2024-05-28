@@ -91,10 +91,6 @@ void TaskTransformedParameters::setupUI()
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->comboMode,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskTransformedParameters::onModeChanged);
     connect(ui->buttonAddFeature,
             &QToolButton::toggled,
             this,
@@ -126,9 +122,25 @@ void TaskTransformedParameters::setupUI()
     auto pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
 
     using Mode = PartDesign::Transformed::Mode;
+
+    ui->buttonGroupMode->setId(ui->radioTransformBody, static_cast<int>(Mode::TransformBody));
+    ui->buttonGroupMode->setId(ui->radioTransformToolShapes, static_cast<int>(Mode::TransformToolShapes));
+
+    connect(ui->buttonGroupMode,
+            qOverload<int>(&QButtonGroup::idClicked),
+            this,
+            &TaskTransformedParameters::onModeChanged);
+
     auto const mode = static_cast<Mode>(pcTransformed->TransformMode.getValue());
     ui->groupFeatureList->setEnabled(mode == Mode::TransformToolShapes);
-    ui->comboMode->setCurrentIndex(static_cast<int>(mode));
+    switch (mode) {
+        case Mode::TransformBody:
+            ui->radioTransformBody->setChecked(true);
+            break;
+        case Mode::TransformToolShapes:
+            ui->radioTransformToolShapes->setChecked(true);
+            break;
+    }
 
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
     // Fill data into dialog elements
@@ -281,16 +293,20 @@ bool TaskTransformedParameters::isEnabledTransaction() const
     return enableTransaction;
 }
 
-void TaskTransformedParameters::onModeChanged(int mode)
+void TaskTransformedParameters::onModeChanged(int mode_id)
 {
-    using Mode = PartDesign::Transformed::Mode;
+    if (mode_id < 0) {
+        return;
+    }
 
     auto pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
-    pcTransformed->TransformMode.setValue(mode);
+    pcTransformed->TransformMode.setValue(mode_id);
 
-    auto const tmode = static_cast<Mode>(mode);
-    ui->groupFeatureList->setEnabled(tmode == Mode::TransformToolShapes);
-    if (tmode == Mode::TransformBody) {
+    using Mode = PartDesign::Transformed::Mode;
+    Mode const mode = static_cast<Mode>(mode_id);
+
+    ui->groupFeatureList->setEnabled(mode == Mode::TransformToolShapes);
+    if (mode == Mode::TransformBody) {
         ui->listWidgetFeatures->clear();
     }
     setupTransaction();

@@ -15,38 +15,45 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Mode:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="comboMode">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <item>
-        <property name="text">
-         <string>Transform tool shapes</string>
-        </property>
-       </item>
-       <item>
+    <widget class="QWidget" name="widget" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QRadioButton" name="radioTransformBody">
         <property name="text">
          <string>Transform body</string>
         </property>
-       </item>
-      </widget>
-     </item>
-    </layout>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">buttonGroupMode</string>
+        </attribute>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioTransformToolShapes">
+        <property name="text">
+         <string>Transform tool shapes</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">buttonGroupMode</string>
+        </attribute>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <widget class="QWidget" name="groupFeatureList" native="true">
@@ -122,7 +129,8 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>comboMode</tabstop>
+  <tabstop>radioTransformBody</tabstop>
+  <tabstop>radioTransformToolShapes</tabstop>
   <tabstop>buttonAddFeature</tabstop>
   <tabstop>buttonRemoveFeature</tabstop>
   <tabstop>listWidgetFeatures</tabstop>
@@ -130,4 +138,7 @@
  </tabstops>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroupMode"/>
+ </buttongroups>
 </ui>
