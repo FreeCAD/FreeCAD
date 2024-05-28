@@ -91,6 +91,18 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
             qOverload<int>(&QComboBox::activated),
             this,
             &TaskFemConstraintRigidBody::onRotModeZChanged);
+    connect(ui->qsb_ref_node_x,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskFemConstraintRigidBody::onRefNodeXChanged);
+    connect(ui->qsb_ref_node_y,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskFemConstraintRigidBody::onRefNodeYChanged);
+    connect(ui->qsb_ref_node_z,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskFemConstraintRigidBody::onRefNodeZChanged);
 
     this->groupLayout()->addWidget(proxy);
 
@@ -506,6 +518,29 @@ void TaskFemConstraintRigidBody::onTransModeZChanged(int item)
     }
 }
 
+void TaskFemConstraintRigidBody::onRefNodeXChanged(double value)
+{
+    auto obj = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
+    Base::Vector3d refNode = obj->ReferenceNode.getValue();
+    refNode.x = value;
+    obj->ReferenceNode.setValue(refNode);
+}
+
+void TaskFemConstraintRigidBody::onRefNodeYChanged(double value)
+{
+    auto obj = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
+    Base::Vector3d refNode = obj->ReferenceNode.getValue();
+    refNode.y = value;
+    obj->ReferenceNode.setValue(refNode);
+}
+
+void TaskFemConstraintRigidBody::onRefNodeZChanged(double value)
+{
+    auto obj = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
+    Base::Vector3d refNode = obj->ReferenceNode.getValue();
+    refNode.z = value;
+    obj->ReferenceNode.setValue(refNode);
+}
 
 const std::string TaskFemConstraintRigidBody::getReferences() const
 {

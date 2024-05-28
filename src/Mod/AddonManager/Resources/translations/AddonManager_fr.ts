@@ -85,7 +85,7 @@
       <location filename="../../dependency_resolution_dialog.ui" line="17"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="175"/>
       <source>Resolve Dependencies</source>
-      <translation>Résoudre les Dépendances</translation>
+      <translation>Résoudre les dépendances</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="29"/>
@@ -99,12 +99,12 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
       <source>FreeCAD Addons</source>
-      <translation>Extensions FreeCAD</translation>
+      <translation>Extensions de FreeCAD</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
       <source>Required Python modules</source>
-      <translation>Modules Python nécessaires</translation>
+      <translation>Modules nécessaires de Python</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="67"/>
@@ -203,7 +203,7 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation>URL du répertoire</translation>
+      <translation>URL du dépôt</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
@@ -281,7 +281,8 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <message>
       <location filename="../../first_run.ui" line="23"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation>Les extensions qui peuvent être installées ici ne font pas officiellement partie de FreeCAD, et ne sont pas vérifiés par l'équipe de FreeCAD. Assurez-vous de savoir ce que vous êtes en train d'installer !</translation>
+      <translation>Les extensions qui peuvent être installées ici ne font pas officiellement partie de FreeCAD. Elles ne sont pas vérifiées par l'équipe de FreeCAD.
+Assurez-vous de savoir ce que vous installez !</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="46"/>
@@ -446,7 +447,7 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <message>
       <location filename="../../developer_mode_people_table.ui" line="67"/>
       <source>Email</source>
-      <translation>Adresse de courrier électronique</translation>
+      <translation>E-mail</translation>
     </message>
   </context>
   <context>
@@ -477,7 +478,7 @@ Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Ch
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="14"/>
       <source>Supported FreeCAD Versions</source>
-      <translation>Versions FreeCAD prises en charge</translation>
+      <translation>Versions de FreeCAD prises en charge</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="20"/>
@@ -613,12 +614,12 @@ les extensions installées seront vérifiées pour les mises à jour disponibles
     <message>
       <location filename="../../AddonManagerOptions.ui" line="353"/>
       <source>Path to git executable (optional):</source>
-      <translation>Chemin vers l'exécutable de git (facultatif) :</translation>
+      <translation>Chemin d'accès vers l'exécutable de git (facultatif) :</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="372"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
-      <translation>Le chemin vers l'exécutable de git. Détecté automatiquement si nécessaire et non spécifié.</translation>
+      <translation>Le chemin d'accès vers l'exécutable de git. Détecté automatiquement si nécessaire et non spécifié.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="393"/>
@@ -651,7 +652,7 @@ les extensions installées seront vérifiées pour les mises à jour disponibles
     <message>
       <location filename="../../package_details.ui" line="49"/>
       <source>Uninstalls a selected macro or workbench</source>
-      <translation>Désinstalle une macro ou un atelier sélectionné</translation>
+      <translation>Désinstaller une macro ou un atelier sélectionné</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="52"/>
@@ -684,7 +685,7 @@ les extensions installées seront vérifiées pour les mises à jour disponibles
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="14"/>
       <source>Manage Python Dependencies</source>
-      <translation>Gérer les dépendances Python</translation>
+      <translation>Gérer les dépendances de Python</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
@@ -946,7 +947,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="22"/>
       <source>Copyright holder:</source>
-      <translation>Détenteur des droits :</translation>
+      <translation>Détenteur des droits d'auteur :</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="32"/>
@@ -964,7 +965,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../developer_mode_people.ui" line="20"/>
       <source>A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</source>
-      <translation>Un mainteneur est quelqu'un qui a un accès régulier aux livraisons sur ce projet. Un auteur est toute autre personne à qui vous souhaitez donner du crédit.</translation>
+      <translation>Un mainteneur est quelqu'un qui a un accès régulier aux livraisons sur ce projet. Un auteur est tout autre personne à qui vous souhaitez donner du crédit.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>
@@ -974,12 +975,12 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>
       <source>Email:</source>
-      <translation>Adresse de courrier électronique :</translation>
+      <translation>E-mail :</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="46"/>
       <source>Email is required for maintainers, and optional for authors.</source>
-      <translation>Le courriel est requis pour les mainteneurs, et facultatif pour les auteurs.</translation>
+      <translation>L'e-mail est requis pour les mainteneurs et facultatif pour les auteurs.</translation>
     </message>
   </context>
   <context>
@@ -987,7 +988,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../proxy_authentication.ui" line="14"/>
       <source>Proxy login required</source>
-      <translation>Connexion au proxy requise</translation>
+      <translation>Une connexion au proxy est requise</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="20"/>
@@ -997,7 +998,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../proxy_authentication.ui" line="29"/>
       <source>Proxy:</source>
-      <translation>Proxy:</translation>
+      <translation>Proxy :</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="42"/>
@@ -1071,12 +1072,12 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="412"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="429"/>
       <source>Select Toolbar</source>
-      <translation>Sélectionnez la barre d'outils</translation>
+      <translation>Sélectionner une barre d'outils</translation>
     </message>
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="26"/>
       <source>Select a toolbar to add this macro to:</source>
-      <translation>Sélectionnez une barre d'outils pour y ajouter cette macro :</translation>
+      <translation>Sélectionner une barre d'outils pour y ajouter cette macro :</translation>
     </message>
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="36"/>
@@ -1134,15 +1135,13 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <location filename="../../addonmanager_cache.py" line="95"/>
       <source>Previous cache process was interrupted, restarting...
 </source>
-      <translation>Le processus du précédent cache a été interrompu, redémarrage...
-</translation>
+      <translation>Le processus du précédent cache a été interrompu, redémarrage...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_cache.py" line="116"/>
       <source>Custom repo list changed, forcing recache...
 </source>
-      <translation>La liste des dépôts personnalisés a changé, ce qui force à relancer le cache...
-</translation>
+      <translation>La liste des dépôts personnalisés a changé, ce qui force à relancer le cache...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="339"/>
@@ -1243,7 +1242,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../manage_python_dependencies.py" line="164"/>
       <source>New Python Version Detected</source>
-      <translation>Nouvelle version de Python détectée</translation>
+      <translation>Une nouvelle version de Python a été trouvée</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="169"/>
@@ -1340,7 +1339,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="266"/>
       <source>Version {version} installed</source>
-      <translation>Version installée {version}</translation>
+      <translation>Version {version} installée</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="270"/>
@@ -1358,7 +1357,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="294"/>
       <source>Currently on branch {}, name changed to {}</source>
-      <translation>Pour le moment sur la branche {}, le nom a été changé à {}</translation>
+      <translation>Pour le moment sur la branche {}, le nom a été changé en {}</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="285"/>
@@ -1445,7 +1444,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_package_details_controller.py" line="249"/>
       <source>Branch change succeeded, please restart to use the new version.</source>
-      <translation>Le changement de branche a réussi, veuillez redémarrer pour utiliser la nouvelle version.</translation>
+      <translation>Le changement de branche a réussi, redémarrer pour utiliser la nouvelle version.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="111"/>
@@ -1522,7 +1521,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="204"/>
       <source>Select the corresponding license file in your Addon</source>
-      <translation>Sélectionner le fichier de licence correspondant dans votre extension</translation>
+      <translation>Sélectionner le fichier de licence correspondant à votre extension</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="237"/>
@@ -1548,7 +1547,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="127"/>
       <source>Unrecognized content kind &apos;{}&apos;</source>
-      <translation>Type de contenu non reconnu &apos;{}&apos;</translation>
+      <translation>Type de contenu non reconnu "{}"</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="188"/>
@@ -1622,7 +1621,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="153"/>
       <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</source>
-      <translation>Cette extension nécessite des paquets Python qui ne sont pas installés, et ne peuvent pas être installés automatiquement. Pour utiliser cet atelier, vous devez installer manuellement les paquets Python suivants :</translation>
+      <translation>Cette extension nécessite des paquets Python qui ne sont pas installés et ne peuvent pas être installés automatiquement. Pour utiliser cette extension, vous devez installer manuellement les paquets Python suivants :</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="159"/>
@@ -1642,12 +1641,12 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="184"/>
       <source>Addon &apos;{}&apos; requires &apos;{}&apos;, which is not available in your copy of FreeCAD.</source>
-      <translation>L'extension &apos;{}&apos; nécessite &apos;{}&apos;, qui n'est pas disponible dans votre copie de FreeCAD.</translation>
+      <translation>L'extension "{}" nécessite "{}" qui n'est pas disponible dans votre version de FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="192"/>
       <source>Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</source>
-      <translation>L'extension &apos;{}&apos; nécessite les ateliers suivants, qui ne sont pas présents dans votre copie de FreeCAD :</translation>
+      <translation>L'extension "{}" nécessite les ateliers suivants, qui ne sont pas présents dans votre version de FreeCAD :</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="199"/>
@@ -1663,7 +1662,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="247"/>
       <source>This Addon (or one if its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
-      <translation>Cette extension (ou l'une de ses dépendances) nécessite Python {}.{}, et votre système exécute {}.{}. Installation annulée.</translation>
+      <translation>Cette extension (ou l'une de ses dépendances) nécessite Python {}.{}. Votre système exécute {}.{}. Installation annulée.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="268"/>
@@ -1738,7 +1737,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="452"/>
       <source>Cancelling installation of &apos;{}&apos;</source>
-      <translation>Annulation de l'installation de &apos;{}&apos;</translation>
+      <translation>Annulation de l'installation de "{}"</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="478"/>
@@ -1793,7 +1792,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_devmode.py" line="241"/>
       <source>WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</source>
-      <translation>ATTENTION : le chemin spécifié dans les métadonnées du package.xml ne correspond pas à la branche actuellement extraite.</translation>
+      <translation>ATTENTION : le chemin d'accès spécifié dans les métadonnées du package.xml ne correspond pas à la branche actuellement extraite.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="263"/>
@@ -1854,7 +1853,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_devmode.py" line="614"/>
       <source>Auto-detecting the required version of Python for this Addon requires Vermin (https://pypi.org/project/vermin/). OK to install?</source>
-      <translation>La détection automatique de la version requise de Python pour cet extension nécessite Vermin (https://pypi.org/project/vermin/). D'accord pour l'installer ?</translation>
+      <translation>La détection automatique de la version requise de Python pour cette extension nécessite Vermin (https://pypi.org/project/vermin/). D'accord pour l'installer ?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="620"/>
@@ -2045,7 +2044,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../change_branch.py" line="94"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
-      <translation>DANGER : le passage d'une branche à l'autre est destiné aux développeurs et aux bêta-testeurs. Il peut entraîner la rupture de documents non rétrocompatibles, une instabilité, des pannes et/ou la mort thermique prématurée de l'univers. Êtes-vous sûr de vouloir continuer ?</translation>
+      <translation>DANGER : Le passage d'une branche à l'autre est destiné aux développeurs et aux bêta-testeurs, et peut entraîner des documents endommagés et non rétrocompatibles, de l'instabilité, des pannes et/ou la mort prématurée de l'univers... Êtes-vous sûr de vouloir continuer ?</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="103"/>
@@ -2098,7 +2097,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="165"/>
       <source>Downloaded package.xml for {}</source>
-      <translation>Fichier package.xml téléchargé pour {}</translation>
+      <translation>Le fichier package.xml a été téléchargé pour {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="196"/>
@@ -2113,17 +2112,17 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="212"/>
       <source>Downloaded metadata.txt for {}</source>
-      <translation>Fichier metadata.txt téléchargé pour {}</translation>
+      <translation>Le fichier metadata.txt a été téléchargé pour {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="255"/>
       <source>Downloaded requirements.txt for {}</source>
-      <translation>Fichier requirements.txt téléchargé pour {}</translation>
+      <translation>Le fichier requirements.txt a été téléchargé pour {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="273"/>
       <source>Downloaded icon for {}</source>
-      <translation>Icône téléchargée pour {}</translation>
+      <translation>L'icône a été téléchargée pour {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="152"/>
@@ -2158,7 +2157,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../Addon.py" line="442"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
-      <translation>{} : atelier interne non reconnu &apos;{}&apos;</translation>
+      <translation>{} : atelier interne non reconnu "{}"</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="475"/>
@@ -2194,12 +2193,12 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="170"/>
       <source>Removed extra installed file {}</source>
-      <translation>Suppression du fichier installé en extra {}</translation>
+      <translation>Suppression du fichier {} installé en plus</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="184"/>
       <source>Error while trying to remove extra installed file {}</source>
-      <translation>Erreur lors de la suppression du fichier installé en extra {}</translation>
+      <translation>Erreur lors de la suppression du fichier {} installé en plus</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="248"/>
@@ -2255,7 +2254,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="383"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
-      <translation>Erreur de connexion au Wiki, FreeCAD ne peut pas récupérer la liste des macros du Wiki pour le moment</translation>
+      <translation>Erreur de connexion au wiki : FreeCAD ne peut pas récupérer la liste des macros du wiki pour le moment</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="592"/>
@@ -2305,7 +2304,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="860"/>
       <source>Timeout while fetching metadata for macro {}</source>
-      <translation>Dépassement du délai lors de la récupération des métadonnées pour la macro {}</translation>
+      <translation>Délai de récupération des métadonnées de la macro {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="871"/>
@@ -2380,7 +2379,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="77"/>
       <source>Succeeded</source>
-      <translation>C'est réussi</translation>
+      <translation>Opération réussie</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="79"/>
@@ -2400,7 +2399,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_readme_controller.py" line="82"/>
       <source>Loading info for {} from the FreeCAD Macro Recipes wiki...</source>
-      <translation>Chargement des informations pour {} à partir de la page du wiki Liste des macros de FreeCAD...</translation>
+      <translation>Chargement des informations pour {} à partir de la page du wiki "Liste des macros de FreeCAD..."</translation>
     </message>
     <message>
       <location filename="../../addonmanager_readme_controller.py" line="90"/>

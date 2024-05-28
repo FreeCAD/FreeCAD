@@ -130,7 +130,7 @@ protected:
     void onDeleteObject(const App::DocumentObject& obj);
 
     bool compareSelections(std::vector<Gui::SelectionObject> treeSel, QList<QGraphicsItem*> sceneSel);
-    void addSceneToTreeSel(QGraphicsItem* scene, std::vector<Gui::SelectionObject> treeSel);
+    void addSceneItemToTreeSel(QGraphicsItem* sceneItem, std::vector<Gui::SelectionObject> treeSel);
     void removeSelFromTreeSel(QList<QGraphicsItem*> sceneSel, Gui::SelectionObject& sel);
     std::string getSceneSubName(QGraphicsItem* scene);
     void setTreeToSceneSelect();
@@ -156,7 +156,7 @@ private:
     QString m_currentPath;
     ViewProviderPage* m_vpPage;
 
-    QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order
+    QList<QGraphicsItem*> m_orderedSceneSelection;        //items in selection order
 
     void getPaperAttributes();
     PagePrinter* m_pagePrinter;

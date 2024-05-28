@@ -347,9 +347,13 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
 std::string PythonConverter::process(const Sketcher::Constraint* constraint, GeoIdMode geoIdMode)
 {
     bool addLastIdVar = geoIdMode == GeoIdMode::AddLastGeoIdToGeoIds;
-    std::string geoId1 = (addLastIdVar ? "lastGeoId + " : "") + std::to_string(constraint->First);
-    std::string geoId2 = (addLastIdVar ? "lastGeoId + " : "") + std::to_string(constraint->Second);
-    std::string geoId3 = (addLastIdVar ? "lastGeoId + " : "") + std::to_string(constraint->Third);
+    bool addLastIdVar1 = constraint->First >= 0 && addLastIdVar;
+    bool addLastIdVar2 = constraint->Second >= 0 && addLastIdVar;
+    bool addLastIdVar3 = constraint->Third >= 0 && addLastIdVar;
+
+    std::string geoId1 = (addLastIdVar1 ? "lastGeoId + " : "") + std::to_string(constraint->First);
+    std::string geoId2 = (addLastIdVar2 ? "lastGeoId + " : "") + std::to_string(constraint->Second);
+    std::string geoId3 = (addLastIdVar3 ? "lastGeoId + " : "") + std::to_string(constraint->Third);
 
     static std::map<
         const Sketcher::ConstraintType,

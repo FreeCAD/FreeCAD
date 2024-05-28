@@ -205,9 +205,7 @@ class BIM_Preflight_TaskPanel:
                 for c in self.culprits[test]:
                     FreeCADGui.Selection.addSelection(c)
             if not self.rform:
-                self.rform = FreeCADGui.PySideUic.loadUi(
-                    os.path.join(os.path.dirname(__file__), "dialogPreflightResults.ui")
-                )
+                self.rform = FreeCADGui.PySideUic.loadUi(":/ui/dialogPreflightResults.ui")
                 # center the dialog over FreeCAD window
                 mw = FreeCADGui.getMainWindow()
                 self.rform.move(

@@ -885,10 +885,10 @@ void CenterLine::Save(Base::Writer &writer) const
 
     // style is deprecated in favour of line number, but we still save and restore it
     // to avoid problems with old documents.
-    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << std::endl;
-    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << std::endl;
-    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.m_color.asHexString() << "\"/>" << std::endl;
-    const char v = m_format.m_visible?'1':'0';
+    writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.getStyle() << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.getWidth() << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Color value=\"" <<  m_format.getColor().asHexString() << "\"/>" << std::endl;
+    const char v = m_format.getVisible() ? '1' : '0';
     writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << std::endl;
 
 //stored geometry
@@ -984,14 +984,16 @@ void CenterLine::Restore(Base::XMLReader &reader)
     // style is deprecated in favour of line number, but we still save and restore it
     // to avoid problems with old documents.
     reader.readElement("Style");
-    m_format.m_style = reader.getAttributeAsInteger("value");
+    m_format.setStyle(reader.getAttributeAsInteger("value"));
     reader.readElement("Weight");
-    m_format.m_weight = reader.getAttributeAsFloat("value");
+    m_format.setWidth(reader.getAttributeAsFloat("value"));
     reader.readElement("Color");
-    std::string temp = reader.getAttribute("value");
-    m_format.m_color.fromHexString(temp);
+    std::string tempHex = reader.getAttribute("value");
+    App::Color tempColor;
+    tempColor.fromHexString(tempHex);
+    m_format.setColor(tempColor);
     reader.readElement("Visible");
-    m_format.m_visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    m_format.setVisible( (int)reader.getAttributeAsInteger("value")==0 ? false : true);
 
 //stored geometry
     reader.readElement("GeometryType");

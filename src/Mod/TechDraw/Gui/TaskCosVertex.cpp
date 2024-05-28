@@ -132,14 +132,14 @@ void TaskCosVertex::updateUi()
     ui->dsbY->setValue(y);
 }
 
-//! create the cv at an unscaled, unrotated position
+//! create the cv as entered, addCosmeticVertex will invert it
 void TaskCosVertex::addCosVertex(QPointF qPos)
 {
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Cosmetic Vertex"));
 
-    Base::Vector3d pos = DU::invertY(DU::toVector3d(qPos));
+//    Base::Vector3d pos = DU::invertY(DU::toVector3d(qPos));
 //    int idx =
-    (void) m_baseFeat->addCosmeticVertex(pos);
+    (void) m_baseFeat->addCosmeticVertex(DU::toVector3d(qPos));
     m_baseFeat->requestPaint();
 
     Gui::Command::commitCommand();
@@ -233,17 +233,16 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     //x, y are scene pos of dvp/dpgi
 
     QPointF basePosScene(x, -y);                 //base position in scene coords
-    QPointF displace = dragEnd - basePosScene;
-    QPointF scenePosCV = displace;
+    QPointF scenePosCV = dragEnd - basePosScene;
 
-    //  Invert Y value so the math works.
-    // scenePosCV is effectively a scaled (and rotated) value
-    Base::Vector3d posToRotate = DU::invertY(DU::toVector3d(scenePosCV));
+    // Invert Y value so the math works.
+    // scenePosCV is effectively a scaled (and rotated), inverted value
+    // Base::Vector3d posToRotate = DU::invertY(DU::toVector3d(scenePosCV));
 
     // unscale and rotate the picked point
-    posToRotate = CosmeticVertex::makeCanonicalPoint(m_baseFeat, posToRotate);
+    Base::Vector3d posToRotate = CosmeticVertex::makeCanonicalPointInverted(m_baseFeat, DU::toVector3d(scenePosCV));
     // now put Y value back to display form
-    scenePosCV = DU::toQPointF(DU::invertY(posToRotate));
+    scenePosCV = DU::toQPointF(posToRotate);
 
     m_savePoint = Rez::appX(scenePosCV);
     updateUi();
@@ -309,11 +308,11 @@ bool TaskCosVertex::accept()
         return false;
 
     removeTracker();
-    // whatever is in the ui for x,y is treated as an unscaled, unrotated, invertedY position.
+    // whatever is in the ui for x,y is treated as an unscaled, unrotated, conventional Y position.
     // the position from the tracker is unscaled & unrotated before updating the ui
     double x = ui->dsbX->value().getValue();
     double y = ui->dsbY->value().getValue();
-    QPointF uiPoint(x, -y);
+    QPointF uiPoint(x, y);
 
     addCosVertex(uiPoint);
 

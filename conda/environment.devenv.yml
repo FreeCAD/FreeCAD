@@ -90,9 +90,7 @@ dependencies:
 - pyside2
 - python==3.11.*
 - pyyaml
-- qt
 - qt-main
-- qt-webengine
 - six
 - smesh
 - swig

@@ -683,7 +683,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
+      <translation>CSV (*.csv *.CSV);;Сви (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -953,7 +953,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
       <source>Delimiter Character:</source>
-      <translation type="unfinished">Delimiter Character:</translation>
+      <translation>Знак за раздвајање:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="156"/>

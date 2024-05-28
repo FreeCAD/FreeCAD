@@ -71,7 +71,6 @@
 #include "TechDrawHandler.h"
 #include "ViewProviderDimension.h"
 #include "ViewProviderDrawingView.h"
-#include "ViewProviderDrawingView.h"
 
 
 using namespace TechDrawGui;
@@ -2636,12 +2635,6 @@ void CmdTechDrawDimensionRepair::activated(int iMsg)
         dim = static_cast<TechDraw::DrawViewDimension*>(dimObjs.at(0));
     }
 
-    //    ReferenceVector references2d;
-    //    ReferenceVector references3d;
-    //    //TechDraw::DrawViewPart* partFeat =
-    //    TechDraw::getReferencesFromSelection(references2d, references3d);
-
-    //    Gui::Control().showDialog(new TaskDlgDimReference(dim, references2d, references3d));
     Gui::Control().showDialog(new TaskDlgDimReference(dim));
 }
 

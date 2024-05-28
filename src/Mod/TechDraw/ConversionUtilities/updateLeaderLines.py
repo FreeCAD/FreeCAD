@@ -1,17 +1,18 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2024 Wanderer Fan <wandererfan@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU General Public License (GPL)            *
-# *   as published by the Free Software Foundation; either version 3 of     *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
 # *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
+# *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
 # *   License along with this program; if not, write to the Free Software   *
@@ -19,16 +20,26 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+#
+# updates any leader lines in the current document from pre-v0.22 coordinates
+# to v0.22+ coordinates.
 
-import os
-import FreeCADGui
-from PySide.QtCore import QT_TRANSLATE_NOOP
-
-"""Helper for InitGui"""
+# usage: open the document to be converted in FreeCAD then run this macro and
+#        save the result.
 
 
-def add_preferences_page():
-    """Adds the NativeIFC preferences page"""
-    page = os.path.join(os.path.dirname(__file__), "ui", "preferencesNativeIFC.ui")
-    category = QT_TRANSLATE_NOOP("NativeIFC", "Import-Export")
-    FreeCADGui.addPreferencePage(page, category)
+import TechDraw
+
+RezFactor = 10.0
+
+for obj in FreeCAD.ActiveDocument.Objects:
+    print("obj: {}".format(obj.Name))
+    if obj.isDerivedFrom("TechDraw::DrawLeaderLine"):
+        pointsAll = obj.WayPoints
+        newPoints = list()
+        for point in pointsAll:
+            point = point / RezFactor
+            newPoints.append(point)
+        obj.WayPoints = newPoints
+
+print("conversion complete")

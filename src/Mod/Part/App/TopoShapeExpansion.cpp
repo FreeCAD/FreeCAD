@@ -2025,8 +2025,11 @@ TopoShape TopoShape::getSubTopoShape(const char* Type, bool silent) const
         }
         return TopoShape();
     }
-
+#ifdef FC_USE_TNP_FIX
+    auto res = shapeTypeAndIndex(mapped.index);
+#else
     auto res = shapeTypeAndIndex(Type);
+#endif
     if (res.second <= 0) {
         if (!silent) {
             FC_THROWM(Base::ValueError, "Invalid shape name " << (Type ? Type : ""));

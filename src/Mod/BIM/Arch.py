@@ -872,7 +872,7 @@ def makeRailing(stairs):
                 outlineLRAll = stair.OutlineRightAll
                 stairRailingLR = "RailingRight"
             if outlineLR or outlineLRAll:
-                lrRail = Arch.makePipe(baseobj=None,diameter=0,length=0,placement=None,name=translate("Arch","Railing"))
+                lrRail = makePipe(baseobj=None,diameter=0,length=0,placement=None,name=translate("Arch","Railing"))
                 if outlineLRAll:
                     setattr(stair, stairRailingLR, lrRail)
                     break

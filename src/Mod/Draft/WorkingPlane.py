@@ -1246,7 +1246,7 @@ class PlaneGui(PlaneBase):
         if not FreeCAD.GuiUp:
             return False
 
-        sels = FreeCADGui.Selection.getSelectionEx("", 0)
+        sels = FreeCADGui.Selection.getSelectionEx("", 1)
         if not sels:
             return False
 
