@@ -182,6 +182,10 @@ private:
     std::vector<ConstraintIds> radiusequalityConstraints;
 
 private:
+    void autoDeleteAllConstraints();
+    void autoHorizontalVerticalConstraints();
+    void autoPointOnPointCoincident();
+    void autoMissingEquality();
     bool checkHorizontal(Base::Vector3d dir, double angleprecision);
     bool checkVertical(Base::Vector3d dir, double angleprecision);
     void makeConstraints(std::vector<ConstraintIds>&);

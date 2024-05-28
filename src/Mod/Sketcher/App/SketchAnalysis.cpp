@@ -783,7 +783,6 @@ void SketchAnalysis::makeMissingEqualityOneByOne()
     radiusequalityConstraints.clear();
 }
 
-
 void SketchAnalysis::solvesketch(int& status, int& dofs, bool updategeo)
 {
     status = sketch->solve(updategeo);
@@ -807,9 +806,7 @@ void SketchAnalysis::solvesketch(int& status, int& dofs, bool updategeo)
     }
 }
 
-int SketchAnalysis::autoconstraint(double precision,
-                                   double angleprecision,
-                                   bool includeconstruction)
+void SketchAnalysis::autoDeleteAllConstraints()
 {
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("delete all constraints");
@@ -818,15 +815,67 @@ int SketchAnalysis::autoconstraint(double precision,
 
     doc->commitTransaction();
 
-    int status, dofs;
-
-    solvesketch(status, dofs, true);
-
-    if (status) {  // it should not be possible at this moment as we start from a clean situation
-        THROWMT(Base::RuntimeError,
-                QT_TRANSLATE_NOOP("Exceptions",
+    // a failure should not be possible at this moment as we start from a clean situation
+    solveSketch(QT_TRANSLATE_NOOP("Exceptions",
                                   "Autoconstrain error: Unsolvable sketch without constraints."));
+}
+
+void SketchAnalysis::autoHorizontalVerticalConstraints()
+{
+    App::Document* doc = sketch->getDocument();
+    doc->openTransaction("add vertical/horizontal constraints");
+
+    makeMissingVerticalHorizontal();
+
+    // finish the transaction and update
+    doc->commitTransaction();
+
+    solveSketch(QT_TRANSLATE_NOOP("Exceptions",
+                                  "Autoconstrain error: Unsolvable sketch after applying "
+                                  "horizontal and vertical constraints."));
+}
+
+void SketchAnalysis::autoPointOnPointCoincident()
+{
+    App::Document* doc = sketch->getDocument();
+    doc->openTransaction("add coincident constraint");
+
+    makeMissingPointOnPointCoincident();
+
+    // finish the transaction and update
+    doc->commitTransaction();
+
+    solveSketch(QT_TRANSLATE_NOOP("Exceptions",
+                                  "Autoconstrain error: Unsolvable sketch after applying "
+                                  "point-on-point constraints."));
+}
+
+void SketchAnalysis::autoMissingEquality()
+{
+    App::Document* doc = sketch->getDocument();
+    doc->openTransaction("add equality constraints");
+
+    try {
+        makeMissingEquality();
     }
+    catch (Base::RuntimeError&) {
+        doc->abortTransaction();
+        throw;
+    }
+
+    // finish the transaction and update
+    doc->commitTransaction();
+
+    solveSketch(QT_TRANSLATE_NOOP("Exceptions",
+                                  "Autoconstrain error: Unsolvable sketch after "
+                                  "applying equality constraints."));
+}
+
+int SketchAnalysis::autoconstraint(double precision,
+                                   double angleprecision,
+                                   bool includeconstruction)
+{
+    autoDeleteAllConstraints();
 
     // STAGE 1: Vertical/Horizontal Line Segments
     int nhv = detectMissingVerticalHorizontalConstraints(angleprecision);
@@ -845,94 +894,26 @@ int SketchAnalysis::autoconstraint(double precision,
     // STAGE 3: Equality constraint detection
     int ne = detectMissingEqualityConstraints(precision);
 
-    Base::Console().Log(
-        "Constraints: Vertical/Horizontal: %d found. Point-on-point: %d. Equality: %d\n",
-        nhv,
-        nc,
-        ne);
+    Base::Console().Log("Constraints: Vertical/Horizontal: %d found. "
+                        "Point-on-point: %d. Equality: %d\n",
+                        nhv,
+                        nc,
+                        ne);
 
     // Applying STAGE 1, if any
     if (nhv > 0) {
-        App::Document* doc = sketch->getDocument();
-        doc->openTransaction("add vertical/horizontal constraints");
-
-        makeMissingVerticalHorizontal();
-
-        // finish the transaction and update
-        doc->commitTransaction();
-
-        solvesketch(status, dofs, true);
-
-        if (status == -2) {  // redundants
-            sketch->autoRemoveRedundants(false);
-            solvesketch(status, dofs, false);
-        }
-
-        if (status) {
-            THROWMT(Base::RuntimeError,
-                    QT_TRANSLATE_NOOP("Exceptions",
-                                      "Autoconstrain error: Unsolvable sketch after applying "
-                                      "horizontal and vertical constraints."));
-        }
+        autoHorizontalVerticalConstraints();
     }
 
     // Applying STAGE 2
     if (nc > 0) {
-        App::Document* doc = sketch->getDocument();
-        doc->openTransaction("add coincident constraint");
-
-        makeMissingPointOnPointCoincident();
-
-        // finish the transaction and update
-        doc->commitTransaction();
-
-        solvesketch(status, dofs, true);
-
-        if (status == -2) {  // redundants
-            sketch->autoRemoveRedundants(false);
-            solvesketch(status, dofs, false);
-        }
-
-        if (status) {
-            THROWMT(Base::RuntimeError,
-                    QT_TRANSLATE_NOOP("Exceptions",
-                                      "Autoconstrain error: Unsolvable sketch after applying "
-                                      "point-on-point constraints."));
-        }
+        autoPointOnPointCoincident();
     }
 
     // Applying STAGE 3
     if (ne > 0) {
-        App::Document* doc = sketch->getDocument();
-        doc->openTransaction("add equality constraints");
-
-        try {
-            makeMissingEquality();
-        }
-        catch (Base::RuntimeError&) {
-            doc->abortTransaction();
-            throw;
-        }
-
-        // finish the transaction and update
-        doc->commitTransaction();
-
-        solvesketch(status, dofs, true);
-
-        if (status == -2) {  // redundants
-            sketch->autoRemoveRedundants(false);
-            solvesketch(status, dofs, false);
-        }
-
-        if (status) {
-            THROWMT(
-                Base::RuntimeError,
-                QT_TRANSLATE_NOOP(
-                    "Exceptions",
-                    "Autoconstrain error: Unsolvable sketch after applying equality constraints."));
-        }
+        autoMissingEquality();
     }
-
 
     return 0;
 }
