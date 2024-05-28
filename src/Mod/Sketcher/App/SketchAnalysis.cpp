@@ -114,8 +114,8 @@ private:
 
 struct EdgeIds
 {
-    double l;
-    int GeoId;
+    double l {};
+    int GeoId {};
 };
 
 struct Edge_Less
@@ -195,11 +195,11 @@ struct PointConstraints
         VertexIds id;
         id.GeoId = index;
         id.PosId = Sketcher::PointPos::start;
-        id.v = segm->getStartPoint(/*emulateCCW=*/true);
+        id.v = segm->getStartPoint(/*emulateCCWXY=*/true);
         vertexIds.push_back(id);
         id.GeoId = index;
         id.PosId = Sketcher::PointPos::end;
-        id.v = segm->getEndPoint(/*emulateCCW=*/true);
+        id.v = segm->getEndPoint(/*emulateCCWXY=*/true);
         vertexIds.push_back(id);
     }
 
@@ -208,11 +208,11 @@ struct PointConstraints
         VertexIds id;
         id.GeoId = index;
         id.PosId = Sketcher::PointPos::start;
-        id.v = segm->getStartPoint(/*emulateCCW=*/true);
+        id.v = segm->getStartPoint(/*emulateCCWXY=*/true);
         vertexIds.push_back(id);
         id.GeoId = index;
         id.PosId = Sketcher::PointPos::end;
-        id.v = segm->getEndPoint(/*emulateCCW=*/true);
+        id.v = segm->getEndPoint(/*emulateCCWXY=*/true);
         vertexIds.push_back(id);
     }
 
@@ -300,7 +300,7 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
 
     std::list<ConstraintIds> missingCoincidences;  // Holds the list of missing coincidences
 
-    std::vector<VertexIds>::iterator vt = vertexIds.begin();
+    auto vt = vertexIds.begin();
     Vertex_EqualTo pred(precision);
 
     // Comparing existing constraints and find missing ones
@@ -424,7 +424,7 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
     }
 
     // Return number of missing constraints
-    return this->vertexConstraints.size();
+    return int(this->vertexConstraints.size());
 }
 
 void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
@@ -435,15 +435,15 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
         auto geo2 = sketch->getGeometry(vc.Second);
 
         // tangency point-on-point
-        const Part::GeomCurve* curve1 = dynamic_cast<const Part::GeomCurve*>(geo1);
-        const Part::GeomCurve* curve2 = dynamic_cast<const Part::GeomCurve*>(geo2);
+        const auto* curve1 = dynamic_cast<const Part::GeomCurve*>(geo1);
+        const auto* curve2 = dynamic_cast<const Part::GeomCurve*>(geo2);
 
         if (curve1 && curve2) {
 
-            if (geo1->is<Part::GeomLineSegment>() && geo2->is<Part::GeomLineSegment>()) {
+            const auto* segm1 = dynamic_cast<const Part::GeomLineSegment*>(geo1);
+            const auto* segm2 = dynamic_cast<const Part::GeomLineSegment*>(geo2);
 
-                const auto* segm1 = static_cast<const Part::GeomLineSegment*>(geo1);
-                const auto* segm2 = static_cast<const Part::GeomLineSegment*>(geo2);
+            if (segm1 && segm2) {
 
                 Base::Vector3d dir1 = segm1->getEndPoint() - segm1->getStartPoint();
                 Base::Vector3d dir2 = segm2->getEndPoint() - segm2->getStartPoint();
@@ -457,8 +457,8 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
             }
 
             try {
-                double u1;
-                double u2;
+                double u1 {};
+                double u2 {};
 
                 curve1->closestParameter(vc.v, u1);
                 curve2->closestParameter(vc.v, u2);
@@ -499,7 +499,7 @@ void SketchAnalysis::solveSketch(const char* errorText)
     int dofs {};
     solvesketch(status, dofs, true);
 
-    if (status == -2) {  // redundant constraints
+    if (status == int(Solver::RedundantConstraints)) {
         sketch->autoRemoveRedundants(false);
 
         solvesketch(status, dofs, false);
@@ -564,9 +564,7 @@ int SketchAnalysis::detectMissingVerticalHorizontalConstraints(double anglepreci
     for (std::size_t i = 0; i < geom.size(); i++) {
         Part::Geometry* g = geom[i];
 
-        if (g->is<Part::GeomLineSegment>()) {
-            const Part::GeomLineSegment* segm = static_cast<const Part::GeomLineSegment*>(g);
-
+        if (const auto* segm = dynamic_cast<const Part::GeomLineSegment*>(g)) {
             Base::Vector3d dir = segm->getEndPoint() - segm->getStartPoint();
 
             ConstraintIds id;
@@ -588,7 +586,7 @@ int SketchAnalysis::detectMissingVerticalHorizontalConstraints(double anglepreci
         }
     }
 
-    return verthorizConstraints.size();
+    return int(verthorizConstraints.size());
 }
 
 void SketchAnalysis::makeMissingVerticalHorizontal()
@@ -623,22 +621,19 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
     for (std::size_t i = 0; i < geom.size(); i++) {
         Part::Geometry* g = geom[i];
 
-        if (g->is<Part::GeomLineSegment>()) {
-            const Part::GeomLineSegment* segm = static_cast<const Part::GeomLineSegment*>(g);
+        if (const auto* segm = dynamic_cast<const Part::GeomLineSegment*>(g)) {
             EdgeIds id;
             id.GeoId = (int)i;
             id.l = (segm->getEndPoint() - segm->getStartPoint()).Length();
             lineedgeIds.push_back(id);
         }
-        else if (g->is<Part::GeomArcOfCircle>()) {
-            const Part::GeomArcOfCircle* segm = static_cast<const Part::GeomArcOfCircle*>(g);
+        else if (const auto* segm = dynamic_cast<const Part::GeomArcOfCircle*>(g)) {
             EdgeIds id;
             id.GeoId = (int)i;
             id.l = segm->getRadius();
             radiusedgeIds.push_back(id);
         }
-        else if (g->is<Part::GeomCircle>()) {
-            const Part::GeomCircle* segm = static_cast<const Part::GeomCircle*>(g);
+        else if (const auto* segm = dynamic_cast<const Part::GeomCircle*>(g)) {
             EdgeIds id;
             id.GeoId = (int)i;
             id.l = segm->getRadius();
@@ -647,7 +642,7 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
     }
 
     std::sort(lineedgeIds.begin(), lineedgeIds.end(), Edge_Less(precision));
-    std::vector<EdgeIds>::iterator vt = lineedgeIds.begin();
+    auto vt = lineedgeIds.begin();
     Edge_EqualTo pred(precision);
 
     std::list<ConstraintIds> equallines;
@@ -712,19 +707,16 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
     // and check which of them is forcing two vertexes to be coincident.
     // If there is none but two vertexes can be considered equal a coincident constraint is missing.
     std::vector<Sketcher::Constraint*> constraint = sketch->Constraints.getValues();
-    for (std::vector<Sketcher::Constraint*>::iterator it = constraint.begin();
-         it != constraint.end();
-         ++it) {
-        if ((*it)->Type == Sketcher::Equal) {
+    for (auto it : constraint) {
+        if (it->Type == Sketcher::Equal) {
             ConstraintIds id {Base::Vector3d {},
-                              (*it)->First,
-                              (*it)->Second,
-                              (*it)->FirstPos,
-                              (*it)->SecondPos,
-                              (*it)->Type};
+                              it->First,
+                              it->Second,
+                              it->FirstPos,
+                              it->SecondPos,
+                              it->Type};
 
-            std::list<ConstraintIds>::iterator pos =
-                std::find_if(equallines.begin(), equallines.end(), Constraint_Equal(id));
+            auto pos = std::find_if(equallines.begin(), equallines.end(), Constraint_Equal(id));
 
             if (pos != equallines.end()) {
                 equallines.erase(pos);
@@ -741,19 +733,18 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
     this->lineequalityConstraints.clear();
     this->lineequalityConstraints.reserve(equallines.size());
 
-    for (std::list<ConstraintIds>::iterator it = equallines.begin(); it != equallines.end(); ++it) {
-        this->lineequalityConstraints.push_back(*it);
+    for (const auto& it : equallines) {
+        this->lineequalityConstraints.push_back(it);
     }
 
     this->radiusequalityConstraints.clear();
     this->radiusequalityConstraints.reserve(equalradius.size());
 
-    for (std::list<ConstraintIds>::iterator it = equalradius.begin(); it != equalradius.end();
-         ++it) {
-        this->radiusequalityConstraints.push_back(*it);
+    for (const auto& it : equalradius) {
+        this->radiusequalityConstraints.push_back(it);
     }
 
-    return this->lineequalityConstraints.size() + this->radiusequalityConstraints.size();
+    return int(this->lineequalityConstraints.size() + this->radiusequalityConstraints.size());
 }
 
 void SketchAnalysis::makeMissingEquality()
@@ -794,15 +785,15 @@ void SketchAnalysis::solvesketch(int& status, int& dofs, bool updategeo)
         dofs = sketch->getLastDoF();
     }
 
-    if (sketch->getLastHasRedundancies()) {  // redundant constraints
-        status = -2;
+    if (sketch->getLastHasRedundancies()) {
+        status = int(Solver::RedundantConstraints);
     }
 
-    if (dofs < 0) {  // over-constrained sketch
-        status = -4;
+    if (dofs < 0) {
+        status = int(Solver::OverConstrained);
     }
-    else if (sketch->getLastHasConflicts()) {  // conflicting constraints
-        status = -3;
+    else if (sketch->getLastHasConflicts()) {
+        status = int(Solver::ConflictingConstraints);
     }
 }
 

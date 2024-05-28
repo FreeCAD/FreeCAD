@@ -39,6 +39,15 @@ namespace Sketcher
 
 class SketchObject;
 
+
+enum class Solver
+{
+    RedundantConstraints = -2,
+    ConflictingConstraints = -3,
+    OverConstrained = -4,
+};
+
+
 class SketcherExport SketchAnalysis
 {
 public:
