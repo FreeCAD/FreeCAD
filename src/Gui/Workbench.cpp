@@ -590,7 +590,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
                   << "Std_ViewRear" << "Std_ViewBottom" << "Std_ViewLeft"
                   << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight";
 
-        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle"
+        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_AlignToSelection" << "Std_DrawStyle"
               << StdViews << "Separator"
               << "Std_ViewDockUndockFullscreen";
 
@@ -654,12 +654,11 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Standard views
     auto stdviews = new MenuItem;
     stdviews->setCommand("Standard views");
-    *stdviews << "Std_ViewFitAll" << "Std_ViewFitSelection" << axoviews
+    *stdviews << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_AlignToSelection" << axoviews
               << "Separator" << "Std_ViewHome" << "Std_ViewFront" << "Std_ViewTop"
-              << "Std_ViewRight" << "Std_ViewRear"
-              << "Std_ViewBottom" << "Std_ViewLeft"
-              << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight"
-              << "Separator" << "Std_StoreWorkingView" << "Std_RecallWorkingView";
+              << "Std_ViewRight" << "Std_ViewRear" << "Std_ViewBottom" << "Std_ViewLeft"
+              << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight" << "Separator"
+              << "Std_StoreWorkingView" << "Std_RecallWorkingView";
 
     // stereo
     auto view3d = new MenuItem;
