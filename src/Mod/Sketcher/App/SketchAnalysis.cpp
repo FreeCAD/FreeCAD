@@ -756,63 +756,33 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
     return this->lineequalityConstraints.size() + this->radiusequalityConstraints.size();
 }
 
-void SketchAnalysis::makeMissingEquality(bool onebyone)
+void SketchAnalysis::makeMissingEquality()
 {
-    int status, dofs;
-    std::vector<Sketcher::Constraint*> constr;
+    std::vector<Sketcher::ConstraintIds> equalities(lineequalityConstraints);
+    equalities.insert(equalities.end(),
+                      radiusequalityConstraints.begin(),
+                      radiusequalityConstraints.end());
+    makeConstraints(equalities);
 
+    lineequalityConstraints.clear();
+    radiusequalityConstraints.clear();
+}
+
+void SketchAnalysis::makeMissingEqualityOneByOne()
+{
     std::vector<Sketcher::ConstraintIds> equalities(lineequalityConstraints);
     equalities.insert(equalities.end(),
                       radiusequalityConstraints.begin(),
                       radiusequalityConstraints.end());
 
-    for (std::vector<Sketcher::ConstraintIds>::iterator it = equalities.begin();
-         it != equalities.end();
-         ++it) {
-        Sketcher::Constraint* c = new Sketcher::Constraint();
-        c->Type = it->Type;
-        c->First = it->First;
-        c->Second = it->Second;
-        c->FirstPos = it->FirstPos;
-        c->SecondPos = it->SecondPos;
-
-        if (onebyone) {
-            // addConstraint() creates a clone
-            sketch->addConstraint(c);
-            delete c;
-
-            solvesketch(status, dofs, true);
-
-            if (status == -2) {  // redundant constraints
-                sketch->autoRemoveRedundants(false);
-
-                solvesketch(status, dofs, false);
-            }
-
-            if (status) {
-                THROWMT(Base::RuntimeError,
-                        QT_TRANSLATE_NOOP("Exceptions",
-                                          "Autoconstrain error: Unsolvable sketch while applying "
-                                          "equality constraints."));
-            }
-        }
-        else {
-            constr.push_back(c);
-        }
-    }
-
-    if (!onebyone) {
-        sketch->addConstraints(constr);
-    }
-
+    makeConstraintsOneByOne(equalities,
+                            QT_TRANSLATE_NOOP("Exceptions",
+                                              "Autoconstrain error: Unsolvable sketch while "
+                                              "applying equality constraints."));
     lineequalityConstraints.clear();
     radiusequalityConstraints.clear();
-
-    for (std::vector<Sketcher::Constraint*>::iterator it = constr.begin(); it != constr.end();
-         ++it) {
-        delete *it;
-    }
 }
+
 
 void SketchAnalysis::solvesketch(int& status, int& dofs, bool updategeo)
 {

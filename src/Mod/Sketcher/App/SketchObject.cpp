@@ -9841,8 +9841,10 @@ void SketchObject::makeMissingVerticalHorizontal(bool onebyone)
 
 void SketchObject::makeMissingEquality(bool onebyone)
 {
-    if (analyser)
-        analyser->makeMissingEquality(onebyone);
+    if (analyser) {
+        onebyone ? analyser->makeMissingEqualityOneByOne()
+                 : analyser->makeMissingEquality();
+    }
 }
 
 int SketchObject::detectDegeneratedGeometries(double tolerance)

@@ -142,7 +142,8 @@ public:
         radiusequalityConstraints = cl;
     }
     /// Equality constraints simple routine Make step (see constructor)
-    void makeMissingEquality(bool onebyone = true);
+    void makeMissingEquality();
+    void makeMissingEqualityOneByOne();
 
     /// Detect degenerated geometries
     int detectDegeneratedGeometries(double tolerance) const;
