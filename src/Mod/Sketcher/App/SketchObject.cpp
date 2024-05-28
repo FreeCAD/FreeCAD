@@ -9825,8 +9825,10 @@ void SketchObject::setMissingPointOnPointConstraints(std::vector<ConstraintIds>&
 
 void SketchObject::makeMissingPointOnPointCoincident(bool onebyone)
 {
-    if (analyser)
-        analyser->makeMissingPointOnPointCoincident(onebyone);
+    if (analyser) {
+        onebyone ? analyser->makeMissingPointOnPointCoincidentOneByOne()
+                 : analyser->makeMissingPointOnPointCoincident();
+    }
 }
 
 void SketchObject::makeMissingVerticalHorizontal(bool onebyone)

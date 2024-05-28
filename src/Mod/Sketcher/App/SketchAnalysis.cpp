@@ -482,53 +482,77 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
     }
 }
 
-void SketchAnalysis::makeMissingPointOnPointCoincident(bool onebyone)
+Sketcher::Constraint* SketchAnalysis::create(const ConstraintIds& id)
 {
-    int status, dofs;
+    auto c = new Sketcher::Constraint();
+    c->Type = id.Type;
+    c->First = id.First;
+    c->Second = id.Second;
+    c->FirstPos = id.FirstPos;
+    c->SecondPos = id.SecondPos;
+    return c;
+}
+
+void SketchAnalysis::solveSketch(const char* errorText)
+{
+    int status {};
+    int dofs {};
+    solvesketch(status, dofs, true);
+
+    if (status == -2) {  // redundant constraints
+        sketch->autoRemoveRedundants(false);
+
+        solvesketch(status, dofs, false);
+    }
+
+    if (status) {
+        THROWMT(Base::RuntimeError, errorText);
+    }
+}
+
+void SketchAnalysis::makeConstraints(std::vector<ConstraintIds>& ids)
+{
     std::vector<Sketcher::Constraint*> constr;
-
-    for (const auto& it : vertexConstraints) {
-        Sketcher::Constraint* c = new Sketcher::Constraint();
-        c->Type = it.Type;
-        c->First = it.First;
-        c->Second = it.Second;
-        c->FirstPos = it.FirstPos;
-        c->SecondPos = it.SecondPos;
-
-        if (onebyone) {
-            // addConstraint() creates a clone
-            sketch->addConstraint(c);
-            delete c;
-
-            solvesketch(status, dofs, true);
-
-            if (status == -2) {  // redundant constraints
-                sketch->autoRemoveRedundants(false);
-
-                solvesketch(status, dofs, false);
-            }
-
-            if (status) {
-                THROWMT(Base::RuntimeError,
-                        QT_TRANSLATE_NOOP("Exceptions",
-                                          "Autoconstrain error: Unsolvable sketch while applying "
-                                          "coincident constraints."));
-            }
-        }
-        else {
-            constr.push_back(c);
-        }
+    constr.reserve(ids.size());
+    for (const auto& it : ids) {
+        auto c = create(it);
+        constr.push_back(c);
     }
 
-    if (!onebyone) {
-        sketch->addConstraints(constr);
-    }
-
-    vertexConstraints.clear();
+    sketch->addConstraints(constr);
+    ids.clear();
 
     for (auto it : constr) {
         delete it;
     }
+}
+
+void SketchAnalysis::makeConstraintsOneByOne(std::vector<ConstraintIds>& ids, const char* errorText)
+{
+    for (const auto& it : ids) {
+        auto c = create(it);
+
+        // addConstraint() creates a clone
+        sketch->addConstraint(c);
+        delete c;
+
+        solveSketch(errorText);
+    }
+
+    ids.clear();
+}
+
+void SketchAnalysis::makeMissingPointOnPointCoincident()
+{
+    makeConstraints(vertexConstraints);
+}
+
+void SketchAnalysis::makeMissingPointOnPointCoincidentOneByOne()
+{
+    makeConstraintsOneByOne(vertexConstraints,
+                            QT_TRANSLATE_NOOP("Exceptions",
+                                              "Autoconstrain error: Unsolvable sketch while "
+                                              "applying coincident constraints."));
 }
 
 int SketchAnalysis::detectMissingVerticalHorizontalConstraints(double angleprecision)

@@ -97,9 +97,11 @@ public:
         vertexConstraints = cl;
     }
     /// Point on Point constraint simple routine Make step (see constructor)
-    /// if onebyone, then the sketch is solved after each individual constraint addition and any
+    void makeMissingPointOnPointCoincident();
+    /// Point on Point constraint simple routine Make step (see constructor)
+    /// The sketch is solved after each individual constraint addition and any
     /// redundancy removed.
-    void makeMissingPointOnPointCoincident(bool onebyone = false);
+    void makeMissingPointOnPointCoincidentOneByOne();
 
     /// Vertical/Horizontal constraints simple routine Detect step (see constructor)
     int detectMissingVerticalHorizontalConstraints(double angleprecision = M_PI / 8);
@@ -180,7 +182,11 @@ private:
 private:
     bool checkHorizontal(Base::Vector3d dir, double angleprecision);
     bool checkVertical(Base::Vector3d dir, double angleprecision);
+    void makeConstraints(std::vector<ConstraintIds>&);
+    void makeConstraintsOneByOne(std::vector<ConstraintIds>&, const char* errorText);
     std::set<int> getDegeneratedGeometries(double tolerance) const;
+    void solveSketch(const char* errorText);
+    static Sketcher::Constraint* create(const ConstraintIds& id);
 };
 
 }  // namespace Sketcher
