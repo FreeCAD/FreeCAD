@@ -49,17 +49,18 @@ SketchAnalysis::SketchAnalysis(Sketcher::SketchObject* Obj)
     : sketch(Obj)
 {}
 
-SketchAnalysis::~SketchAnalysis()
-{}
+SketchAnalysis::~SketchAnalysis() = default;
 
-struct SketchAnalysis::VertexIds
+namespace
+{
+struct VertexIds
 {
     Base::Vector3d v;
-    int GeoId;
-    Sketcher::PointPos PosId;
+    int GeoId {};
+    Sketcher::PointPos PosId {};
 };
 
-struct SketchAnalysis::Vertex_Less
+struct Vertex_Less
 {
     explicit Vertex_Less(double tolerance)
         : tolerance(tolerance)
@@ -82,7 +83,7 @@ private:
     double tolerance;
 };
 
-struct SketchAnalysis::VertexID_Less
+struct VertexID_Less
 {
     bool operator()(const VertexIds& x, const VertexIds& y) const
     {
@@ -90,7 +91,7 @@ struct SketchAnalysis::VertexID_Less
     }
 };
 
-struct SketchAnalysis::Vertex_EqualTo
+struct Vertex_EqualTo
 {
     explicit Vertex_EqualTo(double tolerance)
         : tolerance(tolerance)
@@ -111,13 +112,13 @@ private:
     double tolerance;
 };
 
-struct SketchAnalysis::EdgeIds
+struct EdgeIds
 {
     double l;
     int GeoId;
 };
 
-struct SketchAnalysis::Edge_Less
+struct Edge_Less
 {
     explicit Edge_Less(double tolerance)
         : tolerance(tolerance)
@@ -134,7 +135,7 @@ private:
     double tolerance;
 };
 
-struct SketchAnalysis::Edge_EqualTo
+struct Edge_EqualTo
 {
     explicit Edge_EqualTo(double tolerance)
         : tolerance(tolerance)
@@ -150,6 +151,8 @@ struct SketchAnalysis::Edge_EqualTo
 private:
     double tolerance;
 };
+
+}  // namespace
 
 int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
                                                          bool includeconstruction /*=true*/)

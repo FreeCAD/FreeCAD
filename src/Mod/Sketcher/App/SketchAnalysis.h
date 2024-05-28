@@ -172,13 +172,6 @@ public:
 private:
     Sketcher::SketchObject* sketch;
 
-    struct VertexIds;
-    struct Vertex_Less;
-    struct VertexID_Less;
-    struct Vertex_EqualTo;
-    struct EdgeIds;
-    struct Edge_Less;
-    struct Edge_EqualTo;
     std::vector<ConstraintIds> vertexConstraints;
     std::vector<ConstraintIds> verthorizConstraints;
     std::vector<ConstraintIds> lineequalityConstraints;
