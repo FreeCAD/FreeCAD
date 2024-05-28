@@ -127,7 +127,11 @@ void TaskTransformedParameters::setupUI()
     ui->buttonGroupMode->setId(ui->radioTransformToolShapes, static_cast<int>(Mode::TransformToolShapes));
 
     connect(ui->buttonGroupMode,
-            qOverload<int>(&QButtonGroup::idClicked),
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+            qOverload<int>(&QButtonGroup::buttonClicked),
+#else
+            &QButtonGroup::idClicked,
+#endif
             this,
             &TaskTransformedParameters::onModeChanged);
 
