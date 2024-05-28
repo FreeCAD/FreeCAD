@@ -77,10 +77,10 @@ def print_geometry_tree(element):
 def show_geometry_tree(element):
     """Same as get_geometry_tree but in a Qt dialog"""
 
-    import FreeCADGui  # lazy import
-    from PySide2 import QtGui, QtWidgets
-    from nativeifc import ifc_tools
     import Arch_rc
+    import FreeCADGui  # lazy import
+    from nativeifc import ifc_tools
+    from PySide import QtGui, QtWidgets
 
     if isinstance(element, FreeCAD.DocumentObject):
         element = ifc_tools.get_ifc_element(element)
@@ -145,9 +145,9 @@ def isfloat(s):
 def show_properties(current, previous):
     """Displays object properties"""
 
-    from nativeifc import ifc_tools  # lazy loading
     import FreeCADGui
-    from PySide2 import QtCore, QtGui, QtWidgets
+    from nativeifc import ifc_tools  # lazy loading
+    from PySide import QtCore, QtGui, QtWidgets
 
     ifcid = int(current.text(0).split("=", 1)[0].strip(" ").strip("#"))
     sel = FreeCADGui.Selection.getSelection()
