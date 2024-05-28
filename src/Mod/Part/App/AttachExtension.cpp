@@ -42,7 +42,9 @@ AttachExtension::AttachExtension()
                                 ("Attacher::AttachEngine3D"),
                                 "Attachment",
                                 (App::PropertyType)(App::Prop_None),
-                                "Class name of attach engine object driving the attachment.");
+                                "Class name of attach engine object driving the attachment.\n"
+				"Attacher::AttachEngine3D  Attacher::AttachEnginePlane\n"
+				"Attacher::AttachEngineLine  Attacher::AttachEnginePoint");
     this->AttacherType.setStatus(App::Property::Status::Hidden, true);
 
     EXTENSION_ADD_PROPERTY_TYPE(
