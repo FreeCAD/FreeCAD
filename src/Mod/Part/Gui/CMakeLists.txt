@@ -259,6 +259,9 @@ SET(PartGuiIcon_SVG
 
 add_library(PartGui SHARED ${PartGui_SRCS} ${PartGuiIcon_SVG})
 target_link_libraries(PartGui ${PartGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(PartGui)
+endif()
 
 
 SET_BIN_DIR(PartGui PartGui /Mod/Part)

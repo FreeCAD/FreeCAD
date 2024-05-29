@@ -52,6 +52,9 @@ SET(Assembly_SRCS
 
 add_library(Assembly SHARED ${Assembly_SRCS})
 target_link_libraries(Assembly ${Assembly_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Assembly)
+endif()
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)

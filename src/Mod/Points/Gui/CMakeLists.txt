@@ -66,6 +66,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(PointsGui SHARED ${PointsGui_SRCS} ${PointsGui_Scripts} ${PointsGuiIcon_SVG})
 target_link_libraries(PointsGui ${PointsGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(PointsGui)
+endif()
 
 fc_target_copy_resource_flat(PointsGui
     ${CMAKE_CURRENT_SOURCE_DIR}
