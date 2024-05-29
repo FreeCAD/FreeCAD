@@ -300,13 +300,26 @@ class GmshTools():
                 .format(self.working_dir)
             )
 
+        solver = None
+        for m in self.analysis.Group:
+            if m.isDerivedFrom("Fem::FemSolverObjectPython"):
+                solver = m
+        if solver:
+            if hasattr(solver, "MeshFormat"):
+                file_ext = solver.MeshFormat
+            else:
+                file_ext = ".unv"
+        else:
+            file_ext = ".unv"
+
+
         # file paths
         _geometry_name = self.part_obj.Name + "_Geometry"
         self.mesh_name = self.part_obj.Name + "_Mesh"
         # geometry file
         self.temp_file_geometry = os.path.join(self.working_dir, _geometry_name + ".brep")
         # mesh file
-        self.temp_file_mesh = os.path.join(self.working_dir, self.mesh_name + ".unv")
+        self.temp_file_mesh = os.path.join(self.working_dir, self.mesh_name + file_ext)
         # Gmsh input file
         self.temp_file_geo = os.path.join(self.working_dir, "shape2mesh.geo")
         Console.PrintMessage("  " + self.temp_file_geometry + "\n")
