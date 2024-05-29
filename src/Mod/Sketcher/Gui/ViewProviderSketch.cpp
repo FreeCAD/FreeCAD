@@ -2209,6 +2209,16 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                             sketchHandler->applyCursor();
                         this->updateColor();
                     }
+                    else if (shapetype.size() > 12 && shapetype.substr(0, 12) == "ExternalEdge") {
+                        int GeoId = std::atoi(&shapetype[12]) - 1;
+                        GeoId = -GeoId - 3;
+                        resetPreselectPoint();
+                        preselection.PreselectCurve = GeoId;
+
+                        if (sketchHandler)
+                            sketchHandler->applyCursor();
+                        this->updateColor();
+                    }
                     else if (shapetype.size() > 6 && shapetype.substr(0, 6) == "Vertex") {
                         int PtIndex = std::atoi(&shapetype[6]) - 1;
                         setPreselectPoint(PtIndex);
@@ -2449,7 +2459,12 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
 
     auto selectEdge = [this](int edgeid) {
         std::stringstream ss;
-        ss << "Edge" << edgeid;
+        if (edgeid >= 0) {
+            ss << "Edge" << edgeid;
+        }
+        else {
+            ss << "ExternalEdge" << -edgeid - 1;
+        }
         addSelection2(ss.str());
     };
 
