@@ -218,9 +218,8 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
                 else if (type == "DistanceY") {
                     ip2 = Base::Vector2d(ip1.x, ip2.y);
                 }
-                Base::Vector2d imid = (ip1 + ip2) * 0.5;
+
                 Base::Vector2d idir = ip2 - ip1;
-                Base::Vector2d inormal = Base::Vector2d(-idir.y, idir.x);
 
                 if (type == "Distance" && fabs(dir.x * idir.y - dir.y * idir.x) > Precision::Confusion()) {
                     //dimensions not parallel
@@ -2222,6 +2221,10 @@ void QGIViewDimension::drawAreaExecutive(const Base::Vector2d& centerPoint, doub
                                            double centerOverhang, int standardStyle,
                                            int renderExtent, bool flipArrow) const
 {
+    Q_UNUSED(area)
+    Q_UNUSED(centerOverhang)
+    Q_UNUSED(renderExtent)
+
     QPainterPath areaPath;
 
     Base::Vector2d labelCenter(labelRectangle.GetCenter());
@@ -2717,9 +2720,6 @@ void QGIViewDimension::drawArea(TechDraw::DrawViewDimension* dimension,
     Base::BoundBox2d labelRectangle(
         fromQtGui(mapRectFromItem(datumLabel, datumLabel->boundingRect())));
     areaPoint areaPoint = dimension->getAreaPoint();
-
-    double endAngle;
-    double startRotation;
 
     drawAreaExecutive(
         fromQtApp(areaPoint.center), areaPoint.area, labelRectangle, 0.0, viewProvider->StandardAndStyle.getValue(),
