@@ -291,12 +291,6 @@ void QGVPage::activateHandler(TechDrawHandler* newHandler)
 
     toolHandler = std::unique_ptr<TechDrawHandler>(newHandler);
     toolHandler->activate(this);
-
-    // make sure receiver has focus so immediately pressing Escape will be handled by
-    // ViewProviderSketch::keyPressed() and dismiss the active handler, and not the entire
-    // sketcher editor
-    //Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-    //mdi->setFocus();
 }
 
 void QGVPage::deactivateHandler()
