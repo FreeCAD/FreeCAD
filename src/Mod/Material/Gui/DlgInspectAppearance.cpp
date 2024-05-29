@@ -183,8 +183,6 @@ void DlgInspectAppearance::update(std::vector<Gui::ViewProvider*>& views)
                         auto& material = (prop->getValues())[index];
                         auto* tab = makeAppearanceTab(material);
                         ui->tabAppearance->addTab(tab, QString::number(index));
-
-                        index++;
                     }
                 }
             }
