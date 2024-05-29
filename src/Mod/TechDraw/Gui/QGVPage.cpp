@@ -533,9 +533,7 @@ void QGVPage::mouseMoveEvent(QMouseEvent* event)
     if (toolHandler) {
         toolHandler->mouseMoveEvent(event);
     }
-    else {
-        m_navStyle->handleMouseMoveEvent(event);
-    }
+    m_navStyle->handleMouseMoveEvent(event);
     QGraphicsView::mouseMoveEvent(event);
 }
 
@@ -548,7 +546,12 @@ void QGVPage::mouseReleaseEvent(QMouseEvent* event)
     else {
         m_navStyle->handleMouseReleaseEvent(event);
         QGraphicsView::mouseReleaseEvent(event);
-        resetCursor();
+        if (toolHandler) {
+            toolHandler->updateCursor();
+        }
+        else {
+            resetCursor();
+        }
     }
 }
 
