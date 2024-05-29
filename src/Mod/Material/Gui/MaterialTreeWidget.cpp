@@ -650,8 +650,10 @@ void MaterialTreeWidget::onSelectMaterial(const QItemSelection& selected,
     updateMaterial(uuid);
     std::string _uuid = uuid.toStdString();
 
-    Q_EMIT materialSelected(getMaterialManager().getMaterial(uuid));
-    Q_EMIT onMaterial(uuid);
+    if (!uuid.isEmpty()) {
+        Q_EMIT materialSelected(getMaterialManager().getMaterial(uuid));
+        Q_EMIT onMaterial(uuid);
+    }
 }
 
 void MaterialTreeWidget::onDoubleClick(const QModelIndex& index)
