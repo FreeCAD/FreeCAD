@@ -203,16 +203,21 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
             for (auto& d : dims) {
                 if (d == dim) { continue; }
 
+                std::string typei = d->Type.getValueAsString();
+                if (typei != "Distance" && typei != "DistanceX" && typei != "DistanceY") {
+                    continue;
+                }
+
                 pp = d->getLinearPoints();
                 Base::Vector3d ip1_3d = Rez::guiX(pp.first());
                 Base::Vector3d ip2_3d = Rez::guiX(pp.second());
 
                 Base::Vector2d ip1 = Base::Vector2d(ip1_3d.x, ip1_3d.y);
                 Base::Vector2d ip2 = Base::Vector2d(ip2_3d.x, ip2_3d.y);
-                if (type == "DistanceX") {
+                if (typei == "DistanceX") {
                     ip2 = Base::Vector2d(ip2.x, ip1.y);
                 }
-                else if (type == "DistanceY") {
+                else if (typei == "DistanceY") {
                     ip2 = Base::Vector2d(ip1.x, ip2.y);
                 }
 
