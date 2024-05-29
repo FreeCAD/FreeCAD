@@ -17,14 +17,14 @@ SET(Overlay_Stylesheets_Files
 FILE(GLOB Images_Files RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
     "${CMAKE_CURRENT_SOURCE_DIR}/images_dark-light/*.svg")
 
-SOURCE_GROUP("images_dark-light" FILES ${Images_Files})
+SOURCE_GROUP("Images_dark-light" FILES ${Images_Files})
 
-FILE(GLOB images_classic RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+FILE(GLOB Images_Files2 RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
     "${CMAKE_CURRENT_SOURCE_DIR}/images_classic/*.png")
 
 SOURCE_GROUP("images_classic" FILES ${Images_Files2})
 
-FILE(GLOB overlay_icons RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+FILE(GLOB Overlay_icons RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
     "${CMAKE_CURRENT_SOURCE_DIR}/overlay/icons/*.svg")
 
 SOURCE_GROUP("overlay_icons" FILES ${Overlay_icons})
