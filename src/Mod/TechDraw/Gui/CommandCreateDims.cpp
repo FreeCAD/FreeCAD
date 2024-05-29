@@ -967,12 +967,10 @@ protected:
     void makeCts_1Circle(bool& selAllowed)
     {
         if (availableDimension == AvailableDimension::FIRST) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius dimension"));
             createRadiusDiameterDimension(selCircleArc[0], true);
             selAllowed = true;
         }
         if (availableDimension == AvailableDimension::SECOND) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius dimension"));
             createRadiusDiameterDimension(selCircleArc[0], false);
             if (selCircleArc[0].geomEdgeType() != TechDraw::ARCOFCIRCLE) {
                 availableDimension = AvailableDimension::RESET;
@@ -1003,12 +1001,10 @@ protected:
     void makeCts_1Ellipse(bool& selAllowed)
     {
         if (availableDimension == AvailableDimension::FIRST) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius dimension"));
             createRadiusDiameterDimension(selEllipseArc[0], true);
             selAllowed = true;
         }
         if (availableDimension == AvailableDimension::SECOND) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius dimension"));
             createRadiusDiameterDimension(selEllipseArc[0], false);
             if (selEllipseArc[0].geomEdgeType() != TechDraw::ARCOFELLIPSE) {
                 availableDimension = AvailableDimension::RESET;
@@ -1067,11 +1063,9 @@ protected:
     }
 
     void createRadiusDiameterDimension(ReferenceEntry ref, bool firstCstr) {
-        bool isCircleGeom = true;
-
         int GeoId(TechDraw::DrawUtil::getIndexFromName(ref.getSubName()));
         TechDraw::BaseGeomPtr geom = partFeat->getGeomByIndex(GeoId);
-        isCircleGeom = (geom->getGeomType() == TechDraw::CIRCLE) || (geom->getGeomType() == TechDraw::ELLIPSE);
+        bool isCircleGeom = (geom->getGeomType() == TechDraw::CIRCLE) || (geom->getGeomType() == TechDraw::ELLIPSE);
 
         // Use same preference as in sketcher?
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/TechDraw/dimensioning");
@@ -1083,9 +1077,11 @@ protected:
             (!firstCstr && !dimensioningRadius && dimensioningDiameter) ||
             (firstCstr && dimensioningRadius && dimensioningDiameter && !isCircleGeom) ||
             (!firstCstr && dimensioningRadius && dimensioningDiameter && isCircleGeom)) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius dimension"));
             dim = dimMaker(partFeat, "Radius", { ref }, {});
         }
         else {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Diameter dimension"));
             dim = dimMaker(partFeat, "Diameter", { ref }, {});
         }
 
