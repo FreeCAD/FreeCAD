@@ -34,6 +34,7 @@
 #include <QPixmap>
 #endif//#ifndef _PreComp_
 
+#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -1405,11 +1406,13 @@ CmdTechDrawDimension::CmdTechDrawDimension()
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_Dimension";
     sAccel = "D";
+    eType = ForEdit;
 }
 
 void CmdTechDrawDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    App::AutoTransaction::setEnable(false);
 
     ReferenceVector references2d;
     ReferenceVector references3d;
