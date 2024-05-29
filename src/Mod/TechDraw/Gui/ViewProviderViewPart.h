@@ -60,6 +60,8 @@ public:
     App::PropertyEnumeration   HighlightLineStyle;
     App::PropertyColor  HighlightLineColor;
     App::PropertyFloat  HighlightAdjust;
+    App::PropertyEnumeration BreakLineType;
+    App::PropertyEnumeration BreakLineStyle;
     App::PropertyBool   ShowAllEdges;
     App::PropertyColor   FaceColor;
     App::PropertyPercent FaceTransparency;

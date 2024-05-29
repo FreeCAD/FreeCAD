@@ -98,6 +98,11 @@ using SU = ShapeUtils;
 // DrawBrokenView
 //===========================================================================
 
+const char *DrawBrokenView::BreakTypeEnums[] = {
+    QT_TRANSLATE_NOOP("DrawBrokenView", "None"),
+    QT_TRANSLATE_NOOP("DrawBrokenView", "ZigZag"),
+    QT_TRANSLATE_NOOP("DrawBrokenView", "Simple"),
+    nullptr};
 PROPERTY_SOURCE(TechDraw::DrawBrokenView, TechDraw::DrawViewPart)
 
 DrawBrokenView::DrawBrokenView()

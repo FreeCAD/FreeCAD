@@ -1046,6 +1046,7 @@ void QGIViewPart::drawBreakLines()
         return;
     }
 
+    auto breakType = vp->BreakLineType.getValue();
     auto breaks = dbv->Breaks.getValues();
     for (auto& breakObj : breaks) {
         QGIBreakLine* breakLine = new QGIBreakLine();
@@ -1061,8 +1062,9 @@ void QGIViewPart::drawBreakLines()
         breakLine->setBounds(topLeft, bottomRight);
         breakLine->setPos(0.0, 0.0);
         breakLine->setLinePen(
-            m_dashedLineGenerator->getLinePen(1, vp->HiddenWidth.getValue()));
+            m_dashedLineGenerator->getLinePen(vp->BreakLineStyle.getValue(), vp->HiddenWidth.getValue()));
         breakLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
+        breakLine->setBreakType(breakType);
         breakLine->setZValue(ZVALUE::SECTIONLINE);
         App::Color color = prefBreaklineColor();
         breakLine->setBreakColor(color.asValue<QColor>());
