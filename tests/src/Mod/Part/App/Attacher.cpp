@@ -171,6 +171,8 @@ TEST_F(AttacherTest, TestAllStringModesValid)
         "OXZ",
         "OYZ",
         "OYX",
+
+        "ParallelPlane",
     };
     int index = 0;
     for (auto mode : modes) {
@@ -197,6 +199,9 @@ TEST_F(AttacherTest, TestAllModesBoundaries)
     _boxes[1]->recomputeFeature();
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
 
+    _boxes[1]->MapMode.setValue(mmParallelPlane);
+    _boxes[1]->recomputeFeature();
+    EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
     _boxes[1]->MapMode.setValue(mmFlatFace);
     _boxes[1]->recomputeFeature();
     EXPECT_TRUE(boxesMatch(_boxes[1]->Shape.getBoundingBox(), Base::BoundBox3d(0, 0, 0, 3, 1, 2)));
