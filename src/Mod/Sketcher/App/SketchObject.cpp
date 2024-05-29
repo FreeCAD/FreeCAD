@@ -277,7 +277,7 @@ void SketchObject::buildShape()
             vertices.emplace_back(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(i-1, PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
-   
+
         } else
             shapes.push_back(getEdge(geo,convertSubName(
                         Data::IndexedName::fromConst("Edge", i), false).c_str()));
