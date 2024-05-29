@@ -203,11 +203,6 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
             for (auto& d : dims) {
                 if (d == dim) { continue; }
 
-                std::string dType = d->Type.getValueAsString();
-                if (dType != type) {
-                    continue;
-                }
-
                 pp = d->getLinearPoints();
                 Base::Vector3d ip1_3d = Rez::guiX(pp.first());
                 Base::Vector3d ip2_3d = Rez::guiX(pp.second());
@@ -224,7 +219,7 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
                 Base::Vector2d idir = ip2 - ip1;
                 Base::Vector2d inormal = Base::Vector2d(-idir.y, idir.x);
 
-                if (type == "Distance" && fabs(dir.x * idir.y - dir.y * idir.x) > Precision::Confusion()) {
+                if (fabs(dir.x * idir.y - dir.y * idir.x) > Precision::Confusion()) {
                     //dimensions not parallel
                     continue;
                 }
