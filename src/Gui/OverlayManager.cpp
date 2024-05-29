@@ -156,7 +156,7 @@ private:
         }
         else if (!overlayStyleSheet.isEmpty() && !QFile::exists(overlayStyleSheet)) {
             // User did choose one of predefined stylesheets, we need to qualify it with namespace
-            overlayStyleSheet = QStringLiteral("overlay:%1").arg(overlayStyleSheet);
+                overlayStyleSheet = QStringLiteral("overlay:Dark Theme + Dark Background.qss");
         }
 
         return overlayStyleSheet;
@@ -177,70 +177,7 @@ private:
     static const QString _default;
 };
 
-const QString OverlayStyleSheet::_default = QStringLiteral(
-        "* {alternate-background-color: rgba(250,250,250,120)}"
-
-        "QComboBox, QComboBox:editable, QComboBox:!editable, QLineEdit,"
-        "QTextEdit, QPlainTextEdit, QAbstractSpinBox, QDateEdit, QDateTimeEdit,"
-        "Gui--PropertyEditor--PropertyEditor QLabel "
-            "{background : palette(base);}"
-
-        "QScrollBar { background: rgba(0,0,0,10);}"
-        "QTabWidget::pane { background-color: transparent; border: transparent }"
-        "Gui--OverlayTabWidget { qproperty-effectColor: rgba(0,0,0,0) }"
-        "Gui--OverlayTabWidget::pane { background-color: rgba(250,250,250,80) }"
-
-        "QTabBar {border : none;}"
-        "QTabBar::tab {color: palette(text);"
-                        "background-color: rgba(100,100,100,50);"
-                        "padding: 5px}"
-        "QTabBar::tab:selected {background-color: rgba(250,250,250,80);}"
-        "QTabBar::tab:hover {background-color: rgba(250,250,250,200);}"
-
-        "QHeaderView { background:transparent }"
-        "QHeaderView::section {color: palette(text);"
-                                "background-color: rgba(250,250,250,50);"
-                                "border: 1px solid palette(dark);"
-                                "padding: 2px}"
-
-        "QTreeView, QListView, QTableView {"
-                    "background: rgb(250,250,250);"
-                    "border: transparent;"
-                    "selection-background-color: rgba(94, 144, 250, 0.7);}"
-        "QListView::item:selected, QTreeView::item:selected {"
-                    "background-color: rgba(94, 144, 250, 0.7);}"
-
-        "Gui--PropertyEditor--PropertyEditor {"
-                    "border: 1px solid palette(dark);"
-                    "qproperty-groupTextColor: rgb(100, 100, 100);"
-                    "qproperty-groupBackground: rgba(180, 180, 180, 0.7);}"
-
-        "QToolTip {background-color: rgba(250,250,250,180);}"
-
-        "Gui--TreeWidget QHeaderView:section {"
-                    "height: 0px;"
-                    "background-color: transparent;"
-                    "padding: 0px;"
-                    "border: transparent;}"
-
-        "Gui--CallTipsList::item { background-color: rgba(200,200,200,200);}"
-        "Gui--CallTipsList::item::selected { background-color: palette(highlight);}"
-
-        "QPushButton { background: rgba(250,250,250,80);padding: 2px 4px;}"
-        "QPushButton::hover { background: rgba(250,250,250,200);}"
-        "QPushButton::focus { background: rgba(250,250,250,255);}"
-        "QPushButton::pressed { background-color: #5e90fa;"
-                                    "border: 1px inset palette(dark) }"
-        "QPushButton::checked { background: rgba(100,100,100,100);"
-                                    "border: 1px inset palette(dark) }"
-        "QPushButton::checked:hover { background: rgba(150,150,150,200);"
-                                            "border: 1px inset palette(dark) }"
-        "Gui--OverlayToolButton { background: transparent; padding: 0px; border: none }"
-        "Gui--OverlayTitleBar,"
-        "Gui--OverlaySplitterHandle { background-color: rgba(200, 200, 200, 150); }"
-        "QWidget#ClippingScrollAreaContents, "
-        "QScrollArea#ClippingScrollArea { border: none; background-color: #a0e6e6e6; }"
-        "Gui--PropertyEditor--PropertyEditor > QWidget > QPushButton {text-align:left;padding-left:2px;}"
+const QString OverlayStyleSheet::_default = QStringLiteral("overlay:Dark Theme + Dark Background.qss"
     );
 
 // -----------------------------------------------------------
