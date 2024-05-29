@@ -145,7 +145,8 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant& va
 
 void QGIDatumLabel::snapPosition(QPointF& pos)
 {
-    qreal snapPercent = 0.05;
+    qreal snapPercent = 0.4;
+    double dimSpacing = Rez::guiX(activeDimAttributes.getCascadeSpacing());
 
     auto* qgivd = dynamic_cast<QGIViewDimension*>(parentItem());
     if (!qgivd) {
@@ -177,17 +178,19 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
     Base::Vector2d mid = (p1 + p2) * 0.5;
     Base::Vector2d dir = p2 - p1;
     Base::Vector2d normal = Base::Vector2d(-dir.y, dir.x);
-    Base::Vector2d posV = Base::Vector2d(pos.x() + m_dimText->boundingRect().width() * 0.5,
-                                        pos.y() + m_dimText->boundingRect().height() * 0.5);
+
+    Base::Vector2d toCenter = getPosToCenterVec();
+
+    Base::Vector2d posV = Base::Vector2d(pos.x(), pos.y()) + toCenter;
+
     Base::Vector2d projPnt;
     projPnt.ProjectToLine(posV - mid, normal);
     projPnt = projPnt + mid;
 
-    if ((projPnt - posV).Length() < dir.Length() * snapPercent) {
+    if ((projPnt - posV).Length() < dimSpacing * snapPercent) {
         posV = projPnt;
-        pos.setX(posV.x - m_dimText->boundingRect().width() * 0.5);
-        pos.setY(posV.y - m_dimText->boundingRect().height() * 0.5);
-
+        pos.setX(posV.x - toCenter.x);
+        pos.setY(posV.y - toCenter.y);
     }
 
     // 2 - We check for coord/chain dimensions to offer proper snapping
@@ -195,9 +198,8 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
     if (qgiv) {
         auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(qgiv->getViewObject());
         if (dvp) {
-            std::vector<TechDraw::DrawViewDimension*> dims = dvp->getDimensions();
-            double dimSpacing = Rez::guiX(activeDimAttributes.getCascadeSpacing());
             snapPercent = 0.2;
+            std::vector<TechDraw::DrawViewDimension*> dims = dvp->getDimensions();
             for (auto& d : dims) {
                 if (d == dim) { continue; }
 
@@ -233,8 +235,8 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
                 auto labeli = qgivDi->getDatumLabel();
                 if (!labeli) { continue; }
                 QPointF posi = labeli->pos();
-                Base::Vector2d posVi = Base::Vector2d(posi.x() + labeli->m_dimText->boundingRect().width() * 0.5,
-                    posi.y() + labeli->m_dimText->boundingRect().height() * 0.5);
+                Base::Vector2d toCenteri = labeli->getPosToCenterVec();
+                Base::Vector2d posVi = Base::Vector2d(posi.x(), posi.y()) + toCenteri;
 
                 Base::Vector2d projPnt2;
                 projPnt2.ProjectToLine(posV - posVi, idir);
@@ -242,14 +244,14 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
 
                 if ((projPnt2 - posV).Length() < dimSpacing * snapPercent) {
                     posV = projPnt2;
-                    pos.setX(posV.x - m_dimText->boundingRect().width() * 0.5);
-                    pos.setY(posV.y - m_dimText->boundingRect().height() * 0.5);
+                    pos.setX(posV.x - toCenter.x);
+                    pos.setY(posV.y - toCenter.y);
                     break;
                 }
                 else if (fabs((projPnt2 - posV).Length() - fabs(dimSpacing)) < dimSpacing * snapPercent) {
                     posV = projPnt2 + (posV - projPnt2).Normalize() * dimSpacing;
-                    pos.setX(posV.x - m_dimText->boundingRect().width() * 0.5);
-                    pos.setY(posV.y - m_dimText->boundingRect().height() * 0.5);
+                    pos.setX(posV.x - toCenter.x);
+                    pos.setY(posV.y - toCenter.y);
                     break;
                 }
             }
@@ -369,8 +371,8 @@ void QGIDatumLabel::setPosFromCenter(const double& xCenter, const double& yCente
     }
 
     //set label's Qt position(top, left) given boundingRect center point
-    setPos(xCenter - m_dimText->boundingRect().width() * 0.5,
-           yCenter - m_dimText->boundingRect().height() * 0.5);
+    Base::Vector2d vec = getPosToCenterVec();
+    setPos(xCenter - vec.x, yCenter - vec.y);
 
     QString uText = m_unitText->toPlainText();
     if ((uText.size() > 0) && (uText.at(0) != QChar::fromLatin1(' '))) {
@@ -408,8 +410,16 @@ void QGIDatumLabel::setPosFromCenter(const double& xCenter, const double& yCente
 void QGIDatumLabel::setLabelCenter()
 {
     //save label's bRect center (posX, posY) given Qt position (top, left)
-    posX = x() + m_dimText->boundingRect().width() / 2.;
-    posY = y() + m_dimText->boundingRect().height() / 2.;
+    Base::Vector2d vec = getPosToCenterVec();
+    posX = x() + vec.x;
+    posY = y() + vec.y;
+}
+
+Base::Vector2d QGIDatumLabel::getPosToCenterVec()
+{
+    QPointF center = m_dimText->boundingRect().center();
+
+    return Base::Vector2d(center.x(), center.y());
 }
 
 void QGIDatumLabel::setFont(QFont font)
