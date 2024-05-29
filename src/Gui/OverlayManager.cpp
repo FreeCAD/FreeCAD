@@ -156,7 +156,7 @@ private:
         }
         else if (!overlayStyleSheet.isEmpty() && !QFile::exists(overlayStyleSheet)) {
             // User did choose one of predefined stylesheets, we need to qualify it with namespace
-                overlayStyleSheet = QStringLiteral("overlay:Dark Theme + Dark Background.qss");
+                overlayStyleSheet = QStringLiteral("overlay:Light Theme + Dark Background.qss");
         }
 
         return overlayStyleSheet;
@@ -177,7 +177,7 @@ private:
     static const QString _default;
 };
 
-const QString OverlayStyleSheet::_default = QStringLiteral("overlay:Dark Theme + Dark Background.qss"
+const QString OverlayStyleSheet::_default = QStringLiteral("overlay:Light Theme + Dark Background.qss"
     );
 
 // -----------------------------------------------------------
