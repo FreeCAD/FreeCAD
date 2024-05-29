@@ -1404,6 +1404,7 @@ CmdTechDrawDimension::CmdTechDrawDimension()
     sWhatsThis = "TechDraw_Dimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_Dimension";
+    sAccel = "D";
 }
 
 void CmdTechDrawDimension::activated(int iMsg)
@@ -1491,8 +1492,6 @@ CmdTechDrawRadiusDimension::CmdTechDrawRadiusDimension()
     sWhatsThis = "TechDraw_RadiusDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_RadiusDimension";
-    sAccel = "D";
-    eType = ForEdit;
 }
 
 void CmdTechDrawRadiusDimension::activated(int iMsg)
