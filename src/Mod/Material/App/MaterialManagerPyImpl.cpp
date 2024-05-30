@@ -111,6 +111,27 @@ PyObject* MaterialManagerPy::getMaterialByPath(PyObject* args)
     }
 }
 
+PyObject* MaterialManagerPy::inheritMaterial(PyObject* args)
+{
+    char* uuid {};
+    if (!PyArg_ParseTuple(args, "s", &uuid)) {
+        return nullptr;
+    }
+
+    try {
+        auto parent = getMaterialManagerPtr()->getMaterial(QString::fromStdString(uuid));
+
+        // Found the parent. Create a new material with this as parent
+        auto material = new Material();
+        material->setParentUUID(QString::fromLatin1(uuid));
+        return new MaterialPy(material); // Transfers ownership
+    }
+    catch (const MaterialNotFound&) {
+        PyErr_SetString(PyExc_LookupError, "Material not found");
+        return nullptr;
+    }
+}
+
 Py::List MaterialManagerPy::getMaterialLibraries() const
 {
     auto libraries = getMaterialManagerPtr()->getMaterialLibraries();
