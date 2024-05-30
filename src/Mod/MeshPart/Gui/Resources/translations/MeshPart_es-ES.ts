@@ -267,7 +267,7 @@ Este comando solo funciona con un objeto 'malla', no con una cara regular o supe
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
-      <translation>Inicio</translation>
+      <translation>Comenzar</translation>
     </message>
   </context>
   <context>

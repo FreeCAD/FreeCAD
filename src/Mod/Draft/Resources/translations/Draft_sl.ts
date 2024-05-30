@@ -658,7 +658,7 @@ To deluje le, če je "Vezana razpostavitev" izključena.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="209"/>
       <source>Fuse</source>
-      <translation>Združi</translation>
+      <translation>Zlij</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="216"/>
@@ -1014,7 +1014,7 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="387"/>
       <location filename="../ui/TaskSelectPlane.ui" line="255"/>
       <source> px</source>
-      <translation> px</translation>
+      <translation> sl. točk</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="206"/>
@@ -1226,7 +1226,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="430"/>
       <source>Arrow size</source>
-      <translation>Velikost puščic</translation>
+      <translation>Velikost puščice</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="495"/>
@@ -1716,7 +1716,7 @@ v Gradniku velikosti pripisov. Če je merilo 1:100, je množilnik 100.</translat
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="210"/>
       <source>Line width</source>
-      <translation>Širina črte</translation>
+      <translation>Debelina črte</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="217"/>
@@ -1767,7 +1767,7 @@ v Gradniku velikosti pripisov. Če je merilo 1:100, je množilnik 100.</translat
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="297"/>
       <source>Arrow size</source>
-      <translation>Velikost puščice</translation>
+      <translation>Velikost puščic</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="304"/>
@@ -2836,7 +2836,7 @@ občega koordinatnega sistema, obarvajo rdeče, zeleno ali modro</translation>
       <location filename="../../DraftGui.py" line="59"/>
       <location filename="../../DraftGui.py" line="545"/>
       <source>Global</source>
-      <translation>Splošno</translation>
+      <translation>Obče</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="60"/>
@@ -5255,24 +5255,24 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
       <translation>Napačen vnos: mora biti število med 0 in 100.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="453"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="495"/>
       <source>Activate this layer</source>
       <translation>Omogoči to plast</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="459"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="501"/>
       <source>Select layer contents</source>
       <translation>Izberite vsebino plasti</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="497"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="511"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="539"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="553"/>
       <source>Merge layer duplicates</source>
       <translation>Združi podvojene plasti</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="503"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="556"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="545"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="598"/>
       <source>Add new layer</source>
       <translation>Dodaj novo plast</translation>
     </message>
@@ -5514,11 +5514,6 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
       <translation type="unfinished">Volume not available for (sub)object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="81"/>
-      <source>added missing view properties</source>
-      <translation>dodane manjkajoče lastnosti pogleda</translation>
-    </message>
-    <message>
       <location filename="../../draftobjects/array.py" line="76"/>
       <source>added property 'Count'</source>
       <translation>dodaj lastnost "Število"</translation>
@@ -5569,6 +5564,11 @@ obstoječih predmetov v vseh odprtih dokumentih?</translation>
       <location filename="../../draftobjects/pointarray.py" line="142"/>
       <source>migrated 'PointList' property to 'PointObject'</source>
       <translation>prenešena lastnost "PointList" v "PointObject"</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/layer.py" line="93"/>
+      <source>updated view properties</source>
+      <translation type="unfinished">updated view properties</translation>
     </message>
   </context>
   <context>
@@ -5728,7 +5728,7 @@ z menija Orodja -&gt; Upravljalnik vstavkov</translation>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="152"/>
       <source>Scale</source>
-      <translation>Povečava</translation>
+      <translation>Prevelikostenje</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="153"/>
@@ -6458,7 +6458,7 @@ Razpostavitev lahko pretvorite v pravokotno ali krožno tako, da spremenite njen
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="62"/>
       <source>Rotate</source>
-      <translation>Zavrti</translation>
+      <translation>Zasukaj</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="65"/>
@@ -6503,7 +6503,7 @@ Create a group first to use this tool.</source>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="209"/>
       <source>Autogroup</source>
-      <translation>Samodejno združevanje</translation>
+      <translation>Samozdruževanje</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="212"/>
@@ -7316,7 +7316,7 @@ vklopite, če želite združevanje oz. izklopite, če želite sestavljanje</tran
       <translation>Površina tega predmeta</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="55"/>
+      <location filename="../../draftobjects/layer.py" line="56"/>
       <source>The objects that are part of this layer</source>
       <translation>Predmeti, ki so zajeti v tej plasti</translation>
     </message>
@@ -8210,8 +8210,8 @@ lastnosti "Prvega kota" in "Zadnjega kota".</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="78"/>
-      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
-      <translation>Če drži, bodo predmeti znotraj te plasti prevzeli barvo oblik po plasti</translation>
+      <source>If it is true, the objects contained within this layer will adopt the shape appearance of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape appearance of the layer</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="89"/>
@@ -8229,22 +8229,27 @@ lastnosti "Prvega kota" in "Zadnjega kota".</translation>
       <translation>Barva oblike predmetov, ki so v tej plasti</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="120"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="121"/>
+      <source>The shape appearance of the objects contained within this layer</source>
+      <translation type="unfinished">The shape appearance of the objects contained within this layer</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="133"/>
       <source>The line width of the objects contained within this layer</source>
       <translation>Debelina črt predmetov, ki so v tej plasti</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="130"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="143"/>
       <source>The draw style of the objects contained within this layer</source>
       <translation>Slog risbe predmetov, ki so v tej plasti</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="141"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="154"/>
       <source>The transparency of the objects contained within this layer</source>
       <translation>Prozornost predmetov, ki so v tej plasti</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="152"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="165"/>
       <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
       <translation>Barva črt predmetov, ki so v tej plasti in uporabljeni na strani Tehnične risbe (TechDraw)</translation>
     </message>
@@ -8374,7 +8379,7 @@ preko kotnice</translation>
       <location filename="../../InitGui.py" line="140"/>
       <location filename="../../InitGui.py" line="141"/>
       <source>Draft</source>
-      <translation>Nagib</translation>
+      <translation>Izris</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="201"/>

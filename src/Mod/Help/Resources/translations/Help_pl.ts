@@ -93,6 +93,13 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <translation>Dokumentacja zostanie otwarta w domyślnej przeglądarce internetowej.</translation>
     </message>
     <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="211"/>
+      <source>The documentation will open in a dockable dialog inside the FreeCAD window,
+which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
+      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
+which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
+    </message>
+    <message>
       <location filename="../../dlgPreferencesHelp.ui" line="246"/>
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
@@ -109,13 +116,6 @@ Markdown version above.</source>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</source>
       <translation>Dokumentacja zostanie otwarta w nowej karcie wewnątrz interfejsu FreeCAD.
 Wymaga to komponentu PySide QtWebengineWidgets</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="211"/>
-      <source>The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open whlle working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation>Dokumentacja otworzy się w dokowanym oknie dialogowym wewnątrz okna FreeCAD,
-co pozwala na pozostawienie go otwartego podczas pracy w widoku 3D. Wymaga to komponentu PySide QtWebengineWidgets</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="215"/>

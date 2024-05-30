@@ -280,7 +280,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="370"/>
       <source>&amp;Renderer</source>
-      <translation>Приказивач</translation>
+      <translation>&amp;Рендеринг</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="482"/>

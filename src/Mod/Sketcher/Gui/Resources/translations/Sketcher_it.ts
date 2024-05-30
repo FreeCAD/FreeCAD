@@ -176,7 +176,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="526"/>
       <source>Create an arc in the sketch</source>
-      <translation>Crea un arco nello sketch</translation>
+      <translation>Crea un arco nello schizzo</translation>
     </message>
   </context>
   <context>
@@ -1062,9 +1062,9 @@ rispetto a una linea o a un terzo punto</translation>
       <source>Set the 'AttachmentSupport' of a sketch.
 First select the supporting geometry, for example, a face or an edge of a solid object,
 then call this command, then choose the desired sketch.</source>
-      <translation>Imposta 'AttachmentSupport' di uno sketch.
+      <translation>Imposta 'AttachmentSupport' di uno schizzo.
 Prima selezionare la geometria di supporto, per esempio, una faccia o un bordo di un oggetto solido,
-poi avvia questo comando, quindi scegli lo sketch desiderato.</translation>
+poi avvia questo comando, quindi scegli lo schizzo desiderato.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="617"/>
@@ -2003,12 +2003,12 @@ vincoli non validi, geometria degenerata, ecc.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="267"/>
       <source>Cut in Sketcher</source>
-      <translation>Taglia nello Sketcher</translation>
+      <translation>Taglia nello schizzo</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="312"/>
       <source>Paste in Sketcher</source>
-      <translation>Incolla nello Sketcher</translation>
+      <translation>Incolla nello schizzo</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1056"/>
@@ -2701,7 +2701,7 @@ vincoli non validi, geometria degenerata, ecc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="227"/>
       <source>One or two point on object constraint(s) was/were deleted, since the latest constraint being applied internally applies point-on-object as well.</source>
-      <translation type="unfinished">One or two point on object constraint(s) was/were deleted, since the latest constraint being applied internally applies point-on-object as well.</translation>
+      <translation>Uno o due punti sui vincoli di oggetto sono stati/sono stati eliminati, poiché il vincolo più recente applicato internamente è applicato anche al punto sull'oggetto.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3844"/>
@@ -4060,12 +4060,12 @@ Per ottenere l'effetto è necessario accedere nuovamente alla modalità di modif
     <message>
       <location filename="../../SketcherSettings.ui" line="165"/>
       <source>Unify Coincident and PointOnObject in a single tool.</source>
-      <translation type="unfinished">Unify Coincident and PointOnObject in a single tool.</translation>
+      <translation>Unifica Coincidente e Punto su Oggetto in un singolo strumento.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="168"/>
       <source>Unify Coincident and PointOnObject</source>
-      <translation type="unfinished">Unify Coincident and PointOnObject</translation>
+      <translation>Unifica Coincidente e Punto su Oggetto</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="184"/>
@@ -4089,11 +4089,11 @@ Per ottenere l'effetto è necessario accedere nuovamente alla modalità di modif
 'Separated tools': Individual tools for each dimensioning constraint.
 'Both': You will have both the 'Dimension' tool and the separated tools.
 This setting is only for the toolbar. Whichever you choose, all tools are always available in the menu and through shortcuts.</source>
-      <translation type="unfinished">Select the type of dimensioning constraints for your toolbar:
-'Single tool': A single tool for all dimensioning constraints in the toolbar: Distance, Distance X / Y, Angle, Radius. (Others in dropdown)
-'Separated tools': Individual tools for each dimensioning constraint.
-'Both': You will have both the 'Dimension' tool and the separated tools.
-This setting is only for the toolbar. Whichever you choose, all tools are always available in the menu and through shortcuts.</translation>
+      <translation>Seleziona il tipo di vincoli di dimensionamento per la barra degli strumenti:
+'Strumento singolo': Un singolo strumento per tutti i vincoli di dimensionamento nella barra degli strumenti: Distanza, Distanza X / Y, Angolo, Raggio. (Altri nella lista drop-down)
+'Strumenti separati': Strumenti singoli per ogni vincolo di dimensionamento.
+'Entrambi': Si ha sia lo strumento 'Dimensione' sia gli strumenti separati.
+Questa impostazione è solo per la barra degli strumenti. Qualunque sia la scelta, tutti gli strumenti sono sempre disponibili nel menu e attraverso le scorciatoie.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="243"/>
@@ -4101,10 +4101,10 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 'Auto': The tool will apply radius to arcs and diameter to circles.
 'Diameter': The tool will apply diameter to both arcs and circles.
 'Radius': The tool will apply radius to both arcs and circles.</source>
-      <translation type="unfinished">While using the Dimension tool you may choose how to handle circles and arcs:
-'Auto': The tool will apply radius to arcs and diameter to circles.
-'Diameter': The tool will apply diameter to both arcs and circles.
-'Radius': The tool will apply radius to both arcs and circles.</translation>
+      <translation>Durante l'utilizzo dello strumento di dimensionamento si può scegliere come gestire i cerchi e gli archi:
+'Auto': Lo strumento applicherà il raggio agli archi e il diametro ai cerchi.
+'Diametro': Lo strumento applicherà il diametro sia agli archi sia ai cerchi.
+'Raggio': Lo strumento applicherà il raggio sia agli archi sia ai cerchi.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="262"/>
@@ -4124,7 +4124,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../SketcherSettings.ui" line="236"/>
       <source>Dimension tool diameter/radius mode:</source>
-      <translation type="unfinished">Dimension tool diameter/radius mode:</translation>
+      <translation>Modalità dello strumento di dimensionamento per diametro/raggio:</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="275"/>
@@ -4132,10 +4132,10 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 'Disabled': On-View-Parameters are completely disabled.
 'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
 'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</source>
-      <translation type="unfinished">Choose a visibility mode for the On-View-Parameters:
-'Disabled': On-View-Parameters are completely disabled.
-'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
-'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</translation>
+      <translation>Scegli una modalità di visibilità per i Parametri On-View:
+'Disabilitato': I Parametri On-View sono completamente disabilitati.
+'Solo dimensionale': Sono visibili solo i Parametri On-View dimensionali. Sono i più utili. Per esempio il raggio di un cerchio.
+'All': Entrambi i Parametri On-View dimensionali e posizionali. I posizionali sono la posizione (x,y) del cursore. Per esempio per il centro di un cerchio.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="190"/>
@@ -4621,7 +4621,7 @@ Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</trans
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1541"/>
       <source>Impossible to update visibility tracking:</source>
-      <translation type="unfinished">Impossible to update visibility tracking:</translation>
+      <translation>Impossibile aggiornare il monitoraggio della visibilità:</translation>
     </message>
   </context>
   <context>
@@ -4821,7 +4821,7 @@ Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</trans
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="14"/>
       <source>Sketcher validation</source>
-      <translation>Convalida dello Sketcher</translation>
+      <translation>Convalida dello schizzo</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
@@ -5793,7 +5793,7 @@ L'algoritmo di Eigen Sparse QR è ottimizzato per matrici sparsi; solitamente pi
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Sketcher visual</source>
-      <translation type="unfinished">Sketcher visual</translation>
+      <translation>Visualizzazione dello Schizzo</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -6039,7 +6039,7 @@ La spaziatura della griglia cambia se diventa più piccola di questo numero di p
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2372"/>
       <source>Selection has no valid geometries. BSplines, Points are not supported yet.</source>
-      <translation type="unfinished">Selection has no valid geometries. BSplines, Points are not supported yet.</translation>
+      <translation>La selezione non ha geometrie valide. I Punti B-Spline non sono ancora supportati.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObjectPyImp.cpp" line="414"/>
@@ -6417,9 +6417,9 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
       <source>Constrain contextually based on your selection.
 Depending on your selection you might have several constraints available. You can cycle through them using M key.
 Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</source>
-      <translation type="unfinished">Constrain contextually based on your selection.
-Depending on your selection you might have several constraints available. You can cycle through them using M key.
-Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</translation>
+      <translation>Vincolo contestuale in base alla selezione.
+A seconda della selezione si potrebbero avere diverse dimensioni disponibili. È possibile scorrerle usando il tasto M.
+Facendo clic con il tasto sinistro sullo spazio vuoto sarà convalidata la quota attuale. Facendo clic con il tasto destro o premendo Esc l'operazione sarà annullata.</translation>
     </message>
   </context>
   <context>
@@ -6427,12 +6427,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="363"/>
       <source>Show/hide circular helper for arcs</source>
-      <translation type="unfinished">Show/hide circular helper for arcs</translation>
+      <translation>Mostra/nascondi helper circolare per gli archi</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="365"/>
       <source>Switches between showing and hiding the circular helper for all arcs</source>
-      <translation type="unfinished">Switches between showing and hiding the circular helper for all arcs</translation>
+      <translation>Commuta tra mostrare e nascondere l'helper circolare per tutti gli archi</translation>
     </message>
   </context>
   <context>
@@ -6580,7 +6580,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2313"/>
       <source>Offset selected geometries. A positive offset length makes the offset go outward, a negative length inward.</source>
-      <translation type="unfinished">Offset selected geometries. A positive offset length makes the offset go outward, a negative length inward.</translation>
+      <translation>Offset delle geometrie selezionate. Un offset positivo fa andare verso l'esterno, un offset negativo verso l'interno.</translation>
     </message>
   </context>
   <context>
@@ -6598,7 +6598,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="481"/>
       <source>This concerns the datum constraints (e.g. distance).If you activate Clone, the tool will copy the datum.Else it will try to replace them with equalities.</source>
-      <translation type="unfinished">This concerns the datum constraints (e.g. distance).If you activate Clone, the tool will copy the datum.Else it will try to replace them with equalities.</translation>
+      <translation>Questo riguarda i vincoli di riferimento (ad esempio la distanza). Se si attiva Clona, lo strumento copierà il riferimento. Altrimenti cercherà di sostituirli con uguaglianze.</translation>
     </message>
   </context>
   <context>
@@ -6826,42 +6826,42 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="212"/>
       <source>Color of fully constrained normal geometry in edit mode</source>
-      <translation type="unfinished">Color of fully constrained normal geometry in edit mode</translation>
+      <translation>Colore della geometria completamente vincolata in modalità modifica</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="238"/>
       <source>Color of normal geometry in edit mode</source>
-      <translation type="unfinished">Color of normal geometry in edit mode</translation>
+      <translation>Colore della geometria normale in modalità modifica</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="306"/>
       <source>Color of fully constrained construction geometry in edit mode</source>
-      <translation type="unfinished">Color of fully constrained construction geometry in edit mode</translation>
+      <translation>Colore della geometria di costruzione completamente vincolata in modalità modifica</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="387"/>
       <source>Internal alignment geometry</source>
-      <translation type="unfinished">Internal alignment geometry</translation>
+      <translation>Geometria di allineamento interno</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="400"/>
       <source>Color of fully constrained internal alignment geometry in edit mode</source>
-      <translation type="unfinished">Color of fully constrained internal alignment geometry in edit mode</translation>
+      <translation>Colore della geometria di allineamento interno completamente vincolata in modalità modifica</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="426"/>
       <source>Color of internal alignment geometry in edit mode</source>
-      <translation type="unfinished">Color of internal alignment geometry in edit mode</translation>
+      <translation>Colore della geometria di allineamento interno in modalità modifica</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="555"/>
       <source>Fully constrained sketch</source>
-      <translation type="unfinished">Fully constrained sketch</translation>
+      <translation>Schizzo completamente vincolato</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="568"/>
       <source>Color of geometry indicating a fully constrained sketch</source>
-      <translation type="unfinished">Color of geometry indicating a fully constrained sketch</translation>
+      <translation>Colore della geometria che indica uno schizzo completamente vincolato</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="588"/>
@@ -6871,7 +6871,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="672"/>
       <source>Color of dimensional driving constraints in edit mode</source>
-      <translation type="unfinished">Color of dimensional driving constraints in edit mode</translation>
+      <translation>Colore dei vincoli dimensionali in modalità modifica</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="799"/>
@@ -6881,7 +6881,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="806"/>
       <source>Color of vertices outside edit mode</source>
-      <translation type="unfinished">Color of vertices outside edit mode</translation>
+      <translation>Colore dei vertici fuori dalla modalità modifica</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="845"/>
@@ -6891,7 +6891,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="852"/>
       <source>Color of edges outside edit mode</source>
-      <translation type="unfinished">Color of edges outside edit mode</translation>
+      <translation>Colore degli spigoli fuori dalla modalità modifica</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="199"/>
@@ -7061,7 +7061,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="218"/>
       <source>C&amp;opy in sketcher</source>
-      <translation type="unfinished">C&amp;opy in sketcher</translation>
+      <translation>C&amp;opia nello schizzo</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="219"/>
@@ -7074,7 +7074,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="249"/>
       <source>C&amp;ut in sketcher</source>
-      <translation type="unfinished">C&amp;ut in sketcher</translation>
+      <translation>Tag&amp;lia nello schizzo</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="250"/>
@@ -7087,7 +7087,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="289"/>
       <source>P&amp;aste in sketcher</source>
-      <translation type="unfinished">P&amp;aste in sketcher</translation>
+      <translation>Incolla nello schizzo</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="290"/>
@@ -7113,12 +7113,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2458"/>
       <source>Array transform</source>
-      <translation type="unfinished">Array transform</translation>
+      <translation>Trasla</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2459"/>
       <source>Translate selected geometries. Enable creation of i * j copies.</source>
-      <translation type="unfinished">Translate selected geometries. Enable creation of i * j copies.</translation>
+      <translation>Trasla le geometrie selezionate. Abilita la creazione di i * j copie.</translation>
     </message>
   </context>
   <context>
@@ -7131,7 +7131,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="491"/>
       <source>This concerns the datum constraints like distances. If you activate Clone, then the tool will copy the datum. Else it will try to replace them with equalities between the initial geometries and the new copies.</source>
-      <translation type="unfinished">This concerns the datum constraints like distances. If you activate Clone, then the tool will copy the datum. Else it will try to replace them with equalities between the initial geometries and the new copies.</translation>
+      <translation>Questo riguarda i vincoli di riferimento come le distanze. Se si attiva Clona, lo strumento copierà il riferimento. Altrimenti cercherà di sostituirli con eguaglianze tra le geometrie iniziali e le nuove copie.</translation>
     </message>
   </context>
   <context>
@@ -7212,7 +7212,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="434"/>
       <source>Axis endpoints</source>
-      <translation type="unfinished">Axis endpoints</translation>
+      <translation>Punti finali dell'asse</translation>
     </message>
   </context>
   <context>
@@ -7333,12 +7333,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandConstraints.cpp" line="1308"/>
       <source>Toggle constraints</source>
-      <translation type="unfinished">Toggle constraints</translation>
+      <translation>Attiva/disattiva vincoli</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1309"/>
       <source>Toggle constrain tools.</source>
-      <translation type="unfinished">Toggle constrain tools.</translation>
+      <translation>Attiva/disattiva gli strumenti di vincolo.</translation>
     </message>
   </context>
 </TS>
