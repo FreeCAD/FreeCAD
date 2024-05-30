@@ -1608,14 +1608,18 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
             // Rect occupied by the item relative to viewport
             auto iconRect = visualItemRect(objitem);
 
+            auto style = this->style();
+
             // If the checkboxes are visible, these are displayed before the icon
             // and we have to compensate for its width.
             if (isSelectionCheckBoxesEnabled()) {
-                auto style = this->style();
                 int checkboxWidth = style->pixelMetric(QStyle::PM_IndicatorWidth)
                                     + style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
                 iconRect.adjust(checkboxWidth, 0, 0, 0);
             }
+
+            int const margin = style->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1;
+            iconRect.adjust(margin, 0, 0, 0);
 
             // We are interested in the first icon (visibility icon)
             iconRect.setWidth(iconSize());
