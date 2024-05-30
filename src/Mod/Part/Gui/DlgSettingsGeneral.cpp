@@ -170,7 +170,7 @@ DlgImportExportStep::DlgImportExportStep(QWidget* parent)
   , importStep(new DlgImportStep(this))
   , headerStep(new DlgExportHeaderStep(this))
 {
-    setWindowTitle(tr("STEP"));
+    setWindowTitle(QLatin1String("STEP"));
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);
