@@ -41,6 +41,10 @@ class BIM_Windows:
             ),
         }
 
+    def IsActive(self):
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
+
     def Activated(self):
         FreeCADGui.Control.showDialog(BIM_Windows_TaskPanel())
 
