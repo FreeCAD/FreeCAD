@@ -517,6 +517,7 @@ public:
     App::PropertyBool RestoreCamera;
     App::PropertyBool ForceOrtho;
     App::PropertyBool SectionView;
+    App::PropertyBool AutoColor;
     App::PropertyString EditingWorkbench;
     SketcherGui::PropertyVisualLayerList VisualLayerList;
     //@}
@@ -749,6 +750,10 @@ protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
     //@}
+
+    /// hook after property restoring to change some property statuses
+    void startRestoring() override;
+    void finishRestoring() override;
 
 private:
     /// function to handle OCCT BSpline weight calculation singularities and representation
