@@ -268,7 +268,7 @@ const std::vector<std::string>& GeoFeature::searchElementCache(const std::string
     return none;
 }
 
-const std::vector<const char*>& GeoFeature::getElementTypes(bool /*all*/) const
+std::vector<const char*> GeoFeature::getElementTypes(bool /*all*/) const
 {
     static std::vector<const char*> nil;
     auto prop = getPropertyOfGeometry();
