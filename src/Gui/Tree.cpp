@@ -2754,7 +2754,8 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
         propGroup->setValue(sortedObjList);
     }
     else if (targetInfo.targetItem->type() == TreeWidget::DocumentType) {
-        objList = targetInfo.targetDoc->getRootObjectsIgnoreLinks();
+        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(targetInfo.targetDoc->getName());
+        objList = guiDoc->getTreeRootObjects();
         // First we need to sort objList by treeRank.
         std::sort(objList.begin(), objList.end(),
             [](App::DocumentObject* a, App::DocumentObject* b) {

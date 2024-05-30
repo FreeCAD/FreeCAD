@@ -308,7 +308,7 @@ def getGlobalPlacement(targetObj, container=None):
 
 
 def isThereOneRootAssembly():
-    for part in App.activeDocument().RootObjectsIgnoreLinks:
+    for part in Gui.activeDocument().TreeRootObjects:
         if part.TypeId == "Assembly::AssemblyObject":
             return True
     return False
