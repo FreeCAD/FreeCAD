@@ -196,6 +196,7 @@ void ViewProviderLeader::handleChangedPropertyType(Base::XMLReader &reader, cons
 
 bool ViewProviderLeader::onDelete(const std::vector<std::string> & parameters)
 {
+    Q_UNUSED(parameters)
     // a leader line cannot be deleted if it has a child weld symbol
 
     // get childs

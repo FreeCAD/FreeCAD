@@ -156,6 +156,9 @@ SET(MatGuiImages
 
 add_library(MatGui SHARED ${MatGui_SRCS} ${MatGuiIcon_SVG} ${MatGuiImages})
 target_link_libraries(MatGui ${MatGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(MatGui)
+endif()
 
 SET_BIN_DIR(MatGui MatGui /Mod/Material)
 SET_PYTHON_PREFIX_SUFFIX(MatGui)
