@@ -43,6 +43,7 @@ DlgSettingsFemGmshImp::DlgSettingsFemGmshImp(QWidget* parent)
             &Gui::PrefFileChooser::fileNameChanged,
             this,
             &DlgSettingsFemGmshImp::onfileNameChanged);
+
 }
 
 DlgSettingsFemGmshImp::~DlgSettingsFemGmshImp() = default;
@@ -51,12 +52,18 @@ void DlgSettingsFemGmshImp::saveSettings()
 {
     ui->cb_gmsh_binary_std->onSave();
     ui->fc_gmsh_binary_path->onSave();
+    ui->le_mesh_file_format->onSave();
+
+
 }
 
 void DlgSettingsFemGmshImp::loadSettings()
 {
     ui->cb_gmsh_binary_std->onRestore();
     ui->fc_gmsh_binary_path->onRestore();
+    ui->le_mesh_file_format->onRestore();
+
+
 }
 
 /**

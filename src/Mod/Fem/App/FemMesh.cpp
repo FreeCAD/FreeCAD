@@ -2562,10 +2562,15 @@ unsigned int FemMesh::getMemSize() const
 
 void FemMesh::Save(Base::Writer& writer) const
 {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh");
+    std::string meshFileFormat = hGrp->GetASCII("MeshFileFormat", ".unv");
+    std::string filename = "FemMesh" + meshFileFormat;
+
+
     if (!writer.isForceXML()) {
         // See SaveDocFile(), RestoreDocFile()
         writer.Stream() << writer.ind() << "<FemMesh file=\"";
-        writer.Stream() << writer.addFile("FemMesh.unv", this) << "\"";
+        writer.Stream() << writer.addFile(filename.c_str(), this) << "\"";
         writer.Stream() << " a11=\"" << _Mtrx[0][0] << "\" a12=\"" << _Mtrx[0][1] << "\" a13=\""
                         << _Mtrx[0][2] << "\" a14=\"" << _Mtrx[0][3] << "\"";
         writer.Stream() << " a21=\"" << _Mtrx[1][0] << "\" a22=\"" << _Mtrx[1][1] << "\" a23=\""

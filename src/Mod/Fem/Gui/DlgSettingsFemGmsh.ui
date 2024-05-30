@@ -106,6 +106,29 @@
           </property>
          </widget>
         </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="l_mesh_file_format">
+          <property name="text">
+           <string>Mesh Format</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefLineEdit" name="le_mesh_file_format">
+          <property name="text">
+           <string>.unv</string>
+          </property>
+          <property name="toolTip">
+           <string>Enter the mesh file format (e.g., unv, vtk, etc.)</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+            <cstring>MeshFileFormat</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+          <cstring>Mod/Fem/Gmsh</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>

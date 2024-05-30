@@ -312,6 +312,10 @@ class GmshTools():
         else:
             file_ext = ".unv"
 
+        FreeCAD.ParamGet(
+            "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
+        ).SetString("MeshFileForma", file_ext)
+
 
         # file paths
         _geometry_name = self.part_obj.Name + "_Geometry"
