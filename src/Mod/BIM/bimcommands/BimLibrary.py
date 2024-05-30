@@ -399,23 +399,9 @@ class BIM_Library_TaskPanel:
                         if f.endswith(".fcstd"):
                             it.setIcon(QtGui.QIcon(":icons/freecad-doc.png"))
                         elif f.endswith(".ifc"):
-                            it.setIcon(
-                                QtGui.QIcon(
-                                    os.path.join(
-                                        os.path.dirname(__file__), "icons", "IFC.svg"
-                                    )
-                                )
-                            )
+                            it.setIcon(QtGui.QIcon(":/icons/IFC.svg"))
                         else:
-                            it.setIcon(
-                                QtGui.QIcon(
-                                    os.path.join(
-                                        os.path.dirname(__file__),
-                                        "icons",
-                                        "Part_document.svg",
-                                    )
-                                )
-                            )
+                            it.setIcon(QtGui.QIcon(":/icons/Part_document.svg"))
         self.modelmode = 0
 
     def getFilters(self):

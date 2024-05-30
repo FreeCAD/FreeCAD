@@ -644,8 +644,7 @@ void MDIViewPage::blockSceneSelection(const bool isBlocked) { isSelectionBlocked
 //Set all QGIViews to unselected state
 void MDIViewPage::clearSceneSelection()
 {
-    //    Base::Console().Message("MDIVP::clearSceneSelection()\n");
-    m_qgSceneSelected.clear();
+    m_orderedSceneSelection.clear();
 
     std::vector<QGIView*> views = m_scene->getViews();
 
@@ -670,7 +669,8 @@ void MDIViewPage::selectQGIView(App::DocumentObject *obj, bool isSelected,
     }
 }
 
-//! invoked by selection change made in Tree via father MDIView
+//! invoked by selection change made in Tree via father MDIView. Selects the
+//! scene item corresponding to the tree's SelectionChange
 //really "onTreeSelectionChanged"
 void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
@@ -700,53 +700,57 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
     blockSceneSelection(false);
 }
 
-//! maintain QGScene selected items in selection order
+//! maintain QGScene selected items in selection order.  m_orderedSceneSelection
+//! contains a list of selected items.  The list is ordered by "time" of selection.
 void MDIViewPage::sceneSelectionManager()
 {
-    //    Base::Console().Message("MDIVP::sceneSelectionManager()\n");
-    QList<QGraphicsItem*> sceneSel = m_scene->selectedItems();
+    QList<QGraphicsItem*> sceneSelectedItems = m_scene->selectedItems();
 
-    if (sceneSel.isEmpty()) {
-        m_qgSceneSelected.clear();//TODO: need to signal somebody?  Tree? handled elsewhere
-        //clearSelection
+    if (sceneSelectedItems.isEmpty()) {
+        //clear selected scene items
+        m_orderedSceneSelection.clear();//TODO: need to signal somebody?  Tree? handled elsewhere
         return;
     }
 
-    if (m_qgSceneSelected.isEmpty() && !sceneSel.isEmpty()) {
-        m_qgSceneSelected.push_back(sceneSel.front());
+    if (m_orderedSceneSelection.isEmpty() && !sceneSelectedItems.isEmpty()) {
+        // if the ordered list is empty, but we have selected items in the scene,
+        // add the first selected item to the ordered list? why only front?
+        m_orderedSceneSelection.push_back(sceneSelectedItems.front());
         return;
     }
 
-    //add to m_qgSceneSelected anything that is in q_sceneSel
-    for (auto qts : sceneSel) {
+    //add to m_orderedSceneSelection anything that is in our scene selection list
+    for (auto selectedItem : sceneSelectedItems) {
         bool found = false;
-        for (auto ms : std::as_const(m_qgSceneSelected)) {
-            if (qts == ms) {
+        for (auto listItem : std::as_const(m_orderedSceneSelection)) {
+            if (selectedItem == listItem) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            m_qgSceneSelected.push_back(qts);
+            m_orderedSceneSelection.push_back(selectedItem);
             break;
         }
     }
 
-    //remove items from m_qgSceneSelected that are not in q_sceneSel
+    //remove items from m_orderedSceneSelection that are not in our scene selection list
     QList<QGraphicsItem*> m_new;
-    for (auto m : std::as_const(m_qgSceneSelected)) {
-        for (auto q : sceneSel) {
-            if (m == q) {
-                m_new.push_back(m);
+    for (auto listItem : std::as_const(m_orderedSceneSelection)) {
+        for (auto selectedItem : sceneSelectedItems) {
+            if (listItem == selectedItem) {
+                m_new.push_back(listItem);
                 break;
             }
         }
     }
-    m_qgSceneSelected = m_new;
+    m_orderedSceneSelection = m_new;
 }
 
-//! update Tree Selection from QGraphicsScene selection
-//triggered by m_scene signal
+//! update Tree Selection from QGraphicsScene selection. on exit, the tree
+//! select and scene select should match.  Called every time an item is selected or
+//! deselected in the scene.
+// triggered by m_scene signal
 void MDIViewPage::sceneSelectionChanged()
 {
     sceneSelectionManager();
@@ -756,8 +760,9 @@ void MDIViewPage::sceneSelectionChanged()
     }
 
     std::vector<Gui::SelectionObject> treeSel = Gui::Selection().getSelectionEx();
-    QList<QGraphicsItem*> sceneSel = m_qgSceneSelected;
-
+    // should this not be looking at m_scene->selectedItems(), ie the current state, rather than
+    // the stored state?
+    QList<QGraphicsItem*> sceneSel = m_orderedSceneSelection;
 
     bool saveBlock = blockSelection(true);// block selectionChanged signal from Tree/Observer
     blockSceneSelection(true);
@@ -769,11 +774,12 @@ void MDIViewPage::sceneSelectionChanged()
     }
     else {
         for (auto& sel : treeSel) {
+            // unselect the stored items
             removeSelFromTreeSel(sceneSel, sel);
         }
 
-        for (auto* scene : sceneSel) {
-            addSceneToTreeSel(scene, treeSel);
+        for (auto* item : sceneSel) {
+            addSceneItemToTreeSel(item, treeSel);
         }
     }
 
@@ -784,12 +790,11 @@ void MDIViewPage::sceneSelectionChanged()
 //Note: Qt says: "no guarantee of selection order"!!!
 void MDIViewPage::setTreeToSceneSelect()
 {
-    //    Base::Console().Message("MDIVP::setTreeToSceneSelect()\n");
     bool saveBlock = blockSelection(true);// block selectionChanged signal from Tree/Observer
     blockSceneSelection(true);
     Gui::Selection().clearSelection();
 
-    for (auto* scene : m_qgSceneSelected) {
+    for (auto* scene : m_orderedSceneSelection) {
         auto* itemView = dynamic_cast<QGIView*>(scene);
         if (!itemView) {
             auto* parent = dynamic_cast<QGIView*>(scene->parentItem());
@@ -858,7 +863,7 @@ std::string MDIViewPage::getSceneSubName(QGraphicsItem* scene)
 }
 
 // adds scene to core selection if it's not in already.
-void MDIViewPage::addSceneToTreeSel(QGraphicsItem* sn, [[maybe_unused]]std::vector<Gui::SelectionObject> treeSel)
+void MDIViewPage::addSceneItemToTreeSel(QGraphicsItem* sn, [[maybe_unused]]std::vector<Gui::SelectionObject> treeSel)
 {
     auto* itemView = dynamic_cast<QGIView*>(sn);
     if (!itemView) {

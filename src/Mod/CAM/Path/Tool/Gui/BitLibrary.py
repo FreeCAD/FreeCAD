@@ -40,6 +40,9 @@ import uuid as UUID
 
 from functools import partial
 
+from PySide.QtGui import QStandardItem, QStandardItemModel, QPixmap
+from PySide.QtCore import Qt
+
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -240,84 +243,14 @@ class _TableView(PySide.QtGui.QTableView):
                 model.removeRow(self._rowWithUuid(uuid))
 
 
-class ModelFactory(object):
+class ModelFactory:
     """Helper class to generate qtdata models for toolbit libraries"""
 
-    def __init__(self, path=None):
-        Path.Log.track()
-        self.path = ""
-        # self.currentLib = ""
-
-    def __libraryLoad(self, path, datamodel):
-        Path.Log.track(path)
-        Path.Preferences.setLastFileToolLibrary(path)
-        # self.currenLib = path
-
-        with open(path) as fp:
-            library = json.load(fp)
-
-        for toolBit in library["tools"]:
-            try:
-                nr = toolBit["nr"]
-                bit = PathToolBit.findToolBit(toolBit["path"], path)
-                if bit:
-                    Path.Log.track(bit)
-                    tool = PathToolBit.Declaration(bit)
-                    datamodel.appendRow(self._toolAdd(nr, tool, bit))
-                else:
-                    Path.Log.error(
-                        "Could not find tool #{}: {}".format(nr, toolBit["path"])
-                    )
-            except Exception as e:
-                msg = "Error loading tool: {} : {}".format(toolBit["path"], e)
-                FreeCAD.Console.PrintError(msg)
-
-    def _toolAdd(self, nr, tool, path):
-
-        strShape = os.path.splitext(os.path.basename(tool["shape"]))[0]
-        # strDiam = tool['parameter']['Diameter']
-        tooltip = "{}".format(strShape)
-
-        toolNr = PySide.QtGui.QStandardItem()
-        toolNr.setData(nr, PySide.QtCore.Qt.EditRole)
-        toolNr.setToolTip(tool["shape"])
-        toolNr.setData(path, _PathRole)
-        toolNr.setData(UUID.uuid4(), _UuidRole)
-        toolNr.setToolTip(tooltip)
-
-        toolName = PySide.QtGui.QStandardItem()
-        toolName.setData(tool["name"], PySide.QtCore.Qt.EditRole)
-        toolName.setEditable(False)
-        toolName.setToolTip(tooltip)
-
-        toolShape = PySide.QtGui.QStandardItem()
-        toolShape.setData(strShape, PySide.QtCore.Qt.EditRole)
-        toolShape.setEditable(False)
-
-        return [toolNr, toolName, toolShape]
-
-    def newTool(self, datamodel, path):
+    @staticmethod
+    def find_libraries(model) -> QStandardItemModel:
         """
-        Adds a toolbit item to a model
-        """
-        Path.Log.track()
-
-        try:
-            nr = 0
-            for row in range(datamodel.rowCount()):
-                itemNr = int(datamodel.item(row, 0).data(PySide.QtCore.Qt.EditRole))
-                nr = max(nr, itemNr)
-            nr += 1
-            tool = PathToolBit.Declaration(path)
-        except Exception as e:
-            Path.Log.error(e)
-
-        datamodel.appendRow(self._toolAdd(nr, tool, path))
-
-    def findLibraries(self, model):
-        """
-        Finds all the fctl files in a location
-        Returns a QStandardItemModel
+        Finds all the fctl files in a location.
+        Returns a QStandardItemModel.
         """
         Path.Log.track()
         path = Path.Preferences.lastPathToolLibrary()
@@ -328,30 +261,132 @@ class ModelFactory(object):
             for libFile in libFiles:
                 loc, fnlong = os.path.split(libFile)
                 fn, ext = os.path.splitext(fnlong)
-                libItem = PySide.QtGui.QStandardItem(fn)
+                libItem = QStandardItem(fn)
                 libItem.setToolTip(loc)
                 libItem.setData(libFile, _PathRole)
-                libItem.setIcon(PySide.QtGui.QPixmap(":/icons/CAM_ToolTable.svg"))
+                libItem.setIcon(QPixmap(":/icons/CAM_ToolTable.svg"))
                 model.appendRow(libItem)
 
         Path.Log.debug("model rows: {}".format(model.rowCount()))
         return model
 
-    def libraryOpen(self, model, lib=""):
+    @staticmethod
+    def __library_load(path: str, data_model: QStandardItemModel):
+        Path.Log.track(path)
+        Path.Preferences.setLastFileToolLibrary(path)
+
+        try:
+            with open(path) as fp:
+                library = json.load(fp)
+        except Exception as e:
+            Path.Log.error(f"Failed to load library from {path}: {e}")
+            return
+
+        for tool_bit in library.get("tools", []):
+            try:
+                nr = tool_bit["nr"]
+                bit = PathToolBit.findToolBit(tool_bit["path"], path)
+                if bit:
+                    Path.Log.track(bit)
+                    tool = PathToolBit.Declaration(bit)
+                    data_model.appendRow(ModelFactory._tool_add(nr, tool, bit))
+                else:
+                    Path.Log.error(f"Could not find tool #{nr}: {tool_bit['path']}")
+            except Exception as e:
+                msg = f"Error loading tool: {tool_bit['path']} : {e}"
+                FreeCAD.Console.PrintError(msg)
+
+    @staticmethod
+    def _generate_tooltip(toolbit: dict) -> str:
         """
-        opens the tools in library
-        Returns a QStandardItemModel
+        Generate an HTML tooltip for a given toolbit dictionary.
+
+        Args:
+        toolbit (dict): A dictionary containing toolbit information.
+
+        Returns:
+        str: An HTML string representing the tooltip.
+        """
+        tooltip = f"<b>Name:</b> {toolbit['name']}<br>"
+        tooltip += f"<b>Shape File:</b> {toolbit['shape']}<br>"
+        tooltip += "<b>Parameters:</b><br>"
+        parameters = toolbit.get("parameter", {})
+        if parameters:
+            for key, value in parameters.items():
+                tooltip += f"  <b>{key}:</b> {value}<br>"
+        else:
+            tooltip += "  No parameters provided.<br>"
+
+        attributes = toolbit.get("attribute", {})
+        if attributes:
+            tooltip += "<b>Attributes:</b><br>"
+            for key, value in attributes.items():
+                tooltip += f"  <b>{key}:</b> {value}<br>"
+
+        return tooltip
+
+    @staticmethod
+    def _tool_add(nr: int, tool: dict, path: str):
+        str_shape = os.path.splitext(os.path.basename(tool["shape"]))[0]
+        tooltip = ModelFactory._generate_tooltip(tool)
+
+        tool_nr = QStandardItem()
+        tool_nr.setData(nr, Qt.EditRole)
+        tool_nr.setData(path, _PathRole)
+        tool_nr.setData(UUID.uuid4(), _UuidRole)
+        tool_nr.setToolTip(tooltip)
+
+        tool_name = QStandardItem()
+        tool_name.setData(tool["name"], Qt.EditRole)
+        tool_name.setEditable(False)
+        tool_name.setToolTip(tooltip)
+
+        tool_shape = QStandardItem()
+        tool_shape.setData(str_shape, Qt.EditRole)
+        tool_shape.setEditable(False)
+
+        return [tool_nr, tool_name, tool_shape]
+
+    @staticmethod
+    def new_tool(datamodel: QStandardItemModel, path: str):
+        """
+        Adds a toolbit item to a model.
+        """
+        Path.Log.track()
+
+        try:
+            nr = (
+                max(
+                    (
+                        int(datamodel.item(row, 0).data(Qt.EditRole))
+                        for row in range(datamodel.rowCount())
+                    ),
+                    default=0,
+                )
+                + 1
+            )
+            tool = PathToolBit.Declaration(path)
+        except Exception as e:
+            Path.Log.error(e)
+            return
+
+        datamodel.appendRow(ModelFactory._tool_add(nr, tool, path))
+
+    @staticmethod
+    def library_open(model: QStandardItemModel, lib: str = "") -> QStandardItemModel:
+        """
+        Opens the tools in a library.
+        Returns a QStandardItemModel.
         """
         Path.Log.track(lib)
 
-        if lib == "":
+        if not lib:
             lib = Path.Preferences.lastFileToolLibrary()
 
-        if lib == "" or lib is None:
+        if not lib or not os.path.isfile(lib):
             return model
 
-        if os.path.isfile(lib):  # An individual library is wanted
-            self.__libraryLoad(lib, model)
+        ModelFactory.__library_load(lib, model)
 
         Path.Log.debug("model rows: {}".format(model.rowCount()))
         return model
@@ -365,6 +400,9 @@ class ToolBitSelector(object):
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitSelector.ui")
         self.factory = ModelFactory()
         self.toolModel = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()))
+        self.libraryModel = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()))
+        self.factory.find_libraries(self.libraryModel)
+
         self.setupUI()
         self.title = self.form.windowTitle()
 
@@ -383,22 +421,62 @@ class ToolBitSelector(object):
         Path.Log.track()
         self.toolModel.clear()
         self.toolModel.setHorizontalHeaderLabels(self.columnNames())
-        self.form.lblLibrary.setText(self.currentLibrary(True))
-        self.form.lblLibrary.setToolTip(self.currentLibrary(False))
-        self.factory.libraryOpen(self.toolModel)
+
+        # Get the currently selected index in the combobox
+        currentIndex = self.form.cboLibraries.currentIndex()
+
+        if currentIndex != -1:
+            # Get the data for the selected index
+            libPath = self.libraryModel.item(currentIndex).data(_PathRole)
+            self.factory.library_open(self.toolModel, libPath)
+        else:
+            pass
+
         self.toolModel.takeColumn(3)
         self.toolModel.takeColumn(2)
 
     def setupUI(self):
         Path.Log.track()
-        self.loadData()
+        self.loadData()  # Load the initial data for the tool model
+
         self.form.tools.setModel(self.toolModel)
-        self.form.tools.selectionModel().selectionChanged.connect(self.enableButtons)
         self.form.tools.doubleClicked.connect(
             partial(self.selectedOrAllToolControllers)
         )
+
+        # Set the library model to the combobox
+        self.form.cboLibraries.setModel(self.libraryModel)
+
+        # Connect the library change to reload data and update tooltip
+        self.form.cboLibraries.currentIndexChanged.connect(self.loadData)
+        self.form.cboLibraries.currentIndexChanged.connect(self.updateLibraryTooltip)
+
+        # Set the current library as the selected item in the combobox
+        current_lib = self.currentLibrary(True)  # True to get short name only
+        currentIndex = self.form.cboLibraries.findText(current_lib)
+        if currentIndex == -1 and self.libraryModel.rowCount() > 0:
+            # If current library is not found, default to the first item
+            currentIndex = 0
+        self.form.cboLibraries.setCurrentIndex(currentIndex)
+        self.updateLibraryTooltip(currentIndex)  # Initialize the tooltip
+
         self.form.libraryEditorOpen.clicked.connect(self.libraryEditorOpen)
         self.form.addToolController.clicked.connect(self.selectedOrAllToolControllers)
+
+    def updateLibraryTooltip(self, index):
+        if index != -1:
+            item = self.libraryModel.item(index)
+            if item:
+                libPath = item.data(_PathRole)
+                self.form.cboLibraries.setToolTip(f"{libPath}")
+            else:
+                self.form.cboLibraries.setToolTip(
+                    translate("CAM_Toolbit", "Select a library")
+                )
+        else:
+            self.form.cboLibraries.setToolTip(
+                translate("CAM_Toolbit", "No library selected")
+            )
 
     def enableButtons(self):
         selected = len(self.form.tools.selectedIndexes()) >= 1
@@ -742,12 +820,12 @@ class ToolBitLibrary(object):
 
             self.toolModel.clear()
             self.listModel.clear()
-            self.factory.libraryOpen(self.toolModel, lib=path)
-            self.factory.findLibraries(self.listModel)
+            self.factory.library_open(self.toolModel, lib=path)
+            self.factory.find_libraries(self.listModel)
 
         else:
             self.toolModel.clear()
-            self.factory.libraryOpen(self.toolModel, lib=path)
+            self.factory.library_open(self.toolModel, lib=path)
 
         self.path = path
         self.form.setWindowTitle("{}".format(Path.Preferences.lastPathToolLibrary()))

@@ -130,14 +130,16 @@ class BIM_ProjectManager:
             ).Value
         human = None
         if self.form.addHumanFigure.isChecked():
-            humanshape = Part.Shape()
+            # TODO ; fix loading of human shape
             humanpath = os.path.join(
                 os.path.dirname(__file__), "geometry", "human figure.brep"
             )
-            humanshape.importBrep(humanpath)
-            human = FreeCAD.ActiveDocument.addObject("Part::Feature", "Human")
-            human.Shape = humanshape
-            human.Placement.move(FreeCAD.Vector(500, 500, 0))
+            if os.path.exists(humanpath):
+                humanshape = Part.Shape()
+                humanshape.importBrep(humanpath)
+                human = FreeCAD.ActiveDocument.addObject("Part::Feature", "Human")
+                human.Shape = humanshape
+                human.Placement.move(FreeCAD.Vector(500, 500, 0))
         if self.form.groupBuilding.isChecked():
             building = Arch.makeBuilding()
             if site:

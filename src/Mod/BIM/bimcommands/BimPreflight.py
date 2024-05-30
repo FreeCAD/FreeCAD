@@ -205,9 +205,7 @@ class BIM_Preflight_TaskPanel:
                 for c in self.culprits[test]:
                     FreeCADGui.Selection.addSelection(c)
             if not self.rform:
-                self.rform = FreeCADGui.PySideUic.loadUi(
-                    os.path.join(os.path.dirname(__file__), "dialogPreflightResults.ui")
-                )
+                self.rform = FreeCADGui.PySideUic.loadUi(":/ui/dialogPreflightResults.ui")
                 # center the dialog over FreeCAD window
                 mw = FreeCADGui.getMainWindow()
                 self.rform.move(
@@ -321,8 +319,8 @@ class BIM_Preflight_TaskPanel:
                 msg = (
                     translate(
                         "BIM",
-                        "ifcopenshell is not installed on your system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check https://www.freecadweb.org/wiki/Extra_python_modules#IfcOpenShell to obtain more information.",
-                    )
+                        "ifcopenshell is not installed on your system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.",
+                    ).replace("%1", "https://www.freecadweb.org/wiki/Extra_python_modules#IfcOpenShell")
                     + " "
                 )
                 self.failed(test)
@@ -894,8 +892,8 @@ class BIM_Preflight_TaskPanel:
                     "\n"
                     + translate(
                         "BIM",
-                        "Verify which properties a certain property set must contain on http://www.buildingsmart-tech.org/ifc/IFC4/Add2/html/annex/annex-b/alphabeticalorder_psets.htm",
-                    )
+                        "Verify which properties a certain property set must contain on %1",
+                    ).replace("%1", "https://standards.buildingsmart.org/IFC/DEV/IFC4_2/FINAL/HTML/annex/annex-b/alphabeticalorder_psets.htm")
                     + "\n\n"
                 )
                 msg += translate(

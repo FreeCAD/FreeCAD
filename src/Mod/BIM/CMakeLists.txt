@@ -178,7 +178,6 @@ SET(nativeifc_SRCS
     nativeifc/ifc_objects.py
     nativeifc/ifc_observer.py
     nativeifc/ifc_performance_test.py
-    nativeifc/ifc_preferences.py
     nativeifc/ifc_psets.py
     nativeifc/ifc_selftest.py
     nativeifc/ifc_status.py

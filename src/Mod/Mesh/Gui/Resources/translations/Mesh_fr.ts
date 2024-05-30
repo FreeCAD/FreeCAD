@@ -102,7 +102,7 @@
     <message>
       <location filename="../../Command.cpp" line="165"/>
       <source>Mesh</source>
-      <translation>Mesh</translation>
+      <translation>Maillage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="166"/>
@@ -631,7 +631,7 @@
     <message>
       <location filename="../../Command.cpp" line="557"/>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="558"/>
@@ -782,34 +782,34 @@
       <translation>Supprimer la sélection</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="955"/>
-      <location filename="../../ViewProvider.cpp" line="1016"/>
+      <location filename="../../ViewProvider.cpp" line="963"/>
+      <location filename="../../ViewProvider.cpp" line="1024"/>
       <source>Cut</source>
       <translation>Couper</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="965"/>
-      <location filename="../../ViewProvider.cpp" line="1086"/>
+      <location filename="../../ViewProvider.cpp" line="973"/>
+      <location filename="../../ViewProvider.cpp" line="1094"/>
       <source>Trim</source>
       <translation>Ajuster</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1173"/>
+      <location filename="../../ViewProvider.cpp" line="1181"/>
       <source>Split</source>
       <translation>Recomposer</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1246"/>
+      <location filename="../../ViewProvider.cpp" line="1254"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1848"/>
+      <location filename="../../ViewProvider.cpp" line="1856"/>
       <source>Delete</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1977"/>
+      <location filename="../../ViewProvider.cpp" line="1985"/>
       <source>Fill hole</source>
       <translation>Remplir le trou</translation>
     </message>
@@ -1832,7 +1832,7 @@ l'ombrage Phong conduit à un aspect plus lisse.</translation>
       <location filename="../../Segmentation.ui" line="252"/>
       <location filename="../../Segmentation.ui" line="286"/>
       <source>Tolerance</source>
-      <translation>Tolérance</translation>
+      <translation>Tolérance </translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="63"/>
@@ -1908,7 +1908,7 @@ l'ombrage Phong conduit à un aspect plus lisse.</translation>
       <location filename="../../SegmentationBestFit.ui" line="89"/>
       <location filename="../../SegmentationBestFit.ui" line="142"/>
       <source>Tolerance</source>
-      <translation>Tolérance </translation>
+      <translation>Tolérance</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="53"/>
@@ -2284,48 +2284,48 @@ Consulter le site http://www.openscad.org/index.html pour l'installer.</translat
       <translation>[Points : %1, Contours : %2, Faces : %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="801"/>
+      <location filename="../../ViewProvider.cpp" line="809"/>
       <source>Display components</source>
       <translation>Afficher les composants</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="809"/>
+      <location filename="../../ViewProvider.cpp" line="817"/>
       <source>Display segments</source>
       <translation>Afficher les segments</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="817"/>
+      <location filename="../../ViewProvider.cpp" line="825"/>
       <source>Display colors</source>
       <translation>Afficher les couleurs</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1679"/>
+      <location filename="../../ViewProvider.cpp" line="1687"/>
       <location filename="../../ViewProviderCurvature.cpp" line="522"/>
       <source>Leave info mode</source>
       <translation>Quitter le mode Information</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1746"/>
+      <location filename="../../ViewProvider.cpp" line="1754"/>
       <source>Index: %1</source>
       <translation>Index : %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1772"/>
+      <location filename="../../ViewProvider.cpp" line="1780"/>
       <source>Leave hole-filling mode</source>
       <translation>Quitter le mode Remplissage des trous</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1822"/>
+      <location filename="../../ViewProvider.cpp" line="1830"/>
       <source>Leave removal mode</source>
       <translation>Quitter le mode Suppression</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1823"/>
+      <location filename="../../ViewProvider.cpp" line="1831"/>
       <source>Delete selected faces</source>
       <translation>Supprimer les faces sélectionnées</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1824"/>
+      <location filename="../../ViewProvider.cpp" line="1832"/>
       <source>Clear selected faces</source>
       <translation>Dé-sélectionner les faces sélectionnées</translation>
     </message>

@@ -27,17 +27,15 @@
 #include <QCoreApplication>
 #include <QGraphicsItem>
 
+#include <App/DocumentObject.h>
 #include <Base/Vector3D.h>
+#include <Gui/Selection.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 class QComboBox;
 class QPointF;
 class QRectF;
-
-namespace App {
-class DocumentObject;
-}
 
 namespace Part {
 class Feature;
@@ -85,6 +83,9 @@ class TechDrawGuiExport DrawGuiUtil {
     static Base::Vector3d fromSceneCoords(const Base::Vector3d& sceneCoord, bool invert = true);
     static Base::Vector3d toSceneCoords(const Base::Vector3d& pageCoord, bool invert = true);
     static Base::Vector3d toGuiPoint(TechDraw::DrawView* obj, const Base::Vector3d& toConvert);
+
+    static bool findObjectInSelection(const std::vector<Gui::SelectionObject>& selection,
+                                      const App::DocumentObject& targetObject);
 };
 
 } //end namespace TechDrawGui

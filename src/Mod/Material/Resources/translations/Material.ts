@@ -234,42 +234,42 @@ If unchecked, they will be sorted by their name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="295"/>
+        <source>Material Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Gui/DlgSettingsMaterial.ui" line="212"/>
-        <source>Testing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Gui/DlgSettingsMaterial.ui" line="218"/>
-        <source>Use legacy editor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Gui/DlgSettingsMaterial.ui" line="237"/>
         <source>Material Selector</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/DlgSettingsMaterial.ui" line="243"/>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="218"/>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="301"/>
         <source>Show favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/DlgSettingsMaterial.ui" line="259"/>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="234"/>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="317"/>
         <source>Show recent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/DlgSettingsMaterial.ui" line="275"/>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="250"/>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="333"/>
         <source>Show empty libraries</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/DlgSettingsMaterial.ui" line="291"/>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="266"/>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="349"/>
         <source>Show empty folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/DlgSettingsMaterial.ui" line="304"/>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="279"/>
+        <location filename="../../Gui/DlgSettingsMaterial.ui" line="362"/>
         <source>Show legacy files</source>
         <translation type="unfinished"></translation>
     </message>
@@ -476,54 +476,54 @@ If unchecked, they will be sorted by their name.</source>
     <message>
         <location filename="../../Gui/MaterialsEditor.cpp" line="737"/>
         <location filename="../../Gui/MaterialsEditor.cpp" line="769"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="965"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1026"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="977"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1038"/>
         <source>Property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Gui/MaterialsEditor.cpp" line="738"/>
         <location filename="../../Gui/MaterialsEditor.cpp" line="770"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="966"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1027"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="978"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1039"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Gui/MaterialsEditor.cpp" line="739"/>
         <location filename="../../Gui/MaterialsEditor.cpp" line="771"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="967"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1028"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="979"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1040"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="834"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="835"/>
         <source>Favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="839"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="842"/>
         <source>Recent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1029"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1041"/>
         <source>Units</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1196"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1208"/>
         <source>Context menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1198"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1210"/>
         <source>Inherit from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1203"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1215"/>
         <source>Inherit new material</source>
         <translation type="unfinished"></translation>
     </message>
@@ -613,12 +613,13 @@ If unchecked, they will be sorted by their name.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Gui/AppMatGui.cpp" line="105"/>
+        <location filename="../../Gui/AppMatGui.cpp" line="106"/>
         <source>Material workbench</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/AppMatGui.cpp" line="107"/>
+        <location filename="../../Gui/AppMatGui.cpp" line="108"/>
+        <location filename="../../Gui/AppMatGui.cpp" line="110"/>
         <source>Material</source>
         <translation type="unfinished"></translation>
     </message>
@@ -649,17 +650,17 @@ If unchecked, they will be sorted by their name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1225"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1237"/>
         <source>Unsaved Material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1226"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1238"/>
         <source>Do you want to save your changes to the material before closing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1228"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1240"/>
         <source>If you don&apos;t save, your changes will be lost.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -968,6 +969,20 @@ If unchecked, they will be sorted by their name.</source>
     <message>
         <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="225"/>
         <source>All Materials</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MatGui::DlgSettingsDefaultMaterial</name>
+    <message>
+        <location filename="../../Gui/DlgSettingsDefaultMaterial.ui" line="14"/>
+        <location filename="../../Gui/DlgSettingsDefaultMaterial.ui" line="20"/>
+        <source>Default Material</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Gui/DlgSettingsDefaultMaterial.cpp" line="51"/>
+        <source>Physical</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

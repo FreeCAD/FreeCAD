@@ -59,8 +59,7 @@ Non-zero values turn the helix into a conical spiral.</source>
       <location filename="../../../App/FeatureHelix.cpp" line="98"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
-      <translation type="unfinished">Sets the turning direction to left handed,
-i.e. counter-clockwise when moving along its axis.</translation>
+      <translation>회전 방향을 왼쪽으로 설정하시오, 예) 축을 따라 이동할 때 시계반대방향으로.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="101"/>
@@ -153,7 +152,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1331"/>
       <source>Additive loft</source>
-      <translation>로프트</translation>
+      <translation>뾰족탑 더하기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1332"/>
@@ -248,7 +247,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1727"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>선택된 모서리에 챔퍼</translation>
+      <translation>도형의 선택 된 모서리를 모따기</translation>
     </message>
   </context>
   <context>
@@ -320,7 +319,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1699"/>
       <source>Make a fillet on an edge, face or body</source>
-      <translation>모서리, 면, 바디에 필렛 생성</translation>
+      <translation>모서리, 면 또는 몸통에 모깎기</translation>
     </message>
   </context>
   <context>
@@ -572,7 +571,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1025"/>
       <source>Create a pocket with the selected sketch</source>
-      <translation>선택된 스케치를 사용하여 돌출 컷 생성</translation>
+      <translation>선택된 스케치를 사용하여 함몰 생성</translation>
     </message>
   </context>
   <context>
@@ -707,7 +706,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1382"/>
       <source>Subtractive loft</source>
-      <translation type="unfinished">Subtractive loft</translation>
+      <translation>뾰족탑 빼기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1383"/>
@@ -782,7 +781,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="211"/>
       <source>Additive Cone</source>
-      <translation type="unfinished">Additive Cone</translation>
+      <translation>원뿔 더하기</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="215"/>
@@ -1012,7 +1011,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>Start boolean</source>
-      <translation type="unfinished">Start boolean</translation>
+      <translation>불연산 시작</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
@@ -1114,12 +1113,12 @@ Please select a body from below, or create a new body.</translation>
     <message>
       <location filename="../../DlgActiveBody.ui" line="36"/>
       <source>Create new body</source>
-      <translation type="unfinished">Create new body</translation>
+      <translation>새 몸통 생성</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="55"/>
       <source>Please select</source>
-      <translation type="unfinished">Please select</translation>
+      <translation>선택하세요</translation>
     </message>
   </context>
   <context>
@@ -1479,17 +1478,17 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="831"/>
       <source>X min must not be equal to X max!</source>
-      <translation type="unfinished">X min must not be equal to X max!</translation>
+      <translation>최소 X값은 최대 X값과 같지 않아야 합니다</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="836"/>
       <source>Y min must not be equal to Y max!</source>
-      <translation type="unfinished">Y min must not be equal to Y max!</translation>
+      <translation>최소 Y값은 최대 Y값과 같지 않아야 합니다</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="841"/>
       <source>Z min must not be equal to Z max!</source>
-      <translation type="unfinished">Z min must not be equal to Z max!</translation>
+      <translation>최소 Z값은 최대 Z값과 같지 않아야 합니다.</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="879"/>
@@ -1526,22 +1525,22 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="57"/>
       <source>Equal distance</source>
-      <translation type="unfinished">Equal distance</translation>
+      <translation>같은 거리</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="62"/>
       <source>Two distances</source>
-      <translation type="unfinished">Two distances</translation>
+      <translation>양쪽 거리</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="67"/>
       <source>Distance and angle</source>
-      <translation type="unfinished">Distance and angle</translation>
+      <translation>거리와 각도</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="80"/>
       <source>Flip direction</source>
-      <translation type="unfinished">Flip direction</translation>
+      <translation>방향전환</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="101"/>
@@ -1551,7 +1550,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="120"/>
       <source>Use All Edges</source>
-      <translation type="unfinished">Use All Edges</translation>
+      <translation>모든 모서리에 적용</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="147"/>
@@ -1672,7 +1671,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="84"/>
       <source>Preview</source>
-      <translation type="unfinished">Preview</translation>
+      <translation>미리보기</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="90"/>
@@ -1682,7 +1681,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="262"/>
       <source>Add all edges</source>
-      <translation type="unfinished">Add all edges</translation>
+      <translation>모든 모서리 추가</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="269"/>
@@ -1716,7 +1715,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="359"/>
       <source>Face normal</source>
-      <translation type="unfinished">Face normal</translation>
+      <translation>면에 수직한 선</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="362"/>
@@ -1727,7 +1726,7 @@ click again to end selection</translation>
       <location filename="../../TaskExtrudeParameters.cpp" line="366"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="368"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>사용자 정의 방향</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="892"/>
@@ -1852,7 +1851,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="63"/>
       <source>Use All Edges</source>
-      <translation type="unfinished">Use All Edges</translation>
+      <translation>모든 모서리에 적용</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="190"/>
@@ -1957,7 +1956,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="179"/>
       <source>Turns:</source>
-      <translation type="unfinished">Turns:</translation>
+      <translation>회전수</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="203"/>
@@ -2078,7 +2077,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="46"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>역방향</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="55"/>
@@ -2132,7 +2131,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="42"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>대상</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="65"/>
@@ -2157,7 +2156,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="50"/>
       <source>Loft parameters</source>
-      <translation type="unfinished">Loft parameters</translation>
+      <translation>뾰족탑 매개변수</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="72"/>
@@ -2261,7 +2260,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="71"/>
       <source>To last</source>
-      <translation type="unfinished">To last</translation>
+      <translation>끝까지</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="72"/>
@@ -2331,12 +2330,12 @@ from the model as reference</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="171"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>사용자 정의 방향</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="181"/>
       <source>Show direction</source>
-      <translation type="unfinished">Show direction</translation>
+      <translation>방향 보기</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="191"/>
@@ -2479,7 +2478,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="91"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>대상</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="125"/>
@@ -2688,7 +2687,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="46"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>역방향</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="55"/>
@@ -2826,7 +2825,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="175"/>
       <source>To last</source>
-      <translation type="unfinished">To last</translation>
+      <translation>끝까지</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="178"/>
@@ -3076,7 +3075,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../ViewProviderChamfer.h" line="41"/>
       <source>Chamfer parameters</source>
-      <translation type="unfinished">Chamfer parameters</translation>
+      <translation>모따기 매개변수</translation>
     </message>
   </context>
   <context>
@@ -3115,7 +3114,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../ViewProviderFillet.h" line="41"/>
       <source>Fillet parameters</source>
-      <translation type="unfinished">Fillet parameters</translation>
+      <translation>모깍기 매개변수</translation>
     </message>
   </context>
   <context>
@@ -3123,7 +3122,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../ViewProviderLinearPattern.h" line="37"/>
       <source>LinearPattern parameters</source>
-      <translation type="unfinished">LinearPattern parameters</translation>
+      <translation>선형 복사 매개변수</translation>
     </message>
   </context>
   <context>
@@ -3139,7 +3138,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../ViewProviderPolarPattern.h" line="37"/>
       <source>PolarPattern parameters</source>
-      <translation type="unfinished">PolarPattern parameters</translation>
+      <translation>원형복사 매개변수</translation>
     </message>
   </context>
   <context>
@@ -3155,7 +3154,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../ViewProviderThickness.h" line="41"/>
       <source>Thickness parameters</source>
-      <translation type="unfinished">Thickness parameters</translation>
+      <translation>두께 매개변수</translation>
     </message>
   </context>
   <context>
@@ -3163,7 +3162,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../ViewProviderMirrored.h" line="37"/>
       <source>Mirrored parameters</source>
-      <translation type="unfinished">Mirrored parameters</translation>
+      <translation>대칭복사 매개변수</translation>
     </message>
   </context>
   <context>
@@ -3544,7 +3543,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="198"/>
       <source>Body</source>
-      <translation type="unfinished">Body</translation>
+      <translation>몸통</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="347"/>
@@ -3573,7 +3572,7 @@ This may lead to unexpected results.</source>
       <location filename="../../CommandBody.cpp" line="861"/>
       <location filename="../../CommandBody.cpp" line="868"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>선택 오류</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="560"/>
@@ -3783,7 +3782,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="66"/>
       <source>Edit loft</source>
-      <translation>로프트(Loft) 수정</translation>
+      <translation>뾰족탑 수정</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="46"/>
@@ -3882,7 +3881,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderChamfer.cpp" line="41"/>
       <source>Edit chamfer</source>
-      <translation type="unfinished">Edit chamfer</translation>
+      <translation>모따기 수정</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDraft.cpp" line="42"/>
@@ -3892,17 +3891,17 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderFillet.cpp" line="41"/>
       <source>Edit fillet</source>
-      <translation type="unfinished">Edit fillet</translation>
+      <translation>모깎기 수정</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLinearPattern.cpp" line="39"/>
       <source>Edit linear pattern</source>
-      <translation type="unfinished">Edit linear pattern</translation>
+      <translation>선형 복사 수정</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirrored.cpp" line="39"/>
       <source>Edit mirrored</source>
-      <translation type="unfinished">Edit mirrored</translation>
+      <translation>대칭복사 수정</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMultiTransform.cpp" line="48"/>
@@ -3912,7 +3911,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderPolarPattern.cpp" line="38"/>
       <source>Edit polar pattern</source>
-      <translation type="unfinished">Edit polar pattern</translation>
+      <translation>원형 복사 수정</translation>
     </message>
     <message>
       <location filename="../../ViewProviderScaled.cpp" line="39"/>
@@ -3945,72 +3944,72 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="66"/>
       <source>ANSI 25</source>
-      <translation type="unfinished">ANSI 25</translation>
+      <translation>ANSI 25</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="71"/>
       <source>ANSI 35</source>
-      <translation type="unfinished">ANSI 35</translation>
+      <translation>ANSI 35</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="76"/>
       <source>ANSI 41</source>
-      <translation type="unfinished">ANSI 41</translation>
+      <translation>ANSI 41</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="81"/>
       <source>ANSI 40</source>
-      <translation type="unfinished">ANSI 40</translation>
+      <translation>ANSI 40</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="86"/>
       <source>ANSI 50</source>
-      <translation type="unfinished">ANSI 50</translation>
+      <translation>ANSI 50</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="91"/>
       <source>ANSI 60</source>
-      <translation type="unfinished">ANSI 60</translation>
+      <translation>ANSI 60</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="96"/>
       <source>ANSI 80</source>
-      <translation type="unfinished">ANSI 80</translation>
+      <translation>ANSI 80</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="101"/>
       <source>ANSI 100</source>
-      <translation type="unfinished">ANSI 100</translation>
+      <translation>ANSI 100</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="106"/>
       <source>ANSI 120</source>
-      <translation type="unfinished">ANSI 120</translation>
+      <translation>ANSI 120</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="111"/>
       <source>ANSI 140</source>
-      <translation type="unfinished">ANSI 140</translation>
+      <translation>ANSI 140</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="116"/>
       <source>ANSI 160</source>
-      <translation type="unfinished">ANSI 160</translation>
+      <translation>ANSI 160</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="121"/>
       <source>ANSI 180</source>
-      <translation type="unfinished">ANSI 180</translation>
+      <translation>ANSI 180</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="126"/>
       <source>ANSI 200</source>
-      <translation type="unfinished">ANSI 200</translation>
+      <translation>ANSI 200</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="131"/>
       <source>ANSI 240</source>
-      <translation type="unfinished">ANSI 240</translation>
+      <translation>ANSI 240</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="136"/>
@@ -4025,37 +4024,37 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="146"/>
       <source>ISO 606 06B</source>
-      <translation type="unfinished">ISO 606 06B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="151"/>
       <source>ISO 606 08B</source>
-      <translation type="unfinished">ISO 606 08B</translation>
+      <translation>ISO 606 08B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="156"/>
       <source>ISO 606 10B</source>
-      <translation type="unfinished">ISO 606 10B</translation>
+      <translation>ISO 606 10B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="161"/>
       <source>ISO 606 12B</source>
-      <translation type="unfinished">ISO 606 12B</translation>
+      <translation>ISO 606 12B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="166"/>
       <source>ISO 606 16B</source>
-      <translation type="unfinished">ISO 606 16B</translation>
+      <translation>ISO 606 16B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="171"/>
       <source>ISO 606 20B</source>
-      <translation type="unfinished">ISO 606 20B</translation>
+      <translation>ISO 606 20B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="176"/>
       <source>ISO 606 24B</source>
-      <translation type="unfinished">ISO 606 24B</translation>
+      <translation>ISO 606 24B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="181"/>
@@ -4176,7 +4175,7 @@ Note that the calculation can take some time</translation>
       <location filename="../../TaskHoleParameters.ui" line="124"/>
       <location filename="../../TaskHoleParameters.ui" line="233"/>
       <source>Clearance</source>
-      <translation type="unfinished">Clearance</translation>
+      <translation>공차</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="137"/>
@@ -4248,7 +4247,7 @@ Only available for holes without thread</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="314"/>
       <source>Hole diameter</source>
-      <translation type="unfinished">Hole diameter</translation>
+      <translation>구멍 지름</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="336"/>
@@ -4275,7 +4274,7 @@ Only available for holes without thread</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="399"/>
       <source>Hole depth</source>
-      <translation type="unfinished">Hole depth</translation>
+      <translation>구멍 깊이</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="409"/>
@@ -4328,7 +4327,7 @@ the screw's top below the surface</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="629"/>
       <source>Flat</source>
-      <translation type="unfinished">Flat</translation>
+      <translation>평평한</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="645"/>
@@ -4447,7 +4446,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Shaft design wizard</source>
-      <translation type="unfinished">Shaft design wizard</translation>
+      <translation>축 설계 마법사</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
@@ -4506,12 +4505,12 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
       <source>Length [mm]</source>
-      <translation type="unfinished">Length [mm]</translation>
+      <translation>길이 [mm]</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
       <source>Diameter [mm]</source>
-      <translation type="unfinished">Diameter [mm]</translation>
+      <translation>지름 [mm]</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
@@ -4592,7 +4591,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
       <source>Gear</source>
-      <translation type="unfinished">Gear</translation>
+      <translation>톱니바퀴</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="155"/>
@@ -4633,12 +4632,12 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="189"/>
       <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
+      <translation>축 설계 마법사...</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="190"/>
       <source>Start the shaft design wizard</source>
-      <translation type="unfinished">Start the shaft design wizard</translation>
+      <translation>축 설계 마법사 시작하기</translation>
     </message>
   </context>
   <context>
@@ -4646,12 +4645,12 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="214"/>
       <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
+      <translation>축 설계 마법사...</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="215"/>
       <source>Start the shaft design wizard</source>
-      <translation type="unfinished">Start the shaft design wizard</translation>
+      <translation>축 설계 마법사 시작하기</translation>
     </message>
   </context>
   <context>
@@ -4719,18 +4718,18 @@ over 90: larger hole radius at the bottom</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="138"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="716"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="718"/>
       <location filename="../../../App/FeatureGroove.cpp" line="219"/>
       <location filename="../../../App/FeatureHole.cpp" line="1900"/>
       <location filename="../../../App/FeatureLoft.cpp" line="295"/>
       <location filename="../../../App/FeatureLoft.cpp" line="313"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="526"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="528"/>
       <location filename="../../../App/FeaturePad.cpp" line="236"/>
       <location filename="../../../App/FeaturePipe.cpp" line="399"/>
       <location filename="../../../App/FeaturePipe.cpp" line="419"/>
       <location filename="../../../App/FeaturePipe.cpp" line="735"/>
       <location filename="../../../App/FeaturePipe.cpp" line="755"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="230"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="137"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="150"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="166"/>
@@ -4740,7 +4739,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="142"/>
       <source>Cut out failed</source>
-      <translation type="unfinished">Cut out failed</translation>
+      <translation>잘라내기 실패</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="147"/>
@@ -4749,9 +4748,9 @@ over 90: larger hole radius at the bottom</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="158"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="275"/>
       <location filename="../../../App/FeatureDraft.cpp" line="323"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="198"/>
       <location filename="../../../App/FeatureGroove.cpp" line="226"/>
       <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <location filename="../../../App/FeatureLoft.cpp" line="298"/>
@@ -4762,45 +4761,53 @@ over 90: larger hole radius at the bottom</translation>
       <location filename="../../../App/FeaturePipe.cpp" line="423"/>
       <location filename="../../../App/FeaturePipe.cpp" line="739"/>
       <location filename="../../../App/FeaturePipe.cpp" line="759"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="199"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="234"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="154"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="170"/>
       <source>Result has multiple solids: that is not currently supported.</source>
-      <translation type="unfinished">Result has multiple solids: that is not currently supported.</translation>
+      <translation>결과에는 여러 고체들이 있습니다. 현재는 지원되지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="203"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="184"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="255"/>
       <source>Failed to create chamfer</source>
-      <translation type="unfinished">Failed to create chamfer</translation>
+      <translation>모따기 실패</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="207"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="259"/>
       <location filename="../../../App/FeatureDraft.cpp" line="319"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="120"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="99"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="181"/>
       <source>Resulting shape is null</source>
       <translation type="unfinished">Resulting shape is null</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="218"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="131"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="204"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="270"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="192"/>
       <source>Resulting shape is invalid</source>
       <translation type="unfinished">Resulting shape is invalid</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="289"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="125"/>
+      <source>No edges specified</source>
+      <translation type="unfinished">No edges specified</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="342"/>
       <source>Size must be greater than zero</source>
-      <translation type="unfinished">Size must be greater than zero</translation>
+      <translation>크기는 0보다 커야 합니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="298"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="351"/>
       <source>Size2 must be greater than zero</source>
-      <translation type="unfinished">Size2 must be greater than zero</translation>
+      <translation>크기2는 0보다 커야 합니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="303"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="356"/>
       <source>Angle must be greater than 0 and less than 180</source>
-      <translation type="unfinished">Angle must be greater than 0 and less than 180</translation>
+      <translation>각도는 0보다 크고 180보다 작아야 합니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureDraft.cpp" line="315"/>
@@ -4808,14 +4815,20 @@ over 90: larger hole radius at the bottom</translation>
       <translation type="unfinished">Failed to create draft</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="93"/>
-      <source>Fillet radius must be greater than zero</source>
-      <translation type="unfinished">Fillet radius must be greater than zero</translation>
+      <location filename="../../../App/FeatureFillet.cpp" line="82"/>
+      <source>Fillet not possible on selected shapes</source>
+      <translation type="unfinished">Fillet not possible on selected shapes</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="89"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="154"/>
+      <source>Fillet radius must be greater than zero</source>
+      <translation>모깎기 반지름은 0보다 커야 합니다</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureFillet.cpp" line="177"/>
       <source>Failed to create fillet</source>
-      <translation type="unfinished">Failed to create fillet</translation>
+      <translation>모깎기 실패</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="89"/>
@@ -4843,27 +4856,27 @@ over 90: larger hole radius at the bottom</translation>
   - 선택한 스케치는 활성 바디에 속하지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="441"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="443"/>
       <source>Length too small</source>
-      <translation type="unfinished">Length too small</translation>
+      <translation>너무 짧은 길이</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="448"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="450"/>
       <source>Second length too small</source>
-      <translation type="unfinished">Second length too small</translation>
+      <translation>너무 짧은 두 번째 길이</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="482"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="484"/>
       <source>Failed to obtain profile shape</source>
       <translation type="unfinished">Failed to obtain profile shape</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="534"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="536"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation type="unfinished">Creation failed because direction is orthogonal to sketch's normal vector</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="553"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="555"/>
       <location filename="../../../App/FeatureGroove.cpp" line="132"/>
       <location filename="../../../App/FeatureGroove.cpp" line="293"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
@@ -4871,17 +4884,17 @@ over 90: larger hole radius at the bottom</translation>
       <translation type="unfinished">Creating a face from sketch failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="615"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="617"/>
       <source>Up to face: Could not get SubShape!</source>
       <translation type="unfinished">Up to face: Could not get SubShape!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="657"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="659"/>
       <source>Magnitude of taper angle matches or exceeds 90 degrees</source>
       <translation type="unfinished">Magnitude of taper angle matches or exceeds 90 degrees</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="668"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="670"/>
       <source>Padding with draft angle failed</source>
       <translation type="unfinished">Padding with draft angle failed</translation>
     </message>
@@ -4961,7 +4974,7 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
       <location filename="../../../App/FeatureHelix.cpp" line="302"/>
       <location filename="../../../App/FeatureHole.cpp" line="2160"/>
       <source>Error: Result is not a solid</source>
-      <translation type="unfinished">Error: Result is not a solid</translation>
+      <translation>오류: 결과가 고체가 아닙니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="252"/>
@@ -4973,7 +4986,7 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
       <location filename="../../../App/FeatureHelix.cpp" line="276"/>
       <location filename="../../../App/FeatureHelix.cpp" line="306"/>
       <source>Error: Result has multiple solids</source>
-      <translation type="unfinished">Error: Result has multiple solids</translation>
+      <translation>오류: 결과가 여러 고체들을 가집니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="266"/>
@@ -5008,7 +5021,7 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1715"/>
       <source>Hole error: Invalid hole depth</source>
-      <translation type="unfinished">Hole error: Invalid hole depth</translation>
+      <translation>구멍 오류: 무효한 구멍 깊이</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1738"/>
@@ -5065,11 +5078,11 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
       <location filename="../../../App/FeatureTransformed.cpp" line="304"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="319"/>
       <source>Boolean operation failed</source>
-      <translation type="unfinished">Boolean operation failed</translation>
+      <translation>불 연산 실패</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1919"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="250"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation type="unfinished">Could not create face from sketch.
@@ -5092,9 +5105,9 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="137"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="403"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="405"/>
       <source>Loft: At least one section is needed</source>
-      <translation type="unfinished">Loft: At least one section is needed</translation>
+      <translation>뾰족탑: 최소 하나의 단면이 필요합니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="142"/>
@@ -5139,41 +5152,41 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="234"/>
       <source>Loft could not be built</source>
-      <translation type="unfinished">Loft could not be built</translation>
+      <translation>뽀족탑을 만들 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="267"/>
       <source>Loft: Result is not a solid</source>
-      <translation type="unfinished">Loft: Result is not a solid</translation>
+      <translation>뾰족탑: 결과가 고체가 아닙니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="280"/>
       <source>Loft: There is nothing to subtract from</source>
-      <translation type="unfinished">Loft: There is nothing to subtract from</translation>
+      <translation>뾰족탑을 뺄 것이 없습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="290"/>
       <source>Loft: Adding the loft failed</source>
-      <translation type="unfinished">Loft: Adding the loft failed</translation>
+      <translation>뾰족탑: 뾰족탑 추가 실패</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="308"/>
       <source>Loft: Subtracting the loft failed</source>
-      <translation type="unfinished">Loft: Subtracting the loft failed</translation>
+      <translation>뽀족탑: 뾰족탑 빼기 실패</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="332"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="539"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="541"/>
       <source>Loft: A fatal error occurred when making the loft</source>
-      <translation type="unfinished">Loft: A fatal error occurred when making the loft</translation>
+      <translation>뾰족탑: 뾰족탑 생성 중 치명적 오류 발생</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="442"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="444"/>
       <source>Loft: Creating a face from sketch failed</source>
       <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="475"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="477"/>
       <source>Loft: Failed to create shell</source>
       <translation type="unfinished">Loft: Failed to create shell</translation>
     </message>
@@ -5203,7 +5216,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation type="unfinished">Pad: Fusion with base feature failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="741"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="743"/>
       <location filename="../../../App/FeaturePad.cpp" line="262"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
@@ -5280,7 +5293,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
       <location filename="../../../App/FeaturePipe.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="704"/>
       <source>Result is not a solid</source>
-      <translation type="unfinished">Result is not a solid</translation>
+      <translation>결과가 고체가 아닙니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="383"/>
@@ -5332,32 +5345,32 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
       <translation type="unfinished">Invalid spine.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="132"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="140"/>
       <source>Pocket: Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation type="unfinished">Pocket: Creation failed because direction is orthogonal to sketch's normal vector</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="143"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="151"/>
       <source>Pocket: Creating a face from sketch failed</source>
       <translation type="unfinished">Pocket: Creating a face from sketch failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="149"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="157"/>
       <source>Pocket: Extruding up to a face is only possible if the sketch is located on a face</source>
       <translation type="unfinished">Pocket: Extruding up to a face is only possible if the sketch is located on a face</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="184"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="192"/>
       <source>Pocket: Up to face: Could not get SubShape!</source>
       <translation type="unfinished">Pocket: Up to face: Could not get SubShape!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="208"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="216"/>
       <source>Pocket: Resulting shape is empty</source>
       <translation type="unfinished">Pocket: Resulting shape is empty</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="217"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="225"/>
       <source>Pocket: Cut out of base feature failed</source>
       <translation type="unfinished">Pocket: Cut out of base feature failed</translation>
     </message>
@@ -5367,13 +5380,13 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
       <translation type="unfinished">Cannot subtract primitive feature without base feature</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="515"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="517"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
       <source>Unknown operation type</source>
       <translation type="unfinished">Unknown operation type</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="521"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="523"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
       <source>Failed to perform boolean operation</source>
       <translation type="unfinished">Failed to perform boolean operation</translation>
@@ -5391,27 +5404,27 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="234"/>
       <source>Length of box too small</source>
-      <translation type="unfinished">Length of box too small</translation>
+      <translation>상자 길이가 너무 작습니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="236"/>
       <source>Width of box too small</source>
-      <translation type="unfinished">Width of box too small</translation>
+      <translation>상자 폭이 너무 작습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="238"/>
       <source>Height of box too small</source>
-      <translation type="unfinished">Height of box too small</translation>
+      <translation>상자 높이가 너무 작습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="284"/>
       <source>Radius of cylinder too small</source>
-      <translation type="unfinished">Radius of cylinder too small</translation>
+      <translation>원통의 반지름이 너무 작습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="286"/>
       <source>Height of cylinder too small</source>
-      <translation type="unfinished">Height of cylinder too small</translation>
+      <translation>원통의 높이가 너무 작습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="288"/>
@@ -5421,18 +5434,18 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="341"/>
       <source>Radius of sphere too small</source>
-      <translation type="unfinished">Radius of sphere too small</translation>
+      <translation>구의 반지름이 너무 작습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="390"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="392"/>
       <source>Radius of cone cannot be negative</source>
-      <translation type="unfinished">Radius of cone cannot be negative</translation>
+      <translation>원뿔의 반지름은 음수가 될 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="394"/>
       <source>Height of cone too small</source>
-      <translation type="unfinished">Height of cone too small</translation>
+      <translation>원뿔의 높이가 너무 작습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="457"/>
@@ -5502,7 +5515,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
       <translation type="unfinished">Reference axis is invalid</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="709"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="711"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="254"/>
       <source>Fusion with base feature failed</source>
       <translation type="unfinished">Fusion with base feature failed</translation>

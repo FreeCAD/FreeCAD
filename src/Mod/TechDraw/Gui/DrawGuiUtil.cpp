@@ -612,3 +612,16 @@ Base::Vector3d DrawGuiUtil::toGuiPoint(DrawView* obj, const Base::Vector3d& toCo
     return result;
 }
 
+
+//! true if targetObj is in the selection list
+bool DrawGuiUtil::findObjectInSelection(const std::vector<Gui::SelectionObject>& selection,
+                                        const App::DocumentObject& targetObject)
+{
+    for (auto& selObj : selection) {
+        if (&targetObject == selObj.getObject()) {
+            return true;
+        }
+    }
+    return false;
+}
+

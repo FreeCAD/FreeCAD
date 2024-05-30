@@ -66,13 +66,8 @@ class BIM_IfcQuantities:
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument:
-            # disable for pre-v0.18
-            if float(FreeCAD.Version()[0] + "." + FreeCAD.Version()[1]) < 0.18:
-                return False
-            return True
-        else:
-            return False
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         from PySide import QtCore, QtGui

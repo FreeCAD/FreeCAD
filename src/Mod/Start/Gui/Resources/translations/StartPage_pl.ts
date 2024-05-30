@@ -27,17 +27,17 @@
   <context>
     <name>StartGui::GeneralSettingsWidget</name>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="209"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
       <source>Language</source>
       <translation>Język</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="210"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
       <source>Unit System</source>
       <translation>Układ jednostek</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="223"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="226"/>
       <source>Navigation Style</source>
       <translation>Styl nawigacji</translation>
     </message>
