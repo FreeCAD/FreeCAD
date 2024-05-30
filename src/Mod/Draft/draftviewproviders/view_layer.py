@@ -70,16 +70,16 @@ class ViewProviderLayer:
                              _tip)
             vobj.OverrideLineColorChildren = True
 
-        if "OverrideShapeColorChildren" not in properties:
+        if "OverrideShapeAppearanceChildren" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "If it is true, the objects contained "
                                      "within this layer will adopt "
-                                     "the shape color of the layer")
+                                     "the shape appearance of the layer")
             vobj.addProperty("App::PropertyBool",
-                             "OverrideShapeColorChildren",
+                             "OverrideShapeAppearanceChildren",
                              "Layer",
                              _tip)
-            vobj.OverrideShapeColorChildren = True
+            vobj.OverrideShapeAppearanceChildren = True
 
         if "UsePrintColor" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -110,8 +110,21 @@ class ViewProviderLayer:
             vobj.addProperty("App::PropertyColor",
                              "ShapeColor",
                              "Layer",
-                             _tip)
+                             _tip,
+                             4)  # Hidden
             vobj.ShapeColor = params.get_param_view("DefaultShapeColor") & 0xFFFFFF00
+
+        if "ShapeAppearance" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "The shape appearance of the objects "
+                                     "contained within this layer")
+            vobj.addProperty("App::PropertyMaterialList",
+                             "ShapeAppearance",
+                             "Layer",
+                             _tip)
+            material = App.Material()
+            material.DiffuseColor = params.get_param_view("DefaultShapeColor") & 0xFFFFFF00
+            vobj.ShapeAppearance = (material, )
 
         if "LineWidth" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -204,8 +217,8 @@ class ViewProviderLayer:
     def updateData(self, obj, prop):
         """Execute when a property from the Proxy class is changed."""
         if prop == "Group":
-            for _prop in ("LineColor", "ShapeColor", "LineWidth",
-                          "DrawStyle", "Transparency", "Visibility"):
+            for _prop in ("LineColor", "ShapeAppearance", "LineWidth",
+                          "DrawStyle", "Visibility"):
                 self.onChanged(obj.ViewObject, _prop)
 
     def change_view_properties(self, vobj, prop):
@@ -222,7 +235,7 @@ class ViewProviderLayer:
             # If the override properties are not set return without change
             if prop == "LineColor" and not vobj.OverrideLineColorChildren:
                 return
-            elif prop == "ShapeColor" and not vobj.OverrideShapeColorChildren:
+            elif prop == "ShapeAppearance" and not vobj.OverrideShapeAppearanceChildren:
                 return
 
             # This checks that the property exists in the target object,
@@ -243,20 +256,49 @@ class ViewProviderLayer:
 
     def onChanged(self, vobj, prop):
         """Execute when a view property is changed."""
-        if (prop in ("LineColor", "ShapeColor", "LineWidth",
-                    "DrawStyle", "Transparency", "Visibility")
+
+        if not hasattr(vobj, prop):
+            return
+
+        if prop == "ShapeColor":
+            if hasattr(vobj, "ShapeAppearance"):
+                material = vobj.ShapeAppearance[0]
+                if material.DiffuseColor != vobj.ShapeColor:
+                    material.DiffuseColor = vobj.ShapeColor
+                    vobj.ShapeAppearance = (material, )
+            # The changed ShapeAppearance will do the rest:
+            return
+
+        if prop == "Transparency":
+            if hasattr(vobj, "ShapeAppearance"):
+                material = vobj.ShapeAppearance[0]
+                if material.Transparency != vobj.Transparency / 100:
+                    material.Transparency = vobj.Transparency / 100
+                    vobj.ShapeAppearance = (material, )
+            # The changed ShapeAppearance will do the rest:
+            return
+
+        if (prop == "ShapeAppearance"
+                and hasattr(vobj, "ShapeColor")
+                and hasattr(vobj, "Transparency")):
+            material = vobj.ShapeAppearance[0]
+            if material.DiffuseColor != vobj.ShapeColor:
+                vobj.ShapeColor = material.DiffuseColor
+            if material.Transparency != vobj.Transparency / 100:
+                vobj.Transparency = int(material.Transparency * 100)
+
+        if (prop in ("LineColor", "ShapeAppearance", "LineWidth",
+                     "DrawStyle", "Visibility")
                 and hasattr(vobj, "OverrideLineColorChildren")
-                and hasattr(vobj, "OverrideShapeColorChildren")):
+                and hasattr(vobj, "OverrideShapeAppearanceChildren")):
             self.change_view_properties(vobj, prop)
 
-        if (prop in ("LineColor", "ShapeColor")
+        # Paint the layer icon in the tree view:
+        if (prop in ("LineColor", "ShapeAppearance")
                 and hasattr(vobj, "LineColor")
-                and hasattr(vobj, "ShapeColor")):
-            # This doesn't do anything to the objects inside the layer,
-            # it just uses the defined Line and Shape colors
-            # to paint the layer icon accordingly in the tree view
+                and hasattr(vobj, "ShapeAppearance")):
             l_color = vobj.LineColor
-            s_color = vobj.ShapeColor
+            s_color = vobj.ShapeAppearance[0].DiffuseColor
 
             l_color = QtGui.QColor(int(l_color[0] * 255),
                                    int(l_color[1] * 255),
