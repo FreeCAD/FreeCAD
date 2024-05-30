@@ -218,6 +218,8 @@ class _Space(ArchComponent.Component):
         pl = obj.PropertiesList
         if not "Boundaries" in pl:
             obj.addProperty("App::PropertyLinkSubList","Boundaries",    "Space",QT_TRANSLATE_NOOP("App::Property","The objects that make the boundaries of this space object"))
+        if not "Area" in pl:
+            obj.addProperty("App::PropertyArea",    "Area",             "Space",QT_TRANSLATE_NOOP("App::Property","Identical to Horizontal Area")) 
         if not "FinishFloor" in pl:
             obj.addProperty("App::PropertyString",     "FinishFloor",   "Space",QT_TRANSLATE_NOOP("App::Property","The finishing of the floor of this space"))
         if not "FinishWalls" in pl:
@@ -385,6 +387,9 @@ class _Space(ArchComponent.Component):
                         if obj.AreaCalculationType == "At Center of Mass":
                             a = self.getArea(obj)
                             obj.HorizontalArea = a
+                    if hasattr(obj,"Area"):
+                        obj.Area = obj.HorizontalArea
+
                 return
 
         print("Arch: error computing space boundary for",obj.Label)
