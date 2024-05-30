@@ -95,6 +95,13 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <translation>Дакументацыя будзе адчыненая ў вашым першапачатковым інтэрнэт-аглядальніку.</translation>
     </message>
     <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="211"/>
+      <source>The documentation will open in a dockable dialog inside the FreeCAD window,
+which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
+      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
+which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
+    </message>
+    <message>
       <location filename="../../dlgPreferencesHelp.ui" line="246"/>
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
@@ -111,13 +118,6 @@ Markdown version above.</source>
       <location filename="../../dlgPreferencesHelp.ui" line="189"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</source>
       <translation>Дакументацыя будзе адчынены на новай укладцы ў інтэрфейсе FreeCAD.
-Для гэтага неабходны кампанент PySide QtWebEngineWidgets</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="211"/>
-      <source>The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open whlle working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation>Дакументацыя будзе адчыненая ў дыялогавым акне, які замацаваны ўнутры акна FreeCAD, што дазваляе вам захоўваць яе адчыненай падчас працы ў трохмерным прадстаўленні.
 Для гэтага неабходны кампанент PySide QtWebEngineWidgets</translation>
     </message>
     <message>

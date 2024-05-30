@@ -774,7 +774,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="245"/>
       <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
-      <translation>Папярэджанне: Калі ласка, пераканайцеся, што гэта адзіны запушчаны асобнік праграмы %1 і што аніякія дакументы не адчыненыя, так як гэта можа прывесці да страты дадзеных!</translation>
+      <translation>Папярэджанне: Калі ласка, пераканайцеся, што гэта адзіны запушчаны асобнік праграмы %1 і што аніякія дакументы не адчыненыя, бо гэтае можа прывесці да страты дадзеных!</translation>
     </message>
   </context>
   <context>
@@ -2586,7 +2586,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgRevertToBackupConfig.ui" line="26"/>
       <source>WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</source>
-      <translation>УВАГА: гэты працэс адменіць усе змены пераваг, якія ўнесеныя з паказанай даты, а таксама скіне вашыя апошнія файлы і макрасы да стану на гэтую дату.</translation>
+      <translation>Папярэджанне: гэты працэс адменіць усе змены пераваг, якія ўнесеныя з паказанай даты, а таксама скіне вашыя апошнія файлы і макрасы да стану на гэтую дату.</translation>
     </message>
     <message>
       <location filename="../DlgRevertToBackupConfig.ui" line="52"/>
@@ -6854,7 +6854,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskDlgRelocation.cpp" line="42"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Становішча</translation>
     </message>
   </context>
   <context>
@@ -8961,7 +8961,7 @@ the current copy will be lost.
     <message>
       <location filename="../ToolBarManager.cpp" line="951"/>
       <source>Undock from toolbar area</source>
-      <translation type="unfinished">Undock from toolbar area</translation>
+      <translation>Адмацаванне ад вобласці панэлі інструментаў</translation>
     </message>
   </context>
   <context>
@@ -13575,7 +13575,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../TaskMeasure.cpp" line="108"/>
       <source>Save the measurement in the active document.</source>
-      <translation type="unfinished">Save the measurement in the active document.</translation>
+      <translation>Захаваць вымярэнні ў бягучым дакуменце.</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="114"/>
@@ -13585,7 +13585,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../TaskMeasure.cpp" line="115"/>
       <source>Close the measurement task.</source>
-      <translation type="unfinished">Close the measurement task.</translation>
+      <translation>Зачыніць задачу вымярэння.</translation>
     </message>
   </context>
   <context>

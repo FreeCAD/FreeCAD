@@ -11,7 +11,8 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="129"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation>Przełączaj widoczność grzebienia krzywizny dla wszystkich łuków krzywej złożonej</translation>
+      <translation>Przełącza widoczność grzebienia krzywizny
+dla wszystkich łuków krzywej złożonej.</translation>
     </message>
   </context>
   <context>
@@ -24,7 +25,8 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="69"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation>Przełączaj widoczność stopnia dla wszystkich odcinków krzywej złożonej</translation>
+      <translation>Przełącza widoczność stopnia
+dla wszystkich odcinków krzywej złożonej.</translation>
     </message>
   </context>
   <context>
@@ -37,7 +39,8 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="159"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation>Przełączaj widoczność wielkości węzłów dla wszystkich odcinków krzywej złożonej</translation>
+      <translation>Przełącza widoczność wielkości węzłów
+dla wszystkich odcinków krzywej złożonej.</translation>
     </message>
   </context>
   <context>
@@ -50,8 +53,9 @@
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="188"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
-      <translation>Przełączaj pomiędzy pokazywaniem a ukrywaniem
-punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
+      <translation>Przełącza pomiędzy pokazywaniem
+a ukrywaniem punktów kontrolnych
+dla wszystkich krzywych złożonych.</translation>
     </message>
   </context>
   <context>
@@ -64,7 +68,8 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="99"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation>Przełącz widoczność ramki kontrolnej dla wszystkich krzywych złożonych</translation>
+      <translation>Przełącza widoczność ramki kontrolnej
+dla wszystkich krzywych złożonych.</translation>
     </message>
   </context>
   <context>
@@ -190,7 +195,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="969"/>
       <source>Create a B-spline in the sketch</source>
-      <translation>Tworzy krzywą złożoną na szkicu</translation>
+      <translation>Tworzy krzywą złożoną w szkicu</translation>
     </message>
   </context>
   <context>
@@ -315,7 +320,8 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8594"/>
       <source>Fix the angle of a line or the angle between two lines</source>
-      <translation>Ustaw kąt linii lub kąt pomiędzy 2 liniami</translation>
+      <translation>Ustawia kąt linii
+lub kąt pomiędzy dwiema liniami.</translation>
     </message>
   </context>
   <context>
@@ -328,7 +334,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3514"/>
       <source>Block the selected edge from moving</source>
-      <translation>Zablokuj wybraną krawędź przed przeniesieniem</translation>
+      <translation>Zablokuje wybraną krawędź przed przeniesieniem.</translation>
     </message>
   </context>
   <context>
@@ -354,7 +360,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7747"/>
       <source>Fix the diameter of a circle or an arc</source>
-      <translation>Ustal średnicę okręgu lub łuku</translation>
+      <translation>Ustala średnicę okręgu lub łuku.</translation>
     </message>
   </context>
   <context>
@@ -367,7 +373,9 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4331"/>
       <source>Fix a length of a line or the distance between a line and a vertex or between two circles</source>
-      <translation>Ustal długość linii lub odległość między linią a wierzchołkiem lub między dwoma okręgami</translation>
+      <translation>Ustala długość linii lub odległość
+między linią a wierzchołkiem
+lub między dwoma okręgami.</translation>
     </message>
   </context>
   <context>
@@ -380,7 +388,8 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4983"/>
       <source>Fix the horizontal distance between two points or line ends</source>
-      <translation>Ustal poziomą odległość między dwoma punktami lub końcami linii</translation>
+      <translation>Ustala poziomą odległość między dwoma punktami
+lub końcami linii.</translation>
     </message>
   </context>
   <context>
@@ -393,7 +402,8 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5287"/>
       <source>Fix the vertical distance between two points or line ends</source>
-      <translation>Ustal pionową odległość między dwoma punktami lub końcami linii</translation>
+      <translation>Ustala pionową odległość między dwoma punktami
+lub końcami linii</translation>
     </message>
   </context>
   <context>
@@ -406,7 +416,8 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9048"/>
       <source>Create an equality constraint between two lines or between circles and arcs</source>
-      <translation>Utwórz wiązanie równości między dwiema liniami lub między okręgami i łukami</translation>
+      <translation>Tworzy wiązanie równości między dwiema liniami
+lub między okręgami i łukami.</translation>
     </message>
   </context>
   <context>
@@ -419,7 +430,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3136"/>
       <source>Create a horizontal constraint on the selected item</source>
-      <translation>Utwórz wiązanie poziome na wybranym elemencie</translation>
+      <translation>Tworzy wiązanie poziome na wybranym elemencie.</translation>
     </message>
   </context>
   <context>
@@ -433,7 +444,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
       <location filename="../../CommandConstraints.cpp" line="3227"/>
       <source>Create both a horizontal and a vertical distance constraint
 on the selected vertex</source>
-      <translation>Wiązanie blokady odległości: utwórz zarówno poziome, jak i pionowe wiązanie odległości
+      <translation>Tworzy zarówno poziome, jak i pionowe wiązanie odległości
 na wybranym wierzchołku</translation>
     </message>
   </context>
@@ -447,7 +458,7 @@ na wybranym wierzchołku</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5585"/>
       <source>Create a parallel constraint between two lines</source>
-      <translation>Utwórz wiązanie równoległości pomiędzy dwoma liniami</translation>
+      <translation>Tworzy wiązanie równoległości pomiędzy dwoma liniami.</translation>
     </message>
   </context>
   <context>
@@ -460,7 +471,7 @@ na wybranym wierzchołku</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5748"/>
       <source>Create a perpendicular constraint between two lines</source>
-      <translation>Utwórz wiązanie prostopadłości między dwoma liniami</translation>
+      <translation>Tworzy wiązanie prostopadłości między dwoma liniami.</translation>
     </message>
   </context>
   <context>
@@ -473,7 +484,7 @@ na wybranym wierzchołku</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4279"/>
       <source>Fix a point onto an object</source>
-      <translation>Ustaw punkt na obiekcie</translation>
+      <translation>Ustawia punkt na obiekcie.</translation>
     </message>
   </context>
   <context>
@@ -486,7 +497,8 @@ na wybranym wierzchołku</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8065"/>
       <source>Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</source>
-      <translation>Ustal średnicę, jeśli wybrano okrąg lub promień, jeśli wybrano łuk lub biegun liniowy</translation>
+      <translation>Ustala średnicę, jeśli wybrano okrąg
+lub promień, jeśli wybrano łuk / krzywą złożoną.</translation>
     </message>
   </context>
   <context>
@@ -515,8 +527,8 @@ oraz krawędzią jako interfejsem.</translation>
       <location filename="../../CommandConstraints.cpp" line="9289"/>
       <source>Create a symmetry constraint between two points
 with respect to a line or a third point</source>
-      <translation>Utwórz wiązanie symetrii pomiędzy dwoma punktami
-w odniesieniu do linii lub trzeciego punktu</translation>
+      <translation>Tworzy wiązanie symetrii pomiędzy dwoma punktami
+w odniesieniu do linii lub trzeciego punktu.</translation>
     </message>
   </context>
   <context>
@@ -529,7 +541,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3181"/>
       <source>Create a vertical constraint on the selected item</source>
-      <translation>Utwórz wiązanie pionowe na wybranym elemencie</translation>
+      <translation>Tworzy wiązanie pionowe na wybranym elemencie.</translation>
     </message>
   </context>
   <context>
@@ -568,7 +580,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="491"/>
       <source>Create an arc by its end points and a point along the arc</source>
-      <translation>Utwórz łuk z punktów końcowych i punkt na łuku</translation>
+      <translation>Tworzy łuk przez punkty końcowe i punkt na łuku.</translation>
     </message>
   </context>
   <context>
@@ -581,7 +593,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1131"/>
       <source>Create a circle by 3 perimeter points</source>
-      <translation>Utwórz okrąg przez trzy punkty na obwodzie</translation>
+      <translation>Tworzy okrąg przez trzy punkty na obwodzie.</translation>
     </message>
   </context>
   <context>
@@ -594,7 +606,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="459"/>
       <source>Create an arc by its center and by its end points</source>
-      <translation>Utwórz łuk ze środka i punktów końcowych</translation>
+      <translation>Tworzy łuk przez środek i punkty końcowe.</translation>
     </message>
   </context>
   <context>
@@ -698,7 +710,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1194"/>
       <source>Create a fillet between two lines or at a coincident point</source>
-      <translation>Utwórz zaokrąglenie między dwiema liniami lub w punkcie zbieżności</translation>
+      <translation>Tworzy zaokrąglenie między dwiema liniami lub w punkcie zbieżności</translation>
     </message>
   </context>
   <context>
@@ -802,7 +814,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1165"/>
       <source>Create a point in the sketch</source>
-      <translation>Utwórz punkt na szkicu</translation>
+      <translation>Tworzy punkt na szkicu.</translation>
     </message>
   </context>
   <context>
@@ -815,7 +827,8 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="198"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
-      <translation>Utwórz polilinię w szkicu. Klawisz "M" przełącza zachowanie</translation>
+      <translation>Tworzy polilinię w szkicu.
+Klawisz "M" przełącza zachowanie.</translation>
     </message>
   </context>
   <context>
@@ -867,7 +880,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1515"/>
       <source>Create a slot in the sketch</source>
-      <translation>Utwórz szczelinę w szkicu</translation>
+      <translation>Tworzy szczelinę w szkicu.</translation>
     </message>
   </context>
   <context>
@@ -958,7 +971,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../Command.cpp" line="311"/>
       <source>Edit the selected sketch.</source>
-      <translation>Edytuj wybrany szkic.</translation>
+      <translation>Edytuje wybrany szkic.</translation>
     </message>
   </context>
   <context>
@@ -984,7 +997,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1404"/>
       <source>Create an edge linked to an external geometry</source>
-      <translation>Utwórz krawędź związaną z zewnętrzną geometrią</translation>
+      <translation>Tworzy krawędź związaną z zewnętrzną geometrią.</translation>
     </message>
   </context>
   <context>
@@ -1049,7 +1062,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../Command.cpp" line="342"/>
       <source>Finish editing the active sketch.</source>
-      <translation>Zakończ edycję aktywnego szkicu.</translation>
+      <translation>Zakończy edycję aktywnego szkicu.</translation>
     </message>
   </context>
   <context>
@@ -1084,7 +1097,7 @@ lub krawędź obiektu bryły, następnie wywołaj tę komendę, a następnie wyb
     <message>
       <location filename="../../Command.cpp" line="954"/>
       <source>Create a new sketch from merging two or more selected sketches.</source>
-      <translation>Utwórz nowy szkic ze scalenia dwóch lub więcej wybranych szkiców.</translation>
+      <translation>Tworzy nowy szkic ze scalenia dwóch lub więcej wybranych szkiców.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="969"/>
@@ -1109,8 +1122,8 @@ lub krawędź obiektu bryły, następnie wywołaj tę komendę, a następnie wyb
       <source>Create a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference.</source>
-      <translation>Utwórz nowy lustrzany szkic dla każdego wybranego szkicu
-używając osi X lub Y bądź punktu początkowego,
+      <translation>Tworzy nowy szkic w odbiciu lustrzanym dla każdego wybranego szkicu
+używając osi X lub Y bądź punktu odniesienia położenia,
 jako odniesienia lustrzanego odbicia.</translation>
     </message>
     <message>
@@ -1147,7 +1160,7 @@ jako odniesienia lustrzanego odbicia.</translation>
     <message>
       <location filename="../../Command.cpp" line="156"/>
       <source>Create a new sketch.</source>
-      <translation>Utwórz nowy szkic.</translation>
+      <translation>Tworzy nowy szkic.</translation>
     </message>
   </context>
   <context>
@@ -1187,8 +1200,8 @@ jako odniesienia lustrzanego odbicia.</translation>
       <location filename="../../Command.cpp" line="416"/>
       <source>Place the selected sketch on one of the global coordinate planes.
 This will clear the 'AttachmentSupport' property, if any.</source>
-      <translation>Umieść wybrany szkic na jednej z globalnych płaszczyzn współrzędnych.
-Spowoduje to wyczyszczenie właściwości "Wsparcie dołączenia", jeśli taka istnieje.</translation>
+      <translation>Umieszcza wybrany szkic na jednej z globalnych płaszczyzn współrzędnych.
+Wyczyści właściwość "Wsparcie dołączenia", jeśli taka istnieje.</translation>
     </message>
   </context>
   <context>
@@ -1201,7 +1214,8 @@ Spowoduje to wyczyszczenie właściwości "Wsparcie dołączenia", jeśli taka i
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="980"/>
       <source>Show all internal geometry or hide unused internal geometry</source>
-      <translation>Pokaż całą geometrię wewnętrzną lub ukryj nieużywaną geometrię wewnętrzną</translation>
+      <translation>Pokazuje całą geometrię wewnętrzną
+lub ukrywa nieużywaną geometrię wewnętrzną.</translation>
     </message>
   </context>
   <context>
@@ -1223,7 +1237,7 @@ Spowoduje to wyczyszczenie właściwości "Wsparcie dołączenia", jeśli taka i
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="339"/>
       <source>Select the constraints associated with the selected geometrical elements</source>
-      <translation>Zaznacz wiązania skojarzone z wybranymi elementami</translation>
+      <translation>Zaznacza wiązania skojarzone z wybranymi elementami.</translation>
     </message>
   </context>
   <context>
@@ -1236,7 +1250,7 @@ Spowoduje to wyczyszczenie właściwości "Wsparcie dołączenia", jeśli taka i
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="772"/>
       <source>Select the geometrical elements associated with the selected constraints</source>
-      <translation>Zaznacz elementy geometryczne powiązane z wybranymi wiązaniami</translation>
+      <translation>Zaznacza elementy geometryczne powiązane z wybranymi wiązaniami.</translation>
     </message>
   </context>
   <context>
@@ -1354,7 +1368,9 @@ Spowoduje to wyczyszczenie właściwości "Wsparcie dołączenia", jeśli taka i
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="98"/>
       <source>Switches the selected constraints or the view to the other virtual space</source>
-      <translation>Przełącza wybrane wiązania lub widok na inną przestrzeń wirtualną</translation>
+      <translation>Przełącza wybrane wiązania
+lub widok
+na inną przestrzeń wirtualną.</translation>
     </message>
   </context>
   <context>
@@ -1408,8 +1424,9 @@ Po uruchomieniu narzędzia wybierz linię lub punkt odniesienia.</translation>
       <location filename="../../CommandConstraints.cpp" line="9899"/>
       <source>Set the toolbar, or the selected constraints,
 into driving or reference mode</source>
-      <translation>Ustaw pasek narzędzi lub wybrane więzy wymiarowe
-w tryb konstrukcyjny lub informacyjny</translation>
+      <translation>Ustawia pasek narzędzi
+lub wybrane więzy wymiarowe
+w tryb konstrukcyjny lub informacyjny.</translation>
     </message>
   </context>
   <context>
@@ -1436,7 +1453,7 @@ w tryb konstrukcyjny lub informacyjny</translation>
       <location filename="../../Command.cpp" line="787"/>
       <source>Validate a sketch by looking at missing coincidences,
 invalid constraints, degenerated geometry, etc.</source>
-      <translation>Sprawdzanie poprawności szkicu przez sprawdzanie braków zbieżności,
+      <translation>Sprawdzi poprawność szkicu przez sprawdzenie braków zbieżności,
 nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     </message>
     <message>
@@ -1460,7 +1477,8 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../Command.cpp" line="1046"/>
       <source>When in edit mode, switch between section view and full view.</source>
-      <translation>W trybie edycji można przełączyć się między widokiem przekroju a widokiem całości.</translation>
+      <translation>W trybie edycji umożliwia przełączenie widoku
+ pomiędzy widokiem przekroju a widokiem całości.</translation>
     </message>
   </context>
   <context>
@@ -1473,7 +1491,8 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../Command.cpp" line="752"/>
       <source>When in edit mode, set the camera orientation perpendicular to the sketch plane.</source>
-      <translation>W trybie edycji ustaw orientację widoku prostopadle do płaszczyzny szkicu.</translation>
+      <translation>W trybie edycji umożliwia ustawienie orientacji widoku
+ prostopadle do płaszczyzny szkicu.</translation>
     </message>
   </context>
   <context>
@@ -4156,7 +4175,7 @@ Pozycje to pozycja (x, y) kursora. Na przykład dla środka okręgu.</translatio
     <message>
       <location filename="../../SketcherSettings.cpp" line="191"/>
       <source>Separated tools</source>
-      <translation>Oddzielne narzędzia</translation>
+      <translation>Narzędzia oddzielnie</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="192"/>
@@ -5118,7 +5137,8 @@ Odbywa się to przez analizę geometrii szkicu i wiązań.</translation>
       <location filename="../../CommandSketcherOverlay.cpp" line="320"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="323"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation>Przełączaj widoczność grzebienia krzywizny dla wszystkich łuków krzywej złożonej</translation>
+      <translation>Przełącza widoczność grzebienia krzywizny
+dla wszystkich łuków krzywej złożonej.</translation>
     </message>
   </context>
   <context>
@@ -5136,7 +5156,8 @@ Odbywa się to przez analizę geometrii szkicu i wiązań.</translation>
       <location filename="../../CommandSketcherOverlay.cpp" line="302"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="305"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation>Przełączaj widoczność stopnia dla wszystkich odcinków krzywej złożonej</translation>
+      <translation>Przełącza widoczność stopnia
+dla wszystkich odcinków krzywej złożonej.</translation>
     </message>
   </context>
   <context>
@@ -5154,7 +5175,8 @@ Odbywa się to przez analizę geometrii szkicu i wiązań.</translation>
       <location filename="../../CommandSketcherOverlay.cpp" line="329"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="332"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation>Przełączaj widoczność wielkości węzłów dla wszystkich odcinków krzywej złożonej</translation>
+      <translation>Przełącza widoczność wielkości węzłów
+dla wszystkich odcinków krzywej złożonej.</translation>
     </message>
   </context>
   <context>
@@ -5163,8 +5185,9 @@ Odbywa się to przez analizę geometrii szkicu i wiązań.</translation>
       <location filename="../../CommandSketcherOverlay.cpp" line="339"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="342"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
-      <translation>Przełączaj pomiędzy pokazywaniem a ukrywaniem
-punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
+      <translation>Przełącza pomiędzy pokazywaniem
+a ukrywaniem punktów kontrolnych
+dla wszystkich krzywych złożonych.</translation>
     </message>
   </context>
   <context>
@@ -5173,7 +5196,8 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
       <location filename="../../CommandSketcherOverlay.cpp" line="311"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="314"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation>Przełącz widoczność ramki kontrolnej dla wszystkich krzywych złożonych</translation>
+      <translation>Przełącza widoczność ramki kontrolnej
+dla wszystkich krzywych złożonych.</translation>
     </message>
   </context>
   <context>
@@ -5209,7 +5233,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
       <location filename="../../CommandConstraints.cpp" line="8551"/>
       <location filename="../../CommandConstraints.cpp" line="8553"/>
       <source>Fix the diameter of a circle or an arc</source>
-      <translation>Ustal średnicę okręgu lub łuku</translation>
+      <translation>Ustala średnicę okręgu lub łuku.</translation>
     </message>
   </context>
   <context>
@@ -5227,7 +5251,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
       <location filename="../../CommandConstraints.cpp" line="8545"/>
       <location filename="../../CommandConstraints.cpp" line="8547"/>
       <source>Fix the radius of a circle or an arc</source>
-      <translation>Ustalenie promienia okręgu lub łuku</translation>
+      <translation>Ustala promień okręgu lub łuku.</translation>
     </message>
   </context>
   <context>
@@ -5250,7 +5274,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
       <location filename="../../CommandCreateGeo.cpp" line="1084"/>
       <location filename="../../CommandCreateGeo.cpp" line="1086"/>
       <source>Create a B-spline by control points</source>
-      <translation>Utwórz krzywą złożoną za pomocą punktów kontrolnych</translation>
+      <translation>Tworzy krzywą złożoną za pomocą punktów kontrolnych.</translation>
     </message>
   </context>
   <context>
@@ -5272,7 +5296,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
       <location filename="../../CommandCreateGeo.cpp" line="1943"/>
       <location filename="../../CommandCreateGeo.cpp" line="1946"/>
       <source>Create a heptagon by its center and by one corner</source>
-      <translation>Tworzy siedmiokąt przez jego środek i przez jeden narożnik</translation>
+      <translation>Tworzy siedmiokąt, przez środek i narożnik.</translation>
     </message>
   </context>
   <context>
@@ -5281,7 +5305,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
       <location filename="../../CommandCreateGeo.cpp" line="1935"/>
       <location filename="../../CommandCreateGeo.cpp" line="1938"/>
       <source>Create a hexagon by its center and by one corner</source>
-      <translation>Utwórz sześciokąt, przez środek i jeden z rogów</translation>
+      <translation>Tworzy sześciokąt, przez środek i narożnik.</translation>
     </message>
   </context>
   <context>
@@ -5298,13 +5322,14 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
       <location filename="../../CommandCreateGeo.cpp" line="1951"/>
       <location filename="../../CommandCreateGeo.cpp" line="1954"/>
       <source>Create an octagon by its center and by one corner</source>
-      <translation>Utwórz ośmiokąt, przez środek i jeden z rogów</translation>
+      <translation>Tworzy ośmiokąt, przez środek i narożnik.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1960"/>
       <location filename="../../CommandCreateGeo.cpp" line="1963"/>
       <source>Create a regular polygon by its center and by one corner</source>
-      <translation>Utwórz regularny wielokąt przez podanie punktu środka i jednego narożnika</translation>
+      <translation>Tworzy regularny wielokąt
+przez podanie środka i narożnika.</translation>
     </message>
   </context>
   <context>
@@ -5313,7 +5338,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
       <location filename="../../CommandCreateGeo.cpp" line="1927"/>
       <location filename="../../CommandCreateGeo.cpp" line="1930"/>
       <source>Create a pentagon by its center and by one corner</source>
-      <translation>Utwórz pięciokąt przez środek i jeden z rogów</translation>
+      <translation>Tworzy pięciokąt przez środek i jeden narożnik.</translation>
     </message>
   </context>
   <context>
@@ -5321,7 +5346,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="428"/>
       <source>Create a rectangle</source>
-      <translation>Utwórz prostokąt</translation>
+      <translation>Tworzy prostokąt</translation>
     </message>
   </context>
   <context>
@@ -5338,7 +5363,8 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
       <location filename="../../CommandCreateGeo.cpp" line="1919"/>
       <location filename="../../CommandCreateGeo.cpp" line="1922"/>
       <source>Create a square by its center and by one corner</source>
-      <translation>Utwórz kwadrat przez środek i jeden z rogów</translation>
+      <translation>Tworzy kwadrat
+przez środek i jeden narożnik.</translation>
     </message>
   </context>
   <context>
@@ -5347,7 +5373,8 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
       <location filename="../../CommandCreateGeo.cpp" line="1912"/>
       <location filename="../../CommandCreateGeo.cpp" line="1915"/>
       <source>Create an equilateral triangle by its center and by one corner</source>
-      <translation>Utwórz trójkąt równoboczny przez jego środek i przez jeden narożnik</translation>
+      <translation>Tworzy trójkąt równoboczny
+przez jego środek i przez jeden narożnik.</translation>
     </message>
   </context>
   <context>
@@ -5361,7 +5388,7 @@ punktów kontrolnych dla wszystkich krzywych złożonych.</translation>
       <location filename="../../CommandCreateGeo.cpp" line="1091"/>
       <location filename="../../CommandCreateGeo.cpp" line="1094"/>
       <source>Create a periodic B-spline by control points</source>
-      <translation>Utwórz okresową krzywą złożoną za pomocą punktów kontrolnych</translation>
+      <translation>Tworzy okresową krzywą złożoną za pomocą punktów kontrolnych.</translation>
     </message>
   </context>
   <context>
@@ -6371,7 +6398,8 @@ Przytrzymaj CTRL, aby włączyć "Przyciąganie pod kątem". Kąt zaczyna się o
     <message>
       <location filename="../../Command.cpp" line="1738"/>
       <source>Reorder the items in the list to configure rendering order.</source>
-      <translation>Zmień kolejność elementów na liście, aby skonfigurować kolejność renderowania.</translation>
+      <translation>Zmienia kolejność elementów na liście,
+aby skonfigurować kolejność renderowania.</translation>
     </message>
   </context>
   <context>
@@ -6384,7 +6412,8 @@ Przytrzymaj CTRL, aby włączyć "Przyciąganie pod kątem". Kąt zaczyna się o
     <message>
       <location filename="../../Command.cpp" line="1223"/>
       <source>Toggle the grid in the sketch. In the menu you can change grid settings.</source>
-      <translation>Włącz / wyłącz siatkę w szkicu. W menu można zmienić ustawienia siatki.</translation>
+      <translation>Włącza / wyłącza siatkę w szkicu.
+W menu można zmienić ustawienia siatki.</translation>
     </message>
   </context>
   <context>
@@ -6397,7 +6426,9 @@ Przytrzymaj CTRL, aby włączyć "Przyciąganie pod kątem". Kąt zaczyna się o
     <message>
       <location filename="../../Command.cpp" line="1479"/>
       <source>Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</source>
-      <translation>Przełącz wszystkie funkcje przyciągania. W menu możesz przełączać indywidualne przełączniki "Przyciągnij do siatki" i "Przyciągnij do obiektów" i zmieniać dodatkowe ustawienia przyciągania.</translation>
+      <translation>Przełącza wszystkie funkcje przyciągania.
+W menu możesz przełączać indywidualne przełączniki "Przyciągnij do siatki"
+oraz "Przyciągnij do obiektów" i zmieniać dodatkowe ustawienia przyciągania.</translation>
     </message>
   </context>
   <context>
@@ -6438,8 +6469,9 @@ Przytrzymaj CTRL, aby włączyć "Przyciąganie pod kątem". Kąt zaczyna się o
       <source>Constrain contextually based on your selection.
 Depending on your selection you might have several constraints available. You can cycle through them using M key.
 Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</source>
-      <translation>Zwiąż kontekstowo na podstawie dokonanego wyboru.
-W zależności od dokonanego wyboru dostępnych może być kilka rodzajów wiązań. Można je przeglądać za pomocą klawisza M.
+      <translation>Nakłada więzy na podstawie dokonanego wyboru.
+W zależności od dokonanego wyboru dostępnych może być kilka rodzajów wiązań.
+Można je przeglądać za pomocą klawisza M.
 Kliknięcie lewym przyciskiem myszki na pustym miejscu spowoduje zatwierdzenie bieżącego wiązania.
 Kliknięcie prawym przyciskiem myszy lub naciśnięcie Esc spowoduje anulowanie.</translation>
     </message>
@@ -6480,7 +6512,7 @@ Kliknięcie prawym przyciskiem myszy lub naciśnięcie Esc spowoduje anulowanie.
     <message>
       <location filename="../../CommandConstraints.cpp" line="7384"/>
       <source>Fix the radius of a circle or an arc</source>
-      <translation>Ustalenie promienia okręgu lub łuku</translation>
+      <translation>Ustala promień okręgu lub łuku.</translation>
     </message>
   </context>
   <context>
@@ -6602,8 +6634,9 @@ Kliknięcie prawym przyciskiem myszy lub naciśnięcie Esc spowoduje anulowanie.
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2313"/>
       <source>Offset selected geometries. A positive offset length makes the offset go outward, a negative length inward.</source>
-      <translation>Odsunięcie wybranych geometrii.
-Dodatnia długość odsunięcia powoduje przesunięcie na zewnątrz, a ujemna do wewnątrz.</translation>
+      <translation>Odsuwa wybrane geometrie.
+Dodatnia długość odsunięcia powoduje przesunięcie na zewnątrz,
+a ujemna do wewnątrz.</translation>
     </message>
   </context>
   <context>
@@ -6711,7 +6744,8 @@ W przeciwnym razie spróbuje zastąpić je równościami.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3090"/>
       <source>Constrains a single line to either horizontal or vertical, whichever is closer to current alignment.</source>
-      <translation>Wiąże pojedynczą linię do poziomu lub pionu, w zależności od tego, co jest bliższe bieżącemu wyrównaniu.</translation>
+      <translation>Wiąże pojedynczą linię do poziomu lub pionu,
+w zależności od tego, co jest bliższe bieżącemu wyrównaniu.</translation>
     </message>
   </context>
   <context>
@@ -6763,7 +6797,9 @@ W przeciwnym razie spróbuje zastąpić je równościami.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3714"/>
       <source>Create a coincident constraint between points, or fix a point on an edge, or a concentric constraint between circles, arcs, and ellipses</source>
-      <translation>Utwórz wiązanie zbieżności między punktami, ustal punkt na krawędzi lub wiązanie koncentryczne między okręgami, łukami i elipsami.</translation>
+      <translation>Tworzy wiązanie zbieżności między punktami,
+wiąże punkt na krawędzi
+lub tworzy wiązanie koncentryczne między okręgami, łukami i elipsami.</translation>
     </message>
   </context>
   <context>
@@ -6776,7 +6812,8 @@ W przeciwnym razie spróbuje zastąpić je równościami.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2391"/>
       <source>Rotate selected geometries, making n copies, enable creation of circular patterns.</source>
-      <translation>Obróć wybrane geometrie, tworząc n kopii, umożliwiając tworzenie wzorców kołowych.</translation>
+      <translation>Obraca wybrane geometrie, tworząc n kopii,
+ umożliwiając tworzenie szyków kołowych.</translation>
     </message>
   </context>
   <context>
@@ -7130,7 +7167,10 @@ W przeciwnym razie spróbuje zastąpić je równościami.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2425"/>
       <source>Scale selected geometries. After selecting the center point you can either enter the scale factor, or select two reference points then scale factor = length(p2-center) / length(p1-center).</source>
-      <translation>Skaluje wybrane geometrie. Po wybraniu punktu środkowego można wprowadzić współczynnik skali lub wybrać dwa punkty odniesienia, a następnie współczynnik skali = długość (p2-środek) / długość (p1-środek).</translation>
+      <translation>Skaluje wybrane geometrie.
+Po wybraniu punktu środkowego można wprowadzić współczynnik skali
+lub wybrać dwa punkty odniesienia, a następnie
+współczynnik skali = długość (p2-środek) / długość (p1-środek).</translation>
     </message>
   </context>
   <context>
@@ -7143,7 +7183,8 @@ W przeciwnym razie spróbuje zastąpić je równościami.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2459"/>
       <source>Translate selected geometries. Enable creation of i * j copies.</source>
-      <translation>Przekształć wybrane geometrie. Włącz tworzenie i * j kopii.</translation>
+      <translation>Przekształca wybrane geometrie.
+Włącza tworzenie i * j kopii.</translation>
     </message>
   </context>
   <context>
@@ -7201,7 +7242,7 @@ początkowymi geometriami i nowymi kopiami.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1225"/>
       <source>Create a chamfer between two lines or at a coincident point</source>
-      <translation>Utwórz fazę między dwiema liniami lub w punkcie zbieżności</translation>
+      <translation>Tworzy sfazowanie między dwiema liniami lub w punkcie zbieżności.</translation>
     </message>
   </context>
   <context>
@@ -7214,7 +7255,7 @@ początkowymi geometriami i nowymi kopiami.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1256"/>
       <source>Create a fillet or chamfer between two lines</source>
-      <translation>Utwórz zaokrąglenie lub sfazowanie pomiędzy dwiema liniami</translation>
+      <translation>Tworzy zaokrąglenie lub sfazowanie pomiędzy dwiema liniami</translation>
     </message>
   </context>
   <context>
@@ -7340,7 +7381,7 @@ początkowymi geometriami i nowymi kopiami.</translation>
       <location filename="../../CommandCreateGeo.cpp" line="1108"/>
       <location filename="../../CommandCreateGeo.cpp" line="1111"/>
       <source>Create a periodic B-spline by knots</source>
-      <translation>Utwórz okresową krzywą złożoną przez węzły</translation>
+      <translation>Tworzy okresową krzywą złożoną przez węzły.</translation>
     </message>
   </context>
   <context>
@@ -7353,7 +7394,8 @@ początkowymi geometriami i nowymi kopiami.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="116"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
-      <translation>Utwórz polilinię w szkicu. Klawisz "M" przełącza zachowanie</translation>
+      <translation>Tworzy polilinię w szkicu.
+Klawisz "M" przełącza zachowanie.</translation>
     </message>
   </context>
   <context>

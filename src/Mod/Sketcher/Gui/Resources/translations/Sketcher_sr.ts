@@ -1055,16 +1055,16 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../Command.cpp" line="552"/>
       <source>Attach sketch...</source>
-      <translation type="unfinished">Attach sketch...</translation>
+      <translation>Придружи скицу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="553"/>
       <source>Set the 'AttachmentSupport' of a sketch.
 First select the supporting geometry, for example, a face or an edge of a solid object,
 then call this command, then choose the desired sketch.</source>
-      <translation type="unfinished">Set the 'AttachmentSupport' of a sketch.
-First select the supporting geometry, for example, a face or an edge of a solid object,
-then call this command, then choose the desired sketch.</translation>
+      <translation>Изабери основу скице ('AttachmentSupport').
+Прво изабери на чему ће да лежи скица, на пример страницу или ивицу пуног тела,
+затим позови ову команду и изабери жељену скицу.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="617"/>
@@ -1184,8 +1184,8 @@ as mirroring reference.</source>
       <location filename="../../Command.cpp" line="416"/>
       <source>Place the selected sketch on one of the global coordinate planes.
 This will clear the 'AttachmentSupport' property, if any.</source>
-      <translation type="unfinished">Place the selected sketch on one of the global coordinate planes.
-This will clear the 'AttachmentSupport' property, if any.</translation>
+      <translation>Постави изабрану скицу на једну од главних координатних равни.
+Ово ће обрисати особину основу ('AttachmentSupport'), ако постоји.</translation>
     </message>
   </context>
   <context>
@@ -1364,7 +1364,7 @@ This will clear the 'AttachmentSupport' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1096"/>
       <source>Creates symmetric of selected geometry. After starting the tool select the reference line or point.</source>
-      <translation type="unfinished">Creates symmetric of selected geometry. After starting the tool select the reference line or point.</translation>
+      <translation>Направи симетричну геометрију изабраној. Након покретања алатке изабери референтну линију или тачку.</translation>
     </message>
   </context>
   <context>
@@ -2002,12 +2002,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="267"/>
       <source>Cut in Sketcher</source>
-      <translation>Исеци из Sketcher-а</translation>
+      <translation>Исеци са скице</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="312"/>
       <source>Paste in Sketcher</source>
-      <translation>Налепи у Sketcher</translation>
+      <translation>Налепи на скицу</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1056"/>
@@ -2131,7 +2131,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="134"/>
       <source>Symmetry geometries</source>
-      <translation type="unfinished">Symmetry geometries</translation>
+      <translation>Геометрија симетричности</translation>
     </message>
   </context>
   <context>
@@ -2139,7 +2139,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>Sketcher</source>
-      <translation>Sketcher</translation>
+      <translation>Скице</translation>
     </message>
   </context>
   <context>
@@ -2267,7 +2267,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../AppSketcherGui.cpp" line="145"/>
       <location filename="../../AppSketcherGui.cpp" line="147"/>
       <source>Sketcher</source>
-      <translation>Sketcher</translation>
+      <translation>Скице</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="122"/>
@@ -2491,7 +2491,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="753"/>
       <source>Sketcher Constraint Substitution</source>
-      <translation>Замена Sketcher ограничења</translation>
+      <translation>Замена ограничења</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="759"/>
@@ -2600,7 +2600,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7017"/>
       <source>Only tangent-via-point is supported with a B-spline.</source>
-      <translation type="unfinished">Only tangent-via-point is supported with a B-spline.</translation>
+      <translation>На Б-Сплајн је могуће применити ограничење тангентности само када су крајње тачке подударне.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9692"/>
@@ -2990,7 +2990,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="9880"/>
       <source>Select one dimensional constraint from the sketch.</source>
-      <translation type="unfinished">Select one dimensional constraint from the sketch.</translation>
+      <translation>Изабери једно димензионално ограничење са скице.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9958"/>
@@ -3181,7 +3181,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="350"/>
       <source>Fillet/Chamfer parameters</source>
-      <translation type="unfinished">Fillet/Chamfer parameters</translation>
+      <translation>Параметри заобљења/обарања ивица</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="215"/>
@@ -3241,7 +3241,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="194"/>
       <source>Symmetry parameters</source>
-      <translation type="unfinished">Symmetry parameters</translation>
+      <translation>Параметри симетричности</translation>
     </message>
   </context>
   <context>
@@ -3292,7 +3292,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="109"/>
       <source>All</source>
-      <translation>Сва</translation>
+      <translation>Сви</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="110"/>
@@ -3960,9 +3960,9 @@ with respect to the others using construction lines</source>
       <source>If selected, it substitutes dimensional constraints by geometric constraints
 in the copies, so that a change in the original element is directly
 reflected on copies</source>
-      <translation>Ако је чекирано, у копијама ће се заменити димензиона ограничења
-геометријским, тако да ће се промене на оригиналном елементу
-директно огледати и на копијама</translation>
+      <translation>Ако је чекирано, у копијама ће димензионална ограничења (коте) бити
+замењене са геометријским ограничењима, тако да ће се промене на
+оригиналном елементу директно огледати и на копијама</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="121"/>
@@ -4005,7 +4005,7 @@ reflected on copies</source>
       <location filename="../../SketcherSettings.ui" line="26"/>
       <source>Sketcher dialog will have additional section
 'Advanced solver control' to adjust solver settings</source>
-      <translation>Панел задатака у Sketcher-у ће имати додатни одељак
+      <translation>Панел задатака у окружењу Скица ће имати додатни одељак
 'Напредне контроле алгоритма' за напредно подешавање алгоритма за решавање</translation>
     </message>
     <message>
@@ -4104,7 +4104,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 'Auto': The tool will apply radius to arcs and diameter to circles.
 'Diameter': The tool will apply diameter to both arcs and circles.
 'Radius': The tool will apply radius to both arcs and circles.</source>
-      <translation>Док се користи алатка за котирање, могуће је бирати третирање кругова и лукова:
+      <translation>Док се користи алатка за димензионирање, могуће је бирати третирање кругова и лукова:
 'Ауто': Алатка ће котирати полупречник лукова и пречник кругова.
 'Пречник': Алатка ће котирати пречник лукова и кругова.
 'Полупречник': Алатка ће котирати полупречник лукова и кругова.</translation>
@@ -4117,7 +4117,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../SketcherSettings.ui" line="268"/>
       <source>On-View-Parameters:</source>
-      <translation type="unfinished">On-View-Parameters:</translation>
+      <translation>Унос параметара током цртања:</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="218"/>
@@ -4135,10 +4135,10 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 'Disabled': On-View-Parameters are completely disabled.
 'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
 'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</source>
-      <translation type="unfinished">Choose a visibility mode for the On-View-Parameters:
-'Disabled': On-View-Parameters are completely disabled.
-'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
-'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</translation>
+      <translation>Расположиви параметри за унос током цртања:
+'Онемогућен унос': Унос параметара током цртања није могућ.
+'Само параметри величине': На располагању су само поља за унос параметара величине.
+'Сви': На располагању су поља за унос параметара величине и положаја.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="190"/>
@@ -4173,17 +4173,17 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../SketcherSettings.cpp" line="222"/>
       <source>Disabled</source>
-      <translation>Онемогућено</translation>
+      <translation>Онемогућен унос</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="223"/>
       <source>Only dimensional</source>
-      <translation>Само димензиона</translation>
+      <translation>Само параметри величине</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="224"/>
       <source>All</source>
-      <translation>Сва</translation>
+      <translation>Сви</translation>
     </message>
   </context>
   <context>
@@ -4258,7 +4258,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="141"/>
       <source>The current sketcher creation tool will remain active after creation.</source>
-      <translation>Тренутно активна алатка Sketcher-а ће остати активна и после употребе.</translation>
+      <translation>Тренутно активна алатка окружења Скице ће остати активна и после употребе.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
@@ -4283,7 +4283,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="92"/>
       <source>If checked, displays the name on dimensional constraints (if exists).</source>
-      <translation>Ако је означено, приказује име на димензионим ограничењима (ако постоје).</translation>
+      <translation>Ако је означено, приказује име на димензионалним ограничењима (ако постоје).</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="95"/>
@@ -4415,7 +4415,7 @@ Then objects are only visible behind the sketch plane.</source>
     <message>
       <location filename="../../SketcherSettings.cpp" line="471"/>
       <source>Sketcher</source>
-      <translation>Sketcher</translation>
+      <translation>Скице</translation>
     </message>
   </context>
   <context>
@@ -4824,7 +4824,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="14"/>
       <source>Sketcher validation</source>
-      <translation>Провера Sketcher-а</translation>
+      <translation>Провера окружења Скице</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
@@ -5061,12 +5061,12 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3160"/>
       <source>Over-constrained:</source>
-      <translation type="unfinished">Over-constrained:</translation>
+      <translation>Превише ограничено:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3166"/>
       <source>Malformed constraints:</source>
-      <translation type="unfinished">Malformed constraints:</translation>
+      <translation>Оштећена ограничења:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3174"/>
@@ -5765,12 +5765,12 @@ Eigen редак QR алгоритам је оптимизован за ретк
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>S&amp;ketch</source>
-      <translation>Sketcher</translation>
+      <translation>Скице</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Sketcher</source>
-      <translation>Sketcher</translation>
+      <translation>Скице</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
@@ -5800,7 +5800,7 @@ Eigen редак QR алгоритам је оптимизован за ретк
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Sketcher visual</source>
-      <translation type="unfinished">Sketcher visual</translation>
+      <translation>Изабери/Прикажи/Сакриј</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -6271,7 +6271,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="151"/>
       <source>Failed to create symmetry</source>
-      <translation type="unfinished">Failed to create symmetry</translation>
+      <translation>Прављење симетричности није успело</translation>
     </message>
   </context>
   <context>
@@ -6417,7 +6417,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="2722"/>
       <source>Dimension</source>
-      <translation>Котирање - Димензиона ограничења</translation>
+      <translation>Котирање - Димензионална ограничења</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2723"/>
@@ -6452,7 +6452,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandConstraints.cpp" line="1205"/>
       <source>Dimension tools.</source>
-      <translation>Алатке за котирање.</translation>
+      <translation>Алатке за димензионирање (котирање).</translation>
     </message>
   </context>
   <context>
@@ -6621,22 +6621,22 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1651"/>
       <source>Corner, width, height</source>
-      <translation type="unfinished">Corner, width, height</translation>
+      <translation>Угао, ширина, висина</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1652"/>
       <source>Center, width, height</source>
-      <translation type="unfinished">Center, width, height</translation>
+      <translation>Центар, ширина, висина</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1653"/>
       <source>3 corners</source>
-      <translation type="unfinished">3 corners</translation>
+      <translation>3 угла</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1654"/>
       <source>Center, 2 corners</source>
-      <translation type="unfinished">Center, 2 corners</translation>
+      <translation>Центар, два угла</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1659"/>
@@ -6878,7 +6878,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="672"/>
       <source>Color of dimensional driving constraints in edit mode</source>
-      <translation>Боја ограничавајућих кота у режиму уређивања</translation>
+      <translation>Боја димензионалних ограничења (кота) у режиму уређивања</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="799"/>
@@ -6908,12 +6908,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="258"/>
       <source>Line pattern of normal edges.</source>
-      <translation type="unfinished">Line pattern of normal edges.</translation>
+      <translation>Обичне линије ће користити ову врсту линија.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="268"/>
       <source>Width of normal edges.</source>
-      <translation type="unfinished">Width of normal edges.</translation>
+      <translation>Ширина обичних линија.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="293"/>
@@ -6928,22 +6928,22 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="352"/>
       <source>Line pattern of construction edges.</source>
-      <translation type="unfinished">Line pattern of construction edges.</translation>
+      <translation>Помоћне линије ће користити ову врсту линија.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="362"/>
       <source>Width of construction edges.</source>
-      <translation type="unfinished">Width of construction edges.</translation>
+      <translation>Ширина помоћних линија.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="446"/>
       <source>Line pattern of internal aligned edges.</source>
-      <translation type="unfinished">Line pattern of internal aligned edges.</translation>
+      <translation>Линије за унутрашње поравнање ће користити ову врсту линија.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="456"/>
       <source>Width of internal aligned edges.</source>
-      <translation type="unfinished">Width of internal aligned edges.</translation>
+      <translation>Ширина линија за унутрашње поравнање.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="481"/>
@@ -6958,12 +6958,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="514"/>
       <source>Line pattern of external edges.</source>
-      <translation type="unfinished">Line pattern of external edges.</translation>
+      <translation>Спољашње линије ће користити ову врсту линија.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="524"/>
       <source>Width of external edges.</source>
-      <translation type="unfinished">Width of external edges.</translation>
+      <translation>Ширина спољашњих линија.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="601"/>
@@ -7023,7 +7023,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="791"/>
       <source>Colors outside Sketcher</source>
-      <translation>Боје изван Sketcher-а</translation>
+      <translation>Боје изван окружења Скице</translation>
     </message>
   </context>
   <context>
@@ -7031,7 +7031,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="499"/>
       <source>Copies (+'U'/ -'J')</source>
-      <translation type="unfinished">Copies (+'U'/ -'J')</translation>
+      <translation>Копије (+'У'/ -'Ј')</translation>
     </message>
   </context>
   <context>
@@ -7039,7 +7039,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="307"/>
       <source>Sides (+'U'/ -'J')</source>
-      <translation type="unfinished">Sides (+'U'/ -'J')</translation>
+      <translation>Странице (+'У'/ -'Ј')</translation>
     </message>
   </context>
   <context>
@@ -7047,7 +7047,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="405"/>
       <source>Keep original geometries (U)</source>
-      <translation type="unfinished">Keep original geometries (U)</translation>
+      <translation>Задржи оригиналну геометрију (У)</translation>
     </message>
   </context>
   <context>
@@ -7055,7 +7055,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandConstraints.cpp" line="1277"/>
       <source>Constrain</source>
-      <translation type="unfinished">Constrain</translation>
+      <translation>Ограничење</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1278"/>
@@ -7068,12 +7068,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="218"/>
       <source>C&amp;opy in sketcher</source>
-      <translation type="unfinished">C&amp;opy in sketcher</translation>
+      <translation>Копирај са скице</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="219"/>
       <source>Copy selected geometries and constraints to the clipboard</source>
-      <translation type="unfinished">Copy selected geometries and constraints to the clipboard</translation>
+      <translation>Копирај изабрану геометрију и ограничења у привремену меморију</translation>
     </message>
   </context>
   <context>
@@ -7081,12 +7081,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="249"/>
       <source>C&amp;ut in sketcher</source>
-      <translation type="unfinished">C&amp;ut in sketcher</translation>
+      <translation>Исеци са скице</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="250"/>
       <source>Cut selected geometries and constraints to the clipboard</source>
-      <translation type="unfinished">Cut selected geometries and constraints to the clipboard</translation>
+      <translation>Исеци изабрану геометрију и ограничења у привремену меморију</translation>
     </message>
   </context>
   <context>
@@ -7094,12 +7094,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="289"/>
       <source>P&amp;aste in sketcher</source>
-      <translation type="unfinished">P&amp;aste in sketcher</translation>
+      <translation>Налепи на скицу</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="290"/>
       <source>Paste selected geometries and constraints from the clipboard</source>
-      <translation type="unfinished">Paste selected geometries and constraints from the clipboard</translation>
+      <translation>Налепи изабрану геометрију и ограничења из привремене меморије</translation>
     </message>
   </context>
   <context>
@@ -7107,12 +7107,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2424"/>
       <source>Scale transform</source>
-      <translation type="unfinished">Scale transform</translation>
+      <translation>Скалирање</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2425"/>
       <source>Scale selected geometries. After selecting the center point you can either enter the scale factor, or select two reference points then scale factor = length(p2-center) / length(p1-center).</source>
-      <translation type="unfinished">Scale selected geometries. After selecting the center point you can either enter the scale factor, or select two reference points then scale factor = length(p2-center) / length(p1-center).</translation>
+      <translation>Скалирај изабрану геометрију. Прво изабери централну тачку, а онда скалираји помоћу коефицијента скалирања или помоћу две тачке. Коефицијент скалирања = дужина(п2-центар) / дужина (п1-центер).</translation>
     </message>
   </context>
   <context>
@@ -7146,7 +7146,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="516"/>
       <source>Copies (+'U'/-'J')</source>
-      <translation type="unfinished">Copies (+'U'/-'J')</translation>
+      <translation>Копије (+'У'/ -'Ј')</translation>
     </message>
   </context>
   <context>
@@ -7154,7 +7154,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="519"/>
       <source>Rows (+'R'/-'F')</source>
-      <translation type="unfinished">Rows (+'R'/-'F')</translation>
+      <translation>Редови (+'Р'/-'Ф')</translation>
     </message>
   </context>
   <context>
@@ -7180,7 +7180,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1225"/>
       <source>Create a chamfer between two lines or at a coincident point</source>
-      <translation type="unfinished">Create a chamfer between two lines or at a coincident point</translation>
+      <translation>Направи обарање ивица између две линије у подударној тачки</translation>
     </message>
   </context>
   <context>
@@ -7188,12 +7188,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1255"/>
       <source>Create fillet or chamfer</source>
-      <translation type="unfinished">Create fillet or chamfer</translation>
+      <translation>Направи заобљење или обарање ивице</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1256"/>
       <source>Create a fillet or chamfer between two lines</source>
-      <translation type="unfinished">Create a fillet or chamfer between two lines</translation>
+      <translation>Направи заобљење или обарање ивице између две линије</translation>
     </message>
   </context>
   <context>
@@ -7201,12 +7201,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="549"/>
       <source>Arc ends</source>
-      <translation type="unfinished">Arc ends</translation>
+      <translation>Заобљени крајеви</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="550"/>
       <source>Flat ends</source>
-      <translation type="unfinished">Flat ends</translation>
+      <translation>Равни крајеви</translation>
     </message>
   </context>
   <context>
@@ -7219,7 +7219,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="434"/>
       <source>Axis endpoints</source>
-      <translation type="unfinished">Axis endpoints</translation>
+      <translation>Крајње тачке осе</translation>
     </message>
   </context>
   <context>
@@ -7227,12 +7227,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="432"/>
       <source>Preserve corner (U)</source>
-      <translation type="unfinished">Preserve corner (U)</translation>
+      <translation>Сачувај угао (У)</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="435"/>
       <source>Preserves intersection point and most constraints</source>
-      <translation type="unfinished">Preserves intersection point and most constraints</translation>
+      <translation>Сачува се пресечна тачка и већина ограничења</translation>
     </message>
   </context>
   <context>
@@ -7240,17 +7240,17 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="279"/>
       <source>Point, length, angle</source>
-      <translation type="unfinished">Point, length, angle</translation>
+      <translation>Тачка, дужина, угао</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="280"/>
       <source>Point, width, height</source>
-      <translation type="unfinished">Point, width, height</translation>
+      <translation>Тачка, ширина, висина</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="281"/>
       <source>2 points</source>
-      <translation type="unfinished">2 points</translation>
+      <translation>2 тачке</translation>
     </message>
   </context>
   <context>
@@ -7279,7 +7279,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="266"/>
       <source>Create Symmetry Constraints (J)</source>
-      <translation type="unfinished">Create Symmetry Constraints (J)</translation>
+      <translation>Направи ограничење симетричности (Ј)</translation>
     </message>
   </context>
   <context>
@@ -7287,12 +7287,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandConstraints.cpp" line="6512"/>
       <source>Constrain tangent or collinear</source>
-      <translation type="unfinished">Constrain tangent or collinear</translation>
+      <translation>Ограничење тангентности или колинеарности</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6513"/>
       <source>Create a tangent or collinear constraint between two entities</source>
-      <translation type="unfinished">Create a tangent or collinear constraint between two entities</translation>
+      <translation>Направи ограничење тангентности или колинеарности између два геометријска елемента</translation>
     </message>
   </context>
   <context>
@@ -7305,7 +7305,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandConstraints.cpp" line="9845"/>
       <source>Change the value of a dimensional constraint</source>
-      <translation type="unfinished">Change the value of a dimensional constraint</translation>
+      <translation>Промени вредност димензионалног ограничења</translation>
     </message>
   </context>
   <context>

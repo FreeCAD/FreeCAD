@@ -1055,16 +1055,16 @@ u odnosu na pravu ili treću tačku</translation>
     <message>
       <location filename="../../Command.cpp" line="552"/>
       <source>Attach sketch...</source>
-      <translation type="unfinished">Attach sketch...</translation>
+      <translation>Pridruži skicu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="553"/>
       <source>Set the 'AttachmentSupport' of a sketch.
 First select the supporting geometry, for example, a face or an edge of a solid object,
 then call this command, then choose the desired sketch.</source>
-      <translation type="unfinished">Set the 'AttachmentSupport' of a sketch.
-First select the supporting geometry, for example, a face or an edge of a solid object,
-then call this command, then choose the desired sketch.</translation>
+      <translation>Izaberi osnovu skice ('AttachmentSupport').
+Prvo izaberi na čemu će da leži skica, na primer stranicu ili ivicu punog tela,
+zatim pozovi ovu komandu i izaberi željenu skicu.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="617"/>
@@ -1100,7 +1100,7 @@ then call this command, then choose the desired sketch.</translation>
     <message>
       <location filename="../../Command.cpp" line="826"/>
       <source>Mirror sketch</source>
-      <translation>Simetrično preslikanja skicu</translation>
+      <translation>Simetrično preslikaj skicu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="827"/>
@@ -1184,8 +1184,8 @@ koristeći koordinatni početak ili ose X i Y kao referentne.</translation>
       <location filename="../../Command.cpp" line="416"/>
       <source>Place the selected sketch on one of the global coordinate planes.
 This will clear the 'AttachmentSupport' property, if any.</source>
-      <translation type="unfinished">Place the selected sketch on one of the global coordinate planes.
-This will clear the 'AttachmentSupport' property, if any.</translation>
+      <translation>Postavi izabranu skicu na jednu od glavnih koordinatnih ravni.
+Ovo će obrisati osobinu osnovu ('AttachmentSupport'), ako postoji.</translation>
     </message>
   </context>
   <context>
@@ -1364,7 +1364,7 @@ This will clear the 'AttachmentSupport' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1096"/>
       <source>Creates symmetric of selected geometry. After starting the tool select the reference line or point.</source>
-      <translation type="unfinished">Creates symmetric of selected geometry. After starting the tool select the reference line or point.</translation>
+      <translation>Napravi simetričnu geometriju izabranoj. Nakon pokretanja alatke izaberi referentnu liniju ili tačku.</translation>
     </message>
   </context>
   <context>
@@ -2002,12 +2002,12 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="267"/>
       <source>Cut in Sketcher</source>
-      <translation>Iseci iz Sketcher-a</translation>
+      <translation>Iseci sa skice</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="312"/>
       <source>Paste in Sketcher</source>
-      <translation>Nalepi u Sketcher</translation>
+      <translation>Nalepi na skicu</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1056"/>
@@ -2131,7 +2131,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="134"/>
       <source>Symmetry geometries</source>
-      <translation type="unfinished">Symmetry geometries</translation>
+      <translation>Geometrija simetričnosti</translation>
     </message>
   </context>
   <context>
@@ -2139,7 +2139,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>Sketcher</source>
-      <translation>Sketcher</translation>
+      <translation>Skice</translation>
     </message>
   </context>
   <context>
@@ -2267,7 +2267,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
       <location filename="../../AppSketcherGui.cpp" line="145"/>
       <location filename="../../AppSketcherGui.cpp" line="147"/>
       <source>Sketcher</source>
-      <translation>Sketcher</translation>
+      <translation>Skice</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="122"/>
@@ -2491,7 +2491,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="753"/>
       <source>Sketcher Constraint Substitution</source>
-      <translation>Zamena Sketcher ograničenja</translation>
+      <translation>Zamena ograničenja</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="759"/>
@@ -2600,7 +2600,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7017"/>
       <source>Only tangent-via-point is supported with a B-spline.</source>
-      <translation type="unfinished">Only tangent-via-point is supported with a B-spline.</translation>
+      <translation>Na B-Splajn je moguće primeniti ograničenje tangentnosti samo kada su krajnje tačke podudarne.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9692"/>
@@ -2990,7 +2990,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../CommandConstraints.cpp" line="9880"/>
       <source>Select one dimensional constraint from the sketch.</source>
-      <translation type="unfinished">Select one dimensional constraint from the sketch.</translation>
+      <translation>Izaberi jedno dimenzionalno ograničenje sa skice.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9958"/>
@@ -3181,7 +3181,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="350"/>
       <source>Fillet/Chamfer parameters</source>
-      <translation type="unfinished">Fillet/Chamfer parameters</translation>
+      <translation>Parametri zaobljenja/obaranja ivica</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="215"/>
@@ -3241,7 +3241,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="194"/>
       <source>Symmetry parameters</source>
-      <translation type="unfinished">Symmetry parameters</translation>
+      <translation>Parametri simetričnosti</translation>
     </message>
   </context>
   <context>
@@ -3292,7 +3292,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="109"/>
       <source>All</source>
-      <translation>Sva</translation>
+      <translation>Svi</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="110"/>
@@ -3960,9 +3960,9 @@ u odnosu na ostale sa pomoćnim linijama</translation>
       <source>If selected, it substitutes dimensional constraints by geometric constraints
 in the copies, so that a change in the original element is directly
 reflected on copies</source>
-      <translation>Ako je čekirano, u kopijama će se zameniti dimenziona ograničenja
-geometrijskim, tako da će se promene na originalnom elementu
-direktno ogledati i na kopijama</translation>
+      <translation>Ako je čekirano, u kopijama će dimenzionalna ograničenja (kote) biti
+zamenjene sa geometrijskim ograničenjima, tako da će se promene na
+originalnom elementu direktno ogledati i na kopijama</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="121"/>
@@ -4005,7 +4005,7 @@ direktno ogledati i na kopijama</translation>
       <location filename="../../SketcherSettings.ui" line="26"/>
       <source>Sketcher dialog will have additional section
 'Advanced solver control' to adjust solver settings</source>
-      <translation>Panel zadataka u Sketcher-u će imati dodatni odeljak
+      <translation>Panel zadataka u okruženju Skice će imati dodatni odeljak
 'Napredne kontrole algoritma' za napredno podešavanje algoritma za rešavanje</translation>
     </message>
     <message>
@@ -4104,7 +4104,7 @@ Ovo podešavanje je samo za traku sa alatkama. Šta god bude izabrano, svi alati
 'Auto': The tool will apply radius to arcs and diameter to circles.
 'Diameter': The tool will apply diameter to both arcs and circles.
 'Radius': The tool will apply radius to both arcs and circles.</source>
-      <translation>Dok se koristi alatka za kotiranje, moguće je birati tretiranje krugova i lukova:
+      <translation>Dok se koristi alatka za dimenzioniranje, moguće je birati tretiranje krugova i lukova:
 'Auto': Alatka će kotirati poluprečnik lukova i prečnik krugova.
 'Prečnik': Alatka će kotirati prečnik lukova i krugova.
 'Poluprečnik': Alatka će kotirati poluprečnik lukova i krugova.</translation>
@@ -4117,7 +4117,7 @@ Ovo podešavanje je samo za traku sa alatkama. Šta god bude izabrano, svi alati
     <message>
       <location filename="../../SketcherSettings.ui" line="268"/>
       <source>On-View-Parameters:</source>
-      <translation type="unfinished">On-View-Parameters:</translation>
+      <translation>Unos parametara tokom crtanja:</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="218"/>
@@ -4135,10 +4135,10 @@ Ovo podešavanje je samo za traku sa alatkama. Šta god bude izabrano, svi alati
 'Disabled': On-View-Parameters are completely disabled.
 'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
 'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</source>
-      <translation type="unfinished">Choose a visibility mode for the On-View-Parameters:
-'Disabled': On-View-Parameters are completely disabled.
-'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
-'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</translation>
+      <translation>Raspoloživi parametri za unos tokom crtanja:
+'Onemogućen unos': Unos parametara tokom crtanja nije moguć.
+'Samo parametri veličine': Na raspolaganju su samo polja za unos parametara veličine.
+'Svi': Na raspolaganju su polja za unos parametara veličine i položaja.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="190"/>
@@ -4173,17 +4173,17 @@ Ovo podešavanje je samo za traku sa alatkama. Šta god bude izabrano, svi alati
     <message>
       <location filename="../../SketcherSettings.cpp" line="222"/>
       <source>Disabled</source>
-      <translation>Onemogućeno</translation>
+      <translation>Onemogućen unos</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="223"/>
       <source>Only dimensional</source>
-      <translation>Samo dimenziona</translation>
+      <translation>Samo parametri veličine</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="224"/>
       <source>All</source>
-      <translation>Sva</translation>
+      <translation>Svi</translation>
     </message>
   </context>
   <context>
@@ -4258,7 +4258,7 @@ Podržava sve sisteme jedinica osim 'US sistem jedinica' i 'Građevinski Euro US
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="141"/>
       <source>The current sketcher creation tool will remain active after creation.</source>
-      <translation>Trenutno aktivna alatka Sketcher-a će ostati aktivna i posle upotrebe.</translation>
+      <translation>Trenutno aktivna alatka okruženja Skice će ostati aktivna i posle upotrebe.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
@@ -4283,7 +4283,7 @@ Podržava sve sisteme jedinica osim 'US sistem jedinica' i 'Građevinski Euro US
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="92"/>
       <source>If checked, displays the name on dimensional constraints (if exists).</source>
-      <translation>Ako je označeno, prikazuje ime na dimenzionim ograničenjima (ako postoje).</translation>
+      <translation>Ako je označeno, prikazuje ime na dimenzionalnim ograničenjima (ako postoje).</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="95"/>
@@ -4415,7 +4415,7 @@ Then objects are only visible behind the sketch plane.</source>
     <message>
       <location filename="../../SketcherSettings.cpp" line="471"/>
       <source>Sketcher</source>
-      <translation>Sketcher</translation>
+      <translation>Skice</translation>
     </message>
   </context>
   <context>
@@ -4824,7 +4824,7 @@ Međutim, nisu pronađena nikakva ograničenja vezana za krajnje tačke.</transl
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="14"/>
       <source>Sketcher validation</source>
-      <translation>Provera Sketcher-a</translation>
+      <translation>Provera okruženja Skice</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
@@ -5061,12 +5061,12 @@ Ovo se radi analizom geometrije i ograničenja skice.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3160"/>
       <source>Over-constrained:</source>
-      <translation type="unfinished">Over-constrained:</translation>
+      <translation>Previše ograničeno:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3166"/>
       <source>Malformed constraints:</source>
-      <translation type="unfinished">Malformed constraints:</translation>
+      <translation>Oštećena ograničenja:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3174"/>
@@ -5765,12 +5765,12 @@ Eigen redak QR algoritam je optimizovan za retke matrice; obično brže</transla
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>S&amp;ketch</source>
-      <translation>Sketcher</translation>
+      <translation>Skica</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Sketcher</source>
-      <translation>Sketcher</translation>
+      <translation>Skice</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
@@ -5800,7 +5800,7 @@ Eigen redak QR algoritam je optimizovan za retke matrice; obično brže</transla
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Sketcher visual</source>
-      <translation type="unfinished">Sketcher visual</translation>
+      <translation>Izaberi/Prikaži/Sakrij</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -6271,7 +6271,7 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="151"/>
       <source>Failed to create symmetry</source>
-      <translation type="unfinished">Failed to create symmetry</translation>
+      <translation>Pravljenje simetričnosti nije uspelo</translation>
     </message>
   </context>
   <context>
@@ -6417,7 +6417,7 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
     <message>
       <location filename="../../CommandConstraints.cpp" line="2722"/>
       <source>Dimension</source>
-      <translation>Kotiranje - Dimenziona ograničenja</translation>
+      <translation>Kotiranje - Dimenzionalna ograničenja</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2723"/>
@@ -6452,7 +6452,7 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../CommandConstraints.cpp" line="1205"/>
       <source>Dimension tools.</source>
-      <translation>Alatke za kotiranje.</translation>
+      <translation>Alatke za dimenzioniranje (kotiranje).</translation>
     </message>
   </context>
   <context>
@@ -6621,22 +6621,22 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1651"/>
       <source>Corner, width, height</source>
-      <translation type="unfinished">Corner, width, height</translation>
+      <translation>Ugao, širina, visina</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1652"/>
       <source>Center, width, height</source>
-      <translation type="unfinished">Center, width, height</translation>
+      <translation>Centar, širina, visina</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1653"/>
       <source>3 corners</source>
-      <translation type="unfinished">3 corners</translation>
+      <translation>3 ugla</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1654"/>
       <source>Center, 2 corners</source>
-      <translation type="unfinished">Center, 2 corners</translation>
+      <translation>Centar, dva ugla</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1659"/>
@@ -6878,7 +6878,7 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="672"/>
       <source>Color of dimensional driving constraints in edit mode</source>
-      <translation>Boja ograničavajućih kota u režimu uređivanja</translation>
+      <translation>Boja dimenzionalnih ograničenja (kota) u režimu uređivanja</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="799"/>
@@ -6908,12 +6908,12 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="258"/>
       <source>Line pattern of normal edges.</source>
-      <translation type="unfinished">Line pattern of normal edges.</translation>
+      <translation>Obične linije će koristiti ovu vrstu linija.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="268"/>
       <source>Width of normal edges.</source>
-      <translation type="unfinished">Width of normal edges.</translation>
+      <translation>Širina običnih linija.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="293"/>
@@ -6928,22 +6928,22 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="352"/>
       <source>Line pattern of construction edges.</source>
-      <translation type="unfinished">Line pattern of construction edges.</translation>
+      <translation>Pomoćne linije će koristiti ovu vrstu linija.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="362"/>
       <source>Width of construction edges.</source>
-      <translation type="unfinished">Width of construction edges.</translation>
+      <translation>Širina pomoćnih linija.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="446"/>
       <source>Line pattern of internal aligned edges.</source>
-      <translation type="unfinished">Line pattern of internal aligned edges.</translation>
+      <translation>Linije za unutrašnje poravnanje će koristiti ovu vrstu linija.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="456"/>
       <source>Width of internal aligned edges.</source>
-      <translation type="unfinished">Width of internal aligned edges.</translation>
+      <translation>Širina linija za unutrašnje poravnanje.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="481"/>
@@ -6958,12 +6958,12 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="514"/>
       <source>Line pattern of external edges.</source>
-      <translation type="unfinished">Line pattern of external edges.</translation>
+      <translation>Spoljašnje linije će koristiti ovu vrstu linija.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="524"/>
       <source>Width of external edges.</source>
-      <translation type="unfinished">Width of external edges.</translation>
+      <translation>Širina spoljašnjih linija.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="601"/>
@@ -7023,7 +7023,7 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="791"/>
       <source>Colors outside Sketcher</source>
-      <translation>Boje izvan Sketcher-a</translation>
+      <translation>Boje izvan okruženja Skice</translation>
     </message>
   </context>
   <context>
@@ -7031,7 +7031,7 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="499"/>
       <source>Copies (+'U'/ -'J')</source>
-      <translation type="unfinished">Copies (+'U'/ -'J')</translation>
+      <translation>Kopije (+'U'/-'J')</translation>
     </message>
   </context>
   <context>
@@ -7039,7 +7039,7 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="307"/>
       <source>Sides (+'U'/ -'J')</source>
-      <translation type="unfinished">Sides (+'U'/ -'J')</translation>
+      <translation>Stranica (+'U'/-'J')</translation>
     </message>
   </context>
   <context>
@@ -7047,7 +7047,7 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="405"/>
       <source>Keep original geometries (U)</source>
-      <translation type="unfinished">Keep original geometries (U)</translation>
+      <translation>Zadrži originalnu geometriju (U)</translation>
     </message>
   </context>
   <context>
@@ -7055,7 +7055,7 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../CommandConstraints.cpp" line="1277"/>
       <source>Constrain</source>
-      <translation type="unfinished">Constrain</translation>
+      <translation>Ograničenje</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1278"/>
@@ -7068,12 +7068,12 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="218"/>
       <source>C&amp;opy in sketcher</source>
-      <translation type="unfinished">C&amp;opy in sketcher</translation>
+      <translation>Kopiraj sa skice</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="219"/>
       <source>Copy selected geometries and constraints to the clipboard</source>
-      <translation type="unfinished">Copy selected geometries and constraints to the clipboard</translation>
+      <translation>Kopiraj izabranu geometriju i ograničenja u privremenu memoriju</translation>
     </message>
   </context>
   <context>
@@ -7081,12 +7081,12 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="249"/>
       <source>C&amp;ut in sketcher</source>
-      <translation type="unfinished">C&amp;ut in sketcher</translation>
+      <translation>Iseci sa skice</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="250"/>
       <source>Cut selected geometries and constraints to the clipboard</source>
-      <translation type="unfinished">Cut selected geometries and constraints to the clipboard</translation>
+      <translation>Iseci izabranu geometriju i ograničenja u privremenu memoriju</translation>
     </message>
   </context>
   <context>
@@ -7094,12 +7094,12 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="289"/>
       <source>P&amp;aste in sketcher</source>
-      <translation type="unfinished">P&amp;aste in sketcher</translation>
+      <translation>Nalepi na skicu</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="290"/>
       <source>Paste selected geometries and constraints from the clipboard</source>
-      <translation type="unfinished">Paste selected geometries and constraints from the clipboard</translation>
+      <translation>Nalepi izabranu geometriju i ograničenja iz privremene memorije</translation>
     </message>
   </context>
   <context>
@@ -7107,12 +7107,12 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2424"/>
       <source>Scale transform</source>
-      <translation type="unfinished">Scale transform</translation>
+      <translation>Skaliranje</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2425"/>
       <source>Scale selected geometries. After selecting the center point you can either enter the scale factor, or select two reference points then scale factor = length(p2-center) / length(p1-center).</source>
-      <translation type="unfinished">Scale selected geometries. After selecting the center point you can either enter the scale factor, or select two reference points then scale factor = length(p2-center) / length(p1-center).</translation>
+      <translation>Skaliraj izabranu geometriju. Prvo izaberi centralnu tačku, a onda skaliraji pomoću koeficijenta skaliranja ili pomoću dve tačke. Koeficijent skaliranja = dužina(p2-centar) / dužina (p1-center).</translation>
     </message>
   </context>
   <context>
@@ -7146,7 +7146,7 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="516"/>
       <source>Copies (+'U'/-'J')</source>
-      <translation type="unfinished">Copies (+'U'/-'J')</translation>
+      <translation>Kopije (+'U'/-'J')</translation>
     </message>
   </context>
   <context>
@@ -7154,7 +7154,7 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="519"/>
       <source>Rows (+'R'/-'F')</source>
-      <translation type="unfinished">Rows (+'R'/-'F')</translation>
+      <translation>Redova (+'R'/-'F')</translation>
     </message>
   </context>
   <context>
@@ -7180,7 +7180,7 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1225"/>
       <source>Create a chamfer between two lines or at a coincident point</source>
-      <translation type="unfinished">Create a chamfer between two lines or at a coincident point</translation>
+      <translation>Napravi obaranje ivica između dve linije u podudarnoj tački</translation>
     </message>
   </context>
   <context>
@@ -7188,12 +7188,12 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1255"/>
       <source>Create fillet or chamfer</source>
-      <translation type="unfinished">Create fillet or chamfer</translation>
+      <translation>Napravi zaobljenje ili obaranje ivice</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1256"/>
       <source>Create a fillet or chamfer between two lines</source>
-      <translation type="unfinished">Create a fillet or chamfer between two lines</translation>
+      <translation>Napravi zaobljenje ili obaranje ivice između dve linije</translation>
     </message>
   </context>
   <context>
@@ -7201,12 +7201,12 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="549"/>
       <source>Arc ends</source>
-      <translation type="unfinished">Arc ends</translation>
+      <translation>Zaobljeni krajevi</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="550"/>
       <source>Flat ends</source>
-      <translation type="unfinished">Flat ends</translation>
+      <translation>Ravni krajevi</translation>
     </message>
   </context>
   <context>
@@ -7219,7 +7219,7 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="434"/>
       <source>Axis endpoints</source>
-      <translation type="unfinished">Axis endpoints</translation>
+      <translation>Krajnje tačke ose</translation>
     </message>
   </context>
   <context>
@@ -7227,12 +7227,12 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="432"/>
       <source>Preserve corner (U)</source>
-      <translation type="unfinished">Preserve corner (U)</translation>
+      <translation>Sačuvaj ugao (U)</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="435"/>
       <source>Preserves intersection point and most constraints</source>
-      <translation type="unfinished">Preserves intersection point and most constraints</translation>
+      <translation>Sačuva se presečna tačka i većina ograničenja</translation>
     </message>
   </context>
   <context>
@@ -7240,17 +7240,17 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="279"/>
       <source>Point, length, angle</source>
-      <translation type="unfinished">Point, length, angle</translation>
+      <translation>Tačka, dužina, ugao</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="280"/>
       <source>Point, width, height</source>
-      <translation type="unfinished">Point, width, height</translation>
+      <translation>Tačka, širina, visina</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="281"/>
       <source>2 points</source>
-      <translation type="unfinished">2 points</translation>
+      <translation>2 tačke</translation>
     </message>
   </context>
   <context>
@@ -7279,7 +7279,7 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="266"/>
       <source>Create Symmetry Constraints (J)</source>
-      <translation type="unfinished">Create Symmetry Constraints (J)</translation>
+      <translation>Napravi ograničenje simetričnosti (J)</translation>
     </message>
   </context>
   <context>
@@ -7287,12 +7287,12 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../CommandConstraints.cpp" line="6512"/>
       <source>Constrain tangent or collinear</source>
-      <translation type="unfinished">Constrain tangent or collinear</translation>
+      <translation>Ograničenje tangentnosti ili kolinearnosti</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6513"/>
       <source>Create a tangent or collinear constraint between two entities</source>
-      <translation type="unfinished">Create a tangent or collinear constraint between two entities</translation>
+      <translation>Napravi ograničenje tangentnosti ili kolinearnosti između dva geometrijska elementa</translation>
     </message>
   </context>
   <context>
@@ -7305,7 +7305,7 @@ Levi klik na prazan prostor potvrdiće trenutno ograničenje. Desni klik ili pr
     <message>
       <location filename="../../CommandConstraints.cpp" line="9845"/>
       <source>Change the value of a dimensional constraint</source>
-      <translation type="unfinished">Change the value of a dimensional constraint</translation>
+      <translation>Promeni vrednost dimenzionalnog ograničenja</translation>
     </message>
   </context>
   <context>

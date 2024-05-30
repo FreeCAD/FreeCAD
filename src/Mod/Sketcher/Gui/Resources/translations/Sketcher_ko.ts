@@ -3789,7 +3789,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../DrawSketchHandlerExternal.h" line="77"/>
       <source>This object belongs to another body, can't link.</source>
-      <translation type="unfinished">This object belongs to another body, can't link.</translation>
+      <translation>이것은 다른 몸통에 속해있으므로 연결할 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerExternal.h" line="81"/>
