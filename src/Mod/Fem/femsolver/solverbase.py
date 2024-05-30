@@ -51,9 +51,14 @@ class Proxy(object):
     def __init__(self, obj):
         obj.Proxy = self
         obj.addExtension("App::GroupExtensionPython")
-        obj.addProperty("App::PropertyEnumeration", "MeshFormat", "Solver", "Mesh format for Gmsh output")
-        obj.MeshFormat = self.MeshType
-        obj.MeshFormat = ".unv"
+        self._addMeshFormatProperty(obj)
+
+    def _addMeshFormatProperty(self, obj):
+        if not hasattr(obj, "MeshFormat"):
+            obj.addProperty("App::PropertyEnumeration", "MeshFormat", "Solver", "Mesh format for Gmsh output")
+            obj.MeshFormat = self.MeshType
+            obj.MeshFormat = ".unv"
+
 
     def createMachine(self, obj, directory, testmode):
         raise NotImplementedError()
@@ -111,20 +116,6 @@ class ViewProxy(object):
             )
             return False
         task = solver_taskpanel.ControlTaskPanel(machine)
-
-        task.meshFormatPropertyLabel = QtGui.QLabel("Mesh Format")
-        task.meshFormatPropertyField = QtGui.QComboBox()
-        task.meshFormatPropertyField.addItems(vobj.Object.MeshFormat)
-        task.meshFormatPropertyField.setCurrentText(vobj.Object.MeshFormat)
-
-        task.layout().addWidget(task.meshFormatPropertyLabel)
-        task.layout().addWidget(task.meshFormatPropertyField)
-
-        def updateMeshFormatProperty():
-            vobj.Object.MeshFormat = task.meshFormatPropertyField.currentTexT()
-
-        task.meshFormatPropertyField.currentTextChanged.connect(updateMeshFormatProperty)
-
         Gui.Control.showDialog(task)
         return True
 
