@@ -107,6 +107,7 @@ void SketcherSettings::saveSettings()
     ui->checkBoxAdvancedSolverTaskBox->onSave();
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
     ui->checkBoxEnableEscape->onSave();
+    ui->checkBoxDisableShading->onSave();
     ui->checkBoxNotifyConstraintSubstitutions->onSave();
     ui->checkBoxAutoRemoveRedundants->onSave();
     ui->checkBoxUnifiedCoincident->onSave();
@@ -178,6 +179,7 @@ void SketcherSettings::loadSettings()
     ui->checkBoxAdvancedSolverTaskBox->onRestore();
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
     ui->checkBoxEnableEscape->onRestore();
+    ui->checkBoxDisableShading->onRestore();
     ui->checkBoxNotifyConstraintSubstitutions->onRestore();
     ui->checkBoxAutoRemoveRedundants->onRestore();
     ui->checkBoxUnifiedCoincident->onRestore();

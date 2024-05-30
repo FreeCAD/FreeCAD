@@ -3226,14 +3226,24 @@ void ViewProviderSketch::unsetEdit(int ModNum)
             deactivateHandler();
 
         // Resets the override draw style mode when leaving the sketch edit mode.
-        // TODO: This could maybe also be a preference (enable auto switch of draw style). Additionally the previous override draw style could be saved and applied when leaving the edit mode.
-        Gui::MDIView* mdi = Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
-        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
-        if (viewer)
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+        auto disableShadedView = hGrp->GetBool("DisableShadedView", true);
+        if (disableShadedView) {
+            Gui::Document* doc = Gui::Application::Instance->activeDocument();
+            Gui::MDIView* mdi = doc->getActiveView();
+            Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
+
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+            auto OverrideMode = hGrp->GetASCII("OverrideMode", "As Is");
+
+            if (viewer)
             {
-                viewer->updateOverrideMode("As Is");
-                viewer->setOverrideMode("As Is");
+                viewer->updateOverrideMode(OverrideMode);
+                viewer->setOverrideMode(OverrideMode);
             }
+        }
 
         editCoinManager = nullptr;
         snapManager = nullptr;
@@ -3312,12 +3322,22 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     }
 
     // Sets the view mode to no shading to prevent visibility issues against parallel surfaces with shininess when entering the sketch mode.
-    // TODO: This could maybe also be a preference (enable auto switch of draw style) and further improved if the user has already an override draw style enabled which has no shading (e.g. wireframe). Additionally the current override draw style could be saved and applied when leaving the edit mode.
-    if (viewer)
-    {
-        viewer->updateOverrideMode("No Shading");
-        viewer->setOverrideMode("No Shading");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    auto disableShadedView = hGrp->GetBool("DisableShadedView", true);
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    hGrp->SetASCII("OverrideMode", viewer->getOverrideMode());
+
+    if (disableShadedView) {
+
+
+            viewer->updateOverrideMode("No Shading");
+            viewer->setOverrideMode("No Shading");
+
     }
+
 
     auto editDoc = Gui::Application::Instance->editDocument();
     editDocName.clear();
