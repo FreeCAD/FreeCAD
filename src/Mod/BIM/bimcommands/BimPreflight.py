@@ -68,6 +68,10 @@ class BIM_Preflight:
             ),
         }
 
+    def IsActive(self):
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
+
     def Activated(self):
         FreeCADGui.BIMPreflightDone = False
         FreeCADGui.Control.showDialog(BIM_Preflight_TaskPanel())
