@@ -27,6 +27,7 @@
 #include <Mod/Import/ImportGlobal.h>
 #include <Base/FileInfo.h>
 #include <TDocStd_Document.hxx>
+#include <StepData_StepModel.hxx>
 
 namespace Import
 {
@@ -36,7 +37,7 @@ class ImportExport ReaderStep
 public:
     explicit ReaderStep(const Base::FileInfo& file);
 
-    void read(Handle(TDocStd_Document) hDoc);
+    void read(Handle(TDocStd_Document) hDoc, Resource_FormatType codePage);
 
 private:
     Base::FileInfo file;

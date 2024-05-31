@@ -99,6 +99,44 @@ void ImportExportSettings::initIGES(Base::Reference<ParameterGrp> hGrp)
     }
 }
 
+void ImportExportSettings::setImportCodePage(int cpIndex)
+{
+    pGroup->SetInt("ImportCodePage", cpIndex);
+}
+
+Resource_FormatType ImportExportSettings::getImportCodePage() const
+{
+    Resource_FormatType result;
+    int codePageIndex = pGroup->GetInt("ImportCodePage", 0);
+    int i=0;
+    for (const auto& codePageIt : codePageList) {
+        if (i == codePageIndex)
+        {
+            result = codePageIt.codePage;
+            break;
+        }
+        i++;
+    }
+    return result;
+}
+
+std::list<ImportExportSettings::CodePage> ImportExportSettings::getCodePageList() const
+{
+    return codePageList;
+}
+
+void ImportExportSettings::setReadShowDialogImport(bool on)
+{
+    auto grp = pGroup->GetGroup("hSTEP");
+    grp->SetBool("ReadShowDialogImport", on);
+}
+
+bool ImportExportSettings::getReadShowDialogImport() const
+{
+    auto grp = pGroup->GetGroup("hSTEP");
+    return grp->GetBool("ReadShowDialogImport", false);
+}
+
 void ImportExportSettings::initSTEP(Base::Reference<ParameterGrp> hGrp)
 {
     //STEP handling
