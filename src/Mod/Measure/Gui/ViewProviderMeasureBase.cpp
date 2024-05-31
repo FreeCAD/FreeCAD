@@ -37,6 +37,7 @@
 # include <Inventor/engines/SoComposeMatrix.h>
 # include <Inventor/engines/SoTransformVec3f.h>
 # include <Inventor/engines/SoConcatenate.h>
+# include <Inventor/SbViewportRegion.h>
 #endif
 
 #include <App/DocumentObject.h>
@@ -474,6 +475,28 @@ void ViewProviderMeasureBase::onSubjectVisibilityChanged(const App::DocumentObje
 }
 
 
+float ViewProviderMeasureBase::getViewScale() {
+    float scale = 1.0;
+
+    Gui::View3DInventor* view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
+    if (!view) {
+        Base::Console().Log("ViewProviderMeasureBase::getViewScale: Could not get active view\n");
+        return scale;
+    }
+    Gui::View3DInventorViewer* viewer = view->getViewer();
+
+    SoCamera * const camera = viewer->getSoRenderManager()->getCamera();
+    if (!camera)
+        return false;
+
+    SbViewVolume volume(camera->getViewVolume());
+    SbVec3f center(volume.getSightPoint(camera->focalDistance.getValue()));
+    scale = volume.getWorldToScreenScale(center, 1.0);
+    return scale;
+}
+
+
+
 //NOLINTBEGIN
 PROPERTY_SOURCE(MeasureGui::ViewProviderMeasure, MeasureGui::ViewProviderMeasureBase)
 //NOLINTEND
@@ -606,12 +629,20 @@ Base::Vector3d ViewProviderMeasure::getBasePosition(){
 
 
 Base::Vector3d ViewProviderMeasure::getTextPosition(){
-    constexpr float DefaultLeaderLength{20.0};
     auto basePoint = getBasePosition();
-    Base::Vector3d textDirection(1.0, 1.0, 1.0);
-    textDirection.Normalize();
 
-    return basePoint + textDirection * DefaultLeaderLength;
+    Gui::View3DInventor* view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
+    if (!view) {
+        Base::Console().Log("ViewProviderMeasureBase::getTextPosition: Could not get active view\n");
+        return Base::Vector3d();
+    }
+    
+    Gui::View3DInventorViewer* viewer = view->getViewer();    
+
+    // Convert to screenspace, offset and convert back to world space
+    SbVec2s screenPos = viewer->getPointOnViewport(SbVec3f(basePoint.x, basePoint.y, basePoint.z));
+    SbVec3f textPos = viewer->getPointOnFocalPlane(screenPos + SbVec2s(30.0, 30.0));
+    return Base::Vector3d(textPos[0], textPos[1], textPos[2]);
 }
 
 //! called by the system when it is time to display this measure

@@ -76,8 +76,8 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
                                  const std::vector<featureStatus>& status,
                                  bool singleFeatureSelect,
                                  QWidget* parent)
-  : TaskBox(Gui::BitmapFactory().pixmap("edit-select-box"),
-            tr("Select feature"), true, parent)
+  : TaskBox(Gui::BitmapFactory().pixmap("edit-select-all"),
+            tr("Select attachment"), true, parent)
   , ui(new Ui_TaskFeaturePick)
   , doSelection(false)
 {

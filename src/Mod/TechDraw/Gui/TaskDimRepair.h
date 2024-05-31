@@ -72,7 +72,6 @@ protected:
 private:
     std::unique_ptr<Ui_TaskDimRepair> ui;
     TechDraw::DrawViewDimension* m_dim;
-    long int m_dimType;
 
     long int m_saveMeasureType;
     long int m_saveDimType;

@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="485"/>
       <source>From components</source>
-      <translation>Z komponentů</translation>
+      <translation>Z komponent</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Create mesh segments from components</source>
-      <translation>Vytvořit segmenty sítí ze složek</translation>
+      <translation>Vytvořit segmenty sítí z komponent</translation>
     </message>
   </context>
   <context>
@@ -497,7 +497,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
       <source>Select whole component</source>
-      <translation>Vybrat celý díl</translation>
+      <translation>Vybrat celou komponentu</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="112"/>
@@ -607,17 +607,17 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="37"/>
       <source>Chord length</source>
-      <translation type="unfinished">Chord length</translation>
+      <translation>Délka tětivy</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="42"/>
       <source>Centripetal</source>
-      <translation type="unfinished">Centripetal</translation>
+      <translation>Dostředivý</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
       <source>Iso-Parametric</source>
-      <translation type="unfinished">Iso-Parametric</translation>
+      <translation>Izoparametrický</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
@@ -682,7 +682,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="160"/>
       <source>Torsion</source>
-      <translation type="unfinished">Torsion</translation>
+      <translation>Krut</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="167"/>

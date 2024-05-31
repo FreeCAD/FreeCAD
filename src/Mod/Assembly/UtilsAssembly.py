@@ -850,6 +850,12 @@ def arePlacementSameDir(plc1, plc2):
     return zAxis1.dot(zAxis2) > 0
 
 
+def arePlacementZParallel(plc1, plc2):
+    zAxis1 = plc1.Rotation.multVec(App.Vector(0, 0, 1))
+    zAxis2 = plc2.Rotation.multVec(App.Vector(0, 0, 1))
+    return zAxis1.cross(zAxis2).Length < 1e-06
+
+
 """
 So here we want to find a placement that corresponds to a local coordinate system that would be placed at the selected vertex.
 - obj is usually a App::Link to a PartDesign::Body, or primitive, fasteners. But can also be directly the object.1

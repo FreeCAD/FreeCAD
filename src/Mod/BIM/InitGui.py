@@ -246,7 +246,8 @@ class BIMWorkbench(Workbench):
                 t = QT_TRANSLATE_NOOP("BIM_GenericTools", "Generic 3D tools")
                 return { "MenuText": t, "ToolTip": t, "Icon": "BIM_Box"}
             def IsActive(self):
-                return not FreeCAD.ActiveDocument is None
+                v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+                return v
         FreeCADGui.addCommand("BIM_GenericTools", BIM_GenericTools(self.generictools))
         self.bimtools.append("BIM_GenericTools")
 
@@ -274,7 +275,8 @@ class BIMWorkbench(Workbench):
                     }
 
                 def IsActive(self):
-                    return not FreeCAD.ActiveDocument is None
+                    v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+                    return v
 
             FreeCADGui.addCommand("Arch_RebarTools", RebarGroupCommand())
             self.bimtools[self.bimtools.index("Arch_Rebar")] = "Arch_RebarTools"

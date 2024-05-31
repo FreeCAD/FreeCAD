@@ -1556,7 +1556,7 @@
     <message>
       <location filename="../../Command.cpp" line="1278"/>
       <source>Extrude...</source>
-      <translation>Извлачење...</translation>
+      <translation>Извуци</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1279"/>
@@ -1574,7 +1574,7 @@
     <message>
       <location filename="../../Command.cpp" line="1415"/>
       <source>Fillet...</source>
-      <translation>Заобљење...</translation>
+      <translation>Заобли</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1416"/>
@@ -1700,7 +1700,7 @@
     <message>
       <location filename="../../Command.cpp" line="1471"/>
       <source>Mirroring...</source>
-      <translation>Симетрично пресликавање...</translation>
+      <translation>Симетрично пресликај</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1472"/>
@@ -6345,7 +6345,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
       <source>Attachment...</source>
-      <translation>Придруживање...</translation>
+      <translation>Придружи</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="83"/>

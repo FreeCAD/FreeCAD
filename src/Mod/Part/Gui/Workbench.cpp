@@ -117,6 +117,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << copy
           << "Part_CheckGeometry"
           << "Part_Defeaturing"
+          << "Materials_InspectAppearance"
+          << "Materials_InspectMaterial"
           << "Separator"
           << bop << join << split << compound
           << "Separator"

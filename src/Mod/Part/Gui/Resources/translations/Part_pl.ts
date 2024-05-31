@@ -2098,7 +2098,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../Command.cpp" line="410"/>
       <source>Common</source>
-      <translation>Część wspólna</translation>
+      <translation>Przecięcie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>

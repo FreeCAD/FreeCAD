@@ -4008,34 +4008,34 @@ Default: 3 mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="689"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="688"/>
         <source>H</source>
         <comment>H is horizontal feed rate. Must be as short as possible</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="694"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="693"/>
         <source>V</source>
         <comment>V is vertical feed rate. Must be as short as possible</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="699"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="698"/>
         <source>Tool number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="702"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="701"/>
         <source>Horizontal feedrate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="705"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="704"/>
         <source>Vertical feedrate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="708"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="707"/>
         <source>Spindle RPM</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6707,69 +6707,69 @@ Aborting op creation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="345"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="344"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="588"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="587"/>
         <source>Stock not a cylinder!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1005"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1004"/>
         <source>Select Output File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1007"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1006"/>
         <source>All Files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1388"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1387"/>
         <source>Unsupported stock object %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1404"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1403"/>
         <source>Unsupported stock type %s (%d)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1495"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1494"/>
         <source>Model Selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1683"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1682"/>
         <location filename="../../../Path/Main/Gui/JobDlg.py" line="71"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1684"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1683"/>
         <source>Please add one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1685"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1684"/>
         <location filename="../../../Path/Main/Gui/JobDlg.py" line="76"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1687"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1686"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1698"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1697"/>
         <source>This job has no base model.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1705"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1704"/>
         <source>This job has no tool.</source>
         <translation type="unfinished"></translation>
     </message>

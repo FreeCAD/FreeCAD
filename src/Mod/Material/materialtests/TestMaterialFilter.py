@@ -52,9 +52,9 @@ class MaterialFilterTestCases(unittest.TestCase):
         # Use our test files as a custom directory
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources")
         self.customDir = param.GetString("CustomMaterialsDir", "")
-        self.useBuiltInDir = param.GetBool("UseBuiltInMaterials", False)
-        self.useWorkbenchDir = param.GetBool("UseMaterialsFromWorkbenches", False)
-        self.useUserDir = param.GetBool("UseMaterialsFromConfigDir", False)
+        self.useBuiltInDir = param.GetBool("UseBuiltInMaterials", True)
+        self.useWorkbenchDir = param.GetBool("UseMaterialsFromWorkbenches", True)
+        self.useUserDir = param.GetBool("UseMaterialsFromConfigDir", True)
         self.useCustomDir = param.GetBool("UseMaterialsFromCustomDir", False)
 
         filePath = os.path.dirname(__file__) + os.sep
@@ -102,3 +102,91 @@ class MaterialFilterTestCases(unittest.TestCase):
         self.assertIsNotNone(material)
         self.assertEqual(material.Name, "TestBrassAppearance")
         self.assertEqual(material.UUID, UUIDBrassAppearance)
+    
+        # Create an empty filter
+        filter = Materials.MaterialFilter()
+        self.assertEqual(len(self.MaterialManager.MaterialLibraries), 1)
+
+        filtered = self.MaterialManager.filterMaterials(filter)
+        self.assertEquals(len(filtered), 4)
+
+        filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
+        self.assertEquals(len(filtered), 5)
+
+        # Create a basic rendering filter
+        filter.Name = "Basic Appearance"
+        filter.RequiredCompleteModels = [self.uuids.BasicRendering]
+
+        filtered = self.MaterialManager.filterMaterials(filter)
+        self.assertEquals(len(filtered), 3)
+
+        filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
+        self.assertEquals(len(filtered), 3)
+
+        # Create an advanced rendering filter
+        filter= Materials.MaterialFilter()
+        filter.Name = "Advanced Appearance"
+        filter.RequiredCompleteModels = [self.uuids.AdvancedRendering]
+
+        filtered = self.MaterialManager.filterMaterials(filter)
+        self.assertEquals(len(filtered), 0)
+
+        filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
+        self.assertEquals(len(filtered), 0)
+
+        # Create a Density filter
+        filter= Materials.MaterialFilter()
+        filter.Name = "Density"
+        filter.RequiredCompleteModels = [self.uuids.Density]
+
+        filtered = self.MaterialManager.filterMaterials(filter)
+        self.assertEquals(len(filtered), 2)
+
+        filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
+        self.assertEquals(len(filtered), 3)
+
+        # Create a Hardness filter
+        filter= Materials.MaterialFilter()
+        filter.Name = "Hardness"
+        filter.RequiredCompleteModels = [self.uuids.Hardness]
+
+        filtered = self.MaterialManager.filterMaterials(filter)
+        self.assertEquals(len(filtered), 0)
+
+        filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
+        self.assertEquals(len(filtered), 0)
+
+        # Create a Density and Basic Rendering filter
+        filter= Materials.MaterialFilter()
+        filter.Name = "Density and Basic Rendering"
+        filter.RequiredCompleteModels = [self.uuids.Density, self.uuids.BasicRendering]
+
+        filtered = self.MaterialManager.filterMaterials(filter)
+        self.assertEquals(len(filtered), 1)
+
+        filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
+        self.assertEquals(len(filtered), 1)
+
+        # Create a Linear Elastic filter
+        filter= Materials.MaterialFilter()
+        filter.Name = "Linear Elastic"
+        filter.RequiredCompleteModels = [self.uuids.LinearElastic]
+
+        filtered = self.MaterialManager.filterMaterials(filter)
+        self.assertEquals(len(filtered), 0)
+
+        filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
+        self.assertEquals(len(filtered), 0)
+
+        filter= Materials.MaterialFilter()
+        filter.Name = "Linear Elastic - incomplete"
+        filter.RequiredModels = [self.uuids.LinearElastic]
+
+        filtered = self.MaterialManager.filterMaterials(filter)
+        self.assertEquals(len(filtered), 2)
+
+        filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
+
+    def testErrorInput(self):
+
+        self.assertRaises(TypeError, self.MaterialManager.filterMaterials, [])

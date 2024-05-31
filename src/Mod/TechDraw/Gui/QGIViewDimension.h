@@ -121,6 +121,8 @@ protected:
 
     int getPrecision();
 
+    void snapPosition(QPointF& position);
+
     bool getVerticalSep() const { return verticalSep; }
     void setVerticalSep(bool sep) { verticalSep = sep; }
     std::vector<int> getSeps() const { return seps; }

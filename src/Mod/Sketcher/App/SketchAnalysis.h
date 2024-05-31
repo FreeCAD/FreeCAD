@@ -142,7 +142,7 @@ public:
     void makeMissingEquality(bool onebyone = true);
 
     /// Detect degenerated geometries
-    int detectDegeneratedGeometries(double tolerance);
+    int detectDegeneratedGeometries(double tolerance) const;
     /// Remove degenerated geometries
     int removeDegeneratedGeometries(double tolerance);
 
@@ -169,7 +169,7 @@ public:
     // third type of routines
     std::vector<Base::Vector3d> getOpenVertices() const;
 
-protected:
+private:
     Sketcher::SketchObject* sketch;
 
     struct VertexIds;
@@ -184,9 +184,10 @@ protected:
     std::vector<ConstraintIds> lineequalityConstraints;
     std::vector<ConstraintIds> radiusequalityConstraints;
 
-protected:
+private:
     bool checkHorizontal(Base::Vector3d dir, double angleprecision);
     bool checkVertical(Base::Vector3d dir, double angleprecision);
+    std::set<int> getDegeneratedGeometries(double tolerance) const;
 };
 
 }  // namespace Sketcher

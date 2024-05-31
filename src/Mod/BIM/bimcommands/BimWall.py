@@ -55,7 +55,8 @@ class Arch_Wall:
 
     def IsActive(self):
 
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         """Executed when Arch Wall is called.
@@ -361,12 +362,16 @@ class Arch_Wall:
     def setLength(self,d):
         """Simple callback for the interactive mode gui widget to set length."""
 
+        if isinstance(d, FreeCAD.Units.Quantity):
+            d = d.Value
         self.lengthValue = d
 
     def setWidth(self,d):
         """Simple callback for the interactive mode gui widget to set width."""
 
         from draftutils import params
+        if isinstance(d, FreeCAD.Units.Quantity):
+            d = d.Value
         self.Width = d
         self.tracker.width(d)
         params.set_param_arch("WallWidth",d)
@@ -376,6 +381,8 @@ class Arch_Wall:
         """Simple callback for the interactive mode gui widget to set height."""
 
         from draftutils import params
+        if isinstance(d, FreeCAD.Units.Quantity):
+            d = d.Value
         self.Height = d
         self.tracker.height(d)
         params.set_param_arch("WallHeight",d)

@@ -1305,7 +1305,7 @@
     <message>
       <location filename="../../Command.cpp" line="1444"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>선택된 모서리에 챔퍼</translation>
+      <translation>도형의 선택 된 모서리를 모따기</translation>
     </message>
   </context>
   <context>
@@ -2951,12 +2951,12 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="272"/>
       <source>Equal distance</source>
-      <translation type="unfinished">Equal distance</translation>
+      <translation>같은 거리</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="273"/>
       <source>Two distances</source>
-      <translation type="unfinished">Two distances</translation>
+      <translation>양쪽 거리</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="276"/>

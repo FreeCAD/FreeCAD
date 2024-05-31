@@ -30,6 +30,7 @@
 # @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+import FreeCAD as App
 from draftutils.messages import _wrn
 from draftutils.translate import translate
 
@@ -61,24 +62,35 @@ class Layer:
         """Execute code when the document is restored."""
         self.set_properties(obj)
 
-        if self.Type != "VisGroup":
-            return
         if not hasattr(obj, "ViewObject"):
             return
         vobj = obj.ViewObject
         if not vobj:
             return
-        self.add_missing_properties_0v19(obj, vobj)
-        self.Type = "Layer"
 
-    def add_missing_properties_0v19(self, obj, vobj):
-        """Update view properties."""
-        # It is not possible to change the property group of obj.Group.
-        for prop in ("DrawStyle", "LineColor", "LineWidth", "ShapeColor", "Transparency"):
-            vobj.setGroupOfProperty(prop, "Layer")
+        # ShapeAppearance property was added in v1.0, obj should be OK if it is present:
+        if hasattr(vobj, "ShapeAppearance"):
+            return
+
+        if self.Type == "VisGroup":  # Type prior to v0.19.
+            self.Type = "Layer"
+            # It is not possible to change the property group of vobj.Group.
+            for prop in ("DrawStyle", "LineColor", "LineWidth", "ShapeColor", "Transparency"):
+                vobj.setGroupOfProperty(prop, "Layer")
+
         vobj.Proxy.set_properties(vobj)
-        _wrn("v0.19, " + obj.Label + ", "
-             + translate("draft", "added missing view properties"))
+
+        material = App.Material()  #  Material with default v0.21 properties.
+        material.DiffuseColor = vobj.ShapeColor
+        material.Transparency = vobj.Transparency / 100
+        vobj.ShapeAppearance = (material, )
+        vobj.setPropertyStatus("ShapeColor", "Hidden")
+
+        if hasattr(vobj, "OverrideShapeColorChildren"):  # v0.19 - v0.21
+            vobj.OverrideShapeAppearanceChildren = vobj.OverrideShapeColorChildren
+            vobj.removeProperty("OverrideShapeColorChildren")
+
+        _wrn("v1.0, " + obj.Label + ", " + translate("draft", "updated view properties"))
 
     def dumps(self):
         """Return a tuple of objects to save or None."""

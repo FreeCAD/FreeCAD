@@ -92,7 +92,7 @@ LEGACY_NAMING_MAP = {"Draft.ts": "draft.ts"}
 # Locations that require QM file generation (predominantly Python workbenches)
 GENERATE_QM = {
     "AddonManager",
-    "Arch",
+    "BIM",
     "Cloud",
     "Draft",
     "Inspection",
@@ -110,7 +110,7 @@ locations = [
         "../Mod/AddonManager/Resources/AddonManager.qrc",
     ],
     ["App", "../App/Resources/translations", "../App/Resources/App.qrc"],
-    ["Arch", "../Mod/Arch/Resources/translations", "../Mod/Arch/Resources/Arch.qrc"],
+    ["BIM", "../Mod/Arch/Resources/translations", "../Mod/Arch/Resources/Arch.qrc"],
     [
         "Assembly",
         "../Mod/Assembly/Gui/Resources/translations",
