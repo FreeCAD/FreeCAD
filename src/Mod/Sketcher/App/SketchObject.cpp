@@ -260,25 +260,28 @@ void SketchObject::buildShape()
         ++i;
         if(GeometryFacade::getConstruction(geo))
             continue;
-        if (geo->isDerivedFrom(Part::GeomPoint::getClassTypeId())) {
+        if (geo->isDerivedFrom<Part::GeomPoint>())
 #ifdef FC_USE_TNP_FIX
+        {
             Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(i-1, Sketcher::PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
 
             vertices.push_back(vertex);
             vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
-        } else {
+        }
+        else {
             auto indexedName = Data::IndexedName::fromConst("Edge", i);
             shapes.push_back(getEdge(geo,convertSubName(indexedName, false).c_str()));
         }
 
 #else
+        {
             vertices.emplace_back(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(i-1, PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
-
-        } else
+        }
+        else
             shapes.push_back(getEdge(geo,convertSubName(
                         Data::IndexedName::fromConst("Edge", i), false).c_str()));
 #endif
