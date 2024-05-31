@@ -32,6 +32,59 @@
 using namespace Part;
 using namespace Attacher;
 
+namespace
+{
+    std::vector<std::string> EngineEnums = {"Engine 3D",
+                                            "Engine Plane",
+                                            "Engine Line",
+                                            "Engine Point"};
+
+    const char* enumToClass(const char* mode)
+    {
+        if (EngineEnums.at(0) == mode) {
+            return "Attacher::AttachEngine3D";
+        }
+        if (EngineEnums.at(1) == mode) {
+            return "Attacher::AttachEnginePlane";
+        }
+        if (EngineEnums.at(2) == mode) {
+            return "Attacher::AttachEngineLine";
+        }
+        if (EngineEnums.at(3) == mode) {
+            return "Attacher::AttachEnginePoint";
+        }
+
+        return "Attacher::AttachEngine3D";
+    }
+
+    const char* classToEnum(const char* type)
+    {
+        if (strcmp(type, "Attacher::AttachEngine3D") == 0) {
+            return EngineEnums.at(0).c_str();
+        }
+        if (strcmp(type, "Attacher::AttachEnginePlane") == 0) {
+            return EngineEnums.at(1).c_str();
+        }
+        if (strcmp(type, "Attacher::AttachEngineLine") == 0) {
+            return EngineEnums.at(2).c_str();
+        }
+        if (strcmp(type, "Attacher::AttachEnginePoint") == 0) {
+            return EngineEnums.at(3).c_str();
+        }
+
+        return EngineEnums.at(0).c_str();
+    }
+
+    void restoreAttacherEngine(AttachExtension* self)
+    {
+        const char* mode = enumToClass(self->AttacherEngine.getValueAsString());
+        const char* type = self->AttacherType.getValue();
+        if (strcmp(mode, type) != 0) {
+            self->AttacherEngine.setValue(classToEnum(type));
+        }
+    }
+}
+
 EXTENSION_PROPERTY_SOURCE(Part::AttachExtension, App::DocumentObjectExtension)
 
 #ifdef FC_USE_TNP_FIX
@@ -41,9 +94,15 @@ AttachExtension::AttachExtension()
     EXTENSION_ADD_PROPERTY_TYPE(AttacherType,
                                 ("Attacher::AttachEngine3D"),
                                 "Attachment",
-                                (App::PropertyType)(App::Prop_None),
+                                (App::PropertyType)(App::Prop_ReadOnly | App::Prop_Hidden),
                                 "Class name of attach engine object driving the attachment.");
-    this->AttacherType.setStatus(App::Property::Status::Hidden, true);
+
+    EXTENSION_ADD_PROPERTY_TYPE(AttacherEngine,
+                                (0L),
+                                "Attachment",
+                                (App::PropertyType)(App::Prop_None),
+                                "Attach engine object driving the attachment.");
+    AttacherEngine.setEnums(EngineEnums);
 
     EXTENSION_ADD_PROPERTY_TYPE(
         Support,
@@ -354,6 +413,9 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
                 AttachmentSupport.Paste(Support);
             }
         }
+        else if (prop == &AttacherEngine) {
+            AttacherType.setValue(enumToClass(AttacherEngine.getValueAsString()));
+        }
         else if (_props.matchProperty(prop)) {
             if (prop == &AttachmentSupport) {
                 Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
@@ -407,6 +469,8 @@ void AttachExtension::onExtendedDocumentRestored()
         }
         _active = -1;
         updatePropertyStatus(isAttacherActive());
+
+        restoreAttacherEngine(this);
     }
     catch (Base::Exception&) {
     }

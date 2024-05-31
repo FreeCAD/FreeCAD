@@ -87,6 +87,7 @@ public:
     Attacher::AttachEngine& attacher(bool base = false) const;
 
     App::PropertyString AttacherType;
+    App::PropertyEnumeration AttacherEngine;
     App::PropertyLinkSubList Support;  // deprecated, leave here for backward compatibility
     App::PropertyLinkSubList AttachmentSupport;
     App::PropertyEnumeration MapMode;  // see AttachEngine::eMapMode
