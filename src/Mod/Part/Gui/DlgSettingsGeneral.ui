@@ -25,10 +25,10 @@
         <property name="text">
          <string>Automatically check model after boolean operation</string>
         </property>
-        <property name="prefEntry" stdset="0">
+        <property name="prefEntry" stdset="1">
          <cstring>CheckModel</cstring>
         </property>
-        <property name="prefPath" stdset="0">
+        <property name="prefPath" stdset="1">
          <cstring>Mod/Part/Boolean</cstring>
         </property>
        </widget>
@@ -38,10 +38,10 @@
         <property name="text">
          <string>Automatically refine model after boolean operation</string>
         </property>
-        <property name="prefEntry" stdset="0">
+        <property name="prefEntry" stdset="1">
          <cstring>RefineModel</cstring>
         </property>
-        <property name="prefPath" stdset="0">
+        <property name="prefPath" stdset="1">
          <cstring>Mod/Part/Boolean</cstring>
         </property>
        </widget>
@@ -51,10 +51,10 @@
         <property name="text">
          <string>Automatically refine model after sketch-based operation</string>
         </property>
-        <property name="prefEntry" stdset="0">
+        <property name="prefEntry" stdset="1">
          <cstring>RefineModel</cstring>
         </property>
-        <property name="prefPath" stdset="0">
+        <property name="prefPath" stdset="1">
          <cstring>Mod/PartDesign</cstring>
         </property>
        </widget>
