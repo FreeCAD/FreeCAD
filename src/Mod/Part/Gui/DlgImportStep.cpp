@@ -52,6 +52,7 @@ DlgImportStep::DlgImportStep(QWidget* parent)
     }
 #if OCC_VERSION_HEX < 0x070800
     // hide options that not supported in this OCCT version (7.8.0)
+    ui->label_6->hide();
     ui->checkBoxShowOnImport->hide();
     ui->comboBoxImportCodePage->hide();
 #endif
