@@ -127,7 +127,7 @@ def checkShapeFileLibrary():
     except Exception:
         url = "https://raw.githubusercontent.com/GeospatialPython/pyshp/master/shapefile.py"
         if FreeCAD.GuiUp:
-            import addonmanager_utilities
+            import urllib.request
             import FreeCADGui
             from PySide import QtGui
             reply = QtGui.QMessageBox.question(FreeCADGui.getMainWindow(),
@@ -136,7 +136,7 @@ def checkShapeFileLibrary():
                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                                                QtGui.QMessageBox.No)
             if reply == QtGui.QMessageBox.Yes:
-                u = addonmanager_utilities.urlopen(url)
+                u = urllib.request.urlopen(url)
                 if not u:
                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to download from %1").replace("%1",url)+"\n")
                     return False
