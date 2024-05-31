@@ -163,6 +163,8 @@ public:
     /// Exit the selection mode of the associated task panel
     void exitSelectionMode();
 
+    static void removeItemFromListWidget(QListWidget* widget, const QString& itemstr);
+
 protected:
     /** Setup the standalone UI.
      * Call this in the derived destructor with ViewProvider.
@@ -212,7 +214,7 @@ protected:
     void fillPlanesCombo(ComboLinks& combolinks, Part::Part2DObject* sketch);
 
     /**
-     * Returns the base transformed object
+     * Returns the base transformed objectfromStdString
      * For stand alone features it will be objects associated with this object
      * For features inside multitransform it will be the base multitransform object
      */
@@ -257,8 +259,6 @@ private:
     PartDesignGui::ViewProviderTransformed* getTopTransformedView() const;
 
     void changeEvent(QEvent* event) override;
-
-    static void removeItemFromListWidget(QListWidget* widget, const QString& itemstr);
 
 protected:
     enum class SelectionMode

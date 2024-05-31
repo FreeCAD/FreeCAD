@@ -61,6 +61,10 @@ public:
     //@{
     short mustExecute() const override;
     void setupObject() override;
+
+    const char* getViewProviderName() const override {
+        return "PartDesignGui::ViewProviderExtrude";
+    }
     //@}
 
 protected:

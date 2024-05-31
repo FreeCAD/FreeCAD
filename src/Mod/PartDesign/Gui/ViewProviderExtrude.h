@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2024 Kacper Donat <kacper@kadet.net>                    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,33 +21,28 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPad_H
-#define PARTGUI_ViewProviderPad_H
+#ifndef PARTGUI_ViewProviderExtrude_H
+#define PARTGUI_ViewProviderExtrude_H
 
-#include "ViewProviderExtrude.h"
+#include "ViewProviderSketchBased.h"
+
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderPad : public ViewProviderExtrude
+class PartDesignGuiExport ViewProviderExtrude : public ViewProviderSketchBased
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPad);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderExtrude);
 
 public:
-    /// constructor
-    ViewProviderPad();
-    /// destructor
-    ~ViewProviderPad() override;
+    ViewProviderExtrude() = default;
+    ~ViewProviderExtrude() override = default;
 
-    void setupContextMenu(QMenu*, QObject*, const char*) override;
-
-protected:
-    /// Returns a newly created TaskDlgPadParameters
-    TaskDlgFeatureParameters *getEditDialog() override;
-
+    void highlightShapeFaces(const std::vector<std::string>& faces);
 };
+
 
 
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderPad_H
+#endif // PARTGUI_ViewProviderExtrude_H

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,33 +21,44 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPad_H
-#define PARTGUI_ViewProviderPad_H
+#include "PreCompiled.h"
 
+#ifndef _PreComp_
+# include <QMenu>
+#endif
+
+#include <App/Document.h>
+#include <Gui/Application.h>
+#include <Mod/PartDesign/App/FeatureExtrude.h>
+#include <Mod/Part/Gui/ReferenceHighlighter.h>
+
+#include "TaskExtrudeParameters.h"
 #include "ViewProviderExtrude.h"
 
-namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderPad : public ViewProviderExtrude
+using namespace PartDesignGui;
+
+PROPERTY_SOURCE(PartDesignGui::ViewProviderExtrude, PartDesignGui::ViewProviderSketchBased)
+
+void PartDesignGui::ViewProviderExtrude::highlightShapeFaces(const std::vector<std::string>& faces)
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPad);
+    auto extrude = static_cast<PartDesign::FeatureExtrude*>(getObject());
+    auto base = static_cast<Part::Feature*>(extrude->UpToShape.getValue());
 
-public:
-    /// constructor
-    ViewProviderPad();
-    /// destructor
-    ~ViewProviderPad() override;
+    auto baseViewProvider =
+        static_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(base));
 
-    void setupContextMenu(QMenu*, QObject*, const char*) override;
+    baseViewProvider->unsetHighlightedFaces();
+    baseViewProvider->updateView();
 
-protected:
-    /// Returns a newly created TaskDlgPadParameters
-    TaskDlgFeatureParameters *getEditDialog() override;
+    if (faces.size() > 0) {
+        std::vector<App::Color> colors = baseViewProvider->DiffuseColor.getValues();
 
-};
+        auto color = baseViewProvider->ShapeAppearance.getDiffuseColor();
 
+        PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), color);
+        highlighter.getFaceColors(faces, colors);
 
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderPad_H
+        baseViewProvider->setHighlightedFaces(colors);
+    }
+}
