@@ -1262,7 +1262,7 @@ void execCosmeticCircle(Gui::Command* cmd)
     }
 
     Gui::Control().showDialog(new TaskDlgCosmeticCircle(baseFeat,
-                                                      points.front(),
+                                                      points,
                                                       centerIs3d));
 }
 

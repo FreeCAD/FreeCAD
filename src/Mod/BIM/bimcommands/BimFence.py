@@ -41,7 +41,8 @@ class Arch_Fence:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Fence", "Creates a fence object from a selected section, post and path")}
 
     def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelection()) != 3:

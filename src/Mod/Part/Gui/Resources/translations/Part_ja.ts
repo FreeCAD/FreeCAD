@@ -441,7 +441,7 @@
       <location filename="../../AttacherTexts.cpp" line="248"/>
       <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Intersection of two faces.</translation>
+      <translation>2面の交差</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="250"/>
@@ -2235,7 +2235,7 @@ of projection.</source>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="1557"/>
       <source>Project on surface</source>
-      <translation type="unfinished">Project on surface</translation>
+      <translation>サーフェスに投影</translation>
     </message>
   </context>
   <context>
@@ -3327,7 +3327,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="92"/>
       <source>Direction:</source>
-      <translation type="unfinished">Direction:</translation>
+      <translation>方向:</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="109"/>
@@ -4099,32 +4099,32 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Ambient shape color</source>
-      <translation type="unfinished">Ambient shape color</translation>
+      <translation>シェイプの環境光色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default ambient color for new shapes</source>
-      <translation type="unfinished">The default ambient color for new shapes</translation>
+      <translation>新しいシェイプのデフォルトの環境光色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="116"/>
       <source>Emissive shape color</source>
-      <translation type="unfinished">Emissive shape color</translation>
+      <translation>シェイプの放射光色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="123"/>
       <source>The default emissive color for new shapes</source>
-      <translation type="unfinished">The default emissive color for new shapes</translation>
+      <translation>新しいシェイプのデフォルトの放射光色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="149"/>
       <source>Specular shape color</source>
-      <translation type="unfinished">Specular shape color</translation>
+      <translation>シェイプの反射光色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="156"/>
       <source>The default specular color for new shapes</source>
-      <translation type="unfinished">The default specular color for new shapes</translation>
+      <translation>新しいシェイプのデフォルトの反射光色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="182"/>
@@ -4139,12 +4139,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="217"/>
       <source>Shape shininess</source>
-      <translation type="unfinished">Shape shininess</translation>
+      <translation>シェイプの光沢度</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="224"/>
       <source>The default shininess for new shapes</source>
-      <translation type="unfinished">The default shininess for new shapes</translation>
+      <translation>新しいシェイプのデフォルトの光沢度</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="255"/>
@@ -4370,7 +4370,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../Mirroring.ui" line="121"/>
       <source>Use selected reference</source>
-      <translation type="unfinished">Use selected reference</translation>
+      <translation>選択した参照を使用</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="142"/>
@@ -4401,12 +4401,12 @@ the sketch plane's normal vector will be used</source>
       <location filename="../../Mirroring.ui" line="150"/>
       <location filename="../../Mirroring.cpp" line="215"/>
       <source>Selecting</source>
-      <translation type="unfinished">Selecting</translation>
+      <translation>選択</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="166"/>
       <source>Mirror plane reference</source>
-      <translation type="unfinished">Mirror plane reference</translation>
+      <translation>鏡面の参照</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="20"/>
@@ -5951,7 +5951,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderProjectOnSurface.cpp" line="54"/>
       <source>Edit projection</source>
-      <translation type="unfinished">Edit projection</translation>
+      <translation>投影を編集</translation>
     </message>
   </context>
   <context>
@@ -6354,7 +6354,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="47"/>
       <source>Wires</source>
-      <translation type="unfinished">Wires</translation>
+      <translation>ワイヤー</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="53"/>
@@ -6531,7 +6531,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../DlgScale.ui" line="22"/>
       <source>X Factor</source>
-      <translation type="unfinished">X Factor</translation>
+      <translation>X係数</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="29"/>
@@ -6541,37 +6541,37 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../DlgScale.ui" line="64"/>
       <source>Z Factor</source>
-      <translation type="unfinished">Z Factor</translation>
+      <translation>X係数</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="71"/>
       <source>Scale the object by a single factor in all directions.</source>
-      <translation type="unfinished">Scale the object by a single factor in all directions.</translation>
+      <translation>オブジェクトを全方向に単一の係数で拡大縮小</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="74"/>
       <source>Uniform Scaling</source>
-      <translation type="unfinished">Uniform Scaling</translation>
+      <translation>均一な拡大縮小</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
       <source>Y Factor</source>
-      <translation type="unfinished">Y Factor</translation>
+      <translation>Y係数</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="119"/>
       <source>Specify a different scale factor for each cardinal direction.</source>
-      <translation type="unfinished">Specify a different scale factor for each cardinal direction.</translation>
+      <translation>各基本方向に異なる拡大縮小係数を指定</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="122"/>
       <source>Non-Uniform Scaling</source>
-      <translation type="unfinished">Non-Uniform Scaling</translation>
+      <translation>非均一な拡大縮小</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="195"/>
       <source>Select shape(s) that should be scaled</source>
-      <translation type="unfinished">Select shape(s) that should be scaled</translation>
+      <translation>拡大縮小するシェイプを選択</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="199"/>
@@ -6581,19 +6581,19 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../DlgScale.cpp" line="198"/>
       <source>No scalable shapes selected</source>
-      <translation type="unfinished">No scalable shapes selected</translation>
+      <translation>拡大縮小可能なシェイプが選択されていません。</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>ドキュメント '%1' は存在しません。</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="254"/>
       <location filename="../../DlgScale.cpp" line="260"/>
       <source>Creating Scale failed.
 %1</source>
-      <translation type="unfinished">Creating Scale failed.
+      <translation>拡大縮小失敗。
 %1</translation>
     </message>
   </context>
@@ -6612,7 +6612,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../Command.cpp" line="1307"/>
       <source>Scale a selected shape</source>
-      <translation type="unfinished">Scale a selected shape</translation>
+      <translation>選択したシェイプを拡大縮小</translation>
     </message>
   </context>
   <context>
@@ -6620,13 +6620,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../CommandFilter.cpp" line="46"/>
       <source>Selection filter</source>
-      <translation type="unfinished">Selection filter</translation>
+      <translation>選択フィルター</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="47"/>
       <location filename="../../CommandFilter.cpp" line="48"/>
       <source>Change the selection filter</source>
-      <translation type="unfinished">Change the selection filter</translation>
+      <translation>選択フィルターを変更</translation>
     </message>
   </context>
   <context>
@@ -6634,13 +6634,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../CommandFilter.cpp" line="173"/>
       <source>Vertex selection</source>
-      <translation type="unfinished">Vertex selection</translation>
+      <translation>頂点の選択</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="174"/>
       <location filename="../../CommandFilter.cpp" line="176"/>
       <source>Only allow the selection of vertices</source>
-      <translation type="unfinished">Only allow the selection of vertices</translation>
+      <translation>頂点の選択だけを許可</translation>
     </message>
   </context>
   <context>
@@ -6648,13 +6648,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../CommandFilter.cpp" line="198"/>
       <source>Edge selection</source>
-      <translation type="unfinished">Edge selection</translation>
+      <translation>辺の選択</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="199"/>
       <location filename="../../CommandFilter.cpp" line="201"/>
       <source>Only allow the selection of edges</source>
-      <translation type="unfinished">Only allow the selection of edges</translation>
+      <translation>辺の選択だけを許可</translation>
     </message>
   </context>
   <context>
@@ -6662,13 +6662,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../CommandFilter.cpp" line="223"/>
       <source>Face selection</source>
-      <translation type="unfinished">Face selection</translation>
+      <translation>面の選択</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="224"/>
       <location filename="../../CommandFilter.cpp" line="226"/>
       <source>Only allow the selection of faces</source>
-      <translation type="unfinished">Only allow the selection of faces</translation>
+      <translation>面の選択だけを許可</translation>
     </message>
   </context>
   <context>
@@ -6678,7 +6678,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
       <location filename="../../CommandFilter.cpp" line="249"/>
       <location filename="../../CommandFilter.cpp" line="251"/>
       <source>All selection filters cleared</source>
-      <translation type="unfinished">All selection filters cleared</translation>
+      <translation>すべての選択フィルターをクリアしました。</translation>
     </message>
   </context>
   <context>
@@ -6686,7 +6686,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="75"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
-      <translation type="unfinished">Shape must be a wire, edge or compound. Something else was supplied.</translation>
+      <translation>シェイプはワイヤー、エッジ、またはコンパウンドである必要があります。それ以外の物が設定されようとしました。</translation>
     </message>
   </context>
   <context>
@@ -6746,7 +6746,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
       <source>Wire is not closed.</source>
-      <translation type="unfinished">Wire is not closed.</translation>
+      <translation>ワイヤーが閉じていません。</translation>
     </message>
   </context>
 </TS>

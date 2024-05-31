@@ -75,8 +75,11 @@ class PackageList(QtWidgets.QWidget):
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         package_type = pref.GetInt("PackageTypeSelection", 1)
         status = pref.GetInt("StatusSelection", 0)
+        search_string = pref.GetString("SearchString", "")
         self.ui.view_bar.filter_selector.set_contents_filter(package_type)
         self.ui.view_bar.filter_selector.set_status_filter(status)
+        if search_string:
+            self.ui.view_bar.search.filter_line_edit.setText(search_string)
         self.item_filter.setPackageFilter(package_type)
         self.item_filter.setStatusFilter(status)
 

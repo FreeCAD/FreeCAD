@@ -782,34 +782,34 @@
       <translation>Suprimeix selecció</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="955"/>
-      <location filename="../../ViewProvider.cpp" line="1016"/>
+      <location filename="../../ViewProvider.cpp" line="963"/>
+      <location filename="../../ViewProvider.cpp" line="1024"/>
       <source>Cut</source>
       <translation>Talla</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="965"/>
-      <location filename="../../ViewProvider.cpp" line="1086"/>
+      <location filename="../../ViewProvider.cpp" line="973"/>
+      <location filename="../../ViewProvider.cpp" line="1094"/>
       <source>Trim</source>
       <translation>Retallar</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1173"/>
+      <location filename="../../ViewProvider.cpp" line="1181"/>
       <source>Split</source>
       <translation>Dividir</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1246"/>
+      <location filename="../../ViewProvider.cpp" line="1254"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1848"/>
+      <location filename="../../ViewProvider.cpp" line="1856"/>
       <source>Delete</source>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1977"/>
+      <location filename="../../ViewProvider.cpp" line="1985"/>
       <source>Fill hole</source>
       <translation>Omplir forat</translation>
     </message>
@@ -2279,48 +2279,48 @@ Visiteu http://www.openscad.org/index.html per a instal·lar-lo.</translation>
       <translation>[Punts: %1, Arestes: %2, Cares: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="801"/>
+      <location filename="../../ViewProvider.cpp" line="809"/>
       <source>Display components</source>
       <translation>Mostra els components</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="809"/>
+      <location filename="../../ViewProvider.cpp" line="817"/>
       <source>Display segments</source>
       <translation>Mostra els segments</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="817"/>
+      <location filename="../../ViewProvider.cpp" line="825"/>
       <source>Display colors</source>
       <translation>Mostra els colors</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1679"/>
+      <location filename="../../ViewProvider.cpp" line="1687"/>
       <location filename="../../ViewProviderCurvature.cpp" line="522"/>
       <source>Leave info mode</source>
       <translation>Surt del mode d'informació</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1746"/>
+      <location filename="../../ViewProvider.cpp" line="1754"/>
       <source>Index: %1</source>
       <translation>Índex: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1772"/>
+      <location filename="../../ViewProvider.cpp" line="1780"/>
       <source>Leave hole-filling mode</source>
       <translation>Surt del mode d'emplenament de forats</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1822"/>
+      <location filename="../../ViewProvider.cpp" line="1830"/>
       <source>Leave removal mode</source>
       <translation>Surt del mode de supressió</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1823"/>
+      <location filename="../../ViewProvider.cpp" line="1831"/>
       <source>Delete selected faces</source>
       <translation>Elimina les cares seleccionades</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1824"/>
+      <location filename="../../ViewProvider.cpp" line="1832"/>
       <source>Clear selected faces</source>
       <translation>Esborra les cares seleccionades</translation>
     </message>

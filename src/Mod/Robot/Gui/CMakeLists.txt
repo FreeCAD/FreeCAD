@@ -127,6 +127,9 @@ SET(RobotGuiIcon_SVG
 
 add_library(RobotGui SHARED ${RobotGui_SRCS} ${RobotGuiIcon_SVG})
 target_link_libraries(RobotGui ${RobotGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(RobotGui)
+endif()
 
 unset(_flag_found CACHE)
 check_cxx_compiler_flag("-Wno-deprecated-copy" _flag_found)

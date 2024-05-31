@@ -1914,7 +1914,7 @@ kliknite ponovno za završetak odabira</translation>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
       <location filename="../../TaskHelixParameters.cpp" line="197"/>
       <source>Select reference...</source>
-      <translation>Odaberite referencu...</translation>
+      <translation type="unfinished">Select reference...</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="90"/>
@@ -3033,7 +3033,7 @@ kliknite ponovno za završetak odabira</translation>
       <location filename="../../TaskTransformedParameters.cpp" line="387"/>
       <location filename="../../TaskTransformedParameters.cpp" line="423"/>
       <source>Select reference...</source>
-      <translation type="unfinished">Select reference...</translation>
+      <translation>Odaberite referencu...</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="413"/>
@@ -4580,7 +4580,7 @@ preko 90: veći polumjer rupe na dnu</translation>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="165"/>
       <source>None</source>
-      <translation>Prazno</translation>
+      <translation>Nijedan</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="151"/>
@@ -4727,18 +4727,18 @@ preko 90: veći polumjer rupe na dnu</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="138"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="716"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="718"/>
       <location filename="../../../App/FeatureGroove.cpp" line="219"/>
       <location filename="../../../App/FeatureHole.cpp" line="1900"/>
       <location filename="../../../App/FeatureLoft.cpp" line="295"/>
       <location filename="../../../App/FeatureLoft.cpp" line="313"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="526"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="528"/>
       <location filename="../../../App/FeaturePad.cpp" line="236"/>
       <location filename="../../../App/FeaturePipe.cpp" line="399"/>
       <location filename="../../../App/FeaturePipe.cpp" line="419"/>
       <location filename="../../../App/FeaturePipe.cpp" line="735"/>
       <location filename="../../../App/FeaturePipe.cpp" line="755"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="230"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="137"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="150"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="166"/>
@@ -4757,9 +4757,9 @@ preko 90: veći polumjer rupe na dnu</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="158"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="275"/>
       <location filename="../../../App/FeatureDraft.cpp" line="323"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="198"/>
       <location filename="../../../App/FeatureGroove.cpp" line="226"/>
       <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <location filename="../../../App/FeatureLoft.cpp" line="298"/>
@@ -4770,43 +4770,51 @@ preko 90: veći polumjer rupe na dnu</translation>
       <location filename="../../../App/FeaturePipe.cpp" line="423"/>
       <location filename="../../../App/FeaturePipe.cpp" line="739"/>
       <location filename="../../../App/FeaturePipe.cpp" line="759"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="199"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="234"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="154"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="170"/>
       <source>Result has multiple solids: that is not currently supported.</source>
       <translation>Rezultat ima više volumenskih tijela: ovo trenutno nije podržano.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="203"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="184"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="255"/>
       <source>Failed to create chamfer</source>
       <translation>Nije uspjelo stvaranje fasete</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="207"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="259"/>
       <location filename="../../../App/FeatureDraft.cpp" line="319"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="120"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="99"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="181"/>
       <source>Resulting shape is null</source>
       <translation>Stvoreni oblik je prazan</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="218"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="131"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="204"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="270"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="192"/>
       <source>Resulting shape is invalid</source>
       <translation>Stvoreni oblik je neispravan</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="289"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="125"/>
+      <source>No edges specified</source>
+      <translation type="unfinished">No edges specified</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="342"/>
       <source>Size must be greater than zero</source>
       <translation>Veličina mora biti veća od 0</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="298"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="351"/>
       <source>Size2 must be greater than zero</source>
       <translation>Veličina2 mora biti veća od 0</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="303"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="356"/>
       <source>Angle must be greater than 0 and less than 180</source>
       <translation>Kut mora biti veći od 0 i manji od 180</translation>
     </message>
@@ -4816,12 +4824,18 @@ preko 90: veći polumjer rupe na dnu</translation>
       <translation>Nije uspjelo stvaranje nacrta</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="93"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="82"/>
+      <source>Fillet not possible on selected shapes</source>
+      <translation type="unfinished">Fillet not possible on selected shapes</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureFillet.cpp" line="89"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="154"/>
       <source>Fillet radius must be greater than zero</source>
       <translation>Polumjer zaobljenja mora biti veći od 0</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="177"/>
       <source>Failed to create fillet</source>
       <translation>Nije uspjelo stvaranje zaobljenja</translation>
     </message>
@@ -4851,27 +4865,27 @@ preko 90: veći polumjer rupe na dnu</translation>
   - odabrana skica ne pripada aktivnom tijelu.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="441"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="443"/>
       <source>Length too small</source>
       <translation type="unfinished">Length too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="448"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="450"/>
       <source>Second length too small</source>
       <translation type="unfinished">Second length too small</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="482"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="484"/>
       <source>Failed to obtain profile shape</source>
       <translation type="unfinished">Failed to obtain profile shape</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="534"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="536"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation type="unfinished">Creation failed because direction is orthogonal to sketch's normal vector</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="553"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="555"/>
       <location filename="../../../App/FeatureGroove.cpp" line="132"/>
       <location filename="../../../App/FeatureGroove.cpp" line="293"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
@@ -4879,17 +4893,17 @@ preko 90: veći polumjer rupe na dnu</translation>
       <translation>Stvaranje lice od skice nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="615"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="617"/>
       <source>Up to face: Could not get SubShape!</source>
       <translation type="unfinished">Up to face: Could not get SubShape!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="657"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="659"/>
       <source>Magnitude of taper angle matches or exceeds 90 degrees</source>
       <translation type="unfinished">Magnitude of taper angle matches or exceeds 90 degrees</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="668"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="670"/>
       <source>Padding with draft angle failed</source>
       <translation type="unfinished">Padding with draft angle failed</translation>
     </message>
@@ -5078,7 +5092,7 @@ Nije dozvoljeno presjecanje elemenata na skici.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1919"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="250"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Nije moguće napraviti površinu pomoću skice.
@@ -5101,7 +5115,7 @@ Ukrštanje elemenata skice ili više površina u skici nije dozvoljeno za izradu
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="137"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="403"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="405"/>
       <source>Loft: At least one section is needed</source>
       <translation>Izvuci profil: Potreban je barem jedna presjek.</translation>
     </message>
@@ -5172,17 +5186,17 @@ Ukrštanje elemenata skice ili više površina u skici nije dozvoljeno za izradu
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="332"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="539"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="541"/>
       <source>Loft: A fatal error occurred when making the loft</source>
       <translation>Izvučeni oblik presjeka: Došlo je do fatalne pogreške pri izradi izvučenog oblika</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="442"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="444"/>
       <source>Loft: Creating a face from sketch failed</source>
       <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="475"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="477"/>
       <source>Loft: Failed to create shell</source>
       <translation type="unfinished">Loft: Failed to create shell</translation>
     </message>
@@ -5213,7 +5227,7 @@ izvlačenje: Kreiranje nije uspjelo jer je smjer ortogonalan na normalu vektora 
       <translation>Izvlačenje: Spajanje sa baznom značajkom nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="741"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="743"/>
       <location filename="../../../App/FeaturePad.cpp" line="262"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
@@ -5342,32 +5356,32 @@ Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</trans
       <translation>Ne važeća vodilna krivulja</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="132"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="140"/>
       <source>Pocket: Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Utor: Kreiranje nije uspjelo jer je smjer ortogonalan na normalu vektora skice.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="143"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="151"/>
       <source>Pocket: Creating a face from sketch failed</source>
       <translation>Utor: Pravljenje površine iz skice nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="149"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="157"/>
       <source>Pocket: Extruding up to a face is only possible if the sketch is located on a face</source>
       <translation>Utor:  Izduženje do plohe je samo moguće ako je skica smještena na plohi.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="184"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="192"/>
       <source>Pocket: Up to face: Could not get SubShape!</source>
       <translation>Utor: Do površine: Nije moguće dobiti podoblik</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="208"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="216"/>
       <source>Pocket: Resulting shape is empty</source>
       <translation>Utor: Dobijeni oblik je prazan</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="217"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="225"/>
       <source>Pocket: Cut out of base feature failed</source>
       <translation>Utor: Izrezivanje baznog elementa nije uspjelo</translation>
     </message>
@@ -5377,13 +5391,13 @@ Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</trans
       <translation>Nemoguće odrediti razliku primitivnog elementa bez baznog elementa</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="515"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="517"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
       <source>Unknown operation type</source>
       <translation type="unfinished">Unknown operation type</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="521"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="523"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
       <source>Failed to perform boolean operation</source>
       <translation type="unfinished">Failed to perform boolean operation</translation>
@@ -5512,7 +5526,7 @@ Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</trans
       <translation type="unfinished">Reference axis is invalid</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="709"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="711"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="254"/>
       <source>Fusion with base feature failed</source>
       <translation>Spajanje sa baznom značajkom nije uspjelo</translation>

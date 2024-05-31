@@ -1843,7 +1843,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="47"/>
       <source>Radius:</source>
-      <translation>Rayon :</translation>
+      <translation>Rayon :</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="63"/>
@@ -1948,7 +1948,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="152"/>
       <source>Height:</source>
-      <translation>Hauteur :</translation>
+      <translation>Hauteur :</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="179"/>
@@ -2783,7 +2783,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="87"/>
       <source>Angle:</source>
-      <translation>Angle :</translation>
+      <translation>Angle :</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="121"/>
@@ -2835,7 +2835,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="181"/>
       <source>Up to face</source>
-      <translation>Jusqu'à la face</translation>
+      <translation>Jusqu'à une face</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="182"/>
@@ -2920,7 +2920,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="47"/>
       <source>Thickness</source>
-      <translation>Épaisseur</translation>
+      <translation>Évidement</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="76"/>
@@ -4553,12 +4553,12 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="165"/>
       <source>None</source>
-      <translation>Aucun</translation>
+      <translation>Rien</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="151"/>
       <source>Fixed</source>
-      <translation>Fixé</translation>
+      <translation>Constante</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="152"/>
@@ -4700,18 +4700,18 @@ over 90: larger hole radius at the bottom</source>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="138"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="716"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="718"/>
       <location filename="../../../App/FeatureGroove.cpp" line="219"/>
       <location filename="../../../App/FeatureHole.cpp" line="1900"/>
       <location filename="../../../App/FeatureLoft.cpp" line="295"/>
       <location filename="../../../App/FeatureLoft.cpp" line="313"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="526"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="528"/>
       <location filename="../../../App/FeaturePad.cpp" line="236"/>
       <location filename="../../../App/FeaturePipe.cpp" line="399"/>
       <location filename="../../../App/FeaturePipe.cpp" line="419"/>
       <location filename="../../../App/FeaturePipe.cpp" line="735"/>
       <location filename="../../../App/FeaturePipe.cpp" line="755"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="230"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="137"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="150"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="166"/>
@@ -4730,9 +4730,9 @@ over 90: larger hole radius at the bottom</source>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="158"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="275"/>
       <location filename="../../../App/FeatureDraft.cpp" line="323"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="198"/>
       <location filename="../../../App/FeatureGroove.cpp" line="226"/>
       <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <location filename="../../../App/FeatureLoft.cpp" line="298"/>
@@ -4743,43 +4743,51 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="423"/>
       <location filename="../../../App/FeaturePipe.cpp" line="739"/>
       <location filename="../../../App/FeaturePipe.cpp" line="759"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="199"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="234"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="154"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="170"/>
       <source>Result has multiple solids: that is not currently supported.</source>
       <translation>Le résultat a plusieurs solides : ce n'est pas pris en charge pour le moment.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="203"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="184"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="255"/>
       <source>Failed to create chamfer</source>
       <translation>Impossible de créer le chanfrein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="207"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="259"/>
       <location filename="../../../App/FeatureDraft.cpp" line="319"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="120"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="99"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="181"/>
       <source>Resulting shape is null</source>
       <translation>La forme résultante est nulle</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="218"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="131"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="204"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="270"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="192"/>
       <source>Resulting shape is invalid</source>
       <translation>La forme résultante est invalide</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="289"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="125"/>
+      <source>No edges specified</source>
+      <translation type="unfinished">No edges specified</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureChamfer.cpp" line="342"/>
       <source>Size must be greater than zero</source>
       <translation>La distance doit être plus grande que zéro</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="298"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="351"/>
       <source>Size2 must be greater than zero</source>
       <translation>La taille 2 doit être plus grande que zéro</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="303"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="356"/>
       <source>Angle must be greater than 0 and less than 180</source>
       <translation>L'angle doit être compris entre 0 et 180</translation>
     </message>
@@ -4789,12 +4797,18 @@ over 90: larger hole radius at the bottom</source>
       <translation>Échec de la création de la dépouille</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="93"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="82"/>
+      <source>Fillet not possible on selected shapes</source>
+      <translation type="unfinished">Fillet not possible on selected shapes</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureFillet.cpp" line="89"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="154"/>
       <source>Fillet radius must be greater than zero</source>
       <translation>Le rayon du congé doit être plus grand que zéro</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="177"/>
       <source>Failed to create fillet</source>
       <translation>Impossible de créer le congé</translation>
     </message>
@@ -4823,27 +4837,27 @@ over 90: larger hole radius at the bottom</source>
   - l'esquisse sélectionnée n'appartient pas au corps actif.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="441"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="443"/>
       <source>Length too small</source>
       <translation>Longueur trop petite</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="448"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="450"/>
       <source>Second length too small</source>
       <translation>La deuxième longueur est trop petite</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="482"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="484"/>
       <source>Failed to obtain profile shape</source>
       <translation>Impossible d'obtenir la forme du profil</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="534"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="536"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>La création a échoué car la direction est orthogonale au vecteur normal de l'esquisse.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="553"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="555"/>
       <location filename="../../../App/FeatureGroove.cpp" line="132"/>
       <location filename="../../../App/FeatureGroove.cpp" line="293"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
@@ -4851,17 +4865,17 @@ over 90: larger hole radius at the bottom</source>
       <translation>La création d'une face à partir de l'esquisse a échoué</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="615"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="617"/>
       <source>Up to face: Could not get SubShape!</source>
       <translation>Jusqu'à la face : impossible d'obtenir la sous-forme !</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="657"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="659"/>
       <source>Magnitude of taper angle matches or exceeds 90 degrees</source>
       <translation>La valeur de l'angle de dépouille est égale ou supérieure à 90 degrés</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="668"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="670"/>
       <source>Padding with draft angle failed</source>
       <translation>La protrusion avec l'angle de dépouille a échoué.</translation>
     </message>
@@ -5049,7 +5063,7 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1919"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="250"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Impossible de créer une face à partir d'une esquisse.
@@ -5072,7 +5086,7 @@ L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'e
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="137"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="403"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="405"/>
       <source>Loft: At least one section is needed</source>
       <translation>Lissage : au moins une section est nécessaire</translation>
     </message>
@@ -5143,17 +5157,17 @@ L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'e
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="332"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="539"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="541"/>
       <source>Loft: A fatal error occurred when making the loft</source>
       <translation>Lissage : une erreur s'est produite lors de la création du lissage</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="442"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="444"/>
       <source>Loft: Creating a face from sketch failed</source>
       <translation>Lissage : la création d'une face à partir de l'esquisse a échoué</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="475"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="477"/>
       <source>Loft: Failed to create shell</source>
       <translation>Lissage : impossible de créer la coque</translation>
     </message>
@@ -5183,7 +5197,7 @@ L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'e
       <translation>Protrusion : la fusion avec la fonction de base a échoué</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="741"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="743"/>
       <location filename="../../../App/FeaturePad.cpp" line="262"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
@@ -5312,32 +5326,32 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
       <translation>Trajectoire non valide</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="132"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="140"/>
       <source>Pocket: Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Cavité : la création a échoué car la direction est orthogonale au vecteur normal de l'esquisse.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="143"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="151"/>
       <source>Pocket: Creating a face from sketch failed</source>
       <translation>Cavité : la création d'une face à partir de l'esquisse a échoué</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="149"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="157"/>
       <source>Pocket: Extruding up to a face is only possible if the sketch is located on a face</source>
       <translation>Cavité : l'extrusion jusqu'à une face n'est possible que si l'esquisse est située sur une face</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="184"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="192"/>
       <source>Pocket: Up to face: Could not get SubShape!</source>
       <translation>Cavité : jusqu'à une face : impossible d'obtenir une sous-forme !</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="208"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="216"/>
       <source>Pocket: Resulting shape is empty</source>
       <translation>Cavité : la forme résultante est vide</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="217"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="225"/>
       <source>Pocket: Cut out of base feature failed</source>
       <translation>Cavité : la découpe de l'élément de base a échoué</translation>
     </message>
@@ -5347,13 +5361,13 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
       <translation>Impossible de soustraire la fonction primitive sans la fonction de base</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="515"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="517"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
       <source>Unknown operation type</source>
       <translation>Type d'opération inconnu</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="521"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="523"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
       <source>Failed to perform boolean operation</source>
       <translation>Impossible d'effectuer l'opération booléenne</translation>
@@ -5482,7 +5496,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
       <translation>L'axe de référence n'est pas valide</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="709"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="711"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="254"/>
       <source>Fusion with base feature failed</source>
       <translation>La fusion avec la fonction de base a échoué</translation>

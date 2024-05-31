@@ -53,6 +53,7 @@
 #include "QGIDimLines.h"
 #include "QGIVertex.h"
 #include "QGCustomSvg.h"
+#include "TaskSelectLineAttributes.h"
 #include "ViewProviderDimension.h"
 #include "ZVALUE.h"
 
@@ -131,12 +132,132 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant& va
         }
     }
     else if (change == ItemPositionHasChanged && scene()) {
+        QPointF newPos = value.toPointF();    //position within parent!
+        snapPosition(newPos);
+
         setLabelCenter();
         m_dragState = Dragging;
         Q_EMIT dragging(m_ctrl);
     }
 
     return QGraphicsItem::itemChange(change, value);
+}
+
+void QGIDatumLabel::snapPosition(QPointF& pos)
+{
+    qreal snapPercent = 0.05;
+
+    auto* qgivd = dynamic_cast<QGIViewDimension*>(parentItem());
+    if (!qgivd) {
+        return;
+    }
+    auto* dim(dynamic_cast<TechDraw::DrawViewDimension*>(qgivd->getViewObject()));
+    if (!dim) {
+        return;
+    }
+
+    // We only have snap for distances constraints
+    std::string type = dim->Type.getValueAsString();
+    if(type != "Distance" && type != "DistanceX" && type != "DistanceY") {
+        return;
+    }
+
+    // 1 - We try to snap the label to its center position.
+    pointPair pp = dim->getLinearPoints();
+    Base::Vector3d p1_3d = Rez::guiX(pp.first());
+    Base::Vector3d p2_3d = Rez::guiX(pp.second());
+    Base::Vector2d p1 = Base::Vector2d(p1_3d.x, p1_3d.y);
+    Base::Vector2d p2 = Base::Vector2d(p2_3d.x, p2_3d.y);
+    if (type == "DistanceX") {
+        p2 = Base::Vector2d(p2.x, p1.y);
+    }
+    else if (type == "DistanceY") {
+        p2 = Base::Vector2d(p1.x, p2.y);
+    }
+    Base::Vector2d mid = (p1 + p2) * 0.5;
+    Base::Vector2d dir = p2 - p1;
+    Base::Vector2d normal = Base::Vector2d(-dir.y, dir.x);
+    Base::Vector2d posV = Base::Vector2d(pos.x() + m_dimText->boundingRect().width() * 0.5,
+                                        pos.y() + m_dimText->boundingRect().height() * 0.5);
+    Base::Vector2d projPnt;
+    projPnt.ProjectToLine(posV - mid, normal);
+    projPnt = projPnt + mid;
+
+    if ((projPnt - posV).Length() < dir.Length() * snapPercent) {
+        posV = projPnt;
+        pos.setX(posV.x - m_dimText->boundingRect().width() * 0.5);
+        pos.setY(posV.y - m_dimText->boundingRect().height() * 0.5);
+
+    }
+
+    // 2 - We check for coord/chain dimensions to offer proper snapping
+    auto* qgiv = dynamic_cast<QGIView*>(qgivd->parentItem());
+    if (qgiv) {
+        auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(qgiv->getViewObject());
+        if (dvp) {
+            std::vector<TechDraw::DrawViewDimension*> dims = dvp->getDimensions();
+            double dimSpacing = Rez::guiX(activeDimAttributes.getCascadeSpacing());
+            snapPercent = 0.2;
+            for (auto& d : dims) {
+                if (d == dim) { continue; }
+
+                std::string dType = d->Type.getValueAsString();
+                if (dType != type) {
+                    continue;
+                }
+
+                pp = d->getLinearPoints();
+                Base::Vector3d ip1_3d = Rez::guiX(pp.first());
+                Base::Vector3d ip2_3d = Rez::guiX(pp.second());
+
+                Base::Vector2d ip1 = Base::Vector2d(ip1_3d.x, ip1_3d.y);
+                Base::Vector2d ip2 = Base::Vector2d(ip2_3d.x, ip2_3d.y);
+                if (type == "DistanceX") {
+                    ip2 = Base::Vector2d(ip2.x, ip1.y);
+                }
+                else if (type == "DistanceY") {
+                    ip2 = Base::Vector2d(ip1.x, ip2.y);
+                }
+
+                Base::Vector2d idir = ip2 - ip1;
+
+                if (type == "Distance" && fabs(dir.x * idir.y - dir.y * idir.x) > Precision::Confusion()) {
+                    //dimensions not parallel
+                    continue;
+                }
+
+                auto* vp = dynamic_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(d));
+                if (!vp) { continue; }
+                auto* qgivDi(dynamic_cast<QGIViewDimension*>(vp->getQView()));
+                if (!qgivDi) { continue; }
+                auto labeli = qgivDi->getDatumLabel();
+                if (!labeli) { continue; }
+                QPointF posi = labeli->pos();
+                Base::Vector2d posVi = Base::Vector2d(posi.x() + labeli->m_dimText->boundingRect().width() * 0.5,
+                    posi.y() + labeli->m_dimText->boundingRect().height() * 0.5);
+
+                Base::Vector2d projPnt2;
+                projPnt2.ProjectToLine(posV - posVi, idir);
+                projPnt2 = projPnt2 + posVi;
+
+                if ((projPnt2 - posV).Length() < dimSpacing * snapPercent) {
+                    posV = projPnt2;
+                    pos.setX(posV.x - m_dimText->boundingRect().width() * 0.5);
+                    pos.setY(posV.y - m_dimText->boundingRect().height() * 0.5);
+                    break;
+                }
+                else if (fabs((projPnt2 - posV).Length() - fabs(dimSpacing)) < dimSpacing * snapPercent) {
+                    posV = projPnt2 + (posV - projPnt2).Normalize() * dimSpacing;
+                    pos.setX(posV.x - m_dimText->boundingRect().width() * 0.5);
+                    pos.setY(posV.y - m_dimText->boundingRect().height() * 0.5);
+                    break;
+                }
+            }
+        }
+    }
+
+
+    setPos(pos); // no infinite loop because if pos doesn't change then itemChanged is not triggered.
 }
 
 void QGIDatumLabel::mousePressEvent(QGraphicsSceneMouseEvent* event)
@@ -238,7 +359,7 @@ void QGIDatumLabel::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
 void QGIDatumLabel::setPosFromCenter(const double& xCenter, const double& yCenter)
 {
     prepareGeometryChange();
-    QGIViewDimension* qgivd = dynamic_cast<QGIViewDimension*>(parentItem());
+    auto* qgivd = dynamic_cast<QGIViewDimension*>(parentItem());
     if (!qgivd) {
         return;
     }
@@ -248,8 +369,8 @@ void QGIDatumLabel::setPosFromCenter(const double& xCenter, const double& yCente
     }
 
     //set label's Qt position(top, left) given boundingRect center point
-    setPos(xCenter - m_dimText->boundingRect().width() / 2.,
-           yCenter - m_dimText->boundingRect().height() / 2.);
+    setPos(xCenter - m_dimText->boundingRect().width() * 0.5,
+           yCenter - m_dimText->boundingRect().height() * 0.5);
 
     QString uText = m_unitText->toPlainText();
     if ((uText.size() > 0) && (uText.at(0) != QChar::fromLatin1(' '))) {
@@ -2100,6 +2221,10 @@ void QGIViewDimension::drawAreaExecutive(const Base::Vector2d& centerPoint, doub
                                            double centerOverhang, int standardStyle,
                                            int renderExtent, bool flipArrow) const
 {
+    Q_UNUSED(area)
+    Q_UNUSED(centerOverhang)
+    Q_UNUSED(renderExtent)
+
     QPainterPath areaPath;
 
     Base::Vector2d labelCenter(labelRectangle.GetCenter());
@@ -2595,9 +2720,6 @@ void QGIViewDimension::drawArea(TechDraw::DrawViewDimension* dimension,
     Base::BoundBox2d labelRectangle(
         fromQtGui(mapRectFromItem(datumLabel, datumLabel->boundingRect())));
     areaPoint areaPoint = dimension->getAreaPoint();
-
-    double endAngle;
-    double startRotation;
 
     drawAreaExecutive(
         fromQtApp(areaPoint.center), areaPoint.area, labelRectangle, 0.0, viewProvider->StandardAndStyle.getValue(),

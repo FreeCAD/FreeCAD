@@ -158,7 +158,6 @@ NurbsBase2D::NurbsBase2D(Eigen::VectorXd u_knots, Eigen::VectorXd v_knots,
                      Eigen::VectorXd weights,
                      int degree_u, int degree_v)
 {
-    // assert(weights.size() == u_knots.size() * v_knots.size());
     this->u_knots = u_knots;
     this->v_knots = v_knots;
     this->weights = weights;
@@ -248,15 +247,12 @@ Eigen::VectorXd NurbsBase2D::getDuVector(Eigen::Vector2d u)
     n_v.resize(this->v_functions.size());
     for (unsigned int u_i=0; u_i < this->u_functions.size(); u_i++)
     {
-        // std::cout << "u_i: " << u_i << " , n_u: " << n_u.size()
-        //           << " , Dn_u: " << Dn_u.size() << std::endl;
         n_u[u_i] = this->u_functions[u_i](u.x());
         Dn_u[u_i] = this->Du_functions[u_i](u.x());
     }
     for (unsigned int v_i=0; v_i < this->v_functions.size(); v_i++)
     {
         n_v[v_i] = this->v_functions[v_i](u.y());
-        // std::cout << v_i << std::endl;
     }
 
     for (unsigned int u_i=0; u_i < this->u_functions.size(); u_i++)
