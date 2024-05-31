@@ -69,7 +69,7 @@ Params = [
         doc = "Tree view item background. Only effective in overlay."),
     ParamInt('ItemBackgroundPadding', 0, on_change=True, title="Item background padding", proxy=ParamSpinBox(0, 100, 1),
         doc = "Tree view item background padding."),
-    ParamBool('HideColumn', True, on_change=True, title="Hide extra column",
+    ParamBool('HideColumn', True, on_change=True, title="Hide Description",
         doc = "Hide extra tree view column for item description."),
     ParamBool('HideInternalNames', True, on_change=True, title="Hide Internal Names",
         doc = "Hide extra tree view column - Internal Names."),

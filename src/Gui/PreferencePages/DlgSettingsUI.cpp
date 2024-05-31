@@ -549,7 +549,7 @@ void DlgSettingsUI::retranslateUi()
     VisibilityIcon->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docVisibilityIcon()));
     VisibilityIcon->setText(QObject::tr("Show visibility icon"));
     HideColumn->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docHideColumn()));
-    HideColumn->setText(QObject::tr("Hide extra column"));
+    HideColumn->setText(QObject::tr("Hide Description"));
     HideInternalNames->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docHideInternalNames()));
     HideInternalNames->setText(QObject::tr("Hide Internal Names"));
     HideScrollBar->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docHideScrollBar()));
