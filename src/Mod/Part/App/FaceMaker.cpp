@@ -71,6 +71,9 @@ void Part::FaceMaker::addTopoShape(const TopoShape& shape) {
         case TopAbs_FACE:
             this->myInputFaces.push_back(sh);
         break;
+        case TopAbs_VERTEX:
+            // Explicitly ignore as a vertex can't add to a face nor is there any expectation to.
+        break;
         default:
             throw Base::TypeError(tr("Shape must be a wire, edge or compound. Something else was supplied.").toStdString());
         break;
