@@ -165,10 +165,11 @@ private:
                     mode = ocaf.getMode();
                 }
 #if OCC_VERSION_HEX >= 0x070800
-                auto handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
-                if(handle->GetBool("ReadShowDialogImport", false))
-                {
-                    Gui::Command::doCommand(Gui::Command::Gui,"Gui.showPreferences('Import-Export', 8)");
+                auto handle = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
+                if (handle->GetBool("ReadShowDialogImport", false)) {
+                    Gui::Command::doCommand(Gui::Command::Gui,
+                                            "Gui.showPreferences('Import-Export', 8)");
                 }
                 Part::OCAF::ImportExportSettings settings;
                 Resource_FormatType cp = settings.getImportCodePage();

@@ -42,7 +42,7 @@ ReaderStep::ReaderStep(const Base::FileInfo& file)  // NOLINT
     : file {file}
 {}
 
-void ReaderStep::read(Handle(TDocStd_Document) hDoc,Resource_FormatType codePage)   // NOLINT
+void ReaderStep::read(Handle(TDocStd_Document) hDoc, Resource_FormatType codePage)  // NOLINT
 {
     std::string utf8Name = file.filePath();
     std::string name8bit = Part::encodeFilename(utf8Name);
@@ -57,7 +57,7 @@ void ReaderStep::read(Handle(TDocStd_Document) hDoc,Resource_FormatType codePage
     Handle(StepData_StepModel) aStepModel = new StepData_StepModel;
     aStepModel->InternalParameters.InitFromStatic();
     aStepModel->SetSourceCodePage(codePage);
-    if (aReader.ReadFile(name8bit.c_str(),aStepModel->InternalParameters) != IFSelect_RetDone) {
+    if (aReader.ReadFile(name8bit.c_str(), aStepModel->InternalParameters) != IFSelect_RetDone) {
 #endif
         throw Base::FileException("Cannot read STEP file", file);
     }
