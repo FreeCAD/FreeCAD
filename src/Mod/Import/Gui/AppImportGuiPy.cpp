@@ -172,7 +172,10 @@ private:
                 }
                 Part::OCAF::ImportExportSettings settings;
                 Resource_FormatType cp = settings.getImportCodePage();
+#else
+                Resource_FormatType cp = Resource_FormatType_UTF8;
 #endif
+
                 if (mode && !pcDoc->isSaved()) {
                     auto gdoc = Gui::Application::Instance->getDocument(pcDoc);
                     if (!gdoc->save()) {
