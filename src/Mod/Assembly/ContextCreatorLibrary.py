@@ -115,6 +115,7 @@ class ContextCreationSystem:
 
     def createCopy(self, objects, edit_obj): # create a viable "Feature" object with the shape of the original in the assembly
         copiedObjects = []
+        Gui.ActiveDocument.Document.RecomputesFrozen = True
         for obj in objects:
             if(obj is edit_obj):
                 continue
@@ -132,6 +133,7 @@ class ContextCreationSystem:
             copiedObj.RefObj = propertyString
             copiedObj.RefObjLocation = self.mainDocumentFileName
             copiedObjects.append(copiedObj)
+        Gui.ActiveDocument.Document.RecomputesFrozen = False
             
             
         return copiedObjects
@@ -243,6 +245,8 @@ class ContextCreationSystem:
             assemblyObj = None
             assemblyDocument = None
             referenceObjectsNames = []
+
+            Gui.ActiveDocument.Document.RecomputesFrozen = True
                 
             for obj in self.objectToUpdate:
                 if "RefObj" in obj.PropertiesList:
@@ -263,6 +267,9 @@ class ContextCreationSystem:
                     except:
                         print("could not update object: " + refObj.Label)
             App.open(originalDocument)
+
+            Gui.ActiveDocument.Document.RecomputesFrozen = False
+
             # current_doc = App.open(self.mainDocumentFileName)
             # current_doc_filename = current_doc.FileName
 
