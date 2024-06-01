@@ -94,9 +94,9 @@ class CutPlaneTaskPanel:
         FreeCAD.ActiveDocument.removeObject(self.previewObj.Name)
         side = self.combobox.currentIndex()
         FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Cutting"))
-        FreeCADGui.addModule("Arch")
+        FreeCADGui.addModule("ArchCutPlane")
         FreeCADGui.doCommand("sels = FreeCADGui.Selection.getSelectionEx('', 0)")
-        FreeCADGui.doCommand("Arch.cutComponentwithPlane(sels, side=" + str(side) + ")")
+        FreeCADGui.doCommand("ArchCutPlane.cutComponentwithPlane(sels, side=" + str(side) + ")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         return True
