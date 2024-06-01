@@ -68,6 +68,7 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/LineGenerator.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "DlgPageChooser.h"
 #include "DrawGuiUtil.h"
@@ -83,21 +84,19 @@ using DU = DrawUtil;
 void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
 {
     qcb->clear();
-    QPalette qcbPal = qcb->palette();
-    QColor textColor = qcbPal.color(QPalette::WindowText);
+
     auto curStyleSheet =
         App::GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
             ->GetASCII("StyleSheet", "None");
-
-    bool darkSS = isStyleSheetDark(curStyleSheet);
 
     int i = 0;
     for (; i < ArrowPropEnum::ArrowCount; i++) {
         qcb->addItem(
             QCoreApplication::translate("ArrowPropEnum", ArrowPropEnum::ArrowTypeEnums[i]));
         QIcon itemIcon(QString::fromUtf8(ArrowPropEnum::ArrowTypeIcons[i].c_str()));
-        if (darkSS) {
+        if (isStyleSheetDark(curStyleSheet)) {
+            QColor textColor = Preferences::lightTextColor().asValue<QColor>();
             QSize iconSize(48, 48);
             QIcon itemUpdatedIcon(maskBlackPixels(itemIcon, iconSize, textColor));
             qcb->setItemIcon(i, itemUpdatedIcon);
@@ -111,21 +110,19 @@ void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
 void DrawGuiUtil::loadBalloonShapeBox(QComboBox* qballooncb)
 {
     qballooncb->clear();
-    QPalette qballooncbPal = qballooncb->palette();
-    QColor textColor = qballooncbPal.color(QPalette::WindowText);
+
     auto curStyleSheet =
         App::GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
             ->GetASCII("StyleSheet", "None");
-
-    bool darkSS = isStyleSheetDark(curStyleSheet);
 
     int i = 0;
     for (; i < BalloonPropEnum::BalloonCount; i++) {
         qballooncb->addItem(
             QCoreApplication::translate("BalloonPropEnum", BalloonPropEnum::BalloonTypeEnums[i]));
         QIcon itemIcon(QString::fromUtf8(BalloonPropEnum::BalloonTypeIcons[i].c_str()));
-        if (darkSS) {
+        if (isStyleSheetDark(curStyleSheet)) {
+            QColor textColor = Preferences::lightTextColor().asValue<QColor>();
             QSize iconSize(48, 48);
             QIcon itemUpdatedIcon(maskBlackPixels(itemIcon, iconSize, textColor));
             qballooncb->setItemIcon(i, itemUpdatedIcon);
@@ -139,21 +136,18 @@ void DrawGuiUtil::loadBalloonShapeBox(QComboBox* qballooncb)
 void DrawGuiUtil::loadMattingStyleBox(QComboBox* qmattingcb)
 {
     qmattingcb->clear();
-    QPalette qmattingcbPal = qmattingcb->palette();
-    QColor textColor = qmattingcbPal.color(QPalette::WindowText);
     auto curStyleSheet =
         App::GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
             ->GetASCII("StyleSheet", "None");
-
-    bool darkSS = isStyleSheetDark(curStyleSheet);
 
     int i = 0;
     for (; i < MattingPropEnum::MattingCount; i++) {
         qmattingcb->addItem(
             QCoreApplication::translate("MattingPropEnum", MattingPropEnum::MattingTypeEnums[i]));
         QIcon itemIcon(QString::fromUtf8(MattingPropEnum::MattingTypeIcons[i].c_str()));
-        if (darkSS) {
+        if (isStyleSheetDark(curStyleSheet)) {
+            QColor textColor = Preferences::lightTextColor().asValue<QColor>();
             QSize iconSize(48, 48);
             QIcon itemUpdatedIcon(maskBlackPixels(itemIcon, iconSize, textColor));
             qmattingcb->setItemIcon(i, itemUpdatedIcon);
@@ -184,15 +178,13 @@ void DrawGuiUtil::loadLineStyleChoices(QComboBox* combo, LineGenerator* generato
     else {
         choices = LineGenerator::getLineDescriptions();
     }
-    QPalette comboPal = combo->palette();
-    QColor textColor = comboPal.color(QPalette::WindowText);
 
     int itemNumber {0};
     for (auto& entry : choices) {
         QString qentry = Base::Tools::fromStdString(entry);
         combo->addItem(qentry);
         if (generator) {
-            combo->setItemIcon(itemNumber, iconForLine(itemNumber + 1, generator, textColor));
+            combo->setItemIcon(itemNumber, iconForLine(itemNumber + 1, generator));
         }
         itemNumber++;
     }
@@ -201,8 +193,7 @@ void DrawGuiUtil::loadLineStyleChoices(QComboBox* combo, LineGenerator* generato
 
 //! make an icon that shows a sample of lineNumber in the current line standard
 QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
-                               TechDraw::LineGenerator* generator,
-                               QColor textColor)
+                               TechDraw::LineGenerator* generator)
 {
     //    Base::Console().Message("DGU::iconForLine(lineNumber: %d)\n", lineNumber);
     constexpr int iconSize {64};
@@ -225,15 +216,17 @@ QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
         App::GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
             ->GetASCII("StyleSheet", "None");
-
-    bool darkSS = isStyleSheetDark(curStyleSheet);
+    QColor textColor{Qt::black};
+    if (isStyleSheetDark(curStyleSheet)) {
+        textColor = Preferences::lightTextColor().asValue<QColor>();
+    }
 
     // handle simple case of continuous line
     if (linePen.style() == Qt::SolidLine) {
         linePen.setWidthF(iconLineWeight * lineCount);
         painter.setPen(linePen);
         painter.drawLine(borderSize, iconSize / 2, iconSize - borderSize, iconSize / 2);
-        if (darkSS) {
+        if (isStyleSheetDark(curStyleSheet)) {
             QIcon lineItemIcon(bitmap);
             return QIcon(maskBlackPixels(lineItemIcon, lineIconSize, textColor));
         }
@@ -253,7 +246,7 @@ QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
         painter.drawLine(borderSize, yHeight, maxLineLength, yHeight);
         yHeight += iconLineWeight;
     }
-    if (darkSS) {
+    if (isStyleSheetDark(curStyleSheet)) {
         QIcon lineItemIcon(bitmap);
         return QIcon(maskBlackPixels(lineItemIcon, lineIconSize, textColor));
     }
@@ -736,15 +729,8 @@ bool DrawGuiUtil::findObjectInSelection(const std::vector<Gui::SelectionObject>&
 
 bool DrawGuiUtil::isStyleSheetDark(std::string curStyleSheet)
 {
-    // normalize stylesheet name
-    auto normalizeCurStyleSheet = [](std::string str) {
-        std::transform(str.begin(), str.end(), str.begin(), [](unsigned char ch) {
-            return ch == ' ' ? '_' : std::tolower(ch);
-        });
-        return str;
-    };
-    std::string styleSheetName = normalizeCurStyleSheet(curStyleSheet);
-    if (styleSheetName.find("dark") != std::string::npos) {
+    if (curStyleSheet.find("dark") != std::string::npos ||
+        curStyleSheet.find("Dark") != std::string::npos) {
         return true;
     }
     return false;
