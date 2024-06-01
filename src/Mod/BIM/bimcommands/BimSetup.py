@@ -489,7 +489,7 @@ class BIM_Setup:
             ).GetInt("gridEvery", 10)
             wp = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Mod/Draft"
-            ).GetInt("defaultWP", 0)
+            ).GetInt("defaultWP", 1)
             tsize = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Mod/Draft"
             ).GetFloat("textheight", 10)

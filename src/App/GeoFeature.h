@@ -177,7 +177,7 @@ public:
     virtual DocumentObject *getElementOwner(const Data::MappedName & /*name*/) const
     {return nullptr;}
 
-    virtual const std::vector<const char *>& getElementTypes(bool all=true) const;
+    virtual std::vector<const char *> getElementTypes(bool all=true) const;
 
     /// Return the higher level element names of the given element
     virtual std::vector<Data::IndexedName> getHigherElements(const char *name, bool silent=false) const;

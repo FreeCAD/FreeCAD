@@ -57,6 +57,9 @@ SET(InspectionGuiIcon_SVG
 
 add_library(InspectionGui SHARED ${InspectionGui_SRCS} ${InspectionGui_Scripts} ${InspectionGuiIcon_SVG})
 target_link_libraries(InspectionGui ${InspectionGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(InspectionGui)
+endif()
 
 
 fc_target_copy_resource_flat(InspectionGui

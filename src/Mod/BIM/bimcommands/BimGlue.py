@@ -43,10 +43,8 @@ class BIM_Glue:
         }
 
     def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         import Part

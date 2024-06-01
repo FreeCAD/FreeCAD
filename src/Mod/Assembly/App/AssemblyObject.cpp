@@ -58,12 +58,15 @@
 #include <OndselSolver/ASMTMarker.h>
 #include <OndselSolver/ASMTPart.h>
 #include <OndselSolver/ASMTJoint.h>
+#include <OndselSolver/ASMTAngleJoint.h>
 #include <OndselSolver/ASMTFixedJoint.h>
 #include <OndselSolver/ASMTGearJoint.h>
 #include <OndselSolver/ASMTRevoluteJoint.h>
 #include <OndselSolver/ASMTCylindricalJoint.h>
 #include <OndselSolver/ASMTTranslationalJoint.h>
 #include <OndselSolver/ASMTSphericalJoint.h>
+#include <OndselSolver/ASMTParallelAxesJoint.h>
+#include <OndselSolver/ASMTPerpendicularJoint.h>
 #include <OndselSolver/ASMTPointInPlaneJoint.h>
 #include <OndselSolver/ASMTPointInLineJoint.h>
 #include <OndselSolver/ASMTLineInPlaneJoint.h>
@@ -846,6 +849,23 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointOfType(App::DocumentObjec
     else if (type == JointType::Distance) {
         return makeMbdJointDistance(joint);
     }
+    else if (type == JointType::Parallel) {
+        return CREATE<ASMTParallelAxesJoint>::With();
+    }
+    else if (type == JointType::Perpendicular) {
+        return CREATE<ASMTPerpendicularJoint>::With();
+    }
+    else if (type == JointType::Angle) {
+        double angle = fabs(Base::toRadians(getJointDistance(joint)));
+        if (fmod(angle, 2 * M_PI) < Precision::Confusion()) {
+            return CREATE<ASMTParallelAxesJoint>::With();
+        }
+        else {
+            auto mbdJoint = CREATE<ASMTAngleJoint>::With();
+            mbdJoint->theIzJz = angle;
+            return mbdJoint;
+        }
+    }
     else if (type == JointType::RackPinion) {
         auto mbdJoint = CREATE<ASMTRackPinionJoint>::With();
         mbdJoint->pitchRadius = getJointDistance(joint);
@@ -1166,9 +1186,9 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
     App::DocumentObject* part = getLinkObjFromProp(joint, propPartName);
     App::DocumentObject* obj = getObjFromNameProp(joint, propObjName, propPartName);
 
-    if (!part) {
-        Base::Console().Warning("The property %s or Joint %s is empty.",
-                                propPartName,
+    if (!part || !obj) {
+        Base::Console().Warning("The property %s of Joint %s is empty.",
+                                obj ? propPartName : propObjName,
                                 joint->getFullName());
         return "";
     }
@@ -1222,6 +1242,13 @@ void AssemblyObject::getRackPinionMarkers(App::DocumentObject* joint,
     App::DocumentObject* part2 = getLinkObjFromProp(joint, "Part2");
     App::DocumentObject* obj2 = getObjFromNameProp(joint, "Object2", "Part2");
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
+
+    if (!part1 || !obj1) {
+        Base::Console().Warning("The property %s of Joint %s is empty.",
+                                obj1 ? "Part1" : "Object1",
+                                joint->getFullName());
+        return;
+    }
 
     // For the pinion nothing special needed :
     markerNameJ = handleOneSideOfJoint(joint, "Object2", "Part2", "Placement2");

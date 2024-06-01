@@ -717,8 +717,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
             }
-
             solRes = refineShapeIfActive(solRes);
+            if (!isSingleSolidRuleSatisfied(solRes.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            }
             this->Shape.setValue(getSolid(solRes));
         }
         else if (prism.hasSubShape(TopAbs_SOLID)) {
@@ -726,10 +728,17 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 prism.makeElementFuse(prism.getSubTopoShapes(TopAbs_SOLID));
             }
             prism = refineShapeIfActive(prism);
-            this->Shape.setValue(getSolid(prism));
+            prism = getSolid(prism);
+            if (!isSingleSolidRuleSatisfied(prism.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            }
+            this->Shape.setValue(prism);
         }
         else {
             prism = refineShapeIfActive(prism);
+            if (!isSingleSolidRuleSatisfied(prism.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            }
             this->Shape.setValue(prism);
         }
 

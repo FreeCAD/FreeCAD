@@ -43,7 +43,8 @@ class Arch_Add:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Add","Adds the selected components to the active object")}
 
     def IsActive(self):
-        return len(FreeCADGui.Selection.getSelection()) > 1
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v and len(FreeCADGui.Selection.getSelection()) > 1
 
     def Activated(self):
         import Draft
@@ -78,7 +79,8 @@ class Arch_Remove:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Remove","Remove the selected components from their parents, or create a hole in a component")}
 
     def IsActive(self):
-        return bool(FreeCADGui.Selection.getSelection())
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v and bool(FreeCADGui.Selection.getSelection())
 
     def Activated(self):
         import Draft
@@ -115,7 +117,8 @@ class Arch_SplitMesh:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_SplitMesh","Splits selected meshes into independent components")}
 
     def IsActive(self):
-        return bool(FreeCADGui.Selection.getSelection())
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v and bool(FreeCADGui.Selection.getSelection())
 
     def Activated(self):
         import Arch
@@ -142,7 +145,8 @@ class Arch_MeshToShape:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_MeshToShape","Turns selected meshes into Part Shape objects")}
 
     def IsActive(self):
-        return bool(FreeCADGui.Selection.getSelection())
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v and bool(FreeCADGui.Selection.getSelection())
 
     def Activated(self):
         import Arch
@@ -179,7 +183,8 @@ class Arch_SelectNonSolidMeshes:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Selects all non-manifold meshes from the document or from the selected groups")}
 
     def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         msel = []
@@ -208,7 +213,8 @@ class Arch_RemoveShape:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_RemoveShape","Removes cubic shapes from Arch components")}
 
     def IsActive(self):
-        return bool(FreeCADGui.Selection.getSelection())
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v and bool(FreeCADGui.Selection.getSelection())
 
     def Activated(self):
         import Arch
@@ -225,7 +231,8 @@ class Arch_CloseHoles:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_CloseHoles","Closes holes in open shapes, turning them solids")}
 
     def IsActive(self):
-        return bool(FreeCADGui.Selection.getSelection())
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v and bool(FreeCADGui.Selection.getSelection())
 
     def Activated(self):
         import Arch
@@ -243,7 +250,8 @@ class Arch_Check:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Check","Checks the selected objects for problems")}
 
     def IsActive(self):
-        return bool(FreeCADGui.Selection.getSelection())
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v and bool(FreeCADGui.Selection.getSelection())
 
     def Activated(self):
         import Arch
@@ -266,7 +274,8 @@ class Arch_Survey:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Survey","Starts survey")}
 
     def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         FreeCADGui.addModule("Arch")
@@ -282,7 +291,8 @@ class Arch_ToggleIfcBrepFlag:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Force an object to be exported as Brep or not")}
 
     def IsActive(self):
-        return bool(FreeCADGui.Selection.getSelection())
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v and bool(FreeCADGui.Selection.getSelection())
 
     def Activated(self):
         import Arch
@@ -300,7 +310,8 @@ class Arch_Component:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Component","Creates an undefined architectural component")}
 
     def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
@@ -326,7 +337,8 @@ class Arch_CloneComponent:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_CloneComponent","Clones an object as an undefined architectural component")}
 
     def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
@@ -352,7 +364,8 @@ class Arch_IfcSpreadsheet:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","Creates a spreadsheet to store IFC properties of an object.")}
 
     def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
@@ -378,7 +391,8 @@ class Arch_ToggleSubs:
                 'ToolTip' : QT_TRANSLATE_NOOP("Arch_ToggleSubs","Shows or hides the subcomponents of this object")}
 
     def IsActive(self):
-        return bool(FreeCADGui.Selection.getSelection())
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v and bool(FreeCADGui.Selection.getSelection())
 
     def Activated(self):
         import Draft
@@ -421,7 +435,8 @@ class Arch_MergeWalls:
         toolbars.
         """
 
-        return bool(FreeCADGui.Selection.getSelection())
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v and bool(FreeCADGui.Selection.getSelection())
 
     def Activated(self):
         """Executed when Arch MergeWalls is called.

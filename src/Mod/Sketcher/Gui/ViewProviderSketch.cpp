@@ -2588,6 +2588,12 @@ void ViewProviderSketch::updateColor()
     editCoinManager->updateColor();
 }
 
+bool ViewProviderSketch::selectAll()
+{
+    // TODO: eventually implement "select all" logic
+    return true;
+}
+
 bool ViewProviderSketch::doubleClicked()
 {
     Gui::Application::Instance->activeDocument()->setEdit(this);
@@ -3225,6 +3231,13 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         selection.reset();
         this->detachSelection();
 
+        ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/View");
+
+        auto headlightIntensityExisting = hGrpView->GetInt("HeadlightIntensityExisting", 100);
+        hGrpView->SetInt("HeadlightIntensity", headlightIntensityExisting);
+        hGrpView->RemoveInt("HeadlightIntensityExisting");
+
         App::AutoTransaction trans("Sketch recompute");
         try {
             // and update the sketch
@@ -3294,6 +3307,14 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
                 e.what());
         }
     }
+
+    ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View");
+
+    auto headlightIntensityExisting = hGrpView->GetInt("HeadlightIntensity", 100);
+    auto headlightIntensityTemp = 50;
+    hGrpView->SetInt("HeadlightIntensity", headlightIntensityTemp);
+    hGrpView->SetInt("HeadlightIntensityExisting", headlightIntensityExisting);
 
     auto editDoc = Gui::Application::Instance->editDocument();
     editDocName.clear();

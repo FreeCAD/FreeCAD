@@ -71,7 +71,33 @@ QGIBreakLine::QGIBreakLine()
 
 void QGIBreakLine::draw()
 {
-    // Base::Console().Message("QGIBL::draw()\n");
+    if (breakType() == 0) {
+        // none
+        m_background->hide();
+        m_line0->hide();
+        m_line1->hide();
+    }
+
+    if (breakType() == 1) {
+        drawLargeZigZag();
+        m_background->show();
+        m_line0->show();
+        m_line1->show();
+    }
+
+    if (breakType() == 2) {
+        // simple line from pref
+        drawSimpleLines();
+        m_background->hide();
+        m_line0->show();
+        m_line1->show();
+    }
+
+    update();
+}
+
+void QGIBreakLine::drawLargeZigZag()
+{
     Base::Vector3d horizontal{1.0, 0.0, 0.0};
     prepareGeometryChange();
     double offset = zigzagWidth / 2.0;
@@ -100,11 +126,6 @@ void QGIBreakLine::draw()
                           std::fabs(m_right - m_left + zigzagWidth),
                           std::fabs(m_top - m_bottom + zigzagWidth));
     m_background->setRect(backgroundRect);
-
-    m_line0->show();
-    m_line1->show();
-    m_background->show();
-    update();
 }
 
 // start needs to be Rez'd and +Y up
@@ -149,6 +170,44 @@ QPainterPath QGIBreakLine::makeVerticalZigZag(Base::Vector3d start) const
     }
     return pPath;
 }
+
+
+void QGIBreakLine::drawSimpleLines()
+{
+    Base::Vector3d horizontal{1.0, 0.0, 0.0};
+    prepareGeometryChange();
+    if (DU::fpCompare(fabs(m_direction.Dot(horizontal)), 1.0, EWTOLERANCE)) {
+        // m_direction connects the two cut points.  The break lines have
+        // to be perpendicular to m_direction
+        Base::Vector3d start = Base::Vector3d(m_left, m_bottom, 0.0);
+        Base::Vector3d end   = Base::Vector3d(m_left, m_top, 0.0);
+        m_line0->setPath(pathFromPoints(start, end));
+
+        start = Base::Vector3d(m_right, m_bottom, 0.0);
+        end   = Base::Vector3d(m_right, m_top, 0.0);
+        m_line1->setPath(pathFromPoints(start, end));
+    } else {
+        // m_top is lower than m_bottom due to Qt Y+ down coords
+        // the higher break line
+        // 2x horizontal zigszags
+        Base::Vector3d start = Base::Vector3d(m_left, m_bottom, 0.0);
+        Base::Vector3d end   = Base::Vector3d(m_right, m_bottom, 0.0);
+        m_line0->setPath(pathFromPoints(start, end));
+
+        // the lower break line
+        start = Base::Vector3d(m_left, m_top, 0.0);
+        end   = Base::Vector3d(m_right, m_top, 0.0);
+        m_line1->setPath(pathFromPoints(start, end));
+    }
+}
+
+QPainterPath QGIBreakLine::pathFromPoints(Base::Vector3d start, Base::Vector3d end)
+{
+    QPainterPath result(DU::toQPointF(start));
+    result.lineTo(DU::toQPointF(end));
+    return result;
+}
+
 
 void QGIBreakLine::setBounds(double left, double top, double right, double bottom)
 {

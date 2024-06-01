@@ -53,9 +53,9 @@ namespace sp = std::placeholders;
     qApp->translate("Workbench", "Shaft design wizard");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Face tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Edge tools");
-    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Start boolean");
-    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Start part");
-    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Sketch tools");
+    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Boolean tools");
+    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Helper tools");
+    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Modeling tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Create Geometry");
     //
     qApp->translate("Workbench", "Measure");
@@ -279,7 +279,7 @@ void Workbench::activated()
         "SELECT Part::Feature SUBELEMENT Vertex COUNT 1..",
         Vertex,
         "Vertex tools",
-        "Part_Box_Parametric"
+        "PartDesign_Body"
     ));
 
     const char* Edge[] = {
@@ -294,7 +294,7 @@ void Workbench::activated()
         "SELECT Part::Feature SUBELEMENT Edge COUNT 1..",
         Edge,
         "Edge tools",
-        "Part_Box_Parametric"
+        "PartDesign_Body"
     ));
 
     const char* Face[] = {
@@ -312,7 +312,7 @@ void Workbench::activated()
         "SELECT Part::Feature SUBELEMENT Face COUNT 1",
         Face,
         "Face tools",
-        "Part_Box_Parametric"
+        "PartDesign_Body"
     ));
 
     const char* Body[] = {
@@ -321,8 +321,8 @@ void Workbench::activated()
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Body COUNT 1",
         Body,
-        "Start Body",
-        "Part_Box_Parametric"
+        "Helper tools",
+        "PartDesign_Body"
     ));
 
     const char* Body2[] = {
@@ -331,8 +331,8 @@ void Workbench::activated()
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Body COUNT 1..",
         Body2,
-        "Start Boolean",
-        "Part_Box_Parametric"
+        "Boolean tools",
+        "PartDesign_Body"
     ));
 
     const char* Plane1[] = {
@@ -345,8 +345,8 @@ void Workbench::activated()
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT App::Plane COUNT 1",
         Plane1,
-        "Start Part",
-        "Part_Box_Parametric"
+        "Helper tools",
+        "PartDesign_Body"
     ));
     const char* Plane2[] = {
         "PartDesign_NewSketch",
@@ -358,8 +358,8 @@ void Workbench::activated()
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Plane COUNT 1",
         Plane2,
-        "Start Part",
-        "Part_Box_Parametric"
+        "Helper tools",
+        "PartDesign_Body"
     ));
 
     const char* Line[] = {
@@ -370,8 +370,8 @@ void Workbench::activated()
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Line COUNT 1",
         Line,
-        "Start Part",
-        "Part_Box_Parametric"
+        "Helper tools",
+        "PartDesign_Body"
     ));
 
     const char* Point[] = {
@@ -383,8 +383,8 @@ void Workbench::activated()
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Point COUNT 1",
         Point,
-        "Start Part",
-        "Part_Box_Parametric"
+        "Helper tools",
+        "PartDesign_Body"
     ));
 
     const char* NoSel[] = {
@@ -406,7 +406,7 @@ void Workbench::activated()
         "SELECT Part::Feature SUBELEMENT Face COUNT 2..",
         Faces,
         "Face tools",
-        "Part_Box_Parametric"
+        "PartDesign_Body"
     ));
 
     const char* Sketch[] = {
@@ -426,8 +426,8 @@ void Workbench::activated()
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Sketcher::SketchObject COUNT 1",
         Sketch,
-        "Sketch tools",
-        "Part_Box_Parametric"
+        "Modeling tools",
+        "PartDesign_Body"
     ));
 
     const char* Transformed[] = {
@@ -551,6 +551,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Separator"
           << datums
           << "PartDesign_CoordinateSystem"
+          << "PartDesign_ShapeBinder"
           << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone"
           << "Separator"
@@ -563,6 +564,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << transformations
           << "Separator"
           << dressups
+          << "Separator"
+          << "Materials_InspectAppearance"
+          << "Materials_InspectMaterial"
           << "Separator"
           << "PartDesign_Boolean"
           << "Separator"

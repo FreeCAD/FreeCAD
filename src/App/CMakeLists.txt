@@ -342,6 +342,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(FreeCADApp SHARED ${FreeCADApp_SRCS})
 target_link_libraries(FreeCADApp ${FreeCADApp_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(FreeCADApp)
+endif()
 
 add_dependencies(FreeCADApp fc_version)
 

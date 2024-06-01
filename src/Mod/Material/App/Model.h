@@ -201,10 +201,6 @@ public:
     {
         return QDir(_directory).absolutePath();
     }
-    // const QString getRelativePath() const
-    // {
-    //     return QDir(_directory).relativeFilePath(QDir(_directory).absolutePath());
-    // }
     const QString getUUID() const
     {
         return _uuid;
