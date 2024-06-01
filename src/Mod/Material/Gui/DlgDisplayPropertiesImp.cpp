@@ -167,7 +167,6 @@ DlgDisplayPropertiesImp::DlgDisplayPropertiesImp(bool floating, QWidget* parent,
 
     std::vector<Gui::ViewProvider*> views = getSelection();
     setDisplayModes(views);
-    setMaterial(views);
     setColorPlot(views);
     setShapeAppearance(views);
     setLineColor(views);
@@ -276,10 +275,10 @@ void DlgDisplayPropertiesImp::setupConnections()
             qOverload<int>(&QSpinBox::valueChanged),
             this,
             &DlgDisplayPropertiesImp::onSpinLineTransparencyValueChanged);
-    connect(d->ui.buttonUserDefinedMaterial,
+    connect(d->ui.buttonCustomAppearance,
             &Gui::ColorButton::clicked,
             this,
-            &DlgDisplayPropertiesImp::onButtonUserDefinedMaterialClicked);
+            &DlgDisplayPropertiesImp::onbuttonCustomAppearanceClicked);
     connect(d->ui.buttonColorPlot,
             &Gui::ColorButton::clicked,
             this,
@@ -309,7 +308,6 @@ void DlgDisplayPropertiesImp::OnChange(Gui::SelectionSingleton::SubjectType& rCa
         || Reason.Type == Gui::SelectionChanges::ClrSelection) {
         std::vector<Gui::ViewProvider*> views = getSelection();
         setDisplayModes(views);
-        setMaterial(views);
         setColorPlot(views);
         setShapeAppearance(views);
         setLineColor(views);
@@ -357,15 +355,10 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
             }
         }
         else if (prop.isDerivedFrom<App::PropertyMaterialList>()) {
-            //auto& value = static_cast<const App::PropertyMaterialList&>(prop).getValue();
             if (prop_name == "ShapeAppearance") {
-                // Base::Console().Log("slotChangeObject(ShapeAppearance)\n");
-                // bool blocked = d->ui.buttonColor->blockSignals(true);
-                // auto color = value.diffuseColor;
-                // d->ui.buttonColor->setColor(QColor((int)(255.0f * color.r),
-                //                                    (int)(255.0f * color.g),
-                //                                    (int)(255.0f * color.b)));
-                // d->ui.buttonColor->blockSignals(blocked);
+                auto& values = static_cast<const App::PropertyMaterialList&>(prop).getValues();
+                auto& material = values[0];
+                d->ui.widgetMaterial->setMaterial(QString::fromStdString(material.uuid));
             }
         }
         else if (prop.isDerivedFrom<App::PropertyInteger>()) {
@@ -419,10 +412,10 @@ void DlgDisplayPropertiesImp::reject()
 /**
  * Opens a dialog that allows to modify the 'ShapeMaterial' property of all selected view providers.
  */
-void DlgDisplayPropertiesImp::onButtonUserDefinedMaterialClicked()
+void DlgDisplayPropertiesImp::onbuttonCustomAppearanceClicked()
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    Gui::Dialog::DlgMaterialPropertiesImp dlg("ShapeMaterial", this);
+    Gui::Dialog::DlgMaterialPropertiesImp dlg("ShapeAppearance", this);
     dlg.setViewProviders(Provider);
     dlg.exec();
 
@@ -586,25 +579,6 @@ void DlgDisplayPropertiesImp::setDisplayModes(const std::vector<Gui::ViewProvide
     }
 }
 
-void DlgDisplayPropertiesImp::setMaterial(const std::vector<Gui::ViewProvider*>& views)
-{
-    Q_UNUSED(views);
-    // bool material = false;
-    // App::Material mat = App::Material(App::Material::DEFAULT);
-    // for (auto view : views) {
-    //     if (auto* prop =
-    //             dynamic_cast<App::PropertyMaterial*>(view->getPropertyByName("ShapeMaterial"))) {
-    //         mat = prop->getValue();
-    //         material = mat.uuid.empty();
-    //         if (!material) {
-    //             d->ui.widgetMaterial->setMaterial(QString::fromStdString(mat.uuid));
-    //         }
-    //         break;
-    //     }
-    // }
-    // d->ui.buttonUserDefinedMaterial->setEnabled(material);
-}
-
 void DlgDisplayPropertiesImp::setColorPlot(const std::vector<Gui::ViewProvider*>& views)
 {
     bool material = false;
@@ -627,16 +601,13 @@ void DlgDisplayPropertiesImp::setShapeAppearance(const std::vector<Gui::ViewProv
     for (auto view : views) {
         if (auto* prop =
                 dynamic_cast<App::PropertyMaterialList*>(view->getPropertyByName("ShapeAppearance"))) {
+            material = true;
             mat = prop->getValues()[0];
-            material = mat.uuid.empty();
-            if (!material) {
-                d->ui.widgetMaterial->setMaterial(QString::fromStdString(mat.uuid));
-            }
+            d->ui.widgetMaterial->setMaterial(QString::fromStdString(mat.uuid));
             break;
         }
     }
-    // d->ui.buttonUserDefinedMaterial->setEnabled(material);
-    d->ui.buttonUserDefinedMaterial->setEnabled(true);
+    d->ui.buttonCustomAppearance->setEnabled(material);
 }
 
 void DlgDisplayPropertiesImp::setLineColor(const std::vector<Gui::ViewProvider*>& views)
@@ -694,21 +665,7 @@ void DlgDisplayPropertiesImp::onMaterialSelected(
     for (auto it : Provider) {
         if (auto* prop = dynamic_cast<App::PropertyMaterialList*>(
                 it->getPropertyByName("ShapeAppearance"))) {
-            App::Material mat;
-            mat.ambientColor =
-                material->getAppearanceProperty(QString::fromLatin1("AmbientColor"))->getColor();
-            mat.diffuseColor =
-                material->getAppearanceProperty(QString::fromLatin1("DiffuseColor"))->getColor();
-            mat.emissiveColor =
-                material->getAppearanceProperty(QString::fromLatin1("EmissiveColor"))->getColor();
-            mat.specularColor =
-                material->getAppearanceProperty(QString::fromLatin1("SpecularColor"))->getColor();
-            mat.shininess =
-                material->getAppearanceProperty(QString::fromLatin1("Shininess"))->getFloat();
-            mat.transparency =
-                material->getAppearanceProperty(QString::fromLatin1("Transparency"))->getFloat();
-            mat.uuid = material->getUUID().toStdString();
-            prop->setValue(mat);
+            prop->setValue(material->getMaterialAppearance());
         }
     }
 }

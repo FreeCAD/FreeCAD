@@ -31,17 +31,21 @@ namespace Gui {
     class ViewProvider;
 }
 
+namespace Materials {
+    class Material;
+}
+
 namespace PartGui {
 
 class ViewProviderPartExt;
 
-class FaceColors : public QWidget, public Gui::SelectionObserver
+class FaceAppearances : public QWidget, public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    explicit FaceColors(ViewProviderPartExt* vp, QWidget* parent = nullptr);
-    ~FaceColors() override;
+    explicit FaceAppearances(ViewProviderPartExt* vp, QWidget* parent = nullptr);
+    ~FaceAppearances() override;
 
     void open();
     bool accept();
@@ -49,9 +53,10 @@ public:
 
 private:
     void setupConnections();
-    void onColorButtonChanged();
+    void onMaterialSelected(const std::shared_ptr<Materials::Material>& material);
     void onDefaultButtonClicked();
     void onBoxSelectionToggled(bool checked);
+    void onButtonCustomAppearanceClicked();
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
@@ -66,13 +71,13 @@ private:
     Private* d;
 };
 
-class TaskFaceColors : public Gui::TaskView::TaskDialog
+class TaskFaceAppearances : public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    explicit TaskFaceColors(ViewProviderPartExt* vp);
-    ~TaskFaceColors() override;
+    explicit TaskFaceAppearances(ViewProviderPartExt* vp);
+    ~TaskFaceAppearances() override;
 
 public:
     void open() override;
@@ -84,7 +89,7 @@ public:
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 private:
-    FaceColors* widget;
+    FaceAppearances* widget;
 };
 
 } //namespace PartGui

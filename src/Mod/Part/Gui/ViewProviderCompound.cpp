@@ -95,8 +95,8 @@ void ViewProviderCompound::updateData(const App::Property* prop)
         TopTools_IndexedMapOfShape compMap;
         TopExp::MapShapes(compShape, TopAbs_FACE, compMap);
 
-        std::vector<App::Color> compCol;
-        compCol.resize(compMap.Extent(), this->ShapeAppearance.getDiffuseColor());
+        std::vector<App::Material> compCol;
+        compCol.resize(compMap.Extent(), this->ShapeAppearance[0]);
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
@@ -111,14 +111,14 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 
             auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
             if (vpBase) {
-                std::vector<App::Color> baseCol = vpBase->DiffuseColor.getValues();
-                applyTransparency(vpBase->Transparency.getValue(),baseCol);
-                if (static_cast<int>(baseCol.size()) == baseMap.Extent()) {
-                    applyColor(hist[index], baseCol, compCol);
+                vpBase->ShapeAppearance.setTransparency(vpBase->Transparency.getValue());
+                if (static_cast<int>(vpBase->ShapeAppearance.getSize()) == baseMap.Extent()) {
+                    applyMaterial(hist[index], vpBase->ShapeAppearance, compCol);
                 }
-                else if (!baseCol.empty() && baseCol[0] != this->ShapeAppearance.getDiffuseColor()) {
-                    baseCol.resize(baseMap.Extent(), baseCol[0]);
-                    applyColor(hist[index], baseCol, compCol);
+                else if (vpBase->ShapeAppearance.getSize() > 0
+                         && vpBase->ShapeAppearance[0] != this->ShapeAppearance[0]) {
+                    vpBase->ShapeAppearance.setSize(baseMap.Extent(), vpBase->ShapeAppearance[0]);
+                    applyMaterial(hist[index], vpBase->ShapeAppearance, compCol);
                 }
             }
         }
@@ -129,7 +129,7 @@ void ViewProviderCompound::updateData(const App::Property* prop)
             applyTransparency(Transparency.getValue(), compCol);
         }
 
-        this->DiffuseColor.setValues(compCol);
+        this->ShapeAppearance.setValues(compCol);
     }
     else if (prop->isDerivedFrom<App::PropertyLinkList>()) {
         const std::vector<App::DocumentObject *>& pBases = static_cast<const App::PropertyLinkList*>(prop)->getValues();

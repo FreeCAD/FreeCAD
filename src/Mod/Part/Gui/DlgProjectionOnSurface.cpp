@@ -720,34 +720,38 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
     auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(
         Gui::Application::Instance->getViewProvider(iCurrentObject));
     if (vp) {
-        std::vector<App::Color> colors;
-        App::Color defaultColor;
+        App::Color aColor;
+        aColor.setPackedValue(iColor);
         if (currentShapeType == TopAbs_FACE) {
-            colors = vp->DiffuseColor.getValues();
-            defaultColor = vp->ShapeAppearance.getDiffuseColor();
+            std::vector<App::Material> colors = vp->ShapeAppearance.getValues();
+            App::Color defaultColor = vp->ShapeAppearance.getDiffuseColor();
+
+            if (static_cast<Standard_Integer>(colors.size()) != anIndices.Extent()) {
+                colors.resize(anIndices.Extent(), vp->ShapeAppearance[0]);
+            }
+
+            if (iHighlight) {
+                colors.at(index - 1).diffuseColor = aColor;
+            }
+            else {
+                colors.at(index - 1).diffuseColor = defaultColor;
+            }
+            vp->ShapeAppearance.setValues(colors);
         }
         else if (currentShapeType == TopAbs_EDGE) {
-            colors = vp->LineColorArray.getValues();
-            defaultColor = vp->LineColor.getValue();
-        }
+            std::vector<App::Color> colors = vp->LineColorArray.getValues();
+            App::Color defaultColor = vp->LineColor.getValue();
 
-        if (static_cast<Standard_Integer>(colors.size()) != anIndices.Extent()) {
-            colors.resize(anIndices.Extent(), defaultColor);
-        }
+            if (static_cast<Standard_Integer>(colors.size()) != anIndices.Extent()) {
+                colors.resize(anIndices.Extent(), defaultColor);
+            }
 
-        if (iHighlight) {
-            App::Color aColor;
-            aColor.setPackedValue(iColor);
-            colors.at(index - 1) = aColor;
-        }
-        else {
-            colors.at(index - 1) = defaultColor;
-        }
-        if (currentShapeType == TopAbs_FACE) {
-            vp->DiffuseColor.setValues(colors);
-        }
-        else if (currentShapeType == TopAbs_EDGE) {
-            vp->LineColorArray.setValues(colors);
+            if (iHighlight) {
+                colors.at(index - 1) = aColor;
+            }
+            else {
+                colors.at(index - 1) = defaultColor;
+            }
         }
     }
 }

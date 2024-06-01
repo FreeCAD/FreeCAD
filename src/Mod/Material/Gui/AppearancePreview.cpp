@@ -21,15 +21,23 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#endif
+#include <QImage>
+#include <QImageReader>
 
+#include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSphere.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoTexture2.h>
+#endif
+
+#include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
 
 #include <App/Application.h>
 #include <Base/Parameter.h>
+#include <Gui/BitmapFactory.h>
 
 #include "AppearancePreview.h"
 
@@ -123,11 +131,24 @@ AppearancePreview::AppearancePreview(QWidget* parent)
     // setBackground();
     setEnabledNaviCube(false);
 
-    auto root = dynamic_cast<SoSeparator*>(getSceneGraph());
+    _group = dynamic_cast<SoSeparator*>(getSceneGraph());
+    _group->ref();
+
+    _switch = new SoSwitch();
+    _switch->ref();
     _material = new SoMaterial();
     _material->ref();
-    root->addChild(_material);
-    root->addChild(new SoSphere());
+    _texture = new SoTexture2();
+    _texture->ref();
+    _environment = new SoTextureCoordinateEnvironment();
+    _environment->ref();
+
+    _switch->addChild(_material);
+    _switch->addChild(_texture);
+    _switch->whichChild.setValue(0);
+
+    _group->addChild(_switch);
+    _group->addChild(new SoSphere());
 
     setCameraType(SoOrthographicCamera::getClassTypeId());
     setViewDirection(SbVec3f(1, 1, -5));
@@ -136,8 +157,30 @@ AppearancePreview::AppearancePreview(QWidget* parent)
 
 AppearancePreview::~AppearancePreview()
 {
+    if (_switch) {
+        if (_switch->findChild(_material) > -1) {
+            _switch->removeChild(_material);
+        }
+        if (_switch->findChild(_texture) > -1) {
+            _switch->removeChild(_texture);
+        }
+    }
+    if (_group) {
+        if (_group->findChild(_switch) > -1) {
+            _group->removeChild(_switch);
+        }
+    }
+
+    _group->unref();
+    _group = nullptr;
+    _switch->unref();
+    _switch = nullptr;
     _material->unref();
     _material = nullptr;
+    _texture->unref();
+    _texture = nullptr;
+    _environment->unref();
+    _environment = nullptr;
 }
 
 void AppearancePreview::applySettings()
@@ -148,8 +191,19 @@ void AppearancePreview::applySettings()
     viewSettings->applySettings();
 }
 
+void AppearancePreview::setCoinTexture()
+{
+    _switch->whichChild.setValue(1);
+}
+
+void AppearancePreview::setCoinMaterial()
+{
+    _switch->whichChild.setValue(0);
+}
+
 void AppearancePreview::setAmbientColor(const QColor& color)
 {
+    setCoinMaterial();
     _material->ambientColor.setValue(
         SbColor(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0));
     _material->ambientColor.setDefault(false);
@@ -157,6 +211,7 @@ void AppearancePreview::setAmbientColor(const QColor& color)
 
 void AppearancePreview::setDiffuseColor(const QColor& color)
 {
+    setCoinMaterial();
     _material->diffuseColor.setValue(
         SbColor(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0));
     _material->diffuseColor.setDefault(false);
@@ -164,6 +219,7 @@ void AppearancePreview::setDiffuseColor(const QColor& color)
 
 void AppearancePreview::setSpecularColor(const QColor& color)
 {
+    setCoinMaterial();
     _material->specularColor.setValue(
         SbColor(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0));
     _material->specularColor.setDefault(false);
@@ -171,6 +227,7 @@ void AppearancePreview::setSpecularColor(const QColor& color)
 
 void AppearancePreview::setEmissiveColor(const QColor& color)
 {
+    setCoinMaterial();
     _material->emissiveColor.setValue(
         SbColor(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0));
     _material->emissiveColor.setDefault(false);
@@ -178,48 +235,74 @@ void AppearancePreview::setEmissiveColor(const QColor& color)
 
 void AppearancePreview::setShininess(double value)
 {
+    setCoinMaterial();
     _material->shininess.setValue(value);
     _material->shininess.setDefault(false);
 }
 
 void AppearancePreview::setTransparency(double value)
 {
+    setCoinMaterial();
     _material->transparency.setValue(value);
     _material->transparency.setDefault(false);
 }
 
+void AppearancePreview::setTexture(const QImage& image)
+{
+    setCoinTexture();
+
+    SoSFImage texture;
+    Gui::BitmapFactory().convert(image, texture);
+    _texture->image = texture;
+}
+
+void AppearancePreview::setTextureScaling(double scale)
+{}
+
 void AppearancePreview::resetAmbientColor()
 {
+    setCoinMaterial();
     _material->ambientColor.deleteValues(0);
     _material->ambientColor.setDefault(true);
 }
 
 void AppearancePreview::resetDiffuseColor()
 {
+    setCoinMaterial();
     _material->diffuseColor.deleteValues(0);
     _material->diffuseColor.setDefault(true);
 }
 
 void AppearancePreview::resetSpecularColor()
 {
+    setCoinMaterial();
     _material->specularColor.deleteValues(0);
     _material->specularColor.setDefault(true);
 }
 
 void AppearancePreview::resetEmissiveColor()
 {
+    setCoinMaterial();
     _material->emissiveColor.deleteValues(0);
     _material->emissiveColor.setDefault(true);
 }
 
 void AppearancePreview::resetShininess()
 {
+    setCoinMaterial();
     _material->shininess.deleteValues(0);
     _material->shininess.setDefault(true);
 }
 
 void AppearancePreview::resetTransparency()
 {
+    setCoinMaterial();
     _material->transparency.deleteValues(0);
     _material->transparency.setDefault(true);
 }
+
+void AppearancePreview::resetTexture()
+{}
+
+void AppearancePreview::resetTextureScaling()
+{}

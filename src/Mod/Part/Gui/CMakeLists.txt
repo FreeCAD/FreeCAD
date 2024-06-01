@@ -31,6 +31,8 @@ list(APPEND PartGui_LIBS
     ${QtConcurrent_LIBRARIES}
 )
 
+generate_from_xml(ViewProviderExtPy)
+
 set (Part_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Part_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
@@ -61,7 +63,7 @@ set(PartGui_UIC_SRCS
     DlgProjectionOnSurface.ui
     SectionCutting.ui
     ShapeFromMesh.ui
-    TaskFaceColors.ui
+    TaskFaceAppearances.ui
     TaskShapeBuilder.ui
     TaskLoft.ui
     TaskOffset.ui
@@ -69,9 +71,16 @@ set(PartGui_UIC_SRCS
     TaskAttacher.ui
 )
 
+SET(Python_SRCS
+    ViewProviderExtPy.xml
+    ViewProviderExtPyImp.cpp
+)
+SOURCE_GROUP("Python" FILES ${Python_SRCS})
+
 SET(PartGui_SRCS
     ${PartGui_QRC_SRCS}
     ${PartGui_UIC_HDRS}
+    ${Python_SRCS}
     AppPartGui.cpp
     AttacherTexts.h
     AttacherTexts.cpp
@@ -224,9 +233,9 @@ SET(PartGui_SRCS
     SectionCutting.ui
     ShapeFromMesh.cpp
     ShapeFromMesh.h
-    TaskFaceColors.cpp
-    TaskFaceColors.h
-    TaskFaceColors.ui
+    TaskFaceAppearances.cpp
+    TaskFaceAppearances.h
+    TaskFaceAppearances.ui
     TaskShapeBuilder.cpp
     TaskShapeBuilder.h
     TaskShapeBuilder.ui

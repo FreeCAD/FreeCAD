@@ -48,7 +48,7 @@ protected:
 
 private:
     std::vector<App::Color> originalLineColors;
-    std::vector<App::Color> originalFaceColors;
+    std::vector<App::Material> originalFaceAppearance;
 
 };
 

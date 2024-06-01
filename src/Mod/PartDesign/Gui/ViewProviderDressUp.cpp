@@ -100,13 +100,13 @@ void ViewProviderDressUp::highlightReferences(const bool on)
     std::vector<std::string> edges = pcDressUp->Base.getSubValuesStartsWith("Edge");
 
     if (on) {
-        if (!faces.empty() && originalFaceColors.empty()) {
-            originalFaceColors = vp->DiffuseColor.getValues();
-            std::vector<App::Color> colors = originalFaceColors;
+        if (!faces.empty() && originalFaceMaterials.empty()) {
+            originalFaceMaterials = vp->ShapeAppearance.getValues();
+            std::vector<App::Material> materials = originalFaceMaterials;
 
             PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), ShapeAppearance.getDiffuseColor());
-            highlighter.getFaceColors(faces, colors);
-            vp->DiffuseColor.setValues(colors);
+            highlighter.getFaceMaterials(faces, materials);
+            vp->ShapeAppearance.setValues(materials);
         }
         if (!edges.empty() && originalLineColors.empty()) {
             originalLineColors = vp->LineColorArray.getValues();
@@ -117,9 +117,9 @@ void ViewProviderDressUp::highlightReferences(const bool on)
             vp->LineColorArray.setValues(colors);
         }
     } else {
-        if (!faces.empty() && !originalFaceColors.empty()) {
-            vp->DiffuseColor.setValues(originalFaceColors);
-            originalFaceColors.clear();
+        if (!faces.empty() && !originalFaceMaterials.empty()) {
+            vp->ShapeAppearance.setValues(originalFaceMaterials);
+            originalFaceMaterials.clear();
         }
         if (!edges.empty() && !originalLineColors.empty()) {
             vp->LineColorArray.setValues(originalLineColors);
