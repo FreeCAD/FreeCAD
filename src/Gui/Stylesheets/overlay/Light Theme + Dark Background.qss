@@ -35,7 +35,7 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:hover {
 }
 
 Gui--OverlayTabWidget[transparent="true"] QWidget {
-  color: #ffffff;
+  color: #000000;
 }
 
 /* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
