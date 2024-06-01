@@ -66,6 +66,7 @@
 # include <Inventor/nodes/SoPolygonOffset.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoShapeHints.h>
+# include <Inventor/nodes/SoTexture3.h>
 
 # include <boost/algorithm/string/predicate.hpp>
 #endif
@@ -86,10 +87,11 @@
 #include <Mod/Part/App/Tools.h>
 
 #include "ViewProviderExt.h"
+#include "ViewProviderPartExtPy.h"
 #include "SoBrepEdgeSet.h"
 #include "SoBrepFaceSet.h"
 #include "SoBrepPointSet.h"
-#include "TaskFaceColors.h"
+#include "TaskFaceAppearances.h"
 
 
 FC_LOG_LEVEL_INIT("Part", true, true)
@@ -100,12 +102,12 @@ using namespace PartGui;
 namespace {
 float fromPercent(long value)
 {
-    return static_cast<float>(value) / 100.0F;
+    return std::roundf(value) / 100.0F;
 }
 
 long toPercent(float value)
 {
-    return static_cast<long>(100.0 * value + 0.5);
+    return std::lround(100.0 * value);
 }
 }
 
@@ -175,7 +177,6 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY_TYPE(LineColor, (lmat.diffuseColor), osgroup, App::Prop_None, "Set object line color.");
     ADD_PROPERTY_TYPE(PointColor, (vmat.diffuseColor), osgroup, App::Prop_None, "Set object point color");
     ADD_PROPERTY_TYPE(PointColorArray, (PointColor.getValue()), osgroup, App::Prop_None, "Object point color array.");
-    ADD_PROPERTY_TYPE(DiffuseColor,(ShapeAppearance.getDiffuseColors()), osgroup, App::Prop_None, "Object diffuse color.");
     ADD_PROPERTY_TYPE(LineColorArray,(LineColor.getValue()), osgroup, App::Prop_None, "Object line color array.");
     ADD_PROPERTY_TYPE(LineWidth,(lwidth), osgroup, App::Prop_None, "Set object line width.");
     LineWidth.setConstraints(&sizeRange);
@@ -196,6 +197,16 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY_TYPE(DrawStyle,((long int)0), osgroup, App::Prop_None, "Defines the style of the edges in the 3D view.");
     DrawStyle.setEnums(DrawStyleEnums);
 
+    // This is needed to restore old DiffuseColor values since the restore
+    // function is asynchronous
+    App::PropertyColor noColor;
+    ADD_PROPERTY_TYPE(_diffuseColor,
+                      (noColor.getValue()),
+                      osgroup,
+                      App::Prop_NoPersist,
+                      "Object diffuse color.");
+    _diffuseColor.setStatus(App::Property::PropHidden, true);
+
     coords = new SoCoordinate3();
     coords->ref();
     faceset = new SoBrepFaceSet();
@@ -209,6 +220,14 @@ ViewProviderPartExt::ViewProviderPartExt()
     lineset->ref();
     nodeset = new SoBrepPointSet();
     nodeset->ref();
+
+    // Support for textured faces
+    pcShapeTexture3D = new SoTexture3;
+    pcShapeTexture3D->ref();
+    pcShapeCoordinates = new SoCoordinate3;
+    pcShapeCoordinates->ref();
+    pcShapeFaceset = new SoIndexedFaceSet;
+    pcShapeFaceset->ref();
 
     pcFaceBind = new SoMaterialBinding();
     pcFaceBind->ref();
@@ -261,6 +280,19 @@ ViewProviderPartExt::~ViewProviderPartExt()
     normb->unref();
     lineset->unref();
     nodeset->unref();
+
+    pcShapeTexture3D->unref();
+    pcShapeCoordinates->unref();
+    pcShapeFaceset->unref();
+}
+
+PyObject* ViewProviderPartExt::getPyObject()
+{
+    if (!pyViewObject) {
+        pyViewObject = new ViewProviderPartExtPy(this);
+    }
+    pyViewObject->IncRef();
+    return pyViewObject;
 }
 
 void ViewProviderPartExt::onChanged(const App::Property* prop)
@@ -328,29 +360,20 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     else if (prop == &LineColorArray) {
         setHighlightedEdges(LineColorArray.getValues());
     }
-    else if (prop == &DiffuseColor) {
-        setHighlightedFaces(DiffuseColor.getValues());
+    else if (prop == &_diffuseColor) {
+        // Used to load the old DiffuseColor values asynchronously
+        ShapeAppearance.setDiffuseColors(_diffuseColor.getValues());
+        ShapeAppearance.setTransparency(Transparency.getValue() / 100.0f);
     }
     else if (prop == &ShapeAppearance) {
-        pcFaceBind->value = SoMaterialBinding::OVERALL;
+        setHighlightedFaces(ShapeAppearance);
         ViewProviderGeometryObject::onChanged(prop);
-        // While restoring a document do not override the
-        // DiffuseColor that has already been restored
-        if (!isRestoring()) {
-            App::Color c = ShapeAppearance.getDiffuseColor();
-            c.a = fromPercent(Transparency.getValue());
-            DiffuseColor.setValue(c);
-        }
     }
     else if (prop == &Transparency) {
         const App::Material& Mat = ShapeAppearance[0];
         long value = toPercent(Mat.transparency);
         if (value != Transparency.getValue()) {
             float trans = fromPercent(Transparency.getValue());
-            auto colors = DiffuseColor.getValues();
-            for (auto &c : colors)
-                c.a = trans;
-            DiffuseColor.setValues(colors);
 
             App::PropertyContainer* parent = ShapeAppearance.getContainer();
             ShapeAppearance.setContainer(nullptr);
@@ -380,12 +403,12 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
             updateVisual();
             // updateVisual() may not be triggered by any change (e.g.
             // triggered by an external object through forceUpdate()). And
-            // since DiffuseColor is not changed here either, do not falsely set
+            // since ShapeAppearance is not changed here either, do not falsely set
             // the document modified status
             Base::ObjectStatusLocker<App::Property::Status,App::Property> guard(
-                    App::Property::NoModify, &DiffuseColor);
+                    App::Property::NoModify, &ShapeAppearance);
             // The material has to be checked again (#0001736)
-            onChanged(&DiffuseColor);
+            onChanged(&ShapeAppearance);
         }
     }
 
@@ -444,7 +467,10 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     // just faces with no edges or points
     pcFlatRoot->addChild(pShapeHints);
     pcFlatRoot->addChild(pcFaceBind);
-    pcFlatRoot->addChild(pcShapeMaterial);
+    pcFlatRoot->addChild(pcSwitchAppearance);
+    pcTextureGroup3D->addChild(pcShapeTexture3D);
+    pcTextureGroup3D->addChild(pcShapeCoordinates);
+    pcTextureGroup3D->addChild(pcShapeFaceset);
     SoDrawStyle* pcFaceStyle = new SoDrawStyle();
     pcFaceStyle->style = SoDrawStyle::FILLED;
     pcFlatRoot->addChild(pcFaceStyle);
@@ -599,69 +625,89 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getSelectionShape(const char* /
     return {};
 }
 
-void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Color>& colors)
+void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& materials)
 {
-    if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange))
-        getObject()->touch(true);
-
-    Gui::SoUpdateVBOAction action;
-    action.apply(this->faceset);
-
-    int size = static_cast<int>(colors.size());
+    int size = static_cast<int>(materials.size());
     if (size > 1 && size == this->faceset->partIndex.getNum()) {
         pcFaceBind->value = SoMaterialBinding::PER_PART;
-        pcShapeMaterial->diffuseColor.setNum(size);
-        pcShapeMaterial->transparency.setNum(size);
-        SbColor* ca = pcShapeMaterial->diffuseColor.startEditing();
-        float *t = pcShapeMaterial->transparency.startEditing();
-        for (int i = 0; i < size; i++) {
-            ca[i].setValue(colors[i].r, colors[i].g, colors[i].b);
-            t[i] = colors[i].a;
-        }
-        pcShapeMaterial->diffuseColor.finishEditing();
-        pcShapeMaterial->transparency.finishEditing();
-    }
-    else if (colors.size() == 1) {
-        pcFaceBind->value = SoMaterialBinding::OVERALL;
-        pcShapeMaterial->diffuseColor.setValue(colors[0].r, colors[0].g, colors[0].b);
-        pcShapeMaterial->transparency = Transparency.getValue()/100.f;
-    }
-}
-
-void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& colors)
-{
-    int size = static_cast<int>(colors.size());
-    if (size > 1 && size == this->faceset->partIndex.getNum()) {
-        pcFaceBind->value = SoMaterialBinding::PER_PART;
+        activateMaterial();
 
         pcShapeMaterial->diffuseColor.setNum(size);
         pcShapeMaterial->ambientColor.setNum(size);
         pcShapeMaterial->specularColor.setNum(size);
         pcShapeMaterial->emissiveColor.setNum(size);
+        pcShapeMaterial->shininess.setNum(size);
 
         SbColor* dc = pcShapeMaterial->diffuseColor.startEditing();
         SbColor* ac = pcShapeMaterial->ambientColor.startEditing();
         SbColor* sc = pcShapeMaterial->specularColor.startEditing();
         SbColor* ec = pcShapeMaterial->emissiveColor.startEditing();
+        float* sh = pcShapeMaterial->shininess.startEditing();
 
         for (int i = 0; i < size; i++) {
-            dc[i].setValue(colors[i].diffuseColor.r, colors[i].diffuseColor.g, colors[i].diffuseColor.b);
-            ac[i].setValue(colors[i].ambientColor.r, colors[i].ambientColor.g, colors[i].ambientColor.b);
-            sc[i].setValue(colors[i].specularColor.r, colors[i].specularColor.g, colors[i].specularColor.b);
-            ec[i].setValue(colors[i].emissiveColor.r, colors[i].emissiveColor.g, colors[i].emissiveColor.b);
+            dc[i].setValue(materials[i].diffuseColor.r, materials[i].diffuseColor.g, materials[i].diffuseColor.b);
+            ac[i].setValue(materials[i].ambientColor.r, materials[i].ambientColor.g, materials[i].ambientColor.b);
+            sc[i].setValue(materials[i].specularColor.r, materials[i].specularColor.g, materials[i].specularColor.b);
+            ec[i].setValue(materials[i].emissiveColor.r, materials[i].emissiveColor.g, materials[i].emissiveColor.b);
+            sh[i] = materials[i].shininess;
         }
 
         pcShapeMaterial->diffuseColor.finishEditing();
         pcShapeMaterial->ambientColor.finishEditing();
         pcShapeMaterial->specularColor.finishEditing();
         pcShapeMaterial->emissiveColor.finishEditing();
+        pcShapeMaterial->shininess.finishEditing();
     }
-    else if (colors.size() == 1) {
+    else if (size == 1) {
         pcFaceBind->value = SoMaterialBinding::OVERALL;
-        pcShapeMaterial->diffuseColor.setValue(colors[0].diffuseColor.r, colors[0].diffuseColor.g, colors[0].diffuseColor.b);
-        pcShapeMaterial->ambientColor.setValue(colors[0].ambientColor.r, colors[0].ambientColor.g, colors[0].ambientColor.b);
-        pcShapeMaterial->specularColor.setValue(colors[0].specularColor.r, colors[0].specularColor.g, colors[0].specularColor.b);
-        pcShapeMaterial->emissiveColor.setValue(colors[0].emissiveColor.r, colors[0].emissiveColor.g, colors[0].emissiveColor.b);
+        setCoinAppearance(materials[0]);
+    }
+}
+
+void ViewProviderPartExt::setHighlightedFaces(const App::PropertyMaterialList& appearance)
+{
+    int size = static_cast<int>(appearance.getSize());
+    if (size > 1 && size == this->faceset->partIndex.getNum()) {
+        pcFaceBind->value = SoMaterialBinding::PER_PART;
+        activateMaterial();
+
+        pcShapeMaterial->diffuseColor.setNum(size);
+        pcShapeMaterial->ambientColor.setNum(size);
+        pcShapeMaterial->specularColor.setNum(size);
+        pcShapeMaterial->emissiveColor.setNum(size);
+        pcShapeMaterial->shininess.setNum(size);
+
+        SbColor* dc = pcShapeMaterial->diffuseColor.startEditing();
+        SbColor* ac = pcShapeMaterial->ambientColor.startEditing();
+        SbColor* sc = pcShapeMaterial->specularColor.startEditing();
+        SbColor* ec = pcShapeMaterial->emissiveColor.startEditing();
+        float* sh = pcShapeMaterial->shininess.startEditing();
+
+        for (int i = 0; i < size; i++) {
+            dc[i].setValue(appearance.getDiffuseColor(i).r,
+                        appearance.getDiffuseColor(i).g,
+                        appearance.getDiffuseColor(i).b);
+            ac[i].setValue(appearance.getAmbientColor(i).r,
+                        appearance.getAmbientColor(i).g,
+                        appearance.getAmbientColor(i).b);
+            sc[i].setValue(appearance.getSpecularColor(i).r,
+                        appearance.getSpecularColor(i).g,
+                        appearance.getSpecularColor(i).b);
+            ec[i].setValue(appearance.getEmissiveColor(i).r,
+                        appearance.getEmissiveColor(i).g,
+                        appearance.getEmissiveColor(i).b);
+            sh[i] = appearance.getShininess(i);
+        }
+
+        pcShapeMaterial->diffuseColor.finishEditing();
+        pcShapeMaterial->ambientColor.finishEditing();
+        pcShapeMaterial->specularColor.finishEditing();
+        pcShapeMaterial->emissiveColor.finishEditing();
+        pcShapeMaterial->shininess.finishEditing();
+    }
+    else if (size == 1) {
+        pcFaceBind->value = SoMaterialBinding::OVERALL;
+        setCoinAppearance(appearance[0]);
     }
 }
 
@@ -678,18 +724,21 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
     }
 
     if(boost::starts_with(element,"Face")) {
-        auto size = DiffuseColor.getSize();
+        auto size = ShapeAppearance.getSize();
         if(element[4]=='*') {
             auto color = ShapeAppearance.getDiffuseColor();
             color.a = Transparency.getValue()/100.0f;
             bool singleColor = true;
             for(int i=0;i<size;++i) {
-                if(DiffuseColor[i]!=color)
-                    ret[std::string(element,4)+std::to_string(i+1)] = DiffuseColor[i];
-                singleColor = singleColor && DiffuseColor[0]==DiffuseColor[i];
+                if (ShapeAppearance.getDiffuseColor(i) != color) {
+                    ret[std::string(element, 4) + std::to_string(i + 1)] =
+                        ShapeAppearance.getDiffuseColor(i);
+                }
+                singleColor = singleColor
+                    && ShapeAppearance.getDiffuseColor(0) == ShapeAppearance.getDiffuseColor(i);
             }
             if(size && singleColor) {
-                color = DiffuseColor[0];
+                color = ShapeAppearance.getDiffuseColor(0);
                 color.a = Transparency.getValue()/100.0f;
                 ret.clear();
             }
@@ -697,7 +746,7 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
         }else{
             int idx = atoi(element+4);
             if(idx>0 && idx<=size)
-                ret[element] = DiffuseColor[idx-1];
+                ret[element] = ShapeAppearance.getDiffuseColor(idx - 1);
             else
                 ret[element] = ShapeAppearance.getDiffuseColor();
             if(size==1)
@@ -753,7 +802,8 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
 
 void ViewProviderPartExt::unsetHighlightedFaces()
 {
-    DiffuseColor.touch();
+    // DiffuseColor.touch();
+    ShapeAppearance.touch();
     Transparency.touch();
 }
 
@@ -875,7 +925,7 @@ void ViewProviderPartExt::finishRestoring()
     // and currently sets a single color.
     // In case DiffuseColor has defined multiple colors they will
     // be passed to the scene graph now.
-    DiffuseColor.touch();
+    ShapeAppearance.touch();
     Gui::ViewProviderGeometryObject::finishRestoring();
 }
 
@@ -883,11 +933,11 @@ void ViewProviderPartExt::setupContextMenu(QMenu* menu, QObject* receiver, const
 {
     QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Part_ColorFace.svg"));
     Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
-    QAction* act = menu->addAction(iconObject, QObject::tr("Set colors..."), receiver, member);
+    QAction* act = menu->addAction(iconObject, QObject::tr("Set appearance per face..."), receiver, member);
     act->setData(QVariant((int)ViewProvider::Color));
 }
 
-bool ViewProviderPartExt::changeFaceColors()
+bool ViewProviderPartExt::changeFaceAppearances()
 {
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     if (dlg) {
@@ -896,7 +946,7 @@ bool ViewProviderPartExt::changeFaceColors()
     }
 
     Gui::Selection().clearSelection();
-    Gui::Control().showDialog(new TaskFaceColors(this));
+    Gui::Control().showDialog(new TaskFaceAppearances(this));
     return true;
 }
 
@@ -906,7 +956,7 @@ bool ViewProviderPartExt::setEdit(int ModNum)
         // When double-clicking on the item for this pad the
         // object unsets and sets its edit mode without closing
         // the task panel
-        return changeFaceColors();
+        return changeFaceAppearances();
     }
     else {
         return Gui::ViewProviderGeometryObject::setEdit(ModNum);
@@ -1321,7 +1371,8 @@ void ViewProviderPartExt::updateVisual()
     VisualTouched = false;
 
     // The material has to be checked again
-    setHighlightedFaces(DiffuseColor.getValues());
+    // setHighlightedFaces(DiffuseColor.getValues());
+    setHighlightedFaces(ShapeAppearance);
     setHighlightedEdges(LineColorArray.getValues());
     setHighlightedPoints(PointColorArray.getValue());
 }
@@ -1336,3 +1387,18 @@ void ViewProviderPartExt::forceUpdate(bool enable) {
         --forceUpdateCount;
 }
 
+
+void ViewProviderPartExt::handleChangedPropertyName(Base::XMLReader& reader,
+                                                    const char* TypeName,
+                                                    const char* PropName)
+{
+    if (strcmp(PropName, "DiffuseColor") == 0
+        && strcmp(TypeName, App::PropertyColorList::getClassTypeId().getName()) == 0) {
+
+        // PropertyColorLists are loaded asynchronously as they're stored in separate files
+        _diffuseColor.Restore(reader);
+    }
+    else {
+        Gui::ViewProviderGeometryObject::handleChangedPropertyName(reader, TypeName, PropName);
+    }
+}

@@ -285,9 +285,19 @@ QModelIndex MaterialTreeWidget::findInTree(const QString& uuid)
 
 void MaterialTreeWidget::setMaterial(const QString& uuid)
 {
-    if (uuid.isEmpty() || uuid == m_uuid) {
+    if (uuid == m_uuid) {
         return;
     }
+
+    if (uuid.isEmpty()) {
+        // Nothing is selected
+        QItemSelectionModel* selectionModel = m_materialTree->selectionModel();
+        selectionModel->clear();
+        m_material->clear();
+
+        return;
+    }
+
     updateMaterial(uuid);
 
     // Now select the material in the tree
@@ -633,6 +643,11 @@ void MaterialTreeWidget::onSelectMaterial(const QItemSelection& selected,
                                           const QItemSelection& deselected)
 {
     Q_UNUSED(deselected);
+
+    if (selected.isEmpty()) {
+        m_uuid.clear();
+        return;
+    }
 
     // Get the UUID before changing the underlying data model
     QString uuid;

@@ -2112,7 +2112,7 @@ void CmdColorPerFace::activated(int iMsg)
         return;
     PartGui::ViewProviderPartExt* vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(sel.front()));
     if (vp)
-        vp->changeFaceColors();
+        vp->changeFaceAppearances();
 }
 
 bool CmdColorPerFace::isActive()

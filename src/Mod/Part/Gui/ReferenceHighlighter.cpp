@@ -210,6 +210,17 @@ void ReferenceHighlighter::getFaceColor(const std::string& element, std::vector<
         colors[pos] = elementColor;
 }
 
+void ReferenceHighlighter::getFaceColor(const std::string& element,
+                                        std::vector<App::Material>& materials) const
+{
+    int idx = std::stoi(element.substr(4)) - 1;
+    assert(idx >= 0);
+    std::size_t pos = std::size_t(idx);
+    if (pos < materials.size()) {
+        materials[pos].diffuseColor = elementColor;
+    }
+}
+
 void ReferenceHighlighter::getFaceColors(const std::vector<std::string>& elements,
                                          std::vector<App::Color>& colors) const
 {
@@ -224,5 +235,26 @@ void ReferenceHighlighter::getFaceColors(const std::vector<std::string>& element
     }
     else {
         std::fill(colors.begin(), colors.end(), objectColor);
+    }
+}
+
+void ReferenceHighlighter::getFaceMaterials(const std::vector<std::string>& elements,
+                                         std::vector<App::Material>& materials) const
+{
+    App::Material defaultMaterial;
+    materials.resize(fMap.Extent(), defaultMaterial);
+
+    if (!elements.empty()) {
+        for (const std::string& e : elements) {
+            if (boost::starts_with(e, "Face")) {
+                getFaceColor(e, materials);
+            }
+        }
+    }
+    else {
+        for (auto& material : materials) {
+            material.diffuseColor = objectColor;
+        }
+        // std::fill(materials.begin(), materials.end(), objectColor);
     }
 }
