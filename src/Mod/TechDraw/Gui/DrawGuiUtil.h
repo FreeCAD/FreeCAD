@@ -76,8 +76,7 @@ class TechDrawGuiExport DrawGuiUtil {
     static void loadLineStandardsChoices(QComboBox* combo);
     static void loadLineStyleChoices(QComboBox* combo,
                                      TechDraw::LineGenerator* generator = nullptr);
-    static QIcon
-    iconForLine(size_t lineNumber, TechDraw::LineGenerator* generator, QColor textColor);
+    static QIcon iconForLine(size_t lineNumber, TechDraw::LineGenerator* generator);
 
     static double roundToDigits(double original, int digits);
 
