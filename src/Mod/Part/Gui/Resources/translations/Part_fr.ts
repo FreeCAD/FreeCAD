@@ -1610,12 +1610,12 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>Import CAD...</source>
-      <translation>Importation CAO...</translation>
+      <translation>Importer un fichier de CAO...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
       <source>Imports a CAD file</source>
-      <translation>Importe un fichier CAO</translation>
+      <translation>Importe un fichier d'un format de CAO</translation>
     </message>
   </context>
   <context>
@@ -3139,7 +3139,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="20"/>
       <source>Import</source>
-      <translation>Importation</translation>
+      <translation>Importer</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
@@ -5601,7 +5601,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../Command.cpp" line="1070"/>
       <source>All CAD Files</source>
-      <translation>Tous les fichiers CAO</translation>
+      <translation>Tous les fichiers de CAO</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1075"/>

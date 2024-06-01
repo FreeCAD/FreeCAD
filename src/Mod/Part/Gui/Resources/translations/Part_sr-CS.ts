@@ -1556,7 +1556,7 @@
     <message>
       <location filename="../../Command.cpp" line="1278"/>
       <source>Extrude...</source>
-      <translation>Izvlačenje...</translation>
+      <translation>Izvuci</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1279"/>
@@ -1574,7 +1574,7 @@
     <message>
       <location filename="../../Command.cpp" line="1415"/>
       <source>Fillet...</source>
-      <translation>Zaobljenje...</translation>
+      <translation>Zaobli</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1416"/>
@@ -1700,7 +1700,7 @@
     <message>
       <location filename="../../Command.cpp" line="1471"/>
       <source>Mirroring...</source>
-      <translation>Simetrično preslikavanje...</translation>
+      <translation>Simetrično preslikaj</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1472"/>
@@ -6346,7 +6346,7 @@ To će stvoriti 'Filter sastavljanja' za svaki oblik.</translation>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
       <source>Attachment...</source>
-      <translation>Pridruživanje...</translation>
+      <translation>Pridruži</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="83"/>

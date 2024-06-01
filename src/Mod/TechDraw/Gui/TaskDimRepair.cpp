@@ -236,12 +236,13 @@ bool TaskDimRepair::accept()
 {
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Repair Dimension"));
+    Gui::Command::openCommand(Base::Tools::toStdString(tr("Repair Dimension")).c_str());
     replaceReferences();
     m_dim->Type.setValue(m_dimType);
     Gui::Command::commitCommand();
 
     m_dim->recomputeFeature();
+    Gui::Selection().clearSelection();
     return true;
 }
 
@@ -249,6 +250,7 @@ bool TaskDimRepair::reject()
 {
     restoreDimState();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
+    Gui::Selection().clearSelection();
     return false;
 }
 
