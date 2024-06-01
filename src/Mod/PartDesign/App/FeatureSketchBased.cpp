@@ -102,11 +102,7 @@ void ProfileBased::positionByPrevious()
     else {
         //no base. Use either Sketch support's placement, or sketch's placement itself.
         Part::Part2DObject* sketch = getVerifiedSketch();
-#ifdef FC_USE_TNP_FIX
-        App::DocumentObject* support = sketch->Support.getValue();
-#else
         App::DocumentObject* support = sketch->AttachmentSupport.getValue();
-#endif
         if (support && support->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
             this->Placement.setValue(static_cast<App::GeoFeature*>(support)->Placement.getValue());
         }
@@ -580,13 +576,8 @@ TopoShape ProfileBased::getTopoShapeSupportFace() const
         shape = getTopoShapeVerifiedFace();
     }
     else if (sketch->MapMode.getValue() == Attacher::mmFlatFace
-#ifdef FC_USE_TNP_FIX
-             && sketch->Support.getValue()) {
-        const auto& Support = sketch->Support;
-#else
              && sketch->AttachmentSupport.getValue()) {
         const auto& Support = sketch->AttachmentSupport;
-#endif
         App::DocumentObject* ref = Support.getValue();
         shape = Part::Feature::getTopoShape(
             ref,
@@ -641,11 +632,7 @@ Part::Feature* ProfileBased::getBaseObject(bool silent) const
     //due to former test we know we have a 2d object
     Part::Part2DObject* sketch = getVerifiedSketch(silent);
     const char* err = nullptr;
-#ifdef FC_USE_TNP_FIX
-    App::DocumentObject* spt = sketch->Support.getValue();
-#else
     App::DocumentObject* spt = sketch->AttachmentSupport.getValue();
-#endif
     if (spt) {
         if (spt->isDerivedFrom(Part::Feature::getClassTypeId())) {
             rv = static_cast<Part::Feature*>(spt);
