@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 # *   Copyright (c) 2023 FreeCAD Project Association                        *
+# *   Copyright (c) 2024 Syres                                              *
+# *   Copyright (c) 2024 Furgo                                              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,63 +23,86 @@
 # ***************************************************************************
 """Provide the grid observer and background color change for the Draft Workbench.
 """
-import lazy_loader.lazy_loader as lz
 
 import FreeCAD
-import FreeCADGui
 from draftutils import gui_utils
 from draftutils import utils
 
 
-# View observer code to update the Draft Tray:
+# View observer code to update the Draft_ToggleGrid command button to reflect
+# the grid's visibility status
+# Based on view observer code to update the Draft Tray
 if FreeCAD.GuiUp:
-    import PySide.QtCore as QtCore
-    import PySide.QtGui as QtGui
+    import FreeCADGui
     from PySide import QtWidgets
     from draftutils.todo import ToDo
 
-    def _update_gui():
+    def _update_grid_gui():
+        """Callback function to update the Toggle Grid button on all
+        toolbars and menus
+        """
         try:
+            # Get the active view
             view = gui_utils.get_3d_view()
+
+            # If there isn't a view (no document loaded?), disable the button
             if view is None:
-                mw = FreeCADGui.getMainWindow()
-                if mw.findChild(QtWidgets.QToolBar, "Draft snap"):
-                    tbSnap = mw.findChild(QtWidgets.QToolBar, "Draft snap")
-                    btnGrid = _find_grid_toolbutton(
-                        "Draft snap", "Toggle grid", False, False
-                    )
-                    if mw.findChild(QtWidgets.QToolBar, "draft_snap_widget"):
-                        tbSnapWidget = mw.findChild(
-                            QtWidgets.QToolBar, "draft_snap_widget"
-                        )
-                        btnGridSW = _find_grid_toolbutton(
-                            "draft_snap_widget", "Toggle grid", False, False
-                        )
+                _set_grid_button_state(False, False)
                 return
-            _update_gridgui()
+            else:
+                # Otherwise, if there is a view, update the button's status
+                # Update only if FreeCAD has started with GUI, the Draft
+                # workbench has loaded, and there is a view
+                if (
+                    FreeCAD.GuiUp
+                    and hasattr(FreeCADGui, "draftToolBar")
+                    and gui_utils.get_3d_view() is not None
+                ):
+                    if FreeCADGui.Snapper.grid.Visible:
+                        _set_grid_button_state(True, True)
+                    else:
+                        _set_grid_button_state(True, False)
         except Exception:
             pass
 
     def _view_observer_callback(sub_win):
+        # FIXME: the original Draft Tray observer had this commented out code
+        # Check if it's necessary
+        #if sub_win is None:
+        #    return
+        #view = gui_utils.get_3d_view()
+        #if view is None:
+        #    return
         if not hasattr(FreeCADGui, "draftToolBar"):
             return
+
         tray = FreeCADGui.draftToolBar.tray
         if tray is None:
             return
-        if FreeCADGui.draftToolBar.tray.isVisible() is False:
+
+        if not tray.isVisible():
             return
-        ToDo.delay(_update_gui, None)
+
+        ToDo.delay(_update_grid_gui, None)
 
     _view_observer_active = False
 
     def _view_observer_start():
+        """Start the grid observer. This is intended to happen when the draft
+        workbench is activated. This function connects the
+        _view_observer_callback to Qt's subWindowActivated signal. The MDI
+        area emits the subWindowActivated() signal when the active window
+        changes.
+        """
         mw = FreeCADGui.getMainWindow()
         mdi = mw.findChild(QtWidgets.QMdiArea)
         global _view_observer_active
         if not _view_observer_active:
+            # Connect callback to subWindowActivated signal
             mdi.subWindowActivated.connect(_view_observer_callback)
             _view_observer_active = True
-            _view_observer_callback(mdi.activeSubWindow())  # Trigger initial update.
+            # Trigger initial grid button update
+            _view_observer_callback(mdi.activeSubWindow())
 
     def _view_observer_stop():
         mw = FreeCADGui.getMainWindow()
@@ -87,45 +112,19 @@ if FreeCAD.GuiUp:
             mdi.subWindowActivated.disconnect(_view_observer_callback)
             _view_observer_active = False
 
-    def _update_gridgui():
-        if (
-            FreeCAD.GuiUp
-            and hasattr(FreeCADGui, "draftToolBar")
-            and gui_utils.get_3d_view() is not None
-        ):
-            mw = FreeCADGui.getMainWindow()
-            if mw.findChild(QtWidgets.QToolBar, "Draft snap"):
-                if FreeCADGui.Snapper.grid.Visible:
-                    tbSnap = mw.findChild(QtWidgets.QToolBar, "Draft snap")
-                    btnGrid = _find_grid_toolbutton(
-                        "Draft snap", "Toggle grid", True, True
-                    )
-                    if mw.findChild(QtWidgets.QToolBar, "draft_snap_widget"):
-                        tbSnapWidget = mw.findChild(
-                            QtWidgets.QToolBar, "draft_snap_widget"
-                        )
-                        btnGridSW = _find_grid_toolbutton(
-                            "draft_snap_widget", "Toggle grid", True, True
-                        )
-                else:
-                    tbSnap = mw.findChild(QtWidgets.QToolBar, "Draft snap")
-                    btnGrid = _find_grid_toolbutton(
-                        "Draft snap", "Toggle grid", True, False
-                    )
-                    if mw.findChild(QtWidgets.QToolBar, "draft_snap_widget"):
-                        tbSnapWidget = mw.findChild(
-                            QtWidgets.QToolBar, "draft_snap_widget"
-                        )
-                        btnGridSW = _find_grid_toolbutton(
-                            "draft_snap_widget", "Toggle grid", True, False
-                        )
+    def _set_grid_button_state(button_enable, button_check):
+        """Sets the enabled and check states of the Draft_ToggleGrid command.
+        This is then reflected on the associated "Toggle Grid" buttons of every
+        toolbar and menu.
 
-    def _find_grid_toolbutton(tbObj, tbButton, tbButtonEnabled, tbButtonChecked):
-        mw = FreeCADGui.getMainWindow()
-        for toolbar in mw.findChildren(QtWidgets.QToolBar):
-            if toolbar.objectName() == tbObj:
-                for toolbutton in toolbar.findChildren(QtWidgets.QToolButton):
-                    if hasattr(toolbutton, "text"):
-                        if toolbutton.text() == tbButton:
-                            toolbutton.setEnabled(tbButtonEnabled)
-                            toolbutton.setChecked(tbButtonChecked)
+        Args:
+            button_enable (bool): if True, enable the grid button
+            button_check (bool): if True, check the grid button
+
+        Returns:
+            None
+        """
+
+        action = FreeCADGui.Command.get("Draft_ToggleGrid").getAction()[0]
+        action.setCheckable(button_enable)
+        action.setChecked(button_check)

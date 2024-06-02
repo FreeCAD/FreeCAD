@@ -493,6 +493,7 @@ class BIMWorkbench(Workbench):
         from DraftGui import todo
         import BimStatusBar
         from nativeifc import ifc_observer
+        from draftutils import grid_observer
         
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
@@ -502,6 +503,8 @@ class BIMWorkbench(Workbench):
             FreeCADGui.Snapper.show()
         if hasattr(WorkingPlane, "_view_observer_start"):
             WorkingPlane._view_observer_start()
+        if hasattr(grid_observer, "_view_observer_start"):
+            grid_observer._view_observer_start()
         if PARAMS.GetBool("FirstTime", True) and (not hasattr(FreeCAD, "TestEnvironment")):
             todo.delay(FreeCADGui.runCommand, "BIM_Welcome")
         todo.delay(BimStatusBar.setStatusIcons, True)
@@ -571,6 +574,7 @@ class BIMWorkbench(Workbench):
         from bimcommands import BimViews
         import WorkingPlane
         from nativeifc import ifc_observer
+        from draftutils import grid_observer
         
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
@@ -585,6 +589,9 @@ class BIMWorkbench(Workbench):
 
         if hasattr(WorkingPlane, "_view_observer_stop"):
             WorkingPlane._view_observer_stop()
+
+        if hasattr(grid_observer, "_view_observer_stop"):
+            grid_observer._view_observer_stop()
 
         # print("Deactivating status icon")
         todo.delay(BimStatusBar.setStatusIcons, False)
