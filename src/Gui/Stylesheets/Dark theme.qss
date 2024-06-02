@@ -124,7 +124,7 @@ QWidget {
   border: 0px solid #020202;
   padding: 0px;
   color: White;
-  selection-background-color: #333333;
+  selection-background-color: transparent;
   selection-color: White;
 }
 

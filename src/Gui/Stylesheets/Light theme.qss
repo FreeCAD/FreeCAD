@@ -124,7 +124,7 @@ QWidget {
   border: 0px solid #ababab;
   padding: 0px;
   color: black;
-  selection-background-color: #f0f0f0;
+  selection-background-color: transparent;
   selection-color: black;
 }
 
@@ -1583,6 +1583,7 @@ background-color: rgba(237, 237, 237, 0.5);
 QSint--ActionGroup {
 padding: 0px; /* if not reset, it might create problems with QPushButtons and other elements */
 margin: 0px; /* if not reset, it might create problems with QPushButtons and other elements */
+color: black;
 }
 
 QSint--ActionGroup QGroupBox {
@@ -1943,7 +1944,7 @@ QTabBar::close-button, QDockWidget QTabBar::close-button {
   border: 0;
   margin: 3px;
   padding: 0px;
-  image: url(qss:images_classic/close-lightgray.png);
+  image: url(qss:images_classic/Close-lightgray.png);
 }
 
 QTabBar::close-button:hover, QDockWidget QTabBar::close-button:hover {
