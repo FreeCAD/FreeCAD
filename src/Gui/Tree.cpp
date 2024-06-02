@@ -5335,17 +5335,19 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
 
             // Prepend the visibility pixmap to the final icon pixmaps and use these as the icon.
             QIcon new_icon;
+            auto style = this->getTree()->style();
+            int const spacing = style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
             for (auto state: {QIcon::On, QIcon::Off}) {
                 QPixmap px_org = icon.pixmap(0xFFFF, 0xFFFF, QIcon::Normal, state);
 
-                QPixmap px(2*px_org.width(), px_org.height());
+                QPixmap px(2*px_org.width() + spacing, px_org.height());
                 px.fill(Qt::transparent);
 
                 QPainter pt;
                 pt.begin(&px);
                 pt.setPen(Qt::NoPen);
                 pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & Status::Visible) ? pxVisible : pxInvisible);
-                pt.drawPixmap(px_org.width(), 0, px_org.width(), px_org.height(), px_org);
+                pt.drawPixmap(px_org.width() + spacing, 0, px_org.width(), px_org.height(), px_org);
                 pt.end();
 
                 new_icon.addPixmap(px, QIcon::Normal, state);
