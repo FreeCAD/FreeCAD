@@ -1,8 +1,3 @@
-* {
-  /* color: #ffffff; */
-  /* alternate-background-color: rgba(255, 255, 255, 0.437); */
-}
-
 QTabWidget::pane{
   background-color: rgba(0, 0, 0, 0.01);
   border: transparent;
@@ -13,6 +8,23 @@ QAbstractItemView {
   border: transparent;
   padding-right: 5px;
 }
+Gui--OverlayTabWidget[transparent="true"] QWidget {
+   selection-background-color: transparent;
+}
+
+/* Gui--OverlayTabWidget[transparent="true"] QTreeView:selected {
+  color: #000000;
+  background-color: #00ff11;
+}
+Gui--OverlayTabWidget[transparent="true"] QTreeView:selected:active {
+  color: #000000;
+  background-color: #00ff11;
+}
+
+Gui--OverlayTabWidget[transparent="true"] QTreeView:active {
+  color: #000000;
+  background-color: #00ff11;
+} */
 
 Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
   color: #000000;
@@ -22,16 +34,39 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item {
   color: #ffffff;
 }
 
-Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected {
+ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected {
   color: #000000;
-  background: rgba(250,250,250,200);
+  background-color: #c7def5;
 }
+
+Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
+  color: #000000;
+  background-color: #c7def5;
+}
+
+ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected:focus {
+  color: #000000;
+  background-color: #c7def5;
+}
+
+
 Gui--OverlayTabWidget[transparent="true"] QTreeView::item:hover {
   color: #000000;
-  background: rgba(250,250,250,200);
+  background-color: #c7def5;
 }
+
  Gui--OverlayTabWidget[transparent="true"] QTreeView::item:active {
+  color: #ffffff;
+}
+
+Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected:active {
   color: #000000;
+  background-color: #c7def5;
+}
+
+
+Gui--OverlayTabWidget[transparent="true"] QTreeView::item:disabled {
+  color: #9a9a9a;
 }
 
 Gui--OverlayTabWidget[transparent="true"] QWidget {
@@ -53,6 +88,7 @@ Gui--OverlayTabWidget {
   qproperty-effectHeight: 1;
   qproperty-enableEffect: 1;
 }
+
  Gui--OverlayTabWidget#OverlayBottom {
   qproperty-effectColor: rgba(225, 225, 225, 220);
   qproperty-effectBlurRadius: 5;
@@ -114,26 +150,10 @@ Gui--OverlayToolButton::checked:hover {
   border: 1px inset #f5f5f5;
 }
 
-/* QTreeView{
-  color: #000000;
-} */
-/*
-QTreeView:disabled {
-  color: #262626;
-} */
-
-/* Gui--OverlayTabWidget[transparent="true"] QTreeView {
-  color: #ffffff;
-} */
- /* QTreeView::item {
-  /* border-radius: 3px; */
-  /* margin: 1.5px 0px; */
-  /* background-color: rgba(255, 255, 255, 200); */
-/* } */
-
 QFrame {
   border: none;
 }
+
 
 Gui--OverlayToolButton[objectName="OBTN Transparent"] {
   image: url(qss:overlay/icons/transparent_dark.svg);
@@ -169,62 +189,23 @@ Gui--OverlayToolButton[objectName="OBTN Float"]:hover {
   image: url(qss:overlay/icons/float_light.svg);
 }
 
-Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:has-siblings:!adjoins-item {
-  border-image: url(qss:images_dark-light/branch_vline_light.svg) 0;
+Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:closed:has-children:has-siblings  {
+  border-image: none;
+  image: url(qss:images_classic/Arrow-right-white.png) 0;
 }
 
-Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:has-siblings:adjoins-item {
-  border-image: url(qss:images_dark-light/branch_more_light.svg) 0;
+Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:has-children:!has-siblings:closed  {
+  border-image: none;
+  image: url(qss:images_classic/Arrow-right-white.png) 0;
 }
 
-Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:!has-children:!has-siblings:adjoins-item {
-  border-image: url(qss:images_dark-light/branch_end_light.svg) 0;
+Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:open:has-children:has-siblings  {
+  border-image: none;
+  image: url(qss:images_classic/Arrow-down-white.png) 0;
 }
 
-Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:closed:has-children:has-siblings {
-  border-image: url(qss:images_dark-light/branch_more_closed_light.svg) 0;
+Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:open:has-children:!has-siblings  {
+  border-image: none;
+  image: url(qss:images_classic/Arrow-down-white.png) 0;
 }
 
-Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:has-children:!has-siblings:closed {
-  border-image: url(qss:images_dark-light/branch_end_closed_light.svg) 0;
-}
-
-Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:open:has-children:has-siblings {
-  border-image: url(qss:images_dark-light/branch_more_open_light.svg) 0;
-}
-
-Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:open:has-children:!has-siblings {
-  border-image: url(qss:images_dark-light/branch_end_open_light.svg) 0;
-}
-
-
-/* Normal stuff */
-
-
-QTreeView::branch:has-siblings:!adjoins-item  {
-  border-image: url(qss:images_dark-light/branch_vline_dark.svg) 0;
-}
-
-QTreeView::branch:has-siblings:adjoins-item  {
-  border-image: url(qss:images_dark-light/branch_more_dark.svg) 0;
-}
-
-QTreeView::branch:!has-children:!has-siblings:adjoins-item  {
-  border-image: url(qss:images_dark-light/branch_end_dark.svg) 0;
-}
-
-QTreeView::branch:closed:has-children:has-siblings  {
-  border-image: url(qss:images_dark-light/branch_more_closed_dark.svg) 0;
-}
-
-QTreeView::branch:has-children:!has-siblings:closed  {
-  border-image: url(qss:images_dark-light/branch_end_closed_dark.svg) 0;
-}
-
-QTreeView::branch:open:has-children:has-siblings  {
-  border-image: url(qss:images_dark-light/branch_more_open_dark.svg) 0;
-}
-
-QTreeView::branch:open:has-children:!has-siblings  {
-  border-image: url(qss:images_dark-light/branch_end_open_dark.svg) 0;
-}
