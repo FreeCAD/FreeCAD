@@ -157,7 +157,7 @@ public:
         funcs["ColumnSize2"] = &TreeParamsP::updateColumnSize2;
         TreeToolTipIcon = handle->GetBool("TreeToolTipIcon", false);
         funcs["TreeToolTipIcon"] = &TreeParamsP::updateTreeToolTipIcon;
-        VisibilityIcon = handle->GetBool("VisibilityIcon", false);
+        VisibilityIcon = handle->GetBool("VisibilityIcon", true);
         funcs["VisibilityIcon"] = &TreeParamsP::updateVisibilityIcon;
     }
 
@@ -395,7 +395,7 @@ public:
     }
     // Auto generated code (Tools/params_utils.py:296)
     static void updateVisibilityIcon(TreeParamsP *self) {
-        auto v = self->handle->GetBool("VisibilityIcon", false);
+        auto v = self->handle->GetBool("VisibilityIcon", true);
         if (self->VisibilityIcon != v) {
             self->VisibilityIcon = v;
             TreeParams::onVisibilityIconChanged();
@@ -1407,7 +1407,7 @@ const bool & TreeParams::getVisibilityIcon() {
 
 // Auto generated code (Tools/params_utils.py:366)
 const bool & TreeParams::defaultVisibilityIcon() {
-    const static bool def = false;
+    const static bool def = true;
     return def;
 }
 
