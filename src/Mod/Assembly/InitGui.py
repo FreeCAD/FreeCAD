@@ -78,6 +78,7 @@ class AssemblyWorkbench(Workbench):
             "Assembly_CreateAssembly",
             "Assembly_InsertLink",
             "Assembly_SolveAssembly",
+            "Assembly_CreateView",
         ]
 
         cmdListMenuOnly = [
@@ -92,17 +93,16 @@ class AssemblyWorkbench(Workbench):
             "Assembly_CreateJointCylindrical",
             "Assembly_CreateJointSlider",
             "Assembly_CreateJointBall",
+            "Separator",
             "Assembly_CreateJointDistance",
+            "Assembly_CreateJointParallel",
+            "Assembly_CreateJointPerpendicular",
+            "Assembly_CreateJointAngle",
+            "Separator",
+            "Assembly_CreateJointRackPinion",
+            "Assembly_CreateJointScrew",
+            "Assembly_CreateJointGearBelt",
         ]
-
-        if Preferences.preferences().GetBool("ExperimentalFeatures", False):
-            cmdList = cmdList + ["Assembly_CreateView"]
-            cmdListJoints = cmdListJoints + [
-                "Separator",
-                "Assembly_CreateJointRackPinion",
-                "Assembly_CreateJointScrew",
-                "Assembly_CreateJointGearBelt",
-            ]
 
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Assembly"), cmdList)
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Assembly Joints"), cmdListJoints)

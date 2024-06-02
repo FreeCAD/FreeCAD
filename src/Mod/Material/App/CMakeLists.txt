@@ -118,6 +118,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(Materials SHARED ${Materials_SRCS})
 target_link_libraries(Materials ${Materials_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Materials)
+endif()
 
 SET_BIN_DIR(Materials Materials /Mod/Material)
 SET_PYTHON_PREFIX_SUFFIX(Materials)

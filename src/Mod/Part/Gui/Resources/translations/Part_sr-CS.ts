@@ -1054,7 +1054,7 @@
       <location filename="../../DlgBlock.ui" line="48"/>
       <location filename="../../DlgBlock.ui" line="209"/>
       <source>Dimension</source>
-      <translation>Kota</translation>
+      <translation>Merne jedinice</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="53"/>
@@ -1208,7 +1208,7 @@
     <message>
       <location filename="../../Command.cpp" line="1247"/>
       <source>Boolean...</source>
-      <translation>Bulova...</translation>
+      <translation>Bulove operacije...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1248"/>
@@ -1300,7 +1300,7 @@
     <message>
       <location filename="../../Command.cpp" line="1443"/>
       <source>Chamfer...</source>
-      <translation>Obori ivice...</translation>
+      <translation>Obaranje ivica...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1444"/>
@@ -1446,12 +1446,12 @@
     <message>
       <location filename="../../Command.cpp" line="1499"/>
       <source>Cross-sections...</source>
-      <translation>Poprečni presek...</translation>
+      <translation>Poprečni preseci...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1500"/>
       <source>Cross-sections</source>
-      <translation>Poprečni presek</translation>
+      <translation>Poprečni preseci</translation>
     </message>
   </context>
   <context>
@@ -1543,7 +1543,7 @@
     <message>
       <location filename="../../Command.cpp" line="1011"/>
       <source>Exports to a CAD file</source>
-      <translation>Izvozi u CAD datoteku</translation>
+      <translation>Izvezi u CAD datoteku</translation>
     </message>
   </context>
   <context>
@@ -1556,7 +1556,7 @@
     <message>
       <location filename="../../Command.cpp" line="1278"/>
       <source>Extrude...</source>
-      <translation>Izvlačenje...</translation>
+      <translation>Izvuci</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1279"/>
@@ -1574,7 +1574,7 @@
     <message>
       <location filename="../../Command.cpp" line="1415"/>
       <source>Fillet...</source>
-      <translation>Zaobljenje...</translation>
+      <translation>Zaobli</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1416"/>
@@ -1615,7 +1615,7 @@
     <message>
       <location filename="../../Command.cpp" line="948"/>
       <source>Imports a CAD file</source>
-      <translation>Uvozi CAD datoteku</translation>
+      <translation>Uvezi CAD datoteku</translation>
     </message>
   </context>
   <context>
@@ -1646,7 +1646,7 @@
     <message>
       <location filename="../../Command.cpp" line="1567"/>
       <source>Loft...</source>
-      <translation>Kroz preseke...</translation>
+      <translation>Po presecima...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1568"/>
@@ -1700,7 +1700,7 @@
     <message>
       <location filename="../../Command.cpp" line="1471"/>
       <source>Mirroring...</source>
-      <translation>Simetrično preslikavanje...</translation>
+      <translation>Simetrično preslikaj</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1472"/>
@@ -1772,7 +1772,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
-      <translation>Napravi tačkasti objekat na osnovu geometrije</translation>
+      <translation>Napravi tačkasti objekat od geometrije</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="136"/>
@@ -2194,7 +2194,7 @@ projekcije.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="199"/>
       <source>Loft</source>
-      <translation>Kroz preseke</translation>
+      <translation>Po presecima</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="263"/>
@@ -2344,7 +2344,7 @@ Napomena: Položaj je izražen u lokalnom koordinatnom sistemu objekta koji se p
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross sections</source>
-      <translation>Poprečni presek</translation>
+      <translation>Poprečni preseci</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
@@ -2397,12 +2397,12 @@ Napomena: Položaj je izražen u lokalnom koordinatnom sistemu objekta koji se p
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="14"/>
       <source>Boolean Operation</source>
-      <translation>Bulova Operacija</translation>
+      <translation>Bulove operacije</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="20"/>
       <source>Boolean operation</source>
-      <translation>Bulova Operacija</translation>
+      <translation>Bulove operacije</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="32"/>
@@ -2509,7 +2509,7 @@ Napomena: Položaj je izražen u lokalnom koordinatnom sistemu objekta koji se p
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1109"/>
       <source>Chamfer Edges</source>
-      <translation>Obori ivice</translation>
+      <translation>Obaranje ivica</translation>
     </message>
   </context>
   <context>
@@ -2940,7 +2940,7 @@ Ako su obe dužine nula, koristi se jedinična vrednost.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="275"/>
       <source>Edges to chamfer</source>
-      <translation>Ivice za obaranje</translation>
+      <translation>Ivice koje treba oboriti</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="912"/>
@@ -3037,7 +3037,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="20"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Izvezi</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="26"/>
@@ -3047,17 +3047,17 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="47"/>
       <source>Millimeter</source>
-      <translation type="unfinished">Millimeter</translation>
+      <translation>Milimetar</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="52"/>
       <source>Meter</source>
-      <translation type="unfinished">Meter</translation>
+      <translation>Metar</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="57"/>
       <source>Inch</source>
-      <translation type="unfinished">Inch</translation>
+      <translation>Inč</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
@@ -3327,7 +3327,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="92"/>
       <source>Direction:</source>
-      <translation type="unfinished">Direction:</translation>
+      <translation>Pravac:</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="109"/>
@@ -4101,32 +4101,32 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Ambient shape color</source>
-      <translation type="unfinished">Ambient shape color</translation>
+      <translation>Boja okoline</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default ambient color for new shapes</source>
-      <translation type="unfinished">The default ambient color for new shapes</translation>
+      <translation>Podrazumevana boja okoline za nove oblike</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="116"/>
       <source>Emissive shape color</source>
-      <translation type="unfinished">Emissive shape color</translation>
+      <translation>Emitujuća boja</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="123"/>
       <source>The default emissive color for new shapes</source>
-      <translation type="unfinished">The default emissive color for new shapes</translation>
+      <translation>Podrazumevana emitujuća boja za nove oblike</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="149"/>
       <source>Specular shape color</source>
-      <translation type="unfinished">Specular shape color</translation>
+      <translation>Boja odsjaja</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="156"/>
       <source>The default specular color for new shapes</source>
-      <translation type="unfinished">The default specular color for new shapes</translation>
+      <translation>Podrazumevana boja odsjaja za nove oblike</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="182"/>
@@ -4141,12 +4141,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="217"/>
       <source>Shape shininess</source>
-      <translation type="unfinished">Shape shininess</translation>
+      <translation>Blistavost oblika</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="224"/>
       <source>The default shininess for new shapes</source>
-      <translation type="unfinished">The default shininess for new shapes</translation>
+      <translation>Podrazumevana blistavost za nove oblike</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="255"/>
@@ -4361,7 +4361,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="241"/>
       <source>Loft</source>
-      <translation>Kroz preseke</translation>
+      <translation>Po presecima</translation>
     </message>
   </context>
   <context>
@@ -5288,7 +5288,7 @@ povlačenjem pravougaonog okvira u 3D pogledu</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="14"/>
       <source>Loft</source>
-      <translation>Kroz preseke</translation>
+      <translation>Po presecima</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>
@@ -5519,7 +5519,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../TaskThickness.cpp" line="253"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Greška pri unosu</translation>
     </message>
   </context>
   <context>
@@ -5954,7 +5954,7 @@ Da li želiš da nastaviš?</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
       <source>Create tube</source>
-      <translation>Napravi cev</translation>
+      <translation>Cev</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="173"/>
@@ -6002,7 +6002,7 @@ Da li želiš da nastaviš?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>Boolean</source>
-      <translation>Bulove</translation>
+      <translation>Bulove operacije</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
@@ -6012,7 +6012,7 @@ Da li želiš da nastaviš?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Join</source>
-      <translation>Spoji</translation>
+      <translation>Spajanje objekata</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -6035,7 +6035,7 @@ Da li želiš da nastaviš?</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
       <source>Create tube</source>
-      <translation>Napravi cev</translation>
+      <translation>Cev</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
@@ -6089,7 +6089,7 @@ Da li želiš da nastaviš?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
       <source>Connect objects</source>
-      <translation>Poveži objekte</translation>
+      <translation>Spoji objekte</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
@@ -6346,7 +6346,7 @@ To će stvoriti 'Filter sastavljanja' za svaki oblik.</translation>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
       <source>Attachment...</source>
-      <translation>Pridruživanje...</translation>
+      <translation>Pridruži</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
@@ -6609,7 +6609,7 @@ Ova bulova logička operacija uklanja sve delove objekata koji se preklapaju.
     <message>
       <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>Dokument '%1' ne postoji.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="254"/>
@@ -6769,7 +6769,7 @@ Ova bulova logička operacija uklanja sve delove objekata koji se preklapaju.
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
       <source>Wire is not closed.</source>
-      <translation type="unfinished">Wire is not closed.</translation>
+      <translation>Žica nije zatvorena.</translation>
     </message>
   </context>
 </TS>

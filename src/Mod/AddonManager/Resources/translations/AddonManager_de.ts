@@ -6,12 +6,12 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="14"/>
       <source>Custom repository</source>
-      <translation>Eigenes Projektarchiv</translation>
+      <translation>Nutzerdefiniertes Projektarchiv</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="20"/>
       <source>Repository URL</source>
-      <translation>URL des Projektarchivs</translation>
+      <translation>Projektarchiv Internetadresse</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
@@ -53,7 +53,7 @@
     <message>
       <location filename="../../compact_view.ui" line="102"/>
       <source>UpdateAvailable</source>
-      <translation>Update verfügbar</translation>
+      <translation>AktualisierungVerfügbar</translation>
     </message>
   </context>
   <context>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
       <source>Optional?</source>
-      <translation>Optional?</translation>
+      <translation>Wahlweise?</translation>
     </message>
   </context>
   <context>
@@ -92,14 +92,14 @@
       <source>This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
 
 Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</source>
-      <translation>Diese Erweiterung hat die folgenden erforderlichen bzw. optionalen Abhängigkeiten. Sie müssen installiert werden, bevor dieses Addon verwendet werden kann.
+      <translation>Diese Erweiterung hat die folgenden erforderlichen bzw. optionalen Abhängigkeiten. Du must diese installieren, bevor diese Erweiterung verwendet werden kann.
 
-Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wählen, um die Erweiterung zu installieren, ohne die Abhängigkeiten zu installieren.</translation>
+Möchtest Du das der Erweiterungsverwalter sie automatisch installiert? Wähle &quot;Ignorieren&quot;, um die Erweiterung zu installieren, ohne die Abhängigkeiten zu installieren.</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
       <source>FreeCAD Addons</source>
-      <translation>FreeCAD-Addons</translation>
+      <translation>FreeCAD Erweiterungen</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
@@ -117,12 +117,12 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="14"/>
       <source>Addon Developer Tools</source>
-      <translation>Addon-Entwicklungswerkzeuge</translation>
+      <translation>Werkzeuge für Erweiterungsentwickler</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation>Pfad zum Addon</translation>
+      <translation>Pfad zur Erweiterung</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
@@ -144,7 +144,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation>Erläuterung dessen, was dieses Addon zur Verfügung stellt. Wird im Addon-Manager angezeigt. Es ist nicht notwendig anzugeben, dass dies ein FreeCAD-Addon ist.</translation>
+      <translation>Erläuterung, was diese Erweiterung bietet. Wird im Erweiterungsverwalter angezeigt. Der Hinweis, dass es sich um eine FreeCAD Erweiterung  handelt, ist nicht notwendig.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -193,7 +193,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
       <source>README URL</source>
-      <translation>LIESMICH-URL</translation>
+      <translation>LIESMICH URL</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
@@ -203,22 +203,22 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation>URL des Projektarchivs</translation>
+      <translation>Projektarchiv Internetadresse</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
       <source>Website URL</source>
-      <translation>URL der Webseite</translation>
+      <translation>Internetadresse der Webseite</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="211"/>
       <source>Documentation URL</source>
-      <translation>URL der Dokumentation</translation>
+      <translation>Internetadresse der Dokumentation</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
       <source>Addon Name</source>
-      <translation>Addon-Name</translation>
+      <translation>Erweiterungsname</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
@@ -248,7 +248,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="277"/>
       <source>Addon Contents</source>
-      <translation>Addon-Inhalte</translation>
+      <translation>Ereiterungsinhalte</translation>
     </message>
   </context>
   <context>
@@ -266,27 +266,27 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode_tags.ui" line="20"/>
       <source>Comma-separated list of tags describing this item:</source>
-      <translation>Durch Kommas getrennte Liste von Tags, die dieses Element beschreiben:</translation>
+      <translation>Durch Kommas getrennte Liste von Schlagwörtern, die dieses Element beschreiben:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
       <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
-      <translation>HInweis: Gängige Tags einschließlich &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot; usw.</translation>
+      <translation>HInweis: Gängige Schlagwörter einschließlich &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot; usw.</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="17"/>
       <source>Welcome to the Addon Manager</source>
-      <translation>Willkommen beim Addon-Manager</translation>
+      <translation>Willkommen beim Erweiterungsverwalter</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="23"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation>Die Addons, die hier installiert werden können, sind nicht offiziell Teil von FreeCAD und werden nicht vom FreeCAD Team überprüft. Man sollte sich sicher sein, dass man weiß, was man installiert!</translation>
+      <translation>Die Erweiterungen, die hier installiert werden können, sind formell nicht Teil von FreeCAD und werden nicht vom FreeCAD Team überprüft. Stelle sicher, dass Du weist, was Du installierst!</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="46"/>
       <source>Download Settings</source>
-      <translation>Herunterladeeinstellungen</translation>
+      <translation>Einstellungen fürs Herunterladen</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="53"/>
@@ -316,7 +316,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../first_run.ui" line="93"/>
       <source>These and other settings are available in the FreeCAD Preferences window.</source>
-      <translation>Diese und andere Einstellungen sind im FreeCAD Einstellungs-Fenster verfügbar.</translation>
+      <translation>Diese und andere Einstellungen sind im FreeCAD Einstellungsfenster verfügbar.</translation>
     </message>
   </context>
   <context>
@@ -393,7 +393,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
       <location filename="../../expanded_view.py" line="131"/>
       <location filename="../../expanded_view.ui" line="178"/>
       <source>Maintainer</source>
-      <translation>Maintainer</translation>
+      <translation>Instandhalter</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="134"/>
@@ -506,7 +506,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../AddonManagerOptions.ui" line="14"/>
       <source>Addon manager options</source>
-      <translation>Addon-Manager-Optionen</translation>
+      <translation>Auswahlmöglichkeiten Erweiterungsverwalter</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="20"/>
@@ -623,7 +623,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="393"/>
       <source>Advanced Options</source>
-      <translation>Erweiterte Optionen</translation>
+      <translation>Erweiterte Wahlmöglichkeiten</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="399"/>
@@ -2347,7 +2347,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
       <location filename="../../AddonManagerOptions.py" line="262"/>
       <source>Repository URL</source>
       <comment>Preferences header for custom repositories</comment>
-      <translation>URL des Projektarchivs</translation>
+      <translation>Projektarchiv Internetadresse</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.py" line="268"/>

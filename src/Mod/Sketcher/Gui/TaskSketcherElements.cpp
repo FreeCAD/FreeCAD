@@ -492,7 +492,7 @@ private:
     {
         int hue, sat, val, alp;
         QIcon Normal = Gui::BitmapFactory().iconFromTheme(name);
-        QImage imgConstr(Normal.pixmap(qAsConst(Normal).availableSizes()[0]).toImage());
+        QImage imgConstr(Normal.pixmap(std::as_const(Normal).availableSizes()[0]).toImage());
         QImage imgExt(imgConstr);
         QImage imgInt(imgConstr);
 
@@ -1159,7 +1159,7 @@ void ElementFilterList::languageChange()
 /* TRANSLATOR SketcherGui::TaskSketcherElements */
 
 TaskSketcherElements::TaskSketcherElements(ViewProviderSketch* sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Elements"), true, nullptr)
+    : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_CreateLine"), tr("Elements"), true, nullptr)
     , sketchView(sketchView)
     , ui(new Ui_TaskSketcherElements())
     , focusItemIndex(-1)
@@ -1230,7 +1230,7 @@ void TaskSketcherElements::connectSignals()
                      &TaskSketcherElements::onFilterBoxStateChanged);
     QObject::connect(
         ui->settingsButton, &QToolButton::clicked, ui->settingsButton, &QToolButton::showMenu);
-    QObject::connect(qAsConst(ui->settingsButton)->actions()[0],
+    QObject::connect(std::as_const(ui->settingsButton)->actions()[0],
                      &QAction::changed,
                      this,
                      &TaskSketcherElements::onSettingsExtendedInformationChanged);
@@ -1250,7 +1250,7 @@ void TaskSketcherElements::createFilterButtonActions()
     auto* action = new QWidgetAction(this);
     filterList = new ElementFilterList(this);
     action->setDefaultWidget(filterList);
-    qAsConst(ui->filterButton)->addAction(action);
+    std::as_const(ui->filterButton)->addAction(action);
 }
 
 void TaskSketcherElements::onFilterBoxStateChanged(int val)

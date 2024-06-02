@@ -134,8 +134,9 @@ bool DimensionAutoCorrect::autocorrectReferences(std::vector<bool>& referenceSta
     const std::vector<Part::TopoShape> savedGeometry = getDimension()->SavedGeometry.getValues();
     if (savedGeometry.empty() || savedGeometry.size() != refsAll.size()) {
         // this must be an old document without savedGeometry property.  We can not
-        // validate the references in this case.
-        return false;
+        // validate the references in this case so we have to assume the references are
+        // correct.
+        return true;
     }
 
     size_t iRef {0};

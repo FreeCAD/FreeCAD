@@ -265,8 +265,8 @@ void SketchObject::buildShape()
             Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(i-1, Sketcher::PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
-            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
-                                  Data::MappedName::fromRawData(name.c_str()),0L);
+//            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
+//                                  Data::MappedName::fromRawData(name.c_str()),0L);
             vertices.push_back(vertex);
             vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
         } else {
@@ -8620,20 +8620,23 @@ bool SketchObject::evaluateConstraints() const
 
     std::vector<Part::Geometry*> geometry = getCompleteGeometry();
     const std::vector<Sketcher::Constraint*>& constraints = Constraints.getValuesForce();
-    if (static_cast<int>(geometry.size()) != extGeoCount + intGeoCount)
+    if (static_cast<int>(geometry.size()) != extGeoCount + intGeoCount) {
         return false;
-    if (geometry.size() < 2)
+    }
+    if (geometry.size() < 2) {
         return false;
+    }
 
-    std::vector<Sketcher::Constraint*>::const_iterator it;
-    for (it = constraints.begin(); it != constraints.end(); ++it) {
-        if (!evaluateConstraint(*it))
+    for (auto it : constraints) {
+        if (!evaluateConstraint(it)) {
             return false;
+        }
     }
 
     if (!constraints.empty()) {
-        if (!Constraints.scanGeometry(geometry))
+        if (!Constraints.scanGeometry(geometry)) {
             return false;
+        }
     }
 
     return true;
@@ -8652,8 +8655,9 @@ void SketchObject::validateConstraints()
     std::vector<Sketcher::Constraint*>::const_iterator it;
     for (it = constraints.begin(); it != constraints.end(); ++it) {
         bool valid = evaluateConstraint(*it);
-        if (valid)
+        if (valid) {
             newConstraints.push_back(*it);
+        }
     }
 
     if (newConstraints.size() != constraints.size()) {
@@ -9551,14 +9555,29 @@ void SketchObject::setExpression(const App::ObjectIdentifier& path,
     }
 }
 
+const std::string &SketchObject::internalPrefix()
+{
+    static std::string _prefix("Internal");
+    return _prefix;
+}
+
+const char *SketchObject::convertInternalName(const char *name)
+{
+    if (name && boost::starts_with(name, internalPrefix()))
+        return name + internalPrefix().size();
+    return nullptr;
+}
+
 std::pair<std::string,std::string> SketchObject::getElementName(
         const char *name, ElementNameType type) const
 {
     //  Todo: Toponaming Project March 2024:  This method override breaks the sketcher - selection and deletion
     //          of constraints ceases to work.  See #13169.  We need to prove that this works before
-    //          enabling it.  For now, bypass it.
+    //          enabling it.
     return Part2DObject::getElementName(name,type);
-
+#ifndef FC_USE_TNP_FIX
+    return Part2DObject::getElementName(name,type);
+#endif
     std::pair<std::string, std::string> ret;
     if(!name) return ret;
 
@@ -9566,30 +9585,57 @@ std::pair<std::string,std::string> SketchObject::getElementName(
         return Part2DObject::getElementName(name,type);
 
     const char *mapped = Data::isMappedElement(name);
+    Data::IndexedName index = checkSubName(name);
+    index.appendToStringBuffer(ret.second);
+    if (auto realName = convertInternalName(ret.second.c_str())) {
+        Data::MappedElement mappedElement;
+// Todo: Do we need to add the InternalShape?
+//        if (mapped)
+//            mappedElement = InternalShape.getShape().getElementName(name);
+//        else if (type == ElementNameType::Export)
+//            ret.first = getExportElementName(InternalShape.getShape(), realName).first;
+//        else
+//            mappedElement = InternalShape.getShape().getElementName(realName);
+
+        if (mapped || type != ElementNameType::Export) {
+            if (mappedElement.index) {
+                ret.second = internalPrefix();
+                mappedElement.index.appendToStringBuffer(ret.second);
+            }
+            if (mappedElement.name) {
+                ret.first = Data::ComplexGeoData::elementMapPrefix();
+                mappedElement.name.appendToBuffer(ret.first);
+            }
+            else if (mapped)
+                ret.first = name;
+        }
+
+        if (ret.first.size()) {
+            if (auto dot = strrchr(ret.first.c_str(), '.'))
+                ret.first.resize(dot+1-ret.first.c_str());
+            else
+                ret.first += ".";
+            ret.first += ret.second;
+        }
+        if (mapped && (!mappedElement.index || !mappedElement.name))
+            ret.second.insert(0, Data::MISSING_PREFIX);
+        return ret;
+    }
+
     if(!mapped) {
         auto occindex = Part::TopoShape::shapeTypeAndIndex(name);
         if (occindex.second)
             return Part2DObject::getElementName(name,type);
-
-        Data::IndexedName index = checkSubName(name);
-        ret.first = convertSubName(index, true);
-        if(!Data::isMappedElement(ret.first.c_str()))
-            ret.first.clear();
-        index.appendToStringBuffer(ret.second);
-        return ret;
     }
-
-    Data::IndexedName index = checkSubName(name);
-    if(index) {
-        index.appendToStringBuffer(ret.second);
-        ret.first = convertSubName(index, true);
-        if(type==ElementNameType::Export) {
-            if(boost::starts_with(ret.second,"Vertex"))
-                ret.second[0] = 'v';
-            else if(boost::starts_with(ret.second,"Edge"))
-                ret.second[0] = 'e';
-        }
+    if(index && type==ElementNameType::Export) {
+        if(boost::starts_with(ret.second,"Vertex"))
+            ret.second[0] = 'v';
+        else if(boost::starts_with(ret.second,"Edge"))
+            ret.second[0] = 'e';
     }
+    ret.first = convertSubName(index, true);
+    if(!Data::isMappedElement(ret.first.c_str()))
+        ret.first.clear();
     return ret;
 }
 
@@ -9793,6 +9839,16 @@ void SketchObject::makeMissingEquality(bool onebyone)
 {
     if (analyser)
         analyser->makeMissingEquality(onebyone);
+}
+
+int SketchObject::detectDegeneratedGeometries(double tolerance)
+{
+    return analyser->detectDegeneratedGeometries(tolerance);
+}
+
+int SketchObject::removeDegeneratedGeometries(double tolerance)
+{
+    return analyser->removeDegeneratedGeometries(tolerance);
 }
 
 int SketchObject::autoRemoveRedundants(bool updategeo)

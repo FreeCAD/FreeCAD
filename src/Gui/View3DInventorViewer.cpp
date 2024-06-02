@@ -227,7 +227,12 @@ public:
         else if (event->type() == QEvent::KeyPress) {
             auto ke = static_cast<QKeyEvent*>(event);  // NOLINT
             if (ke->matches(QKeySequence::SelectAll)) {
-                static_cast<View3DInventorViewer*>(obj)->selectAll();
+                auto* viewer3d = static_cast<View3DInventorViewer*>(obj);
+                auto* editingVP = viewer3d->getEditingViewProvider();
+                if(!editingVP || !editingVP->selectAll())
+                {
+                    viewer3d->selectAll();
+                }
                 return true;
             }
         }
@@ -1086,6 +1091,12 @@ void View3DInventorViewer::resetEditingViewProvider()
 bool View3DInventorViewer::isEditingViewProvider() const
 {
     return this->editViewProvider != nullptr;
+}
+
+/// return currently editing view provider
+ViewProvider* View3DInventorViewer::getEditingViewProvider() const
+{
+    return this->editViewProvider;
 }
 
 /// display override mode
@@ -3338,6 +3349,39 @@ void View3DInventorViewer::viewSelection()
         path.unrefNoDelete();
         pcGroup->unref();
 #endif
+    }
+}
+
+void View3DInventorViewer::alignToSelection()
+{
+    if (!getCamera()) {
+        return;
+    }
+
+    const auto selection = Selection().getSelection();
+
+    // Empty selection
+    if (selection.empty()) {
+        return;
+    }
+
+    // Too much selections
+    if (selection.size() > 1) {
+        return;
+    }
+
+    // Get the geo feature
+    App::GeoFeature* geoFeature = nullptr;
+    std::pair<std::string, std::string> elementName;
+    App::GeoFeature::resolveElement(selection[0].pObject, selection[0].SubName, elementName, false, App::GeoFeature::ElementNameType::Normal, nullptr, nullptr, &geoFeature);
+    if (!geoFeature) {
+        return;
+    }
+
+    Base::Vector3d direction;
+    if (geoFeature->getCameraAlignmentDirection(direction, selection[0].SubName)) {
+        const auto orientation = SbRotation(SbVec3f(0, 0, 1), Base::convertTo<SbVec3f>(direction));
+        setCameraOrientation(orientation);
     }
 }
 

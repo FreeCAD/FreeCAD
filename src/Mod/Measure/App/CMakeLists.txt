@@ -71,6 +71,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(Measure SHARED ${Measure_SRCS})
 target_link_libraries(Measure ${Measure_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Measure)
+endif()
 
 #if(MSVC)
 #    set_target_properties(Measure PROPERTIES SUFFIX ".pyd")

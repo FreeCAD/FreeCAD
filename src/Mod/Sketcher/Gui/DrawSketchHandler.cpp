@@ -270,7 +270,8 @@ void CurveConverter::OnChange(Base::Subject<const char*>& rCaller, const char* s
 // Construction/Destruction
 
 DrawSketchHandler::DrawSketchHandler()
-    : sketchgui(nullptr)
+    : Gui::ToolHandler()
+    , sketchgui(nullptr)
 {}
 
 DrawSketchHandler::~DrawSketchHandler()
@@ -279,11 +280,6 @@ DrawSketchHandler::~DrawSketchHandler()
 std::string DrawSketchHandler::getToolName() const
 {
     return "DSH_None";
-}
-
-QString DrawSketchHandler::getCrosshairCursorSVGName() const
-{
-    return QString::fromLatin1("None");
 }
 
 std::unique_ptr<QWidget> DrawSketchHandler::createWidget() const
@@ -311,36 +307,20 @@ void DrawSketchHandler::activate(ViewProviderSketch* vp)
 {
     sketchgui = vp;
 
-    // save the cursor at the time the DSH is activated
-    auto* view = dynamic_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
-
-    if (view) {
-        Gui::View3DInventorViewer* viewer = dynamic_cast<Gui::View3DInventor*>(view)->getViewer();
-        oldCursor = viewer->getWidget()->cursor();
-
-        updateCursor();
-
-        this->signalToolChanged();
-
-        this->preActivated();
-        this->activated();
-    }
-    else {
+    if (!Gui::ToolHandler::activate()) {
         sketchgui->purgeHandler();
     }
 }
 
 void DrawSketchHandler::deactivate()
 {
-    this->deactivated();
-    this->postDeactivated();
+    Gui::ToolHandler::deactivate();
     ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, true);
 
     // clear temporary Curve and Markers from the scenograph
     clearEdit();
     clearEditMarkers();
     resetPositionText();
-    unsetCursor();
     setAngleSnapping(false);
 
     ViewProviderSketchDrawSketchHandlerAttorney::signalToolChanged(*sketchgui, "DSH_None");
@@ -348,23 +328,8 @@ void DrawSketchHandler::deactivate()
 
 void DrawSketchHandler::preActivated()
 {
+    this->signalToolChanged();
     ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, false);
-}
-
-void DrawSketchHandler::quit()
-{
-    assert(sketchgui);
-
-    Gui::Selection().rmvSelectionGate();
-    Gui::Selection().rmvPreselect();
-
-    sketchgui->purgeHandler();
-}
-
-void DrawSketchHandler::toolWidgetChanged(QWidget* newwidget)
-{
-    toolwidget = newwidget;
-    onWidgetChanged();
 }
 
 void DrawSketchHandler::registerPressedKey(bool pressed, int key)
@@ -383,6 +348,23 @@ void DrawSketchHandler::pressRightButton(Base::Vector2d /*onSketchPos*/)
     quit();
 }
 
+
+void DrawSketchHandler::quit()
+{
+    assert(sketchgui);
+
+    Gui::Selection().rmvSelectionGate();
+    Gui::Selection().rmvPreselect();
+
+    sketchgui->purgeHandler();
+}
+
+void DrawSketchHandler::toolWidgetChanged(QWidget* newwidget)
+{
+    toolwidget = newwidget;
+    onWidgetChanged();
+}
+
 //**************************************************************************
 // Helpers
 
@@ -394,198 +376,6 @@ int DrawSketchHandler::getHighestVertexIndex()
 int DrawSketchHandler::getHighestCurveIndex()
 {
     return sketchgui->getSketchObject()->getHighestCurveIndex();
-}
-
-unsigned long DrawSketchHandler::getCrosshairColor()
-{
-    unsigned long color = 0xFFFFFFFF;  // white
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    color = hGrp->GetUnsigned("CursorCrosshairColor", color);
-    // from rgba to rgb
-    color = (color >> 8) & 0xFFFFFF;
-    return color;
-}
-
-void DrawSketchHandler::setCrosshairCursor(const QString& svgName)
-{
-    const unsigned long defaultCrosshairColor = 0xFFFFFF;
-    unsigned long color = getCrosshairColor();
-    auto colorMapping = std::map<unsigned long, unsigned long>();
-    colorMapping[defaultCrosshairColor] = color;
-    // hot spot of all SVG icons should be 8,8 for 32x32 size (16x16 for 64x64)
-    int hotX = 8;
-    int hotY = 8;
-    setSvgCursor(svgName, hotX, hotY, colorMapping);
-}
-
-void DrawSketchHandler::setCrosshairCursor(const char* svgName)
-{
-    QString cursorName = QString::fromLatin1(svgName);
-    setCrosshairCursor(cursorName);
-}
-
-void DrawSketchHandler::setSvgCursor(const QString& cursorName,
-                                     int x,
-                                     int y,
-                                     const std::map<unsigned long, unsigned long>& colorMapping)
-{
-    // The Sketcher_Pointer_*.svg icons have a default size of 64x64. When directly creating
-    // them with a size of 32x32 they look very bad.
-    // As a workaround the icons are created with 64x64 and afterwards the pixmap is scaled to
-    // 32x32. This workaround is only needed if pRatio is equal to 1.0
-    //
-    qreal pRatio = devicePixelRatio();
-    bool isRatioOne = (pRatio == 1.0);
-    qreal defaultCursorSize = isRatioOne ? 64 : 32;
-    qreal hotX = x;
-    qreal hotY = y;
-#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
-    if (qGuiApp->platformName() == QLatin1String("xcb")) {
-        hotX *= pRatio;
-        hotY *= pRatio;
-    }
-#endif
-    qreal cursorSize = defaultCursorSize * pRatio;
-
-    QPixmap pointer = Gui::BitmapFactory().pixmapFromSvg(cursorName.toStdString().c_str(),
-                                                         QSizeF(cursorSize, cursorSize),
-                                                         colorMapping);
-    if (isRatioOne) {
-        pointer = pointer.scaled(32, 32);
-    }
-    pointer.setDevicePixelRatio(pRatio);
-    setCursor(pointer, hotX, hotY, false);
-}
-
-void DrawSketchHandler::setCursor(const QPixmap& p, int x, int y, bool autoScale)
-{
-    Gui::View3DInventorViewer* viewer = getViewer();
-    if (viewer) {
-        QCursor cursor;
-        QPixmap p1(p);
-        // TODO remove autoScale after all cursors are SVG-based
-        if (autoScale) {
-            qreal pRatio = viewer->devicePixelRatio();
-            int newWidth = p.width() * pRatio;
-            int newHeight = p.height() * pRatio;
-            p1 = p1.scaled(newWidth, newHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-            p1.setDevicePixelRatio(pRatio);
-            qreal hotX = x;
-            qreal hotY = y;
-#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
-            if (qGuiApp->platformName() == QLatin1String("xcb")) {
-                hotX *= pRatio;
-                hotY *= pRatio;
-            }
-#endif
-            cursor = QCursor(p1, hotX, hotY);
-        }
-        else {
-            // already scaled
-            cursor = QCursor(p1, x, y);
-        }
-
-        actCursor = cursor;
-        actCursorPixmap = p1;
-
-        viewer->getWidget()->setCursor(cursor);
-    }
-}
-
-void DrawSketchHandler::addCursorTail(std::vector<QPixmap>& pixmaps)
-{
-    // Create a pixmap that will contain icon and each autoconstraint icon
-    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-        QPixmap baseIcon = QPixmap(actCursorPixmap);
-        baseIcon.setDevicePixelRatio(actCursorPixmap.devicePixelRatio());
-        qreal pixelRatio = baseIcon.devicePixelRatio();
-        // cursor size in device independent pixels
-        qreal baseCursorWidth = baseIcon.width();
-        qreal baseCursorHeight = baseIcon.height();
-
-        int tailWidth = 0;
-        for (auto const& p : pixmaps) {
-            tailWidth += p.width();
-        }
-
-        int newIconWidth = baseCursorWidth + tailWidth;
-        int newIconHeight = baseCursorHeight;
-
-        QPixmap newIcon(newIconWidth, newIconHeight);
-        newIcon.fill(Qt::transparent);
-
-        QPainter qp;
-        qp.begin(&newIcon);
-
-        qp.drawPixmap(QPointF(0, 0),
-                      baseIcon.scaled(baseCursorWidth * pixelRatio,
-                                      baseCursorHeight * pixelRatio,
-                                      Qt::KeepAspectRatio,
-                                      Qt::SmoothTransformation));
-
-        // Iterate through pixmaps and them to the cursor pixmap
-        std::vector<QPixmap>::iterator pit = pixmaps.begin();
-        int i = 0;
-        qreal currentIconX = baseCursorWidth;
-        qreal currentIconY;
-
-        for (; pit != pixmaps.end(); ++pit, i++) {
-            QPixmap icon = *pit;
-            currentIconY = baseCursorHeight - icon.height();
-            qp.drawPixmap(QPointF(currentIconX, currentIconY), icon);
-            currentIconX += icon.width();
-        }
-
-        qp.end();  // Finish painting
-
-        // Create the new cursor with the icon.
-        QPoint p = actCursor.hotSpot();
-        newIcon.setDevicePixelRatio(pixelRatio);
-        QCursor newCursor(newIcon, p.x(), p.y());
-        applyCursor(newCursor);
-    }
-}
-
-void DrawSketchHandler::updateCursor()
-{
-    auto cursorstring = getCrosshairCursorSVGName();
-
-    if (cursorstring != QString::fromLatin1("None")) {
-        setCrosshairCursor(cursorstring);
-    }
-}
-
-void DrawSketchHandler::applyCursor()
-{
-    applyCursor(actCursor);
-}
-
-void DrawSketchHandler::applyCursor(QCursor& newCursor)
-{
-    Gui::View3DInventorViewer* viewer = getViewer();
-    if (viewer) {
-        viewer->getWidget()->setCursor(newCursor);
-    }
-}
-
-void DrawSketchHandler::unsetCursor()
-{
-    Gui::View3DInventorViewer* viewer = getViewer();
-    if (viewer) {
-        viewer->getWidget()->setCursor(oldCursor);
-    }
-}
-
-qreal DrawSketchHandler::devicePixelRatio()
-{
-    qreal pixelRatio = 1;
-    Gui::View3DInventorViewer* viewer = getViewer();
-    if (viewer) {
-        pixelRatio = viewer->devicePixelRatio();
-    }
-    return pixelRatio;
 }
 
 std::vector<QPixmap>
@@ -1283,13 +1073,4 @@ void DrawSketchHandler::moveConstraint(int constNum, const Base::Vector2d& toPos
 void DrawSketchHandler::signalToolChanged() const
 {
     ViewProviderSketchDrawSketchHandlerAttorney::signalToolChanged(*sketchgui, this->getToolName());
-}
-
-Gui::View3DInventorViewer* DrawSketchHandler::getViewer()
-{
-    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-        return static_cast<Gui::View3DInventor*>(view)->getViewer();
-    }
-    return nullptr;
 }

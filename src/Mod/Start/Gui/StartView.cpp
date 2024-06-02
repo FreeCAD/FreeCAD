@@ -114,7 +114,7 @@ StartView::StartView(Gui::Document* pcDocument, QWidget* parent)
 
     auto scrolledWidget = gsl::owner<QWidget*>(new QWidget(this));
     _contents->setWidget(scrolledWidget);
-    _contents->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
+    _contents->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
     _contents->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
     _contents->setWidgetResizable(true);
     auto layout = gsl::owner<QVBoxLayout*>(new QVBoxLayout(scrolledWidget));
@@ -192,7 +192,7 @@ void StartView::configureNewFileButtons(QLayout* layout) const
                                   QLatin1String(":/icons/DraftWorkbench.svg")});
     auto arch = createNewButton({tr("BIM/Architecture"),
                                  tr("Create an architectural project"),
-                                 QLatin1String(":/icons/ArchWorkbench.svg")});
+                                 QLatin1String(":/icons/BIMWorkbench.svg")});
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");

@@ -153,8 +153,7 @@ App::DocumentObjectExecReturn *Boolean::execute()
 
     result = refineShapeIfActive(result);
 
-    int solidCount = countSolids(result);
-    if (solidCount > 1) {
+    if (!isSingleSolidRuleSatisfied(result)) {
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
     }
 

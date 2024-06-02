@@ -55,6 +55,7 @@
 #include <Base/PlacementPy.h>
 #include <Base/Tools.h>
 
+#include "Action.h"
 #include "MainWindow.h"
 #include "ViewProviderLink.h"
 #include "ViewProviderLinkPy.h"
@@ -2619,6 +2620,9 @@ void ViewProviderLink::_setupContextMenu(
             act->setData(QVariant((int)ViewProvider::Color));
         }
     }
+
+    auto cmd = Application::Instance->commandManager().getCommandByName("Std_LinkSelectLinked");
+    menu->addAction(cmd->getAction()->action());
 }
 
 bool ViewProviderLink::initDraggingPlacement() {

@@ -402,7 +402,7 @@ class CAMSanity:
                     )
                 )
             tooldata["image"] = ""
-            imagepath = "" #os.path.join(self.filelocation, f"T{TC.ToolNumber}.png")
+            imagepath = os.path.join(self.filelocation, f"T{TC.ToolNumber}.png")
             tooldata["imagepath"] = imagepath
             Path.Log.debug(imagepath)
             if imagedata is not None:

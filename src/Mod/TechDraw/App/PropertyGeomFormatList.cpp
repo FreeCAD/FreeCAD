@@ -107,19 +107,20 @@ void PropertyGeomFormatList::setPyObject(PyObject *value)
 //    Part2DObject* part2d = dynamic_cast<Part2DObject*>(this->getContainer());
 
     if (PySequence_Check(value)) {
-        Py_ssize_t nSize = PySequence_Size(value);
+        Py::Sequence sequence(value);
+        Py_ssize_t nSize = sequence.size();
         std::vector<GeomFormat*> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i < nSize; ++i) {
-            PyObject* item = PySequence_GetItem(value, i);
-            if (!PyObject_TypeCheck(item, &(GeomFormatPy::Type))) {
+            Py::Object item = sequence.getItem(i);
+            if (!PyObject_TypeCheck(item.ptr(), &(GeomFormatPy::Type))) {
                 std::string error = std::string("types in list must be 'GeomFormat', not ");
-                error += item->ob_type->tp_name;
+                error += item.ptr()->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
 
-            values[i] = static_cast<GeomFormatPy*>(item)->getGeomFormatPtr();
+            values[i] = static_cast<GeomFormatPy*>(item.ptr())->getGeomFormatPtr();
         }
 
         setValues(values);

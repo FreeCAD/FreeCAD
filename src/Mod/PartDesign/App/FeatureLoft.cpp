@@ -288,13 +288,15 @@ App::DocumentObjectExecReturn *Loft::execute()
             BRepAlgoAPI_Fuse mkFuse(base, result);
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Adding the loft failed"));
+                
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
+
             // lets check if the result is a solid
             if (boolOp.IsNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-            int solidCount = countSolids(boolOp);
-            if (solidCount > 1) {
+
+            if (!isSingleSolidRuleSatisfied(boolOp)) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
@@ -306,13 +308,15 @@ App::DocumentObjectExecReturn *Loft::execute()
             BRepAlgoAPI_Cut mkCut(base, result);
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Subtracting the loft failed"));
+
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape boolOp = this->getSolid(mkCut.Shape());
+
             // lets check if the result is a solid
             if (boolOp.IsNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-            int solidCount = countSolids(boolOp);
-            if (solidCount > 1) {
+
+            if (!isSingleSolidRuleSatisfied(boolOp)) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
@@ -390,6 +394,8 @@ App::DocumentObjectExecReturn *Loft::execute(void)
     } catch (const Base::Exception&) {
     }
 
+    auto hasher = getDocument()->getStringHasher();
+
     try {
         //setup the location
         this->positionByPrevious();
@@ -413,7 +419,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
                 wiresections[i++].push_back(s);
         }
 
-        TopoShape result(0);
+        TopoShape result(0,hasher);
         std::vector<TopoShape> shapes;
 
 //        if (SplitProfile.getValue()) {
@@ -429,14 +435,14 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             for (auto &wires : wiresections) {
                 for(auto& wire : wires)
                     wire.move(invObjLoc);
-                shells.push_back(TopoShape(0).makeElementLoft(
+                shells.push_back(TopoShape(0, hasher).makeElementLoft(
                     wires, Part::IsSolid::notSolid, Ruled.getValue()? Part::IsRuled::ruled : Part::IsRuled::notRuled, Closed.getValue() ? Part::IsClosed::closed : Part::IsClosed::notClosed));
 //            }
 
             //build the top and bottom face, sew the shell and build the final solid
             TopoShape front;
             if (wiresections[0].front().shapeType() != TopAbs_VERTEX) {
-                front = getVerifiedFace();
+                front = getTopoShapeVerifiedFace();
                 if (front.isNull())
                     return new App::DocumentObjectExecReturn(
                         QT_TRANSLATE_NOOP("Exception", "Loft: Creating a face from sketch failed"));
@@ -526,7 +532,11 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
         boolOp = refineShapeIfActive(boolOp);
-        Shape.setValue(getSolid(boolOp));
+        boolOp = getSolid(boolOp);
+        if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+        }
+        Shape.setValue(boolOp);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {

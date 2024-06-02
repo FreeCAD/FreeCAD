@@ -11,7 +11,7 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="103"/>
       <source>Welcome to %1</source>
-      <translation type="unfinished">Welcome to %1</translation>
+      <translation>Ласкаво просимо до %1</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="106"/>
@@ -27,19 +27,19 @@
   <context>
     <name>StartGui::GeneralSettingsWidget</name>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="209"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
       <source>Language</source>
-      <translation type="unfinished">Language</translation>
+      <translation>Мова</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="210"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
       <source>Unit System</source>
-      <translation type="unfinished">Unit System</translation>
+      <translation>Система одиниць вимірювання</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="223"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="226"/>
       <source>Navigation Style</source>
-      <translation type="unfinished">Navigation Style</translation>
+      <translation>Стиль навігації</translation>
     </message>
   </context>
   <context>
@@ -61,22 +61,22 @@
     <message>
       <location filename="../../StartView.cpp" line="178"/>
       <source>Empty file</source>
-      <translation type="unfinished">Empty file</translation>
+      <translation>Порожній файл</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="179"/>
       <source>Create a new empty FreeCAD file</source>
-      <translation type="unfinished">Create a new empty FreeCAD file</translation>
+      <translation>Створити новий порожній файл FreeCAD</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="181"/>
       <source>Open File</source>
-      <translation type="unfinished">Open File</translation>
+      <translation>Відкрити файл</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="182"/>
       <source>Open an existing CAD file or 3D model</source>
-      <translation type="unfinished">Open an existing CAD file or 3D model</translation>
+      <translation>Відкрити файл CAD або 3D модель, що вже існує</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="184"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../StartView.cpp" line="188"/>
       <source>Create an assembly project</source>
-      <translation type="unfinished">Create an assembly project</translation>
+      <translation>Створити проект збірки</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="190"/>
@@ -116,22 +116,22 @@
     <message>
       <location filename="../../StartView.cpp" line="194"/>
       <source>Create an architectural project</source>
-      <translation type="unfinished">Create an architectural project</translation>
+      <translation>Створити архітектурний проект</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="434"/>
       <source>New File</source>
-      <translation type="unfinished">New File</translation>
+      <translation>Новий файл</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="435"/>
       <source>Examples</source>
-      <translation type="unfinished">Examples</translation>
+      <translation>Приклади</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="436"/>
       <source>Recent Files</source>
-      <translation type="unfinished">Recent Files</translation>
+      <translation>Останні файли</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="440"/>
@@ -152,7 +152,7 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="58"/>
       <source>Classic</source>
-      <translation type="unfinished">Classic</translation>
+      <translation>Класичний</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
@@ -172,13 +172,13 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="138"/>
       <source>More themes are available online using the Addon Manager</source>
-      <translation type="unfinished">More themes are available online using the Addon Manager</translation>
+      <translation>Більше тем доступні онлайн за допомогою Менеджера доповнень</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="139"/>
       <source>Classic</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Classic</translation>
+      <translation>Класичний</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="140"/>

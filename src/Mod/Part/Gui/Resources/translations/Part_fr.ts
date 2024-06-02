@@ -1341,7 +1341,7 @@
     <message>
       <location filename="../../Command.cpp" line="736"/>
       <source>Compound tools: working with lists of shapes.</source>
-      <translation>Outils pour des composés : travailler avec des listes de formes.</translation>
+      <translation>Travailler avec des listes de formes.</translation>
     </message>
   </context>
   <context>
@@ -1610,12 +1610,12 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>Import CAD...</source>
-      <translation>Importation CAO...</translation>
+      <translation>Importer un fichier de CAO...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
       <source>Imports a CAD file</source>
-      <translation>Importe un fichier CAO</translation>
+      <translation>Importe un fichier d'un format de CAO</translation>
     </message>
   </context>
   <context>
@@ -3139,7 +3139,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="20"/>
       <source>Import</source>
-      <translation>Importation</translation>
+      <translation>Importer</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
@@ -4096,32 +4096,32 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Ambient shape color</source>
-      <translation type="unfinished">Ambient shape color</translation>
+      <translation>Couleur ambiante des formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default ambient color for new shapes</source>
-      <translation type="unfinished">The default ambient color for new shapes</translation>
+      <translation>La couleur ambiante par défaut pour les nouvelles formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="116"/>
       <source>Emissive shape color</source>
-      <translation type="unfinished">Emissive shape color</translation>
+      <translation>Couleur émissive des formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="123"/>
       <source>The default emissive color for new shapes</source>
-      <translation type="unfinished">The default emissive color for new shapes</translation>
+      <translation>La couleur émissive par défaut pour les nouvelles formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="149"/>
       <source>Specular shape color</source>
-      <translation type="unfinished">Specular shape color</translation>
+      <translation>Couleur spéculaire des formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="156"/>
       <source>The default specular color for new shapes</source>
-      <translation type="unfinished">The default specular color for new shapes</translation>
+      <translation>La couleur spéculaire par défaut pour les nouvelles formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="182"/>
@@ -4136,12 +4136,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="217"/>
       <source>Shape shininess</source>
-      <translation type="unfinished">Shape shininess</translation>
+      <translation>Brillance des formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="224"/>
       <source>The default shininess for new shapes</source>
-      <translation type="unfinished">The default shininess for new shapes</translation>
+      <translation>La brillance par défaut des nouvelles formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="255"/>
@@ -4745,7 +4745,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="410"/>
       <source>Done</source>
-      <translation>Terminé</translation>
+      <translation>Fait</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="412"/>
@@ -5313,7 +5313,7 @@ faces en traçant un rectangle de sélection dans la vue 3D.</translation>
       <location filename="../../TaskOffset.ui" line="14"/>
       <location filename="../../TaskOffset.ui" line="20"/>
       <source>Offset</source>
-      <translation>Décaler</translation>
+      <translation>Décalage</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="34"/>
@@ -5515,7 +5515,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../TaskThickness.cpp" line="188"/>
       <source>Done</source>
-      <translation>Terminé</translation>
+      <translation>Fait</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="253"/>
@@ -5601,7 +5601,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../Command.cpp" line="1070"/>
       <source>All CAD Files</source>
-      <translation>Tous les fichiers CAO</translation>
+      <translation>Tous les fichiers de CAO</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1075"/>

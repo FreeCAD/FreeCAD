@@ -74,8 +74,8 @@ TaskMeasure::TaskMeasure()
     // formLayout->setFieldGrowthPolicy(QFormLayout::FieldGrowthPolicy::ExpandingFieldsGrow);
     formLayout->setFormAlignment(Qt::AlignCenter);
 
-    formLayout->addRow(QString::fromLatin1("Mode:"), modeSwitch);
-    formLayout->addRow(QString::fromLatin1("Result:"), valueResult);
+    formLayout->addRow(tr("Mode:"), modeSwitch);
+    formLayout->addRow(tr("Result:"), valueResult);
     layout->addLayout(formLayout);
 
     Content.emplace_back(taskbox);
@@ -104,15 +104,15 @@ TaskMeasure::~TaskMeasure(){
 void TaskMeasure::modifyStandardButtons(QDialogButtonBox* box) {
 
     QPushButton* btn = box->button(QDialogButtonBox::Apply);
-    btn->setText(tr("Annotate"));
-    btn->setToolTip(tr("Press the Annotate button to add measurement to the document."));
+    btn->setText(tr("Save"));
+    btn->setToolTip(tr("Save the measurement in the active document."));
     connect(btn, &QPushButton::released, this, &TaskMeasure::apply);
 
     // Disable button by default
     btn->setEnabled(false);
     btn = box->button(QDialogButtonBox::Abort);
-    btn->setText(QString::fromLatin1("Close"));
-    btn->setToolTip(tr("Press the Close button to exit."));
+    btn->setText(tr("Close"));
+    btn->setToolTip(tr("Close the measurement task."));
 
     // Connect reset button
     btn = box->button(QDialogButtonBox::Reset);
@@ -259,7 +259,7 @@ void ensureGroup(Measure::MeasureBase* measurement) {
     App::Document* doc = App::GetApplication().getActiveDocument();
     App::DocumentObject* obj = doc->getObject(measurementGroupName);
     if (!obj || !obj->isValid()) {
-        obj = doc->addObject("App::DocumentObjectGroup", measurementGroupName);
+        obj = doc->addObject("App::DocumentObjectGroup", measurementGroupName, true, "MeasureGui::ViewProviderMeasureGroup");
     }
 
     auto group = static_cast<App::DocumentObjectGroup*>(obj);

@@ -46,6 +46,7 @@
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewMulti.h>
+#include <Mod/TechDraw/App/DrawBrokenView.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/CenterLine.h>
@@ -84,6 +85,7 @@ ViewProviderViewPart::ViewProviderViewPart()
     static const char *hgroup = "Highlight";
     static const char *sgroup = "Section Line";
     static const char *fgroup = "Faces";
+    static const char *bvgroup = "Broken View";
 
     //default line weights
 
@@ -109,13 +111,15 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(CenterScale, (defScale), dgroup, App::Prop_None, "Center mark size adjustment, if enabled");
 
     //properties that affect Section Line
-    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,sgroup, App::Prop_None, "Show/hide section line if applicable");
+    ADD_PROPERTY_TYPE(ShowSectionLine ,(Preferences::showSectionLine()), sgroup, App::Prop_None, "Show/hide section line if applicable");
+    ADD_PROPERTY_TYPE(IncludeCutLine ,(Preferences::includeCutLine()), sgroup, App::Prop_None, "Show/hide section cut line if applicable");
     ADD_PROPERTY_TYPE(SectionLineStyle, (Preferences::SectionLineStyle()), sgroup, App::Prop_None,
                         "Set section line style if applicable");
     ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), sgroup, App::Prop_None,
                         "Set section line color if applicable");
 
-     bool marksDefault  = Preferences::sectionLineConvention() == 1 ? true : false;
+    // Assumption: ASME does not use change marks and ISO does use change marks
+    bool marksDefault  = Preferences::sectionLineConvention() == 1 ? true : false;
     ADD_PROPERTY_TYPE(SectionLineMarks, (marksDefault), sgroup, App::Prop_None,
                         "Show marks at direction changes for ComplexSection");
 
@@ -125,6 +129,13 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(HighlightLineColor, (prefHighlightColor()), hgroup, App::Prop_None,
                         "Set highlight line color if applicable");
     ADD_PROPERTY_TYPE(HighlightAdjust, (0.0), hgroup, App::Prop_None, "Adjusts the rotation of the Detail highlight");
+
+    // properties that affect BrokenViews
+    BreakLineType.setEnums(DrawBrokenView::BreakTypeEnums);
+    ADD_PROPERTY_TYPE(BreakLineType, (Preferences::BreakType()), bvgroup, App::Prop_None,
+                        "Adjusts the type of break line depiction on broken views");
+    ADD_PROPERTY_TYPE(BreakLineStyle, (Preferences::BreakLineStyle()), bvgroup, App::Prop_None,
+                        "Set break line style if applicable");
 
     ADD_PROPERTY_TYPE(ShowAllEdges ,(false),dgroup, App::Prop_None, "Temporarily show invisible lines");
 
@@ -139,12 +150,15 @@ ViewProviderViewPart::ViewProviderViewPart()
     if (bodyName == "ISO") {
         SectionLineStyle.setEnums(ISOLineName::ISOLineNameEnums);
         HighlightLineStyle.setEnums(ISOLineName::ISOLineNameEnums);
+        BreakLineStyle.setEnums(ISOLineName::ISOLineNameEnums);
     } else if (bodyName == "ANSI") {
         SectionLineStyle.setEnums(ANSILineName::ANSILineNameEnums);
         HighlightLineStyle.setEnums(ANSILineName::ANSILineNameEnums);
+        BreakLineStyle.setEnums(ANSILineName::ANSILineNameEnums);
     } else if (bodyName == "ASME") {
         SectionLineStyle.setEnums(ASMELineName::ASMELineNameEnums);
         HighlightLineStyle.setEnums(ASMELineName::ASMELineNameEnums);
+        BreakLineStyle.setEnums(ASMELineName::ASMELineNameEnums);
     }
 }
 
@@ -176,12 +190,15 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
         prop == &(SectionLineStyle) ||
         prop == &(SectionLineColor) ||
         prop == &(SectionLineMarks) ||
+        prop == &(IncludeCutLine)  ||
         prop == &(HighlightLineStyle) ||
         prop == &(HighlightLineColor) ||
         prop == &(HorizCenterLine) ||
         prop == &(VertCenterLine)  ||
         prop == &(FaceColor) ||
-        prop == &(FaceTransparency)) {
+        prop == &(FaceTransparency)  ||
+        prop == &(BreakLineType)   ||
+        prop == &(BreakLineStyle) ) {
         // redraw QGIVP
         QGIView* qgiv = getQView();
         if (qgiv) {
@@ -340,17 +357,9 @@ void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, co
 
 bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
 {
-    // if a cosmetic subelement is in the list of selected subNames then we treat this
-    // as a delete of the subelement and not a delete of the DVP
-    std::vector<std::string> removables = getSelectedCosmetics(subNames);
-    if (!removables.empty()) {
-        // we have cosmetics, so remove them and tell Std_Delete not to remove the DVP
-        deleteCosmeticElements(removables);
-        getViewObject()->recomputeFeature();
-        return false;
-    }
-
+    // Base::Console().Message("VPVP::onDelete(%d subNames)\n", subNames.size());
     // we cannot delete if the view has a section or detail view
+    (void) subNames;
     QString bodyMessage;
     QTextStream bodyMessageStream(&bodyMessage);
 
@@ -375,52 +384,6 @@ bool ViewProviderViewPart::canDelete(App::DocumentObject *obj) const
     // that it cannot be deleted if it has a child view is handled in the onDelete() function
     Q_UNUSED(obj)
     return true;
-}
-
-//! extract the names of cosmetic subelements from the list of all selected elements
-std::vector<std::string> ViewProviderViewPart::getSelectedCosmetics(std::vector<std::string> subNames)
-{
-
-    std::vector<std::string> result;
-    // pick out any cosmetic vertices or edges in the selection
-    for (auto& sub : subNames) {
-        if (DU::getGeomTypeFromName(sub) == "Vertex") {
-            if (DU::isCosmeticVertex(getViewObject(), sub)) {
-                result.emplace_back(sub);
-            }
-        } else if (DU::getGeomTypeFromName(sub) == "Edge") {
-            if (DU::isCosmeticEdge(getViewObject(), sub)  ||
-                DU::isCenterLine(getViewObject(), sub)) {
-                result.emplace_back(sub);
-            }
-        }
-    }
-    return result;
-}
-
-//! delete cosmetic elements for a list of subelement names
-void ViewProviderViewPart::deleteCosmeticElements(std::vector<std::string> removables)
-{
-    for (auto& name : removables) {
-        if (DU::getGeomTypeFromName(name) == "Vertex") {
-            CosmeticVertex* vert = getViewObject()->getCosmeticVertexBySelection(name);
-            getViewObject()->removeCosmeticVertex(vert->getTagAsString());
-            continue;
-        }
-        if (DU::getGeomTypeFromName(name) == "Edge") {
-            CosmeticEdge* edge = getViewObject()->getCosmeticEdgeBySelection(name);
-            if (edge) {
-                // if not edge, something has gone very wrong!
-                getViewObject()->removeCosmeticEdge(edge->getTagAsString());
-                continue;
-            }
-            CenterLine* line = getViewObject()->getCenterLineBySelection(name);
-            if (line) {
-                getViewObject()->removeCenterLine(line->getTagAsString());
-                continue;
-            }
-        }
-    }
 }
 
 App::Color ViewProviderViewPart::prefSectionColor()

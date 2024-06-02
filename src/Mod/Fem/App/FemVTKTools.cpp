@@ -470,7 +470,6 @@ void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh)
 
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     exportVTKMesh(mesh, grid);
-    // vtkSmartPointer<vtkDataSet> dataset = vtkDataSet::SafeDownCast(grid);
     Base::Console().Log("Start: writing mesh data ======================\n");
     if (f.hasExtension("vtu")) {
         writeVTKFile<vtkXMLUnstructuredGridWriter>(filename, grid);
@@ -630,7 +629,6 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     // result
     FemVTKTools::exportFreeCADResult(res, grid);
 
-    // vtkSmartPointer<vtkDataSet> dataset = vtkDataSet::SafeDownCast(grid);
     if (f.hasExtension("vtu")) {
         writeVTKFile<vtkXMLUnstructuredGridWriter>(filename, grid);
     }
@@ -659,6 +657,7 @@ std::map<std::string, std::string> _getFreeCADMechResultVectorProperties()
     resFCVecProp["PS1Vector"] = "Major Principal Stress Vector";
     resFCVecProp["PS2Vector"] = "Intermediate Principal Stress Vector";
     resFCVecProp["PS3Vector"] = "Minor Principal Stress Vector";
+    resFCVecProp["HeatFlux"] = "Heat Flux";
 
     return resFCVecProp;
 }
@@ -867,9 +866,6 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
         }
 
         if (field && field->getSize() > 0) {
-            // if (nPoints != field->getSize())
-            //     Base::Console().Error("Size of PropertyVectorList = %d, not equal
-            //     to vtk mesh node count %d \n", field->getSize(), nPoints);
             const std::vector<Base::Vector3d>& vel = field->getValues();
             vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
             data->SetNumberOfComponents(dim);
@@ -924,9 +920,6 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result,
         }
 
         if (field && field->getSize() > 0) {
-            // if (nPoints != field->getSize())
-            //     Base::Console().Error("Size of PropertyFloatList = %d, not equal to vtk mesh
-            //     node count %d \n", field->getSize(), nPoints);
             const std::vector<double>& vec = field->getValues();
             vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
             data->SetNumberOfValues(nPoints);

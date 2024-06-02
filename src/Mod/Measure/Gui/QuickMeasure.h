@@ -45,7 +45,11 @@ public:
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void tryMeasureSelection(const Gui::SelectionChanges& msg);
 
+    bool canMeasureSelection(const Gui::SelectionChanges& msg) const;
+    void addSelectionToMeasurement();
+    void printResult();
     void print(const QString& message);
 
     Measure::Measurement* measurement;

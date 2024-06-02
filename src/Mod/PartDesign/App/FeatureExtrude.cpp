@@ -73,8 +73,9 @@ short FeatureExtrude::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
-Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVector)
+Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVector, bool inverse)
 {
+    (void) inverse;
     Base::Vector3d extrudeDirection;
 
     if (!UseCustomVector.getValue()) {
@@ -91,12 +92,12 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
             Base::Vector3d dir;
             getAxis(pcReferenceAxis, subReferenceAxis, base, dir, ForbiddenAxis::NotPerpendicularWithNormal);
             switch (addSubType) {
-            case Type::Additive:
-                extrudeDirection = dir;
-                break;
-            case Type::Subtractive:
-                extrudeDirection = -dir;
-                break;
+                case Type::Additive:
+                    extrudeDirection = dir;
+                    break;
+                case Type::Subtractive:
+                    extrudeDirection = -dir;
+                    break;
             }
         }
     }
@@ -431,6 +432,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
     bool makeface = options.testFlag(ExtrudeOption::MakeFace);
     bool fuse = options.testFlag(ExtrudeOption::MakeFuse);
     bool legacyPocket = options.testFlag(ExtrudeOption::LegacyPocket);
+    bool inverseDirection = options.testFlag(ExtrudeOption::InverseDirection);
 
     std::string method(Type.getValueAsString());
 
@@ -513,7 +515,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
         base.move(invObjLoc);
 
-        Base::Vector3d paddingDirection = computeDirection(SketchVector);
+        Base::Vector3d paddingDirection = computeDirection(SketchVector, inverseDirection);
 
         // create vector in padding direction with length 1
         gp_Dir dir(paddingDirection.x, paddingDirection.y, paddingDirection.z);
@@ -715,8 +717,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
             }
-
             solRes = refineShapeIfActive(solRes);
+            if (!isSingleSolidRuleSatisfied(solRes.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            }
             this->Shape.setValue(getSolid(solRes));
         }
         else if (prism.hasSubShape(TopAbs_SOLID)) {
@@ -724,10 +728,17 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 prism.makeElementFuse(prism.getSubTopoShapes(TopAbs_SOLID));
             }
             prism = refineShapeIfActive(prism);
-            this->Shape.setValue(getSolid(prism));
+            prism = getSolid(prism);
+            if (!isSingleSolidRuleSatisfied(prism.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            }
+            this->Shape.setValue(prism);
         }
         else {
             prism = refineShapeIfActive(prism);
+            if (!isSingleSolidRuleSatisfied(prism.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            }
             this->Shape.setValue(prism);
         }
 

@@ -90,6 +90,9 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
     ui->pcbMatting->onSave();
     ui->pdsbBalloonKink->onSave();
     ui->cbCutSurface->onSave();
+    ui->cb_ShowSectionLine->onSave();
+    ui->cb_IncludeCutLine->onSave();
+
 
     // don't save invalid parameter values
     // the comboboxes are properly loaded.
@@ -115,6 +118,9 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
 
     ui->pcbDetailMatting->onSave();
     ui->pcbDetailHighlight->onSave();
+
+    ui->pcbBreakType->onSave();
+    ui->pcbBreakStyle->onSave();
 }
 
 void DlgPrefsTechDrawAnnotationImp::loadSettings()
@@ -152,7 +158,8 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     ui->cbCutSurface->onRestore();
     ui->pcbDetailMatting->onRestore();
     ui->pcbDetailHighlight->onRestore();
-
+    ui->cb_ShowSectionLine->onRestore();
+    ui->cb_IncludeCutLine->onRestore();
 
     ui->pcbBalloonArrow->onRestore();
     DrawGuiUtil::loadArrowBox(ui->pcbBalloonArrow);
@@ -173,7 +180,10 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     ui->pcbCenterStyle->onRestore();
     ui->pcbHighlightStyle->onRestore();
     ui->pcbHiddenStyle->onRestore();
+    ui->pcbBreakStyle->onRestore();
     loadLineStyleBoxes();
+
+    ui->pcbBreakType->onRestore();
 }
 
 /**
@@ -260,6 +270,11 @@ void DlgPrefsTechDrawAnnotationImp::loadLineStyleBoxes()
     DrawGuiUtil::loadLineStyleChoices(ui->pcbHiddenStyle, m_lineGenerator);
     if (ui->pcbHiddenStyle->count() > Preferences::HiddenLineStyle()) {
         ui->pcbHiddenStyle->setCurrentIndex(Preferences::HiddenLineStyle() - 1);
+    }
+
+    DrawGuiUtil::loadLineStyleChoices(ui->pcbBreakStyle, m_lineGenerator);
+    if (ui->pcbBreakStyle->count() > Preferences::BreakLineStyle()) {
+        ui->pcbBreakStyle->setCurrentIndex(Preferences::BreakLineStyle() - 1);
     }
 }
 

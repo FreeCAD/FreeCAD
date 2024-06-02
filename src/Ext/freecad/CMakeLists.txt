@@ -27,6 +27,7 @@ endif()
 configure_file(__init__.py.template ${NAMESPACE_INIT})
 
 set(EXT_FILES
+    freecad_doc.py
     part.py
     partdesign.py
     project_utility.py

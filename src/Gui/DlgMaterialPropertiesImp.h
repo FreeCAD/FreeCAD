@@ -28,6 +28,12 @@
 #include <memory>
 #include <vector>
 
+namespace App
+{
+class Color;
+class Material;
+}
+
 namespace Gui
 {
 class ViewProvider;
@@ -48,18 +54,36 @@ public:
     void setViewProviders(const std::vector<Gui::ViewProvider*>&);
     QColor diffuseColor() const;
 
-private:
+protected:
     void setupConnections();
+    App::Material getMaterial();
+    App::Color getColor(const QColor& color) const;
     void onAmbientColorChanged();
     void onDiffuseColorChanged();
     void onEmissiveColorChanged();
     void onSpecularColorChanged();
     void onShininessValueChanged(int);
+    void onButtonReset(bool checked);
+    void onButtonDefault(bool checked);
+    void setButtonColors();
 
-private:
+protected:
     std::unique_ptr<Ui_DlgMaterialProperties> ui;
     std::string material;
     std::vector<Gui::ViewProvider*> Objects;
+    bool updateColors;
+};
+
+class GuiExport DlgFaceMaterialPropertiesImp: public DlgMaterialPropertiesImp
+{
+    Q_OBJECT
+
+public:
+    explicit DlgFaceMaterialPropertiesImp(const std::string& mat,
+                                          QWidget* parent = nullptr,
+                                          Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgFaceMaterialPropertiesImp() override;
+    App::Material getCustomAppearance() const;
 };
 
 }  // namespace Dialog

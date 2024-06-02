@@ -96,24 +96,9 @@ public:
                             const Base::Vector3f& up = Base::Vector3f(0, 0, 1),
                             float MaxSize = 0.1);
 
-    /*
-    struct FaceSplitEdge
-    {
-      unsigned long ulFaceIndex;
-      Base::Vector3f p1,p2;
-    };
 
-    static void projectCurve( MeshWithProperty* pMesh,
-                                         const TopoDS_Edge& aEdge,
-                                         const std::vector<Base::Vector3f> &rclPoints,
-                                         std::vector<FaceSplitEdge> &vSplitEdges);
-  */
     static void cutByCurve(MeshCore::MeshKernel* pMesh,
                            const std::vector<CurveProjector::FaceSplitEdge>& vSplitEdges);
-    /*
-      static bool projectPointToMesh(MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f
-      &Rslt,unsigned long &FaceIndex);
-    */
 };
 
 }  // namespace MeshPart

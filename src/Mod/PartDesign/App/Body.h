@@ -41,6 +41,7 @@ class PartDesignExport Body : public Part::BodyBase
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Body);
 
 public:
+    App::PropertyBool AllowCompound;
 
     /// True if this body feature is active or was active when the document was last closed
     //App::PropertyBool IsActive;

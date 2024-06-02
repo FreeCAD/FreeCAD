@@ -52,7 +52,7 @@ class MaterialsExport MaterialProperty: public ModelProperty
 public:
     MaterialProperty();
     MaterialProperty(const MaterialProperty& other);
-    explicit MaterialProperty(const ModelProperty& other);
+    explicit MaterialProperty(const ModelProperty& other, QString modelUUID);
     explicit MaterialProperty(const std::shared_ptr<MaterialProperty>& other);
     ~MaterialProperty() override = default;
 
@@ -61,7 +61,11 @@ public:
         return _valuePtr->getType();
     }
 
-    const QString getModelUUID() const;
+    const QString getModelUUID() const
+    {
+        return _modelUUID;
+    }
+
     QVariant getValue();
     QVariant getValue() const;
     QList<QVariant> getList()
@@ -112,6 +116,7 @@ public:
     void setValue(const QString& value);
     void setValue(const std::shared_ptr<MaterialValue>& value);
     void setString(const QString& value);
+    void setString(const std::string& value);
     void setBoolean(bool value);
     void setBoolean(int value);
     void setBoolean(const QString& value);
@@ -347,7 +352,15 @@ public:
     {
         return _physical;
     }
+    const std::map<QString, std::shared_ptr<MaterialProperty>>& getPhysicalProperties() const
+    {
+        return _physical;
+    }
     std::map<QString, std::shared_ptr<MaterialProperty>>& getAppearanceProperties()
+    {
+        return _appearance;
+    }
+    const std::map<QString, std::shared_ptr<MaterialProperty>>& getAppearanceProperties() const
     {
         return _appearance;
     }

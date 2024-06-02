@@ -152,16 +152,12 @@ endif ()
 
 SOURCE_GROUP("pycxx" FILES ${PYCXX_SOURCES})
 
+# auto-generate resource file with all available translations
 set (FreeCADBase_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Base_translation.qrc)
-qt_find_and_add_translation(QM_SRCS "Resources/translations/Base_*.ts"
-        ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
-qt_create_resource_file_prefix(${FreeCADBase_TR_QRC} ${QM_SRCS})
-set(FreeCADBase_RES_SRCS
-        Resources/translation.qrc
-        ${FreeCADBase_TR_QRC}
-        )
-
-qt_add_resources(FreeCADBase_QRC_SRCS ${FreeCADBase_RES_SRCS})
+qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file(${FreeCADBase_TR_QRC} ${QM_SRCS})
+qt_add_resources(FreeCADBase_QRC_SRCS ${FreeCADBase_TR_QRC})
 
 SET(FreeCADBase_XML_SRCS
     AxisPy.xml
@@ -344,6 +340,7 @@ SET(FreeCADBase_HPP_SRCS
 
 SET(FreeCADBase_SRCS
     ${PYCXX_SOURCES}
+    ${FreeCADBase_QRC_SRCS}
     ${FreeCADBase_CPP_SRCS}
     ${FreeCADBase_HPP_SRCS}
     ${FreeCADBase_XML_SRCS}
@@ -391,6 +388,9 @@ endif(FREECAD_USE_PCH)
 add_library(FreeCADBase SHARED ${FreeCADBase_SRCS})
 
 target_link_libraries(FreeCADBase ${FreeCADBase_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(FreeCADBase)
+endif()
 
 SET_BIN_DIR(FreeCADBase FreeCADBase)
 

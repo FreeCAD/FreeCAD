@@ -1318,7 +1318,14 @@ public:
         addCommand("Sketcher_ToggleActiveConstraint");
 
     }
-    const char* className() const override { return "CmdSketcherCompToggleConstraints"; }
+    const char* className() const override
+    {
+        return "CmdSketcherCompToggleConstraints";
+    }
+    bool isActive() override
+    {
+        return isCommandActive(getActiveGuiDocument());
+    }
 };
 
 // Dimension tool =======================================================
@@ -1376,6 +1383,7 @@ public:
         , selLine({})
         , selCircleArc({})
         , selEllipseAndCo({})
+        , selSplineAndCo({})
         , initialSelection(std::move(SubNames))
         , numberOfConstraintsCreated(0)
     {
@@ -1616,6 +1624,15 @@ protected:
 
     Sketcher::SketchObject* Obj;
 
+    void clearRefVectors()
+    {
+        selPoints.clear();
+        selLine.clear();
+        selCircleArc.clear();
+        selEllipseAndCo.clear();
+        selSplineAndCo.clear();
+    }
+
     void handleInitialSelection()
     {
         if (initialSelection.size() == 0) {
@@ -1648,11 +1665,7 @@ protected:
         bool selAllowed = makeAppropriateConstraint(Base::Vector2d(0.,0.));
 
         if (!selAllowed) {
-            selPoints.clear();
-            selLine.clear();
-            selCircleArc.clear();
-            selEllipseAndCo.clear();
-            selSplineAndCo.clear();
+            clearRefVectors();
         }
     }
 
@@ -1686,10 +1699,7 @@ protected:
             numberOfConstraintsCreated = 0;
             specialConstraint = SpecialConstraint::None;
             previousOnSketchPos = Base::Vector2d(0.f, 0.f);
-            selPoints.clear();
-            selLine.clear();
-            selCircleArc.clear();
-            selEllipseAndCo.clear();
+            clearRefVectors();
         }
         else {
             sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
@@ -2787,7 +2797,15 @@ public:
         addCommand("Sketcher_ConstrainVertical");
     }
 
-    const char* className() const override { return "CmdSketcherCompHorizontalVertical"; }
+    const char* className() const override
+    {
+        return "CmdSketcherCompHorizontalVertical";
+    }
+
+    bool isActive() override
+    {
+        return isCommandActive(getActiveGuiDocument());
+    }
 };
 
 // ============================================================================

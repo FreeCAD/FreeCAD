@@ -96,6 +96,7 @@ SET(PathPythonMainGui_SRCS
     Path/Main/Gui/PreferencesJob.py
     Path/Main/Gui/SanityCmd.py
     Path/Main/Gui/Simulator.py
+    Path/Main/Gui/SimulatorGL.py
 )
 
 SET(PathPythonMainSanity_SRCS
@@ -275,8 +276,9 @@ SET(Tools_Library_SRCS
 SET(Tools_Shape_SRCS
     Tools/Shape/ballend.fcstd
     Tools/Shape/bullnose.fcstd
-    Tools/Shape/drill.fcstd
     Tools/Shape/chamfer.fcstd
+    Tools/Shape/dovetail.fcstd
+    Tools/Shape/drill.fcstd
     Tools/Shape/endmill.fcstd
     Tools/Shape/probe.fcstd
     Tools/Shape/slittingsaw.fcstd

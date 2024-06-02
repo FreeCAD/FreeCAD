@@ -37,7 +37,6 @@
 #include <Gui/View3DInventor.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 
-#include "SpreadsheetView.h"
 #include "ViewProviderSpreadsheet.h"
 #include "ViewProviderSpreadsheetPy.h"
 
@@ -50,15 +49,12 @@ using namespace Spreadsheet;
 
 PROPERTY_SOURCE(SpreadsheetGui::ViewProviderSheet, Gui::ViewProviderDocumentObject)
 
-ViewProviderSheet::ViewProviderSheet()
-    : Gui::ViewProviderDocumentObject()
-{}
+ViewProviderSheet::ViewProviderSheet() = default;
 
 ViewProviderSheet::~ViewProviderSheet()
 {
     if (!view.isNull()) {
         Gui::getMainWindow()->removeWindow(view);
-        //        delete view;
     }
 }
 
@@ -76,14 +72,31 @@ std::vector<std::string> ViewProviderSheet::getDisplayModes() const
 
 QIcon ViewProviderSheet::getIcon() const
 {
+    // clang-format off
     static const char* const Points_Feature_xpm[] = {
-        "16 16 3 1",        "       c None",    ".      c #000000", "+      c #FFFFFF",
-        "                ", "                ", "................", ".++++.++++.++++.",
-        ".++++.++++.++++.", "................", ".++++.++++.++++.", ".++++.++++.++++.",
-        "................", ".++++.++++.++++.", ".++++.++++.++++.", "................",
-        ".++++.++++.++++.", ".++++.++++.++++.", "................", "                "};
+        "16 16 3 1",
+        "       c None",
+        ".      c #000000",
+        "+      c #FFFFFF",
+        "                ",
+        "                ",
+        "................",
+        ".++++.++++.++++.",
+        ".++++.++++.++++.",
+        "................",
+        ".++++.++++.++++.",
+        ".++++.++++.++++.",
+        "................",
+        ".++++.++++.++++.",
+        ".++++.++++.++++.",
+        "................",
+        ".++++.++++.++++.",
+        ".++++.++++.++++.",
+        "................",
+        "                "};
     QPixmap px(Points_Feature_xpm);
     return px;
+    // clang-format on
 }
 
 bool ViewProviderSheet::setEdit(int ModNum)

@@ -1,0 +1,19 @@
+#Inventor V2.1 ascii
+
+
+Separator {
+
+  Separator {
+
+    Translation {
+      translation 0 0.05 0
+
+    }
+    Cube {
+      width 0.75
+      height 0.1
+      depth 0.75
+
+    }
+  }
+}

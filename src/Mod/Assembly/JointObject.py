@@ -51,21 +51,14 @@ TranslatedJointTypes = [
     translate("Assembly", "Slider"),
     translate("Assembly", "Ball"),
     translate("Assembly", "Distance"),
+    translate("Assembly", "Parallel"),
+    translate("Assembly", "Perpendicular"),
+    translate("Assembly", "Angle"),
     translate("Assembly", "RackPinion"),
     translate("Assembly", "Screw"),
     translate("Assembly", "Gears"),
     translate("Assembly", "Belt"),
 ]
-
-TranslatedJointTypesNoExperimental = [
-    translate("Assembly", "Fixed"),
-    translate("Assembly", "Revolute"),
-    translate("Assembly", "Cylindrical"),
-    translate("Assembly", "Slider"),
-    translate("Assembly", "Ball"),
-    translate("Assembly", "Distance"),
-]
-
 
 JointTypes = [
     "Fixed",
@@ -74,6 +67,9 @@ JointTypes = [
     "Slider",
     "Ball",
     "Distance",
+    "Parallel",
+    "Perpendicular",
+    "Angle",
     "RackPinion",
     "Screw",
     "Gears",
@@ -82,6 +78,7 @@ JointTypes = [
 
 JointUsingDistance = [
     "Distance",
+    "Angle",
     "RackPinion",
     "Screw",
     "Gears",
@@ -116,6 +113,7 @@ JointUsingReverse = [
     "Cylindrical",
     "Slider",
     "Distance",
+    "Parallel",
 ]
 
 JointUsingLimitLength = [
@@ -126,6 +124,19 @@ JointUsingLimitLength = [
 JointUsingLimitAngle = [
     "Revolute",
     "Cylindrical",
+]
+
+JointUsingPreSolve = [
+    "Fixed",
+    "Revolute",
+    "Cylindrical",
+    "Slider",
+    "Ball",
+]
+
+JointParallelForbidden = [
+    "Angle",
+    "Perpendicular",
 ]
 
 
@@ -409,7 +420,6 @@ class Joint:
         return None
 
     def loads(self, state):
-
         return None
 
     def getAssembly(self, joint):
@@ -435,14 +445,7 @@ class Joint:
                 if obj1 is None or obj2 is None:
                     return
 
-                presolved = self.preSolve(
-                    joint,
-                    obj1,
-                    joint.Part1,
-                    obj2,
-                    joint.Part2,
-                    False,
-                )
+                presolved = self.preSolve(joint, False)
 
                 isAssembly = self.getAssembly(joint).Type == "Assembly"
                 if isAssembly and not presolved:
@@ -450,10 +453,13 @@ class Joint:
                 else:
                     self.updateJCSPlacements(joint)
 
-        if prop == "Distance" and joint.JointType == "Distance":
+        if prop == "Distance" and (joint.JointType == "Distance" or joint.JointType == "Angle"):
             # during loading the onchanged may be triggered before full init.
             if hasattr(joint, "Vertex1"):  # so we check Vertex1
-                solveIfAllowed(self.getAssembly(joint))
+                if joint.Part1 and joint.Part2:
+                    if joint.JointType == "Angle" and joint.Distance != 0.0:
+                        self.preventParallel(joint)
+                    solveIfAllowed(self.getAssembly(joint))
 
     def execute(self, fp):
         """Do something when doing a recomputation, this method is mandatory"""
@@ -489,14 +495,10 @@ class Joint:
             joint.Placement2 = self.findPlacement(
                 joint, joint.Object2, joint.Part2, joint.Element2, joint.Vertex2, True
             )
-            if joint.JointType != "Distance":
-                self.preSolve(
-                    joint,
-                    current_selection[0]["object"],
-                    joint.Part1,
-                    current_selection[1]["object"],
-                    joint.Part2,
-                )
+            if joint.JointType in JointUsingPreSolve:
+                self.preSolve(joint)
+            elif joint.JointType in JointParallelForbidden:
+                self.preventParallel(joint)
 
             if isAssembly:
                 solveIfAllowed(assembly, True)
@@ -579,7 +581,7 @@ class Joint:
 
         solveIfAllowed(self.getAssembly(joint))
 
-    def preSolve(self, joint, obj1, part1, obj2, part2, savePlc=True):
+    def preSolve(self, joint, savePlc=True):
         # The goal of this is to put the part in the correct position to avoid wrong placement by the solve.
 
         # we actually don't want to match perfectly the JCS, it is best to match them
@@ -634,11 +636,48 @@ class Joint:
 
             joint.Placement1 = joint.Placement1  # Make sure plc1 is redrawn
 
+    def preventParallel(self, joint):
+        # Angle and perpendicular joints in the solver cannot handle the situation where both JCS are Parallel
+        parallel = self.areJcsZParallel(joint)
+        if not parallel:
+            return
+
+        assembly = self.getAssembly(joint)
+        isAssembly = assembly.Type == "Assembly"
+        if isAssembly:
+            part1ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part1")
+            part2ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part2")
+        else:
+            part1ConnectedByJoint = False
+            part2ConnectedByJoint = True
+
+        if part2ConnectedByJoint:
+            self.partMovedByPresolved = joint.Part2
+            self.presolveBackupPlc = joint.Part2.Placement
+
+            joint.Part2.Placement = UtilsAssembly.applyRotationToPlacementAlongAxis(
+                joint.Part2.Placement, 10, App.Vector(1, 0, 0)
+            )
+
+        elif part1ConnectedByJoint:
+            self.partMovedByPresolved = joint.Part1
+            self.presolveBackupPlc = joint.Part1.Placement
+
+            joint.Part1.Placement = UtilsAssembly.applyRotationToPlacementAlongAxis(
+                joint.Part1.Placement, 10, App.Vector(1, 0, 0)
+            )
+
     def areJcsSameDir(self, joint):
         globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Object1, joint.Part1)
         globalJcsPlc2 = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Object2, joint.Part2)
 
         return UtilsAssembly.arePlacementSameDir(globalJcsPlc1, globalJcsPlc2)
+
+    def areJcsZParallel(self, joint):
+        globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Object1, joint.Part1)
+        globalJcsPlc2 = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Object2, joint.Part2)
+
+        return UtilsAssembly.arePlacementZParallel(globalJcsPlc1, globalJcsPlc2)
 
 
 class ViewProviderJoint:
@@ -858,6 +897,12 @@ class ViewProviderJoint:
             return ":/icons/Assembly_CreateJointBall.svg"
         elif self.app_obj.JointType == "Distance":
             return ":/icons/Assembly_CreateJointDistance.svg"
+        elif self.app_obj.JointType == "Parallel":
+            return ":/icons/Assembly_CreateJointParallel.svg"
+        elif self.app_obj.JointType == "Perpendicular":
+            return ":/icons/Assembly_CreateJointPerpendicular.svg"
+        elif self.app_obj.JointType == "Angle":
+            return ":/icons/Assembly_CreateJointAngle.svg"
         elif self.app_obj.JointType == "RackPinion":
             return ":/icons/Assembly_CreateJointRackPinion.svg"
         elif self.app_obj.JointType == "Screw":
@@ -1186,12 +1231,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.form.setWindowTitle("Match parts")
             self.form.jointType.hide()
 
-        if Preferences.preferences().GetBool("ExperimentalFeatures", True):
-            self.form.jointType.addItems(TranslatedJointTypes)
-        else:
-            self.form.jointType.addItems(TranslatedJointTypesNoExperimental)
+        self.form.jointType.addItems(TranslatedJointTypes)
 
         self.form.jointType.setCurrentIndex(jointTypeIndex)
+        self.jType = JointTypes[self.form.jointType.currentIndex()]
         self.form.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
 
         self.form.distanceSpinbox.valueChanged.connect(self.onDistanceChanged)
@@ -1205,8 +1248,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.limitRotMinSpinbox.valueChanged.connect(self.onLimitRotMinChanged)
         self.form.limitRotMaxSpinbox.valueChanged.connect(self.onLimitRotMaxChanged)
 
-        jType = JointTypes[self.form.jointType.currentIndex()]
-        self.form.reverseRotCheckbox.setChecked(jType == "Gears")
+        self.form.reverseRotCheckbox.setChecked(self.jType == "Gears")
         self.form.reverseRotCheckbox.stateChanged.connect(self.reverseRotToggled)
 
         if jointObj:
@@ -1368,7 +1410,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         ViewProviderJoint(self.joint.ViewObject)
 
     def onJointTypeChanged(self, index):
-        self.joint.Proxy.setJointType(self.joint, JointTypes[self.form.jointType.currentIndex()])
+        self.jType = JointTypes[self.form.jointType.currentIndex()]
+        self.joint.Proxy.setJointType(self.joint, self.jType)
         self.adaptUi()
 
     def onDistanceChanged(self, quantity):
@@ -1405,17 +1448,25 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.form.jointType.setCurrentIndex(9)
 
     def adaptUi(self):
-        jType = JointTypes[self.form.jointType.currentIndex()]
+        jType = self.jType
 
         if jType in JointUsingDistance:
             self.form.distanceLabel.show()
             self.form.distanceSpinbox.show()
             if jType == "Distance":
                 self.form.distanceLabel.setText("Distance")
+            elif jType == "Angle":
+                self.form.distanceLabel.setText("Angle")
             elif jType == "Gears" or jType == "Belt":
                 self.form.distanceLabel.setText("Radius 1")
             else:
                 self.form.distanceLabel.setText("Pitch radius")
+
+            if jType == "Angle":
+                self.form.distanceSpinbox.setProperty("unit", "deg")
+            else:
+                self.form.distanceSpinbox.setProperty("unit", "mm")
+
         else:
             self.form.distanceLabel.hide()
             self.form.distanceSpinbox.hide()

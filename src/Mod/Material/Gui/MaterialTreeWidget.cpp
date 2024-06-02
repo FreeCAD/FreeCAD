@@ -285,9 +285,19 @@ QModelIndex MaterialTreeWidget::findInTree(const QString& uuid)
 
 void MaterialTreeWidget::setMaterial(const QString& uuid)
 {
-    if (uuid.isEmpty() || uuid == m_uuid) {
+    if (uuid == m_uuid) {
         return;
     }
+
+    if (uuid.isEmpty()) {
+        // Nothing is selected
+        QItemSelectionModel* selectionModel = m_materialTree->selectionModel();
+        selectionModel->clear();
+        m_material->clear();
+
+        return;
+    }
+
     updateMaterial(uuid);
 
     // Now select the material in the tree
@@ -634,6 +644,11 @@ void MaterialTreeWidget::onSelectMaterial(const QItemSelection& selected,
 {
     Q_UNUSED(deselected);
 
+    if (selected.isEmpty()) {
+        m_uuid.clear();
+        return;
+    }
+
     // Get the UUID before changing the underlying data model
     QString uuid;
     auto model = dynamic_cast<QStandardItemModel*>(m_materialTree->model());
@@ -708,4 +723,35 @@ void MaterialTreeWidget::saveMaterialTreeChildren(const Base::Reference<Paramete
             saveMaterialTreeChildren(treeParam, tree, model, child);
         }
     }
+}
+
+// --------------------------------------------------------------------
+
+PrefMaterialTreeWidget::PrefMaterialTreeWidget(QWidget* parent)
+    : MaterialTreeWidget(parent)
+    , PrefWidget()
+{}
+
+PrefMaterialTreeWidget::~PrefMaterialTreeWidget() = default;
+
+void PrefMaterialTreeWidget::restorePreferences()
+{
+    if (getWindowParameter().isNull()) {
+        failedToRestore(objectName());
+        return;
+    }
+
+    const char* defaultUuid = "7f9fd73b-50c9-41d8-b7b2-575a030c1eeb";
+    QString uuid = QString::fromStdString(getWindowParameter()->GetASCII(entryName(), defaultUuid));
+    setMaterial(uuid);
+}
+
+void PrefMaterialTreeWidget::savePreferences()
+{
+    if (getWindowParameter().isNull()) {
+        failedToSave(objectName());
+        return;
+    }
+
+    getWindowParameter()->SetASCII(entryName(), getMaterialUUID().toStdString());
 }

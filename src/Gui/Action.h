@@ -28,6 +28,7 @@
 #include <QAction>
 #include <QComboBox>
 #include <QKeySequence>
+#include <QMap>
 #include <FCGlobal.h>
 
 namespace Gui
@@ -188,13 +189,16 @@ class GuiExport WorkbenchGroup : public ActionGroup
 {
     Q_OBJECT
 
+    QAction* getOrCreateAction(const QString& wbName);
+
 public:
     /**
      * Creates an action for the command \a pcCmd to load the workbench \a name
      * when it gets activated.
      */
-    WorkbenchGroup (Command* pcCmd, QObject * parent);
-    void addTo (QWidget * widget) override;
+    WorkbenchGroup(Command* pcCmd, QObject* parent);
+
+    void addTo(QWidget * widget) override;
     void refreshWorkbenchList();
 
     void slotActivateWorkbench(const char*);
@@ -211,6 +215,8 @@ protected Q_SLOTS:
 private:
     QList<QAction*> enabledWbsActions;
     QList<QAction*> disabledWbsActions;
+
+    QMap<QString, QAction*> actionByWorkbenchName;
 
     Q_DISABLE_COPY(WorkbenchGroup)
 };

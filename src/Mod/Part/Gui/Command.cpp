@@ -131,7 +131,7 @@ CmdPartBox2::CmdPartBox2()
     sToolTipText  = QT_TR_NOOP("Create a box solid without dialog");
     sWhatsThis    = "Part_Box2";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Box";
+    sPixmap       = "Part_Box_Parametric";
 }
 
 void CmdPartBox2::activated(int iMsg)
@@ -172,7 +172,7 @@ CmdPartBox3::CmdPartBox3()
     sToolTipText  = QT_TR_NOOP("Create a box solid without dialog");
     sWhatsThis    = "Part_Box3";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Box";
+    sPixmap       = "Part_Box_Parametric";
 }
 
 void CmdPartBox3::activated(int iMsg)
@@ -1059,7 +1059,7 @@ CmdPartImportCurveNet::CmdPartImportCurveNet()
     sToolTipText= QT_TR_NOOP("Import a curve network");
     sWhatsThis  = "Part_ImportCurveNet";
     sStatusTip  = sToolTipText;
-    sPixmap     = "Part_Box";
+    sPixmap     = "Part_Box_Parametric";
 }
 
 void CmdPartImportCurveNet::activated(int iMsg)
@@ -2112,7 +2112,7 @@ void CmdColorPerFace::activated(int iMsg)
         return;
     PartGui::ViewProviderPartExt* vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(sel.front()));
     if (vp)
-        vp->changeFaceColors();
+        vp->changeFaceAppearances();
 }
 
 bool CmdColorPerFace::isActive()

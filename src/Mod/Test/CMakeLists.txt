@@ -15,6 +15,7 @@ SET(Test_SRCS
     unittestgui.py
     testmakeWireString.py
     TestPythonSyntax.py
+    TestPerf.py
 )
 
 SET(TestData_SRCS

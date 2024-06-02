@@ -21,11 +21,11 @@ if (FREECAD_USE_3DCONNEXION)
 endif(FREECAD_USE_3DCONNEXION)
 
 if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
-	add_definitions(-DUSE_3DCONNEXION_NAVLIB)
-	if(APPLE)
-		add_definitions(-D__APPLE__)
-	endif(APPLE)
-	set(3DCONNEXION_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3Dconnexion/inc)
+    add_definitions(-DUSE_3DCONNEXION_NAVLIB)
+    if(APPLE)
+        add_definitions(-D__APPLE__)
+    endif(APPLE)
+    set(3DCONNEXION_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3Dconnexion/inc)
 endif(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
 
 if (BUILD_VR)
@@ -1217,6 +1217,7 @@ SET(FreeCADGui_CPP_SRCS
     ManualAlignment.cpp
     StartupProcess.cpp
     TransactionObject.cpp
+    ToolHandler.cpp
 )
 SET(FreeCADGui_SRCS
     Application.h
@@ -1254,6 +1255,7 @@ SET(FreeCADGui_SRCS
     ManualAlignment.h
     StartupProcess.h
     TransactionObject.h
+    ToolHandler.h
     ${FreeCADGui_SDK_MOC_HDRS}
 )
 
@@ -1342,6 +1344,9 @@ endif ()
 
 add_library(FreeCADGui SHARED ${FreeCADGui_SRCS})
 target_link_libraries(FreeCADGui ${FreeCADGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(FreeCADGui)
+endif()
 
 SET_BIN_DIR(FreeCADGui FreeCADGui)
 

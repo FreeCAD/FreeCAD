@@ -58,6 +58,11 @@ class PerfTestCase(unittest.TestCase):
             self.fileList = sys.argv[sys.argv.index("--pass") + 1 :]
         else:
             raise FileNotFoundError("Must provide filename parameter(s) via --pass")
+        if "--save" in sys.argv:
+            self.saveModels = True
+            self.fileList = sys.argv[sys.argv.index("--save") + 1 :]
+        else:
+            self.saveModels = False
         if Part.Shape().ElementMapVersion == "":
             self.tnp = ""
         else:
@@ -91,6 +96,9 @@ class PerfTestCase(unittest.TestCase):
                 dumpdata = hpy().heap()
                 dumpdata.stat.dump(self.memfile)
                 self.memfile.flush()
+            if self.saveModels:
+                filenametnp = App.ActiveDocument.Name + self.tnp
+                App.ActiveDocument.saveAs(filenametnp)
             App.closeDocument(doc.Name)
 
         try:

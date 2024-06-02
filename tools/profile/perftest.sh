@@ -7,9 +7,10 @@
 notnp=<Path to your first executable to profile goes here>  #<dir>/bin/FreeCAD${cmd}
 tnp=<Path to your second executable to profile goes here>   #<dir/bin/FreeCAD${cmd}
 results="results.txt" # File to append measurements to.  We do not clear so xargs works on script
+save="--save" # or ""  Whether to save the resulting file from the tnp executable for further testing.
 
 perf record -o "$1.perf" $notnp -t TestPerf --pass "$@"
-perf record -o "$1.tnp.perf" $tnp -t TestPerf --pass "$@"
+perf record -o "$1.tnp.perf" $tnp -t TestPerf --pass "$save" "$@"
 
 # For interactive walking of the details using perf:
 #perf report -i $1.perf

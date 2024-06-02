@@ -30,6 +30,7 @@
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
 #include "ElementNamingUtils.h"
+#include "Link.h"
 
 
 using namespace App;
@@ -141,6 +142,10 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         ElementNameType type, const DocumentObject *filter, 
         const char **_element, GeoFeature **geoFeature)
 {
+#ifdef FC_USE_TNP_FIX
+    elementName.first.clear();
+    elementName.second.clear();
+#endif
     if(!obj || !obj->isAttachedToDocument())
         return nullptr;
     if(!subname)
@@ -148,13 +153,16 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     const char *element = Data::findElementName(subname);
     if(_element) *_element = element;
 #ifdef FC_USE_TNP_FIX
-    elementName.first.clear();
-    elementName.second.clear();
     auto sobj = obj->getSubObject(std::string(subname, element).c_str());
     if(!sobj)
         return nullptr;
     auto linked = sobj->getLinkedObject(true);
     auto geo = Base::freecad_dynamic_cast<GeoFeature>(linked);
+    if(!geo && linked) {
+        auto ext = linked->getExtensionByType<LinkBaseExtension>(true);
+        if(ext)
+            geo = Base::freecad_dynamic_cast<GeoFeature>(ext->getTrueLinkedObject(true));
+    }
 #else
     auto sobj = obj->getSubObject(subname);
     if(!sobj)
@@ -201,44 +209,81 @@ void GeoFeature::setMaterialAppearance(const App::Material& material)
     Q_UNUSED(material)
 }
 
+bool GeoFeature::getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const
+{
+    Q_UNUSED(subname)
+    Q_UNUSED(direction)
+    return false;
+}
+
 #ifdef FC_USE_TNP_FIX
-bool GeoFeature::hasMissingElement(const char *subname) {
+bool GeoFeature::hasMissingElement(const char* subname)
+{
     return Data::hasMissingElement(subname);
-    if(!subname)
+    if (!subname) {
         return false;
-    auto dot = strrchr(subname,'.');
-    if(!dot)
-        return subname[0]=='?';
-    return dot[1]=='?';
+    }
+    auto dot = strrchr(subname, '.');
+    if (!dot) {
+        return subname[0] == '?';
+    }
+    return dot[1] == '?';
 }
 
-void GeoFeature::updateElementReference() {
+void GeoFeature::updateElementReference()
+{
     auto prop = getPropertyOfGeometry();
-    if(!prop) return;
+    if (!prop) {
+        return;
+    }
     auto geo = prop->getComplexData();
-    if(!geo) return;
+    if (!geo) {
+        return;
+    }
     bool reset = false;
-    PropertyLinkBase::updateElementReferences(this,reset);
+    PropertyLinkBase::updateElementReferences(this, reset);
 }
 
-void GeoFeature::onChanged(const Property *prop) {
-    if(prop==getPropertyOfGeometry()) {
-        if(getDocument() && !getDocument()->testStatus(Document::Restoring)
-            && !getDocument()->isPerformingTransaction())
-        {
+void GeoFeature::onChanged(const Property* prop)
+{
+    if (prop == getPropertyOfGeometry()) {
+        if (getDocument() && !getDocument()->testStatus(Document::Restoring)
+            && !getDocument()->isPerformingTransaction()) {
             updateElementReference();
         }
     }
     DocumentObject::onChanged(prop);
 }
 
+const std::vector<std::string>& GeoFeature::searchElementCache(const std::string& element,
+                                                               Data::SearchOptions options,
+                                                               double tol,
+                                                               double atol) const
+{
+    static std::vector<std::string> none;
+    (void)element;
+    (void)options;
+    (void)tol;
+    (void)atol;
+    return none;
+}
 
-std::vector<Data::IndexedName>
-GeoFeature::getHigherElements(const char *element, bool silent) const
+std::vector<const char*> GeoFeature::getElementTypes(bool /*all*/) const
+{
+    static std::vector<const char*> nil;
+    auto prop = getPropertyOfGeometry();
+    if (!prop) {
+        return nil;
+    }
+    return prop->getComplexData()->getElementTypes();
+}
+
+std::vector<Data::IndexedName> GeoFeature::getHigherElements(const char* element, bool silent) const
 {
     auto prop = getPropertyOfGeometry();
-    if (!prop)
+    if (!prop) {
         return {};
+    }
     return prop->getComplexData()->getHigherElements(element, silent);
 }
 #endif
