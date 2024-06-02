@@ -229,6 +229,7 @@ void StartupPostProcess::execute()
     setWheelEventFilter();
     setLocale();
     setCursorFlashing();
+    setQtStyle();
     checkOpenGL();
     loadOpenInventor();
     setBranding();
@@ -296,7 +297,6 @@ void StartupPostProcess::setLocale()
     else if (localeFormat == 2) {
         Translator::instance()->setLocale("C");
     }
-
 }
 
 void StartupPostProcess::setCursorFlashing()
@@ -305,6 +305,13 @@ void StartupPostProcess::setCursorFlashing()
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     int blinkTime = hGrp->GetBool("EnableCursorBlinking", true) ? -1 : 0;
     QApplication::setCursorFlashTime(blinkTime);
+}
+
+void StartupPostProcess::setQtStyle()
+{
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
+    auto qtStyle = hGrp->GetASCII("QtStyle");
+    QApplication::setStyle(QString::fromStdString(qtStyle));
 }
 
 void StartupPostProcess::checkOpenGL()
