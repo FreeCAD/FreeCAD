@@ -26,7 +26,10 @@
 #include <memory>
 #include <Mod/Part/App/Interface.h>
 #include <Base/Parameter.h>
+#include <Standard_Version.hxx>
+#if OCC_VERSION_HEX >= 0x070800
 #include <Resource_FormatType.hxx>
+#endif
 
 namespace Part
 {
@@ -54,12 +57,12 @@ public:
         ObjectPerDocument = 3,
         ObjectPerDirectory = 4,
     };
-
+#if OCC_VERSION_HEX >= 0x070800
     struct CodePage {
         std::string codePageName;
         Resource_FormatType codePage;
     };
-
+#endif
     static void initialize();
     ImportExportSettings();
 
@@ -99,13 +102,14 @@ public:
     void setImportMode(ImportMode);
     ImportMode getImportMode() const;
 
+#if OCC_VERSION_HEX >= 0x070800
     void setReadShowDialogImport(bool);
     bool getReadShowDialogImport() const;
 
     void setImportCodePage(int);
     Resource_FormatType getImportCodePage() const;
     std::list<ImportExportSettings::CodePage> getCodePageList() const;
-
+#endif
 private:
     static void initGeneral(Base::Reference<ParameterGrp> hGrp);
     static void initSTEP(Base::Reference<ParameterGrp> hGrp);
@@ -115,6 +119,7 @@ private:
     mutable STEP::ImportExportSettingsPtr step;
     mutable IGES::ImportExportSettingsPtr iges;
     ParameterGrp::handle pGroup;
+#if OCC_VERSION_HEX >= 0x070800
     std::list<CodePage> codePageList {
                                       {"No conversion", Resource_FormatType_NoConversion},
                                       {"Multi-byte UTF-8 encoding", Resource_FormatType_UTF8},
@@ -144,6 +149,7 @@ private:
                                       {"CP1257 (Baltic) encoding", Resource_FormatType_CP1257},
                                       {"CP1258 (Vietnamese) encoding", Resource_FormatType_CP1258},
                                       };
+#endif
 };
 
 } //namespace OCAF

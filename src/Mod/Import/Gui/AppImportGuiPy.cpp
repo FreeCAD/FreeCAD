@@ -186,7 +186,11 @@ private:
 
                 try {
                     Import::ReaderStep reader(file);
+#if OCC_VERSION_HEX < 0x070800
+                    reader.read(hDoc);
+#else
                     reader.read(hDoc, cp);
+#endif
                 }
                 catch (OSD_Exception& e) {
                     Base::Console().Error("%s\n", e.GetMessageString());
@@ -496,7 +500,11 @@ private:
 
             if (file.hasExtension({"stp", "step"})) {
                 Import::ReaderStep reader(file);
+#if OCC_VERSION_HEX < 0x070800
+                reader.read(hDoc);
+#else
                 reader.read(hDoc, Resource_FormatType_UTF8);
+#endif
             }
             else if (file.hasExtension({"igs", "iges"})) {
                 Import::ReaderIges reader(file);

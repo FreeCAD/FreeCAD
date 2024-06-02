@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Interface_Static.hxx>
+#include <Interface_Static.hxx>
 #endif
 
 #include "ImportExportSettings.h"
@@ -99,6 +99,8 @@ void ImportExportSettings::initIGES(Base::Reference<ParameterGrp> hGrp)
     }
 }
 
+#if OCC_VERSION_HEX >= 0x070800
+
 void ImportExportSettings::setImportCodePage(int cpIndex)
 {
     pGroup->SetInt("ImportCodePage", cpIndex);
@@ -136,6 +138,8 @@ bool ImportExportSettings::getReadShowDialogImport() const
     auto grp = pGroup->GetGroup("hSTEP");
     return grp->GetBool("ReadShowDialogImport", false);
 }
+
+#endif
 
 void ImportExportSettings::initSTEP(Base::Reference<ParameterGrp> hGrp)
 {

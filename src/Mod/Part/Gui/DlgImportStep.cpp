@@ -37,7 +37,6 @@ DlgImportStep::DlgImportStep(QWidget* parent)
 {
     ui->setupUi(this);
     Part::OCAF::ImportExportSettings settings;
-    ui->checkBoxShowOnImport->setChecked(settings.getReadShowDialogImport());
     ui->checkBoxMergeCompound->setChecked(settings.getReadShapeCompoundMode());
     ui->checkBoxImportHiddenObj->setChecked(settings.getImportHiddenObject());
     ui->checkBoxUseLinkGroup->setChecked(settings.getUseLinkGroup());
@@ -45,12 +44,14 @@ DlgImportStep::DlgImportStep(QWidget* parent)
     ui->checkBoxReduceObjects->setChecked(settings.getReduceObjects());
     ui->checkBoxExpandCompound->setChecked(settings.getExpandCompound());
     ui->checkBoxShowProgress->setChecked(settings.getShowProgress());
+#if OCC_VERSION_HEX >= 0x070800
+    ui->checkBoxShowOnImport->setChecked(settings.getReadShowDialogImport());
     std::list<Part::OCAF::ImportExportSettings::CodePage> codepagelist;
     codepagelist = settings.getCodePageList();
     for (const auto& codePage : codepagelist) {
         ui->comboBoxImportCodePage->addItem(QString::fromStdString(codePage.codePageName));
     }
-#if OCC_VERSION_HEX < 0x070800
+#else
     // hide options that not supported in this OCCT version (7.8.0)
     ui->label_6->hide();
     ui->checkBoxShowOnImport->hide();
@@ -67,7 +68,10 @@ DlgImportStep::~DlgImportStep() = default;
 void DlgImportStep::saveSettings()
 {
     // (h)STEP of Import module
+#if OCC_VERSION_HEX >= 0x070800
     ui->checkBoxShowOnImport->onSave();
+    ui->comboBoxImportCodePage->onSave();
+#endif
     ui->checkBoxMergeCompound->onSave();
     ui->checkBoxImportHiddenObj->onSave();
     ui->checkBoxUseLinkGroup->onSave();
@@ -76,13 +80,15 @@ void DlgImportStep::saveSettings()
     ui->checkBoxExpandCompound->onSave();
     ui->checkBoxShowProgress->onSave();
     ui->comboBoxImportMode->onSave();
-    ui->comboBoxImportCodePage->onSave();
 }
 
 void DlgImportStep::loadSettings()
 {
     // (h)STEP of Import module
+#if OCC_VERSION_HEX >= 0x070800
     ui->checkBoxShowOnImport->onRestore();
+    ui->comboBoxImportCodePage->onRestore();
+#endif
     ui->checkBoxMergeCompound->onRestore();
     ui->checkBoxImportHiddenObj->onRestore();
     ui->checkBoxUseLinkGroup->onRestore();
@@ -91,7 +97,6 @@ void DlgImportStep::loadSettings()
     ui->checkBoxExpandCompound->onRestore();
     ui->checkBoxShowProgress->onRestore();
     ui->comboBoxImportMode->onRestore();
-    ui->comboBoxImportCodePage->onRestore();
 }
 
 /**
