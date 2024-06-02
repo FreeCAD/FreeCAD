@@ -25,8 +25,8 @@ __title__ = "FreeCAD FEM calculix constraint body heat source"
 __author__ = "Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
-
 import FreeCAD
+import itertools
 
 
 def get_analysis_types():
@@ -70,22 +70,29 @@ def write_constraint(f, femobj, bodyheatsource_obj, ccxwriter):
 
     # floats read from ccx should use {:.13G}, see comment in writer module
     # search referenced material
-    ref = bodyheatsource_obj.References
+    ref = bodyheatsource_obj.References[0]
+    ref_feat = ref[0]
+    ref_sub_obj = ref[1][0]
     density = None
     for mat in ccxwriter.member.mats_linear:
-        for mat_ref in mat["Object"].References:
-            if mat_ref[0] == ref[0][0]:
-                density = FreeCAD.Units.Quantity(mat["Object"].Material["Density"])
-                break
+        mat_ref = [*itertools.chain(*[itertools.product([i[0]],i[1]) for i in mat["Object"].References])]
+        if (ref_feat, ref_sub_obj) in mat_ref:
+            density = FreeCAD.Units.Quantity(mat["Object"].Material["Density"])
+            break
 
     if not density:
         # search material without references
         for mat in ccxwriter.member.mats_linear:
             if not mat["Object"].References:
                 density = FreeCAD.Units.Quantity(mat["Object"].Material["Density"])
+                break
 
-    # get some data from the bodyheatsource_obj (is in power per unit mass)
-    heat = FreeCAD.Units.Quantity(bodyheatsource_obj.HeatSource, "m^2/s^3") * density
+    # get data from the bodyheatsource_obj (DissipationRate is in power per unit mass)
+    if bodyheatsource_obj.Mode == "Dissipation Rate":
+        heat = bodyheatsource_obj.DissipationRate * density
+    elif bodyheatsource_obj.Mode == "Total Power":
+        volume = ref_feat.getSubObject(ref_sub_obj).Volume
+        heat = bodyheatsource_obj.TotalPower / FreeCAD.Units.Quantity(volume, "mm^3")
     # write to file
     f.write("*DFLUX\n")
     f.write(
