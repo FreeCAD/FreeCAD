@@ -1,7 +1,6 @@
 
 SET(Stylesheets_Files
     "Behave-dark.qss"
-    "ProDark.qss"
     "Dark theme.qss"
 	"Light theme.qss"
 )
@@ -11,7 +10,7 @@ SET(Overlay_Stylesheets_Files
     "overlay/Dark Theme + Light Background.qss"
     "overlay/Light Theme + Dark Background.qss"
     "overlay/Light Theme + Light Background.qss"
-    "overlay/overlay/DarkBehave_overlay.qss"
+    "overlay/DarkBehave_overlay.qss"
 )
 
 # Find all the image files
