@@ -51,13 +51,8 @@ if FreeCAD.GuiUp:
                 return
             else:
                 # Otherwise, if there is a view, update the button's status
-                # Update only if FreeCAD has started with GUI, the Draft
-                # workbench has loaded, and there is a view
-                if (
-                    FreeCAD.GuiUp
-                    and hasattr(FreeCADGui, "draftToolBar")
-                    and gui_utils.get_3d_view() is not None
-                ):
+                # Update only if the Draft workbench has loaded
+                if hasattr(FreeCADGui, "draftToolBar"):
                     if FreeCADGui.Snapper.grid.Visible:
                         _set_grid_button_state(True, True)
                     else:
