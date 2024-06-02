@@ -74,6 +74,7 @@ private:
     bool hiddenMainWindow() const;
     void showMainWindow();
     void activateWorkbench();
+    void checkParameters();
 
 private:
     bool loadFromPythonModule = false;

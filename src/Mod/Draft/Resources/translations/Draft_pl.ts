@@ -656,7 +656,7 @@ Działa to tylko wtedy, gdy opcja "Szyk łączy" jest nieaktywna.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="209"/>
       <source>Fuse</source>
-      <translation>Scalenie</translation>
+      <translation>Scal</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="216"/>
@@ -841,28 +841,74 @@ po naciśnięciu jednego z powyższych przycisków</translation>
       <translation>Możesz też wybrać pojedynczy wierzchołek, aby przesunąć bieżącą płaszczyznę roboczą bez zmiany jej orientacji. Następnie naciśnij przycisk poniżej.</translation>
     </message>
     <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="145"/>
+      <source>Moves the working plane without changing its
+orientation. If no point is selected, the plane
+will be moved to the center of the view.</source>
+      <translation type="unfinished">Moves the working plane without changing its
+orientation. If no point is selected, the plane
+will be moved to the center of the view.</translation>
+    </message>
+    <message>
       <location filename="../ui/TaskSelectPlane.ui" line="159"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="169"/>
+      <source>The color of the grid</source>
+      <translation>Kolor siatki</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="162"/>
       <source>Grid color</source>
       <translation>Kolor siatki</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="274"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="176"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="186"/>
+      <source>The distance between grid lines</source>
+      <translation>Odległość między liniami siatki</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="196"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="206"/>
+      <source>The number of squares between major grid lines</source>
+      <translation type="unfinished">The number of squares between major grid lines</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="199"/>
+      <source>Major lines every</source>
+      <translation type="unfinished">Major lines every</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="209"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="229"/>
+      <source> squares</source>
+      <translation type="unfinished"> squares</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="216"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="226"/>
+      <source>The number of squares in the X and Y direction of the grid</source>
+      <translation type="unfinished">The number of squares in the X and Y direction of the grid</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="219"/>
+      <source>Grid size</source>
+      <translation>Rozmiar siatki</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="242"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="252"/>
+      <source>The distance at which a point can be snapped to</source>
+      <translation type="unfinished">The distance at which a point can be snapped to</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="289"/>
       <source>Resets the working plane to its next position</source>
       <translation>Resetuje płaszczyznę roboczą do następnej pozycji</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="277"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="292"/>
       <source>Next</source>
       <translation>Następny</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="145"/>
-      <source>Moves the working plane without changing its
-orientation. If no point is selected, the plane
-will be moved to the center of the view</source>
-      <translation>Przenosi płaszczyznę roboczą bez zmiany jej orientacji. 
-Jeśli nie zaznaczono żadnego punktu, płaszczyzna
-zostanie przeniesiona do środka widoku</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="150"/>
@@ -870,69 +916,32 @@ zostanie przeniesiona do środka widoku</translation>
       <translation>Przesuń płaszczyznę roboczą</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="169"/>
       <location filename="../ui/TaskSelectPlane.ui" line="179"/>
-      <source>The spacing between the smaller grid lines</source>
-      <translation>Odstęp między mniejszymi liniami siatki</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="172"/>
       <source>Grid spacing</source>
       <translation>Odstęp siatki</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="189"/>
-      <location filename="../ui/TaskSelectPlane.ui" line="199"/>
-      <source>The number of squares between each main line of the grid</source>
-      <translation>Liczba kwadratów pomiędzy każdą główną linią siatki</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="192"/>
-      <source>Main line every</source>
-      <translation>Główna linia co</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="206"/>
-      <source>Grid extension</source>
-      <translation>Rozszerzenie siatki</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="213"/>
-      <source> lines</source>
-      <translation> linie</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="226"/>
-      <location filename="../ui/TaskSelectPlane.ui" line="238"/>
-      <source>The distance at which a point can be snapped to
-when approaching the mouse. You can also change this
-value by using the [ and ] keys while drawing</source>
-      <translation>Odległość, w której kursor myszki może być przyciągnięty do punktu
-podczas jego zbliżania. Możesz również zmienić tę wartość
-używając klawisza [ i ] podczas rysowania</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="231"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="245"/>
       <source>Snapping radius</source>
       <translation>Promień przyciągania</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="249"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="264"/>
       <source>Centers the view on the current working plane</source>
       <translation>Wyśrodkowuje widok na aktualnej płaszczyźnie roboczej</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="252"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="267"/>
       <source>Center view</source>
       <translation>Wyśrodkuj widok</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="261"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="276"/>
       <source>Resets the working plane to its previous position</source>
       <translation>Resetuje płaszczyznę roboczą do poprzedniej pozycji</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="264"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="279"/>
       <source>Previous</source>
       <translation>Poprzedni</translation>
     </message>
@@ -947,65 +956,106 @@ używając klawisza [ i ] podczas rysowania</translation>
       <translation>Wczytaj nastawy</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="93"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="57"/>
+      <source>Shape</source>
+      <translation>Kształt</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="63"/>
+      <source>Shape appearance</source>
+      <translation>Wygląd kształtu</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="80"/>
+      <source>Ambient shape color</source>
+      <translation>Kolor kształtu otoczenia</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="91"/>
+      <source>Emissive shape color</source>
+      <translation>Kolor emisji kształtu</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="102"/>
+      <source>Specular shape color</source>
+      <translation>Kolor odblasku kształtu</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="113"/>
+      <source>Shape transparency</source>
+      <translation>Przezroczystość kształtu</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="130"/>
+      <source>Shape shininess</source>
+      <translation>Połysk kształtu</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="150"/>
+      <source>Other</source>
+      <translation>Inne</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="156"/>
       <source>Line color</source>
       <translation>Kolor linii</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="104"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="314"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="167"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="380"/>
       <source>Line width</source>
       <translation>Szerokość linii</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="111"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="136"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="321"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="387"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="255"/>
       <source> px</source>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="143"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="206"/>
       <source>Draw style</source>
       <translation>Styl kreślenia</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="151"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="214"/>
       <source>Solid</source>
       <translation>Ciągła</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="156"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="219"/>
       <source>Dashed</source>
       <translation>Kreskowana</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="161"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="224"/>
       <source>Dotted</source>
       <translation>Kropkowana</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="166"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="229"/>
       <source>DashDot</source>
       <translation>Kreska kropka</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="237"/>
       <source>Display mode</source>
       <translation>Tryb wyświetlania</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="182"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="245"/>
       <source>Flat Lines</source>
       <translation>Cieniowany z krawędziami</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="255"/>
       <source>Wireframe</source>
       <translation>Szkieletowy</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="187"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="250"/>
       <source>Shaded</source>
       <translation>Cieniowany</translation>
     </message>
@@ -1020,165 +1070,174 @@ używając klawisza [ i ] podczas rysowania</translation>
       <translation>Zapisz bieżący styl jako ustawienie wstępne ...</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="56"/>
-      <source>Shapes</source>
-      <translation>Kształty</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="118"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="181"/>
       <source>Point color</source>
       <translation>Kolor punktu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="129"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
       <source>Point size</source>
       <translation>Rozmiar punktu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="197"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="260"/>
       <source>Points</source>
       <translation>Tylko punkty</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="65"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="69"/>
       <source>Shape color</source>
       <translation>Kolor kształtu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="76"/>
-      <source>Transparency</source>
-      <translation>Przezroczystość</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="208"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="502"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="592"/>
       <source>Annotations</source>
       <translation>Adnotacje</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="463"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="549"/>
       <source>Text spacing</source>
       <translation>Odstęp wymiaru od linii</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="214"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="357"/>
       <source>Text color</source>
       <translation>Kolor tekstu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="265"/>
-      <source>Line spacing</source>
-      <translation>Odstępy między wierszami</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="297"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="458"/>
       <source>Dimensions</source>
       <translation>Wymiary</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="336"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
       <source>Dot</source>
       <translation>Kropka</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="341"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="279"/>
+      <source>Annotation</source>
+      <translation>Adnotacja</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
+      <source>Texts</source>
+      <translation>Teksty</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="328"/>
+      <source>Line spacing factor</source>
+      <translation>Współczynnik odstępu między wierszami</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="349"/>
+      <source>The annotation scale multiplier is the inverse of the scale set in the
+Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
+      <translation type="unfinished">The annotation scale multiplier is the inverse of the scale set in the
+Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
+      <source>Lines and arrows</source>
+      <translation>Linie i ograniczniki</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="407"/>
       <source>Circle</source>
       <translation>Okrąg</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="346"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="412"/>
       <source>Arrow</source>
       <translation>Strzałka</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="351"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="417"/>
       <source>Tick</source>
-      <translation>Ukośnik gruby</translation>
+      <translation>Grot</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="356"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
       <source>Tick-2</source>
       <translation>Ukośnik architektury</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="385"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="471"/>
       <source>If checked, a unit symbol is added to dimension texts</source>
       <translation>Jeśli ta opcja jest zaznaczona, symbol jednostki jest domyślnie dodawany do tekstów wymiarów</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="488"/>
       <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
       <translation>Jednostka używana do wymiarowania. Pozostaw to pole puste, aby użyć aktualnej jednostki z programu FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="426"/>
-      <source>Ext lines</source>
-      <translation>Linie pomocnicze</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="416"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="502"/>
       <source>The distance the dimension line is extended past the extension lines</source>
       <translation>Odległość, na jaką linia wymiarowa jest wydłużona poza linie pomocnicze</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="221"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
       <source>The color for texts, dimension texts and label texts</source>
       <translation>Kolor tekstów, tekstów wymiarów i tekstów etykiet</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="228"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
       <source>Font name</source>
       <translation>Nazwa czcionki</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="241"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="304"/>
       <source>The font for texts, dimensions and labels</source>
       <translation>Czcionka dla tekstów, wymiarów i etykiet</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="248"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="311"/>
       <source>Font size</source>
       <translation>Rozmiar czcionki</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="255"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="318"/>
       <source>The height for texts, dimension texts and label texts</source>
       <translation>Wysokość czcionki dla tekstów, wymiarów i etykiet</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="272"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="335"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
       <translation>Odstęp wierszy dla tekstów wieloliniowych i etykiet (w stosunku do rozmiaru czcionki)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="279"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="342"/>
       <source>Scale multiplier</source>
       <translation>Mnożnik skali</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="286"/>
-      <source>The annotation scale multiplier is the inverse of the scale set in the 
-Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
-      <translation>Mnożnik skali adnotacji jest odwrotnością skali ustawionej w widżecie skali adnotacji. 
-Jeżeli skala wynosi 1:100, mnożnik wynosi 100.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="303"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="444"/>
       <source>Line and arrow color</source>
       <translation>Kolor linii i strzałki</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="328"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="394"/>
       <source>Arrow type</source>
       <translation>Styl strzałki</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="430"/>
       <source>Arrow size</source>
       <translation>Rozmiar strzałki</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="433"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="495"/>
+      <source>Dim line overshoot</source>
+      <translation type="unfinished">Dim line overshoot</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="512"/>
+      <source>Ext line length</source>
+      <translation type="unfinished">Ext line length</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
       <source>The length of extension lines. Use 0 for full extension lines. A negative value
 defines the gap between the ends of the extension lines and the measured points.
 A positive value defines the maximum length of the extension lines. Only used
@@ -1189,47 +1248,42 @@ Wartość dodatnia określa maksymalną długość linii pomocniczych.
 Wartość używana tylko dla wymiarów liniowych.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="453"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="532"/>
+      <source>Ext line overshoot</source>
+      <translation type="unfinished">Ext line overshoot</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
       <source>The length of extension lines above the dimension line</source>
       <translation>Długość linii pomocniczej powyżej linii wymiarowej</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="470"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="556"/>
       <source>The space between the dimension line and the dimension text</source>
       <translation>Odstęp pomiędzy tekstem a linią wymiarową</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="485"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="575"/>
       <source>Apply the above style to selected object(s)</source>
       <translation>Zastosuj powyższy styl do wybranych obiektów</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="499"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="589"/>
       <source>Apply the above style to all annotations (texts, dimensions and labels)</source>
       <translation>Zastosuj powyższy styl do wszystkich adnotacji (tekstów, wymiarów i etykiet)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="378"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
       <source>Show unit</source>
       <translation>Wyświetlaj jednostki</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="409"/>
-      <source>Dim overshoot</source>
-      <translation>Przedłużenie wymiaru</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="446"/>
-      <source>Ext overshoot</source>
-      <translation>Przedłużenie linii pomocniczych</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="395"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="481"/>
       <source>Unit override</source>
       <translation>Zastępuj jednostki</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="488"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="578"/>
       <source>Selected</source>
       <translation>Zaznaczone</translation>
     </message>
@@ -1479,12 +1533,12 @@ aby uniknąć przypadkowego poruszenia myszą i modyfikacji wprowadzonej wartoś
       <translation>Kolor geometrii konstrukcji</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="316"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="319"/>
       <source>Draft classic style</source>
       <translation>Styl klasyczny rysunku</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="321"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="324"/>
       <source>Bitsnpieces style</source>
       <translation>Styl końcówki i kawałki</translation>
     </message>
@@ -1569,7 +1623,7 @@ definicje wzorów, do dodania do standardowych wzorów</translation>
       <location filename="../ui/preferences-drafttexts.ui" line="540"/>
       <location filename="../ui/preferences-drafttexts.ui" line="569"/>
       <location filename="../ui/preferences-drafttexts.ui" line="598"/>
-      <location filename="../ui/preferences-dxf.ui" line="544"/>
+      <location filename="../ui/preferences-dxf.ui" line="588"/>
       <location filename="../ui/preferences-svg.ui" line="209"/>
       <source>mm</source>
       <translation>mm</translation>
@@ -1704,7 +1758,7 @@ w widżecie Skala adnotacji. Jeśli skala wynosi 1:100, mnożnik wynosi 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="284"/>
       <source>Tick</source>
-      <translation>Grot</translation>
+      <translation>Ukośnik gruby</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="289"/>
@@ -1951,36 +2005,31 @@ Wartość ta jest maksymalną długością odcinka.</translation>
       <translation>Pokaż okno dialogowe podczas importowania i eksportowania</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="51"/>
+      <location filename="../ui/preferences-dxf.ui" line="54"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>Jeśli opcja jest zaznaczona stosowany jest importer Python, w przeciwnym razie stosowany jest nowszy importer C++.
 Uwaga: Importer C++ jest szybszy, ale nie jest jeszcze tak funkcjonalny</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="55"/>
+      <location filename="../ui/preferences-dxf.ui" line="58"/>
       <source>Use legacy python importer</source>
       <translation>Użyj starszego importera Python</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="71"/>
+      <location filename="../ui/preferences-dxf.ui" line="74"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>Jeśli opcja jest zaznaczona stosowany jest eksporter Python, w przeciwnym razie stosowany jest nowszy eksporter C++.
 Uwaga: eksporter C++ jest szybszy, ale nie jest jeszcze tak funkcjonalny</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="75"/>
+      <location filename="../ui/preferences-dxf.ui" line="78"/>
       <source>Use legacy python exporter</source>
       <translation>Użyj starszego eksportera Python</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="88"/>
-      <source>Automatic update (legacy importer only)</source>
-      <translation>Automatyczna aktualizacja (tylko starszy importer)</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="96"/>
+      <location filename="../ui/preferences-dxf.ui" line="99"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -1989,109 +2038,104 @@ Można to również zrobić ręcznie, instalując środowisko pracy „dxf_libra
 z Menedżera dodatków.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="101"/>
+      <location filename="../ui/preferences-dxf.ui" line="104"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation>Pozwól programowi FreeCAD na automatyczne pobieranie i aktualizację bibliotek DXF</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="119"/>
+      <location filename="../ui/preferences-dxf.ui" line="122"/>
       <location filename="../ui/preferences-oca.ui" line="26"/>
       <location filename="../ui/preferences-svg.ui" line="26"/>
       <source>Import options</source>
       <translation>Opcje importu</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="140"/>
-      <source>Note: Not all the options below are used by the new importer yet</source>
-      <translation>Wskazówka: Nie wszystkie opcje prezentowane poniżej są używane przez nowego importera</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="149"/>
+      <location filename="../ui/preferences-dxf.ui" line="157"/>
       <source>Import</source>
       <translation>Import</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="156"/>
+      <location filename="../ui/preferences-dxf.ui" line="164"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>Jeśli opcja ta nie jest zaznaczona, teksty / meta teksty nie zostaną zaimportowane</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="159"/>
+      <location filename="../ui/preferences-dxf.ui" line="167"/>
       <source>texts and dimensions</source>
       <translation>Teksty i wymiary</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="172"/>
+      <location filename="../ui/preferences-dxf.ui" line="180"/>
       <source>If unchecked, points won't be imported</source>
       <translation>Jeśli opcja ta nie jest zaznaczona, punkty nie zostaną zaimportowane</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="175"/>
+      <location filename="../ui/preferences-dxf.ui" line="183"/>
       <source>points</source>
       <translation>punkty</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="188"/>
+      <location filename="../ui/preferences-dxf.ui" line="196"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>Jeśli opcja jest zaznaczona, zaimportowane zostaną również obiekty z obszaru papieru</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="191"/>
+      <location filename="../ui/preferences-dxf.ui" line="199"/>
       <source>layouts</source>
       <translation>Układy</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="204"/>
+      <location filename="../ui/preferences-dxf.ui" line="212"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation>Zaznacz tę opcję, jeśli chcesz, aby zaimportować również bloki bez nazwy (zaczynające się od *)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="207"/>
+      <location filename="../ui/preferences-dxf.ui" line="215"/>
       <source>*blocks</source>
       <translation>Bloki</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="224"/>
+      <location filename="../ui/preferences-dxf.ui" line="235"/>
       <source>Create</source>
       <translation>Utwórz</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="231"/>
+      <location filename="../ui/preferences-dxf.ui" line="245"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>Zostaną utworzone tylko standardowe obiekty części (opcja najszybsza)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="234"/>
+      <location filename="../ui/preferences-dxf.ui" line="248"/>
       <source>simple Part shapes</source>
       <translation>Podstawowe kształty Części</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="250"/>
+      <location filename="../ui/preferences-dxf.ui" line="267"/>
       <source>Parametric Draft objects will be created whenever possible</source>
       <translation>W miarę możliwości będą tworzone parametryczne rysunki obiektów</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="253"/>
+      <location filename="../ui/preferences-dxf.ui" line="270"/>
       <source>Draft objects</source>
       <translation>Obiekty Rysunku Roboczego</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="266"/>
+      <location filename="../ui/preferences-dxf.ui" line="286"/>
       <source>Sketches will be created whenever possible</source>
       <translation>W miarę możliwości zostaną utworzone szkice</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="269"/>
+      <location filename="../ui/preferences-dxf.ui" line="289"/>
       <source>Sketches</source>
       <translation>Szkice</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="289"/>
+      <location filename="../ui/preferences-dxf.ui" line="309"/>
       <source>Scale factor to apply to imported files</source>
       <translation>Współczynnik skalowania do zastosowania przy imporcie plików</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="309"/>
+      <location filename="../ui/preferences-dxf.ui" line="329"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -2102,142 +2146,157 @@ Przykład: dla plików w milimetrach: 1, w centymetrach: 10,
                              w metrach: 1000, w calach: 25,4, w stopach: 304.8</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="380"/>
+      <location filename="../ui/preferences-dxf.ui" line="403"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</source>
       <translation>Jeśli opcja jest zaznaczona, obiekty z tych samych warstw zostaną połączone w Bloki rysunków,
 umożliwi to szybsze obracanie obrazu na wyświetlaczu, ale czyni je mniej łatwymi do edycji.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="448"/>
-      <source>Import hatch boundaries as wires (legacy importer only)</source>
-      <translation>Importuj granice kreskowania jako polilinie (tylko starszy importer)</translation>
+      <location filename="../ui/preferences-dxf.ui" line="664"/>
+      <source>Project exported objects along current view direction</source>
+      <translation type="unfinished">Project exported objects along current view direction</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="469"/>
-      <source>Render polylines with width (legacy importer only)</source>
-      <translation>Renderuj polilinie ze szerokością (tylko starszy importer)</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="570"/>
-      <source>Export 3D objects as polyface meshes (legacy exporter only)</source>
-      <translation>Eksportuj obiekty 3D jako siatki wielościenne (tylko starszy eksporter)</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="614"/>
-      <source>Project exported objects along current view direction (legacy exporter only)</source>
-      <translation>Rzutuj wyeksportowane obiekty wzdłuż bieżącego kierunku widoku (tylko starszy eksporter)</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="359"/>
+      <location filename="../ui/preferences-dxf.ui" line="382"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation>FreeCAD będzie próbował łączyć przyległe obiekty w polilinie.
 Zauważ, że to może być czasochłonne!</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="338"/>
+      <location filename="../ui/preferences-dxf.ui" line="358"/>
       <source>Colors will set as specified in the DXF file whenever possible.
 Otherwise default colors will be applied.</source>
       <translation>Jeśli to możliwe, kolory zostaną ustawione tak, jak są zdefiniowane w pliku DXF.
 W przeciwnym razie zostaną zastosowane kolory domyślne.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="342"/>
+      <location filename="../ui/preferences-dxf.ui" line="91"/>
+      <source>Automatic update (legacy importer/exporter only)</source>
+      <translation type="unfinished">Automatic update (legacy importer/exporter only)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="148"/>
+      <source>Some options are not yet available for the new importer</source>
+      <translation type="unfinished">Some options are not yet available for the new importer</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="362"/>
       <source>Use colors from the DXF file</source>
       <translation>Użyj kolorów z pliku DXF</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="363"/>
+      <location filename="../ui/preferences-dxf.ui" line="386"/>
       <source>Join geometry</source>
       <translation>Łącz geometrie</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="384"/>
+      <location filename="../ui/preferences-dxf.ui" line="407"/>
       <source>Group layers into blocks</source>
       <translation>Grupuj warstwy w bloki</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="401"/>
+      <location filename="../ui/preferences-dxf.ui" line="427"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation>Importowane teksty uzyskają standardowy rozmiar tekstu w projekcie,
 zamiast rozmiaru, który mają w dokumencie DXF</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="405"/>
+      <location filename="../ui/preferences-dxf.ui" line="431"/>
       <source>Use standard font size for texts</source>
       <translation>Użyj standardowego rozmiaru czcionki dla tekstów</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="422"/>
+      <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
       <translation>Jeśli opcja ta jest zaznaczona, warstwy DXF zostaną zaimportowane jako warstwy robocze</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="425"/>
-      <source>Use Layers</source>
-      <translation>Użyj warstw</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="445"/>
+      <location filename="../ui/preferences-dxf.ui" line="474"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>Kreskowanie zostanie zamienione na podstawowe linie</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="465"/>
+      <location filename="../ui/preferences-dxf.ui" line="477"/>
+      <source>Import hatch boundaries as wires</source>
+      <translation type="unfinished">Import hatch boundaries as wires</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="497"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>Jeśli polilinie mają zdefiniowaną szerokość, będą renderowane
 jako zamknięte linie łamane o odpowiedniej szerokości</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="495"/>
+      <location filename="../ui/preferences-dxf.ui" line="501"/>
+      <source>Render polylines with width</source>
+      <translation type="unfinished">Render polylines with width</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="530"/>
+      <source>Some options are not yet available for the new exporter</source>
+      <translation type="unfinished">Some options are not yet available for the new exporter</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="539"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation>Eksport elipsy jest słabo wspierany. Użyj tej opcji, aby wyeksportować je jako polilinie.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="498"/>
+      <location filename="../ui/preferences-dxf.ui" line="542"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>Traktuj elipsy i spliny jako polilinie</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="527"/>
+      <location filename="../ui/preferences-dxf.ui" line="571"/>
       <source>Max Spline Segment:</source>
       <translation>Maksymalny segment splajnu:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="537"/>
+      <location filename="../ui/preferences-dxf.ui" line="581"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>Maksymalna długość każdego z segmentów polilinii.
 Jeśli jest ustawiona na "0", cały splajn jest traktowany jako odcinek prosty.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="487"/>
+      <location filename="../ui/preferences-dxf.ui" line="519"/>
       <location filename="../ui/preferences-svg.ui" line="107"/>
       <source>Export options</source>
       <translation>Opcje eksportu</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="567"/>
+      <location filename="../ui/preferences-dxf.ui" line="451"/>
+      <source>Use layers</source>
+      <translation type="unfinished">Use layers</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="614"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>Wszystkie obiekty zawierające ściany zostaną wyeksportowane jako trójwymiarowe powierzchnie czołowe</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="587"/>
+      <location filename="../ui/preferences-dxf.ui" line="617"/>
+      <source>Export 3D objects as polyface meshes</source>
+      <translation type="unfinished">Export 3D objects as polyface meshes</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="634"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>Widoki rysunków technicznych będą eksportowane jako bloki.
 Eksport może zawieść w przypadku szablonów DXF w wersji nowszej od R12.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="591"/>
+      <location filename="../ui/preferences-dxf.ui" line="638"/>
       <source>Export TechDraw Views as blocks</source>
       <translation>Eksportuj widoki Rysunku Technicznego jako bloki</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="611"/>
+      <location filename="../ui/preferences-dxf.ui" line="661"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>Eksportowane obiekty będą rzutowane tak, aby odzwierciedlały aktualny kierunek widoku</translation>
     </message>
@@ -2247,58 +2306,81 @@ Eksport może zawieść w przypadku szablonów DXF w wersji nowszej od R12.</tra
       <translation>Siatka i przyciąganie</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="420"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="455"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="493"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="423"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="458"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="496"/>
       <source>Shift</source>
       <translation>Shift</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="372"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="375"/>
       <source>Always snap</source>
       <translation>Przyciąganie jest aktywne zawsze</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="391"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="133"/>
+      <source>Major lines every</source>
+      <translation type="unfinished">Major lines every</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="146"/>
+      <source>The number of squares between major grid lines.
+Major grid lines are thicker than minor grid lines.</source>
+      <translation type="unfinished">The number of squares between major grid lines.
+Major grid lines are thicker than minor grid lines.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="150"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="221"/>
+      <source> squares</source>
+      <translation type="unfinished"> squares</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="218"/>
+      <source>The number of squares in the X and Y direction of the grid</source>
+      <translation type="unfinished">The number of squares in the X and Y direction of the grid</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="394"/>
       <source>Snap modifier</source>
       <translation>Modyfikator przyciągania</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="407"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="410"/>
       <source>The Snap modifier key</source>
       <translation>Klawisz zmieniający przyciąganie</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="425"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="460"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="498"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="428"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="463"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="501"/>
       <source>Ctrl</source>
       <translation>Ctrl</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="430"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="465"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="503"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="433"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="468"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="506"/>
       <source>Alt</source>
       <translation>Alt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="438"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="441"/>
       <source>Constrain modifier</source>
       <translation>Modyfikator wiązania</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="445"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="448"/>
       <source>The Constrain modifier key</source>
       <translation>Klawisz modyfikatora wiązań</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="473"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="476"/>
       <source>Alt modifier</source>
       <translation>Alt jako modyfikator</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="480"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="483"/>
       <source>The Alt modifier key. The function of this key depends on the command.</source>
       <translation>Klawisz modyfikujący Alt. Funkcja tego klawisza zależy od polecenia.</translation>
     </message>
@@ -2310,7 +2392,7 @@ Use Draft ToggleGrid to change this for the active view.</source>
 Przełącz widoczność siatki środowiska Rysunek Roboczy, aby zmienić to dla aktywnego widoku.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="183"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="186"/>
       <source>The distance between grid lines</source>
       <translation>Odległość między liniami siatki</translation>
     </message>
@@ -2387,59 +2469,37 @@ jeśli pasują do osi X, Y lub Z globalnego układu współrzędnych.</translati
       <translation>Użyj kolorowych osi</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="133"/>
-      <source>Main lines every</source>
-      <translation>Główne linie co</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="146"/>
-      <source>The number of squares between main grid lines.
-These lines are thicker than normal grid lines.</source>
-      <translation>Liczba kwadratów między głównymi liniami siatki.
-Linie te są grubsze niż zwykłe linie siatki.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="176"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="179"/>
       <source>Grid spacing</source>
       <translation>Odstęp siatki</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="208"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="211"/>
       <source>Grid size</source>
       <translation>Rozmiar siatki</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="215"/>
-      <source>The number of horizontal and vertical lines in the grid</source>
-      <translation>Liczba poziomych oraz pionowych linii siatki</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="218"/>
-      <source> lines</source>
-      <translation> linie</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="237"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="240"/>
       <source>Grid transparency</source>
       <translation>Przezroczystość siatki</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="247"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="250"/>
       <source> %</source>
       <translation> %</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="263"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="266"/>
       <source>Grid color</source>
       <translation>Kolor siatki</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="293"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="296"/>
       <source>Snapping and modifier keys</source>
       <translation>Przyciąganie i klawisz modyfikujący</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="299"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="302"/>
       <source>Snap symbol style</source>
       <translation>Styl symbolu przyciągania</translation>
     </message>
@@ -2454,32 +2514,32 @@ Linie te są grubsze niż zwykłe linie siatki.</translation>
       <translation> sekund</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="306"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="309"/>
       <source>The style for snap symbols</source>
       <translation>Styl dla symboli przyciągania</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="342"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="345"/>
       <source>Snap symbol color</source>
       <translation>Kolor symbolu przyciągania</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="349"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="352"/>
       <source>The color for snap symbols</source>
       <translation>Kolor dla symboli przyciągania</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="369"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="372"/>
       <source>If checked, snapping is activated without the need to press the Snap modifier key</source>
       <translation>Jeśli ta opcja jest zaznaczona, przyciąganie jest aktywne bez potrzeby naciskania klawisza modyfikującego</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="270"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="273"/>
       <source>The color of the grid</source>
       <translation>Kolor siatki</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="244"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="247"/>
       <source>The overall transparency of the grid</source>
       <translation>Ogólnie przezroczystość siatki</translation>
     </message>
@@ -2507,7 +2567,7 @@ Linie te są grubsze niż zwykłe linie siatki.</translation>
       <location filename="../ui/preferences-draft.ui" line="89"/>
       <location filename="../ui/preferences-dwg.ui" line="51"/>
       <source>Automatic</source>
-      <translation>Automatyczna</translation>
+      <translation>Automatycznie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="56"/>
@@ -2783,7 +2843,7 @@ będzie widoczny tylko podczas wykonywania poleceń</translation>
       <location filename="../../DraftGui.py" line="59"/>
       <location filename="../../DraftGui.py" line="545"/>
       <source>Global</source>
-      <translation>Globalnie</translation>
+      <translation>Globalne</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="60"/>
@@ -3446,126 +3506,126 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <location filename="../../draftmake/make_text.py" line="92"/>
       <location filename="../../draftmake/make_text.py" line="178"/>
       <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="827"/>
-      <location filename="../../draftutils/utils.py" line="1071"/>
+      <location filename="../../draftutils/gui_utils.py" line="831"/>
+      <location filename="../../draftutils/utils.py" line="1082"/>
       <source>No active document. Aborting.</source>
       <translation>Brak aktywnego dokumentu — przerwano.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="131"/>
-      <location filename="../../draftutils/gui_utils.py" line="835"/>
+      <location filename="../../draftutils/gui_utils.py" line="839"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>Nieprawidłowe dane wejściowe: obiektu {} nie ma w dokumencie.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="160"/>
+      <location filename="../../draftutils/gui_utils.py" line="164"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Nie można wstawić nowego obiektu do przeskalowanej części</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="266"/>
+      <location filename="../../draftutils/gui_utils.py" line="270"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>Symbol nie został zaimplementowany. Użyj symbolu domyślnego.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="711"/>
+      <location filename="../../draftutils/gui_utils.py" line="715"/>
       <source>image is Null</source>
       <translation>brak obrazu</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="717"/>
+      <location filename="../../draftutils/gui_utils.py" line="721"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>nazwa pliku nie istnieje w systemie lub w zasobach</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="776"/>
+      <location filename="../../draftutils/gui_utils.py" line="780"/>
       <source>unable to load texture</source>
       <translation>nie można załadować tekstury</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="841"/>
+      <location filename="../../draftutils/gui_utils.py" line="845"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>Nie ma "ViewObject.RootNode".</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="652"/>
+      <location filename="../../draftutils/utils.py" line="663"/>
       <source>Solids:</source>
       <translation>Bryły:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="653"/>
+      <location filename="../../draftutils/utils.py" line="664"/>
       <source>Faces:</source>
       <translation>Ściany:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="654"/>
+      <location filename="../../draftutils/utils.py" line="665"/>
       <source>Wires:</source>
       <translation>Polilinie:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="655"/>
+      <location filename="../../draftutils/utils.py" line="666"/>
       <source>Edges:</source>
       <translation>Krawędzie:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="656"/>
+      <location filename="../../draftutils/utils.py" line="667"/>
       <source>Vertices:</source>
       <translation>Wierzchołki:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="660"/>
+      <location filename="../../draftutils/utils.py" line="671"/>
       <source>Face</source>
       <translation>Ściana</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="665"/>
+      <location filename="../../draftutils/utils.py" line="676"/>
       <source>Wire</source>
       <translation>Polilinia</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="697"/>
-      <location filename="../../draftutils/utils.py" line="701"/>
+      <location filename="../../draftutils/utils.py" line="708"/>
+      <location filename="../../draftutils/utils.py" line="712"/>
       <source>different types</source>
       <translation>różne typy</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="711"/>
+      <location filename="../../draftutils/utils.py" line="722"/>
       <source>Objects have different placements. Distance between the two base points:</source>
       <translation>Obiekty posiadają różne umiejscowienia. 
 Odległość między dwoma punktami bazowymi:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1111"/>
+      <location filename="../../draftutils/utils.py" line="1122"/>
       <source>This function will be deprecated in {}. Please use '{}'.</source>
       <translation>Ta funkcja będzie przestarzała w {}. Proszę użyć "{}".</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1113"/>
+      <location filename="../../draftutils/utils.py" line="1124"/>
       <source>This function will be deprecated. Please use '{}'.</source>
       <translation>Ta funkcja będzie przestarzała. Proszę użyć "{}".</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="714"/>
+      <location filename="../../draftutils/utils.py" line="725"/>
       <source>has a different value</source>
       <translation>posiada inną wartość</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="717"/>
+      <location filename="../../draftutils/utils.py" line="728"/>
       <source>doesn't exist in one of the objects</source>
       <translation>nie istnieje w jednym z obiektów</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="885"/>
+      <location filename="../../draftutils/utils.py" line="896"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
       <translation>%s udostępnia bazę %d innym obiektom. Proszę sprawdź, czy chcesz to zmienić.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="891"/>
+      <location filename="../../draftutils/utils.py" line="902"/>
       <source>%s cannot be modified because its placement is readonly.</source>
       <translation>%s nie może być zmodyfikowane ponieważ wartość umiejscowienia jest tylko do odczytu.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1034"/>
+      <location filename="../../draftutils/utils.py" line="1045"/>
       <source>Wrong input: unknown document {}</source>
       <translation>Nieprawidłowe dane wejściowe: nieznany dokument {}</translation>
     </message>
@@ -3611,40 +3671,40 @@ Odległość między dwoma punktami bazowymi:</translation>
       <translation>Wybierz pierwszy punkt</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="163"/>
+      <location filename="../../draftguitools/gui_lines.py" line="170"/>
       <source>Create Line</source>
       <translation>Utwórz linię</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="185"/>
+      <location filename="../../draftguitools/gui_lines.py" line="192"/>
       <source>Create Wire</source>
       <translation>Utwórz polilinię</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="356"/>
+      <location filename="../../draftguitools/gui_lines.py" line="363"/>
       <source>Polyline</source>
       <translation>Polilinia</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="151"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="154"/>
-      <location filename="../../draftguitools/gui_lines.py" line="218"/>
-      <location filename="../../draftguitools/gui_lines.py" line="226"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="152"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="155"/>
+      <location filename="../../draftguitools/gui_lines.py" line="225"/>
       <location filename="../../draftguitools/gui_lines.py" line="233"/>
-      <location filename="../../draftguitools/gui_lines.py" line="241"/>
-      <location filename="../../draftguitools/gui_lines.py" line="251"/>
-      <location filename="../../draftguitools/gui_splines.py" line="140"/>
-      <location filename="../../draftguitools/gui_splines.py" line="145"/>
+      <location filename="../../draftguitools/gui_lines.py" line="240"/>
+      <location filename="../../draftguitools/gui_lines.py" line="248"/>
+      <location filename="../../draftguitools/gui_lines.py" line="258"/>
+      <location filename="../../draftguitools/gui_splines.py" line="142"/>
+      <location filename="../../draftguitools/gui_splines.py" line="147"/>
       <source>Pick next point</source>
       <translation>Wybierz kolejny punkt</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="323"/>
+      <location filename="../../draftguitools/gui_lines.py" line="330"/>
       <source>Unable to create a Wire from selected objects</source>
       <translation>Nie można utworzyć linii łamanej z zaznaczonych obiektów</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="348"/>
+      <location filename="../../draftguitools/gui_lines.py" line="355"/>
       <source>Convert to Wire</source>
       <translation>Konwertuj do Linii łamanej</translation>
     </message>
@@ -3721,15 +3781,15 @@ Odległość między dwoma punktami bazowymi:</translation>
       <translation>Niektóre elementy podrzędne nie mogły być przeniesione.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="88"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="85"/>
       <location filename="../../draftguitools/gui_polygons.py" line="78"/>
       <source>Pick center point</source>
       <translation>Wybierz punkt środkowy</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="254"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="270"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="409"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="251"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="267"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="406"/>
       <location filename="../../draftguitools/gui_polygons.py" line="196"/>
       <location filename="../../draftguitools/gui_polygons.py" line="207"/>
       <location filename="../../draftguitools/gui_polygons.py" line="268"/>
@@ -3737,70 +3797,70 @@ Odległość między dwoma punktami bazowymi:</translation>
       <translation>Wybierz promień</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="277"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="278"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="444"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="445"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="274"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="275"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="441"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="442"/>
       <source>Start angle</source>
       <translation>Kąt początkowy</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="283"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="450"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="280"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="447"/>
       <source>Pick start angle</source>
       <translation>Wybierz kąt początkowy</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="285"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="286"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="452"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="453"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="282"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="283"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="449"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="450"/>
       <source>Aperture angle</source>
       <translation>Kąt otwarcia</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="292"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="289"/>
       <source>Pick aperture</source>
       <translation>Wybierz otwarcie</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="319"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="316"/>
       <source>Create Circle (Part)</source>
       <translation>Utwórz okrąg (środowisko pracy Część)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="337"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="334"/>
       <source>Create Circle</source>
       <translation>Utwórz okrąg</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="368"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="365"/>
       <source>Create Arc (Part)</source>
       <translation>Utwórz łuk (środowisko pracy Część)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="388"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="385"/>
       <source>Create Arc</source>
       <translation>Utwórz łuk</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="462"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="459"/>
       <source>Pick aperture angle</source>
       <translation>Wybierz kąt otwarcia</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="505"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="547"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="502"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="544"/>
       <source>Arc by 3 points</source>
       <translation>Łuk przez trzy punkty</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="566"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="563"/>
       <source>Create Arc by 3 points</source>
       <translation>Utwórz łuk przez trzy punkty</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_grid.py" line="53"/>
+      <location filename="../../draftguitools/gui_grid.py" line="54"/>
       <source>Toggle grid</source>
       <translation>Przełącz widoczność siatki</translation>
     </message>
@@ -4082,12 +4142,12 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
       <translation>Utwórz wielokąt foremny</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_split.py" line="64"/>
+      <location filename="../../draftguitools/gui_split.py" line="59"/>
       <source>Click anywhere on a line to split it.</source>
       <translation>Kliknij gdziekolwiek na linii, aby ją podzielić.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_split.py" line="107"/>
+      <location filename="../../draftguitools/gui_split.py" line="102"/>
       <source>Split line</source>
       <translation>Podziel linię</translation>
     </message>
@@ -4133,19 +4193,19 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
       <translation>Krzywa złożona</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_splines.py" line="120"/>
+      <location filename="../../draftguitools/gui_splines.py" line="122"/>
       <source>Spline has been closed</source>
       <translation>Splajn został zamknięty</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="143"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="382"/>
-      <location filename="../../draftguitools/gui_splines.py" line="131"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="144"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="377"/>
+      <location filename="../../draftguitools/gui_splines.py" line="133"/>
       <source>Last point has been removed</source>
       <translation>Usunięto ostatni punkt</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_splines.py" line="183"/>
+      <location filename="../../draftguitools/gui_splines.py" line="185"/>
       <source>Create B-spline</source>
       <translation>Utwórz krzywą złożoną</translation>
     </message>
@@ -4274,30 +4334,30 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
       <translation>Punkt końcowy krzywej Béziera nie może być wygładzony</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="75"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="76"/>
       <source>Bézier curve</source>
       <translation>Krzywa Béziera</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="135"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="346"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="136"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="342"/>
       <source>Bézier curve has been closed</source>
       <translation>Krzywa Béziera została zamknięta</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="213"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="466"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="214"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="461"/>
       <source>Create BezCurve</source>
       <translation>Utwórz krzywą Béziera</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="265"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="266"/>
       <source>Cubic Bézier curve</source>
       <translation>Sześcienna krzywa Béziera</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="390"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="394"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="385"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="389"/>
       <source>Click and drag to define next knot</source>
       <translation>Kliknij i przeciągnij, aby zdefiniować następny węzeł</translation>
     </message>
@@ -4521,7 +4581,7 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
       <translation>Nie można sklonować obiektu bez kształtu, następuje pominięcie</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lineslope.py" line="64"/>
+      <location filename="../../draftguitools/gui_lineslope.py" line="60"/>
       <source>Change slope</source>
       <translation>Zmień nachylenie</translation>
     </message>
@@ -5247,12 +5307,12 @@ typ_etykiety musi być jednym z następujących:</translation>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="251"/>
       <source>Found 1 block: exploding it</source>
-      <translation>Znaleziono 1 blok: rozbijanie go</translation>
+      <translation>Znaleziono 1 blok: wykonam rozłożenie</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="260"/>
       <source>Found 1 multi-solids compound: exploding it</source>
-      <translation>Znaleziono 1 złożenie wielu brył: rozstrzeliwuję to</translation>
+      <translation>Znaleziono złożenie wielu brył: wykonam rozłożenie</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="269"/>
@@ -5498,7 +5558,7 @@ typ_etykiety musi być jednym z następujących:</translation>
       <translation>Otwieranie hiperłącza</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="154"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="152"/>
       <source>Select 3 vertices, one or more shapes or an object to define a working plane</source>
       <translation>Wybierz trzy wierzchołki, jeden lub więcej kształtów lub obiekt, aby zdefiniować płaszczyznę roboczą</translation>
     </message>
@@ -5614,32 +5674,32 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi Menu -&gt; Mene
       <translation>Utwórz sfazowanie</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="310"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="421"/>
       <source>Save style</source>
       <translation>Zapisz styl</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="311"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="422"/>
       <source>Name of this new style:</source>
       <translation>Nazwa tego nowego stylu:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="318"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="429"/>
       <source>Warning</source>
       <translation>Ostrzeżenie</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="319"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="430"/>
       <source>Name exists. Overwrite?</source>
       <translation>Nazwa istnieje. Nadpisać?</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="339"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="450"/>
       <source>Error: json module not found. Unable to load style</source>
       <translation>Błąd: nie znaleziono modułu json. Nie można wczytać stylu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="358"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="469"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>Błąd: nie znaleziono modułu json. Nie można zapisać stylu</translation>
     </message>
@@ -5649,8 +5709,8 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi Menu -&gt; Mene
       <translation>Klonuj</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lineslope.py" line="88"/>
-      <location filename="../../draftguitools/gui_lineslope.py" line="91"/>
+      <location filename="../../draftguitools/gui_lineslope.py" line="84"/>
+      <location filename="../../draftguitools/gui_lineslope.py" line="87"/>
       <source>Slope</source>
       <translation>Nachylenie</translation>
     </message>
@@ -5744,48 +5804,48 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi Menu -&gt; Mene
       <translation>Zapisywanie stanu pokazany/ukryty obiektu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="277"/>
+      <location filename="../../draftguitools/gui_layers.py" line="283"/>
       <source>On</source>
       <translation>Włącz</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="278"/>
+      <location filename="../../draftguitools/gui_layers.py" line="284"/>
       <location filename="../../draftobjects/label.py" line="326"/>
       <source>Name</source>
       <translation>Nazwa</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="279"/>
+      <location filename="../../draftguitools/gui_layers.py" line="285"/>
       <source>Line width</source>
       <translation>Szerokość linii</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="280"/>
+      <location filename="../../draftguitools/gui_layers.py" line="286"/>
       <source>Draw style</source>
       <translation>Styl kreślenia</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="281"/>
+      <location filename="../../draftguitools/gui_layers.py" line="287"/>
       <source>Line color</source>
       <translation>Kolor linii</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="282"/>
+      <location filename="../../draftguitools/gui_layers.py" line="288"/>
       <source>Face color</source>
       <translation>Kolor powierzchni</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="283"/>
+      <location filename="../../draftguitools/gui_layers.py" line="289"/>
       <source>Transparency</source>
       <translation>Przezroczystość</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="284"/>
+      <location filename="../../draftguitools/gui_layers.py" line="290"/>
       <source>Line print color</source>
       <translation>Kolor linii na wydruku</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="305"/>
+      <location filename="../../draftguitools/gui_layers.py" line="311"/>
       <source>New Layer</source>
       <translation>Nowa warstwa</translation>
     </message>
@@ -5892,12 +5952,12 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi Menu -&gt; Mene
   <context>
     <name>Draft_SelectPlane</name>
     <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="58"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="59"/>
       <source>Select plane</source>
       <translation>Wybierz płaszczyznę</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="61"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="62"/>
       <source>Select 3 vertices, one or more shapes or an object to define a working plane.</source>
       <translation>Wybierz trzy wierzchołki, jeden lub więcej kształtów lub obiekt, aby zdefiniować płaszczyznę roboczą.</translation>
     </message>
@@ -5980,12 +6040,12 @@ CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="299"/>
+      <location filename="../../draftguitools/gui_lines.py" line="306"/>
       <source>Polyline</source>
       <translation>Polilinia</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="302"/>
+      <location filename="../../draftguitools/gui_lines.py" line="309"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
       <translation>Tworzy wielopunktową linię (polilinię). 
 CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
@@ -6277,12 +6337,12 @@ CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
   <context>
     <name>Draft_Arc</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="66"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="63"/>
       <source>Arc</source>
       <translation>Łuk</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="69"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="66"/>
       <source>Creates a circular arc by a center point and a radius.
 CTRL to snap, SHIFT to constrain.</source>
       <translation>Tworzy łuk kołowy za pomocą punktu środkowego i promienia.
@@ -6292,12 +6352,12 @@ CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
   <context>
     <name>Draft_Arc_3Points</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="480"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="477"/>
       <source>Arc by 3 points</source>
       <translation>Łuk przez trzy punkty</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="483"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="480"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
       <translation>Tworzy łuk kołowy przez wskazanie 3 punktów. 
@@ -6307,12 +6367,12 @@ CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
   <context>
     <name>Draft_ArcTools</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="614"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="611"/>
       <source>Arc tools</source>
       <translation>Narzędzia łuku</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="617"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="614"/>
       <source>Create various types of circular arcs.</source>
       <translation>Tworzy różne rodzaje łuków kołowych.</translation>
     </message>
@@ -6455,7 +6515,7 @@ Utwórz najpierw grupę, aby użyć tego narzędzia.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="209"/>
       <source>Autogroup</source>
-      <translation>Grupuj automatycznie</translation>
+      <translation>Grupowanie automatyczne</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="212"/>
@@ -6496,12 +6556,12 @@ Tworzy grupę konstrukcyjną, jeśli nie istniała.</translation>
   <context>
     <name>Draft_WorkingPlaneProxy</name>
     <message>
-      <location filename="../../draftguitools/gui_planeproxy.py" line="50"/>
+      <location filename="../../draftguitools/gui_planeproxy.py" line="46"/>
       <source>Create working plane proxy</source>
       <translation>Utwórz pośrednią płaszczyznę roboczą</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_planeproxy.py" line="52"/>
+      <location filename="../../draftguitools/gui_planeproxy.py" line="49"/>
       <source>Creates a proxy object from the current working plane.
 Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
 Then you can use it to save a different camera position and objects' states any time you need.</source>
@@ -6569,7 +6629,7 @@ Jeśli wybrane zostaną inne obiekty, zostaną one zignorowane.</translation>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="57"/>
       <source>Polygon</source>
-      <translation>Wielokąt foremny</translation>
+      <translation>Wielokąt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="60"/>
@@ -6582,12 +6642,12 @@ CTRL aby przyciągnąć, SHIFT aby ograniczyć</translation>
   <context>
     <name>Draft_Split</name>
     <message>
-      <location filename="../../draftguitools/gui_split.py" line="56"/>
+      <location filename="../../draftguitools/gui_split.py" line="51"/>
       <source>Split</source>
       <translation>Rozdziel</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_split.py" line="59"/>
+      <location filename="../../draftguitools/gui_split.py" line="54"/>
       <source>Splits the selected line or polyline into two independent lines
 or polylines by clicking anywhere along the original object.
 It works best when choosing a point on a straight segment and not a corner vertex.</source>
@@ -6640,12 +6700,12 @@ CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
   <context>
     <name>Draft_BezCurve</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="65"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="66"/>
       <source>Bézier curve</source>
       <translation>Krzywa Béziera</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="68"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="69"/>
       <source>Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
       <translation>Tworzy N-stopniową krzywą Béziera. Im więcej punktów wybierzesz, tym osiągniesz wyższy stopień krzywej.
@@ -6655,12 +6715,12 @@ CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
   <context>
     <name>Draft_CubicBezCurve</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="252"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="253"/>
       <source>Cubic Bézier curve</source>
       <translation>Sześcienna krzywa Béziera</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="255"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="256"/>
       <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
@@ -6672,12 +6732,12 @@ CTRL aby przyciągnąć, SHIFT aby utworzyć wiązanie.</translation>
   <context>
     <name>Draft_BezierTools</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="490"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="485"/>
       <source>Bézier tools</source>
       <translation>Narzędzia krzywych Béziera</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="493"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="488"/>
       <source>Create various types of Bézier curves.</source>
       <translation>Tworzy różne typy krzywych Béziera.</translation>
     </message>
@@ -6748,7 +6808,7 @@ Szyk można przekształcić w szyk polarny lub kołowy, zmieniając jego typ.</t
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="71"/>
       <source>Scale</source>
-      <translation>Skaluj</translation>
+      <translation>Skala</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="74"/>
@@ -6768,9 +6828,9 @@ CTRL, aby przyciągnąć, SHIFT, aby ograniczyć, ALT do kopiowania.</translatio
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="71"/>
       <source>Adds a layer to the document.
-Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</source>
-      <translation>Dodaje warstwę do dokumentu.
-Obiekty dodane do tej warstwy mogą mieć te same właściwości wizualne, takie jak kolor linii, szerokość linii i kolor kształtu.</translation>
+Objects added to this layer can share the same visual properties.</source>
+      <translation type="unfinished">Adds a layer to the document.
+Objects added to this layer can share the same visual properties.</translation>
     </message>
   </context>
   <context>
@@ -6806,12 +6866,12 @@ Tablica „Szyk powiązań punktowych” jest bardziej efektywna przy obsłudze 
   <context>
     <name>Draft_ArrayTools</name>
     <message>
-      <location filename="../../draftguitools/gui_arrays.py" line="65"/>
+      <location filename="../../draftguitools/gui_arrays.py" line="66"/>
       <source>Array tools</source>
       <translation>Narzędzia szyku</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arrays.py" line="68"/>
+      <location filename="../../draftguitools/gui_arrays.py" line="69"/>
       <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
       <translation>Tworzy różne typy szyków, w tym
 prostokątne, biegunowe, kołowe, po ścieżce i punktowe</translation>
@@ -6997,12 +7057,12 @@ Szyk można zmienić w szyk ortogonalny lub kołowy poprzez zmianę jego typu.</
   <context>
     <name>Draft_Slope</name>
     <message>
-      <location filename="../../draftguitools/gui_lineslope.py" line="70"/>
+      <location filename="../../draftguitools/gui_lineslope.py" line="66"/>
       <source>Set slope</source>
       <translation>Ustaw nachylenie</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lineslope.py" line="73"/>
+      <location filename="../../draftguitools/gui_lineslope.py" line="69"/>
       <source>Sets the slope of the selected line by changing the value of the Z value of one of its points.
 If a polyline is selected, it will apply the slope transformation to each of its segments.
 
@@ -8332,7 +8392,7 @@ beyond the dimension line</source>
       <location filename="../../InitGui.py" line="140"/>
       <location filename="../../InitGui.py" line="141"/>
       <source>Draft</source>
-      <translation>Rysunek Roboczy</translation>
+      <translation>Rysunek roboczy</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="201"/>

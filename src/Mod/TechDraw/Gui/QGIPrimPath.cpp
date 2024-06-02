@@ -39,10 +39,12 @@
 #include "QGIPrimPath.h"
 #include "PreferencesGui.h"
 #include "QGIView.h"
+#include "DrawGuiUtil.h"
 
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+using DGU = DrawGuiUtil;
 
 QGIPrimPath::QGIPrimPath():
     m_width(0),
@@ -251,9 +253,9 @@ void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent *event)
         auto parent = dynamic_cast<QGIView *>(parentItem());
         if (parent) {
             std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
-            if (selection.size() == 1
-                && selection.front().getObject() == parent->getViewObject()) {
-
+            if (DGU::findObjectInSelection(selection, *(parent->getViewObject()))) {
+                // if our parent is already in the selection, then allow addition
+                // primitives to be selected.
                 multiselectActivated = true;
                 event->setModifiers(originalModifiers | Qt::ControlModifier);
             }

@@ -34,12 +34,15 @@
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/TechDraw/App/DrawViewSection.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
 
@@ -70,7 +73,8 @@ QGIView::QGIView()
     :QGraphicsItemGroup(),
      viewObj(nullptr),
      m_innerView(false),
-     m_multiselectActivated(false)
+     m_multiselectActivated(false),
+     snapping(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -152,32 +156,36 @@ void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 
 QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    QPointF newPos(0.0, 0.0);
 //    Base::Console().Message("QGIV::itemChange(%d)\n", change);
     if(change == ItemPositionChange && scene()) {
-        newPos = value.toPointF();            //position within parent!
+        QPointF newPos = value.toPointF();            //position within parent!
 
         TechDraw::DrawView *viewObj = getViewObject();
-        if (viewObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+        auto* dpgi = dynamic_cast<TechDraw::DrawProjGroupItem*>(viewObj);
+        if (dpgi && dpgi->getPGroup()) {
             // restrict movements of secondary views.
-            TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(viewObj);
-            TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
-            if (dpg) {
-                if(alignHash.size() == 1) {   //if aligned.
-                    QGraphicsItem* item = alignHash.begin().value();
-                    QString alignMode   = alignHash.begin().key();
-                    if(alignMode == QString::fromLatin1("Vertical")) {
-                        newPos.setX(item->pos().x());
-                    } else if(alignMode == QString::fromLatin1("Horizontal")) {
-                        newPos.setY(item->pos().y());
-                    }
+            if(alignHash.size() == 1) {   //if aligned.
+                QGraphicsItem* item = alignHash.begin().value();
+                QString alignMode   = alignHash.begin().key();
+                if(alignMode == QString::fromLatin1("Vertical")) {
+                    newPos.setX(item->pos().x());
+                }
+                else if(alignMode == QString::fromLatin1("Horizontal")) {
+                    newPos.setY(item->pos().y());
                 }
             }
         }
+        else {
+            // For general views we check if we need to snap to a position
+            snapPosition(newPos);
+        }
+
         // tell the feature that we have moved
         Gui::ViewProvider *vp = getViewProvider(viewObj);
         if (vp && !vp->isRestoring()) {
+            snapping = true; // avoid triggering updateView by the VP updateData
             viewObj->setPosition(Rez::appX(newPos.x()), Rez::appX(-newPos.y()));
+            snapping = false;
         }
 
         return newPos;
@@ -195,6 +203,89 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     }
 
     return QGraphicsItemGroup::itemChange(change, value);
+}
+
+void QGIView::snapPosition(QPointF& mPos)
+{
+    // For general views we check if the view is close to aligned vertically or horizontally to another view.
+
+    // First get a list of the views of the page.
+    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
+        return;
+    }
+    ViewProviderPage* vp = mdi->getViewProviderPage();
+    if (!vp) {
+        return;
+    }
+    QGSPage* scenePage = vp->getQGSPage();
+    if (!scenePage) {
+        return;
+    }
+
+    std::vector<QGIView*> views = scenePage->getViews();
+    qreal snapPercent = 0.05;
+
+    auto* sectionView = dynamic_cast<TechDraw::DrawViewSection*>(getViewObject());
+    if (sectionView) {
+        auto* baseView = sectionView->getBaseDVP();
+        if (!baseView) { return; }
+
+        Base::Vector3d dir3d = sectionView->getSectionDirectionOnBaseView();
+        double bSize = Rez::guiX(baseView->getSizeAlongVector(dir3d));
+        double sSize = Rez::guiX(sectionView->getSizeAlongVector(dir3d));
+
+        auto* vpdv = dynamic_cast<ViewProviderDrawingView*>(getViewProvider(baseView));
+        if (!vpdv) { return; }
+        auto* qgiv(dynamic_cast<QGIView*>(vpdv->getQView()));
+        if (!qgiv) { return; }
+        QPointF bvPos = qgiv->pos();
+        Base::Vector2d bvPt(bvPos.x(), bvPos.y());
+        Base::Vector2d mPt(mPos.x(), mPos.y());
+        Base::Vector2d dir(dir3d.x, dir3d.y);
+        if (dir.Length() < Precision::Confusion()) { return; }
+        dir.Normalize();
+
+        double snapDist = bSize * snapPercent;
+
+        Base::Vector2d projPt;
+        projPt.ProjectToLine(mPt - bvPt, dir);
+        projPt = projPt + bvPt;
+
+        Base::Vector2d v = (projPt - bvPt) + 0.5 * (sSize - bSize) * dir;
+        int sign = v * dir > 0 ? - 1 : 1;
+        double dist = v.Length();
+        if (dist < snapDist) {
+            v = dist * dir;
+            mPos = mPos + sign * QPointF(v.x, v.y);
+            return;
+        }
+
+       v = (projPt - bvPt) + 0.5 * (bSize - sSize) * dir;
+        sign = v * dir > 0 ? - 1 : 1;
+        dist = v.Length();
+        if (dist < snapDist) {
+            v = dist * dir;
+            mPos = mPos + sign * QPointF(v.x, v.y);
+            return;
+        }
+    }
+
+    for (auto* view : views) {
+        if (view == this) { continue; }
+
+        QPointF vPos = view->pos();
+        qreal dx = view->boundingRect().width() * snapPercent;
+        qreal dy = view->boundingRect().height() * snapPercent;
+        if (fabs(mPos.x() - vPos.x()) < dx) {
+            mPos.setX(vPos.x());
+            break;
+        }
+        else if (fabs(mPos.y() - vPos.y()) < dy) {
+            mPos.setY(vPos.y());
+            break;
+        }
+    }
 }
 
 void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)

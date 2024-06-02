@@ -200,7 +200,7 @@ class Shape2DView(DraftObject):
             return shape.Solids
         if shape.ShapeType == "Compound":
             return shape.SubShapes
-        return [shape]
+        return [shape.copy()]
 
     def execute(self, obj):
         if self.props_changed_placement_only(obj) \

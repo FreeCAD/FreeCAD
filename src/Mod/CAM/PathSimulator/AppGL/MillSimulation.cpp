@@ -360,12 +360,12 @@ void MillSimulation::ProcessSim(unsigned int time_ms)
 {
 
     static int ancient = 0;
-    static int last = 0;
-    static int msec = 0;
+    static unsigned int last = 0;
+    static unsigned int msec = 0xFFFFFFFF;
     static int fps = 0;
     static int renderTime = 0;
 
-    last = msec;
+    last = msec == 0xFFFFFFFF ? time_ms : msec;
     msec = time_ms;
     if (mIsRotate) {
         simDisplay.RotateEye((msec - last) / 4600.0f);
@@ -437,9 +437,11 @@ void MillSimulation::HandleKeyPress(int key)
                 mSimSpeed = key - '0';
             }
             break;
+        }
+        guiDisplay.UpdatePlayState(mSimPlaying);
     }
-    guiDisplay.UpdatePlayState(mSimPlaying);
 }
+
 
 void MillSimulation::InitDisplay(float quality)
 {

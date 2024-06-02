@@ -62,7 +62,7 @@
       <location filename="../../VisualInspection.ui" line="39"/>
       <location filename="../../VisualInspection.ui" line="66"/>
       <source>Objects</source>
-      <translation>Об'єкти</translation>
+      <translation>Обʼєкти</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="50"/>

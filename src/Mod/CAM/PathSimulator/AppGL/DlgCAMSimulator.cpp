@@ -24,16 +24,9 @@
 
 #include "DlgCAMSimulator.h"
 #include "MillSimulation.h"
-#include <QtGui/QMatrix4x4>
-#include <QtGui/qscreen.h>
 #include <QDateTime>
 #include <QSurfaceFormat>
-#include <QMouseEvent>
-#include <QWheelEvent>
 #include <QPoint>
-
-using namespace CAMSimulator;
-using namespace MillSim;
 
 QOpenGLContext* gOpenGlContext;
 
@@ -236,6 +229,8 @@ DlgCAMSimulator* DlgCAMSimulator::GetInstance()
         QSurfaceFormat format;
         format.setSamples(16);
         format.setSwapInterval(2);
+        format.setDepthBufferSize(24);
+        format.setStencilBufferSize(8);
         mInstance = new DlgCAMSimulator();
         mInstance->setFormat(format);
         mInstance->resize(800, 600);

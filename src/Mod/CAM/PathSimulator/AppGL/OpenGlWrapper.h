@@ -26,6 +26,9 @@
 #include "DlgCAMSimulator.h"
 extern QOpenGLContext* gOpenGlContext;
 #define gSimWindow CAMSimulator::DlgCAMSimulator::GetInstance()
+#define glClearColor gSimWindow->glClearColor
+#define glBlendFunc gSimWindow->glBlendFunc
+#define glClear gSimWindow->glClear
 #define glGenBuffers gSimWindow->glGenBuffers
 #define glBindBuffer gSimWindow->glBindBuffer
 #define glBufferData gSimWindow->glBufferData

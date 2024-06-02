@@ -114,7 +114,7 @@ StartView::StartView(Gui::Document* pcDocument, QWidget* parent)
 
     auto scrolledWidget = gsl::owner<QWidget*>(new QWidget(this));
     _contents->setWidget(scrolledWidget);
-    _contents->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
+    _contents->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
     _contents->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
     _contents->setWidgetResizable(true);
     auto layout = gsl::owner<QVBoxLayout*>(new QVBoxLayout(scrolledWidget));

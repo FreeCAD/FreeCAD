@@ -46,6 +46,7 @@
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewMulti.h>
+#include <Mod/TechDraw/App/DrawBrokenView.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/CenterLine.h>
@@ -84,6 +85,7 @@ ViewProviderViewPart::ViewProviderViewPart()
     static const char *hgroup = "Highlight";
     static const char *sgroup = "Section Line";
     static const char *fgroup = "Faces";
+    static const char *bvgroup = "Broken View";
 
     //default line weights
 
@@ -128,6 +130,13 @@ ViewProviderViewPart::ViewProviderViewPart()
                         "Set highlight line color if applicable");
     ADD_PROPERTY_TYPE(HighlightAdjust, (0.0), hgroup, App::Prop_None, "Adjusts the rotation of the Detail highlight");
 
+    // properties that affect BrokenViews
+    BreakLineType.setEnums(DrawBrokenView::BreakTypeEnums);
+    ADD_PROPERTY_TYPE(BreakLineType, (Preferences::BreakType()), bvgroup, App::Prop_None,
+                        "Adjusts the type of break line depiction on broken views");
+    ADD_PROPERTY_TYPE(BreakLineStyle, (Preferences::BreakLineStyle()), bvgroup, App::Prop_None,
+                        "Set break line style if applicable");
+
     ADD_PROPERTY_TYPE(ShowAllEdges ,(false),dgroup, App::Prop_None, "Temporarily show invisible lines");
 
     // Faces related properties
@@ -141,12 +150,15 @@ ViewProviderViewPart::ViewProviderViewPart()
     if (bodyName == "ISO") {
         SectionLineStyle.setEnums(ISOLineName::ISOLineNameEnums);
         HighlightLineStyle.setEnums(ISOLineName::ISOLineNameEnums);
+        BreakLineStyle.setEnums(ISOLineName::ISOLineNameEnums);
     } else if (bodyName == "ANSI") {
         SectionLineStyle.setEnums(ANSILineName::ANSILineNameEnums);
         HighlightLineStyle.setEnums(ANSILineName::ANSILineNameEnums);
+        BreakLineStyle.setEnums(ANSILineName::ANSILineNameEnums);
     } else if (bodyName == "ASME") {
         SectionLineStyle.setEnums(ASMELineName::ASMELineNameEnums);
         HighlightLineStyle.setEnums(ASMELineName::ASMELineNameEnums);
+        BreakLineStyle.setEnums(ASMELineName::ASMELineNameEnums);
     }
 }
 
@@ -184,7 +196,9 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
         prop == &(HorizCenterLine) ||
         prop == &(VertCenterLine)  ||
         prop == &(FaceColor) ||
-        prop == &(FaceTransparency)) {
+        prop == &(FaceTransparency)  ||
+        prop == &(BreakLineType)   ||
+        prop == &(BreakLineStyle) ) {
         // redraw QGIVP
         QGIView* qgiv = getQView();
         if (qgiv) {

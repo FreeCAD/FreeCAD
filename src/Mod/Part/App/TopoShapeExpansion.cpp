@@ -689,6 +689,7 @@ void TopoShape::copyElementMap(const TopoShape& topoShape, const char* op)
     setMappedChildElements(children);
 }
 
+#ifndef FC_USE_TNP_FIX
 namespace
 {
 void warnIfLogging()
@@ -722,7 +723,7 @@ void checkAndMatchHasher(TopoShape& topoShape1, const TopoShape& topoShape2)
     }
 }
 }  // namespace
-
+#endif
 
 // TODO: Refactor mapSubElementTypeForShape to reduce complexity
 void TopoShape::mapSubElementTypeForShape(const TopoShape& other,
@@ -2025,8 +2026,11 @@ TopoShape TopoShape::getSubTopoShape(const char* Type, bool silent) const
         }
         return TopoShape();
     }
-
+#ifdef FC_USE_TNP_FIX
+    auto res = shapeTypeAndIndex(mapped.index);
+#else
     auto res = shapeTypeAndIndex(Type);
+#endif
     if (res.second <= 0) {
         if (!silent) {
             FC_THROWM(Base::ValueError, "Invalid shape name " << (Type ? Type : ""));
@@ -4451,7 +4455,7 @@ TopoShape& TopoShape::makeElementRevolve(const TopoShape& _base,
 
 TopoShape& TopoShape::makeElementRevolution(const TopoShape& _base,
                                             const gp_Ax1& axis,
-                                            double d,
+                                            [[maybe_unused]]double d,
                                             const TopoDS_Face& supportface,
                                             const TopoDS_Face& uptoface,
                                             const char* face_maker,

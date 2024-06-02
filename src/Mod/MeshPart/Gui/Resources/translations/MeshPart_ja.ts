@@ -62,7 +62,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -490,27 +490,27 @@ A value in the range of 0.2-10.</source>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="235"/>
-      <location filename="../../Tessellation.cpp" line="241"/>
+      <location filename="../../Tessellation.cpp" line="237"/>
+      <location filename="../../Tessellation.cpp" line="243"/>
       <source>No active document</source>
       <translation>アクティブなドキュメントがありません</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="272"/>
+      <location filename="../../Tessellation.cpp" line="273"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>チップのないボディを選択しました。
 ボディの先端を設定するか、別の形を選択してください。</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="278"/>
+      <location filename="../../Tessellation.cpp" line="279"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>面のないシェイプを選択しました。
 別のシェイプを選択してください。</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="282"/>
+      <location filename="../../Tessellation.cpp" line="283"/>
       <source>Select a shape for meshing, first.</source>
       <translation>最初にメッシュにするシェイプを選択してください。</translation>
     </message>

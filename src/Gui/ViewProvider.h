@@ -462,6 +462,9 @@ public:
     virtual void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>&) const {}
     //@}
 
+    /// is called when the provider is in edit and a "Select All" command was issued
+    /// Provider shall return 'false' is it ignores the command, 'true' otherwise
+    virtual bool selectAll() { return false; }
     /// is called when the provider is in edit and a key event occurs. Only ESC ends edit.
     virtual bool keyPressed(bool pressed, int key);
     /// Is called by the tree if the user double clicks on the object. It returns the string

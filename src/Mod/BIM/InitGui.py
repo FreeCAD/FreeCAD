@@ -88,7 +88,6 @@ class BIMWorkbench(Workbench):
         ]
 
         self.annotationtools = [
-            #"BIM_ImagePlane",
             "BIM_Text",
             "Draft_ShapeString",
             "BIM_DimensionAligned",
@@ -128,6 +127,7 @@ class BIMWorkbench(Workbench):
             "Arch_Frame",
             "Arch_Fence",
             "Arch_Truss",
+            "Arch_Equipment",
             "Arch_Rebar",
         ]
         
@@ -141,12 +141,15 @@ class BIMWorkbench(Workbench):
             "Arch_Reference",
         ]
 
-        self.modify = [
+        self.modify_gen = [
             "Draft_Move",
             "BIM_Copy",
             "Draft_Rotate",
             "BIM_Clone",
-            "BIM_Unclone",
+            "BIM_SimpleCopy",
+            "BIM_Compound",
+        ]
+        self.modify_2d = [
             "Draft_Offset",
             "BIM_Offset2D",
             "Draft_Trimex",
@@ -154,26 +157,29 @@ class BIMWorkbench(Workbench):
             "Draft_Split",
             "Draft_Scale",
             "Draft_Stretch",
-            "BIM_Rewire",
-            "BIM_Glue",
+            "Draft_Draft2Sketch",
+        ]
+        self.modify_obj = [
             "Draft_Upgrade",
             "Draft_Downgrade",
-            "Draft_Draft2Sketch",
-            "Arch_CutPlane",
             "Arch_Add",
             "Arch_Remove",
-            "BIM_Reextrude",
+        ]
+        self.modify_3d = [
             "Draft_OrthoArray",
             "Draft_PathArray",
+            "Draft_CircularArray",
             "Draft_PointArray",
+            "Arch_CutPlane",
             "Draft_Mirror",
             "BIM_Extrude",
             "BIM_Cut",
             "BIM_Fuse",
             "BIM_Common",
-            "BIM_Compound",
-            "BIM_SimpleCopy",
         ]
+
+        sep = ["Separator"]
+        self.modify = self.modify_gen + sep + self.modify_2d + sep + self.modify_obj + sep + self.modify_3d
 
         self.manage = [
             "BIM_Setup",
@@ -211,6 +217,13 @@ class BIMWorkbench(Workbench):
             "Arch_Survey",
             "BIM_Diff",
             "BIM_IfcExplorer",
+            "BIM_ImagePlane",
+            "BIM_Unclone",
+            "BIM_Rewire",
+            "BIM_Glue",
+            "BIM_Reextrude",
+            "Arch_PanelTools",
+            "Arch_StructureTools",
         ]
 
         nudge = [
@@ -246,7 +259,8 @@ class BIMWorkbench(Workbench):
                 t = QT_TRANSLATE_NOOP("BIM_GenericTools", "Generic 3D tools")
                 return { "MenuText": t, "ToolTip": t, "Icon": "BIM_Box"}
             def IsActive(self):
-                return not FreeCAD.ActiveDocument is None
+                v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+                return v
         FreeCADGui.addCommand("BIM_GenericTools", BIM_GenericTools(self.generictools))
         self.bimtools.append("BIM_GenericTools")
 
@@ -274,7 +288,8 @@ class BIMWorkbench(Workbench):
                     }
 
                 def IsActive(self):
-                    return not FreeCAD.ActiveDocument is None
+                    v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+                    return v
 
             FreeCADGui.addCommand("Arch_RebarTools", RebarGroupCommand())
             self.bimtools[self.bimtools.index("Arch_Rebar")] = "Arch_RebarTools"
@@ -388,13 +403,19 @@ class BIMWorkbench(Workbench):
         t2 = QT_TRANSLATE_NOOP("Workbench", "Draft snap")
         t3 = QT_TRANSLATE_NOOP("Workbench", "3D/BIM tools")
         t4 = QT_TRANSLATE_NOOP("Workbench", "Annotation tools")
-        t5 = QT_TRANSLATE_NOOP("Workbench", "Modification tools")
+        t5 = QT_TRANSLATE_NOOP("Workbench", "2D modification tools")
         t6 = QT_TRANSLATE_NOOP("Workbench", "Manage tools")
+        t7 = QT_TRANSLATE_NOOP("Workbench", "General modification tools")
+        t8 = QT_TRANSLATE_NOOP("Workbench", "Object modification tools")
+        t9 = QT_TRANSLATE_NOOP("Workbench", "3D modification tools")
         self.appendToolbar(t1, self.draftingtools)
         self.appendToolbar(t2, self.snapbar)
         self.appendToolbar(t3, self.bimtools)
         self.appendToolbar(t4, self.annotationtools)
-        self.appendToolbar(t5, self.modify)
+        self.appendToolbar(t7, self.modify_gen)
+        self.appendToolbar(t5, self.modify_2d)
+        self.appendToolbar(t8, self.modify_obj)
+        self.appendToolbar(t9, self.modify_3d)
         self.appendToolbar(t6, self.manage)
 
         # create menus
@@ -406,7 +427,7 @@ class BIMWorkbench(Workbench):
         t5 =  QT_TRANSLATE_NOOP("Workbench", "&Snapping")
         t6 =  QT_TRANSLATE_NOOP("Workbench", "&Modify")
         t7 =  QT_TRANSLATE_NOOP("Workbench", "&Manage")
-        t8 =  QT_TRANSLATE_NOOP("Workbench", "&IFC")
+        #t8 =  QT_TRANSLATE_NOOP("Workbench", "&IFC")
         t9 =  QT_TRANSLATE_NOOP("Workbench", "&Flamingo")
         t10 = QT_TRANSLATE_NOOP("Workbench", "&Fasteners")
         t11 = QT_TRANSLATE_NOOP("Workbench", "&Utils")
@@ -423,13 +444,13 @@ class BIMWorkbench(Workbench):
         self.appendMenu(t5, self.snapmenu)
         self.appendMenu(t6, self.modify)
         self.appendMenu(t7, self.manage)
-        if ifctools:
-            self.appendMenu(t8, ifctools)
+        #if ifctools:
+        #    self.appendMenu(t8, ifctools)
         if flamingo:
             self.appendMenu(t9, flamingo)
         if fasteners:
             self.appendMenu(t10, fasteners)
-        self.appendMenu(t11, self.utils)
+        self.appendMenu(t11, self.utils + ifctools)
         self.appendMenu([t11, t12], nudge)
 
     def loadPreferences(self):

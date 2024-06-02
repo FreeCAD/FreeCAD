@@ -98,6 +98,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(CAMSimulator SHARED ${CAMSimulator_SRCS})
 target_link_libraries(CAMSimulator ${CAMSimulator_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(CAMSimulator)
+endif()
 
 SET_BIN_DIR(CAMSimulator CAMSimulator /Mod/CAM)
 SET_PYTHON_PREFIX_SUFFIX(CAMSimulator)

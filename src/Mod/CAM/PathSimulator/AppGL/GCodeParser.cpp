@@ -222,9 +222,6 @@ bool GCodeParser::AddLine(const char* ptr)
             Operations.push_back(lastState);
             lastState.z = rPlane;
             Operations.push_back(lastState);
-            // restore original state
-            lastState.z = finalDepth;
-            lastState.cmd = eDril;
         }
         else {
             Operations.push_back(lastState);
