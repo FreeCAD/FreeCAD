@@ -188,10 +188,6 @@ public:
 
     virtual std::vector<const char*> getElementTypes(bool all = true) const;
 
-    /// Return the higher level element names of the given element
-    virtual std::vector<Data::IndexedName> getHigherElements(const char* name,
-                                                             bool silent = false) const;
-
 protected:
     void onChanged(const Property* prop) override;
     //    void onDocumentRestored() override;
