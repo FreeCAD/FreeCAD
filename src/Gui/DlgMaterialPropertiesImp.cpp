@@ -229,7 +229,7 @@ void DlgMaterialPropertiesImp::onShininessValueChanged(int sh)
 /**
  * Reset the colors to the Coin3D defaults
  */
-void DlgMaterialPropertiesImp::onButtonReset(bool checked)
+void DlgMaterialPropertiesImp::onButtonReset()
 {
     for (std::vector<ViewProvider*>::iterator it = Objects.begin(); it != Objects.end(); ++it) {
         App::Property* prop = (*it)->getPropertyByName(material.c_str());
@@ -257,7 +257,7 @@ void DlgMaterialPropertiesImp::onButtonReset(bool checked)
 /**
  * Reset the colors to the current default
  */
-void DlgMaterialPropertiesImp::onButtonDefault(bool checked)
+void DlgMaterialPropertiesImp::onButtonDefault()
 {
     for (std::vector<ViewProvider*>::iterator it = Objects.begin(); it != Objects.end(); ++it) {
         App::Property* prop = (*it)->getPropertyByName(material.c_str());
