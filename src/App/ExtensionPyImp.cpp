@@ -37,12 +37,12 @@ std::string ExtensionPy::representation() const
     return {"<extension>"};
 }
 
-PyObject *ExtensionPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
 
-int ExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)
+int ExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }

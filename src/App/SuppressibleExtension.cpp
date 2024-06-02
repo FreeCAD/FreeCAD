@@ -29,7 +29,8 @@
 #include "SuppressibleExtensionPy.h"
 
 
-namespace App {
+namespace App
+{
 
 EXTENSION_PROPERTY_SOURCE(App::SuppressibleExtension, App::DocumentObjectExtension)
 
@@ -43,19 +44,24 @@ template class AppExport ExtensionPythonT<SuppressibleExtensionPythonT<Suppressi
 SuppressibleExtension::SuppressibleExtension()
 {
     initExtensionType(SuppressibleExtension::getExtensionClassTypeId());
-    EXTENSION_ADD_PROPERTY_TYPE(Suppressed, (false), "Base", PropertyType(Prop_None), "Is object suppressed");
+    EXTENSION_ADD_PROPERTY_TYPE(Suppressed,
+                                (false),
+                                "Base",
+                                PropertyType(Prop_None),
+                                "Is object suppressed");
 }
 
 SuppressibleExtension::~SuppressibleExtension() = default;
 
-PyObject* SuppressibleExtension::getExtensionPyObject() {
+PyObject* SuppressibleExtension::getExtensionPyObject()
+{
 
-    if (ExtensionPythonObject.is(Py::_None())){
+    if (ExtensionPythonObject.is(Py::_None())) {
         // ref counter is set to 1
         auto ext = new SuppressibleExtensionPy(this);
-        ExtensionPythonObject = Py::Object(ext,true);
+        ExtensionPythonObject = Py::Object(ext, true);
     }
     return Py::new_reference_to(ExtensionPythonObject);
 }
 
-} //namespace App
+}  // namespace App

@@ -36,21 +36,22 @@ namespace App
 class AppExport Path
 {
 protected:
-    std::vector<Base::Persistence *> _PathVector;
+    std::vector<Base::Persistence*> _PathVector;
 
 public:
     /// Constructor
     Path() = default;
-    explicit Path(const std::vector<Base::Persistence *> & PathVector);
+    explicit Path(const std::vector<Base::Persistence*>& PathVector);
 
     virtual ~Path() = default;
 
-    const std::vector<Base::Persistence *> & getVector() const {
+    const std::vector<Base::Persistence*>& getVector() const
+    {
         return _PathVector;
     }
 };
 
-} //namespace App
+}  // namespace App
 
 
-#endif // APP_Path_H
+#endif  // APP_Path_H

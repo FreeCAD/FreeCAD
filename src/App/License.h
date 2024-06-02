@@ -75,6 +75,6 @@ int constexpr findLicense(const char* identifier)
     }
     return -1;
 }
-}// namespace App
+}  // namespace App
 
-#endif// APP_LICENSE_H
+#endif  // APP_LICENSE_H

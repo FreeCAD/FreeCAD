@@ -31,7 +31,7 @@
 namespace App
 {
 
-class AppExport VRMLObject : public GeoFeature
+class AppExport VRMLObject: public GeoFeature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(App::VRMLObject);
 
@@ -40,24 +40,26 @@ public:
     VRMLObject();
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "Gui::ViewProviderVRMLObject";
     }
-    DocumentObjectExecReturn *execute() override {
+    DocumentObjectExecReturn* execute() override
+    {
         return DocumentObject::StdReturn;
     }
     short mustExecute() const override;
-    PyObject *getPyObject() override;
-    void Save (Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
-    void SaveDocFile (Base::Writer &writer) const override;
-    void RestoreDocFile(Base::Reader &reader) override;
+    PyObject* getPyObject() override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
+    void SaveDocFile(Base::Writer& writer) const override;
+    void RestoreDocFile(Base::Reader& reader) override;
 
-    //NOLINTBEGIN
+    // NOLINTBEGIN
     PropertyFileIncluded VrmlFile;
     PropertyStringList Urls;
     PropertyStringList Resources;
-    //NOLINTEND
+    // NOLINTEND
 
 protected:
     void onChanged(const App::Property*) override;
@@ -66,7 +68,7 @@ private:
     std::string getRelativePath(const std::string& prefix, const std::string& resource) const;
     static std::string fixRelativePath(const std::string& name, const std::string& resource);
     static void makeDirectories(const std::string& path, const std::string& subdir);
-    bool restoreTextureFinished(Base::Reader &reader);
+    bool restoreTextureFinished(Base::Reader& reader);
     void reloadFile();
 
 private:
@@ -76,7 +78,7 @@ private:
     mutable bool restoreData {false};
 };
 
-} //namespace App
+}  // namespace App
 
 
-#endif // APP_INVENTOROBJECT_H
+#endif  // APP_INVENTOROBJECT_H

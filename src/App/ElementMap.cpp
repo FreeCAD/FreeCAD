@@ -18,7 +18,7 @@
 #include <boost/algorithm/string/split.hpp>
 
 
-FC_LOG_LEVEL_INIT("ElementMap", true, 2);// NOLINT
+FC_LOG_LEVEL_INIT("ElementMap", true, 2);  // NOLINT
 
 namespace Data
 {
@@ -104,7 +104,8 @@ void ElementMap::beforeSave(const ::App::StringHasherRef& hasherRef) const
     }
 }
 
-void ElementMap::save(std::ostream& stream, int index,
+void ElementMap::save(std::ostream& stream,
+                      int index,
                       const std::map<const ElementMap*, int>& childMapSet,
                       const std::map<QByteArray, int>& postfixMap) const
 {
@@ -121,7 +122,7 @@ void ElementMap::save(std::ostream& stream, int index,
             if (child.elementMap) {
                 auto it = childMapSet.find(child.elementMap.get());
                 if (it == childMapSet.end() || it->second == 0) {
-                    FC_ERR("Invalid child element map");// NOLINT
+                    FC_ERR("Invalid child element map");  // NOLINT
                 }
                 else {
                     mapIndex = it->second;
@@ -240,7 +241,7 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
     int count = 0;
     std::string tmp;
     if (!(stream >> id >> tmp >> count) || tmp != "PostfixCount") {
-        FC_THROWM(Base::RuntimeError, msg);// NOLINT
+        FC_THROWM(Base::RuntimeError, msg);  // NOLINT
     }
 
     auto& map = _idToElementMap[id];
@@ -258,7 +259,7 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
     std::vector<ElementMapPtr> childMaps;
     count = 0;
     if (!(stream >> tmp >> count) || tmp != "MapCount" || count == 0) {
-        FC_THROWM(Base::RuntimeError, msg);// NOLINT
+        FC_THROWM(Base::RuntimeError, msg);  // NOLINT
     }
     childMaps.reserve(count - 1);
     for (int i = 0; i < count - 1; ++i) {
@@ -269,7 +270,8 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
     return restore(hasherRef, stream, childMaps, postfixes);
 }
 
-ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream& stream,
+ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef,
+                                  std::istream& stream,
                                   std::vector<ElementMapPtr>& childMaps,
                                   const std::vector<std::string>& postfixes)
 {
@@ -281,14 +283,14 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
     int typeCount = 0;
     unsigned id = 0;
     if (!(stream >> tmp >> index >> id >> typeCount) || tmp != "ElementMap") {
-        FC_THROWM(Base::RuntimeError, msg);// NOLINT
+        FC_THROWM(Base::RuntimeError, msg);  // NOLINT
     }
 
     auto& map = _idToElementMap[id];
     if (map) {
         while (tmp != "EndMap") {
             if (!std::getline(stream, tmp)) {
-                FC_THROWM(Base::RuntimeError, "unexpected end of child element map");// NOLINT
+                FC_THROWM(Base::RuntimeError, "unexpected end of child element map");  // NOLINT
             }
         }
         return map;
@@ -303,12 +305,12 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
     for (int i = 0; i < typeCount; ++i) {
         int outerCount = 0;
         if (!(stream >> tmp)) {
-            FC_THROWM(Base::RuntimeError, "missing element type");// NOLINT
+            FC_THROWM(Base::RuntimeError, "missing element type");  // NOLINT
         }
         IndexedName idx(tmp.c_str(), 1);
 
         if (!(stream >> tmp >> outerCount) || tmp != "ChildCount") {
-            FC_THROWM(Base::RuntimeError, "missing element child count");// NOLINT
+            FC_THROWM(Base::RuntimeError, "missing element child count");  // NOLINT
         }
 
         auto& indices = this->indexedNames[idx.getType()];
@@ -319,16 +321,16 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
             long tag = 0;
             int mapIndex = 0;
             if (!(stream >> cIndex >> offset >> count >> tag >> mapIndex >> tmp)) {
-                FC_THROWM(Base::RuntimeError, "Invalid element child");// NOLINT
+                FC_THROWM(Base::RuntimeError, "Invalid element child");  // NOLINT
             }
             if (cIndex < 0) {
-                FC_THROWM(Base::RuntimeError, "Invalid element child index");// NOLINT
+                FC_THROWM(Base::RuntimeError, "Invalid element child index");  // NOLINT
             }
             if (offset < 0) {
-                FC_THROWM(Base::RuntimeError, "Invalid element child offset");// NOLINT
+                FC_THROWM(Base::RuntimeError, "Invalid element child offset");  // NOLINT
             }
             if (mapIndex >= index || mapIndex < 0 || mapIndex > (int)childMaps.size()) {
-                FC_THROWM(Base::RuntimeError, "Invalid element child map index");// NOLINT
+                FC_THROWM(Base::RuntimeError, "Invalid element child map index");  // NOLINT
             }
             auto& child = indices.children[cIndex + offset + count];
             child.indexedName = IndexedName::fromConst(idx.getType(), cIndex);
@@ -346,7 +348,7 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
             this->childElementSize += child.count;
 
             if (!(stream >> tmp)) {
-                FC_THROWM(Base::RuntimeError, "Invalid element child string id");// NOLINT
+                FC_THROWM(Base::RuntimeError, "Invalid element child string id");  // NOLINT
             }
 
             tokens.clear();
@@ -371,7 +373,7 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
         }
 
         if (!(stream >> tmp >> outerCount) || tmp != "NameCount") {
-            FC_THROWM(Base::RuntimeError, "missing element name outerCount");// NOLINT
+            FC_THROWM(Base::RuntimeError, "missing element name outerCount");  // NOLINT
         }
 
         boost::io::ios_flags_saver ifs(stream);
@@ -384,7 +386,7 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
             int innerCount = 0;
             while (true) {
                 if (!(stream >> tmp)) {
-                    FC_THROWM(Base::RuntimeError, "Failed to read element name");// NOLINT
+                    FC_THROWM(Base::RuntimeError, "Failed to read element name");  // NOLINT
                 }
                 if (tmp == "0") {
                     break;
@@ -396,7 +398,7 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
                 tokens.clear();
                 boost::split(tokens, tmp, boost::is_any_of("."));
                 if (tokens.size() < 2) {
-                    FC_THROWM(Base::RuntimeError, "Invalid element entry");// NOLINT
+                    FC_THROWM(Base::RuntimeError, "Invalid element entry");  // NOLINT
                 }
 
                 int offset = 1;
@@ -406,12 +408,12 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
                 switch (tokens[0][0]) {
                     case ':': {
                         if (tokens.size() < 3) {
-                            FC_THROWM(Base::RuntimeError, "Invalid element entry");// NOLINT
+                            FC_THROWM(Base::RuntimeError, "Invalid element entry");  // NOLINT
                         }
                         ++offset;
                         long elementNameIndex = strtol(tokens[0].c_str() + 1, nullptr, hexBase);
                         if (elementNameIndex <= 0 || elementNameIndex > (int)postfixes.size()) {
-                            FC_THROWM(Base::RuntimeError, "Invalid element name index");// NOLINT
+                            FC_THROWM(Base::RuntimeError, "Invalid element name index");  // NOLINT
                         }
                         long elementIndex = strtol(tokens[1].c_str(), nullptr, hexBase);
                         ref->name = MappedName(
@@ -427,7 +429,7 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
                         ref->name = MappedName(tokens[0].c_str() + 1);
                         break;
                     default:
-                        FC_THROWM(Base::RuntimeError, "Invalid element name marker");// NOLINT
+                        FC_THROWM(Base::RuntimeError, "Invalid element name marker");  // NOLINT
                 }
 
                 if (tokens[offset] != "0") {
@@ -473,31 +475,34 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
         }
     }
     if (hasherWarn) {
-        FC_WARN(hasherWarn);// NOLINT
+        FC_WARN(hasherWarn);  // NOLINT
     }
     if (hasherIDWarn) {
-        FC_WARN(hasherIDWarn);// NOLINT
+        FC_WARN(hasherIDWarn);  // NOLINT
     }
     if (postfixWarn) {
-        FC_WARN(postfixWarn);// NOLINT
+        FC_WARN(postfixWarn);  // NOLINT
     }
     if (childSIDWarn) {
-        FC_WARN(childSIDWarn);// NOLINT
+        FC_WARN(childSIDWarn);  // NOLINT
     }
 
     if (!(stream >> tmp) || tmp != "EndMap") {
-        FC_THROWM(Base::RuntimeError, "unexpected end of child element map");// NOLINT
+        FC_THROWM(Base::RuntimeError, "unexpected end of child element map");  // NOLINT
     }
 
     return shared_from_this();
 }
 
-MappedName ElementMap::addName(MappedName& name, const IndexedName& idx, const ElementIDRefs& sids,
-                               bool overwrite, IndexedName* existing)
+MappedName ElementMap::addName(MappedName& name,
+                               const IndexedName& idx,
+                               const ElementIDRefs& sids,
+                               bool overwrite,
+                               IndexedName* existing)
 {
     if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         if (name.find("#") >= 0 && name.findTagInElementName() < 0) {
-            FC_ERR("missing tag postfix " << name);// NOLINT
+            FC_ERR("missing tag postfix " << name);  // NOLINT
         }
     }
     while (true) {
@@ -505,14 +510,14 @@ MappedName ElementMap::addName(MappedName& name, const IndexedName& idx, const E
             erase(idx);
         }
         auto ret = mappedNames.insert(std::make_pair(name, idx));
-        if (ret.second) {              // element just inserted did not exist yet in the map
-            ret.first->first.compact();// FIXME see MappedName.cpp
+        if (ret.second) {                // element just inserted did not exist yet in the map
+            ret.first->first.compact();  // FIXME see MappedName.cpp
             mappedRef(idx).append(ret.first->first, sids);
-            FC_TRACE(idx << " -> " << name);// NOLINT
+            FC_TRACE(idx << " -> " << name);  // NOLINT
             return ret.first->first;
         }
         if (ret.first->second == idx) {
-            FC_TRACE("duplicate " << idx << " -> " << name);// NOLINT
+            FC_TRACE("duplicate " << idx << " -> " << name);  // NOLINT
             return ret.first->first;
         }
         if (!overwrite) {
@@ -526,7 +531,8 @@ MappedName ElementMap::addName(MappedName& name, const IndexedName& idx, const E
     };
 }
 
-void ElementMap::addPostfix(const QByteArray& postfix, std::map<QByteArray, int>& postfixMap,
+void ElementMap::addPostfix(const QByteArray& postfix,
+                            std::map<QByteArray, int>& postfixMap,
                             std::vector<QByteArray>& postfixes)
 {
     if (postfix.isEmpty()) {
@@ -539,8 +545,11 @@ void ElementMap::addPostfix(const QByteArray& postfix, std::map<QByteArray, int>
     }
 }
 
-MappedName ElementMap::setElementName(const IndexedName& element, const MappedName& name,
-                                      long masterTag, const ElementIDRefs* sid, bool overwrite)
+MappedName ElementMap::setElementName(const IndexedName& element,
+                                      const MappedName& name,
+                                      long masterTag,
+                                      const ElementIDRefs* sid,
+                                      bool overwrite)
 {
     if (!element) {
         throw Base::ValueError("Invalid input");
@@ -553,13 +562,13 @@ MappedName ElementMap::setElementName(const IndexedName& element, const MappedNa
     for (int i = 0, count = name.size(); i < count; ++i) {
         char check = name[i];
         if (check == '.' || (std::isspace((int)check) != 0)) {
-            FC_THROWM(Base::RuntimeError, "Illegal character in mapped name: " << name);// NOLINT
+            FC_THROWM(Base::RuntimeError, "Illegal character in mapped name: " << name);  // NOLINT
         }
     }
     for (const char* readChar = element.getType(); *readChar != 0; ++readChar) {
         char check = *readChar;
         if (check == '.' || (std::isspace((int)check) != 0)) {
-            FC_THROWM(Base::RuntimeError,// NOLINT
+            FC_THROWM(Base::RuntimeError,  // NOLINT
                       "Illegal character in element name: " << element);
         }
     }
@@ -586,7 +595,7 @@ MappedName ElementMap::setElementName(const IndexedName& element, const MappedNa
         }
         const int maxAttempts {100};
         if (++i == maxAttempts) {
-            FC_ERR("unresolved duplicate element mapping '"// NOLINT
+            FC_ERR("unresolved duplicate element mapping '"  // NOLINT
                    << name << ' ' << element << '/' << existing);
             return name;
         }
@@ -602,9 +611,14 @@ MappedName ElementMap::setElementName(const IndexedName& element, const MappedNa
 }
 
 // try to hash element name while preserving the source tag
-void ElementMap::encodeElementName(char element_type, MappedName& name, std::ostringstream& ss,
-                                   ElementIDRefs* sids, long masterTag, const char* postfix,
-                                   long tag, bool forceTag) const
+void ElementMap::encodeElementName(char element_type,
+                                   MappedName& name,
+                                   std::ostringstream& ss,
+                                   ElementIDRefs* sids,
+                                   long masterTag,
+                                   const char* postfix,
+                                   long tag,
+                                   bool forceTag) const
 {
     if (postfix && (postfix[0] != 0)) {
         if (!boost::starts_with(postfix, ELEMENT_MAP_PREFIX)) {
@@ -715,26 +729,30 @@ MappedName ElementMap::dehashElementName(const MappedName& name) const
     auto sid = this->hasher->getID(id);
     if (!sid) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE)) {
-            FC_WARN("failed to find hash id " << id);// NOLINT
+            FC_WARN("failed to find hash id " << id);  // NOLINT
         }
         else {
-            FC_LOG("failed to find hash id " << id);// NOLINT
+            FC_LOG("failed to find hash id " << id);  // NOLINT
         }
         return name;
     }
     if (sid.isHashed()) {
-        FC_LOG("cannot de-hash id " << id);// NOLINT
+        FC_LOG("cannot de-hash id " << id);  // NOLINT
         return name;
     }
     MappedName ret(sid);
-//        sid.toString());// FIXME .toString() was missing in original function. is this correct?
-    FC_TRACE("de-hash " << name << " -> " << ret);// NOLINT
+    //        sid.toString());// FIXME .toString() was missing in original function. is this
+    //        correct?
+    FC_TRACE("de-hash " << name << " -> " << ret);  // NOLINT
     return ret;
 }
 
-MappedName ElementMap::renameDuplicateElement(int index, const IndexedName& element,
-                                              const IndexedName& element2, const MappedName& name,
-                                              ElementIDRefs& sids, long masterTag) const
+MappedName ElementMap::renameDuplicateElement(int index,
+                                              const IndexedName& element,
+                                              const IndexedName& element2,
+                                              const MappedName& name,
+                                              ElementIDRefs& sids,
+                                              long masterTag) const
 {
     int idx {0};
 #ifdef FC_DEBUG
@@ -751,7 +769,7 @@ MappedName ElementMap::renameDuplicateElement(int index, const IndexedName& elem
     MappedName renamed(name);
     encodeElementName(element.getType()[0], renamed, ss, &sids, masterTag);
     if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-        FC_WARN("duplicate element mapping '"// NOLINT
+        FC_WARN("duplicate element mapping '"  // NOLINT
                 << name << " -> " << renamed << ' ' << element << '/' << element2);
     }
     return renamed;
@@ -1008,13 +1026,20 @@ void ElementMap::hashChildMaps(long masterTag)
                           .findTagInElementName(&tag, &len, nullptr, nullptr, false, false);
             // TODO: What is this 10?
             if (pos > 10) {
-                MappedName postfix = hashElementName(
-                    MappedName::fromRawData(child.postfix.constData(), pos), child.sids);
+                MappedName postfix =
+                    hashElementName(MappedName::fromRawData(child.postfix.constData(), pos),
+                                    child.sids);
                 ss.str("");
                 ss << MAPPED_CHILD_ELEMENTS_PREFIX << postfix;
                 MappedName tmp;
-                encodeElementName(
-                    child.indexedName[0], tmp, ss, nullptr, masterTag, nullptr, child.tag, true);
+                encodeElementName(child.indexedName[0],
+                                  tmp,
+                                  ss,
+                                  nullptr,
+                                  masterTag,
+                                  nullptr,
+                                  child.tag,
+                                  true);
                 this->childElements.remove(child.postfix);
                 child.postfix = tmp.toBytes();
                 this->childElements[child.postfix].childMap = &child;
@@ -1152,7 +1177,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
     for (auto& child : expansion.empty() ? children : expansion) {
         if (!child.indexedName || (child.count == 0)) {
             if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                FC_ERR("invalid mapped child element");// NOLINT
+                FC_ERR("invalid mapped child element");  // NOLINT
             }
             continue;
         }
@@ -1195,15 +1220,20 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
                 if (!name) {
                     if ((child.tag == 0) || child.tag == masterTag) {
                         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                            FC_WARN("unmapped element");// NOLINT
+                            FC_WARN("unmapped element");  // NOLINT
                         }
                         continue;
                     }
                     name = MappedName(childIdx);
                 }
                 ss.str("");
-                encodeElementName(
-                    idx[0], name, ss, &sids, masterTag, child.postfix.constData(), child.tag);
+                encodeElementName(idx[0],
+                                  name,
+                                  ss,
+                                  &sids,
+                                  masterTag,
+                                  child.postfix.constData(),
+                                  child.tag);
                 setElementName(idx, name, masterTag, &sids);
             }
             continue;
@@ -1231,19 +1261,20 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
 
             entry = &childElements[tmp.toBytes()];
             if (entry->childMap) {
-                FC_ERR("duplicate mapped child element");// NOLINT
+                FC_ERR("duplicate mapped child element");  // NOLINT
                 continue;
             }
         }
 
         auto& indices = this->indexedNames[child.indexedName.getType()];
-        auto res = indices.children.emplace(
-            child.indexedName.getIndex() + child.offset + child.count, child);
+        auto res =
+            indices.children.emplace(child.indexedName.getIndex() + child.offset + child.count,
+                                     child);
         if (!res.second) {
             if (!entry->childMap) {
                 this->childElements.remove(tmp.toBytes());
             }
-            FC_ERR("duplicate mapped child element");// NOLINT
+            FC_ERR("duplicate mapped child element");  // NOLINT
             continue;
         }
 
@@ -1293,7 +1324,9 @@ std::vector<MappedElement> ElementMap::getAll() const
     return ret;
 }
 
-long ElementMap::getElementHistory(const MappedName& name, long masterTag, MappedName* original,
+long ElementMap::getElementHistory(const MappedName& name,
+                                   long masterTag,
+                                   MappedName* original,
                                    std::vector<MappedName>* history) const
 {
     long tag = 0;
@@ -1321,7 +1354,7 @@ long ElementMap::getElementHistory(const MappedName& name, long masterTag, Mappe
 
     while (true) {
         if ((len == 0) || len > pos) {
-            FC_WARN("invalid name length " << name);// NOLINT
+            FC_WARN("invalid name length " << name);  // NOLINT
             return 0;
         }
         bool deHashed = false;
@@ -1440,4 +1473,4 @@ void ElementMap::traceElement(const MappedName& name, long masterTag, TraceCallb
 }
 
 
-}// Namespace Data
+}  // Namespace Data

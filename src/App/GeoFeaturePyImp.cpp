@@ -37,16 +37,18 @@ std::string GeoFeaturePy::representation() const
     return {"<GeoFeature object>"};
 }
 
-PyObject* GeoFeaturePy::getPaths(PyObject * /*args*/)
+PyObject* GeoFeaturePy::getPaths(PyObject* /*args*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return nullptr;
 }
 
-PyObject* GeoFeaturePy::getGlobalPlacement(PyObject * args) {
+PyObject* GeoFeaturePy::getGlobalPlacement(PyObject* args)
+{
 
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         Base::Placement p = static_cast<GeoFeature*>(getDocumentObjectPtr())->globalPlacement();
@@ -57,10 +59,11 @@ PyObject* GeoFeaturePy::getGlobalPlacement(PyObject * args) {
     }
 }
 
-PyObject* GeoFeaturePy::getPropertyNameOfGeometry(PyObject * args)
+PyObject* GeoFeaturePy::getPropertyNameOfGeometry(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     GeoFeature* object = this->getGeoFeaturePtr();
     const PropertyComplexGeoData* prop = object->getPropertyOfGeometry();
@@ -71,10 +74,11 @@ PyObject* GeoFeaturePy::getPropertyNameOfGeometry(PyObject * args)
     return Py::new_reference_to(Py::None());
 }
 
-PyObject* GeoFeaturePy::getPropertyOfGeometry(PyObject * args)
+PyObject* GeoFeaturePy::getPropertyOfGeometry(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     GeoFeature* object = this->getGeoFeaturePtr();
     const PropertyComplexGeoData* prop = object->getPropertyOfGeometry();
@@ -84,7 +88,7 @@ PyObject* GeoFeaturePy::getPropertyOfGeometry(PyObject * args)
     return Py::new_reference_to(Py::None());
 }
 
-PyObject *GeoFeaturePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* GeoFeaturePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
@@ -94,7 +98,8 @@ int GeoFeaturePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0;
 }
 
-Py::String GeoFeaturePy::getElementMapVersion() const {
-    return Py::String(getGeoFeaturePtr()->getElementMapVersion(
-        getGeoFeaturePtr()->getPropertyOfGeometry()));
+Py::String GeoFeaturePy::getElementMapVersion() const
+{
+    return Py::String(
+        getGeoFeaturePtr()->getElementMapVersion(getGeoFeaturePtr()->getPropertyOfGeometry()));
 }

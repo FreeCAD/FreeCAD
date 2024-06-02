@@ -35,7 +35,7 @@ namespace App
 
 /** Base class of all geometric document objects.
  */
-class AppExport Part : public App::GeoFeature, public App::OriginGroupExtension
+class AppExport Part: public App::GeoFeature, public App::OriginGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(App::Part);
 
@@ -44,26 +44,26 @@ public:
     PropertyString Type;
 
     /** @name base properties of all Assembly Items
-    * These properties correspond mostly to the meta information
-    * in the App::Document class
-    */
+     * These properties correspond mostly to the meta information
+     * in the App::Document class
+     */
     //@{
     /// Id e.g. Part number
-    App::PropertyString  Id;
+    App::PropertyString Id;
     /// unique identifier of the Item
-    App::PropertyUUID    Uid;
+    App::PropertyUUID Uid;
     /// material descriptions
-    App::PropertyLink    Material;
+    App::PropertyLink Material;
     /// Meta descriptions
-    App::PropertyMap     Meta;
+    App::PropertyMap Meta;
 
     /** License string
-    * Holds the short license string for the Item, e.g. CC-BY
-    * for the Creative Commons license suit.
-    */
-    App::PropertyString  License;
+     * Holds the short license string for the Item, e.g. CC-BY
+     * for the Creative Commons license suit.
+     */
+    App::PropertyString License;
     /// License description/contract URL
-    App::PropertyString  LicenseURL;
+    App::PropertyString LicenseURL;
     //@}
 
     /** @name Visual properties */
@@ -80,12 +80,15 @@ public:
     ~Part() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "Gui::ViewProviderPart";
     }
 
 
-    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop) override;
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
 
     /**
      * Returns the part which contains this object.
@@ -93,14 +96,14 @@ public:
      * @param obj       the object to search for
      * @param recursive: whether to recursively find any grand parent Part container
      */
-    static App::Part* getPartOfObject (const DocumentObject* obj, bool recursive=true);
+    static App::Part* getPartOfObject(const DocumentObject* obj, bool recursive = true);
 
-    PyObject *getPyObject() override;
+    PyObject* getPyObject() override;
 };
 
-//using PartPython = App::FeaturePythonT<Part>;
+// using PartPython = App::FeaturePythonT<Part>;
 
-} //namespace App
+}  // namespace App
 
 
-#endif // APP_Part_H
+#endif  // APP_Part_H

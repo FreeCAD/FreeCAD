@@ -1,24 +1,24 @@
 /**************************************************************************
-*                                                                         *
-*   Copyright (c) 2021-2023 FreeCAD Project Association                   *
-*                                                                         *
-*   This file is part of FreeCAD.                                         *
-*                                                                         *
-*   FreeCAD is free software: you can redistribute it and/or modify it    *
-*   under the terms of the GNU Lesser General Public License as           *
-*   published by the Free Software Foundation, either version 2.1 of the  *
-*   License, or (at your option) any later version.                       *
-*                                                                         *
-*   FreeCAD is distributed in the hope that it will be useful, but        *
-*   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-*   Lesser General Public License for more details.                       *
-*                                                                         *
-*   You should have received a copy of the GNU Lesser General Public      *
-*   License along with FreeCAD. If not, see                               *
-*   <https://www.gnu.org/licenses/>.                                      *
-*                                                                         *
-***************************************************************************/
+ *                                                                         *
+ *   Copyright (c) 2021-2023 FreeCAD Project Association                   *
+ *                                                                         *
+ *   This file is part of FreeCAD.                                         *
+ *                                                                         *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
+ *                                                                         *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
+ *                                                                         *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
+ *                                                                         *
+ ***************************************************************************/
 
 #ifndef BASE_METADATAREADER_H
 #define BASE_METADATAREADER_H
@@ -43,32 +43,36 @@ namespace Meta
 {
 
 /**
-        * \struct Contact
-        * \brief A person or company representing a point of contact for the package (either author or maintainer).
-        */
-struct AppExport Contact {
+ * \struct Contact
+ * \brief A person or company representing a point of contact for the package (either author or
+ * maintainer).
+ */
+struct AppExport Contact
+{
     Contact() = default;
-    Contact(std::string name, std::string  email);
+    Contact(std::string name, std::string email);
     explicit Contact(const XERCES_CPP_NAMESPACE::DOMElement* elem);
-    std::string name; //< Contact name - required
-    std::string email;//< Contact email - may be optional
+    std::string name;   //< Contact name - required
+    std::string email;  //< Contact email - may be optional
     bool operator==(const Contact& rhs) const;
 };
 
 /**
-        * \struct License
-        * \brief A license that covers some or all of this package.
-        *
-        * Many licenses also require the inclusion of the complete license text, specified in this struct
-        * using the "file" member.
-        */
-struct AppExport License {
+ * \struct License
+ * \brief A license that covers some or all of this package.
+ *
+ * Many licenses also require the inclusion of the complete license text, specified in this struct
+ * using the "file" member.
+ */
+struct AppExport License
+{
     License() = default;
     License(std::string name, boost::filesystem::path file);
     explicit License(const XERCES_CPP_NAMESPACE::DOMElement* elem);
-    std::string name;//< Short name of license, e.g. "LGPL2", "MIT", "Mozilla Public License", etc.
+    std::string
+        name;  //< Short name of license, e.g. "LGPL2", "MIT", "Mozilla Public License", etc.
     boost::filesystem::path
-        file;//< Optional path to the license file, relative to the XML file's location
+        file;  //< Optional path to the license file, relative to the XML file's location
     bool operator==(const License& rhs) const;
 };
 
@@ -83,32 +87,35 @@ enum class UrlType
 };
 
 /**
-        * \struct Url
-        * \brief A URL, including type information (e.g. website, repository, or bugtracker, in package.xml)
-        */
-struct AppExport Url {
+ * \struct Url
+ * \brief A URL, including type information (e.g. website, repository, or bugtracker, in
+ * package.xml)
+ */
+struct AppExport Url
+{
     Url();
     Url(std::string location, UrlType type);
     explicit Url(const XERCES_CPP_NAMESPACE::DOMElement* elem);
-    std::string location;//< The actual URL, including protocol
-    UrlType type;        //< What kind of URL this is
-    std::string branch;  //< If it's a repository, which branch to use
+    std::string location;  //< The actual URL, including protocol
+    UrlType type;          //< What kind of URL this is
+    std::string branch;    //< If it's a repository, which branch to use
     bool operator==(const Url& rhs) const;
 };
 
 /**
-        * \struct Version
-        * A semantic version structure providing comparison operators and conversion to and from std::string
-        */
-struct AppExport Version {
+ * \struct Version
+ * A semantic version structure providing comparison operators and conversion to and from
+ * std::string
+ */
+struct AppExport Version
+{
     Version();
-    explicit Version(int major, int minor = 0, int patch = 0,
-                     std::string  suffix = std::string());
+    explicit Version(int major, int minor = 0, int patch = 0, std::string suffix = std::string());
     explicit Version(const std::string& semanticString);
 
-    int major{};
-    int minor{};
-    int patch{};
+    int major {};
+    int minor {};
+    int patch {};
     std::string suffix;
 
     std::string str() const;
@@ -122,9 +129,9 @@ struct AppExport Version {
 };
 
 /**
-        * \enum DependencyType
-        * The type of dependency.
-        */
+ * \enum DependencyType
+ * The type of dependency.
+ */
 enum class DependencyType
 {
     automatic,
@@ -134,81 +141,83 @@ enum class DependencyType
 };
 
 /**
-        * \struct Dependency
-        * \brief Another package that this package depends on, conflicts with, or replaces
-        */
-struct AppExport Dependency {
+ * \struct Dependency
+ * \brief Another package that this package depends on, conflicts with, or replaces
+ */
+struct AppExport Dependency
+{
     Dependency();
-    explicit Dependency(std::string  pkg);
+    explicit Dependency(std::string pkg);
     explicit Dependency(const XERCES_CPP_NAMESPACE::DOMElement* elem);
-    std::string
-        package;//< Required: must exactly match the contents of the "name" element in the referenced package's package.xml file.
-    std::string
-        version_lt;//< Optional: The dependency to the package is restricted to versions less than the stated version number.
-    std::string
-        version_lte;//< Optional: The dependency to the package is restricted to versions less or equal than the stated version number.
-    std::string
-        version_eq;//< Optional: The dependency to the package is restricted to a version equal than the stated version number.
-    std::string
-        version_gte;//< Optional: The dependency to the package is restricted to versions greater or equal than the stated version number.
-    std::string
-        version_gt;//< Optional: The dependency to the package is restricted to versions greater than the stated version number.
-    std::string condition;        //< Optional: Conditional expression as documented in REP149.
-    bool optional;                //< Optional: Whether this dependency is considered "optional"
-    DependencyType dependencyType;//< Optional: defaults to "automatic"
+    std::string package;  //< Required: must exactly match the contents of the "name" element in the
+                          // referenced package's package.xml file.
+    std::string version_lt;   //< Optional: The dependency to the package is restricted to versions
+                              // less than the stated version number.
+    std::string version_lte;  //< Optional: The dependency to the package is restricted to versions
+                              // less or equal than the stated version number.
+    std::string version_eq;   //< Optional: The dependency to the package is restricted to a version
+                              // equal than the stated version number.
+    std::string version_gte;  //< Optional: The dependency to the package is restricted to versions
+                              // greater or equal than the stated version number.
+    std::string version_gt;   //< Optional: The dependency to the package is restricted to versions
+                              // greater than the stated version number.
+    std::string condition;    //< Optional: Conditional expression as documented in REP149.
+    bool optional;            //< Optional: Whether this dependency is considered "optional"
+    DependencyType dependencyType;  //< Optional: defaults to "automatic"
     bool operator==(const Dependency& rhs) const;
 };
 
 /**
-        * \struct GenericMetadata
-        * A structure to hold unrecognized single-level metadata.
-        *
-        * Most unrecognized metadata is simple: when parsing the XML, if the parser finds a tag it
-        * does not recognize, and that tag has no children, it is parsed into this data structure
-        * for convenient access by client code.
-        */
-struct AppExport GenericMetadata {
+ * \struct GenericMetadata
+ * A structure to hold unrecognized single-level metadata.
+ *
+ * Most unrecognized metadata is simple: when parsing the XML, if the parser finds a tag it
+ * does not recognize, and that tag has no children, it is parsed into this data structure
+ * for convenient access by client code.
+ */
+struct AppExport GenericMetadata
+{
     GenericMetadata() = default;
     explicit GenericMetadata(const XERCES_CPP_NAMESPACE::DOMElement* elem);
-    explicit GenericMetadata(std::string  contents);
-    std::string contents;                         //< The contents of the tag
-    std::map<std::string, std::string> attributes;//< The XML attributes of the tag
+    explicit GenericMetadata(std::string contents);
+    std::string contents;                           //< The contents of the tag
+    std::map<std::string, std::string> attributes;  //< The XML attributes of the tag
 };
 
-}// namespace Meta
+}  // namespace Meta
 
 /**
-    * \class Metadata
-    * \brief Reads data from a metadata file.
-    *
-    * The metadata format is based on https://ros.org/reps/rep-0149.html, modified for FreeCAD
-    * use. Full format documentation is available at the FreeCAD Wiki:
-    * https://wiki.freecad.org/Package_Metadata
-    */
+ * \class Metadata
+ * \brief Reads data from a metadata file.
+ *
+ * The metadata format is based on https://ros.org/reps/rep-0149.html, modified for FreeCAD
+ * use. Full format documentation is available at the FreeCAD Wiki:
+ * https://wiki.freecad.org/Package_Metadata
+ */
 class AppExport Metadata
 {
 public:
     Metadata();
 
     /**
-    * Read the data from a file on disk
-    *
-    * This constructor takes a path to an XML file and loads the XML from that file as
-    * metadata.
-    */
+     * Read the data from a file on disk
+     *
+     * This constructor takes a path to an XML file and loads the XML from that file as
+     * metadata.
+     */
     explicit Metadata(const boost::filesystem::path& metadataFile);
 
     /**
-    * Construct a Metadata object from a DOM node.
-    *
-    * This node may have any tag name: it is only accessed via its children, which are
-    * expected to follow the standard Metadata format for the contents of the <package> element.
-    */
+     * Construct a Metadata object from a DOM node.
+     *
+     * This node may have any tag name: it is only accessed via its children, which are
+     * expected to follow the standard Metadata format for the contents of the <package> element.
+     */
     Metadata(const XERCES_CPP_NAMESPACE::DOMNode* domNode, int format);
 
     /**
-    * Treat the incoming rawData as metadata to be parsed.
-    */
+     * Treat the incoming rawData as metadata to be parsed.
+     */
     explicit Metadata(const std::string& rawData);
 
     ~Metadata();
@@ -218,69 +227,69 @@ public:
     // Recognized Metadata
     //////////////////////////////////////////////////////////////
 
-    std::string name() const;     //< A short name for this package, often used as a menu entry.
-    std::string type() const;     //< The type for this package.
-    Meta::Version version() const;//< Version string in semantic triplet format, e.g. "1.2.3".
+    std::string name() const;       //< A short name for this package, often used as a menu entry.
+    std::string type() const;       //< The type for this package.
+    Meta::Version version() const;  //< Version string in semantic triplet format, e.g. "1.2.3".
     std::string date()
-        const;//< Date string -- currently arbitrary (when C++20 is well-supported we can revisit)
-    std::string description() const;//< Text-only description of the package. No markup.
+        const;  //< Date string -- currently arbitrary (when C++20 is well-supported we can revisit)
+    std::string description() const;  //< Text-only description of the package. No markup.
     std::vector<Meta::Contact>
-    maintainer() const;//< Must be at least one, and must specify an email address.
+    maintainer() const;  //< Must be at least one, and must specify an email address.
     std::vector<Meta::License>
-    license() const;//< Must be at least one, and most licenses require including a license file.
-    std::vector<Meta::Url> url()
-        const;//< Any number of URLs may be specified, but at least one repository URL must be included at the package level.
+    license() const;  //< Must be at least one, and most licenses require including a license file.
+    std::vector<Meta::Url> url() const;  //< Any number of URLs may be specified, but at least one
+                                         // repository URL must be included at the package level.
     std::vector<Meta::Contact>
-    author() const;//< Any number of authors may be specified, and email addresses are optional.
+    author() const;  //< Any number of authors may be specified, and email addresses are optional.
     std::vector<Meta::Dependency>
-    depend() const;//< Zero or more packages this package requires prior to use.
+    depend() const;  //< Zero or more packages this package requires prior to use.
     std::vector<Meta::Dependency>
-    conflict() const;//< Zero of more packages this package conflicts with.
+    conflict() const;  //< Zero of more packages this package conflicts with.
     std::vector<Meta::Dependency>
-    replace() const;//< Zero or more packages this package is intended to replace.
-    std::vector<std::string> tag() const;//< Zero or more text tags related to this package.
-    boost::filesystem::path icon() const;//< Path to an icon file.
+    replace() const;  //< Zero or more packages this package is intended to replace.
+    std::vector<std::string> tag() const;  //< Zero or more text tags related to this package.
+    boost::filesystem::path icon() const;  //< Path to an icon file.
     std::string
-    classname() const;//< Recognized for convenience -- generally only used by Workbenches.
+    classname() const;  //< Recognized for convenience -- generally only used by Workbenches.
     boost::filesystem::path
-    subdirectory() const;//< Optional, override the default subdirectory name for this item.
+    subdirectory() const;  //< Optional, override the default subdirectory name for this item.
     std::vector<boost::filesystem::path>
-    file() const;//< Arbitrary files associated with this package or content item.
-    Meta::Version freecadmin() const;//< The minimum FreeCAD version.
-    Meta::Version freecadmax() const;//< The maximum FreeCAD version.
-    Meta::Version pythonmin() const; //< The minimum Python version.
+    file() const;  //< Arbitrary files associated with this package or content item.
+    Meta::Version freecadmin() const;  //< The minimum FreeCAD version.
+    Meta::Version freecadmax() const;  //< The maximum FreeCAD version.
+    Meta::Version pythonmin() const;   //< The minimum Python version.
 
     /**
-        * Access the metadata for the content elements of this package
-        *
-        * In addition to the overall package metadata, this class reads in metadata contained in a
-        * <content> element. Each entry in the content element is an element representing some
-        * type of package content (e.g. add-on, macro, theme, etc.). This class places no restriction
-        * on the types, it is up to client code to place requirements on the metadata included
-        * here.
-        *
-        * For example, themes might be specified:
-        * <content>
-        *   <theme>
-        *     <name>High Contrast</name>
-        *   </theme>
-        * </content>
-        */
+     * Access the metadata for the content elements of this package
+     *
+     * In addition to the overall package metadata, this class reads in metadata contained in a
+     * <content> element. Each entry in the content element is an element representing some
+     * type of package content (e.g. add-on, macro, theme, etc.). This class places no restriction
+     * on the types, it is up to client code to place requirements on the metadata included
+     * here.
+     *
+     * For example, themes might be specified:
+     * <content>
+     *   <theme>
+     *     <name>High Contrast</name>
+     *   </theme>
+     * </content>
+     */
     std::multimap<std::string, Metadata> content() const;
 
     /**
-        * Convenience accessor for unrecognized simple metadata.
-        *
-        * If the XML parser encounters tags that it does not recognize, and those tags have
-        * no children, a GenericMetadata object is created. Those objects can be accessed using
-        * operator[], which returns a (potentially empty) vector containing all instances of the
-        * given tag. It cannot be used to *create* a new tag, however. See addGenericMetadata().
-        */
+     * Convenience accessor for unrecognized simple metadata.
+     *
+     * If the XML parser encounters tags that it does not recognize, and those tags have
+     * no children, a GenericMetadata object is created. Those objects can be accessed using
+     * operator[], which returns a (potentially empty) vector containing all instances of the
+     * given tag. It cannot be used to *create* a new tag, however. See addGenericMetadata().
+     */
     std::vector<Meta::GenericMetadata> operator[](const std::string& tag) const;
 
     /**
-        * Directly access the DOM tree to support unrecognized multi-level metadata
-        */
+     * Directly access the DOM tree to support unrecognized multi-level metadata
+     */
     XERCES_CPP_NAMESPACE::DOMElement* dom() const;
 
 
@@ -333,19 +342,19 @@ public:
     void clearFile();
 
     /**
-        * Write the metadata to an XML file
-        */
+     * Write the metadata to an XML file
+     */
     void write(const boost::filesystem::path& file) const;
 
     /**
-        * Determine whether this package satisfies the given dependency
-        */
+     * Determine whether this package satisfies the given dependency
+     */
     bool satisfies(const Meta::Dependency&);
 
     /**
-        * Determine whether the current metadata specifies support for the currently-running version of FreeCAD.
-        * Does not interrogate content items, which must be queried individually.
-        */
+     * Determine whether the current metadata specifies support for the currently-running version of
+     * FreeCAD. Does not interrogate content items, which must be queried individually.
+     */
     bool supportsCurrentFreeCAD() const;
 
 private:
@@ -384,6 +393,6 @@ private:
     void appendToElement(XERCES_CPP_NAMESPACE::DOMElement* root) const;
 };
 
-}// namespace App
+}  // namespace App
 
 #endif

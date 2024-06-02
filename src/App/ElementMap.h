@@ -46,17 +46,17 @@ class ElementMap;
 using ElementMapPtr = std::shared_ptr<ElementMap>;
 
 /** Element trace callback
-     *
-     * The callback has the following call signature
-     *  (const std::string &name, size_t offset, long encodedTag, long tag) -> bool
-     *
-     * @param name: the current element name.
-     * @param offset: the offset skipping the encoded element name for the next iteration.
-     * @param encodedTag: the tag encoded inside the current element, which is usually the tag
-     *                    of the previous step in the shape history.
-     * @param tag: the tag of the current shape element.
-     *
-     * @sa traceElement()
+ *
+ * The callback has the following call signature
+ *  (const std::string &name, size_t offset, long encodedTag, long tag) -> bool
+ *
+ * @param name: the current element name.
+ * @param offset: the offset skipping the encoded element name for the next iteration.
+ * @param encodedTag: the tag encoded inside the current element, which is usually the tag
+ *                    of the previous step in the shape history.
+ * @param tag: the tag of the current shape element.
+ *
+ * @sa traceElement()
  */
 typedef std::function<bool(const MappedName&, int, long, long)> TraceCallback;
 
@@ -68,13 +68,14 @@ typedef std::function<bool(const MappedName&, int, long, long)> TraceCallback;
  *   possibly a recursive elementmap
  * `mappedNames` maps a MappedName to a specific IndexedName.
  */
-class AppExport ElementMap: public std::enable_shared_from_this<ElementMap> //TODO can remove shared_from_this?
+class AppExport ElementMap
+    : public std::enable_shared_from_this<ElementMap>  // TODO can remove shared_from_this?
 {
 public:
     /** Default constructor: hooks internal functions to \c signalSaveDocument and
      * \c signalStartRestoreDocument. This is related to the save and restore process
      * of the map.
-    */
+     */
     ElementMap();
 
     /** Ensures that naming is properly assigned. It then marks as "used" all the StringID
@@ -82,14 +83,14 @@ public:
      * as a parameter. Finally do this recursively for all childEelementMaps as well.
      *
      * @param hasherRef where all the StringID needed to build the map are stored.
-    */
+     */
     // FIXME this should be made part of \c save, to achieve symmetry with the restore method
     void beforeSave(const ::App::StringHasherRef& hasherRef) const;
 
     /** Serialize this map. Calls \c collectChildMaps to get \c childMapSet and
      * \c postfixMap, then calls the other (private) save function with those parameters.
      * @param stream: serialized stream
-    */
+     */
     void save(std::ostream& stream) const;
 
     /** Deserialize and restore this map. This function restores \c childMaps and
@@ -97,7 +98,7 @@ public:
      * parameters.
      * @param hasherRef: where all the StringIDs are stored
      * @param stream: stream to deserialize
-    */
+     */
     ElementMapPtr restore(::App::StringHasherRef hasherRef, std::istream& stream);
 
 
@@ -196,9 +197,10 @@ public:
 
     std::vector<MappedElement> getAll() const;
 
-    long getElementHistory(const MappedName & name,
+    long getElementHistory(const MappedName& name,
                            long masterTag,
-                           MappedName *original=nullptr, std::vector<MappedName> *history=nullptr) const;
+                           MappedName* original = nullptr,
+                           std::vector<MappedName>* history = nullptr) const;
 
     /** Iterate through the history of the give element name with a given callback
      *
@@ -214,8 +216,10 @@ private:
      * @param stream: serialized stream
      * @param childMapSet: where all child element maps are stored
      * @param postfixMap. where all postfixes are stored
-    */
-    void save(std::ostream& stream, int index, const std::map<const ElementMap*, int>& childMapSet,
+     */
+    void save(std::ostream& stream,
+              int index,
+              const std::map<const ElementMap*, int>& childMapSet,
               const std::map<QByteArray, int>& postfixMap) const;
 
     /** Deserialize and restore this map.
@@ -223,8 +227,9 @@ private:
      * @param stream: stream to deserialize
      * @param childMaps: where all child element maps are stored
      * @param postfixes. where all postfixes are stored
-    */
-    ElementMapPtr restore(::App::StringHasherRef hasherRef, std::istream& stream,
+     */
+    ElementMapPtr restore(::App::StringHasherRef hasherRef,
+                          std::istream& stream,
                           std::vector<ElementMapPtr>& childMaps,
                           const std::vector<std::string>& postfixes);
 
@@ -237,20 +242,27 @@ private:
      * associated with another indexedName, set \c existing to that indexedname
      * @return the name just added, or an empty name if it wasn't added.
      */
-    MappedName addName(MappedName& name, const IndexedName& idx, const ElementIDRefs& sids,
-                       bool overwrite, IndexedName* existing);
+    MappedName addName(MappedName& name,
+                       const IndexedName& idx,
+                       const ElementIDRefs& sids,
+                       bool overwrite,
+                       IndexedName* existing);
 
     /** Utility function that adds \c postfix to \c postfixMap, and to \c postfixes
      * if it was not present in the map.
-    */
-    static void addPostfix(const QByteArray& postfix, std::map<QByteArray, int>& postfixMap,
+     */
+    static void addPostfix(const QByteArray& postfix,
+                           std::map<QByteArray, int>& postfixMap,
                            std::vector<QByteArray>& postfixes);
 
     /* Note: the original proc passed `ComplexGeoData& master` for getting the `Tag`,
      *   now it just passes `long masterTag`.*/
-    MappedName renameDuplicateElement(int index, const IndexedName& element,
-                                      const IndexedName& element2, const MappedName& name,
-                                      ElementIDRefs& sids, long masterTag) const;
+    MappedName renameDuplicateElement(int index,
+                                      const IndexedName& element,
+                                      const IndexedName& element2,
+                                      const MappedName& name,
+                                      ElementIDRefs& sids,
+                                      long masterTag) const;
 
     /** Convenience method to hash the main element name
      *
@@ -263,7 +275,7 @@ private:
     /// Reverse hashElementName()
     MappedName dehashElementName(const MappedName& name) const;
 
-    //FIXME duplicate code? as in copy/paste
+    // FIXME duplicate code? as in copy/paste
     const MappedNameRef* findMappedRef(const IndexedName& idx) const;
     MappedNameRef* findMappedRef(const IndexedName& idx);
 
@@ -313,6 +325,6 @@ public:
 };
 
 
-}// namespace Data
+}  // namespace Data
 
-#endif// DATA_ELEMENTMAP_H
+#endif  // DATA_ELEMENTMAP_H

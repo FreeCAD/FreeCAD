@@ -35,7 +35,7 @@ namespace App
 class DocumentObjectGroup;
 class GroupExtensionPy;
 
-class AppExport GroupExtension : public DocumentObjectExtension
+class AppExport GroupExtension: public DocumentObjectExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::GroupExtension);
     using inherited = DocumentObjectExtension;
@@ -50,22 +50,25 @@ public:
     /** Adds an object of \a sType with \a pObjectName to the document this group belongs to and
      * append it to this group as well.
      */
-    virtual DocumentObject *addObject(const char* sType, const char* pObjectName);
+    virtual DocumentObject* addObject(const char* sType, const char* pObjectName);
     /* Adds the object \a obj to this group. Returns all objects that have been added.
      */
     virtual std::vector<DocumentObject*> addObject(DocumentObject* obj);
     /* Adds the objects \a objs to this group. Returns all objects that have been added.
      */
     virtual std::vector<DocumentObject*> addObjects(std::vector<DocumentObject*> obj);
-    
+
     /* Sets the objects in this group. Everything contained already will be removed first
      */
-    virtual std::vector< DocumentObject* > setObjects(std::vector< DocumentObject* > obj);    
-    
+    virtual std::vector<DocumentObject*> setObjects(std::vector<DocumentObject*> obj);
+
     /*override this function if you want only special objects
      */
-    virtual bool allowObject(DocumentObject* ) {return true;}
-    
+    virtual bool allowObject(DocumentObject*)
+    {
+        return true;
+    }
+
     /** Removes an object from this group. Returns all objects that have been removed.
      */
     virtual std::vector<DocumentObject*> removeObject(DocumentObject* obj);
@@ -75,16 +78,19 @@ public:
     /** Removes all children objects from this group and the document.
      */
     virtual void removeObjectsFromDocument();
-    /** Returns the object of this group with \a Name. If the group doesn't have such an object 0 is returned.
-     * @note This method might return 0 even if the document this group belongs to contains an object with this name.
+    /** Returns the object of this group with \a Name. If the group doesn't have such an object 0 is
+     * returned.
+     * @note This method might return 0 even if the document this group belongs to contains an
+     * object with this name.
      */
-    DocumentObject *getObject(const char* Name) const;
+    DocumentObject* getObject(const char* Name) const;
     /**
      * Checks whether the object \a obj is part of this group.
      * @param obj        the object to check for.
-     * @param recursive  if true check also if the obj is child of some sub group (default is false).
+     * @param recursive  if true check also if the obj is child of some sub group (default is
+     * false).
      */
-    virtual bool hasObject(const DocumentObject* obj, bool recursive=false) const;
+    virtual bool hasObject(const DocumentObject* obj, bool recursive = false) const;
     /**
      * Checks whether this group object is a child (or sub-child if enabled)
      * of the given group object.
@@ -92,7 +98,7 @@ public:
     bool isChildOf(const GroupExtension* group, bool recursive = true) const;
     /** Returns a list of all objects this group does have.
      */
-    const std::vector<DocumentObject*> &getObjects() const;
+    const std::vector<DocumentObject*>& getObjects() const;
     /** Returns a list of all objects of \a typeId this group does have.
      */
     std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;
@@ -100,36 +106,44 @@ public:
      */
     int countObjectsOfType(const Base::Type& typeId) const;
     /** Returns the object group of the document which the given object \a obj is part of.
-     * In case this object is not part of a group 0 is returned. 
-     * @note This only returns objects that are normal groups, not any special derived type 
-     * like GeoFeatureGroups or OriginGroups. To retrieve those please use their appropriate functions
+     * In case this object is not part of a group 0 is returned.
+     * @note This only returns objects that are normal groups, not any special derived type
+     * like GeoFeatureGroups or OriginGroups. To retrieve those please use their appropriate
+     * functions
      */
     static DocumentObject* getGroupOfObject(const DocumentObject* obj);
     //@}
-    
+
     PyObject* getExtensionPyObject() override;
 
     void extensionOnChanged(const Property* p) override;
 
-    bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
-        PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const override;
+    bool extensionGetSubObject(DocumentObject*& ret,
+                               const char* subname,
+                               PyObject** pyObj,
+                               Base::Matrix4D* mat,
+                               bool transform,
+                               int depth) const override;
 
-    bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
+    bool extensionGetSubObjects(std::vector<std::string>& ret, int reason) const override;
 
-    App::DocumentObjectExecReturn *extensionExecute() override;
+    App::DocumentObjectExecReturn* extensionExecute() override;
 
     std::vector<DocumentObject*> getAllChildren() const;
-    void getAllChildren(std::vector<DocumentObject*> &, std::set<DocumentObject*> &) const;
-    
+    void getAllChildren(std::vector<DocumentObject*>&, std::set<DocumentObject*>&) const;
+
     /// Properties
     PropertyLinkList Group;
     PropertyBool _GroupTouched;
 
 private:
     void removeObjectFromDocument(DocumentObject*);
-    // This function stores the already searched objects to prevent infinite recursion in case of a cyclic group graph
-    // It throws an exception of type Base::RuntimeError if a cyclic dependency is detected.
-    bool recursiveHasObject(const DocumentObject* obj, const GroupExtension* group, std::vector<const GroupExtension*> history) const;
+    // This function stores the already searched objects to prevent infinite recursion in case of a
+    // cyclic group graph It throws an exception of type Base::RuntimeError if a cyclic dependency
+    // is detected.
+    bool recursiveHasObject(const DocumentObject* obj,
+                            const GroupExtension* group,
+                            std::vector<const GroupExtension*> history) const;
 
     // for tracking children visibility
     void slotChildChanged(const App::DocumentObject&, const App::Property&);
@@ -138,32 +152,35 @@ private:
 
 
 template<typename ExtensionT>
-class GroupExtensionPythonT : public ExtensionT {
-         
+class GroupExtensionPythonT: public ExtensionT
+{
+
 public:
-    
     GroupExtensionPythonT() = default;
     ~GroupExtensionPythonT() override = default;
- 
-    //override the documentobjectextension functions to make them available in python 
-    bool allowObject(DocumentObject* obj)  override {
+
+    // override the documentobjectextension functions to make them available in python
+    bool allowObject(DocumentObject* obj) override
+    {
         Base::PyGILStateLocker locker;
         Py::Object pyobj = Py::asObject(obj->getPyObject());
         EXTENSION_PROXY_ONEARG(allowObject, pyobj);
-                
-        if(result.isNone())
+
+        if (result.isNone()) {
             return ExtensionT::allowObject(obj);
-        
-        if(result.isBoolean())
+        }
+
+        if (result.isBoolean()) {
             return result.isTrue();
-        
+        }
+
         return false;
     };
 };
 
 using GroupExtensionPython = ExtensionPythonT<GroupExtensionPythonT<GroupExtension>>;
 
-} //namespace App
+}  // namespace App
 
 
-#endif // APP_GROUPEXTENSION_H
+#endif  // APP_GROUPEXTENSION_H

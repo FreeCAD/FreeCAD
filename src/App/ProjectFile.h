@@ -199,6 +199,6 @@ private:
 };
 
 
-}  // namespace APP
+}  // namespace App
 
 #endif  // APP_PROJECTFILE_H

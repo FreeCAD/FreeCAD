@@ -31,7 +31,7 @@ namespace App
 {
 class SuppressibleExtensionPy;
 
-class AppExport SuppressibleExtension : public DocumentObjectExtension
+class AppExport SuppressibleExtension: public DocumentObjectExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::SuppressibleExtension);
     using inherited = DocumentObjectExtension;
@@ -43,21 +43,22 @@ public:
 
     PyObject* getExtensionPyObject() override;
 
-    ///Properties
-    PropertyBool   Suppressed;
+    /// Properties
+    PropertyBool Suppressed;
 };
 
 template<typename ExtensionT>
-class SuppressibleExtensionPythonT : public ExtensionT {
+class SuppressibleExtensionPythonT: public ExtensionT
+{
 
 public:
-
     SuppressibleExtensionPythonT() = default;
     ~SuppressibleExtensionPythonT() override = default;
 };
 
-using SuppressibleExtensionPython = ExtensionPythonT<SuppressibleExtensionPythonT<SuppressibleExtension>>;
+using SuppressibleExtensionPython =
+    ExtensionPythonT<SuppressibleExtensionPythonT<SuppressibleExtension>>;
 
-} //namespace App
+}  // namespace App
 
-#endif // SUPPRESSIBLEEXTENSION_H
+#endif  // SUPPRESSIBLEEXTENSION_H

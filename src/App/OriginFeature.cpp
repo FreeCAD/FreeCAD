@@ -35,7 +35,7 @@ PROPERTY_SOURCE(App::Line, App::OriginFeature)
 
 OriginFeature::OriginFeature()
 {
-    ADD_PROPERTY_TYPE ( Role, (""), 0, App::Prop_ReadOnly, "Role of the feature in the Origin" ) ;
+    ADD_PROPERTY_TYPE(Role, (""), 0, App::Prop_ReadOnly, "Role of the feature in the Origin");
 
     // Set placement to read-only
     Placement.setStatus(Property::Hidden, true);
@@ -43,18 +43,20 @@ OriginFeature::OriginFeature()
 
 OriginFeature::~OriginFeature() = default;
 
-Origin * OriginFeature::getOrigin () {
-    App::Document *doc = getDocument();
-    auto origins = doc->getObjectsOfType ( App::Origin::getClassTypeId() );
+Origin* OriginFeature::getOrigin()
+{
+    App::Document* doc = getDocument();
+    auto origins = doc->getObjectsOfType(App::Origin::getClassTypeId());
 
-    auto originIt= std::find_if (origins.begin(), origins.end(), [this] (DocumentObject *origin) {
-            assert ( origin->isDerivedFrom ( App::Origin::getClassTypeId() ) );
-            return static_cast<App::Origin *> (origin)->hasObject (this);
-        } );
+    auto originIt = std::find_if(origins.begin(), origins.end(), [this](DocumentObject* origin) {
+        assert(origin->isDerivedFrom(App::Origin::getClassTypeId()));
+        return static_cast<App::Origin*>(origin)->hasObject(this);
+    });
     if (originIt == origins.end()) {
         return nullptr;
-    } else {
-        assert ( (*originIt)->isDerivedFrom ( App::Origin::getClassTypeId() ) );
-        return static_cast<App::Origin *> (*originIt);
+    }
+    else {
+        assert((*originIt)->isDerivedFrom(App::Origin::getClassTypeId()));
+        return static_cast<App::Origin*>(*originIt);
     }
 }

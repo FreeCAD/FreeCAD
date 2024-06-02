@@ -35,7 +35,7 @@ namespace App
 
 /** Base class of all geometric document objects.
  */
-class AppExport Origin : public App::DocumentObject
+class AppExport Origin: public App::DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(App::Origin);
     Q_DECLARE_TR_FUNCTIONS(App::Origin)
@@ -46,7 +46,8 @@ public:
     ~Origin() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "Gui::ViewProviderOrigin";
     }
 
@@ -56,58 +57,67 @@ public:
      */
     ///@{
     // returns X axis
-    App::Line *getX () const {
-        return getAxis (AxisRoles[0]);
+    App::Line* getX() const
+    {
+        return getAxis(AxisRoles[0]);
     }
     // returns Y axis
-    App::Line *getY () const {
-        return getAxis (AxisRoles[1]);
+    App::Line* getY() const
+    {
+        return getAxis(AxisRoles[1]);
     }
     // returns Z axis
-    App::Line *getZ () const {
-        return getAxis (AxisRoles[2]);
+    App::Line* getZ() const
+    {
+        return getAxis(AxisRoles[2]);
     }
 
     // returns XY plane
-    App::Plane *getXY () const {
-        return getPlane (PlaneRoles[0]);
+    App::Plane* getXY() const
+    {
+        return getPlane(PlaneRoles[0]);
     }
     // returns XZ plane
-    App::Plane *getXZ () const {
-        return getPlane (PlaneRoles[1]);
+    App::Plane* getXZ() const
+    {
+        return getPlane(PlaneRoles[1]);
     }
     // returns YZ plane
-    App::Plane *getYZ () const {
-        return getPlane (PlaneRoles[2]);
+    App::Plane* getYZ() const
+    {
+        return getPlane(PlaneRoles[2]);
     }
 
     /// Returns all axis objects to iterate on them
-    std::vector<App::Line *> axes() const {
-        return { getX(), getY(), getZ() };
+    std::vector<App::Line*> axes() const
+    {
+        return {getX(), getY(), getZ()};
     }
 
     /// Returns all base planes objects to iterate on them
-    std::vector<App::Plane *> planes() const {
-        return { getXY(), getXZ(), getYZ() };
+    std::vector<App::Plane*> planes() const
+    {
+        return {getXY(), getXZ(), getYZ()};
     }
 
     /// Returns all controlled objects (both planes and axis) to iterate on them
-    std::vector<App::OriginFeature *> baseObjects() const {
-        return { getX(), getY(), getZ(), getXY(), getXZ(), getYZ() };
+    std::vector<App::OriginFeature*> baseObjects() const
+    {
+        return {getX(), getY(), getZ(), getXY(), getXZ(), getYZ()};
     }
 
     /// Returns an axis by it's name
-    App::OriginFeature *getOriginFeature( const char* role ) const;
+    App::OriginFeature* getOriginFeature(const char* role) const;
 
     /// Returns an axis by it's name
-    App::Line *getAxis( const char* role ) const;
+    App::Line* getAxis(const char* role) const;
 
     /// Returns an axis by it's name
-    App::Plane *getPlane( const char* role ) const;
+    App::Plane* getPlane(const char* role) const;
     ///@}
 
     /// Returns true if the given object is part of the origin
-    bool hasObject (const DocumentObject *obj) const;
+    bool hasObject(const DocumentObject* obj) const;
 
     /// Returns the default bounding box of the origin (use this if you confused what should be s )
     // TODO Delete me if not really needed (2015-09-01, Fat-Zer)
@@ -126,27 +136,33 @@ public:
 
 protected:
     /// Checks integrity of the Origin
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     /// Creates all corresponding Axes and Planes objects for the origin if they aren't linked yet
-    void setupObject () override;
+    void setupObject() override;
     /// Removes all planes and axis if they are still linked to the document
-    void unsetupObject () override;
+    void unsetupObject() override;
 
 private:
     struct SetupData;
-    void setupOriginFeature (App::PropertyLink &featProp, const SetupData &data);
+    void setupOriginFeature(App::PropertyLink& featProp, const SetupData& data);
 
-    class OriginExtension : public GeoFeatureGroupExtension {
+    class OriginExtension: public GeoFeatureGroupExtension
+    {
         Origin* obj;
+
     public:
         explicit OriginExtension(Origin* obj);
         void initExtension(ExtensionContainer* obj) override;
-        bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
-                PyObject **, Base::Matrix4D *, bool, int) const override;
+        bool extensionGetSubObject(DocumentObject*& ret,
+                                   const char* subname,
+                                   PyObject**,
+                                   Base::Matrix4D*,
+                                   bool,
+                                   int) const override;
     };
     OriginExtension extension;
 };
 
-} //namespace App
+}  // namespace App
 
-#endif // APP_Origin_H
+#endif  // APP_Origin_H

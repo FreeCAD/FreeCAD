@@ -38,7 +38,7 @@ std::string SuppressibleExtensionPy::representation() const
     return {"<suppressible extension object>"};
 }
 
-PyObject *SuppressibleExtensionPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* SuppressibleExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

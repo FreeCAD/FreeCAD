@@ -52,6 +52,6 @@ public:
     static void callCleanup();
 };
 
-}
+}  // namespace App
 
 #endif  // APP_CLEANUPPROCESS_H

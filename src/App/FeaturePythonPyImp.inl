@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
+// clang-format off
 namespace App
 {
 
@@ -200,3 +200,4 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(const char *attr)
 }
 
 } //namespace App
+// clang-format on

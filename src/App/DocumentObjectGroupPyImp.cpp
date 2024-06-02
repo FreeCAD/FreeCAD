@@ -37,7 +37,7 @@ std::string DocumentObjectGroupPy::representation() const
     return {"<group object>"};
 }
 
-PyObject *DocumentObjectGroupPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* DocumentObjectGroupPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
@@ -46,4 +46,3 @@ int DocumentObjectGroupPy::setCustomAttributes(const char* /*attr*/, PyObject* /
 {
     return 0;
 }
-

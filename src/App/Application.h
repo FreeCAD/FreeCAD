@@ -40,7 +40,7 @@ namespace Base
 {
 class ConsoleObserverStd;
 class ConsoleObserverFile;
-}
+}  // namespace Base
 
 namespace App
 {
@@ -52,7 +52,8 @@ class Property;
 class AutoTransaction;
 class ExtensionContainer;
 
-enum GetLinkOption {
+enum GetLinkOption
+{
     /// Get all links (both directly and in directly) linked to the given object
     GetLinkRecursive = 1,
     /// Get link array element instead of the array
@@ -63,7 +64,8 @@ enum GetLinkOption {
     GetLinkExternal = 8,
 };
 
-enum class MessageOption {
+enum class MessageOption
+{
     Quiet, /**< Suppress error. */
     Error, /**< Print an error message. */
     Throw, /**< Throw an exception. */
@@ -78,7 +80,6 @@ class AppExport Application
 {
 
 public:
-
     //---------------------------------------------------------------------
     // exported functions go here +++++++++++++++++++++++++++++++++++++++++
     //---------------------------------------------------------------------
@@ -94,14 +95,16 @@ public:
      * The second name is a UTF8 name of any kind. It's that name normally shown to
      * the user and stored in the App::Document::Name property.
      */
-    App::Document* newDocument(const char * Name=nullptr, const char * UserName=nullptr,
-            bool createView=true, bool tempDoc=false);
+    App::Document* newDocument(const char* Name = nullptr,
+                               const char* UserName = nullptr,
+                               bool createView = true,
+                               bool tempDoc = false);
     /// Closes the document \a name and removes it from the application.
     bool closeDocument(const char* name);
     /// find a unique document name
-    std::string getUniqueDocumentName(const char *Name, bool tempDoc=false) const;
+    std::string getUniqueDocumentName(const char* Name, bool tempDoc = false) const;
     /// Open an existing document from a file
-    App::Document* openDocument(const char * FileName=nullptr, bool createView=true);
+    App::Document* openDocument(const char* FileName = nullptr, bool createView = true);
     /** Open multiple documents
      *
      * @param filenames: input file names
@@ -119,18 +122,19 @@ public:
      *
      * This function will also open any external referenced files.
      */
-    std::vector<Document*> openDocuments(const std::vector<std::string> &filenames,
-            const std::vector<std::string> *paths=nullptr,
-            const std::vector<std::string> *labels=nullptr,
-            std::vector<std::string> *errs=nullptr,
-            bool createView = true);
+    std::vector<Document*> openDocuments(const std::vector<std::string>& filenames,
+                                         const std::vector<std::string>* paths = nullptr,
+                                         const std::vector<std::string>* labels = nullptr,
+                                         std::vector<std::string>* errs = nullptr,
+                                         bool createView = true);
     /// Retrieve the active document
     App::Document* getActiveDocument() const;
     /// Retrieve a named document
-    App::Document* getDocument(const char *Name) const;
+    App::Document* getDocument(const char* Name) const;
 
     /// Path matching mode for getDocumentByPath()
-    enum class PathMatchMode {
+    enum class PathMatchMode
+    {
         /// Match by resolving to absolute file path
         MatchAbsolute = 0,
         /** Match by absolute path first. If not found then match by resolving
@@ -152,20 +156,21 @@ public:
      * @param checkCanonical: file path matching mode, @sa PathMatchMode.
      * @return Return the document found by matching with the given path
      */
-    App::Document* getDocumentByPath(const char *path,
-                                     PathMatchMode checkCanonical = PathMatchMode::MatchAbsolute) const;
+    App::Document*
+    getDocumentByPath(const char* path,
+                      PathMatchMode checkCanonical = PathMatchMode::MatchAbsolute) const;
 
     /// gets the (internal) name of the document
-    const char * getDocumentName(const App::Document* ) const;
+    const char* getDocumentName(const App::Document*) const;
     /// get a list of all documents in the application
     std::vector<App::Document*> getDocuments() const;
     /// Set the active document
     void setActiveDocument(App::Document* pDoc);
-    void setActiveDocument(const char *Name);
+    void setActiveDocument(const char* Name);
     /// close all documents (without saving)
     void closeAllDocuments();
     /// Add pending document to open together with the current opening document
-    int addPendingDocument(const char *FileName, const char *objName, bool allowPartial);
+    int addPendingDocument(const char* FileName, const char* objName, bool allowPartial);
     /// Indicate whether the application is opening (restoring) some document
     bool isRestoring() const;
     /// Indicate the application is closing all document
@@ -190,9 +195,9 @@ public:
      * with the given name and ID. If more than one document is changed, the
      * transactions will share the same ID, and will be undo/redo together.
      */
-    int setActiveTransaction(const char *name, bool persist=false);
+    int setActiveTransaction(const char* name, bool persist = false);
     /// Return the current active transaction name and ID
-    const char *getActiveTransaction(int *tid=nullptr) const;
+    const char* getActiveTransaction(int* tid = nullptr) const;
     /** Commit/abort current active transactions
      *
      * @param abort: whether to abort or commit the transactions
@@ -202,53 +207,53 @@ public:
      * transaction with the current active transaction ID is either committed or
      * aborted
      */
-    void closeActiveTransaction(bool abort=false, int id=0);
+    void closeActiveTransaction(bool abort = false, int id = 0);
     //@}
 
     /** @name Signals of the Application */
     //@{
     /// signal on new Document
-    boost::signals2::signal<void (const Document&, bool)> signalNewDocument;
+    boost::signals2::signal<void(const Document&, bool)> signalNewDocument;
     /// signal on document getting deleted
-    boost::signals2::signal<void (const Document&)> signalDeleteDocument;
+    boost::signals2::signal<void(const Document&)> signalDeleteDocument;
     /// signal on already deleted Document
-    boost::signals2::signal<void ()> signalDeletedDocument;
+    boost::signals2::signal<void()> signalDeletedDocument;
     /// signal on relabeling Document (user name)
-    boost::signals2::signal<void (const Document&)> signalRelabelDocument;
+    boost::signals2::signal<void(const Document&)> signalRelabelDocument;
     /// signal on renaming Document (internal name)
-    boost::signals2::signal<void (const Document&)> signalRenameDocument;
+    boost::signals2::signal<void(const Document&)> signalRenameDocument;
     /// signal on activating Document
-    boost::signals2::signal<void (const Document&)> signalActiveDocument;
+    boost::signals2::signal<void(const Document&)> signalActiveDocument;
     /// signal on saving Document
-    boost::signals2::signal<void (const Document&)> signalSaveDocument;
+    boost::signals2::signal<void(const Document&)> signalSaveDocument;
     /// signal on starting to restore Document
-    boost::signals2::signal<void (const Document&)> signalStartRestoreDocument;
+    boost::signals2::signal<void(const Document&)> signalStartRestoreDocument;
     /// signal on restoring Document
-    boost::signals2::signal<void (const Document&)> signalFinishRestoreDocument;
+    boost::signals2::signal<void(const Document&)> signalFinishRestoreDocument;
     /// signal on pending reloading of a partial Document
-    boost::signals2::signal<void (const Document&)> signalPendingReloadDocument;
+    boost::signals2::signal<void(const Document&)> signalPendingReloadDocument;
     /// signal on starting to save Document
-    boost::signals2::signal<void (const Document&, const std::string&)> signalStartSaveDocument;
+    boost::signals2::signal<void(const Document&, const std::string&)> signalStartSaveDocument;
     /// signal on saved Document
-    boost::signals2::signal<void (const Document&, const std::string&)> signalFinishSaveDocument;
+    boost::signals2::signal<void(const Document&, const std::string&)> signalFinishSaveDocument;
     /// signal on undo in document
-    boost::signals2::signal<void (const Document&)> signalUndoDocument;
+    boost::signals2::signal<void(const Document&)> signalUndoDocument;
     /// signal on application wide undo
-    boost::signals2::signal<void ()> signalUndo;
+    boost::signals2::signal<void()> signalUndo;
     /// signal on redo in document
-    boost::signals2::signal<void (const Document&)> signalRedoDocument;
+    boost::signals2::signal<void(const Document&)> signalRedoDocument;
     /// signal on application wide redo
-    boost::signals2::signal<void ()> signalRedo;
+    boost::signals2::signal<void()> signalRedo;
     /// signal before close/abort active transaction
-    boost::signals2::signal<void (bool)> signalBeforeCloseTransaction;
+    boost::signals2::signal<void(bool)> signalBeforeCloseTransaction;
     /// signal after close/abort active transaction
-    boost::signals2::signal<void (bool)> signalCloseTransaction;
+    boost::signals2::signal<void(bool)> signalCloseTransaction;
     /// signal on show hidden items
-    boost::signals2::signal<void (const Document&)> signalShowHidden;
+    boost::signals2::signal<void(const Document&)> signalShowHidden;
     /// signal on start opening document(s)
-    boost::signals2::signal<void ()> signalStartOpenDocument;
+    boost::signals2::signal<void()> signalStartOpenDocument;
     /// signal on finished opening document(s)
-    boost::signals2::signal<void ()> signalFinishOpenDocument;
+    boost::signals2::signal<void()> signalFinishOpenDocument;
     //@}
 
 
@@ -258,34 +263,37 @@ public:
      */
     //@{
     /// signal before change of doc property
-    boost::signals2::signal<void (const App::Document&, const App::Property&)> signalBeforeChangeDocument;
+    boost::signals2::signal<void(const App::Document&, const App::Property&)>
+        signalBeforeChangeDocument;
     /// signal on changed doc property
-    boost::signals2::signal<void (const App::Document&, const App::Property&)> signalChangedDocument;
+    boost::signals2::signal<void(const App::Document&, const App::Property&)> signalChangedDocument;
     /// signal on new Object
-    boost::signals2::signal<void (const App::DocumentObject&)> signalNewObject;
-    //boost::signals2::signal<void (const App::DocumentObject&)>     m_sig;
+    boost::signals2::signal<void(const App::DocumentObject&)> signalNewObject;
+    // boost::signals2::signal<void (const App::DocumentObject&)>     m_sig;
     /// signal on deleted Object
-    boost::signals2::signal<void (const App::DocumentObject&)> signalDeletedObject;
+    boost::signals2::signal<void(const App::DocumentObject&)> signalDeletedObject;
     /// signal on changed Object
-    boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalBeforeChangeObject;
+    boost::signals2::signal<void(const App::DocumentObject&, const App::Property&)>
+        signalBeforeChangeObject;
     /// signal on changed Object
-    boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalChangedObject;
+    boost::signals2::signal<void(const App::DocumentObject&, const App::Property&)>
+        signalChangedObject;
     /// signal on relabeled Object
-    boost::signals2::signal<void (const App::DocumentObject&)> signalRelabelObject;
+    boost::signals2::signal<void(const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object
-    boost::signals2::signal<void (const App::DocumentObject&)> signalActivatedObject;
+    boost::signals2::signal<void(const App::DocumentObject&)> signalActivatedObject;
     /// signal before recomputed document
-    boost::signals2::signal<void (const App::Document&)> signalBeforeRecomputeDocument;
+    boost::signals2::signal<void(const App::Document&)> signalBeforeRecomputeDocument;
     /// signal on recomputed document
-    boost::signals2::signal<void (const App::Document&)> signalRecomputed;
+    boost::signals2::signal<void(const App::Document&)> signalRecomputed;
     /// signal on recomputed document object
-    boost::signals2::signal<void (const App::DocumentObject&)> signalObjectRecomputed;
+    boost::signals2::signal<void(const App::DocumentObject&)> signalObjectRecomputed;
     // signal on opened transaction
-    boost::signals2::signal<void (const App::Document&, std::string)> signalOpenTransaction;
+    boost::signals2::signal<void(const App::Document&, std::string)> signalOpenTransaction;
     // signal a committed transaction
-    boost::signals2::signal<void (const App::Document&)> signalCommitTransaction;
+    boost::signals2::signal<void(const App::Document&)> signalCommitTransaction;
     // signal an aborted transaction
-    boost::signals2::signal<void (const App::Document&)> signalAbortTransaction;
+    boost::signals2::signal<void(const App::Document&)> signalAbortTransaction;
     //@}
 
     /** @name Signals of property changes
@@ -294,45 +302,48 @@ public:
      */
     //@{
     /// signal on adding a dynamic property
-    boost::signals2::signal<void (const App::Property&)> signalAppendDynamicProperty;
+    boost::signals2::signal<void(const App::Property&)> signalAppendDynamicProperty;
     /// signal on about removing a dynamic property
-    boost::signals2::signal<void (const App::Property&)> signalRemoveDynamicProperty;
+    boost::signals2::signal<void(const App::Property&)> signalRemoveDynamicProperty;
     /// signal on about changing the editor mode of a property
-    boost::signals2::signal<void (const App::Document&, const App::Property&)> signalChangePropertyEditor;
+    boost::signals2::signal<void(const App::Document&, const App::Property&)>
+        signalChangePropertyEditor;
     //@}
 
     /** @name Signals of extension changes
-     * These signals are emitted on dynamic extension addition. Dynamic extensions are the ones added by python (c++ ones are part
-     * of the class definition, hence not dynamic)
-     * The extension in question is provided as parameter.
+     * These signals are emitted on dynamic extension addition. Dynamic extensions are the ones
+     * added by python (c++ ones are part of the class definition, hence not dynamic) The extension
+     * in question is provided as parameter.
      */
     //@{
     /// signal before adding the extension
-    boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalBeforeAddingDynamicExtension;
+    boost::signals2::signal<void(const App::ExtensionContainer&, std::string extension)>
+        signalBeforeAddingDynamicExtension;
     /// signal after the extension was added
-    boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalAddedDynamicExtension;
-     //@}
+    boost::signals2::signal<void(const App::ExtensionContainer&, std::string extension)>
+        signalAddedDynamicExtension;
+    //@}
 
 
     /** @name methods for parameter handling */
     //@{
     /// returns the system parameter
-    ParameterManager &                                GetSystemParameter();
+    ParameterManager& GetSystemParameter();
     /// returns the user parameter
-    ParameterManager &                                GetUserParameter();
+    ParameterManager& GetUserParameter();
     /** Gets a parameter group by a full qualified path
      * It's an easy method to get a group:
      * \code
      * // getting standard parameter
-     * ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Raytracing");
-     * std::string cDir             = hGrp->GetASCII("ProjectPath", "");
-     * std::string cCameraName      = hGrp->GetASCII("CameraName", "TempCamera.inc");
-     * \endcode
+     * ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User
+     * parameter:BaseApp/Preferences/Mod/Raytracing"); std::string cDir             =
+     * hGrp->GetASCII("ProjectPath", ""); std::string cCameraName      =
+     * hGrp->GetASCII("CameraName", "TempCamera.inc"); \endcode
      */
-    Base::Reference<ParameterGrp>                     GetParameterGroupByPath(const char* sName);
+    Base::Reference<ParameterGrp> GetParameterGroupByPath(const char* sName);
 
-    ParameterManager *                                GetParameterSet(const char* sName) const;
-    const std::map<std::string,Base::Reference<ParameterManager>> &  GetParameterSetList() const;
+    ParameterManager* GetParameterSet(const char* sName) const;
+    const std::map<std::string, Base::Reference<ParameterManager>>& GetParameterSetList() const;
     void AddParameterSet(const char* sName);
     void RemoveParameterSet(const char* sName);
     //@}
@@ -387,7 +398,7 @@ public:
 
     /** @name Init, Destruct an Access methods */
     //@{
-    static void init(int argc, char ** argv);
+    static void init(int argc, char** argv);
     static void initTypes();
     static void destruct();
     static void destructObserver();
@@ -395,10 +406,19 @@ public:
     static std::list<std::string> getCmdLineFiles();
     static std::list<std::string> processFiles(const std::list<std::string>&);
     static void runApplication();
-    friend Application &GetApplication();
-    static std::map<std::string, std::string> &Config(){return mConfig;}
-    static int GetARGC(){return _argc;}
-    static char** GetARGV(){return _argv;}
+    friend Application& GetApplication();
+    static std::map<std::string, std::string>& Config()
+    {
+        return mConfig;
+    }
+    static int GetARGC()
+    {
+        return _argc;
+    }
+    static char** GetARGV()
+    {
+        return _argv;
+    }
     //@}
 
     /** @name Application directories */
@@ -410,7 +430,7 @@ public:
      system's temporary directory but can be customized by the user.
      */
     static std::string getTempPath();
-    static std::string getTempFileName(const char* FileName=nullptr);
+    static std::string getTempFileName(const char* FileName = nullptr);
     static std::string getUserCachePath();
     static std::string getUserConfigPath();
     static std::string getUserAppDataDir();
@@ -442,18 +462,18 @@ public:
      * @param option: @sa App::GetLinkOption
      * @param maxCount: limit the number of links returned, 0 means no limit
      */
-    std::set<DocumentObject*> getLinksTo(
-            const DocumentObject *, int options, int maxCount=0) const;
+    std::set<DocumentObject*>
+    getLinksTo(const DocumentObject*, int options, int maxCount = 0) const;
 
     /// Check if there is any link to the given object
-    bool hasLinksTo(const DocumentObject *obj) const;
+    bool hasLinksTo(const DocumentObject* obj) const;
     //@}
 
     friend class App::Document;
 
 protected:
     /// get called by the document when the name is changing
-    void renameDocument(const char *OldName, const char *NewName);
+    void renameDocument(const char* OldName, const char* NewName);
 
     /** @name I/O of the document
      * This slot gets connected to all App::Documents created
@@ -477,25 +497,31 @@ protected:
     void slotAbortTransaction(const App::Document&);
     void slotStartSaveDocument(const App::Document&, const std::string&);
     void slotFinishSaveDocument(const App::Document&, const std::string&);
-    void slotChangePropertyEditor(const App::Document&, const App::Property &);
+    void slotChangePropertyEditor(const App::Document&, const App::Property&);
     //@}
 
     /// open single document only
-    App::Document* openDocumentPrivate(const char * FileName, const char *propFileName,
-            const char *label, bool isMainDoc, bool createView, std::vector<std::string> &&objNames);
+    App::Document* openDocumentPrivate(const char* FileName,
+                                       const char* propFileName,
+                                       const char* label,
+                                       bool isMainDoc,
+                                       bool createView,
+                                       std::vector<std::string>&& objNames);
 
     /// Helper class for App::Document to signal on close/abort transaction
-    class AppExport TransactionSignaller {
+    class AppExport TransactionSignaller
+    {
     public:
         TransactionSignaller(bool abort, bool signal);
         ~TransactionSignaller();
+
     private:
         bool abort;
     };
 
 private:
     /// Constructor
-    explicit Application(std::map<std::string, std::string> &mConfig);
+    explicit Application(std::map<std::string, std::string>& mConfig);
     /// Destructor
     virtual ~Application();
 
@@ -513,6 +539,7 @@ private:
     static void setupPythonTypes();
     static void setupPythonException(PyObject*);
 
+    // clang-format off
     // static python wrapper of the exported functions
     static PyObject* sGetParam          (PyObject *self, PyObject *args);
     static PyObject* sSaveParameter     (PyObject *self, PyObject *args);
@@ -563,18 +590,19 @@ private:
     static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args);
     static PyObject *sCheckAbort(PyObject *self,PyObject *args);
     static PyMethodDef    Methods[];
+    // clang-format on
 
     friend class ApplicationObserver;
 
     /** @name  Private Init, Destruct an Access methods */
     //@{
-    static void initConfig(int argc, char ** argv);
+    static void initConfig(int argc, char** argv);
     static void initApplication();
     static void logStatus();
     // the one and only pointer to the application object
-    static Application *_pcSingleton;
+    static Application* _pcSingleton;
     /// checks if the environment is alright
-    //static void CheckEnv(void);
+    // static void CheckEnv(void);
     /// Search for the FreeCAD home path based on argv[0]
     /*!
      * There are multiple implementations of this method per-OS
@@ -587,14 +615,15 @@ private:
     /// load the user and system parameter set
     static void LoadParameters();
     /// puts the given env variable in the config
-    static void SaveEnv(const char *);
+    static void SaveEnv(const char*);
     /// startup configuration container
-    static std::map<std::string,std::string> mConfig;
+    static std::map<std::string, std::string> mConfig;
     static int _argc;
-    static char ** _argv;
+    static char** _argv;
     //@}
 
-    struct FileTypeItem {
+    struct FileTypeItem
+    {
         std::string filter;
         std::string module;
         std::vector<std::string> types;
@@ -603,44 +632,45 @@ private:
     /// open ending information
     std::vector<FileTypeItem> _mImportTypes;
     std::vector<FileTypeItem> _mExportTypes;
-    std::map<std::string,Document*> DocMap;
-    mutable std::map<std::string,Document*> DocFileMap;
-    std::map<std::string,Base::Reference<ParameterManager>> mpcPramManager;
-    std::map<std::string,std::string> &_mConfig;
-    App::Document* _pActiveDoc{nullptr};
+    std::map<std::string, Document*> DocMap;
+    mutable std::map<std::string, Document*> DocFileMap;
+    std::map<std::string, Base::Reference<ParameterManager>> mpcPramManager;
+    std::map<std::string, std::string>& _mConfig;
+    App::Document* _pActiveDoc {nullptr};
 
     std::deque<std::string> _pendingDocs;
     std::deque<std::string> _pendingDocsReopen;
-    std::map<std::string,std::vector<std::string> > _pendingDocMap;
+    std::map<std::string, std::vector<std::string>> _pendingDocMap;
 
     // To prevent infinite recursion of reloading a partial document due a truly
     // missing object
-    std::map<std::string,std::set<std::string> > _docReloadAttempts;
+    std::map<std::string, std::set<std::string>> _docReloadAttempts;
 
-    bool _isRestoring{false};
-    bool _allowPartial{false};
-    bool _isClosingAll{false};
+    bool _isRestoring {false};
+    bool _allowPartial {false};
+    bool _isClosingAll {false};
 
     // for estimate max link depth
-    int _objCount{-1};
+    int _objCount {-1};
 
     friend class AutoTransaction;
 
     std::string _activeTransactionName;
-    int _activeTransactionID{0};
-    int _activeTransactionGuard{0};
-    bool _activeTransactionTmpName{false};
+    int _activeTransactionID {0};
+    int _activeTransactionGuard {0};
+    bool _activeTransactionTmpName {false};
 
-    static Base::ConsoleObserverStd  *_pConsoleObserverStd;
-    static Base::ConsoleObserverFile *_pConsoleObserverFile;
+    static Base::ConsoleObserverStd* _pConsoleObserverStd;
+    static Base::ConsoleObserverFile* _pConsoleObserverFile;
 };
 
 /// Singleton getter of the Application
-inline App::Application &GetApplication(){
+inline App::Application& GetApplication()
+{
     return *App::Application::_pcSingleton;
 }
 
-} // namespace App
+}  // namespace App
 
 
-#endif // APP_APPLICATION_H
+#endif  // APP_APPLICATION_H
