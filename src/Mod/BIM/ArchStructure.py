@@ -197,7 +197,8 @@ class CommandStructuresFromSelection:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Create multiple Arch Structures from a selected base, using each selected edge as an extrusion path")}
 
     def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         selex = FreeCADGui.Selection.getSelectionEx()

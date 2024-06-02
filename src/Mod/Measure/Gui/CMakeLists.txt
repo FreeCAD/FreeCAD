@@ -86,6 +86,9 @@ SET(MeasureGuiIcon_SVG
 
 add_library(MeasureGui SHARED ${MeasureGui_SRCS} ${MeasureGuiIcon_SVG})
 target_link_libraries(MeasureGui ${MeasureGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(MeasureGui)
+endif()
 
 SET_BIN_DIR(MeasureGui MeasureGui /Mod/Measure)
 SET_PYTHON_PREFIX_SUFFIX(MeasureGui)

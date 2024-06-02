@@ -197,7 +197,9 @@ SET(SketcherGuiIcon_SVG
 
 add_library(SketcherGui SHARED ${SketcherGui_SRCS} ${SketcherGuiIcon_SVG})
 target_link_libraries(SketcherGui ${SketcherGui_LIBS})
-
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(SketcherGui)
+endif()
 
 SET_BIN_DIR(SketcherGui SketcherGui /Mod/Sketcher)
 SET_PYTHON_PREFIX_SUFFIX(SketcherGui)

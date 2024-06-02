@@ -60,6 +60,10 @@ class BIM_Material:
             ),
         }
 
+    def IsActive(self):
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
+
     def Activated(self):
 
         self.dlg = None

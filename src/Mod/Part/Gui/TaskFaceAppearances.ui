@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PartGui::TaskFaceColors</class>
- <widget class="QWidget" name="PartGui::TaskFaceColors">
+ <class>PartGui::TaskFaceAppearances</class>
+ <widget class="QWidget" name="PartGui::TaskFaceAppearances">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>247</width>
-    <height>143</height>
+    <height>219</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Set color per face</string>
+   <string>Set appearance per face</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -26,57 +26,57 @@
      <property name="title">
       <string notr="true">Group box</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="faceLabel">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Faces:</string>
-        </property>
-       </widget>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="faceLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Faces:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelElement">
+          <property name="text">
+           <string notr="true">[]</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
-      <item row="0" column="1" colspan="2">
-       <widget class="QLabel" name="labelElement">
-        <property name="text">
-         <string notr="true">[]</string>
-        </property>
-       </widget>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="MatGui::MaterialTreeWidget" name="widgetMaterial" native="true"/>
+        </item>
+       </layout>
       </item>
-     <item row="1" column="0" colspan="2">
-       <widget class="Gui::ColorButton" name="colorButton">
-        <property name="minimumSize">
-         <size>
-          <width>146</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>160</width>
-          <height>16777215</height>
-         </size>
-        </property>
-       </widget>
+      <item>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="1">
+         <widget class="QPushButton" name="buttonCustomAppearance">
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelCustomAppearance">
+          <property name="text">
+           <string>Custom Appearance</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
-      <item row="1" column="2">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      </layout>
+     </layout>
     </widget>
    </item>
    <item>
@@ -136,9 +136,10 @@ by dragging a selection rectangle in the 3D view</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::ColorButton</class>
-   <extends>QPushButton</extends>
-   <header>Gui/Widgets.h</header>
+   <class>MatGui::MaterialTreeWidget</class>
+   <extends>QWidget</extends>
+   <header>Mod/Material/Gui/MaterialTreeWidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

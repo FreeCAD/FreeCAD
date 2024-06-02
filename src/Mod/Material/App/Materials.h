@@ -116,6 +116,7 @@ public:
     void setValue(const QString& value);
     void setValue(const std::shared_ptr<MaterialValue>& value);
     void setString(const QString& value);
+    void setString(const std::string& value);
     void setBoolean(bool value);
     void setBoolean(int value);
     void setBoolean(const QString& value);
