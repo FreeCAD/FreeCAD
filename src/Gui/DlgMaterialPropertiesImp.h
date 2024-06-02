@@ -27,6 +27,7 @@
 #include <QDialog>
 #include <memory>
 #include <vector>
+#include <FCGlobal.h>
 
 namespace App
 {
@@ -63,8 +64,8 @@ protected:
     void onEmissiveColorChanged();
     void onSpecularColorChanged();
     void onShininessValueChanged(int);
-    void onButtonReset(bool checked);
-    void onButtonDefault(bool checked);
+    void onButtonReset();
+    void onButtonDefault();
     void setButtonColors();
 
 protected:
