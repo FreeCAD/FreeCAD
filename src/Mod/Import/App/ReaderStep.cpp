@@ -43,9 +43,9 @@ ReaderStep::ReaderStep(const Base::FileInfo& file)  // NOLINT
 {}
 
 #if OCC_VERSION_HEX < 0x070800
-void ReaderStep::read(Handle(TDocStd_Document) hDoc) // NOLINT
+void ReaderStep::read(Handle(TDocStd_Document) hDoc)  // NOLINT
 #else
-void ReaderStep::read(Handle(TDocStd_Document) hDoc, Resource_FormatType codePage) // NOLINT
+void ReaderStep::read(Handle(TDocStd_Document) hDoc, Resource_FormatType codePage)  // NOLINT
 #endif
 {
     std::string utf8Name = file.filePath();
