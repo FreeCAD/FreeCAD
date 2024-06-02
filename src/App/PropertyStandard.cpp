@@ -2840,7 +2840,7 @@ void PropertyMaterialList::setDiffuseColors(const std::vector<App::Color>& color
     aboutToSetValue();
     setSize(colors.size(), _lValueList[0]);
 
-    for (int i = 0; i < colors.size(); i++) {
+    for (std::size_t i = 0; i < colors.size(); i++) {
         _lValueList[i].diffuseColor = colors[i];
     }
     hasSetValue();

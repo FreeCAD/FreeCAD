@@ -257,7 +257,9 @@ void AppearancePreview::setTexture(const QImage& image)
 }
 
 void AppearancePreview::setTextureScaling(double scale)
-{}
+{
+    Q_UNUSED(scale)
+}
 
 void AppearancePreview::resetAmbientColor()
 {
