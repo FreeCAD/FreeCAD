@@ -37,16 +37,6 @@
 	  <tag>dark</tag>
     </preferencepack>
     <preferencepack>
-      <name>ProDark</name>
-      <type>Theme</type>
-      <description>Applies a dark background and a darker stylesheet.</description>
-      <version>0.5.0</version>
-      <tag>built-in</tag>
-      <tag>dark</tag>
-      <tag>background</tag>
-      <tag>stylesheet</tag>
-    </preferencepack>
-    <preferencepack>
       <name>Dark behave</name>
       <type>Theme</type>
       <description>Applies a dark background and a darker stylesheet.</description>

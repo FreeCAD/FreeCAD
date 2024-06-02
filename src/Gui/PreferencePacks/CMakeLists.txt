@@ -6,7 +6,6 @@ SET(PreferencePacks_Files
 SET(PreferencePacks_Directories
 "Classic"
 "Dark behave"
-"ProDark"
 "Light theme"
 "Dark theme"
 )
