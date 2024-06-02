@@ -37,7 +37,6 @@ import WorkingPlane
 
 from draftguitools import gui_base
 from draftutils import gui_utils
-from draftutils import grid_observer
 from draftutils.translate import translate
 
 
@@ -67,7 +66,7 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
         """Return True when this command should be available."""
         return bool(gui_utils.get_3d_view())
 
-    def Activated(self, index = 0):
+    def Activated(self):
         """Execute when the command is called."""
         super().Activated()
 
@@ -90,8 +89,6 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
             grid.set()
             WorkingPlane.get_working_plane()
             grid.show_always = True
-
-        grid_observer._update_grid_gui()
 
 Gui.addCommand("Draft_ToggleGrid", ToggleGrid())
 
