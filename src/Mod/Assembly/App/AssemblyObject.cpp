@@ -1124,53 +1124,73 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
         if (jointType == JointType::Slider || jointType == JointType::Cylindrical) {
             auto* propLenMin =
                 dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("LengthMin"));
-            if (propLenMin) {
+            auto* propLenMax =
+                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("LengthMax"));
+
+            if (propLenMin && propLenMax) {
+                // Swap the values if necessary.
+                double minLength = propLenMin->getValue();
+                double maxLength = propLenMax->getValue();
+                if (minLength > maxLength) {
+                    propLenMin->setValue(maxLength);
+                    propLenMax->setValue(minLength);
+                    minLength = maxLength;
+                    maxLength = propLenMax->getValue();
+                }
+
                 auto limit = ASMTTranslationLimit::With();
                 limit->setName(joint->getFullName() + "-LimitLenMin");
                 limit->setMarkerI(fullMarkerNameI);
                 limit->setMarkerJ(fullMarkerNameJ);
                 limit->settype("=>");
-                limit->setlimit(std::to_string(propLenMin->getValue()));
+                limit->setlimit(std::to_string(minLength));
                 limit->settol("1.0e-9");
                 mbdAssembly->addLimit(limit);
-            }
-            auto* propLenMax =
-                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("LengthMax"));
-            if (propLenMax) {
-                auto limit = ASMTTranslationLimit::With();
-                limit->setName(joint->getFullName() + "-LimitLenMax");
-                limit->setMarkerI(fullMarkerNameI);
-                limit->setMarkerJ(fullMarkerNameJ);
-                limit->settype("=<");
-                limit->setlimit(std::to_string(propLenMax->getValue()));
-                limit->settol("1.0e-9");
-                mbdAssembly->addLimit(limit);
+
+                auto limit2 = ASMTTranslationLimit::With();
+                limit2->setName(joint->getFullName() + "-LimitLenMax");
+                limit2->setMarkerI(fullMarkerNameI);
+                limit2->setMarkerJ(fullMarkerNameJ);
+                limit2->settype("=<");
+                limit2->setlimit(std::to_string(maxLength));
+                limit2->settol("1.0e-9");
+                mbdAssembly->addLimit(limit2);
             }
         }
         if (jointType == JointType::Revolute || jointType == JointType::Cylindrical) {
             auto* propRotMin =
                 dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("AngleMin"));
-            if (propRotMin) {
+            auto* propRotMax =
+                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("AngleMax"));
+
+            if (propRotMin && propRotMax) {
+                // Swap the values if necessary.
+                double minAngle = propRotMin->getValue();
+                double maxAngle = propRotMax->getValue();
+                if (minAngle > maxAngle) {
+                    propRotMin->setValue(maxAngle);
+                    propRotMax->setValue(minAngle);
+                    minAngle = maxAngle;
+                    maxAngle = propRotMax->getValue();
+                }
+
                 auto limit = ASMTRotationLimit::With();
                 limit->setName(joint->getFullName() + "-LimitRotMin");
                 limit->setMarkerI(fullMarkerNameI);
                 limit->setMarkerJ(fullMarkerNameJ);
                 limit->settype("=>");
-                limit->setlimit(std::to_string(propRotMin->getValue()) + "*pi/180.0");
+                limit->setlimit(std::to_string(minAngle) + "*pi/180.0");
                 limit->settol("1.0e-9");
                 mbdAssembly->addLimit(limit);
-            }
-            auto* propRotMax =
-                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("AngleMax"));
-            if (propRotMax) {
-                auto limit = ASMTRotationLimit::With();
-                limit->setName(joint->getFullName() + "-LimiRotMax");
-                limit->setMarkerI(fullMarkerNameI);
-                limit->setMarkerJ(fullMarkerNameJ);
-                limit->settype("=<");
-                limit->setlimit(std::to_string(propRotMax->getValue()) + "*pi/180.0");
-                limit->settol("1.0e-9");
-                mbdAssembly->addLimit(limit);
+
+                auto limit2 = ASMTRotationLimit::With();
+                limit2->setName(joint->getFullName() + "-LimiRotMax");
+                limit2->setMarkerI(fullMarkerNameI);
+                limit2->setMarkerJ(fullMarkerNameJ);
+                limit2->settype("=<");
+                limit2->setlimit(std::to_string(maxAngle) + "*pi/180.0");
+                limit2->settol("1.0e-9");
+                mbdAssembly->addLimit(limit2);
             }
         }
     }
