@@ -23,7 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QApplication>
+# include <QApplication>
+# include <QPointer>
 #endif
 
 #include "App/Document.h"
@@ -33,7 +34,9 @@
 #include "Application.h"
 #include "Document.h"
 #include "ViewProviderDocumentObject.h"
-
+#include "View3DInventor.h"
+#include "MainWindow.h"
+#include "propertymanager/PropertyManager.h"
 
 using namespace Gui;
 
@@ -126,6 +129,74 @@ bool StdCmdGroup::isActive()
     return hasActiveDocument();
 }
 
+//===========================================================================
+// Std_VarSet
+//===========================================================================
+DEF_STD_CMD_A(StdCmdVarSet)
+
+StdCmdVarSet::StdCmdVarSet()
+  : Command("Std_VarSet")
+{
+    sGroup        = "Structure";
+    sMenuText     = QT_TR_NOOP("Create a variable set");
+    sToolTipText  = QT_TR_NOOP("A Variable Set is an object that maintains a set of properties to be used as "
+                               "variables.  Variable Sets inside a Part can be exposed such that these Parts "
+                               "can act as variants.");
+    sWhatsThis    = "Std_VarSet";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "VarSet";
+}
+
+void StdCmdVarSet::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a variable set"));
+
+    std::string VarSetName;
+    VarSetName = getUniqueObjectName("VarSet");
+    doCommand(Doc,"App.activeDocument().addObject('App::VarSet','%s')",VarSetName.c_str());
+
+    updateActive();
+}
+
+bool StdCmdVarSet::isActive()
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
+// Std_PropertyManager
+//===========================================================================
+DEF_3DV_CMD(StdCmdPropertyManager)
+
+StdCmdPropertyManager::StdCmdPropertyManager()
+  : Command("Std_PropertyManager")
+{
+    sGroup        = "Structure";
+    sMenuText     = QT_TR_NOOP("Open the Property Manager");
+    sToolTipText  = QT_TR_NOOP("The Property Manager shows an overview of the properties of Variable Sets.");
+    sWhatsThis    = "Std_PropertyManager";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "VarSet";
+}
+
+void StdCmdPropertyManager::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::Document* doc = Application::Instance->activeDocument();
+    if (doc) {
+        static QPointer<Gui::Dialog::DlgPropertyManager> dlg = nullptr;
+        if (!dlg)
+            dlg = new Gui::Dialog::DlgPropertyManager();
+        //dlg->setDocument(doc);
+        dlg->setAttribute(Qt::WA_DeleteOnClose);
+        dlg->show();
+    }
+}
+
+
 namespace Gui {
 
 void CreateStructureCommands()
@@ -134,6 +205,8 @@ void CreateStructureCommands()
 
     rcCmdMgr.addCommand(new StdCmdPart());
     rcCmdMgr.addCommand(new StdCmdGroup());
+    rcCmdMgr.addCommand(new StdCmdVarSet());
+    rcCmdMgr.addCommand(new StdCmdPropertyManager());
 }
 
 } // namespace Gui
