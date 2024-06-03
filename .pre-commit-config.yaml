@@ -5,6 +5,7 @@
 files: |
     (?x)^(
         src/Base|
+        src/Main|
         src/Tools|
         tests/src|
         src/Mod/AddonManager|
