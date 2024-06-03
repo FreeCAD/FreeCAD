@@ -213,6 +213,7 @@ void ViewProviderMeasureBase::onChanged(const App::Property* prop)
     if (prop == &TextColor) {
         const App::Color& color = TextColor.getValue();
         pLabel->textColor.setValue(color.r, color.g, color.b);
+        updateIcon();
     }
     else if (prop == &TextBackgroundColor) {
         const App::Color& color = TextBackgroundColor.getValue();
@@ -281,14 +282,22 @@ void ViewProviderMeasureBase::positionAnno(const Measure::MeasureBase* measureOb
 }
 
 
+void ViewProviderMeasureBase::updateIcon() {
+    // This assumes the icons main color is black
+
+    Gui::ColorMap colorMap {
+        { 0x000000, TextColor.getValue().getPackedRGB() >> 8 },
+    };
+    pLabel->setIcon(Gui::BitmapFactory().pixmapFromSvg(sPixmap, QSize(20, 20), colorMap));
+}
+
+
 void ViewProviderMeasureBase::attach(App::DocumentObject *pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
     auto measureObj = static_cast<MeasureBase*>(pcObj);
     positionAnno(measureObj);
-
-    // Set the icon
-    pLabel->setIcon(Gui::BitmapFactory().pixmapFromSvg(sPixmap, QSize(20, 20)));
+    updateIcon();
 }
 
 
