@@ -6432,12 +6432,12 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="363"/>
       <source>Show/hide circular helper for arcs</source>
-      <translation>Afficher/masquer le cercle auxiliaire pour les arcs</translation>
+      <translation>Afficher/masquer le cercle guide pour les arcs</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="365"/>
       <source>Switches between showing and hiding the circular helper for all arcs</source>
-      <translation>Permet d'afficher ou de masquer l'aide circulaire pour tous les arcs</translation>
+      <translation>Afficher ou masquer le cercle guide pour tous les arcs</translation>
     </message>
   </context>
   <context>

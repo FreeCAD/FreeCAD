@@ -32,8 +32,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 if App.GuiUp:
     import FreeCADGui as Gui
 
-# translate = App.Qt.translate
-
 __title__ = "Assembly Joint object"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
@@ -1294,7 +1292,9 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
     def accept(self):
         if len(self.current_selection) != 2:
-            App.Console.PrintWarning("You need to select 2 elements from 2 separate parts.")
+            App.Console.PrintWarning(
+                translate("Assembly", "You need to select 2 elements from 2 separate parts.")
+            )
             return False
 
         self.deactivate()

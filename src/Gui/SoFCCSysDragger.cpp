@@ -51,6 +51,8 @@
 #include <Base/Quantity.h>
 
 #include "SoFCCSysDragger.h"
+#include "So3DAnnotation.h"
+
 #include "MainWindow.h"
 #include "SoFCDB.h"
 
@@ -1006,7 +1008,7 @@ SoFCCSysDragger::SoFCCSysDragger()
 {
     SO_KIT_CONSTRUCTOR(SoFCCSysDragger);
 
-    SO_KIT_ADD_CATALOG_ENTRY(annotation, SoAnnotation, TRUE, geomSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(annotation, So3DAnnotation, TRUE, geomSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(scaleNode, SoScale, TRUE, annotation, "", TRUE);
 
     // Translator

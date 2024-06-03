@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 // NOLINTNEXTLINE
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include "App/Metadata.h"
 

@@ -4117,12 +4117,12 @@ Il valore è il diametro della sfera da adattare allo schermo.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="799"/>
       <source>Enable spinning animations that are used in some navigation styles after dragging</source>
-      <translation type="unfinished">Enable spinning animations that are used in some navigation styles after dragging</translation>
+      <translation>Abilita le animazioni di rotazione usate in alcuni stili di navigazione dopo il trascinamento</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="802"/>
       <source>Enable spinning animations</source>
-      <translation type="unfinished">Enable spinning animations</translation>
+      <translation>Abilita animazioni di rotazione</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="742"/>
@@ -8962,7 +8962,7 @@ la copia corrente andranno perse.
     <message>
       <location filename="../ToolBarManager.cpp" line="951"/>
       <source>Undock from toolbar area</source>
-      <translation type="unfinished">Undock from toolbar area</translation>
+      <translation>Scollega dall'area della barra degli strumenti</translation>
     </message>
   </context>
   <context>
@@ -13368,7 +13368,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="856"/>
       <source>Toggle transparent mode</source>
-      <translation type="unfinished">Toggle transparent mode</translation>
+      <translation>Attiva/Disattiva modalità trasparente</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="857"/>
@@ -13568,7 +13568,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="108"/>
       <source>Save the measurement in the active document.</source>
-      <translation type="unfinished">Save the measurement in the active document.</translation>
+      <translation>Salva la misura nel documento attivo.</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="114"/>
@@ -13578,7 +13578,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="115"/>
       <source>Close the measurement task.</source>
-      <translation type="unfinished">Close the measurement task.</translation>
+      <translation>Chiude la funzione di misura.</translation>
     </message>
   </context>
   <context>

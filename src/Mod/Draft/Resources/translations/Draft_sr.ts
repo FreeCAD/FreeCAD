@@ -866,7 +866,7 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="176"/>
       <location filename="../ui/TaskSelectPlane.ui" line="186"/>
       <source>The distance between grid lines</source>
-      <translation type="unfinished">The distance between grid lines</translation>
+      <translation>Размак између линија координатне мреже</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="196"/>
@@ -877,7 +877,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="199"/>
       <source>Major lines every</source>
-      <translation type="unfinished">Major lines every</translation>
+      <translation>Главне линије на сваких</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="209"/>
@@ -1231,12 +1231,12 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="495"/>
       <source>Dim line overshoot</source>
-      <translation type="unfinished">Dim line overshoot</translation>
+      <translation>Продужетак котне линије</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="512"/>
       <source>Ext line length</source>
-      <translation type="unfinished">Ext line length</translation>
+      <translation>Дужина помоћне котне линије</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
@@ -1251,7 +1251,7 @@ for linear dimensions.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="532"/>
       <source>Ext line overshoot</source>
-      <translation type="unfinished">Ext line overshoot</translation>
+      <translation>Продужетак помоћне котне линије</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
@@ -1532,7 +1532,7 @@ accidentally and modifying the entered value.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="319"/>
       <source>Draft classic style</source>
-      <translation>Draft клаcични cтил</translation>
+      <translation>Цртање клаcични cтил</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="324"/>
@@ -2109,12 +2109,12 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="267"/>
       <source>Parametric Draft objects will be created whenever possible</source>
-      <translation>Параметарски Draft објекти ће бићи створени кад год је то могуће</translation>
+      <translation>Параметарски објекти окружења Цртање ће бити створени кад год је то могуће</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="270"/>
       <source>Draft objects</source>
-      <translation>Draft објекти</translation>
+      <translation>Објекти окружења Цртање</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="286"/>
@@ -2197,7 +2197,7 @@ Otherwise default colors will be applied.</source>
       <location filename="../ui/preferences-dxf.ui" line="427"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
-      <translation>Увезени текстови ће добити предефинисану Draft величину текста,
+      <translation>Увезени текстови ће добити предефинисану величину текста окружења Цртање,
 уместо величине коју имају у DXF документу</translation>
     </message>
     <message>
@@ -2208,7 +2208,7 @@ instead of the size they have in the DXF document</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation>Ако је ово означено, DXF слојеви ће бити импортовани као Draft слојеви</translation>
+      <translation>Ако је ово означено, DXF слојеви ће бити импортовани као слојеви окружења Цртање</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="474"/>
@@ -2317,7 +2317,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="133"/>
       <source>Major lines every</source>
-      <translation type="unfinished">Major lines every</translation>
+      <translation>Главне линије на сваких</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="146"/>
@@ -2391,7 +2391,7 @@ Use Draft ToggleGrid to change this for the active view.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="186"/>
       <source>The distance between grid lines</source>
-      <translation type="unfinished">The distance between grid lines</translation>
+      <translation>Размак између линија координатне мреже</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="303"/>
@@ -3024,7 +3024,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../../DraftGui.py" line="520"/>
       <source>Active Draft command</source>
-      <translation>Активна Draft команда</translation>
+      <translation>Активна команда окружења Цртање</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="521"/>
@@ -3127,7 +3127,7 @@ Uncheck to use working plane coordinate system</source>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
       <translation>Чекирај ако објекат треба да буде попуњен, иначе ће се појавити као жичани.
-Није доступно ако је омогућена Draft опција подешавања 'Користи Парт примитиве'</translation>
+Није доступно ако је омогућена опција подешавања 'Користи Парт примитиве'</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="556"/>
@@ -4089,7 +4089,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
       <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation>Скица је превише сложена за уређивање: предлаже се коришћење подразумеваног Sketcher уређивача скица</translation>
+      <translation>Скица је превише сложена за уређивање: предлаже се коришћење подразумеваног уређивача скица</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="77"/>
@@ -5253,24 +5253,24 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Погрешан унос: мора бити број између 0 и 100.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="453"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="495"/>
       <source>Activate this layer</source>
       <translation>Активирај овај слој</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="459"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="501"/>
       <source>Select layer contents</source>
       <translation>Изабери садржај слоја</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="497"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="511"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="539"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="553"/>
       <source>Merge layer duplicates</source>
       <translation>Обједини дупликате слоја</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="503"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="556"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="545"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="598"/>
       <source>Add new layer</source>
       <translation>Додај нови слој</translation>
     </message>
@@ -5512,11 +5512,6 @@ The final angle will be the base angle plus this amount.</source>
       <translation type="unfinished">Volume not available for (sub)object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="81"/>
-      <source>added missing view properties</source>
-      <translation>додате особине приказа које недостају</translation>
-    </message>
-    <message>
       <location filename="../../draftobjects/array.py" line="76"/>
       <source>added property 'Count'</source>
       <translation type="unfinished">added property 'Count'</translation>
@@ -5568,38 +5563,43 @@ of existing objects in all opened documents?</translation>
       <source>migrated 'PointList' property to 'PointObject'</source>
       <translation type="unfinished">migrated 'PointList' property to 'PointObject'</translation>
     </message>
+    <message>
+      <location filename="../../draftobjects/layer.py" line="93"/>
+      <source>updated view properties</source>
+      <translation type="unfinished">updated view properties</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <location filename="../../InitGui.py" line="103"/>
       <source>Draft creation tools</source>
-      <translation>Draft алатке за прављење</translation>
+      <translation>Алатке за прављење</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="106"/>
       <source>Draft annotation tools</source>
-      <translation>Draft алатке за напомене</translation>
+      <translation>Алатке за напомене</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="109"/>
       <source>Draft modification tools</source>
-      <translation>Draft алатке за измене</translation>
+      <translation>Алатке за измене</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="112"/>
       <source>Draft utility tools</source>
-      <translation>Draft помоћне алатке</translation>
+      <translation>Корисне алатке</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="115"/>
       <source>Draft snap</source>
-      <translation>Draft хватање</translation>
+      <translation>Хватање</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="120"/>
       <source>&amp;Drafting</source>
-      <translation>&amp;Drafting</translation>
+      <translation>&amp;Цртање</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="123"/>
@@ -5609,12 +5609,12 @@ of existing objects in all opened documents?</translation>
     <message>
       <location filename="../../InitGui.py" line="126"/>
       <source>&amp;Modification</source>
-      <translation>&amp;Modification</translation>
+      <translation>&amp;Измене</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="129"/>
       <source>&amp;Utilities</source>
-      <translation>&amp;Utilities</translation>
+      <translation>&amp;Корисни алати</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="50"/>
@@ -5989,7 +5989,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="63"/>
       <source>Label</source>
-      <translation>Име</translation>
+      <translation>Ознака</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="66"/>
@@ -6085,16 +6085,16 @@ The lines must share a common point at the start or at the end for the operation
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="57"/>
       <source>Draft to sketch</source>
-      <translation type="unfinished">Draft to sketch</translation>
+      <translation>Цртеж у скицу</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="60"/>
       <source>Convert bidirectionally between Draft objects and Sketches.
 Many Draft objects will be converted into a single non-constrained Sketch.
 However, a single sketch with disconnected traces will be converted into several individual Draft objects.</source>
-      <translation>Конвертуј двосмерно између Драфт објеката и скица.
-Многи Драфт објекти ће бити конвертовани у скицу на којој нема ограничења.
-Међутим, једна скица са неспојеним елементима биће конвертована у неколико појединачних Драфт објеката.</translation>
+      <translation>Претвори објекте окружења Цртање у објекте окружења Скице и обратно.
+Многи објекти окружења Цртање ће бити конвертовани у скицу на којој нема ограничења.
+Међутим, једна скица са неспојеним елементима биће конвертована у неколико појединачних објеката окружења Цртање.</translation>
     </message>
   </context>
   <context>
@@ -6375,7 +6375,7 @@ CTRL за хватање, SHIFT за ограничавање.</translation>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="62"/>
       <source>Toggles the Draft grid on and off.</source>
-      <translation>Укључује/Искључује Draft координатну мрежу.</translation>
+      <translation>Укључује/Искључује координатну мрежу.</translation>
     </message>
   </context>
   <context>
@@ -6396,7 +6396,7 @@ CTRL за хватање, SHIFT за ограничавање.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="258"/>
       <source>Edit</source>
-      <translation>Уреди</translation>
+      <translation>Измени</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="267"/>
@@ -6508,7 +6508,7 @@ Create a group first to use this tool.</source>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="212"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
-      <translation>Изабери групу у коју ћеш додати све Draft и Arch објекте.</translation>
+      <translation>Изабери групу у коју ћеш додати све објекте окружења Цртање и Атхитектура.</translation>
     </message>
   </context>
   <context>
@@ -6927,7 +6927,7 @@ CTRL за хватање, SHIFT за ограничавање, ALT за одаб
 Можеш да изабереш једну линију или један кружни лук пре покретања ове команде
 да би направио одговарајућу повезану коту.
 Такође, можеш да изабереш објекат настао алатком 'Измери растојање' пре покретања ове команде
-да би га претворио у Draft објекат 'Кота'.</translation>
+да би га претворио у објекат 'Кота' окружења Цртање.</translation>
     </message>
   </context>
   <context>
@@ -7057,7 +7057,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
 Ако је изабрана изломљена линија, команда ће применити трансформацију нагиба на сваки од њених сегмената.
 
 Нагиб ће увек променити вредност Z, тако да ова команда добро функционише само за
-праве Draft линије које су нацртане у равни XY. Изабрани објекти који нису линије биће занемарени.</translation>
+праве линије које су нацртане у равни XY. Изабрани објекти који нису линије биће занемарени.</translation>
     </message>
   </context>
   <context>
@@ -7142,7 +7142,7 @@ The closed shapes can be used for extrusions and boolean operations.</source>
       <source>Heal faulty Draft objects saved with an earlier version of the program.
 If an object is selected it will try to heal that object in particular,
 otherwise it will try to heal all objects in the active document.</source>
-      <translation>Излечи неисправне Draft објекте сачуване у ранијој верзији програма.
+      <translation>Излечи неисправне објекте окружења Цртање сачуване у ранијој верзији програма.
 Ако је објекат изабран, покушаће да излечи тај објекат посебно,
 у супротном ће покушати да излечи све објекте у активном документу.</translation>
     </message>
@@ -7316,7 +7316,7 @@ set True for fusion or False for compound</source>
       <translation>Површина овог објекта</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="55"/>
+      <location filename="../../draftobjects/layer.py" line="56"/>
       <source>The objects that are part of this layer</source>
       <translation>Објекти који су део овог слоја</translation>
     </message>
@@ -8214,8 +8214,8 @@ the 'First Angle' and 'Last Angle' properties.</source>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="78"/>
-      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
-      <translation>Ако је то тачно, објекти који се налазе у овом слоју ће прихватити боју геометријских објеката овог слоја</translation>
+      <source>If it is true, the objects contained within this layer will adopt the shape appearance of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape appearance of the layer</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="89"/>
@@ -8233,22 +8233,27 @@ the 'First Angle' and 'Last Angle' properties.</source>
       <translation>Боја геометријских објеката који се налазе у овом слоју</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="120"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="121"/>
+      <source>The shape appearance of the objects contained within this layer</source>
+      <translation type="unfinished">The shape appearance of the objects contained within this layer</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="133"/>
       <source>The line width of the objects contained within this layer</source>
       <translation>Ширина линија објеката који се налазе у овом слоју</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="130"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="143"/>
       <source>The draw style of the objects contained within this layer</source>
       <translation>Стил приказа објеката који се налазе у овом слоју</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="141"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="154"/>
       <source>The transparency of the objects contained within this layer</source>
       <translation>Провидност објеката који се налазе у овом слоју</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="152"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="165"/>
       <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
       <translation>Боја линија објеката који се налазе у овом слоју, када се користи на TechDraw цртежу</translation>
     </message>
@@ -8377,7 +8382,7 @@ beyond the dimension line</source>
       <location filename="../../InitGui.py" line="140"/>
       <location filename="../../InitGui.py" line="141"/>
       <source>Draft</source>
-      <translation>Закошење</translation>
+      <translation>Draft</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="201"/>

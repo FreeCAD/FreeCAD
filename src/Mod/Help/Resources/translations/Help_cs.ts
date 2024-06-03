@@ -99,6 +99,13 @@ modul pro Python by měl být nainstalován pro optimální výsledky.</translat
       <translation>Dokumentace se otevře ve výchozím webovém prohlížeči.</translation>
     </message>
     <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="211"/>
+      <source>The documentation will open in a dockable dialog inside the FreeCAD window,
+which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
+      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
+which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
+    </message>
+    <message>
       <location filename="../../dlgPreferencesHelp.ui" line="246"/>
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
@@ -116,14 +123,6 @@ Toto bude fungovat, pouze pokud jste vybrali Markdown verzi výše.</translation
       <location filename="../../dlgPreferencesHelp.ui" line="189"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</source>
       <translation>Dokumentace se otevře v nové kartě uvnitř rozhraní FreeCADu.
-To vyžaduje komponentu PySide QtWebengineWidgets.</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="211"/>
-      <source>The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open whlle working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation>Dokumentace se otevře v dokovatelném dialogovém okně FreeCADu,
-které vám umožní ponechat ji otevřenou při práci ve 3D pohledu.
 To vyžaduje komponentu PySide QtWebengineWidgets.</translation>
     </message>
     <message>
