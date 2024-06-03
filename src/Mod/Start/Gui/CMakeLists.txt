@@ -76,9 +76,9 @@ SET(StartGuiIcon_SVG
         )
 
 SET(StartGuiThumbnail_PNG
-        Resources/thumbnails/Classic418.png
-        Resources/thumbnails/Dark_theme418.png
-        Resources/thumbnails/Light_theme418.png
+        Resources/thumbnails/Theme_thumbnail_classic.png
+        Resources/thumbnails/Theme_thumbnail_dark.png
+        Resources/thumbnails/Theme_thumbnail_light.png
         )
 
 # TODO: Evaluate PCH use with Qt6/QtQuick/Qml

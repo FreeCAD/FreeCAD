@@ -61,9 +61,9 @@ void ThemeSelectorWidget::setupButtons(QBoxLayout* layout)
                                        {Theme::Light, tr("Light theme")}
                                        };
     std::map<Theme, QIcon> iconMap {
-        {Theme::Classic, QIcon(QLatin1String(":/thumbnails/Classic418.png"))},
-        {Theme::Light, QIcon(QLatin1String(":/thumbnails/Light_theme418.png"))},
-        {Theme::Dark, QIcon(QLatin1String(":/thumbnails/Dark_theme418.png"))}};
+        {Theme::Classic, QIcon(QLatin1String(":/thumbnails/Theme_thumbnail_classic.png"))},
+        {Theme::Light, QIcon(QLatin1String(":/thumbnails/Theme_thumbnail_light.png"))},
+        {Theme::Dark, QIcon(QLatin1String(":/thumbnails/Theme_thumbnail_dark.png"))}};
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/MainWindow");
     auto styleSheetName = QString::fromStdString(hGrp->GetASCII("StyleSheet"));

@@ -2,8 +2,8 @@
     <qresource prefix="/">
         <file>icons/StartCommandIcon.svg</file>
         <file>icons/PartDesignWorkbench.svg</file>
-        <file>thumbnails/Classic418.png</file>
-        <file>thumbnails/Light_theme418.png</file>
-        <file>thumbnails/Dark_theme418.png</file>
+        <file>thumbnails/Theme_thumbnail_classic.png</file>
+        <file>thumbnails/Theme_thumbnail_light.png</file>
+        <file>thumbnails/Theme_thumbnail_dark.png</file>
     </qresource>
 </RCC>
