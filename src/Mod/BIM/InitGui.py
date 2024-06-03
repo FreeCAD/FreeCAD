@@ -503,8 +503,8 @@ class BIMWorkbench(Workbench):
             FreeCADGui.Snapper.show()
         if hasattr(WorkingPlane, "_view_observer_start"):
             WorkingPlane._view_observer_start()
-        if hasattr(grid_observer, "_view_observer_start"):
-            grid_observer._view_observer_start()
+        if hasattr(grid_observer, "_view_observer_setup"):
+            grid_observer._view_observer_setup()
         if PARAMS.GetBool("FirstTime", True) and (not hasattr(FreeCAD, "TestEnvironment")):
             todo.delay(FreeCADGui.runCommand, "BIM_Welcome")
         todo.delay(BimStatusBar.setStatusIcons, True)
@@ -590,8 +590,8 @@ class BIMWorkbench(Workbench):
         if hasattr(WorkingPlane, "_view_observer_stop"):
             WorkingPlane._view_observer_stop()
 
-        if hasattr(grid_observer, "_view_observer_stop"):
-            grid_observer._view_observer_stop()
+        if hasattr(grid_observer, "_view_observer_setup"):
+            grid_observer._view_observer_setup()
 
         # print("Deactivating status icon")
         todo.delay(BimStatusBar.setStatusIcons, False)

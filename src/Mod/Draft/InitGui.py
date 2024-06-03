@@ -156,7 +156,7 @@ class DraftWorkbench(FreeCADGui.Workbench):
         import WorkingPlane
         WorkingPlane._view_observer_start()  # Updates the draftToolBar when switching views.
         from draftutils import grid_observer
-        grid_observer._view_observer_start()
+        grid_observer._view_observer_setup()
         FreeCAD.Console.PrintLog("Draft workbench activated.\n")
 
     def Deactivated(self):
@@ -170,7 +170,7 @@ class DraftWorkbench(FreeCADGui.Workbench):
         import WorkingPlane
         WorkingPlane._view_observer_stop()
         from draftutils import grid_observer
-        grid_observer._view_observer_stop()
+        grid_observer._view_observer_setup()
         FreeCAD.Console.PrintLog("Draft workbench deactivated.\n")
 
     def ContextMenu(self, recipient):

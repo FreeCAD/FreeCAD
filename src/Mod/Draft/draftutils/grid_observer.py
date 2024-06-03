@@ -21,12 +21,11 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the grid observer and background color change for the Draft Workbench.
+"""Provide the grid observer for the Draft and BIM workbenches.
 """
 
 import FreeCAD
 from draftutils import gui_utils
-from draftutils import utils
 
 
 # View observer code to update the Draft_ToggleGrid command button to reflect
@@ -38,8 +37,8 @@ if FreeCAD.GuiUp:
     from draftutils.todo import ToDo
 
     def _update_grid_gui():
-        """Callback function to update the Toggle Grid button on all
-        toolbars and menus
+        """Update function executed by the callback to refresh the Toggle Grid
+        button state on all toolbars and menus
         """
         try:
             # Get the active view
@@ -51,10 +50,10 @@ if FreeCAD.GuiUp:
                 return
             else:
                 # Otherwise, if there is a view, update the button's status
-                # Update only if the Draft workbench has loaded
+                # Update only if the Draft or BIM workbenches are active
                 if hasattr(FreeCADGui, "draftToolBar"):
 
-                    # Retrieve the associated grid for each MDI document
+                    # Retrieve the associated grid for each MDI document.
                     # [1] is the index where the grid is stored in the
                     # trackers list. See setTrackers().
                     view_idx = FreeCADGui.Snapper.trackers[0].index(view)
@@ -67,14 +66,14 @@ if FreeCAD.GuiUp:
         except Exception:
             pass
 
-    def _view_observer_callback(sub_win):
-        # FIXME: the original Draft Tray observer had this commented out code
-        # Check if it's necessary
-        #if sub_win is None:
-        #    return
-        #view = gui_utils.get_3d_view()
-        #if view is None:
-        #    return
+    def _view_observer_callback():
+        """
+        Callback function to update the Toggle Grid button.
+
+        The update will only happen if either the Draft or BIM
+        workbenches are active, and the tray is visible
+        """
+
         if not hasattr(FreeCADGui, "draftToolBar"):
             return
 
@@ -89,13 +88,18 @@ if FreeCAD.GuiUp:
 
     _view_observer_active = False
 
-    def _view_observer_start():
-        """Start the grid observer. This is intended to happen when the draft
-        workbench is activated. This function connects the
-        _view_observer_callback to Qt's subWindowActivated signal. The MDI
-        area emits the subWindowActivated() signal when the active window
-        changes.
+    def _view_observer_setup():
+        """Start or stop the grid observer.
+
+        Start: it is intended to happen when either the Draft or BIM workbench
+        are activated. The _view_observer_callback is connected to Qt's
+        subWindowActivated signal. The MDI area emits the subWindowActivated()
+        signal when the active window changes.
+
+        Stop: This happens when either the Draft or BIM workbenches are
+        deactivated and is the reverse of the start operation.
         """
+
         mw = FreeCADGui.getMainWindow()
         mdi = mw.findChild(QtWidgets.QMdiArea)
         global _view_observer_active
@@ -104,13 +108,8 @@ if FreeCAD.GuiUp:
             mdi.subWindowActivated.connect(_view_observer_callback)
             _view_observer_active = True
             # Trigger initial grid button update
-            _view_observer_callback(mdi.activeSubWindow())
-
-    def _view_observer_stop():
-        mw = FreeCADGui.getMainWindow()
-        mdi = mw.findChild(QtWidgets.QMdiArea)
-        global _view_observer_active
-        if _view_observer_active:
+            _view_observer_callback()
+        else:
             mdi.subWindowActivated.disconnect(_view_observer_callback)
             _view_observer_active = False
 
