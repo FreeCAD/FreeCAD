@@ -34,7 +34,7 @@
 #include <Gui/DockWindowManager.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
+#include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/WaitCursor.h>
 
 #include <Mod/Material/App/ModelUuids.h>
@@ -278,7 +278,7 @@ void DlgDisplayPropertiesImp::setupConnections()
     connect(d->ui.buttonCustomAppearance,
             &Gui::ColorButton::clicked,
             this,
-            &DlgDisplayPropertiesImp::onbuttonCustomAppearanceClicked);
+            &DlgDisplayPropertiesImp::onButtonCustomAppearanceClicked);
     connect(d->ui.buttonColorPlot,
             &Gui::ColorButton::clicked,
             this,
@@ -412,14 +412,24 @@ void DlgDisplayPropertiesImp::reject()
 /**
  * Opens a dialog that allows to modify the 'ShapeMaterial' property of all selected view providers.
  */
-void DlgDisplayPropertiesImp::onbuttonCustomAppearanceClicked()
+void DlgDisplayPropertiesImp::onButtonCustomAppearanceClicked()
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    Gui::Dialog::DlgMaterialPropertiesImp dlg("ShapeAppearance", this);
-    dlg.setViewProviders(Provider);
+    Gui::Dialog::DlgMaterialPropertiesImp dlg(this);
+    if (!Provider.empty()) {
+        if (auto vp = dynamic_cast<Gui::ViewProviderGeometryObject*>(Provider.front())) {
+            App::Material mat = vp->ShapeAppearance[0];
+            dlg.setCustomMaterial(mat);
+            dlg.setDefaultMaterial(mat);
+        }
+    }
     dlg.exec();
-
-    // d->ui.buttonColor->setColor(dlg.diffuseColor());
+    App::Material mat = dlg.getCustomMaterial();
+    for (auto vp : Provider) {
+        if (auto vpg = dynamic_cast<Gui::ViewProviderGeometryObject*>(vp)) {
+            vpg->ShapeAppearance.setValue(mat);
+        }
+    }
 }
 
 /**
@@ -430,11 +440,18 @@ void DlgDisplayPropertiesImp::onButtonColorPlotClicked()
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     static QPointer<Gui::Dialog::DlgMaterialPropertiesImp> dlg = nullptr;
     if (!dlg) {
-        dlg = new Gui::Dialog::DlgMaterialPropertiesImp("TextureMaterial", this);
+        dlg = new Gui::Dialog::DlgMaterialPropertiesImp(this);
     }
     dlg->setModal(false);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->setViewProviders(Provider);
+    if (!Provider.empty()) {
+        App::Property* prop = Provider.front()->getPropertyByName("TextureMaterial");
+        if (auto matProp = dynamic_cast<App::PropertyMaterialList*>(prop)) {
+            App::Material mat = (*matProp)[0];
+            dlg->setCustomMaterial(mat);
+            dlg->setDefaultMaterial(mat);
+        }
+    }
     dlg->show();
 }
 

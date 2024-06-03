@@ -27,7 +27,7 @@
 #include <QDialog>
 #include <memory>
 #include <vector>
-#include <FCGlobal.h>
+#include <App/Material.h>
 
 namespace App
 {
@@ -48,17 +48,16 @@ class GuiExport DlgMaterialPropertiesImp: public QDialog
     Q_OBJECT
 
 public:
-    explicit DlgMaterialPropertiesImp(const std::string& mat,
-                                      QWidget* parent = nullptr,
+    explicit DlgMaterialPropertiesImp(QWidget* parent = nullptr,
                                       Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgMaterialPropertiesImp() override;
-    void setViewProviders(const std::vector<Gui::ViewProvider*>&);
-    QColor diffuseColor() const;
+    App::Material getCustomMaterial() const;
+    void setCustomMaterial(const App::Material& mat);
+    App::Material getDefaultMaterial() const;
+    void setDefaultMaterial(const App::Material& mat);
 
-protected:
+private:
     void setupConnections();
-    App::Material getMaterial();
-    App::Color getColor(const QColor& color) const;
     void onAmbientColorChanged();
     void onDiffuseColorChanged();
     void onEmissiveColorChanged();
@@ -66,25 +65,12 @@ protected:
     void onShininessValueChanged(int);
     void onButtonReset();
     void onButtonDefault();
-    void setButtonColors();
+    void setButtonColors(const App::Material& mat);
 
-protected:
+private:
     std::unique_ptr<Ui_DlgMaterialProperties> ui;
-    std::string material;
-    std::vector<Gui::ViewProvider*> Objects;
-    bool updateColors;
-};
-
-class GuiExport DlgFaceMaterialPropertiesImp: public DlgMaterialPropertiesImp
-{
-    Q_OBJECT
-
-public:
-    explicit DlgFaceMaterialPropertiesImp(const std::string& mat,
-                                          QWidget* parent = nullptr,
-                                          Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgFaceMaterialPropertiesImp() override;
-    App::Material getCustomAppearance() const;
+    App::Material customMaterial;
+    App::Material defaultMaterial;
 };
 
 }  // namespace Dialog

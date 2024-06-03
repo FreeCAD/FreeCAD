@@ -65,6 +65,7 @@ protected:
     void slotDeleteDocument(const Gui::Document&);
     void slotDeleteObject(const Gui::ViewProvider&);
     void updatePanel();
+    int getFirstIndex() const;
 
 private:
     class Private;

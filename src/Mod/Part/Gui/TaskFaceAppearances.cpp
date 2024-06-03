@@ -418,21 +418,30 @@ void FaceAppearances::updatePanel()
     d->ui->buttonCustomAppearance->setDisabled(d->index.isEmpty());
 }
 
+int FaceAppearances::getFirstIndex() const
+{
+    if (!d->index.isEmpty()) {
+        return *(d->index.begin());
+    }
+
+    return 0;
+}
+
 /**
  * Opens a dialog that allows to modify the 'ShapeMaterial' property of all selected view providers.
  */
 void FaceAppearances::onButtonCustomAppearanceClicked()
 {
-    std::vector<Gui::ViewProvider*> Provider;
-    Provider.push_back(d->vp);
-    Gui::Dialog::DlgFaceMaterialPropertiesImp dlg("ShapeAppearance", this);
-    dlg.setViewProviders(Provider);
+    Gui::Dialog::DlgMaterialPropertiesImp dlg(this);
+    App::Material mat = d->perface[getFirstIndex()];
+    dlg.setCustomMaterial(mat);
+    dlg.setDefaultMaterial(mat);
     dlg.exec();
 
     // Set the face appearance
     if (!d->index.isEmpty()) {
         for (int it : d->index) {
-            d->perface[it] = dlg.getCustomAppearance();
+            d->perface[it] = dlg.getCustomMaterial();
         }
         d->vp->ShapeAppearance.setValues(d->perface);
         // new color has been applied, unselect so that users can see this
