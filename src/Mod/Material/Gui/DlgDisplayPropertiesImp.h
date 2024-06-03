@@ -75,7 +75,7 @@ private Q_SLOTS:
     void onButtonPointColorChanged();
     void onSpinLineWidthValueChanged(int);
     void onSpinLineTransparencyValueChanged(int);
-    void onbuttonCustomAppearanceClicked();
+    void onButtonCustomAppearanceClicked();
     void onButtonColorPlotClicked();
     void onMaterialSelected(const std::shared_ptr<Materials::Material>& material);
 
