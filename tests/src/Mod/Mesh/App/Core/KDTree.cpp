@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <Mod/Mesh/App/Core/KDTree.h>
 
 // NOLINTBEGIN(cppcoreguidelines-*,readability-*)

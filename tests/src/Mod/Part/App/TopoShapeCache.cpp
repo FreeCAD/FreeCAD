@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapeCache.h>
 
