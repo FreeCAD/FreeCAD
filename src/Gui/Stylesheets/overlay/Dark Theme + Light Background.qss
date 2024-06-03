@@ -161,20 +161,20 @@ Gui--OverlayTabWidget {
   }
   Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:closed:has-children:has-siblings  {
     border-image: none;
-    image: url(qss:images_classic/Arrow-right-black) 0;
+    image: url(qss:images_classic/Arrow-right-black.png) 0;
   }
 
   Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:has-children:!has-siblings:closed  {
     border-image: none;
-    image: url(qss:images_classic/Arrow-right-black) 0;
+    image: url(qss:images_classic/Arrow-right-black.png) 0;
   }
 
   Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:open:has-children:has-siblings  {
     border-image: none;
-    image: url(qss:images_classic/Arrow-down-black) 0;
+    image: url(qss:images_classic/Arrow-down-black.png) 0;
   }
 
   Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:open:has-children:!has-siblings  {
     border-image: none;
-    image: url(qss:images_classic/Arrow-down-black) 0;
+    image: url(qss:images_classic/Arrow-down-black.png) 0;
   }
