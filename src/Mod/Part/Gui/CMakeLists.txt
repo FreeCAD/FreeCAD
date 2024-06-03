@@ -31,7 +31,7 @@ list(APPEND PartGui_LIBS
     ${QtConcurrent_LIBRARIES}
 )
 
-generate_from_xml(ViewProviderExtPy)
+generate_from_xml(ViewProviderPartExtPy)
 
 set (Part_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Part_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
@@ -72,8 +72,8 @@ set(PartGui_UIC_SRCS
 )
 
 SET(Python_SRCS
-    ViewProviderExtPy.xml
-    ViewProviderExtPyImp.cpp
+    ViewProviderPartExtPy.xml
+    ViewProviderPartExtPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
