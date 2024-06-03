@@ -206,7 +206,7 @@ std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape& shape)
         const auto& ref = v.first.size() ? v.first : v.second;
         subshape = shape.getSubShape(ref.c_str(), true);
         if (subshape.IsNull()) {
-            FC_THROWM(Base::CADKernelError, "Invalid edge link: " << v.second);
+            FC_THROWM(Base::CADKernelError, "Invalid edge link: " << ref);
         }
 
         if (subshape.ShapeType() == TopAbs_EDGE) {
