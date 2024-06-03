@@ -66,7 +66,7 @@ ViewProviderBody::ViewProviderBody()
     ADD_PROPERTY(DisplayModeBody,((long)0));
     DisplayModeBody.setEnums(BodyModeEnum);
 
-    sPixmap = "PartDesign_Body_Tree.svg";
+    sPixmap = "PartDesign_Body.svg";
 
     Gui::ViewProviderOriginGroupExtension::initExtension(this);
 }
@@ -255,11 +255,11 @@ void ViewProviderBody::updateData(const App::Property* prop)
 }
 
 void ViewProviderBody::copyColorsfromTip(App::DocumentObject* tip) {
-    // update DiffuseColor
+    // update ShapeAppearance
     Gui::ViewProvider* vptip = Gui::Application::Instance->getViewProvider(tip);
     if (vptip && vptip->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
-        auto colors = static_cast<PartGui::ViewProviderPartExt*>(vptip)->DiffuseColor.getValues();
-        this->DiffuseColor.setValues(colors);
+        auto materials = static_cast<PartGui::ViewProviderPartExt*>(vptip)->ShapeAppearance.getValues();
+        this->ShapeAppearance.setValues(materials);
     }
 }
 
@@ -426,7 +426,6 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
     if (prop == &Visibility ||
         prop == &Selectable ||
         prop == &DisplayModeBody ||
-        prop == &DiffuseColor ||
         prop == &PointColorArray ||
         prop == &LineColorArray) {
         return;

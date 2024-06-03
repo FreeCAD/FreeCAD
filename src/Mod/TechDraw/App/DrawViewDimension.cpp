@@ -231,7 +231,7 @@ DrawViewDimension::DrawViewDimension()
     resetAngular();
     resetArc();
     m_hasGeometry = false;
-    m_matcher = new GeometryMatcher(this);
+    m_matcher = new GeometryMatcher();
     m_referencesCorrect = true;
     m_corrector = new DimensionAutoCorrect(this);
 }
@@ -453,9 +453,10 @@ short DrawViewDimension::mustExecute() const
 
 App::DocumentObjectExecReturn* DrawViewDimension::execute()
 {
-    // Base::Console().Message("DVD::execute() - %s\n", getNameInDocument());
     if (!okToProceed()) {
-        return  new App::DocumentObjectExecReturn("Dimension could not execute");
+        // if we set an error here, it will be triggering many times during
+        // document load.
+        return  DrawView::execute();
     }
 
     m_referencesCorrect = true;
@@ -463,6 +464,7 @@ App::DocumentObjectExecReturn* DrawViewDimension::execute()
         m_referencesCorrect = autocorrectReferences();
     }
     if (!m_referencesCorrect) {
+        m_referencesCorrect = true;
         new App::DocumentObjectExecReturn("Autocorrect failed to fix broken references", this);
     }
 
@@ -529,7 +531,8 @@ bool DrawViewDimension::okToProceed()
     }
     DrawViewPart* dvp = getViewPart();
     if (!dvp) {
-        // TODO: translate these messages
+        // TODO: translate these messages and figure out how to present them to
+        // the user since we can't pop up a message box here.
         // this case is probably temporary during restore
         // Base::Console().Message("DVD::okToProceed - no view for dimension\n");
         return false;
@@ -537,20 +540,20 @@ bool DrawViewDimension::okToProceed()
 
     if (!(has2DReferences() || has3DReferences())) {
         // no references, can't do anything
-        Base::Console().Warning("DVD::okToProceed - Dimension object has no valid references\n");
+        // Base::Console().Message("DVD::okToProceed - Dimension object has no valid references\n");
         return false;
     }
 
     if (!getViewPart()->hasGeometry()) {
         // can't do anything until Source has geometry
-        Base::Console().Warning("DVD::okToProceed - Dimension object has no geometry\n");
+        // Base::Console().Message("DVD::okToProceed - Dimension object has no geometry\n");
         return false;
     }
 
     // is this check still relevant or is it replaced by the autocorrect and
     // validate methods?
     if (References3D.getValues().empty() && !checkReferences2D()) {
-        Base::Console().Warning("%s has invalid 2D References\n", getNameInDocument());
+        // Base::Console().Warning("%s has invalid 2D References\n", getNameInDocument());
         return false;
     }
     return validateReferenceForm();
@@ -560,7 +563,9 @@ bool DrawViewDimension::okToProceed()
 //! everything matches, we don't need to correct anything.
 bool DrawViewDimension::autocorrectReferences()
 {
-    // Base::Console().Message("DVD::autocorrectReferences()\n");
+    // TODO: check for saved geometry here.  If we don't have saved geometry, we can't
+    // successfully auto correct in phase 1.  This check is currently in
+    // referencesHaveValidGeometry.
     std::vector<bool> referenceState;
     bool refsAreValid = m_corrector->referencesHaveValidGeometry(referenceState);
     if (!refsAreValid) {
@@ -569,8 +574,6 @@ bool DrawViewDimension::autocorrectReferences()
         refsAreValid = m_corrector->autocorrectReferences(referenceState, repairedRefs);
         if (!refsAreValid) {
             // references are broken and we can not fix them
-            Base::Console().Warning("Autocorrect failed to fix references for %s\n",
-                                    getNameInDocument());
             return false;
 
         }

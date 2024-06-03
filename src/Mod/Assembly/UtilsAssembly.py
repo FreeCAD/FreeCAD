@@ -850,6 +850,12 @@ def arePlacementSameDir(plc1, plc2):
     return zAxis1.dot(zAxis2) > 0
 
 
+def arePlacementZParallel(plc1, plc2):
+    zAxis1 = plc1.Rotation.multVec(App.Vector(0, 0, 1))
+    zAxis2 = plc2.Rotation.multVec(App.Vector(0, 0, 1))
+    return zAxis1.cross(zAxis2).Length < 1e-06
+
+
 """
 So here we want to find a placement that corresponds to a local coordinate system that would be placed at the selected vertex.
 - obj is usually a App::Link to a PartDesign::Body, or primitive, fasteners. But can also be directly the object.1
@@ -921,13 +927,15 @@ def findPlacement(obj, part, elt, vtx, ignoreVertex=False):
 
         # First we find the translation
         if vtx_type == "Face" or ignoreVertex:
-            if surface.TypeId == "Part::GeomCylinder" or surface.TypeId == "Part::GeomCone":
+            if surface.TypeId == "Part::GeomCylinder":
                 centerOfG = face.CenterOfGravity - surface.Center
                 centerPoint = surface.Center + centerOfG
                 centerPoint = centerPoint + App.Vector().projectToLine(centerOfG, surface.Axis)
                 plc.Base = centerPoint
             elif surface.TypeId == "Part::GeomTorus" or surface.TypeId == "Part::GeomSphere":
                 plc.Base = surface.Center
+            elif surface.TypeId == "Part::GeomCone":
+                plc.Base = surface.Apex
             else:
                 plc.Base = face.CenterOfGravity
         elif vtx_type == "Edge":

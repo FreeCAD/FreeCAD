@@ -167,7 +167,7 @@ void DlgPrefsTechDrawDimensionsImp::loadSettings()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/TechDraw/dimensioning");
     bool singleTool = hGrp->GetBool("SingleDimensioningTool", true);
-    bool SeparatedTools = hGrp->GetBool("SeparatedDimensioningTools", true);
+    bool SeparatedTools = hGrp->GetBool("SeparatedDimensioningTools", false);
     int index = SeparatedTools ? (singleTool ? 2 : 1) : 0;
     ui->dimensioningMode->setCurrentIndex(index);
     setProperty("dimensioningMode", index);
@@ -201,9 +201,7 @@ void DlgPrefsTechDrawDimensionsImp::dimensioningModeChanged(int index)
 void DlgPrefsTechDrawDimensionsImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        saveSettings();
         ui->retranslateUi(this);
-        loadSettings();
     }
     else {
         QWidget::changeEvent(e);

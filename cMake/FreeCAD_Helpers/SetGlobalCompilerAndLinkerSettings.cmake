@@ -90,4 +90,8 @@ macro(SetGlobalCompilerAndLinkerSettings)
             link_libraries(-lgdi32)
         endif()
     endif(MINGW)
+
+    # Enable the Topological Naming Problem mitigation code
+    add_compile_options(-DFC_USE_TNP_FIX)
+
 endmacro(SetGlobalCompilerAndLinkerSettings)

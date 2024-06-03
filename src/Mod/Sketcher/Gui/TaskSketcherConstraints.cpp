@@ -813,7 +813,7 @@ FilterValueBitset ConstraintFilterList::getMultiFilter()
 // ----------------------------------------------------------------------------
 
 TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Constraints"), true, nullptr)
+    : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_CreateLineAngleLength"), tr("Constraints"), true, nullptr)
     , sketchView(sketchView)
     , inEditMode(false)
     , ui(new Ui_TaskSketcherConstraints)

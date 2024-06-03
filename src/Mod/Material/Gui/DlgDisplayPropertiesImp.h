@@ -75,7 +75,7 @@ private Q_SLOTS:
     void onButtonPointColorChanged();
     void onSpinLineWidthValueChanged(int);
     void onSpinLineTransparencyValueChanged(int);
-    void onButtonUserDefinedMaterialClicked();
+    void onbuttonCustomAppearanceClicked();
     void onButtonColorPlotClicked();
     void onMaterialSelected(const std::shared_ptr<Materials::Material>& material);
 
@@ -87,7 +87,6 @@ private:
     void setupFilters();
     void slotChangedObject(const Gui::ViewProvider&, const App::Property& Prop);
     void setDisplayModes(const std::vector<Gui::ViewProvider*>&);
-    void setMaterial(const std::vector<Gui::ViewProvider*>&);
     void setColorPlot(const std::vector<Gui::ViewProvider*>&);
     void setShapeAppearance(const std::vector<Gui::ViewProvider*>&);
     void setLineColor(const std::vector<Gui::ViewProvider*>&);

@@ -388,6 +388,58 @@ bool CmdFemConstraintFixed::isActive()
 
 
 //================================================================================================
+DEF_STD_CMD_A(CmdFemConstraintRigidBody)
+
+CmdFemConstraintRigidBody::CmdFemConstraintRigidBody()
+    : Command("FEM_ConstraintRigidBody")
+{
+    sAppModule = "Fem";
+    sGroup = QT_TR_NOOP("Fem");
+    sMenuText = QT_TR_NOOP("Rigid body constraint");
+    sToolTipText = QT_TR_NOOP("Creates a rigid body constraint for a geometric entity");
+    sWhatsThis = "FEM_ConstraintRigidBody";
+    sStatusTip = sToolTipText;
+    sPixmap = "FEM_ConstraintRigidBody";
+}
+
+void CmdFemConstraintRigidBody::activated(int)
+{
+    Fem::FemAnalysis* Analysis;
+
+    if (getConstraintPrerequisits(&Analysis)) {
+        return;
+    }
+
+    std::string FeatName = getUniqueObjectName("ConstraintRigidBody");
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make rigid body constraint"));
+    doCommand(Doc,
+              "App.activeDocument().addObject(\"Fem::ConstraintRigidBody\",\"%s\")",
+              FeatName.c_str());
+    doCommand(Doc,
+              "App.activeDocument().%s.Scale = 1",
+              FeatName.c_str());  // OvG: set initial scale to 1
+    doCommand(Doc,
+              "App.activeDocument().%s.addObject(App.activeDocument().%s)",
+              Analysis->getNameInDocument(),
+              FeatName.c_str());
+
+    doCommand(Doc,
+              "%s",
+              gethideMeshShowPartStr(FeatName).c_str());  // OvG: Hide meshes and show parts
+
+    updateActive();
+
+    doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
+}
+
+bool CmdFemConstraintRigidBody::isActive()
+{
+    return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
+}
+
+
+//================================================================================================
 DEF_STD_CMD_A(CmdFemConstraintFluidBoundary)
 
 CmdFemConstraintFluidBoundary::CmdFemConstraintFluidBoundary()
@@ -1616,14 +1668,8 @@ void setupFilter(Gui::Command* cmd, std::string Name)
 
     auto selObject = Gui::Selection().getSelection()[0].pObject;
 
-    // issue error if no post object
-    if (!((selObject->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline"))
-          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostClipFilter"))
-          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostContoursFilter"))
-          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostCutFilter"))
-          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostDataAlongLineFilter"))
-          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostScalarClipFilter"))
-          || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostWarpVectorFilter")))) {
+    // issue error if no filter object
+    if (!(selObject->isDerivedFrom<Fem::FemPostObject>())) {
         QMessageBox::warning(
             Gui::getMainWindow(),
             qApp->translate("setupFilter", "Error: no post processing object selected."),
@@ -1637,7 +1683,7 @@ void setupFilter(Gui::Command* cmd, std::string Name)
     // (which can be a pipeline itself)
     bool selectionIsPipeline = false;
     Fem::FemPostPipeline* pipeline = nullptr;
-    if (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline")) {
+    if (selObject->isDerivedFrom<Fem::FemPostPipeline>()) {
         pipeline = static_cast<Fem::FemPostPipeline*>(selObject);
         selectionIsPipeline = true;
     }
@@ -1645,7 +1691,7 @@ void setupFilter(Gui::Command* cmd, std::string Name)
         auto parents = selObject->getInList();
         if (!parents.empty()) {
             for (auto parentObject : parents) {
-                if (parentObject->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline")) {
+                if (parentObject->isDerivedFrom<Fem::FemPostPipeline>()) {
                     pipeline = static_cast<Fem::FemPostPipeline*>(parentObject);
                 }
             }
@@ -1704,9 +1750,12 @@ void setupFilter(Gui::Command* cmd, std::string Name)
                    selObjectView->VectorMode.getValueAsString());
 
     // hide selected filter
-    cmd->doCommand(Gui::Command::Doc,
-                   "App.activeDocument().%s.ViewObject.Visibility = False",
-                   selObject->getNameInDocument());
+    if (!femFilter->isDerivedFrom<Fem::FemPostDataAlongLineFilter>()
+        && !femFilter->isDerivedFrom<Fem::FemPostDataAtPointFilter>()) {
+        cmd->doCommand(Gui::Command::Doc,
+                       "App.activeDocument().%s.ViewObject.Visibility = False",
+                       selObject->getNameInDocument());
+    }
 
     cmd->updateActive();
     // open the dialog to edit the filter
@@ -2625,6 +2674,7 @@ void CreateFemCommands()
     rcCmdMgr.addCommand(new CmdFemConstraintContact());
     rcCmdMgr.addCommand(new CmdFemConstraintDisplacement());
     rcCmdMgr.addCommand(new CmdFemConstraintFixed());
+    rcCmdMgr.addCommand(new CmdFemConstraintRigidBody());
     rcCmdMgr.addCommand(new CmdFemConstraintFluidBoundary());
     rcCmdMgr.addCommand(new CmdFemConstraintForce());
     rcCmdMgr.addCommand(new CmdFemConstraintGear());

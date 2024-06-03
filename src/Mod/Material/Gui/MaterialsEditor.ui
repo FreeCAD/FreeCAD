@@ -209,7 +209,7 @@
       </widget>
       <widget class="QWidget" name="tabProperties">
        <attribute name="title">
-        <string>Properties</string>
+        <string>Physical</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_43">
         <item>

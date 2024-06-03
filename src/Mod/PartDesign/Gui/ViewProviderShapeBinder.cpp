@@ -161,9 +161,9 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
             lcolors.resize(eMap.Extent(), svp->LineColor.getValue());
 
             TopExp::MapShapes(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_FACE, eMap);
-            originalFaceColors = svp->DiffuseColor.getValues();
-            std::vector<App::Color> fcolors = originalFaceColors;
-            fcolors.resize(eMap.Extent(), svp->ShapeAppearance.getDiffuseColor());
+            originalFaceAppearance = svp->ShapeAppearance.getValues();
+            std::vector<App::Material> fcolors = originalFaceAppearance;
+            fcolors.resize(eMap.Extent(), svp->ShapeAppearance[0]);
 
             for (const std::string& e : subs) {
                 // Note: stoi may throw, but it strictly shouldn't happen
@@ -177,11 +177,11 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
                     int idx = std::stoi(e.substr(4)) - 1;
                     assert(idx >= 0);
                     if (idx < static_cast<int>(fcolors.size()))
-                        fcolors[idx] = App::Color(1.0, 0.0, 1.0); // magenta
+                        fcolors[idx].diffuseColor = App::Color(1.0, 0.0, 1.0); // magenta
                 }
             }
             svp->LineColorArray.setValues(lcolors);
-            svp->DiffuseColor.setValues(fcolors);
+            svp->ShapeAppearance.setValues(fcolors);
         }
     }
     else {
@@ -189,8 +189,8 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
             svp->LineColorArray.setValues(originalLineColors);
             originalLineColors.clear();
 
-            svp->DiffuseColor.setValues(originalFaceColors);
-            originalFaceColors.clear();
+            svp->ShapeAppearance.setValues(originalFaceAppearance);
+            originalFaceAppearance.clear();
         }
     }
 }

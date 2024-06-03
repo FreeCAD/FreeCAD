@@ -141,6 +141,15 @@ public:
      * appearance from an App::Material object.
      */
     virtual void setMaterialAppearance(const App::Material& material);
+
+    /**
+     * @brief Virtual function to get the camera alignment direction
+     *
+     * Finds a direction to align the camera with.
+     *
+     * @return bool whether or not a direction is found.
+     */
+    virtual bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname = nullptr) const;
 #ifdef FC_USE_TNP_FIX
     /** Search sub element using internal cached geometry
      *
@@ -168,10 +177,8 @@ public:
     virtual DocumentObject *getElementOwner(const Data::MappedName & /*name*/) const
     {return nullptr;}
 
-    virtual const std::vector<const char *>& getElementTypes(bool all=true) const;
+    virtual std::vector<const char *> getElementTypes(bool all=true) const;
 
-    /// Return the higher level element names of the given element
-    virtual std::vector<Data::IndexedName> getHigherElements(const char *name, bool silent=false) const;
 
 protected:
     void onChanged(const Property* prop) override;

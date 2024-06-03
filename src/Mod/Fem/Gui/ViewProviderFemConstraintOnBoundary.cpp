@@ -94,7 +94,7 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
             else if (subSet.second[0].find("Face") != std::string::npos) {
                 // make sure original colors are remembered
                 if (originalFaceColors[base].empty()) {
-                    originalFaceColors[base] = vp->DiffuseColor.getValues();
+                    originalFaceColors[base] = vp->ShapeAppearance.getDiffuseColors();
                 }
                 std::vector<App::Color> colors = originalFaceColors[base];
 
@@ -104,7 +104,7 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                     base->Shape.getValue(),
                     colors.empty() ? ShapeAppearance.getDiffuseColor() : colors[0]);
                 highlighter.getFaceColors(subSet.second, colors);
-                vp->DiffuseColor.setValues(colors);
+                vp->ShapeAppearance.setDiffuseColors(colors);
             }
         }
         else {
@@ -117,7 +117,7 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 originalLineColors[base].clear();
             }
             else if (!originalFaceColors[base].empty()) {
-                vp->DiffuseColor.setValues(originalFaceColors[base]);
+                vp->ShapeAppearance.setDiffuseColors(originalFaceColors[base]);
                 originalFaceColors[base].clear();
             }
         }
@@ -164,7 +164,7 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
                 continue;
             }
 
-            vp->DiffuseColor.setValues(ogPair.second);
+            vp->ShapeAppearance.setDiffuseColors(ogPair.second);
             ogPair.second.clear();
         }
     }

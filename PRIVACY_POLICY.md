@@ -19,6 +19,8 @@ The FreeCAD eco system includes user developed workbenches.  These workbenches c
 
 FreeCAD is meant to manipulate CAD files which may contain metadata. It is your responsibility to verify the metadata contained in your files before you share them with others.   These files may contain local directory paths which could reveal user names if the user name forms part of the path - as in “C:\MrsCAD\Documents\myFreeCADFile.FCstd”.
 
+FreeCAD can also be used to create and run macros. These are Python scripts that can perform any action that the user can perform on a system. When running a macro from an outside source, it is your responsibility to ensure you trust the author.
+
 While running and for subsequent runs, FreeCAD uses local persistent storage for logs, configuration files, cache, thumbnails, recently accessed files and other information which may contain private data. This stays on local storage.
 
 When reading the online version of the User Manual within FreeCAD, manual contents is requested through HTTPS connections.

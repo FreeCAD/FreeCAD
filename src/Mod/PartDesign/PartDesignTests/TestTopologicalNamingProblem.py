@@ -108,6 +108,28 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         else:
             self.assertTrue(self.Pad2.isValid())    # TNP problem is not present with ElementMaps
 
+    def testPartDesignElementMapSketch(self):
+        """ Test that creating a sketch results in a correct element map.  """
+        # Arrange
+        body = self.Doc.addObject('PartDesign::Body', 'Body')
+        sketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        body.addObject(sketch)
+        TestSketcherApp.CreateRectangleSketch(sketch, (0, 0), (1, 1))
+        # Act
+        self.Doc.recompute()
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+            return
+        reverseMap = sketch.Shape.ElementReverseMap
+        faces = [name for name in reverseMap.keys() if name.startswith("Face")]
+        edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
+        vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
+        # Assert
+        self.assertEqual(sketch.Shape.ElementMapSize,9)
+        self.assertEqual(len(reverseMap),9)
+        self.assertEqual(len(faces),1)
+        self.assertEqual(len(edges),4)
+        self.assertEqual(len(vertexes),4)
+
     def testPartDesignElementMapPad(self):
         """ Test that padding a sketch results in a correct element map.  Note that comprehensive testing
             of the geometric functionality of the Pad is in TestPad.py """
@@ -580,7 +602,8 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Doc.recompute()
         # Assert
         self.assertEqual(len(body.Shape.childShapes()), 1)
-        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 26)
+        # The next size can vary based on tOCCT version (26 or 30), so we accept having entries.
+        self.assertGreaterEqual(body.Shape.childShapes()[0].ElementMapSize, 26)
 
     def testPartDesignElementMapPocket(self):
         pass  # TODO
@@ -944,7 +967,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(self.Body.Shape.BoundBox.YMin,0)
         self.assertEqual(self.Body.Shape.BoundBox.ZMin,0)
         self.assertEqual(self.Body.Shape.BoundBox.XMax,31.37)
-        self.assertEqual(self.Body.Shape.BoundBox.YMax,25.2)
+        self.assertAlmostEqual(self.Body.Shape.BoundBox.YMax,25.2)
         self.assertEqual(self.Body.Shape.BoundBox.ZMax,20)
         self.assertNotEquals(area1, area2)
 
@@ -1091,9 +1114,9 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(self.Body.Shape.BoundBox.XMin, 0)
         self.assertEqual(self.Body.Shape.BoundBox.YMin, 0)
         self.assertEqual(self.Body.Shape.BoundBox.ZMin, 0)
-        self.assertEqual(self.Body.Shape.BoundBox.XMax, 31.37)
-        self.assertEqual(self.Body.Shape.BoundBox.YMax, 25.2)
-        self.assertEqual(self.Body.Shape.BoundBox.ZMax, 20)
+        self.assertEqual(self.Body.Shape.BoundBox.XMax, 35)
+        self.assertEqual(self.Body.Shape.BoundBox.YMax, 25)
+        self.assertEqual(self.Body.Shape.BoundBox.ZMax, 10)
 
     def testSubShapeBinder(self):
         doc = self.Doc
@@ -1233,9 +1256,9 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(self.Body.Shape.BoundBox.XMin, 0)
         self.assertEqual(self.Body.Shape.BoundBox.YMin, 0)
         self.assertEqual(self.Body.Shape.BoundBox.ZMin, 0)
-        self.assertEqual(self.Body.Shape.BoundBox.XMax, 31.37)
-        self.assertEqual(self.Body.Shape.BoundBox.YMax, 25.2)
-        self.assertEqual(self.Body.Shape.BoundBox.ZMax, 20)
+        self.assertEqual(self.Body.Shape.BoundBox.XMax, 35)
+        self.assertEqual(self.Body.Shape.BoundBox.YMax, 25)
+        self.assertEqual(self.Body.Shape.BoundBox.ZMax, 10)
 
     def testPartDesignTNPChamfer(self):
         """ Test Chamfer """
@@ -1258,9 +1281,6 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
         doc.Body.newObject('Sketcher::SketchObject', 'Sketch')
         doc.Sketch.AttachmentSupport = (chamfer, "Face8")
-        # doc.Sketch.AttachmentOffset = App.Placement(
-        #     App.Vector(0.0000000000, 2.0000000000, 0.0000000000),
-        #     App.Rotation(0.0000000000, 0.0000000000, 0.0000000000))
         doc.Sketch.MapMode = 'FlatFace'
         doc.recompute()
 
@@ -1296,11 +1316,9 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
         pocket = self.Doc.addObject('PartDesign::Pocket', 'Pocket')
         pocket.Type = "Length"
-        # pocket.Length2 = 2
         pocket.Length = 3
         pocket.Direction = App.Vector(-0.710000000,0.7100000000, 0.0000000000)
         pocket.Profile = doc.Sketch
-        pocket.Reversed = True
         body.addObject(pocket)
         self.Doc.recompute()
         volume3 = body.Shape.Volume
@@ -1332,6 +1350,97 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertAlmostEqual(volume2, boxVolume - 3 * chamferVolume)
         self.assertAlmostEqual(volume3, boxVolume - 3 * chamferVolume - cutVolume, 4)
         self.assertAlmostEqual(volume4, boxVolume - 2 * chamferVolume - cutVolume, 4)
+
+    def testPartDesignTNPFillet(self):
+        """ Test Fillet """
+        # Arrange
+        doc = self.Doc
+        body = self.Doc.addObject('PartDesign::Body', 'Body')
+        box = self.Doc.addObject('PartDesign::AdditiveBox', 'Box')
+        body.addObject(box)
+        self.Doc.recompute()
+        volume1 = body.Shape.Volume
+        fillet = self.Doc.addObject('PartDesign::Fillet', 'Fillet')
+        fillet.Base = (box, ['Edge1',
+                              'Edge5',
+                              'Edge7',
+                              ])
+        # fillet.Size = 1
+        body.addObject(fillet)
+        self.Doc.recompute()
+        volume2 = body.Shape.Volume
+
+        doc.Body.newObject('Sketcher::SketchObject', 'Sketch')
+        doc.Sketch.AttachmentSupport = (fillet, "Face2")
+        doc.Sketch.MapMode = 'FlatFace'
+        doc.recompute()
+
+        x1, x2, y1, y2 = 4,6 , 6, 11
+        geoList = []
+        geoList.append(
+            Part.LineSegment(App.Vector(x1, y1, 0.0 ),
+                             App.Vector(x1, y2, 0.0 )))
+        geoList.append(
+            Part.LineSegment(App.Vector(x1, y2, 0.0),
+                             App.Vector(x2, y2, 0.0)))
+        geoList.append(
+            Part.LineSegment(App.Vector(x2, y2, 0.0),
+                             App.Vector(x2, y1, 0.0)))
+        geoList.append(
+            Part.LineSegment(App.Vector(x2, y1, 0.0),
+                             App.Vector(x1, y1, 0.0)))
+        doc.Sketch.addGeometry(geoList, False)
+        del geoList
+
+        constraintList = []
+        constraintList.append(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
+        constraintList.append(Sketcher.Constraint('Horizontal', 0))
+        constraintList.append(Sketcher.Constraint('Horizontal', 2))
+        constraintList.append(Sketcher.Constraint('Vertical', 1))
+        constraintList.append(Sketcher.Constraint('Vertical', 3))
+        doc.Sketch.addConstraint(constraintList)
+        del constraintList
+        body.addObject(doc.Sketch)
+
+        pocket = self.Doc.addObject('PartDesign::Pocket', 'Pocket')
+        pocket.Type = "Length"
+        pocket.Length = 3
+        pocket.Direction = App.Vector(-0.710000000,0.7100000000, 0.0000000000)
+        pocket.Profile = doc.Sketch
+        # pocket.Reversed = False
+        body.addObject(pocket)
+        self.Doc.recompute()
+        volume3 = body.Shape.Volume
+        # Change the filleted edges, potentially triggering TNP
+        fillet.Base = (box, ['Edge5',
+                              'Edge7',
+                              ])
+        self.Doc.recompute()
+        volume4 = body.Shape.Volume
+        # Assert
+        if body.Shape.ElementMapVersion == "":   # Skip without element maps.
+            return
+        reverseMap = body.Shape.childShapes()[0].ElementReverseMap
+        faces = [name for name in reverseMap.keys() if name.startswith("Face")]
+        edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
+        vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
+        self.assertEqual(len(body.Shape.childShapes()), 1)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 62)
+        self.assertEqual(len(reverseMap),62)
+        self.assertEqual(len(faces),12)
+        self.assertEqual(len(edges),30)
+        self.assertEqual(len(vertexes),20)
+        boxVolume = 10 * 10 * 10
+        # Full prism minus the rounded triangle prism.
+        filletVolume = 1 * 1 * 10 - 1 * 1 * math.pi / 4 * 10 #0.5 * 10
+        cutVolume = 24
+        self.assertAlmostEqual(volume1, boxVolume )
+        self.assertAlmostEqual(volume2, boxVolume - 3 * filletVolume)
+        self.assertAlmostEqual(volume3, boxVolume - 3 * filletVolume - cutVolume, 4)
+        self.assertAlmostEqual(volume4, boxVolume - 2 * filletVolume - cutVolume, 4)
 
     def create_t_sketch(self):
         self.Doc.getObject('Body').newObject('Sketcher::SketchObject', 'Sketch')

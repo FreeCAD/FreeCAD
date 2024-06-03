@@ -311,7 +311,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/TechDraw/dimensioning");
-    bool separatedTools = hGrp->GetBool("SeparatedDimensioningTools", true);
+    bool separatedTools = hGrp->GetBool("SeparatedDimensioningTools", false);
     if (hGrp->GetBool("SingleDimensioningTool", true)) {
         if (separatedTools) {
             *dims << "TechDraw_Dimension";
@@ -346,8 +346,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *extattribs << "TechDraw_ExtensionExtendShortenLineGroup";
     *extattribs << "TechDraw_ExtensionLockUnlockView";
     *extattribs << "TechDraw_ExtensionPositionSectionView";
-    *extattribs << "TechDraw_ExtensionPosChainDimensionGroup";
-    *extattribs << "TechDraw_ExtensionCascadeDimensionGroup";
     if (separatedTools) {
         *extattribs << "TechDraw_ExtensionAreaAnnotation";
         *extattribs << "TechDraw_ExtensionArcLengthAnnotation";
@@ -452,8 +450,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *extattribs << "TechDraw_ExtensionExtendShortenLineGroup";
     *extattribs << "TechDraw_ExtensionLockUnlockView";
     *extattribs << "TechDraw_ExtensionPositionSectionView";
-    *extattribs << "TechDraw_ExtensionPosChainDimensionGroup";
-    *extattribs << "TechDraw_ExtensionCascadeDimensionGroup";
     *extattribs << "TechDraw_ExtensionAreaAnnotation";
     *extattribs << "TechDraw_ExtensionArcLengthAnnotation";
     *extattribs << "TechDraw_ExtensionCustomizeFormat";

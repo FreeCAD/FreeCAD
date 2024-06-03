@@ -41,7 +41,7 @@
     <message>
       <location filename="../../materials-editor.ui" line="80"/>
       <source>Save as...</source>
-      <translation type="unfinished">Save as...</translation>
+      <translation>另存为...</translation>
     </message>
     <message>
       <location filename="../../materials-editor.ui" line="96"/>

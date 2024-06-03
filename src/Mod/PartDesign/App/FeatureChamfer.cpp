@@ -198,6 +198,9 @@ App::DocumentObjectExecReturn *Chamfer::execute()
             shape = refineShapeIfActive(shape);
             shape = getSolid(shape);
         }
+        if (!isSingleSolidRuleSatisfied(shape.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+        }
         this->Shape.setValue(shape);
         if (failed) {
             return new App::DocumentObjectExecReturn(
@@ -270,10 +273,11 @@ App::DocumentObjectExecReturn *Chamfer::execute()
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is invalid"));
             }
         }
-        int solidCount = countSolids(shape);
-        if (solidCount > 1) {
+        
+        if (!isSingleSolidRuleSatisfied(shape)) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
         }
+
         shape = refineShapeIfActive(shape);
         this->Shape.setValue(getSolid(shape));
         return App::DocumentObject::StdReturn;

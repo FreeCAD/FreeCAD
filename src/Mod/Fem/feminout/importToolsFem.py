@@ -455,6 +455,11 @@ def fill_femresult_mechanical(
                 res_obj.Temperature = list(map((lambda x: x), Temperature.values()))
             res_obj.Time = step_time
 
+    if "heatflux" in result_set:
+        HeatFlux = result_set["heatflux"]
+        if HeatFlux:
+            res_obj.HeatFlux = list(map((lambda x: x), HeatFlux.values()))
+
     # fill res_obj.MassFlow
     if "mflow" in result_set:
         MassFlow = result_set["mflow"]

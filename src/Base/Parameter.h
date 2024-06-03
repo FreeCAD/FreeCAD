@@ -434,12 +434,15 @@ public:
     bool LoadOrCreateDocument();
     /// Saves an XML document by calling the serializer's save method.
     void SaveDocument() const;
+    void SetIgnoreSave(bool value);
+    bool IgnoreSave() const;
     //@}
 
 private:
     XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument* _pDocument {nullptr};
     ParameterSerializer* paramSerializer {nullptr};
 
+    bool gIgnoreSave;
     bool gDoNamespaces;
     bool gDoSchema;
     bool gSchemaFullChecking;

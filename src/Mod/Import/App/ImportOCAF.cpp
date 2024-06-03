@@ -311,26 +311,6 @@ void ImportOCAF::createShape(const TDF_Label& label,
             TopoDS_Compound comp;
             builder.MakeCompound(comp);
 
-            /*
-                        std::vector<App::Color> colors;
-                        for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
-                            Quantity_Color aColor;
-                            App::Color color(0.8f,0.8f,0.8f);
-                            if (aColorTool->GetColor(xp.Current(), XCAFDoc_ColorGen, aColor) ||
-                                aColorTool->GetColor(xp.Current(), XCAFDoc_ColorSurf, aColor) ||
-                                aColorTool->GetColor(xp.Current(), XCAFDoc_ColorCurv, aColor)) {
-                                color.r = (float)aColor.Red();
-                                color.g = (float)aColor.Green();
-                                color.b = (float)aColor.Blue();
-                                colors.push_back(color);
-                            }
-                        }
-
-                        if (colors.size() > 1) {
-                            createShape(label, loc, name, lValue, false);
-                            return;
-                        }
-            */
             for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
                 const TopoDS_Shape& sh = xp.Current();
                 if (!sh.IsNull()) {
@@ -395,19 +375,6 @@ void ImportOCAF::createShape(const TDF_Label& label,
             // We must add the PartOrigin and the Part itself
             pcPart->addObjects(localValue);
 
-            // Let's compute relative placement of the Part
-            /*
-                        gp_Trsf trf;
-                        Base::Matrix4D mtrx;
-                        if ( loc.IsIdentity() )
-                             trf = loc.Transformation();
-                        else
-                             trf = TopLoc_Location(loc.FirstDatum()).Transformation();
-                        Part::TopoShape::convertToMatrix(trf, mtrx);
-                        Base::Placement pl;
-                        pl.fromMatrix(mtrx);
-                        pcPart->Placement.setValue(pl);
-            */
             lValue.push_back(pcPart);
         }
 
@@ -428,7 +395,6 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape,
     Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
 
     if (!loc.IsIdentity()) {
-        // part->Shape.setValue(aShape.Moved(TopLoc_Location(loc.FirstDatum())));
         part->Shape.setValue(aShape.Moved(loc));
     }
     else {
@@ -554,20 +520,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
     jt = myColorMap.find(Part::ShapeMapHasher {}(shape));
 
     App::Color partColor(0.8f, 0.8f, 0.8f);
-#if 0  // TODO
-    Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-    if (vp && vp->isDerivedFrom(PartGui::ViewProviderPart::getClassTypeId())) {
-        if (jt != myColorMap.end()) {
-            App::Color color;
-            color.r = jt->second.Red();
-            color.g = jt->second.Green();
-            color.b = jt->second.Blue();
-            static_cast<PartGui::ViewProviderPart*>(vp)->ShapeAppearance.setDiffuseColor(color);
-        }
 
-        partColor = static_cast<PartGui::ViewProviderPart*>(vp)->ShapeAppearance.getDiffuseColor();
-    }
-#endif
 
     // set label name if defined
     if (setname && !myNameMap.empty()) {
@@ -587,7 +540,6 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
             xp.Next();
         }
 
-        bool found_face_color = false;
         std::vector<App::Color> faceColors;
         faceColors.resize(faces.Extent(), partColor);
         xp.Init(shape, TopAbs_FACE);
@@ -596,18 +548,8 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
             if (jt != myColorMap.end()) {
                 int index = faces.FindIndex(xp.Current());
                 faceColors[index - 1] = convertColor(jt->second);
-                found_face_color = true;
             }
             xp.Next();
-        }
-
-        if (found_face_color) {
-#if 0  // TODO
-            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-            if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
-                static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.setValues(faceColors);
-            }
-#endif
         }
     }
 }
@@ -616,12 +558,6 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
 {
     TopoDS_Shape aShape;
     if (aShapeTool->GetShape(label, aShape)) {
-        // if (aShapeTool->IsReference(label)) {
-        //     TDF_Label reflabel;
-        //     if (aShapeTool->GetReferredShape(label, reflabel)) {
-        //         loadShapes(reflabel);
-        //     }
-        // }
         if (aShapeTool->IsTopLevel(label)) {
             int ctSolids = 0, ctShells = 0, ctComps = 0;
             // add the shapes
@@ -687,18 +623,6 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
             }
             delete[] str;
         }
-
-#if 0
-        // http://www.opencascade.org/org/forum/thread_15174/
-        if (aShapeTool->IsAssembly(label)) {
-            TDF_LabelSequence shapeLabels;
-            aShapeTool->GetComponents(label, shapeLabels);
-            Standard_Integer nbShapes = shapeLabels.Length();
-            for (Standard_Integer i = 1; i <= nbShapes; i++) {
-                loadShapes(shapeLabels.Value(i));
-            }
-        }
-#endif
 
         if (label.HasChild()) {
             TDF_ChildIterator it;

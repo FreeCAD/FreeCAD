@@ -119,7 +119,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
 
         base.move(invObjLoc);
 
-        Base::Vector3d pocketDirection = computeDirection(SketchVector);
+        Base::Vector3d pocketDirection = computeDirection(SketchVector, false);
 
         // create vector in pocketing direction with length 1
         gp_Dir dir(pocketDirection.x, pocketDirection.y, pocketDirection.z);
@@ -194,8 +194,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
             TopoDS_Shape result = refineShapeIfActive(mkCut.Shape());
             this->AddSubShape.setValue(result);
 
-            int prismCount = countSolids(prism);
-            if (prismCount > 1) {
+            if (!isSingleSolidRuleSatisfied(result)) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
@@ -229,8 +228,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
-            int solidCount = countSolids(result);
-            if (solidCount > 1) {
+            if (!isSingleSolidRuleSatisfied(result)) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
 
             }
@@ -256,5 +254,16 @@ App::DocumentObjectExecReturn *Pocket::execute()
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
+#endif
+}
+
+Base::Vector3d Pocket::getProfileNormal() const
+{
+    auto res = FeatureExtrude::getProfileNormal();
+    // turn around for pockets
+#ifdef FC_USE_TNP_FIX
+    return res * -1;
+#else
+    return res;
 #endif
 }

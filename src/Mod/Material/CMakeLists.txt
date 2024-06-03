@@ -286,6 +286,7 @@ set(MaterialTest_Files
     materialtests/TestModels.py
     materialtests/TestMaterials.py
     materialtests/TestMaterialCreation.py
+    materialtests/TestMaterialFilter.py
 )
 
 ADD_CUSTOM_TARGET(MaterialTest ALL
@@ -297,7 +298,7 @@ fc_target_copy_resource(MaterialTest
     ${CMAKE_BINARY_DIR}/Mod/Material
     ${MaterialTest_Files})
 
-set(MaterialTestData_Files
+set(MaterialPythonTestData_Files
     materialtests/Materials/TestAcrylicLegacy.FCMat
     materialtests/Materials/TestAluminumAppearance.FCMat
     materialtests/Materials/TestAluminumMixed.FCMat
@@ -305,14 +306,14 @@ set(MaterialTestData_Files
     materialtests/Materials/TestBrassAppearance.FCMat
 )
 
-ADD_CUSTOM_TARGET(MaterialTestData ALL
-    SOURCES ${MaterialTestData_Files}
+ADD_CUSTOM_TARGET(MaterialPythonTestData ALL
+    SOURCES ${MaterialPythonTestData_Files}
 )
 
-fc_target_copy_resource(MaterialTestData
+fc_target_copy_resource(MaterialPythonTestData
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Material
-    ${MaterialTestData_Files})
+    ${MaterialPythonTestData_Files})
 
 ADD_CUSTOM_TARGET(MaterialScripts ALL
     SOURCES ${MaterialScripts_Files} ${Material_Ui_Files} ${Material_QRC_SRCS}
@@ -397,6 +398,11 @@ fc_target_copy_resource(MaterialModelLib
 INSTALL(
     FILES ${MaterialTest_Files}
     DESTINATION Mod/Material/materialtests
+)
+
+INSTALL(
+    FILES ${MaterialPythonTestData_Files}
+    DESTINATION Mod/Material/materialtests/Materials
 )
 
 foreach(file ${MaterialLib_Files} ${FluidMaterial_Files} ${AppearanceLib_Files} ${PatternLib_Files} ${MaterialTestLib_Files} ${MaterialModel_Files})

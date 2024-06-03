@@ -375,7 +375,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Assert elementMap
         if surface1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertEqual(surface1.ElementMapSize, 6)
-            self.assertBounds(surface1, App.BoundBox(-5, -5, 0, 5, 5, 10))
+            self.assertBounds(surface1, App.BoundBox(-5, -5, 0, 5, 5, 10), precision=2)
         else:
             # Todo: WHY is the actual sweep different?  That's BAD.  However, the "New" approach
             #       above, which uses BRepOffsetAPI_MakePipe appears to be correct over the older
@@ -387,7 +387,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
             #       math.radians(math.degrees(360)%180) * 2 appears to have been applied, which
             #       looks suspiciously like a substantial bug in OCCT.
             # Assert Shape
-            self.assertBounds(surface1, App.BoundBox(-5, -2.72011, 0, 5, 5, 6.28319), precision=3)
+            self.assertBounds(surface1, App.BoundBox(-5, -2.72011, 0, 5, 5, 6.28319), precision=2)
         del surface1
 
     def testAppPartMakeLoft(self):

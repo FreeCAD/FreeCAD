@@ -45,6 +45,7 @@ protected:
 
     void SetUp() override
     {
+        Base::Interpreter().runString("import Part");
         _docName = App::GetApplication().getUniqueDocumentName("test");
         App::GetApplication().newDocument(_docName.c_str(), "testUser");
         _hasher = Base::Reference<App::StringHasher>(new App::StringHasher);
@@ -1815,7 +1816,7 @@ TEST_F(TopoShapeExpansionTest, makeElementThickSolid)
 
     // Note:  Cannot do an elementsMatch here because the oldest OCCT treats ThickSolid a little
     // differently.  So, just mae sure the size is right, and something has a THK in it.
-    for (auto element : elements) {
+    for (auto& element : elements) {
         if (element.second.find("THK") > 0) {
             EXPECT_TRUE(1);
             break;

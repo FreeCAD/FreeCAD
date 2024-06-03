@@ -2579,6 +2579,8 @@ void PropertyMaterial::Save(Base::Writer& writer) const
                     << "\" emissiveColor=\"" << _cMat.emissiveColor.getPackedValue()
                     << "\" shininess=\"" << _cMat.shininess
                     << "\" transparency=\"" << _cMat.transparency
+                    << "\" image=\"" << _cMat.image
+                    << "\" imagePath=\"" << _cMat.imagePath
                     << "\" uuid=\"" << _cMat.uuid
                     << "\"/>" << std::endl;
     // clang-format on
@@ -2596,6 +2598,12 @@ void PropertyMaterial::Restore(Base::XMLReader& reader)
     _cMat.emissiveColor.setPackedValue(reader.getAttributeAsUnsigned("emissiveColor"));
     _cMat.shininess = (float)reader.getAttributeAsFloat("shininess");
     _cMat.transparency = (float)reader.getAttributeAsFloat("transparency");
+    if (reader.hasAttribute("image")) {
+        _cMat.image = reader.getAttribute("image");
+    }
+    if (reader.hasAttribute("imagePath")) {
+        _cMat.imagePath = reader.getAttribute("imagePath");
+    }
     if (reader.hasAttribute("uuid")) {
         _cMat.uuid = reader.getAttribute("uuid");
     }
@@ -2635,7 +2643,7 @@ TYPESYSTEM_SOURCE(App::PropertyMaterialList, App::PropertyLists)
 
 PropertyMaterialList::PropertyMaterialList()
 {
-    setSizeOne();
+    setMinimumSizeOne();
 }
 
 PropertyMaterialList::~PropertyMaterialList() = default;
@@ -2662,7 +2670,7 @@ void PropertyMaterialList::verifyIndex(int index) const
     }
 }
 
-void PropertyMaterialList::setSizeOne()
+void PropertyMaterialList::setMinimumSizeOne()
 {
     int size = getSize();
     if (size < 1) {
@@ -2690,7 +2698,7 @@ void PropertyMaterialList::setValue()
 void PropertyMaterialList::setValue(const Material& mat)
 {
     aboutToSetValue();
-    setSizeOne();
+    setSize(1);
     for (auto& material : _lValueList) {
         material = mat;
     }
@@ -2710,7 +2718,7 @@ void PropertyMaterialList::setValue(int index, const Material& mat)
 void PropertyMaterialList::setAmbientColor(const Color& col)
 {
     aboutToSetValue();
-    setSizeOne();
+    setMinimumSizeOne();
     for (auto& material : _lValueList) {
         material.ambientColor = col;
     }
@@ -2720,7 +2728,7 @@ void PropertyMaterialList::setAmbientColor(const Color& col)
 void PropertyMaterialList::setAmbientColor(float r, float g, float b, float a)
 {
     aboutToSetValue();
-    setSizeOne();
+    setMinimumSizeOne();
     for (auto& material : _lValueList) {
         material.ambientColor.set(r, g, b, a);
     }
@@ -2730,7 +2738,7 @@ void PropertyMaterialList::setAmbientColor(float r, float g, float b, float a)
 void PropertyMaterialList::setAmbientColor(uint32_t rgba)
 {
     aboutToSetValue();
-    setSizeOne();
+    setMinimumSizeOne();
     for (auto& material : _lValueList) {
         material.ambientColor.setPackedValue(rgba);
     }
@@ -2770,7 +2778,7 @@ void PropertyMaterialList::setAmbientColor(int index, uint32_t rgba)
 void PropertyMaterialList::setDiffuseColor(const Color& col)
 {
     aboutToSetValue();
-    setSizeOne();
+    setMinimumSizeOne();
     for (auto& material : _lValueList) {
         material.diffuseColor = col;
     }
@@ -2780,7 +2788,7 @@ void PropertyMaterialList::setDiffuseColor(const Color& col)
 void PropertyMaterialList::setDiffuseColor(float r, float g, float b, float a)
 {
     aboutToSetValue();
-    setSizeOne();
+    setMinimumSizeOne();
     for (auto& material : _lValueList) {
         material.diffuseColor.set(r, g, b, a);
     }
@@ -2790,7 +2798,7 @@ void PropertyMaterialList::setDiffuseColor(float r, float g, float b, float a)
 void PropertyMaterialList::setDiffuseColor(uint32_t rgba)
 {
     aboutToSetValue();
-    setSizeOne();
+    setMinimumSizeOne();
     for (auto& material : _lValueList) {
         material.diffuseColor.setPackedValue(rgba);
     }
@@ -2827,10 +2835,21 @@ void PropertyMaterialList::setDiffuseColor(int index, uint32_t rgba)
     hasSetValue();
 }
 
+void PropertyMaterialList::setDiffuseColors(const std::vector<App::Color>& colors)
+{
+    aboutToSetValue();
+    setSize(colors.size(), _lValueList[0]);
+
+    for (std::size_t i = 0; i < colors.size(); i++) {
+        _lValueList[i].diffuseColor = colors[i];
+    }
+    hasSetValue();
+}
+
 void PropertyMaterialList::setSpecularColor(const Color& col)
 {
     aboutToSetValue();
-    setSizeOne();
+    setMinimumSizeOne();
     for (auto& material : _lValueList) {
         material.specularColor = col;
     }
@@ -2840,7 +2859,7 @@ void PropertyMaterialList::setSpecularColor(const Color& col)
 void PropertyMaterialList::setSpecularColor(float r, float g, float b, float a)
 {
     aboutToSetValue();
-    setSizeOne();
+    setMinimumSizeOne();
     for (auto& material : _lValueList) {
         material.specularColor.set(r, g, b, a);
     }
@@ -2850,7 +2869,7 @@ void PropertyMaterialList::setSpecularColor(float r, float g, float b, float a)
 void PropertyMaterialList::setSpecularColor(uint32_t rgba)
 {
     aboutToSetValue();
-    setSizeOne();
+    setMinimumSizeOne();
     for (auto& material : _lValueList) {
         material.specularColor.setPackedValue(rgba);
     }
@@ -2890,7 +2909,7 @@ void PropertyMaterialList::setSpecularColor(int index, uint32_t rgba)
 void PropertyMaterialList::setEmissiveColor(const Color& col)
 {
     aboutToSetValue();
-    setSizeOne();
+    setMinimumSizeOne();
     for (auto& material : _lValueList) {
         material.emissiveColor = col;
     }
@@ -2900,7 +2919,7 @@ void PropertyMaterialList::setEmissiveColor(const Color& col)
 void PropertyMaterialList::setEmissiveColor(float r, float g, float b, float a)
 {
     aboutToSetValue();
-    setSizeOne();
+    setMinimumSizeOne();
     for (auto& material : _lValueList) {
         material.emissiveColor.set(r, g, b, a);
     }
@@ -2910,7 +2929,7 @@ void PropertyMaterialList::setEmissiveColor(float r, float g, float b, float a)
 void PropertyMaterialList::setEmissiveColor(uint32_t rgba)
 {
     aboutToSetValue();
-    setSizeOne();
+    setMinimumSizeOne();
     for (auto& material : _lValueList) {
         material.emissiveColor.setPackedValue(rgba);
     }
@@ -2950,7 +2969,7 @@ void PropertyMaterialList::setEmissiveColor(int index, uint32_t rgba)
 void PropertyMaterialList::setShininess(float val)
 {
     aboutToSetValue();
-    setSizeOne();
+    setMinimumSizeOne();
     for (auto& material : _lValueList) {
         material.shininess = val;
     }
@@ -2970,7 +2989,7 @@ void PropertyMaterialList::setShininess(int index, float val)
 void PropertyMaterialList::setTransparency(float val)
 {
     aboutToSetValue();
-    setSizeOne();
+    setMinimumSizeOne();
     for (auto& material : _lValueList) {
         material.transparency = val;
     }
@@ -3039,12 +3058,12 @@ const Color& PropertyMaterialList::getEmissiveColor(int index) const
 
 float PropertyMaterialList::getShininess() const
 {
-    return _lValueList[0].transparency;
+    return _lValueList[0].shininess;
 }
 
 float PropertyMaterialList::getShininess(int index) const
 {
-    return _lValueList[index].transparency;
+    return _lValueList[index].shininess;
 }
 
 float PropertyMaterialList::getTransparency() const
@@ -3074,7 +3093,7 @@ void PropertyMaterialList::Save(Base::Writer& writer) const
     if (!writer.isForceXML()) {
         writer.Stream() << writer.ind() << "<MaterialList file=\""
                         << (getSize() ? writer.addFile(getName(), this) : "") << "\""
-                        << " version=\"2\"/>"
+                        << " version=\"3\"/>"
                         << std::endl;
     }
 }
@@ -3107,8 +3126,21 @@ void PropertyMaterialList::SaveDocFile(Base::Writer& writer) const
         str << it.emissiveColor.getPackedValue();
         str << it.shininess;
         str << it.transparency;
-        // str << it.uuid.c_str();
     }
+
+    // Apply the latest changes last for backwards compatibility
+    for (const auto& it : _lValueList) {
+        writeString(str, it.image);
+        writeString(str, it.imagePath);
+        writeString(str, it.uuid);
+    }
+}
+
+void PropertyMaterialList::writeString(Base::OutputStream& str, const std::string &value) const
+{
+    uint32_t uCt = (uint32_t)value.size();
+    str << uCt;
+    str.write(value.c_str(), uCt);
 }
 
 void PropertyMaterialList::RestoreDocFile(Base::Reader& reader)
@@ -3120,11 +3152,20 @@ void PropertyMaterialList::RestoreDocFile(Base::Reader& reader)
         str >> count;
         RestoreDocFileV0(count, reader);
     }
+    else if (formatVersion == Version_3) {
+        // Default to the latest
+        RestoreDocFileV3(reader);
+    }
     else {
         int32_t version;
         str >> version;
         if (version < 0) {
-            RestoreDocFileV1(reader);
+            // This was a failed attempt at versioning, but is included
+            // to support files created during development. In can be removed
+            // in a future release once dev files are migrated.
+            uint32_t count = 0;
+            str >> count;
+            RestoreDocFileV0(count, reader);
         }
         else {
             uint32_t uCt = static_cast<uint32_t>(version);
@@ -3156,14 +3197,14 @@ void PropertyMaterialList::RestoreDocFileV0(uint32_t count, Base::Reader& reader
     setValues(values);
 }
 
-void PropertyMaterialList::RestoreDocFileV1(Base::Reader& reader)
+void PropertyMaterialList::RestoreDocFileV3(Base::Reader& reader)
 {
     Base::InputStream str(reader);
     uint32_t count = 0;
     str >> count;
     std::vector<Material> values(count);
-    uint32_t value {};  // must be 32 bit long
-    float valueF {};
+    uint32_t value;  // must be 32 bit long
+    float valueF;
     for (auto& it : values) {
         str >> value;
         it.ambientColor.setPackedValue(value);
@@ -3177,10 +3218,27 @@ void PropertyMaterialList::RestoreDocFileV1(Base::Reader& reader)
         it.shininess = valueF;
         str >> valueF;
         it.transparency = valueF;
-        // str >> valueS;
-        // it.uuid = valueS;
+    }
+    for (auto& it : values) {
+        readString(str, it.image);
+        readString(str, it.imagePath);
+        readString(str, it.uuid);
     }
     setValues(values);
+}
+
+void PropertyMaterialList::readString(Base::InputStream& str,
+                                                    std::string& value)
+{
+    uint32_t uCt;
+    str >> uCt;
+
+    char *temp = new char[uCt];
+
+    str.read(temp, uCt);
+    value.assign(temp, static_cast<std::size_t>(uCt));
+
+    delete [] temp;
 }
 
 const char* PropertyMaterialList::getEditorName() const

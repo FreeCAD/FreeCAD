@@ -265,8 +265,8 @@ void SketchObject::buildShape()
             Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(i-1, Sketcher::PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
-            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
-                                  Data::MappedName::fromRawData(name.c_str()),0L);
+//            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
+//                                  Data::MappedName::fromRawData(name.c_str()),0L);
             vertices.push_back(vertex);
             vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
         } else {
@@ -8620,20 +8620,23 @@ bool SketchObject::evaluateConstraints() const
 
     std::vector<Part::Geometry*> geometry = getCompleteGeometry();
     const std::vector<Sketcher::Constraint*>& constraints = Constraints.getValuesForce();
-    if (static_cast<int>(geometry.size()) != extGeoCount + intGeoCount)
+    if (static_cast<int>(geometry.size()) != extGeoCount + intGeoCount) {
         return false;
-    if (geometry.size() < 2)
+    }
+    if (geometry.size() < 2) {
         return false;
+    }
 
-    std::vector<Sketcher::Constraint*>::const_iterator it;
-    for (it = constraints.begin(); it != constraints.end(); ++it) {
-        if (!evaluateConstraint(*it))
+    for (auto it : constraints) {
+        if (!evaluateConstraint(it)) {
             return false;
+        }
     }
 
     if (!constraints.empty()) {
-        if (!Constraints.scanGeometry(geometry))
+        if (!Constraints.scanGeometry(geometry)) {
             return false;
+        }
     }
 
     return true;
@@ -8652,8 +8655,9 @@ void SketchObject::validateConstraints()
     std::vector<Sketcher::Constraint*>::const_iterator it;
     for (it = constraints.begin(); it != constraints.end(); ++it) {
         bool valid = evaluateConstraint(*it);
-        if (valid)
+        if (valid) {
             newConstraints.push_back(*it);
+        }
     }
 
     if (newConstraints.size() != constraints.size()) {
@@ -9569,7 +9573,8 @@ std::pair<std::string,std::string> SketchObject::getElementName(
 {
     //  Todo: Toponaming Project March 2024:  This method override breaks the sketcher - selection and deletion
     //          of constraints ceases to work.  See #13169.  We need to prove that this works before
-    //          enabling it.  This appears to be okay now.
+    //          enabling it.
+    return Part2DObject::getElementName(name,type);
 #ifndef FC_USE_TNP_FIX
     return Part2DObject::getElementName(name,type);
 #endif
@@ -9834,6 +9839,16 @@ void SketchObject::makeMissingEquality(bool onebyone)
 {
     if (analyser)
         analyser->makeMissingEquality(onebyone);
+}
+
+int SketchObject::detectDegeneratedGeometries(double tolerance)
+{
+    return analyser->detectDegeneratedGeometries(tolerance);
+}
+
+int SketchObject::removeDegeneratedGeometries(double tolerance)
+{
+    return analyser->removeDegeneratedGeometries(tolerance);
 }
 
 int SketchObject::autoRemoveRedundants(bool updategeo)

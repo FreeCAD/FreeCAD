@@ -1766,7 +1766,7 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
             const Part::Geometry *geo2 = GeoList::getGeometryFromGeoId (geomlist, Constr->Second);
 
             if (isLineSegment(*geo2)) {
-                if (isCircleOrArc(*geo1)){
+                if (isCircleOrArc(*geo1) && Constr->FirstPos == Sketcher::PointPos::none){
                     std::swap(geo1, geo2); // see below
                 }
                 else {
@@ -1818,7 +1818,7 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
                 p2 = lineSeg->getEndPoint();
             }
             else if (geo->is<Part::GeomArcOfCircle>()) {
-                const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
+                auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                 double radius = arc->getRadius();
                 Base::Vector3d center = arc->getCenter();
                 double startangle, endangle;
@@ -2588,6 +2588,12 @@ void ViewProviderSketch::updateColor()
     editCoinManager->updateColor();
 }
 
+bool ViewProviderSketch::selectAll()
+{
+    // TODO: eventually implement "select all" logic
+    return true;
+}
+
 bool ViewProviderSketch::doubleClicked()
 {
     Gui::Application::Instance->activeDocument()->setEdit(this);
@@ -3225,6 +3231,13 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         selection.reset();
         this->detachSelection();
 
+        ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/View");
+
+        auto headlightIntensityExisting = hGrpView->GetInt("HeadlightIntensityExisting", 100);
+        hGrpView->SetInt("HeadlightIntensity", headlightIntensityExisting);
+        hGrpView->RemoveInt("HeadlightIntensityExisting");
+
         App::AutoTransaction trans("Sketch recompute");
         try {
             // and update the sketch
@@ -3294,6 +3307,14 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
                 e.what());
         }
     }
+
+    ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View");
+
+    auto headlightIntensityExisting = hGrpView->GetInt("HeadlightIntensity", 100);
+    auto headlightIntensityTemp = 50;
+    hGrpView->SetInt("HeadlightIntensity", headlightIntensityTemp);
+    hGrpView->SetInt("HeadlightIntensityExisting", headlightIntensityExisting);
 
     auto editDoc = Gui::Application::Instance->editDocument();
     editDocName.clear();
