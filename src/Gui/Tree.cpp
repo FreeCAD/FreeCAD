@@ -411,7 +411,7 @@ class TreeWidgetItemDelegate: public QStyledItemDelegate {
     // More information: https://github.com/FreeCAD/FreeCAD/pull/13807
     QTreeView *artificial;
 
-    QRect calculateItemRect(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    QRect calculateItemRect(const QStyleOptionViewItem &option) const;
 
 public:
     explicit TreeWidgetItemDelegate(QObject* parent=nullptr);
@@ -437,7 +437,7 @@ TreeWidgetItemDelegate::TreeWidgetItemDelegate(QObject* parent)
 }
 
 
-QRect TreeWidgetItemDelegate::calculateItemRect(const QStyleOptionViewItem &option, const QModelIndex &index) const
+QRect TreeWidgetItemDelegate::calculateItemRect(const QStyleOptionViewItem &option) const
 {
     auto tree = static_cast<TreeWidget*>(parent());
     auto style = tree->style();
@@ -485,7 +485,7 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
                 && (trimBG || (opt.backgroundBrush.style() == Qt::NoBrush
                                 && _TreeItemBackground.style() != Qt::NoBrush)))
         {
-            QRect rect = calculateItemRect(option, index);
+            QRect rect = calculateItemRect(option);
 
             if (trimBG && opt.backgroundBrush.style() == Qt::NoBrush) {
                 painter->fillRect(rect, _TreeItemBackground);
@@ -526,7 +526,7 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
     }
 
     if (TreeParams::getHideColumn()) {
-        option->rect = calculateItemRect(*option, index);
+        option->rect = calculateItemRect(*option);
 
         // we need to extend this shape a bit, 3px on each side
         // this value was obtained experimentally
