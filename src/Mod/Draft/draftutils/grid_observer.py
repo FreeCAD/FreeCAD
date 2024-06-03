@@ -53,7 +53,14 @@ if FreeCAD.GuiUp:
                 # Otherwise, if there is a view, update the button's status
                 # Update only if the Draft workbench has loaded
                 if hasattr(FreeCADGui, "draftToolBar"):
-                    if FreeCADGui.Snapper.grid.Visible:
+
+                    # Retrieve the associated grid for each MDI document
+                    # [1] is the index where the grid is stored in the
+                    # trackers list. See setTrackers().
+                    view_idx = FreeCADGui.Snapper.trackers[0].index(view)
+                    grid = FreeCADGui.Snapper.trackers[1][view_idx]
+
+                    if grid.Visible:
                         _set_grid_button_state(True, True)
                     else:
                         _set_grid_button_state(True, False)
