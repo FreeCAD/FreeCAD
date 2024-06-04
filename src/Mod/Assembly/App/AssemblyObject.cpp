@@ -399,6 +399,10 @@ std::shared_ptr<ASMTAssembly> AssemblyObject::makeMbdAssembly()
     auto assembly = CREATE<ASMTAssembly>::With();
     assembly->setName("OndselAssembly");
 
+    ParameterGrp::handle hPgr = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Assembly");
+
+    assembly->setDebug(hPgr->GetBool("LogSolverDebug", false));
     return assembly;
 }
 
