@@ -1114,17 +1114,17 @@ installed addons will be checked for available updates</source>
   <context>
     <name>AddonsInstaller</name>
     <message>
-      <location filename="../../AddonManager.py" line="223"/>
+      <location filename="../../AddonManager.py" line="227"/>
       <source>Starting up...</source>
       <translation>Запуск...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="258"/>
+      <location filename="../../AddonManager.py" line="263"/>
       <source>Loading addon information</source>
       <translation>Загрузка информации о дополнении</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="284"/>
+      <location filename="../../AddonManager.py" line="289"/>
       <source>Worker process {} is taking a long time to stop...</source>
       <translation>Работающий процесс {} занимает много времени при остановке...</translation>
     </message>
@@ -1143,39 +1143,39 @@ installed addons will be checked for available updates</source>
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="339"/>
+      <location filename="../../AddonManager.py" line="347"/>
       <source>Addon manager</source>
       <translation>Менеджер дополнений</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="346"/>
+      <location filename="../../AddonManager.py" line="354"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation>Вы должны перезапустить FreeCAD, чтобы изменения вступили в силу.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="352"/>
+      <location filename="../../AddonManager.py" line="360"/>
       <source>Restart now</source>
       <translation>Перезагрузить сейчас</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="353"/>
+      <location filename="../../AddonManager.py" line="361"/>
       <source>Restart later</source>
       <translation>Перезагрузить позже</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="417"/>
-      <location filename="../../AddonManager.py" line="870"/>
+      <location filename="../../AddonManager.py" line="427"/>
+      <location filename="../../AddonManager.py" line="880"/>
       <source>Refresh local cache</source>
       <translation>Обновить локальный кэш</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="547"/>
+      <location filename="../../AddonManager.py" line="557"/>
       <source>Updating cache...</source>
       <translation>Обновление кэша...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="607"/>
-      <location filename="../../AddonManager.py" line="642"/>
+      <location filename="../../AddonManager.py" line="617"/>
+      <location filename="../../AddonManager.py" line="652"/>
       <source>Checking for updates...</source>
       <translation>Проверка обновлений...</translation>
     </message>
@@ -1211,14 +1211,14 @@ installed addons will be checked for available updates</source>
       <translation>Применить %n доступных обновлений</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="799"/>
-      <location filename="../../AddonManager.py" line="825"/>
-      <location filename="../../AddonManager.py" line="924"/>
+      <location filename="../../AddonManager.py" line="809"/>
+      <location filename="../../AddonManager.py" line="835"/>
+      <location filename="../../AddonManager.py" line="934"/>
       <source>Cannot launch a new installer until the previous one has finished.</source>
       <translation>Невозможно запустить новую установку, пока не завершена предыдущая.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="910"/>
+      <location filename="../../AddonManager.py" line="920"/>
       <source>Execution of macro failed. See console for failure details.</source>
       <translation>Не удалось выполнить макрос. Подробности об ошибке смотрите в консоли.</translation>
     </message>
@@ -1226,7 +1226,7 @@ installed addons will be checked for available updates</source>
       <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
-      <location filename="../../package_list.py" line="376"/>
+      <location filename="../../package_list.py" line="379"/>
       <source>Maintainer</source>
       <translation>Разработчик</translation>
     </message>
@@ -1234,7 +1234,7 @@ installed addons will be checked for available updates</source>
       <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
-      <location filename="../../package_list.py" line="388"/>
+      <location filename="../../package_list.py" line="391"/>
       <source>Author</source>
       <translation>Автор</translation>
     </message>
@@ -1270,27 +1270,27 @@ installed addons will be checked for available updates</source>
       <translation>Не удалось импортировать QtNetwork ― видимо, он не установлен в системе. У вашего поставщика может быть пакет для этой зависимости (обычно это &quot;python3-pyside2.qtnetwork&quot;)</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="217"/>
+      <location filename="../../NetworkManager.py" line="227"/>
       <source>Failed to convert the specified proxy port &apos;{}&apos; to a port number</source>
       <translation>Не удалось преобразовать указанный прокси-порт &apos;{}&apos; в номер порта</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="246"/>
+      <location filename="../../NetworkManager.py" line="256"/>
       <source>Parameter error: mutually exclusive proxy options set. Resetting to default.</source>
       <translation>Ошибка параметров: взаимно исключающие параметры прокси. Используются параметры по умолчанию.</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="261"/>
+      <location filename="../../NetworkManager.py" line="271"/>
       <source>Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</source>
       <translation>Ошибка параметров: указан пользовательский прокси, но прокси не предоставлен. Используются параметры по умолчанию.</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="411"/>
+      <location filename="../../NetworkManager.py" line="421"/>
       <source>Addon Manager: Unexpected {} response from server</source>
       <translation>Менеджер дополнений: Неожиданный ответ сервера {}</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="512"/>
+      <location filename="../../NetworkManager.py" line="527"/>
       <source>Error with encrypted connection</source>
       <translation>Ошибка защищенного соединения</translation>
     </message>
@@ -1346,8 +1346,8 @@ installed addons will be checked for available updates</source>
       <translation>Установлено {date}</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="447"/>
-      <location filename="../../package_list.py" line="497"/>
+      <location filename="../../package_list.py" line="450"/>
+      <location filename="../../package_list.py" line="500"/>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="273"/>
       <source>Installed</source>
@@ -1899,64 +1899,64 @@ installed addons will be checked for available updates</source>
       <translation>Поиск...</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="186"/>
+      <location filename="../../package_list.py" line="189"/>
       <source>Click for details about package {}</source>
       <translation>Щёлкните для подробностей о пакете {}</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="192"/>
+      <location filename="../../package_list.py" line="195"/>
       <source>Click for details about workbench {}</source>
       <translation>Щёлкните для подробностей о верстаке {}</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="194"/>
+      <location filename="../../package_list.py" line="197"/>
       <source>Click for details about macro {}</source>
       <translation>Щёлкните для подробностей о макросе {}</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="381"/>
+      <location filename="../../package_list.py" line="384"/>
       <source>Maintainers:</source>
       <translation>Сопровождающие:</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="330"/>
+      <location filename="../../package_list.py" line="333"/>
       <source>Tags</source>
       <translation>Теги</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="409"/>
+      <location filename="../../package_list.py" line="412"/>
       <source>{} ★ on GitHub</source>
       <translation>{} ★ на GitHub</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="411"/>
+      <location filename="../../package_list.py" line="414"/>
       <source>No ★, or not on GitHub</source>
       <translation>Нет ★ или нет на GitHub</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="416"/>
+      <location filename="../../package_list.py" line="419"/>
       <source>Created </source>
       <translation>Создано </translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="424"/>
+      <location filename="../../package_list.py" line="427"/>
       <source>Updated </source>
       <translation>Обновлено </translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="427"/>
+      <location filename="../../package_list.py" line="430"/>
       <source>Score: </source>
       <translation>Счёт: </translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="449"/>
-      <location filename="../../package_list.py" line="501"/>
+      <location filename="../../package_list.py" line="452"/>
+      <location filename="../../package_list.py" line="504"/>
       <source>Up-to-date</source>
       <translation>Актуальная версия</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="451"/>
-      <location filename="../../package_list.py" line="505"/>
+      <location filename="../../package_list.py" line="454"/>
+      <location filename="../../package_list.py" line="508"/>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="305"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="313"/>
@@ -1964,34 +1964,34 @@ installed addons will be checked for available updates</source>
       <translation>Доступно обновление</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="454"/>
-      <location filename="../../package_list.py" line="511"/>
+      <location filename="../../package_list.py" line="457"/>
+      <location filename="../../package_list.py" line="514"/>
       <source>Pending restart</source>
       <translation>В ожидании перезапуска</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="456"/>
-      <location filename="../../package_list.py" line="514"/>
+      <location filename="../../package_list.py" line="459"/>
+      <location filename="../../package_list.py" line="517"/>
       <source>DISABLED</source>
       <translation>ОТКЛЮЧЕНО</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="471"/>
+      <location filename="../../package_list.py" line="474"/>
       <source>Installed version</source>
       <translation>Установленная версия</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="480"/>
+      <location filename="../../package_list.py" line="483"/>
       <source>Unknown version</source>
       <translation>Неизвестная версия</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="482"/>
+      <location filename="../../package_list.py" line="485"/>
       <source>Installed on</source>
       <translation>Установлено</translation>
     </message>
     <message>
-      <location filename="../../package_list.py" line="491"/>
+      <location filename="../../package_list.py" line="494"/>
       <source>Available version</source>
       <translation>Доступная версия</translation>
     </message>
@@ -2464,12 +2464,12 @@ installed addons will be checked for available updates</source>
   <context>
     <name>Std_AddonMgr</name>
     <message>
-      <location filename="../../AddonManager.py" line="160"/>
+      <location filename="../../AddonManager.py" line="164"/>
       <source>&amp;Addon manager</source>
       <translation>&amp;Менеджер дополнений</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="164"/>
+      <location filename="../../AddonManager.py" line="168"/>
       <source>Manage external workbenches, macros, and preference packs</source>
       <translation>Управление внешними верстаками, макросами и наборами настроек</translation>
     </message>
@@ -2506,7 +2506,7 @@ installed addons will be checked for available updates</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AddonManager.py" line="130"/>
+      <location filename="../../AddonManager.py" line="134"/>
       <source>Addon Manager</source>
       <translation>Менеджер дополнений</translation>
     </message>

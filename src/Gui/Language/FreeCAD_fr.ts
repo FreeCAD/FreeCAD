@@ -794,7 +794,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="325"/>
       <source>Camera settings</source>
-      <translation>Paramètres de la prise de vue</translation>
+      <translation>Paramètres de la caméra</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="332"/>
@@ -2894,7 +2894,7 @@ la taille de la boîte englobante de l'objet 3D affichée.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="513"/>
       <source>Camera type</source>
-      <translation>Type de prise de vue</translation>
+      <translation>Type de caméra</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="534"/>
@@ -2999,7 +2999,7 @@ la taille de la boîte englobante de l'objet 3D affichée.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="42"/>
       <source>Browse cache directory</source>
-      <translation>Rechercher dans le répertoire de cache</translation>
+      <translation>Rechercher dans le répertoire du cache</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="59"/>
@@ -4072,24 +4072,24 @@ Vue en rotation libre : la pièce sera pivotée autour de l’axe z.</translatio
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="538"/>
       <source>Default camera orientation</source>
-      <translation>Orientation par défaut de la prise de vue</translation>
+      <translation>Orientation par défaut de la caméra</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="557"/>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
-      <translation>Orientation par défaut de la prise de vue lors de la création d'un nouveau document ou de la sélection de la vue d'accueil</translation>
+      <translation>Orientation par défaut de la caméra lors de la création d'un nouveau document ou de la sélection de la vue d'accueil</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="564"/>
       <source>Camera zoom</source>
-      <translation>Zoom de la prise de vue</translation>
+      <translation>Zoom de la caméra</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="583"/>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
-      <translation>Définit le zoom de la prise de vue pour de nouveaux documents.
-La valeur est le diamètre de la sphère qui correspond à l'écran.</translation>
+      <translation>Définit le zoom de la caméra pour de nouveaux documents.
+La valeur est le diamètre de la sphère qui rentre à l'écran.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="587"/>
@@ -4530,7 +4530,7 @@ les petites fonctions difficiles, voire impossible à sélectionner.</translatio
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="28"/>
       <source>Input the source value and unit</source>
-      <translation>Entrez la valeur source et l'unité</translation>
+      <translation>Saisir la valeur source et l'unité</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="35"/>
@@ -4540,7 +4540,7 @@ les petites fonctions difficiles, voire impossible à sélectionner.</translatio
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="48"/>
       <source>Input here the unit for the result</source>
-      <translation>Entrez ici l'unité pour le résultat</translation>
+      <translation>Saisir ici l'unité pour le résultat</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="58"/>
@@ -4557,7 +4557,7 @@ les petites fonctions difficiles, voire impossible à sélectionner.</translatio
       <source>List of last used calculations.
 To add a calculation press Return in the value input field</source>
       <translation>Liste des dernières conversions utilisées.
-Pour ajouter une conversion, appuyez sur Valider dans le champ de saisie de la valeur</translation>
+Pour ajouter une conversion, appuyez sur Valider dans le champ de saisie des valeurs</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="94"/>
@@ -5246,7 +5246,7 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../Placement.cpp" line="711"/>
       <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-      <translation>Certains champs de saisie sont incorrects, assurez-vous que les valeurs de positionnement sont valides !</translation>
+      <translation>Certains champs de saisie sont incorrects. Assurez-vous que les valeurs de position sont valides !</translation>
     </message>
   </context>
   <context>
@@ -8811,7 +8811,7 @@ Remarquer que toute modification apportée à la copie en cours sera perdue.</tr
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="561"/>
       <source>Hide property view scroll bar</source>
-      <translation>Masquer la barre de défilement de la vue des propriétés</translation>
+      <translation>Masquer la barre de défilement de l'éditeur de propriétés</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="563"/>
@@ -8941,7 +8941,7 @@ Remarquer que toute modification apportée à la copie en cours sera perdue.</tr
     <message>
       <location filename="../ToolBarManager.cpp" line="951"/>
       <source>Undock from toolbar area</source>
-      <translation type="unfinished">Undock from toolbar area</translation>
+      <translation>Désancrer de la barre d'outils</translation>
     </message>
   </context>
   <context>
@@ -10428,7 +10428,7 @@ création d'assemblages complexes.</translation>
       <location filename="../CommandView.cpp" line="1010"/>
       <location filename="../CommandView.cpp" line="1011"/>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
-      <translation>Active/désactive la propriété des objets à sélectionner dans la vue 3D</translation>
+      <translation>Activer/désactiver la propriété des objets à sélectionner dans la vue 3D</translation>
     </message>
   </context>
   <context>
@@ -10758,13 +10758,13 @@ création d'assemblages complexes.</translation>
     <message>
       <location filename="../CommandView.cpp" line="2492"/>
       <source>Issue camera position</source>
-      <translation>Récupérer la position de la prise de vue</translation>
+      <translation>Récupérer la position de la caméra</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2493"/>
       <location filename="../CommandView.cpp" line="2495"/>
       <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
-      <translation>Récupérer la position de la prise de vue dans la console et dans une macro, pour réutiliser facilement cette position</translation>
+      <translation>Récupérer la position de la caméra dans la console et dans une macro, pour réutiliser facilement cette position</translation>
     </message>
   </context>
   <context>
@@ -10870,13 +10870,13 @@ création d'assemblages complexes.</translation>
     <message>
       <location filename="../CommandView.cpp" line="271"/>
       <source>Restore saved camera</source>
-      <translation>Rétablir une prise de vue sauvegardée</translation>
+      <translation>Rétablir une caméra sauvegardée</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="272"/>
       <location filename="../CommandView.cpp" line="273"/>
       <source>Restore saved camera settings</source>
-      <translation>Restaurer les paramètres enregistrés de la prise de vue</translation>
+      <translation>Restaurer les paramètres enregistrés de la caméra</translation>
     </message>
   </context>
   <context>
@@ -10926,13 +10926,13 @@ création d'assemblages complexes.</translation>
     <message>
       <location filename="../CommandView.cpp" line="245"/>
       <source>Save current camera</source>
-      <translation>Enregistrer la prise de vue en cours</translation>
+      <translation>Enregistrer la caméra en cours</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="246"/>
       <location filename="../CommandView.cpp" line="247"/>
       <source>Save current camera settings</source>
-      <translation>Enregistrer les paramètres de la prise de vue en cours</translation>
+      <translation>Enregistrer les paramètres de la caméra en cours</translation>
     </message>
   </context>
   <context>
@@ -12578,11 +12578,11 @@ selon la taille de votre écran ou vos préférences personnelles.</translation>
 'ComboView': combine tree view and property view into one panel.
 'TreeView and PropertyView': split tree view and property view into separate panel.
 'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
-      <translation>Personnaliser l'affichage de la vue en arborescence dans le panneau (redémarrage requis).
+      <translation>Personnaliser l'affichage de l'arborescence dans le panneau (redémarrage requis).
 
-'''Vue combinée''' : combine la vue en arborescence et la vue des propriétés en un seul panneau.
-* '''Arborescence et Propriétés'' : sépare la vue en arborescence et la vue des propriétés en deux panneaux distincts.
-'''Les deux''' : affiche les trois panneaux. Vous pouvez avoir les deux ensembles de paramètres de la vue en arborescence et la vue des propriétés.</translation>
+'''Vue combinée''' : combine la vue en arborescence et l'éditeur de propriétés en un seul panneau.
+* '''Arborescence et Propriétés'' : sépare la vue en arborescence et l'éditeur de propriétés en deux panneaux distincts.
+'''Les deux''' : affiche les trois panneaux. Vous pouvez avoir les deux ensembles de paramètres de la vue en arborescence et l'éditeur de propriétés.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="274"/>
@@ -12717,7 +12717,7 @@ Si cette option est cochée, FreeCAD affichera l'écran de démarrage.</translat
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="504"/>
       <source>TreeView and PropertyView</source>
-      <translation>Arborescence et Propriétés</translation>
+      <translation>Vue en arborescence et Éditeur de propriétés</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="531"/>
@@ -13331,7 +13331,7 @@ Mettre à zéro pour remplir l'espace.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="993"/>
       <source>Hide property view scroll bar in dock overlay</source>
-      <translation>Masquer la barre de défilement de l'affichage des propriétés dans la fenêtre superposée ancrable</translation>
+      <translation>Masquer la barre de défilement de l'éditeur de propriétés dans la fenêtre superposée ancrable</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="1021"/>
@@ -13467,7 +13467,7 @@ Mettre à zéro pour remplir l'espace.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1729"/>
       <source>Show the property view, which displays the properties of the selected object.</source>
-      <translation>Afficher la vue des propriétés, qui affiche les propriétés de l'objet sélectionné.</translation>
+      <translation>Afficher l'éditeur de propriétés pour montrer les propriétés de l'objet sélectionné.</translation>
     </message>
   </context>
   <context>
@@ -13480,7 +13480,7 @@ Mettre à zéro pour remplir l'espace.</translation>
     <message>
       <location filename="../CommandFeat.cpp" line="155"/>
       <source>Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</source>
-      <translation>Active/désactive le figeage des objets sélectionnés. Un objet figé n'est pas recalculé lorsque ses parents changent.</translation>
+      <translation>Activer/désactiver le figeage des objets sélectionnés. Un objet figé n'est pas recalculé lorsque ses parents changent.</translation>
     </message>
   </context>
   <context>
@@ -13544,7 +13544,7 @@ Mettre à zéro pour remplir l'espace.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="108"/>
       <source>Save the measurement in the active document.</source>
-      <translation type="unfinished">Save the measurement in the active document.</translation>
+      <translation>Enregistrer la mesure dans le document actif</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="114"/>
@@ -13554,7 +13554,7 @@ Mettre à zéro pour remplir l'espace.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="115"/>
       <source>Close the measurement task.</source>
-      <translation type="unfinished">Close the measurement task.</translation>
+      <translation>Fermer la tâche de la mesure</translation>
     </message>
   </context>
   <context>

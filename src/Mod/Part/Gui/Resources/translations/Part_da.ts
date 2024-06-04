@@ -3130,7 +3130,7 @@ Please check one or more edge entities first.</translation>
   <context>
     <name>PartGui::DlgImportExportStep</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.cpp" line="171"/>
+      <location filename="../../DlgSettingsGeneral.cpp" line="173"/>
       <source>STEP</source>
       <translation type="unfinished">STEP</translation>
     </message>
@@ -3540,25 +3540,25 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgPrimitives.ui" line="485"/>
       <location filename="../../DlgPrimitives.ui" line="1439"/>
       <source>Angle in first direction:</source>
-      <translation type="unfinished">Angle in first direction:</translation>
+      <translation>Vinkel i første retning:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="492"/>
       <location filename="../../DlgPrimitives.ui" line="1446"/>
       <source>Angle in first direction</source>
-      <translation type="unfinished">Angle in first direction</translation>
+      <translation>Vinkel i første retning</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="511"/>
       <location filename="../../DlgPrimitives.ui" line="1465"/>
       <source>Angle in second direction:</source>
-      <translation type="unfinished">Angle in second direction:</translation>
+      <translation>Vinkel i anden retning:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="518"/>
       <location filename="../../DlgPrimitives.ui" line="1472"/>
       <source>Angle in second direction</source>
-      <translation type="unfinished">Angle in second direction</translation>
+      <translation>Vinkel i anden retning</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="569"/>
@@ -4058,14 +4058,29 @@ during file reading (slower but higher details).</translation>
       <translation type="unfinished">Automatically refine model after sketch-based operation</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="68"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="74"/>
       <source>Object naming</source>
       <translation type="unfinished">Object naming</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="77"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
       <source>Add name of base object</source>
       <translation type="unfinished">Add name of base object</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="99"/>
+      <source>Experimental</source>
+      <translation type="unfinished">Experimental</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</source>
+      <translation type="unfinished">These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="118"/>
+      <source>Allow multiple solids in Part Design Body by default (experimental)</source>
+      <translation type="unfinished">Allow multiple solids in Part Design Body by default (experimental)</translation>
     </message>
   </context>
   <context>

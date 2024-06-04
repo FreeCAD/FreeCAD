@@ -9825,20 +9825,26 @@ void SketchObject::setMissingPointOnPointConstraints(std::vector<ConstraintIds>&
 
 void SketchObject::makeMissingPointOnPointCoincident(bool onebyone)
 {
-    if (analyser)
-        analyser->makeMissingPointOnPointCoincident(onebyone);
+    if (analyser) {
+        onebyone ? analyser->makeMissingPointOnPointCoincidentOneByOne()
+                 : analyser->makeMissingPointOnPointCoincident();
+    }
 }
 
 void SketchObject::makeMissingVerticalHorizontal(bool onebyone)
 {
-    if (analyser)
-        analyser->makeMissingVerticalHorizontal(onebyone);
+    if (analyser) {
+        onebyone ? analyser->makeMissingVerticalHorizontalOneByOne()
+                 : analyser->makeMissingVerticalHorizontal();
+    }
 }
 
 void SketchObject::makeMissingEquality(bool onebyone)
 {
-    if (analyser)
-        analyser->makeMissingEquality(onebyone);
+    if (analyser) {
+        onebyone ? analyser->makeMissingEqualityOneByOne()
+                 : analyser->makeMissingEquality();
+    }
 }
 
 int SketchObject::detectDegeneratedGeometries(double tolerance)

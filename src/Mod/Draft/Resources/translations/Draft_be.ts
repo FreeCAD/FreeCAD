@@ -849,9 +849,8 @@ of the buttons above</source>
       <source>Moves the working plane without changing its
 orientation. If no point is selected, the plane
 will be moved to the center of the view.</source>
-      <translation type="unfinished">Moves the working plane without changing its
-orientation. If no point is selected, the plane
-will be moved to the center of the view.</translation>
+      <translation>Рухае працоўную плоскасць без змены яе арыентацыі.
+Калі кропка не абраная, плоскасць будзе рухацца ў цэнтр выгляду.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="159"/>
@@ -874,24 +873,24 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="196"/>
       <location filename="../ui/TaskSelectPlane.ui" line="206"/>
       <source>The number of squares between major grid lines</source>
-      <translation type="unfinished">The number of squares between major grid lines</translation>
+      <translation>Колькасць квадратаў паміж асноўнымі лініямі сеткі</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="199"/>
       <source>Major lines every</source>
-      <translation type="unfinished">Major lines every</translation>
+      <translation>Асноўныя лініі кожныя</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="209"/>
       <location filename="../ui/TaskSelectPlane.ui" line="229"/>
       <source> squares</source>
-      <translation type="unfinished"> squares</translation>
+      <translation> квадраты</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="216"/>
       <location filename="../ui/TaskSelectPlane.ui" line="226"/>
       <source>The number of squares in the X and Y direction of the grid</source>
-      <translation type="unfinished">The number of squares in the X and Y direction of the grid</translation>
+      <translation>Колькасць квадратаў у напрамку X і Y сеткі</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="219"/>
@@ -902,7 +901,7 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="242"/>
       <location filename="../ui/TaskSelectPlane.ui" line="252"/>
       <source>The distance at which a point can be snapped to</source>
-      <translation type="unfinished">The distance at which a point can be snapped to</translation>
+      <translation>Адлегласць, на якім кропка можа быць прывязаная да</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="289"/>
@@ -1137,8 +1136,8 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="349"/>
       <source>The annotation scale multiplier is the inverse of the scale set in the
 Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
-      <translation type="unfinished">The annotation scale multiplier is the inverse of the scale set in the
-Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translation>
+      <translation>Множнік маштабу заметкі з'яўляецца велічынёй, якая зваротная маштабу, які зададзены ў фішцы маштабу заметак.
+Калі маштаб роўны 1: 100, множнік роўны 100.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
@@ -1233,12 +1232,12 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="495"/>
       <source>Dim line overshoot</source>
-      <translation type="unfinished">Dim line overshoot</translation>
+      <translation>Перакрыццё лініі вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="512"/>
       <source>Ext line length</source>
-      <translation type="unfinished">Ext line length</translation>
+      <translation>Даўжыня вынасной лініі</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
@@ -1255,7 +1254,7 @@ for linear dimensions.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="532"/>
       <source>Ext line overshoot</source>
-      <translation type="unfinished">Ext line overshoot</translation>
+      <translation>Перакрыццё вынасной лініі</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
@@ -1372,7 +1371,7 @@ faces are picked during commands.</source>
       <location filename="../ui/preferences-draft.ui" line="112"/>
       <source>If checked, a widget indicating the current working
 plane orientation appears when picking points</source>
-      <translation>Калі птушка, падчас выбару кропак з'яўляецца віджэт, які паказвае бягучую арыентацыю працоўнай плоскасці</translation>
+      <translation>Калі птушка, падчас выбару кропак з'яўляецца фішка, які паказвае бягучую арыентацыю працоўнай плоскасці</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="116"/>
@@ -1687,7 +1686,7 @@ as "Arial", a style such as "sans", "serif" or "mono", or a family such as
       <source>The default annotation scale multiplier. This is the inverse of the scale set
 in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
       <translation>Першапачатковы множнік маштабу заметкі.
-З'яўляецца велічынёй, якая зваротная маштабу, які зададзены ў Віджэце маштабу заметак.
+З'яўляецца велічынёй, якая зваротная маштабу, які зададзены ў фішцы маштабу заметак.
 Калі маштаб роўны 1: 100, множнік роўны 100.</translation>
     </message>
     <message>
@@ -2155,7 +2154,7 @@ turning the display faster, but making them less easily editable.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="664"/>
       <source>Project exported objects along current view direction</source>
-      <translation type="unfinished">Project exported objects along current view direction</translation>
+      <translation>Праецыраваць экспартаваныя аб'екты наўздоўж бягучага напрамку выгляду</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="382"/>
@@ -2174,12 +2173,12 @@ Otherwise default colors will be applied.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="91"/>
       <source>Automatic update (legacy importer/exporter only)</source>
-      <translation type="unfinished">Automatic update (legacy importer/exporter only)</translation>
+      <translation>Аўтаматычнае абнаўленне (толькі для састарэлага сродку імпартавання/экспартавання)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="148"/>
       <source>Some options are not yet available for the new importer</source>
-      <translation type="unfinished">Some options are not yet available for the new importer</translation>
+      <translation>Некаторыя налады пакуль недаступныя для новага сродку імпартавання</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="362"/>
@@ -2220,7 +2219,7 @@ instead of the size they have in the DXF document</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="477"/>
       <source>Import hatch boundaries as wires</source>
-      <translation type="unfinished">Import hatch boundaries as wires</translation>
+      <translation>Імпартаваць контуры штрыхоўкі як ломаныя лініі</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="497"/>
@@ -2231,12 +2230,12 @@ as closed wires with correct width</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="501"/>
       <source>Render polylines with width</source>
-      <translation type="unfinished">Render polylines with width</translation>
+      <translation>Візуалізаваць ломаныя лініі з шырынёй</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="530"/>
       <source>Some options are not yet available for the new exporter</source>
-      <translation type="unfinished">Some options are not yet available for the new exporter</translation>
+      <translation>Некаторыя налады пакуль недаступныя для новага сродку экспартавання</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="539"/>
@@ -2269,7 +2268,7 @@ If it is set to '0' the whole spline is treated as a straight segment.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="451"/>
       <source>Use layers</source>
-      <translation type="unfinished">Use layers</translation>
+      <translation>Ужываць пласты</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="614"/>
@@ -2279,7 +2278,7 @@ If it is set to '0' the whole spline is treated as a straight segment.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="617"/>
       <source>Export 3D objects as polyface meshes</source>
-      <translation type="unfinished">Export 3D objects as polyface meshes</translation>
+      <translation>Экспартаваць трохмерныя аб'екты ў выглядзе шматгранных сетак</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="634"/>
@@ -2318,25 +2317,25 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="133"/>
       <source>Major lines every</source>
-      <translation type="unfinished">Major lines every</translation>
+      <translation>Асноўныя лініі кожныя</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="146"/>
       <source>The number of squares between major grid lines.
 Major grid lines are thicker than minor grid lines.</source>
-      <translation type="unfinished">The number of squares between major grid lines.
-Major grid lines are thicker than minor grid lines.</translation>
+      <translation>Колькасць квадратаў паміж асноўнымі лініямі сеткі.
+Гэтыя лініі тлустыя за звычайныя лініі сеткі.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="150"/>
       <location filename="../ui/preferences-draftsnap.ui" line="221"/>
       <source> squares</source>
-      <translation type="unfinished"> squares</translation>
+      <translation> квадраты</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="218"/>
       <source>The number of squares in the X and Y direction of the grid</source>
-      <translation type="unfinished">The number of squares in the X and Y direction of the grid</translation>
+      <translation>Колькасць квадратаў у напрамку X і Y сеткі</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="394"/>
@@ -2702,22 +2701,22 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="774"/>
       <source>If checked, the Snap widget is displayed in the Draft statusbar</source>
-      <translation>Калі птушка, віджэт прывязкі будзе бачны ў радку стана Чарнавіка</translation>
+      <translation>Калі птушка, фішка прывязкі будзе бачная ў радку стана Чарнавіка</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="777"/>
       <source>Show the Snap widget in the Draft Workbench</source>
-      <translation>Паказаць віджэт прывязкі ў варштату Чарнавіка</translation>
+      <translation>Паказаць фішку прывязкі ў варштату Чарнавіка</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="793"/>
       <source>If checked, the Annotation scale widget is displayed in the Draft statusbar</source>
-      <translation>Калі птушка, віджэт маштабу заметак будзе бачны ў радку стана Чарнавіка</translation>
+      <translation>Калі птушка, фішка маштабу заметак будзе бачная ў радку стана Чарнавіка</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="796"/>
       <source>Show the Annotation scale widget in the Draft Workbench</source>
-      <translation>Паказаць віджэт маштабу заметак у варштату Чарнавіка</translation>
+      <translation>Паказаць фішку маштабу заметак у варштату Чарнавіка</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="215"/>
@@ -5257,24 +5256,24 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Няправільны ўвод: павінен быць лік ад 0 да 100.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="453"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="495"/>
       <source>Activate this layer</source>
       <translation>Задзейнічаць гэты ўзровень</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="459"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="501"/>
       <source>Select layer contents</source>
       <translation>Абраць змест пласта</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="497"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="511"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="539"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="553"/>
       <source>Merge layer duplicates</source>
       <translation>Аб'яднаць паўторныя пласты</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="503"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="556"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="545"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="598"/>
       <source>Add new layer</source>
       <translation>Дадаць новы пласт</translation>
     </message>
@@ -5516,11 +5515,6 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Аб'ём недаступны для аб'екта ці ўкладзенага абъекта</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="81"/>
-      <source>added missing view properties</source>
-      <translation>дададзены ўласцівасці выгляду, якія адсутнічаюць</translation>
-    </message>
-    <message>
       <location filename="../../draftobjects/array.py" line="76"/>
       <source>added property 'Count'</source>
       <translation>дададзена ўласцівасць 'Count'</translation>
@@ -5570,6 +5564,11 @@ of existing objects in all opened documents?</source>
       <location filename="../../draftobjects/pointarray.py" line="142"/>
       <source>migrated 'PointList' property to 'PointObject'</source>
       <translation>уласцівасць 'PointList' была пераўтворана ў 'PointObject'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/layer.py" line="93"/>
+      <source>updated view properties</source>
+      <translation type="unfinished">updated view properties</translation>
     </message>
   </context>
   <context>
@@ -6816,8 +6815,8 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</source>
       <location filename="../../draftguitools/gui_layers.py" line="71"/>
       <source>Adds a layer to the document.
 Objects added to this layer can share the same visual properties.</source>
-      <translation type="unfinished">Adds a layer to the document.
-Objects added to this layer can share the same visual properties.</translation>
+      <translation>Дадае пласт да дакумента.
+Аб'екты, якія дададзеныя ў гэты пласт, могуць валодаць аднолькавымі візуальнымі ўласцівасцямі.</translation>
     </message>
   </context>
   <context>
@@ -7311,7 +7310,7 @@ set True for fusion or False for compound</source>
       <translation>Плошча аб'екту</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="55"/>
+      <location filename="../../draftobjects/layer.py" line="56"/>
       <source>The objects that are part of this layer</source>
       <translation>Аб'екты, якія з'яўляюцца часткай пласта</translation>
     </message>
@@ -7450,7 +7449,7 @@ and the object defined in 'Target'.
 The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</source>
       <translation>Тэкст, які адлюстраваны меткай.
 
-Уласцівасць даступная толькі для чытання, так як канчатковы тэкст залежыць ад 'Тыпу меткі' і аб'екту, які вызначаны ў 'Мэце'.
+Уласцівасць даступная толькі для чытання, бо канчатковы тэкст залежыць ад 'Тыпу меткі' і аб'екту, які вызначаны ў 'Мэце'.
 'Карыстальніцкі тэкст' адлюстроўваецца толькі ў тым выпадку, калі для налады 'Тып меткі' зададзена значэнне 'Карыстальніцкі'.</translation>
     </message>
     <message>
@@ -7670,7 +7669,7 @@ Leave this property empty to be able to set 'Axis' and 'Center' manually.</sourc
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
       <translation>Агульная колькасць элементаў у масіве.
-Уласцівасць даступная толькі для чытання, так як колькасць залежыць ад налад масіву.</translation>
+Уласцівасць даступная толькі для чытання, бо колькасць залежыць ад налад масіву.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="67"/>
@@ -7687,7 +7686,7 @@ This property is read-only, as the number depends on the parameters of the array
       <source>Number of copies in the array.
 This property is read-only, as the number depends on the points in 'Point Object'.</source>
       <translation>Колькасць копій у масіве.
-Уласцівасць даступна толькі для чытання, так як колькасць залежыць ад кропак у 'Аб'екце кропкі'.</translation>
+Уласцівасць даступна толькі для чытання, бо колькасць залежыць ад кропак у 'Аб'екце кропкі'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="103"/>
@@ -8189,8 +8188,8 @@ the 'First Angle' and 'Last Angle' properties.</source>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="78"/>
-      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
-      <translation>Калі true, аб'екты, якія змяшчаюцца ў пласце, будуць мець колер фігуры пласта</translation>
+      <source>If it is true, the objects contained within this layer will adopt the shape appearance of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape appearance of the layer</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="89"/>
@@ -8208,22 +8207,27 @@ the 'First Angle' and 'Last Angle' properties.</source>
       <translation>Колер фігур аб'ектаў, якія змяшчаюцца на пласце</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="120"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="121"/>
+      <source>The shape appearance of the objects contained within this layer</source>
+      <translation type="unfinished">The shape appearance of the objects contained within this layer</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="133"/>
       <source>The line width of the objects contained within this layer</source>
       <translation>Шырыня ліній аб'ектаў, якія змяшчаюцца на пласце</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="130"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="143"/>
       <source>The draw style of the objects contained within this layer</source>
       <translation>Стыль чарцяжа аб'ектаў, якія змяшчаюцца на пласце</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="141"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="154"/>
       <source>The transparency of the objects contained within this layer</source>
       <translation>Празрыстасць аб'ектаў, якія змяшчаюцца на пласце</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="152"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="165"/>
       <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
       <translation>Колер ліній аб'ектаў, якія змяшчаюцца на пласце, пры ўжыванні на старонцы Тэхнічнага чарцяжа</translation>
     </message>

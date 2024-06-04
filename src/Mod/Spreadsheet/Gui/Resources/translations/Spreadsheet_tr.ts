@@ -696,7 +696,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>Dosyayı Dışarı Aktar</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="124"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Hesap tablosunu göster</translation>
     </message>
@@ -739,7 +739,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Hücreye alias'lı bir isim atayın, örneğin Spreadsheet.B1 yerine Spreadsheet.my_alias_name</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Hesap Tablosu</translation>
     </message>
@@ -1163,7 +1163,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>İsimsiz</translation>
     </message>

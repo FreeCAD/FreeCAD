@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <Base/FileInfo.h>
 #include <Mod/Points/App/Points.h>
 #include <Mod/Points/App/PointsAlgos.h>

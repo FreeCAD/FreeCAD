@@ -25,11 +25,11 @@
 
 #include <QWindow>
 #include <QOpenGLExtraFunctions>
-
-#include <QtGui/qpainter.h>
 #include <QPainter>
-
-
+#include <QExposeEvent>
+#include <QResizeEvent>
+#include <QMouseEvent>
+#include <QOpenGLContext>
 
 namespace MillSim
 {

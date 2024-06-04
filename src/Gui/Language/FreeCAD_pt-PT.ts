@@ -6691,7 +6691,7 @@ Deseja sair sem guardar os seus dados?</translation>
     <message>
       <location filename="../Action.cpp" line="1038"/>
       <source>none</source>
-      <translation>Nenhuma</translation>
+      <translation>nenhum</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="1053"/>

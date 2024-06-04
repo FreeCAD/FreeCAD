@@ -219,16 +219,16 @@ Toutes les valeurs de la feuille de configuration qui sont modifiées par rappor
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="145"/>
-      <source>If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bounding box).
+      <source>If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object&apos;s bounding box).
 
 This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
 
 Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</source>
-      <translation>Si cette option est activée, la création du brut est incluse dans le modèle. Si un modèle n'inclut pas de définition du brut, l'algorithme de création du brut par défaut sera utilisé (création à partir de la boîte de délimitation de l'objet de base).
+      <translation type="unfinished">If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object&apos;s bounding box).
 
-Cette option est particulièrement utile si le brut est une boîte ou un cylindre, ou si la machine a un placement standard pour l'usinage.
+This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
 
-Notez que cette option est désactivée si un objet brut provenant d'un solide existant est utilisé dans la tâche. Ils ne peuvent pas être enregistrés dans un modèle.</translation>
+Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="184"/>
@@ -275,12 +275,12 @@ Seules les opérations pour lesquelles des valeurs de configuration en cours ont
 
 For Box and Cylinder stocks this means the actual size of the stock solid being created.
 
-For stock from the Base object's bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.</source>
-      <translation>Si cette option est activée, les paramètres en cours de la taille du brut sont inclus dans le modèle.
+For stock from the Base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s Base object and apply the stored extra settings.</source>
+      <translation type="unfinished">If enabled the current size settings for the stock object are included in the template.
 
-Pour les bruts de boîtes et de cylindres, il s'agit de la taille réelle du solide créé.
+For Box and Cylinder stocks this means the actual size of the stock solid being created.
 
-Pour le brut provenant de la boîte englobante de l'objet de base, il s'agit du matériau supplémentaire dans toutes les directions. Un brut créé à partir d'un tel modèle obtiendra sa taille de base à partir de l'objet de base de la nouvelle tâche et appliquera les paramètres supplémentaires enregistrés.</translation>
+For stock from the Base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s Base object and apply the stored extra settings.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="168"/>
@@ -320,7 +320,7 @@ Pour le brut provenant de la boîte englobante de l'objet de base, il s'agit du 
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="35"/>
       <source>Controller Name /  Tool Number</source>
-      <translation>Nom du contrôleur/Numéro de l'outil</translation>
+      <translation>Nom du contrôleur/numéro de l'outil</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="67"/>
@@ -345,17 +345,17 @@ Pour le brut provenant de la boîte englobante de l'objet de base, il s'agit du 
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="186"/>
       <source>Spindle</source>
-      <translation>Vitesse de broche</translation>
+      <translation>Vitesse de la broche</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="196"/>
       <source>Forward</source>
-      <translation>sens horaire</translation>
+      <translation>Sens horaire</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="201"/>
       <source>Reverse</source>
-      <translation>Inverser</translation>
+      <translation>Sens anti-horaire</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="244"/>
@@ -365,7 +365,7 @@ Pour le brut provenant de la boîte englobante de l'objet de base, il s'agit du 
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="293"/>
       <source>Any modifications only affect this ToolController!</source>
-      <translation>Toute modification n'affecte que ce contrôleur d'outils!</translation>
+      <translation>Les modifications n'affectent que ce contrôleur d'outils !</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolEdit.ui" line="14"/>
@@ -384,8 +384,8 @@ Pour le brut provenant de la boîte englobante de l'objet de base, il s'agit du 
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="27"/>
-      <source>Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces "Mixed Case"</source>
-      <translation>Nom de propriété. Ne peut contenir que des lettres, des chiffres et des tirets bas. Les noms avec des casses différentes s'afficheront avec des espaces "casses différentes".</translation>
+      <source>Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &quot;Mixed Case&quot;</source>
+      <translation type="unfinished">Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &quot;Mixed Case&quot;</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="34"/>
@@ -583,13 +583,13 @@ Pour le brut provenant de la boîte englobante de l'objet de base, il s'agit du 
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="107"/>
-      <source>Extension of bounding box's MinX</source>
-      <translation>Extension de la boîte englobante en MinX</translation>
+      <source>Extension of bounding box&apos;s MinX</source>
+      <translation type="unfinished">Extension of bounding box&apos;s MinX</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="120"/>
-      <source>Extension of bounding box's MaxX</source>
-      <translation>Extension de la boîte englobante en MaxX</translation>
+      <source>Extension of bounding box&apos;s MaxX</source>
+      <translation type="unfinished">Extension of bounding box&apos;s MaxX</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="127"/>
@@ -598,13 +598,13 @@ Pour le brut provenant de la boîte englobante de l'objet de base, il s'agit du 
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="134"/>
-      <source>Extension of bounding box's MinY</source>
-      <translation>Extension de la boîte englobante en MinY</translation>
+      <source>Extension of bounding box&apos;s MinY</source>
+      <translation type="unfinished">Extension of bounding box&apos;s MinY</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="141"/>
-      <source>Extension of bounding box's MaxY</source>
-      <translation>Extension de la boîte englobante en MaxY</translation>
+      <source>Extension of bounding box&apos;s MaxY</source>
+      <translation type="unfinished">Extension of bounding box&apos;s MaxY</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="148"/>
@@ -613,13 +613,13 @@ Pour le brut provenant de la boîte englobante de l'objet de base, il s'agit du 
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="155"/>
-      <source>Extension of bounding box's MinZ</source>
-      <translation>Extension de la boîte englobante en MinZ</translation>
+      <source>Extension of bounding box&apos;s MinZ</source>
+      <translation type="unfinished">Extension of bounding box&apos;s MinZ</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="162"/>
-      <source>Extension of bounding box's MaxZ</source>
-      <translation>Extension de la boîte englobante en MaxZ</translation>
+      <source>Extension of bounding box&apos;s MaxZ</source>
+      <translation type="unfinished">Extension of bounding box&apos;s MaxZ</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="182"/>
@@ -648,13 +648,13 @@ Pour le brut provenant de la boîte englobante de l'objet de base, il s'agit du 
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
-      <source>If checked the path is constrained by the solid. Otherwise the volume of the solid describes a 'keep out' zone</source>
-      <translation>Si cette case est cochée, le parcours est contraint par le solide. Sinon, le volume du solide décrit une "zone interdite".</translation>
+      <source>If checked the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</source>
+      <translation type="unfinished">If checked the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
-      <source>Extend Model's Bounding Box</source>
-      <translation>Étendre la boite englobante du modèle</translation>
+      <source>Extend Model&apos;s Bounding Box</source>
+      <translation type="unfinished">Extend Model&apos;s Bounding Box</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="175"/>
@@ -694,8 +694,8 @@ Pour le brut provenant de la boîte englobante de l'objet de base, il s'agit du 
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="59"/>
-      <source>Select one or more features in the 3d view and press 'Add' to add them as the base items for this operation. Selected features can be deleted entirely.</source>
-      <translation>Sélectionner une ou plusieurs fonctions dans la vue 3D et appuyer sur "Ajouter" pour les ajouter comme éléments de base à cette opération. Les fonctions sélectionnées peuvent être supprimées entièrement.</translation>
+      <source>Select one or more features in the 3d view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</source>
+      <translation type="unfinished">Select one or more features in the 3d view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="69"/>
@@ -769,8 +769,8 @@ Réinitialiser supprime tous les éléments en cours de la liste et remplit la l
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="66"/>
-      <source>Remove all list items and fill list with all eligible features from the job's base object.</source>
-      <translation>Supprimer tous les éléments de la liste et compléter la liste avec tous les éléments admissibles de l'objet de base de la tâche.</translation>
+      <source>Remove all list items and fill list with all eligible features from the job&apos;s base object.</source>
+      <translation type="unfinished">Remove all list items and fill list with all eligible features from the job&apos;s base object.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="69"/>
@@ -827,13 +827,13 @@ Réinitialiser supprime tous les éléments en cours de la liste et remplit la l
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <location filename="../panels/SetupGlobal.ui" line="36"/>
       <source>Start Depth</source>
-      <translation>Profondeur de départ</translation>
+      <translation>Profondeur initiale</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
       <location filename="../panels/PageDiametersEdit.ui" line="27"/>
       <source>Start Depth of the operation. The highest point in Z-axis the operation needs to process.</source>
-      <translation>Profondeur de départ de l'opération. Le point le plus élevé de l'axe Z que l'opération doit traiter.</translation>
+      <translation>Profondeur initiale de l'opération. Le point le plus élevé de l'axe Z que l'opération doit traiter.</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="59"/>
@@ -971,7 +971,7 @@ Réinitialiser supprime tous les éléments en cours de la liste et remplit la l
       <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
       <location filename="../panels/SetupGlobal.ui" line="249"/>
       <source>Coolant</source>
-      <translation>Liquide de refroidissement</translation>
+      <translation>Refroidissement</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="76"/>
@@ -1188,8 +1188,8 @@ Réinitialiser supprime tous les éléments en cours de la liste et remplit la l
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="63"/>
-      <source>Don't retract after every hole</source>
-      <translation>Ne pas se rétracter après chaque trou</translation>
+      <source>Don&apos;t retract after every hole</source>
+      <translation type="unfinished">Don&apos;t retract after every hole</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="66"/>
@@ -1234,7 +1234,7 @@ Réinitialiser supprime tous les éléments en cours de la liste et remplit la l
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="179"/>
       <source>G85: Retract from the hole at the given feedrate instead of rapid move</source>
-      <translation>G85 : retrait du trou à la vitesse d'avance donnée au lieu d'un déplacement rapide</translation>
+      <translation>G85 : retrait du trou à la vitesse d'avance indiquée au lieu d'un déplacement rapide</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="63"/>
@@ -1365,12 +1365,12 @@ Réinitialiser supprime tous les éléments en cours de la liste et remplit la l
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="99"/>
       <source>Climb</source>
-      <translation>Escalader</translation>
+      <translation>En avalant</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="104"/>
       <source>Conventional</source>
-      <translation>Conventionnel</translation>
+      <translation>Opposition</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="112"/>
@@ -1399,8 +1399,8 @@ Ce dernier peut être utilisé pour surfacer l'ensemble de la zone du brut afin 
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
-      <source>The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit's rotation and the tool's lateral movement are in the same direction</source>
-      <translation>Le mode de coupe suppose que la coupe d'un côté de l'outil représente la pièce résultante et que l'autre côté est soit déjà fraisé, soit sera supprimé plus tard. En gardant cela à l'esprit, le mode usinage en avalant est appelé lorsque l'outil est déplacée dans la coupe à chaque rotation, alors que dans le mode usinage en opposition, la rotation des outils et le mouvement latéral des outils sont dans la même direction</translation>
+      <source>The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit&apos;s rotation and the tool&apos;s lateral movement are in the same direction</source>
+      <translation type="unfinished">The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit&apos;s rotation and the tool&apos;s lateral movement are in the same direction</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="119"/>
@@ -1593,8 +1593,8 @@ La direction du décalage est déterminée par le côté de la coupe.</translati
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
-      <source>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don't warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</source>
-      <translation>Vérifier si vous voulez que cette opération de profil soit également appliquée aux trous cylindriques, qui sont normalement percés. Cela peut être utile si aucun foret de taille adéquate n'est disponible ou si le nombre de trous ne justifie pas un changement d'outil. Remarquez que le côté et la direction de la coupe sont inversés par rapport aux valeurs spécifiées.</translation>
+      <source>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don&apos;t warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</source>
+      <translation type="unfinished">Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don&apos;t warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
@@ -1699,12 +1699,12 @@ La direction du décalage est déterminée par le côté de la coupe.</translati
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="241"/>
       <source>Currently using custom point inputs in the Property View of the Data tab</source>
-      <translation>Utilisation actuelle d’entrées de point personnalisées dans la Vue Propriétés de l’onglet Données</translation>
+      <translation>Utilisation des saisies des points personnalisées dans l'éditeur de propriétés de l'onglet Données</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="244"/>
       <source>Currently using custom point inputs available in the Property View of the Data tab.</source>
-      <translation>Utilisation en cours des points d'entrée personnalisés dans la vue des propriétés de l'onglet Données.</translation>
+      <translation>Utilisation des saisies des points personnalisées disponibles dans l'éditeur de propriétés de l'onglet Données</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="275"/>
@@ -1781,7 +1781,7 @@ La direction du décalage est déterminée par le côté de la coupe.</translati
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="77"/>
       <source>Scan Type</source>
-      <translation>Type de scan</translation>
+      <translation>Type de balayage</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="105"/>
@@ -1814,7 +1814,8 @@ La direction du décalage est déterminée par le côté de la coupe.</translati
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="84"/>
       <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
-      <translation>Planaire : balayage surfacique plat et 3D. Rotationnel : balayage rotatif sur le 4ème axe.</translation>
+      <translation>Planaire : plan, balayage surfacique 3D.
+Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
@@ -1835,8 +1836,8 @@ La direction du décalage est déterminée par le côté de la coupe.</translati
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="140"/>
-      <source>Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.</source>
-      <translation>Éviter de couper les "N" dernières faces dans la liste des faces sélectionnées de la géométrie de base.</translation>
+      <source>Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</source>
+      <translation type="unfinished">Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="147"/>
@@ -1979,7 +1980,7 @@ Par défaut : OpToolDiameter</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="87"/>
       <source>Heights</source>
-      <translation>Hauteur</translation>
+      <translation>Hauteurs</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="93"/>
@@ -1994,34 +1995,34 @@ Par défaut : OpToolDiameter</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="113"/>
       <source>Clearance</source>
-      <translation>Jeu</translation>
+      <translation>Dégagement</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="120"/>
       <source>Expression set as ClearanceHeight for new operations.
 
-Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
-      <translation>Expression définie comme hauteur de dégagement pour les nouvelles opérations.
+Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</source>
+      <translation type="unfinished">Expression set as ClearanceHeight for new operations.
 
-Par défaut : "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
+Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="145"/>
       <source>Expression set as SafeHeight for new operations.
 
-Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</source>
-      <translation>Expression définie comme hauteur de sécurité pour les nouvelles opérations.
+Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</source>
+      <translation type="unfinished">Expression set as SafeHeight for new operations.
 
-Par défaut : OpStockZMax+SetupSheet.SafeHeightOffset</translation>
+Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="154"/>
       <source>SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
-Default: "5mm"</source>
-      <translation>SafeHeightOffset peut être utilisé pour les expressions afin de définir SafeHeight pour les nouvelles opérations.
+Default: &quot;5mm&quot;</source>
+      <translation type="unfinished">SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
-Par défaut : "5 mm"</translation>
+Default: &quot;5mm&quot;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="205"/>
@@ -2036,7 +2037,7 @@ Par défaut : "5 mm"</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="138"/>
       <source>Safe</source>
-      <translation>Sécurisé</translation>
+      <translation>Sécurité</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="129"/>
@@ -2120,22 +2121,52 @@ Par défaut : 3 mm</translation>
       <translation>Entrée/sortie</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="66"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="65"/>
       <source>Discretization Deflection</source>
       <translation>Discrétisation Déflexion</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="73"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="72"/>
       <source>This value is used in discretizing arcs into segments. Smaller values will result in larger gcode. Larger values may cause unwanted segments in the medial line path.</source>
       <translation>Cette valeur est utilisée pour discrétiser les arcs en segments. Des valeurs plus petites donneront un G-code plus grand. Des valeurs plus grandes peuvent provoquer des segments non désirés dans le parcours de la ligne médiane.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="105"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="104"/>
       <source>Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</source>
       <translation>Définit le degré d'agressivité avec lequel les segments colinéaires sont filtrés du diagramme de Voronoï. Les valeurs valides sont comprises entre 0 et 90 degrés (les nombres les plus élevés filtrent davantage). Valeur par défaut = 10</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="98"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="117"/>
+      <source>Finishing pass Z offset</source>
+      <translation type="unfinished">Finishing pass Z offset</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="124"/>
+      <source>Endmill offset for the finishing pass run. Use small value like -0.2 mm to help clean &quot;fuzzy skin&quot; or other artefacts.</source>
+      <translation type="unfinished">Endmill offset for the finishing pass run. Use small value like -0.2 mm to help clean &quot;fuzzy skin&quot; or other artefacts.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="140"/>
+      <source>After carving travel again the path to remove artifacts and imperfections</source>
+      <translation type="unfinished">After carving travel again the path to remove artifacts and imperfections</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="146"/>
+      <source>Finishing pass</source>
+      <translation type="unfinished">Finishing pass</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="153"/>
+      <source>Optimize path to avoid raising endmill when moving to adjacent edges. May result in sub-millimeter inaccuracies. </source>
+      <translation type="unfinished">Optimize path to avoid raising endmill when moving to adjacent edges. May result in sub-millimeter inaccuracies. </translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="156"/>
+      <source>Optimize movements</source>
+      <translation type="unfinished">Optimize movements</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="97"/>
       <source>Filter Colinear lines</source>
       <translation>Filtrez les lignes colinéaires</translation>
     </message>
@@ -2280,12 +2311,12 @@ Si la hauteur spécifiée est 0, le parcours de finition utilisera la moitié de
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="91"/>
-      <source>Radius of the fillet on the tag's top edge.
+      <source>Radius of the fillet on the tag&apos;s top edge.
 
 If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.</source>
-      <translation>Rayon du congé sur l'arête supérieure de l'attache.
+      <translation type="unfinished">Radius of the fillet on the tag&apos;s top edge.
 
-Si le rayon spécifié est plus grand que celui supporté par la forme de l'attache elle-même, la forme résultante sera celle d'un dôme.</translation>
+If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="109"/>
@@ -2409,7 +2440,7 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
 &amp;quot;/home/cnc/%d.g-code&amp;quot;
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation>Entrez un chemin et éventuellement un nom de fichier (voir ci-dessous) pour être utilisé par défaut pour l'export du post-processeur.
+      <translation>Entrer un chemin d'accès et éventuellement un nom de fichier (voir ci-dessous) pour être utilisé par défaut pour l'exportation du post-processeur.
 Les substitutions suivantes sont effectuées avant que le nom ne soit résolu lors du post-traitement :
 La substitution permet :
 %D ... répertoire du document actif
@@ -2506,8 +2537,8 @@ Si cette option est laissée vide, aucun modèle ne sera présélectionné.</tra
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="298"/>
-      <source>It doesn't seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.</source>
-      <translation>Il semble qu'aucun script de post-processeur ne soit installé. Veuillez en ajouter dans votre répertoire macro et assurez-vous que le nom du fichier se termine par "_post.py".</translation>
+      <source>It doesn&apos;t seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.</source>
+      <translation type="unfinished">It doesn&apos;t seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="312"/>
@@ -2516,8 +2547,8 @@ Si cette option est laissée vide, aucun modèle ne sera présélectionné.</tra
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="332"/>
-      <source>Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.</source>
-      <translation>Arguments facultatifs transmis au post-processeur par défaut spécifié ci-dessus. Voir la documentation du post-processeur pour connaître les arguments pris en charge.</translation>
+      <source>Optional arguments passed to the default Post Processor specified above. See the Post Processor&apos;s documentation for supported arguments.</source>
+      <translation type="unfinished">Optional arguments passed to the default Post Processor specified above. See the Post Processor&apos;s documentation for supported arguments.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="370"/>
@@ -2541,8 +2572,8 @@ Si cette option est laissée vide, aucun modèle ne sera présélectionné.</tra
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="405"/>
-      <source>Extend Model's Bounding Box</source>
-      <translation>Étendre la boite englobante du modèle</translation>
+      <source>Extend Model&apos;s Bounding Box</source>
+      <translation type="unfinished">Extend Model&apos;s Bounding Box</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="429"/>
@@ -2637,127 +2668,127 @@ Si plusieurs outils ou formes d'outils portant le même nom existent dans diffé
       <translation>Interface graphique</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="23"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="36"/>
       <source>Default Path colors</source>
       <translation>Couleurs par défaut des parcours</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="57"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="70"/>
       <source>Path highlight color</source>
       <translation>Couleur de surbrillance des parcours</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="70"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="83"/>
       <source>Default normal path color</source>
       <translation>Couleur par défaut des parcours normaux</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="103"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="116"/>
       <source>Bounding box normal color</source>
       <translation>Couleur normale des boîtes englobantes</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="110"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="123"/>
       <source>The default color for new shapes</source>
       <translation>Couleur par défaut des nouvelles formes</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="156"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="169"/>
       <source>Probe path color</source>
       <translation>Couleur des trajets de la sonde</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="202"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="215"/>
       <source>Bounding box selection color</source>
       <translation>Couleur des sélections des boîtes englobantes</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="248"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="261"/>
       <source>Default pathline width</source>
       <translation>Largeur de la ligne de trajectoire par défaut</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="29"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="42"/>
       <source>The default line thickness for new shapes</source>
       <translation>L'épaisseur de ligne par défaut des nouvelles formes</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="32"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="45"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="215"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="228"/>
       <source>Default path marker color</source>
       <translation>Couleur par défaut des marqueurs des parcours</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="77"/>
-      <location filename="../../DlgSettingsPathColor.ui" line="130"/>
-      <location filename="../../DlgSettingsPathColor.ui" line="176"/>
-      <location filename="../../DlgSettingsPathColor.ui" line="222"/>
-      <location filename="../../DlgSettingsPathColor.ui" line="255"/>
-      <location filename="../../DlgSettingsPathColor.ui" line="275"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="90"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="143"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="189"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="235"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="268"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="288"/>
       <source>The default line color for new shapes</source>
       <translation>Couleur des lignes par défaut des nouvelles formes</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="169"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="182"/>
       <source>Rapid path color</source>
       <translation>Couleur des parcours rapides</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="304"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="317"/>
       <source>UI Settings</source>
       <translation>Paramètres de l'interface utilisateur</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="313"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="326"/>
       <source>Path Selection Style</source>
       <translation>Style des sélections des parcours</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="326"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="339"/>
       <source>Default path shape selection behavior in 3D viewer</source>
       <translation>Comportement par défaut de la sélection de la forme du parcours dans le visionneur 3D</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="336"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="349"/>
       <source>Shape</source>
       <translation>Forme</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="341"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="354"/>
       <source>Bounding Box</source>
       <translation>Boîte englobante</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="346"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="359"/>
       <source>None</source>
       <translation>Aucun</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="354"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="367"/>
       <source>Task Panel Layout</source>
       <translation>Disposition du panneau des tâches</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="368"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="381"/>
       <source>Classic</source>
       <translation>Classique</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="373"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="386"/>
       <source>Classic - reversed</source>
       <translation>Classique - inversé</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="378"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="391"/>
       <source>Multi Panel</source>
       <translation>Panneau multiple</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="383"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="396"/>
       <source>Multi Panel - reversed</source>
       <translation>Panneau multiple - inversé</translation>
     </message>
@@ -2810,7 +2841,8 @@ Si plusieurs outils ou formes d'outils portant le même nom existent dans diffé
     <message>
       <location filename="../preferences/Advanced.ui" line="117"/>
       <source>If OpenCAMLib is installed with Python bindings it can be used by some additional 3D operations. NOTE: Enabling OpenCAMLib here requires a restart of FreeCAD to take effect.</source>
-      <translation>Si OpenCAMLib est installé avec des liaisons Python, il peut être utilisé par des opérations 3D supplémentaires. REMARQUE : l'activation d'OpenCAMLib ici nécessite un redémarrage de FreeCAD pour prendre effet.</translation>
+      <translation>Si OpenCAMLib est installé avec des liaisons Python, il peut être utilisé par des opérations 3D supplémentaires.
+Remarque : l'activation d'OpenCAMLib ici nécessite un redémarrage de FreeCAD pour prendre effet.</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="86"/>
@@ -2930,10 +2962,8 @@ Si plusieurs outils ou formes d'outils portant le même nom existent dans diffé
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="48"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Sélectionner le style souhaité de la finition des angles :
-- Dégagement des angles : prendre le parcours le plus court pour couvrir le coin,
-- Dégagement en T : prolonger d'une certaine direction jusqu'à ce que le coin soit couvert.</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="52"/>
@@ -2987,11 +3017,8 @@ Si plusieurs outils ou formes d'outils portant le même nom existent dans diffé
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="114"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it's the radius of the tool (R) and for dogbones it's R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;custom&lt;/span&gt; ... let's you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Détermine la longueur de l'incision du dégagement à insérer dans le profil.
-- Adaptative : la longueur est adaptée pour couvrir le coin en fonction de l'angle de ses arêtes, en tenant compte du rayon actuel de l'outil (par défaut).
-- Fix : identique à adaptive pour les angles droits. Pour les dégagements en T, c'est le rayon de l'outil (R) et pour les dégagements des angles, c'est R * (2/√2 - 1).
-- Personnalisé : permet de spécifier une longueur personnalisée (fixe) inférieure.</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it&apos;s the radius of the tool (R) and for dogbones it&apos;s R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;custom&lt;/span&gt; ... let&apos;s you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it&apos;s the radius of the tool (R) and for dogbones it&apos;s R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;custom&lt;/span&gt; ... let&apos;s you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="121"/>
@@ -3006,20 +3033,17 @@ Si plusieurs outils ou formes d'outils portant le même nom existent dans diffé
     <message>
       <location filename="../panels/DogboneEdit.ui" line="131"/>
       <source>fixed</source>
-      <translation>réparé</translation>
+      <translation>fixe</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="142"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter length for each bone if &lt;span style=" font-weight:600;"&gt;Incision&lt;/span&gt; is set to &lt;span style=" font-weight:600;"&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Entrer la longueur de chaque dégagement si l'incision est réglée sur personnalisée, ignorée sinon.</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter length for each bone if &lt;span style=&quot; font-weight:600;&quot;&gt;Incision&lt;/span&gt; is set to &lt;span style=&quot; font-weight:600;&quot;&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter length for each bone if &lt;span style=&quot; font-weight:600;&quot;&gt;Incision&lt;/span&gt; is set to &lt;span style=&quot; font-weight:600;&quot;&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="155"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=" font-weight:600;"&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=" font-weight:600;"&gt;un-check&lt;/span&gt; the bones you don't want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=" font-weight:600;"&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you're trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Liste des emplacements des dégagements (avec tous les dégagements à cet emplacement) qui font partie de cette finition. La liste est déterminée par les coins du profil et le côté sélectionné pour les dégagements.
-Vous pouvez décocher les dégagements que vous ne souhaitez pas voir habillés.
-Si un dégagement est grisé, cela signifie qu'il a déjà été usiné lors d'une finition précédente. En d'autres termes, si vous usinez à nouveau cette finition du dégagement d'angle, vous ne pourrez sélectionner que les dégagements qui ne sont pas cochés ici.
-Si cette liste est vide, cela signifie probablement que vous essayez de créer des dégagements du mauvais côté du profil.</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="165"/>
@@ -3088,8 +3112,8 @@ Si cette liste est vide, cela signifie probablement que vous essayez de créer d
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="54"/>
-      <source>Height of holding tag. Note that resulting tag might be smaller if the tag's width and angle result in a triangular shape.</source>
-      <translation>Hauteur de l'attache de maintien. Remarquer que l'attache résultante peut être plus petite si la largeur et l'angle de l'attache donnent une forme triangulaire.</translation>
+      <source>Height of holding tag. Note that resulting tag might be smaller if the tag&apos;s width and angle result in a triangular shape.</source>
+      <translation type="unfinished">Height of holding tag. Note that resulting tag might be smaller if the tag&apos;s width and angle result in a triangular shape.</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="61"/>
@@ -3103,8 +3127,8 @@ Si cette liste est vide, cela signifie probablement que vous essayez de créer d
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="97"/>
-      <source>List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don't lie on the base wire.</source>
-      <translation>Liste des attaches en cours. Modifier des coordonnées par un double-clic ou par le bouton Modifier. Les attaches sont automatiquement désactivées si elles chevauchent l'attache précédente ou si elles ne se trouvent pas sur la polyligne de base.</translation>
+      <source>List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don&apos;t lie on the base wire.</source>
+      <translation type="unfinished">List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don&apos;t lie on the base wire.</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="116"/>
@@ -3195,7 +3219,7 @@ Si cette liste est vide, cela signifie probablement que vous essayez de créer d
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="136"/>
       <source>Start Depth</source>
-      <translation>Profondeur de départ</translation>
+      <translation>Profondeur initiale</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="150"/>
@@ -3215,7 +3239,7 @@ Si cette liste est vide, cela signifie probablement que vous essayez de créer d
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="198"/>
       <source>Heights</source>
-      <translation>Hauteur</translation>
+      <translation>Hauteurs</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="214"/>
@@ -3280,12 +3304,13 @@ Si cette liste est vide, cela signifie probablement que vous essayez de créer d
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="54"/>
       <source>Enter the filename containing the probe data</source>
-      <translation>Entrez le nom du fichier contenant les données de la sonde</translation>
+      <translation>Entrer le nom du fichier contenant les données de la sonde</translation>
     </message>
   </context>
   <context>
     <name>TaskPathSimulator</name>
     <message>
+      <location filename="../panels/TaskCAMSimulator.ui" line="14"/>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
       <location filename="../panels/TaskPathSimulator.ui" line="14"/>
       <source>Path Simulator</source>
@@ -3302,11 +3327,13 @@ Si cette liste est vide, cela signifie probablement que vous essayez de créer d
       <translation>Arrêter</translation>
     </message>
     <message>
+      <location filename="../panels/TaskCAMSimulator.ui" line="115"/>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <source>Activate / resume simulation</source>
       <translation>Activer / reprendre la simulation</translation>
     </message>
     <message>
+      <location filename="../panels/TaskCAMSimulator.ui" line="118"/>
       <location filename="../panels/TaskPathSimulator.ui" line="58"/>
       <source>Play</source>
       <translation>Exécuter</translation>
@@ -3352,11 +3379,13 @@ Si cette liste est vide, cela signifie probablement que vous essayez de créer d
       <translation>G/s</translation>
     </message>
     <message>
+      <location filename="../panels/TaskCAMSimulator.ui" line="50"/>
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <source>Accuracy:</source>
       <translation>Précision :</translation>
     </message>
     <message>
+      <location filename="../panels/TaskCAMSimulator.ui" line="105"/>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <source>Job:</source>
       <translation>Tâche :</translation>
@@ -3478,22 +3507,22 @@ Si cette liste est vide, cela signifie probablement que vous essayez de créer d
       <translation>Sélecteur d'outils</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitSelector.ui" line="30"/>
-      <source>TextLabel</source>
-      <translation>TextLabel</translation>
+      <location filename="../panels/ToolBitSelector.ui" line="51"/>
+      <source>Library editor...</source>
+      <translation type="unfinished">Library editor...</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitSelector.ui" line="78"/>
+      <location filename="../panels/ToolBitSelector.ui" line="75"/>
       <source>Available Tool Bits to choose from.</source>
       <translation>Outil coupant disponible au choix.</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitSelector.ui" line="101"/>
+      <location filename="../panels/ToolBitSelector.ui" line="98"/>
       <source>Create ToolControllers for the selected toolbits and add them to the Job</source>
       <translation>Créer des contrôleurs d'outils pour les outils coupants sélectionnés et les ajouter à la tâche</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitSelector.ui" line="104"/>
+      <location filename="../panels/ToolBitSelector.ui" line="101"/>
       <source>Add To Job</source>
       <translation>Ajouter à la tâche</translation>
     </message>
@@ -3590,21 +3619,21 @@ This is useful if the operator can safely load work into one coordinate system w
 
 Ordering by Tool, will minimize the Tool Changes. A tool change will be done, then all operations in all coordinate systems before changing tools.
 
-Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the 'split output' even with only a single work coordinate system since it will put each operation into a separate file.</source>
-      <translation>Commander par Fixation entraînera l'exécution de toutes les opérations dans le premier système de coordonnées avant de passer au second. Ensuite, toutes les opérations seront effectuées dans le même ordre.
+Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the &apos;split output&apos; even with only a single work coordinate system since it will put each operation into a separate file.</source>
+      <translation type="unfinished">Ordering by Fixture, will cause all operations to be performed in the first coordinate system before switching to the second. Then all operations will be performed there in the same order.
 
-Ceci est utile si l'opérateur peut charger en toute sécurité le travail dans un système de coordonnées pendant que la machine fonctionne dans un autre.
+This is useful if the operator can safely load work into one coordinate system while the machine is doing work in another.
 
-Commander par Outil, réduira les changements d'outil. Un changement d'outil sera effectué, puis toutes les opérations dans tous les systèmes de coordonnées avant de changer l'outil.
+Ordering by Tool, will minimize the Tool Changes. A tool change will be done, then all operations in all coordinate systems before changing tools.
 
-Commander par Opération effectuera chaque opération dans tous les systèmes de coordonnées avant de passer à l'opération suivante.. Ceci est particulièrement utile en conjonction avec "Séparer les fichiers de sortie" même avec un seul système de coordonnées de travail puisqu'elle placera chaque opération dans un fichier séparé.</translation>
+Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the &apos;split output&apos; even with only a single work coordinate system since it will put each operation into a separate file.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="254"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=" font-style:italic;"&gt;Work Offsets&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
-FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the 'order by' setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Les systèmes de coordonnées de travail&lt;/span&gt; également appelés &lt;span style=" font-style:italic;"&gt;Décalages de travail&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;Décalages de fixations&lt;/span&gt;, ou &lt;span style=" font-style:italic;"&gt;Fixations&lt;/span&gt; sont utiles pour construire des tâches de production efficaces où la même pièce est fabriquée plusieurs fois sur la machine.
-FreeCAD ne sait pas où se trouve un système de coordonnées particulier dans le système de coordonnées de la machine, de sorte que l'ajout de systèmes de coordonnées supplémentaires à votre tâche n'aura aucune incidence visuelle sur ce dernier. En revanche, cela modifiera la sortie de votre G-code. La manière exacte dont la sortie est affectée est contrôlée par le paramètre "ordre par".&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
+FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
+FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="409"/>
@@ -3638,8 +3667,8 @@ FreeCAD ne sait pas où se trouve un système de coordonnées particulier dans l
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="488"/>
-      <source>Extend Model's Bounding Box</source>
-      <translation>Étendre la boite englobante du modèle</translation>
+      <source>Extend Model&apos;s Bounding Box</source>
+      <translation type="unfinished">Extend Model&apos;s Bounding Box</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="493"/>
@@ -3781,34 +3810,34 @@ FreeCAD ne sait pas où se trouve un système de coordonnées particulier dans l
     <message>
       <location filename="../panels/PathEdit.ui" line="1030"/>
       <source>Start Depth</source>
-      <translation>Profondeur de départ</translation>
+      <translation>Profondeur initiale</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1114"/>
       <source>Expression set as ClearanceHeight for new operations.
 
-Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
-      <translation>Expression définie comme hauteur de dégagement pour les nouvelles opérations.
+Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</source>
+      <translation type="unfinished">Expression set as ClearanceHeight for new operations.
 
-Par défaut : "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
+Default: &quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&quot;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1139"/>
       <source>Expression set as SafeHeight for new operations.
 
-Default: "OpStockZMax+SetupSheet.SafeHeightOffset"</source>
-      <translation>Expression définie comme hauteur de sécurité pour les nouvelles opérations.
+Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</source>
+      <translation type="unfinished">Expression set as SafeHeight for new operations.
 
-Par défaut : OpStockZMax+SetupSheet.SafeHeightOffset</translation>
+Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1148"/>
       <source>SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
-Default: "5mm"</source>
-      <translation>SafeHeightOffset peut être utilisé pour les expressions afin de définir SafeHeight pour les nouvelles opérations.
+Default: &quot;5mm&quot;</source>
+      <translation type="unfinished">SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
-Par défaut : "5 mm"</translation>
+Default: &quot;5mm&quot;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1247"/>
@@ -3865,52 +3894,55 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 %S ... Sequence Number
 
 The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-"/home/cnc/%d.g-code"
+&quot;/home/cnc/%d.g-code&quot;
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation>Entrer un chemin d'accès et éventuellement un nom de fichier (voir ci-dessous) pour être utilisé par défaut pour l'export du post-processeur.
-Les substitutions suivantes sont effectuées avant que le nom ne soit résolu lors du post-traitement :
-La substitution permet :
-%D ... répertoire du document actif
-%d ... nom du document actif (avec extension)
-%M ... répertoire de la macro de l'utilisateur
-%j ... nom de la tâche active
+      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
+Substitution allows the following:
+%D ... directory of the active document
+%d ... name of the active document (with extension)
+%M ... user macro directory
+%j ... name of the active Job object
 
-Le suivant peut être utilisé si la sortie est divisée. Si la sortie n'est pas divisée, celles-ci seront ignorées.
-%T ... numéro d'outil
-%t ... étiquette du contrôleur d'outil
+The Following can be used if output is being split. If Output is not split
+these will be ignored.
+%T ... Tool Number
+%t ... Tool Controller label
 
-%W ... système de coordonnées de la pièce
-%O ... étiquette de l'opération
+%W ... Work Coordinate System
+%O ... Operation Label
 
-Lors de la division de la sortie, un numéro d'ordre sera toujours ajouté.
+When splitting output, a sequence number will always be added.
 
-si %S est inclus, vous pouvez spécifier où le nombre se produit. Sans elle, le nombre sera ajouté à la fin de la chaîne de caractère.
+if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
 
-%S ... numéro de séquence
+%S ... Sequence Number
 
-L'exemple suivant enregistre tous les fichiers avec le même nom que le document, le répertoire /home/freecad (supprimer les guillemets) :
-"/home/cnc/%d.g-code"
-Voir la politique de sauvegarde des fichiers ci-dessous sur la façon de gérer les conflits de noms.</translation>
+The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
+&quot;/home/cnc/%d.g-code&quot;
+See the file save policy below on how to deal with name conflicts.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="397"/>
-      <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
-      <translation>Si plusieurs systèmes de coordonnées sont utilisés, mettre à VRAI ce paramètre entraînera l'écriture du G-code dans plusieurs fichiers de sortie contrôlés par la propriété "ordre par".  Par exemple, si l'ordre est basé sur la fixation, le premier fichier de sortie sera pour la première fixation et un fichier séparé pour le second.</translation>
+      <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the &apos;order by&apos; property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
+      <translation type="unfinished">If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the &apos;order by&apos; property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="400"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post processing will create multiple output files based on the &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; setting.
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post processing will create multiple output files based on the &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; setting.
 
 
-For example, if &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to Tool, the first output file will contain the first tool change and all operations, in all coordinate systems, that can be done with that tool before the next tool change is called.
+For example, if &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to Tool, the first output file will contain the first tool change and all operations, in all coordinate systems, that can be done with that tool before the next tool change is called.
 
 
-If &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to &lt;span style=" font-style:italic;"&gt;operation&lt;/span&gt; and &lt;span style=" font-style:italic;"&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si vrai, le post-traitement créera plusieurs fichiers de sortie basés sur le paramètre &lt;span style=" font-style:italic;"&gt;ordre par&lt;/span&gt;.
+If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to &lt;span style=&quot; font-style:italic;&quot;&gt;operation&lt;/span&gt; and &lt;span style=&quot; font-style:italic;&quot;&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post processing will create multiple output files based on the &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; setting.
 
-Par exemple, si &lt;span style=" font-style:italic;"&gt;ordre par&lt;/span&gt; est défini sur Outil, le premier fichier de sortie contiendra le premier changement d'outil et toutes les opérations, dans tous les systèmes de coordonnées, ce qui peut être fait avec cet outil avant que le prochain changement d'outil ne soit appelé.
 
-Si &lt;span style=" font-style:italic;"&gt;ordre par&lt;/span&gt; est réglé sur &lt;span style=" font-style:italic;"&gt;opération&lt;/span&gt; et &lt;span style=" font-style:italic;"&gt;sortie séparée&lt;/span&gt; est vrai, chaque opération sera écrite dans un fichier séparé.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+For example, if &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to Tool, the first output file will contain the first tool change and all operations, in all coordinate systems, that can be done with that tool before the next tool change is called.
+
+
+If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to &lt;span style=&quot; font-style:italic;&quot;&gt;operation&lt;/span&gt; and &lt;span style=&quot; font-style:italic;&quot;&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1037"/>
@@ -3947,7 +3979,7 @@ Par défaut : OpToolDiameter</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1081"/>
       <source>Heights</source>
-      <translation>Hauteur</translation>
+      <translation>Hauteurs</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1087"/>
@@ -3962,7 +3994,7 @@ Par défaut : OpToolDiameter</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1107"/>
       <source>Clearance</source>
-      <translation>Jeu</translation>
+      <translation>Dégagement</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1123"/>
@@ -3976,12 +4008,12 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1132"/>
       <source>Safe</source>
-      <translation>Sécurisé</translation>
+      <translation>Sécurité</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1160"/>
       <source>Coolant</source>
-      <translation>Liquide de refroidissement</translation>
+      <translation>Refroidissement</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1166"/>
@@ -4059,60 +4091,60 @@ Par défaut : 3 mm</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="186"/>
+      <location filename="../../../InitGui.py" line="187"/>
       <source>Project Setup</source>
       <translation>Configuration du projet</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="187"/>
+      <location filename="../../../InitGui.py" line="188"/>
       <source>Tool Commands</source>
       <translation>Commandes de l’outil</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="189"/>
+      <location filename="../../../InitGui.py" line="190"/>
       <source>New Operations</source>
       <translation>Nouvelles opérations</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="193"/>
-      <location filename="../../../InitGui.py" line="230"/>
+      <location filename="../../../InitGui.py" line="194"/>
+      <location filename="../../../InitGui.py" line="231"/>
       <source>Path Modification</source>
       <translation>Modifications du parcours</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="197"/>
+      <location filename="../../../InitGui.py" line="198"/>
       <source>Helpful Tools</source>
       <translation>Outils utiles</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="201"/>
-      <location filename="../../../InitGui.py" line="215"/>
-      <location filename="../../../InitGui.py" line="222"/>
-      <location filename="../../../InitGui.py" line="229"/>
-      <location filename="../../../InitGui.py" line="237"/>
-      <location filename="../../../InitGui.py" line="243"/>
-      <location filename="../../../InitGui.py" line="245"/>
-      <location filename="../../../InitGui.py" line="248"/>
+      <location filename="../../../InitGui.py" line="202"/>
+      <location filename="../../../InitGui.py" line="216"/>
+      <location filename="../../../InitGui.py" line="223"/>
+      <location filename="../../../InitGui.py" line="230"/>
+      <location filename="../../../InitGui.py" line="238"/>
+      <location filename="../../../InitGui.py" line="244"/>
+      <location filename="../../../InitGui.py" line="246"/>
+      <location filename="../../../InitGui.py" line="249"/>
       <source>&amp;CAM</source>
       <translation>&amp;CAM</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="216"/>
+      <location filename="../../../InitGui.py" line="217"/>
       <source>Path Dressup</source>
       <translation>Finitions du parcours</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="223"/>
+      <location filename="../../../InitGui.py" line="224"/>
       <source>Supplemental Commands</source>
       <translation>Autres commandes</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="238"/>
+      <location filename="../../../InitGui.py" line="239"/>
       <source>Specialty Operations</source>
       <translation>Opérations spécialisées</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="249"/>
+      <location filename="../../../InitGui.py" line="250"/>
       <source>Utils</source>
       <translation>Utilitaires</translation>
     </message>
@@ -4137,7 +4169,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="84"/>
       <source>Camotics Project (*.camotics)</source>
-      <translation>Projet camotics (*.camotics)</translation>
+      <translation>Projet CAMotics (*.camotics)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="688"/>
@@ -4159,17 +4191,17 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="701"/>
       <source>Horizontal feedrate</source>
-      <translation>Débit d'alimentation horizontale</translation>
+      <translation>Vitesse d'avance horizontale</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="704"/>
       <source>Vertical feedrate</source>
-      <translation>Débit d'alimentation verticale</translation>
+      <translation>Vitesse d'avance verticale</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="707"/>
       <source>Spindle RPM</source>
-      <translation>tr/min de la broche</translation>
+      <translation>Vitesse de rotation de la broche</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="184"/>
@@ -4179,7 +4211,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="185"/>
       <source>CCW</source>
-      <translation>dans le sens contraire des aiguilles d'une montre</translation>
+      <translation>Sens anti-horaire</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
@@ -4349,14 +4381,14 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Dressup/DogboneII.py" line="250"/>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="463"/>
-      <source>Dressup length if incision is set to 'custom'</source>
-      <translation>Longueur de la finition si incision est réglée sur "personnalisée".</translation>
+      <source>Dressup length if incision is set to &apos;custom&apos;</source>
+      <translation type="unfinished">Dressup length if incision is set to &apos;custom&apos;</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/DogboneII.py" line="258"/>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="445"/>
-      <source>Bones that aren't dressed up</source>
-      <translation>Les dégagements des angles qui ne sont pas finalisés</translation>
+      <source>Bones that aren&apos;t dressed up</source>
+      <translation type="unfinished">Bones that aren&apos;t dressed up</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="946"/>
@@ -4764,7 +4796,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1066"/>
       <source>Internal input state</source>
-      <translation>État de l'entrée interne</translation>
+      <translation>État des saisies internes</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1075"/>
@@ -4856,12 +4888,12 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Base.py" line="236"/>
       <source>Starting Depth of Tool- first cut depth in Z</source>
-      <translation>Profondeur de départ de l'outil - première profondeur de coupe en Z</translation>
+      <translation>Profondeur initiale de l'outil : première profondeur de coupe en Z</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="244"/>
       <source>Final Depth of Tool- lowest value in Z</source>
-      <translation>Profondeur finale de l'outil - valeur la plus basse en Z</translation>
+      <translation>Profondeur finale de l'outil : valeur la plus basse en Z</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="258"/>
@@ -4870,6 +4902,7 @@ Par défaut : 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="269"/>
+      <location filename="../../../Path/Op/Base.py" line="471"/>
       <source>Incremental Step Down of Tool</source>
       <translation>Pas de descente incrémentale de l'outil</translation>
     </message>
@@ -4971,7 +5004,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="125"/>
       <source>Incremental Drill depth before retracting to clear chips</source>
-      <translation>Profondeur de perçage incrémentielle avant retrait pour éliminer les copeaux</translation>
+      <translation>Profondeur de perçage incrémentale avant de se rétracter pour éliminer les copeaux</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="131"/>
@@ -5019,7 +5052,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Engrave.py" line="71"/>
       <location filename="../../../Path/Op/Engrave.py" line="81"/>
-      <location filename="../../../Path/Op/Vcarve.py" line="214"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="285"/>
       <source>Additional base objects to be engraved</source>
       <translation>Objets de base supplémentaires à graver</translation>
     </message>
@@ -5092,12 +5125,12 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="77"/>
       <source>Use adaptive algorithm to eliminate excessive air milling above planar pocket top.</source>
-      <translation>Utiliser l'algorithme adaptatif pour éliminer l'excès de fraisage en l'air au-dessus du plan supérieur de la poche.</translation>
+      <translation>Utiliser l'algorithme adaptatif pour éviter les passages à vide inutiles au-dessus d'une poche.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="87"/>
       <source>Use adaptive algorithm to eliminate excessive air milling below planar pocket bottom.</source>
-      <translation>Utiliser l'algorithme adaptatif pour éliminer l'excès de fraisage en l'air sous le plan inférieur de la poche.</translation>
+      <translation>Utiliser l'algorithme adaptatif pour éviter les passages à vide inutiles au fond d'une poche plate.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="97"/>
@@ -5307,7 +5340,7 @@ Par défaut : 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="153"/>
       <location filename="../../../Path/Op/Surface.py" line="194"/>
       <source>Stop index(angle) for rotational scan</source>
-      <translation>Arrêter l'index(angle) pour une analyse rotationnelle</translation>
+      <translation>Arrêter l'index (angle) pour le balayage rotationnel</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="162"/>
@@ -5327,18 +5360,19 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="186"/>
       <source>Start index(angle) for rotational scan</source>
-      <translation>Démarrer l'index(angle) pour une analyse rotationnelle</translation>
+      <translation>Démarrer l'index (angle) pour le balayage rotationnel</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="203"/>
       <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
-      <translation>Planaire : balayage surfacique plat et 3D. Rotationnel : balayage rotatif sur le 4ème axe.</translation>
+      <translation>Planaire : plan, balayage surfacique 3D.
+Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="212"/>
       <location filename="../../../Path/Op/Waterline.py" line="232"/>
-      <source>Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.</source>
-      <translation>Éviter de couper les "N" dernières faces dans la liste des faces sélectionnées de la géométrie de base.</translation>
+      <source>Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</source>
+      <translation type="unfinished">Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="220"/>
@@ -5426,8 +5460,8 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="369"/>
       <location filename="../../../Path/Op/Waterline.py" line="407"/>
-      <source>Set the stepover percentage, based on the tool's diameter.</source>
-      <translation>Définir le pourcentage de recouvrement entre les passes en fonction du diamètre de l'outil.</translation>
+      <source>Set the stepover percentage, based on the tool&apos;s diameter.</source>
+      <translation type="unfinished">Set the stepover percentage, based on the tool&apos;s diameter.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="378"/>
@@ -5475,23 +5509,23 @@ Par défaut : 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="349"/>
-      <source>Set thread's major diameter</source>
-      <translation>Définir le diamètre extérieur du filetage</translation>
+      <source>Set thread&apos;s major diameter</source>
+      <translation type="unfinished">Set thread&apos;s major diameter</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="355"/>
-      <source>Set thread's minor diameter</source>
-      <translation>Définir le diamètre intérieur du filetage</translation>
+      <source>Set thread&apos;s minor diameter</source>
+      <translation type="unfinished">Set thread&apos;s minor diameter</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="363"/>
-      <source>Set thread's pitch - used for metric threads</source>
-      <translation>Définir le pas du filetage, utilisé pour les filetages métriques</translation>
+      <source>Set thread&apos;s pitch - used for metric threads</source>
+      <translation type="unfinished">Set thread&apos;s pitch - used for metric threads</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="372"/>
-      <source>Set thread's TPI (turns per inch) - used for imperial threads</source>
-      <translation>Définir le pas du filetage (tours par pouce), utilisé pour les filetages impériaux</translation>
+      <source>Set thread&apos;s TPI (turns per inch) - used for imperial threads</source>
+      <translation type="unfinished">Set thread&apos;s TPI (turns per inch) - used for imperial threads</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="381"/>
@@ -5519,19 +5553,34 @@ Par défaut : 3 mm</translation>
       <translation>Opération pour nettoyer l'intérieur du filetage</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="226"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="293"/>
+      <source>Optimize movements</source>
+      <translation type="unfinished">Optimize movements</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Vcarve.py" line="300"/>
+      <source>Add finishing pass</source>
+      <translation type="unfinished">Add finishing pass</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Vcarve.py" line="307"/>
+      <source>Finishing pass Z offset</source>
+      <translation type="unfinished">Finishing pass Z offset</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Vcarve.py" line="321"/>
       <source>The deflection value for discretizing arcs</source>
       <translation>La valeur de déflexion pour discrétiser les arcs</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="236"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="331"/>
       <source>Cutoff for removing colinear segments (degrees). 
                         default=10.0.</source>
       <translation>Seuil de décision pour la suppression des segments colinéaires (degrés). 
                         par défaut=10.0.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="242"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="337"/>
       <source>Vcarve Tolerance</source>
       <translation>Tolérance de la gravure en V</translation>
     </message>
@@ -5875,7 +5924,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="811"/>
       <source>Canceling 3D Surface operation. Error creating OCL cutter.</source>
-      <translation>Annulation de l'opération de surface 3D. Erreur lors de la création de l'outil de découpe d'openCAMlib.</translation>
+      <translation>Annulation de l'opération de surfaçage 3D. Erreur lors de la création de l'outil de coupe d'openCAMlib.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1042"/>
@@ -5885,7 +5934,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1047"/>
       <source>Canceled 3D Surface operation.</source>
-      <translation>Opération de surface 3D annulée.</translation>
+      <translation>L'opération de surfaçage 3D est annulée.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1147"/>
@@ -5910,7 +5959,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1197"/>
       <source>No scan data to convert to G-code.</source>
-      <translation>Aucune donnée d'analyse à convertir en G-code.</translation>
+      <translation>Aucune donnée de balayage à convertir en G-code.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="2749"/>
@@ -5930,7 +5979,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="2787"/>
       <source>OCL tool not available. Cannot determine is cutter has tilt available.</source>
-      <translation>Outil d'openCAMlib indisponible. Impossible de déterminer si l'outil de découpe a une inclinaison disponible.</translation>
+      <translation>L'outil d'openCAMlib est indisponible. Il n'est pas possible de déterminer si l'outil de coupe a une inclinaison disponible.</translation>
     </message>
   </context>
   <context>
@@ -5943,7 +5992,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="121"/>
       <source>Cannot calculate the Center Of Mass.</source>
-      <translation>Impossible de calculer le centre de masse.</translation>
+      <translation>Impossible de calculer le centre d'inertie.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="126"/>
@@ -5979,7 +6028,7 @@ Par défaut : 3 mm</translation>
   <context>
     <name>PathVcarve</name>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="396"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="583"/>
       <source>The Job Base Object has no engraveable element. Engraving operation will produce no output.</source>
       <translation>La tâche de base n'a pas d'élément à graver. L'opération de gravure ne produira aucun résultat.</translation>
     </message>
@@ -6014,7 +6063,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="106"/>
       <source>CenterOfMass</source>
-      <translation>Centre de la masse</translation>
+      <translation>Centre d'inertie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="107"/>
@@ -6046,7 +6095,7 @@ Par défaut : 3 mm</translation>
       <location filename="../../../Path/Op/Waterline.py" line="114"/>
       <location filename="../../../Path/Op/Waterline.py" line="127"/>
       <source>CircularZigZag</source>
-      <translation>ZigZag Circulaire</translation>
+      <translation>Circulaire en zigzag</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="115"/>
@@ -6075,12 +6124,12 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="121"/>
       <source>Conventional</source>
-      <translation>Conventionnel</translation>
+      <translation>Opposition</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="122"/>
       <source>Climb</source>
-      <translation>Escalader</translation>
+      <translation>En avalant</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="125"/>
@@ -6218,7 +6267,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="835"/>
       <source>Heights</source>
-      <translation>Hauteur</translation>
+      <translation>Hauteurs</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="913"/>
@@ -6320,7 +6369,7 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../InitGui.py" line="88"/>
       <location filename="../../../InitGui.py" line="91"/>
-      <location filename="../../../InitGui.py" line="266"/>
+      <location filename="../../../InitGui.py" line="267"/>
       <location filename="../../AppPathGui.cpp" line="90"/>
       <source>CAM</source>
       <translation>CAM</translation>
@@ -6329,15 +6378,15 @@ Abandon de la création de l'opération</translation>
   <context>
     <name>CAM_EngraveTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="142"/>
+      <location filename="../../../InitGui.py" line="143"/>
       <source>Engraving Operations</source>
-      <translation>Opération de gravure</translation>
+      <translation>Opérations de gravure</translation>
     </message>
   </context>
   <context>
     <name>CAM_3dTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="179"/>
+      <location filename="../../../InitGui.py" line="180"/>
       <source>3D Operations</source>
       <translation>Opérations 3D</translation>
     </message>
@@ -6357,7 +6406,7 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../PathCommands.py" line="120"/>
       <source>Feature Completion</source>
-      <translation>Achèvement de la fonction</translation>
+      <translation>Fonction terminée</translation>
     </message>
     <message>
       <location filename="../../../PathCommands.py" line="121"/>
@@ -6416,12 +6465,12 @@ Abandon de la création de l'opération</translation>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="81"/>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="155"/>
       <source>Extend</source>
-      <translation>Étendre</translation>
+      <translation>Prolonger</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="88"/>
       <source>extends the leadin distance</source>
-      <translation>prolonge la rampe d'entrée</translation>
+      <translation>prolonger la rampe d'entrée</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="102"/>
@@ -6441,12 +6490,12 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="162"/>
       <source>Extends the leadout distance</source>
-      <translation>Prolonge la rampe de sortie</translation>
+      <translation>Prolonger la rampe de sortie</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="182"/>
       <source>Plunge at rapid speed</source>
-      <translation>Plongée à la vitesse rapide</translation>
+      <translation>Descendre à vitesse rapide</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="185"/>
@@ -6471,7 +6520,7 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="205"/>
       <source>Keep Tool Down</source>
-      <translation>Garder l'outil vers le bas</translation>
+      <translation>Garder l'outil en bas</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="52"/>
@@ -6517,7 +6566,7 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="496"/>
       <source>Please select a Profile object</source>
-      <translation>Veuillez sélectionner un objet Profil</translation>
+      <translation>Sélectionner un contournage</translation>
     </message>
   </context>
   <context>
@@ -6561,7 +6610,7 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="1307"/>
       <source>Cannot insert holding tags for this path - please select a Profile path</source>
-      <translation>Impossible d'ajouter des points d'attaches pour ce parcours - Veuillez sélectionner un profil de parcours</translation>
+      <translation>Impossible d'ajouter des attaches de maintien pour ce parcours. Sélectionner un parcours de contournage.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="1357"/>
@@ -6571,7 +6620,7 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="1362"/>
       <source>Please select a Profile object</source>
-      <translation>Veuillez sélectionner un objet Profil</translation>
+      <translation>Sélectionner un contournage</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/TagPreferences.py" line="94"/>
@@ -6627,7 +6676,7 @@ Abandon de la création de l'opération</translation>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="294"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="376"/>
       <source>Please select a toolpath object</source>
-      <translation>Sélectionner un objet parcours d'outil</translation>
+      <translation>Sélectionner un parcours d'outil</translation>
     </message>
   </context>
   <context>
@@ -6682,7 +6731,7 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="634"/>
       <source>Please select a toolpath object</source>
-      <translation>Sélectionner un objet parcours d'outil</translation>
+      <translation>Sélectionner un parcours d'outil</translation>
     </message>
   </context>
   <context>
@@ -6703,12 +6752,12 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="132"/>
       <source>RampMethod2</source>
-      <translation>Méthode rampe 1</translation>
+      <translation>Méthode rampe 2</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="133"/>
       <source>RampMethod3</source>
-      <translation>Méthode rampe 1</translation>
+      <translation>Méthode rampe 3</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="134"/>
@@ -6758,7 +6807,7 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="931"/>
       <source>Please select a Profile object</source>
-      <translation>Veuillez sélectionner un objet Profil</translation>
+      <translation>Sélectionner un contournage</translation>
     </message>
   </context>
   <context>
@@ -6800,7 +6849,7 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="350"/>
       <source>Use Probe Map to correct Z depth</source>
-      <translation>Utiliser la carte de sonde pour corriger la profondeur de Z</translation>
+      <translation>Utiliser la carte de la sonde pour corriger la profondeur de Z</translation>
     </message>
   </context>
   <context>
@@ -6864,12 +6913,12 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1387"/>
       <source>Unsupported stock object %s</source>
-      <translation>Objet brut %s non pris en charge</translation>
+      <translation>Le brut %s n'est pas pris en charge</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1403"/>
       <source>Unsupported stock type %s (%d)</source>
-      <translation>Type de brut %s (%d) non pris en charge</translation>
+      <translation>Le type de brut %s (%d) n'est pas pris en charge</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1494"/>
@@ -6916,36 +6965,37 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="59"/>
       <source>Creates a CAM Job</source>
-      <translation>Créer une tâche CAM</translation>
+      <translation>Créer une tâche</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
       <source>The currently selected unit schema: 
-     '{}' for this document
- Does not use 'minutes' for velocity values. 
+     &apos;{}&apos; for this document
+ Does not use &apos;minutes&apos; for velocity values. 
  
 CNC machines require feed rate to be expressed in 
 unit/minute. To ensure correct G-code: 
 Select a minute-based schema in preferences.
 For example:
-    'Metric, Small Parts &amp; CNC'
-    'US Customary'
-    'Imperial Decimal'</source>
-      <translation>Le schéma d'unité actuellement sélectionné "{}" pour ce document n'utilise pas les "minutes"
-pour les valeurs de vitesse.
-
-Les machines à commande numérique exigent que la vitesse d'avance soit exprimée en
-unité/minute. Pour garantir un G-code correct, sélectionnez un schéma basé sur les minutes
-dans les préférences.
-Par exemple :
-    - Métrique, petites pièces et CNC
-    - Unités de mesure américaines
-    - Décimale impériale</translation>
+    &apos;Metric, Small Parts &amp; CNC&apos;
+    &apos;US Customary&apos;
+    &apos;Imperial Decimal&apos;</source>
+      <translation type="unfinished">The currently selected unit schema: 
+     &apos;{}&apos; for this document
+ Does not use &apos;minutes&apos; for velocity values. 
+ 
+CNC machines require feed rate to be expressed in 
+unit/minute. To ensure correct G-code: 
+Select a minute-based schema in preferences.
+For example:
+    &apos;Metric, Small Parts &amp; CNC&apos;
+    &apos;US Customary&apos;
+    &apos;Imperial Decimal&apos;</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="79"/>
-      <source>Don't Show This Anymore</source>
-      <translation>Ne plus afficher ceci dorénavant</translation>
+      <source>Don&apos;t Show This Anymore</source>
+      <translation type="unfinished">Don&apos;t Show This Anymore</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="88"/>
@@ -6985,7 +7035,7 @@ Par exemple :
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="383"/>
       <source>Unsupported stock type</source>
-      <translation>Type de brut non pris en charge</translation>
+      <translation>Le type de brut n'est pas pris en charge</translation>
     </message>
   </context>
   <context>
@@ -6993,12 +7043,12 @@ Par exemple :
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="314"/>
       <source>Camotics</source>
-      <translation>Camotics</translation>
+      <translation>CAMotics</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
       <source>Simulate using Camotics</source>
-      <translation>Simuler avec Camotics</translation>
+      <translation>Simuler avec CAMotics</translation>
     </message>
   </context>
   <context>
@@ -7006,12 +7056,12 @@ Par exemple :
     <message>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="153"/>
       <source>Fixture</source>
-      <translation>Fixation</translation>
+      <translation>Fixations</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="156"/>
       <source>Creates a Fixture Offset</source>
-      <translation>Créer un décalage pour la fixation</translation>
+      <translation>Créer un décalage pour les fixations</translation>
     </message>
   </context>
   <context>
@@ -7050,7 +7100,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="105"/>
       <source>Exports CAM Job as a template to be used for other jobs</source>
-      <translation>Exporter la tâche CAM comme modèle à utiliser pour d'autres tâches</translation>
+      <translation>Exporter la tâche comme modèle à utiliser pour d'autres tâches</translation>
     </message>
   </context>
   <context>
@@ -7157,12 +7207,12 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
       <source>Tool Controller</source>
-      <translation>Contrôleur d'outil</translation>
+      <translation>Contrôleur d'outils</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="60"/>
       <source>Feed Rate</source>
-      <translation>Débit d'alimentation</translation>
+      <translation>Vitesse d'avance</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="85"/>
@@ -7321,8 +7371,8 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="236"/>
-      <source>The Job's last post-processed file is missing</source>
-      <translation>Le dernier fichier post-traité de la tâche est manquant</translation>
+      <source>The Job&apos;s last post-processed file is missing</source>
+      <translation type="unfinished">The Job&apos;s last post-processed file is missing</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="363"/>
@@ -7342,18 +7392,18 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="420"/>
-      <source>Tool Controller '{}' has no feedrate</source>
-      <translation>Le contrôleur d'outils "{}" n'a pas de vitesse d'avance</translation>
+      <source>Tool Controller &apos;{}&apos; has no feedrate</source>
+      <translation type="unfinished">Tool Controller &apos;{}&apos; has no feedrate</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="432"/>
-      <source>Tool Controller '{}' has no spindlespeed</source>
-      <translation>Le contrôleur d'outils "{}" n'a pas de vitesse de rotation</translation>
+      <source>Tool Controller &apos;{}&apos; has no spindlespeed</source>
+      <translation type="unfinished">Tool Controller &apos;{}&apos; has no spindlespeed</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="457"/>
-      <source>Tool Controller '{}' is not used</source>
-      <translation>Le contrôleur d'outils "{}" n'est pas utilisé</translation>
+      <source>Tool Controller &apos;{}&apos; is not used</source>
+      <translation type="unfinished">Tool Controller &apos;{}&apos; is not used</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="334"/>
@@ -7375,8 +7425,29 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Simulator.py" line="635"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="291"/>
       <source>Simulate G-code on stock</source>
       <translation>Simuler le G-code sur le brut</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="260"/>
+      <source>High</source>
+      <translation type="unfinished">High</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="262"/>
+      <source>Low</source>
+      <translation type="unfinished">Low</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="264"/>
+      <source>Medium</source>
+      <translation type="unfinished">Medium</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="287"/>
+      <source>New CAM Simulator</source>
+      <translation type="unfinished">New CAM Simulator</translation>
     </message>
   </context>
   <context>
@@ -7433,62 +7504,62 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="635"/>
+      <location filename="../../../Path/Op/Base.py" line="644"/>
       <source>No parent job found for operation.</source>
       <translation>Aucune tâche d’origine trouvée pour l’opération.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="641"/>
-      <source>Parent job %s doesn't have a base object</source>
-      <translation>La tâche d’origine %s n’a pas d’objet de base</translation>
+      <location filename="../../../Path/Op/Base.py" line="650"/>
+      <source>Parent job %s doesn&apos;t have a base object</source>
+      <translation type="unfinished">Parent job %s doesn&apos;t have a base object</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="787"/>
+      <location filename="../../../Path/Op/Base.py" line="796"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation>Aucun contrôleur d'outil n'est sélectionné. Il faut un outil pour créer un parcours.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="801"/>
+      <location filename="../../../Path/Op/Base.py" line="810"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation>Aucun outil trouvé ou bien le diamètre est nul. Il faut un outil pour créer un parcours.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="836"/>
+      <location filename="../../../Path/Op/Base.py" line="845"/>
       <source>No Tool Controller selected.</source>
       <translation>Aucun contrôleur d'outil sélectionné.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="839"/>
+      <location filename="../../../Path/Op/Base.py" line="848"/>
       <source>Tool Error</source>
       <translation>Erreur de l'outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="852"/>
+      <location filename="../../../Path/Op/Base.py" line="861"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation>Les vitesses d'avance du contrôleur d'outils sont nécessaires pour calculer le temps de cycle.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="855"/>
+      <location filename="../../../Path/Op/Base.py" line="864"/>
       <source>Feedrate Error</source>
-      <translation>Erreur de débit d'alimentation</translation>
+      <translation>Erreur de la vitesse d'avance</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="863"/>
+      <location filename="../../../Path/Op/Base.py" line="872"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
       <translation>Ajouter des vitesses rapides du contrôleur d'outils sur la feuille de configuration pour des temps de cycle plus précis.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="872"/>
+      <location filename="../../../Path/Op/Base.py" line="881"/>
       <source>Cycletime Error</source>
       <translation>Erreur de temps de cycle</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="895"/>
+      <location filename="../../../Path/Op/Base.py" line="904"/>
       <source>Base object %s.%s already in the list</source>
       <translation>L'objet de base %s. %s est déjà dans la liste</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="908"/>
+      <location filename="../../../Path/Op/Base.py" line="917"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation>L'objet de base %s.%s est rejeté par l'opération</translation>
     </message>
@@ -7520,7 +7591,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Engrave.py" line="76"/>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="65"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="68"/>
       <source>%s is not a Base Model object of the job %s</source>
       <translation>%s n’est pas un objet Modèle de base de la tâche %s</translation>
     </message>
@@ -7636,12 +7707,12 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="61"/>
       <source>Climb</source>
-      <translation>Escalader</translation>
+      <translation>En avalant</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="62"/>
       <source>Conventional</source>
-      <translation>Conventionnel</translation>
+      <translation>Opposition</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="65"/>
@@ -7757,7 +7828,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
       <location filename="../../../Path/Op/Slot.py" line="271"/>
       <location filename="../../../Path/Op/Slot.py" line="283"/>
       <source>Lowest Point</source>
-      <translation>Point le moin élevé</translation>
+      <translation>Point le plus bas</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="272"/>
@@ -7794,12 +7865,12 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Op/Slot.py" line="620"/>
       <source>Custom points not at same Z height.</source>
-      <translation>Les points personnalisés ne sont pas à la même hauteur de Z.</translation>
+      <translation>Les points personnalisés ne sont pas à la même hauteur en Z.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="678"/>
       <source>Current Extend Radius value produces negative arc radius.</source>
-      <translation>La valeur courante de l'extension du rayon produit un rayon d'arc négatif.</translation>
+      <translation>L'actuelle valeur de l'extension du rayon produit un rayon d'arc négatif.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="696"/>
@@ -7810,7 +7881,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
       <location filename="../../../Path/Op/Slot.py" line="724"/>
       <location filename="../../../Path/Op/Slot.py" line="872"/>
       <source>operation collides with model.</source>
-      <translation>l'opération entre en collision avec le modèle.</translation>
+      <translation>L'opération entre en collision avec le modèle.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="837"/>
@@ -7826,7 +7897,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Op/Slot.py" line="988"/>
       <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
-      <translation>Un seul sommet sélectionné. Ajoutez une autre fonction à la géométrie de base.</translation>
+      <translation>Un seul sommet sélectionné. Ajouter une autre fonction à la géométrie de base.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="1014"/>
@@ -7841,7 +7912,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Op/Slot.py" line="1095"/>
       <source>value error.</source>
-      <translation>erreur de valeur.</translation>
+      <translation>erreur de la valeur</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="1157"/>
@@ -7877,7 +7948,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
       <location filename="../../../Path/Op/Slot.py" line="1921"/>
       <location filename="../../../Path/Op/Slot.py" line="1935"/>
       <source>Current offset value produces negative radius.</source>
-      <translation>La valeur du décalage actuel produit un rayon négatif.</translation>
+      <translation>L'actuelle valeur du décalage produit un rayon négatif.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Slot.py" line="281"/>
@@ -7905,7 +7976,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Op/Surface.py" line="453"/>
       <source>CenterOfMass</source>
-      <translation>Centre de la masse</translation>
+      <translation>Centre d'inertie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="454"/>
@@ -7925,12 +7996,12 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Op/Surface.py" line="459"/>
       <source>Conventional</source>
-      <translation>Conventionnel</translation>
+      <translation>Opposition</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="460"/>
       <source>Climb</source>
-      <translation>Escalader</translation>
+      <translation>En avalant</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="463"/>
@@ -7940,7 +8011,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Op/Surface.py" line="464"/>
       <source>CircularZigZag</source>
-      <translation>ZigZag Circulaire</translation>
+      <translation>Circulaire en zigzag</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="465"/>
@@ -8007,7 +8078,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Op/Surface.py" line="485"/>
       <source>First</source>
-      <translation>Européenne</translation>
+      <translation>Premier</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="486"/>
@@ -8027,12 +8098,12 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Op/Gui/Surface.py" line="282"/>
       <source>3D Surface</source>
-      <translation>Surface 3D</translation>
+      <translation>Surfacer 3D</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Surface.py" line="285"/>
       <source>Create a 3D Surface Operation from a model</source>
-      <translation>Créer une opération de surface 3D à partir d'un modèle</translation>
+      <translation>Créer une opération de surfaçage 3D à partir d'un modèle</translation>
     </message>
   </context>
   <context>
@@ -8095,12 +8166,12 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="293"/>
       <source>Climb</source>
-      <translation>Escalader</translation>
+      <translation>En avalant</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="297"/>
       <source>Conventional</source>
-      <translation>Conventionnel</translation>
+      <translation>Opposition</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="253"/>
@@ -8116,22 +8187,22 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
   <context>
     <name>CAM_Vcarve</name>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="359"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="546"/>
       <source>VCarve requires an engraving cutter with a cutting edge angle</source>
       <translation>La gravure en V nécessite une fraise à graver avec un angle de coupe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="366"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="553"/>
       <source>Engraver cutting edge angle must be &lt; 180 degrees.</source>
       <translation>L'angle du bord de coupe du graveur doit être &lt; 180 degrés.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="166"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="219"/>
       <source>Vcarve</source>
       <translation>Graver en V</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="167"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="220"/>
       <source>Creates a medial line engraving toolpath</source>
       <translation>Créer un parcours d'outil de gravure en ligne médiane</translation>
     </message>
@@ -8334,7 +8405,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="131"/>
       <source>Forward</source>
-      <translation>sens horaire</translation>
+      <translation>Sens horaire</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="132"/>
@@ -8407,17 +8478,17 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
   <context>
     <name>CAM_ToolBit</name>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="77"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="80"/>
       <source>Toolbit working directory not set up. Do that now?</source>
       <translation>Le répertoire de travail des outils coupants n'est pas configuré. Voulez-vous le faire maintenant ?</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="85"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="88"/>
       <source>Choose a writable location for your toolbits</source>
       <translation>Choisir un emplacement accessible en écriture pour vos outils coupants</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="125"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="128"/>
       <source>Toolbit Working directory {} needs these sudirectories:
  {} 
  Create them?</source>
@@ -8426,41 +8497,41 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
  Voulez-vous les créer ?</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="144"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="147"/>
       <source>Copy example files to new {} directory?</source>
       <translation>Copier les fichiers des exemples dans le nouveau répertoire {} ?</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="668"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="799"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="746"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="877"/>
       <source>Tooltable JSON (*.fctl)</source>
       <translation>Table d'outils JSON (*.fctl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="670"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="804"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="748"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="882"/>
       <source>Save toolbit library</source>
       <translation>Enregistrer la bibliothèque d'outils coupants</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="731"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="809"/>
       <source>Tool</source>
       <translation>Outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="732"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="810"/>
       <source>Shape</source>
       <translation>Forme</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="800"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="878"/>
       <source>LinuxCNC tooltable (*.tbl)</source>
       <translation>Table d'outils LinuxCNC (*.tbl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="802"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="880"/>
       <source>Camotics tooltable (*.json)</source>
-      <translation>Table d'outils de camotics (*.json)</translation>
+      <translation>Table d'outils de CAMotics (*.json)</translation>
     </message>
   </context>
   <context>
@@ -8523,6 +8594,16 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
       <location filename="../../../Path/Tool/Gui/Bit.py" line="242"/>
       <source>Select Tool Shape</source>
       <translation>Sélectionner la forme de l'outil</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="475"/>
+      <source>Select a library</source>
+      <translation type="unfinished">Select a library</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="479"/>
+      <source>No library selected</source>
+      <translation type="unfinished">No library selected</translation>
     </message>
   </context>
 </TS>

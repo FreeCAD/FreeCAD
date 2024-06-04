@@ -1,5 +1,5 @@
 #include "Base/Unit.h"
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <Base/Exception.h>
 
 // NOLINTBEGIN

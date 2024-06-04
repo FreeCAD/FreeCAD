@@ -2967,17 +2967,17 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="232"/>
       <source>20px</source>
-      <translation type="unfinished">20px</translation>
+      <translation>20px</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="233"/>
       <source>25px</source>
-      <translation type="unfinished">25px</translation>
+      <translation>25px</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="234"/>
       <source>30px</source>
-      <translation type="unfinished">30px</translation>
+      <translation>30px</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="287"/>
@@ -3025,12 +3025,12 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="91"/>
       <source>Daily</source>
-      <translation type="unfinished">Daily</translation>
+      <translation>매일</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="96"/>
       <source>Weekly</source>
-      <translation type="unfinished">Weekly</translation>
+      <translation>매주</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="101"/>
@@ -3045,7 +3045,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="111"/>
       <source>Never</source>
-      <translation type="unfinished">Never</translation>
+      <translation>안 함</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="119"/>
@@ -7724,7 +7724,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../MainWindow.cpp" line="736"/>
       <source>Task List</source>
-      <translation type="unfinished">Task List</translation>
+      <translation>작업 목록</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="761"/>
@@ -7772,14 +7772,14 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../resource.cpp" line="85"/>
       <source>Workbenches</source>
-      <translation>워크벤치</translation>
+      <translation>작업대</translation>
     </message>
     <message>
       <location filename="../resource.cpp" line="86"/>
       <location filename="../resource.cpp" line="87"/>
       <location filename="../resource.cpp" line="88"/>
       <source>Python</source>
-      <translation type="unfinished">Python</translation>
+      <translation>파이썬</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="628"/>
@@ -7807,7 +7807,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Application.cpp" line="1509"/>
       <source>Workbench failure</source>
-      <translation>워크벤치 실패</translation>
+      <translation>작업대 실패</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="1510"/>
@@ -7910,7 +7910,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../CommandDoc.cpp" line="1810"/>
       <source>Paste</source>
-      <translation type="unfinished">Paste</translation>
+      <translation>붙여넣기</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1915"/>
@@ -7933,12 +7933,12 @@ Please check the Report View for more details.</source>
       <location filename="../CommandStd.cpp" line="101"/>
       <location filename="../CommandStd.cpp" line="104"/>
       <source>Cannot load workbench</source>
-      <translation>워크벤치를 불러올 수 없습니다</translation>
+      <translation>작업대를 불러올 수 없습니다</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="105"/>
       <source>A general error occurred while loading the workbench</source>
-      <translation>워크벤치를 불러오는 동안 일반 오류가 발생했습니다</translation>
+      <translation>작업대를 불러오는 동안 일반 오류가 발생했습니다</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="760"/>
@@ -8193,7 +8193,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../Document.cpp" line="1053"/>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
+      <translation>계속 진행 하시겠습니까?</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1072"/>
@@ -8323,12 +8323,12 @@ Would you like to save the file with a different name?</source>
     <message>
       <location filename="../Document.cpp" line="2343"/>
       <source>Undo</source>
-      <translation type="unfinished">Undo</translation>
+      <translation>실행 취소</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="2343"/>
       <source>Redo</source>
-      <translation type="unfinished">Redo</translation>
+      <translation>다시 실행</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="2345"/>
@@ -8714,7 +8714,7 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderDocumentObject.cpp" line="259"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>수정</translation>
     </message>
     <message>
       <location filename="../ViewProviderImagePlane.cpp" line="147"/>
@@ -8806,7 +8806,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="552"/>
       <source>FontSize</source>
-      <translation type="unfinished">FontSize</translation>
+      <translation>글꼴크기</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="555"/>
@@ -8951,7 +8951,7 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="95"/>
       <source>Suppressed</source>
-      <translation type="unfinished">Suppressed</translation>
+      <translation>억제</translation>
     </message>
     <message>
       <location filename="../ToolBarManager.cpp" line="951"/>
@@ -10084,7 +10084,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="137"/>
       <source>Open Recent</source>
-      <translation type="unfinished">Open Recent</translation>
+      <translation>최근 파일 열기</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="138"/>
@@ -11036,13 +11036,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="72"/>
       <source>Workbench</source>
-      <translation>워크벤치</translation>
+      <translation>작업대</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="73"/>
       <location filename="../CommandStd.cpp" line="75"/>
       <source>Switch between workbenches</source>
-      <translation>워크벤치 간 엇바꾸기</translation>
+      <translation>작업대 전환</translation>
     </message>
   </context>
   <context>
@@ -11576,7 +11576,7 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../Workbench.cpp" line="537"/>
       <source>Workbench</source>
-      <translation>워크벤치</translation>
+      <translation>작업대</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="538"/>
@@ -11692,7 +11692,7 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="14"/>
       <source>Notification Area</source>
-      <translation type="unfinished">Notification Area</translation>
+      <translation>알림 영역</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="20"/>
@@ -11778,7 +11778,7 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="181"/>
       <source>Maximum Number of Notifications:</source>
-      <translation type="unfinished">Maximum Number of Notifications:</translation>
+      <translation>최대 알림 갯수</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="188"/>
@@ -11818,7 +11818,7 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="274"/>
       <source>Message List</source>
-      <translation type="unfinished">Message List</translation>
+      <translation>메시지 목록</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="280"/>
@@ -11828,7 +11828,7 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="299"/>
       <source>Maximum Messages (0 = no limit):</source>
-      <translation type="unfinished">Maximum Messages (0 = no limit):</translation>
+      <translation>최대 메시지 갯수( 0 = 무제한)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="306"/>
@@ -11846,7 +11846,7 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="14"/>
       <source>Available Workbenches</source>
-      <translation>사용 가능한 워크벤치</translation>
+      <translation>사용 가능한 작업대</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="101"/>
@@ -11858,13 +11858,13 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="148"/>
       <source>Start up workbench:</source>
-      <translation type="unfinished">Start up workbench:</translation>
+      <translation>시작 작업대</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="155"/>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation>FreeCAD 실행 후 활성화되고 표시될 워크벤치 고르기</translation>
+      <translation>FreeCAD 실행 후 활성화되고 표시될 작업대 고르기</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="73"/>
@@ -11889,12 +11889,12 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="112"/>
       <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
-      <translation>이 옵션을 선택하면, 뷰포트의 각 탭에 대해 활성 상태인 워크벤치를 기억합니다</translation>
+      <translation>이 옵션을 선택하면, 뷰포트의 각 탭에 대해 활성 상태인 작업대를 기억합니다</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="115"/>
       <source>Remember active workbench by tab</source>
-      <translation>탭별로 활성 워크벤치 기억하기</translation>
+      <translation>탭별로 활성 작업대 기억하기</translation>
     </message>
   </context>
   <context>
@@ -11912,17 +11912,17 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="26"/>
       <source>XY-Plane</source>
-      <translation type="unfinished">XY-Plane</translation>
+      <translation>XY 평면</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="36"/>
       <source>XZ-Plane</source>
-      <translation type="unfinished">XZ-Plane</translation>
+      <translation>XZ 평면</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="43"/>
       <source>YZ-Plane</source>
-      <translation type="unfinished">YZ-Plane</translation>
+      <translation>YZ평면</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="53"/>
@@ -11950,17 +11950,17 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
       <source>XY-Plane</source>
-      <translation type="unfinished">XY-Plane</translation>
+      <translation>XY 평면</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="38"/>
       <source>XZ-Plane</source>
-      <translation type="unfinished">XZ-Plane</translation>
+      <translation>XZ 평면</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="45"/>
       <source>YZ-Plane</source>
-      <translation type="unfinished">YZ-Plane</translation>
+      <translation>YZ평면</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="76"/>
@@ -11990,7 +11990,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="159"/>
       <source>Transparency :</source>
-      <translation type="unfinished">Transparency :</translation>
+      <translation>투명도 :</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="191"/>
@@ -12091,7 +12091,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="239"/>
       <source>Sort alphabetically</source>
-      <translation type="unfinished">Sort alphabetically</translation>
+      <translation>알파벳 순으로 정렬</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="524"/>
@@ -12475,7 +12475,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="55"/>
       <source>Default unit system:</source>
-      <translation type="unfinished">Default unit system:</translation>
+      <translation>기본 단위계</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="71"/>
@@ -13455,7 +13455,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="352"/>
       <source>Lock toolbars</source>
-      <translation type="unfinished">Lock toolbars</translation>
+      <translation>도구 모음 잠금</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="353"/>
@@ -13469,7 +13469,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1728"/>
       <source>Properties</source>
-      <translation type="unfinished">Properties</translation>
+      <translation>속성</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1729"/>
@@ -13536,7 +13536,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="77"/>
       <source>Mode:</source>
-      <translation type="unfinished">Mode:</translation>
+      <translation>모드:</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="78"/>
@@ -13546,7 +13546,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="107"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>저장</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="108"/>

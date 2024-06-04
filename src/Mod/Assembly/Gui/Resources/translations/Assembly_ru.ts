@@ -105,12 +105,12 @@
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="416"/>
+      <location filename="../../../CommandCreateJoint.py" line="496"/>
       <source>Toggle grounded</source>
       <translation>Переключить заземление</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="423"/>
+      <location filename="../../../CommandCreateJoint.py" line="503"/>
       <source>Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
       <translation>Заземление детали навсегда фиксирует ее положение в сборке, предотвращая любое движение или вращение. Прежде чем приступить к сборке, вам понадобится хотя бы одна заземленная часть.</translation>
     </message>
@@ -199,57 +199,66 @@
     <name>Assembly</name>
     <message>
       <location filename="../../../JointObject.py" line="48"/>
-      <location filename="../../../JointObject.py" line="61"/>
       <source>Fixed</source>
       <translation>Зафиксировано</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="49"/>
-      <location filename="../../../JointObject.py" line="62"/>
       <source>Revolute</source>
       <translation>Вращение</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="50"/>
-      <location filename="../../../JointObject.py" line="63"/>
       <source>Cylindrical</source>
       <translation>Цилиндрический</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
-      <location filename="../../../JointObject.py" line="64"/>
       <source>Slider</source>
       <translation>Ползунок</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="52"/>
-      <location filename="../../../JointObject.py" line="65"/>
       <source>Ball</source>
       <translation>Шар</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="53"/>
-      <location filename="../../../JointObject.py" line="66"/>
       <source>Distance</source>
       <translation>Расстояние</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
+      <source>Parallel</source>
+      <translation>Параллельно</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="55"/>
+      <source>Perpendicular</source>
+      <translation>Перпендикулярно</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="56"/>
+      <source>Angle</source>
+      <translation>Угол</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="57"/>
       <source>RackPinion</source>
       <translation>Реечная шестерня</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="55"/>
+      <location filename="../../../JointObject.py" line="58"/>
       <source>Screw</source>
       <translation>Винт</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="56"/>
+      <location filename="../../../JointObject.py" line="59"/>
       <source>Gears</source>
       <translation>Шестерни</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="57"/>
+      <location filename="../../../JointObject.py" line="60"/>
       <source>Belt</source>
       <translation>Ремень</translation>
     </message>
@@ -272,127 +281,127 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../JointObject.py" line="173"/>
+      <location filename="../../../JointObject.py" line="184"/>
       <source>The type of the joint</source>
       <translation>Тип соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="192"/>
+      <location filename="../../../JointObject.py" line="203"/>
       <source>The first object of the joint</source>
       <translation>Первый объект объединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="200"/>
+      <location filename="../../../JointObject.py" line="211"/>
       <source>The first part of the joint</source>
       <translation>Первая часть соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="208"/>
+      <location filename="../../../JointObject.py" line="219"/>
       <source>The selected element of the first object</source>
       <translation>Выбранный элемент первого объекта</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="216"/>
+      <location filename="../../../JointObject.py" line="227"/>
       <source>The selected vertex of the first object</source>
       <translation>Выбранная вершина первого объекта</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="227"/>
+      <location filename="../../../JointObject.py" line="238"/>
       <source>This is the local coordinate system within object1 that will be used for the joint.</source>
       <translation>Это локальная система координат внутри объекта 1, которая будет использоваться для соединения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="238"/>
+      <location filename="../../../JointObject.py" line="249"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Это предотвращает перерасчет Placement1, позволяя настраивать позиционирование места размещения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="247"/>
+      <location filename="../../../JointObject.py" line="258"/>
       <source>The second object of the joint</source>
       <translation>Второй объект соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="255"/>
+      <location filename="../../../JointObject.py" line="266"/>
       <source>The second part of the joint</source>
       <translation>Вторая деталь соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="263"/>
+      <location filename="../../../JointObject.py" line="274"/>
       <source>The selected element of the second object</source>
       <translation>Выбранный элемент второго объекта</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="271"/>
+      <location filename="../../../JointObject.py" line="282"/>
       <source>The selected vertex of the second object</source>
       <translation>Выбранная вершина второго объекта</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="282"/>
+      <location filename="../../../JointObject.py" line="293"/>
       <source>This is the local coordinate system within object2 that will be used for the joint.</source>
       <translation>Это локальная система координат внутри объекта 2, которая будет использоваться для соединения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="293"/>
+      <location filename="../../../JointObject.py" line="304"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Это предотвращает перерасчет Placement2, позволяя настраивать позиционирование места размещения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="304"/>
+      <location filename="../../../JointObject.py" line="315"/>
       <source>This is the distance of the joint. It is used only by the distance joint and by RackPinion (pitch radius), Screw and Gears and Belt(radius1)</source>
       <translation>Это расстояние сустава. Он используется только в распорном соединении, а также в реечной шестерне (радиус шага), винте, шестернях и ремне (радиус 1)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="315"/>
+      <location filename="../../../JointObject.py" line="326"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Это второе расстояние сустава. Он используется только зубчатым соединением для хранения второго радиуса.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="326"/>
+      <location filename="../../../JointObject.py" line="337"/>
       <source>This is the rotation of the joint.</source>
       <translation>Это вращение соединения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="337"/>
+      <location filename="../../../JointObject.py" line="348"/>
       <source>This is the offset vector of the joint.</source>
       <translation>Это вектор смещения соединения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="348"/>
+      <location filename="../../../JointObject.py" line="359"/>
       <source>This indicates if the joint is active.</source>
       <translation>Это указывает на то, активно ли соединение.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="360"/>
+      <location filename="../../../JointObject.py" line="371"/>
       <source>Is this joint using limits.</source>
       <translation>Это совместное использование лимитов.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="372"/>
+      <location filename="../../../JointObject.py" line="383"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>Это минимальный предел длины между обеими системами координат (вдоль их оси Z).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="383"/>
+      <location filename="../../../JointObject.py" line="394"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>Это максимальный предел длины между обеими системами координат (вдоль их оси Z).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="394"/>
+      <location filename="../../../JointObject.py" line="405"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>Это минимальный предел угла между обеими системами координат (между их осью X).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="405"/>
+      <location filename="../../../JointObject.py" line="416"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>Это максимальный предел угла между обеими системами координат (между их осью X).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="914"/>
+      <location filename="../../../JointObject.py" line="959"/>
       <source>The object to ground</source>
       <translation>Объект для закрепления</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="926"/>
+      <location filename="../../../JointObject.py" line="971"/>
       <source>This is where the part is grounded.</source>
       <translation>Это деталь для крепления.</translation>
     </message>
@@ -572,17 +581,17 @@
   <context>
     <name>Assembly_CreateJointRackPinion</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="251"/>
+      <location filename="../../../CommandCreateJoint.py" line="331"/>
       <source>Create Rack and Pinion Joint</source>
       <translation>Создайте соединение реечки и шестерни</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="258"/>
+      <location filename="../../../CommandCreateJoint.py" line="338"/>
       <source>Create a Rack and Pinion Joint: Links a part with a sliding joint with a part with a revolute joint.</source>
       <translation>Создание реечного соединения: связывает деталь со скользящим соединением с деталью с вращающимся соединением.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="263"/>
+      <location filename="../../../CommandCreateJoint.py" line="343"/>
       <source>Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.</source>
       <translation>Выберите те же системы координат, что и для вращающихся и скользящих соединений. Радиус шага определяет соотношение движения между рейкой и шестерней.</translation>
     </message>
@@ -590,23 +599,23 @@
   <context>
     <name>Assembly_CreateJointScrew</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="282"/>
+      <location filename="../../../CommandCreateJoint.py" line="362"/>
       <source>Create Screw Joint</source>
       <translation>Создать винтовое соединение</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="289"/>
+      <location filename="../../../CommandCreateJoint.py" line="369"/>
       <source>Create a Screw Joint: Links a part with a sliding joint with a part with a revolute joint.</source>
       <translation>Создать винтовое соединение: связывает деталь со скользящим соединением с деталью с вращающимся соединением.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="294"/>
+      <location filename="../../../CommandCreateJoint.py" line="374"/>
       <source>Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.</source>
       <translation>Выберите те же системы координат, что и для вращающихся и скользящих соединений. Радиус шага определяет соотношение движения между вращающимся винтом и скользящей частью.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="325"/>
-      <location filename="../../../CommandCreateJoint.py" line="356"/>
+      <location filename="../../../CommandCreateJoint.py" line="405"/>
+      <location filename="../../../CommandCreateJoint.py" line="436"/>
       <source>Select the same coordinate systems as the revolute joints.</source>
       <translation>Выберите те же системы координат, что и для вращающихся соединений.</translation>
     </message>
@@ -614,12 +623,12 @@
   <context>
     <name>Assembly_CreateJointGears</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="313"/>
+      <location filename="../../../CommandCreateJoint.py" line="393"/>
       <source>Create Gears Joint</source>
       <translation>Создать соединение шестерен</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="320"/>
+      <location filename="../../../CommandCreateJoint.py" line="400"/>
       <source>Create a Gears Joint: Links two rotating gears together. They will have inverse rotation direction.</source>
       <translation>Создайте соединение шестерен: соединяет две вращающиеся шестерни вместе. Они будут иметь обратное направление вращения.</translation>
     </message>
@@ -627,12 +636,12 @@
   <context>
     <name>Assembly_CreateJointBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="344"/>
+      <location filename="../../../CommandCreateJoint.py" line="424"/>
       <source>Create Belt Joint</source>
       <translation>Создать ременное соединение</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="351"/>
+      <location filename="../../../CommandCreateJoint.py" line="431"/>
       <source>Create a Belt Joint: Links two rotating objects together. They will have the same rotation direction.</source>
       <translation>Создать ременное соединение: связывает два вращающихся объекта вместе. Они будут иметь одинаковое направление вращения.</translation>
     </message>
@@ -640,17 +649,17 @@
   <context>
     <name>Assembly_CreateJointGearBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="376"/>
+      <location filename="../../../CommandCreateJoint.py" line="456"/>
       <source>Create Gear/Belt Joint</source>
       <translation>Создать соединение шестерни/ремня</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="382"/>
+      <location filename="../../../CommandCreateJoint.py" line="462"/>
       <source>Create a Gears/Belt Joint: Links two rotating gears together.</source>
       <translation>Создайте соединение шестерни/ремня: соединяет две вращающиеся шестерни вместе.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="387"/>
+      <location filename="../../../CommandCreateJoint.py" line="467"/>
       <source>Select the same coordinate systems as the revolute joints.</source>
       <translation>Выберите те же системы координат, что и для вращающихся соединений.</translation>
     </message>
@@ -703,6 +712,45 @@ Press ESC to cancel.</source>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="58"/>
       <source>Explode radially</source>
       <translation>Расширить радиально</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointParallel</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="249"/>
+      <source>Create Parallel Joint</source>
+      <translation type="unfinished">Create Parallel Joint</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="256"/>
+      <source>Create an Parallel Joint: Make the Z axis of selected coordinate systems parallel.</source>
+      <translation type="unfinished">Create an Parallel Joint: Make the Z axis of selected coordinate systems parallel.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointPerpendicular</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="277"/>
+      <source>Create Perpendicular Joint</source>
+      <translation type="unfinished">Create Perpendicular Joint</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="284"/>
+      <source>Create an Perpendicular Joint: Make the Z axis of selected coordinate systems perpendicular.</source>
+      <translation type="unfinished">Create an Perpendicular Joint: Make the Z axis of selected coordinate systems perpendicular.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointAngle</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="303"/>
+      <source>Create Angle Joint</source>
+      <translation type="unfinished">Create Angle Joint</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="310"/>
+      <source>Create an Angle Joint: Fix the angle between the Z axis of selected coordinate systems.</source>
+      <translation type="unfinished">Create an Angle Joint: Fix the angle between the Z axis of selected coordinate systems.</translation>
     </message>
   </context>
 </TS>

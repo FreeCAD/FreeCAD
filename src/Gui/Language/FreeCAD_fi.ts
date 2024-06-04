@@ -80,7 +80,7 @@
       <location filename="../CommandTest.cpp" line="716"/>
       <location filename="../CommandTest.cpp" line="717"/>
       <source>Run test cases to verify console messages</source>
-      <translation type="unfinished">Run test cases to verify console messages</translation>
+      <translation>Suorita testit konsoliviestien tarkistamiseksi</translation>
     </message>
   </context>
   <context>
@@ -93,7 +93,7 @@
     <message>
       <location filename="../CommandView.cpp" line="3325"/>
       <source>Clear all visible measurements</source>
-      <translation type="unfinished">Clear all visible measurements</translation>
+      <translation>Tyhjennä kaikki näkyvät mittaustulokset</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../CommandView.cpp" line="3355"/>
       <source>Turn on or off the display of all measurements</source>
-      <translation type="unfinished">Turn on or off the display of all measurements</translation>
+      <translation>Kytke kaikkien mittausten näyttäminen päälle tai pois päältä</translation>
     </message>
   </context>
   <context>
@@ -217,7 +217,7 @@
     <message>
       <location filename="../CommandView.cpp" line="918"/>
       <source>Toggle transparency</source>
-      <translation type="unfinished">Toggle transparency</translation>
+      <translation>Vaihda läpinäkyvyys</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1031"/>
@@ -233,7 +233,7 @@
     <message>
       <location filename="../CommandFeat.cpp" line="122"/>
       <source>Set Random Color</source>
-      <translation type="unfinished">Set Random Color</translation>
+      <translation>Määritä satunnainen väri</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="168"/>
@@ -433,7 +433,7 @@
     <message>
       <location filename="../Application.h" line="257"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
-      <translation type="unfinished">The object will be edited using the mode defined internally to be the most appropriate for the object type</translation>
+      <translation>Objektia muokataan käyttäen sisäisesti määriteltyä moodia, joka on sopivin objektityypille</translation>
     </message>
     <message>
       <location filename="../Application.h" line="261"/>
@@ -443,7 +443,7 @@
     <message>
       <location filename="../Application.h" line="262"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
-      <translation type="unfinished">The object will have its placement editable with the Std TransformManip command</translation>
+      <translation>Objektin sijoittelua voidaan muokata Std TransformManip -komennolla</translation>
     </message>
     <message>
       <location filename="../Application.h" line="266"/>
@@ -453,7 +453,7 @@
     <message>
       <location filename="../Application.h" line="267"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
-      <translation type="unfinished">This edit mode is implemented as available but currently does not seem to be used by any object</translation>
+      <translation>Tämä muokkaustila on toteutettu käytettävissä olevaksi, mutta tällä hetkellä mikään objekti ei näytä käyttävän sitä</translation>
     </message>
     <message>
       <location filename="../Application.h" line="271"/>
@@ -1097,7 +1097,7 @@ Jos tämä ei ole rastitettuna, ominaisuus on nimettävä ainutlaatuisesti, ja s
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="17"/>
       <source>Create New Preference Pack</source>
-      <translation type="unfinished">Create New Preference Pack</translation>
+      <translation>Luo uusi asetuspaketti</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="28"/>
@@ -1120,7 +1120,7 @@ Jos tämä ei ole rastitettuna, ominaisuus on nimettävä ainutlaatuisesti, ja s
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="160"/>
       <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
-      <translation type="unfinished">A preference pack with that name already exists. Do you want to overwrite it?</translation>
+      <translation>Kyseisellä nimellä varustettu asetuspaketti on jo olemassa. Haluatko korvata sen?</translation>
     </message>
   </context>
   <context>
@@ -2756,17 +2756,17 @@ report this setting as enabled when seeking support on the FreeCAD forums</trans
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
       <source>Relative size:</source>
-      <translation type="unfinished">Relative size:</translation>
+      <translation>Suhteellinen koko:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="99"/>
       <source>Letter color:</source>
-      <translation type="unfinished">Letter color:</translation>
+      <translation>Kirjaimen väri:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="106"/>
       <source>Axis letter color</source>
-      <translation type="unfinished">Axis letter color</translation>
+      <translation>Akselin kirjaimen väri</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="232"/>
@@ -4276,7 +4276,7 @@ vaakatilan Python-konsolissa</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="49"/>
       <source>Enable block cursor</source>
-      <translation type="unfinished">Enable block cursor</translation>
+      <translation>Ota lohkokursori käyttöön</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="65"/>
@@ -4291,12 +4291,12 @@ vaakatilan Python-konsolissa</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="84"/>
       <source>Python profiler interval (milliseconds):</source>
-      <translation type="unfinished">Python profiler interval (milliseconds):</translation>
+      <translation>Python profilerin aikaväli (millisekuntia):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
       <source>The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</source>
-      <translation type="unfinished">The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</translation>
+      <translation>Aika, jolloin profiloija toimii, kun Python on käynnissä (pitääkseen graafisen käyttöliittymän responsiivisena). Aseta arvoksi 0 poistaaksesi se käytöstä.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="116"/>
@@ -4306,7 +4306,7 @@ vaakatilan Python-konsolissa</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="122"/>
       <source>Path to external Python executable (optional):</source>
-      <translation type="unfinished">Path to external Python executable (optional):</translation>
+      <translation>Polku ulkoiseen Python-binääriin (valinnainen):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="141"/>
@@ -12288,7 +12288,7 @@ FreeCAD käynnistyksen jälkeen</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="84"/>
       <source>Enable block cursor</source>
-      <translation type="unfinished">Enable block cursor</translation>
+      <translation>Ota lohkokursori käyttöön</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="100"/>
@@ -13084,7 +13084,7 @@ Python-konsolista Raporttinäkymäpaneeliin</translation>
     <message>
       <location filename="../CommandView.cpp" line="902"/>
       <source>Toggle transparency</source>
-      <translation type="unfinished">Toggle transparency</translation>
+      <translation>Vaihda läpinäkyvyys</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="904"/>

@@ -74,7 +74,7 @@
     <message>
       <location filename="../CommandTest.cpp" line="715"/>
       <source>Test console output</source>
-      <translation>Testovat výstup konzole</translation>
+      <translation>Výstup testovací konzoly</translation>
     </message>
     <message>
       <location filename="../CommandTest.cpp" line="716"/>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../CommandView.cpp" line="3324"/>
       <source>Clear measurement</source>
-      <translation>Čisti měření</translation>
+      <translation>Vymazat měření</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3325"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../CommandView.cpp" line="3355"/>
       <source>Turn on or off the display of all measurements</source>
-      <translation>Zapnout nebo vypnout displej všech měření</translation>
+      <translation>Zapnout nebo vypnout zobrazení všech měření</translation>
     </message>
   </context>
   <context>
@@ -233,12 +233,12 @@
     <message>
       <location filename="../CommandFeat.cpp" line="122"/>
       <source>Set Random Color</source>
-      <translation type="unfinished">Set Random Color</translation>
+      <translation>Nastavit náhodnou barvu</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="168"/>
       <source>Toggle freeze</source>
-      <translation type="unfinished">Toggle freeze</translation>
+      <translation>Přepnout zmrazení</translation>
     </message>
   </context>
   <context>
@@ -476,7 +476,7 @@
     <message>
       <location filename="../QuantitySpinBox_p.h" line="54"/>
       <source>Expression:</source>
-      <translation type="unfinished">Expression:</translation>
+      <translation>Výraz:</translation>
     </message>
   </context>
   <context>
@@ -626,7 +626,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../WidgetFactory.cpp" line="367"/>
       <source>&amp;Cancel</source>
-      <translation>Zrušit</translation>
+      <translation>&amp;Zrušit</translation>
     </message>
   </context>
   <context>
@@ -758,7 +758,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="241"/>
       <source>Cache directory</source>
-      <translation>Složka mezipaměti</translation>
+      <translation>Adresář mezipaměti</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="243"/>
@@ -845,7 +845,7 @@ while doing a left or right click and move the mouse up or down</source>
       <location filename="../Clipping.ui" line="122"/>
       <location filename="../Clipping.ui" line="167"/>
       <source>Offset</source>
-      <translation>Odstup</translation>
+      <translation>Odsazení</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="55"/>
@@ -1273,21 +1273,21 @@ Pokud toto není zaškrtnuto, musí být vlastnost pojmenována jedinečně a bu
     <message>
       <location filename="../DlgKeyboard.ui" line="119"/>
       <source>&amp;New shortcut:</source>
-      <translation>&amp;Nový zkratka:</translation>
+      <translation>&amp;Nová zkratka:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="137"/>
       <source>Multi-key sequence delay:</source>
-      <translation type="unfinished">Multi-key sequence delay:</translation>
+      <translation>Zpoždění sekvence více kláves:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="156"/>
       <source>Time in milliseconds to wait for the next keystroke of the current key sequence.
 For example, pressing 'F' twice in less than the time delay setting here will be
 treated as shortcut key sequence 'F, F'.</source>
-      <translation type="unfinished">Time in milliseconds to wait for the next keystroke of the current key sequence.
-For example, pressing 'F' twice in less than the time delay setting here will be
-treated as shortcut key sequence 'F, F'.</translation>
+      <translation>Doba v milisekundách po kterou se čeká na další stisk aktuální sekvence kláves.
+Například při dvojím stisknutí klávesy 'F' za dobu kratší, než je zde nastavená časová
+prodleva, bude považováno za sekvenci klávesové zkratky 'F, F'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="186"/>
@@ -1944,7 +1944,7 @@ Možná je chyba v přístupových právech k souboru?</translation>
     <message>
       <location filename="../DlgMacroRecordImp.cpp" line="107"/>
       <source>The macro directory doesn't exist. Please, choose another one.</source>
-      <translation>Makro adresář neexistuje. Prosím vyberte jiný.</translation>
+      <translation>Adresář maker neexistuje. Prosím vyberte jiný.</translation>
     </message>
     <message>
       <location filename="../DlgMacroRecordImp.cpp" line="119"/>
@@ -1964,7 +1964,7 @@ Možná je chyba v přístupových právech k souboru?</translation>
     <message>
       <location filename="../DlgMacroRecordImp.cpp" line="173"/>
       <source>Choose macro directory</source>
-      <translation>Vyberte makro adresář</translation>
+      <translation>Vyberte adresář maker</translation>
     </message>
   </context>
   <context>
@@ -2751,17 +2751,17 @@ při hledání podpory na fóru FreeCADu oznámit, že je toto nastavení povole
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
       <source>Relative size:</source>
-      <translation type="unfinished">Relative size:</translation>
+      <translation>Relativní velikost:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="99"/>
       <source>Letter color:</source>
-      <translation type="unfinished">Letter color:</translation>
+      <translation>Barva písmena:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="106"/>
       <source>Axis letter color</source>
-      <translation type="unfinished">Axis letter color</translation>
+      <translation>Barva písmena osy</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="232"/>
@@ -2828,7 +2828,7 @@ ale pomalejší odezvu na jakékoli změny scény.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
       <source>MSAA 6x</source>
-      <translation type="unfinished">MSAA 6x</translation>
+      <translation>MSAA 6x</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="133"/>
@@ -2998,17 +2998,17 @@ ohraničujícího kvádru 3D objektů, které jsou zobrazeny.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="20"/>
       <source>Cache directory</source>
-      <translation>Složka mezipaměti</translation>
+      <translation>Adresář mezipaměti</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="28"/>
       <source>Location (read-only):</source>
-      <translation type="unfinished">Location (read-only):</translation>
+      <translation>Umístění (pouze pro čtení):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="42"/>
       <source>Browse cache directory</source>
-      <translation type="unfinished">Browse cache directory</translation>
+      <translation>Procházet adresář mezipaměti</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="59"/>
@@ -3960,12 +3960,12 @@ Můžete také použít tuto formu: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="202"/>
       <source>Opacity when inactive</source>
-      <translation type="unfinished">Opacity when inactive</translation>
+      <translation>Neprůhlednost při neaktivitě</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="218"/>
       <source>Opacity of the navigation cube when not focused</source>
-      <translation type="unfinished">Opacity of the navigation cube when not focused</translation>
+      <translation>Neprůhlednost navigační krychle, pokud není zaměřena</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="243"/>
@@ -4286,7 +4286,7 @@ místo v konzoli Pythonu</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="84"/>
       <source>Python profiler interval (milliseconds):</source>
-      <translation type="unfinished">Python profiler interval (milliseconds):</translation>
+      <translation>Interval profilování Pythonu (ms):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
@@ -6291,7 +6291,7 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     <message>
       <location filename="../ManualAlignment.cpp" line="1252"/>
       <source>&amp;Cancel</source>
-      <translation>Zrušit</translation>
+      <translation>&amp;Zrušit</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1256"/>
@@ -6851,7 +6851,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskDlgRelocation.cpp" line="42"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Poloha</translation>
     </message>
   </context>
   <context>
@@ -7283,7 +7283,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="Translator.cpp" line="179"/>
       <source>Danish</source>
-      <translation type="unfinished">Danish</translation>
+      <translation>Dánština</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="152"/>
@@ -7677,7 +7677,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../DlgLocationPos.ui" line="162"/>
       <source>5 m</source>
-      <translation type="unfinished">5 m</translation>
+      <translation>5 m</translation>
     </message>
   </context>
   <context>
@@ -8161,7 +8161,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../NotificationArea.cpp" line="1087"/>
       <source>Notifier:</source>
-      <translation type="unfinished">Notifier:</translation>
+      <translation>Oznamovatel:</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1089"/>
@@ -8782,7 +8782,7 @@ na aktuální kopii budou ztraceny.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="541"/>
       <source>Show visibility icon</source>
-      <translation type="unfinished">Show visibility icon</translation>
+      <translation>Zobrazit ikonu viditelnosti</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="543"/>
@@ -8822,7 +8822,7 @@ na aktuální kopii budou ztraceny.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="559"/>
       <source>Hide tab bar</source>
-      <translation>Skrýt titulek</translation>
+      <translation>Skrýt pás karet</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="561"/>
@@ -8912,7 +8912,7 @@ na aktuální kopii budou ztraceny.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="607"/>
       <source>Hint show tab bar</source>
-      <translation>Zobrazit titulek na náznaku</translation>
+      <translation>Zobrazit pás karet u náznaku</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="609"/>
@@ -8947,17 +8947,17 @@ na aktuální kopii budou ztraceny.
     <message>
       <location filename="../ViewProviderPart.cpp" line="73"/>
       <source>Active object</source>
-      <translation type="unfinished">Active object</translation>
+      <translation>Aktivní objekt</translation>
     </message>
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="95"/>
       <source>Suppressed</source>
-      <translation type="unfinished">Suppressed</translation>
+      <translation>Potlačeno</translation>
     </message>
     <message>
       <location filename="../ToolBarManager.cpp" line="951"/>
       <source>Undock from toolbar area</source>
-      <translation type="unfinished">Undock from toolbar area</translation>
+      <translation>Uvolnit z oblasti panelu nástrojů</translation>
     </message>
   </context>
   <context>
@@ -11552,7 +11552,7 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1399"/>
       <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</source>
-      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</translation>
+      <translation>Je-li povoleno, zobrazí se ikona oka před položkami stromového zobrazení, zobrazuje se stav viditelnosti položek. Po kliknutí je viditelnost přepnuta</translation>
     </message>
   </context>
   <context>
@@ -11595,7 +11595,7 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../Workbench.cpp" line="540"/>
       <source>Individual views</source>
-      <translation type="unfinished">Individual views</translation>
+      <translation>Individuální pohledy</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="541"/>
@@ -11874,22 +11874,22 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="73"/>
       <source>Workbench selector type:</source>
-      <translation type="unfinished">Workbench selector type:</translation>
+      <translation>Typ voliče pracovního prostředí:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="80"/>
       <source>Choose the workbench selector widget type (restart required).</source>
-      <translation type="unfinished">Choose the workbench selector widget type (restart required).</translation>
+      <translation>Vyberte typ widgetu pracovního prostředí (vyžaduje restart).</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="37"/>
       <source>Workbench selector items style:</source>
-      <translation type="unfinished">Workbench selector items style:</translation>
+      <translation>Styl položek voliče pracovního prostředí:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="44"/>
       <source>Customize how the items are displayed.</source>
-      <translation type="unfinished">Customize how the items are displayed.</translation>
+      <translation>Přizpůsobí, jak jsou položky zobrazeny.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="112"/>
@@ -12101,17 +12101,17 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="524"/>
       <source>ComboBox</source>
-      <translation type="unfinished">ComboBox</translation>
+      <translation>Rozbalovací seznam</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="525"/>
       <source>TabBar</source>
-      <translation type="unfinished">TabBar</translation>
+      <translation>Pás karet</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="531"/>
       <source>Icon &amp; Text</source>
-      <translation type="unfinished">Icon &amp; Text</translation>
+      <translation>Ikona i text</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="532"/>
@@ -12480,7 +12480,7 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="55"/>
       <source>Default unit system:</source>
-      <translation type="unfinished">Default unit system:</translation>
+      <translation>Výchozí jednotky:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="71"/>
@@ -13330,12 +13330,12 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="853"/>
       <source>Show tab bar on mouse over when auto hide</source>
-      <translation>Zobrazit titulek přejetím myší při automatickém skrývání</translation>
+      <translation>Zobrazit pás káret přejetím myší při automatickém skrývání</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="881"/>
       <source>Hide tab bar in dock overlay</source>
-      <translation>Skrytí titulku v dokovatelném překrytí</translation>
+      <translation>Skrýt pás karet v dokovaném překrytí</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="909"/>
@@ -13491,7 +13491,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1729"/>
       <source>Show the property view, which displays the properties of the selected object.</source>
-      <translation type="unfinished">Show the property view, which displays the properties of the selected object.</translation>
+      <translation>Zobrazí náhled vlastností, který zobrazuje vlastnosti vybraného objektu.</translation>
     </message>
   </context>
   <context>
@@ -13499,12 +13499,12 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandFeat.cpp" line="153"/>
       <source>Toggle freeze</source>
-      <translation type="unfinished">Toggle freeze</translation>
+      <translation>Přepnout zmrazení</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="155"/>
       <source>Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</source>
-      <translation type="unfinished">Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</translation>
+      <translation>Přepíná stav zamrznutí vybraných objektů. Když se jeho rodiče změní, zmrazený objekt se nepřepočítá.</translation>
     </message>
   </context>
   <context>
@@ -13518,7 +13518,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
       <location filename="../CommandView.cpp" line="1629"/>
       <location filename="../CommandView.cpp" line="1630"/>
       <source>Change to a standard view</source>
-      <translation type="unfinished">Change to a standard view</translation>
+      <translation>Změnit na standardní zobrazení</translation>
     </message>
   </context>
   <context>
@@ -13534,13 +13534,13 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3205"/>
       <source>&amp;Measure</source>
-      <translation type="unfinished">&amp;Measure</translation>
+      <translation>&amp;Změřit</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3206"/>
       <location filename="../CommandView.cpp" line="3208"/>
       <source>Measure a feature</source>
-      <translation type="unfinished">Measure a feature</translation>
+      <translation>Změřit prvek</translation>
     </message>
   </context>
   <context>
@@ -13548,7 +13548,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="51"/>
       <source>Measurement</source>
-      <translation type="unfinished">Measurement</translation>
+      <translation>Měření</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="77"/>
@@ -13568,7 +13568,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="108"/>
       <source>Save the measurement in the active document.</source>
-      <translation type="unfinished">Save the measurement in the active document.</translation>
+      <translation>Uložit měření v aktivním dokumentu.</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="114"/>
@@ -13578,7 +13578,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="115"/>
       <source>Close the measurement task.</source>
-      <translation type="unfinished">Close the measurement task.</translation>
+      <translation>Zavřít úkol měření.</translation>
     </message>
   </context>
   <context>
@@ -13594,7 +13594,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../ToolBarManager.cpp" line="950"/>
       <source>Undock toolbars</source>
-      <translation type="unfinished">Undock toolbars</translation>
+      <translation>Uvolnit panely nástrojů</translation>
     </message>
   </context>
 </TS>

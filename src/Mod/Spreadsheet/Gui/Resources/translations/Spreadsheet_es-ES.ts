@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="962"/>
       <source>Create a new spreadsheet</source>
-      <translation>Crear hoja de cálculo nueva</translation>
+      <translation>Crear una hoja de cálculo nueva</translation>
     </message>
   </context>
   <context>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../../qtcolorpicker.cpp" line="920"/>
       <source>Custom Color</source>
-      <translation>Color Personalizado</translation>
+      <translation>Color personalizado</translation>
     </message>
   </context>
   <context>
@@ -696,7 +696,7 @@ la configuración de diseño. La propiedad se creará si no existe.</translation
       <translation>Exportar archivo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="124"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Mostrar la hoja de cálculo</translation>
     </message>
@@ -740,7 +740,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Hoja de cálculo</translation>
     </message>
@@ -853,7 +853,7 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="450"/>
       <source>Custom Color</source>
-      <translation>Color Personalizado</translation>
+      <translation>Color personalizado</translation>
     </message>
   </context>
   <context>
@@ -1014,7 +1014,7 @@ Por defecto: %V = %A
       <source>Insert %n row(s) below</source>
       <translation>
         <numerusform>Insertar %n fila(s) debajo</numerusform>
-        <numerusform>Insertar %n filas debajo</numerusform>
+        <numerusform>Insertar %n fila(s) debajo</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1165,7 +1165,7 @@ Por defecto: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Sin nombre</translation>
     </message>
