@@ -104,14 +104,6 @@ AttachExtension::AttachExtension()
                                 "Attach engine object driving the attachment.");
     AttacherEngine.setEnums(EngineEnums);
 
-    EXTENSION_ADD_PROPERTY_TYPE(
-        Support,
-        (nullptr, nullptr),
-        "Attachment",
-        (App::PropertyType)(App::Prop_Hidden),
-        "Support of the 2D geometry (Deprecated! Use AttachmentSupport instead");
-    Support.setScope(App::LinkScope::Global);
-
     EXTENSION_ADD_PROPERTY_TYPE(AttachmentSupport,
                                 (nullptr, nullptr),
                                 "Attachment",
@@ -405,24 +397,10 @@ App::DocumentObjectExecReturn* AttachExtension::extensionExecute()
 void AttachExtension::extensionOnChanged(const App::Property* prop)
 {
     if (!getExtendedObject()->isRestoring()) {
-        if (prop == &Support) {
-            if (!prop->testStatus(App::Property::User3)) {
-                Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
-                    App::Property::User3,
-                    &Support);
-                AttachmentSupport.Paste(Support);
-            }
-        }
-        else if (prop == &AttacherEngine) {
+        if (prop == &AttacherEngine) {
             AttacherType.setValue(enumToClass(AttacherEngine.getValueAsString()));
         }
         else if (_props.matchProperty(prop)) {
-            if (prop == &AttachmentSupport) {
-                Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
-                    App::Property::User3,
-                    &Support);
-                Support.Paste(AttachmentSupport);
-            }
             _active = -1;
             updateAttacherVals(/*base*/ false);
             updatePropertyStatus(isAttacherActive());
@@ -443,23 +421,39 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
     App::DocumentObjectExtension::extensionOnChanged(prop);
 }
 
-void AttachExtension::extHandleChangedPropertyName(Base::XMLReader& reader,
-                                                   const char* TypeName,
-                                                   const char* PropName)
+bool AttachExtension::extensionHandleChangedPropertyName(Base::XMLReader& reader,
+                                                         const char* TypeName,
+                                                         const char* PropName)
 {
-    // Was superPlacement
     Base::Type type = Base::Type::fromName(TypeName);
-    if (AttachmentOffset.getClassTypeId() == type && strcmp(PropName, "superPlacement") == 0) {
+    // superPlacement -> AttachmentOffset
+    if (strcmp(PropName, "superPlacement") == 0 && AttachmentOffset.getClassTypeId() == type) {
         AttachmentOffset.Restore(reader);
+        return true;
     }
+    // Support -> AttachmentSupport
+    if (strcmp(PropName, "Support") == 0) {
+        // At one point, the type of Support changed from PropertyLinkSub to its present type
+        // of PropertyLinkSubList. Later, the property name changed to AttachmentSupport
+        App::PropertyLinkSub tmp;
+        if (strcmp(tmp.getTypeId().getName(), TypeName) == 0) {
+            tmp.setContainer(this->getExtendedContainer());
+            tmp.Restore(reader);
+            AttachmentSupport.setValue(tmp.getValue(), tmp.getSubValues());
+            this->MapMode.setValue(Attacher::mmFlatFace);
+            return true;
+        }
+        if (AttachmentSupport.getClassTypeId() == type) {
+            AttachmentSupport.Restore(reader);
+            return true;
+        }
+    }
+    return App::DocumentObjectExtension::extensionHandleChangedPropertyName(reader, TypeName, PropName);
 }
 
 void AttachExtension::onExtendedDocumentRestored()
 {
     try {
-        if (Support.getValue()) {
-            AttachmentSupport.Paste(Support);
-        }
         initBase(false);
         if (_baseProps.attachment) {
             _baseProps.attachment->setScope(App::LinkScope::Hidden);
