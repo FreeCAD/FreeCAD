@@ -125,6 +125,8 @@ const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","D
 
 ViewProviderPartExt::ViewProviderPartExt()
 {
+    texture.initExtension(this);
+
     VisualTouched = true;
     forceUpdateCount = 0;
     NormalsFromUV = true;
@@ -221,14 +223,6 @@ ViewProviderPartExt::ViewProviderPartExt()
     nodeset = new SoBrepPointSet();
     nodeset->ref();
 
-    // Support for textured faces
-    pcShapeTexture3D = new SoTexture3;
-    pcShapeTexture3D->ref();
-    pcShapeCoordinates = new SoCoordinate3;
-    pcShapeCoordinates->ref();
-    pcShapeFaceset = new SoIndexedFaceSet;
-    pcShapeFaceset->ref();
-
     pcFaceBind = new SoMaterialBinding();
     pcFaceBind->ref();
 
@@ -280,10 +274,6 @@ ViewProviderPartExt::~ViewProviderPartExt()
     normb->unref();
     lineset->unref();
     nodeset->unref();
-
-    pcShapeTexture3D->unref();
-    pcShapeCoordinates->unref();
-    pcShapeFaceset->unref();
 }
 
 PyObject* ViewProviderPartExt::getPyObject()
@@ -467,10 +457,8 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     // just faces with no edges or points
     pcFlatRoot->addChild(pShapeHints);
     pcFlatRoot->addChild(pcFaceBind);
-    pcFlatRoot->addChild(pcSwitchAppearance);
-    pcTextureGroup3D->addChild(pcShapeTexture3D);
-    pcTextureGroup3D->addChild(pcShapeCoordinates);
-    pcTextureGroup3D->addChild(pcShapeFaceset);
+    pcFlatRoot->addChild(texture.getAppearance());
+    texture.setup(pcShapeMaterial);
     SoDrawStyle* pcFaceStyle = new SoDrawStyle();
     pcFaceStyle->style = SoDrawStyle::FILLED;
     pcFlatRoot->addChild(pcFaceStyle);
@@ -630,7 +618,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
     int size = static_cast<int>(materials.size());
     if (size > 1 && size == this->faceset->partIndex.getNum()) {
         pcFaceBind->value = SoMaterialBinding::PER_PART;
-        activateMaterial();
+        texture.activateMaterial();
 
         pcShapeMaterial->diffuseColor.setNum(size);
         pcShapeMaterial->ambientColor.setNum(size);
@@ -669,7 +657,7 @@ void ViewProviderPartExt::setHighlightedFaces(const App::PropertyMaterialList& a
     int size = static_cast<int>(appearance.getSize());
     if (size > 1 && size == this->faceset->partIndex.getNum()) {
         pcFaceBind->value = SoMaterialBinding::PER_PART;
-        activateMaterial();
+        texture.activateMaterial();
 
         pcShapeMaterial->diffuseColor.setNum(size);
         pcShapeMaterial->ambientColor.setNum(size);

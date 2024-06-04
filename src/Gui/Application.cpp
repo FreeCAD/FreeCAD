@@ -122,6 +122,7 @@
 #include "ViewProviderPart.h"
 #include "ViewProviderPythonFeature.h"
 #include "ViewProviderTextDocument.h"
+#include "ViewProviderTextureExtension.h"
 #include "ViewProviderVRMLObject.h"
 #include "ViewProviderVarSet.h"
 #include "WaitCursor.h"
@@ -1875,6 +1876,7 @@ void Application::initApplication()
 
 void Application::initTypes()
 {
+    // clang-format off
     // views
     Gui::BaseView                               ::init();
     Gui::MDIView                                ::init();
@@ -1925,6 +1927,8 @@ void Application::initTypes()
     Gui::ViewProviderMaterialObject             ::init();
     Gui::ViewProviderMaterialObjectPython       ::init();
     Gui::ViewProviderTextDocument               ::init();
+    Gui::ViewProviderTextureExtension           ::init();
+    Gui::ViewProviderFaceTexture                ::init();
     Gui::ViewProviderLinkObserver               ::init();
     Gui::LinkView                               ::init();
     Gui::ViewProviderLink                       ::init();
@@ -1945,6 +1949,7 @@ void Application::initTypes()
     // register transaction type
     new App::TransactionProducer<TransactionViewProvider>
             (ViewProviderDocumentObject::getClassTypeId());
+    // clang-format on
 }
 
 void Application::initOpenInventor()
