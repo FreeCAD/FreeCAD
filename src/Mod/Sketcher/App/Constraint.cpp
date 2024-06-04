@@ -30,6 +30,8 @@
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/thread.hpp>
 #include "Constraint.h"
 #include "ConstraintPy.h"
 
@@ -58,8 +60,13 @@ Constraint::Constraint()
     , isActive(true)
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
+    // The random number generator is not threadsafe so we guard it.  See
+    // https://www.boost.org/doc/libs/1_62_0/libs/uuid/uuid.html#Design%20notes
     static boost::mt19937 ran;
     static bool seeded = false;
+    static boost::mutex random_number_mutex;
+
+    boost::lock_guard<boost::mutex> guard(random_number_mutex);
 
     if (!seeded) {
         ran.seed(QDateTime::currentMSecsSinceEpoch() & 0xffffffff);
