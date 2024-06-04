@@ -141,6 +141,8 @@ void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, 
 void TaskDressUpParameters::addAllEdges(QListWidget* widget)
 {
 #ifdef FC_USE_TNP_FIX
+    Q_UNUSED(widget)
+
     if (!DressUpView) {
         return;
     }
@@ -153,7 +155,6 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
     int count = Part::Feature::getTopoShape(base).countSubShapes(TopAbs_EDGE);
     auto subValues = pcDressUp->Base.getSubValues(false);
     std::size_t len = subValues.size();
-    std::string name("Edge");
     for (int i = 0; i < count; ++i) {
         std::string name = "Edge" + std::to_string(i+1);
         if (std::find(subValues.begin(), subValues.begin() + len, name)
