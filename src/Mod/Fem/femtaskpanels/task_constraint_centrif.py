@@ -155,13 +155,8 @@ class _TaskPanel:
         doc = FreeCADGui.getDocument(self.obj.Document)
         doc.Document.recompute()
 
-        self.AxisSelectionWidget.setback_listobj_visibility()
-        if self.AxisSelectionWidget.sel_server:
-            FreeCADGui.Selection.removeObserver(self.AxisSelectionWidget.sel_server)
-
-        self.BodySelectionWidget.setback_listobj_visibility()
-        if self.BodySelectionWidget.sel_server:
-            FreeCADGui.Selection.removeObserver(self.BodySelectionWidget.sel_server)
+        self.AxisSelectionWidget.finish_selection()
+        self.BodySelectionWidget.finish_selection()
 
         doc.resetEdit()
 
