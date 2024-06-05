@@ -3203,8 +3203,8 @@ void PropertyMaterialList::RestoreDocFileV3(Base::Reader& reader)
     uint32_t count = 0;
     str >> count;
     std::vector<Material> values(count);
-    uint32_t value;  // must be 32 bit long
-    float valueF;
+    uint32_t value {};  // must be 32 bit long
+    float valueF {};
     for (auto& it : values) {
         str >> value;
         it.ambientColor.setPackedValue(value);
@@ -3227,18 +3227,15 @@ void PropertyMaterialList::RestoreDocFileV3(Base::Reader& reader)
     setValues(values);
 }
 
-void PropertyMaterialList::readString(Base::InputStream& str,
-                                                    std::string& value)
+void PropertyMaterialList::readString(Base::InputStream& str, std::string& value)
 {
-    uint32_t uCt;
+    uint32_t uCt {};
     str >> uCt;
 
-    char *temp = new char[uCt];
+    std::vector<char> temp(uCt);
 
-    str.read(temp, uCt);
-    value.assign(temp, static_cast<std::size_t>(uCt));
-
-    delete [] temp;
+    str.read(temp.data(), uCt);
+    value.assign(temp.data(), temp.size());
 }
 
 const char* PropertyMaterialList::getEditorName() const

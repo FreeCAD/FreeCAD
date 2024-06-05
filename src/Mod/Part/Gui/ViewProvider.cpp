@@ -72,8 +72,8 @@ void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
 }
 
 void ViewProviderPart::applyMaterial(const Part::ShapeHistory& hist,
-                                  const App::PropertyMaterialList& colBase,
-                                  std::vector<App::Material>& colBool)
+                                     const std::vector<App::Material>& colBase,
+                                     std::vector<App::Material>& colBool)
 {
     std::map<int, std::vector<int>>::const_iterator jt;
     // apply color from modified faces
@@ -85,8 +85,7 @@ void ViewProviderPart::applyMaterial(const Part::ShapeHistory& hist,
     }
 }
 
-void ViewProviderPart::applyTransparency(const float& transparency,
-                                  std::vector<App::Color>& colors)
+void ViewProviderPart::applyTransparency(float transparency, std::vector<App::Color>& colors)
 {
     if (transparency != 0.0) {
         // transparency has been set object-wide
@@ -99,7 +98,7 @@ void ViewProviderPart::applyTransparency(const float& transparency,
     }
 }
 
-void ViewProviderPart::applyTransparency(const float& transparency, std::vector<App::Material>& colors)
+void ViewProviderPart::applyTransparency(float transparency, std::vector<App::Material>& colors)
 {
     if (transparency != 0.0) {
         // transparency has been set object-wide
