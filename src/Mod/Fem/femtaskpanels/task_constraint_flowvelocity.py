@@ -169,6 +169,7 @@ class _TaskPanel(object):
             self._part.ViewObject.show()
 
     def reject(self):
+        self._selectionWidget.finish_selection()
         FreeCADGui.ActiveDocument.resetEdit()
         self._restoreVisibility()
         return True
@@ -178,6 +179,7 @@ class _TaskPanel(object):
             self._obj.References = self._selectionWidget.references
         self._applyWidgetChanges()
         self._obj.Document.recompute()
+        self._selectionWidget.finish_selection()
         FreeCADGui.ActiveDocument.resetEdit()
         self._restoreVisibility()
         return True

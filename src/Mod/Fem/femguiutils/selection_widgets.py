@@ -592,6 +592,11 @@ class GeometryElementsSelection(QtGui.QWidget):
                 return False
         return True
 
+    def finish_selection(self):
+        self.setback_listobj_visibility()
+        if self.sel_server:
+            FreeCADGui.Selection.removeObserver(self.sel_server)
+
 
 class FemSelectionObserver:
     """selection observer especially for the needs of geometry reference selection of FEM"""
