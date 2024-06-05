@@ -179,13 +179,14 @@ class CAMSimulation:
         self._populateJobSelection(form)
         form.comboJobs.currentIndexChanged.connect(self.onJobChange)
         self.onJobChange()
+        form.listOperations.itemChanged.connect(self.onOperationItemChange)
         FreeCADGui.Control.showDialog(self.taskForm)
         self.disableAnim = False
         self.firstDrill = True
         self.millSim = CAMSimulator.PathSim()
         self.initdone = True
         self.job = self.jobs[self.taskForm.form.comboJobs.currentIndex()]
-        self.SetupSimulation()
+        # self.SetupSimulation()
 
     def _populateJobSelection(self, form):
         # Make Job selection combobox
@@ -250,8 +251,6 @@ class CAMSimulation:
                 listItem.setCheckState(QtCore.Qt.CheckState.Checked)
                 self.operations.append(op)
                 form.listOperations.addItem(listItem)
-        if self.initdone:
-            self.SetupSimulation()
 
     def onAccuracyBarChange(self):
         form = self.taskForm.form
@@ -263,7 +262,17 @@ class CAMSimulation:
             qualText = QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Medium")
         form.labelAccuracy.setText(qualText)
 
+    def onOperationItemChange(self, _item):
+        playvalid = False
+        form = self.taskForm.form
+        for i in range(form.listOperations.count()):
+            if form.listOperations.item(i).checkState() == QtCore.Qt.CheckState.Checked:
+                playvalid = True
+                break
+        form.toolButtonPlay.setEnabled(playvalid)
+
     def SimPlay(self):
+        self.SetupSimulation()
         self.millSim.ResetSimulation()
         for op in self.activeOps:
             tool = PathDressup.toolController(op).Tool
