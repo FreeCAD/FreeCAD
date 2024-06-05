@@ -201,6 +201,9 @@ def run_example(example, solver=None, base_name=None, run_solver=False):
 def init_doc(doc=None):
     if doc is None:
         doc = FreeCAD.newDocument()
+        # set license
+        doc.License = "Creative Commons Attribution 4.0"
+        doc.LicenseURL = "https://creativecommons.org/licenses/by/4.0/"
     return doc
 
 
