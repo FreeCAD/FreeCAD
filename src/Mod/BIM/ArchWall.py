@@ -207,6 +207,10 @@ class _Wall(ArchComponent.Component):
         if not "CountBroken" in lp:
             obj.addProperty("App::PropertyInteger","CountBroken","Blocks",QT_TRANSLATE_NOOP("App::Property","The number of broken blocks"))
             obj.setEditorMode("CountBroken",1)
+        if not "ArchSketchData" in lp:
+            obj.addProperty("App::PropertyBool","ArchSketchData","Wall",QT_TRANSLATE_NOOP("App::Property","Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties"))
+            obj.ArchSketchData = True
+
         self.Type = "Wall"
 
     def onDocumentRestored(self,obj):
@@ -215,7 +219,7 @@ class _Wall(ArchComponent.Component):
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
 
-        if Draft.getType(obj.Base) == "ArchSketch":
+        if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
             if hasattr(obj,"Width"):
                 obj.setEditorMode("Width", ["ReadOnly"])
             if hasattr(obj,"Align"):
@@ -513,7 +517,7 @@ class _Wall(ArchComponent.Component):
                                 else:
                                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
 
-        if Draft.getType(obj.Base) == "ArchSketch":
+        if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
             if hasattr(obj,"Width"):
                 obj.setEditorMode("Width", ["ReadOnly"])
             if hasattr(obj,"Align"):
@@ -597,7 +601,7 @@ class _Wall(ArchComponent.Component):
         # Get width of each edge segment from Base Objects if they store it
         # (Adding support in SketchFeaturePython, DWire...)
         widths = []  # [] or None are both False
-        if obj.Base:
+        if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
             if hasattr(obj.Base, 'Proxy'):
                 if hasattr(obj.Base.Proxy, 'getWidths'):
                     # Return a list of Width corresponding to indexes of sorted
@@ -608,7 +612,7 @@ class _Wall(ArchComponent.Component):
         # Base Object does not provide it
         if not widths:
             if obj.OverrideWidth:
-                if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                     # If Base Object is ordinary Sketch (or when ArchSketch.getWidth() not implemented yet):-
                     # sort the width list in OverrrideWidth to correspond to indexes of sorted edges of Sketch
                     try:
@@ -641,7 +645,7 @@ class _Wall(ArchComponent.Component):
         # Get align of each edge segment from Base Objects if they store it.
         # (Adding support in SketchFeaturePython, DWire...)
         aligns = []
-        if obj.Base:
+        if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
             if hasattr(obj.Base, 'Proxy'):
                 if hasattr(obj.Base.Proxy, 'getAligns'):
                     # Return a list of Align corresponds to indexes of sorted
@@ -651,7 +655,7 @@ class _Wall(ArchComponent.Component):
         # Base Object does not provide it
         if not aligns:
             if obj.OverrideAlign:
-                if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                     # If Base Object is ordinary Sketch (or when
                     # ArchSketch.getAligns() not implemented yet):- sort the
                     # align list in OverrideAlign to correspond to indexes of
@@ -678,7 +682,8 @@ class _Wall(ArchComponent.Component):
         # Get offset of each edge segment from Base Objects if they store it
         # (Adding support in SketchFeaturePython, DWire...)
         offsets = []  # [] or None are both False
-        if obj.Base:
+        if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
+
             if hasattr(obj.Base, 'Proxy'):
                 if hasattr(obj.Base.Proxy, 'getOffsets'):
                     # Return a list of Offset corresponding to indexes of sorted
@@ -688,7 +693,7 @@ class _Wall(ArchComponent.Component):
         # Base Object does not provide it
         if not offsets:
             if obj.OverrideOffset:
-                if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                     # If Base Object is ordinary Sketch (or when ArchSketch.getOffsets() not implemented yet):-
                     # sort the offset list in OverrideOffset to correspond to indexes of sorted edges of Sketch
                     if hasattr(ArchSketchObject, 'sortSketchOffset'):
@@ -781,8 +786,9 @@ class _Wall(ArchComponent.Component):
                         else:
                             base,placement = self.rebase(obj.Base.Shape)
 
-                    elif hasattr(obj.Base, 'Proxy') and \
+                    elif hasattr(obj.Base, 'Proxy') and obj.ArchSketchData and \
                     hasattr(obj.Base.Proxy, 'getWallBaseShapeEdgesInfo'):
+
                         wallBaseShapeEdgesInfo = obj.Base.Proxy.getWallBaseShapeEdgesInfo(obj.Base)
                         #get wall edges (not wires); use original edges if getWallBaseShapeEdgesInfo() provided none
                         if wallBaseShapeEdgesInfo:
