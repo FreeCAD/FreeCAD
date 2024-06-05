@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include "App/MappedName.h"
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <App/StringHasher.h>
 #include <App/StringHasherPy.h>

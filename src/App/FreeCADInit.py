@@ -695,6 +695,7 @@ FreeCAD.addImportType("FreeCAD document (*.FCStd)","FreeCAD")
 # set to no gui, is overwritten by InitGui
 App.GuiUp = 0
 
+# fmt: off
 # fill up unit definitions
 
 App.Units.NanoMetre     = App.Units.Quantity('nm')
@@ -898,7 +899,7 @@ App.Units.VolumetricThermalExpansionCoefficient = App.Units.Unit(0,0,0,0,-1)
 App.Units.Work                        = App.Units.Unit(2,1,-2)
 App.Units.YieldStrength               = App.Units.Unit(-1,1,-2)
 App.Units.YoungsModulus               = App.Units.Unit(-1,1,-2)
-
+# fmt: on
 
 # Add an enum for the different unit schemes
 from enum import IntEnum

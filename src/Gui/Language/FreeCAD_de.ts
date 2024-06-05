@@ -2211,7 +2211,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <location filename="../DlgPreferencePackManagement.ui" line="56"/>
       <source>Open Addon Manager...</source>
-      <translation>Addon (Programmerweiterung)-Manager öffnen...</translation>
+      <translation>Erweiterungs-Manager öffnen...</translation>
     </message>
   </context>
   <context>
@@ -8449,7 +8449,7 @@ Bitte starten Sie einen Browser und geben darin ein: http://localhost:%1.</trans
     <message>
       <location filename="../TaskView/TaskDialog.cpp" line="92"/>
       <source>Do you want to close this dialog?</source>
-      <translation>Möchten Sie diesen Dialog zu schließen?</translation>
+      <translation>Soll dieser Dialog geschlossen werden?</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="856"/>
@@ -8953,7 +8953,7 @@ the current copy will be lost.
     <message>
       <location filename="../ToolBarManager.cpp" line="951"/>
       <source>Undock from toolbar area</source>
-      <translation type="unfinished">Undock from toolbar area</translation>
+      <translation>Von der Symbolleiste abdocken</translation>
     </message>
   </context>
   <context>
@@ -13556,7 +13556,7 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="108"/>
       <source>Save the measurement in the active document.</source>
-      <translation type="unfinished">Save the measurement in the active document.</translation>
+      <translation>Die Messung im aktiven Dokument speichern.</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="114"/>
@@ -13566,7 +13566,7 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="115"/>
       <source>Close the measurement task.</source>
-      <translation type="unfinished">Close the measurement task.</translation>
+      <translation>Messungsdialog schließen.</translation>
     </message>
   </context>
   <context>

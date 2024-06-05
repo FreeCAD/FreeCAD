@@ -71,7 +71,7 @@ PyObject* ViewProviderGeometryObjectPy::getCustomAttributes(const char* attr) co
 
 PyObject* ViewProviderGeometryObjectPy::getUserDefinedMaterial()
 {
-    App::Material mat = ViewProviderGeometryObject::getUserDefinedMaterial();
+    App::Material mat = App::Material::getDefaultAppearance();
     return new App::MaterialPy(new App::Material(mat));
 }
 

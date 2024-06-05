@@ -321,17 +321,17 @@
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="2526"/>
+      <location filename="../../Command.cpp" line="2523"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2527"/>
+      <location filename="../../Command.cpp" line="2524"/>
       <source>Apply changes to pipeline</source>
       <translation>Použít změny na potrubí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2528"/>
+      <location filename="../../Command.cpp" line="2525"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
       <translation>Aplikujte změny parametrů přímo a ne pouze při přepočtu...</translation>
     </message>
@@ -339,27 +339,27 @@
   <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1872"/>
+      <location filename="../../Command.cpp" line="1869"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1873"/>
+      <location filename="../../Command.cpp" line="1870"/>
       <source>Region clip filter</source>
       <translation>Filtr krajního klipu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1875"/>
+      <location filename="../../Command.cpp" line="1872"/>
       <source>Define/create a clip filter which uses functions to define the clipped region</source>
       <translation>Definujte/vytvořte klipový filtr, který používá funkce k definování oříznuté oblasti</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2428"/>
+      <location filename="../../Command.cpp" line="2425"/>
       <source>Wrong selection</source>
       <translation>Neplatný výběr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2429"/>
+      <location filename="../../Command.cpp" line="2426"/>
       <source>Select a pipeline, please.</source>
       <translation>Vyberte potrubí, prosím.</translation>
     </message>
@@ -367,17 +367,17 @@
   <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1925"/>
+      <location filename="../../Command.cpp" line="1922"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1926"/>
+      <location filename="../../Command.cpp" line="1923"/>
       <source>Function cut filter</source>
       <translation>Funkce cut filtr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1927"/>
+      <location filename="../../Command.cpp" line="1924"/>
       <source>Cut the data along an implicit function</source>
       <translation>Ořízněte data podél implicitní funkce</translation>
     </message>
@@ -385,17 +385,17 @@
   <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1977"/>
+      <location filename="../../Command.cpp" line="1974"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1978"/>
+      <location filename="../../Command.cpp" line="1975"/>
       <source>Line clip filter</source>
       <translation>Linkový klipový filtr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1979"/>
+      <location filename="../../Command.cpp" line="1976"/>
       <source>Define/create a clip filter which clips a field along a line</source>
       <translation>Definujte/vytvořte klipový filtr, který ořízne pole podél čáry</translation>
     </message>
@@ -403,17 +403,17 @@
   <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2026"/>
+      <location filename="../../Command.cpp" line="2023"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2027"/>
+      <location filename="../../Command.cpp" line="2024"/>
       <source>Data at point clip filter</source>
       <translation>Filtr dat v bodě klipu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2028"/>
+      <location filename="../../Command.cpp" line="2025"/>
       <source>Define/create a clip filter which clips a field data at point</source>
       <translation>Definujte/vytvořte klipový filtr, který ořízne data pole v bodě</translation>
     </message>
@@ -421,37 +421,37 @@
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2299"/>
+      <location filename="../../Command.cpp" line="2296"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2300"/>
+      <location filename="../../Command.cpp" line="2297"/>
       <source>Filter functions</source>
       <translation>Funkce filtru</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2301"/>
+      <location filename="../../Command.cpp" line="2298"/>
       <source>Functions for use in postprocessing filter...</source>
       <translation>Funkce pro použití ve filtru postprocessingu...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2480"/>
+      <location filename="../../Command.cpp" line="2477"/>
       <source>Plane</source>
       <translation>Rovina</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2487"/>
+      <location filename="../../Command.cpp" line="2484"/>
       <source>Sphere</source>
       <translation>Koule</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2494"/>
+      <location filename="../../Command.cpp" line="2491"/>
       <source>Cylinder</source>
       <translation>Válec</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2501"/>
+      <location filename="../../Command.cpp" line="2498"/>
       <source>Box</source>
       <translation>Kvádr</translation>
     </message>
@@ -459,65 +459,65 @@
   <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1771"/>
+      <location filename="../../Command.cpp" line="1768"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
       <translation>Tloušťka [mm]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1775"/>
+      <location filename="../../Command.cpp" line="1772"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
       <translation>Napětí [MPa]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1779"/>
+      <location filename="../../Command.cpp" line="1776"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
       <translation>Linearizovaná napětí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1783"/>
+      <location filename="../../Command.cpp" line="1780"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
       <translation>Membranová</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1787"/>
+      <location filename="../../Command.cpp" line="1784"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
       <translation>Membrána a ohýbání</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1791"/>
+      <location filename="../../Command.cpp" line="1788"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
       <translation>Celkem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2076"/>
+      <location filename="../../Command.cpp" line="2073"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2077"/>
+      <location filename="../../Command.cpp" line="2074"/>
       <source>Stress linearization plot</source>
       <translation>Graf linearizace napětí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2078"/>
+      <location filename="../../Command.cpp" line="2075"/>
       <source>Define/create stress linearization plots</source>
       <translation>Definujte/vytvářejte grafy linearizace napětí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2115"/>
-      <location filename="../../Command.cpp" line="2124"/>
+      <location filename="../../Command.cpp" line="2112"/>
+      <location filename="../../Command.cpp" line="2121"/>
       <source>Wrong selection</source>
       <translation>Neplatný výběr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2116"/>
-      <location filename="../../Command.cpp" line="2125"/>
+      <location filename="../../Command.cpp" line="2113"/>
+      <location filename="../../Command.cpp" line="2122"/>
       <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
       <translation>Vyberte filtr Clip, který ořízne pole STRES podél čáry, prosím.</translation>
     </message>
@@ -525,27 +525,27 @@
   <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-      <location filename="../../Command.cpp" line="2567"/>
+      <location filename="../../Command.cpp" line="2564"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2568"/>
+      <location filename="../../Command.cpp" line="2565"/>
       <source>Post pipeline from result</source>
       <translation>Odeslat kanál z výsledku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2569"/>
+      <location filename="../../Command.cpp" line="2566"/>
       <source>Creates a post processing pipeline from a result object</source>
       <translation>Vytvoří kanál po zpracování z výsledného objektu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2647"/>
+      <location filename="../../Command.cpp" line="2644"/>
       <source>Wrong selection type</source>
       <translation>Špatný typ výběru</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2648"/>
+      <location filename="../../Command.cpp" line="2645"/>
       <source>Select a result object, please.</source>
       <translation>Vyberte prosím výsledný objekt.</translation>
     </message>
@@ -553,17 +553,17 @@
   <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2151"/>
+      <location filename="../../Command.cpp" line="2148"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2152"/>
+      <location filename="../../Command.cpp" line="2149"/>
       <source>Scalar clip filter</source>
       <translation>Skalární klipový filtr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2154"/>
+      <location filename="../../Command.cpp" line="2151"/>
       <source>Define/create a clip filter which clips a field with a scalar value</source>
       <translation>Definujte/vytvořte klipový filtr, který ořízne pole se skalární hodnotou</translation>
     </message>
@@ -571,17 +571,17 @@
   <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2201"/>
+      <location filename="../../Command.cpp" line="2198"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2202"/>
+      <location filename="../../Command.cpp" line="2199"/>
       <source>Warp filter</source>
       <translation>Filtr pokřivení</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2203"/>
+      <location filename="../../Command.cpp" line="2200"/>
       <source>Warp the geometry along a vector field by a certain factor</source>
       <translation>Pokřivení geometrie podél vektorového pole o určitý faktor</translation>
     </message>
@@ -615,8 +615,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="415"/>
-      <source>Make FEM constraint fixed geometry</source>
-      <translation type="unfinished">Make FEM constraint fixed geometry</translation>
+      <source>Make rigid body constraint</source>
+      <translation type="unfinished">Make rigid body constraint</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="519"/>
@@ -684,17 +684,17 @@
       <translation>Vytvořte sadu uzlů</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1716"/>
+      <location filename="../../Command.cpp" line="1710"/>
       <source>Create filter</source>
       <translation>Vytvořit filtr</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2333"/>
+      <location filename="../../Command.cpp" line="2330"/>
       <source>Create function</source>
       <translation>Vytvořit funkci</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2619"/>
+      <location filename="../../Command.cpp" line="2616"/>
       <source>Create pipeline from result</source>
       <translation>Vytvořte potrubí z výsledku</translation>
     </message>
@@ -781,22 +781,22 @@
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2482"/>
+      <location filename="../../Command.cpp" line="2479"/>
       <source>Create a plane function, defined by its origin and normal</source>
       <translation>Vytvořte rovinnou funkci definovanou jejím počátkem a normálou</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2489"/>
+      <location filename="../../Command.cpp" line="2486"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>Vytvořte funkci koule definovanou jejím středem a poloměrem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2495"/>
+      <location filename="../../Command.cpp" line="2492"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
       <translation>Vytvořte funkci válce definovanou svým středem, osou a poloměrem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2502"/>
+      <location filename="../../Command.cpp" line="2499"/>
       <source>Create a box function, defined by its center, length, width and height</source>
       <translation>Vytvořte krabicovou funkci definovanou svým středem, délkou, šířkou a výškou</translation>
     </message>
@@ -2972,6 +2972,7 @@ Specify another file please.</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
@@ -3003,6 +3004,11 @@ Specify another file please.</translation>
       <location filename="../ui/ConstraintSectionPrint.ui" line="14"/>
       <source>SectionPrint parameter</source>
       <translation>Parametr SectionPrint</translation>
+    </message>
+    <message>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="34"/>
+      <source>Variable</source>
+      <translation type="unfinished">Variable</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="14"/>
@@ -3709,7 +3715,7 @@ Poznámka: pro 2D je možné pouze nastavení pro x,
       <translation type="unfinished">Edit analysis feature</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="624"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="659"/>
       <source>Constraint RigidBody</source>
       <translation type="unfinished">Constraint RigidBody</translation>
     </message>
@@ -4041,7 +4047,7 @@ Možné proměnné naleznete v popisném poli níže.</translation>
     <message>
       <location filename="../../SphereWidget.ui" line="20"/>
       <source>Center</source>
-      <translation>Na střed</translation>
+      <translation>Střed</translation>
     </message>
   </context>
   <context>
@@ -4928,7 +4934,7 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="17"/>
       <source>Center</source>
-      <translation>Na střed</translation>
+      <translation>Střed</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="29"/>
@@ -5327,7 +5333,7 @@ používá se pro řešič Elmer</translation>
     <message>
       <location filename="../../Workbench.cpp" line="66"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="67"/>
@@ -5379,14 +5385,14 @@ používá se pro řešič Elmer</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1665"/>
-      <location filename="../../Command.cpp" line="1682"/>
-      <location filename="../../Command.cpp" line="1711"/>
+      <location filename="../../Command.cpp" line="1676"/>
+      <location filename="../../Command.cpp" line="1705"/>
       <source>The filter could not be set up.</source>
       <translation>Filtr nelze nastavit.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1681"/>
-      <location filename="../../Command.cpp" line="1710"/>
+      <location filename="../../Command.cpp" line="1675"/>
+      <location filename="../../Command.cpp" line="1704"/>
       <source>Error: no post processing object selected.</source>
       <translation>Chyba: nebyl vybrán žádný objekt následného zpracování.</translation>
     </message>
@@ -6158,17 +6164,17 @@ Nejprve prosím vyberte typ výsledku.</translation>
   <context>
     <name>CmdFemPostContoursFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2250"/>
+      <location filename="../../Command.cpp" line="2247"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2251"/>
+      <location filename="../../Command.cpp" line="2248"/>
       <source>Contours filter</source>
       <translation>Filtr obrysů</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2252"/>
+      <location filename="../../Command.cpp" line="2249"/>
       <source>Define/create a contours filter which displays iso contours</source>
       <translation>Definujte/vytvořte filtr obrysů, který zobrazuje izo obrysy</translation>
     </message>
@@ -6216,7 +6222,7 @@ Nejprve prosím vyberte typ výsledku.</translation>
     <message>
       <location filename="../../BoxWidget.ui" line="20"/>
       <source>Center</source>
-      <translation>Na střed</translation>
+      <translation>Střed</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="124"/>
@@ -6257,7 +6263,7 @@ Nejprve prosím vyberte typ výsledku.</translation>
     <message>
       <location filename="../../CylinderWidget.ui" line="20"/>
       <source>Center</source>
-      <translation>Na střed</translation>
+      <translation>Střed</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="104"/>
@@ -6466,8 +6472,8 @@ Nejprve prosím vyberte typ výsledku.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="20"/>
-      <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Vyberte plochy, klikněte Přidat nebo Odstranit</translation>
+      <source>Click Add or Remove and select geometric element(s)</source>
+      <translation type="unfinished">Click Add or Remove and select geometric element(s)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="35"/>
@@ -6562,40 +6568,40 @@ Nejprve prosím vyberte typ výsledku.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="398"/>
-      <source>Constraint rigid body</source>
-      <translation type="unfinished">Constraint rigid body</translation>
+      <source>Rigid body constraint</source>
+      <translation type="unfinished">Rigid body constraint</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="399"/>
-      <source>Creates a FEM constraint for a rigid body</source>
-      <translation type="unfinished">Creates a FEM constraint for a rigid body</translation>
+      <source>Creates a rigid body constraint for a geometric entity</source>
+      <translation type="unfinished">Creates a rigid body constraint for a geometric entity</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintRigidBody</name>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="260"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="271"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="311"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="334"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="345"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="272"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="283"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="323"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="346"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="357"/>
       <source>Selection error</source>
       <translation>Chyba výběru</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="260"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="334"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="272"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="346"/>
       <source>Nothing selected!</source>
       <translation>Nic není vybráno!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="271"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="345"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="283"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="357"/>
       <source>Selected object is not a part!</source>
       <translation>Vybraný objekt není součást!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="309"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="321"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
       <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
     </message>
@@ -6603,7 +6609,7 @@ Nejprve prosím vyberte typ výsledku.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintRigidBody</name>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="732"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="767"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>

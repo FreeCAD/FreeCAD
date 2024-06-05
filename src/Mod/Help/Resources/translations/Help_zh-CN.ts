@@ -100,6 +100,13 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <translation>文档将在您的默认网络浏览器中打开。</translation>
     </message>
     <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="211"/>
+      <source>The documentation will open in a dockable dialog inside the FreeCAD window,
+which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
+      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
+which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
+    </message>
+    <message>
       <location filename="../../dlgPreferencesHelp.ui" line="246"/>
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
@@ -117,13 +124,6 @@ Markdown 版本的情况下，这才会起作用。</translation>
       <location filename="../../dlgPreferencesHelp.ui" line="189"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</source>
       <translation type="unfinished">The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="211"/>
-      <source>The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open whlle working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open whlle working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="215"/>

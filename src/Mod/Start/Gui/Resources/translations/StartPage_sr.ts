@@ -48,7 +48,7 @@
       <location filename="../../Manipulator.cpp" line="47"/>
       <location filename="../../Manipulator.cpp" line="48"/>
       <source>Start</source>
-      <translation>Почетак</translation>
+      <translation>Почетна</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../StartView.cpp" line="191"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation>Направи 2D цртеж у Draft радном окружењу</translation>
+      <translation>Направи 2D цртеж у окружења Цртање</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="193"/>
@@ -144,7 +144,7 @@
     <message>
       <location filename="../../StartView.cpp" line="428"/>
       <source>Start</source>
-      <translation>Почетак</translation>
+      <translation>Почетна</translation>
     </message>
   </context>
   <context>

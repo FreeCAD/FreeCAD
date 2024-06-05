@@ -46,6 +46,7 @@
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
+#include <Gui/DlgMaterialPropertiesImp.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
@@ -54,8 +55,10 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 
-#include "TaskFaceColors.h"
-#include "ui_TaskFaceColors.h"
+#include <Mod/Material/Gui/MaterialTreeWidget.h>
+
+#include "TaskFaceAppearances.h"
+#include "ui_TaskFaceAppearances.h"
 #include "SoBrepFaceSet.h"
 #include "ViewProviderExt.h"
 
@@ -84,23 +87,23 @@ namespace PartGui {
     };
 }
 
-class FaceColors::Private
+class FaceAppearances::Private
 {
 public:
     using Connection = boost::signals2::connection;
-    Ui_TaskFaceColors* ui;
+    Ui_TaskFaceAppearances* ui;
     QPointer<Gui::View3DInventorViewer> view;
     ViewProviderPartExt* vp;
     App::DocumentObject* obj;
     Gui::Document* doc;
-    std::vector<App::Color> perface;
+    std::vector<App::Material> perface;
     QSet<int> index;
     bool boxSelection;
     Connection connectDelDoc;
     Connection connectDelObj;
     Connection connectUndoDoc;
 
-    explicit Private(ViewProviderPartExt* vp) : ui(new Ui_TaskFaceColors()), view(nullptr), vp(vp)
+    explicit Private(ViewProviderPartExt* vp) : ui(new Ui_TaskFaceAppearances()), view(nullptr), vp(vp)
     {
         obj = vp->getObject();
         doc = Gui::Application::Instance->getDocument(obj->getDocument());
@@ -113,9 +116,7 @@ public:
             xp.Next();
         }
 
-        std::vector<App::Color> current = vp->DiffuseColor.getValues();
-        if (current.empty())
-            current.push_back(vp->ShapeAppearance.getDiffuseColor());
+        std::vector<App::Material> current = vp->ShapeAppearance.getValues();
         perface = current;
         perface.resize(mapOfShape.Extent(), perface.front());
 
@@ -220,7 +221,7 @@ public:
                 polygon.Add(Base::Vector2d(it[0], it[1]));
         }
 
-        FaceColors* self = static_cast<FaceColors*>(ud);
+        FaceAppearances* self = static_cast<FaceAppearances*>(ud);
         self->d->view = nullptr;
         if (self->d->obj && self->d->obj->isDerivedFrom<Part::Feature>()) {
             cb->setHandled();
@@ -235,9 +236,9 @@ public:
     }
 };
 
-/* TRANSLATOR PartGui::TaskFaceColors */
+/* TRANSLATOR PartGui::TaskFaceAppearances */
 
-FaceColors::FaceColors(ViewProviderPartExt* vp, QWidget* parent)
+FaceAppearances::FaceAppearances(ViewProviderPartExt* vp, QWidget* parent)
     : d(new Private(vp))
 {
     Q_UNUSED(parent);
@@ -245,23 +246,22 @@ FaceColors::FaceColors(ViewProviderPartExt* vp, QWidget* parent)
     setupConnections();
 
     d->ui->groupBox->setTitle(QString::fromUtf8(vp->getObject()->Label.getValue()));
-    d->ui->colorButton->setDisabled(true);
-    d->ui->colorButton->setAllowTransparency(true);
+    d->ui->buttonCustomAppearance->setDisabled(true);
 
     FaceSelection* gate = new FaceSelection(d->vp->getObject());
     Gui::Selection().addSelectionGate(gate);
 
     //NOLINTBEGIN
     d->connectDelDoc = Gui::Application::Instance->signalDeleteDocument.connect(std::bind
-        (&FaceColors::slotDeleteDocument, this, sp::_1));
+        (&FaceAppearances::slotDeleteDocument, this, sp::_1));
     d->connectDelObj = Gui::Application::Instance->signalDeletedObject.connect(std::bind
-        (&FaceColors::slotDeleteObject, this, sp::_1));
+        (&FaceAppearances::slotDeleteObject, this, sp::_1));
     d->connectUndoDoc = d->doc->signalUndoDocument.connect(std::bind
-        (&FaceColors::slotUndoDocument, this, sp::_1));
+        (&FaceAppearances::slotUndoDocument, this, sp::_1));
     //NOLINTEND
 }
 
-FaceColors::~FaceColors()
+FaceAppearances::~FaceAppearances()
 {
     if (d->view) {
         d->view->stopSelection();
@@ -276,17 +276,23 @@ FaceColors::~FaceColors()
     delete d;
 }
 
-void FaceColors::setupConnections()
+void FaceAppearances::setupConnections()
 {
-    connect(d->ui->colorButton, &Gui::ColorButton::changed,
-            this, &FaceColors::onColorButtonChanged);
     connect(d->ui->defaultButton, &QPushButton::clicked,
-            this, &FaceColors::onDefaultButtonClicked);
+            this, &FaceAppearances::onDefaultButtonClicked);
     connect(d->ui->boxSelection, &QPushButton::toggled,
-            this, &FaceColors::onBoxSelectionToggled);
+            this, &FaceAppearances::onBoxSelectionToggled);
+    connect(d->ui->widgetMaterial,
+            &MatGui::MaterialTreeWidget::materialSelected,
+            this,
+            &FaceAppearances::onMaterialSelected);
+    connect(d->ui->buttonCustomAppearance,
+            &QPushButton::clicked,
+            this,
+            &FaceAppearances::onButtonCustomAppearanceClicked);
 }
 
-void FaceColors::slotUndoDocument(const Gui::Document& Doc)
+void FaceAppearances::slotUndoDocument(const Gui::Document& Doc)
 {
     if (d->doc == &Doc) {
         d->doc->resetEdit();
@@ -294,19 +300,19 @@ void FaceColors::slotUndoDocument(const Gui::Document& Doc)
     }
 }
 
-void FaceColors::slotDeleteDocument(const Gui::Document& Doc)
+void FaceAppearances::slotDeleteDocument(const Gui::Document& Doc)
 {
     if (d->doc == &Doc)
         Gui::Control().closeDialog();
 }
 
-void FaceColors::slotDeleteObject(const Gui::ViewProvider& obj)
+void FaceAppearances::slotDeleteObject(const Gui::ViewProvider& obj)
 {
     if (d->vp == &obj)
         Gui::Control().closeDialog();
 }
 
-void FaceColors::onBoxSelectionToggled(bool checked)
+void FaceAppearances::onBoxSelectionToggled(bool checked)
 {
     Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
     // toggle the button state and feature
@@ -330,28 +336,26 @@ void FaceColors::onBoxSelectionToggled(bool checked)
     }
 }
 
-void FaceColors::onDefaultButtonClicked()
+void FaceAppearances::onDefaultButtonClicked()
 {
-    std::fill(d->perface.begin(), d->perface.end(), d->vp->ShapeAppearance.getDiffuseColor());
-    d->vp->DiffuseColor.setValues(d->perface);
+    std::fill(d->perface.begin(), d->perface.end(), d->vp->ShapeAppearance[0]);
+    d->vp->ShapeAppearance.setValues(d->perface);
 }
 
-void FaceColors::onColorButtonChanged()
+void FaceAppearances::onMaterialSelected(const std::shared_ptr<Materials::Material>& material)
 {
     if (!d->index.isEmpty()) {
-        QColor color = d->ui->colorButton->color();
         for (int it : d->index) {
-            // alpha of App::Color is contrary to the one of QColor
-            d->perface[it].set(color.redF(), color.greenF(), color.blueF(), (1.0 - color.alphaF()));
+            d->perface[it] = material->getMaterialAppearance();
         }
-        d->vp->DiffuseColor.setValues(d->perface);
+        d->vp->ShapeAppearance.setValues(d->perface);
         // new color has been applied, unselect so that users can see this
         onSelectionChanged(Gui::SelectionChanges::ClrSelection);
         Gui::Selection().clearSelection();
     }
 }
 
-void FaceColors::onSelectionChanged(const Gui::SelectionChanges& msg)
+void FaceAppearances::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     // no object selected in the combobox or no sub-element was selected
     if (!msg.pSubName)
@@ -366,11 +370,10 @@ void FaceColors::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (docname == msg.pDocName && objname == msg.pObjectName) {
             int index = std::atoi(msg.pSubName + 4) - 1;
             d->index.insert(index);
-            const App::Color& faceColor = d->perface[index];
+            const App::Color& faceColor = d->perface[index].diffuseColor;
             QColor color;
             // alpha of App::Color is contrary to the one of QColor
             color.setRgbF(faceColor.r, faceColor.g, faceColor.b, (1.0 - faceColor.a));
-            d->ui->colorButton->setColor(color);
             selection_changed = true;
         }
     }
@@ -394,7 +397,7 @@ void FaceColors::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-void FaceColors::updatePanel()
+void FaceAppearances::updatePanel()
 {
     QString faces = QString::fromLatin1("[");
     int size = d->index.size();
@@ -412,16 +415,39 @@ void FaceColors::updatePanel()
     }
 
     d->ui->labelElement->setText(faces);
-    d->ui->colorButton->setDisabled(d->index.isEmpty());
+    d->ui->buttonCustomAppearance->setDisabled(d->index.isEmpty());
 }
 
-void FaceColors::open()
+/**
+ * Opens a dialog that allows to modify the 'ShapeMaterial' property of all selected view providers.
+ */
+void FaceAppearances::onButtonCustomAppearanceClicked()
+{
+    std::vector<Gui::ViewProvider*> Provider;
+    Provider.push_back(d->vp);
+    Gui::Dialog::DlgFaceMaterialPropertiesImp dlg("ShapeAppearance", this);
+    dlg.setViewProviders(Provider);
+    dlg.exec();
+
+    // Set the face appearance
+    if (!d->index.isEmpty()) {
+        for (int it : d->index) {
+            d->perface[it] = dlg.getCustomAppearance();
+        }
+        d->vp->ShapeAppearance.setValues(d->perface);
+        // new color has been applied, unselect so that users can see this
+        onSelectionChanged(Gui::SelectionChanges::ClrSelection);
+        Gui::Selection().clearSelection();
+    }
+}
+
+void FaceAppearances::open()
 {
     Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
     doc->openCommand(QT_TRANSLATE_NOOP("Command", "Change face colors"));
 }
 
-bool FaceColors::accept()
+bool FaceAppearances::accept()
 {
     Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
     doc->commitCommand();
@@ -429,7 +455,7 @@ bool FaceColors::accept()
     return true;
 }
 
-bool FaceColors::reject()
+bool FaceAppearances::reject()
 {
     Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
     doc->abortCommand();
@@ -437,7 +463,7 @@ bool FaceColors::reject()
     return true;
 }
 
-void FaceColors::changeEvent(QEvent* e)
+void FaceAppearances::changeEvent(QEvent* e)
 {
     QWidget::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
@@ -446,33 +472,33 @@ void FaceColors::changeEvent(QEvent* e)
 }
 
 
-/* TRANSLATOR PartGui::TaskFaceColors */
+/* TRANSLATOR PartGui::TaskFaceAppearances */
 
-TaskFaceColors::TaskFaceColors(ViewProviderPartExt* vp)
+TaskFaceAppearances::TaskFaceAppearances(ViewProviderPartExt* vp)
 {
-    widget = new FaceColors(vp);
+    widget = new FaceAppearances(vp);
     addTaskBox(widget);
 }
 
-TaskFaceColors::~TaskFaceColors() = default;
+TaskFaceAppearances::~TaskFaceAppearances() = default;
 
-void TaskFaceColors::open()
+void TaskFaceAppearances::open()
 {
     widget->open();
 }
 
-void TaskFaceColors::clicked(int)
+void TaskFaceAppearances::clicked(int)
 {
 }
 
-bool TaskFaceColors::accept()
+bool TaskFaceAppearances::accept()
 {
     return widget->accept();
 }
 
-bool TaskFaceColors::reject()
+bool TaskFaceAppearances::reject()
 {
     return widget->reject();
 }
 
-#include "moc_TaskFaceColors.cpp"
+#include "moc_TaskFaceAppearances.cpp"

@@ -561,7 +561,7 @@ in Bezug auf eine Linie oder einen dritten Punkt</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="490"/>
       <source>Create arc by 3 points</source>
-      <translation>Kreisbogen durch drei Punkte erstellen</translation>
+      <translation>Kreisbogen durch 3 Punkte erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="491"/>
@@ -574,7 +574,7 @@ in Bezug auf eine Linie oder einen dritten Punkt</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1130"/>
       <source>Create circle by 3 points</source>
-      <translation>Kreis durch drei Punkte erstellen</translation>
+      <translation>Kreis durch 3 Punkte erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1131"/>
@@ -4090,7 +4090,7 @@ Erfordert das erneute aktivieren des Bearbeitungsmodus.</translation>
 'Separated tools': Individual tools for each dimensioning constraint.
 'Both': You will have both the 'Dimension' tool and the separated tools.
 This setting is only for the toolbar. Whichever you choose, all tools are always available in the menu and through shortcuts.</source>
-      <translation>Wählen Sie die Art der maßlichen Randbedingungen für Ihre Werkzeugleiste:
+      <translation>Die Art der maßlichen Randbedingungen für die Werkzeugleiste wählen:
 'Einzelnes Werkzeug': Ein einzelnes Werkzeug für alle Bemaßungen in der Werkzeugleiste: Entfernung, Abstand X / Y, Winkel, Radius. (Weitere im Dropdown)
 'Getrennte Werkzeuge': Individuelle Werkzeuge für jede maßliche Randbedingung.
 'Beides': Zeigt das kombinierte Bemaßungs-Werkzeug (Dimension) sowie die einzelnen Werkzeuge an.
@@ -4199,7 +4199,7 @@ Diese Einstellung ist nur für die Werkzeugleiste. Unabhängig von der Auswahl s
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="208"/>
       <source>Font size</source>
-      <translation>Schrifthöhe</translation>
+      <translation>Schriftgröße</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="160"/>
@@ -4994,7 +4994,7 @@ Dies erfolgt durch Analyse der Skizzengeometrien und Randbedingungen.</translati
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2921"/>
       <source>Do you want to close this dialog?</source>
-      <translation>Möchten Sie dieses Dialogfeld schließen?</translation>
+      <translation>Soll dieser Dialog geschlossen werden?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2935"/>

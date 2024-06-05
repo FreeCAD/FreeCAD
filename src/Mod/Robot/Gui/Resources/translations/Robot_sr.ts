@@ -931,7 +931,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>&amp;Robot</source>
-      <translation>&amp;Робот</translation>
+      <translation>&amp;Роботи</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
