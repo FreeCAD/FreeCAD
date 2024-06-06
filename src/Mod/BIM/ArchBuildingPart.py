@@ -299,7 +299,8 @@ class BuildingPart(ArchIFC.IfcProduct):
 
     def execute(self,obj):
 
-        # gather all the child shapes into a compound
+        "gather all the child shapes into a compound"
+        
         pl = obj.Placement
         shapes,materialstable = self.getShapes(obj)
         if shapes:
@@ -322,12 +323,13 @@ class BuildingPart(ArchIFC.IfcProduct):
             obj.ViewObject.Proxy.onChanged(obj.ViewObject,"AutoGroupBox")
 
     def getMovableChildren(self, obj):
+    
         "recursively get movable children"
 
         result = []
         for child in obj.Group:
-            if isinstance(child, "App::DocumentObjectGroup"):
-                result.extend(getMovableChildren(child))
+            if child.isDerivedFrom("App::DocumentObjectGroup"):
+                result.extend(self.getMovableChildren(child))
             if not hasattr(child,"MoveWithHost") or child.MoveWithHost:
                 if hasattr(child,"Placement"):
                     result.append(child)
