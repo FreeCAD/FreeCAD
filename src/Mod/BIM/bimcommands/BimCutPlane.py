@@ -27,7 +27,6 @@
 import os
 import FreeCAD
 import FreeCADGui
-from PySide import QtCore, QtGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
@@ -66,6 +65,7 @@ class Arch_CutPlane:
 class CutPlaneTaskPanel:
     def __init__(self):
         import ArchCutPlane
+        from PySide import QtCore, QtGui
         _, self.base, self.cutter = ArchCutPlane._getShapes(FreeCADGui.Selection.getSelectionEx("", 0))
 
         self.previewObj = FreeCAD.ActiveDocument.addObject("Part::Feature", "PreviewCutVolume")
