@@ -84,6 +84,10 @@ private:
     bool setLanguage(); //Returns true if language has been changed
     void setNumberLocale(bool force = false);
     void setDecimalPointConversion(bool on);
+    void retranslateUnits();
+    int getCurrentIconSize() const;
+    void addIconSizes(int current);
+    void translateIconSizes();
 
 private:
     int localeIndex;

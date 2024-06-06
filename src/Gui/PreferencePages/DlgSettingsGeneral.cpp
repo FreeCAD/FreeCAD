@@ -325,19 +325,7 @@ void DlgSettingsGeneral::loadSettings()
     if (model)
         model->sort(0);
 
-    int current = getMainWindow()->iconSize().width();
-    current = hGrp->GetInt("ToolbarIconSize", current);
-    ui->toolbarIconSize->clear();
-    ui->toolbarIconSize->addItem(tr("Small (%1px)").arg(16), QVariant((int)16));
-    ui->toolbarIconSize->addItem(tr("Medium (%1px)").arg(24), QVariant((int)24));
-    ui->toolbarIconSize->addItem(tr("Large (%1px)").arg(32), QVariant((int)32));
-    ui->toolbarIconSize->addItem(tr("Extra large (%1px)").arg(48), QVariant((int)48));
-    index = ui->toolbarIconSize->findData(QVariant(current));
-    if (index < 0) {
-        ui->toolbarIconSize->addItem(tr("Custom (%1px)").arg(current), QVariant((int)current));
-        index = ui->toolbarIconSize->findData(QVariant(current));
-    }
-    ui->toolbarIconSize->setCurrentIndex(index);
+    addIconSizes(getCurrentIconSize());
 
     //TreeMode combobox setup.
     loadDockWindowVisibility();
@@ -448,14 +436,68 @@ void DlgSettingsGeneral::loadThemes()
     }
 }
 
+int DlgSettingsGeneral::getCurrentIconSize() const
+{
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
+    int current = getMainWindow()->iconSize().width();
+    return hGrp->GetInt("ToolbarIconSize", current);
+}
+
+void DlgSettingsGeneral::addIconSizes(int current)
+{
+    ui->toolbarIconSize->clear();
+
+    QList<int> sizes{16, 24, 32, 48};
+    if (!sizes.contains(current)) {
+        sizes.append(current);
+    }
+
+    for (int size : sizes) {
+        ui->toolbarIconSize->addItem(QString(), QVariant(size));
+    }
+
+    int index = ui->toolbarIconSize->findData(QVariant(current));
+    ui->toolbarIconSize->setCurrentIndex(index);
+    translateIconSizes();
+}
+
+void DlgSettingsGeneral::translateIconSizes()
+{
+    auto getSize = [this](int index) {
+        return ui->toolbarIconSize->itemData(index).toInt();
+    };
+
+    QStringList sizes;
+    sizes << tr("Small (%1px)").arg(getSize(0));
+    sizes << tr("Medium (%1px)").arg(getSize(1));
+    sizes << tr("Large (%1px)").arg(getSize(2));
+    sizes << tr("Extra large (%1px)").arg(getSize(3));
+    if (ui->toolbarIconSize->count() > 4) {
+        sizes << tr("Custom (%1px)").arg(getSize(4));
+    }
+
+    for (int index = 0; index < sizes.size(); index++) {
+        ui->toolbarIconSize->setItemText(index, sizes[index]);
+    }
+}
+
+void DlgSettingsGeneral::retranslateUnits()
+{
+    int num = ui->comboBox_UnitSystem->count();
+    for (int i = 0; i < num; i++) {
+        QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
+        ui->comboBox_UnitSystem->setItemText(i, item);
+    }
+}
+
 void DlgSettingsGeneral::changeEvent(QEvent *event)
 {
     if (event->type() == QEvent::LanguageChange) {
+        translateIconSizes();
+        retranslateUnits();
         int index = ui->UseLocaleFormatting->currentIndex();
-        int index2 = ui->comboBox_UnitSystem->currentIndex();
         ui->retranslateUi(this);
         ui->UseLocaleFormatting->setCurrentIndex(index);
-        ui->comboBox_UnitSystem->setCurrentIndex(index2);
     }
     else {
         QWidget::changeEvent(event);
