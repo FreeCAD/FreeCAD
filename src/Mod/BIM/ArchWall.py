@@ -718,11 +718,10 @@ class _Wall(ArchComponent.Component):
             return None
         if obj.Normal == Vector(0,0,0):
             if obj.Base:
-                baseshape = obj.Base.Shape
+                normal = DraftGeomUtils.get_shape_normal(obj.Base.Shape)
+                if normal is None:
+                    normal = Vector(0,0,1)
             else:
-                baseshape = Part.makeLine((0,0,0),(length,0,0))
-            normal = DraftGeomUtils.get_shape_normal(baseshape)
-            if normal == None:
                 normal = Vector(0,0,1)
         else:
             normal = Vector(obj.Normal)
