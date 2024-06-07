@@ -151,6 +151,9 @@ int main( int argc, char ** argv )
         }
         argv_.push_back(0); // 0-terminated string
     }
+
++    // https://www.qt.io/blog/dark-mode-on-windows-11-with-qt-6.5
++    _putenv("QT_QPA_PLATFORM=windows:darkmode=1");
 #endif
 
     // Name and Version of the Application
@@ -168,7 +171,7 @@ int main( int argc, char ** argv )
     //App::Application::Config()["HiddenDockWindow"] = "Property editor";
     App::Application::Config()["SplashAlignment" ] = "Bottom|Left";
     App::Application::Config()["SplashTextColor" ] = "#8aadf4"; // light blue
-    App::Application::Config()["SplashInfoColor" ] = "#8aadf4"; // light blue 
+    App::Application::Config()["SplashInfoColor" ] = "#8aadf4"; // light blue
     App::Application::Config()["SplashInfoPosition" ] = "6,75";
 
     QGuiApplication::setDesktopFileName(QStringLiteral("org.freecad.FreeCAD"));
@@ -345,21 +348,21 @@ public:
     }
 };
 
-static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx) 
+static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
 {
-#ifdef _M_IX86 
-  if (pEx->ExceptionRecord->ExceptionCode == EXCEPTION_STACK_OVERFLOW)   
-  { 
-    // be sure that we have enough space... 
-    static char MyStack[1024*128];   
-    // it assumes that DS and SS are the same!!! (this is the case for Win32) 
-    // change the stack only if the selectors are the same (this is the case for Win32) 
-    //__asm push offset MyStack[1024*128]; 
-    //__asm pop esp; 
-    __asm mov eax,offset MyStack[1024*128]; 
-    __asm mov esp,eax; 
-  } 
-#endif 
+#ifdef _M_IX86
+  if (pEx->ExceptionRecord->ExceptionCode == EXCEPTION_STACK_OVERFLOW)
+  {
+    // be sure that we have enough space...
+    static char MyStack[1024*128];
+    // it assumes that DS and SS are the same!!! (this is the case for Win32)
+    // change the stack only if the selectors are the same (this is the case for Win32)
+    //__asm push offset MyStack[1024*128];
+    //__asm pop esp;
+    __asm mov eax,offset MyStack[1024*128];
+    __asm mov esp,eax;
+  }
+#endif
   MyStackWalker sw;
   sw.ShowCallstack(GetCurrentThread(), pEx->ContextRecord);
   Base::Console().Log("*** Unhandled Exception!\n");
@@ -367,46 +370,46 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
   Base::Console().Log("   ExpFlags: %d\n", pEx->ExceptionRecord->ExceptionFlags);
   Base::Console().Log("   ExpAddress: 0x%8.8X\n", pEx->ExceptionRecord->ExceptionAddress);
 
-  bool bFailed = true; 
-  HANDLE hFile; 
+  bool bFailed = true;
+  HANDLE hFile;
   hFile = CreateFileW(s_szMiniDumpFileName.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-  if (hFile != INVALID_HANDLE_VALUE) 
-  { 
-    MINIDUMP_EXCEPTION_INFORMATION stMDEI; 
-    stMDEI.ThreadId = GetCurrentThreadId(); 
-    stMDEI.ExceptionPointers = pEx; 
-    stMDEI.ClientPointers = true; 
-    // try to create a miniDump: 
-    if (s_pMDWD( 
-      GetCurrentProcess(), 
-      GetCurrentProcessId(), 
-      hFile, 
-      s_dumpTyp, 
-      &stMDEI, 
-      NULL, 
-      NULL 
-      )) 
-    { 
-      bFailed = false;  // succeeded 
-    } 
-    CloseHandle(hFile); 
-  } 
+  if (hFile != INVALID_HANDLE_VALUE)
+  {
+    MINIDUMP_EXCEPTION_INFORMATION stMDEI;
+    stMDEI.ThreadId = GetCurrentThreadId();
+    stMDEI.ExceptionPointers = pEx;
+    stMDEI.ClientPointers = true;
+    // try to create a miniDump:
+    if (s_pMDWD(
+      GetCurrentProcess(),
+      GetCurrentProcessId(),
+      hFile,
+      s_dumpTyp,
+      &stMDEI,
+      NULL,
+      NULL
+      ))
+    {
+      bFailed = false;  // succeeded
+    }
+    CloseHandle(hFile);
+  }
 
-  if (bFailed) 
-  { 
-    return EXCEPTION_CONTINUE_SEARCH; 
-  } 
+  if (bFailed)
+  {
+    return EXCEPTION_CONTINUE_SEARCH;
+  }
 
-  // Optional display an error message 
-  // FatalAppExit(-1, ("Application failed!")); 
+  // Optional display an error message
+  // FatalAppExit(-1, ("Application failed!"));
 
 
-  // or return one of the following: 
-  // - EXCEPTION_CONTINUE_SEARCH 
-  // - EXCEPTION_CONTINUE_EXECUTION 
-  // - EXCEPTION_EXECUTE_HANDLER 
-  return EXCEPTION_CONTINUE_SEARCH;  // this will trigger the "normal" OS error-dialog 
-} 
+  // or return one of the following:
+  // - EXCEPTION_CONTINUE_SEARCH
+  // - EXCEPTION_CONTINUE_EXECUTION
+  // - EXCEPTION_EXECUTE_HANDLER
+  return EXCEPTION_CONTINUE_SEARCH;  // this will trigger the "normal" OS error-dialog
+}
 
 void InitMiniDumpWriter(const std::string& filename)
 {
