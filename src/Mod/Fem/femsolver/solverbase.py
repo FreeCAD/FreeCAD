@@ -45,7 +45,7 @@ if App.GuiUp:
 class Proxy(object):
 
     BaseType = "Fem::FemSolverObjectPython"
-    MeshType = [".unv", ".msh", ".inp", ".stl", ".bdf", ".m", ".med", ".vtk", ".ply", ".xml", ".dxf", ".off"]
+    MeshTypes = [".unv"]
 
 
     def __init__(self, obj):
@@ -55,8 +55,8 @@ class Proxy(object):
 
     def _addMeshFormatProperty(self, obj):
         if not hasattr(obj, "MeshFormat"):
-            obj.addProperty("App::PropertyEnumeration", "MeshFormat", "Solver", "Mesh format for Gmsh output")
-            obj.MeshFormat = self.MeshType
+            obj.addProperty("App::PropertyEnumeration", "MeshFormat", "Fem", "Mesh format for Gmsh output")
+            obj.MeshFormat = self.MeshTypes
             obj.MeshFormat = ".unv"
 
 

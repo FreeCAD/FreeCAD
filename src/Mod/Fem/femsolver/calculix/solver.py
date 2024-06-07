@@ -42,6 +42,7 @@ if FreeCAD.GuiUp:
     import FemGui
 
 ANALYSIS_TYPES = ["static", "frequency", "thermomech", "check", "buckling"]
+MESH_TYPES = [".unv"]
 
 
 def create(doc, name="SolverCalculiX"):
@@ -130,6 +131,11 @@ def on_restore_of_document(obj, ccx_prefs):
 
 
 def add_attributes(obj, ccx_prefs):
+
+    if not hasattr(obj, "MeshFormat"):
+            obj.addProperty("App::PropertyEnumeration", "MeshFormat", "Fem", "Mesh format for Gmsh output")
+            obj.MeshFormat = MESH_TYPES
+            obj.MeshFormat = ".unv"
 
     if not hasattr(obj, "AnalysisType"):
         obj.addProperty(
