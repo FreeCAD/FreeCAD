@@ -300,7 +300,13 @@ class GmshTools():
                 .format(self.working_dir)
             )
 
+
         solver = None
+
+        gmsh_prefs = FreeCAD.ParamGet(
+            "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
+        )
+
         for m in self.analysis.Group:
             if m.isDerivedFrom("Fem::FemSolverObjectPython"):
                 solver = m
@@ -309,13 +315,10 @@ class GmshTools():
                 file_ext = solver.MeshFormat
             else:
                 file_ext = ".unv"
+            gmsh_prefs.SetString("MeshFileFormat", file_ext)
         else:
-            file_ext = ".unv"
-
-        FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
-        ).SetString("MeshFileForma", file_ext)
-
+            file_ext = gmsh_prefs.GetString("MeshFileFormat", ".unv")
+            
 
         # file paths
         _geometry_name = self.part_obj.Name + "_Geometry"
@@ -948,6 +951,7 @@ class GmshTools():
         geo.close()
 
     def run_gmsh_with_geo(self):
+        FreeCAD.Console.PrintMessage("Run  Gmsh with GEO")
         command_list = [self.gmsh_bin, "-", self.temp_file_geo]
         # print(command_list)
         try:
