@@ -26,10 +26,11 @@
 #ifndef _PreComp_
 #include <QMessageBox>
 #endif
-
+#include <App/Application.h>
 #include "DlgSettingsFemGmshImp.h"
 #include "ui_DlgSettingsFemGmsh.h"
-
+#include <App/Application.h>
+#include <Base/Console.h>
 
 using namespace FemGui;
 
@@ -50,18 +51,46 @@ DlgSettingsFemGmshImp::~DlgSettingsFemGmshImp() = default;
 
 void DlgSettingsFemGmshImp::saveSettings()
 {
+    
     ui->cb_gmsh_binary_std->onSave();
     ui->fc_gmsh_binary_path->onSave();
-    ui->le_mesh_file_format->onSave();
+    ui->cb_mesh_file_format->onSave();
 
-
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh");
+    std::string meshFormats[] = {".unv", ".vtk", ".inp", ".med"};
+    int ind = ui->cb_mesh_file_format->currentIndex();
+    hGrp->SetASCII("MeshFileFormat", meshFormats[ind]);
+    
 }
 
 void DlgSettingsFemGmshImp::loadSettings()
 {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh");
+    std::string str = hGrp->GetASCII("MeshFileFormat", ".unv");
+    int ind = 0;
+    if(str == ".unv")
+    {
+        ind =0;
+    }
+    else if(str == ".vtk")
+    {
+        ind =1;
+    }
+    else if(str == ".inp")
+    {
+        ind =2;
+    }
+    else if(str == ".med")
+    {
+        ind =3;
+    }
+
+    ui->cb_mesh_file_format->setCurrentIndex(ind);
     ui->cb_gmsh_binary_std->onRestore();
     ui->fc_gmsh_binary_path->onRestore();
-    ui->le_mesh_file_format->onRestore();
+    ui->cb_mesh_file_format->onRestore();
 
 
 }
@@ -72,7 +101,9 @@ void DlgSettingsFemGmshImp::loadSettings()
 void DlgSettingsFemGmshImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
+        int c_index = ui->cb_mesh_file_format->currentIndex();
         ui->retranslateUi(this);
+        ui->cb_mesh_file_format->setCurrentIndex(c_index);
     }
     else {
         QWidget::changeEvent(e);

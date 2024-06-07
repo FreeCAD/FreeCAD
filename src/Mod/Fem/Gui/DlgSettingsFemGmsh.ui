@@ -114,19 +114,42 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="Gui::PrefLineEdit" name="le_mesh_file_format">
-          <property name="text">
-           <string>.unv</string>
+         <widget class="Gui::PrefComboBox" name="cb_mesh_file_format">
+          <property name="minimumSize">
+           <size>
+            <width>148</width>
+            <height>0</height>
+           </size>
           </property>
           <property name="toolTip">
-           <string>Enter the mesh file format (e.g., unv, vtk, etc.)</string>
+           <string>Enter the mesh file format</string>
           </property>
           <property name="prefEntry" stdset="0">
-            <cstring>MeshFileFormat</cstring>
+           <cstring>MeshFileFormat</cstring>
           </property>
           <property name="prefPath" stdset="0">
-          <cstring>Mod/Fem/Gmsh</cstring>
+           <cstring>Mod/Fem/Gmsh</cstring>
           </property>
+          <item>
+           <property name="text">
+            <string>.unv</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>.vtk</string>
+           </property>
+           </item>
+          <item>
+           <property name="text">
+            <string>.inp</string>
+           </property>
+           </item>
+          <item>
+           <property name="text">
+            <string>.med</string>
+           </property>
+           </item>
          </widget>
         </item>
        </layout>
@@ -164,6 +187,11 @@
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
