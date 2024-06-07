@@ -6,28 +6,24 @@ QAbstractItemView {
   alternate-background-color: rgba(255, 255, 255, 0.119);
   color: #000000;
   border: transparent;
-  padding-right: 5px;
+  padding-right: 6px;
 }
 Gui--OverlayTabWidget[transparent="true"] QWidget {
    selection-background-color: transparent;
 }
 
-/* Gui--OverlayTabWidget[transparent="true"] QTreeView:selected {
-  color: #000000;
-  background-color: #00ff11;
+/* Overwrites Properties panel to use white text. */
+QTreeView {
+  background-color: #5f5f5f;
+  border: 0px solid #696968;
+  /* alternate-background-color: rgba(255, 0, 0, 0.611); */
+  color: #fdfdfd;
+  gridline-color: #696968;
+  border-radius: 0px;
 }
-Gui--OverlayTabWidget[transparent="true"] QTreeView:selected:active {
-  color: #000000;
-  background-color: #00ff11;
-}
-
-Gui--OverlayTabWidget[transparent="true"] QTreeView:active {
-  color: #000000;
-  background-color: #00ff11;
-} */
 
 Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
-  color: #000000;
+  color: #ffffff;
 }
 
 Gui--OverlayTabWidget[transparent="true"] QTreeView::item {
@@ -69,16 +65,6 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:disabled {
   color: #9a9a9a;
 }
 
-Gui--OverlayTabWidget[transparent="true"] QWidget {
-  color: #000000;
-}
-
-/* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
-To customize for each overlay docking site, use the following selector
-
-Gui--OverlayTabWidget#OverlayLeft {}
-*/
-
 Gui--OverlayTabWidget {
   qproperty-effectColor: rgba(25, 25, 25, 220);
   qproperty-effectBlurRadius: 5;
@@ -105,8 +91,8 @@ Gui--OverlayTabWidget::pane {
 }
 
 QSint--ActionGroup QFrame[class="content"] {
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
   }
 
 Gui--OverlayTabWidget::tab-bar:top,
@@ -189,22 +175,30 @@ Gui--OverlayToolButton[objectName="OBTN Float"]:hover {
   image: url(qss:overlay/icons/float_light.svg);
 }
 
-Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:closed:has-children:has-siblings  {
+ QTreeView::branch:closed:has-children:has-siblings  {
+  margin-top: 5px;
+  margin-bottom: 5px;
   border-image: none;
   image: url(qss:images_classic/Arrow-right-white.png) 0;
 }
 
-Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:has-children:!has-siblings:closed  {
+ QTreeView::branch:has-children:!has-siblings:closed  {
+  margin-top: 5px;
+  margin-bottom: 5px;
   border-image: none;
   image: url(qss:images_classic/Arrow-right-white.png) 0;
 }
 
-Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:open:has-children:has-siblings  {
+ QTreeView::branch:open:has-children:has-siblings  {
+  margin-left: 6px;
+  margin-right: 6px;
   border-image: none;
   image: url(qss:images_classic/Arrow-down-white.png) 0;
 }
 
-Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:open:has-children:!has-siblings  {
+ QTreeView::branch:open:has-children:!has-siblings  {
+  margin-left: 6px;
+  margin-right: 6px;
   border-image: none;
   image: url(qss:images_classic/Arrow-down-white.png) 0;
 }
