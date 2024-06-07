@@ -389,7 +389,7 @@ class PythonPackageManager:
             # Nothing to migrate
             return False
 
-        os.makedirs(new_directory, mode=0o777, exist_ok=False)
+        os.makedirs(new_directory, mode=0o777, exist_ok=True)
 
         for content_item in os.listdir(old_directory):
             if content_item == new_directory_name:
