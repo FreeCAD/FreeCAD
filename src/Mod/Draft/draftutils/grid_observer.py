@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-# *   Copyright (c) 2023 FreeCAD Project Association                        *
+# *                                                                         *
 # *   Copyright (c) 2024 Syres                                              *
 # *   Copyright (c) 2024 Furgo                                              *
 # *                                                                         *
@@ -25,64 +24,52 @@
 """
 
 import FreeCAD
-from draftutils import gui_utils
 
 
 # View observer code to update the Draft_ToggleGrid command button to reflect
-# the grid's visibility status
-# Based on view observer code to update the Draft Tray
+# the grid's visibility status.
+# Based on view observer code to update the Draft Tray.
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtWidgets
+    from draftutils import gui_utils
     from draftutils.todo import ToDo
 
     def _update_grid_gui():
         """Update function executed by the callback to refresh the Toggle Grid
-        button state on all toolbars and menus
+        button state on all toolbars and menus.
         """
+
         try:
-            # Get the active view
+            # Get the active view.
             view = gui_utils.get_3d_view()
 
-            # If there isn't a view (no document loaded?), disable the button
+            # If the active view is not a 3D view, uncheck the button.
             if view is None:
-                _set_grid_button_state(False, False)
+                _set_grid_button_state(False)
                 return
+
+            # Otherwise, if there is a view, update the button's checked state.
+
+            # Retrieve the associated grid for each MDI document.
+            # [1] is the index where the grid is stored in the
+            # trackers list. See setTrackers().
+            view_idx = FreeCADGui.Snapper.trackers[0].index(view)
+            grid = FreeCADGui.Snapper.trackers[1][view_idx]
+            if grid.Visible:
+                _set_grid_button_state(True)
             else:
-                # Otherwise, if there is a view, update the button's status
-                # Update only if the Draft or BIM workbenches are active
-                if hasattr(FreeCADGui, "draftToolBar"):
+                _set_grid_button_state(False)
 
-                    # Retrieve the associated grid for each MDI document.
-                    # [1] is the index where the grid is stored in the
-                    # trackers list. See setTrackers().
-                    view_idx = FreeCADGui.Snapper.trackers[0].index(view)
-                    grid = FreeCADGui.Snapper.trackers[1][view_idx]
-
-                    if grid.Visible:
-                        _set_grid_button_state(True, True)
-                    else:
-                        _set_grid_button_state(True, False)
         except Exception:
             pass
 
     def _view_observer_callback():
-        """
-        Callback function to update the Toggle Grid button.
+        """Callback function to update the Toggle Grid button.
 
         The update will only happen if either the Draft or BIM
-        workbenches are active, and the tray is visible
+        workbenches are active.
         """
-
-        if not hasattr(FreeCADGui, "draftToolBar"):
-            return
-
-        tray = FreeCADGui.draftToolBar.tray
-        if tray is None:
-            return
-
-        if not tray.isVisible():
-            return
 
         ToDo.delay(_update_grid_gui, None)
 
@@ -113,19 +100,18 @@ if FreeCAD.GuiUp:
             mdi.subWindowActivated.disconnect(_view_observer_callback)
             _view_observer_active = False
 
-    def _set_grid_button_state(button_enable, button_check):
-        """Sets the enabled and check states of the Draft_ToggleGrid command.
+    def _set_grid_button_state(button_check):
+        """Sets the checked state of the Draft_ToggleGrid command.
         This is then reflected on the associated "Toggle Grid" buttons of every
         toolbar and menu.
 
         Args:
-            button_enable (bool): if True, enable the grid button
-            button_check (bool): if True, check the grid button
+            button_check (bool): if True, check the grid button.
 
         Returns:
             None
         """
 
         action = FreeCADGui.Command.get("Draft_ToggleGrid").getAction()[0]
-        action.setCheckable(button_enable)
+        action.setCheckable(True)
         action.setChecked(button_check)
