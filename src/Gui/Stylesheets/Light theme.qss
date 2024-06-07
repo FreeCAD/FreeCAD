@@ -597,7 +597,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qcombobox
 
 --------------------------------------------------------------------------- */
 QAbstractItemView {
-  alternate-background-color: #5b5b5b;
+  alternate-background-color: #ababab;
   color: black;
   border: 1px solid #ababab;
   border-radius: 2px;
