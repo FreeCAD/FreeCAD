@@ -1,17 +1,24 @@
-* {
-  /* color: #000000; */
-}
-
 QTabWidget::pane{
   background-color: rgba(255, 255, 255, 0.01);
   border: transparent;
 }
+
 QAbstractItemView {
   alternate-background-color: rgba(0, 0, 0, 0.119);
   color: White;
   border: transparent;
   padding-right: 5px;
 }
+
+QTreeView {
+  background-color: #cecece;
+  border: 0px solid #696968;
+  /* alternate-background-color: rgba(255, 0, 0, 0.611); */
+  color: #0e0e0e;
+  gridline-color: #696968;
+  border-radius: 0px;
+}
+
 Gui--OverlayTabWidget[transparent="true"] QWidget {
   selection-background-color: transparent;
 }
@@ -37,7 +44,6 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
   color: #000000;
   background-color: #c7def5;
 }
-
 
 Gui--OverlayTabWidget[transparent="true"] QTreeView::item:disabled {
   color: #8b8b8b;
@@ -159,22 +165,31 @@ Gui--OverlayTabWidget {
   Gui--OverlayToolButton[objectName="OBTN Float"]:hover {
     image: url(qss:overlay/icons/float_lighter.svg);
   }
-  Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:closed:has-children:has-siblings  {
+
+  QTreeView::branch:closed:has-children:has-siblings  {
+    margin-top: 5px;
+    margin-bottom: 5px;
     border-image: none;
     image: url(qss:images_classic/Arrow-right-black.png) 0;
   }
 
-  Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:has-children:!has-siblings:closed  {
+   QTreeView::branch:has-children:!has-siblings:closed  {
+    margin-top: 5px;
+    margin-bottom: 5px;
     border-image: none;
     image: url(qss:images_classic/Arrow-right-black.png) 0;
   }
 
-  Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:open:has-children:has-siblings  {
+   QTreeView::branch:open:has-children:has-siblings  {
+    margin-left: 6px;
+    margin-right: 6px;
     border-image: none;
     image: url(qss:images_classic/Arrow-down-black.png) 0;
   }
 
-  Gui--OverlayTabWidget[transparent="true"] QTreeView::branch:open:has-children:!has-siblings  {
+   QTreeView::branch:open:has-children:!has-siblings  {
+    margin-left: 6px;
+    margin-right: 6px;
     border-image: none;
     image: url(qss:images_classic/Arrow-down-black.png) 0;
   }
