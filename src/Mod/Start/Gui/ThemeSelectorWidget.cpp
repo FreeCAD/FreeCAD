@@ -55,11 +55,9 @@ void ThemeSelectorWidget::setupButtons(QBoxLayout* layout)
     if (!layout) {
         return;
     }
-    std::map<Theme, QString> themeMap {
-                                       {Theme::Classic, tr("Classic")},
+    std::map<Theme, QString> themeMap {{Theme::Classic, tr("Classic")},
                                        {Theme::Dark, tr("Dark theme")},
-                                       {Theme::Light, tr("Light theme")}
-                                       };
+                                       {Theme::Light, tr("Light theme")}};
     std::map<Theme, QIcon> iconMap {
         {Theme::Classic, QIcon(QLatin1String(":/thumbnails/Theme_thumbnail_classic.png"))},
         {Theme::Light, QIcon(QLatin1String(":/thumbnails/Theme_thumbnail_light.png"))},
@@ -141,4 +139,4 @@ void ThemeSelectorWidget::retranslateUi()
     _buttons[static_cast<int>(Theme::Dark)]->setText(tr("Dark theme", "Visual theme name"));
     _buttons[static_cast<int>(Theme::Light)]->setText(tr("Light theme", "Visual theme name"));
     _buttons[static_cast<int>(Theme::Classic)]->setText(tr("Classic", "Visual theme name"));
- }
+}
