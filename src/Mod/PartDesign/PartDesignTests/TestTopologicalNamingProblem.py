@@ -1442,6 +1442,322 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertAlmostEqual(volume3, boxVolume - 3 * filletVolume - cutVolume, 4)
         self.assertAlmostEqual(volume4, boxVolume - 2 * filletVolume - cutVolume, 4)
 
+
+    # TODO: ENABLE THIS TEST WHEN MULTISOLIDS AND TNP PLAY NICELY
+    # def testPD_TNPSketchPadMultipleSolids(self):
+    #     """ Prove that a sketch with multiple wires works correctly"""
+    #     doc = App.ActiveDocument
+    #     App.activeDocument().addObject('PartDesign::Body','Body')
+    #     doc.Body.newObject('Sketcher::SketchObject','Sketch')
+    #     doc.Sketch.AttachmentSupport = (doc.XY_Plane,[''])
+    #     doc.Sketch.MapMode = 'FlatFace'
+    #     radius = 15
+    #     geoList = []
+    #     geoList.append(Part.Circle(App.Vector(-20, 20, 0.000000), App.Vector(0.000000, 0.000000, 1.000000), radius))
+    #     doc.Sketch.addGeometry(geoList,False)
+    #     geoList = []
+    #     geoList.append(Part.Circle(App.Vector(20, 20, 0.000000), App.Vector(0.000000, 0.000000, 1.000000), radius))
+    #     doc.Sketch.addGeometry(geoList,False)
+    #     geoList = []
+    #     geoList.append(Part.Circle(App.Vector(20, -20, 0.000000), App.Vector(0.000000, 0.000000, 1.000000), radius))
+    #     doc.Sketch.addGeometry(geoList,False)
+    #     geoList = []
+    #     geoList.append(Part.Circle(App.Vector(-20,-20, 0.000000), App.Vector(0.000000, 0.000000, 1.000000), radius))
+    #     doc.Sketch.addGeometry(geoList,False)
+    #     del geoList
+    #     doc.recompute()
+    #     doc.Body.newObject('PartDesign::Pad','Pad')
+    #     doc.Pad.Profile = (doc.Sketch, ['',])
+    #     doc.Pad.Length = 10
+    #     doc.Pad.ReferenceAxis = (doc.Sketch,['N_Axis'])
+    #     doc.Sketch.Visibility = False
+    #     doc.recompute()
+    #     expected_volume = math.pi * radius * radius * 10 * 4 # Volume of 4 padded circles
+    #     self.assertAlmostEqual(doc.Body.Shape.Volume, expected_volume )
+    #   # Add additional code to attach another sketch, then change the original sketch and check TNP
+
+    def testPD_TNPSketchPadTouching(self):
+        """ Prove that a sketch with touching wires works correctly"""
+        doc = App.ActiveDocument
+        App.activeDocument().addObject('PartDesign::Body','Body')
+        doc.Body.newObject('Sketcher::SketchObject','Sketch')
+        doc.Sketch.AttachmentSupport = (doc.XY_Plane,[''])
+        doc.Sketch.MapMode = 'FlatFace'
+        radius = 20
+        geoList = []
+        geoList.append(Part.Circle(App.Vector(-20, 20, 0.000000), App.Vector(0.000000, 0.000000, 1.000000), radius))
+        doc.Sketch.addGeometry(geoList,False)
+        geoList = []
+        geoList.append(Part.Circle(App.Vector(20, 20, 0.000000), App.Vector(0.000000, 0.000000, 1.000000), radius))
+        doc.Sketch.addGeometry(geoList,False)
+        geoList = []
+        geoList.append(Part.Circle(App.Vector(20, -20, 0.000000), App.Vector(0.000000, 0.000000, 1.000000), radius))
+        doc.Sketch.addGeometry(geoList,False)
+        geoList = []
+        geoList.append(Part.Circle(App.Vector(-20,-20, 0.000000), App.Vector(0.000000, 0.000000, 1.000000), radius))
+        doc.Sketch.addGeometry(geoList,False)
+        del geoList
+        doc.recompute()
+        doc.Body.newObject('PartDesign::Pad','Pad')
+        doc.Pad.Profile = (doc.Sketch, ['',])
+        doc.Pad.Length = 10
+        doc.Pad.ReferenceAxis = (doc.Sketch,['N_Axis'])
+        doc.Sketch.Visibility = False
+        doc.recompute()
+        expected_volume = math.pi * radius * radius * 10 * 4 # Volume of 4 padded circles
+        # self.assertAlmostEqual(doc.Body.Shape.Volume, expected_volume ) # TODO ENABLE THIS ASSERTION WHEN IT PASSES
+    #   # Add additional code to attach another sketch, then change the original sketch and check TNP
+
+    # TODO ENABLE THIS TEST IF CODE IS WRITTEN TO SUPPORT SKETCHES WITH OVERLAPS.
+    # def testPD_TNPSketchPadOverlapping(self):
+    #     """ Prove that a sketch with overlapping wires works correctly"""
+    #     doc = App.ActiveDocument
+    #     App.activeDocument().addObject('PartDesign::Body','Body')
+    #     doc.Body.newObject('Sketcher::SketchObject','Sketch')
+    #     doc.Sketch.AttachmentSupport = (doc.XY_Plane,[''])
+    #     doc.Sketch.MapMode = 'FlatFace'
+    #     radius = 25
+    #     geoList = []
+    #     geoList.append(Part.Circle(App.Vector(-20, 20, 0.000000), App.Vector(0.000000, 0.000000, 1.000000), radius))
+    #     doc.Sketch.addGeometry(geoList,False)
+    #     geoList = []
+    #     geoList.append(Part.Circle(App.Vector(20, 20, 0.000000), App.Vector(0.000000, 0.000000, 1.000000), radius))
+    #     doc.Sketch.addGeometry(geoList,False)
+    #     geoList = []
+    #     geoList.append(Part.Circle(App.Vector(20, -20, 0.000000), App.Vector(0.000000, 0.000000, 1.000000), radius))
+    #     doc.Sketch.addGeometry(geoList,False)
+    #     geoList = []
+    #     geoList.append(Part.Circle(App.Vector(-20,-20, 0.000000), App.Vector(0.000000, 0.000000, 1.000000), radius))
+    #     doc.Sketch.addGeometry(geoList,False)
+    #     del geoList
+    #     doc.recompute()
+    #     doc.Body.newObject('PartDesign::Pad','Pad')
+    #     doc.Pad.Profile = (doc.Sketch, ['',])
+    #     doc.Pad.Length = 10
+    #     doc.Pad.ReferenceAxis = (doc.Sketch,['N_Axis'])
+    #     doc.Sketch.Visibility = False
+    #     doc.recompute()
+    #     expected_volume = math.pi * radius * radius * 10 * 4 # Volume of 4 padded circles
+    #     length = 12 # FIXME arbitrary guess, figure out the right value for either this or the angle.
+    #     angle = 2 * math.asin(length/2*radius)
+    #     expected_volume = expected_volume - 1/2 * radius * radius * (angle-math.sin(angle))  # Volume of the overlap areas
+    #     self.assertAlmostEqual(doc.Body.Shape.Volume, expected_volume )
+    #   # Add additional code to attach another sketch, then change the original sketch and check TNP
+
+    def testPD_TNPSketchPadSketchMove(self):
+        """ Prove that a sketch attached to a padded sketch shape does not have a problem when the initial sketch has geometry move"""
+        doc = App.ActiveDocument
+        App.activeDocument().addObject('PartDesign::Body','Body')
+        doc.Body.newObject('Sketcher::SketchObject','Sketch')
+        doc.Sketch.AttachmentSupport = (doc.XY_Plane,[''])
+        doc.Sketch.MapMode = 'FlatFace'
+        geoList = []
+        geoList.append(Part.LineSegment(App.Vector(0,0,0),App.Vector(40,0,0)))
+        geoList.append(Part.LineSegment(App.Vector(40,0,0),App.Vector(40,20,0)))
+        geoList.append(Part.LineSegment(App.Vector(40,20,0),App.Vector(0,20,0)))
+        geoList.append(Part.LineSegment(App.Vector(0,20,0),App.Vector(0,0,0)))
+        doc.Sketch.addGeometry(geoList,False)
+        constraintList = []
+        constraintList.append(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
+        constraintList.append(Sketcher.Constraint('Horizontal', 0))
+        constraintList.append(Sketcher.Constraint('Horizontal', 2))
+        constraintList.append(Sketcher.Constraint('Vertical', 1))
+        constraintList.append(Sketcher.Constraint('Vertical', 3))
+        doc.Sketch.addConstraint(constraintList)
+        doc.recompute()
+        doc.Body.newObject('PartDesign::Pad','Pad')
+        doc.Pad.Profile = (doc.Sketch, ['',])
+        doc.Pad.Length = 10
+        doc.Pad.ReferenceAxis = (doc.Sketch,['N_Axis'])
+        doc.Sketch.Visibility = False
+        doc.Pad.Length = 10.000000
+        doc.Pad.TaperAngle = 0.000000
+        doc.Pad.UseCustomVector = 0
+        doc.Pad.Direction = (0, 0, 1)
+        doc.Pad.ReferenceAxis = (doc.Sketch, ['N_Axis'])
+        doc.Pad.AlongSketchNormal = 1
+        doc.Pad.Type = 0
+        doc.Pad.UpToFace = None
+        doc.Pad.Reversed = 0
+        doc.Pad.Midplane = 0
+        doc.Pad.Offset = 0
+        doc.recompute()
+        doc.Sketch.Visibility = False
+        doc.Body.newObject('Sketcher::SketchObject','Sketch001')
+        doc.Sketch001.AttachmentSupport = (doc.Pad,['Face6',])
+        doc.Sketch001.MapMode = 'FlatFace'
+        geoList = []
+        geoList.append(Part.LineSegment(App.Vector(5,5,0),App.Vector(5,10,0)))
+        geoList.append(Part.LineSegment(App.Vector(5,10,0),App.Vector(25,10,0)))
+        geoList.append(Part.LineSegment(App.Vector(25,10,0),App.Vector(25,5,0)))
+        geoList.append(Part.LineSegment(App.Vector(25,5,0),App.Vector(5,5,0)))
+        doc.Sketch001.addGeometry(geoList,False)
+        del geoList
+        constraintList = []
+        constraintList.append(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
+        constraintList.append(Sketcher.Constraint('Vertical', 0))
+        constraintList.append(Sketcher.Constraint('Vertical', 2))
+        constraintList.append(Sketcher.Constraint('Horizontal', 1))
+        constraintList.append(Sketcher.Constraint('Horizontal', 3))
+        doc.Sketch001.addConstraint(constraintList)
+        doc.recompute()
+        doc.Body.newObject('PartDesign::Pad','Pad001')
+        doc.Pad001.Profile = (doc.Sketch001, ['',])
+        doc.Pad001.Length = 10
+        doc.Pad001.ReferenceAxis = (doc.Sketch001,['N_Axis'])
+        doc.Sketch001.Visibility = False
+        doc.Pad001.Length = 10.000000
+        doc.Pad001.TaperAngle = 0.000000
+        doc.Pad001.UseCustomVector = 0
+        doc.Pad001.Direction = (0, 0, 1)
+        doc.Pad001.ReferenceAxis = (doc.Sketch001, ['N_Axis'])
+        doc.Pad001.AlongSketchNormal = 1
+        doc.Pad001.Type = 0
+        doc.Pad001.UpToFace = None
+        doc.Pad001.Reversed = 0
+        doc.Pad001.Midplane = 0
+        doc.Pad001.Offset = 0
+        doc.recompute()
+        doc.Pad.Visibility = False
+        doc.Sketch001.Visibility = False
+        doc.Sketch.movePoint(3,0,App.Vector(-5,0,0),1)
+        doc.Sketch.movePoint(0,0,App.Vector(0.000000,-5,0),1)
+        doc.Sketch.movePoint(1,0,App.Vector(-5,0.000000,0),1)
+        doc.Sketch.movePoint(2,0,App.Vector(-0,-5,0),1)
+        doc.recompute()
+        # If Sketch001 is still at the right start point, we are good.
+        self.assertTrue(doc.Sketch001.AttachmentOffset.Matrix == App.Matrix())
+        matrix1 = App.Matrix()
+        matrix1.A34 = 10    # Z offset by 10.
+        self.assertTrue(doc.Sketch001.Placement.Matrix == matrix1)
+
+    def testPD_TNPSketchPadSketchDelete(self):
+        """ Prove that a sketch attached to a padded sketch shape does not have a problem when the initial sketch has geometry deleted"""
+        doc = App.ActiveDocument
+        App.activeDocument().addObject('PartDesign::Body','Body')
+        doc.Body.newObject('Sketcher::SketchObject','Sketch')
+        doc.Sketch.AttachmentSupport = (doc.XY_Plane,[''])
+        doc.Sketch.MapMode = 'FlatFace'
+        import ProfileLib.RegularPolygon
+        ProfileLib.RegularPolygon.makeRegularPolygon(doc.Sketch,6,App.Vector(0.000000,0.000000,0),App.Vector(24,12,0),False)
+        doc.Sketch.addConstraint(Sketcher.Constraint('Coincident', 6, 3, -1, 1))
+        doc.Sketch.addConstraint(Sketcher.Constraint('PointOnObject',0,2,-2))
+        doc.recompute()
+        doc.Body.newObject('PartDesign::Pad','Pad')
+        doc.Pad.Profile = (doc.Sketch, ['',])
+        doc.Pad.Length = 10
+        doc.Pad.ReferenceAxis = (doc.Sketch,['N_Axis'])
+        doc.Sketch.Visibility = False
+        doc.Pad.Length = 10.000000
+        doc.Pad.TaperAngle = 0.000000
+        doc.Pad.UseCustomVector = 0
+        doc.Pad.Direction = (0, 0, 1)
+        doc.Pad.ReferenceAxis = (doc.Sketch, ['N_Axis'])
+        doc.Pad.AlongSketchNormal = 1
+        doc.Pad.Type = 0
+        doc.Pad.UpToFace = None
+        doc.Pad.Reversed = 0
+        doc.Pad.Midplane = 0
+        doc.Pad.Offset = 0
+        doc.recompute()
+        doc.Sketch.Visibility = False
+        doc.Body.newObject('Sketcher::SketchObject','Sketch001')
+        doc.Sketch001.AttachmentSupport = (doc.Pad,['Face8',])
+        doc.Sketch001.MapMode = 'FlatFace'
+        geoList = []
+        geoList.append(Part.LineSegment(App.Vector(-5, 5, 0.000000),App.Vector(-5, -5, 0.000000)))
+        geoList.append(Part.LineSegment(App.Vector(-5, -5, 0.000000),App.Vector(5, -5, 0.000000)))
+        geoList.append(Part.LineSegment(App.Vector(5, -5, 0.000000),App.Vector(5, 5, 0.000000)))
+        geoList.append(Part.LineSegment(App.Vector(5, 5, 0.000000),App.Vector(-5, 5, 0.000000)))
+        doc.Sketch001.addGeometry(geoList,False)
+        del geoList
+        constraintList = []
+        constraintList.append(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
+        constraintList.append(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
+        constraintList.append(Sketcher.Constraint('Vertical', 0))
+        constraintList.append(Sketcher.Constraint('Vertical', 2))
+        constraintList.append(Sketcher.Constraint('Horizontal', 1))
+        constraintList.append(Sketcher.Constraint('Horizontal', 3))
+        doc.Sketch001.addConstraint(constraintList)
+        constraintList = []
+        doc.recompute()
+        doc.Body.newObject('PartDesign::Pad','Pad001')
+        doc.Pad001.Profile = (doc.Sketch001, ['',])
+        doc.Pad001.Length = 10
+        doc.Pad001.ReferenceAxis = (doc.Sketch001,['N_Axis'])
+        doc.Sketch001.Visibility = False
+        doc.Pad001.Length = 10.000000
+        doc.Pad001.TaperAngle = 0.000000
+        doc.Pad001.UseCustomVector = 0
+        doc.Pad001.Direction = (0, 0, 1)
+        doc.Pad001.ReferenceAxis = (doc.Sketch001, ['N_Axis'])
+        doc.Pad001.AlongSketchNormal = 1
+        doc.Pad001.Type = 0
+        doc.Pad001.UpToFace = None
+        doc.Pad001.Reversed = 0
+        doc.Pad001.Midplane = 0
+        doc.Pad001.Offset = 0
+        doc.recompute()
+        doc.Pad.Visibility = False
+        doc.Sketch001.Visibility = False
+        doc.Sketch.delGeometries([4])
+        doc.Sketch.addConstraint(Sketcher.Constraint('Coincident',3,2,4,1))
+        doc.Sketch.delConstraint(12)
+        doc.recompute()
+        # If Sketch001 is still at the right start point, we are good.
+        self.assertTrue(doc.Sketch001.AttachmentOffset.Matrix == App.Matrix())
+        matrix1 = App.Matrix()
+        matrix1.A34 = 10    # Z offset by 10
+        self.assertTrue(doc.Sketch001.Placement.Matrix == matrix1)
+
+    def testPD_TNPSketchPadSketchConstructionChange(self):
+        """ Prove that a sketch attached to a padded sketch shape does not have a problem when the initial sketch has geometry changed from Construction"""
+        pass  # TODO
+
+    def testPD_TNPSketchPadSketchTrim(self):
+        """ Prove that a sketch attached to a padded sketch shape does not have a problem when the initial sketch has geometry trimmed"""
+        pass  # TODO
+
+    def testPD_TNPSketchPadSketchExternal(self):
+        """ Prove that a sketch attached to a padded sketch shape does not have a problem when the initial sketch has external geometry changed"""
+        pass  # TODO
+
+    def testPD_TNPSketchPadSketchTransform(self):
+        """ Prove that a sketch attached to a padded sketch shape does not have a problem when the initial sketch has a transformation applied"""
+        pass  # TODO
+
+    def testPD_TNPSketchPadSketchSymmetry(self):
+        """ Prove that a sketch attached to a padded sketch shape does not have a problem when the initial sketch has Symmetry applied"""
+        pass  # TODO
+
+    def testPD_TNPSketchPadSketchBSpline(self):
+        """ Prove that a sketch attached to a padded sketch shape does not have a problem when the initial sketch has BSpline changed"""
+        pass  # TODO
+
+    def testPD_TNPSketchRotSketchMove(self):
+        """ Prove that a sketch attached to a rotated sketch shape does not have a problem when the initial sketch has geometry moved"""
+        pass  # TODO
+
+    def testPD_TNPSketchPocketSketchMove(self):
+        """ Prove that a sketch attached to a pocketed sketch shape does not have a problem when the initial sketch has geometry moved"""
+        pass  # TODO
+
+    def testPD_TNPSketchLoftSketchMove(self):
+        """ Prove that a sketch attached to a lofted sketch shape does not have a problem when the initial sketch has geometry moved"""
+        pass  # TODO
+
+    def testPD_TNPSketchPipeSketchMove(self):
+        """ Prove that a sketch attached to a piped sketch shape does not have a problem when the initial sketch has geometry moved"""
+        pass  # TODO
+
     def create_t_sketch(self):
         self.Doc.getObject('Body').newObject('Sketcher::SketchObject', 'Sketch')
         geo_list = [
