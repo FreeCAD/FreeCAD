@@ -12,5 +12,4 @@ Models:
     UUID: '9d81fcb2-bf81-48e3-bb57-d45ecf380096'
     SurfaceSpeedHSS: '145 m/min'
     SurfaceSpeedCarbide: '275 m/min'
-    Kp: '0.75 cm^3/s'
-    Kd: '4000 cm^3/s'
+    SpecificCuttingForce: ''

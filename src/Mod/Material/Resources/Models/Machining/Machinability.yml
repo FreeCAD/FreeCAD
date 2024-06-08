@@ -38,13 +38,8 @@ Model:
     Units: 'm/min'
     URL: 'https://en.wikipedia.org/wiki/Speeds_and_feeds#Cutting_speed'
     Description: "Cutting speed (Surface Speed) for Carbide"
-  Kp:
-    Type: 'Float'
-    Units: 'cm^3/s'
-    URL: ''
-    Description: "Specific Cutting Force. Constant to calculate spindle power"
-  Kd:
-    Type: 'Float'
-    Units: 'cm^3/s'
-    URL: ''
-    Description: "Material Constant. Used to calculate spindle power "
+  SpecificCuttingForce:
+    Type: 'Quantity'
+    Units: 'N/mm^2'
+    URL: 'https://www.machiningdoctor.com/glossary/specific-cutting-force-kc-kc1/'
+    Description: "Normalized specific cutting force"
