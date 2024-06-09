@@ -25,21 +25,37 @@ Model:
   Name: 'Machinability'
   UUID: '9d81fcb2-bf81-48e3-bb57-d45ecf380096'
   URL: 'https://en.wikipedia.org/wiki/Speeds_and_feeds'
-  Description: >
+  Description: >-
     Model for calculating feeds and speeds on a milling machine or lathe
   DOI: ""
   SurfaceSpeedHSS:
     Type: 'Quantity'
     Units: 'm/min'
     URL: 'https://en.wikipedia.org/wiki/Speeds_and_feeds#Cutting_speed'
-    Description: "Cutting speed (Surface Speed) for High Speed Steel"
+    Description: >-
+      Cutting speed (Surface Speed) for general-purpose milling
+      using High Speed Steel tools.
   SurfaceSpeedCarbide:
     Type: 'Quantity'
     Units: 'm/min'
     URL: 'https://en.wikipedia.org/wiki/Speeds_and_feeds#Cutting_speed'
-    Description: "Cutting speed (Surface Speed) for Carbide"
+    Description: >-
+      Cutting speed (Surface Speed) for general-purpose milling
+      using Carbide tools.
   SpecificCuttingForce:
     Type: 'Quantity'
     Units: 'N/mm^2'
     URL: 'https://www.machiningdoctor.com/glossary/specific-cutting-force-kc-kc1/'
-    Description: "Normalized specific cutting force"
+    Description: >-
+      Specific cutting force, normalized for a chip with cross section of 1 mm times 1 mm.
+      This material property, generally denoted with k_c1.1, is used together with the
+      "material constant" m_c to calculate the actual specific cutting force for the actual
+      feed (i.e. undeformed chip thickness).
+  MaterialConstant:
+    Type: 'Float'
+    Units: None
+    URL: 'https://www.machiningdoctor.com/glossary/specific-cutting-force-kc-kc1/'
+    Description: >-
+      This material property, generally denoted m_c, determines the effect of the
+      undeformed chip thickness on the actual specific cutting force, the further away
+      it gets from k_c1.1's normalization point.
