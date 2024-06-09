@@ -102,7 +102,6 @@ void WorkbenchComboBox::refreshList(QList<QAction*> actionList)
     }
 }
 
-
 WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
     : QWidget(parent)
     , wbActionGroup(aGroup)
@@ -112,7 +111,7 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
     setWhatsThis(aGroup->action()->whatsThis());
     setObjectName(QString::fromLatin1("WbTabBar"));
 
-    tabBar = new QTabBar(this);
+    tabBar = new WbTabBar(this);
     moreButton = new QToolButton(this);
     layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
 
@@ -205,6 +204,12 @@ int WorkbenchTabWidget::tabIndexForWorkbenchActivateAction(QAction* workbenchAct
     return actionToTabIndex.at(workbenchActivateAction);
 }
 
+WorkbenchItemStyle Gui::WorkbenchTabWidget::itemStyle() const
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
+    return static_cast<WorkbenchItemStyle>(hGrp->GetInt("WorkbenchSelectorItem", 0));
+}
+
 void WorkbenchTabWidget::updateLayout()
 {
     if (!parentWidget()) {
@@ -293,6 +298,8 @@ void WorkbenchTabWidget::updateWorkbenchList()
         return;
     }
 
+    tabBar->setItemStyle(itemStyle());
+
     // As clearing and adding tabs can cause changing current tab in QTabBar.
     // This in turn will cause workbench to change, so we need to prevent
     // processing of such events until the QTabBar is fully prepared.
@@ -320,8 +327,7 @@ void WorkbenchTabWidget::updateWorkbenchList()
 
 int WorkbenchTabWidget::addWorkbenchTab(QAction* action, int tabIndex)
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
-    auto itemStyle = static_cast<WorkbenchItemStyle>(hGrp->GetInt("WorkbenchSelectorItem", 0));
+    auto itemStyle = this->itemStyle();
 
     // if tabIndex is negative we assume that tab must be placed at the end of tabBar (default behavior)
     if (tabIndex < 0) {
@@ -422,5 +428,3 @@ void WorkbenchTabWidget::adjustSize()
 
     parentWidget()->adjustSize();
 }
-
-#include "moc_WorkbenchSelector.cpp"
