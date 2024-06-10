@@ -2554,9 +2554,34 @@ void Application::initConfig(int argc, char ** argv)
     mConfig["Debug"] = "0";
 #   endif
 
-    // init python
-    PyImport_AppendInittab ("FreeCAD", init_freecad_module);
-    PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
+    if (!Py_IsInitialized()) {
+        // init python
+        PyImport_AppendInittab ("FreeCAD", init_freecad_module);
+        PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
+    }
+    else {
+        // "import FreeCAD" in a normal Python 3.12 interpreter would raise
+        //     Fatal Python error: PyImport_AppendInittab:
+        //         PyImport_AppendInittab() may not be called after Py_Initialize()
+        //  because the (external) interpreter is already initialized.
+        //  Therefore we use a workaround as described in https://stackoverflow.com/a/57019607
+
+        PyObject *sysModules = PyImport_GetModuleDict();
+
+        const char *moduleName = "FreeCAD";
+        PyImport_AddModule(moduleName);
+        ApplicationMethods = Application::Methods;
+        PyObject *pyModule = init_freecad_module();
+        PyDict_SetItemString(sysModules, moduleName, pyModule);
+        Py_DECREF(pyModule);
+
+        moduleName = "__FreeCADBase__";
+        PyImport_AddModule(moduleName);
+        pyModule = init_freecad_base_module();
+        PyDict_SetItemString(sysModules, moduleName, pyModule);
+        Py_DECREF(pyModule);
+    }
+
     const char* pythonpath = Base::Interpreter().init(argc,argv);
     if (pythonpath)
         mConfig["PythonSearchPath"] = pythonpath;
