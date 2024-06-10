@@ -27,16 +27,19 @@
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
+#include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_BSplineSurface.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Geom_BezierSurface.hxx>
+#include <Geom_Line.hxx>
 #include <Precision.hxx>
 #include <TColgp_Array2OfPnt.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
+#include <gp_Cylinder.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Lin.hxx>
 #include <gp_Pln.hxx>
@@ -44,6 +47,8 @@
 #endif
 
 #include <App/Application.h>
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "FemTools.h"
 
@@ -321,4 +326,75 @@ std::string Fem::Tools::checkIfBinaryExists(std::string prefSection,
         }
     }
     return "";
+}
+
+Base::Placement Fem::Tools::getSubShapeGlobalLocation(const Part::Feature* feat,
+                                                      const TopoDS_Shape& sh)
+{
+    Base::Matrix4D matrix = Part::TopoShape::convert(sh.Location().Transformation());
+    Base::Placement shPla {matrix};
+    Base::Placement featlPlaInv = feat->Placement.getValue().inverse();
+    Base::Placement shGlobalPla = feat->globalPlacement() * featlPlaInv * shPla;
+
+    return shGlobalPla;
+}
+
+void Fem::Tools::setSubShapeGlobalLocation(const Part::Feature* feat, TopoDS_Shape& sh)
+{
+    Base::Placement pla = getSubShapeGlobalLocation(feat, sh);
+    sh.Location(Part::Tools::fromPlacement(pla));
+}
+
+
+TopoDS_Shape
+Fem::Tools::getFeatureSubShape(const Part::Feature* feat, const char* subName, bool silent)
+{
+    TopoDS_Shape sh;
+    const Part::TopoShape& toposhape = feat->Shape.getShape();
+    if (toposhape.isNull()) {
+        return sh;
+    }
+
+    sh = toposhape.getSubShape(subName, silent);
+    if (sh.IsNull()) {
+        return sh;
+    }
+
+    setSubShapeGlobalLocation(feat, sh);
+
+    return sh;
+}
+
+bool Fem::Tools::getCylinderParams(const TopoDS_Shape& sh,
+                                   Base::Vector3d& base,
+                                   Base::Vector3d& axis,
+                                   double& height,
+                                   double& radius)
+{
+    TopoDS_Face face = TopoDS::Face(sh);
+    BRepAdaptor_Surface surface(face);
+    if (!(surface.GetType() == GeomAbs_Cylinder)) {
+        return false;
+    }
+
+    gp_Cylinder cyl = surface.Cylinder();
+    gp_Pnt start = surface.Value(surface.FirstUParameter(), surface.FirstVParameter());
+    gp_Pnt end = surface.Value(surface.FirstUParameter(), surface.LastVParameter());
+
+    Handle(Geom_Curve) handle = new Geom_Line(cyl.Axis());
+    GeomAPI_ProjectPointOnCurve proj(start, handle);
+    gp_XYZ startProj = proj.NearestPoint().XYZ();
+    proj.Perform(end);
+    gp_XYZ endProj = proj.NearestPoint().XYZ();
+
+    gp_XYZ ax(endProj - startProj);
+    gp_XYZ center = (startProj + endProj) / 2.0;
+    gp_Dir dir(ax);
+
+    height = ax.Modulus();
+    radius = cyl.Radius();
+    base = Base::Vector3d(center.X(), center.Y(), center.Z());
+    axis = Base::Vector3d(dir.X(), dir.Y(), dir.Z());
+
+    return true;
 }

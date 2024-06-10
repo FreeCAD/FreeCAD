@@ -27,45 +27,117 @@
 Separator {
 
   Separator {
+    DEF REC_TRANSFORM Switch {
+    Separator {
 
-    Translation {
-      translation 0 0.5 0
+      BaseColor {
+        rgb 0.0 1.0 0.0
 
+      }
+      DEF AXIS Separator {
+
+        Translation {
+          translation 0 2.5 0
+
+        }
+        Cone {
+          bottomRadius 0.4
+          height 1.0
+
+        }
+        Translation {
+          translation 0 -1.5 0
+
+        }
+        Cylinder {
+          radius 0.15
+          height 2.0
+
+        }
+      }
+      Separator {
+
+      BaseColor {
+        rgb 1.0 0.0 0.0
+
+      }
+        Rotation {
+          rotation 0 0 1  -1.5707964
+
+        }
+        USE AXIS
+      }
+
+      Separator {
+
+      BaseColor {
+        rgb 0.0 0.0 1.0
+
+      }
+        Rotation {
+          rotation 1 0 0  1.5707964
+
+        }
+        USE AXIS
+      }
     }
-    Sphere {
-      radius 0.5
+    Separator {
 
+      BaseColor {
+        rgb 1.0 0.0 0.0
+
+      }
+      Translation {
+        translation 0 2.5 0
+
+      }
+      Cone {
+        bottomRadius 0.4
+        height 1.0
+
+      }
+      Translation {
+        translation 0 -1.5 0
+
+      }
+      Cylinder {
+        radius 0.15
+        height 2.0
+
+      }
     }
-    Translation {
-      translation 0 1.25 0
 
-    }
-    Cylinder {
-      radius 0.25
-      height 1.75
+  }
+}
+  Separator {
 
-    }
-    Translation {
-      translation 0 1.25 0
+    Switch {
 
-    }
-    BaseColor {
-      rgb 1 1 1
+      Separator {
 
-    }
-    Cylinder {
-      radius 0.25
-      height 0.75
+        BaseColor {
+          rgb 0.0 0.0 1.0
 
-    }
-    Translation {
-      translation 0 -1.25 0
+        }
+        Translation {
+          translation 0 12.0 0
 
-    }
-    Cylinder {
-      radius 0.7
-      height 0.175
+        }
+        Cone {
+          bottomRadius 0.4
+          height 1.0
 
+        }
+        Translation {
+          translation 0 -12.5 0
+
+        }
+        Cylinder {
+          radius 0.15
+          height 24.0
+
+        }
+      }
     }
   }
 }

@@ -1002,9 +1002,6 @@ void CmdFemConstraintTransform::activated(int)
     doCommand(Doc,
               "App.activeDocument().addObject(\"Fem::ConstraintTransform\",\"%s\")",
               FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.X_rot = 0.0", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Y_rot = 0.0", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Z_rot = 0.0", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
