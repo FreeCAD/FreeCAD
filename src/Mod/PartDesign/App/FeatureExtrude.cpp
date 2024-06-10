@@ -708,7 +708,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         prism = refineShapeIfActive(prism);
         this->AddSubShape.setValue(prism);
 
-        if (!base.isNull() && fuse) {
+        if (base.shapeType(true) <= TopAbs_SOLID && fuse) {
             prism.Tag = -this->getID();
 
             // Let's call algorithm computing a fuse operation:
