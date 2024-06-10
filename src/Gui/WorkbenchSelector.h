@@ -29,6 +29,8 @@
 #include <QMenu>
 #include <QToolButton>
 #include <QLayout>
+#include <QWheelEvent>
+
 #include <FCGlobal.h>
 #include <Gui/ToolBarManager.h>
 #include <map>
@@ -101,7 +103,23 @@ class GuiExport WorkbenchTabWidget : public QWidget
             return size;
         }
 
+        void wheelEvent(QWheelEvent* wheelEvent) override
+        {
+            // Qt does not expose any way to programmatically control scroll of QTabBar hence
+            // we need to use a bit hacky solution of simulating clicks on the scroll buttons
+
+            auto left = findChild<QAbstractButton*>(QString::fromUtf8("ScrollLeftButton"));
+            auto right = findChild<QAbstractButton*>(QString::fromUtf8("ScrollRightButton"));
+
+            if (wheelEvent->angleDelta().y() > 0) {
+                right->click();
+            } else {
+                left->click();
+            }
+        }
+
         WorkbenchItemStyle itemStyle() const { return _itemStyle; }
+
         void setItemStyle(WorkbenchItemStyle itemStyle) {
             _itemStyle = itemStyle;
             setProperty("style", QString::fromUtf8(workbenchItemStyleToString(itemStyle)));
@@ -122,7 +140,7 @@ class GuiExport WorkbenchTabWidget : public QWidget
 
 public:
     explicit WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent = nullptr);
-    
+
     void setToolBarArea(Gui::ToolBarArea area);
     void buildPrefMenu();
 

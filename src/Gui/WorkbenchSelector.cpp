@@ -428,3 +428,5 @@ void WorkbenchTabWidget::adjustSize()
 
     parentWidget()->adjustSize();
 }
+
+#include "moc_WorkbenchSelector.cpp"
