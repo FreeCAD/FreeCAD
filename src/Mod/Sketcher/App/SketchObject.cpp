@@ -265,8 +265,7 @@ void SketchObject::buildShape()
             Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(i-1, Sketcher::PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
-//            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
-//                                  Data::MappedName::fromRawData(name.c_str()),0L);
+
             vertices.push_back(vertex);
             vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
         } else {
@@ -278,8 +277,7 @@ void SketchObject::buildShape()
             vertices.emplace_back(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(i-1, PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
-            // vertices.back().setElementName(Data::IndexedName::fromConst("Vertex", 1),
-            //                                Data::MappedName::fromRawData(name.c_str()));
+
         } else
             shapes.push_back(getEdge(geo,convertSubName(
                         Data::IndexedName::fromConst("Edge", i), false).c_str()));
@@ -2529,17 +2527,6 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
                             oc2pf.x,
                             oc2pf.y,
                             oc2pf.z);
-
-        /*auto printoffsetcurve = [](Part::GeomOffsetCurve *c) {
-
-            for(double param = c->getFirstParameter(); param < c->getLastParameter(); param = param
-        + (c->getLastParameter()-c->getFirstParameter())/10) Base::Console().Log("\n%f:
-        (%f,%f,0)\n", param, c->pointAtParameter(param).x,c->pointAtParameter(param).y);
-
-        };
-
-        printoffsetcurve(ocurve1);
-        printoffsetcurve(ocurve2);*/
 #endif
 
         // Next we calculate the intersection of offset curves to get the center of the fillet
@@ -4651,7 +4638,6 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 auto* geosymaoe = static_cast<Part::GeomArcOfParabola*>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
 
-                // double df= geosymaoe->getFocal();
                 Base::Vector3d f1 = geosymaoe->getFocus();
 
                 Base::Vector3d sf1 =
@@ -4846,7 +4832,6 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
 
                 geosymbsp->setPoles(poles);
 
-                // isStartEndInverted.insert(std::make_pair(geoId, false));
             }
             else if (geosym->is<Part::GeomPoint>()) {
                 auto* geosympoint = static_cast<Part::GeomPoint*>(geosym);
@@ -6733,30 +6718,6 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     else {
         Geometry.touch();
     }
-
-    // * DOCUMENTING OCC ISSUE OCC < 6.9.0
-    // https://forum.freecad.org/viewtopic.php?f=10&t=9364&start=330#p162528
-    //
-    // A segmentation fault is generated:
-    // Program received signal SIGSEGV, Segmentation fault.
-    // #0 /lib/x86_64-linux-gnu/libc.so.6(+0x36cb0) [0x7f4b933bbcb0]
-    // #1  0x7f4b0300ea14 in BSplCLib::BuildCache(double, double, bool, int, TColStd_Array1OfReal
-    // const&, TColgp_Array1OfPnt const&, TColStd_Array1OfReal const&, TColgp_Array1OfPnt&,
-    // TColStd_Array1OfReal&) from /usr/lib/x86_64-linux-gnu/libTKMath.so.10+0x484 #2 0x7f4b033f9582
-    // in Geom_BSplineCurve::ValidateCache(double) from
-    // /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x202 #3  0x7f4b033f2a7e in
-    // Geom_BSplineCurve::D0(double, gp_Pnt&) const from
-    // /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xde #4  0x7f4b033de1b5 in Geom_Curve::Value(double)
-    // const from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x25 #5  0x7f4b03423d73 in
-    // GeomLProp_CurveTool::Value(Handle(Geom_Curve) const&, double, gp_Pnt&) from
-    // /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x13 #6  0x7f4b03427175 in
-    // GeomLProp_CLProps::SetParameter(double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x75 #7
-    // 0x7f4b0342727d in GeomLProp_CLProps::GeomLProp_CLProps(Handle(Geom_Curve) const&, double,
-    // int, double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xcd #8  0x7f4b11924b53 in
-    // Part::GeomCurve::pointAtParameter(double) const from
-    // /home/abdullah/github/freecad-build/Mod/Part/Part.so+0xa7
-
-
     return true;
 }
 
@@ -7332,15 +7293,6 @@ static gp_Vec ProjVecOnPlane_UVN(const gp_Vec& V, const gp_Pln& Pl)
     gp_Vec2d vector = ProjVecOnPlane_UV(V, Pl);
     return gp_Vec(vector.X(), vector.Y(), 0.0);
 }
-
-// Auxiliary Method: returns vector projection in XYZ space
-#if 0
-static gp_Vec ProjVecOnPlane_XYZ( const gp_Vec& V, const gp_Pln& Pl)
-{
-  return V.Dot(Pl.Position().XDirection()) * Pl.Position().XDirection() +
-         V.Dot(Pl.Position().YDirection()) * Pl.Position().YDirection();
-}
-#endif
 
 // Auxiliary Method: returns point projection in UV space of plane
 static gp_Vec2d ProjPointOnPlane_UV(const gp_Pnt& P, const gp_Pln& Pl)
@@ -8077,7 +8029,6 @@ void SketchObject::rebuildExternalGeometry()
                                     gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
                                     gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
 
-                                    // gp_Dir normal = e.Axis().Direction();
                                     gp_Dir normal = gp_Dir(0, 0, 1);
                                     gp_Ax2 xdirref(p, normal);
 
@@ -8925,20 +8876,7 @@ void SketchObject::onChanged(const App::Property* prop)
             }
         }
     }
-#if 0
-    // For now do not delete anything (#0001791). When changing the support
-    // face it might be better to check which external geometries can be kept.
-    else if (prop == &AttachmentSupport) {
-        // make sure not to change anything while restoring this object
-        if (!isRestoring()) {
-            // if support face has changed then clear the external geometry
-            delConstraintsToExternal();
-            for (int i=0; i < getExternalGeometryCount(); i++) {
-                delExternal(0);
-            }
-        }
-    }
-#endif
+
     Part::Part2DObject::onChanged(prop);
 }
 
