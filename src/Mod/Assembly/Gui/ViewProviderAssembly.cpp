@@ -150,11 +150,11 @@ bool ViewProviderAssembly::canDragObject(App::DocumentObject* obj) const
     Gui::Command::openCommand(tr("Delete associated joints").toStdString().c_str());
     for (auto joint : allJoints) {
         // getLinkObjFromProp returns nullptr if the property doesn't exist.
-        App::DocumentObject* obj1 = AssemblyObject::getObjFromNameProp(joint, "Object1", "Part1");
-        App::DocumentObject* obj2 = AssemblyObject::getObjFromNameProp(joint, "Object2", "Part2");
-        App::DocumentObject* part1 = AssemblyObject::getLinkObjFromProp(joint, "Part1");
-        App::DocumentObject* part2 = AssemblyObject::getLinkObjFromProp(joint, "Part2");
-        App::DocumentObject* obj3 = AssemblyObject::getLinkObjFromProp(joint, "ObjectToGround");
+        App::DocumentObject* obj1 = AssemblyObject::getObjFromProp(joint, "Object1");
+        App::DocumentObject* obj2 = AssemblyObject::getObjFromProp(joint, "Object2");
+        App::DocumentObject* part1 = AssemblyObject::getObjFromProp(joint, "Part1");
+        App::DocumentObject* part2 = AssemblyObject::getObjFromProp(joint, "Part2");
+        App::DocumentObject* obj3 = AssemblyObject::getObjFromProp(joint, "ObjectToGround");
         if (obj == obj1 || obj == obj2 || obj == part1 || obj == part2 || obj == obj3) {
             if (!prompted) {
                 prompted = true;

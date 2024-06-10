@@ -268,9 +268,7 @@ def getObjectInPart(objName, part):
 
 # get the placement of Obj relative to its containing Part
 # Example : assembly.part1.part2.partn.body1 : placement of Obj relative to part1
-def getObjPlcRelativeToPart(objName, part):
-    obj = getObjectInPart(objName, part)
-
+def getObjPlcRelativeToPart(obj, part):
     # we need plc to be relative to the containing part
     obj_global_plc = getGlobalPlacement(obj, part)
     part_global_plc = getGlobalPlacement(part)
@@ -280,15 +278,13 @@ def getObjPlcRelativeToPart(objName, part):
 
 # Example : assembly.part1.part2.partn.body1 : jcsPlc is relative to body1
 # This function returns jcsPlc relative to part1
-def getJcsPlcRelativeToPart(jcsPlc, objName, part):
-    obj_relative_plc = getObjPlcRelativeToPart(objName, part)
+def getJcsPlcRelativeToPart(jcsPlc, obj, part):
+    obj_relative_plc = getObjPlcRelativeToPart(obj, part)
     return obj_relative_plc * jcsPlc
 
 
 # Return the jcs global placement
-def getJcsGlobalPlc(jcsPlc, objName, part):
-    obj = getObjectInPart(objName, part)
-
+def getJcsGlobalPlc(jcsPlc, obj, part):
     obj_global_plc = getGlobalPlacement(obj, part)
     return obj_global_plc * jcsPlc
 
