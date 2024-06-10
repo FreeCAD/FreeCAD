@@ -959,19 +959,15 @@ QToolBar::separator:vertical {
 QToolButton#qt_toolbar_ext_button {
 margin: 0px;
 padding: 0px;
-/* background-color: #696969; */
-/*background-image: url(qss:images_classic/more_white.png);*/
 background-repeat: none;
 background-position: center center;
 }
 
 QToolButton#qt_toolbar_ext_button:hover {
-/*background-image: url(qss:images_classic/more_white.png);*/
 background-color: @ThemeAccentColor1;
 }
 
 QToolButton#qt_toolbar_ext_button:on {
-/*background-image: url(qss:images_classic/more_white.png);*/
 border-color: #020202;
 background-color: @ThemeAccentColor1;
 }
@@ -985,15 +981,8 @@ QSpinBox {
   background-color: #252525;
   border: 1px solid #020202;
   color: White;
-  /* This fixes 103, 111 */
-  /* padding-top: 0px;
-  /* This fixes 103, 111 */
-  /*padding-bottom: 0px;
-  /*padding-left: 4px;
-  /*padding-right: 4px;*/
   border-radius: 2px;
   min-height: 1.7em;
-  /* min-width: 5px; removed to fix 109 */
 }
 
 QAbstractSpinBox:up-button {
@@ -1006,8 +995,7 @@ QAbstractSpinBox:up-button {
   border-bottom-left-radius: 2px;
   margin-top: 1px;
   margin-right: 1px;
-    /*width: 12px;
-  /*margin-bottom: -1px;*/
+
 }
 
 QAbstractSpinBox::up-arrow, QAbstractSpinBox::up-arrow:disabled, QAbstractSpinBox::up-arrow:off {
@@ -1050,8 +1038,7 @@ QAbstractSpinBox::down-arrow:hover {
 }
 
 QAbstractSpinBox:hover {
-  /*border: 1px solid @ThemeAccentColor1;
-  color: White;*/
+
 }
 
 QAbstractSpinBox:focus {
@@ -1060,7 +1047,6 @@ QAbstractSpinBox:focus {
 
 QAbstractSpinBox:selected {
   background: @ThemeAccentColor2;
-  /*color: White;*/
 }
 
 /* ------------------------------------------------------------------------ */
@@ -1286,7 +1272,7 @@ QToolButton:checked {
 }
 
 QToolButton:checked:disabled {
-  background-color: #b65555;
+  background-color: @ThemeAccentColor1;
   color: #adadad;
   border-radius: 2px;
   padding: 0px;
@@ -1299,8 +1285,7 @@ QToolButton:checked:hover {
 }
 
 QToolButton:checked:pressed {
-  background-color: @ThemeAccentColor1;
-  border: 1px solid #020202;
+  border: 1px solid @ThemeAccentColor2;
 }
 
 QToolButton:checked:selected {
@@ -1314,7 +1299,6 @@ QToolButton:hover {
 }
 
 QToolButton:pressed {
-  /* background-color: @ThemeAccentColor2; */
 }
 
 QToolButton:selected {
@@ -1357,27 +1341,23 @@ QToolButton[popupMode="2"] {
 }
 QToolBar > QToolButton#qt_toolbutton_menubutton {
   padding-right: 15px; /* Hack to add more width to buttons with menu */
-  /* border: 1px solid transparent; */
   border-radius: 3px;
 }
 
 QToolButton::menu-button {
   border: 1px solid transparent;
-  /* border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px; */
   /* 16px width + 4px for border = 20px allocated above */
   border-radius: 3px;
   width: 1.6ex;
-  /* padding: 2px; */
 }
 
 QToolButton::menu-button:hover {
-  border: 1px solid #020202;
+  border: 1px solid transparent;
+
 }
 
 QToolButton::menu-button:pressed {
-  border: 1px solid #020202;
-  background-color: #252525;
+  border: 1px solid transparent;
 }
 
 QToolButton::menu-button:checked:hover {
@@ -1564,8 +1544,6 @@ Tasks panel (custom FreeCAD class)
 Gui--PropertyEditor--PropertyEditor {
   qproperty-groupTextColor: white;
   qproperty-groupBackground: #3c3c3c;
-  border: 0px solid #020202;
-  border: 0px solid #595963;
   border: 0px solid #333365;
 }
 
@@ -1717,19 +1695,44 @@ QSint--ActionGroup QFrame[class="content"] QToolButton {
   color: white;
   text-align: center;
   background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #333333, stop:1 #252525);
-  border: 1px solid #adadad;
+  border: 1px solid #000000;
   padding: 1px 1px; /* different than regular QPushButton */
   margin: 0px; /* different than regular QPushButton */
   min-height: 16px; /* same as QTabBar QPushButton min-width */
   border-radius: 3px;
 }
 
-QSint--ActionGroup QFrame[class="content"] QToolButton:hover{
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor3);
+/* QToolButtons with a menu found in Sketcher task panel*/
+QSint--ActionGroup QToolButton::menu-button {
+  border-left: 1px solid #000000;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  padding: 0px;
+  width: 19px; /* 16px width + 4px for border = 20px allocated above */
+  outline: none;
+  background-color: transparent;
+  /* margin: 10px; */
+}
 
+QSint--ActionGroup QToolButton#settingsButton,
+QSint--ActionGroup QToolButton#filterButton,
+QSint--ActionGroup QToolButton#manualUpdate {
+    padding-right: 20px; /* make way for the popup button */
+}
+
+/* to give widget inside the menu same look as regular menu */
+QSint--ActionGroup QToolButton#filterButton QListWidget {
+    color: #ffffff;
+    background: #252525;
+    border: 1px solid #000000;
+}
+
+
+QSint--ActionGroup QFrame[class="content"] QToolButton:hover{
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #444444, stop:1 #333333);
 }
 QSint--ActionGroup QFrame[class="content"] QToolButton:focus {
-  border: 0.5px solid @ThemeAccentColor2;
+  border: 1px solid @ThemeAccentColor2;
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:disabled,
@@ -1739,8 +1742,7 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:disabled:checked {
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ThemeAccentColor1, stop:1 @ThemeAccentColor3);
-
+  border: 1px solid  @ThemeAccentColor1;
 }
 
 /* QSlider ----------------------------------------------------------------
@@ -2702,6 +2704,7 @@ QAbstractView:selected {
 PlotWidget {
   /* Fix cut labels in plots #134 */
   padding: 0px;
+  color: rgba(2, 2, 2, 0.614);
 }
 
 /*==================================================================================================
