@@ -3543,7 +3543,7 @@ StdTreePreSelection::StdTreePreSelection()
 {
     sGroup       = "TreeView";
     sMenuText    = QT_TR_NOOP("Pre-selection");
-    sToolTipText = QT_TR_NOOP("Preselect the object in 3D view when mouse over the tree item");
+    sToolTipText = QT_TR_NOOP("Preselect the object in 3D view when hovering the cursor over the tree item");
     sStatusTip   = sToolTipText;
     sWhatsThis   = "Std_TreePreSelection";
     sPixmap      = "tree-pre-sel";
