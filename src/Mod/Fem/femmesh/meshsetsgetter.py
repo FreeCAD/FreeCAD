@@ -135,6 +135,7 @@ class MeshSetsGetter():
 
         # constraints element sets getter
         self.get_constraints_centrif_elements()
+        self.get_constraints_bodyheatsource_elements()
 
         # constraints node sets getter
         self.get_constraints_fixed_nodes()
@@ -539,6 +540,18 @@ class MeshSetsGetter():
             self.member.cons_centrif[0]["FEMElements"] = self.ccx_evolumes
         else:
             self.get_solid_element_sets(self.member.cons_centrif)
+
+    def get_constraints_bodyheatsource_elements(self):
+        # get element ids and write them into the femobj
+        if not self.member.cons_bodyheatsource:
+            return
+        if (
+            len(self.member.cons_bodyheatsource) == 1
+            and not self.member.cons_bodyheatsource[0]["Object"].References
+        ):
+            self.member.cons_bodyheatsource[0]["FEMElements"] = self.ccx_evolumes
+        else:
+            self.get_solid_element_sets(self.member.cons_bodyheatsource)
 
     # ********************************************************************************************
     # ********************************************************************************************

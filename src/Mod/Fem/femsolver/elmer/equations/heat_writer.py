@@ -30,6 +30,9 @@ __url__ = "https://www.freecad.org"
 ## \addtogroup FEM
 #  @{
 
+import itertools
+import FreeCAD
+
 from .. import sifio
 from .. import writer as general_writer
 from femtools import membertools
@@ -138,7 +141,29 @@ class Heatwriter:
             self.write.handled(tempObj)
 
     def _outputHeatBodyForce(self, obj, name):
-        heatSource = self.write.getFromUi(obj.HeatSource, "W/kg", "L^2*T^-3")
+        if obj.Mode == "Dissipation Rate":
+            heatSource = obj.DissipationRate.getValueAs("W/kg").Value
+
+        elif obj.Mode == "Total Power":
+            ref = obj.References[0]
+            ref_feat = ref[0]
+            ref_sub_obj = ref[1][0]
+            density = None
+            for mat in self.write.getMember("App::MaterialObject"):
+                mat_ref = [*itertools.chain(*[itertools.product([i[0]],i[1]) for i in mat.References])]
+                if (ref_feat, ref_sub_obj) in mat_ref:
+                    density = FreeCAD.Units.Quantity(mat.Material["Density"])
+                    break
+
+            if not density:
+                # search material without references
+                for mat in self.write.getMember("App::MaterialObject"):
+                    if not mat.References:
+                        density = FreeCAD.Units.Quantity(mat.Material["Density"])
+                        break
+            volume = ref_feat.getSubObject(ref_sub_obj).Volume
+            heatSource = (obj.TotalPower / (density*FreeCAD.Units.Quantity(volume, "mm^3"))).getValueAs("W/kg").Value
+            
         if heatSource == 0.0:
             # a zero heat would break Elmer (division by zero)
             raise general_writer.WriteError("The body heat source must not be zero!")
