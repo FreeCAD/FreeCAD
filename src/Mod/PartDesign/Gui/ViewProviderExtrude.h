@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2012 Jan Rheinländer                                    *
- *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2024 Kacper Donat <kacper@kadet.net>                    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,42 +21,23 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderDressUp_H
-#define PARTGUI_ViewProviderDressUp_H
+#ifndef PARTGUI_ViewProviderExtrude_H
+#define PARTGUI_ViewProviderExtrude_H
 
-#include "ViewProvider.h"
+#include "ViewProviderSketchBased.h"
 
 
 namespace PartDesignGui {
 
-class TaskDlgDressUpParameters;
-
-class PartDesignGuiExport ViewProviderDressUp : public ViewProvider
+class PartDesignGuiExport ViewProviderExtrude : public ViewProviderSketchBased
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderDressUp);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderExtrude);
 
 public:
-    /// constructor
-    ViewProviderDressUp()  = default;
-    /// destructor
-    ~ViewProviderDressUp() override         = default;
+    ViewProviderExtrude() = default;
+    ~ViewProviderExtrude() override = default;
 
-    /// grouping handling
-    void setupContextMenu(QMenu*, QObject*, const char*) override;
-
-    /// Highlight the references that have been selected
-    void highlightReferences(const bool on);
-
-    /**
-     * Returns the feature Name associated with the view provider.
-     * Should be reimplemented in the successor.
-     */
-    virtual const std::string & featureName() const;
-    std::string featureIcon() const;
-    QString menuName;
-
-protected:
-    bool setEdit(int ModNum) override;
+    void highlightShapeFaces(const std::vector<std::string>& faces);
 };
 
 
@@ -65,4 +45,4 @@ protected:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderDressUp_H
+#endif // PARTGUI_ViewProviderExtrude_H

@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2012 Jan Rheinländer                                    *
- *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,47 +21,44 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderDressUp_H
-#define PARTGUI_ViewProviderDressUp_H
+#include "PreCompiled.h"
 
-#include "ViewProvider.h"
+#ifndef _PreComp_
+# include <QMenu>
+#endif
+
+#include <App/Document.h>
+#include <Gui/Application.h>
+#include <Mod/PartDesign/App/FeatureExtrude.h>
+#include <Mod/Part/Gui/ReferenceHighlighter.h>
+
+#include "TaskExtrudeParameters.h"
+#include "ViewProviderExtrude.h"
 
 
-namespace PartDesignGui {
+using namespace PartDesignGui;
 
-class TaskDlgDressUpParameters;
+PROPERTY_SOURCE(PartDesignGui::ViewProviderExtrude, PartDesignGui::ViewProviderSketchBased)
 
-class PartDesignGuiExport ViewProviderDressUp : public ViewProvider
+void PartDesignGui::ViewProviderExtrude::highlightShapeFaces(const std::vector<std::string>& faces)
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderDressUp);
+    auto extrude = static_cast<PartDesign::FeatureExtrude*>(getObject());
+    auto base = static_cast<Part::Feature*>(extrude->UpToShape.getValue());
 
-public:
-    /// constructor
-    ViewProviderDressUp()  = default;
-    /// destructor
-    ~ViewProviderDressUp() override         = default;
+    auto baseViewProvider =
+        static_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(base));
 
-    /// grouping handling
-    void setupContextMenu(QMenu*, QObject*, const char*) override;
+    baseViewProvider->unsetHighlightedFaces();
+    baseViewProvider->updateView();
 
-    /// Highlight the references that have been selected
-    void highlightReferences(const bool on);
+    if (faces.size() > 0) {
+        std::vector<App::Color> colors = baseViewProvider->DiffuseColor.getValues();
 
-    /**
-     * Returns the feature Name associated with the view provider.
-     * Should be reimplemented in the successor.
-     */
-    virtual const std::string & featureName() const;
-    std::string featureIcon() const;
-    QString menuName;
+        auto color = baseViewProvider->ShapeAppearance.getDiffuseColor();
 
-protected:
-    bool setEdit(int ModNum) override;
-};
+        PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), color);
+        highlighter.getFaceColors(faces, colors);
 
-
-
-} // namespace PartDesignGui
-
-
-#endif // PARTGUI_ViewProviderDressUp_H
+        baseViewProvider->setHighlightedFaces(colors);
+    }
+}
