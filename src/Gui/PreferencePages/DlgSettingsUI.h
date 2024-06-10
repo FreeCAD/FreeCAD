@@ -80,6 +80,7 @@ private:
     Gui::PrefCheckBox *ResizableColumn = nullptr;
     Gui::PrefCheckBox *VisibilityIcon = nullptr;
     Gui::PrefCheckBox *HideColumn = nullptr;
+    Gui::PrefCheckBox *HideInternalNames = nullptr;
     Gui::PrefCheckBox *HideScrollBar = nullptr;
     Gui::PrefCheckBox *HideHeaderView = nullptr;
     QLabel *labelIconSize = nullptr;

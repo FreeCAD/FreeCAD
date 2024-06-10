@@ -217,6 +217,7 @@ public:
     bool itemHidden;
     std::string label;
     std::string label2;
+    std::string internalName;
 
     using Connection = boost::signals2::scoped_connection;
 
@@ -245,6 +246,7 @@ public:
         itemHidden = !viewObject->showInTree();
         label = viewObject->getObject()->Label.getValue();
         label2 = viewObject->getObject()->Label2.getValue();
+        internalName = viewObject->getObject()->getNameInDocument();
     }
 
     void insertItem(DocumentObjectItem* item)
@@ -478,8 +480,9 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
 
     // If the second column is not shown, we'll trim the color background when
     // rendering as transparent overlay.
-    bool trimBG = TreeParams::getHideColumn();
 
+    bool trimBG = TreeParams::getHideColumn() || TreeParams::getHideInternalNames();
+    
     if (index.column() == 0) {
         if (tree->testAttribute(Qt::WA_NoSystemBackground)
                 && (trimBG || (opt.backgroundBrush.style() == Qt::NoBrush
@@ -494,7 +497,6 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
             }
         }
     }
-
     style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, artificial);
 }
 
@@ -589,7 +591,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
     this->setDragDropMode(QTreeWidget::InternalMove);
-    this->setColumnCount(2);
+    this->setColumnCount(3);
     this->setItemDelegate(new TreeWidgetItemDelegate(this));
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -671,10 +673,12 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     setupResizableColumn(this);
     this->header()->setStretchLastSection(true);
     QObject::connect(this->header(), &QHeaderView::sectionResized, [](int idx, int, int newSize) {
-        if (idx)
+        if (idx == 1)
             TreeParams::setColumnSize2(newSize);
-        else
-            TreeParams::setColumnSize1(newSize);
+        else if (idx == 2)
+                TreeParams::setColumnSize3(newSize);
+            else
+                TreeParams::setColumnSize1(newSize);
     });
 
     // Add the first main label
@@ -712,7 +716,8 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
         documentPartialPixmap = std::make_unique<QPixmap>(icon.pixmap(documentPixmap->size(), QIcon::Disabled));
     }
     setColumnHidden(1, TreeParams::getHideColumn());
-    header()->setVisible(!TreeParams::getHideColumn());
+    setColumnHidden(2, TreeParams::getHideInternalNames());
+    header()->setVisible(!TreeParams::getHideColumn() || !TreeParams::getHideInternalNames());
 }
 
 TreeWidget::~TreeWidget()
@@ -1104,6 +1109,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     contextMenu.addMenu(&settingsMenu);
 
     QAction* action = new QAction(tr("Show description column"), this);
+    QAction* internalNameAction = new QAction(tr("Show internal name"), this);
     action->setStatusTip(tr("Show an extra tree view column for item description. The item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property."));
     action->setCheckable(true);
 
@@ -1111,11 +1117,26 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     action->setChecked(!hGrp->GetBool("HideColumn", true));
 
     settingsMenu.addAction(action);
-    QObject::connect(action, &QAction::triggered, this, [this, action, hGrp]() {
+    QObject::connect(action, &QAction::triggered, this, [this, action, internalNameAction, hGrp]() {
         bool show = action->isChecked();
         hGrp->SetBool("HideColumn", !show);
         setColumnHidden(1, !show);
-        header()->setVisible(show);
+        header()->setVisible(action->isChecked()||internalNameAction->isChecked());
+    });
+
+
+    internalNameAction->setStatusTip(tr("Show an internal name column for items."));
+    internalNameAction->setCheckable(true);
+
+    internalNameAction->setChecked(!hGrp->GetBool("HideInternalNames", true));
+
+    settingsMenu.addAction(internalNameAction);
+
+    QObject::connect(internalNameAction, &QAction::triggered, this, [this, action, internalNameAction, hGrp]() {
+        bool show = internalNameAction->isChecked();
+        hGrp->SetBool("HideInternalNames", !show);
+        setColumnHidden(2, !show);
+        header()->setVisible(action->isChecked()||internalNameAction->isChecked());
     });
 
     if (contextMenu.actions().count() > 0) {
@@ -1429,12 +1450,15 @@ void TreeWidget::setupResizableColumn(TreeWidget *tree) {
         if(!tree || tree==inst) {
             inst->header()->setSectionResizeMode(0, mode);
             inst->header()->setSectionResizeMode(1, mode);
+            inst->header()->setSectionResizeMode(2, mode);
             if (TreeParams::getResizableColumn()) {
                 QSignalBlocker blocker(inst);
                 if (TreeParams::getColumnSize1() > 0)
                     inst->header()->resizeSection(0, TreeParams::getColumnSize1());
                 if (TreeParams::getColumnSize2() > 0)
                     inst->header()->resizeSection(1, TreeParams::getColumnSize2());
+               if (TreeParams::getColumnSize3() > 0)
+                    inst->header()->resizeSection(2, TreeParams::getColumnSize3());
             }
         }
     }
@@ -3237,6 +3261,7 @@ void TreeWidget::setupText()
 {
     this->headerItem()->setText(0, tr("Labels & Attributes"));
     this->headerItem()->setText(1, tr("Description"));
+    this->headerItem()->setText(2, tr("Internal name"));
 
     this->showHiddenAction->setText(tr("Show items hidden in tree view"));
     this->showHiddenAction->setStatusTip(tr("Show items that are marked as 'hidden' in the tree view"));
@@ -3832,6 +3857,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
     item->setText(0, QString::fromUtf8(data->label.c_str()));
     if (!data->label2.empty())
         item->setText(1, QString::fromUtf8(data->label2.c_str()));
+    item->setText(2, QString::fromUtf8(data->internalName.c_str()));
     if (!obj.showInTree() && !showHidden())
         item->setHidden(true);
     item->testStatus(true);
