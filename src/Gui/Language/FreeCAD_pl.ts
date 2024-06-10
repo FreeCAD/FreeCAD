@@ -3382,12 +3382,12 @@ Typowe rozmiary to 128, 256 i 512</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="444"/>
       <source>How many backup files will be kept when saving document</source>
-      <translation>Ile plików kopii zapasowej będzie przechowywanych podczas zapisywania dokumentu</translation>
+      <translation>Ilość plików kopii zapasowej tworzonych podczas zapisywania dokumentu.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="447"/>
       <source>Maximum number of backup files to keep when resaving document</source>
-      <translation>Maksymalna liczba plików kopii zapasowych podczas ponownego zapisywania dokumentu</translation>
+      <translation>Maksymalna liczba plików kopii zapasowej tworzonych przy zapisie dokumentu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="511"/>
@@ -4760,7 +4760,7 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     <message>
       <location filename="../DocumentRecovery.cpp" line="558"/>
       <source>Transient directories deleted.</source>
-      <translation>Katalogi przejściowe usunięto.</translation>
+      <translation>Katalogi tymczasowe zostały usunięte.</translation>
     </message>
   </context>
   <context>
@@ -8966,12 +8966,12 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="95"/>
       <source>Suppressed</source>
-      <translation>Wyciszony</translation>
+      <translation>Wygaszony</translation>
     </message>
     <message>
       <location filename="../ToolBarManager.cpp" line="951"/>
       <source>Undock from toolbar area</source>
-      <translation type="unfinished">Undock from toolbar area</translation>
+      <translation>Odłącz od obszaru paska narzędzi</translation>
     </message>
   </context>
   <context>
@@ -11883,7 +11883,7 @@ Obecnie w Twoim systemie znajdują się następujące środowiska pracy:&lt;/p&g
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="148"/>
       <source>Start up workbench:</source>
-      <translation>Uruchamianie środowiska pracy:</translation>
+      <translation>Uruchom środowisko pracy:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="155"/>
@@ -13588,7 +13588,7 @@ gdy zmieniają się jego obiekty nadrzędne.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="108"/>
       <source>Save the measurement in the active document.</source>
-      <translation type="unfinished">Save the measurement in the active document.</translation>
+      <translation>Zapisz pomiar w aktywnym dokumencie.</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="114"/>
@@ -13598,7 +13598,7 @@ gdy zmieniają się jego obiekty nadrzędne.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="115"/>
       <source>Close the measurement task.</source>
-      <translation type="unfinished">Close the measurement task.</translation>
+      <translation>Zakończ zadanie pomiaru.</translation>
     </message>
   </context>
   <context>

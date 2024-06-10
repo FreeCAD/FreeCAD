@@ -95,6 +95,13 @@ egyéni stílustáblával alakítható ki, és szebben nézhet ki, mint a wiki o
       <translation>A dokumentáció az alapértelmezett böngészőben fog megnyílni.</translation>
     </message>
     <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="211"/>
+      <source>The documentation will open in a dockable dialog inside the FreeCAD window,
+which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
+      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
+which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
+    </message>
+    <message>
       <location filename="../../dlgPreferencesHelp.ui" line="246"/>
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
@@ -112,13 +119,6 @@ Markdown fenti verziót választotta.</translation>
       <location filename="../../dlgPreferencesHelp.ui" line="189"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</source>
       <translation>A dokumentáció egy új lapon fog megnyílni a FreeCAD felületén belül. Ehhez a PySide QtWebengineWidgets komponensre van szükség</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="211"/>
-      <source>The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open whlle working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation>A dokumentáció egy dokkolható párbeszédpanelben nyílik meg a FreeCAD ablakon belül,
-amely lehetővé teszi, hogy a 3D nézetben való munka közben is nyitva maradjon. Ehhez a PySide QtWebengineWidgets komponensre van szükség</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="215"/>

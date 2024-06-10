@@ -30,9 +30,7 @@
 #include <App/GeoFeature.h>
 #include <App/PropertyStandard.h>
 
-#include "ViewProviderExt.h"
 #include "ViewProviderPartExtPy.h"
-
 #include "ViewProviderPartExtPy.cpp"
 
 

@@ -614,7 +614,7 @@ změnit konfiguraci návrhu. Pokud vlastnost neexistuje, bude vytvořena.</trans
       <location filename="../../PropertiesDialog.ui" line="102"/>
       <location filename="../../PropertiesDialog.ui" line="155"/>
       <source>Center</source>
-      <translation>Na střed</translation>
+      <translation>Střed</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
@@ -696,7 +696,7 @@ změnit konfiguraci návrhu. Pokud vlastnost neexistuje, bude vytvořena.</trans
       <translation>Exportovat soubor</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="124"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Zobrazit tabulku</translation>
     </message>
@@ -740,7 +740,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Tabulka</translation>
     </message>
@@ -1181,7 +1181,7 @@ Výchozí hodnota: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Nepojmenovaný</translation>
     </message>

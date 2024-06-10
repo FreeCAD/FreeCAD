@@ -171,12 +171,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="525"/>
       <source>Create arc</source>
-      <translation>Створення дуги</translation>
+      <translation>Створити дугу</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="526"/>
       <source>Create an arc in the sketch</source>
-      <translation type="unfinished">Create an arc in the sketch</translation>
+      <translation>Створює дугу в ескізі</translation>
     </message>
   </context>
   <context>
@@ -466,7 +466,7 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4278"/>
       <source>Constrain point on object</source>
-      <translation type="unfinished">Constrain point on object</translation>
+      <translation>Прив'язати точку на обʼєкті</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4279"/>
@@ -1055,16 +1055,15 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../Command.cpp" line="552"/>
       <source>Attach sketch...</source>
-      <translation type="unfinished">Attach sketch...</translation>
+      <translation>Приєднати ескіз...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="553"/>
       <source>Set the 'AttachmentSupport' of a sketch.
 First select the supporting geometry, for example, a face or an edge of a solid object,
 then call this command, then choose the desired sketch.</source>
-      <translation type="unfinished">Set the 'AttachmentSupport' of a sketch.
-First select the supporting geometry, for example, a face or an edge of a solid object,
-then call this command, then choose the desired sketch.</translation>
+      <translation>Встановіть параметр «AttachmentSupport» ескізу.
+Спочатку виберіть опорну геометрію, наприклад, грань або ребро твердого об'єкта, потім викличте цю команду і виберіть потрібний ескіз.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="617"/>
@@ -1184,8 +1183,8 @@ as mirroring reference.</source>
       <location filename="../../Command.cpp" line="416"/>
       <source>Place the selected sketch on one of the global coordinate planes.
 This will clear the 'AttachmentSupport' property, if any.</source>
-      <translation type="unfinished">Place the selected sketch on one of the global coordinate planes.
-This will clear the 'AttachmentSupport' property, if any.</translation>
+      <translation>Помістіть вибраний ескіз на одну з глобальних координатних площин.
+Це очистить властивість «AttachmentSupport», якщо вона є.</translation>
     </message>
   </context>
   <context>
@@ -1364,7 +1363,7 @@ This will clear the 'AttachmentSupport' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1096"/>
       <source>Creates symmetric of selected geometry. After starting the tool select the reference line or point.</source>
-      <translation type="unfinished">Creates symmetric of selected geometry. After starting the tool select the reference line or point.</translation>
+      <translation>Створює симетричну фігуру відносно виділеної геометрії. Після запуску інструмента виберіть опорну лінію або точку.</translation>
     </message>
   </context>
   <context>
@@ -1684,7 +1683,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="2057"/>
       <location filename="../../CommandConstraints.cpp" line="2089"/>
       <source>Add arc length constraint</source>
-      <translation type="unfinished">Add arc length constraint</translation>
+      <translation>Додати обмеження довжини дуги</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5095"/>
@@ -2001,12 +2000,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="267"/>
       <source>Cut in Sketcher</source>
-      <translation type="unfinished">Cut in Sketcher</translation>
+      <translation>Вирізати в Ескізі</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="312"/>
       <source>Paste in Sketcher</source>
-      <translation type="unfinished">Paste in Sketcher</translation>
+      <translation>Вставити в Ескіз</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1056"/>
@@ -2115,22 +2114,22 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="119"/>
       <source>Rotate geometries</source>
-      <translation type="unfinished">Rotate geometries</translation>
+      <translation>Поворот геометрії</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="115"/>
       <source>Scale geometries</source>
-      <translation type="unfinished">Scale geometries</translation>
+      <translation>Масштабувати Геометрію</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="114"/>
       <source>Translate geometries</source>
-      <translation type="unfinished">Translate geometries</translation>
+      <translation>Переміщення геометрії</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="134"/>
       <source>Symmetry geometries</source>
-      <translation type="unfinished">Symmetry geometries</translation>
+      <translation>Симетрія геометрії</translation>
     </message>
   </context>
   <context>
@@ -2599,7 +2598,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7017"/>
       <source>Only tangent-via-point is supported with a B-spline.</source>
-      <translation type="unfinished">Only tangent-via-point is supported with a B-spline.</translation>
+      <translation>B-сплайном підтримується лише дотична до точки.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9692"/>
@@ -2699,22 +2698,22 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="227"/>
       <source>One or two point on object constraint(s) was/were deleted, since the latest constraint being applied internally applies point-on-object as well.</source>
-      <translation type="unfinished">One or two point on object constraint(s) was/were deleted, since the latest constraint being applied internally applies point-on-object as well.</translation>
+      <translation>Одне або два обмеження на об'єкт було видалено, оскільки останнє обмеження, яке застосовувалося, також було внутрішнім обмеженням на об'єкт.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3844"/>
       <source>Select either several points, or several conics for concentricity.</source>
-      <translation type="unfinished">Select either several points, or several conics for concentricity.</translation>
+      <translation>Виберіть або кілька точок, або кілька конусів для концентричності.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3847"/>
       <source>Select either one point and several curves, or one curve and several points</source>
-      <translation type="unfinished">Select either one point and several curves, or one curve and several points</translation>
+      <translation>Виберіть або одну точку і кілька кривих, або одну криву і кілька точок</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3850"/>
       <source>Select either one point and several curves or one curve and several points for pointOnObject, or several points for coincidence, or several conics for concentricity.</source>
-      <translation type="unfinished">Select either one point and several curves or one curve and several points for pointOnObject, or several points for coincidence, or several conics for concentricity.</translation>
+      <translation>Виберіть або одну точку і кілька кривих, або одну криву і кілька точок для pointOnObject, або кілька точок для збігу, або кілька конусів для концентричності.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3954"/>
@@ -2729,7 +2728,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4632"/>
       <source>Cannot add a length constraint on this selection!</source>
-      <translation type="unfinished">Cannot add a length constraint on this selection!</translation>
+      <translation>Неможливо додати обмеження довжини до цього виділення!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5032"/>
@@ -2773,7 +2772,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5655"/>
       <source>One selected edge is not a valid line.</source>
-      <translation type="unfinished">One selected edge is not a valid line.</translation>
+      <translation>Одне виділене ребро не є допустимою лінією.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5664"/>
@@ -2989,7 +2988,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="9880"/>
       <source>Select one dimensional constraint from the sketch.</source>
-      <translation type="unfinished">Select one dimensional constraint from the sketch.</translation>
+      <translation>Виберіть одне розмірне обмеження з ескізу.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9958"/>
@@ -3180,7 +3179,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="350"/>
       <source>Fillet/Chamfer parameters</source>
-      <translation type="unfinished">Fillet/Chamfer parameters</translation>
+      <translation>Параметри скруглення/фаски</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="215"/>
@@ -3225,22 +3224,22 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="178"/>
       <source>Rotate parameters</source>
-      <translation type="unfinished">Rotate parameters</translation>
+      <translation>Параметри розвороту</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="174"/>
       <source>Scale parameters</source>
-      <translation type="unfinished">Scale parameters</translation>
+      <translation>Параметри масштабування</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="173"/>
       <source>Translate parameters</source>
-      <translation type="unfinished">Translate parameters</translation>
+      <translation>Параметри переміщення</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="194"/>
       <source>Symmetry parameters</source>
-      <translation type="unfinished">Symmetry parameters</translation>
+      <translation>Параметри симетрії</translation>
     </message>
   </context>
   <context>
@@ -3979,7 +3978,7 @@ reflected on copies</source>
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="25"/>
       <source>Number of sides:</source>
-      <translation type="unfinished">Number of sides:</translation>
+      <translation>Кількість сторін:</translation>
     </message>
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="32"/>
@@ -3998,7 +3997,7 @@ reflected on copies</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="20"/>
       <source>Task panel widgets</source>
-      <translation type="unfinished">Task panel widgets</translation>
+      <translation>Віджети панелі завдань</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="26"/>
@@ -4062,27 +4061,27 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="165"/>
       <source>Unify Coincident and PointOnObject in a single tool.</source>
-      <translation type="unfinished">Unify Coincident and PointOnObject in a single tool.</translation>
+      <translation>Об'єднує Coincident і PointOnObject в одному інструменті.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="168"/>
       <source>Unify Coincident and PointOnObject</source>
-      <translation type="unfinished">Unify Coincident and PointOnObject</translation>
+      <translation>Об'єднати Coincident і PointOnObject</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="184"/>
       <source>Use the automatic horizontal/vertical constraint tool. This create a command group in which you have the auto tool, horizontal and vertical.</source>
-      <translation type="unfinished">Use the automatic horizontal/vertical constraint tool. This create a command group in which you have the auto tool, horizontal and vertical.</translation>
+      <translation>Дозволяє використати інструмент автоматичного горизонтального/вертикального обмеження. Це створює групу команд, в якій ви отримаєте автоматичний інструмент для обмеження по горизонталі та вертикалі.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="187"/>
       <source>Auto tool for Horizontal/Vertical</source>
-      <translation type="unfinished">Auto tool for Horizontal/Vertical</translation>
+      <translation>Автоматичний інструмент для Горизонт./Верт. обмежень</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="212"/>
       <source>Dimension constraint</source>
-      <translation type="unfinished">Dimension constraint</translation>
+      <translation>Розмірні Обмеження</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="225"/>
@@ -5066,7 +5065,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3166"/>
       <source>Malformed constraints:</source>
-      <translation type="unfinished">Malformed constraints:</translation>
+      <translation>Невірні обмеження:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3174"/>
@@ -5469,7 +5468,7 @@ Do you want to detach it from the support?</source>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="27"/>
       <source>Link</source>
-      <translation>Посилання</translation>
+      <translation>Link (Посилання)</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="40"/>
@@ -6041,7 +6040,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="134"/>
       <source>Selection has no valid geometries.</source>
-      <translation type="unfinished">Selection has no valid geometries.</translation>
+      <translation>Вибір не містить припустимих геометрій.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2372"/>
@@ -6256,22 +6255,22 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="135"/>
       <source>Failed to rotate</source>
-      <translation type="unfinished">Failed to rotate</translation>
+      <translation>Помилка розвороту</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="131"/>
       <source>Failed to scale</source>
-      <translation type="unfinished">Failed to scale</translation>
+      <translation>Помилка масштабування</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="130"/>
       <source>Failed to translate</source>
-      <translation type="unfinished">Failed to translate</translation>
+      <translation>Помилка переміщення</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="151"/>
       <source>Failed to create symmetry</source>
-      <translation type="unfinished">Failed to create symmetry</translation>
+      <translation>Помилка створення симетрії</translation>
     </message>
   </context>
   <context>
@@ -6582,7 +6581,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2312"/>
       <source>Offset geometry</source>
-      <translation type="unfinished">Offset geometry</translation>
+      <translation>Зміщення Геометрії</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2313"/>
@@ -6600,7 +6599,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="477"/>
       <source>Clone constraints</source>
-      <translation type="unfinished">Clone constraints</translation>
+      <translation>Клонувати обмеження</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="481"/>
@@ -6621,22 +6620,22 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1651"/>
       <source>Corner, width, height</source>
-      <translation type="unfinished">Corner, width, height</translation>
+      <translation>Кут, ширина, висота</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1652"/>
       <source>Center, width, height</source>
-      <translation type="unfinished">Center, width, height</translation>
+      <translation>Центр, ширина, висота</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1653"/>
       <source>3 corners</source>
-      <translation type="unfinished">3 corners</translation>
+      <translation>3 кути</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1654"/>
       <source>Center, 2 corners</source>
-      <translation type="unfinished">Center, 2 corners</translation>
+      <translation>По центру, 2 кути</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1659"/>
@@ -6838,12 +6837,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="238"/>
       <source>Color of normal geometry in edit mode</source>
-      <translation type="unfinished">Color of normal geometry in edit mode</translation>
+      <translation>Колір нормальної геометрії в режимі редагування</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="306"/>
       <source>Color of fully constrained construction geometry in edit mode</source>
-      <translation type="unfinished">Color of fully constrained construction geometry in edit mode</translation>
+      <translation>Колір повністю обмеженої допоміжної геометрії в режимі редагування</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="387"/>
@@ -6863,12 +6862,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="555"/>
       <source>Fully constrained sketch</source>
-      <translation type="unfinished">Fully constrained sketch</translation>
+      <translation>Ескіз повністю визначений</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="568"/>
       <source>Color of geometry indicating a fully constrained sketch</source>
-      <translation type="unfinished">Color of geometry indicating a fully constrained sketch</translation>
+      <translation>Колір геометрії повністю визначеного ескізу</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="588"/>
@@ -6878,7 +6877,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="672"/>
       <source>Color of dimensional driving constraints in edit mode</source>
-      <translation type="unfinished">Color of dimensional driving constraints in edit mode</translation>
+      <translation>Колір розмірних обмежень в режимі редагування</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="799"/>
@@ -6888,7 +6887,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="806"/>
       <source>Color of vertices outside edit mode</source>
-      <translation type="unfinished">Color of vertices outside edit mode</translation>
+      <translation>Колір вершин поза режимом редагування</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="845"/>
@@ -6898,22 +6897,22 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="852"/>
       <source>Color of edges outside edit mode</source>
-      <translation type="unfinished">Color of edges outside edit mode</translation>
+      <translation>Колір ребер поза режимом редагування</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="199"/>
       <source>Geometry</source>
-      <translation type="unfinished">Geometry</translation>
+      <translation>Геометрія</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="258"/>
       <source>Line pattern of normal edges.</source>
-      <translation type="unfinished">Line pattern of normal edges.</translation>
+      <translation>Шаблон лінії нормальних ребер.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="268"/>
       <source>Width of normal edges.</source>
-      <translation type="unfinished">Width of normal edges.</translation>
+      <translation>Ширина нормальних ребер.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="293"/>
@@ -7133,7 +7132,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="488"/>
       <source>Clone constraints</source>
-      <translation type="unfinished">Clone constraints</translation>
+      <translation>Клонувати обмеження</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="491"/>
@@ -7146,7 +7145,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="516"/>
       <source>Copies (+'U'/-'J')</source>
-      <translation type="unfinished">Copies (+'U'/-'J')</translation>
+      <translation>Копії (+'U'/-'J')</translation>
     </message>
   </context>
   <context>
@@ -7154,7 +7153,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="519"/>
       <source>Rows (+'R'/-'F')</source>
-      <translation type="unfinished">Rows (+'R'/-'F')</translation>
+      <translation>Рядки (+'R'/-'F')</translation>
     </message>
   </context>
   <context>
@@ -7175,12 +7174,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1224"/>
       <source>Create chamfer</source>
-      <translation type="unfinished">Create chamfer</translation>
+      <translation>Створити фаску</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1225"/>
       <source>Create a chamfer between two lines or at a coincident point</source>
-      <translation type="unfinished">Create a chamfer between two lines or at a coincident point</translation>
+      <translation>Створює фаску між двома лініями або в точці збігу</translation>
     </message>
   </context>
   <context>
@@ -7188,12 +7187,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1255"/>
       <source>Create fillet or chamfer</source>
-      <translation type="unfinished">Create fillet or chamfer</translation>
+      <translation>Створення закруглення або фаски</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1256"/>
       <source>Create a fillet or chamfer between two lines</source>
-      <translation type="unfinished">Create a fillet or chamfer between two lines</translation>
+      <translation>Створює заокруглення або фаску між двома лініями</translation>
     </message>
   </context>
   <context>
@@ -7201,7 +7200,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="549"/>
       <source>Arc ends</source>
-      <translation type="unfinished">Arc ends</translation>
+      <translation>Кінці дуг</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="550"/>
@@ -7340,12 +7339,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandConstraints.cpp" line="1308"/>
       <source>Toggle constraints</source>
-      <translation type="unfinished">Toggle constraints</translation>
+      <translation>Увімкнути обмеження</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1309"/>
       <source>Toggle constrain tools.</source>
-      <translation type="unfinished">Toggle constrain tools.</translation>
+      <translation>Інструмент для перемикання обмежень.</translation>
     </message>
   </context>
 </TS>

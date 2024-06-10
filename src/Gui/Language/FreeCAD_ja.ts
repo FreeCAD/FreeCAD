@@ -88,7 +88,7 @@
     <message>
       <location filename="../CommandView.cpp" line="3324"/>
       <source>Clear measurement</source>
-      <translation>計測のクリア</translation>
+      <translation>測定値を消去</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3325"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../CommandView.cpp" line="3354"/>
       <source>Toggle measurement</source>
-      <translation>計測値の表示切替</translation>
+      <translation>測定値の表示切り替え</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3355"/>
@@ -159,7 +159,7 @@
     <message>
       <location filename="../CommandStd.cpp" line="784"/>
       <source>Insert measurement</source>
-      <translation>寸法を挿入</translation>
+      <translation>測定値を挿入</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="815"/>
@@ -217,7 +217,7 @@
     <message>
       <location filename="../CommandView.cpp" line="918"/>
       <source>Toggle transparency</source>
-      <translation type="unfinished">Toggle transparency</translation>
+      <translation>透明度の切り替え</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1031"/>
@@ -238,7 +238,7 @@
     <message>
       <location filename="../CommandFeat.cpp" line="168"/>
       <source>Toggle freeze</source>
-      <translation type="unfinished">Toggle freeze</translation>
+      <translation>フリーズの切り替え</translation>
     </message>
   </context>
   <context>
@@ -316,7 +316,7 @@
     <message>
       <location filename="../Workbench.cpp" line="531"/>
       <source>Measure</source>
-      <translation>計測</translation>
+      <translation>測定</translation>
     </message>
   </context>
   <context>
@@ -387,7 +387,7 @@
     <message>
       <location filename="../DlgExpressionInput.ui" line="26"/>
       <source>Expression editor</source>
-      <translation type="unfinished">Expression editor</translation>
+      <translation>式エディター</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="67"/>
@@ -471,12 +471,12 @@
     <message>
       <location filename="../QuantitySpinBox_p.h" line="53"/>
       <source>Enter an expression... (=)</source>
-      <translation type="unfinished">Enter an expression... (=)</translation>
+      <translation>式を入力... (=)</translation>
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="54"/>
       <source>Expression:</source>
-      <translation type="unfinished">Expression:</translation>
+      <translation>式:</translation>
     </message>
   </context>
   <context>
@@ -1279,7 +1279,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgKeyboard.ui" line="137"/>
       <source>Multi-key sequence delay:</source>
-      <translation type="unfinished">Multi-key sequence delay:</translation>
+      <translation>マルチキーシーケンスの待ち時間:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="156"/>
@@ -1665,7 +1665,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgMacroExecute.ui" line="106"/>
       <source>Filter by case-insensitive file content, regular expressions supported</source>
-      <translation type="unfinished">Filter by case-insensitive file content, regular expressions supported</translation>
+      <translation>大文字小文字を区別せずにファイルの内容をフィルタリングします。正規表現がサポートされています。</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="122"/>
@@ -2277,22 +2277,22 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="540"/>
       <source>Reset page '%1'...</source>
-      <translation type="unfinished">Reset page '%1'...</translation>
+      <translation>ページ '%1' をリセット...</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="543"/>
       <source>Resets the user settings for the page '%1'</source>
-      <translation type="unfinished">Resets the user settings for the page '%1'</translation>
+      <translation>ページ '%1' のユーザー設定をリセット</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="546"/>
       <source>Reset group '%1'...</source>
-      <translation type="unfinished">Reset group '%1'...</translation>
+      <translation>グループ '%1' をリセット...</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="549"/>
       <source>Resets the user settings for the group '%1'</source>
-      <translation type="unfinished">Resets the user settings for the group '%1'</translation>
+      <translation>グループ '%1' のユーザー設定をリセット</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="552"/>
@@ -2740,7 +2740,7 @@ VBOはOpenGLの機能で、頂点データ (位置、法線ベクトル、色な
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
       <source>Relative size:</source>
-      <translation type="unfinished">Relative size:</translation>
+      <translation>相対サイズ:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="99"/>
@@ -3029,7 +3029,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="111"/>
       <source>Never</source>
-      <translation type="unfinished">Never</translation>
+      <translation>なし</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="119"/>
@@ -4094,17 +4094,17 @@ The value is the diameter of the sphere to fit on the screen.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="799"/>
       <source>Enable spinning animations that are used in some navigation styles after dragging</source>
-      <translation type="unfinished">Enable spinning animations that are used in some navigation styles after dragging</translation>
+      <translation>ドラッグ後に一部のナビゲーションスタイルで使用される回転アニメーションを有効にする</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="802"/>
       <source>Enable spinning animations</source>
-      <translation type="unfinished">Enable spinning animations</translation>
+      <translation>回転アニメーションを有効</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="742"/>
       <source>Duration of navigation animations that have a fixed duration</source>
-      <translation type="unfinished">Duration of navigation animations that have a fixed duration</translation>
+      <translation>固定時間のナビゲーションアニメーションの表示時間</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="745"/>
@@ -6826,7 +6826,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskDlgRelocation.cpp" line="42"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>位置</translation>
     </message>
   </context>
   <context>
@@ -6911,7 +6911,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="60"/>
       <source>Plot mode:</source>
-      <translation>プロットモード:</translation>
+      <translation>プロットモード：</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="84"/>
@@ -7258,7 +7258,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="Translator.cpp" line="179"/>
       <source>Danish</source>
-      <translation type="unfinished">Danish</translation>
+      <translation>デンマーク語</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="152"/>
@@ -7652,7 +7652,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../DlgLocationPos.ui" line="162"/>
       <source>5 m</source>
-      <translation type="unfinished">5 m</translation>
+      <translation>5 m</translation>
     </message>
   </context>
   <context>
@@ -7788,12 +7788,12 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../StartupProcess.cpp" line="332"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</source>
-      <translation type="unfinished">This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</translation>
+      <translation>このシステムは OpenGL %1.%2 を実行しています。FreeCAD では OpenGL 2.0 以上が必要です。必要に応じてグラフィックドライバーやカードを更新してください。</translation>
     </message>
     <message>
       <location filename="../StartupProcess.cpp" line="341"/>
       <source>Invalid OpenGL Version</source>
-      <translation type="unfinished">Invalid OpenGL Version</translation>
+      <translation>無効な OpenGL バージョンです。</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="488"/>
@@ -7946,7 +7946,7 @@ Be aware the point where you click matters.</source>
       <location filename="../CommandView.cpp" line="346"/>
       <location filename="../CommandView.cpp" line="576"/>
       <source>Freeze view</source>
-      <translation>ビューを固定</translation>
+      <translation>ビューをフリーズ</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="349"/>
@@ -8113,7 +8113,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../NotificationArea.cpp" line="431"/>
       <source> (%1 times)</source>
-      <translation type="unfinished"> (%1 times)</translation>
+      <translation> (%1 回)</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="664"/>
@@ -8136,7 +8136,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../NotificationArea.cpp" line="1087"/>
       <source>Notifier:</source>
-      <translation type="unfinished">Notifier:</translation>
+      <translation>通知:</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1089"/>
@@ -8489,7 +8489,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
     <message>
       <location filename="../SoFCCSysDragger.cpp" line="614"/>
       <source>Translation XY:</source>
-      <translation type="unfinished">Translation XY:</translation>
+      <translation>平行移動量 XY:</translation>
     </message>
     <message>
       <location filename="../SoFCCSysDragger.cpp" line="941"/>
@@ -8704,24 +8704,24 @@ the current copy will be lost.
     <message>
       <location filename="../OverlayManager.cpp" line="1047"/>
       <source>Toggle overlay</source>
-      <translation type="unfinished">Toggle overlay</translation>
+      <translation>オーバーレイの切り替え</translation>
     </message>
     <message>
       <location filename="../OverlayManager.cpp" line="1048"/>
       <location filename="../OverlayWidgets.cpp" line="2181"/>
       <source>Toggle floating window</source>
-      <translation type="unfinished">Toggle floating window</translation>
+      <translation>フローティングウィンドウの切り替え</translation>
     </message>
     <message>
       <location filename="../OverlayManager.cpp" line="1049"/>
       <source>Close dock window</source>
-      <translation type="unfinished">Close dock window</translation>
+      <translation>ドッキングウィンドウを閉じる</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="117"/>
       <location filename="../OverlayWidgets.cpp" line="147"/>
       <source>Press ESC to hide hint</source>
-      <translation type="unfinished">Press ESC to hide hint</translation>
+      <translation>ヒントを非表示にするにはESCを押してください。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="530"/>
@@ -8736,197 +8736,197 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="533"/>
       <source>Item background color</source>
-      <translation type="unfinished">Item background color</translation>
+      <translation>アイテム背景色</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="536"/>
       <source>Item background padding</source>
-      <translation type="unfinished">Item background padding</translation>
+      <translation>アイテム背景余白</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="539"/>
       <source>Resizable columns</source>
-      <translation type="unfinished">Resizable columns</translation>
+      <translation>可変サイズのカラム</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="541"/>
       <source>Show visibility icon</source>
-      <translation type="unfinished">Show visibility icon</translation>
+      <translation>可視アイコンを表示</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="543"/>
       <source>Hide extra column</source>
-      <translation type="unfinished">Hide extra column</translation>
+      <translation>追加カラムを非表示</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="545"/>
       <source>Hide scroll bar</source>
-      <translation type="unfinished">Hide scroll bar</translation>
+      <translation>スクロールバーを非表示</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="547"/>
       <source>Hide header</source>
-      <translation type="unfinished">Hide header</translation>
+      <translation>ヘッダーを非表示</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="549"/>
       <source>IconSize</source>
-      <translation type="unfinished">IconSize</translation>
+      <translation>アイコンサイズ</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="552"/>
       <source>FontSize</source>
-      <translation type="unfinished">FontSize</translation>
+      <translation>フォントサイズ</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="555"/>
       <source>ItemSpacing</source>
-      <translation type="unfinished">ItemSpacing</translation>
+      <translation>アイテム間隔</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="557"/>
       <source>Overlay</source>
-      <translation type="unfinished">Overlay</translation>
+      <translation>重ねて表示</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="559"/>
       <source>Hide tab bar</source>
-      <translation type="unfinished">Hide tab bar</translation>
+      <translation>タブバーを非表示</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="561"/>
       <source>Hide property view scroll bar</source>
-      <translation type="unfinished">Hide property view scroll bar</translation>
+      <translation>プロパティビューのスクロールバーを非表示</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="563"/>
       <source>Auto hide in non 3D view</source>
-      <translation type="unfinished">Auto hide in non 3D view</translation>
+      <translation>3D ビュー以外では自動で非表示</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="565"/>
       <source>Auto mouse pass through</source>
-      <translation type="unfinished">Auto mouse pass through</translation>
+      <translation>マウスによる自動パススルー</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="567"/>
       <source>Auto mouse wheel pass through</source>
-      <translation type="unfinished">Auto mouse wheel pass through</translation>
+      <translation>マウスホイールによる自動パススルー</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="569"/>
       <source>Delay mouse wheel pass through (ms)</source>
-      <translation type="unfinished">Delay mouse wheel pass through (ms)</translation>
+      <translation>マウスホイールによるパススルーの待ち時間 (ミリ秒)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="572"/>
       <source>Alpha test radius</source>
-      <translation type="unfinished">Alpha test radius</translation>
+      <translation>アルファテストの半径</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="575"/>
       <source>Check Navigation Cube</source>
-      <translation type="unfinished">Check Navigation Cube</translation>
+      <translation>ナビゲーションキューブを確認</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="577"/>
       <source>Hint trigger size</source>
-      <translation type="unfinished">Hint trigger size</translation>
+      <translation>ヒント・トリガーのサイズ</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="580"/>
       <source>Hint width</source>
-      <translation type="unfinished">Hint width</translation>
+      <translation>ヒントの幅</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="583"/>
       <source>Left panel hint offset</source>
-      <translation type="unfinished">Left panel hint offset</translation>
+      <translation>左パネルのヒントのオフセット</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="586"/>
       <source>Left panel hint length</source>
-      <translation type="unfinished">Left panel hint length</translation>
+      <translation>左パネルのヒントの長さ</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="589"/>
       <source>Right panel hint offset</source>
-      <translation type="unfinished">Right panel hint offset</translation>
+      <translation>右パネルのヒントのオフセット</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="592"/>
       <source>Right panel hint length</source>
-      <translation type="unfinished">Right panel hint length</translation>
+      <translation>右パネルのヒントの長さ</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="595"/>
       <source>Top panel hint offset</source>
-      <translation type="unfinished">Top panel hint offset</translation>
+      <translation>上パネルのヒントのオフセット</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="598"/>
       <source>Top panel hint length</source>
-      <translation type="unfinished">Top panel hint length</translation>
+      <translation>上パネルのヒントの長さ</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="601"/>
       <source>Bottom panel hint offset</source>
-      <translation type="unfinished">Bottom panel hint offset</translation>
+      <translation>下パネルのヒントのオフセット</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="604"/>
       <source>Bottom panel hint length</source>
-      <translation type="unfinished">Bottom panel hint length</translation>
+      <translation>下パネルのヒントの長さ</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="607"/>
       <source>Hint show tab bar</source>
-      <translation type="unfinished">Hint show tab bar</translation>
+      <translation>タブバー表示のヒント</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="609"/>
       <source>Hint delay (ms)</source>
-      <translation type="unfinished">Hint delay (ms)</translation>
+      <translation>ヒントの待ち時間 (ミリ秒)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="612"/>
       <source>Splitter auto hide delay (ms)</source>
-      <translation type="unfinished">Splitter auto hide delay (ms)</translation>
+      <translation>スプリッターの自動非表示の待ち時間 (ミリ秒)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="615"/>
       <source>Activate on hover</source>
-      <translation type="unfinished">Activate on hover</translation>
+      <translation>ホバー時にアクティブ化</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="617"/>
       <source>Layout delay (ms)</source>
-      <translation type="unfinished">Layout delay (ms)</translation>
+      <translation>レイアウト待ち時間 (ミリ秒)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="620"/>
       <source>Animation duration (ms)</source>
-      <translation type="unfinished">Animation duration (ms)</translation>
+      <translation>アニメーション速度 (ミリ秒)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="623"/>
       <source>Animation curve type</source>
-      <translation type="unfinished">Animation curve type</translation>
+      <translation>アニメーションカーブのタイプ</translation>
     </message>
     <message>
       <location filename="../ViewProviderPart.cpp" line="73"/>
       <source>Active object</source>
-      <translation type="unfinished">Active object</translation>
+      <translation>アクティブなオブジェクト</translation>
     </message>
     <message>
       <location filename="../ViewProviderSuppressibleExtension.cpp" line="95"/>
       <source>Suppressed</source>
-      <translation type="unfinished">Suppressed</translation>
+      <translation>一時停止中</translation>
     </message>
     <message>
       <location filename="../ToolBarManager.cpp" line="951"/>
       <source>Undock from toolbar area</source>
-      <translation type="unfinished">Undock from toolbar area</translation>
+      <translation>ツールバー領域からドッキング解除</translation>
     </message>
   </context>
   <context>
@@ -9482,13 +9482,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="326"/>
       <source>Freeze display</source>
-      <translation>表示を固定</translation>
+      <translation>表示をフリーズ</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="327"/>
       <location filename="../CommandView.cpp" line="329"/>
       <source>Freezes the current view position</source>
-      <translation>現在のビューを固定</translation>
+      <translation>現在のビュー位置をフリーズ</translation>
     </message>
   </context>
   <context>
@@ -9501,7 +9501,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStructure.cpp" line="95"/>
       <source>A Group is a general purpose container to group objects in the Tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
-      <translation type="unfinished">A Group is a general purpose container to group objects in the Tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</translation>
+      <translation>グループはツリー ビュー内のオブジェクトをグループ化するための汎用コンテナで、データ型に関係なく使用できます。モデル内のオブジェクトを整理するためのシンプルなフォルダです。</translation>
     </message>
   </context>
   <context>
@@ -9606,7 +9606,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="211"/>
       <source>A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
-      <translation type="unfinished">A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</translation>
+      <translation>リンクは同じドキュメント内、または別のドキュメント内の別のオブジェクトを参照またはリンクするオブジェクトです。クローンとは異なり、リンクは元シェイプを直接参照するため、メモリーの効率が良く、複雑なアセンブリの作成に役立ちます。</translation>
     </message>
   </context>
   <context>
@@ -9795,7 +9795,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="3148"/>
       <location filename="../CommandView.cpp" line="3150"/>
       <source>Activate the distance measurement tool</source>
-      <translation>距離計測ツールをアクティブにする</translation>
+      <translation>距離測定ツールをアクティブにする</translation>
     </message>
   </context>
   <context>
@@ -9817,7 +9817,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="521"/>
       <source>Merge document...</source>
-      <translation type="unfinished">Merge document...</translation>
+      <translation>ドキュメントの統合...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="522"/>
@@ -9825,7 +9825,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="534"/>
       <location filename="../CommandDoc.cpp" line="543"/>
       <source>Merge document</source>
-      <translation type="unfinished">Merge document</translation>
+      <translation>ドキュメントの統合</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="535"/>
@@ -9835,7 +9835,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="544"/>
       <source>Cannot merge document with itself.</source>
-      <translation type="unfinished">Cannot merge document with itself.</translation>
+      <translation>ドキュメントを自身に統合することはできません。</translation>
     </message>
   </context>
   <context>
@@ -9930,7 +9930,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStructure.cpp" line="52"/>
       <source>A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
-      <translation type="unfinished">A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</translation>
+      <translation>パーツはオブジェクトのグループをまとめて3Dビューで一単位として振る舞うようにするための汎用コンテナです。Partのプリミティブ、PartDesignのボディー、その他のパーツなどを持つオブジェクトを配置するための手段となります。</translation>
     </message>
   </context>
   <context>
@@ -11506,7 +11506,7 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../TreeParams.cpp" line="1234"/>
       <source>Hide tree view scroll bar in dock overlay.</source>
-      <translation>ドックオーバーレイ時にツリービューのスクロールバーを非表示。</translation>
+      <translation>ドックオーバーレイ時にツリービューのスクロールバーを非表示</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1262"/>
@@ -11521,7 +11521,7 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../TreeParams.cpp" line="1399"/>
       <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</source>
-      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</translation>
+      <translation>有効にするとツリービューのアイテムの前に目のアイコンを表示し、アイテムの表示状態を示します。クリックすると表示状態が切り替わります。</translation>
     </message>
   </context>
   <context>
@@ -11564,7 +11564,7 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../Workbench.cpp" line="540"/>
       <source>Individual views</source>
-      <translation type="unfinished">Individual views</translation>
+      <translation>個々のビュー</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="541"/>
@@ -11842,22 +11842,22 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="73"/>
       <source>Workbench selector type:</source>
-      <translation type="unfinished">Workbench selector type:</translation>
+      <translation>ワークベンチ選択のタイプ:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="80"/>
       <source>Choose the workbench selector widget type (restart required).</source>
-      <translation type="unfinished">Choose the workbench selector widget type (restart required).</translation>
+      <translation>ワークベンチ選択のウィジェットタイプを選択(再起動が必要です)。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="37"/>
       <source>Workbench selector items style:</source>
-      <translation type="unfinished">Workbench selector items style:</translation>
+      <translation>ワークベンチ選択アイテムのスタイル:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="44"/>
       <source>Customize how the items are displayed.</source>
-      <translation type="unfinished">Customize how the items are displayed.</translation>
+      <translation>アイテムの表示方法をカスタマイズ</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="112"/>
@@ -12069,17 +12069,17 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="524"/>
       <source>ComboBox</source>
-      <translation type="unfinished">ComboBox</translation>
+      <translation>コンボボックス</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="525"/>
       <source>TabBar</source>
-      <translation type="unfinished">TabBar</translation>
+      <translation>タブバー</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="531"/>
       <source>Icon &amp; Text</source>
-      <translation type="unfinished">Icon &amp; Text</translation>
+      <translation>アイコンとテキスト</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="532"/>
@@ -12448,7 +12448,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="55"/>
       <source>Default unit system:</source>
-      <translation type="unfinished">Default unit system:</translation>
+      <translation>デフォルトの単位系:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="71"/>
@@ -12463,17 +12463,17 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
       <source>Unit system for all parts of the application. Can be overridden by specifying a document unit system.</source>
-      <translation type="unfinished">Unit system for all parts of the application. Can be overridden by specifying a document unit system.</translation>
+      <translation>アプリケーションのすべてのパーツの単位系。ドキュメントの単位系を指定することで上書きできます。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
       <source>If enabled, document unit systems are ignored</source>
-      <translation type="unfinished">If enabled, document unit systems are ignored</translation>
+      <translation>有効にした場合、ドキュメントの単位系は無視されます。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="96"/>
       <source>Ignore project unit system and use default</source>
-      <translation type="unfinished">Ignore project unit system and use default</translation>
+      <translation>プロジェクトの単位系を無視してデフォルトを使用</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="103"/>
@@ -12611,12 +12611,12 @@ display the splash screen</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="348"/>
       <source>Activate overlay handling of dock windows</source>
-      <translation type="unfinished">Activate overlay handling of dock windows</translation>
+      <translation>ドッキングウィンドウのオーバーレイ処理を有効</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="351"/>
       <source>Activate overlay handling</source>
-      <translation type="unfinished">Activate overlay handling</translation>
+      <translation>オーバーレイ処理を有効</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="370"/>
@@ -12923,7 +12923,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="20"/>
       <source>This page let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
-      <translation type="unfinished">This page let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</translation>
+      <translation>このページでは現在のテーマをカスタマイズできます。テーマ開発者のために用意された設定は選択可能なため、現在のテーマに変化があるかどうかはわかりません。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="34"/>
@@ -12943,24 +12943,24 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="133"/>
       <source>Style sheet (advanced):</source>
-      <translation type="unfinished">Style sheet (advanced):</translation>
+      <translation>スタイルシート (高度):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="140"/>
       <source>Style sheet how user interface will look like</source>
-      <translation type="unfinished">Style sheet how user interface will look like</translation>
+      <translation>ユーザーインターフェイスの外観を指定するスタイルシート</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="156"/>
       <source>Overlay style sheet:</source>
-      <translation type="unfinished">Overlay style sheet:</translation>
+      <translation>オーバーレイスタイルシート:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="47"/>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="80"/>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="113"/>
       <source>This color might be used by your theme to let you customize it.</source>
-      <translation type="unfinished">This color might be used by your theme to let you customize it.</translation>
+      <translation>この色はテーマに使用されカスタマイズ可能です。</translation>
     </message>
   </context>
   <context>
@@ -12968,13 +12968,13 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandDoc.cpp" line="606"/>
       <source>Export dependency graph...</source>
-      <translation type="unfinished">Export dependency graph...</translation>
+      <translation>依存関係グラフをエクスポート...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="607"/>
       <location filename="../CommandDoc.cpp" line="608"/>
       <source>Export the dependency graph to a file</source>
-      <translation type="unfinished">Export the dependency graph to a file</translation>
+      <translation>依存関係グラフをファイルにエクスポート</translation>
     </message>
   </context>
   <context>
@@ -12982,12 +12982,12 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="3383"/>
       <source>Selection back</source>
-      <translation type="unfinished">Selection back</translation>
+      <translation>選択を戻す</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3385"/>
       <source>Restore the previous Tree view selection. Only works if Tree RecordSelection mode is switched on.</source>
-      <translation type="unfinished">Restore the previous Tree view selection. Only works if Tree RecordSelection mode is switched on.</translation>
+      <translation>前のツリー ビュー選択を復元します。ツリー選択記録モードがオンの場合にのみ機能します。</translation>
     </message>
   </context>
   <context>
@@ -12995,12 +12995,12 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="3417"/>
       <source>Selection forward</source>
-      <translation type="unfinished">Selection forward</translation>
+      <translation>選択をやり直す</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3419"/>
       <source>Restore the next Tree view selection. Only works if Tree RecordSelection mode is switched on.</source>
-      <translation type="unfinished">Restore the next Tree view selection. Only works if Tree RecordSelection mode is switched on.</translation>
+      <translation>次のツリー ビュー選択を復元します。ツリー選択記録モードがオンの場合にのみ機能します。</translation>
     </message>
   </context>
   <context>
@@ -13008,17 +13008,17 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="14"/>
       <source>Light Sources</source>
-      <translation type="unfinished">Light Sources</translation>
+      <translation>光源</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="20"/>
       <source>Light sources</source>
-      <translation type="unfinished">Light sources</translation>
+      <translation>光源（こうげん）</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="26"/>
       <source>Light source</source>
-      <translation type="unfinished">Light source</translation>
+      <translation>光源</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="72"/>
@@ -13028,7 +13028,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="107"/>
       <source>Lights</source>
-      <translation type="unfinished">Lights</translation>
+      <translation>ライト</translation>
     </message>
   </context>
   <context>
@@ -13036,12 +13036,12 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="902"/>
       <source>Toggle transparency</source>
-      <translation type="unfinished">Toggle transparency</translation>
+      <translation>透明度の切り替え</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="904"/>
       <source>Toggles transparency of the selected objects. You can also fine tune transparency value in the Appearance taskbox (right click an object in the tree, Appearance).</source>
-      <translation type="unfinished">Toggles transparency of the selected objects. You can also fine tune transparency value in the Appearance taskbox (right click an object in the tree, Appearance).</translation>
+      <translation>選択したオブジェクトの透明度を切り替え。表示タスクボックスで透明度の値を微調整することもできます (ツリー内のオブジェクトを右クリックして「表示」を選択)。</translation>
     </message>
   </context>
   <context>
@@ -13049,12 +13049,12 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="3754"/>
       <source>Toggle overlay for all</source>
-      <translation type="unfinished">Toggle overlay for all</translation>
+      <translation>すべてのオーバーレイを切り替え</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3755"/>
       <source>Toggle overlay mode for all docked windows</source>
-      <translation type="unfinished">Toggle overlay mode for all docked windows</translation>
+      <translation>すべてのドッキングウィンドウのオーバーレイモードを切り替えます。</translation>
     </message>
   </context>
   <context>
@@ -13062,14 +13062,14 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="3778"/>
       <source>Toggle transparent for all</source>
-      <translation type="unfinished">Toggle transparent for all</translation>
+      <translation>すべての透明度を切り替え</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3779"/>
       <source>Toggle transparent mode for all docked overlay windows.
 This makes the docked windows stay transparent at all times.</source>
-      <translation type="unfinished">Toggle transparent mode for all docked overlay windows.
-This makes the docked windows stay transparent at all times.</translation>
+      <translation>すべてのドッキングオーバーレイウィンドウの透明度を切り替えます。
+これによってドッキングウィンドウは常に透明になります。</translation>
     </message>
   </context>
   <context>
@@ -13077,12 +13077,12 @@ This makes the docked windows stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3803"/>
       <source>Toggle overlay</source>
-      <translation type="unfinished">Toggle overlay</translation>
+      <translation>オーバーレイの切り替え</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3804"/>
       <source>Toggle overlay mode for the docked window under the cursor</source>
-      <translation type="unfinished">Toggle overlay mode for the docked window under the cursor</translation>
+      <translation>カーソル下のドッキングウィンドウのオーバーレイモードを切り替えます。</translation>
     </message>
   </context>
   <context>
@@ -13090,14 +13090,14 @@ This makes the docked windows stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3827"/>
       <source>Toggle transparent</source>
-      <translation type="unfinished">Toggle transparent</translation>
+      <translation>透明度を切り替え</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3828"/>
       <source>Toggle transparent mode for the docked window under cursor.
 This makes the docked window stay transparent at all times.</source>
-      <translation type="unfinished">Toggle transparent mode for the docked window under cursor.
-This makes the docked window stay transparent at all times.</translation>
+      <translation>カーソル下のドッキングウィンドウの透明モードを切り替えます。
+これによってドッキングウィンドウは常に透明になります。</translation>
     </message>
   </context>
   <context>
@@ -13105,12 +13105,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3852"/>
       <source>Toggle left</source>
-      <translation type="unfinished">Toggle left</translation>
+      <translation>左の切り替え</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3853"/>
       <source>Show/hide left overlay panel</source>
-      <translation type="unfinished">Show/hide left overlay panel</translation>
+      <translation>左部オーバーレイパネルの表示/非表示</translation>
     </message>
   </context>
   <context>
@@ -13118,12 +13118,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3877"/>
       <source>Toggle right</source>
-      <translation type="unfinished">Toggle right</translation>
+      <translation>右の切り替え</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3878"/>
       <source>Show/hide right overlay panel</source>
-      <translation type="unfinished">Show/hide right overlay panel</translation>
+      <translation>右部オーバーレイパネルの表示/非表示</translation>
     </message>
   </context>
   <context>
@@ -13131,12 +13131,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3902"/>
       <source>Toggle top</source>
-      <translation type="unfinished">Toggle top</translation>
+      <translation>上の切り替え</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3903"/>
       <source>Show/hide top overlay panel</source>
-      <translation type="unfinished">Show/hide top overlay panel</translation>
+      <translation>上部オーバーレイパネルの表示/非表示</translation>
     </message>
   </context>
   <context>
@@ -13144,12 +13144,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3927"/>
       <source>Toggle bottom</source>
-      <translation type="unfinished">Toggle bottom</translation>
+      <translation>下の切り替え</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3928"/>
       <source>Show/hide bottom overlay panel</source>
-      <translation type="unfinished">Show/hide bottom overlay panel</translation>
+      <translation>下部オーバーレイパネルの表示/非表示</translation>
     </message>
   </context>
   <context>
@@ -13157,12 +13157,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3952"/>
       <source>Bypass mouse events in docked overlay windows</source>
-      <translation type="unfinished">Bypass mouse events in docked overlay windows</translation>
+      <translation>ドッキングオーバーレイウィンドウでマウスイベントをバイパス</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3953"/>
       <source>Bypass all mouse events in docked overlay windows</source>
-      <translation type="unfinished">Bypass all mouse events in docked overlay windows</translation>
+      <translation>ドッキングオーバーレイウィンドウですべてのマウスイベントをバイパス</translation>
     </message>
   </context>
   <context>
@@ -13170,12 +13170,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3994"/>
       <source>Dock window overlay</source>
-      <translation type="unfinished">Dock window overlay</translation>
+      <translation>ドッキングウィンドウオーバーレイ</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3995"/>
       <source>Setting docked window overlay mode</source>
-      <translation type="unfinished">Setting docked window overlay mode</translation>
+      <translation>ドッキングウィンドウのオーバーレイモードの設定</translation>
     </message>
   </context>
   <context>
@@ -13183,36 +13183,35 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="317"/>
       <source>Overlay dock (re),layout delay.</source>
-      <translation type="unfinished">Overlay dock (re),layout delay.</translation>
+      <translation>オーバーレイでのドック (再ドック)、レイアウトの待ち時間。</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="372"/>
       <source>Overlay splitter handle auto hide delay. Set zero to disable auto hiding.</source>
-      <translation type="unfinished">Overlay splitter handle auto hide delay. Set zero to disable auto hiding.</translation>
+      <translation>オーバーレイでのスプリッターハンドルの自動非表示の待ち時間。自動非表示を無効にる場合は0に設定してください。</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="400"/>
       <source>Show auto hidden dock overlay on mouse over.
 If disabled, then show on mouse click.</source>
-      <translation type="unfinished">Show auto hidden dock overlay on mouse over.
-If disabled, then show on mouse click.</translation>
+      <translation>マウスオーバーで自動非表示ドッキングオーバーレイを表示します。
+無効の場合、マウスクリックで表示します。</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="429"/>
       <source>Auto mouse click through transparent part of dock overlay.</source>
-      <translation type="unfinished">Auto mouse click through transparent part of dock overlay.</translation>
+      <translation>ドッキングオーバーレイの透明部分を自動マウスクリック透過</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="457"/>
       <source>Auto pass through mouse wheel event on transparent dock overlay.</source>
-      <translation type="unfinished">Auto pass through mouse wheel event on transparent dock overlay.</translation>
+      <translation>透明ドックオーバーレイでの自動パススルーのマウスホイールイベント。</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="485"/>
       <source>Delay capturing mouse wheel event for passing through if it is
 previously handled by other widget.</source>
-      <translation type="unfinished">Delay capturing mouse wheel event for passing through if it is
-previously handled by other widget.</translation>
+      <translation>直前に他のウィジェットで処理されていた場合にパススルー用のマウスホイールイベントを補足するまでの待ち時間。</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="514"/>
@@ -13220,100 +13219,98 @@ previously handled by other widget.</translation>
 defines a region of alpha test under the mouse cursor.
 Auto click through is only activated if all pixels within
 the region are non-opaque.</source>
-      <translation type="unfinished">If auto mouse click through is enabled, then this radius
-defines a region of alpha test under the mouse cursor.
-Auto click through is only activated if all pixels within
-the region are non-opaque.</translation>
+      <translation>自動マウスクリック透過が有効な場合、この半径によってマウスカーソル下のアルファテスト領域が定義されます。
+自動クリック透過はこの領域内のすべてのピクセルが不透明な場合にのみアクティブ化されます。</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="545"/>
       <source>Leave space for Navigation Cube in dock overlay</source>
-      <translation type="unfinished">Leave space for Navigation Cube in dock overlay</translation>
+      <translation>ドッキングオーバーレイでナビゲーションキューブのための領域を残す</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="573"/>
       <source>Auto hide hint visual display triggering width</source>
-      <translation type="unfinished">Auto hide hint visual display triggering width</translation>
+      <translation>自動非表示ヒントの視覚表示のトリガー幅</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="601"/>
       <source>Auto hide hint visual display width</source>
-      <translation type="unfinished">Auto hide hint visual display width</translation>
+      <translation>自動非表示ヒントの視覚表示の幅</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="629"/>
       <source>Auto hide hint visual display length for left panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for left panel. Set to zero to fill the space.</translation>
+      <translation>自動非表示ヒントの視覚表示の左パネル用の長さ。スペースを埋める場合はゼロを設定。</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="657"/>
       <source>Auto hide hint visual display length for right panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for right panel. Set to zero to fill the space.</translation>
+      <translation>自動非表示ヒントの視覚表示の右パネル用の長さ。スペースを埋める場合はゼロを設定。</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="685"/>
       <source>Auto hide hint visual display length for top panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for top panel. Set to zero to fill the space.</translation>
+      <translation>自動非表示ヒントの視覚表示の上パネル用の長さ。スペースを埋める場合はゼロを設定。</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="713"/>
       <source>Auto hide hint visual display length for bottom panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for bottom panel. Set to zero to fill the space.</translation>
+      <translation>自動非表示ヒントの視覚表示の下パネル用の長さ。スペースを埋める場合はゼロを設定。</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="741"/>
       <source>Auto hide hint visual display offset for left panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for left panel</translation>
+      <translation>自動非表示ヒントの視覚表示の左パネル用のオフセット</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="769"/>
       <source>Auto hide hint visual display offset for right panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for right panel</translation>
+      <translation>自動非表示ヒントの視覚表示の右パネル用のオフセット</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="797"/>
       <source>Auto hide hint visual display offset for top panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for top panel</translation>
+      <translation>自動非表示ヒントの視覚表示の上パネル用のオフセット</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="825"/>
       <source>Auto hide hint visual display offset for bottom panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for bottom panel</translation>
+      <translation>自動非表示ヒントの視覚表示の下パネル用のオフセット</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="853"/>
       <source>Show tab bar on mouse over when auto hide</source>
-      <translation type="unfinished">Show tab bar on mouse over when auto hide</translation>
+      <translation>自動非表示時にマウスオーバーでタブバーを表示</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="881"/>
       <source>Hide tab bar in dock overlay</source>
-      <translation type="unfinished">Hide tab bar in dock overlay</translation>
+      <translation>ドックオーバーレイ時にタブバーを非表示</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="909"/>
       <source>Delay before show hint visual</source>
-      <translation type="unfinished">Delay before show hint visual</translation>
+      <translation>ヒントを表示するまでの待ち時間</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="937"/>
       <source>Auto hide animation duration, 0 to disable</source>
-      <translation type="unfinished">Auto hide animation duration, 0 to disable</translation>
+      <translation>自動非表示アニメーションの待ち時間。0で無効にします。</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="965"/>
       <source>Auto hide animation curve type</source>
-      <translation type="unfinished">Auto hide animation curve type</translation>
+      <translation>自動非表示のアニメーションカーブのタイプ</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="993"/>
       <source>Hide property view scroll bar in dock overlay</source>
-      <translation type="unfinished">Hide property view scroll bar in dock overlay</translation>
+      <translation>ドックオーバーレイ時にプロパティビューのスクロールバーを非表示</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="1021"/>
       <source>Minimum overlay dock widget width/height</source>
-      <translation type="unfinished">Minimum overlay dock widget width/height</translation>
+      <translation>オーバーレイドッキングウィジェットの最小の幅/高さ</translation>
     </message>
   </context>
   <context>
@@ -13321,7 +13318,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="856"/>
       <source>Toggle transparent mode</source>
-      <translation type="unfinished">Toggle transparent mode</translation>
+      <translation>透明モードの切り替え</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="857"/>
@@ -13331,57 +13328,57 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="858"/>
       <source>Turn off auto hide/show</source>
-      <translation type="unfinished">Turn off auto hide/show</translation>
+      <translation>自動表示/非表示をオフ</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="859"/>
       <source>Auto hide</source>
-      <translation type="unfinished">Auto hide</translation>
+      <translation>自動非表示</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="860"/>
       <source>Auto hide docked widgets on leave</source>
-      <translation type="unfinished">Auto hide docked widgets on leave</translation>
+      <translation>放置時にドッキング中のウィジェットを自動非表示</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="861"/>
       <source>Hide on edit</source>
-      <translation type="unfinished">Hide on edit</translation>
+      <translation>編集時に非表示</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="862"/>
       <source>Auto hide docked widgets on editing</source>
-      <translation type="unfinished">Auto hide docked widgets on editing</translation>
+      <translation>編集時にドッキング中のウィジェットを自動非表示</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="863"/>
       <source>Show on edit</source>
-      <translation type="unfinished">Show on edit</translation>
+      <translation>編集時に表示</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="864"/>
       <source>Auto show docked widgets on editing</source>
-      <translation type="unfinished">Auto show docked widgets on editing</translation>
+      <translation>編集時にドッキング中のウィジェットを自動表示</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="865"/>
       <source>Auto task</source>
-      <translation type="unfinished">Auto task</translation>
+      <translation>自動タスク</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="866"/>
       <source>Auto show task view for any current task, and hide the view when there is no task.</source>
-      <translation type="unfinished">Auto show task view for any current task, and hide the view when there is no task.</translation>
+      <translation>タスクがある場合はタスクビューを自動表示し、タスクがない場合は非表示にします。</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="867"/>
       <source>Toggle overlay</source>
-      <translation type="unfinished">Toggle overlay</translation>
+      <translation>オーバーレイの切り替え</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="893"/>
       <source>Select auto show/hide mode</source>
-      <translation type="unfinished">Select auto show/hide mode</translation>
+      <translation>自動表示/非表示モードを選択</translation>
     </message>
   </context>
   <context>
@@ -13389,7 +13386,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="1837"/>
       <source>Mouse pass through, ESC to stop</source>
-      <translation type="unfinished">Mouse pass through, ESC to stop</translation>
+      <translation>マウスによるパススルー。ESCで停止。</translation>
     </message>
   </context>
   <context>
@@ -13397,13 +13394,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="829"/>
       <source>Document i&amp;nformation...</source>
-      <translation type="unfinished">Document i&amp;nformation...</translation>
+      <translation>ドキュメント情報(I)...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="830"/>
       <location filename="../CommandDoc.cpp" line="832"/>
       <source>Show details of the currently active document</source>
-      <translation type="unfinished">Show details of the currently active document</translation>
+      <translation>現在アクティブなドキュメントの詳細を表示します。</translation>
     </message>
   </context>
   <context>
@@ -13425,13 +13422,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="352"/>
       <source>Lock toolbars</source>
-      <translation type="unfinished">Lock toolbars</translation>
+      <translation>ツールバーを固定</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="353"/>
       <location filename="../CommandWindow.cpp" line="355"/>
       <source>Locks toolbar so they are no longer moveable</source>
-      <translation type="unfinished">Locks toolbar so they are no longer moveable</translation>
+      <translation>ツールバーを固定して移動できなくします。</translation>
     </message>
   </context>
   <context>
@@ -13444,7 +13441,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1729"/>
       <source>Show the property view, which displays the properties of the selected object.</source>
-      <translation type="unfinished">Show the property view, which displays the properties of the selected object.</translation>
+      <translation>選択したオブジェクトのプロパティを表示するためのプロパティビューを表示します。</translation>
     </message>
   </context>
   <context>
@@ -13452,12 +13449,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandFeat.cpp" line="153"/>
       <source>Toggle freeze</source>
-      <translation type="unfinished">Toggle freeze</translation>
+      <translation>フリーズの切り替え</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="155"/>
       <source>Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</source>
-      <translation type="unfinished">Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</translation>
+      <translation>選択したオブジェクトのフリーズ状態を切り替え。親が変更された場合でもフリーズしたオブジェクトは再計算されません。</translation>
     </message>
   </context>
   <context>
@@ -13471,7 +13468,7 @@ the region are non-opaque.</translation>
       <location filename="../CommandView.cpp" line="1629"/>
       <location filename="../CommandView.cpp" line="1630"/>
       <source>Change to a standard view</source>
-      <translation type="unfinished">Change to a standard view</translation>
+      <translation>標準ビューに変更</translation>
     </message>
   </context>
   <context>
@@ -13487,13 +13484,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3205"/>
       <source>&amp;Measure</source>
-      <translation type="unfinished">&amp;Measure</translation>
+      <translation>測定(&amp;M)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3206"/>
       <location filename="../CommandView.cpp" line="3208"/>
       <source>Measure a feature</source>
-      <translation type="unfinished">Measure a feature</translation>
+      <translation>フィーチャーを測定</translation>
     </message>
   </context>
   <context>
@@ -13501,7 +13498,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="51"/>
       <source>Measurement</source>
-      <translation type="unfinished">Measurement</translation>
+      <translation>測定</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="77"/>
@@ -13521,7 +13518,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="108"/>
       <source>Save the measurement in the active document.</source>
-      <translation type="unfinished">Save the measurement in the active document.</translation>
+      <translation>測定値をアクティブなドキュメントに保存します。</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="114"/>
@@ -13531,7 +13528,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="115"/>
       <source>Close the measurement task.</source>
-      <translation type="unfinished">Close the measurement task.</translation>
+      <translation>測定タスクを閉じます。</translation>
     </message>
   </context>
   <context>
@@ -13547,7 +13544,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../ToolBarManager.cpp" line="950"/>
       <source>Undock toolbars</source>
-      <translation type="unfinished">Undock toolbars</translation>
+      <translation>ツールバーのドッキング解除</translation>
     </message>
   </context>
 </TS>

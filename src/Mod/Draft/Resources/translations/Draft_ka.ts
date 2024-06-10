@@ -555,8 +555,8 @@ Negative values will result in copies produced in the negative direction.</sourc
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="403"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>თუ ჩართულია, მოხდება მასივში მიღებული ობიექტების შერწყმა, თუ ისინი ერთმანეთს ეხებიან.
-მუშაობს მხოლოდ მაშინ, თუ "ბმულის მასივი" გამორთულია.</translation>
+      <translation>თუ ჩართულია, მიღებული ობიექტები მასივში შეერთდება, თუ ისინი ერთმანეთს ეხებიან.
+ეს მხოლოდ მაშინ მუშაობს, თუ "მასივების მიბმა" გამორთულია.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="407"/>
@@ -573,7 +573,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="418"/>
       <source>Link array</source>
-      <translation>ბმულების მასივი</translation>
+      <translation>მასივების მიბმა</translation>
     </message>
   </context>
   <context>
@@ -652,13 +652,13 @@ Change the direction of the axis itself in the property editor.</source>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="205"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>თუ ჩართულია, მიღებული ობიექტები მასივში შეერთდება, თუ ისინი ერთმანეთს ეხებიან.
-ეს მხოლოდ მაშინ მუშაობს, თუ "მასივების მიბმა" გამორთულია.</translation>
+      <translation>თუ ჩართულია, მოხდება მასივში მიღებული ობიექტების შერწყმა, თუ ისინი ერთმანეთს ეხებიან.
+მუშაობს მხოლოდ მაშინ, თუ "ბმულის მასივი" გამორთულია.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="209"/>
       <source>Fuse</source>
-      <translation>შერწყმა</translation>
+      <translation>შეერთება</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="216"/>
@@ -670,7 +670,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="220"/>
       <source>Link array</source>
-      <translation>მასივების მიბმა</translation>
+      <translation>ბმულების მასივი</translation>
     </message>
   </context>
   <context>
@@ -1017,7 +1017,7 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="387"/>
       <location filename="../ui/TaskSelectPlane.ui" line="255"/>
       <source> px</source>
-      <translation> px</translation>
+      <translation> პქს</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="206"/>
@@ -1102,7 +1102,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="549"/>
       <source>Text spacing</source>
-      <translation>სიმბოლოებს შორის დაშორება</translation>
+      <translation>ტექსტში დაშორებები</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="357"/>
@@ -1875,7 +1875,7 @@ used for linear dimensions.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="585"/>
       <source>Text spacing</source>
-      <translation>ტექსტში დაშორებები</translation>
+      <translation>სიმბოლოებს შორის დაშორება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="447"/>
@@ -3161,7 +3161,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="569"/>
       <source>Undo</source>
-      <translation>დაბრუნება (&amp;U)</translation>
+      <translation>დაბრუნება</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="583"/>
@@ -5256,24 +5256,24 @@ The final angle will be the base angle plus this amount.</source>
       <translation>არასწორი შეყვანა: უნდა იყოს რიცხვი 0-დან 100-მდე.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="453"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="495"/>
       <source>Activate this layer</source>
       <translation>ამ ფენის გააქტიურება</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="459"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="501"/>
       <source>Select layer contents</source>
       <translation>ფენის შიგთავსის მონიშვნა</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="497"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="511"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="539"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="553"/>
       <source>Merge layer duplicates</source>
       <translation>ფენის დუბლიკატების შერწყმა</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="503"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="556"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="545"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="598"/>
       <source>Add new layer</source>
       <translation>ახალი ფენის დამატება</translation>
     </message>
@@ -5515,11 +5515,6 @@ The final angle will be the base angle plus this amount.</source>
       <translation>მოცულობა ხელმიუწვდომელია (ქვე)ობიექტისთვის</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="81"/>
-      <source>added missing view properties</source>
-      <translation>ხედის ნაკლული თვისებები დამატებულია</translation>
-    </message>
-    <message>
       <location filename="../../draftobjects/array.py" line="76"/>
       <source>added property 'Count'</source>
       <translation>დამატებულია თვისება 'Count'</translation>
@@ -5570,6 +5565,11 @@ of existing objects in all opened documents?</source>
       <location filename="../../draftobjects/pointarray.py" line="142"/>
       <source>migrated 'PointList' property to 'PointObject'</source>
       <translation>თვისება 'PointList' მიგრირებულია თვისებაში 'PointObject'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/layer.py" line="93"/>
+      <source>updated view properties</source>
+      <translation type="unfinished">updated view properties</translation>
     </message>
   </context>
   <context>
@@ -6461,7 +6461,7 @@ The array can be turned into an orthogonal or a polar array by changing its type
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="62"/>
       <source>Rotate</source>
-      <translation>შებრუნება</translation>
+      <translation>შემობრუნება</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="65"/>
@@ -6594,7 +6594,7 @@ If other objects are selected they are ignored.</source>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="65"/>
       <source>Fillet</source>
-      <translation>მომრგვალება</translation>
+      <translation>მომრგვალებული ნაზოლი</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="68"/>
@@ -6797,7 +6797,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="71"/>
       <source>Scale</source>
-      <translation>მასშტაბირება</translation>
+      <translation>მასშტაბი</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="74"/>
@@ -6902,7 +6902,7 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="85"/>
       <source>Dimension</source>
-      <translation>ზომა</translation>
+      <translation>განზომილება</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="88"/>
@@ -6954,7 +6954,7 @@ then draw a line to specify the distance and direction of stretching.</source>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="54"/>
       <source>Rectangle</source>
-      <translation>ოთხკუთხედი</translation>
+      <translation>მართკუთხედი</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="57"/>
@@ -7012,7 +7012,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="71"/>
       <source>Clone</source>
-      <translation>ასლი</translation>
+      <translation>კლონი</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="74"/>
@@ -7316,7 +7316,7 @@ set True for fusion or False for compound</source>
       <translation>ობიექტის ფართობი</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="55"/>
+      <location filename="../../draftobjects/layer.py" line="56"/>
       <source>The objects that are part of this layer</source>
       <translation>ობიექტები, რომლებიც ამ ფენის ნაწილია</translation>
     </message>
@@ -8209,8 +8209,8 @@ the 'First Angle' and 'Last Angle' properties.</source>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="78"/>
-      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
-      <translation>თუ ჩართულია, ამ ფენაში შემავალი ობიექტები მიიღებენ ფენის მოხაზულობის ფერს</translation>
+      <source>If it is true, the objects contained within this layer will adopt the shape appearance of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape appearance of the layer</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="89"/>
@@ -8228,22 +8228,27 @@ the 'First Angle' and 'Last Angle' properties.</source>
       <translation>ამ ფენაში შემავალი ობიექტების მოხაზულობის ფერი</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="120"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="121"/>
+      <source>The shape appearance of the objects contained within this layer</source>
+      <translation type="unfinished">The shape appearance of the objects contained within this layer</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="133"/>
       <source>The line width of the objects contained within this layer</source>
       <translation>ამ ფენაში შემავალი ობიექტების ხაზის სიგანე</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="130"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="143"/>
       <source>The draw style of the objects contained within this layer</source>
       <translation>ამ ფენაში შემავალი ობიექტების ხატვის სტილი</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="141"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="154"/>
       <source>The transparency of the objects contained within this layer</source>
       <translation>ამ ფენაში არსებული ობიექტების გამჭვირვალობა</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="152"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="165"/>
       <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
       <translation>როცა გამოიყენება TechDraw-ის გვერდზე, განსაზღვრავს ამ ფენაში შემავალი ობიექტების ხაზის ფერს</translation>
     </message>

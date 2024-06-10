@@ -164,6 +164,10 @@ SET(TechDraw_SRCS
     LineNameEnum.h
     ArrowPropEnum.cpp
     ArrowPropEnum.h
+    BalloonPropEnum.cpp
+    BalloonPropEnum.h
+    MattingPropEnum.cpp
+    MattingPropEnum.h
     Preferences.cpp
     Preferences.h
     TechDrawExport.cpp

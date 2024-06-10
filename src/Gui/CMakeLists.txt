@@ -371,6 +371,7 @@ SET(Gui_UIC_SRCS
     TaskElementColors.ui
     DlgObjectSelection.ui
     DlgAddProperty.ui
+    DlgAddPropertyVarSet.ui
     VectorListEditor.ui
 )
 
@@ -458,6 +459,7 @@ SET(Dialog_CPP_SRCS
     TaskMeasure.cpp
     DlgObjectSelection.cpp
     DlgAddProperty.cpp
+    DlgAddPropertyVarSet.cpp
     VectorListEditor.cpp
 )
 
@@ -498,6 +500,7 @@ SET(Dialog_HPP_SRCS
     TaskMeasure.h
     DlgObjectSelection.h
     DlgAddProperty.h
+    DlgAddPropertyVarSet.h
     VectorListEditor.h
 )
 
@@ -1005,6 +1008,7 @@ SET(Inventor_CPP_SRCS
     SoFCSelectionAction.cpp
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
+    So3DAnnotation.cpp
     SoAxisCrossKit.cpp
     SoTextLabel.cpp
     SoDatumLabel.cpp

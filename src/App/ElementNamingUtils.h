@@ -5,6 +5,7 @@
 #include "FCGlobal.h"
 
 
+// clang-format off
 namespace Data
 {
 
@@ -64,6 +65,7 @@ AppExport const char *findElementName(const char *subname);
 AppExport const char *hasMappedElementName(const char *subname);
 
 
-}// namespace Data
+}  // namespace Data
+// clang-format on
 
 #endif // ELEMENT_NAMING_UTILS_H

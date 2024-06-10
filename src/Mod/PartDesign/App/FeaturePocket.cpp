@@ -39,7 +39,7 @@ using namespace PartDesign;
 
 /* TRANSLATOR PartDesign::Pocket */
 
-const char* Pocket::TypeEnums[]= {"Length", "ThroughAll", "UpToFirst", "UpToFace", "TwoLengths", nullptr};
+const char* Pocket::TypeEnums[]= {"Length", "ThroughAll", "UpToFirst", "UpToFace", "TwoLengths", "UpToShape", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::FeatureExtrude)
 
@@ -56,6 +56,7 @@ Pocket::Pocket()
     ADD_PROPERTY_TYPE(ReferenceAxis, (nullptr), "Pocket", App::Prop_None, "Reference axis of direction");
     ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pocket", App::Prop_None, "Measure pocket length along the sketch normal direction");
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Pocket", App::Prop_None, "Face where pocket will end");
+    ADD_PROPERTY_TYPE(UpToShape, (nullptr), "Pocket", App::Prop_None, "Face(s) or shape(s) where pocket will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pocket", App::Prop_None, "Offset from face in which pocket will end");
     Offset.setConstraints(&signedLengthConstraint);
     ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Pocket", App::Prop_None, "Taper angle");

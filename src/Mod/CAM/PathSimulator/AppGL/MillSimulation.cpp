@@ -351,12 +351,12 @@ namespace MillSim {
     void MillSimulation::ProcessSim(unsigned int time_ms) {
 
         static int ancient = 0;
-        static int last = 0;
-        static int msec = 0;
+        static unsigned int last = 0;
+        static unsigned int msec = 0xFFFFFFFF;
         static int fps = 0;
         static int renderTime = 0;
 
-        last = msec;
+        last = msec == 0xFFFFFFFF ? time_ms : msec;
         msec = time_ms;
         if (mIsRotate) {
             mEyeRoration += (msec - last) / 4600.0f;
@@ -447,9 +447,9 @@ namespace MillSim {
     {
         mEyeRoration += rotStep;
         if (mEyeRoration > PI2)
-            mEyeRoration = PI2;
+            mEyeRoration -= PI2;
         else if (mEyeRoration < 0)
-            mEyeRoration = 0;
+            mEyeRoration += PI2;
     }
 
     void MillSimulation::MoveEye(float x, float z)
@@ -480,7 +480,7 @@ namespace MillSim {
     {
         // gray background
         glClearColor(0.6f, 0.8f, 1.0f, 1.0f);
-
+        mEyeRoration = 0.0;
 
         // use shaders
         //   standard diffuse shader

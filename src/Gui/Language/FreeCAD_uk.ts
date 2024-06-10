@@ -10572,7 +10572,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="1008"/>
       <location filename="../CommandDoc.cpp" line="1010"/>
       <source>Undo exactly one action</source>
-      <translation>Скасовує рівно одну дію</translation>
+      <translation>Скасовує останню дію</translation>
     </message>
   </context>
   <context>

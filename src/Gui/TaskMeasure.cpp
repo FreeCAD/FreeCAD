@@ -150,6 +150,7 @@ void TaskMeasure::setMeasureObject(Measure::MeasureBase* obj) {
 
 
 void TaskMeasure::update() {
+    App::Document *doc = App::GetApplication().getActiveDocument();
 
     // Reset selection if the selected object is not valid
     for(auto sel : Gui::Selection().getSelection()) {
@@ -173,7 +174,7 @@ void TaskMeasure::update() {
     std::string mode = explicitMode ? modeSwitch->currentText().toStdString() : "";
 
     App::MeasureSelection selection;
-    for (auto s : Gui::Selection().getSelection()) {
+    for (auto s : Gui::Selection().getSelection(doc->getName(), ResolveMode::NoResolve)) {
         App::SubObjectT sub(s.pObject, s.SubName);
 
         App::MeasureSelectionItem item = { sub, Base::Vector3d(s.x, s.y, s.z) };
@@ -211,7 +212,6 @@ void TaskMeasure::update() {
         // we don't already have a measureobject or it isn't the same type as the new one
         removeObject();
 
-        App::Document *doc = App::GetApplication().getActiveDocument();
         if (measureType->isPython) {
             Base::PyGILStateLocker lock;
             auto pyMeasureClass = measureType->pythonClass;

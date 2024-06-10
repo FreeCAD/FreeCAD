@@ -16,7 +16,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="95"/>
       <source>Rotate</source>
-      <translation>Girar</translation>
+      <translation>Rotar</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="96"/>

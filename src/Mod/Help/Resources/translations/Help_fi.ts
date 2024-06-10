@@ -21,11 +21,11 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-You can easily download the documentation for offline use by using the Addon
-Manager and installing the &quot;offline-documentation&quot; addon. If this
-field is left blank, FreeCAD will automatically search for the help files at
-the default location ($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Aseta tämä mukautettuun URL-osoitteeseen tai kansioon, jossa ohjetiedostot sijaitsevat.
+Voit helposti ladata dokumentaation offline-käyttöä varten käyttämällä Addon
+Manageria ja asentamalla lisäosan &quot;offline-documentation&quot;. Jos tämä
+kenttä jätetään tyhjäksi, FreeCAD hakee automaattisesti ohjetiedostot
+oletussijainnista ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
@@ -46,8 +46,8 @@ the default location ($USERAPPDATADIR/Mod/offline-documentation).</translation>
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>This will fetch the documentation from pages rendered on GitHub.
 This is currently not available...</source>
-      <translation type="unfinished">This will fetch the documentation from pages rendered on GitHub.
-This is currently not available...</translation>
+      <translation>Tämä noutaa dokumentaation GitHubin sivuilta.
+Tämä ei ole tällä hetkellä saatavilla...</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="33"/>
@@ -97,7 +97,14 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>The documentation will open in your default web browser.</source>
-      <translation type="unfinished">The documentation will open in your default web browser.</translation>
+      <translation>Dokumentaatio avautuu oletusselaimessasi.</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="211"/>
+      <source>The documentation will open in a dockable dialog inside the FreeCAD window,
+which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
+      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
+which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="246"/>
@@ -117,13 +124,6 @@ Markdown version above.</translation>
       <location filename="../../dlgPreferencesHelp.ui" line="189"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</source>
       <translation type="unfinished">The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="211"/>
-      <source>The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open whlle working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open whlle working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="215"/>
@@ -156,12 +156,12 @@ which allows you to keep it open whlle working in the 3D view. This requires the
     <message>
       <location filename="../../Help.py" line="80"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
-      <translation type="unfinished">PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</translation>
+      <translation>PySide QtWebEngineWidgets -moduulia ei ole saatavilla. Ohjeen renderöinti tapahtuu järjestelmän oletusselaimella</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="84"/>
       <source>There is no markdown renderer installed on your system, so this help page is rendered as is. Please install the markdown or pandoc python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no markdown renderer installed on your system, so this help page is rendered as is. Please install the markdown or pandoc python modules to improve the rendering of this page.</translation>
+      <translation>Järjestelmääsi ei ole asennettu Markdown-renderöijää, joten tämä ohjesivu renderöidään sellaisenaan. Asenna Markdown tai Pandoc-Python moduulit parantaaksesi tämän sivun renderöintiä.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="113"/>

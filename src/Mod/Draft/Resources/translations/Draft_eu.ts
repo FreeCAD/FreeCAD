@@ -1192,7 +1192,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="311"/>
       <source>Font size</source>
-      <translation>Letra-tamaina</translation>
+      <translation>Letra-tipoaren tamaina</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="318"/>
@@ -5254,24 +5254,24 @@ Amaierako angelua oinarriko angelua gehi kantitate hau izango da.</translation>
       <translation>Okerreko sarrera: 0 eta 100 arteko zenbakia izan behar du.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="453"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="495"/>
       <source>Activate this layer</source>
       <translation>Aktibatu geruza hau</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="459"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="501"/>
       <source>Select layer contents</source>
       <translation>Hautatu geruza-edukiak</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="497"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="511"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="539"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="553"/>
       <source>Merge layer duplicates</source>
       <translation>Fusionatu geruza bikoiztuak</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="503"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="556"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="545"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="598"/>
       <source>Add new layer</source>
       <translation>Gehitu geruza berria</translation>
     </message>
@@ -5513,11 +5513,6 @@ Amaierako angelua oinarriko angelua gehi kantitate hau izango da.</translation>
       <translation type="unfinished">Volume not available for (sub)object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="81"/>
-      <source>added missing view properties</source>
-      <translation>falta ziren bista-propietateak gehitu dira</translation>
-    </message>
-    <message>
       <location filename="../../draftobjects/array.py" line="76"/>
       <source>added property 'Count'</source>
       <translation>'Count' propietatea gehitu da</translation>
@@ -5568,6 +5563,11 @@ of existing objects in all opened documents?</translation>
       <location filename="../../draftobjects/pointarray.py" line="142"/>
       <source>migrated 'PointList' property to 'PointObject'</source>
       <translation type="unfinished">migrated 'PointList' property to 'PointObject'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/layer.py" line="93"/>
+      <source>updated view properties</source>
+      <translation type="unfinished">updated view properties</translation>
     </message>
   </context>
   <context>
@@ -7318,7 +7318,7 @@ ezarri 'Egia' fusiorako edo 'Faltsua' konposaturako</translation>
       <translation>Objektuaren area</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="55"/>
+      <location filename="../../draftobjects/layer.py" line="56"/>
       <source>The objects that are part of this layer</source>
       <translation>Geruza hau osatzen duten objektuak</translation>
     </message>
@@ -8217,8 +8217,8 @@ eta 'Azken angelua' propietateak erabiltzen baitira.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="78"/>
-      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
-      <translation>Egia bada, geruza honek dituen objektuek geruzaren forma-kolorea hartuko dute</translation>
+      <source>If it is true, the objects contained within this layer will adopt the shape appearance of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape appearance of the layer</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="89"/>
@@ -8236,22 +8236,27 @@ eta 'Azken angelua' propietateak erabiltzen baitira.</translation>
       <translation>Geruza honetan dauden objektuen forma-kolorea</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="120"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="121"/>
+      <source>The shape appearance of the objects contained within this layer</source>
+      <translation type="unfinished">The shape appearance of the objects contained within this layer</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="133"/>
       <source>The line width of the objects contained within this layer</source>
       <translation>Geruza honetan dauden objektuen lerro-zabalera</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="130"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="143"/>
       <source>The draw style of the objects contained within this layer</source>
       <translation>Geruza honetan dauden objektuen marrazki-estiloa</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="141"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="154"/>
       <source>The transparency of the objects contained within this layer</source>
       <translation>Geruza honetan dauden objektuen gardentasuna</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="152"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="165"/>
       <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
       <translation>Geruza honetako objektuen lerro-kolorea, TechDraw orri batean daudenean</translation>
     </message>
