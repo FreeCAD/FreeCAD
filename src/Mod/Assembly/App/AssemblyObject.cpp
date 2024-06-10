@@ -434,8 +434,8 @@ App::DocumentObject* AssemblyObject::getJointOfPartConnectingToGround(App::Docum
         if (!joint) {
             continue;
         }
-        App::DocumentObject* part1 = getLinkObjFromProp(joint, "Part1");
-        App::DocumentObject* part2 = getLinkObjFromProp(joint, "Part2");
+        App::DocumentObject* part1 = getObjFromProp(joint, "Part1");
+        App::DocumentObject* part2 = getObjFromProp(joint, "Part2");
         if (!part1 || !part2) {
             continue;
         }
@@ -507,8 +507,8 @@ std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS, bool
             continue;
         }
 
-        auto* part1 = getLinkObjFromProp(joint, "Part1");
-        auto* part2 = getLinkObjFromProp(joint, "Part2");
+        auto* part1 = getObjFromProp(joint, "Part1");
+        auto* part2 = getObjFromProp(joint, "Part2");
         if (!part1 || !part2 || part1->getFullName() == part2->getFullName()) {
             // Remove incomplete joints. Left-over when the user delets a part.
             // Remove incoherent joints (self-pointing joints)
@@ -571,8 +571,8 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfObj(App::DocumentOb
     std::vector<App::DocumentObject*> jointsOf;
 
     for (auto joint : joints) {
-        App::DocumentObject* obj1 = getObjFromNameProp(joint, "object1", "Part1");
-        App::DocumentObject* obj2 = getObjFromNameProp(joint, "Object2", "Part2");
+        App::DocumentObject* obj1 = getObjFromProp(joint, "object1");
+        App::DocumentObject* obj2 = getObjFromProp(joint, "Object2");
         if (obj == obj1 || obj == obj2) {
             jointsOf.push_back(obj);
         }
@@ -587,8 +587,8 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfPart(App::DocumentO
     std::vector<App::DocumentObject*> jointsOf;
 
     for (auto joint : joints) {
-        App::DocumentObject* part1 = getLinkObjFromProp(joint, "Part1");
-        App::DocumentObject* part2 = getLinkObjFromProp(joint, "Part2");
+        App::DocumentObject* part1 = getObjFromProp(joint, "Part1");
+        App::DocumentObject* part2 = getObjFromProp(joint, "Part2");
         if (part == part1 || part == part2) {
             jointsOf.push_back(joint);
         }
@@ -748,8 +748,8 @@ void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& 
             joints.begin(),
             joints.end(),
             [&connectedParts](App::DocumentObject* joint) {
-                App::DocumentObject* obj1 = getLinkObjFromProp(joint, "Part1");
-                App::DocumentObject* obj2 = getLinkObjFromProp(joint, "Part2");
+                App::DocumentObject* obj1 = getObjFromProp(joint, "Part1");
+                App::DocumentObject* obj2 = getObjFromProp(joint, "Part2");
                 if ((connectedParts.find(obj1) == connectedParts.end())
                     || (connectedParts.find(obj2) == connectedParts.end())) {
                     Base::Console().Warning(
@@ -786,8 +786,8 @@ AssemblyObject::getConnectedParts(App::DocumentObject* part,
             continue;
         }
 
-        App::DocumentObject* obj1 = getLinkObjFromProp(joint, "Part1");
-        App::DocumentObject* obj2 = getLinkObjFromProp(joint, "Part2");
+        App::DocumentObject* obj1 = getObjFromProp(joint, "Part1");
+        App::DocumentObject* obj2 = getObjFromProp(joint, "Part2");
         if (obj1 == part) {
             connectedParts.push_back(obj2);
         }
@@ -928,10 +928,10 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointDistance(App::DocumentObj
 {
     DistanceType type = getDistanceType(joint);
 
-    const char* elt1 = getElementFromProp(joint, "Element1");
-    const char* elt2 = getElementFromProp(joint, "Element2");
-    auto* obj1 = getLinkedObjFromNameProp(joint, "Object1", "Part1");
-    auto* obj2 = getLinkedObjFromNameProp(joint, "Object2", "Part2");
+    const char* elt1 = getElementFromProp(joint, "Object1");
+    const char* elt2 = getElementFromProp(joint, "Object2");
+    auto* obj1 = getLinkedObjFromProp(joint, "Object1");
+    auto* obj2 = getLinkedObjFromProp(joint, "Object2");
 
     if (type == DistanceType::PointPoint) {
         // Point to point distance, or ball joint if distance=0.
@@ -1226,8 +1226,8 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
                                                  const char* propPartName,
                                                  const char* propPlcName)
 {
-    App::DocumentObject* part = getLinkObjFromProp(joint, propPartName);
-    App::DocumentObject* obj = getObjFromNameProp(joint, propObjName, propPartName);
+    App::DocumentObject* part = getObjFromProp(joint, propPartName);
+    App::DocumentObject* obj = getObjFromProp(joint, propObjName);
 
     if (!part || !obj) {
         Base::Console().Warning("The property %s of Joint %s is empty.",
@@ -1278,12 +1278,12 @@ void AssemblyObject::getRackPinionMarkers(App::DocumentObject* joint,
         swapJCS(joint);  // make sure that rack is first.
     }
 
-    App::DocumentObject* part1 = getLinkObjFromProp(joint, "Part1");
-    App::DocumentObject* obj1 = getObjFromNameProp(joint, "Object1", "Part1");
+    App::DocumentObject* part1 = getObjFromProp(joint, "Part1");
+    App::DocumentObject* obj1 = getObjFromProp(joint, "Object1");
     Base::Placement plc1 = getPlacementFromProp(joint, "Placement1");
 
-    App::DocumentObject* part2 = getLinkObjFromProp(joint, "Part2");
-    App::DocumentObject* obj2 = getObjFromNameProp(joint, "Object2", "Part2");
+    App::DocumentObject* part2 = getObjFromProp(joint, "Part2");
+    App::DocumentObject* obj2 = getObjFromProp(joint, "Object2");
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
 
     if (!part1 || !obj1) {
@@ -1346,21 +1346,21 @@ void AssemblyObject::getRackPinionMarkers(App::DocumentObject* joint,
 
 int AssemblyObject::slidingPartIndex(App::DocumentObject* joint)
 {
-    App::DocumentObject* part1 = getLinkObjFromProp(joint, "Part1");
-    App::DocumentObject* obj1 = getObjFromNameProp(joint, "Object1", "Part1");
+    App::DocumentObject* part1 = getObjFromProp(joint, "Part1");
+    App::DocumentObject* obj1 = getObjFromProp(joint, "Object1");
     boost::ignore_unused(obj1);
     Base::Placement plc1 = getPlacementFromProp(joint, "Placement1");
 
-    App::DocumentObject* part2 = getLinkObjFromProp(joint, "Part2");
-    App::DocumentObject* obj2 = getObjFromNameProp(joint, "Object2", "Part2");
+    App::DocumentObject* part2 = getObjFromProp(joint, "Part2");
+    App::DocumentObject* obj2 = getObjFromProp(joint, "Object2");
     boost::ignore_unused(obj2);
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
 
     int slidingFound = 0;
     for (auto* jt : getJoints(false, false)) {
         if (getJointType(jt) == JointType::Slider) {
-            App::DocumentObject* jpart1 = getLinkObjFromProp(jt, "Part1");
-            App::DocumentObject* jpart2 = getLinkObjFromProp(jt, "Part2");
+            App::DocumentObject* jpart1 = getObjFromProp(jt, "Part1");
+            App::DocumentObject* jpart2 = getObjFromProp(jt, "Part2");
             int found = 0;
             Base::Placement plcjt, plci;
             if (jpart1 == part1 || jpart1 == part2) {
@@ -1503,8 +1503,8 @@ std::vector<App::DocumentObject*> AssemblyObject::getDownstreamParts(App::Docume
     auto it = std::remove(jointsOfPart.begin(), jointsOfPart.end(), connectingJoint);
     jointsOfPart.erase(it, jointsOfPart.end());
     for (auto joint : jointsOfPart) {
-        App::DocumentObject* part1 = getLinkObjFromProp(joint, "Part1");
-        App::DocumentObject* part2 = getLinkObjFromProp(joint, "Part2");
+        App::DocumentObject* part1 = getObjFromProp(joint, "Part1");
+        App::DocumentObject* part2 = getObjFromProp(joint, "Part2");
         bool firstIsDown = part->getFullName() == part2->getFullName();
         App::DocumentObject* downstreamPart = firstIsDown ? part1 : part2;
 
@@ -1550,7 +1550,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getUpstreamParts(App::Document
     std::string name;
     App::DocumentObject* connectingJoint = getJointOfPartConnectingToGround(part, name);
     App::DocumentObject* upPart =
-        getLinkObjFromProp(connectingJoint, name == "Part1" ? "Part2" : "Part1");
+        getObjFromProp(connectingJoint, name == "Part1" ? "Part2" : "Part1");
 
     std::vector<App::DocumentObject*> upstreamParts = getUpstreamParts(upPart, limit);
     upstreamParts.push_back(part);
@@ -1571,7 +1571,7 @@ App::DocumentObject* AssemblyObject::getUpstreamMovingPart(App::DocumentObject* 
     }
 
     App::DocumentObject* upPart =
-        getLinkObjFromProp(connectingJoint, name == "Part1" ? "Part2" : "Part1");
+        getObjFromProp(connectingJoint, name == "Part1" ? "Part2" : "Part1");
 
     return getUpstreamMovingPart(upPart);
 }
@@ -1635,20 +1635,6 @@ void AssemblyObject::updateGroundedJointsPlacements()
 
 void AssemblyObject::swapJCS(App::DocumentObject* joint)
 {
-    auto propElement1 = dynamic_cast<App::PropertyString*>(joint->getPropertyByName("Element1"));
-    auto propElement2 = dynamic_cast<App::PropertyString*>(joint->getPropertyByName("Element2"));
-    if (propElement1 && propElement2) {
-        auto temp = std::string(propElement1->getValue());
-        propElement1->setValue(propElement2->getValue());
-        propElement2->setValue(temp);
-    }
-    auto propVertex1 = dynamic_cast<App::PropertyString*>(joint->getPropertyByName("Vertex1"));
-    auto propVertex2 = dynamic_cast<App::PropertyString*>(joint->getPropertyByName("Vertex2"));
-    if (propVertex1 && propVertex2) {
-        auto temp = std::string(propVertex1->getValue());
-        propVertex1->setValue(propVertex2->getValue());
-        propVertex2->setValue(temp);
-    }
     auto propPlacement1 =
         dynamic_cast<App::PropertyPlacement*>(joint->getPropertyByName("Placement1"));
     auto propPlacement2 =
@@ -1658,12 +1644,16 @@ void AssemblyObject::swapJCS(App::DocumentObject* joint)
         propPlacement1->setValue(propPlacement2->getValue());
         propPlacement2->setValue(temp);
     }
-    auto propObject1 = dynamic_cast<App::PropertyString*>(joint->getPropertyByName("Object1"));
-    auto propObject2 = dynamic_cast<App::PropertyString*>(joint->getPropertyByName("Object2"));
+    auto propObject1 = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName("Object1"));
+    auto propObject2 = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName("Object2"));
     if (propObject1 && propObject2) {
-        auto temp = std::string(propObject1->getValue());
+        auto temp = propObject1->getValue();
+        auto subs1 = propObject1->getSubValues();
+        auto subs2 = propObject2->getSubValues();
         propObject1->setValue(propObject2->getValue());
+        propObject1->setSubValues(std::move(subs2));
         propObject2->setValue(temp);
+        propObject2->setSubValues(std::move(subs1));
     }
     auto propPart1 = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName("Part1"));
     auto propPart2 = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName("Part2"));
@@ -1747,12 +1737,12 @@ double AssemblyObject::getEdgeRadius(App::DocumentObject* obj, const char* elt)
 
 DistanceType AssemblyObject::getDistanceType(App::DocumentObject* joint)
 {
-    std::string type1 = getElementTypeFromProp(joint, "Element1");
-    std::string type2 = getElementTypeFromProp(joint, "Element2");
-    std::string elt1 = getElementFromProp(joint, "Element1");
-    std::string elt2 = getElementFromProp(joint, "Element2");
-    auto* obj1 = getLinkedObjFromNameProp(joint, "Object1", "Part1");
-    auto* obj2 = getLinkedObjFromNameProp(joint, "Object2", "Part2");
+    std::string type1 = getElementTypeFromProp(joint, "Object1");
+    std::string type2 = getElementTypeFromProp(joint, "Object2");
+    std::string elt1 = getElementFromProp(joint, "Object1");
+    std::string elt2 = getElementFromProp(joint, "Object2");
+    auto* obj1 = getLinkedObjFromProp(joint, "Object1");
+    auto* obj2 = getLinkedObjFromProp(joint, "Object2");
 
     if (type1 == "Vertex" && type2 == "Vertex") {
         return DistanceType::PointPoint;
@@ -2094,8 +2084,8 @@ Base::Placement AssemblyObject::getGlobalPlacement(App::DocumentObject* joint,
                                                    const char* targetObj,
                                                    const char* container)
 {
-    App::DocumentObject* obj = getObjFromNameProp(joint, targetObj, container);
-    App::DocumentObject* part = getLinkObjFromProp(joint, container);
+    App::DocumentObject* obj = getObjFromProp(joint, targetObj);
+    App::DocumentObject* part = getObjFromProp(joint, container);
     return getGlobalPlacement(obj, part);
 }
 
@@ -2137,12 +2127,17 @@ JointType AssemblyObject::getJointType(App::DocumentObject* joint)
 
 const char* AssemblyObject::getElementFromProp(App::DocumentObject* obj, const char* propName)
 {
-    auto* prop = dynamic_cast<App::PropertyString*>(obj->getPropertyByName(propName));
+    auto* prop = dynamic_cast<App::PropertyXLinkSub*>(obj->getPropertyByName(propName));
     if (!prop) {
         return "";
     }
 
-    return prop->getValue();
+    auto subs = prop->getSubValues();
+    if (subs.empty()) {
+        return "";
+    }
+
+    return subs[0].c_str();
 }
 
 std::string AssemblyObject::getElementTypeFromProp(App::DocumentObject* obj, const char* propName)
@@ -2157,58 +2152,19 @@ std::string AssemblyObject::getElementTypeFromProp(App::DocumentObject* obj, con
     return elementType;
 }
 
-App::DocumentObject* AssemblyObject::getLinkObjFromProp(App::DocumentObject* joint,
-                                                        const char* propLinkName)
+App::DocumentObject* AssemblyObject::getObjFromProp(App::DocumentObject* joint, const char* pName)
 {
-    auto* propObj = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName(propLinkName));
+    auto* propObj = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName(pName));
     if (!propObj) {
         return nullptr;
     }
     return propObj->getValue();
 }
 
-App::DocumentObject* AssemblyObject::getObjFromNameProp(App::DocumentObject* joint,
-                                                        const char* pObjName,
-                                                        const char* pPart)
+App::DocumentObject* AssemblyObject::getLinkedObjFromProp(App::DocumentObject* joint,
+                                                          const char* pObj)
 {
-    auto* propObjName = dynamic_cast<App::PropertyString*>(joint->getPropertyByName(pObjName));
-    if (!propObjName) {
-        return nullptr;
-    }
-    std::string objName = std::string(propObjName->getValue());
-
-    App::DocumentObject* containingPart = getLinkObjFromProp(joint, pPart);
-    if (!containingPart) {
-        return nullptr;
-    }
-
-    if (objName == containingPart->getNameInDocument()) {
-        return containingPart;
-    }
-
-    /*if (containingPart->getTypeId().isDerivedFrom(App::Link::getClassTypeId())) {
-        App::Link* link = dynamic_cast<App::Link*>(containingPart);
-
-        containingPart = link->getLinkedObject();
-        if (!containingPart) {
-            return nullptr;
-        }
-    }*/
-
-    for (auto obj : containingPart->getOutListRecursive()) {
-        if (objName == obj->getNameInDocument()) {
-            return obj;
-        }
-    }
-
-    return nullptr;
-}
-
-App::DocumentObject* AssemblyObject::getLinkedObjFromNameProp(App::DocumentObject* joint,
-                                                              const char* pObjName,
-                                                              const char* pPart)
-{
-    auto* obj = getObjFromNameProp(joint, pObjName, pPart);
+    auto* obj = getObjFromProp(joint, pObj);
     if (obj) {
         return obj->getLinkedObject(true);
     }
