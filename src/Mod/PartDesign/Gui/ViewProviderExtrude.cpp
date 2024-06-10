@@ -24,13 +24,13 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMenu>
+#include <QMenu>
 #endif
 
 #include <App/Document.h>
 #include <Gui/Application.h>
-#include <Mod/PartDesign/App/FeatureExtrude.h>
 #include <Mod/Part/Gui/ReferenceHighlighter.h>
+#include <Mod/PartDesign/App/FeatureExtrude.h>
 
 #include "TaskExtrudeParameters.h"
 #include "ViewProviderExtrude.h"
@@ -52,13 +52,13 @@ void PartDesignGui::ViewProviderExtrude::highlightShapeFaces(const std::vector<s
     baseViewProvider->updateView();
 
     if (faces.size() > 0) {
-        std::vector<App::Color> colors = baseViewProvider->DiffuseColor.getValues();
+        auto materials = baseViewProvider->ShapeAppearance.getValues();
 
         auto color = baseViewProvider->ShapeAppearance.getDiffuseColor();
 
         PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), color);
-        highlighter.getFaceColors(faces, colors);
+        highlighter.getFaceMaterials(faces, materials);
 
-        baseViewProvider->setHighlightedFaces(colors);
+        baseViewProvider->setHighlightedFaces(materials);
     }
 }
