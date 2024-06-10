@@ -1130,7 +1130,13 @@ std::vector<DrawViewSection*> DrawViewPart::getSectionRefs() const
     std::vector<App::DocumentObject*> inObjs = getInList();
     for (auto& o : inObjs) {
         if (o->isDerivedFrom<DrawViewSection>()) {
-            result.push_back(static_cast<TechDraw::DrawViewSection*>(o));
+            // expressions can add extra links to this DVP so we keep only
+            // objects that are BaseViews
+            auto section = dynamic_cast<TechDraw::DrawViewSection*>(o);
+            auto base = section->BaseView.getValue();
+            if (base == this) {
+                result.push_back(section);
+            }
         }
     }
     return result;
@@ -1141,10 +1147,16 @@ std::vector<DrawViewDetail*> DrawViewPart::getDetailRefs() const
     std::vector<DrawViewDetail*> result;
     std::vector<App::DocumentObject*> inObjs = getInList();
     for (auto& o : inObjs) {
-        if (o->isDerivedFrom<DrawViewDetail>()) {
-            if (!o->isRemoving()) {
-                result.push_back(static_cast<TechDraw::DrawViewDetail*>(o));
+        if (o->isDerivedFrom<DrawViewDetail>() &&
+            !o->isRemoving() ) {
+            // expressions can add extra links to this DVP so we keep only
+            // objects that are BaseViews
+            auto detail = dynamic_cast<TechDraw::DrawViewDetail*>(o);
+            auto base = detail->BaseView.getValue();
+            if (base == this) {
+                result.push_back(detail);
             }
+
         }
     }
     return result;
