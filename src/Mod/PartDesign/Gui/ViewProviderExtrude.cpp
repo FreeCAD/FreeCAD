@@ -46,19 +46,23 @@ void PartDesignGui::ViewProviderExtrude::highlightShapeFaces(const std::vector<s
     auto base = static_cast<Part::Feature*>(extrude->UpToShape.getValue());
 
     auto baseViewProvider =
-        static_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(base));
+        dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(base));
+
+    if (!baseViewProvider) {
+        return;
+    }
 
     baseViewProvider->unsetHighlightedFaces();
     baseViewProvider->updateView();
 
     if (faces.size() > 0) {
-        std::vector<App::Color> colors = baseViewProvider->DiffuseColor.getValues();
+        std::vector<App::Material> materials = baseViewProvider->ShapeAppearance.getValues();
 
         auto color = baseViewProvider->ShapeAppearance.getDiffuseColor();
 
         PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), color);
-        highlighter.getFaceColors(faces, colors);
+        highlighter.getFaceMaterials(faces, materials);
 
-        baseViewProvider->setHighlightedFaces(colors);
+        baseViewProvider->setHighlightedFaces(materials);
     }
 }
