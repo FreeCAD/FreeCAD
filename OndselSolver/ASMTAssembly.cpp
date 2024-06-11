@@ -443,18 +443,30 @@ void MbD::ASMTAssembly::runFile(const char* fileName)
 
 void MbD::ASMTAssembly::runDraggingLogTest()
 {
-	auto assembly = ASMTAssembly::assemblyFromFile("../testapp/runPreDrag.asmt");
-	assembly->runDraggingLog("../testapp/dragging.log");
-	//auto assembly = ASMTAssembly::assemblyFromFile("../temp/runPreDrag.asmt");
-	//assembly->setDebug(true);
-	//assembly->runDraggingLog("../temp/dragging.log");
-	//assembly->setDebug(false);
+	runDraggingTest();
+	auto assembly = ASMTAssembly::assemblyFromFile("runPreDrag.asmt");
+	assembly->runDraggingLog("dragging.log");
+}
+
+void MbD::ASMTAssembly::runDraggingLogTest2()
+{
+	runDraggingTest2();
+	auto assembly = ASMTAssembly::assemblyFromFile("runPreDrag.asmt");
+	assembly->runDraggingLog("dragging.log");
+}
+
+void MbD::ASMTAssembly::runDraggingLogTest3()
+{
+	runDraggingTest3();
+	auto assembly = ASMTAssembly::assemblyFromFile("runPreDrag.asmt");
+	assembly->runDraggingLog("dragging.log");
 }
 
 void MbD::ASMTAssembly::runDraggingTest()
 {
 	//auto assembly = ASMTAssembly::assemblyFromFile("../testapp/pistonWithLimits.asmt");
 	auto assembly = ASMTAssembly::assemblyFromFile("../testapp/dragCrankSlider.asmt");
+	assembly->setDebug(true);
 
 	auto limit1 = ASMTRotationLimit::With();
 	limit1->setName("Limit1");
@@ -494,6 +506,7 @@ void MbD::ASMTAssembly::runDraggingTest2()
 {
 	//auto assembly = ASMTAssembly::assemblyFromFile("../testapp/pistonWithLimits.asmt");
 	auto assembly = ASMTAssembly::assemblyFromFile("../testapp/dragCrankSlider.asmt");
+	assembly->setDebug(true);
 
 	auto limit1 = ASMTRotationLimit::With();
 	limit1->setName("Limit1");
@@ -532,6 +545,7 @@ void MbD::ASMTAssembly::runDraggingTest2()
 void MbD::ASMTAssembly::runDraggingTest3()
 {
 	auto assembly = ASMTAssembly::assemblyFromFile("../testapp/rackPinion3.asmt");
+	assembly->setDebug(true);
 	auto dragPart = assembly->partNamed("/OndselAssembly/rackPinion#Box");
 	auto rotPart = assembly->partNamed("/OndselAssembly/rackPinion#Cylinder");
 	auto dragParts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
@@ -1318,7 +1332,9 @@ void MbD::ASMTAssembly::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<
 		mbdSystem->runDragStep(dragMbDParts);
 	}
 	catch (...) {
-		runPreDrag();
+		//Do not use 
+		//runPreDrag();
+		//Assembly breaks up too easily because of redundant constraint removal.
 	}
 }
 

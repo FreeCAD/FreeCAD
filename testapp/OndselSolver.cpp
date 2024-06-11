@@ -25,11 +25,9 @@ void sharedptrTest();
 
 int main()
 {
+	ASMTAssembly::runDraggingLogTest3();
+	ASMTAssembly::runDraggingLogTest2();
 	ASMTAssembly::runDraggingLogTest();
-	ASMTAssembly::runDraggingTest2();
-	ASMTAssembly::runDraggingTest3();
-	ASMTAssembly::runDraggingTest();
-	//ASMTAssembly::runFile("../testapp/pistonWithLimits.asmt");
 	ASMTAssembly::runFile("../testapp/pistonAllowZRotation.asmt");
 	ASMTAssembly::runFile("../testapp/Schmidt_Coupling_Ass_1-1.asmt");
 	ASMTAssembly::runFile("../testapp/RevRevJt.asmt");
