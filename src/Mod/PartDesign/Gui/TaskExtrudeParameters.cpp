@@ -446,7 +446,6 @@ void PartDesignGui::TaskExtrudeParameters::selectedShape(const Gui::SelectionCha
 
     Gui::Selection().clearSelection();
 
-    auto base = extrude->getBaseObject();
     auto ref = document->getObject(msg.pObjectName);
 
     extrude->UpToShape.setValue(ref);
@@ -487,7 +486,6 @@ void TaskExtrudeParameters::updateShapeName()
 
 void TaskExtrudeParameters::updateShapeFaces()
 {
-    auto extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     auto faces = getShapeFaces();
 
     ui->listWidgetReferences->clear();

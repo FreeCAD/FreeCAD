@@ -175,7 +175,7 @@ void ConstraintTransform::handleChangedPropertyName(Base::XMLReader& reader,
                                                     const char* propName)
 {
     if (strcmp(propName, "X_rot") == 0) {
-        double xAngle;
+        double xAngle {};
         if (strcmp(typeName, "App::PropertyFloat") == 0) {
             App::PropertyFloat X_rotProperty;
             X_rotProperty.Restore(reader);
@@ -189,7 +189,7 @@ void ConstraintTransform::handleChangedPropertyName(Base::XMLReader& reader,
         anglesToRotation(xAngle, 0, 0);
     }
     else if (strcmp(propName, "Y_rot") == 0) {
-        double yAngle;
+        double yAngle {};
         if (strcmp(typeName, "App::PropertyFloat") == 0) {
             App::PropertyFloat Y_rotProperty;
             Y_rotProperty.Restore(reader);
@@ -203,7 +203,7 @@ void ConstraintTransform::handleChangedPropertyName(Base::XMLReader& reader,
         anglesToRotation(0, yAngle, 0);
     }
     else if (strcmp(propName, "Z_rot") == 0) {
-        double zAngle;
+        double zAngle {};
         if (strcmp(typeName, "App::PropertyFloat") == 0) {
             App::PropertyFloat Z_rotProperty;
             Z_rotProperty.Restore(reader);
