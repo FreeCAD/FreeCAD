@@ -439,7 +439,6 @@ void insertShapeFaces(JtkShape* partShape)
             return;
         }
 
-
         if (vertex && (vertexCount > 0) && normal && (normCount > 0)) {
             for (int i = 0; i < vertexCount - 2; i++) {
                 SimpleMeshFacet temp;
@@ -457,15 +456,6 @@ void insertShapeFaces(JtkShape* partShape)
                 temp.p3[2] = vertex[i * 3 + 8];
 
                 result.push_back(temp);
-                /*
-                          file << "  facet normal "<< normal[i*3+0] << " " << normal[i*3+1] << " "
-                   << normal[i*3+2] << " " << endl; file << "    outer loop" << endl; file << "
-                   vertex " << vertex[i*3+0] << " " << vertex[i*3+1] << " " << vertex[i*3+2] << " "
-                   << endl; file << "      vertex " << vertex[i*3+3] << " " << vertex[i*3+4] << " "
-                   << vertex[i*3+5] << " " << endl; file << "      vertex " << vertex[i*3+6] << " "
-                   << vertex[i*3+7] << " " << vertex[i*3+8] << " " << endl; file << "    endloop" <<
-                   endl; file << "  endfacet" << endl;
-                */
             }
         }
 #ifdef _DEBUG
@@ -505,7 +495,6 @@ int myPreactionCB_CollectFacets(JtkHierarchy* CurrNode, int level, JtkClientData
 
         case JtkEntity::JtkPART: {
 
-            {
                 JtkTransform* partXform = NULL;
                 ((JtkPart*)CurrNode)->getTransform(partXform);
                 if (partXform) {
@@ -535,26 +524,22 @@ int myPreactionCB_CollectFacets(JtkHierarchy* CurrNode, int level, JtkClientData
                         }
                     }
                 }
-            }
-        } break;
+             } break;
 
         case JtkEntity::JtkASSEMBLY: {
             InfoOut << "JtkASSEMBLY: ";
             InfoOut << CurrNode->name() << "(" << ((JtkAssembly*)CurrNode)->numChildren()
                     << " children)\n";
 
-            {
-                JtkTransform* partXform = NULL;
-                ((JtkPart*)CurrNode)->getTransform(partXform);
-                if (partXform) {}
-            }
+            JtkTransform* partXform = NULL;
+            ((JtkPart*)CurrNode)->getTransform(partXform);
+            
         } break;
 
         case JtkEntity::JtkINSTANCE: {
             {
                 JtkTransform* partXform = NULL;
                 ((JtkPart*)CurrNode)->getTransform(partXform);
-                if (partXform) {}
             }
         } break;
     }
@@ -636,8 +621,6 @@ void readFile(const char* FileName, int iLods)
         throw "Unable to create JtkCADImporter.  Check license...\n";
     }
 
-    // Uninitialize JtTk
-    // JtkEntityFactory::fini();
 }
 
 
