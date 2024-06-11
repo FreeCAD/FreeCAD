@@ -235,8 +235,8 @@ public:
 
     static void swapJCS(App::DocumentObject* joint);
 
-    static bool isEdgeType(App::DocumentObject* obj, const char* elName, GeomAbs_CurveType type);
-    static bool isFaceType(App::DocumentObject* obj, const char* elName, GeomAbs_SurfaceType type);
+    static bool isEdgeType(App::DocumentObject* obj, std::string& elName, GeomAbs_CurveType type);
+    static bool isFaceType(App::DocumentObject* obj, std::string& elName, GeomAbs_SurfaceType type);
     static double getFaceRadius(App::DocumentObject* obj, const char* elName);
     static double getEdgeRadius(App::DocumentObject* obj, const char* elName);
 
