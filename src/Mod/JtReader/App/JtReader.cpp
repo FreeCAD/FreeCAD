@@ -495,36 +495,36 @@ int myPreactionCB_CollectFacets(JtkHierarchy* CurrNode, int level, JtkClientData
 
         case JtkEntity::JtkPART: {
 
-                JtkTransform* partXform = NULL;
-                ((JtkPart*)CurrNode)->getTransform(partXform);
-                if (partXform) {
-                    printXform(partXform, level + 1);
+            JtkTransform* partXform = NULL;
+            ((JtkPart*)CurrNode)->getTransform(partXform);
+            if (partXform) {
+                printXform(partXform, level + 1);
+            }
+
+            int partNumShapeLODs = -1;
+            partNumShapeLODs = ((JtkPart*)CurrNode)->numPolyLODs();
+            for (int lod = 0; lod < partNumShapeLODs; lod++) {
+                indent(level + 1);
+                InfoOut << "LOD#" << lod << ":\n";
+
+                if (iLod != lod && iLod != -1) {
+                    continue;
                 }
 
-                int partNumShapeLODs = -1;
-                partNumShapeLODs = ((JtkPart*)CurrNode)->numPolyLODs();
-                for (int lod = 0; lod < partNumShapeLODs; lod++) {
-                    indent(level + 1);
-                    InfoOut << "LOD#" << lod << ":\n";
+                int partNumShapes = -1;
+                partNumShapes = ((JtkPart*)CurrNode)->numPolyShapes(lod);
+                for (int shNum = 0; shNum < partNumShapes; shNum++) {
+                    indent(level + 2);
+                    InfoOut << "Shape#" << shNum << ":\n";
 
-                    if (iLod != lod && iLod != -1) {
-                        continue;
-                    }
-
-                    int partNumShapes = -1;
-                    partNumShapes = ((JtkPart*)CurrNode)->numPolyShapes(lod);
-                    for (int shNum = 0; shNum < partNumShapes; shNum++) {
-                        indent(level + 2);
-                        InfoOut << "Shape#" << shNum << ":\n";
-
-                        JtkShape* partShape = NULL;
-                        ((JtkPart*)CurrNode)->getPolyShape(partShape, lod, shNum);
-                        if (partShape) {
-                            insertShapeFaces(partShape);
-                        }
+                    JtkShape* partShape = NULL;
+                    ((JtkPart*)CurrNode)->getPolyShape(partShape, lod, shNum);
+                    if (partShape) {
+                        insertShapeFaces(partShape);
                     }
                 }
-             } break;
+            }
+        } break;
 
         case JtkEntity::JtkASSEMBLY: {
             InfoOut << "JtkASSEMBLY: ";
@@ -533,7 +533,7 @@ int myPreactionCB_CollectFacets(JtkHierarchy* CurrNode, int level, JtkClientData
 
             JtkTransform* partXform = NULL;
             ((JtkPart*)CurrNode)->getTransform(partXform);
-            
+
         } break;
 
         case JtkEntity::JtkINSTANCE: {
@@ -620,7 +620,6 @@ void readFile(const char* FileName, int iLods)
     else {
         throw "Unable to create JtkCADImporter.  Check license...\n";
     }
-
 }
 
 
