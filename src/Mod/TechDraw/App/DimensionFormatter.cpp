@@ -321,8 +321,8 @@ QString DimensionFormatter::formatValueToSpec(const double value, const QString&
         formattedValue = QString::asprintf(Base::Tools::toStdString(fs).c_str(), value);
         // First, try to cut trailing zeros, if AFTER decimal dot there are nonzero numbers
         // Second, try to cut also decimal dot and zeros, if there are just zeros after it
-        formattedValue.replace(QRegularExpression(QStringLiteral("([0-9][0-9]*\\.[0-9]*[1-9])00*$")), QStringLiteral("\\1"));
-        formattedValue.replace(QRegularExpression(QStringLiteral("([0-9][0-9]*)\\.0*$")), QStringLiteral("\\1"));
+        formattedValue.replace(QRegularExpression(QLatin1String("([0-9][0-9]*\\.[0-9]*[1-9])00*$")), QStringLiteral("\\1"));
+        formattedValue.replace(QRegularExpression(QLatin1String("([0-9][0-9]*)\\.0*$")), QStringLiteral("\\1"));
     } else {
         if (isNumericFormat(formatSpecifier)) {
             formattedValue = QString::asprintf(Base::Tools::toStdString(formatSpecifier).c_str(), value);

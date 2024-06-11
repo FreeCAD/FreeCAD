@@ -440,7 +440,7 @@ void ShortcutManager::onTimer()
 
         const auto &index = actionMap.get<1>();
         static const std::string symbols = "~!@#$%^&*()_+";
-        QString shortcut = pendingSequence.toString() + QStringLiteral(", Ctrl+");
+        QString shortcut = pendingSequence.toString() + QLatin1String(", Ctrl+");
         for (int s : symbols) {
             QKeySequence k(shortcut + QLatin1Char(s));
             auto it = index.lower_bound(ActionKey(k));

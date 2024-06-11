@@ -718,13 +718,13 @@ void InputField::fixup(QString& input) const
 {
     input.remove(locale().groupSeparator());
 
-    QString asciiMinus(QStringLiteral("-"));
+    QString asciiMinus(QLatin1String("-"));
     QString localeMinus(locale().negativeSign());
     if (localeMinus != asciiMinus) {
         input.replace(localeMinus, asciiMinus);
     }
 
-    QString asciiPlus(QStringLiteral("+"));
+    QString asciiPlus(QLatin1String("+"));
     QString localePlus(locale().positiveSign());
     if (localePlus != asciiPlus) {
         input.replace(localePlus, asciiPlus);

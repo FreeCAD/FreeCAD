@@ -495,7 +495,7 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderFemPostDataAlongLine* v
     setupConnectionsStep1();
     this->groupLayout()->addWidget(proxy);
 
-    QSize size = ui->point1X->sizeForText(QStringLiteral("000000000000"));
+    QSize size = ui->point1X->sizeForText(QLatin1String("000000000000"));
     ui->point1X->setMinimumWidth(size.width());
     ui->point1Y->setMinimumWidth(size.width());
     ui->point1Z->setMinimumWidth(size.width());
@@ -921,7 +921,7 @@ TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderFemPostDataAtPoint* view, Q
 
     this->groupLayout()->addWidget(proxy);
 
-    QSize size = ui->centerX->sizeForText(QStringLiteral("000000000000"));
+    QSize size = ui->centerX->sizeForText(QLatin1String("000000000000"));
     ui->centerX->setMinimumWidth(size.width());
     ui->centerY->setMinimumWidth(size.width());
     ui->centerZ->setMinimumWidth(size.width());

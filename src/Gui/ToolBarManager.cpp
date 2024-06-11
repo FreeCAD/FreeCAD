@@ -274,7 +274,7 @@ public:
             auto toolbar = qobject_cast<QToolBar*>(widgetAt(i));
 
             if (!toolbar || toolbar->objectName().isEmpty()
-                         || toolbar->objectName().startsWith(QStringLiteral("*"))) {
+                         || toolbar->objectName().startsWith(QLatin1String("*"))) {
                 continue;
             }
 
@@ -372,7 +372,7 @@ void ToolBarManager::setupStatusBar()
     if (auto sb = getMainWindow()->statusBar()) {
         sb->installEventFilter(this);
         statusBarAreaWidget = new ToolBarAreaWidget(sb, ToolBarArea::StatusBarToolBarArea, hStatusBar, connParam);
-        statusBarAreaWidget->setObjectName(QStringLiteral("StatusBarArea"));
+        statusBarAreaWidget->setObjectName(QLatin1String("StatusBarArea"));
         sb->insertPermanentWidget(2, statusBarAreaWidget);
         statusBarAreaWidget->show();
     }
@@ -383,11 +383,11 @@ void ToolBarManager::setupMenuBar()
     if (auto mb = getMainWindow()->menuBar()) {
         mb->installEventFilter(this);
         menuBarLeftAreaWidget = new ToolBarAreaWidget(mb, ToolBarArea::LeftMenuToolBarArea, hMenuBarLeft, connParam, &menuBarTimer);
-        menuBarLeftAreaWidget->setObjectName(QStringLiteral("MenuBarLeftArea"));
+        menuBarLeftAreaWidget->setObjectName(QLatin1String("MenuBarLeftArea"));
         mb->setCornerWidget(menuBarLeftAreaWidget, Qt::TopLeftCorner);
         menuBarLeftAreaWidget->show();
         menuBarRightAreaWidget = new ToolBarAreaWidget(mb, ToolBarArea::RightMenuToolBarArea, hMenuBarRight, connParam, &menuBarTimer);
-        menuBarRightAreaWidget->setObjectName(QStringLiteral("MenuBarRightArea"));
+        menuBarRightAreaWidget->setObjectName(QLatin1String("MenuBarRightArea"));
         mb->setCornerWidget(menuBarRightAreaWidget, Qt::TopRightCorner);
         menuBarRightAreaWidget->show();
     }
@@ -506,7 +506,7 @@ QPointer<QWidget> createActionWidget()
     static QPointer<QWidget> actionWidget;
     if (!actionWidget) {
         actionWidget = new QWidget(getMainWindow());
-        actionWidget->setObjectName(QStringLiteral("_fc_action_widget_"));
+        actionWidget->setObjectName(QLatin1String("_fc_action_widget_"));
         /* TODO This is a temporary hack until a longterm solution
         is found, thanks to @realthunder for this pointer.
         Although actionWidget has zero size, it somehow has a
@@ -1084,7 +1084,7 @@ void ToolBarManager::addToMenu(QLayout* layout, QWidget* area, QMenu* menu)
         auto widget = layout->itemAt(i)->widget();
         if (!widget || widget == area
             || widget->objectName().isEmpty()
-            || widget->objectName().startsWith(QStringLiteral("*")))
+            || widget->objectName().startsWith(QLatin1String("*")))
         {
             continue;
         }

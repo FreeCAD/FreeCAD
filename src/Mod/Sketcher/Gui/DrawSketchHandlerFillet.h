@@ -415,7 +415,7 @@ template<>
 void DSHFilletController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QStringLiteral("Fillet"), QStringLiteral("Chamfer")};
+        QStringList names = {QLatin1String("Fillet"), QStringLiteral("Chamfer")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         toolWidget->setComboboxItemIcon(

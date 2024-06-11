@@ -607,7 +607,7 @@ void DlgSettingsGeneral::recreatePreferencePackMenu()
             if (tagString.isEmpty())
                 tagString.append(QString::fromStdString(tag));
             else
-                tagString.append(QStringLiteral(", ") + QString::fromStdString(tag));
+                tagString.append(QLatin1String(", ") + QString::fromStdString(tag));
         }
         auto kind = new QTableWidgetItem(tagString);
         ui->PreferencePacks->setItem(row, 1, kind);

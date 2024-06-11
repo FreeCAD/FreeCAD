@@ -439,16 +439,16 @@ void SketcherToolDefaultWidget::setParameterFontStyle(int parameterindex, FontSt
 
         switch (fontStyle) {
             case FontStyle::Italic:
-                parameterSpinBox->setStyleSheet(QStringLiteral("font-weight: normal;"));
-                parameterSpinBox->setStyleSheet(QStringLiteral("font-style: italic;"));
+                parameterSpinBox->setStyleSheet(QLatin1String("font-weight: normal;"));
+                parameterSpinBox->setStyleSheet(QLatin1String("font-style: italic;"));
                 break;
             case FontStyle::Bold:
-                parameterSpinBox->setStyleSheet(QStringLiteral("font-style: normal;"));
-                parameterSpinBox->setStyleSheet(QStringLiteral("font-weight: bold;"));
+                parameterSpinBox->setStyleSheet(QLatin1String("font-style: normal;"));
+                parameterSpinBox->setStyleSheet(QLatin1String("font-weight: bold;"));
                 break;
             case FontStyle::Normal:
-                parameterSpinBox->setStyleSheet(QStringLiteral("font-style: normal;"));
-                parameterSpinBox->setStyleSheet(QStringLiteral("font-weight: normal;"));
+                parameterSpinBox->setStyleSheet(QLatin1String("font-style: normal;"));
+                parameterSpinBox->setStyleSheet(QLatin1String("font-weight: normal;"));
                 break;
         }
 

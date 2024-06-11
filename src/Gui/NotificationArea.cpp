@@ -159,9 +159,9 @@ private:
         critical = BitmapFactory().pixmapFromSvg(":/icons/critical-info.svg", QSize(16, 16));
         info = BitmapFactory().pixmapFromSvg(":/icons/info.svg", QSize(16, 16));
         //NOLINTEND
-        notificationArea = QIcon(QStringLiteral(":/icons/InTray.svg"));
+        notificationArea = QIcon(QLatin1String(":/icons/InTray.svg"));
         notificationAreaMissedNotifications =
-            QIcon(QStringLiteral(":/icons/InTray_missed_notifications.svg"));
+            QIcon(QLatin1String(":/icons/InTray_missed_notifications.svg"));
     }
 
     inline static const auto& getResourceManager()
@@ -1084,8 +1084,8 @@ bool NotificationArea::confirmationRequired(Base::LogStyle level)
 
 void NotificationArea::showConfirmationDialog(const QString& notifiername, const QString& message)
 {
-    auto confirmMsg = QObject::tr("Notifier:") + QStringLiteral(" ") + notifiername + QStringLiteral("\n\n") + message
-        + QStringLiteral("\n\n")
+    auto confirmMsg = QObject::tr("Notifier:") + QLatin1String(" ") + notifiername + QStringLiteral("\n\n") + message
+        + QLatin1String("\n\n")
         + QObject::tr("Do you want to skip confirmation of further critical message notifications "
                       "while loading the file?");
 
@@ -1171,16 +1171,16 @@ void NotificationArea::showInNotificationArea()
 
                 QString iconstr;
                 if (item->isType(Base::LogStyle::Error)) {
-                    iconstr = QStringLiteral(":/icons/edit_Cancel.svg");
+                    iconstr = QLatin1String(":/icons/edit_Cancel.svg");
                 }
                 else if (item->isType(Base::LogStyle::Warning)) {
-                    iconstr = QStringLiteral(":/icons/Warning.svg");
+                    iconstr = QLatin1String(":/icons/Warning.svg");
                 }
                 else if (item->isType(Base::LogStyle::Critical)) {
-                    iconstr = QStringLiteral(":/icons/critical-info.svg");
+                    iconstr = QLatin1String(":/icons/critical-info.svg");
                 }
                 else {
-                    iconstr = QStringLiteral(":/icons/info.svg");
+                    iconstr = QLatin1String(":/icons/info.svg");
                 }
 
                 QString tmpmessage =

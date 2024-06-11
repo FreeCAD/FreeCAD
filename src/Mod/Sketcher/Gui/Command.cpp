@@ -1133,8 +1133,8 @@ protected:
         sizeLabel = new QLabel();
 
         gridSizeBox = new Gui::QuantitySpinBox();
-        gridSizeBox->setProperty("unit", QVariant(QStringLiteral("mm")));
-        gridSizeBox->setObjectName(QStringLiteral("gridSize"));
+        gridSizeBox->setProperty("unit", QVariant(QLatin1String("mm")));
+        gridSizeBox->setObjectName(QLatin1String("gridSize"));
         gridSizeBox->setMaximum(99999999.0);
         gridSizeBox->setMinimum(0.001);
 
@@ -1388,8 +1388,8 @@ protected:
         angleLabel = new QLabel();
 
         snapAngle = new Gui::QuantitySpinBox();
-        snapAngle->setProperty("unit", QVariant(QStringLiteral("deg")));
-        snapAngle->setObjectName(QStringLiteral("snapAngle"));
+        snapAngle->setProperty("unit", QVariant(QLatin1String("deg")));
+        snapAngle->setObjectName(QLatin1String("snapAngle"));
         snapAngle->setMaximum(99999999.0);
         snapAngle->setMinimum(0);
 

@@ -144,7 +144,7 @@ QString checkStatusToString(const int &index)
     }
     if (index > 33 || index < 0)
     {
-        QString message(QObject::tr("Out Of Enum Range:") + QStringLiteral(" "));
+        QString message(QObject::tr("Out Of Enum Range:") + QLatin1String(" "));
         QString number;
         number.setNum(index);
         message += number;
@@ -1013,7 +1013,7 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
     autoRunCheckBox->setText(tr("Skip settings page"));
     autoRunCheckBox->setToolTip(
         tr("Skip this settings page and run the geometry check automatically.")
-        + QStringLiteral("\n")
+        + QLatin1String("\n")
         + tr("Default: false"));
     autoRunCheckBox->setChecked(group->GetBool("AutoRun", false));
     connect(autoRunCheckBox, &QCheckBox::toggled,
@@ -1072,7 +1072,7 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
     settingsBox->groupLayout()->addWidget(new QLabel(tr("\nIndividual boolean operation checks:")));
 
     argumentTypeModeCheckBox = new QCheckBox();
-    argumentTypeModeCheckBox->setText(QStringLiteral("  ") + tr("Bad type"));
+    argumentTypeModeCheckBox->setText(QLatin1String("  ") + tr("Bad type"));
     argumentTypeModeCheckBox->setToolTip(tr("Check for bad argument types.  Default: true"));
     argumentTypeModeCheckBox->setChecked(group->GetBool("ArgumentTypeMode", true));
     connect(argumentTypeModeCheckBox, &QCheckBox::toggled,
@@ -1080,7 +1080,7 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
     settingsBox->groupLayout()->addWidget(argumentTypeModeCheckBox);
 
     selfInterModeCheckBox = new QCheckBox();
-    selfInterModeCheckBox->setText(QStringLiteral("  ") + tr("Self-intersect"));
+    selfInterModeCheckBox->setText(QLatin1String("  ") + tr("Self-intersect"));
     selfInterModeCheckBox->setToolTip(tr("Check for self-intersections.  Default: true"));
     selfInterModeCheckBox->setChecked(group->GetBool("SelfInterMode", true));
     connect(selfInterModeCheckBox, &QCheckBox::toggled,
@@ -1088,7 +1088,7 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
     settingsBox->groupLayout()->addWidget(selfInterModeCheckBox);
 
     smallEdgeModeCheckBox = new QCheckBox();
-    smallEdgeModeCheckBox->setText(QStringLiteral("  ") + tr("Too small edge"));
+    smallEdgeModeCheckBox->setText(QLatin1String("  ") + tr("Too small edge"));
     smallEdgeModeCheckBox->setToolTip(tr("Check for edges that are too small.  Default: true"));
     smallEdgeModeCheckBox->setChecked(group->GetBool("SmallEdgeMode", true));
     connect(smallEdgeModeCheckBox, &QCheckBox::toggled,
@@ -1096,7 +1096,7 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
     settingsBox->groupLayout()->addWidget(smallEdgeModeCheckBox);
 
     rebuildFaceModeCheckBox = new QCheckBox();
-    rebuildFaceModeCheckBox->setText(QStringLiteral("  ") + tr("Nonrecoverable face"));
+    rebuildFaceModeCheckBox->setText(QLatin1String("  ") + tr("Nonrecoverable face"));
     rebuildFaceModeCheckBox->setToolTip(tr("Check for nonrecoverable faces.  Default: true"));
     rebuildFaceModeCheckBox->setChecked(group->GetBool("RebuildFaceMode", true));
     connect(rebuildFaceModeCheckBox, &QCheckBox::toggled,
@@ -1104,7 +1104,7 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
     settingsBox->groupLayout()->addWidget(rebuildFaceModeCheckBox);
 
     continuityModeCheckBox = new QCheckBox();
-    continuityModeCheckBox->setText(QStringLiteral("  ") + tr("Continuity"));
+    continuityModeCheckBox->setText(QLatin1String("  ") + tr("Continuity"));
     continuityModeCheckBox->setToolTip(tr("Check for continuity.  Default: true"));
     continuityModeCheckBox->setChecked(group->GetBool("ContinuityMode", true));
     connect(continuityModeCheckBox, &QCheckBox::toggled,
@@ -1112,7 +1112,7 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
     settingsBox->groupLayout()->addWidget(continuityModeCheckBox);
 
     tangentModeCheckBox = new QCheckBox();
-    tangentModeCheckBox->setText(QStringLiteral("  ") + tr("Incompatibility of face"));
+    tangentModeCheckBox->setText(QLatin1String("  ") + tr("Incompatibility of face"));
     tangentModeCheckBox->setToolTip(tr("Check for incompatible faces.  Default: true"));
     tangentModeCheckBox->setChecked(group->GetBool("TangentMode", true));
     connect(tangentModeCheckBox, &QCheckBox::toggled,
@@ -1120,7 +1120,7 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
     settingsBox->groupLayout()->addWidget(tangentModeCheckBox);
 
     mergeVertexModeCheckBox = new QCheckBox();
-    mergeVertexModeCheckBox->setText(QStringLiteral("  ") + tr("Incompatibility of vertex"));
+    mergeVertexModeCheckBox->setText(QLatin1String("  ") + tr("Incompatibility of vertex"));
     mergeVertexModeCheckBox->setToolTip(tr("Check for incompatible vertices.  Default: true"));
     mergeVertexModeCheckBox->setChecked(group->GetBool("MergeVertexMode", true));
     connect(mergeVertexModeCheckBox, &QCheckBox::toggled,
@@ -1128,7 +1128,7 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
     settingsBox->groupLayout()->addWidget(mergeVertexModeCheckBox);
 
     mergeEdgeModeCheckBox = new QCheckBox();
-    mergeEdgeModeCheckBox->setText(QStringLiteral("  ") + tr("Incompatibility of edge"));
+    mergeEdgeModeCheckBox->setText(QLatin1String("  ") + tr("Incompatibility of edge"));
     mergeEdgeModeCheckBox->setToolTip(tr("Check for incompatible edges.  Default: true"));
     mergeEdgeModeCheckBox->setChecked(group->GetBool("MergeEdgeMode", true));
     connect(mergeEdgeModeCheckBox, &QCheckBox::toggled,
@@ -1136,7 +1136,7 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
     settingsBox->groupLayout()->addWidget(mergeEdgeModeCheckBox);
 
     curveOnSurfaceModeCheckBox = new QCheckBox();
-    curveOnSurfaceModeCheckBox->setText(QStringLiteral("  ") + tr("Invalid curve on surface"));
+    curveOnSurfaceModeCheckBox->setText(QLatin1String("  ") + tr("Invalid curve on surface"));
     curveOnSurfaceModeCheckBox->setToolTip(tr("Check for invalid curves on surfaces.  Default: true"));
     curveOnSurfaceModeCheckBox->setChecked(group->GetBool("CurveOnSurfaceMode", true));
     connect(curveOnSurfaceModeCheckBox, &QCheckBox::toggled,

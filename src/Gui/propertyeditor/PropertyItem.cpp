@@ -3054,7 +3054,7 @@ std::shared_ptr<EnumItems> getEnumItems(const QStringList& commonModes)  // NOLI
     std::shared_ptr<EnumItems> enumItems;
     for (auto &mode : commonModes) {
         ++index;
-        auto fields = mode.split(QStringLiteral("|"));
+        auto fields = mode.split(QLatin1String("|"));
         if (!enumItems && fields.size() <= 1) {
             continue;
         }

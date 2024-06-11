@@ -112,9 +112,9 @@ void FileCardDelegate::paint(QPainter* painter,
     thumbnail->setFixedSize(thumbnailSize, thumbnailSize);
     thumbnail->setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
 
-    _widget->setProperty("state", QStringLiteral(""));
+    _widget->setProperty("state", QLatin1String(""));
     if (option.state & QStyle::State_Selected) {
-        _widget->setProperty("state", QStringLiteral("pressed"));
+        _widget->setProperty("state", QLatin1String("pressed"));
         if (qApp->styleSheet().isEmpty()) {
             QColor color = getSelectionColor();
             _widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"
@@ -128,7 +128,7 @@ void FileCardDelegate::paint(QPainter* painter,
         }
     }
     else if (option.state & QStyle::State_MouseOver) {
-        _widget->setProperty("state", QStringLiteral("hovered"));
+        _widget->setProperty("state", QLatin1String("hovered"));
         if (qApp->styleSheet().isEmpty()) {
             QColor color = getBorderColor();
             _widget->setStyleSheet(QString::fromLatin1("QWidget#thumbnailWidget {"

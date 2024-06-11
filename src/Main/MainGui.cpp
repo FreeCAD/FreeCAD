@@ -179,7 +179,7 @@ int main(int argc, char** argv)
     App::Application::Config()["SplashInfoColor"] = "#418FDE";
     App::Application::Config()["SplashInfoPosition"] = "6,75";
 
-    QGuiApplication::setDesktopFileName(QStringLiteral("org.freecad.FreeCAD"));
+    QGuiApplication::setDesktopFileName(QLatin1String("org.freecad.FreeCAD"));
 
     try {
         // Init phase ===========================================================

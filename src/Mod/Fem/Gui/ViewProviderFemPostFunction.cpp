@@ -451,7 +451,7 @@ BoxWidget::BoxWidget()
 {
     ui->setupUi(this);
 
-    QSize size = ui->centerX->sizeForText(QStringLiteral("000000000000"));
+    QSize size = ui->centerX->sizeForText(QLatin1String("000000000000"));
     ui->centerX->setMinimumWidth(size.width());
     ui->centerY->setMinimumWidth(size.width());
     ui->centerZ->setMinimumWidth(size.width());
@@ -642,7 +642,7 @@ CylinderWidget::CylinderWidget()
 {
     ui->setupUi(this);
 
-    QSize size = ui->centerX->sizeForText(QStringLiteral("000000000000"));
+    QSize size = ui->centerX->sizeForText(QLatin1String("000000000000"));
     ui->centerX->setMinimumWidth(size.width());
     ui->centerY->setMinimumWidth(size.width());
     ui->centerZ->setMinimumWidth(size.width());
@@ -875,7 +875,7 @@ PlaneWidget::PlaneWidget()
 {
     ui->setupUi(this);
 
-    QSize size = ui->originX->sizeForText(QStringLiteral("000000000000"));
+    QSize size = ui->originX->sizeForText(QLatin1String("000000000000"));
     ui->originX->setMinimumWidth(size.width());
     ui->originY->setMinimumWidth(size.width());
     ui->originZ->setMinimumWidth(size.width());
@@ -1055,7 +1055,7 @@ SphereWidget::SphereWidget()
 {
     ui->setupUi(this);
 
-    QSize size = ui->centerX->sizeForText(QStringLiteral("000000000000"));
+    QSize size = ui->centerX->sizeForText(QLatin1String("000000000000"));
     ui->centerX->setMinimumWidth(size.width());
     ui->centerY->setMinimumWidth(size.width());
     ui->centerZ->setMinimumWidth(size.width());

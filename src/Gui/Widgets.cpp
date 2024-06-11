@@ -858,13 +858,13 @@ void ColorButton::onRejected()
 
 UrlLabel::UrlLabel(QWidget* parent, Qt::WindowFlags f)
     : QLabel(parent, f)
-    , _url (QStringLiteral("http://localhost"))
+    , _url (QLatin1String("http://localhost"))
     , _launchExternal(true)
 {
     setToolTip(this->_url);    
     setCursor(Qt::PointingHandCursor);
     if (qApp->styleSheet().isEmpty())
-        setStyleSheet(QStringLiteral("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
+        setStyleSheet(QLatin1String("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
 }
 
 UrlLabel::~UrlLabel() = default;
@@ -1203,7 +1203,7 @@ bool ToolTip::eventFilter(QObject* o, QEvent*e)
     case QEvent::Show:
     case QEvent::Hide:
         if (auto label = qobject_cast<QLabel*>(o)) {
-            if (label->objectName() == QStringLiteral("qtooltip_label")) {
+            if (label->objectName() == QLatin1String("qtooltip_label")) {
                 // This is a trick to circumvent that the tooltip gets hidden immediately
                 // after it gets visible. We just filter out all timer events to keep the
                 // label visible.

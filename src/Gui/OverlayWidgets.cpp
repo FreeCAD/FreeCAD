@@ -386,21 +386,21 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     hide();
 
     actTransparent.setCheckable(true);
-    actTransparent.setData(QStringLiteral("OBTN Transparent"));
+    actTransparent.setData(QLatin1String("OBTN Transparent"));
     actTransparent.setParent(this);
     addAction(&actTransparent);
 
-    actAutoHide.setData(QStringLiteral("OBTN AutoHide"));
+    actAutoHide.setData(QLatin1String("OBTN AutoHide"));
 
-    actEditHide.setData(QStringLiteral("OBTN EditHide"));
+    actEditHide.setData(QLatin1String("OBTN EditHide"));
 
-    actEditShow.setData(QStringLiteral("OBTN EditShow"));
+    actEditShow.setData(QLatin1String("OBTN EditShow"));
 
-    actTaskShow.setData(QStringLiteral("OBTN TaskShow"));
+    actTaskShow.setData(QLatin1String("OBTN TaskShow"));
 
-    actNoAutoMode.setData(QStringLiteral("OBTN NoAutoMode"));
+    actNoAutoMode.setData(QLatin1String("OBTN NoAutoMode"));
 
-    actAutoMode.setData(QStringLiteral("OBTN AutoMode"));
+    actAutoMode.setData(QLatin1String("OBTN AutoMode"));
     actAutoMode.setParent(this);
     autoModeMenu.hide();
     autoModeMenu.setToolTipsVisible(true);
@@ -411,7 +411,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     autoModeMenu.addAction(&actTaskShow);
     addAction(&actAutoMode);
 
-    actOverlay.setData(QStringLiteral("OBTN Overlay"));
+    actOverlay.setData(QLatin1String("OBTN Overlay"));
     actOverlay.setParent(this);
     addAction(&actOverlay);
 
@@ -1057,7 +1057,7 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, OverlayOption option)
                             || option == OverlayOption::Disable)
                         widget->setStyleSheet(QString());
                     else {
-                        static QString _style = QStringLiteral("*{width:0}");
+                        static QString _style = QLatin1String("*{width:0}");
                         widget->setStyleSheet(_style);
                     }
                 }
@@ -1069,7 +1069,7 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, OverlayOption option)
                     if (!TreeParams::getHideScrollBar() || option == OverlayOption::Disable)
                         widget->setStyleSheet(QString());
                     else {
-                        static QString _style = QStringLiteral("*{width:0}");
+                        static QString _style = QLatin1String("*{width:0}");
                         widget->setStyleSheet(_style);
                     }
                 }
@@ -1480,11 +1480,11 @@ void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
     getMainWindow()->removeDockWidget(dock);
 
     auto titleWidget = dock->titleBarWidget();
-    if(titleWidget && titleWidget->objectName()==QStringLiteral("OverlayTitle")) {
+    if(titleWidget && titleWidget->objectName()==QLatin1String("OverlayTitle")) {
         // replace the title bar with an invisible widget to hide it. The
         // OverlayTabWidget uses its own title bar for all docks.
         auto w = new QWidget();
-        w->setObjectName(QStringLiteral("OverlayTitle"));
+        w->setObjectName(QLatin1String("OverlayTitle"));
         dock->setTitleBarWidget(w);
         w->hide();
         titleWidget->deleteLater();
@@ -1548,7 +1548,7 @@ void OverlayTabWidget::removeWidget(QDockWidget *dock, QDockWidget *lastDock)
         hide();
 
     w = dock->titleBarWidget();
-    if(w && w->objectName() == QStringLiteral("OverlayTitle")) {
+    if(w && w->objectName() == QLatin1String("OverlayTitle")) {
         dock->setTitleBarWidget(nullptr);
         w->deleteLater();
     }
@@ -2080,7 +2080,7 @@ OverlaySplitter::OverlaySplitter(QWidget *parent)
 QSplitterHandle * OverlaySplitter::createHandle()
 {
     auto widget = new OverlaySplitterHandle(this->orientation(), this);
-    widget->setObjectName(QStringLiteral("OverlaySplitHandle"));
+    widget->setObjectName(QLatin1String("OverlaySplitHandle"));
     QList<QAction*> actions;
     actions.append(&widget->actFloat);
     widget->setTitleItem(OverlayTabWidget::prepareTitleWidget(widget, actions));

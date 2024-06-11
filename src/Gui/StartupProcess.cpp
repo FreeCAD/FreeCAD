@@ -142,7 +142,7 @@ void StartupProcess::setStyleSheetPaths()
                         + "Gui/Stylesheets/overlay").c_str())
                     << QString::fromUtf8((App::Application::getResourceDir()
                         + "Gui/Stylesheets/overlay").c_str());
-    QDir::setSearchPaths(QStringLiteral("overlay"), qssOverlayPaths);
+    QDir::setSearchPaths(QLatin1String("overlay"), qssOverlayPaths);
 }
 
 void StartupProcess::setImagePaths()
@@ -343,10 +343,10 @@ void StartupPostProcess::checkOpenGL()
                             "Please upgrade your graphics driver and/or card as required.")
                     .arg(major)
                     .arg(minor)
-                + QStringLiteral("\n");
+                + QLatin1String("\n");
             Base::Console().Warning(message.toStdString().c_str());
             Dialog::DlgCheckableMessageBox::showMessage(
-                QCoreApplication::applicationName() + QStringLiteral(" - ")
+                QCoreApplication::applicationName() + QLatin1String(" - ")
                     + QObject::tr("Invalid OpenGL Version"),
                 message);
         }

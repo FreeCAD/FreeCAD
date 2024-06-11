@@ -823,8 +823,8 @@ void AboutDialog::copyToClipboard()
     QString suffix = QString::fromLatin1(config["BuildVersionSuffix"].c_str());
     QString build  = QString::fromLatin1(config["BuildRevision"].c_str());
 
-    QString deskEnv = QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_CURRENT_DESKTOP"), QString());
-    QString deskSess = QProcessEnvironment::systemEnvironment().value(QStringLiteral("DESKTOP_SESSION"), QString());
+    QString deskEnv = QProcessEnvironment::systemEnvironment().value(QLatin1String("XDG_CURRENT_DESKTOP"), QString());
+    QString deskSess = QProcessEnvironment::systemEnvironment().value(QLatin1String("DESKTOP_SESSION"), QString());
     QString deskInfo;
 
     if ( !(deskEnv.isEmpty() && deskSess.isEmpty()) ) {

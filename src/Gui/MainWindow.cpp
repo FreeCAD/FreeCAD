@@ -467,7 +467,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     if(notificationAreaEnabled) {
         NotificationArea* notificationArea = new NotificationArea(statusBar());
         notificationArea->setObjectName(QLatin1String("notificationArea"));
-        notificationArea->setStyleSheet(QStringLiteral("text-align:left;"));
+        notificationArea->setStyleSheet(QLatin1String("text-align:left;"));
         statusBar()->addPermanentWidget(notificationArea);
     }
 
@@ -1767,13 +1767,13 @@ void MainWindow::loadWindowSettings()
     int maxWidth = rect.width();
 
     config.beginGroup(qtver);
-    QPoint pos = config.value(QStringLiteral("Position"), this->pos()).toPoint();
+    QPoint pos = config.value(QLatin1String("Position"), this->pos()).toPoint();
     maxWidth -= pos.x();
     maxHeight -= pos.y();
-    QSize size = config.value(QStringLiteral("Size"), QSize(maxWidth, maxHeight)).toSize();
-    bool max = config.value(QStringLiteral("Maximized"), false).toBool();
-    bool showStatusBar = config.value(QStringLiteral("StatusBar"), true).toBool();
-    QByteArray windowState = config.value(QStringLiteral("MainWindowState")).toByteArray();
+    QSize size = config.value(QLatin1String("Size"), QSize(maxWidth, maxHeight)).toSize();
+    bool max = config.value(QLatin1String("Maximized"), false).toBool();
+    bool showStatusBar = config.value(QLatin1String("StatusBar"), true).toBool();
+    QByteArray windowState = config.value(QLatin1String("MainWindowState")).toByteArray();
     config.endGroup();
 
 
@@ -1866,11 +1866,11 @@ void MainWindow::saveWindowSettings(bool canDelay)
 
 #if 0
     config.beginGroup(qtver);
-    config.setValue(QStringLiteral("Size"), this->size());
-    config.setValue(QStringLiteral("Position"), this->pos());
-    config.setValue(QStringLiteral("Maximized"), this->isMaximized());
-    config.setValue(QStringLiteral("MainWindowState"), this->saveState());
-    config.setValue(QStringLiteral("StatusBar"), this->statusBar()->isVisible());
+    config.setValue(QLatin1String("Size"), this->size());
+    config.setValue(QLatin1String("Position"), this->pos());
+    config.setValue(QLatin1String("Maximized"), this->isMaximized());
+    config.setValue(QLatin1String("MainWindowState"), this->saveState());
+    config.setValue(QLatin1String("StatusBar"), this->statusBar()->isVisible());
     config.endGroup();
 #else
     // We are migrating from saving qt main window layout state in QSettings to

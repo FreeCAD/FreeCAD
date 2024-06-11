@@ -87,8 +87,8 @@ void DlgSettingsTheme::populateStylesheets(const char *key,
     QMap<QString, QString> cssFiles;
     QDir dir;
     if (filter.isEmpty()) {
-        filter << QStringLiteral("*.qss");
-        filter << QStringLiteral("*.css");
+        filter << QLatin1String("*.qss");
+        filter << QLatin1String("*.css");
     }
     QFileInfoList fileNames;
 
@@ -107,7 +107,7 @@ void DlgSettingsTheme::populateStylesheets(const char *key,
     combo->clear();
 
     // now add all unique items
-    combo->addItem(tr(def), QStringLiteral(""));
+    combo->addItem(tr(def), QLatin1String(""));
     for (QMap<QString, QString>::iterator it = cssFiles.begin(); it != cssFiles.end(); ++it) {
         combo->addItem(it.key(), it.value());
     }

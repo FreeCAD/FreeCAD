@@ -96,7 +96,7 @@ bool DrawSketchKeyboardManager::eventFilter(QObject* object, QEvent* event)
 
 void DrawSketchKeyboardManager::detectKeyboardEventHandlingMode(QKeyEvent* keyEvent)
 {
-    QRegularExpression rx(QStringLiteral("^[0-9]$"));
+    QRegularExpression rx(QLatin1String("^[0-9]$"));
     auto match = rx.match(keyEvent->text());
     if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return
         || keyEvent->key() == Qt::Key_Tab || keyEvent->key() == Qt::Key_Backtab

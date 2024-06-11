@@ -145,13 +145,13 @@ private:
 
         if (overlayStyleSheet.isEmpty()) {
             // User did not choose any stylesheet, we need to choose one based on main stylesheet
-            if (mainStyleSheet.contains(QStringLiteral("light"), Qt::CaseInsensitive)) {
-                overlayStyleSheet = QStringLiteral("overlay:Light Theme + Dark Background.qss");
+            if (mainStyleSheet.contains(QLatin1String("light"), Qt::CaseInsensitive)) {
+                overlayStyleSheet = QLatin1String("overlay:Light Theme + Dark Background.qss");
             }
             else {
                 // by default FreeCAD uses somewhat dark background for 3D View.
                 // if user has not explicitly selected light theme, the "Dark Outline" looks best
-                overlayStyleSheet = QStringLiteral("overlay:Dark Theme + Dark Background.qss");
+                overlayStyleSheet = QLatin1String("overlay:Dark Theme + Dark Background.qss");
             }
         }
         else if (!overlayStyleSheet.isEmpty() && !QFile::exists(overlayStyleSheet)) {
@@ -198,7 +198,7 @@ struct OverlayInfo {
     {
         tabWidget = new OverlayTabWidget(parent, dockArea);
         tabWidget->setObjectName(QString::fromUtf8(name));
-        tabWidget->getProxyWidget()->setObjectName(tabWidget->objectName() + QStringLiteral("Proxy"));
+        tabWidget->getProxyWidget()->setObjectName(tabWidget->objectName() + QLatin1String("Proxy"));
         tabWidget->setMovable(true);
         hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                             ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetGroup(name);
@@ -379,9 +379,9 @@ public:
             refresh();
         });
 
-        _actOverlay.setData(QStringLiteral("OBTN Overlay"));
-        _actFloat.setData(QStringLiteral("OBTN Float"));
-        _actClose.setData(QStringLiteral("OBTN Close"));
+        _actOverlay.setData(QLatin1String("OBTN Overlay"));
+        _actFloat.setData(QLatin1String("OBTN Float"));
+        _actClose.setData(QLatin1String("OBTN Close"));
 
         retranslate();
         refreshIcons();
@@ -925,7 +925,7 @@ public:
     QWidget *createTitleBar(QWidget *parent)
     {
         OverlayTitleBar *widget = new OverlayTitleBar(parent);
-        widget->setObjectName(QStringLiteral("OverlayTitle"));
+        widget->setObjectName(QLatin1String("OverlayTitle"));
 
         QList<QAction*> actions;
         if (auto tabWidget = qobject_cast<OverlayTabWidget*>(parent))

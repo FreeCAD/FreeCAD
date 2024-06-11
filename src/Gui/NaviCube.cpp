@@ -417,7 +417,7 @@ int imageVerticalBalance(QImage p, int sizeHint) {
 void NaviCubeImplementation::createCubeFaceTextures() {
     int texSize = 192; // Works well for the max cube size 1024
     QFont font;
-    if (m_TextFont.empty()) font.fromString(QStringLiteral("Arial"));
+    if (m_TextFont.empty()) font.fromString(QLatin1String("Arial"));
     else font.fromString(QString::fromStdString(m_TextFont));
     font.setStyleHint(QFont::SansSerif);
     if (m_FontWeight > 0) {

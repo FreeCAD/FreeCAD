@@ -324,7 +324,7 @@ private:
             return QLatin1String("Sketcher_Pointer_Create_3PointArc");
         }
 
-        return QStringLiteral("None");
+        return QLatin1String("None");
     }
 
     std::unique_ptr<QWidget> createWidget() const override
