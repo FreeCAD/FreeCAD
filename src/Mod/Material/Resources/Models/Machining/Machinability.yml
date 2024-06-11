@@ -42,20 +42,21 @@ Model:
     Description: >-
       Cutting speed (Surface Speed) for general-purpose milling
       using Carbide tools.
-  SpecificCuttingForce:
+  UnitCuttingForce:
     Type: 'Quantity'
     Units: 'N/mm^2'
     URL: 'https://www.machiningdoctor.com/glossary/specific-cutting-force-kc-kc1/'
     Description: >-
-      Specific cutting force, normalized for a chip with cross section of 1 mm times 1 mm.
-      This material property, generally denoted with k_c1.1, is used together with the
-      "material constant" m_c to calculate the actual specific cutting force for the actual
-      feed (i.e. undeformed chip thickness).
-  MaterialConstant:
+      Specific cutting force, normalized for a undeformed chip thickeness of 1 mm, a cutting
+      width of 1 mm and a rake angle of 0 degrees.
+      This material property, generally denoted with k_c1.1, is used together with a chip
+      thickness exponent, m_c, to calculate the actual specific cutting force for the actual
+      feed (i.e. undeformed chip thickness), the actual rake angle and other correction factors.
+  ChipThicknessExponent:
     Type: 'Float'
     Units: None
     URL: 'https://www.machiningdoctor.com/glossary/specific-cutting-force-kc-kc1/'
     Description: >-
-      This material property, generally denoted m_c, determines the effect of the
-      undeformed chip thickness on the actual specific cutting force, the further away
-      it gets from k_c1.1's normalization point.
+      This material property, also called "material constant" and generally denoted m_c,
+      determines the effect of the undeformed chip thickness on the actual specific cutting
+      force the further away it gets from the unit cutting force's normalization point.
