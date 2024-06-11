@@ -2309,6 +2309,30 @@ void FemMesh::writeABAQUS(const std::string& Filename,
     // write nodes
     anABAQUS_Output << "** Nodes" << std::endl;
     anABAQUS_Output << "*Node, NSET=Nall" << std::endl;
+
+    // Axisymmetric, plane strain and plane stress elements expect nodes in the plane z=0.
+    // Set the z coordinate to 0 to avoid possible rounding errors.
+    switch (faceVariant) {
+        case ABAQUS_FaceVariant::Stress:
+        case ABAQUS_FaceVariant::Stress_Reduced:
+        case ABAQUS_FaceVariant::Strain:
+        case ABAQUS_FaceVariant::Strain_Reduced:
+        case ABAQUS_FaceVariant::Axisymmetric:
+        case ABAQUS_FaceVariant::Axisymmetric_Reduced:
+            for (const auto& elMap : elementsMapFac) {
+                const NodesMap& nodeMap = elMap.second;
+                for (const auto& nodes : nodeMap) {
+                    for (int n : nodes.second) {
+                        Base::Vector3d& vertex = vertexMap[n];
+                        vertex.z = 0.0;
+                    }
+                }
+            }
+            break;
+        default:
+            break;
+    }
+
     // This way we get sorted output.
     // See https://forum.freecad.org/viewtopic.php?f=18&t=12646&start=40#p103004
     for (const auto& it : vertexMap) {

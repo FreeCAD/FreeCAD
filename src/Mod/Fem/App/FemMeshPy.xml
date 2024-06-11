@@ -77,9 +77,17 @@
         <Methode Name="writeABAQUS" Const="true" Keyword="true">
             <Documentation>
                 <UserDocu>Write out as ABAQUS inp
-                    writeABAQUS(file, int elemParam, bool groupParam)
-                    elemParam: 0 = all elements, 1 = highest elements only, 2 = FEM elements only (only edges not belonging to faces and faces not belonging to volumes)
-                    groupParam: true = write group data, false = do not write group data
+                    writeABAQUS(file, int elemParam, bool groupParam, str volVariant, str faceVariant, str edgeVariant)
+
+                    elemParam:
+                        0: All elements
+                        1: Highest elements only
+                        2: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)
+
+                    groupParam:
+                        True: Write group data
+                        False: Do not write group data
+
                     volVariant: Volume elements
                         "standard": Tetra4 -> C3D4, Penta6 -> C3D6, Hexa8 -> C3D8, Tetra10 -> C3D10, Penta15 -> C3D15, Hexa20 -> C3D20
                         "reduced": Hexa8 -> C3D8R, Hexa20 -> C3D20R
@@ -107,7 +115,8 @@
 
                     Elements are selected according to CalculiX availability.
                     For example if volume variant "modified" is selected, Tetra10 mesh
-                    elements are assigned to C3D10T and remain elements uses "standard"</UserDocu>
+                    elements are assigned to C3D10T and remain elements uses "standard".
+                    Axisymmetric, plane strain and plane stress elements expect nodes in the plane z=0.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="setTransform">
