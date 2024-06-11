@@ -897,6 +897,32 @@ bool ViewProviderAssembly::onDelete(const std::vector<std::string>& subNames)
     return ViewProviderPart::onDelete(subNames);
 }
 
+bool ViewProviderAssembly::canDelete(App::DocumentObject* obj) const
+{
+    bool res = ViewProviderPart::canDelete(obj);
+    if (res) {
+        // If a component is deleted, then we delete the joints as well.
+        for (auto parent : obj->getInList()) {
+            if (!parent) {
+                continue;
+            }
+
+            auto* prop =
+                dynamic_cast<App::PropertyBool*>(parent->getPropertyByName("EnableLimits"));
+            auto* prop2 =
+                dynamic_cast<App::PropertyLink*>(parent->getPropertyByName("ObjectToGround"));
+            if (prop || prop2) {
+                Gui::Command::doCommand(Gui::Command::Doc,
+                                        "App.getDocument(\"%s\").removeObject(\"%s\")",
+                                        parent->getDocument()->getName(),
+                                        parent->getNameInDocument());
+            }
+        }
+    }
+
+    return res;
+}
+
 void ViewProviderAssembly::setDraggerVisibility(bool val)
 {
     asmDraggerSwitch->whichChild = val ? SO_SWITCH_ALL : SO_SWITCH_NONE;
