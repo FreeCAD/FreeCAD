@@ -941,6 +941,9 @@ class ViewProviderJoint:
 
         return True
 
+    def canDelete(self, _obj):
+        return True
+
 
 ################ Grounded Joint object #################
 
@@ -1142,6 +1145,9 @@ class ViewProviderGroundedJoint:
         """When restoring the serialized object from document we have the chance to set some internals here.\
                 Since no data were serialized nothing needs to be done here."""
         return None
+
+    def canDelete(self, _obj):
+        return True
 
 
 class MakeJointSelGate:
