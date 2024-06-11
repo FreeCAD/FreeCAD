@@ -155,7 +155,7 @@ PyMOD_INIT_FUNC(FreeCAD)
                 path += upDir;
                 break;
             }
-        } 
+        }
     }
 
     if (path.isEmpty()) {
