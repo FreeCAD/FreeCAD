@@ -50,7 +50,7 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
 
-    ui->comboBoxScheme->addItem(QString::fromLatin1("Preference system"), static_cast<int>(-1));
+    ui->comboBoxScheme->addItem(QLatin1String("Preference system"), static_cast<int>(-1));
     int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
     for (int i=0; i<num; i++) {
         QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
@@ -75,8 +75,8 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
 
     ui->ValueInput->setParamGrpPath(QByteArray("User parameter:BaseApp/History/UnitsCalculator"));
     // set a default that also illustrates how the dialog works
-    ui->ValueInput->setText(QString::fromLatin1("1 cm"));
-    ui->UnitInput->setText(QString::fromLatin1("in"));
+    ui->ValueInput->setText(QLatin1String("1 cm"));
+    ui->UnitInput->setText(QLatin1String("in"));
 
     units << Base::Unit::Acceleration
           << Base::Unit::AmountOfSubstance
@@ -157,7 +157,7 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
     // first check the unit, if it is invalid, getTypeString() outputs an empty string
     // explicitly check for "ee" like in "eeV" because this would trigger an exception in Base::Unit
     // since it expects then a scientific notation number like "1e3"
-    if ( (ui->UnitInput->text().mid(0, 2) == QString::fromLatin1("ee")) ||
+    if ( (ui->UnitInput->text().mid(0, 2) == QLatin1String("ee")) ||
         Base::Unit(ui->UnitInput->text()).getTypeString().isEmpty()) {
         ui->ValueOutput->setText(QString::fromLatin1("%1 %2").arg(tr("unknown unit:"), ui->UnitInput->text()));
         ui->pushButton_Copy->setEnabled(false);
@@ -167,7 +167,7 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
             ui->ValueOutput->setText(tr("unit mismatch"));
             ui->pushButton_Copy->setEnabled(false);
         } else { // the unit is valid and has the same type
-            double convertValue = Base::Quantity::parse(QString::fromLatin1("1") + ui->UnitInput->text()).getValue();
+            double convertValue = Base::Quantity::parse(QLatin1String("1") + ui->UnitInput->text()).getValue();
             // we got now e.g. for "1 in" the value '25.4' because 1 in = 25.4 mm
             // the result is now just quant / convertValue because the input is always in a base unit
             // (an input of "1 cm" will immediately be converted to "10 mm" by Gui::InputField of the dialog)
@@ -204,7 +204,7 @@ void DlgUnitsCalculator::copy()
 void DlgUnitsCalculator::returnPressed()
 {
     if (ui->pushButton_Copy->isEnabled()) {
-        ui->textEdit->append(ui->ValueInput->text() + QString::fromLatin1(" = ") + ui->ValueOutput->text());
+        ui->textEdit->append(ui->ValueInput->text() + QLatin1String(" = ") + ui->ValueOutput->text());
         ui->ValueInput->pushToHistory();
     }
 }

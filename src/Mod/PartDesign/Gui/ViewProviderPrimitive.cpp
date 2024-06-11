@@ -114,40 +114,40 @@ void ViewProviderPrimitive::updateData(const App::Property* p) {
 
 QIcon ViewProviderPrimitive::getIcon() const {
 
-    QString str = QString::fromLatin1("PartDesign_");
+    QString str = QLatin1String("PartDesign_");
     auto* prim = static_cast<PartDesign::FeaturePrimitive*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive");
+        str += QLatin1String("Additive");
     else
-        str += QString::fromLatin1("Subtractive");
+        str += QLatin1String("Subtractive");
 
     switch(prim->getPrimitiveType()) {
     case PartDesign::FeaturePrimitive::Box:
-        str += QString::fromLatin1("Box");
+        str += QLatin1String("Box");
         break;
     case PartDesign::FeaturePrimitive::Cylinder:
-        str += QString::fromLatin1("Cylinder");
+        str += QLatin1String("Cylinder");
         break;
     case PartDesign::FeaturePrimitive::Sphere:
-        str += QString::fromLatin1("Sphere");
+        str += QLatin1String("Sphere");
         break;
     case PartDesign::FeaturePrimitive::Cone:
-        str += QString::fromLatin1("Cone");
+        str += QLatin1String("Cone");
         break;
     case PartDesign::FeaturePrimitive::Ellipsoid:
-        str += QString::fromLatin1("Ellipsoid");
+        str += QLatin1String("Ellipsoid");
         break;
     case PartDesign::FeaturePrimitive::Torus:
-        str += QString::fromLatin1("Torus");
+        str += QLatin1String("Torus");
         break;
     case PartDesign::FeaturePrimitive::Prism:
-        str += QString::fromLatin1("Prism");
+        str += QLatin1String("Prism");
         break;
     case PartDesign::FeaturePrimitive::Wedge:
-        str += QString::fromLatin1("Wedge");
+        str += QLatin1String("Wedge");
         break;
     }
 
-    str += QString::fromLatin1(".svg");
+    str += QLatin1String(".svg");
     return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }

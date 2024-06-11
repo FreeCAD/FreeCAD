@@ -150,7 +150,7 @@ private:
             Gui::getMainWindow()->addWindow(edit);
 
             QFont font = editor->font();
-            font.setFamily(QString::fromLatin1("Arial"));
+            font.setFamily(QLatin1String("Arial"));
             editor->setFont(font);
         }
 

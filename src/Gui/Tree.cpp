@@ -434,7 +434,7 @@ TreeWidgetItemDelegate::TreeWidgetItemDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
 {
     artificial = new QTreeView(qobject_cast<QWidget*>(parent));
-    artificial->setObjectName(QString::fromLatin1("DocumentTreeItems"));
+    artificial->setObjectName(QLatin1String("DocumentTreeItems"));
     artificial->setFixedSize(0, 0); // ensure that it does not render
 }
 

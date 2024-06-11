@@ -84,7 +84,7 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     workbenches.sort();
     int index = 1;
     ui->workbenchBox->addItem(QApplication::windowIcon(), tr("Global"));
-    ui->workbenchBox->setItemData(0, QVariant(QString::fromLatin1("Global")), Qt::UserRole);
+    ui->workbenchBox->setItemData(0, QVariant(QLatin1String("Global")), Qt::UserRole);
     for (const auto & workbench : workbenches) {
         QPixmap px = Application::Instance->workbenchIcon(workbench);
         QString mt = Application::Instance->workbenchMenuText(workbench);
@@ -653,7 +653,7 @@ void DlgCustomToolbarsImp::setActionGroup(QAction* action, const QList<QAction*>
             QMenu* menu = tb->menu();
             if (!menu) {
                 tb->setPopupMode(QToolButton::MenuButtonPopup);
-                tb->setObjectName(QString::fromLatin1("qt_toolbutton_menubutton"));
+                tb->setObjectName(QLatin1String("qt_toolbutton_menubutton"));
                 auto menu = new QMenu(tb);
                 menu->addActions(group);
                 tb->setMenu(menu);

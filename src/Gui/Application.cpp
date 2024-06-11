@@ -2274,9 +2274,9 @@ QString Application::replaceVariablesInQss(QString qssText)
     QString accentColor2 = QString::fromLatin1("#%1").arg(longAccentColor2, 8, 16, QLatin1Char('0')).toUpper().mid(0, 7);
     QString accentColor3 = QString::fromLatin1("#%1").arg(longAccentColor3, 8, 16, QLatin1Char('0')).toUpper().mid(0, 7);
 
-    qssText = qssText.replace(QString::fromLatin1("@ThemeAccentColor1"), accentColor1);
-    qssText = qssText.replace(QString::fromLatin1("@ThemeAccentColor2"), accentColor2);
-    qssText = qssText.replace(QString::fromLatin1("@ThemeAccentColor3"), accentColor3);
+    qssText = qssText.replace(QLatin1String("@ThemeAccentColor1"), accentColor1);
+    qssText = qssText.replace(QLatin1String("@ThemeAccentColor2"), accentColor2);
+    qssText = qssText.replace(QLatin1String("@ThemeAccentColor3"), accentColor3);
 
     //Base::Console().Warning("%s\n", qssText.toStdString());
     return qssText;

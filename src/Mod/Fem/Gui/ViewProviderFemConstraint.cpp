@@ -341,20 +341,20 @@ void ViewProviderFemConstraint::checkForWizard()
     if (!mw) {
         return;
     }
-    QDockWidget* dw = mw->findChild<QDockWidget*>(QString::fromLatin1("Combo View"));
+    QDockWidget* dw = mw->findChild<QDockWidget*>(QLatin1String("Combo View"));
     if (!dw) {
         return;
     }
-    QWidget* cw = dw->findChild<QWidget*>(QString::fromLatin1("Combo View"));
+    QWidget* cw = dw->findChild<QWidget*>(QLatin1String("Combo View"));
     if (!cw) {
         return;
     }
-    QTabWidget* tw = cw->findChild<QTabWidget*>(QString::fromLatin1("combiTab"));
+    QTabWidget* tw = cw->findChild<QTabWidget*>(QLatin1String("combiTab"));
     if (!tw) {
         return;
     }
     QStackedWidget* sw =
-        tw->findChild<QStackedWidget*>(QString::fromLatin1("qt_tabwidget_stackedwidget"));
+        tw->findChild<QStackedWidget*>(QLatin1String("qt_tabwidget_stackedwidget"));
     if (!sw) {
         return;
     }
@@ -367,10 +367,10 @@ void ViewProviderFemConstraint::checkForWizard()
     if (!wd) {
         return;
     }
-    QObject* wiz = findChildByName(wd, QString::fromLatin1("ShaftWizard"));
+    QObject* wiz = findChildByName(wd, QLatin1String("ShaftWizard"));
     if (wiz) {
         wizardWidget = static_cast<QVBoxLayout*>(wiz);
-        wizardSubLayout = wiz->findChild<QVBoxLayout*>(QString::fromLatin1("ShaftWizardLayout"));
+        wizardSubLayout = wiz->findChild<QVBoxLayout*>(QLatin1String("ShaftWizardLayout"));
     }
 }
 

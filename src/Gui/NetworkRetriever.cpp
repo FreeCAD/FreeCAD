@@ -291,30 +291,30 @@ bool NetworkRetriever::startDownload( const QString& startUrl )
         wgetArguments << QString::fromLatin1("--output-document=%1").arg( d->outputFile );
     // timestamping enabled -> update newer files only
     if ( d->timeStamp )
-        wgetArguments << QString::fromLatin1("-N");
+        wgetArguments << QLatin1String("-N");
     // get all needed image files
     if ( d->img )
-        wgetArguments << QString::fromLatin1("-p");
+        wgetArguments << QLatin1String("-p");
     // follow relative links only
     if ( d->folRel )
-        wgetArguments<< QString::fromLatin1("-L");
+        wgetArguments<< QLatin1String("-L");
     if ( d->recurse )
     {
-        wgetArguments << QString::fromLatin1("-r");
+        wgetArguments << QLatin1String("-r");
         wgetArguments << QString::fromLatin1("--level=%1").arg( d->level );
     }
 
     if ( d->nop )
-        wgetArguments << QString::fromLatin1("-np");
+        wgetArguments << QLatin1String("-np");
 
     // convert absolute links in to relative
     if ( d->convert )
-        wgetArguments << QString::fromLatin1("-k");
+        wgetArguments << QLatin1String("-k");
     // number of tries
     wgetArguments << QString::fromLatin1("--tries=%1").arg( d->tries );
     // use HTML file extension
     if ( d->html )
-        wgetArguments << QString::fromLatin1("-E");
+        wgetArguments << QLatin1String("-E");
 
     // start URL
     wgetArguments << startUrl;
@@ -327,10 +327,10 @@ bool NetworkRetriever::startDownload( const QString& startUrl )
         QDir::setCurrent(d->dir);
     }
 
-    wget->start(QString::fromLatin1("wget"), wgetArguments);
+    wget->start(QLatin1String("wget"), wgetArguments);
     QDir::setCurrent( cwd );
 #else
-    wget->start(QString::fromLatin1("wget"), wgetArguments);
+    wget->start(QLatin1String("wget"), wgetArguments);
 #endif
 
     return wget->state() == QProcess::Running;
@@ -374,7 +374,7 @@ void NetworkRetriever::wgetFinished(int exitCode, QProcess::ExitStatus status)
 bool NetworkRetriever::testWget()
 {
     QProcess proc;
-    proc.setProgram(QString::fromLatin1("wget"));
+    proc.setProgram(QLatin1String("wget"));
     proc.start();
     bool ok = proc.state() == QProcess::Running;
     proc.kill();
@@ -484,7 +484,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
 
         // set output directory
         QString path = QString::fromStdString(App::Application::getHomePath());
-        path += QString::fromLatin1("/doc/");
+        path += QLatin1String("/doc/");
         ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/OnlineHelp");
         path = QString::fromUtf8(hURLGrp->GetASCII( "DownloadLocation", path.toLatin1() ).c_str());
 

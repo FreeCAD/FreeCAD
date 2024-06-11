@@ -60,9 +60,9 @@ TaskWidgetPathCompound::TaskWidgetPathCompound(ViewProviderPathCompound *Compoun
     const std::vector<App::DocumentObject*> &Paths = pcCompound->Group.getValues();
     for (std::vector<App::DocumentObject*>::const_iterator it= Paths.begin();it!=Paths.end();++it) {
         QString name = QString::fromLatin1((*it)->getNameInDocument());
-        name += QString::fromLatin1(" (");
+        name += QLatin1String(" (");
         name += QString::fromUtf8((*it)->Label.getValue());
-        name += QString::fromLatin1(")");
+        name += QLatin1String(")");
         ui->PathsList->addItem(name);
     }
 }
@@ -79,7 +79,7 @@ std::vector<std::string> TaskWidgetPathCompound::getList() const {
         QListWidgetItem* item = ui->PathsList->item(i);
         QString name = item->text();
         QStringList result;
-        result = name.split(QRegularExpression(QString::fromLatin1("\\s+")));
+        result = name.split(QRegularExpression(QLatin1String("\\s+")));
         std::cout << result[0].toStdString() << std::endl;
         names.push_back(result[0].toStdString());
     }

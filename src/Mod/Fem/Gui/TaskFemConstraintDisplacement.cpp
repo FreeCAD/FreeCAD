@@ -486,21 +486,21 @@ std::string TaskFemConstraintDisplacement::get_spinzRotation() const
 std::string TaskFemConstraintDisplacement::get_xFormula() const
 {
     QString xFormula = ui->DisplacementXFormulaLE->text();
-    xFormula.replace(QString::fromLatin1("\""), QString::fromLatin1("\\\""));
+    xFormula.replace(QLatin1String("\""), QLatin1String("\\\""));
     return xFormula.toStdString();
 }
 
 std::string TaskFemConstraintDisplacement::get_yFormula() const
 {
     QString yFormula = ui->DisplacementYFormulaLE->text();
-    yFormula.replace(QString::fromLatin1("\""), QString::fromLatin1("\\\""));
+    yFormula.replace(QLatin1String("\""), QLatin1String("\\\""));
     return yFormula.toStdString();
 }
 
 std::string TaskFemConstraintDisplacement::get_zFormula() const
 {
     QString zFormula = ui->DisplacementZFormulaLE->text();
-    zFormula.replace(QString::fromLatin1("\""), QString::fromLatin1("\\\""));
+    zFormula.replace(QLatin1String("\""), QLatin1String("\\\""));
     return zFormula.toStdString();
 }
 

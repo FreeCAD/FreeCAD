@@ -459,9 +459,9 @@ QString Tessellation::getStandardParameters(App::DocumentObject* obj) const
                                 "Relative=%3")
                 .arg(devFace)
                 .arg(devAngle)
-                .arg(relative ? QString::fromLatin1("True") : QString::fromLatin1("False"));
+                .arg(relative ? QLatin1String("True") : QLatin1String("False"));
     if (ui->meshShapeColors->isChecked()) {
-        param += QString::fromLatin1(",Segments=True");
+        param += QLatin1String(",Segments=True");
     }
 
     auto svp = Base::freecad_dynamic_cast<PartGui::ViewProviderPartExt>(

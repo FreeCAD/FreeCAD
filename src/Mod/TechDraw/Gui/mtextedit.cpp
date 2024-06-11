@@ -48,21 +48,21 @@ void MTextEdit::insertFromMimeData(const QMimeData *source) {
         QStringList formats = source->formats();
         QString format;
         for (int i=0; i<formats.size(); i++) {
-            if (formats[i] == QLatin1String("image/bmp"))  { format = QString::fromLatin1("BMP");  break; }
-            if (formats[i] == QLatin1String("image/jpeg")) { format = QString::fromLatin1("JPG");  break; }
-            if (formats[i] == QLatin1String("image/jpg"))  { format = QString::fromLatin1("JPG");  break; }
-            if (formats[i] == QLatin1String("image/gif"))  { format = QString::fromLatin1("GIF");  break; }
-            if (formats[i] == QLatin1String("image/png"))  { format = QString::fromLatin1("PNG");  break; }
-            if (formats[i] == QLatin1String("image/pbm"))  { format = QString::fromLatin1("PBM");  break; }
-            if (formats[i] == QLatin1String("image/pgm"))  { format = QString::fromLatin1("PGM");  break; }
-            if (formats[i] == QLatin1String("image/ppm"))  { format = QString::fromLatin1("PPM");  break; }
-            if (formats[i] == QLatin1String("image/tiff")) { format = QString::fromLatin1("TIFF"); break; }
-            if (formats[i] == QLatin1String("image/xbm"))  { format = QString::fromLatin1("XBM");  break; }
-            if (formats[i] == QLatin1String("image/xpm"))  { format = QString::fromLatin1("XPM");  break; }
+            if (formats[i] == QLatin1String("image/bmp"))  { format = QLatin1String("BMP");  break; }
+            if (formats[i] == QLatin1String("image/jpeg")) { format = QLatin1String("JPG");  break; }
+            if (formats[i] == QLatin1String("image/jpg"))  { format = QLatin1String("JPG");  break; }
+            if (formats[i] == QLatin1String("image/gif"))  { format = QLatin1String("GIF");  break; }
+            if (formats[i] == QLatin1String("image/png"))  { format = QLatin1String("PNG");  break; }
+            if (formats[i] == QLatin1String("image/pbm"))  { format = QLatin1String("PBM");  break; }
+            if (formats[i] == QLatin1String("image/pgm"))  { format = QLatin1String("PGM");  break; }
+            if (formats[i] == QLatin1String("image/ppm"))  { format = QLatin1String("PPM");  break; }
+            if (formats[i] == QLatin1String("image/tiff")) { format = QLatin1String("TIFF"); break; }
+            if (formats[i] == QLatin1String("image/xbm"))  { format = QLatin1String("XBM");  break; }
+            if (formats[i] == QLatin1String("image/xpm"))  { format = QLatin1String("XPM");  break; }
             }
         if (!format.isEmpty()) {
 //          dropImage(qvariant_cast<QImage>(source->imageData()), format);
-            dropImage(qvariant_cast<QImage>(source->imageData()), QString::fromLatin1("JPG")); // Sorry, ale cokoli jiného dlouho trvá
+            dropImage(qvariant_cast<QImage>(source->imageData()), QLatin1String("JPG")); // Sorry, ale cokoli jiného dlouho trvá
             return;
             }
         }

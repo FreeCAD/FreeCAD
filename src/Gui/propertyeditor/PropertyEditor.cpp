@@ -734,7 +734,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
         menu.addSeparator();
 
         // the subMenu is allocated on the heap but managed by menu.
-        auto subMenu = new QMenu(QString::fromLatin1("Status"), &menu);
+        auto subMenu = new QMenu(QLatin1String("Status"), &menu);
 
         QAction *action;
         QString text;
@@ -749,7 +749,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
 #define ACTION_SETUP(_name) do {                                        \
             _ACTION_SETUP(_name);                                       \
             if(propType & App::Prop_##_name) {                          \
-                action->setText(text + QString::fromLatin1(" *"));      \
+                action->setText(text + QLatin1String(" *"));      \
                 action->setChecked(true);                               \
             }                                                           \
         }while(0)

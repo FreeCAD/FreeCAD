@@ -104,11 +104,11 @@ public:
     /// It shows a dialog with header and message provided and a checkbox in check state with the message provided.
     /// It uses a parameter in path "User parameter:BaseApp/CheckMessages" derived from the header test, defaulting to false,
     /// to store the status of the checkbox, when the user exits the modal dialog.
-    static void showMessage(const QString& header, const QString& message, bool check = false, const QString& checkText = QString::fromLatin1("Don't show me again"));
+    static void showMessage(const QString& header, const QString& message, bool check = false, const QString& checkText = QLatin1String("Don't show me again"));
 
     /// Same as showMessage above, but it checks the specific preference path and parameter provided, defaulting to entryDefault value if the parameter is not present.
     static void showMessage(const QString& header, const QString& message, const QString& prefPath, const QString& paramEntry, bool entryDefault = false,
-                            bool check = false, const QString& checkText = QString::fromLatin1("Don't show me again"));
+                            bool check = false, const QString& checkText = QLatin1String("Don't show me again"));
 
 private Q_SLOTS:
     void slotClicked(QAbstractButton *b);

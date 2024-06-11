@@ -48,7 +48,7 @@ QString getAutoGroupCommandStr()
             "addObject(App.ActiveDocument.ActiveObject)\n")
             .arg(activePartName);
     }
-    return QString::fromLatin1("# Object created at document root.");
+    return QLatin1String("# Object created at document root.");
 }
 }
 

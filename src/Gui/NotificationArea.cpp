@@ -1233,7 +1233,7 @@ void NotificationArea::showInNotificationArea()
             i++;
         }
 
-        msgw += QString::fromLatin1("</table></p>");
+        msgw += QLatin1String("</table></p>");
 
         NotificationBox::Options options = NotificationBox::Options::RestrictAreaToReference;
 

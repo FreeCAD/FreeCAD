@@ -953,7 +953,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
 
     multiFilterStatus = filterList->getMultiFilter();
 
-    ui->listWidgetConstraints->setStyleSheet(QString::fromLatin1("margin-top: 0px"));
+    ui->listWidgetConstraints->setStyleSheet(QLatin1String("margin-top: 0px"));
 
     //NOLINTBEGIN
     Gui::Application* app = Gui::Application::Instance;
@@ -1353,7 +1353,7 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
         if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) == 0
             && strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) == 0) {
             if (msg.pSubName) {
-                QRegularExpression rx(QString::fromLatin1("^Constraint(\\d+)$"));
+                QRegularExpression rx(QLatin1String("^Constraint(\\d+)$"));
                 QRegularExpressionMatch match;
                 QString expr = QString::fromLatin1(msg.pSubName);
                 boost::ignore_unused(expr.indexOf(rx, 0, &match));
@@ -1432,7 +1432,7 @@ void TaskSketcherConstraints::OnChange(Base::Subject<const char*>& rCaller, cons
 void TaskSketcherConstraints::getSelectionGeoId(QString expr, int& geoid,
                                                 Sketcher::PointPos& pointpos)
 {
-    QRegularExpression rxEdge(QString::fromLatin1("^Edge(\\d+)$"));
+    QRegularExpression rxEdge(QLatin1String("^Edge(\\d+)$"));
     QRegularExpressionMatch match;
     boost::ignore_unused(expr.indexOf(rxEdge, 0, &match));
     geoid = Sketcher::GeoEnum::GeoUndef;
@@ -1446,7 +1446,7 @@ void TaskSketcherConstraints::getSelectionGeoId(QString expr, int& geoid,
         }
     }
     else {
-        QRegularExpression rxVertex(QString::fromLatin1("^Vertex(\\d+)$"));
+        QRegularExpression rxVertex(QLatin1String("^Vertex(\\d+)$"));
         boost::ignore_unused(expr.indexOf(rxVertex, 0, &match));
 
         if (match.hasMatch()) {

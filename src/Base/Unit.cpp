@@ -465,166 +465,166 @@ QString Unit::getString() const
 QString Unit::getTypeString() const
 {
     if (*this == Unit::Acceleration) {
-        return QString::fromLatin1("Acceleration");
+        return QLatin1String("Acceleration");
     }
     if (*this == Unit::AmountOfSubstance) {
-        return QString::fromLatin1("AmountOfSubstance");
+        return QLatin1String("AmountOfSubstance");
     }
     if (*this == Unit::Angle) {
-        return QString::fromLatin1("Angle");
+        return QLatin1String("Angle");
     }
     if (*this == Unit::AngleOfFriction) {
-        return QString::fromLatin1("AngleOfFriction");
+        return QLatin1String("AngleOfFriction");
     }
     if (*this == Unit::Area) {
-        return QString::fromLatin1("Area");
+        return QLatin1String("Area");
     }
     if (*this == Unit::CurrentDensity) {
-        return QString::fromLatin1("CurrentDensity");
+        return QLatin1String("CurrentDensity");
     }
     if (*this == Unit::Density) {
-        return QString::fromLatin1("Density");
+        return QLatin1String("Density");
     }
     if (*this == Unit::DissipationRate) {
-        return QString::fromLatin1("DissipationRate");
+        return QLatin1String("DissipationRate");
     }
     if (*this == Unit::DynamicViscosity) {
-        return QString::fromLatin1("DynamicViscosity");
+        return QLatin1String("DynamicViscosity");
     }
     if (*this == Unit::ElectricalCapacitance) {
-        return QString::fromLatin1("ElectricalCapacitance");
+        return QLatin1String("ElectricalCapacitance");
     }
     if (*this == Unit::ElectricalConductance) {
-        return QString::fromLatin1("ElectricalConductance");
+        return QLatin1String("ElectricalConductance");
     }
     if (*this == Unit::ElectricalConductivity) {
-        return QString::fromLatin1("ElectricalConductivity");
+        return QLatin1String("ElectricalConductivity");
     }
     if (*this == Unit::ElectricalInductance) {
-        return QString::fromLatin1("ElectricalInductance");
+        return QLatin1String("ElectricalInductance");
     }
     if (*this == Unit::ElectricalResistance) {
-        return QString::fromLatin1("ElectricalResistance");
+        return QLatin1String("ElectricalResistance");
     }
     if (*this == Unit::ElectricCharge) {
-        return QString::fromLatin1("ElectricCharge");
+        return QLatin1String("ElectricCharge");
     }
     if (*this == Unit::ElectricCurrent) {
-        return QString::fromLatin1("ElectricCurrent");
+        return QLatin1String("ElectricCurrent");
     }
     if (*this == Unit::ElectricPotential) {
-        return QString::fromLatin1("ElectricPotential");
+        return QLatin1String("ElectricPotential");
     }
     if (*this == Unit::Frequency) {
-        return QString::fromLatin1("Frequency");
+        return QLatin1String("Frequency");
     }
     if (*this == Unit::Force) {
-        return QString::fromLatin1("Force");
+        return QLatin1String("Force");
     }
     if (*this == Unit::HeatFlux) {
-        return QString::fromLatin1("HeatFlux");
+        return QLatin1String("HeatFlux");
     }
     if (*this == Unit::InverseArea) {
-        return QString::fromLatin1("InverseArea");
+        return QLatin1String("InverseArea");
     }
     if (*this == Unit::InverseLength) {
-        return QString::fromLatin1("InverseLength");
+        return QLatin1String("InverseLength");
     }
     if (*this == Unit::InverseVolume) {
-        return QString::fromLatin1("InverseVolume");
+        return QLatin1String("InverseVolume");
     }
     if (*this == Unit::KinematicViscosity) {
-        return QString::fromLatin1("KinematicViscosity");
+        return QLatin1String("KinematicViscosity");
     }
     if (*this == Unit::Length) {
-        return QString::fromLatin1("Length");
+        return QLatin1String("Length");
     }
     if (*this == Unit::LuminousIntensity) {
-        return QString::fromLatin1("LuminousIntensity");
+        return QLatin1String("LuminousIntensity");
     }
     if (*this == Unit::MagneticFieldStrength) {
-        return QString::fromLatin1("MagneticFieldStrength");
+        return QLatin1String("MagneticFieldStrength");
     }
     if (*this == Unit::MagneticFlux) {
-        return QString::fromLatin1("MagneticFlux");
+        return QLatin1String("MagneticFlux");
     }
     if (*this == Unit::MagneticFluxDensity) {
-        return QString::fromLatin1("MagneticFluxDensity");
+        return QLatin1String("MagneticFluxDensity");
     }
     if (*this == Unit::Magnetization) {
-        return QString::fromLatin1("Magnetization");
+        return QLatin1String("Magnetization");
     }
     if (*this == Unit::Mass) {
-        return QString::fromLatin1("Mass");
+        return QLatin1String("Mass");
     }
     if (*this == Unit::Pressure) {
-        return QString::fromLatin1("Pressure");
+        return QLatin1String("Pressure");
     }
     if (*this == Unit::Power) {
-        return QString::fromLatin1("Power");
+        return QLatin1String("Power");
     }
     if (*this == Unit::ShearModulus) {
-        return QString::fromLatin1("ShearModulus");
+        return QLatin1String("ShearModulus");
     }
     if (*this == Unit::SpecificEnergy) {
-        return QString::fromLatin1("SpecificEnergy");
+        return QLatin1String("SpecificEnergy");
     }
     if (*this == Unit::SpecificHeat) {
-        return QString::fromLatin1("SpecificHeat");
+        return QLatin1String("SpecificHeat");
     }
     if (*this == Unit::Stiffness) {
-        return QString::fromLatin1("Stiffness");
+        return QLatin1String("Stiffness");
     }
     if (*this == Unit::StiffnessDensity) {
-        return QString::fromLatin1("StiffnessDensity");
+        return QLatin1String("StiffnessDensity");
     }
     if (*this == Unit::Stress) {
-        return QString::fromLatin1("Stress");
+        return QLatin1String("Stress");
     }
     if (*this == Unit::Temperature) {
-        return QString::fromLatin1("Temperature");
+        return QLatin1String("Temperature");
     }
     if (*this == Unit::ThermalConductivity) {
-        return QString::fromLatin1("ThermalConductivity");
+        return QLatin1String("ThermalConductivity");
     }
     if (*this == Unit::ThermalExpansionCoefficient) {
-        return QString::fromLatin1("ThermalExpansionCoefficient");
+        return QLatin1String("ThermalExpansionCoefficient");
     }
     if (*this == Unit::ThermalTransferCoefficient) {
-        return QString::fromLatin1("ThermalTransferCoefficient");
+        return QLatin1String("ThermalTransferCoefficient");
     }
     if (*this == Unit::TimeSpan) {
-        return QString::fromLatin1("TimeSpan");
+        return QLatin1String("TimeSpan");
     }
     if (*this == Unit::UltimateTensileStrength) {
-        return QString::fromLatin1("UltimateTensileStrength");
+        return QLatin1String("UltimateTensileStrength");
     }
     if (*this == Unit::VacuumPermittivity) {
-        return QString::fromLatin1("VacuumPermittivity");
+        return QLatin1String("VacuumPermittivity");
     }
     if (*this == Unit::Velocity) {
-        return QString::fromLatin1("Velocity");
+        return QLatin1String("Velocity");
     }
     if (*this == Unit::Volume) {
-        return QString::fromLatin1("Volume");
+        return QLatin1String("Volume");
     }
     if (*this == Unit::VolumeFlowRate) {
-        return QString::fromLatin1("VolumeFlowRate");
+        return QLatin1String("VolumeFlowRate");
     }
     if (*this == Unit::VolumetricThermalExpansionCoefficient) {
-        return QString::fromLatin1("VolumetricThermalExpansionCoefficient");
+        return QLatin1String("VolumetricThermalExpansionCoefficient");
     }
     if (*this == Unit::Work) {
-        return QString::fromLatin1("Work");
+        return QLatin1String("Work");
     }
     if (*this == Unit::YieldStrength) {
-        return QString::fromLatin1("YieldStrength");
+        return QLatin1String("YieldStrength");
     }
     if (*this == Unit::YoungsModulus) {
-        return QString::fromLatin1("YoungsModulus");
+        return QLatin1String("YoungsModulus");
     }
     if (*this == Unit::Moment) {
-        return QString::fromLatin1("Moment");
+        return QLatin1String("Moment");
     }
 
     return {};

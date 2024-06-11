@@ -215,9 +215,9 @@ void DlgExtrusion::onSelectEdgeClicked()
             for (App::DocumentObject* obj: sources){
                 if (!obj)
                     continue;
-                features_to_hide.append(QString::fromLatin1("App.ActiveDocument."));
+                features_to_hide.append(QLatin1String("App.ActiveDocument."));
                 features_to_hide.append(QString::fromLatin1(obj->getNameInDocument()));
-                features_to_hide.append(QString::fromLatin1(", \n"));
+                features_to_hide.append(QLatin1String(", \n"));
             }
             QByteArray code_2 = code.arg(features_to_hide).toLatin1();
             Base::Interpreter().runString(code_2.constData());
@@ -602,7 +602,7 @@ void DlgExtrusion::setAxisLink(const char* objname, const char* subname)
     if(objname && strlen(objname) > 0){
         QString txt = QString::fromLatin1(objname);
         if (subname && strlen(subname) > 0){
-            txt = txt + QString::fromLatin1(":") + QString::fromLatin1(subname);
+            txt = txt + QLatin1String(":") + QString::fromLatin1(subname);
         }
         ui->txtLink->setText(txt);
     } else {

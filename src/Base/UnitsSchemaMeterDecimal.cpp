@@ -48,37 +48,37 @@ QString UnitsSchemaMeterDecimal::schemaTranslate(const Base::Quantity& quant,
     Unit unit = quant.getUnit();
     if (unit == Unit::Length) {
         // all length units in metres
-        unitString = QString::fromLatin1("m");
+        unitString = QLatin1String("m");
         factor = 1e3;
     }
     else if (unit == Unit::Area) {
         // all area units in square meters
-        unitString = QString::fromLatin1("m^2");
+        unitString = QLatin1String("m^2");
         factor = 1e6;
     }
     else if (unit == Unit::Volume) {
         // all area units in cubic meters
-        unitString = QString::fromLatin1("m^3");
+        unitString = QLatin1String("m^3");
         factor = 1e9;
     }
     else if (unit == Unit::Power) {
         // watts
-        unitString = QString::fromLatin1("W");
+        unitString = QLatin1String("W");
         factor = 1000000;
     }
     else if (unit == Unit::ElectricPotential) {
         // volts
-        unitString = QString::fromLatin1("V");
+        unitString = QLatin1String("V");
         factor = 1000000;
     }
     else if (unit == Unit::HeatFlux) {
         // watts per square metre
-        unitString = QString::fromLatin1("W/m^2");
+        unitString = QLatin1String("W/m^2");
         factor = 1.0;
     }
     else if (unit == Unit::Velocity) {
         // metres per second
-        unitString = QString::fromLatin1("m/s");
+        unitString = QLatin1String("m/s");
         factor = 1e3;
     }
     else {

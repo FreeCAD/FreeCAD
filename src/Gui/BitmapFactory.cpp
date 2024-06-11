@@ -113,22 +113,22 @@ void BitmapFactoryInst::restoreCustomPaths()
 
 void BitmapFactoryInst::addPath(const QString& path)
 {
-    QDir::addSearchPath(QString::fromLatin1("icons"), path);
+    QDir::addSearchPath(QLatin1String("icons"), path);
 }
 
 void BitmapFactoryInst::removePath(const QString& path)
 {
-    QStringList iconPaths = QDir::searchPaths(QString::fromLatin1("icons"));
+    QStringList iconPaths = QDir::searchPaths(QLatin1String("icons"));
     int pos = iconPaths.indexOf(path);
     if (pos != -1) {
         iconPaths.removeAt(pos);
-        QDir::setSearchPaths(QString::fromLatin1("icons"), iconPaths);
+        QDir::setSearchPaths(QLatin1String("icons"), iconPaths);
     }
 }
 
 QStringList BitmapFactoryInst::getPaths() const
 {
-    return QDir::searchPaths(QString::fromLatin1("icons"));
+    return QDir::searchPaths(QLatin1String("icons"));
 }
 
 QStringList BitmapFactoryInst::findIconFiles() const
@@ -138,7 +138,7 @@ QStringList BitmapFactoryInst::findIconFiles() const
     for (QList<QByteArray>::iterator it = formats.begin(); it != formats.end(); ++it)
         filters << QString::fromLatin1("*.%1").arg(QString::fromLatin1(*it).toLower());
 
-    QStringList paths = QDir::searchPaths(QString::fromLatin1("icons"));
+    QStringList paths = QDir::searchPaths(QLatin1String("icons"));
     paths.removeDuplicates();
     for (QStringList::Iterator pt = paths.begin(); pt != paths.end(); ++pt) {
         QDir d(*pt);
@@ -232,7 +232,7 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
         QList<QByteArray> formats = QImageReader::supportedImageFormats();
         formats.prepend("SVG"); // check first for SVG to use special import mechanism
 
-        QString fileName = QString::fromLatin1("icons:") + fn;
+        QString fileName = QLatin1String("icons:") + fn;
         if (!loadPixmap(fileName, icon)) {
             // Go through supported file formats
             for (QList<QByteArray>::iterator fm = formats.begin(); fm != formats.end(); ++fm) {
@@ -266,7 +266,7 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSizeF& size,
 
     // try to find it in the 'icons' search paths
     if (iconPath.isEmpty()) {
-        QString fileName = QString::fromLatin1("icons:") + fn;
+        QString fileName = QLatin1String("icons:") + fn;
         QFileInfo fi(fileName);
         if (fi.exists()) {
             iconPath = fi.filePath();

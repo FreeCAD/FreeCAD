@@ -102,7 +102,7 @@ gsl::owner<QComboBox*> GeneralSettingsWidget::createLanguageComboBox()
     auto langToStr = Gui::Translator::instance()->activeLanguage();
     QByteArray language = hGrp->GetASCII("Language", langToStr.c_str()).c_str();
     auto comboBox = gsl::owner<QComboBox*>(new QComboBox);
-    comboBox->addItem(QString::fromLatin1("English"), QByteArray("English"));
+    comboBox->addItem(QLatin1String("English"), QByteArray("English"));
     Gui::TStringMap list = Gui::Translator::instance()->supportedLocales();
     int index {1};
     for (auto it = list.begin(); it != list.end(); ++it, ++index) {

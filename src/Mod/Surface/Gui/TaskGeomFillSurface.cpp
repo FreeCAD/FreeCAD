@@ -216,7 +216,7 @@ GeomFillSurface::GeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomF
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    remove->setShortcut(QString::fromLatin1("Del"));
+    remove->setShortcut(QKeySequence(QLatin1String("Del")));
     ui->listWidget->addAction(remove);
     connect(remove, &QAction::triggered, this, &GeomFillSurface::onDeleteEdge);
 

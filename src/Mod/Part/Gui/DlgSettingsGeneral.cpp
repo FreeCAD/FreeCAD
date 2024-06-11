@@ -98,7 +98,7 @@ DlgImportExportIges::DlgImportExportIges(QWidget* parent)
     bg->addButton(ui->radioButtonBRepOn, 1);
 
     QRegularExpression rx;
-    rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
+    rx.setPattern(QLatin1String("[\\x00-\\x7F]+"));
     QRegularExpressionValidator* companyValidator = new QRegularExpressionValidator(ui->lineEditCompany);
     companyValidator->setRegularExpression(rx);
     ui->lineEditCompany->setValidator(companyValidator);

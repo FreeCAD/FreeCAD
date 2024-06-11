@@ -133,7 +133,7 @@ FillingEdgePanel::FillingEdgePanel(ViewProviderFilling* vp, Surface::Filling* ob
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QString::fromLatin1("Del"));
+    action->setShortcut(QKeySequence(QLatin1String("Del")));
     action->setShortcutContext(Qt::WidgetShortcut);
     ui->listUnbound->addAction(action);
     connect(action, &QAction::triggered, this, &FillingEdgePanel::onDeleteUnboundEdge);
@@ -388,11 +388,11 @@ void FillingEdgePanel::onListUnboundItemDoubleClicked(QListWidgetItem* item)
                     // fill up the combo boxes
                     modifyBoundary(true);
                     ui->comboBoxUnboundFaces->addItem(tr("None"), QByteArray(""));
-                    ui->comboBoxUnboundCont->addItem(QString::fromLatin1("C0"),
+                    ui->comboBoxUnboundCont->addItem(QLatin1String("C0"),
                                                      static_cast<int>(GeomAbs_C0));
-                    ui->comboBoxUnboundCont->addItem(QString::fromLatin1("G1"),
+                    ui->comboBoxUnboundCont->addItem(QLatin1String("G1"),
                                                      static_cast<int>(GeomAbs_G1));
-                    ui->comboBoxUnboundCont->addItem(QString::fromLatin1("G2"),
+                    ui->comboBoxUnboundCont->addItem(QLatin1String("G2"),
                                                      static_cast<int>(GeomAbs_G2));
                     TopTools_ListIteratorOfListOfShape it(adj_faces);
                     for (; it.More(); it.Next()) {

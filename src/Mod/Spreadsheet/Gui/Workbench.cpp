@@ -68,7 +68,7 @@ void Workbench::activated()
 {
     if (!initialized) {
         QList<QToolBar*> bars =
-            Gui::getMainWindow()->findChildren<QToolBar*>(QString::fromLatin1("Spreadsheet"));
+            Gui::getMainWindow()->findChildren<QToolBar*>(QLatin1String("Spreadsheet"));
 
         if (bars.size() == 1) {
             QToolBar* bar = bars[0];
@@ -77,13 +77,13 @@ void Workbench::activated()
             QPalette palette = Gui::getMainWindow()->palette();
 
             QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-                QString::fromLatin1("Spreadsheet_ForegroundColor"));
+                QLatin1String("Spreadsheet_ForegroundColor"));
             if (!fgList.empty()) {
                 foregroundColor = fgList[0];
             }
             else {
                 foregroundColor = new QtColorPicker(bar);
-                foregroundColor->setObjectName(QString::fromLatin1("Spreadsheet_ForegroundColor"));
+                foregroundColor->setObjectName(QLatin1String("Spreadsheet_ForegroundColor"));
                 foregroundColor->setStandardColors();
                 foregroundColor->setCurrentColor(palette.color(QPalette::WindowText));
                 QObject::connect(foregroundColor,
@@ -98,13 +98,13 @@ void Workbench::activated()
             bar->addWidget(foregroundColor);
 
             QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-                QString::fromLatin1("Spreadsheet_BackgroundColor"));
+                QLatin1String("Spreadsheet_BackgroundColor"));
             if (!bgList.empty()) {
                 backgroundColor = bgList[0];
             }
             else {
                 backgroundColor = new QtColorPicker(bar);
-                backgroundColor->setObjectName(QString::fromLatin1("Spreadsheet_BackgroundColor"));
+                backgroundColor->setObjectName(QLatin1String("Spreadsheet_BackgroundColor"));
                 backgroundColor->setStandardColors();
                 backgroundColor->setCurrentColor(palette.color(QPalette::Base));
                 QObject::connect(backgroundColor,

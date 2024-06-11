@@ -276,7 +276,7 @@ void DlgSettingsNavigation::onMouseButtonClicked()
         ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(), Qt::UserRole);
     void* instance = Base::Type::createInstanceByName((const char*)data.toByteArray());
     std::unique_ptr<UserNavigationStyle> ns(static_cast<UserNavigationStyle*>(instance));
-    uimb.groupBox->setTitle(uimb.groupBox->title() + QString::fromLatin1(" ")
+    uimb.groupBox->setTitle(uimb.groupBox->title() + QLatin1String(" ")
                             + ui->comboNavigationStyle->currentText());
     QString descr;
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::SELECTION));
@@ -407,7 +407,7 @@ CameraDialog::CameraDialog(QWidget* parent)
 
     auto currentViewButton = new QPushButton(this);
     currentViewButton->setText(tr("Current view"));
-    currentViewButton->setObjectName(QString::fromLatin1("currentView"));
+    currentViewButton->setObjectName(QLatin1String("currentView"));
     layout->addWidget(currentViewButton, 4, 1, 2, 1);
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);

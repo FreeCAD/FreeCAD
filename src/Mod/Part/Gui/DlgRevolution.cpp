@@ -231,7 +231,7 @@ void DlgRevolution::setAxisLink(const char* objname, const char* subname)
     if(objname && strlen(objname) > 0){
         QString txt = QString::fromLatin1(objname);
         if (subname && strlen(subname) > 0){
-            txt = txt + QString::fromLatin1(":") + QString::fromLatin1(subname);
+            txt = txt + QLatin1String(":") + QString::fromLatin1(subname);
         }
         ui->txtAxisLink->setText(txt);
     } else {
@@ -375,9 +375,9 @@ void DlgRevolution::accept()
         QString shape, type, name, solid;
         QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
         if (ui->checkSolid->isChecked()) {
-            solid = QString::fromLatin1("True");}
+            solid = QLatin1String("True");}
         else {
-            solid = QString::fromLatin1("False");}
+            solid = QLatin1String("False");}
 
         App::PropertyLinkSub axisLink;
         this->getAxisLink(axisLink);
@@ -389,18 +389,18 @@ void DlgRevolution::accept()
                              QString::fromLatin1("\"%1\"").arg(QString::fromLatin1(axisLink.getSubValues()[0].c_str()))
                              : QString() );
         } else {
-            strAxisLink = QString::fromLatin1("None");
+            strAxisLink = QLatin1String("None");
         }
 
         QString symmetric;
         if (ui->checkSymmetric->isChecked()) {
-            symmetric = QString::fromLatin1("True");}
+            symmetric = QLatin1String("True");}
         else {
-            symmetric = QString::fromLatin1("False");}
+            symmetric = QLatin1String("False");}
 
         for (auto item : items) {
             shape = item->data(0, Qt::UserRole).toString();
-            type = QString::fromLatin1("Part::Revolution");
+            type = QLatin1String("Part::Revolution");
             name = QString::fromLatin1(activeDoc->getUniqueObjectName("Revolve").c_str());
             Base::Vector3d axis = this->getDirection();
             Base::Vector3d pos = this->getPosition();

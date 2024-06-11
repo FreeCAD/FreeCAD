@@ -788,8 +788,8 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
         // Coin SbString doesn't handle utf8 well, so we convert to ascii
         QString schemeMinute = QString::fromUtf8("\xE2\x80\xB2");  // prime symbol
         QString schemeSecond = QString::fromUtf8("\xE2\x80\xB3");  // double prime symbol
-        QString escapeMinute = QString::fromLatin1("\'");          // substitute ascii single quote
-        QString escapeSecond = QString::fromLatin1("\"");          // substitute ascii double quote
+        QString escapeMinute = QLatin1String("\'");          // substitute ascii single quote
+        QString escapeSecond = QLatin1String("\"");          // substitute ascii double quote
         QString displayString = qUserString.replace(schemeMinute, escapeMinute);
         displayString = displayString.replace(schemeSecond, escapeSecond);
         return Base::Tools::toStdString(displayString);

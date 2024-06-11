@@ -72,10 +72,10 @@ PythonEditor::PythonEditor(QWidget* parent)
 
     // set accelerators
     auto comment = new QShortcut(this);
-    comment->setKey(QKeySequence(QString::fromLatin1("ALT+C")));
+    comment->setKey(QKeySequence(QLatin1String("ALT+C")));
 
     auto uncomment = new QShortcut(this);
-    uncomment->setKey(QKeySequence(QString::fromLatin1("ALT+U")));
+    uncomment->setKey(QKeySequence(QLatin1String("ALT+U")));
 
     connect(comment, &QShortcut::activated, this, &PythonEditor::onComment);
     connect(uncomment, &QShortcut::activated, this, &PythonEditor::onUncomment);
@@ -150,9 +150,9 @@ void PythonEditor::contextMenuEvent ( QContextMenuEvent * e )
     if (!isReadOnly()) {
         menu->addSeparator();
         QAction* comment = menu->addAction( tr("Comment"), this, &PythonEditor::onComment);
-        comment->setShortcut(QKeySequence(QString::fromLatin1("ALT+C")));
+        comment->setShortcut(QKeySequence(QLatin1String("ALT+C")));
         QAction* uncomment = menu->addAction( tr("Uncomment"), this, &PythonEditor::onUncomment);
-        uncomment->setShortcut(QKeySequence(QString::fromLatin1("ALT+U")));
+        uncomment->setShortcut(QKeySequence(QLatin1String("ALT+U")));
     }
 
     menu->exec(e->globalPos());
@@ -171,8 +171,8 @@ void PythonEditor::keyPressEvent(QKeyEvent* e)
         ParameterGrp::handle hPrefGrp = getWindowParameter();
         int indent = hPrefGrp->GetInt( "IndentSize", 4 );
         bool space = hPrefGrp->GetBool( "Spaces", true );
-        QString ch = space ? QString::fromLatin1(" ")
-                           : QString::fromLatin1("\t");
+        QString ch = space ? QLatin1String(" ")
+                           : QLatin1String("\t");
 
         QTextCursor cursor = textCursor();
         QString currentLineText = cursor.block().text();

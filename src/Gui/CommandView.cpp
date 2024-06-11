@@ -342,19 +342,19 @@ Action * StdCmdFreezeViews::createAction()
     saveView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* loadView = pcAction->addAction(QObject::tr("Load views..."));
     loadView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
-    pcAction->addAction(QString::fromLatin1(""))->setSeparator(true);
+    pcAction->addAction(QLatin1String(""))->setSeparator(true);
     freezeView = pcAction->addAction(QObject::tr("Freeze view"));
     freezeView->setShortcut(QString::fromLatin1(getAccel()));
     freezeView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     clearView = pcAction->addAction(QObject::tr("Clear views"));
     clearView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
-    separator = pcAction->addAction(QString::fromLatin1(""));
+    separator = pcAction->addAction(QLatin1String(""));
     separator->setSeparator(true);
     offset = pcAction->actions().count();
 
     // allow up to 50 views
     for (int i=0; i<maxViews; i++)
-        pcAction->addAction(QString::fromLatin1(""))->setVisible(false);
+        pcAction->addAction(QLatin1String(""))->setVisible(false);
 
     return pcAction;
 }
@@ -443,11 +443,11 @@ void StdCmdFreezeViews::onSaveViews()
             // remove the first line because it's a comment like '#Inventor V2.1 ascii'
             QString viewPos;
             if (!data.isEmpty()) {
-                QStringList lines = data.split(QString::fromLatin1("\n"));
+                QStringList lines = data.split(QLatin1String("\n"));
                 if (lines.size() > 1) {
                     lines.pop_front();
                 }
-                viewPos = lines.join(QString::fromLatin1(" "));
+                viewPos = lines.join(QLatin1String(" "));
             }
 
             str << "    <Camera settings=\"" << viewPos.toLatin1().constData() << "\"/>\n";
@@ -503,19 +503,19 @@ void StdCmdFreezeViews::onRestoreViews()
     }
 
     bool ok;
-    int scheme = root.attribute(QString::fromLatin1("SchemaVersion")).toInt(&ok);
+    int scheme = root.attribute(QLatin1String("SchemaVersion")).toInt(&ok);
     if (!ok)
         return;
     // SchemeVersion "1"
     if (scheme == 1) {
         // read the views, ignore the attribute 'Count'
-        QDomElement child = root.firstChildElement(QString::fromLatin1("Views"));
-        QDomElement views = child.firstChildElement(QString::fromLatin1("Camera"));
+        QDomElement child = root.firstChildElement(QLatin1String("Views"));
+        QDomElement views = child.firstChildElement(QLatin1String("Camera"));
         QStringList cameras;
         while (!views.isNull()) {
-            QString setting = views.attribute(QString::fromLatin1("settings"));
+            QString setting = views.attribute(QLatin1String("settings"));
             cameras << setting;
-            views = views.nextSiblingElement(QString::fromLatin1("Camera"));
+            views = views.nextSiblingElement(QLatin1String("Camera"));
         }
 
         // use this rather than the attribute 'Count' because it could be
@@ -671,43 +671,43 @@ Gui::Action * StdCmdDrawStyle::createAction()
     a0->setCheckable(true);
     a0->setIcon(BitmapFactory().iconFromTheme("DrawStyleAsIs"));
     a0->setChecked(true);
-    a0->setObjectName(QString::fromLatin1("Std_DrawStyleAsIs"));
+    a0->setObjectName(QLatin1String("Std_DrawStyleAsIs"));
     a0->setShortcut(QKeySequence(QString::fromUtf8("V,1")));
     a0->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a1 = pcAction->addAction(QString());
     a1->setCheckable(true);
     a1->setIcon(BitmapFactory().iconFromTheme("DrawStylePoints"));
-    a1->setObjectName(QString::fromLatin1("Std_DrawStylePoints"));
+    a1->setObjectName(QLatin1String("Std_DrawStylePoints"));
     a1->setShortcut(QKeySequence(QString::fromUtf8("V,2")));
     a1->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a2 = pcAction->addAction(QString());
     a2->setCheckable(true);
     a2->setIcon(BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
-    a2->setObjectName(QString::fromLatin1("Std_DrawStyleWireframe"));
+    a2->setObjectName(QLatin1String("Std_DrawStyleWireframe"));
     a2->setShortcut(QKeySequence(QString::fromUtf8("V,3")));
     a2->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a3 = pcAction->addAction(QString());
     a3->setCheckable(true);
     a3->setIcon(BitmapFactory().iconFromTheme("DrawStyleHiddenLine"));
-    a3->setObjectName(QString::fromLatin1("Std_DrawStyleHiddenLine"));
+    a3->setObjectName(QLatin1String("Std_DrawStyleHiddenLine"));
     a3->setShortcut(QKeySequence(QString::fromUtf8("V,4")));
     a3->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a4 = pcAction->addAction(QString());
     a4->setCheckable(true);
     a4->setIcon(BitmapFactory().iconFromTheme("DrawStyleNoShading"));
-    a4->setObjectName(QString::fromLatin1("Std_DrawStyleNoShading"));
+    a4->setObjectName(QLatin1String("Std_DrawStyleNoShading"));
     a4->setShortcut(QKeySequence(QString::fromUtf8("V,5")));
     a4->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a5 = pcAction->addAction(QString());
     a5->setCheckable(true);
     a5->setIcon(BitmapFactory().iconFromTheme("DrawStyleShaded"));
-    a5->setObjectName(QString::fromLatin1("Std_DrawStyleShaded"));
+    a5->setObjectName(QLatin1String("Std_DrawStyleShaded"));
     a5->setShortcut(QKeySequence(QString::fromUtf8("V,6")));
     a5->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a6 = pcAction->addAction(QString());
     a6->setCheckable(true);
     a6->setIcon(BitmapFactory().iconFromTheme("DrawStyleFlatLines"));
-    a6->setObjectName(QString::fromLatin1("Std_DrawStyleFlatLines"));
+    a6->setObjectName(QLatin1String("Std_DrawStyleFlatLines"));
     a6->setShortcut(QKeySequence(QString::fromUtf8("V,7")));
     a6->setWhatsThis(QString::fromLatin1(getWhatsThis()));
 
@@ -2120,8 +2120,8 @@ void StdViewLoadImage::activated(int iMsg)
     QFileDialog dialog(Gui::getMainWindow());
     dialog.setWindowTitle(QObject::tr("Choose an image file to open"));
     dialog.setMimeTypeFilters(mimeTypeFilters);
-    dialog.selectMimeTypeFilter(QString::fromLatin1("image/png"));
-    dialog.setDefaultSuffix(QString::fromLatin1("png"));
+    dialog.selectMimeTypeFilter(QLatin1String("image/png"));
+    dialog.setDefaultSuffix(QLatin1String("png"));
     dialog.setAcceptMode(QFileDialog::AcceptOpen);
     dialog.setOption(QFileDialog::DontUseNativeDialog);
 

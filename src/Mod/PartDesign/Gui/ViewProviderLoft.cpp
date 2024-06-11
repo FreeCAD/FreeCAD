@@ -170,14 +170,14 @@ void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vecto
 }
 
 QIcon ViewProviderLoft::getIcon() const {
-    QString str = QString::fromLatin1("PartDesign_");
+    QString str = QLatin1String("PartDesign_");
     auto* prim = static_cast<PartDesign::Loft*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive");
+        str += QLatin1String("Additive");
     else
-        str += QString::fromLatin1("Subtractive");
+        str += QLatin1String("Subtractive");
 
-    str += QString::fromLatin1("Loft.svg");
+    str += QLatin1String("Loft.svg");
     return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 

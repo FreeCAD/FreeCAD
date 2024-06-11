@@ -63,12 +63,12 @@ DlgSettingsCacheDirectory::DlgSettingsCacheDirectory(QWidget* parent)
     QString path = QString::fromStdString(App::Application::getUserCachePath());
     ui->cacheLocation->setText(path);
 
-    ui->comboBoxLimit->addItem(QString::fromLatin1("100 MB"), 100);
-    ui->comboBoxLimit->addItem(QString::fromLatin1("300 MB"), 300);
-    ui->comboBoxLimit->addItem(QString::fromLatin1("500 MB"), 500);
-    ui->comboBoxLimit->addItem(QString::fromLatin1("1 GB"), 1024);
-    ui->comboBoxLimit->addItem(QString::fromLatin1("2 GB"), 2048);
-    ui->comboBoxLimit->addItem(QString::fromLatin1("3 GB"), 3072);
+    ui->comboBoxLimit->addItem(QLatin1String("100 MB"), 100);
+    ui->comboBoxLimit->addItem(QLatin1String("300 MB"), 300);
+    ui->comboBoxLimit->addItem(QLatin1String("500 MB"), 500);
+    ui->comboBoxLimit->addItem(QLatin1String("1 GB"), 1024);
+    ui->comboBoxLimit->addItem(QLatin1String("2 GB"), 2048);
+    ui->comboBoxLimit->addItem(QLatin1String("3 GB"), 3072);
 
     connect(ui->pushButtonCheck, &QPushButton::clicked, this, &DlgSettingsCacheDirectory::runCheck);
     connect(ui->openButton, &QPushButton::clicked, this, &DlgSettingsCacheDirectory::openDirectory);
@@ -208,7 +208,7 @@ bool ApplicationCache::periodicCheckOfSize() const
     QString application = QString::fromStdString(App::Application::getExecutableName());
 
     QSettings settings(vendor, application);
-    QString key = QString::fromLatin1("LastCacheCheck");
+    QString key = QLatin1String("LastCacheCheck");
     QDate date = settings.value(key).toDate();
     QDate now = QDate::currentDate();
 
@@ -286,7 +286,7 @@ void ApplicationCache::clearDirectory(const QString& path)
 {
     // Add the transient directories and the lock files to the ignore list
     QDir tmp = QString::fromUtf8(App::Application::getUserCachePath().c_str());
-    tmp.setNameFilters(QStringList() << QString::fromLatin1("*.lock"));
+    tmp.setNameFilters(QStringList() << QLatin1String("*.lock"));
     tmp.setFilter(QDir::Files);
 
     QList<QFileInfo> dirs;
@@ -347,10 +347,10 @@ qint64 ApplicationCache::toBytes(unsigned int sizeInMB)
 
 QString ApplicationCache::toString(qint64 size)
 {
-    QStringList units = {QString::fromLatin1("Bytes"),
-                         QString::fromLatin1("KB"),
-                         QString::fromLatin1("MB"),
-                         QString::fromLatin1("GB")};
+    QStringList units = {QLatin1String("Bytes"),
+                         QLatin1String("KB"),
+                         QLatin1String("MB"),
+                         QLatin1String("GB")};
     int i;
     double outputSize = size;
     for (i=0; i<units.size()-1; i++) {

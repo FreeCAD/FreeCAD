@@ -369,7 +369,7 @@ QStringList getRefListForMode(AttachEngine &attacher, eMapMode mmode)
         for(eRefType rt : rts){
             buf.append(getShapeTypeText(rt));
         }
-        strlist.append(buf.join(QString::fromLatin1(", ")));
+        strlist.append(buf.join(QLatin1String(", ")));
     }
     return strlist;
 }

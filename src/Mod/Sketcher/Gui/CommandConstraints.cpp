@@ -5810,7 +5810,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                             /*disambig.:*/ "perpendicular constraint");
             QString strError =
                 QObject::tr("Select some geometry from the sketch.", "perpendicular constraint");
-            strError.append(QString::fromLatin1("\n\n"));
+            strError.append(QLatin1String("\n\n"));
             strError.append(strBasicHelp);
             Gui::TranslatedUserWarning(getActiveGuiDocument(),
                                        QObject::tr("Wrong selection"),
@@ -6642,7 +6642,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                             /*disambig.:*/ "tangent constraint");
             QString strError =
                 QObject::tr("Select some geometry from the sketch.", "tangent constraint");
-            strError.append(QString::fromLatin1("\n\n"));
+            strError.append(QLatin1String("\n\n"));
             strError.append(strBasicHelp);
             Gui::TranslatedUserWarning(getActiveGuiDocument(),
                                        QObject::tr("Wrong selection"),

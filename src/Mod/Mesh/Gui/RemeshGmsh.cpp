@@ -97,9 +97,9 @@ GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
 
     d->ui.method->addItem(tr("Automatic"), static_cast<int>(Automatic));
     d->ui.method->addItem(tr("Adaptive"), static_cast<int>(MeshAdapt));
-    d->ui.method->addItem(QString::fromLatin1("Delaunay"), static_cast<int>(Delaunay));
+    d->ui.method->addItem(QLatin1String("Delaunay"), static_cast<int>(Delaunay));
     d->ui.method->addItem(tr("Frontal"), static_cast<int>(FrontalDelaunay));
-    d->ui.method->addItem(QString::fromLatin1("BAMG"), static_cast<int>(BAMG));
+    d->ui.method->addItem(QLatin1String("BAMG"), static_cast<int>(BAMG));
     d->ui.method->addItem(tr("Frontal Quad"), static_cast<int>(FrontalDelaunayForQuads));
     d->ui.method->addItem(tr("Parallelograms"), static_cast<int>(PackingOfParallelograms));
 }

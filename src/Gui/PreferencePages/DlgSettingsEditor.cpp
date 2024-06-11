@@ -57,7 +57,7 @@ namespace
  */
 QFont getMonospaceFont()
 {
-    QFont font(QString::fromLatin1("monospace"));
+    QFont font(QLatin1String("monospace"));
     if (font.fixedPitch())
         return font;
     font.setStyleHint(QFont::Monospace);
@@ -66,7 +66,7 @@ QFont getMonospaceFont()
     font.setStyleHint(QFont::TypeWriter);
     if (font.fixedPitch())
         return font;
-    font.setFamily(QString::fromLatin1("courier"));
+    font.setFamily(QLatin1String("courier"));
     if (font.fixedPitch())
         return font;
     return font; // We failed, but return whatever we have anyway

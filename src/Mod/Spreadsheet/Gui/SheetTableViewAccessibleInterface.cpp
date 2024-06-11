@@ -46,7 +46,7 @@ SheetTableViewAccessibleInterface::SheetTableViewAccessibleInterface(
 QString SheetTableViewAccessibleInterface::text(QAccessible::Text txt) const
 {
     if (txt == QAccessible::Help) {
-        return QString::fromLatin1("Implement me");
+        return QLatin1String("Implement me");
     }
     return QAccessibleWidget::text(txt);
 }

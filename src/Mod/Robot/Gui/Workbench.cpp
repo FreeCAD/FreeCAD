@@ -64,7 +64,7 @@ void Workbench::activated()
 {
     std::string res = App::Application::getResourceDir();
     QString dir = QString::fromLatin1("%1/Mod/Robot/Lib/Kuka").arg(QString::fromUtf8(res.c_str()));
-    QFileInfo fi(dir, QString::fromLatin1("kr_16.csv"));
+    QFileInfo fi(dir, QLatin1String("kr_16.csv"));
 
     if (!fi.exists()) {
         Gui::WaitCursor wc;

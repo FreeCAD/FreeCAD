@@ -110,22 +110,22 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
     // TODO remove this field (2015-09-08, Fat-Zer)
     App::DocumentObject* o = getObject();
     if (o->is<PartDesign::Plane>()) {
-        datumType = QString::fromLatin1("Plane");
+        datumType = QLatin1String("Plane");
         datumText = QObject::tr("Plane");
         datumMenuText = tr("Datum Plane parameters");
     }
     else if (o->is<PartDesign::Line>()) {
-        datumType = QString::fromLatin1("Line");
+        datumType = QLatin1String("Line");
         datumText = QObject::tr("Line");
         datumMenuText = tr("Datum Line parameters");
     }
     else if (o->is<PartDesign::Point>()) {
-        datumType = QString::fromLatin1("Point");
+        datumType = QLatin1String("Point");
         datumText = QObject::tr("Point");
         datumMenuText = tr("Datum Point parameters");
     }
     else if (o->is<PartDesign::CoordinateSystem>()) {
-        datumType = QString::fromLatin1("CoordinateSystem");
+        datumType = QLatin1String("CoordinateSystem");
         datumText = QObject::tr("Coordinate System");
         datumMenuText = tr("Local Coordinate System parameters");
     }

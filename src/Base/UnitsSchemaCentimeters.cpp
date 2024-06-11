@@ -41,33 +41,33 @@ QString UnitsSchemaCentimeters::schemaTranslate(const Base::Quantity& quant,
     Unit unit = quant.getUnit();
     if (unit == Unit::Length) {
         // all length units in centimeters
-        unitString = QString::fromLatin1("cm");
+        unitString = QLatin1String("cm");
         factor = 10.0;
     }
     else if (unit == Unit::Area) {
         // all area units in square meters
-        unitString = QString::fromLatin1("m^2");
+        unitString = QLatin1String("m^2");
         factor = 1000000.0;
     }
     else if (unit == Unit::Volume) {
         // all area units in cubic meters
-        unitString = QString::fromLatin1("m^3");
+        unitString = QLatin1String("m^3");
         factor = 1000000000.0;
     }
     else if (unit == Unit::Power) {
-        unitString = QString::fromLatin1("W");
+        unitString = QLatin1String("W");
         factor = 1000000;
     }
     else if (unit == Unit::ElectricPotential) {
-        unitString = QString::fromLatin1("V");
+        unitString = QLatin1String("V");
         factor = 1000000;
     }
     else if (unit == Unit::HeatFlux) {
-        unitString = QString::fromLatin1("W/m^2");
+        unitString = QLatin1String("W/m^2");
         factor = 1.0;
     }
     else if (unit == Unit::Velocity) {
-        unitString = QString::fromLatin1("mm/min");
+        unitString = QLatin1String("mm/min");
         factor = 1.0 / 60;
     }
     else {

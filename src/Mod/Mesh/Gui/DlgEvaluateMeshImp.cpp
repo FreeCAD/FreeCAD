@@ -1278,7 +1278,7 @@ void DlgEvaluateMeshImp::onRepairAllTogetherClicked()
             QMessageBox::warning(this, tr("Mesh repair"), QString::fromLatin1(e.what()));
         }
         catch (...) {
-            QMessageBox::warning(this, tr("Mesh repair"), QString::fromLatin1("Unknown error occurred."));
+            QMessageBox::warning(this, tr("Mesh repair"), QLatin1String("Unknown error occurred."));
         }
 
         doc->commitCommand();

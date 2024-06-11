@@ -109,10 +109,10 @@ void FitBSplineCurveWidget::tryAccept()
     arguments.append(QString::fromLatin1("MaxDegree = %1").arg(d->ui.degreeMax->value()));
     arguments.append(QString::fromLatin1("Continuity = %1").arg(d->ui.continuity->currentIndex()));
     if (d->ui.checkBoxClosed->isChecked()) {
-        arguments.append(QString::fromLatin1("Closed = True"));
+        arguments.append(QLatin1String("Closed = True"));
     }
     else {
-        arguments.append(QString::fromLatin1("Closed = False"));
+        arguments.append(QLatin1String("Closed = False"));
     }
     if (d->ui.checkBox->isChecked()) {
         int index = d->ui.paramType->currentIndex();

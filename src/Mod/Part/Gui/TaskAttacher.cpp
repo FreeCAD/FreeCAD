@@ -72,17 +72,17 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
 
     if ((sub.size() > 4) && (sub.substr(0,4) == "Face")) {
         int subId = std::atoi(&sub[4]);
-        return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(subId);
+        return QString::fromLatin1(obj->getNameInDocument()) + QLatin1String(":") + QObject::tr("Face") + QString::number(subId);
     } else if ((sub.size() > 4) && (sub.substr(0,4) == "Edge")) {
         int subId = std::atoi(&sub[4]);
-        return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Edge") + QString::number(subId);
+        return QString::fromLatin1(obj->getNameInDocument()) + QLatin1String(":") + QObject::tr("Edge") + QString::number(subId);
     } else if ((sub.size() > 6) && (sub.substr(0,6) == "Vertex")) {
         int subId = std::atoi(&sub[6]);
-        return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Vertex") + QString::number(subId);
+        return QString::fromLatin1(obj->getNameInDocument()) + QLatin1String(":") + QObject::tr("Vertex") + QString::number(subId);
     } else {
         //something else that face/edge/vertex. Can be empty string.
         return QString::fromLatin1(obj->getNameInDocument())
-                + (sub.length()>0 ? QString::fromLatin1(":") : QString())
+                + (sub.length()>0 ? QLatin1String(":") : QString())
                 + QString::fromLatin1(sub.c_str());
     }
 }
@@ -323,7 +323,7 @@ bool TaskAttacher::updatePreview()
     }
     if (errMessage.length()>0){
         ui->message->setText(tr("Attachment mode failed: %1").arg(errMessage));
-        ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
+        ui->message->setStyleSheet(QLatin1String("QLabel{color: red;}"));
     } else {
         if (!attached){
             ui->message->setText(tr("Not attached"));
@@ -331,7 +331,7 @@ bool TaskAttacher::updatePreview()
         } else {
             std::vector<QString> strs = AttacherGui::getUIStrings(pcAttach->attacher().getTypeId(),eMapMode(pcAttach->MapMode.getValue()));
             ui->message->setText(tr("Attached with mode %1").arg(strs[0]));
-            ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: green;}"));
+            ui->message->setStyleSheet(QLatin1String("QLabel{color: green;}"));
         }
     }
     QString splmLabelText = attached ? tr("Attachment Offset (in local coordinates):") : tr("Attachment Offset (inactive - not attached):");
@@ -417,7 +417,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         catch(Base::Exception& e) {
             //error = true;
             ui->message->setText(QCoreApplication::translate("Exception", e.what()));
-            ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
+            ui->message->setStyleSheet(QLatin1String("QLabel{color: red;}"));
         }
 
         QLineEdit* line = getLine(iActiveRef);
@@ -606,7 +606,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
 
     QStringList parts = text.split(QChar::fromLatin1(':'));
     if (parts.length() < 2)
-        parts.push_back(QString::fromLatin1(""));
+        parts.push_back(QLatin1String(""));
     // Check whether this is the name of an App::Plane or Part::Datum feature
     App::DocumentObject* obj = ViewProvider->getObject()->getDocument()->getObject(parts[0].toLatin1());
     if (!obj)
@@ -631,21 +631,21 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
             QRegularExpressionMatch match;
             std::stringstream ss;
 
-            rx.setPattern(QString::fromLatin1("^") + tr("Face") + QString::fromLatin1("(\\d+)$"));
+            rx.setPattern(QLatin1String("^") + tr("Face") + QLatin1String("(\\d+)$"));
             if (part.indexOf(rx, 0, &match) >= 0) {
                 int faceId = match.captured(1).toInt();
                 ss << "Face" << faceId;
                 return ss.str();
             }
 
-            rx.setPattern(QString::fromLatin1("^") + tr("Edge") + QString::fromLatin1("(\\d+)$"));
+            rx.setPattern(QLatin1String("^") + tr("Edge") + QLatin1String("(\\d+)$"));
             if (part.indexOf(rx, 0, &match) >= 0) {
                 int lineId = match.captured(1).toInt();
                 ss << "Edge" << lineId;
                 return ss.str();
             }
 
-            rx.setPattern(QString::fromLatin1("^") + tr("Vertex") + QString::fromLatin1("(\\d+)$"));
+            rx.setPattern(QLatin1String("^") + tr("Vertex") + QLatin1String("(\\d+)$"));
             if (part.indexOf(rx, 0, &match) >= 0) {
                 int vertexId = match.captured(1).toInt();
                 ss << "Vertex" << vertexId;
@@ -828,7 +828,7 @@ void TaskAttacher::updateListOfModes()
             if (mmode != mmDeactivated) {
                 tooltip += QString::fromLatin1("\n\n%1\n%2")
                         .arg(tr("Reference combinations:"),
-                             AttacherGui::getRefListForMode(pcAttach->attacher(),mmode).join(QString::fromLatin1("\n")));
+                             AttacherGui::getRefListForMode(pcAttach->attacher(),mmode).join(QLatin1String("\n")));
             }
             item->setToolTip(tooltip);
 
@@ -846,7 +846,7 @@ void TaskAttacher::updateListOfModes()
                     }
                     item->setText(tr("%1 (add %2)").arg(
                                       item->text(),
-                                      buf.join(QString::fromLatin1("+"))
+                                      buf.join(QLatin1String("+"))
                                       ));
                 } else {
                     item->setText(tr("%1 (add more references)").arg(item->text()));

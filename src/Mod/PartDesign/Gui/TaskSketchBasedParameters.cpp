@@ -74,7 +74,7 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
         refStr = QString::fromLatin1(selObj->getNameInDocument());
     } else if (subname.size() > 4) {
         int faceId = std::atoi(&subname[4]);
-        refStr = QString::fromLatin1(selObj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(faceId);
+        refStr = QString::fromLatin1(selObj->getNameInDocument()) + QLatin1String(":") + QObject::tr("Face") + QString::number(faceId);
     }
 
     std::vector<std::string> upToFaces(1,subname);
@@ -138,7 +138,7 @@ QVariant TaskSketchBasedParameters::setUpToFace(const QString& text)
 
     QStringList parts = text.split(QChar::fromLatin1(':'));
     if (parts.length() < 2)
-        parts.push_back(QString::fromLatin1(""));
+        parts.push_back(QLatin1String(""));
 
     // Check whether this is the name of an App::Plane or Part::Datum feature
     App::DocumentObject* obj = vp->getObject()->getDocument()->getObject(parts[0].toLatin1());
@@ -205,7 +205,7 @@ QVariant TaskSketchBasedParameters::objectNameByLabel(const QString& label,
 QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QString& sub) const
 {
     App::Document* doc = this->vp->getObject()->getDocument();
-    QString o = obj.left(obj.indexOf(QString::fromLatin1(":")));
+    QString o = obj.left(obj.indexOf(QLatin1String(":")));
 
     if (o.isEmpty())
         return {};

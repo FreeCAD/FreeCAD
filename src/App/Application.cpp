@@ -2530,7 +2530,7 @@ void Application::initConfig(int argc, char ** argv)
     // Now it's time to read-in the file branding.xml if it exists
     Branding brand;
     QString binDir = QString::fromUtf8((mConfig["AppHomePath"] + "bin").c_str());
-    QFileInfo fi(binDir, QString::fromLatin1("branding.xml"));
+    QFileInfo fi(binDir, QLatin1String("branding.xml"));
     if (fi.exists() && brand.readFile(fi.absoluteFilePath())) {
         Branding::XmlConfig cfg = brand.getUserDefines();
         for (Branding::XmlConfig::iterator it = cfg.begin(); it != cfg.end(); ++it) {
@@ -3066,7 +3066,7 @@ QString getOldGenericDataLocation(QString home)
         return QString::fromStdString(converter.to_bytes(szPath));
     }
 #elif defined(FC_OS_MACOSX)
-    QFileInfo fi(home, QString::fromLatin1("Library/Preferences"));
+    QFileInfo fi(home, QLatin1String("Library/Preferences"));
     home = fi.absoluteFilePath();
 #endif
 
@@ -3173,9 +3173,9 @@ boost::filesystem::path findPath(const QString& stdHome, const QString& customHo
 std::tuple<QString, QString, QString> getCustomPaths()
 {
     QProcessEnvironment env(QProcessEnvironment::systemEnvironment());
-    QString userHome = env.value(QString::fromLatin1("FREECAD_USER_HOME"));
-    QString userData = env.value(QString::fromLatin1("FREECAD_USER_DATA"));
-    QString userTemp = env.value(QString::fromLatin1("FREECAD_USER_TEMP"));
+    QString userHome = env.value(QLatin1String("FREECAD_USER_HOME"));
+    QString userData = env.value(QLatin1String("FREECAD_USER_DATA"));
+    QString userTemp = env.value(QLatin1String("FREECAD_USER_TEMP"));
 
     auto toNativePath = [](QString& path) {
         if (!path.isEmpty()) {
@@ -3200,8 +3200,8 @@ std::tuple<QString, QString, QString> getCustomPaths()
     // if FREECAD_USER_HOME is set but not FREECAD_USER_TEMP
     if (!userHome.isEmpty() && userTemp.isEmpty()) {
         QDir dir(userHome);
-        dir.mkdir(QString::fromLatin1("temp"));
-        QFileInfo fi(dir, QString::fromLatin1("temp"));
+        dir.mkdir(QLatin1String("temp"));
+        QFileInfo fi(dir, QLatin1String("temp"));
         userTemp = fi.absoluteFilePath();
     }
 

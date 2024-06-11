@@ -54,10 +54,10 @@ CurveOnMeshWidget::~CurveOnMeshWidget()
 void CurveOnMeshWidget::setup()
 {
     ui->meshTolerance->setValue(0.2);
-    ui->continuity->addItem(QString::fromLatin1("C0"), static_cast<int>(GeomAbs_C0));
-    ui->continuity->addItem(QString::fromLatin1("C1"), static_cast<int>(GeomAbs_C1));
-    ui->continuity->addItem(QString::fromLatin1("C2"), static_cast<int>(GeomAbs_C2));
-    ui->continuity->addItem(QString::fromLatin1("C3"), static_cast<int>(GeomAbs_C3));
+    ui->continuity->addItem(QLatin1String("C0"), static_cast<int>(GeomAbs_C0));
+    ui->continuity->addItem(QLatin1String("C1"), static_cast<int>(GeomAbs_C1));
+    ui->continuity->addItem(QLatin1String("C2"), static_cast<int>(GeomAbs_C2));
+    ui->continuity->addItem(QLatin1String("C3"), static_cast<int>(GeomAbs_C3));
     ui->continuity->setCurrentIndex(2);
 
     for (int i = 0; i < 8; i++) {

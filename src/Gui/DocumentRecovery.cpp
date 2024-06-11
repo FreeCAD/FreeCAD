@@ -212,7 +212,7 @@ QString DocumentRecovery::createProjectFile(const QString& documentXml)
 {
     QString source = documentXml;
     QFileInfo fi(source);
-    QString dest = fi.dir().absoluteFilePath(QString::fromLatin1("fc_recovery_file.fcstd"));
+    QString dest = fi.dir().absoluteFilePath(QLatin1String("fc_recovery_file.fcstd"));
 
     std::stringstream str;
     str << doctools << "\n";
@@ -412,16 +412,16 @@ DocumentRecoveryPrivate::Info DocumentRecoveryPrivate::getRecoveryInfo(const QFi
     if (doc_dir.exists(QLatin1String("fc_recovery_file.xml"))) {
         XmlConfig cfg = readXmlFile(info.xmlFile);
 
-        if (cfg.contains(QString::fromLatin1("Label"))) {
-            info.label = cfg[QString::fromLatin1("Label")];
+        if (cfg.contains(QLatin1String("Label"))) {
+            info.label = cfg[QLatin1String("Label")];
         }
 
-        if (cfg.contains(QString::fromLatin1("FileName"))) {
-            info.fileName = cfg[QString::fromLatin1("FileName")];
+        if (cfg.contains(QLatin1String("FileName"))) {
+            info.fileName = cfg[QLatin1String("FileName")];
         }
 
-        if (cfg.contains(QString::fromLatin1("Status"))) {
-            QString status = cfg[QString::fromLatin1("Status")];
+        if (cfg.contains(QLatin1String("Status"))) {
+            QString status = cfg[QLatin1String("Status")];
             if (status == QLatin1String("Deprecated"))
                 info.status = DocumentRecoveryPrivate::Overage;
             else if (status == QLatin1String("Success"))
@@ -474,9 +474,9 @@ DocumentRecoveryPrivate::XmlConfig DocumentRecoveryPrivate::readXmlFile(const QS
     file.close();
 
     QVector<QString> filter;
-    filter << QString::fromLatin1("Label");
-    filter << QString::fromLatin1("FileName");
-    filter << QString::fromLatin1("Status");
+    filter << QLatin1String("Label");
+    filter << QLatin1String("FileName");
+    filter << QLatin1String("Status");
 
     QDomElement child;
     if (!root.isNull()) {
@@ -590,7 +590,7 @@ void DocumentRecoveryFinder::checkDocumentDirs(QDir& tmp, const QList<QFileInfo>
     }
     else {
         int countDeletedDocs = 0;
-        QString recovery_files = QString::fromLatin1("fc_recovery_files");
+        QString recovery_files = QLatin1String("fc_recovery_files");
         for (QList<QFileInfo>::const_iterator it = dirs.cbegin(); it != dirs.cend(); ++it) {
             QDir doc_dir(it->absoluteFilePath());
             doc_dir.setFilter(QDir::NoDotAndDotDot|QDir::AllEntries);
@@ -646,7 +646,7 @@ bool DocumentRecoveryFinder::showRecoveryDialogIfNeeded()
 void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(QDir&, const QList<QFileInfo>&, const QString&)> & callableFunc) const
 {
     QDir tmp = QString::fromUtf8(App::Application::getUserCachePath().c_str());
-    tmp.setNameFilters(QStringList() << QString::fromLatin1("*.lock"));
+    tmp.setNameFilters(QStringList() << QLatin1String("*.lock"));
     tmp.setFilter(QDir::Files);
 
     QString exeName = QString::fromStdString(App::Application::getExecutableName());

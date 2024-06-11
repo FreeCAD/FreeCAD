@@ -593,9 +593,9 @@ void DlgSettingsWorkbenchesImp::setStartWorkbenchComboItems()
     }
 
     {   // add special workbench to selection
-        QPixmap px = Application::Instance->workbenchIcon(QString::fromLatin1("NoneWorkbench"));
-        QString key = QString::fromLatin1("<last>");
-        QString value = QString::fromLatin1("$LastModule");
+        QPixmap px = Application::Instance->workbenchIcon(QLatin1String("NoneWorkbench"));
+        QString key = QLatin1String("<last>");
+        QString value = QLatin1String("$LastModule");
         if (px.isNull()) {
             ui->AutoloadModuleCombo->addItem(key, QVariant(value));
         }

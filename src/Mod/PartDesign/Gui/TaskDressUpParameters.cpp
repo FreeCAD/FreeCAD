@@ -294,7 +294,7 @@ void TaskDressUpParameters::createAddAllEdgesAction(QListWidget* parentList)
     // creates a context menu, a shortcut for it and connects it to a slot function
 
     addAllEdgesAction = new QAction(tr("Add all edges"), this);
-    addAllEdgesAction->setShortcut(QKeySequence(QString::fromLatin1("Ctrl+Shift+A")));
+    addAllEdgesAction->setShortcut(QKeySequence(QLatin1String("Ctrl+Shift+A")));
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     addAllEdgesAction->setShortcutVisibleInContextMenu(true);

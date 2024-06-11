@@ -578,7 +578,7 @@ void ParameterGroup::onCreateSubgroup()
 void ParameterGroup::onExportToFile()
 {
     QString file = FileDialog::getSaveFileName( this, tr("Export parameter to file"),
-        QString(), QString::fromLatin1("XML (*.FCParam)"));
+        QString(), QLatin1String("XML (*.FCParam)"));
     if ( !file.isEmpty() )
     {
         QTreeWidgetItem* item = currentItem();
@@ -594,7 +594,7 @@ void ParameterGroup::onExportToFile()
 void ParameterGroup::onImportFromFile()
 {
     QString file = FileDialog::getOpenFileName( this, tr("Import parameter from file"),
-        QString(), QString::fromLatin1("XML (*.FCParam)"));
+        QString(), QLatin1String("XML (*.FCParam)"));
     if ( !file.isEmpty() )
     {
         QTreeWidgetItem* item = currentItem();
@@ -912,8 +912,8 @@ void ParameterValue::onCreateBoolItem()
         }
     }
 
-    QStringList list; list << QString::fromLatin1("true")
-                           << QString::fromLatin1("false");
+    QStringList list; list << QLatin1String("true")
+                           << QLatin1String("false");
     QString val = QInputDialog::getItem (this, QObject::tr("New boolean item"), QObject::tr("Choose an item:"),
                                          list, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if ( ok )
@@ -1042,7 +1042,7 @@ ParameterText::ParameterText ( QTreeWidget * parent, QString label, const char* 
 {
     setIcon(0, BitmapFactory().iconFromTheme("Param_Text") );
     setText(0, label);
-    setText(1, QString::fromLatin1("Text"));
+    setText(1, QLatin1String("Text"));
     setText(2, QString::fromUtf8(value));
 }
 
@@ -1084,7 +1084,7 @@ ParameterInt::ParameterInt ( QTreeWidget * parent, QString label, long value, co
 {
     setIcon(0, BitmapFactory().iconFromTheme("Param_Int") );
     setText(0, label);
-    setText(1, QString::fromLatin1("Integer"));
+    setText(1, QLatin1String("Integer"));
     setText(2, QString::fromLatin1("%1").arg(value));
 }
 
@@ -1126,7 +1126,7 @@ ParameterUInt::ParameterUInt ( QTreeWidget * parent, QString label, unsigned lon
 {
     setIcon(0, BitmapFactory().iconFromTheme("Param_UInt") );
     setText(0, label);
-    setText(1, QString::fromLatin1("Unsigned"));
+    setText(1, QLatin1String("Unsigned"));
     setText(2, QString::fromLatin1("%1").arg(value));
 }
 
@@ -1177,7 +1177,7 @@ ParameterFloat::ParameterFloat ( QTreeWidget * parent, QString label, double val
 {
     setIcon(0, BitmapFactory().iconFromTheme("Param_Float") );
     setText(0, label);
-    setText(1, QString::fromLatin1("Float"));
+    setText(1, QLatin1String("Float"));
     setText(2, QString::fromLatin1("%1").arg(value));
 }
 
@@ -1219,7 +1219,7 @@ ParameterBool::ParameterBool ( QTreeWidget * parent, QString label, bool value, 
 {
     setIcon(0, BitmapFactory().iconFromTheme("Param_Bool") );
     setText(0, label);
-    setText(1, QString::fromLatin1("Boolean"));
+    setText(1, QLatin1String("Boolean"));
     setText(2, QString::fromLatin1((value ? "true" : "false")));
 }
 
@@ -1228,8 +1228,8 @@ ParameterBool::~ParameterBool() = default;
 void ParameterBool::changeValue()
 {
     bool ok;
-    QStringList list; list << QString::fromLatin1("true")
-                           << QString::fromLatin1("false");
+    QStringList list; list << QLatin1String("true")
+                           << QLatin1String("false");
     int pos = (text(2) == list[0] ? 0 : 1);
 
     QString txt = QInputDialog::getItem (treeWidget(), QObject::tr("Change value"), QObject::tr("Choose an item:"),

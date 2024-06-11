@@ -1672,7 +1672,7 @@ void VectorListWidget::showValue(const QVariant& d)
     QString data;
     const QList<Base::Vector3d>& value = d.value<QList<Base::Vector3d>>();
     if (value.isEmpty()) {
-        data = QString::fromLatin1("[]");
+        data = QLatin1String("[]");
     }
     else {
         data = QString::fromLatin1("[%1 %2 %3], ...")
@@ -1694,7 +1694,7 @@ QVariant PropertyVectorListItem::toString(const QVariant& prop) const
     QString data;
     const QList<Base::Vector3d>& value = prop.value<QList<Base::Vector3d>>();
     if (value.isEmpty()) {
-        data = QString::fromLatin1("[]");
+        data = QLatin1String("[]");
     }
     else {
         data = QString::fromLatin1("[%1 %2 %3], ...")
@@ -1781,10 +1781,10 @@ PropertyVectorDistanceItem::PropertyVectorDistanceItem()
 QVariant PropertyVectorDistanceItem::toString(const QVariant& prop) const
 {
     const Base::Vector3d& value = prop.value<Base::Vector3d>();
-    QString data = QString::fromLatin1("[") + 
-           Base::Quantity(value.x, Base::Unit::Length).getUserString() + QString::fromLatin1("  ") +
-           Base::Quantity(value.y, Base::Unit::Length).getUserString() + QString::fromLatin1("  ") +
-           Base::Quantity(value.z, Base::Unit::Length).getUserString() + QString::fromLatin1("]");
+    QString data = QLatin1String("[") + 
+           Base::Quantity(value.x, Base::Unit::Length).getUserString() + QLatin1String("  ") +
+           Base::Quantity(value.y, Base::Unit::Length).getUserString() + QLatin1String("  ") +
+           Base::Quantity(value.z, Base::Unit::Length).getUserString() + QLatin1String("]");
     if (hasExpression()) {
         data += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
     }

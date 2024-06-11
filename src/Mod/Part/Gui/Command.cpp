@@ -955,11 +955,11 @@ void CmdPartImport::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QStringList filter;
-    filter << QString::fromLatin1("STEP (*.stp *.step)");
-    filter << QString::fromLatin1("STEP with colors (*.stp *.step)");
-    filter << QString::fromLatin1("IGES (*.igs *.iges)");
-    filter << QString::fromLatin1("IGES with colors (*.igs *.iges)");
-    filter << QString::fromLatin1("BREP (*.brp *.brep)");
+    filter << QLatin1String("STEP (*.stp *.step)");
+    filter << QLatin1String("STEP with colors (*.stp *.step)");
+    filter << QLatin1String("IGES (*.igs *.iges)");
+    filter << QLatin1String("IGES with colors (*.igs *.iges)");
+    filter << QLatin1String("BREP (*.brp *.brep)");
 
     QString select;
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
@@ -1018,11 +1018,11 @@ void CmdPartExport::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QStringList filter;
-    filter << QString::fromLatin1("STEP (*.stp *.step)");
-    filter << QString::fromLatin1("STEP with colors (*.stp *.step)");
-    filter << QString::fromLatin1("IGES (*.igs *.iges)");
-    filter << QString::fromLatin1("IGES with colors (*.igs *.iges)");
-    filter << QString::fromLatin1("BREP (*.brp *.brep)");
+    filter << QLatin1String("STEP (*.stp *.step)");
+    filter << QLatin1String("STEP with colors (*.stp *.step)");
+    filter << QLatin1String("IGES (*.igs *.iges)");
+    filter << QLatin1String("IGES with colors (*.igs *.iges)");
+    filter << QLatin1String("BREP (*.brp *.brep)");
 
     QString select;
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
@@ -1068,9 +1068,9 @@ void CmdPartImportCurveNet::activated(int iMsg)
     QStringList filter;
     filter << QString::fromLatin1("%1 (*.stp *.step *.igs *.iges *.brp *.brep)")
                  .arg(QObject::tr("All CAD Files"));
-    filter << QString::fromLatin1("STEP (*.stp *.step)");
-    filter << QString::fromLatin1("IGES (*.igs *.iges)");
-    filter << QString::fromLatin1("BREP (*.brp *.brep)");
+    filter << QLatin1String("STEP (*.stp *.step)");
+    filter << QLatin1String("IGES (*.igs *.iges)");
+    filter << QLatin1String("BREP (*.brp *.brep)");
     filter << QString::fromLatin1("%1 (*.*)")
                  .arg(QObject::tr("All Files"));
 

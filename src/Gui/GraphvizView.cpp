@@ -445,13 +445,13 @@ bool GraphvizView::onMsg(const char* pMsg, const char**)
 {
     if (strcmp("Save",pMsg) == 0 || strcmp("SaveAs",pMsg) == 0) {
         QList< QPair<QString, QString> > formatMap;
-        formatMap << qMakePair(QString::fromLatin1("%1 (*.gv)").arg(tr("Graphviz format")), QString::fromLatin1("gv"));
-        formatMap << qMakePair(QString::fromLatin1("%1 (*.png)").arg(tr("PNG format")), QString::fromLatin1("png"));
-        formatMap << qMakePair(QString::fromLatin1("%1 (*.bmp)").arg(tr("Bitmap format")), QString::fromLatin1("bmp"));
-        formatMap << qMakePair(QString::fromLatin1("%1 (*.gif)").arg(tr("GIF format")), QString::fromLatin1("gif"));
-        formatMap << qMakePair(QString::fromLatin1("%1 (*.jpg)").arg(tr("JPG format")), QString::fromLatin1("jpg"));
-        formatMap << qMakePair(QString::fromLatin1("%1 (*.svg)").arg(tr("SVG format")), QString::fromLatin1("svg"));
-        formatMap << qMakePair(QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF format")), QString::fromLatin1("pdf"));
+        formatMap << qMakePair(QString::fromLatin1("%1 (*.gv)").arg(tr("Graphviz format")), QLatin1String("gv"));
+        formatMap << qMakePair(QString::fromLatin1("%1 (*.png)").arg(tr("PNG format")), QLatin1String("png"));
+        formatMap << qMakePair(QString::fromLatin1("%1 (*.bmp)").arg(tr("Bitmap format")), QLatin1String("bmp"));
+        formatMap << qMakePair(QString::fromLatin1("%1 (*.gif)").arg(tr("GIF format")), QLatin1String("gif"));
+        formatMap << qMakePair(QString::fromLatin1("%1 (*.jpg)").arg(tr("JPG format")), QLatin1String("jpg"));
+        formatMap << qMakePair(QString::fromLatin1("%1 (*.svg)").arg(tr("SVG format")), QLatin1String("svg"));
+        formatMap << qMakePair(QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF format")), QLatin1String("pdf"));
 
         QStringList filter;
         for (const auto & it : std::as_const(formatMap)) {
@@ -524,7 +524,7 @@ void GraphvizView::print(QPrinter* printer)
     QPainter p(printer);
     QRect rect = printer->pageLayout().paintRectPixels(printer->resolution());
     view->scene()->render(&p, rect);
-    //QByteArray buffer = exportGraph(QString::fromLatin1("svg"));
+    //QByteArray buffer = exportGraph(QLatin1String("svg"));
     //QSvgRenderer svg(buffer);
     //svg.render(&p, rect);
     p.end();

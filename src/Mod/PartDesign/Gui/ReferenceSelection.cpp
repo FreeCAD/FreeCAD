@@ -348,7 +348,7 @@ QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>
         return QString::fromLatin1(obj->getNameInDocument());
     }
     else if (!sub.empty()) {
-        return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") +
+        return QString::fromLatin1(obj->getNameInDocument()) + QLatin1String(":") +
                QString::fromLatin1(sub.front().c_str());
     }
 

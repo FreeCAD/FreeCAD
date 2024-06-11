@@ -102,26 +102,26 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
                 auto *projItemPtr = static_cast<TechDraw::DrawProjGroupItem *>(fView);
                 QString type = QString::fromLatin1(projItemPtr->Type.getValueAsString());
 
-                if (type == QString::fromLatin1("Front")) {
-                    gView->alignTo(m_origin, QString::fromLatin1("None"));
+                if (type == QLatin1String("Front")) {
+                    gView->alignTo(m_origin, QLatin1String("None"));
                     installSceneEventFilter(gView);
                 }
-                else if ( type == QString::fromLatin1("Top") ||
-                    type == QString::fromLatin1("Bottom")) {
-                    gView->alignTo(m_origin, QString::fromLatin1("Vertical"));
+                else if ( type == QLatin1String("Top") ||
+                    type == QLatin1String("Bottom")) {
+                    gView->alignTo(m_origin, QLatin1String("Vertical"));
                 }
-                else if ( type == QString::fromLatin1("Left")  ||
-                            type == QString::fromLatin1("Right") ||
-                            type == QString::fromLatin1("Rear") ) {
-                    gView->alignTo(m_origin, QString::fromLatin1("Horizontal"));
+                else if ( type == QLatin1String("Left")  ||
+                            type == QLatin1String("Right") ||
+                            type == QLatin1String("Rear") ) {
+                    gView->alignTo(m_origin, QLatin1String("Horizontal"));
                 }
-                else if ( type == QString::fromLatin1("FrontTopRight") ||
-                            type == QString::fromLatin1("FrontBottomLeft") ) {
-                    gView->alignTo(m_origin, QString::fromLatin1("45slash"));
+                else if ( type == QLatin1String("FrontTopRight") ||
+                            type == QLatin1String("FrontBottomLeft") ) {
+                    gView->alignTo(m_origin, QLatin1String("45slash"));
                 }
-                else if ( type == QString::fromLatin1("FrontTopLeft") ||
-                            type == QString::fromLatin1("FrontBottomRight") ) {
-                    gView->alignTo(m_origin, QString::fromLatin1("45backslash"));
+                else if ( type == QLatin1String("FrontTopLeft") ||
+                            type == QLatin1String("FrontBottomRight") ) {
+                    gView->alignTo(m_origin, QLatin1String("45backslash"));
                 }
             }
          }

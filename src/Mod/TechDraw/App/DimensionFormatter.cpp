@@ -133,7 +133,7 @@ std::string DimensionFormatter::formatValue(const qreal value,
             qBasicUnit = QString::fromUtf8("°");
         }
         else {
-            double convertValue = Base::Quantity::parse(QString::fromLatin1("1") + qBasicUnit).getValue();
+            double convertValue = Base::Quantity::parse(QLatin1String("1") + qBasicUnit).getValue();
             userVal = asQuantity.getValue() / convertValue;
             if (areaMeasure) {
                 userVal = userVal / convertValue; // divide again as area is length²

@@ -146,7 +146,7 @@ DlgExportHeaderStep::DlgExportHeaderStep(QWidget* parent)
     ui->lineEditProduct->setReadOnly(true);
 
     QRegularExpression rx;
-    rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
+    rx.setPattern(QLatin1String("[\\x00-\\x7F]+"));
     QRegularExpressionValidator* companyValidator = new QRegularExpressionValidator(ui->lineEditCompany);
     companyValidator->setRegularExpression(rx);
     ui->lineEditCompany->setValidator(companyValidator);

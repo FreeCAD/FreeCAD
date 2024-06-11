@@ -42,7 +42,7 @@ QString UnitsSchemaFemMilliMeterNewton::schemaTranslate(const Quantity& quant,
     Unit unit = quant.getUnit();
     if (unit == Unit::Length) {
         // all length units in millimeters
-        unitString = QString::fromLatin1("mm");
+        unitString = QLatin1String("mm");
         factor = 1.0;
     }
     else if (unit == Unit::Mass) {

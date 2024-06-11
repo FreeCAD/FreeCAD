@@ -167,10 +167,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             if(alignHash.size() == 1) {   //if aligned.
                 QGraphicsItem* item = alignHash.begin().value();
                 QString alignMode   = alignHash.begin().key();
-                if(alignMode == QString::fromLatin1("Vertical")) {
+                if(alignMode == QLatin1String("Vertical")) {
                     newPos.setX(item->pos().x());
                 }
-                else if(alignMode == QString::fromLatin1("Horizontal")) {
+                else if(alignMode == QLatin1String("Horizontal")) {
                     newPos.setY(item->pos().y());
                 }
             }

@@ -284,7 +284,7 @@ FillingPanel::FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj)
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QString::fromLatin1("Del"));
+    action->setShortcut(QKeySequence(QLatin1String("Del")));
     action->setShortcutContext(Qt::WidgetShortcut);
     ui->listBoundary->addAction(action);
     connect(action, &QAction::triggered, this, &FillingPanel::onDeleteEdge);
@@ -605,11 +605,11 @@ void FillingPanel::onListBoundaryItemDoubleClicked(QListWidgetItem* item)
                     // fill up the combo boxes
                     modifyBoundary(true);
                     ui->comboBoxFaces->addItem(tr("None"), QByteArray(""));
-                    ui->comboBoxCont->addItem(QString::fromLatin1("C0"),
+                    ui->comboBoxCont->addItem(QLatin1String("C0"),
                                               static_cast<int>(GeomAbs_C0));
-                    ui->comboBoxCont->addItem(QString::fromLatin1("G1"),
+                    ui->comboBoxCont->addItem(QLatin1String("G1"),
                                               static_cast<int>(GeomAbs_G1));
-                    ui->comboBoxCont->addItem(QString::fromLatin1("G2"),
+                    ui->comboBoxCont->addItem(QLatin1String("G2"),
                                               static_cast<int>(GeomAbs_G2));
                     TopTools_ListIteratorOfListOfShape it(adj_faces);
                     for (; it.More(); it.Next()) {

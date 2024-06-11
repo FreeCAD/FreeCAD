@@ -168,7 +168,7 @@ void QuickMeasure::printResult()
         print(tr("Minimum distance: %1").arg(dist.getSafeUserString()));
     }
     else {
-        print(QString::fromLatin1(""));
+        print(QLatin1String(""));
     }
 }
 

@@ -294,7 +294,7 @@ void CmdRobotSetDefaultValues::activated(int)
                                          QObject::tr("Set default speed"),
                                          QObject::tr("speed: (e.g. 1 m/s or 3 cm/s)"),
                                          QLineEdit::Normal,
-                                         QString::fromLatin1("1 m/s"),
+                                         QLatin1String("1 m/s"),
                                          &ok,
                                          Qt::MSWindowsFixedSizeDialogHint);
     if (ok && !text.isEmpty()) {
@@ -302,7 +302,7 @@ void CmdRobotSetDefaultValues::activated(int)
     }
 
     QStringList items;
-    items << QString::fromLatin1("False") << QString::fromLatin1("True");
+    items << QLatin1String("False") << QLatin1String("True");
 
     QString item = QInputDialog::getItem(nullptr,
                                          QObject::tr("Set default continuity"),
@@ -322,7 +322,7 @@ void CmdRobotSetDefaultValues::activated(int)
                                  QObject::tr("Set default acceleration"),
                                  QObject::tr("acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)"),
                                  QLineEdit::Normal,
-                                 QString::fromLatin1("1 m/s^2"),
+                                 QLatin1String("1 m/s^2"),
                                  &ok,
                                  Qt::MSWindowsFixedSizeDialogHint);
     if (ok && !text.isEmpty()) {

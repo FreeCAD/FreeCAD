@@ -239,10 +239,10 @@ void UnitTestDialog::reset()
 {
     ui->progressBar->reset();
     ui->treeViewFailure->clear();
-    ui->textLabelRunCt->setText(QString::fromLatin1("<font color=\"#0000ff\">0</font>"));
-    ui->textLabelFailCt->setText(QString::fromLatin1("<font color=\"#0000ff\">0</font>"));
-    ui->textLabelErrCt->setText(QString::fromLatin1("<font color=\"#0000ff\">0</font>"));
-    ui->textLabelRemCt->setText(QString::fromLatin1("<font color=\"#0000ff\">0</font>"));
+    ui->textLabelRunCt->setText(QLatin1String("<font color=\"#0000ff\">0</font>"));
+    ui->textLabelFailCt->setText(QLatin1String("<font color=\"#0000ff\">0</font>"));
+    ui->textLabelErrCt->setText(QLatin1String("<font color=\"#0000ff\">0</font>"));
+    ui->textLabelRemCt->setText(QLatin1String("<font color=\"#0000ff\">0</font>"));
 }
 
 /**

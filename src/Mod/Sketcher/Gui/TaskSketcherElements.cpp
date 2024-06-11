@@ -1392,7 +1392,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                 std::string shapetype(msg.pSubName);
                 // if-else edge vertex
                 if (shapetype.size() > 4 && shapetype.substr(0, 4) == "Edge") {
-                    QRegularExpression rx(QString::fromLatin1("^Edge(\\d+)$"));
+                    QRegularExpression rx(QLatin1String("^Edge(\\d+)$"));
                     QRegularExpressionMatch match;
                     boost::ignore_unused(expr.indexOf(rx, 0, &match));
                     if (match.hasMatch()) {
@@ -1416,7 +1416,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                     }
                 }
                 else if (shapetype.size() > 6 && shapetype.substr(0, 6) == "Vertex") {
-                    QRegularExpression rx(QString::fromLatin1("^Vertex(\\d+)$"));
+                    QRegularExpression rx(QLatin1String("^Vertex(\\d+)$"));
                     QRegularExpressionMatch match;
                     boost::ignore_unused(expr.indexOf(rx, 0, &match));
                     if (match.hasMatch()) {
@@ -1769,71 +1769,71 @@ void TaskSketcherElements::slotElementsChanged()
             type == Part::GeomPoint::getClassTypeId()
                 ? (isNamingBoxChecked ? (tr("Point") + IdInformation())
                            + (construction
-                                  ? (QString::fromLatin1("-") + tr("Construction"))
-                                  : (internalAligned ? (QString::fromLatin1("-") + tr("Internal"))
-                                                     : QString::fromLatin1("")))
+                                  ? (QLatin1String("-") + tr("Construction"))
+                                  : (internalAligned ? (QLatin1String("-") + tr("Internal"))
+                                                     : QLatin1String("")))
                                       : (QString::fromLatin1("%1-").arg(i) + tr("Point")))
                 : type == Part::GeomLineSegment::getClassTypeId()
                 ? (isNamingBoxChecked ? (tr("Line") + IdInformation())
                            + (construction
-                                  ? (QString::fromLatin1("-") + tr("Construction"))
-                                  : (internalAligned ? (QString::fromLatin1("-") + tr("Internal"))
-                                                     : QString::fromLatin1("")))
+                                  ? (QLatin1String("-") + tr("Construction"))
+                                  : (internalAligned ? (QLatin1String("-") + tr("Internal"))
+                                                     : QLatin1String("")))
                                       : (QString::fromLatin1("%1-").arg(i) + tr("Line")))
                 : type == Part::GeomArcOfCircle::getClassTypeId()
                 ? (isNamingBoxChecked ? (tr("Arc") + IdInformation())
                            + (construction
-                                  ? (QString::fromLatin1("-") + tr("Construction"))
-                                  : (internalAligned ? (QString::fromLatin1("-") + tr("Internal"))
-                                                     : QString::fromLatin1("")))
+                                  ? (QLatin1String("-") + tr("Construction"))
+                                  : (internalAligned ? (QLatin1String("-") + tr("Internal"))
+                                                     : QLatin1String("")))
                                       : (QString::fromLatin1("%1-").arg(i) + tr("Arc")))
                 : type == Part::GeomCircle::getClassTypeId()
                 ? (isNamingBoxChecked ? (tr("Circle") + IdInformation())
                            + (construction
-                                  ? (QString::fromLatin1("-") + tr("Construction"))
-                                  : (internalAligned ? (QString::fromLatin1("-") + tr("Internal"))
-                                                     : QString::fromLatin1("")))
+                                  ? (QLatin1String("-") + tr("Construction"))
+                                  : (internalAligned ? (QLatin1String("-") + tr("Internal"))
+                                                     : QLatin1String("")))
                                       : (QString::fromLatin1("%1-").arg(i) + tr("Circle")))
                 : type == Part::GeomEllipse::getClassTypeId()
                 ? (isNamingBoxChecked ? (tr("Ellipse") + IdInformation())
                            + (construction
-                                  ? (QString::fromLatin1("-") + tr("Construction"))
-                                  : (internalAligned ? (QString::fromLatin1("-") + tr("Internal"))
-                                                     : QString::fromLatin1("")))
+                                  ? (QLatin1String("-") + tr("Construction"))
+                                  : (internalAligned ? (QLatin1String("-") + tr("Internal"))
+                                                     : QLatin1String("")))
                                       : (QString::fromLatin1("%1-").arg(i) + tr("Ellipse")))
                 : type == Part::GeomArcOfEllipse::getClassTypeId()
                 ? (isNamingBoxChecked ? (tr("Elliptical Arc") + IdInformation())
                            + (construction
-                                  ? (QString::fromLatin1("-") + tr("Construction"))
-                                  : (internalAligned ? (QString::fromLatin1("-") + tr("Internal"))
-                                                     : QString::fromLatin1("")))
+                                  ? (QLatin1String("-") + tr("Construction"))
+                                  : (internalAligned ? (QLatin1String("-") + tr("Internal"))
+                                                     : QLatin1String("")))
                                       : (QString::fromLatin1("%1-").arg(i) + tr("Elliptical Arc")))
                 : type == Part::GeomArcOfHyperbola::getClassTypeId()
                 ? (isNamingBoxChecked ? (tr("Hyperbolic Arc") + IdInformation())
                            + (construction
-                                  ? (QString::fromLatin1("-") + tr("Construction"))
-                                  : (internalAligned ? (QString::fromLatin1("-") + tr("Internal"))
-                                                     : QString::fromLatin1("")))
+                                  ? (QLatin1String("-") + tr("Construction"))
+                                  : (internalAligned ? (QLatin1String("-") + tr("Internal"))
+                                                     : QLatin1String("")))
                                       : (QString::fromLatin1("%1-").arg(i) + tr("Hyperbolic Arc")))
                 : type == Part::GeomArcOfParabola::getClassTypeId()
                 ? (isNamingBoxChecked ? (tr("Parabolic Arc") + IdInformation())
                            + (construction
-                                  ? (QString::fromLatin1("-") + tr("Construction"))
-                                  : (internalAligned ? (QString::fromLatin1("-") + tr("Internal"))
-                                                     : QString::fromLatin1("")))
+                                  ? (QLatin1String("-") + tr("Construction"))
+                                  : (internalAligned ? (QLatin1String("-") + tr("Internal"))
+                                                     : QLatin1String("")))
                                       : (QString::fromLatin1("%1-").arg(i) + tr("Parabolic Arc")))
                 : type == Part::GeomBSplineCurve::getClassTypeId()
                 ? (isNamingBoxChecked ? (tr("BSpline") + IdInformation())
                            + (construction
-                                  ? (QString::fromLatin1("-") + tr("Construction"))
-                                  : (internalAligned ? (QString::fromLatin1("-") + tr("Internal"))
-                                                     : QString::fromLatin1("")))
+                                  ? (QLatin1String("-") + tr("Construction"))
+                                  : (internalAligned ? (QLatin1String("-") + tr("Internal"))
+                                                     : QLatin1String("")))
                                       : (QString::fromLatin1("%1-").arg(i) + tr("BSpline")))
                 : (isNamingBoxChecked ? (tr("Other") + IdInformation())
                            + (construction
-                                  ? (QString::fromLatin1("-") + tr("Construction"))
-                                  : (internalAligned ? (QString::fromLatin1("-") + tr("Internal"))
-                                                     : QString::fromLatin1("")))
+                                  ? (QLatin1String("-") + tr("Construction"))
+                                  : (internalAligned ? (QLatin1String("-") + tr("Internal"))
+                                                     : QLatin1String("")))
                                       : (QString::fromLatin1("%1-").arg(i) + tr("Other"))),
             sketchView);
 
@@ -1890,8 +1890,8 @@ void TaskSketcherElements::slotElementsChanged()
                 if (size_t(j - 3) < linkobjs.size() && size_t(j - 3) < linksubs.size()) {
                     linkname = IdInformation(true)
                         + QString::fromUtf8(linkobjs[j - 3]->getNameInDocument())
-                        + QString::fromLatin1(".") + QString::fromUtf8(linksubs[j - 3].c_str())
-                        + QString::fromLatin1(")");
+                        + QLatin1String(".") + QString::fromUtf8(linksubs[j - 3].c_str())
+                        + QLatin1String(")");
                 }
                 else {
                     linkname = IdInformation(false);

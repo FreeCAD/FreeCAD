@@ -155,7 +155,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Rotate");
+        return QLatin1String("Sketcher_Pointer_Create_Rotate");
     }
 
     std::unique_ptr<QWidget> createWidget() const override
@@ -477,12 +477,12 @@ void DSHRotateController::configureToolWidget()
             QApplication::translate("TaskSketcherTool_c1_offset", "Clone constraints"));
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
-            QString::fromLatin1("<p>")
+            QLatin1String("<p>")
                 + QApplication::translate("TaskSketcherTool_c1_offset",
                                           "This concerns the datum constraints (e.g. distance)."
                                           "If you activate Clone, the tool will copy the datum."
                                           "Else it will try to replace them with equalities.")
-                + QString::fromLatin1("</p>"));
+                + QLatin1String("</p>"));
     }
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);

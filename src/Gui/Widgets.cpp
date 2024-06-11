@@ -95,7 +95,7 @@ void CommandIconView::startDrag (Qt::DropActions supportedActions)
     }
 
     auto mimeData = new QMimeData;
-    mimeData->setData(QString::fromLatin1("text/x-action-items"), itemData);
+    mimeData->setData(QLatin1String("text/x-action-items"), itemData);
 
     auto drag = new QDrag(this);
     drag->setMimeData(mimeData);
@@ -429,7 +429,7 @@ void AccelLineEdit::keyPressEvent (QKeyEvent * e)
             txtLine.clear();
             break;
         default:
-            txtLine += QString::fromLatin1(",");
+            txtLine += QLatin1String(",");
             break;
         }
     }
@@ -525,7 +525,7 @@ void ModifierLineEdit::keyPressEvent (QKeyEvent * e)
 ClearLineEdit::ClearLineEdit (QWidget * parent)
   : QLineEdit(parent)
 {
-    clearAction = this->addAction(QIcon(QString::fromLatin1(":/icons/edit-cleartext.svg")),
+    clearAction = this->addAction(QIcon(QLatin1String(":/icons/edit-cleartext.svg")),
                                         QLineEdit::TrailingPosition);
     connect(clearAction, &QAction::triggered, this, &ClearLineEdit::clear);
     connect(this, &QLineEdit::textChanged, this, &ClearLineEdit::updateClearButton);
@@ -1409,7 +1409,7 @@ public:
         if (edit) {
             QString inputText = edit->toPlainText();
             if (!inputText.isEmpty()) // let pass empty input, regardless of the type, so user can void the value
-                lines = inputText.split(QString::fromLatin1("\n"));
+                lines = inputText.split(QLatin1String("\n"));
         }
         if (!lines.isEmpty()) {
             if (type == 1) { // floats

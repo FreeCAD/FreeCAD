@@ -150,7 +150,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Translate");
+        return QLatin1String("Sketcher_Pointer_Create_Translate");
     }
 
     std::unique_ptr<QWidget> createWidget() const override

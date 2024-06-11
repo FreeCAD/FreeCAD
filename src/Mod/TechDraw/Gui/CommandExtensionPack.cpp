@@ -320,12 +320,12 @@ Gui::Action* CmdTechDrawExtensionCircleCenterLinesGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCircleCenterLines"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionCircleCenterLines"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionCircleCenterLines"));
+    p1->setObjectName(QLatin1String("TechDraw_ExtensionCircleCenterLines"));
+    p1->setWhatsThis(QLatin1String("TechDraw_ExtensionCircleCenterLines"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionHoleCircle"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionHoleCircle"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionHoleCircle"));
+    p2->setObjectName(QLatin1String("TechDraw_ExtensionHoleCircle"));
+    p2->setWhatsThis(QLatin1String("TechDraw_ExtensionHoleCircle"));
 
     _pcAction = pcAction;
     languageChange();
@@ -649,20 +649,20 @@ Gui::Action* CmdTechDrawExtensionThreadsGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionThreadHoleSide"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionThreadHoleSide"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionThreadHoleSide"));
+    p1->setObjectName(QLatin1String("TechDraw_ExtensionThreadHoleSide"));
+    p1->setWhatsThis(QLatin1String("TechDraw_ExtensionThreadHoleSide"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionThreadHoleBottom"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionThreadHoleBottom"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionThreadHoleBottom"));
+    p2->setObjectName(QLatin1String("TechDraw_ExtensionThreadHoleBottom"));
+    p2->setWhatsThis(QLatin1String("TechDraw_ExtensionThreadHoleBottom"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionThreadBoltSide"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_ExtensionThreadBoltSide"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionThreadBoltSide"));
+    p3->setObjectName(QLatin1String("TechDraw_ExtensionThreadBoltSide"));
+    p3->setWhatsThis(QLatin1String("TechDraw_ExtensionThreadBoltSide"));
     QAction* p4 = pcAction->addAction(QString());
     p4->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionThreadBoltBottom"));
-    p4->setObjectName(QString::fromLatin1("TechDraw_ExtensionThreadBoltBottom"));
-    p4->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionThreadBoltBottom"));
+    p4->setObjectName(QLatin1String("TechDraw_ExtensionThreadBoltBottom"));
+    p4->setWhatsThis(QLatin1String("TechDraw_ExtensionThreadBoltBottom"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1149,16 +1149,16 @@ Gui::Action* CmdTechDrawExtensionDrawCirclesGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionDrawCosmCircle"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionDrawCosmCircle"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionDrawCosmCircle"));
+    p1->setObjectName(QLatin1String("TechDraw_ExtensionDrawCosmCircle"));
+    p1->setWhatsThis(QLatin1String("TechDraw_ExtensionDrawCosmCircle"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionDrawCosmArc"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionDrawCosmArc"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionDrawCosmArc"));
+    p2->setObjectName(QLatin1String("TechDraw_ExtensionDrawCosmArc"));
+    p2->setWhatsThis(QLatin1String("TechDraw_ExtensionDrawCosmArc"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionDrawCosmCircle3Points"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_ExtensionDrawCosmCircle3Points"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionDrawCosmCircle3Points"));
+    p3->setObjectName(QLatin1String("TechDraw_ExtensionDrawCosmCircle3Points"));
+    p3->setWhatsThis(QLatin1String("TechDraw_ExtensionDrawCosmCircle3Points"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1395,12 +1395,12 @@ Gui::Action* CmdTechDrawExtensionLinePPGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionLineParallel"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionLineParallel"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionLineParallel"));
+    p1->setObjectName(QLatin1String("TechDraw_ExtensionLineParallel"));
+    p1->setWhatsThis(QLatin1String("TechDraw_ExtensionLineParallel"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionLinePerpendicular"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionLinePerpendicular"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionLinePerpendicular"));
+    p2->setObjectName(QLatin1String("TechDraw_ExtensionLinePerpendicular"));
+    p2->setWhatsThis(QLatin1String("TechDraw_ExtensionLinePerpendicular"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1701,12 +1701,12 @@ Gui::Action* CmdTechDrawExtendShortenLineGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionExtendLine"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionExtendLine"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionExtendLine"));
+    p1->setObjectName(QLatin1String("TechDraw_ExtensionExtendLine"));
+    p1->setWhatsThis(QLatin1String("TechDraw_ExtensionExtendLine"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionShortenLine"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionShortenLine"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionShortenLine"));
+    p2->setObjectName(QLatin1String("TechDraw_ExtensionShortenLine"));
+    p2->setWhatsThis(QLatin1String("TechDraw_ExtensionShortenLine"));
 
     _pcAction = pcAction;
     languageChange();

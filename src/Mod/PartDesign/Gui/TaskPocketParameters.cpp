@@ -135,7 +135,7 @@ void TaskPocketParameters::onModeChanged(int index)
 
 void TaskPocketParameters::apply()
 {
-    QString facename = QString::fromLatin1("None");
+    QString facename = QLatin1String("None");
     if (static_cast<Mode>(getMode()) == Mode::ToFace) {
         facename = getFaceName();
     }

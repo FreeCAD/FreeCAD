@@ -156,19 +156,19 @@ bool LoftWidget::accept()
 {
     QString list, solid, ruled, closed;
     if (d->ui.checkSolid->isChecked())
-        solid = QString::fromLatin1("True");
+        solid = QLatin1String("True");
     else
-        solid = QString::fromLatin1("False");
+        solid = QLatin1String("False");
 
     if (d->ui.checkRuledSurface->isChecked())
-        ruled = QString::fromLatin1("True");
+        ruled = QLatin1String("True");
     else
-        ruled = QString::fromLatin1("False");
+        ruled = QLatin1String("False");
 
     if (d->ui.checkClosed->isChecked())
-        closed = QString::fromLatin1("True");
+        closed = QLatin1String("True");
     else
-        closed = QString::fromLatin1("False");
+        closed = QLatin1String("False");
 
     QTextStream str(&list);
 

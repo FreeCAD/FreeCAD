@@ -52,7 +52,7 @@ TaskMeasure::TaskMeasure()
 
     // Create mode dropdown and add all registered measuretypes
     modeSwitch = new QComboBox();
-    modeSwitch->addItem(QString::fromLatin1("Auto"));
+    modeSwitch->addItem(QLatin1String("Auto"));
 
     for (App::MeasureType* mType : App::MeasureManager::getMeasureTypes()){
         modeSwitch->addItem(QString::fromLatin1(mType->label.c_str()));

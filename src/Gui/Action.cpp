@@ -376,7 +376,7 @@ QString Action::createToolTip(QString helpText,
 
     // If the user supplied tooltip contains line break, we shall honour it.
     if (helpText.indexOf(QLatin1Char('\n')) >= 0) {
-        tooltip += helpText.toHtmlEscaped() + QString::fromLatin1("</p>") ;
+        tooltip += helpText.toHtmlEscaped() + QLatin1String("</p>") ;
     }
     else {
         // If not, try to end the non wrapping paragraph at some pre defined
@@ -385,7 +385,7 @@ QString Action::createToolTip(QString helpText,
         QFontMetrics fm(font);
         int width = QtTools::horizontalAdvance(fm, helpText);
         if (width <= tipWidth) {
-            tooltip += helpText.toHtmlEscaped() + QString::fromLatin1("</p>") ;
+            tooltip += helpText.toHtmlEscaped() + QLatin1String("</p>") ;
         }
         else {
             int index = tipWidth / width * helpText.size();
@@ -396,7 +396,7 @@ QString Action::createToolTip(QString helpText,
                 }
             }
             tooltip += helpText.left(index).toHtmlEscaped()
-                + QString::fromLatin1("</p>")
+                + QLatin1String("</p>")
                 + helpText.right(helpText.size()-index).trimmed().toHtmlEscaped();
         }
     }
@@ -475,7 +475,7 @@ void ActionGroup::addTo(QWidget *widget)
             widget->addAction(action());
             QToolButton* tb = widget->findChildren<QToolButton*>().constLast();
             tb->setPopupMode(QToolButton::MenuButtonPopup);
-            tb->setObjectName(QString::fromLatin1("qt_toolbutton_menubutton"));
+            tb->setObjectName(QLatin1String("qt_toolbutton_menubutton"));
             QList<QAction*> acts = groupAction()->actions();
             auto menu = new QMenu(tb);
             menu->addActions(acts);

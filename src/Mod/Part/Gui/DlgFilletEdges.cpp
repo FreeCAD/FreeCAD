@@ -986,7 +986,7 @@ bool DlgFilletEdges::accept()
         "FreeCAD.ActiveDocument.%2.Base = FreeCAD.ActiveDocument.%3\n")
         .arg(type, name, shape);
     }
-    code += QString::fromLatin1("__fillets__ = []\n");
+    code += QLatin1String("__fillets__ = []\n");
     for (int i=0; i<model->rowCount(); ++i) {
         QVariant value = model->index(i,0).data(Qt::CheckStateRole);
         Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());

@@ -110,7 +110,7 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
     setToolTip(aGroup->toolTip());
     setStatusTip(aGroup->action()->statusTip());
     setWhatsThis(aGroup->action()->whatsThis());
-    setObjectName(QString::fromLatin1("WbTabBar"));
+    setObjectName(QLatin1String("WbTabBar"));
 
     tabBar = new QTabBar(this);
     moreButton = new QToolButton(this);
@@ -127,7 +127,7 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
     moreButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
     moreButton->setPopupMode(QToolButton::InstantPopup);
     moreButton->setMenu(new QMenu(moreButton));
-    moreButton->setObjectName(QString::fromLatin1("WbTabBarMore"));
+    moreButton->setObjectName(QLatin1String("WbTabBarMore"));
 
     if (parent->inherits("QToolBar")) {
         // when toolbar is created it is not yet placed in its designated area
@@ -399,7 +399,7 @@ void WorkbenchTabWidget::buildPrefMenu()
 
     // Add disabled workbenches, sorted alphabetically.
     for (auto action : wbActionGroup->getDisabledWbActions()) {
-        if (action->text() == QString::fromLatin1("<none>")) {
+        if (action->text() == QLatin1String("<none>")) {
             continue;
         }
 

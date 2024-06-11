@@ -238,7 +238,7 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
         if (obj->isDerivedFrom<App::Link>()) {
             cmd = QString::fromLatin1("lnk = doc.getObject(\"%1\")").arg(objname);
             Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
-            cmd = QString::fromLatin1("obj = lnk.getLinkedObject()");
+            cmd = QLatin1String("obj = lnk.getLinkedObject()");
             Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
             const auto link = static_cast<const App::Link*>(obj);
             obj = link->getLinkedObject();
@@ -250,7 +250,7 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
             const auto geoObj = static_cast<const App::GeoFeature*>(obj);
             const App::PropertyGeometry* geo = geoObj->getPropertyOfGeometry();
             if (geo){
-                cmd = QString::fromLatin1("shp = obj.") + QLatin1String(geo->getName()); //"Shape", "Mesh", "Points", etc.
+                cmd = QLatin1String("shp = obj.") + QLatin1String(geo->getName()); //"Shape", "Mesh", "Points", etc.
                 Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
                 if (sels[0].hasSubNames()) {
                     std::vector<std::string> subnames = sels[0].getSubNames();

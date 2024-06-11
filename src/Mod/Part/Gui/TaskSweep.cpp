@@ -312,14 +312,14 @@ bool SweepWidget::accept()
 
     QString list, solid, frenet;
     if (d->ui.checkSolid->isChecked())
-        solid = QString::fromLatin1("True");
+        solid = QLatin1String("True");
     else
-        solid = QString::fromLatin1("False");
+        solid = QLatin1String("False");
 
     if (d->ui.checkFrenet->isChecked())
-        frenet = QString::fromLatin1("True");
+        frenet = QLatin1String("True");
     else
-        frenet = QString::fromLatin1("False");
+        frenet = QLatin1String("False");
 
     QTextStream str(&list);
 

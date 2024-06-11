@@ -89,7 +89,7 @@ InputField::InputField(QWidget * parent)
     iconLabel->setCursor(Qt::ArrowCursor);
     QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
     iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; }"));
+    iconLabel->setStyleSheet(QLatin1String("QLabel { border: none; padding: 0px; }"));
     iconLabel->hide();
     connect(this, &QLineEdit::textChanged, this, &InputField::updateIconLabel);
     int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
@@ -193,7 +193,7 @@ void InputField::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu *editMenu = createStandardContextMenu();
     editMenu->setTitle(tr("Edit"));
-    auto menu = new QMenu(QString::fromLatin1("InputFieldContextmenu"));
+    auto menu = new QMenu(QLatin1String("InputFieldContextmenu"));
 
     menu->addMenu(editMenu);
     menu->addSeparator();
@@ -275,7 +275,7 @@ void InputField::newInput(const QString & text)
     if(!actUnit.isEmpty() && !res.getUnit().isEmpty() && actUnit != res.getUnit()){
         QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
         iconLabel->setPixmap(pixmap);
-        Q_EMIT parseError(QString::fromLatin1("Wrong unit"));
+        Q_EMIT parseError(QLatin1String("Wrong unit"));
         validInput = false;
         return;
     }

@@ -102,7 +102,7 @@ void OCAFBrowser::load(QTreeWidget* theTree)
     root->setIcon(0, myGroupIcon);
     theTree->addTopLevelItem(root);
 
-    load(pDoc->GetData()->Root(), root, QString::fromLatin1("0"));
+    load(pDoc->GetData()->Root(), root, QLatin1String("0"));
 }
 
 void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QString& str)
@@ -316,7 +316,7 @@ void OCAFBrowser::showDialog(const QString& title, const Handle(TDocStd_Document
     QDialog* dlg = new QDialog(Gui::getMainWindow());
 
     QTreeWidget* tree = new QTreeWidget();
-    tree->setHeaderLabel(QString::fromLatin1("OCAF Browser"));
+    tree->setHeaderLabel(QLatin1String("OCAF Browser"));
 
     QVBoxLayout* layout = new QVBoxLayout;
     layout->addWidget(tree);

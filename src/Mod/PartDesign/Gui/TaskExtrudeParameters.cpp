@@ -968,7 +968,7 @@ void TaskExtrudeParameters::onFaceName(const QString& text)
         QVariant name = objectNameByLabel(label, ui->lineFaceName->property("FeatureName"));
         if (name.isValid()) {
             parts[0] = name.toString();
-            QString uptoface = parts.join(QString::fromLatin1(":"));
+            QString uptoface = parts.join(QLatin1String(":"));
             ui->lineFaceName->setProperty("FeatureName", name);
             ui->lineFaceName->setProperty("FaceName", setUpToFace(uptoface));
         }
@@ -1063,7 +1063,7 @@ QString TaskExtrudeParameters::getFaceName() const
         return getFaceReference(featureName.toString(), faceName);
     }
 
-    return QString::fromLatin1("None");
+    return QLatin1String("None");
 }
 
 void TaskExtrudeParameters::changeEvent(QEvent *e)

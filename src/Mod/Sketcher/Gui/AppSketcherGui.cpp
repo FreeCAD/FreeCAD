@@ -101,15 +101,15 @@ PyMOD_INIT_FUNC(SketcherGui)
     PyObject* sketcherGuiModule = SketcherGui::initModule();
     Base::Console().Log("Loading GUI of Sketcher module... done\n");
 
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/constraints"));
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/elements"));
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/general"));
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/geometry"));
-    // Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/obsolete"));
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/pointers"));
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/splines"));
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/tools"));
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/overlay"));
+    Gui::BitmapFactory().addPath(QLatin1String(":/icons/constraints"));
+    Gui::BitmapFactory().addPath(QLatin1String(":/icons/elements"));
+    Gui::BitmapFactory().addPath(QLatin1String(":/icons/general"));
+    Gui::BitmapFactory().addPath(QLatin1String(":/icons/geometry"));
+    // Gui::BitmapFactory().addPath(QLatin1String(":/icons/obsolete"));
+    Gui::BitmapFactory().addPath(QLatin1String(":/icons/pointers"));
+    Gui::BitmapFactory().addPath(QLatin1String(":/icons/splines"));
+    Gui::BitmapFactory().addPath(QLatin1String(":/icons/tools"));
+    Gui::BitmapFactory().addPath(QLatin1String(":/icons/overlay"));
 
     // instantiating the commands
     CreateSketcherCommands();

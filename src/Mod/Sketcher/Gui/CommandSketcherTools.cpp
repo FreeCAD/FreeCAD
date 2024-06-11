@@ -1634,7 +1634,7 @@ void CmdSketcherCompCopy::activated(int iMsg)
     else if (iMsg == 2) {
         CmdSketcherMove sc;
         sc.activate();
-        pcAction->setShortcut(QString::fromLatin1(""));
+        pcAction->setShortcut(QLatin1String(""));
     }
 }
 

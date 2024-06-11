@@ -391,33 +391,33 @@ void AboutDialog::setupLabels()
     // gets replaced to "<b>FreeCAD</b>", for example
 
     QString author = ui->labelAuthor->text();
-    author.replace(QString::fromLatin1("Unknown Application"), exeName);
-    author.replace(QString::fromLatin1("(c) Unknown Author"), banner);
+    author.replace(QLatin1String("Unknown Application"), exeName);
+    author.replace(QLatin1String("(c) Unknown Author"), banner);
     ui->labelAuthor->setText(author);
     ui->labelAuthor->setUrl(mturl);
 
     if (qApp->styleSheet().isEmpty()) {
-        ui->labelAuthor->setStyleSheet(QString::fromLatin1("Gui--UrlLabel {color: #0000FF;text-decoration: underline;font-weight: 600;}"));
+        ui->labelAuthor->setStyleSheet(QLatin1String("Gui--UrlLabel {color: #0000FF;text-decoration: underline;font-weight: 600;}"));
     }
 
     QString version = ui->labelBuildVersion->text();
-    version.replace(QString::fromLatin1("Unknown"), QString::fromLatin1("%1.%2.%3%4").arg(major, minor, point, suffix));
+    version.replace(QLatin1String("Unknown"), QString::fromLatin1("%1.%2.%3%4").arg(major, minor, point, suffix));
     ui->labelBuildVersion->setText(version);
 
     QString revision = ui->labelBuildRevision->text();
-    revision.replace(QString::fromLatin1("Unknown"), build);
+    revision.replace(QLatin1String("Unknown"), build);
     ui->labelBuildRevision->setText(revision);
 
     QString date = ui->labelBuildDate->text();
-    date.replace(QString::fromLatin1("Unknown"), disda);
+    date.replace(QLatin1String("Unknown"), disda);
     ui->labelBuildDate->setText(date);
 
     QString os = ui->labelBuildOS->text();
-    os.replace(QString::fromLatin1("Unknown"), prettyProductInfoWrapper());
+    os.replace(QLatin1String("Unknown"), prettyProductInfoWrapper());
     ui->labelBuildOS->setText(os);
 
     QString platform = ui->labelBuildPlatform->text();
-    platform.replace(QString::fromLatin1("Unknown"),
+    platform.replace(QLatin1String("Unknown"),
         QString::fromLatin1("%1-bit").arg(QSysInfo::WordSize));
     ui->labelBuildPlatform->setText(platform);
 
@@ -425,7 +425,7 @@ void AboutDialog::setupLabels()
     it = config.find("BuildRevisionBranch");
     if (it != config.end()) {
         QString branch = ui->labelBuildBranch->text();
-        branch.replace(QString::fromLatin1("Unknown"), QString::fromUtf8(it->second.c_str()));
+        branch.replace(QLatin1String("Unknown"), QString::fromUtf8(it->second.c_str()));
         ui->labelBuildBranch->setText(branch);
     }
     else {
@@ -437,7 +437,7 @@ void AboutDialog::setupLabels()
     it = config.find("BuildRevisionHash");
     if (it != config.end()) {
         QString hash = ui->labelBuildHash->text();
-        hash.replace(QString::fromLatin1("Unknown"), QString::fromLatin1(it->second.c_str()).left(7)); // Use the 7-char abbreviated hash
+        hash.replace(QLatin1String("Unknown"), QString::fromLatin1(it->second.c_str()).left(7)); // Use the 7-char abbreviated hash
         ui->labelBuildHash->setText(hash);
         if (auto url_itr = config.find("BuildRepositoryURL"); url_itr != config.end()) {
             auto url = QString::fromStdString(url_itr->second);
@@ -478,7 +478,7 @@ void AboutDialog::showCredits()
     }
 
     auto tab_credits = new QWidget();
-    tab_credits->setObjectName(QString::fromLatin1("tab_credits"));
+    tab_credits->setObjectName(QLatin1String("tab_credits"));
     ui->tabWidget->addTab(tab_credits, tr("Credits"));
     auto hlayout = new QVBoxLayout(tab_credits);
     auto textField = new QTextBrowser(tab_credits);
@@ -486,15 +486,15 @@ void AboutDialog::showCredits()
     textField->setOpenLinks(false);
     hlayout->addWidget(textField);
 
-    QString creditsHTML = QString::fromLatin1("<html><body><h1>");
+    QString creditsHTML = QLatin1String("<html><body><h1>");
     //: Header for the Credits tab of the About screen
     creditsHTML += tr("Credits");
-    creditsHTML += QString::fromLatin1("</h1><p>");
+    creditsHTML += QLatin1String("</h1><p>");
     creditsHTML += tr("FreeCAD would not be possible without the contributions of");
-    creditsHTML += QString::fromLatin1(":</p><h2>"); 
+    creditsHTML += QLatin1String(":</p><h2>"); 
     //: Header for the list of individual people in the Credits list.
     creditsHTML += tr("Individuals");
-    creditsHTML += QString::fromLatin1("</h2><ul>");
+    creditsHTML += QLatin1String("</h2><ul>");
 
     QTextStream stream(&creditsFile);
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
@@ -503,18 +503,18 @@ void AboutDialog::showCredits()
     QString line;
     while (stream.readLineInto(&line)) {
         if (!line.isEmpty()) {
-            if (line == QString::fromLatin1("Firms")) {
-                creditsHTML += QString::fromLatin1("</ul><h2>");
+            if (line == QLatin1String("Firms")) {
+                creditsHTML += QLatin1String("</ul><h2>");
                 //: Header for the list of companies/organizations in the Credits list.
                 creditsHTML += tr("Organizations");
-                creditsHTML += QString::fromLatin1("</h2><ul>");
+                creditsHTML += QLatin1String("</h2><ul>");
             }
             else {
-                creditsHTML += QString::fromLatin1("<li>") + line + QString::fromLatin1("</li>");
+                creditsHTML += QLatin1String("<li>") + line + QLatin1String("</li>");
             }
         }
     }
-    creditsHTML += QString::fromLatin1("</ul></body></html>");
+    creditsHTML += QLatin1String("</ul></body></html>");
     textField->setHtml(creditsHTML);
 }
 
@@ -532,7 +532,7 @@ void AboutDialog::showLicenseInformation()
         ui->tabWidget->removeTab(1); // Hide the license placeholder widget
 
         auto tab_license = new QWidget();
-        tab_license->setObjectName(QString::fromLatin1("tab_license"));
+        tab_license->setObjectName(QLatin1String("tab_license"));
         ui->tabWidget->addTab(tab_license, tr("License"));
         auto hlayout = new QVBoxLayout(tab_license);
         auto textField = new QTextBrowser(tab_license);
@@ -546,7 +546,7 @@ void AboutDialog::showLicenseInformation()
         QString info(QLatin1String("SUCH DAMAGES.<hr/>"));
         info += getAdditionalLicenseInformation();
         QString lictext = ui->textBrowserLicense->toHtml();
-        lictext.replace(QString::fromLatin1("SUCH DAMAGES.<hr/>"), info);
+        lictext.replace(QLatin1String("SUCH DAMAGES.<hr/>"), info);
         ui->textBrowserLicense->setHtml(lictext);
     }
 }
@@ -571,7 +571,7 @@ QString AboutDialog::getAdditionalLicenseInformation() const
 void AboutDialog::showLibraryInformation()
 {
     auto tab_library = new QWidget();
-    tab_library->setObjectName(QString::fromLatin1("tab_library"));
+    tab_library->setObjectName(QLatin1String("tab_library"));
     ui->tabWidget->addTab(tab_library, tr("Libraries"));
     auto hlayout = new QVBoxLayout(tab_library);
     auto textField = new QTextBrowser(tab_library);
@@ -759,7 +759,7 @@ void AboutDialog::showCollectionInformation()
         return;
 
     auto tab_collection = new QWidget();
-    tab_collection->setObjectName(QString::fromLatin1("tab_collection"));
+    tab_collection->setObjectName(QLatin1String("tab_collection"));
     ui->tabWidget->addTab(tab_collection, tr("Collection"));
     auto hlayout = new QVBoxLayout(tab_collection);
     auto textField = new QTextBrowser(tab_collection);
@@ -778,7 +778,7 @@ void AboutDialog::showPrivacyPolicy()
     }
     auto text = QString::fromUtf8(policyFile.readAll());
     auto tabPrivacyPolicy = new QWidget();
-    tabPrivacyPolicy->setObjectName(QString::fromLatin1("tabPrivacyPolicy"));
+    tabPrivacyPolicy->setObjectName(QLatin1String("tabPrivacyPolicy"));
     ui->tabWidget->addTab(tabPrivacyPolicy, tr("Privacy Policy"));
     auto hLayout = new QVBoxLayout(tabPrivacyPolicy);
     auto textField = new QTextBrowser(tabPrivacyPolicy);

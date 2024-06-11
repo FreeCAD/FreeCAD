@@ -122,10 +122,10 @@ public:
             numMax->setText(tr("X: %1\tY: %2\tZ: %3").arg(bbox.MaxX).arg(bbox.MaxY).arg(bbox.MaxZ));
         }
         else {
-            numPoints->setText(QString::fromLatin1(""));
-            numFacets->setText(QString::fromLatin1(""));
-            numMin->setText(QString::fromLatin1(""));
-            numMax->setText(QString::fromLatin1(""));
+            numPoints->setText(QLatin1String(""));
+            numFacets->setText(QLatin1String(""));
+            numMin->setText(QLatin1String(""));
+            numMax->setText(QLatin1String(""));
         }
     }
 

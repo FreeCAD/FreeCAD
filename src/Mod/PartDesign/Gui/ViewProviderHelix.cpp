@@ -58,14 +58,14 @@ TaskDlgFeatureParameters *ViewProviderHelix::getEditDialog()
 }
 
 QIcon ViewProviderHelix::getIcon() const {
-    QString str = QString::fromLatin1("PartDesign_");
+    QString str = QLatin1String("PartDesign_");
     auto* prim = static_cast<PartDesign::Helix*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive");
+        str += QLatin1String("Additive");
     else
-        str += QString::fromLatin1("Subtractive");
+        str += QLatin1String("Subtractive");
 
-    str += QString::fromLatin1("Helix.svg");
+    str += QLatin1String("Helix.svg");
     return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 

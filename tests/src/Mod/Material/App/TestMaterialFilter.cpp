@@ -116,28 +116,28 @@ TEST_F(TestMaterialFilter, TestFilters)
     // First check that our materials are loading
     auto material = _materialManager->getMaterial(QString::fromLatin1(UUIDAluminumAppearance));
     ASSERT_TRUE(material);
-    ASSERT_EQ(material->getName(), QString::fromLatin1("TestAluminumAppearance"));
+    ASSERT_EQ(material->getName(), QLatin1String("TestAluminumAppearance"));
     ASSERT_EQ(material->getUUID(), QString::fromLatin1(UUIDAluminumAppearance));
 
     material = _materialManager->getMaterial(QString::fromLatin1(UUIDAluminumMixed));
     ASSERT_TRUE(material);
-    ASSERT_EQ(material->getName(), QString::fromLatin1("TestAluminumMixed"));
+    ASSERT_EQ(material->getName(), QLatin1String("TestAluminumMixed"));
     ASSERT_EQ(material->getUUID(), QString::fromLatin1(UUIDAluminumMixed));
 
     material = _materialManager->getMaterial(QString::fromLatin1(UUIDAluminumPhysical));
     ASSERT_TRUE(material);
-    ASSERT_EQ(material->getName(), QString::fromLatin1("TestAluminumPhysical"));
+    ASSERT_EQ(material->getName(), QLatin1String("TestAluminumPhysical"));
     ASSERT_EQ(material->getUUID(), QString::fromLatin1(UUIDAluminumPhysical));
 
     material = _materialManager->getMaterial(QString::fromLatin1(UUIDBrassAppearance));
     ASSERT_TRUE(material);
-    ASSERT_EQ(material->getName(), QString::fromLatin1("TestBrassAppearance"));
+    ASSERT_EQ(material->getName(), QLatin1String("TestBrassAppearance"));
     ASSERT_EQ(material->getUUID(), QString::fromLatin1(UUIDBrassAppearance));
 
-    material = _materialManager->getMaterialByPath(QString::fromLatin1("TestAcrylicLegacy.FCMat"),
-        QString::fromLatin1("Custom"));
+    material = _materialManager->getMaterialByPath(QLatin1String("TestAcrylicLegacy.FCMat"),
+        QLatin1String("Custom"));
     ASSERT_TRUE(material);
-    ASSERT_EQ(material->getName(), QString::fromLatin1("TestAcrylicLegacy"));
+    ASSERT_EQ(material->getName(), QLatin1String("TestAcrylicLegacy"));
     ASSERT_EQ(material->getUUID().size(), 36); // We don't know the UUID
 
     // Create an empty filter

@@ -160,18 +160,18 @@ namespace
 {
 inline const QStringList editModeToolbarNames()
 {
-    return QStringList {QString::fromLatin1("Sketcher edit mode"),
-                        QString::fromLatin1("Sketcher geometries"),
-                        QString::fromLatin1("Sketcher constraints"),
-                        QString::fromLatin1("Sketcher tools"),
-                        QString::fromLatin1("Sketcher B-spline tools"),
-                        QString::fromLatin1("Sketcher visual"),
-                        QString::fromLatin1("Sketcher edit tools")};
+    return QStringList {QLatin1String("Sketcher edit mode"),
+                        QLatin1String("Sketcher geometries"),
+                        QLatin1String("Sketcher constraints"),
+                        QLatin1String("Sketcher tools"),
+                        QLatin1String("Sketcher B-spline tools"),
+                        QLatin1String("Sketcher visual"),
+                        QLatin1String("Sketcher edit tools")};
 }
 
 inline const QStringList nonEditModeToolbarNames()
 {
-    return QStringList {QString::fromLatin1("Structure"), QString::fromLatin1("Sketcher")};
+    return QStringList {QLatin1String("Structure"), QLatin1String("Sketcher")};
 }
 }  // namespace
 

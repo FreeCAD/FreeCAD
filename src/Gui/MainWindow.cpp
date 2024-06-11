@@ -431,7 +431,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         tab->setTabsClosable(true);
         // The tabs might be very wide
         tab->setExpanding(false);
-        tab->setObjectName(QString::fromLatin1("mdiAreaTabBar"));
+        tab->setObjectName(QLatin1String("mdiAreaTabBar"));
     }
     d->mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -440,7 +440,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->mdiArea->setBackground(QBrush(QColor(160,160,160)));
     setCentralWidget(d->mdiArea);
 
-    statusBar()->setObjectName(QString::fromLatin1("statusBar"));
+    statusBar()->setObjectName(QLatin1String("statusBar"));
     connect(statusBar(), &QStatusBar::messageChanged, this, &MainWindow::statusMessageChanged);
 
     // labels and progressbar
@@ -466,24 +466,24 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     if(notificationAreaEnabled) {
         NotificationArea* notificationArea = new NotificationArea(statusBar());
-        notificationArea->setObjectName(QString::fromLatin1("notificationArea"));
+        notificationArea->setObjectName(QLatin1String("notificationArea"));
         notificationArea->setStyleSheet(QStringLiteral("text-align:left;"));
         statusBar()->addPermanentWidget(notificationArea);
     }
 
     // clears the action label
     d->actionTimer = new QTimer( this );
-    d->actionTimer->setObjectName(QString::fromLatin1("actionTimer"));
+    d->actionTimer->setObjectName(QLatin1String("actionTimer"));
     connect(d->actionTimer, &QTimer::timeout, d->actionLabel, &QLabel::clear);
 
     // clear status type
     d->statusTimer = new QTimer( this );
-    d->statusTimer->setObjectName(QString::fromLatin1("statusTimer"));
+    d->statusTimer->setObjectName(QLatin1String("statusTimer"));
     connect(d->statusTimer, &QTimer::timeout, this, &MainWindow::clearStatus);
 
     // update gui timer
     d->activityTimer = new QTimer(this);
-    d->activityTimer->setObjectName(QString::fromLatin1("activityTimer"));
+    d->activityTimer->setObjectName(QLatin1String("activityTimer"));
     connect(d->activityTimer, &QTimer::timeout, this, &MainWindow::_updateActions);
     d->activityTimer->setSingleShot(false);
     d->activityTimer->start(150);
@@ -1390,7 +1390,7 @@ void MainWindow::onWindowsMenuAboutToShow()
         QAction* action = actions.at(index);
         QString text;
         QString title = child->windowTitle();
-        int lastIndex = title.lastIndexOf(QString::fromLatin1("[*]"));
+        int lastIndex = title.lastIndexOf(QLatin1String("[*]"));
         if (lastIndex > 0) {
             title = title.left(lastIndex);
             if (child->isWindowModified())
@@ -1647,7 +1647,7 @@ void MainWindow::delayedStartup()
 void MainWindow::appendRecentFile(const QString& filename)
 {
     auto recent = this->findChild<RecentFilesAction *>
-        (QString::fromLatin1("recentFiles"));
+        (QLatin1String("recentFiles"));
     if (recent) {
         recent->appendFile(filename);
     }
@@ -1656,7 +1656,7 @@ void MainWindow::appendRecentFile(const QString& filename)
 void MainWindow::appendRecentMacro(const QString& filename)
 {
     auto recent = this->findChild<RecentMacrosAction *>
-        (QString::fromLatin1("recentMacros"));
+        (QLatin1String("recentMacros"));
     if (recent) {
         recent->appendFile(filename);
     }
@@ -1929,7 +1929,7 @@ QPixmap MainWindow::aboutImage() const
 {
     // See if we have a custom About screen image set
     QPixmap about_image;
-    QFileInfo fi(QString::fromLatin1("images:about_image.png"));
+    QFileInfo fi(QLatin1String("images:about_image.png"));
     if (fi.isFile() && fi.exists())
         about_image.load(fi.filePath(), "PNG");
 
@@ -2008,7 +2008,7 @@ QPixmap MainWindow::splashImage() const
 {
     // search in the UserAppData dir as very first
     QPixmap splash_image;
-    QFileInfo fi(QString::fromLatin1("images:splash_image.png"));
+    QFileInfo fi(QLatin1String("images:splash_image.png"));
     if (fi.isFile() && fi.exists())
         splash_image.load(fi.filePath(), "PNG");
 
@@ -2418,7 +2418,7 @@ void MainWindow::changeEvent(QEvent *e)
 
 void MainWindow::clearStatus() {
     d->currentStatusType = 100;
-    statusBar()->setStyleSheet(QString::fromLatin1("#statusBar{}"));
+    statusBar()->setStyleSheet(QLatin1String("#statusBar{}"));
 }
 
 void MainWindow::statusMessageChanged() {
@@ -2477,7 +2477,7 @@ void MainWindow::showStatus(int type, const QString& message)
         statusBar()->setStyleSheet(d->status->wrn);
         break;
     case MainWindow::Pane:
-        statusBar()->setStyleSheet(QString::fromLatin1("#statusBar{}"));
+        statusBar()->setStyleSheet(QLatin1String("#statusBar{}"));
         break;
     default:
         statusBar()->setStyleSheet(d->status->msg);
@@ -2592,9 +2592,9 @@ void MainWindow::setWindowTitle(const QString& string)
     StatusBarObserver::StatusBarObserver()
         : WindowParameter("OutputWindow")
     {
-        msg = QString::fromLatin1("#statusBar{color: #000000}");  // black
-        wrn = QString::fromLatin1("#statusBar{color: #ffaa00}");  // orange
-        err = QString::fromLatin1("#statusBar{color: #ff0000}");  // red
+        msg = QLatin1String("#statusBar{color: #000000}");  // black
+        wrn = QLatin1String("#statusBar{color: #ffaa00}");  // orange
+        err = QLatin1String("#statusBar{color: #ff0000}");  // red
         Base::Console().AttachObserver(this);
         getWindowParameter()->Attach(this);
         getWindowParameter()->NotifyAll();

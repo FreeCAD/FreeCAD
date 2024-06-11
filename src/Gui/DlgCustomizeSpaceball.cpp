@@ -492,7 +492,7 @@ CommandNode* CommandModel::nodeFromIndex(const QModelIndex &index) const
 
 void CommandModel::goAddMacro(const QByteArray &macroName)
 {
-    QModelIndexList indexList(this->match(this->index(0,0), Qt::UserRole, QVariant(QString::fromLatin1("Macros")),
+    QModelIndexList indexList(this->match(this->index(0,0), Qt::UserRole, QVariant(QLatin1String("Macros")),
                                           1, Qt::MatchWrap | Qt::MatchRecursive));
     QModelIndex macrosIndex;
     if (indexList.empty())
@@ -500,7 +500,7 @@ void CommandModel::goAddMacro(const QByteArray &macroName)
         //this is the first macro and we have to add the Macros item.
         //figure out where to insert it. Should be in the command groups now.
         QStringList groups = orderedGroups();
-        int location(groups.indexOf(QString::fromLatin1("Macros")));
+        int location(groups.indexOf(QLatin1String("Macros")));
         if (location == -1)
             location = groups.size();
         //add row

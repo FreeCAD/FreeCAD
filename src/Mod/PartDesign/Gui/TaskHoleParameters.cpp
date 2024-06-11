@@ -603,10 +603,10 @@ void TaskHoleParameters::threadTypeChanged(int index)
         // the size for ISO type has either the form "M3x0.35" or just "M3"
         // so we need to check if the size contains a 'x'. If yes, check if the string
         // up to the 'x' is exists in the new list
-        if (ThreadSizeString.indexOf(QString::fromLatin1("x")) > -1) {
+        if (ThreadSizeString.indexOf(QLatin1String("x")) > -1) {
             // we have an ISO fine size
             // cut of the part behind the 'x'
-            ThreadSizeString = ThreadSizeString.left(ThreadSizeString.indexOf(QString::fromLatin1("x")));
+            ThreadSizeString = ThreadSizeString.left(ThreadSizeString.indexOf(QLatin1String("x")));
         }
         // search if the string exists in the combobox
         int threadSizeIndex = ui->ThreadSize->findText(ThreadSizeString, Qt::MatchContains);

@@ -336,7 +336,7 @@ void ViewProviderPage::createMDIViewPage()
     m_mdiView->setDocumentObject(getDrawPage()->getNameInDocument());
     m_mdiView->setDocumentName(pcObject->getDocument()->getName());
 
-    m_mdiView->setWindowTitle(tabTitle + QString::fromLatin1("[*]"));
+    m_mdiView->setWindowTitle(tabTitle + QLatin1String("[*]"));
     m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_TreePage"));
     Gui::getMainWindow()->addWindow(m_mdiView);
     switchToMdiViewPage();

@@ -509,7 +509,7 @@ void ReportOutput::SendLog(const std::string& notifiername, const std::string& m
     if (style == ReportHighlighter::LogText) {
         if (messageSize > 0 && qMsg.size()>messageSize) {
             qMsg.truncate(messageSize);
-            qMsg += QString::fromLatin1("...\n");
+            qMsg += QLatin1String("...\n");
         }
     }
 
@@ -656,7 +656,7 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     QAction* copy = menu->addAction(copyStr, this, &ReportOutput::copy);
     copy->setShortcut(QKeySequence(QKeySequence::Copy));
     copy->setEnabled(textCursor().hasSelection());
-    QIcon icon = QIcon::fromTheme(QString::fromLatin1("edit-copy"));
+    QIcon icon = QIcon::fromTheme(QLatin1String("edit-copy"));
     if (!icon.isNull())
         copy->setIcon(icon);
 

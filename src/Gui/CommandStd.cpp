@@ -483,7 +483,7 @@ StdCmdOnlineHelp::StdCmdOnlineHelp()
 void StdCmdOnlineHelp::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::getMainWindow()->showDocumentation(QString::fromLatin1("Online_Help_Startpage"));
+    Gui::getMainWindow()->showDocumentation(QLatin1String("Online_Help_Startpage"));
 }
 
 //===========================================================================
@@ -892,8 +892,8 @@ Gui::Action * StdCmdUserEditMode::createAction()
         QAction* act = pcAction->addAction(QString());
         auto modeName = QString::fromStdString(uem.second.first);
         act->setCheckable(true);
-        act->setIcon(BitmapFactory().iconFromTheme(qPrintable(QString::fromLatin1("Std_UserEditMode")+modeName)));
-        act->setObjectName(QString::fromLatin1("Std_UserEditMode")+modeName);
+        act->setIcon(BitmapFactory().iconFromTheme(qPrintable(QLatin1String("Std_UserEditMode")+modeName)));
+        act->setObjectName(QLatin1String("Std_UserEditMode")+modeName);
         act->setWhatsThis(QString::fromLatin1(getWhatsThis()));
         act->setToolTip(QString::fromStdString(uem.second.second));
 

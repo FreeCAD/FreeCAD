@@ -298,8 +298,8 @@ QString MaterialValue::getYAMLString() const
         }
         else if (getType() == MaterialValue::List) {
             for (auto& it : getList()) {
-                yaml += QString::fromLatin1("\n      - \"") + escapeString(it.toString())
-                    + QString::fromLatin1("\"");
+                yaml += QLatin1String("\n      - \"") + escapeString(it.toString())
+                    + QLatin1String("\"");
             }
             return yaml;
         }
@@ -307,7 +307,7 @@ QString MaterialValue::getYAMLString() const
             yaml += getValue().toString();
         }
     }
-    yaml = QString::fromLatin1(" \"") + escapeString(yaml) + QString::fromLatin1("\"");
+    yaml = QLatin1String(" \"") + escapeString(yaml) + QLatin1String("\"");
     return yaml;
 }
 

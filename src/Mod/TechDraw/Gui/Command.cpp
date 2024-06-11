@@ -442,8 +442,8 @@ void CmdTechDrawView::activated(int iMsg)
                 .arg(QObject::tr("SVG or Image files"), QObject::tr("All Files")));
 
             if (!filename.isEmpty()) {
-                if (filename.endsWith(QString::fromLatin1(".svg"), Qt::CaseInsensitive)
-                    || filename.endsWith(QString::fromLatin1(".svgz"), Qt::CaseInsensitive)) {
+                if (filename.endsWith(QLatin1String(".svg"), Qt::CaseInsensitive)
+                    || filename.endsWith(QLatin1String(".svgz"), Qt::CaseInsensitive)) {
                     std::string FeatName = getUniqueObjectName("Symbol");
                     filename = Base::Tools::escapeEncodeFilename(filename);
                     openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
@@ -717,12 +717,12 @@ Gui::Action* CmdTechDrawSectionGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_SectionView"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_SectionView"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_SectionView"));
+    p1->setObjectName(QLatin1String("TechDraw_SectionView"));
+    p1->setWhatsThis(QLatin1String("TechDraw_SectionView"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_ComplexSection"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ComplexSection"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ComplexSection"));
+    p2->setObjectName(QLatin1String("TechDraw_ComplexSection"));
+    p2->setWhatsThis(QLatin1String("TechDraw_ComplexSection"));
 
     _pcAction = pcAction;
     languageChange();

@@ -130,13 +130,13 @@ SheetView::SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWi
     ui->cells->setPalette(palette);
 
     QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-        QString::fromLatin1("Spreadsheet_BackgroundColor"));
+        QLatin1String("Spreadsheet_BackgroundColor"));
     if (!bgList.empty()) {
         bgList[0]->setCurrentColor(palette.color(QPalette::Base));
     }
 
     QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-        QString::fromLatin1("Spreadsheet_ForegroundColor"));
+        QLatin1String("Spreadsheet_ForegroundColor"));
     if (!fgList.empty()) {
         fgList[0]->setCurrentColor(palette.color(QPalette::Text));
     }
