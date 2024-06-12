@@ -532,7 +532,7 @@ BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge)
             BSplinePtr bspline = std::make_shared<BSpline>(edge);
             if (bspline->isLine()) {
                 result = std::make_shared<Generic>(edge);
-            } else {
+            } else if (bspline->isCircle())  {
                 circEdge = bspline->asCircle(isArc);
                 if (!circEdge.IsNull()) {
                     if (isArc) {
@@ -540,20 +540,20 @@ BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge)
                     } else {
                         result = std::make_shared<Circle>(circEdge);
                     }
-                } else {
-//                    Base::Console().Message("Geom::baseFactory - circEdge is Null\n");
-                    result = bspline;
-                }
+                 }
+            } else {
+//              Base::Console().Message("Geom::baseFactory - circEdge is Null\n");
+                result = bspline;
             }
             break;
         }
         catch (const Standard_Failure& e) {
-            Base::Console().Error("Geom::baseFactory - OCC error - %s - while making spline\n",
+            Base::Console().Log("Geom::baseFactory - OCC error - %s - while making spline\n",
                               e.GetMessageString());
             break;
         }
         catch (...) {
-            Base::Console().Error("Geom::baseFactory - unknown error occurred while making spline\n");
+            Base::Console().Log("Geom::baseFactory - unknown error occurred while making spline\n");
             break;
         } break;
       } // end bspline case
@@ -1593,7 +1593,7 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
         sumCenter += DrawUtil::toVector3d(curveCenter);
     }
     catch (Standard_Failure&) {
-        Base::Console().Error("OCC error.  Could not interpret BSpline as Circle\n");
+        // Base::Console().Error("OCC error.  Could not interpret BSpline as Circle\n");
         return false;
     }
     Base::Vector3d avgCenter = sumCenter/testCount;
