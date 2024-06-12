@@ -813,28 +813,16 @@ public:
             setOverlayMode(OverlayManager::OverlayMode::TransparentAll);
             return;
         case OverlayManager::OverlayMode::ToggleLeft:
-            if (OverlayTabWidget::_LeftOverlay->isVisible())
-                OverlayTabWidget::_LeftOverlay->setState(OverlayTabWidget::State::Hidden);
-            else
-                OverlayTabWidget::_LeftOverlay->setState(OverlayTabWidget::State::Showing);
+            toggleOverlayTab(OverlayTabWidget::_LeftOverlay);
             break;
         case OverlayManager::OverlayMode::ToggleRight:
-            if (OverlayTabWidget::_RightOverlay->isVisible())
-                OverlayTabWidget::_RightOverlay->setState(OverlayTabWidget::State::Hidden);
-            else
-                OverlayTabWidget::_RightOverlay->setState(OverlayTabWidget::State::Showing);
+            toggleOverlayTab(OverlayTabWidget::_RightOverlay);
             break;
         case OverlayManager::OverlayMode::ToggleTop:
-            if (OverlayTabWidget::_TopOverlay->isVisible())
-                OverlayTabWidget::_TopOverlay->setState(OverlayTabWidget::State::Hidden);
-            else
-                OverlayTabWidget::_TopOverlay->setState(OverlayTabWidget::State::Showing);
+            toggleOverlayTab(OverlayTabWidget::_TopOverlay);
             break;
         case OverlayManager::OverlayMode::ToggleBottom:
-            if (OverlayTabWidget::_BottomOverlay->isVisible())
-                OverlayTabWidget::_BottomOverlay->setState(OverlayTabWidget::State::Hidden);
-            else
-                OverlayTabWidget::_BottomOverlay->setState(OverlayTabWidget::State::Showing);
+            toggleOverlayTab(OverlayTabWidget::_BottomOverlay);
             break;
         default:
             break;
@@ -880,6 +868,15 @@ public:
         toggleOverlay(dock, m);
     }
 
+    static void toggleOverlayTab(OverlayTabWidget* tab)
+    {
+        auto toggledState = tab->isVisible()
+            ? OverlayTabWidget::State::Hidden
+            : OverlayTabWidget::State::Showing;
+
+        tab->setState(toggledState, OverlayTabWidget::StateChangeSource::User);
+    }
+    
     void onToggleDockWidget(QDockWidget *dock, int checked)
     {
         if(!dock)
