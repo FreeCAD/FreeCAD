@@ -55,6 +55,7 @@ COORDINATE_SYSTEM = ["Cartesian", "Cartesian 1D", "Cartesian 2D", "Cartesian 3D"
                      "Cylindric", "Cylindric Symmetric",
                      "Axi Symmetric"]
 SIMULATION_TYPE = ["Scanning", "Steady State", "Transient"]
+MESH_TYPES = [".unv"]
 
 
 def create(doc, name="ElmerSolver"):
@@ -81,6 +82,9 @@ class Proxy(solverbase.Proxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
+
+        obj.MeshFormat = MESH_TYPES
+        obj.MeshFormat = ".unv"
 
         obj.addProperty(
             "App::PropertyEnumeration",

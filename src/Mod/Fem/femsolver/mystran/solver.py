@@ -42,6 +42,7 @@ if FreeCAD.GuiUp:
     import FemGui
 
 ANALYSIS_TYPES = ["static"]
+MESH_TYPES = [".unv"]
 
 
 def create(doc, name="SolverMystran"):
@@ -64,6 +65,8 @@ class Proxy(solverbase.Proxy):
         obj.addProperty("App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis")
         obj.AnalysisType = ANALYSIS_TYPES
         obj.AnalysisType = ANALYSIS_TYPES[0]
+        obj.MeshFormat = MESH_TYPES
+        obj.MeshFormat = ".unv"
 
     def createMachine(self, obj, directory, testmode=False):
         return run.Machine(
