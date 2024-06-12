@@ -58,7 +58,7 @@ void DlgSettingsFemGmshImp::saveSettings()
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh");
-    std::string meshFormats[] = {".unv", ".vtk", ".inp", ".med"};
+    std::string meshFormats[] = {".unv", ".vtk", ".inp", ".msh"};
     int ind = ui->cb_mesh_file_format->currentIndex();
     hGrp->SetASCII("MeshFileFormat", meshFormats[ind]);
     
@@ -82,7 +82,7 @@ void DlgSettingsFemGmshImp::loadSettings()
     {
         ind =2;
     }
-    else if(str == ".med")
+    else if(str == ".msh")
     {
         ind =3;
     }
@@ -91,8 +91,6 @@ void DlgSettingsFemGmshImp::loadSettings()
     ui->cb_gmsh_binary_std->onRestore();
     ui->fc_gmsh_binary_path->onRestore();
     ui->cb_mesh_file_format->onRestore();
-
-
 }
 
 /**

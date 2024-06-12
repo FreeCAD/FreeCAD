@@ -215,11 +215,13 @@ private:
     void readNastran95(const std::string& Filename);
     void readZ88(const std::string& Filename);
     void readAbaqus(const std::string& Filename);
+    void readMsh(const std::string& Filename);
 
 private:
     /// positioning matrix
     Base::Matrix4D _Mtrx;
     SMESH_Mesh* myMesh;
+    std::string _FileExt;
 
     std::list<SMESH_HypothesisPtr> hypoth;
     static SMESH_Gen* _mesh_gen;
