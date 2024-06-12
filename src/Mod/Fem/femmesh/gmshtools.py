@@ -315,7 +315,6 @@ class GmshTools():
                 file_ext = solver.MeshFormat
             else:
                 file_ext = ".unv"
-            gmsh_prefs.SetString("MeshFileFormat", file_ext)
         else:
             file_ext = gmsh_prefs.GetString("MeshFileFormat", ".unv")
             
