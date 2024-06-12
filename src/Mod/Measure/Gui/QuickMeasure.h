@@ -29,6 +29,9 @@
 #include <Mod/Measure/MeasureGlobal.h>
 
 #include <Gui/Selection.h>
+
+class QTimer;
+
 namespace Measure {
     class Measurement;
 }
@@ -45,15 +48,19 @@ public:
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void tryMeasureSelection(const Gui::SelectionChanges& msg);
+    void tryMeasureSelection();
 
     bool canMeasureSelection(const Gui::SelectionChanges& msg) const;
     void addSelectionToMeasurement();
     void printResult();
     void print(const QString& message);
 
+    void processSelection();
+
     Measure::Measurement* measurement;
 
+    QTimer* selectionTimer;
+    bool pendingProcessing;
 };
 
 } //namespace MeasureGui
