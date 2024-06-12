@@ -583,39 +583,40 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
     return qt_getCppType<QObject>(pyobject.ptr());
 }
 
+qsizetype PythonWrapper::tryEnum(PyObject* pyPtr)
+{
+    if (PyObject* number = PyNumber_Long(pyPtr)) {
+        Py::Long longObj(number, true);
+        return longObj.as_long();
+    }
+
+    // if PyNumber_Long failed then an exception is set
+    PyErr_Clear();
+
+    Py::Object object(pyPtr);
+    if (object.hasAttr(std::string("value"))) {
+        Py::Long longObj(object.getAttr(std::string("value")));
+        return longObj.as_long();
+    }
+
+    return 0;
+}
+
 qsizetype PythonWrapper::toEnum(PyObject* pyPtr)
 {
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    if (PyLong_Check(pyPtr)) {
-        return PyLong_AsLong(pyPtr);
+    try {
+        return tryEnum(pyPtr);
     }
-    return Shiboken::Enum::getValue(pyPtr);
-#else
-    return toEnum(Py::Object(pyPtr));
-#endif
+    catch (Py::Exception&) {
+        Base::PyException e;
+        e.ReportException();
+        return 0;
+    }
 }
 
 qsizetype PythonWrapper::toEnum(const Py::Object& pyobject)
 {
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     return toEnum(pyobject.ptr());
-#else
-    try {
-        qsizetype ret {};
-        if (pyobject.hasAttr(std::string("value"))) {
-            ret = Py::Int(pyobject.getAttr(std::string("value")));
-        }
-        else {
-            ret = Py::Int(pyobject);
-        }
-        return ret;
-    }
-    catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
-        e.ReportException();
-        return 0;
-    }
-#endif
 }
 
 QGraphicsItem* PythonWrapper::toQGraphicsItem(PyObject* pyPtr)

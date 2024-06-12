@@ -79,6 +79,9 @@ public:
     QDir* toQDir(PyObject* pyobj);
     static void createChildrenNameAttributes(PyObject* root, QObject* object);
     static void setParent(PyObject* pyWdg, QObject* parent);
+
+private:
+    qsizetype tryEnum(PyObject* pyPtr);
 };
 
 } // namespace Gui
