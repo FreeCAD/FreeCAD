@@ -732,7 +732,7 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
                 checkExpression(ui->expression->text());
                 ui->okBtn->setEnabled(true);
             }
-            catch (Base::Exception& e) {
+            catch (Base::Exception&) {
                 ui->okBtn->setDisabled(true);
             }
         }
