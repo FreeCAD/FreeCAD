@@ -51,6 +51,10 @@ set(ONDSELSOLVER_SRC
         OndselSolver/ASMTAngleJoint.cpp
         OndselSolver/ASMTAnimationParameters.cpp
         OndselSolver/ASMTAssembly.cpp
+        OndselSolver/ASMTConeConeContact.cpp
+        OndselSolver/ASMTContact.cpp
+        OndselSolver/ASMTCylConeContact.cpp
+        OndselSolver/ASMTCylCylContact.cpp
         OndselSolver/ASMTCompoundJoint.cpp
         OndselSolver/ASMTConstantGravity.cpp
         OndselSolver/ASMTConstantVelocityJoint.cpp
@@ -421,6 +425,10 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/CADSystem.h
         OndselSolver/CartesianFrame.h
         OndselSolver/CompoundJoint.h
+        OndselSolver/ASMTConeConeContact.h
+        OndselSolver/ASMTContact.h
+        OndselSolver/ASMTCylConeContact.h
+        OndselSolver/ASMTCylCylContact.h
         OndselSolver/Constant.h
         OndselSolver/ConstantGravity.h
         OndselSolver/ConstantVelocityJoint.h

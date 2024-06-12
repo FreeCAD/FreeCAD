@@ -163,9 +163,13 @@
     <ClCompile Include="ASMTAssembly.cpp" />
     <ClCompile Include="ASMTAtPointJoint.cpp" />
     <ClCompile Include="ASMTCompoundJoint.cpp" />
+    <ClCompile Include="ASMTConeConeContact.cpp" />
     <ClCompile Include="ASMTConstantGravity.cpp" />
     <ClCompile Include="ASMTConstantVelocityJoint.cpp" />
     <ClCompile Include="ASMTConstraintSet.cpp" />
+    <ClCompile Include="ASMTContact.cpp" />
+    <ClCompile Include="ASMTCylConeContact.cpp" />
+    <ClCompile Include="ASMTCylCylContact.cpp" />
     <ClCompile Include="ASMTCylindricalJoint.cpp" />
     <ClCompile Include="ASMTCylSphJoint.cpp" />
     <ClCompile Include="ASMTExtrusion.cpp" />
@@ -478,9 +482,13 @@
     <ClInclude Include="ASMTAssembly.h" />
     <ClInclude Include="ASMTAtPointJoint.h" />
     <ClInclude Include="ASMTCompoundJoint.h" />
+    <ClInclude Include="ASMTConeConeContact.h" />
     <ClInclude Include="ASMTConstantGravity.h" />
     <ClInclude Include="ASMTConstantVelocityJoint.h" />
     <ClInclude Include="ASMTConstraintSet.h" />
+    <ClInclude Include="ASMTContact.h" />
+    <ClInclude Include="ASMTCylConeContact.h" />
+    <ClInclude Include="ASMTCylCylContact.h" />
     <ClInclude Include="ASMTCylindricalJoint.h" />
     <ClInclude Include="ASMTCylSphJoint.h" />
     <ClInclude Include="ASMTExtrusion.h" />

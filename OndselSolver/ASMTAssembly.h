@@ -41,6 +41,8 @@ namespace MbD {
 		static std::shared_ptr<ASMTAssembly> assemblyFromFile(const char* chars);
 		static void runFile(const char* chars);
 		static void runDraggingLogTest();
+		static void runDraggingLogTest2();
+		static void runDraggingLogTest3();
 		static void runDraggingTest();
 		static void runDraggingTest2();
 		static void runDraggingTest3();
