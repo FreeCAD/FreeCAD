@@ -62,6 +62,7 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
     ui->qsbHeight->setUnit(Base::Unit::Length);
 
     setUiPrimary();
+    connect(ui->cbCrop, &QCheckBox::clicked, this, &TaskActiveView::onCropChanged);
 }
 
 TaskActiveView::~TaskActiveView() {}
@@ -84,6 +85,8 @@ void TaskActiveView::setUiPrimary()
 {
     //    Base::Console().Message("TAV::setUiPrimary()\n");
     setWindowTitle(QObject::tr("ActiveView to TD View"));
+    ui->cbCrop->setChecked(false);
+    enableCrop(false);
 }
 
 void TaskActiveView::blockButtons(bool b) { Q_UNUSED(b); }
@@ -218,6 +221,17 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
     }
 
     return newImg;
+}
+
+void TaskActiveView::onCropChanged()
+{
+    enableCrop(ui->cbCrop->isChecked());
+}
+
+void TaskActiveView::enableCrop(bool state)
+{
+    ui->qsbHeight->setEnabled(state);
+    ui->qsbWidth->setEnabled(state);
 }
 
 //******************************************************************************
