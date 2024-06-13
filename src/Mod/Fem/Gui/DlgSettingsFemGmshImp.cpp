@@ -44,14 +44,13 @@ DlgSettingsFemGmshImp::DlgSettingsFemGmshImp(QWidget* parent)
             &Gui::PrefFileChooser::fileNameChanged,
             this,
             &DlgSettingsFemGmshImp::onfileNameChanged);
-
 }
 
 DlgSettingsFemGmshImp::~DlgSettingsFemGmshImp() = default;
 
 void DlgSettingsFemGmshImp::saveSettings()
 {
-    
+
     ui->cb_gmsh_binary_std->onSave();
     ui->fc_gmsh_binary_path->onSave();
     ui->cb_mesh_file_format->onSave();
@@ -61,7 +60,6 @@ void DlgSettingsFemGmshImp::saveSettings()
     std::string meshFormats[] = {".unv", ".vtk", ".inp", ".msh"};
     int ind = ui->cb_mesh_file_format->currentIndex();
     hGrp->SetASCII("MeshFileFormat", meshFormats[ind]);
-    
 }
 
 void DlgSettingsFemGmshImp::loadSettings()
@@ -70,21 +68,17 @@ void DlgSettingsFemGmshImp::loadSettings()
         "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh");
     std::string str = hGrp->GetASCII("MeshFileFormat", ".unv");
     int ind = 0;
-    if(str == ".unv")
-    {
-        ind =0;
+    if (str == ".unv") {
+        ind = 0;
     }
-    else if(str == ".vtk")
-    {
-        ind =1;
+    else if (str == ".vtk") {
+        ind = 1;
     }
-    else if(str == ".inp")
-    {
-        ind =2;
+    else if (str == ".inp") {
+        ind = 2;
     }
-    else if(str == ".msh")
-    {
-        ind =3;
+    else if (str == ".msh") {
+        ind = 3;
     }
 
     ui->cb_mesh_file_format->setCurrentIndex(ind);

@@ -1885,7 +1885,6 @@ void FemMesh::readMsh(const std::string& FileName)
     Base::TimeElapsed Start;
     Base::Console().Log("Start: FemMesh::readMsh() =================================\n");
 
-    
 
     Base::FileInfo File(FileName);
     _FileExt = File.extension();
@@ -1893,7 +1892,6 @@ void FemMesh::readMsh(const std::string& FileName)
     PyObject* module = PyImport_ImportModule("feminout.importMshMesh");
     if (!module) {
         return;
-
     }
     try {
         Py::Module mshmod(module, true);
@@ -1920,12 +1918,11 @@ void FemMesh::readMsh(const std::string& FileName)
 }
 
 
-
 void FemMesh::read(const char* FileName)
 {
     Base::FileInfo File(FileName);
     _Mtrx = Base::Matrix4D();
-    
+
     // checking on the file
     if (!File.isReadable()) {
         throw Base::FileException("File to load not existing or not readable", File);
@@ -2611,11 +2608,13 @@ unsigned int FemMesh::getMemSize() const
 void FemMesh::Save(Base::Writer& writer) const
 {
     std::string filename;
-    
-    if(_FileExt.empty())
+
+    if (_FileExt.empty()) {
         filename = "FemMesh.unv";
-    else
+    }
+    else {
         filename = "FemMesh." + _FileExt;
+    }
 
 
     if (!writer.isForceXML()) {
