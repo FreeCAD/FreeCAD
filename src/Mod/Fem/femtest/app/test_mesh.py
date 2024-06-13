@@ -219,6 +219,31 @@ class TestMeshCommon(unittest.TestCase):
                 expected
             )
         )
+    
+    # ********************************************************************************************
+    def test_beam_msh(
+        self
+    ):
+        expected_nodes_num = 520
+        expected_volumes_num = 217
+
+
+        file_extension = "msh"
+        testfile = join(testtools.get_fem_test_home_dir(),
+            "mesh", "beam_mesh.msh")
+       
+        femmesh_testfile = Fem.read(testfile)  # read the mesh from test mesh
+
+        self.assertEqual(
+            len(femmesh_testfile.Nodes),
+            expected_nodes_num,
+            "Test reading .msh mesh file failed. Nodes are different.\n")
+
+        self.assertEqual(
+                len(femmesh_testfile.Volumes),
+                expected_volumes_num,
+            "Test reading .msh meah file failed. Volumes are different.\n"
+            )
 
 
 # ************************************************************************************************
@@ -550,7 +575,7 @@ class TestMeshEleTetra10(unittest.TestCase):
         self.assertEqual(
             femmesh_testfile.Nodes,
             self.expected_nodes["nodes"],
-            "Test reading {} mesh to {} file failed. Nodes are different.\n")
+            "Test reading .msh mesh file failed. Nodes are different.\n")
 
         self.assertEqual(
             [
@@ -558,39 +583,9 @@ class TestMeshEleTetra10(unittest.TestCase):
                 expected_volumes
             ],
             self.expected_elem["volumes"],
-            "Test reading {} mesh to {} file failed. Volumes are different.\n"
+            "Test reading .msh mesh file failed. Volumes are different.\n"
             )
 
-    def test_tetra10_msh(
-        self
-    ):
-       # tetra10 element: reading from msh mesh file format
-
-        expected_nodes_num = 519
-        expected_volumes_num = 216
-
-
-        file_extension = "msh"
-        testfile = join(testtools.get_fem_test_home_dir(),
-            "mesh", "beam_mesh.msh")
-            
-
-       
-        femmesh_testfile = Fem.read(testfile)  # read the mesh from test mesh
-
-        self.assertEqual(
-            len(femmesh_testfile.Nodes),
-            expected_nodes_num,
-            "Test reading {} mesh to {} file failed. Nodes are different.\n")
-
-        self.assertEqual(
-                len(femmesh_testfile.Volumes),
-                expected_volumes_num,
-            "Test reading {} mesh to {} file failed. Volumes are different.\n"
-            )
-        
-
-    
 
 # ************************************************************************************************
 # ************************************************************************************************

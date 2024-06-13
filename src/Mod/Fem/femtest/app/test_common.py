@@ -141,9 +141,7 @@ class TestFemCommon(unittest.TestCase):
                 __import__("{0}".format(mod))
             self.assertTrue(im, "Problem importing {0}".format(mod))
 
-    def test_solver_mesh_format_propert(self):
-        # self.doc = FreeCAD.newDocument("test-solver")
-        # FreeCAD.closeDocument("test-solver")
+    def test_solver_mesh_format_property(self):
 
         solver = self.document.addObject("Fem::FemSolverObjectPython", "Solver")
         proxy = solverbas.Proxy(solver)
