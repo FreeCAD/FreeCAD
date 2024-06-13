@@ -79,6 +79,14 @@ public:
      */
     void getFaceColors(const std::vector<std::string>& elements,
                        std::vector<App::Color>& colors) const;
+    /*!
+     * \brief getFaceMaterials
+     * \param elements The sub-element names. If this list is empty \a materials will be filled with
+     * the default color. \param materials The size of the \a materials array is equal to the number
+     * of faces of the shape
+     */
+    void getFaceMaterials(const std::vector<std::string>& elements,
+                          std::vector<App::Material>& materials) const;
 
 private:
     void getVertexColor(const std::string& element, std::vector<App::Color>& colors) const;
@@ -89,6 +97,7 @@ private:
     void getEdgeColorsOfWire(const std::string& element, std::vector<App::Color>& colors) const;
     void getEdgeColorsOfFace(const std::string& element, std::vector<App::Color>& colors) const;
     void getFaceColor(const std::string& element, std::vector<App::Color>& colors) const;
+    void getFaceColor(const std::string& element, std::vector<App::Material>& materials) const;
 
 private:
     App::Color defaultColor;

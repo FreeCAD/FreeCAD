@@ -23,15 +23,18 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QSignalBlocker>
+# include <QAction>
 #endif
 
 #include <App/Document.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
+#include <Mod/Part/Gui/ReferenceHighlighter.h>
 
 #include "ui_TaskPadPocketParameters.h"
 #include "TaskExtrudeParameters.h"
+#include "TaskTransformedParameters.h"
 #include "ReferenceSelection.h"
 
 
@@ -40,7 +43,7 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskExtrudeParameters */
 
-TaskExtrudeParameters::TaskExtrudeParameters(ViewProviderSketchBased *SketchBasedView, QWidget *parent,
+TaskExtrudeParameters::TaskExtrudeParameters(ViewProviderExtrude *SketchBasedView, QWidget *parent,
                                              const std::string& pixmapname, const QString& parname)
     : TaskSketchBasedParameters(SketchBasedView, parent, pixmapname, parname)
     , propReferenceAxis(nullptr)
@@ -161,9 +164,24 @@ void TaskExtrudeParameters::setupDialog()
 
     ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace.c_str()));
 
+    updateShapeName();
+    updateShapeFaces();
+
     translateModeList(index);
 
+    unselectShapeFaceAction = new QAction(tr("Remove"), this);
+    unselectShapeFaceAction->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    unselectShapeFaceAction->setShortcutVisibleInContextMenu(true);
+#endif
+
+    ui->listWidgetReferences->addAction(unselectShapeFaceAction);
+    ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+
     connectSlots();
+    
+    ui->checkBoxAllFaces->setChecked(ui->listWidgetReferences->count() == 0);
 
     this->propReferenceAxis = &(extrude->ReferenceAxis);
 
@@ -215,14 +233,90 @@ void TaskExtrudeParameters::connectSlots()
         this, &TaskExtrudeParameters::onMidplaneChanged);
     connect(ui->checkBoxReversed, &QCheckBox::toggled,
         this, &TaskExtrudeParameters::onReversedChanged);
+    connect(ui->checkBoxAllFaces, &QCheckBox::toggled,
+        this, &TaskExtrudeParameters::onAllFacesToggled);
     connect(ui->changeMode, qOverload<int>(&QComboBox::currentIndexChanged),
         this, &TaskExtrudeParameters::onModeChanged);
-    connect(ui->buttonFace, &QPushButton::toggled,
-        this, &TaskExtrudeParameters::onButtonFace);
+    connect(ui->buttonFace, &QToolButton::toggled,
+        this, &TaskExtrudeParameters::onSelectFaceToggle);
+    connect(ui->buttonShape, &QToolButton::toggled,
+        this, &TaskExtrudeParameters::onSelectShapeToggle);
     connect(ui->lineFaceName, &QLineEdit::textEdited,
         this, &TaskExtrudeParameters::onFaceName);
     connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
         this, &TaskExtrudeParameters::onUpdateView);
+    connect(ui->buttonShapeFace, &QToolButton::toggled,
+        this, &TaskExtrudeParameters::onSelectShapeFacesToggle);
+    connect(ui->listWidgetReferences, &QListWidget::item,
+        this, &TaskExtrudeParameters::onSelectShapeFacesToggle);
+    connect(unselectShapeFaceAction, &QAction::triggered,
+        this, &TaskExtrudeParameters::onUnselectShapeFacesTrigger);
+}
+
+void TaskExtrudeParameters::onSelectShapeFacesToggle(bool checked)
+{
+    if (checked) {
+        setSelectionMode(SelectShapeFaces);
+        ui->buttonShapeFace->setText(tr("Preview"));
+    } else {
+        setSelectionMode(None);
+        ui->buttonShapeFace->setText(tr("Select faces"));
+    }
+}
+
+void PartDesignGui::TaskExtrudeParameters::onUnselectShapeFacesTrigger()
+{
+    auto selected = ui->listWidgetReferences->selectedItems();
+    auto faces = getShapeFaces();
+
+    auto extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+
+    faces.erase(std::remove_if(faces.begin(), faces.end(), [selected](const std::string &face) { 
+        for (auto &item : selected) {
+            if (item->text().toStdString() == face) {
+                return true;
+            }
+        }
+
+        return false;
+    }));
+
+    extrude->UpToShape.setValue(extrude->UpToShape.getValue(), faces);
+
+    updateShapeFaces();
+}
+
+void TaskExtrudeParameters::setSelectionMode(SelectionMode mode)
+{
+    if (selectionMode == mode) {
+        return;
+    }
+
+    ui->buttonShapeFace->setChecked(mode == SelectShapeFaces);
+    ui->buttonFace->setChecked(mode == SelectFace);
+    ui->buttonShape->setChecked(mode == SelectShape);
+
+    selectionMode = mode;
+
+    switch (mode) {
+        case SelectShape:
+            onSelectReference(AllowSelection::WHOLE);
+            Gui::Selection().addSelectionGate(new SelectionFilterGate("SELECT Part::Feature COUNT 1"));
+            break;
+        case SelectFace:
+            onSelectReference(AllowSelection::FACE);
+            break;
+        case SelectShapeFaces:
+            onSelectReference(AllowSelection::FACE);
+            static_cast<ViewProviderExtrude*>(vp)->highlightShapeFaces(getShapeFaces());
+            break;
+        case SelectReferenceAxis:
+            onSelectReference(AllowSelection::EDGE | AllowSelection::PLANAR | AllowSelection::CIRCLE);
+            break;
+        default:
+            static_cast<ViewProviderExtrude*>(vp)->highlightShapeFaces({});
+            onSelectReference(AllowSelection::NONE);
+    }
 }
 
 void TaskExtrudeParameters::tryRecomputeFeature()
@@ -239,27 +333,29 @@ void TaskExtrudeParameters::tryRecomputeFeature()
 void TaskExtrudeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        // if we have an edge selection for the extrude direction
-        if (!selectionFace) {
-            selectedReferenceAxis(msg);
-        }
-        // if we have a selection of a face
-        else {
-            QString refText = onAddSelection(msg);
-            if (refText.length() > 0) {
-                QSignalBlocker block(ui->lineFaceName);
-                ui->lineFaceName->setText(refText);
-                ui->lineFaceName->setProperty("FeatureName", QByteArray(msg.pObjectName));
-                ui->lineFaceName->setProperty("FaceName", QByteArray(msg.pSubName));
-                // Turn off reference selection mode
-                ui->buttonFace->setChecked(false);
-            }
-            else {
-                clearFaceName();
-            }
+        switch (selectionMode) {
+            case SelectShape:
+                selectedShape(msg);
+                break;
+
+            case SelectShapeFaces:
+                selectedShapeFace(msg);
+                break;
+
+            case SelectFace:
+                selectedFace(msg);
+                break;
+
+            case SelectReferenceAxis:
+                selectedReferenceAxis(msg);
+                break;
+
+            default:
+                // no-op
+                break;
         }
     }
-    else if (msg.Type == Gui::SelectionChanges::ClrSelection && selectionFace) {
+    else if (msg.Type == Gui::SelectionChanges::ClrSelection && selectionMode == SelectFace) {
         clearFaceName();
     }
 }
@@ -268,13 +364,100 @@ void TaskExtrudeParameters::selectedReferenceAxis(const Gui::SelectionChanges& m
 {
     std::vector<std::string> edge;
     App::DocumentObject* selObj;
+
     if (getReferencedSelection(vp->getObject(), msg, selObj, edge) && selObj) {
-        exitSelectionMode();
+        setSelectionMode(None);
+
         propReferenceAxis->setValue(selObj, edge);
         tryRecomputeFeature();
+
         // update direction combobox
         fillDirectionCombo();
     }
+}
+
+void TaskExtrudeParameters::selectedShapeFace(const Gui::SelectionChanges& msg)
+{
+    auto extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    auto document = extrude->getDocument();
+
+    if (strcmp(msg.pDocName, document->getName()) != 0) {
+        return;
+    }
+
+    auto base = static_cast<Part::Feature*>(extrude->UpToShape.getValue());
+
+    if (strcmp(msg.pObjectName, base->getNameInDocument()) != 0) {
+        return;
+    }
+
+    std::vector<std::string> faces = getShapeFaces();
+    std::string subName(msg.pSubName);
+
+    if (subName.empty()) {
+        return;
+    }
+
+    auto positionInList = std::find(faces.begin(), faces.end(), subName);
+
+    if (positionInList != faces.end()) { //If it's found then it's in the list so we remove it.
+        faces.erase(positionInList);
+    }
+    else { //if it's not found then it's not yet in the list so we add it.
+        faces.push_back(subName);
+    }
+
+    extrude->UpToShape.setValue(base, faces);
+
+    updateShapeFaces();
+
+    tryRecomputeFeature();
+}
+
+void PartDesignGui::TaskExtrudeParameters::selectedFace(const Gui::SelectionChanges& msg)
+{
+    QString refText = onAddSelection(msg);
+
+    if (refText.length() > 0) {
+        QSignalBlocker block(ui->lineFaceName);
+
+        ui->lineFaceName->setText(refText);
+        ui->lineFaceName->setProperty("FeatureName", QByteArray(msg.pObjectName));
+        ui->lineFaceName->setProperty("FaceName", QByteArray(msg.pSubName));
+
+        // Turn off reference selection mode
+        ui->buttonFace->setChecked(false);
+    }
+    else {
+        clearFaceName();
+    }
+
+    setSelectionMode(None);
+}
+
+void PartDesignGui::TaskExtrudeParameters::selectedShape(const Gui::SelectionChanges& msg)
+{
+    auto extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    auto document = extrude->getDocument();
+
+    if (strcmp(msg.pDocName, document->getName()) != 0) {
+        return;
+    }
+
+    Gui::Selection().clearSelection();
+
+    auto ref = document->getObject(msg.pObjectName);
+
+    extrude->UpToShape.setValue(ref);
+
+    ui->checkBoxAllFaces->setChecked(true);
+
+    setSelectionMode(None);
+
+    updateShapeName();
+    updateShapeFaces();
+
+    tryRecomputeFeature();
 }
 
 void TaskExtrudeParameters::clearFaceName()
@@ -284,6 +467,51 @@ void TaskExtrudeParameters::clearFaceName()
     ui->lineFaceName->setProperty("FeatureName", QVariant());
     ui->lineFaceName->setProperty("FaceName", QVariant());
 
+}
+
+void TaskExtrudeParameters::updateShapeName()
+{
+    QSignalBlocker block(ui->lineShapeName);
+
+    auto extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    auto shape = extrude->UpToShape.getValue();
+
+    if (shape) {
+        ui->lineShapeName->setText(QString::fromStdString(shape->getFullName()));
+    } else {
+        ui->lineShapeName->setText({});
+        ui->lineShapeName->setPlaceholderText(tr("No shape selected"));
+    }
+}
+
+void TaskExtrudeParameters::updateShapeFaces()
+{
+    auto faces = getShapeFaces();
+
+    ui->listWidgetReferences->clear();
+    for (auto &ref : faces) {
+        ui->listWidgetReferences->addItem(QString::fromStdString(ref));
+    }
+
+    if (selectionMode == SelectShapeFaces) {
+        static_cast<ViewProviderExtrude*>(vp)->highlightShapeFaces(faces);
+    }
+}
+
+std::vector<std::string> PartDesignGui::TaskExtrudeParameters::getShapeFaces()
+{
+    std::vector<std::string> faces;
+
+    auto extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    auto allRefs = extrude->UpToShape.getSubValues();
+
+    std::copy_if(
+        allRefs.begin(), allRefs.end(),
+        std::back_inserter(faces), 
+        [](const std::string& ref) { return boost::starts_with(ref, "Face"); }
+    );
+
+    return faces;
 }
 
 void TaskExtrudeParameters::onLengthChanged(double len)
@@ -418,7 +646,7 @@ void TaskExtrudeParameters::addAxisToCombo(App::DocumentObject* linkObj, std::st
         lnk.setValue(linkObj, std::vector<std::string>(1, linkSubname));
 }
 
-void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
+void TaskExtrudeParameters::setCheckboxes(Mode mode, Type type)
 {
     // disable/hide everything unless we are sure we don't need it
     // exception: the direction parameters are in any case visible
@@ -430,10 +658,11 @@ void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
     bool isMidplaneVisible = false;
     bool isReversedEnabled = false;
     bool isFaceEditVisible = false;
+    bool isShapeEditVisible = false;
     bool isTaperEditVisible = false;
     bool isTaperEdit2Visible = false;
 
-    if (mode == Modes::Dimension) {
+    if (mode == Mode::Dimension) {
         isLengthEditVisible = true;
         ui->lengthEdit->selectNumber();
         QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
@@ -443,22 +672,22 @@ void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
         // Reverse only makes sense if Midplane is not true
         isReversedEnabled = !ui->checkBoxMidplane->isChecked();
     }
-    else if (mode == Modes::ThroughAll && type == Type::Pocket) {
+    else if (mode == Mode::ThroughAll && type == Type::Pocket) {
         isOffsetEditVisible = true;
         isOffsetEditEnabled = false; // offset may have some meaning for through all but it doesn't work
         isMidplaneEnabled = true;
         isMidplaneVisible = true;
         isReversedEnabled = !ui->checkBoxMidplane->isChecked();
     }
-    else if (mode == Modes::ToLast && type == Type::Pad) {
+    else if (mode == Mode::ToLast && type == Type::Pad) {
         isOffsetEditVisible = true;
         isReversedEnabled = true;
     }
-    else if (mode == Modes::ToFirst) {
+    else if (mode == Mode::ToFirst) {
         isOffsetEditVisible = true;
         isReversedEnabled = true;
     }
-    else if (mode == Modes::ToFace) {
+    else if (mode == Mode::ToFace) {
         isOffsetEditVisible = true;
         isReversedEnabled = true;
         isFaceEditVisible = true;
@@ -467,7 +696,15 @@ void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
         if (ui->lineFaceName->property("FeatureName").isNull())
             ui->buttonFace->setChecked(true);
     }
-    else if (mode == Modes::TwoDimensions) {
+    else if (mode == Mode::ToShape) {
+        isReversedEnabled = true;
+        isShapeEditVisible = true;
+
+        if (!ui->checkBoxAllFaces->isChecked()) {
+            ui->buttonShapeFace->setChecked(true);
+        }
+    }
+    else if (mode == Mode::TwoDimensions) {
         isLengthEditVisible = true;
         isLengthEdit2Visible = true;
         isTaperEditVisible = true;
@@ -506,6 +743,8 @@ void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
     if (!isFaceEditVisible) {
         ui->buttonFace->setChecked(false);
     }
+
+    ui->upToShapeList->setVisible(isShapeEditVisible);
 }
 
 void TaskExtrudeParameters::onDirectionCBChanged(int num)
@@ -525,13 +764,11 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
     // when the link is empty we are either in selection mode
     // or we are normal to a face
     App::PropertyLinkSub& lnk = *(axesInList[num]);
+
     if (num == DirectionModes::Select) {
         // to distinguish that this is the direction selection
-        selectionFace = false;
+        setSelectionMode(SelectReferenceAxis);
         setDirectionMode(num);
-        TaskSketchBasedParameters::onSelectReference(AllowSelection::EDGE |
-                                                     AllowSelection::PLANAR |
-                                                     AllowSelection::CIRCLE);
     }
     else {
         if (lnk.getValue()) {
@@ -543,9 +780,9 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
         }
 
         // in case the user is in selection mode, but changed his mind before selecting anything
-        exitSelectionMode();
-
+        setSelectionMode(None);
         setDirectionMode(num);
+
         extrude->ReferenceAxis.setValue(lnk.getValue(), lnk.getSubValues());
         tryRecomputeFeature();
         updateDirectionEdits();
@@ -561,10 +798,27 @@ void TaskExtrudeParameters::onAlongSketchNormalChanged(bool on)
 
 void TaskExtrudeParameters::onDirectionToggled(bool on)
 {
-    if (on)
+    if (on) {
         ui->groupBoxDirection->show();
-    else
+    }
+    else {
         ui->groupBoxDirection->hide();
+    }
+}
+
+void PartDesignGui::TaskExtrudeParameters::onAllFacesToggled(bool on)
+{
+    ui->upToShapeFaces->setVisible(!on);
+    ui->buttonShapeFace->setChecked(false);
+
+    if (on) {
+        auto extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+        extrude->UpToShape.setValue(extrude->UpToShape.getValue());
+
+        updateShapeFaces();
+
+        tryRecomputeFeature();
+    }
 }
 
 void TaskExtrudeParameters::onXDirectionEditChanged(double len)
@@ -678,18 +932,28 @@ void TaskExtrudeParameters::getReferenceAxis(App::DocumentObject*& obj, std::vec
     }
 }
 
-void TaskExtrudeParameters::onButtonFace(const bool checked)
+void TaskExtrudeParameters::onSelectFaceToggle(const bool checked)
 {
-    if (!checked)
+    if (!checked) {
         handleLineFaceNameNo();
-    else
+    }
+    else {
         handleLineFaceNameClick(); // sets placeholder text
+        setSelectionMode(SelectFace);
+    }
+}
 
-    // to distinguish that this is the direction selection
-    selectionFace = true;
+void PartDesignGui::TaskExtrudeParameters::onSelectShapeToggle(const bool checked)
+{
+    if (checked) {
+        setSelectionMode(SelectShape);
 
-    // only faces are allowed
-    TaskSketchBasedParameters::onSelectReference(checked ? AllowSelection::FACE : AllowSelection::NONE);
+        ui->lineShapeName->setText({});
+        ui->lineShapeName->setPlaceholderText(tr("Click on a shape in the model"));
+    } else {
+        setSelectionMode(None);
+        updateShapeName();
+    }
 }
 
 void TaskExtrudeParameters::onFaceName(const QString& text)
@@ -895,6 +1159,24 @@ void TaskExtrudeParameters::handleLineFaceNameClick()
 void TaskExtrudeParameters::handleLineFaceNameNo()
 {
     ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+}
+
+TaskDlgExtrudeParameters::TaskDlgExtrudeParameters(PartDesignGui::ViewProviderExtrude* vp)
+    : TaskDlgSketchBasedParameters(vp)
+{}
+
+bool TaskDlgExtrudeParameters::accept()
+{
+    getTaskParameters()->setSelectionMode(TaskExtrudeParameters::None);
+
+    return TaskDlgSketchBasedParameters::accept();
+}
+
+bool TaskDlgExtrudeParameters::reject()
+{
+    getTaskParameters()->setSelectionMode(TaskExtrudeParameters::None);
+
+    return TaskDlgSketchBasedParameters::reject();
 }
 
 #include "moc_TaskExtrudeParameters.cpp"

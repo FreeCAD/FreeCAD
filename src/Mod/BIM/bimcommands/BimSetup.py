@@ -79,10 +79,11 @@ class BIM_Setup:
             import RebarTools
         except ImportError:
             m.append("Reinforcement")
-        try:
-            import BIMServer
-        except ImportError:
-            m.append("WebTools")
+        # disabled as WebTools can currentyl not be installed because of WebGui dependency
+        #try:
+        #    import BIMServer
+        #except ImportError:
+        #    m.append("WebTools")
         if sys.version_info.major < 3:
             try:
                 import CommandsFrame
@@ -185,10 +186,9 @@ class BIM_Setup:
         FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
         ).SetString(
-            "GridSize", str(grid)
+            "GridSize", grid
         )  # Also set sketcher grid
-        grid = FreeCAD.Units.Quantity(grid).Value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetFloat(
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetString(
             "gridSpacing", grid
         )
         squares = self.form.settingSquares.value()
@@ -253,18 +253,6 @@ class BIM_Setup:
         FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document").SetString(
             "prefLicenseUrl", ""
         )  # TODO - set correct license URL
-        bimdefault = self.form.settingWorkbench.currentIndex()
-        if bimdefault == 1:
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").SetString(
-                "AutoloadModule", "BIMWorkbench"
-            )
-        elif bimdefault == 2:
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").SetString(
-                "AutoloadModule", "StartWorkbench"
-            )
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").SetString(
-                "AutoloadModule", "BIMWorkbench"
-            )
         newdoc = self.form.settingNewdocument.isChecked()
         FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document").SetBool(
             "CreateNewDoc", newdoc
@@ -494,14 +482,14 @@ class BIM_Setup:
             ).GetInt("Decimals", 2)
             grid = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Mod/Draft"
-            ).GetFloat("gridSpacing", 10)
-            grid = FreeCAD.Units.Quantity(grid, FreeCAD.Units.Length).UserString
+            ).GetString("gridSpacing", "1 cm")
+            grid = FreeCAD.Units.Quantity(grid).UserString
             squares = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Mod/Draft"
             ).GetInt("gridEvery", 10)
             wp = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Mod/Draft"
-            ).GetInt("defaultWP", 0)
+            ).GetInt("defaultWP", 1)
             tsize = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Mod/Draft"
             ).GetFloat("textheight", 10)
@@ -531,21 +519,6 @@ class BIM_Setup:
             lic = [0, 1, 2, 1, 3, 4, 1, 0, 0, 0][
                 lic
             ]  # less choices in our simplified dialog
-            bimdefault = FreeCAD.ParamGet(
-                "User parameter:BaseApp/Preferences/General"
-            ).GetString("AutoloadModule", "")
-            if bimdefault == "BIMWorkbench":
-                bimdefault = 1
-            elif (
-                bimdefault == "StartWorkbench"
-                and FreeCAD.ParamGet(
-                    "User parameter:BaseApp/Preferences/Mod/Start"
-                ).GetString("AutoloadModule", "")
-                == "BIMWorkbench"
-            ):
-                bimdefault = 2
-            else:
-                bimdefault = 0
             newdoc = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Document"
             ).GetBool("CreateNewDoc", False)
@@ -604,8 +577,6 @@ class BIM_Setup:
             self.form.settingAuthor.setText(author)
         if lic != None:
             self.form.settingLicense.setCurrentIndex(lic)
-        if bimdefault != None:
-            self.form.settingWorkbench.setCurrentIndex(bimdefault)
         if newdoc != None:
             self.form.settingNewdocument.setChecked(newdoc)
         if bkp != None:
@@ -716,7 +687,7 @@ class BIM_Setup:
                     elif sys.platform.startswith("darwin"):
                         plat = "macos"
                     else:
-                        print("Error - unknown platform")
+                        FreeCAD.Console.PrintError("Error - unknown platform")
                         return
                     if sys.maxsize > 2**32:
                         plat += "64"
@@ -750,7 +721,19 @@ class BIM_Setup:
                                 print("Successfully installed IfcOpenShell to", fp)
                                 break
                     else:
-                        print("Unable to find a build for your version")
-    
+                        FreeCAD.Console.PrintWarning(
+                            "Unable to find a build for your version therefore falling back to a pip install"
+                        )
+                        try:
+                            import pip
+                        except ModuleNotFoundError:
+                            FreeCAD.Console.PrintError(
+                                "Please install pip on your system, restart FreeCAD,"
+                                " change to BIM Wb and use Utils menu > ifcOpenShell update"
+                            )
+                            return
+                        from nativeifc import ifc_openshell
+
+                        FreeCADGui.runCommand('IFC_UpdateIOS',1)
 
 FreeCADGui.addCommand("BIM_Setup", BIM_Setup())

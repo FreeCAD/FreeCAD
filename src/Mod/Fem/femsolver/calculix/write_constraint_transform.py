@@ -26,6 +26,8 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
 
+import FreeCAD
+
 from femtools import geomtools
 
 
@@ -75,11 +77,15 @@ def write_constraint(f, femobj, trans_obj, ccxwriter):
     if trans_obj.TransformType == "Rectangular":
         trans_name = "Rect"
         trans_type = "R"
-        coords = geomtools.get_rectangular_coords(trans_obj)
+        x = trans_obj.Rotation * FreeCAD.Vector(1, 0, 0)
+        y = trans_obj.Rotation * FreeCAD.Vector(0, 1, 0)
+        coords = list(x) + list(y)
     elif trans_obj.TransformType == "Cylindrical":
         trans_name = "Cylin"
         trans_type = "C"
-        coords = geomtools.get_cylindrical_coords(trans_obj)
+        base = trans_obj.BasePoint
+        axis = trans_obj.Axis
+        coords = list(base) + list(base + axis)
     f.write("*TRANSFORM, NSET={}{}, TYPE={}\n".format(
         trans_name,
         trans_obj.Name,

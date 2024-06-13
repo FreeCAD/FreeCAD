@@ -30,6 +30,7 @@ import FreeCADGui
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
+ALLOWEDHOSTS = ["Wall","Structure","Roof"]
 
 
 class Arch_Window:
@@ -49,7 +50,8 @@ class Arch_Window:
 
     def IsActive(self):
 
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
 
@@ -214,7 +216,7 @@ class Arch_Window:
                 host = self.baseFace[0]
             elif obj:
                 host = obj
-            if Draft.getType(host) in AllowedHosts:
+            if Draft.getType(host) in ALLOWEDHOSTS:
                 FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument." + host.Name + "]")
                 siblings = host.Proxy.getSiblings(host)
                 for sibling in siblings:

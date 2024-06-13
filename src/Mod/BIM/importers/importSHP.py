@@ -127,18 +127,18 @@ def checkShapeFileLibrary():
     except Exception:
         url = "https://raw.githubusercontent.com/GeospatialPython/pyshp/master/shapefile.py"
         if FreeCAD.GuiUp:
-            import addonmanager_utilities
+            import urllib.request
             import FreeCADGui
             from PySide import QtGui
             reply = QtGui.QMessageBox.question(FreeCADGui.getMainWindow(),
                                                translate("Arch","Shapefile module not found"),
-                                               translate("Arch","The shapefile Python library was not found on your system. Would you like to download it now from <a href=\"https://github.com/GeospatialPython/pyshp\">https://github.com/GeospatialPython/pyshp</a>? It will be placed in your macros folder."),
+                                               translate("Arch","The shapefile Python library was not found on your system. Would you like to download it now from %1? It will be placed in your macros folder.").replace("%1","<a href=\"https://github.com/GeospatialPython/pyshp\">https://github.com/GeospatialPython/pyshp</a>"),
                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                                                QtGui.QMessageBox.No)
             if reply == QtGui.QMessageBox.Yes:
-                u = addonmanager_utilities.urlopen(url)
+                u = urllib.request.urlopen(url)
                 if not u:
-                    FreeCAD.Console.PrintError(translate("Arch","Error: Unable to download from:")+" "+url+"\n")
+                    FreeCAD.Console.PrintError(translate("Arch","Error: Unable to download from %1").replace("%1",url)+"\n")
                     return False
                 b = u.read()
                 fp = os.path.join(FreeCAD.getUserMacroDir(True),"shapefile.py")

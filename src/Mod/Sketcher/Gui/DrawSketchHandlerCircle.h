@@ -400,9 +400,21 @@ void DSHCircleController::configureToolWidget()
         onViewParameters[OnViewParameter::Sixth]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
     }
     else {
-        onViewParameters[OnViewParameter::Third]->setLabelType(
-            Gui::SoDatumLabel::RADIUS,
-            Gui::EditableDatumLabel::Function::Dimensioning);
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+        bool dimensioningDiameter = hGrp->GetBool("DimensioningDiameter", true);
+        bool dimensioningRadius = hGrp->GetBool("DimensioningRadius", true);
+
+        if (dimensioningRadius && !dimensioningDiameter) {
+            onViewParameters[OnViewParameter::Third]->setLabelType(
+                Gui::SoDatumLabel::RADIUS,
+                Gui::EditableDatumLabel::Function::Dimensioning);
+        }
+        else {
+            onViewParameters[OnViewParameter::Third]->setLabelType(
+                Gui::SoDatumLabel::DIAMETER,
+                Gui::EditableDatumLabel::Function::Dimensioning);
+        }
     }
 }
 
@@ -500,7 +512,17 @@ void DSHCircleController::adaptParameters(Base::Vector2d onSketchPos)
             if (handler->constructionMethod()
                 == DrawSketchHandlerCircle::ConstructionMethod::Center) {
                 if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Third, handler->radius);
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+                    bool dimensioningDiameter = hGrp->GetBool("DimensioningDiameter", true);
+                    bool dimensioningRadius = hGrp->GetBool("DimensioningRadius", true);
+
+                    if (dimensioningRadius && !dimensioningDiameter) {
+                        setOnViewParameterValue(OnViewParameter::Third, handler->radius);
+                    }
+                    else {
+                        setOnViewParameterValue(OnViewParameter::Third, handler->radius * 2);
+                    }
                 }
 
                 Base::Vector3d start = toVector3d(handler->centerPoint);
@@ -616,10 +638,23 @@ void DSHCircleController::addConstraints()
         };
 
         auto constraintradius = [&]() {
-            Gui::cmdAppObjectArgs(handler->sketchgui->getObject(),
-                                  "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                                  firstCurve,
-                                  handler->radius);
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+            bool dimensioningDiameter = hGrp->GetBool("DimensioningDiameter", true);
+            bool dimensioningRadius = hGrp->GetBool("DimensioningRadius", true);
+
+            if (dimensioningRadius && !dimensioningDiameter) {
+                Gui::cmdAppObjectArgs(handler->sketchgui->getObject(),
+                                      "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                                      firstCurve,
+                                      handler->radius);
+            }
+            else {
+                Gui::cmdAppObjectArgs(handler->sketchgui->getObject(),
+                                      "addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ",
+                                      firstCurve,
+                                      handler->radius);
+            }
         };
 
         // NOTE: if AutoConstraints is empty, we can add constraints directly without any diagnose.

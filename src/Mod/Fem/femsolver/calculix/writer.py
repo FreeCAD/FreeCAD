@@ -36,6 +36,7 @@ import FreeCAD
 from FreeCAD import Units
 
 from . import write_constraint_centrif as con_centrif
+from . import write_constraint_bodyheatsource as con_bodyheatsource
 from . import write_constraint_contact as con_contact
 from . import write_constraint_displacement as con_displacement
 from . import write_constraint_fixed as con_fixed
@@ -160,6 +161,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         # element sets constraints
         self.write_constraints_meshsets(inpfile, self.member.cons_centrif, con_centrif)
+        self.write_constraints_meshsets(inpfile, self.member.cons_bodyheatsource, con_bodyheatsource)
 
         # node sets
         self.write_constraints_meshsets(inpfile, self.member.cons_fixed, con_fixed)
@@ -196,6 +198,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_propdata(inpfile, self.member.cons_sectionprint, con_sectionprint)
         self.write_constraints_propdata(inpfile, self.member.cons_selfweight, con_selfweight)
         self.write_constraints_propdata(inpfile, self.member.cons_centrif, con_centrif)
+        self.write_constraints_propdata(inpfile, self.member.cons_bodyheatsource, con_bodyheatsource)
         self.write_constraints_meshsets(inpfile, self.member.cons_force, con_force)
         self.write_constraints_meshsets(inpfile, self.member.cons_pressure, con_pressure)
         self.write_constraints_propdata(inpfile, self.member.cons_temperature, con_temperature)

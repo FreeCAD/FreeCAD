@@ -41,7 +41,7 @@ using namespace Gui::TaskView;
 namespace sp = std::placeholders;
 
 TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Solver messages"), true, nullptr)
+    : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_Sketch"), tr("Solver messages"), true, nullptr)
     , sketchView(sketchView)
     , ui(new Ui_TaskSketcherMessages)
 {

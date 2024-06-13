@@ -713,6 +713,7 @@ double DrawViewDimension::getProjectedDimValue() const
 {
     //    Base::Console().Message("DVD::getProjectedDimValue()\n");
     double result = 0.0;
+    double scale = getViewPart()->getScale();
 
     if (Type.isValue("Distance") || Type.isValue("DistanceX") || Type.isValue("DistanceY")) {
         pointPair pts = getLinearPoints();
@@ -726,31 +727,30 @@ double DrawViewDimension::getProjectedDimValue() const
             // then we should not move the points.
             //
             pts.invertY();
-            pts.scale(1.0 / getViewPart()->getScale());
+            pts.scale(1.0 / scale);
             pts.first(dbv->mapPoint2dFromView(pts.first()));
             pts.second(dbv->mapPoint2dFromView(pts.second()));
             pts.invertY();
-            pts.scale(getViewPart()->getScale());
+            pts.scale(scale);
         }
         Base::Vector3d dimVec = pts.first() - pts.second();
         if (Type.isValue("Distance")) {
-            result = dimVec.Length() / getViewPart()->getScale();
+            result = dimVec.Length() / scale;
         }
         else if (Type.isValue("DistanceX")) {
-            result = fabs(dimVec.x) / getViewPart()->getScale();
+            result = fabs(dimVec.x) / scale;
         }
         else {
-            result = fabs(dimVec.y) / getViewPart()->getScale();
+            result = fabs(dimVec.y) / scale;
         }
     }
     else if (Type.isValue("Radius")) {
         // Projected BaseGeom is scaled for drawing
-        result = m_arcPoints.radius / getViewPart()->getScale();
+        result = m_arcPoints.radius / scale;
     }
     else if (Type.isValue("Diameter")) {
         arcPoints pts = m_arcPoints;
-        result = (pts.radius * 2.0)
-            / getViewPart()->getScale();  // Projected BaseGeom is scaled for drawing
+        result = (pts.radius * 2.0) / scale; // Projected BaseGeom is scaled for drawing
     }
     else if (Type.isValue("Angle") || Type.isValue("Angle3Pt")) {  // same as case "Angle"?
         anglePoints pts = m_anglePoints;
@@ -761,7 +761,7 @@ double DrawViewDimension::getProjectedDimValue() const
         result = legAngle;
     }
     else if (Type.isValue("Area")) {
-        result = m_areaPoint.area / getViewPart()->getScale();
+        result = m_areaPoint.area / scale / scale;
     }
 
     return result;

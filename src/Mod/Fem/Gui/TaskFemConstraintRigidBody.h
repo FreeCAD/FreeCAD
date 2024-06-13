@@ -61,6 +61,9 @@ private Q_SLOTS:
     void onRotModeXChanged(int);
     void onRotModeYChanged(int);
     void onRotModeZChanged(int);
+    void onRefNodeXChanged(double);
+    void onRefNodeYChanged(double);
+    void onRefNodeZChanged(double);
 
 protected:
     bool event(QEvent* e) override;

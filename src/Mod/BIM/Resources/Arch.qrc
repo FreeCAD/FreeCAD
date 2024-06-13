@@ -142,18 +142,12 @@
         <file>icons/IFC_mesh.svg</file>
         <file>icons/IFC_object.svg</file>
         <file>icons/Image_CreateImagePlane.svg</file>
-        <file>icons/Part_Common.svg</file>
-        <file>icons/Part_Compound.svg</file>
-        <file>icons/Part_Cut.svg</file>
-        <file>icons/Part_Extrude.svg</file>
-        <file>icons/Part_Fuse.svg</file>
-        <file>icons/Part_Offset2D.svg</file>
-        <file>icons/Part_Shapebuilder.svg</file>
         <file>icons/Part_document.svg</file>
         <file>icons/Sketch.svg</file>
         <file>icons/Tree_Part.svg</file>
         <file>icons/banner.png</file>
         <file>icons/preferences-arch.svg</file>
+        <file>icons/preferences-bim.svg</file>
         <file>icons/techdraw-ArchView.svg</file>
         <file>icons/techdraw-PageDefault.svg</file>
         <file>icons/warning.svg</file>

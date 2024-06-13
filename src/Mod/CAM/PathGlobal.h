@@ -47,9 +47,18 @@
 // PathSimulator
 #ifndef PathSimulatorExport
 #ifdef PathSimulator_EXPORTS
-#  define PathSimulatorExport      FREECAD_DECL_EXPORT
+#define PathSimulatorExport FREECAD_DECL_EXPORT
 #else
-#  define PathSimulatorExport      FREECAD_DECL_IMPORT
+#define PathSimulatorExport FREECAD_DECL_IMPORT
+#endif
+#endif
+
+// CAMSimulator (new GL simulator)
+#ifndef CAMSimulatorExport
+#ifdef CAMSimulator_EXPORTS
+#define CAMSimulatorExport FREECAD_DECL_EXPORT
+#else
+#define CAMSimulatorExport FREECAD_DECL_IMPORT
 #endif
 #endif
 

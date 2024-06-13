@@ -35,6 +35,7 @@
 #include "Gui/Control.h"
 #include <Mod/Fem/App/FemConstraintFluidBoundary.h>
 
+#include "FemGuiTools.h"
 #include "TaskFemConstraintFluidBoundary.h"
 #include "ViewProviderFemConstraintFluidBoundary.h"
 
@@ -157,7 +158,8 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
         if (pShapeSep->getNumChildren() == 0) {
             // Set up the nodes
             cp->matrix.setNum(0);
-            cp->addChild((SoNode*)createArrow(scaledlength, scaledheadradius));  // OvG: Scaling
+            cp->addChild(
+                (SoNode*)GuiTools::createArrow(scaledlength, scaledheadradius));  // OvG: Scaling
             pShapeSep->addChild(cp);
         }
 #endif
@@ -199,8 +201,8 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
                 idx++;
 #else
                 SoSeparator* sep = new SoSeparator();
-                createPlacement(sep, base, rot);
-                createArrow(sep, scaledlength, scaledheadradius);  // OvG: Scaling
+                GuiTools::createPlacement(sep, base, rot);
+                GuiTools::createArrow(sep, scaledlength, scaledheadradius);  // OvG: Scaling
                 pShapeSep->addChild(sep);
 #endif
             }
@@ -243,8 +245,8 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
                 matrices[idx] = m;
 #else
                 SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(idx));
-                updatePlacement(sep, 0, base, rot);
-                updateArrow(sep, 2, scaledlength, scaledheadradius);  // OvG: Scaling
+                GuiTools::updatePlacement(sep, 0, base, rot);
+                GuiTools::updateArrow(sep, 2, scaledlength, scaledheadradius);  // OvG: Scaling
 #endif
                 idx++;
             }
@@ -261,7 +263,8 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
         if (pShapeSep->getNumChildren() == 0) {
             // Set up the nodes
             cp->matrix.setNum(0);
-            cp->addChild((SoNode*)createFixed(scaledheight, scaledwidth));  // OvG: Scaling
+            cp->addChild(
+                (SoNode*)GuiTools::createFixed(scaledheight, scaledwidth));  // OvG: Scaling
             pShapeSep->addChild(cp);
         }
 #endif
@@ -295,8 +298,8 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
                 idx++;
 #else
                 SoSeparator* sep = new SoSeparator();
-                createPlacement(sep, base, rot);
-                createFixed(sep, scaledheight, scaledwidth);  // OvG: Scaling
+                GuiTools::createPlacement(sep, base, rot);
+                GuiTools::createFixed(sep, scaledheight, scaledwidth);  // OvG: Scaling
                 pShapeSep->addChild(sep);
 #endif
                 n++;

@@ -624,14 +624,13 @@ void GeometryObject::addEdge(TechDraw::BaseGeomPtr bg) { edgeGeom.push_back(bg);
 //adds a new GeomVert surrogate for CV
 //returns GeomVert selection index  ("Vertex3")
 // insertGeomForCV(cv)
+// is this ever used?
 int GeometryObject::addCosmeticVertex(CosmeticVertex* cv)
 {
-    //    Base::Console().Message("GO::addCosmeticVertex(%X)\n", cv);
     double scale = m_parent->getScale();
     Base::Vector3d pos = cv->scaled(scale);
     TechDraw::VertexPtr v(std::make_shared<TechDraw::Vertex>(pos.x, pos.y));
     v->setCosmetic(true);
-//    v->setCosmeticLink = -1;//obs??
     v->setCosmeticTag(cv->getTagAsString());
     v->setHlrVisible(true);
     int idx = vertexGeom.size();
@@ -643,7 +642,6 @@ int GeometryObject::addCosmeticVertex(CosmeticVertex* cv)
 //should probably be called addVertex since not connect to CV by tag
 int GeometryObject::addCosmeticVertex(Base::Vector3d pos)
 {
-    Base::Console().Message("GO::addCosmeticVertex() 1 - deprec?\n");
     TechDraw::VertexPtr v(std::make_shared<TechDraw::Vertex>(pos.x, pos.y));
     v->setCosmetic(true);
     v->setCosmeticTag("tbi");//not connected to CV
@@ -655,7 +653,6 @@ int GeometryObject::addCosmeticVertex(Base::Vector3d pos)
 
 int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString)
 {
-    //    Base::Console().Message("GO::addCosmeticVertex() 2\n");
     TechDraw::VertexPtr v(std::make_shared<TechDraw::Vertex>(pos.x, pos.y));
     v->setCosmetic(true);
     v->setCosmeticTag(tagString);//connected to CV

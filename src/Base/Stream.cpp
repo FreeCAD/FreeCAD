@@ -150,6 +150,12 @@ OutputStream& OutputStream::operator<<(double d)
     return *this;
 }
 
+OutputStream& OutputStream::write(const char* s, int n)
+{
+    _out.write(s, n);
+    return *this;
+}
+
 InputStream::InputStream(std::istream& rin)
     : _in(rin)
 {}
@@ -243,6 +249,12 @@ InputStream& InputStream::operator>>(double& d)
     if (isSwapped()) {
         SwapEndian<double>(d);
     }
+    return *this;
+}
+
+InputStream& InputStream::read(char* s, int n)
+{
+    _in.read(s, n);
     return *this;
 }
 

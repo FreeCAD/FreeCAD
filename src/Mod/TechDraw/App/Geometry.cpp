@@ -81,6 +81,8 @@
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/thread.hpp>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/TopoShape.h>
@@ -621,7 +623,7 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
             TopExp_Explorer explorer(sectionShape, TopAbs_VERTEX);
             while (explorer.More()) {
                 Base::Vector3d pt(DrawUtil::toVector3d(BRep_Tool::Pnt(TopoDS::Vertex(explorer.Current()))));
-                interPoints.push_back(DrawUtil::invertY(pt));
+                interPoints.push_back(pt);
                 explorer.Next();
             }
         }
@@ -802,16 +804,20 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
     gp_Vec v1(m, s);        //vector mid to start
     gp_Vec v2(m, ePt);      //vector mid to end
     gp_Vec v3(0, 0, 1);      //stdZ
+
+    // this is the wrong determination of cw/ccw.  needs to be determined by edge.
     double a = v3.DotCross(v1, v2);    //error if v1 = v2?
 
     startAngle = fmod(f, 2.0*M_PI);
     endAngle = fmod(l, 2.0*M_PI);
+
+
     cw = (a < 0) ? true: false;
     largeArc = (fabs(l-f) > M_PI) ? true : false;
 
-    startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
-    endPnt = Base::Vector3d(ePt.X(), ePt.Y(), s.Z());
-    midPnt = Base::Vector3d(m.X(), m.Y(), s.Z());
+    startPnt = DU::toVector3d(s);
+    endPnt = DU::toVector3d(ePt);
+    midPnt = DU::toVector3d(m);
     if (e.Orientation() == TopAbs_REVERSED) {
         reversed = true;
     }
@@ -845,6 +851,11 @@ AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
     gp_Vec v1(m, s);        //vector mid to start
     gp_Vec v2(m, ePt);      //vector mid to end
     gp_Vec v3(0, 0, 1);      //stdZ
+
+    // this is a bit of an arcane method of determining if v2 is clockwise from v1 or counter clockwise from v1.
+    // The v1 x v2 points up if v2 is ccw from v1 and points down if v2 is cw from v1.  Taking (v1 x v2) * stdZ
+    // gives 1 for parallel with stdZ (v2 is ccw from v1) or -1 for antiparallel with stdZ (v2 is clockwise from v1).
+    // this cw flag is a problem.  we should just declare that arcs are always ccw and flip the start and end angles.
     double a = v3.DotCross(v1, v2);    //error if v1 = v2?
 
     startAngle = fmod(f, 2.0*M_PI);
@@ -852,9 +863,9 @@ AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
     cw = (a < 0) ? true: false;
     largeArc = (fabs(l-f) > M_PI) ? true : false;
 
-    startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
-    endPnt = Base::Vector3d(ePt.X(), ePt.Y(), s.Z());
-    midPnt = Base::Vector3d(m.X(), m.Y(), s.Z());
+    startPnt = DU::toVector3d(s);
+    endPnt = DU::toVector3d(ePt);
+    midPnt = DU::toVector3d(m);
     if (edge.Orientation() == TopAbs_REVERSED) {
         reversed = true;
     }
@@ -888,6 +899,22 @@ bool AOC::isOnArc(Base::Vector3d p)
         return true;
     }
     return false;
+}
+
+BaseGeomPtr AOC::copy()
+{
+    auto base = BaseGeom::copy();
+    TechDraw::CirclePtr circle =  std::static_pointer_cast<TechDraw::Circle>(base);
+    TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(circle);
+    if (aoc) {
+        aoc->clockwiseAngle(clockwiseAngle());
+        aoc->startPnt = startPnt;
+        aoc->startAngle = startAngle;
+        aoc->endPnt = endPnt;
+        aoc->endAngle = endAngle;
+        aoc->largeArc = largeArc;
+    }
+    return base;
 }
 
 double AOC::distToArc(Base::Vector3d p)
@@ -1368,9 +1395,13 @@ void Vertex::Restore(Base::XMLReader &reader)
 void Vertex::createNewTag()
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
+    // The random number generator is not threadsafe so we guard it.  See
+    // https://www.boost.org/doc/libs/1_62_0/libs/uuid/uuid.html#Design%20notes
     static boost::mt19937 ran;
     static bool seeded = false;
+    static boost::mutex random_number_mutex;
 
+    boost::lock_guard<boost::mutex> guard(random_number_mutex);
     if (!seeded) {
         ran.seed(static_cast<unsigned int>(std::time(nullptr)));
         seeded = true;

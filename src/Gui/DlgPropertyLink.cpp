@@ -649,7 +649,7 @@ void DlgPropertyLink::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 
     auto item = findItem(selObj, msg.pSubName, &found);
-    if(!item || !found)
+    if(!item)
         return;
 
     if(!item->isSelected()) {

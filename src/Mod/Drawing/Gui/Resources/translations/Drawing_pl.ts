@@ -55,7 +55,8 @@
       <location filename="../../Command.cpp" line="778"/>
       <location filename="../../Command.cpp" line="780"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation>Wstaw widok Szkicu przez zaznaczenie obiektu(ów) w aktywnym rysunku</translation>
+      <translation>Wstawia widok Szkicu
+przez zaznaczenie obiektu(ów) w aktywnym rysunku.</translation>
     </message>
   </context>
   <context>

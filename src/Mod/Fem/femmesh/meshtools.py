@@ -784,6 +784,8 @@ def get_elset_short_name(
         return "S" + str(i)
     elif is_of_type(obj, "Fem::ConstraintCentrif"):
         return "C" + str(i)
+    elif is_of_type(obj, "Fem::ConstraintBodyHeatSource"):
+        return "H" + str(i)
     else:
         FreeCAD.Console.PrintError(
             "Error in creating short elset name "

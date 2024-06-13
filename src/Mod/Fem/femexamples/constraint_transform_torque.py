@@ -156,9 +156,6 @@ def setup(doc=None, solvertype="ccxtools"):
     con_transform = ObjectsFem.makeConstraintTransform(doc, name="ConstraintTransform")
     con_transform.References = [(geom_obj, "Face1")]
     con_transform.TransformType = "Cylindrical"
-    con_transform.X_rot = 0.0
-    con_transform.Y_rot = 0.0
-    con_transform.Z_rot = 0.0
     analysis.addObject(con_transform)
 
     # mesh

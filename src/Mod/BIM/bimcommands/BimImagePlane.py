@@ -29,6 +29,7 @@ import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+translate = FreeCAD.Qt.translate
 
 
 class BIM_ImagePlane:
@@ -42,19 +43,12 @@ class BIM_ImagePlane:
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument:
-            return True
-        else:
-            return False
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
-        import FreeCADGui
-        from PySide import QtCore, QtGui
-
-        try:
-            import DraftTrackers
-        except Exception:
-            import draftguitools.gui_trackers as DraftTrackers
+        from PySide import QtGui
+        import draftguitools.gui_trackers as DraftTrackers
 
         self.tracker = DraftTrackers.rectangleTracker()
         self.basepoint = None
@@ -75,6 +69,8 @@ class BIM_ImagePlane:
                 )
 
     def MoveCallback(self, point, snapinfo):
+        import DraftVecUtils
+
         if point and self.basepoint and (point != self.basepoint):
             chord = point.sub(self.basepoint)
             length = DraftVecUtils.project(chord, self.tracker.u).Length
@@ -88,8 +84,8 @@ class BIM_ImagePlane:
             self.tracker.update(self.opposite)
 
     def PointCallback(self, point, snapinfo):
-        import FreeCADGui
-        import Image
+        import os
+        import DraftVecUtils
 
         if not point:
             # cancelled

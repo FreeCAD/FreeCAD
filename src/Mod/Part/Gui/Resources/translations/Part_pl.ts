@@ -1195,7 +1195,7 @@
     <message>
       <location filename="../../Command.cpp" line="2098"/>
       <source>Set the color of each individual face of the selected object.</source>
-      <translation>Ustaw kolor dla każdej ściany wybranego obiektu.</translation>
+      <translation>Ustawia kolor dla każdej ściany wybranego obiektu.</translation>
     </message>
   </context>
   <context>
@@ -1305,7 +1305,7 @@
     <message>
       <location filename="../../Command.cpp" line="1444"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Fazuj wybrane krawędzie obiektu</translation>
+      <translation>Tworzy sfazowanie wybranych krawędzi obiektu</translation>
     </message>
   </context>
   <context>
@@ -1323,7 +1323,7 @@
     <message>
       <location filename="../../Command.cpp" line="359"/>
       <source>Make an intersection of two shapes</source>
-      <translation>Utwórz przecięcie dwóch kształtów</translation>
+      <translation>Tworzy przecięcie dwóch kształtów</translation>
     </message>
   </context>
   <context>
@@ -1359,7 +1359,7 @@
     <message>
       <location filename="../../Command.cpp" line="512"/>
       <source>Join walled objects</source>
-      <translation>Połącz wygrodzone obiekty</translation>
+      <translation>Przyłącza do obiektów ze ściankami</translation>
     </message>
   </context>
   <context>
@@ -1413,7 +1413,7 @@
     <message>
       <location filename="../../Command.cpp" line="843"/>
       <source>Make a compound of several shapes</source>
-      <translation>Stwórz złożenie z kilku kształtów</translation>
+      <translation>Tworzy złożenie z kilku kształtów</translation>
     </message>
   </context>
   <context>
@@ -1451,7 +1451,7 @@
     <message>
       <location filename="../../Command.cpp" line="1500"/>
       <source>Cross-sections</source>
-      <translation>Przekrój poprzeczny</translation>
+      <translation>Tworzy przekrój poprzeczny</translation>
     </message>
   </context>
   <context>
@@ -1507,7 +1507,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="414"/>
       <source>Remove feature from a shape</source>
-      <translation>Usuń cechę z kształtu</translation>
+      <translation>Usuwa cechę z kształtu</translation>
     </message>
   </context>
   <context>
@@ -1561,7 +1561,7 @@
     <message>
       <location filename="../../Command.cpp" line="1279"/>
       <source>Extrude a selected sketch</source>
-      <translation>Wyciągnij wybrany szkic</translation>
+      <translation>Wyciąga wybrany szkic</translation>
     </message>
   </context>
   <context>
@@ -1579,7 +1579,7 @@
     <message>
       <location filename="../../Command.cpp" line="1416"/>
       <source>Fillet the selected edges of a shape</source>
-      <translation>Zaokrąglij wybrane krawędzie obiektu</translation>
+      <translation>Tworzy zaokrąglenie wybranych krawędzie kształtu</translation>
     </message>
   </context>
   <context>
@@ -1597,7 +1597,7 @@
     <message>
       <location filename="../../Command.cpp" line="435"/>
       <source>Make a union of several shapes</source>
-      <translation>Utwórz połączenie kilku kształtów</translation>
+      <translation>Tworzy połączenie kilku kształtów</translation>
     </message>
   </context>
   <context>
@@ -1651,7 +1651,7 @@
     <message>
       <location filename="../../Command.cpp" line="1568"/>
       <source>Utility to loft</source>
-      <translation>Narzędzie wyciągnięcia po profilach</translation>
+      <translation>Narzędzie do tworzenia wyciągnięcia przez profile</translation>
     </message>
   </context>
   <context>
@@ -1669,7 +1669,7 @@
     <message>
       <location filename="../../Command.cpp" line="1336"/>
       <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation>Stwórz ścianę z zestawu polilinii (np. ze szkicu)</translation>
+      <translation>Tworzy ścianę z zestawu polilinii (np. ze szkicu)</translation>
     </message>
   </context>
   <context>
@@ -1705,7 +1705,7 @@
     <message>
       <location filename="../../Command.cpp" line="1472"/>
       <source>Mirroring a selected shape</source>
-      <translation>Utwórz odbicie lustrzane wybranego kształtu</translation>
+      <translation>Tworzy odbicie lustrzane wybranego kształtu</translation>
     </message>
   </context>
   <context>
@@ -1795,7 +1795,7 @@
     <message>
       <location filename="../../Command.cpp" line="213"/>
       <source>Creation of parametrized geometric primitives</source>
-      <translation>Tworzenie pierwotnych brył parametrycznych</translation>
+      <translation>Tworzy pierwotne bryły parametryczne</translation>
     </message>
   </context>
   <context>
@@ -1816,7 +1816,7 @@
 onto a face of another object.
 The camera view determines the direction
 of projection.</source>
-      <translation>Rzutuj krawędzie, polilinie lub powierzchnie
+      <translation>Rzutuje krawędzie, polilinie lub powierzchnie
 jednego obiektu na ściany innego obiektu.
 Ujęcie widoku określa kierunek rzutowania.</translation>
     </message>
@@ -1872,7 +1872,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../Command.cpp" line="1388"/>
       <source>Revolve a selected shape</source>
-      <translation>Wyciągnij przez obrót wybrany kształt</translation>
+      <translation>Wyciąga przez obrót wybrany kształt</translation>
     </message>
   </context>
   <context>
@@ -1908,7 +1908,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../Command.cpp" line="900"/>
       <source>Make a section of two shapes</source>
-      <translation>Utwórz część wspólną z dwóch kształtów</translation>
+      <translation>Tworzy część wspólną z dwóch kształtów</translation>
     </message>
   </context>
   <context>
@@ -2013,7 +2013,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../Command.cpp" line="1597"/>
       <source>Utility to sweep</source>
-      <translation>Narzędzie do wyciągnięcia po ścieżce</translation>
+      <translation>Narzędzie do tworzenia wyciągnięcia po ścieżce</translation>
     </message>
   </context>
   <context>
@@ -2098,7 +2098,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../Command.cpp" line="410"/>
       <source>Common</source>
-      <translation>Część wspólna</translation>
+      <translation>Przecięcie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
@@ -2113,7 +2113,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../Command.cpp" line="921"/>
       <source>Section</source>
-      <translation>Przekrój</translation>
+      <translation>Przecięcie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="973"/>
@@ -2421,7 +2421,7 @@ Uwaga: Położenie jest wyrażone w przestrzeni lokalnej dołączanego obiektu.<
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="56"/>
       <source>Section</source>
-      <translation>Przecięcie</translation>
+      <translation>Przekrój</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="76"/>
@@ -3132,7 +3132,7 @@ Zaznacz najpierw jedną lub więcej krawędzi.</translation>
   <context>
     <name>PartGui::DlgImportExportStep</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.cpp" line="171"/>
+      <location filename="../../DlgSettingsGeneral.cpp" line="173"/>
       <source>STEP</source>
       <translation>STEP</translation>
     </message>
@@ -4060,14 +4060,29 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
       <translation>Automatycznie udoskonal model po wykonaniu operacji opartej na szkicu</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="68"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="74"/>
       <source>Object naming</source>
       <translation>Nazewnictwo obiektów</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="77"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
       <source>Add name of base object</source>
       <translation>Dodaj nazwę obiektu podstawowego</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="99"/>
+      <source>Experimental</source>
+      <translation>Eksperymentalne</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</source>
+      <translation type="unfinished">These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="118"/>
+      <source>Allow multiple solids in Part Design Body by default (experimental)</source>
+      <translation type="unfinished">Allow multiple solids in Part Design Body by default (experimental)</translation>
     </message>
   </context>
   <context>
@@ -4627,7 +4642,7 @@ only created cuts will be visible</source>
       <location filename="../../TaskShapeBuilder.cpp" line="423"/>
       <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Wrong selection</source>
-      <translation>Nieprawidłowy wybór</translation>
+      <translation>Niewłaściwy wybór</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="231"/>
@@ -4740,7 +4755,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="339"/>
       <source>Wrong selection</source>
-      <translation>Niewłaściwy wybór</translation>
+      <translation>Nieprawidłowy wybór</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="339"/>
@@ -5622,7 +5637,7 @@ Do you want to continue?</source>
       <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
-      <translation>Ściana</translation>
+      <translation>Powierzchnia</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="78"/>
@@ -5639,7 +5654,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
       <source>Compound</source>
-      <translation>Kształt złożony</translation>
+      <translation>Złożenie</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
@@ -6022,7 +6037,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Compound</source>
-      <translation>Złożenie</translation>
+      <translation>Kształt złożony</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -6186,7 +6201,7 @@ Jeśli wybrany zostanie tylko jeden kształt złożony, jego części składowe 
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation>Filtruj obiekty z wybranego kształtu złożonego, według kryteriów takich jak objętość, pole powierzchni
+      <translation>Filtruje obiekty z wybranego kształtu złożonego, według kryteriów takich jak objętość, pole powierzchni
 lub długość, lub wybierając określone elementy.
 Jeśli zostanie wybrany drugi obiekt, będzie on używany jako punkt odniesienia, na przykład
 do filtrowania według kolizji lub odległości.</translation>
@@ -6218,14 +6233,14 @@ do filtrowania według kolizji lub odległości.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="50"/>
       <source>Explode compound</source>
-      <translation>Rozbij kształt złożony</translation>
+      <translation>Rozbija kształt złożony</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="56"/>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
-      <translation>Rozdziel kształt złożony na osobne obiekty.
-Stworzy to "Filtr złożeń” dla każdego kształtu.</translation>
+      <translation>Rozdziela kształt złożony na osobne obiekty.
+Tworzy "Filtr złożeń” dla każdego kształtu.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
@@ -6637,7 +6652,7 @@ Oznacza to, że nakładające się na siebie objętości kształtów zostaną us
     <message>
       <location filename="../../Command.cpp" line="1307"/>
       <source>Scale a selected shape</source>
-      <translation>Skaluj wybrany kształt</translation>
+      <translation>Wykonuje transformację skali wybranego kształtu</translation>
     </message>
   </context>
   <context>

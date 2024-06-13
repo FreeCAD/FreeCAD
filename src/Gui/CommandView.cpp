@@ -1648,6 +1648,11 @@ public:
     {
         return "StdCmdViewGroup";
     }
+
+    bool isActive() override
+    {
+        return hasActiveDocument();
+    }
 };
 
 //===========================================================================
