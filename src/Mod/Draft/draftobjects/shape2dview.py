@@ -198,9 +198,11 @@ class Shape2DView(DraftObject):
     def _get_shapes(self, shape, onlysolids=False):
         if onlysolids:
             return shape.Solids
+        if shape.isNull():
+            return []
         if shape.ShapeType == "Compound":
             return shape.SubShapes
-        return [shape]
+        return [shape.copy()]
 
     def execute(self, obj):
         if self.props_changed_placement_only(obj) \

@@ -190,6 +190,10 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeConstraintFixed(doc))
         )
         self.assertEqual(
+            "Fem::ConstraintRigidBody",
+            type_of_obj(ObjectsFem.makeConstraintRigidBody(doc))
+        )
+        self.assertEqual(
             "Fem::ConstraintFlowVelocity",
             type_of_obj(ObjectsFem.makeConstraintFlowVelocity(doc))
         )
@@ -433,6 +437,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintFixed(doc),
             "Fem::ConstraintFixed"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeConstraintRigidBody(doc),
+            "Fem::ConstraintRigidBody"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintFlowVelocity(doc),
@@ -776,6 +784,21 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(
             constraint_fixed,
             "Fem::ConstraintFixed"
+        ))
+
+        # ConstraintRigidBody
+        constraint_rigidbody = ObjectsFem.makeConstraintRigidBody(doc)
+        self.assertTrue(is_derived_from(
+            constraint_rigidbody,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_rigidbody,
+            "Fem::Constraint"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_rigidbody,
+            "Fem::ConstraintRigidBody"
         ))
 
         # ConstraintFlowVelocity
@@ -1574,6 +1597,10 @@ class TestObjectType(unittest.TestCase):
                 doc).isDerivedFrom("Fem::ConstraintFixed")
         )
         self.assertTrue(
+            ObjectsFem.makeConstraintRigidBody(
+                doc).isDerivedFrom("Fem::ConstraintRigidBody")
+        )
+        self.assertTrue(
             ObjectsFem.makeConstraintFlowVelocity(
                 doc).isDerivedFrom("Fem::ConstraintPython")
         )
@@ -1844,6 +1871,7 @@ def create_all_fem_objects_doc(
     analysis.addObject(ObjectsFem.makeConstraintDisplacement(doc))
     analysis.addObject(ObjectsFem.makeConstraintElectrostaticPotential(doc))
     analysis.addObject(ObjectsFem.makeConstraintFixed(doc))
+    analysis.addObject(ObjectsFem.makeConstraintRigidBody(doc))
     analysis.addObject(ObjectsFem.makeConstraintFlowVelocity(doc))
     analysis.addObject(ObjectsFem.makeConstraintFluidBoundary(doc))
     analysis.addObject(ObjectsFem.makeConstraintSpring(doc))

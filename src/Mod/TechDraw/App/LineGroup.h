@@ -28,6 +28,8 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <string>
+#include <vector>
+#include <string>
 
 namespace TechDraw
 {

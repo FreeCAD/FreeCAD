@@ -97,6 +97,7 @@ class CAMWorkbench(Workbench):
         toolcmdlist = [
             "CAM_Inspect",
             "CAM_Simulator",
+            "CAM_SimulatorGL",
             "CAM_SelectLoop",
             "CAM_OpActiveToggle",
         ]

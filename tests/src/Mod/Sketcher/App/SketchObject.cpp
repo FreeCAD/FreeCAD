@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <FCConfig.h>
 
@@ -281,7 +281,7 @@ TEST_F(SketchObjectTest, testGetElementName)
     EXPECT_STREQ(forward_normal_name.second.c_str(), "g39;SKT");
     EXPECT_STREQ(reverse_normal_name.first.c_str(), "");
     EXPECT_STREQ(reverse_normal_name.second.c_str(), "Vertex2");
-    EXPECT_STREQ(reverse_export_name.first.c_str(), "");
+    EXPECT_STREQ(reverse_export_name.first.c_str(), ";g39v1;SKT.Vertex1");
     EXPECT_STREQ(reverse_export_name.second.c_str(), "Vertex1");
 #else
     EXPECT_STREQ(forward_normal_name.first.c_str(), ";g39;SKT.Edge1");

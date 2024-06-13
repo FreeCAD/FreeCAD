@@ -116,7 +116,7 @@ Base::Vector3d ViewProviderMeasureDistance::getTextDirection(Base::Vector3d elem
 
 ViewProviderMeasureDistance::ViewProviderMeasureDistance()
 {
-    sPixmap = "umf-measurement";
+    sPixmap = "Measurement-Distance";
 
     // vert indexes used to create the annotation lines
     const size_t lineCount(3);
@@ -218,5 +218,5 @@ void ViewProviderMeasureDistance::redrawAnnotation()
 
 void ViewProviderMeasureDistance::positionAnno(const Measure::MeasureBase* measureObject) {
     (void)measureObject;
-    setLabelTranslation(SbVec3f(0, 10, 0));
+    setLabelTranslation(SbVec3f(0, 0.1 * getViewScale(), 0));
 }

@@ -524,9 +524,9 @@ Multiplier of 'Font Size'</string>
         <item row="9" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="pdsbGapISO">
           <property name="toolTip">
-           <string>Controls the size of gap between dimension point and start of extension line for ISO dimensions. 
-Value * linewidth is the gap. 
-Normally, no gap is used. If using a gap, the recommended value 8.</string>
+           <string>Controls the size of gap between dimension point and start of extension line for ISO dimensions.
+ Value * linewidth is the gap.
+ Normally, no gap is used. If using a gap, the recommended value 8.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -545,8 +545,8 @@ Normally, no gap is used. If using a gap, the recommended value 8.</string>
         <item row="10" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="pdsbGapASME">
           <property name="toolTip">
-           <string>Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap. 
-Normally, no gap is used. If a gap is used, the recommended value is 6.</string>
+           <string>Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap.
+ Normally, no gap is used. If a gap is used, the recommended value is 6.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -616,6 +616,56 @@ Normally, no gap is used. If a gap is used, the recommended value is 6.</string>
      <property name="wordWrap">
       <bool>true</bool>
      </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_6">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Tools</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_general">
+      <item row="0" column="0">
+       <widget class="QLabel" name="dimensioningLabel">
+        <property name="text">
+         <string>Dimensioning tools:</string>
+        </property>
+       </widget>
+      </item>
+	     <item row="0" column="1">
+       <widget class="QComboBox" name="dimensioningMode">
+        <property name="toolTip">
+         <string>Select the type of dimensioning tools for your toolbar:
+'Single tool': A single tool for all dimensioning in the toolbar: Distance, Distance X / Y, Angle, Radius. (Others in dropdown)
+'Separated tools': Individual tools for each dimensioning tool.
+'Both': You will have both the 'Dimension' tool and the separated tools.
+This setting is only for the toolbar. Whichever you choose, all tools are always available in the menu and through shortcuts.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="radiusDiameterLabel">
+        <property name="text">
+         <string>Dimension tool diameter/radius mode:</string>
+        </property>
+       </widget>
+      </item>
+	  <item row="1" column="1">
+       <widget class="QComboBox" name="radiusDiameterMode">
+        <property name="toolTip">
+         <string>While using the Dimension tool you may choose how to handle circles and arcs:
+'Auto': The tool will apply radius to arcs and diameter to circles.
+'Diameter': The tool will apply diameter to all.
+'Radius': The tool will apply radius to all.</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>

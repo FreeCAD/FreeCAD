@@ -41,7 +41,20 @@ class QToolBar;
 
 namespace Gui {
 
-class ToolBarArea;
+// Qt treats area as Flag so in theory toolbar could be in multiple areas at once.
+// We don't do that here so simple enum should suffice.
+enum class ToolBarArea {
+    NoToolBarArea,
+    LeftToolBarArea,
+    RightToolBarArea,
+    TopToolBarArea,
+    BottomToolBarArea,
+    LeftMenuToolBarArea,
+    RightMenuToolBarArea,
+    StatusBarToolBarArea,
+};
+
+class ToolBarAreaWidget;
 
 class GuiExport ToolBarItem
 {
@@ -123,7 +136,9 @@ public:
     int toolBarIconSize(QWidget *widget=nullptr) const;
     void setupToolBarIconSize();
 
-    void populateUndockMenu(QMenu *menu, ToolBarArea *area = nullptr);
+    void populateUndockMenu(QMenu *menu, ToolBarAreaWidget *area = nullptr);
+
+    ToolBarArea toolBarArea(QWidget* toolBar) const;
 
 protected:
     void setup(ToolBarItem*, QToolBar*) const;
@@ -158,7 +173,7 @@ private:
     void setupMenuBarTimer();
     void addToMenu(QLayout* layout, QWidget* area, QMenu* menu);
     QLayout* findLayoutOfObject(QObject* source, QWidget* area) const;
-    ToolBarArea* findToolBarArea() const;
+    ToolBarAreaWidget* findToolBarAreaWidget() const;
 
 private:
     QStringList toolbarNames;
@@ -169,9 +184,9 @@ private:
     QTimer sizeTimer;
     QTimer resizeTimer;
     boost::signals2::scoped_connection connParam;
-    ToolBarArea *statusBarArea = nullptr;
-    ToolBarArea *menuBarLeftArea = nullptr;
-    ToolBarArea *menuBarRightArea = nullptr;
+    ToolBarAreaWidget *statusBarAreaWidget = nullptr;
+    ToolBarAreaWidget *menuBarLeftAreaWidget = nullptr;
+    ToolBarAreaWidget *menuBarRightAreaWidget = nullptr;
     ParameterGrp::handle hGeneral;
     ParameterGrp::handle hPref;
     ParameterGrp::handle hStatusBar;

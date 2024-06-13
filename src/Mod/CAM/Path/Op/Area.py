@@ -340,7 +340,7 @@ class ObjectOp(PathOp.ObjectOp):
 
                 verts = hWire.Wires[0].Vertexes
                 idx = 0
-                if obj.Direction == "CCW":
+                if obj.Direction == "Conventional":
                     idx = len(verts) - 1
                 x = verts[idx].X
                 y = verts[idx].Y

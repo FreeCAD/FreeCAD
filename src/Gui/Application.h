@@ -271,7 +271,7 @@ protected:
          std::make_pair(QT_TRANSLATE_NOOP("EditMode", "Color"),
                         QT_TRANSLATE_NOOP("EditMode",
                                           "The object will have the color of its individual faces "
-                                          "editable with the Part FaceColors command"))},
+                                          "editable with the Part FaceAppearances command"))},
     };
     int userEditMode = userEditModes.begin()->first;
 

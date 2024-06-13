@@ -61,10 +61,14 @@ public:
     //@{
     short mustExecute() const override;
     void setupObject() override;
+
+    const char* getViewProviderName() const override {
+        return "PartDesignGui::ViewProviderExtrude";
+    }
     //@}
 
 protected:
-    Base::Vector3d computeDirection(const Base::Vector3d& sketchVector);
+    Base::Vector3d computeDirection(const Base::Vector3d& sketchVector, bool inverse);
     bool hasTaperedAngle() const;
 
     /// Options for buildExtrusion()

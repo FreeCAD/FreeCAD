@@ -20,7 +20,9 @@
  **************************************************************************/
 
 #include "PreCompiled.h"
-
+#ifndef _PreComp_
+#include <QApplication>
+#endif
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
@@ -71,7 +73,7 @@ PyMOD_INIT_FUNC(MeasureGui)
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
         PyMOD_Return(nullptr);
     }
-    
+
     // load dependent module
     try {
         Base::Interpreter().loadModule("Measure");
@@ -87,10 +89,16 @@ PyMOD_INIT_FUNC(MeasureGui)
     // instantiating the commands
     CreateMeasureCommands();
 
+    MeasureGui::ViewProviderMeasureGroup               ::init();
     MeasureGui::ViewProviderMeasureBase                ::init();
     MeasureGui::ViewProviderMeasure                    ::init();
     MeasureGui::ViewProviderMeasureAngle               ::init();
     MeasureGui::ViewProviderMeasureDistance            ::init();
+
+    MeasureGui::ViewProviderMeasureArea                ::init();
+    MeasureGui::ViewProviderMeasureLength              ::init();
+    MeasureGui::ViewProviderMeasurePosition            ::init();
+    MeasureGui::ViewProviderMeasureRadius              ::init();
 
     // register preferences pages
     new Gui::PrefPageProducer<MeasureGui::DlgPrefsMeasureAppearanceImp>(QT_TRANSLATE_NOOP("QObject", "Measure"));
@@ -98,6 +106,10 @@ PyMOD_INIT_FUNC(MeasureGui)
 //    Q_INIT_RESOURCE(Measure);
 
     Base::Interpreter().addType(&MeasureGui::QuickMeasurePy::Type, mod, "QuickMeasure");
+
+    // Create a QuickMeasure instance
+    auto measure = new MeasureGui::QuickMeasure(QApplication::instance());
+    Q_UNUSED(measure)
 
     PyMOD_Return(mod);
 }

@@ -120,8 +120,33 @@ void TaskTransformedParameters::setupUI()
 
     // Get the feature data
     auto pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
 
+    using Mode = PartDesign::Transformed::Mode;
+
+    ui->buttonGroupMode->setId(ui->radioTransformBody, static_cast<int>(Mode::TransformBody));
+    ui->buttonGroupMode->setId(ui->radioTransformToolShapes, static_cast<int>(Mode::TransformToolShapes));
+
+    connect(ui->buttonGroupMode,
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+            qOverload<int>(&QButtonGroup::buttonClicked),
+#else
+            &QButtonGroup::idClicked,
+#endif
+            this,
+            &TaskTransformedParameters::onModeChanged);
+
+    auto const mode = static_cast<Mode>(pcTransformed->TransformMode.getValue());
+    ui->groupFeatureList->setEnabled(mode == Mode::TransformToolShapes);
+    switch (mode) {
+        case Mode::TransformBody:
+            ui->radioTransformBody->setChecked(true);
+            break;
+        case Mode::TransformToolShapes:
+            ui->radioTransformToolShapes->setChecked(true);
+            break;
+    }
+
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
     // Fill data into dialog elements
     for (auto obj : originals) {
         if (obj) {
@@ -270,6 +295,26 @@ void TaskTransformedParameters::setEnabledTransaction(bool on)
 bool TaskTransformedParameters::isEnabledTransaction() const
 {
     return enableTransaction;
+}
+
+void TaskTransformedParameters::onModeChanged(int mode_id)
+{
+    if (mode_id < 0) {
+        return;
+    }
+
+    auto pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
+    pcTransformed->TransformMode.setValue(mode_id);
+
+    using Mode = PartDesign::Transformed::Mode;
+    Mode const mode = static_cast<Mode>(mode_id);
+
+    ui->groupFeatureList->setEnabled(mode == Mode::TransformToolShapes);
+    if (mode == Mode::TransformBody) {
+        ui->listWidgetFeatures->clear();
+    }
+    setupTransaction();
+    recomputeFeature();
 }
 
 void TaskTransformedParameters::onButtonAddFeature(bool checked)

@@ -1,7 +1,7 @@
 import socket
 from contextlib import closing
 import time
-   
+
 TIMEOUT_TIME_S = 30
 RETRY_DELAY_S = 0.1
 
@@ -16,7 +16,7 @@ def main():
     # DO NOT CHECK 5678 or debugpy will break
     # Check other port manually opened instead
     attempt_counter = 0
-    while (not check_socket('localhost', 6000)) and attempt_counter < MAX_ATTEMPTS:
+    while (not check_socket('localhost', 39999)) and attempt_counter < MAX_ATTEMPTS:
         time.sleep(RETRY_DELAY_S)
         attempt_counter += 1
 

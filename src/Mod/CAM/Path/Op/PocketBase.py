@@ -124,7 +124,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             "Pocket",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)",
+                "The direction that the toolpath should go around the part ClockWise (Climb) or CounterClockWise (Conventional)",
             ),
         )
         obj.addProperty(

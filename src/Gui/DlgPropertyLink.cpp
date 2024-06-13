@@ -362,7 +362,7 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
     // For link list type property, try to auto filter type
     if(tryFilter && isLinkList) {
         Base::Type objType;
-        for(const auto& link : qAsConst(oldLinks)) {
+        for(const auto& link : std::as_const(oldLinks)) {
             auto obj = link.getSubObject();
             if(!obj)
                 continue;
@@ -649,7 +649,7 @@ void DlgPropertyLink::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 
     auto item = findItem(selObj, msg.pSubName, &found);
-    if(!item || !found)
+    if(!item)
         return;
 
     if(!item->isSelected()) {

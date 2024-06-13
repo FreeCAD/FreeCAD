@@ -147,18 +147,6 @@ float Constraint::getScaleFactor() const
     return Scale.getValue() * sizeFactor;
 }
 
-void setSubShapeLocation(const Part::Feature* feat, TopoDS_Shape& sh)
-{
-    // subshape placement is not necessarily the same as the
-    // feature placement.
-    Base::Matrix4D matrix = Part::TopoShape::convert(sh.Location().Transformation());
-    Base::Placement shPla {matrix};
-    Base::Placement featlPlaInv = feat->Placement.getValue().inverse();
-    Base::Placement shGlobalPla = feat->globalPlacement() * featlPlaInv * shPla;
-
-    sh.Location(Part::Tools::fromPlacement(shGlobalPla));
-}
-
 constexpr int CONSTRAINTSTEPLIMIT = 50;
 
 void Constraint::onChanged(const App::Property* prop)
@@ -177,26 +165,20 @@ void Constraint::onChanged(const App::Property* prop)
         for (std::size_t i = 0; i < Objects.size(); i++) {
             App::DocumentObject* obj = Objects[i];
             Part::Feature* feat = static_cast<Part::Feature*>(obj);
-            const Part::TopoShape& toposhape = feat->Shape.getShape();
-            if (!toposhape.getShape().IsNull()) {
-                sh = toposhape.getSubShape(SubElements[i].c_str(), !execute);
-
-                if (!sh.IsNull() && sh.ShapeType() == TopAbs_FACE) {
-                    setSubShapeLocation(feat, sh);
-
-                    // Get face normal in center point
-                    TopoDS_Face face = TopoDS::Face(sh);
-                    BRepGProp_Face props(face);
-                    gp_Vec normal;
-                    gp_Pnt center;
-                    double u1, u2, v1, v2;
-                    props.Bounds(u1, u2, v1, v2);
-                    props.Normal((u1 + u2) / 2.0, (v1 + v2) / 2.0, center, normal);
-                    normal.Normalize();
-                    NormalDirection.setValue(normal.X(), normal.Y(), normal.Z());
-                    // One face is enough...
-                    break;
-                }
+            sh = Tools::getFeatureSubShape(feat, SubElements[i].c_str(), !execute);
+            if (!sh.IsNull() && sh.ShapeType() == TopAbs_FACE) {
+                // Get face normal in center point
+                TopoDS_Face face = TopoDS::Face(sh);
+                BRepGProp_Face props(face);
+                gp_Vec normal;
+                gp_Pnt center;
+                double u1, u2, v1, v2;
+                props.Bounds(u1, u2, v1, v2);
+                props.Normal((u1 + u2) / 2.0, (v1 + v2) / 2.0, center, normal);
+                normal.Normalize();
+                NormalDirection.setValue(normal.X(), normal.Y(), normal.Z());
+                // One face is enough...
+                break;
             }
         }
 
@@ -274,22 +256,15 @@ bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
     TopoDS_Shape sh;
 
     for (std::size_t i = 0; i < Objects.size(); i++) {
-        App::DocumentObject* obj = Objects[i];
-        Part::Feature* feat = static_cast<Part::Feature*>(obj);
-        const Part::TopoShape& toposhape = feat->Shape.getShape();
-        if (toposhape.isNull()) {
-            return false;
-        }
-
-        sh = toposhape.getSubShape(SubElements[i].c_str(), true);
+        Part::Feature* feat = static_cast<Part::Feature*>(Objects[i]);
+        sh = Tools::getFeatureSubShape(feat, SubElements[i].c_str(), true);
         if (sh.IsNull()) {
             return false;
         }
 
-        setSubShapeLocation(feat, sh);
         // Scale by bounding box of the object
         Bnd_Box box;
-        BRepBndLib::Add(toposhape.getShape(), box);
+        BRepBndLib::Add(feat->Shape.getShape().getShape(), box);
         double l = sqrt(box.SquareExtent() / 3.0);
         *scale = this->calcSizeFactor(l);
 
@@ -467,40 +442,6 @@ bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
             }
         }
     }
-
-    return true;
-}
-
-bool Constraint::getCylinder(double& radius,
-                             double& height,
-                             Base::Vector3d& base,
-                             Base::Vector3d& axis) const
-{
-    std::vector<App::DocumentObject*> Objects = References.getValues();
-    std::vector<std::string> SubElements = References.getSubValues();
-    if (Objects.empty()) {
-        return false;
-    }
-    App::DocumentObject* obj = Objects[0];
-    Part::Feature* feat = static_cast<Part::Feature*>(obj);
-    const Part::TopoShape& toposhape = feat->Shape.getShape();
-    if (toposhape.isNull()) {
-        return false;
-    }
-    TopoDS_Shape sh = toposhape.getSubShape(SubElements[0].c_str());
-
-    TopoDS_Face face = TopoDS::Face(sh);
-    BRepAdaptor_Surface surface(face);
-    gp_Cylinder cyl = surface.Cylinder();
-    gp_Pnt start = surface.Value(surface.FirstUParameter(), surface.FirstVParameter());
-    gp_Pnt end = surface.Value(surface.FirstUParameter(), surface.LastVParameter());
-    height = start.Distance(end);
-    radius = cyl.Radius();
-
-    gp_Pnt b = cyl.Location();
-    base = Base::Vector3d(b.X(), b.Y(), b.Z());
-    gp_Dir dir = cyl.Axis().Direction();
-    axis = Base::Vector3d(dir.X(), dir.Y(), dir.Z());
 
     return true;
 }

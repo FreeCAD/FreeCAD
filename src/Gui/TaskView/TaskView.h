@@ -163,6 +163,10 @@ public:
 
     QSize minimumSizeHint() const override;
 
+    // Restore width before opening a task panel
+    void setRestoreWidth(bool on);
+    bool shouldRestoreWidth() const;
+
 Q_SIGNALS:
     void taskUpdate();
 
@@ -175,6 +179,8 @@ protected Q_SLOTS:
 private:
     void triggerMinimumSizeHint();
     void adjustMinimumSizeHint();
+    void saveCurrentWidth();
+    void tryRestoreWidth();
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
@@ -199,6 +205,8 @@ protected:
     QSint::ActionPanel* taskPanel;
     TaskDialog *ActiveDialog;
     TaskEditControl *ActiveCtrl;
+    bool restoreWidth = false;
+    int currentWidth = 0;
 
     Connection connectApplicationActiveDocument;
     Connection connectApplicationDeleteDocument;

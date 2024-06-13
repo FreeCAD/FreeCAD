@@ -214,12 +214,11 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
 
     # which analysis needs which constraints
     # no check in the regard of loads existence (constraint force, pressure, self weight)
-    # is done, because an analysis without loads at all is an valid analysis too
+    # is done, because an analysis without loads at all is a valid analysis too
     if solver.AnalysisType == "static":
-        if not (member.cons_fixed or member.cons_displacement):
+        if not (member.cons_fixed or member.cons_displacement or member.cons_rigidbody):
             message += (
-                "Static analysis: Neither constraint fixed nor "
-                "constraint displacement defined.\n"
+                "Static analysis: No mechanical boundary conditions defined.\n"
             )
     if solver.AnalysisType == "thermomech":
         if not member.cons_initialtemperature:
@@ -257,7 +256,7 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
                 items += len(reference[1])
             if items != 2:
                 message += (
-                    "{} doesn't references exactly two needed faces.\n"
+                    "{} doesn't reference exactly two needed faces.\n"
                     .format(c["Object"].Name)
                 )
     # sectionprint

@@ -54,21 +54,92 @@ const char* Extrusion::eDirModeStrings[] = {
     "Normal",
     nullptr };
 
+namespace
+{
+    std::vector<std::string> MakerEnums = {"Simple",
+                                           "Cheese",
+                                           "Extrusion",
+                                           "Bullseye"};
+
+    const char* enumToClass(const char* mode)
+    {
+        if (MakerEnums.at(0) == mode) {
+            return "Part::FaceMakerSimple";
+        }
+        if (MakerEnums.at(1) == mode) {
+            return "Part::FaceMakerCheese";
+        }
+        if (MakerEnums.at(2) == mode) {
+            return "Part::FaceMakerExtrusion";
+        }
+        if (MakerEnums.at(3) == mode) {
+            return "Part::FaceMakerBullseye";
+        }
+
+        return "Part::FaceMakerBullseye";
+    }
+
+    const char* classToEnum(const char* type)
+    {
+        if (strcmp(type, "Part::FaceMakerSimple") == 0) {
+            return MakerEnums.at(0).c_str();
+        }
+        if (strcmp(type, "Part::FaceMakerCheese") == 0) {
+            return MakerEnums.at(1).c_str();
+        }
+        if (strcmp(type, "Part::FaceMakerExtrusion") == 0) {
+            return MakerEnums.at(2).c_str();
+        }
+        if (strcmp(type, "Part::FaceMakerBullseye") == 0) {
+            return MakerEnums.at(3).c_str();
+        }
+
+        return MakerEnums.at(3).c_str();
+    }
+
+    void restoreFaceMakerMode(Extrusion* self)
+    {
+        const char* mode = enumToClass(self->FaceMakerMode.getValueAsString());
+        const char* type = self->FaceMakerClass.getValue();
+        if (strcmp(mode, type) != 0) {
+            self->FaceMakerMode.setValue(classToEnum(type));
+        }
+    }
+}
+
 Extrusion::Extrusion()
 {
-    ADD_PROPERTY_TYPE(Base, (nullptr), "Extrude", App::Prop_None, "Shape to extrude");
-    ADD_PROPERTY_TYPE(Dir, (Base::Vector3d(0.0, 0.0, 1.0)), "Extrude", App::Prop_None, "Direction of extrusion (also magnitude, if both lengths are zero).");
-    ADD_PROPERTY_TYPE(DirMode, (dmCustom), "Extrude", App::Prop_None, "Sets, how Dir is updated.");
+    // clang-format off
+    ADD_PROPERTY_TYPE(Base, (nullptr), "Extrude", App::Prop_None,
+                      "Shape to extrude");
+    ADD_PROPERTY_TYPE(Dir, (Base::Vector3d(0.0, 0.0, 1.0)), "Extrude", App::Prop_None,
+                      "Direction of extrusion (also magnitude, if both lengths are zero).");
+    ADD_PROPERTY_TYPE(DirMode, (dmCustom), "Extrude", App::Prop_None,
+                      "Sets, how Dir is updated.");
     DirMode.setEnums(eDirModeStrings);
-    ADD_PROPERTY_TYPE(DirLink, (nullptr), "Extrude", App::Prop_None, "Link to edge defining extrusion direction.");
-    ADD_PROPERTY_TYPE(LengthFwd, (0.0), "Extrude", App::Prop_None, "Length of extrusion along direction. If both LengthFwd and LengthRev are zero, magnitude of Dir is used.");
-    ADD_PROPERTY_TYPE(LengthRev, (0.0), "Extrude", App::Prop_None, "Length of additional extrusion, against direction.");
-    ADD_PROPERTY_TYPE(Solid, (false), "Extrude", App::Prop_None, "If true, extruding a wire yields a solid. If false, a shell.");
-    ADD_PROPERTY_TYPE(Reversed, (false), "Extrude", App::Prop_None, "Set to true to swap the direction of extrusion.");
-    ADD_PROPERTY_TYPE(Symmetric, (false), "Extrude", App::Prop_None, "If true, extrusion is done in both directions to a total of LengthFwd. LengthRev is ignored.");
-    ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Extrude", App::Prop_None, "Sets the angle of slope (draft) to apply to the sides. The angle is for outward taper; negative value yields inward tapering.");
-    ADD_PROPERTY_TYPE(TaperAngleRev, (0.0), "Extrude", App::Prop_None, "Taper angle of reverse part of extrusion.");
-    ADD_PROPERTY_TYPE(FaceMakerClass, ("Part::FaceMakerExtrusion"), "Extrude", App::Prop_None, "If Solid is true, this sets the facemaker class to use when converting wires to faces. Otherwise, ignored."); //default for old documents. See setupObject for default for new extrusions.
+    ADD_PROPERTY_TYPE(DirLink, (nullptr), "Extrude", App::Prop_None,
+                      "Link to edge defining extrusion direction.");
+    ADD_PROPERTY_TYPE(LengthFwd, (0.0), "Extrude", App::Prop_None,
+                      "Length of extrusion along direction. If both LengthFwd and LengthRev are zero, magnitude of Dir is used.");
+    ADD_PROPERTY_TYPE(LengthRev, (0.0), "Extrude", App::Prop_None,
+                      "Length of additional extrusion, against direction.");
+    ADD_PROPERTY_TYPE(Solid, (false), "Extrude", App::Prop_None,
+                      "If true, extruding a wire yields a solid. If false, a shell.");
+    ADD_PROPERTY_TYPE(Reversed, (false), "Extrude", App::Prop_None,
+                      "Set to true to swap the direction of extrusion.");
+    ADD_PROPERTY_TYPE(Symmetric, (false), "Extrude", App::Prop_None,
+                      "If true, extrusion is done in both directions to a total of LengthFwd. LengthRev is ignored.");
+    ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Extrude", App::Prop_None,
+                      "Sets the angle of slope (draft) to apply to the sides. The angle is for outward taper; negative value yields inward tapering.");
+    ADD_PROPERTY_TYPE(TaperAngleRev, (0.0), "Extrude", App::Prop_None,
+                      "Taper angle of reverse part of extrusion.");
+    // Default for old documents. See setupObject for default for new extrusions.
+    ADD_PROPERTY_TYPE(FaceMakerClass, ("Part::FaceMakerExtrusion"), "Extrude", (App::PropertyType)(App::Prop_ReadOnly | App::Prop_Hidden),
+                      "If Solid is true, this sets the facemaker class to use when converting wires to faces. Otherwise, ignored.");
+    ADD_PROPERTY_TYPE(FaceMakerMode, (3L), "Extrude", App::Prop_None,
+                      "If Solid is true, this sets the facemaker class to use when converting wires to faces. Otherwise, ignored.");
+    FaceMakerMode.setEnums(MakerEnums);
+    // clang-format on
 }
 
 short Extrusion::mustExecute() const
@@ -457,5 +528,23 @@ void FaceMakerExtrusion::Build()
 void Part::Extrusion::setupObject()
 {
     Part::Feature::setupObject();
-    this->FaceMakerClass.setValue("Part::FaceMakerBullseye"); //default for newly created features
+     //default for newly created features
+    this->FaceMakerMode.setValue(MakerEnums.at(3).c_str());
+    this->FaceMakerClass.setValue("Part::FaceMakerBullseye");
+}
+
+void Extrusion::onDocumentRestored()
+{
+    restoreFaceMakerMode(this);
+}
+
+void Part::Extrusion::onChanged(const App::Property* prop)
+{
+    if (prop == &FaceMakerMode) {
+        if (!isRestoring()) {
+            FaceMakerClass.setValue(enumToClass(FaceMakerMode.getValueAsString()));
+        }
+    }
+
+    Part::Feature::onChanged(prop);
 }

@@ -541,7 +541,7 @@ App::DocumentObject* ImportOCAF2::loadShapes()
     TDF_LabelSequence labels;
     aShapeTool->GetShapes(labels);
     Base::SequencerLauncher seq("Importing...", labels.Length());
-    FC_MSG("free shape count " << labels.Length());
+    FC_LOG("free shape count " << labels.Length());
     sequencer = options.showProgress ? &seq : nullptr;
 
     labels.Clear();

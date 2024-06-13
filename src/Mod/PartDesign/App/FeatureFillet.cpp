@@ -65,6 +65,70 @@ short Fillet::mustExecute() const
 
 App::DocumentObjectExecReturn *Fillet::execute()
 {
+#ifdef FC_USE_TNP_FIX
+    Part::TopoShape baseShape;
+    try {
+        baseShape = getBaseTopoShape();
+    }
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
+    baseShape.setTransform(Base::Matrix4D());
+
+    auto edges = UseAllEdges.getValue() ? baseShape.getSubTopoShapes(TopAbs_EDGE)
+                                        : getContinuousEdges(baseShape);
+    if (edges.empty()) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Fillet not possible on selected shapes"));
+    }
+
+    double radius = Radius.getValue();
+
+    if (radius <= 0) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Fillet radius must be greater than zero"));
+    }
+
+    this->positionByBaseFeature();
+
+    try {
+        TopoShape shape(0);  //,getDocument()->getStringHasher());
+        shape.makeElementFillet(baseShape, edges, Radius.getValue(), Radius.getValue());
+        if (shape.isNull()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Resulting shape is null"));
+        }
+
+        TopTools_ListOfShape aLarg;
+        aLarg.Append(baseShape.getShape());
+        bool failed = false;
+        if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
+            ShapeFix_ShapeTolerance aSFT;
+            aSFT.LimitTolerance(shape.getShape(),
+                                Precision::Confusion(),
+                                Precision::Confusion(),
+                                TopAbs_SHAPE);
+        }
+
+        if (!failed) {
+            shape = refineShapeIfActive(shape);
+            shape = getSolid(shape);
+        }
+        if (!isSingleSolidRuleSatisfied(shape.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+        }
+        this->Shape.setValue(shape);
+
+        if (failed) {
+            return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+        }
+        return App::DocumentObject::StdReturn;
+    }
+    catch (Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
+
+#else
     Part::TopoShape TopShape;
     try {
         TopShape = getBaseTopoShape();
@@ -132,8 +196,7 @@ App::DocumentObjectExecReturn *Fillet::execute()
             }
         }
 
-        int solidCount = countSolids(shape);
-        if (solidCount > 1) {
+        if (!isSingleSolidRuleSatisfied(shape)) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
         }
 
@@ -144,6 +207,7 @@ App::DocumentObjectExecReturn *Fillet::execute()
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
+#endif
 }
 
 void Fillet::Restore(Base::XMLReader &reader)

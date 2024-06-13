@@ -102,6 +102,7 @@ SET(TechDrawGui_SRCS
     CommandDecorate.cpp
     CommandAnnotate.cpp
     CommandExtensionDims.cpp
+    CommandExtensionDims.h
     CommandExtensionPack.cpp
     CommandStack.cpp
     DimensionValidators.cpp
@@ -223,6 +224,8 @@ SET(TechDrawGui_SRCS
     TaskCosmeticCircle.cpp
     TaskCosmeticCircle.h
     TaskCosmeticCircle.ui
+    TechDrawHandler.cpp
+    TechDrawHandler.h
     Widgets/CompassDialWidget.cpp
     Widgets/CompassDialWidget.h
     Widgets/CompassWidget.cpp
@@ -476,6 +479,9 @@ endif(FREECAD_USE_PCH)
 add_library(TechDrawGui SHARED ${TechDrawGui_SRCS} ${TechDrawGuiView_SRCS} ${TechDrawGuiViewProvider_SRCS}
                                ${TechDrawGuiNav_SRCS} ${TechDrawGuiIcon_SVG} ${TechDrawGuiFonts} ${MRTE_SRCS})
 target_link_libraries(TechDrawGui ${TechDrawGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(TechDrawGui)
+endif()
 
 fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/" ${TechDrawGuiIcon_SVG})
 INSTALL(FILES ${TechDrawGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/icons")

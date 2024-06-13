@@ -65,6 +65,7 @@ private:
     void setWheelEventFilter();
     void setLocale();
     void setCursorFlashing();
+    void setQtStyle();
     void checkOpenGL();
     void loadOpenInventor();
     void setBranding();
@@ -74,6 +75,7 @@ private:
     bool hiddenMainWindow() const;
     void showMainWindow();
     void activateWorkbench();
+    void checkParameters();
 
 private:
     bool loadFromPythonModule = false;

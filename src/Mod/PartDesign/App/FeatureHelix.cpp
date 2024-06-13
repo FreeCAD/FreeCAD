@@ -170,7 +170,7 @@ App::DocumentObjectExecReturn* Helix::execute()
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: unsupported mode"));
     }
 
-    TopoDS_Shape sketchshape;
+    TopoDS_Shape sketchshape;   // Fixme: Should this be TopoShape here and below?
     try {
         sketchshape = getVerifiedFace();
     }
@@ -251,10 +251,10 @@ App::DocumentObjectExecReturn* Helix::execute()
             if (getAddSubType() == FeatureAddSub::Subtractive)
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: There is nothing to subtract"));
 
-            int solidCount = countSolids(result);
-            if (solidCount > 1) {
+            if (!isSingleSolidRuleSatisfied(result)) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
+
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
@@ -271,8 +271,8 @@ App::DocumentObjectExecReturn* Helix::execute()
             if (boolOp.IsNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
 
-            int solidCount = countSolids(boolOp);
-            if (solidCount > 1) {
+            
+            if (!isSingleSolidRuleSatisfied(boolOp)) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
@@ -301,8 +301,7 @@ App::DocumentObjectExecReturn* Helix::execute()
             if (boolOp.IsNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
 
-            int solidCount = countSolids(boolOp);
-            if (solidCount > 1) {
+            if (!isSingleSolidRuleSatisfied(boolOp)) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 

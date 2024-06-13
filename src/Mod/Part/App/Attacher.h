@@ -107,6 +107,8 @@ enum eMapMode {
     mmOYZ,
     mmOYX,
 
+    mmParallelPlane,
+
     mmDummy_NumberOfModes//a value useful to check the validity of mode value
 };//see also eMapModeStrings[] definition in .cpp
 
@@ -223,6 +225,9 @@ public: //methods
                       double surfU = 0.0, double surfV = 0.0,
                       const Base::Placement &attachmentOffset = Base::Placement());
     virtual void setUp(const AttachEngine &another);
+
+    void setOffset(const Base::Placement &offset);
+
     virtual AttachEngine* copy() const = 0;
 
     Base::Placement calculateAttachedPlacement(

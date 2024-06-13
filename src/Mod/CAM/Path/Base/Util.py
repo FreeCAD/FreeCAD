@@ -53,7 +53,7 @@ def _getProperty(obj, prop):
         attr = getattr(o, name)
 
     if o == attr:
-        Path.Log.warning(
+        Path.Log.debug(
             translate("PathGui", "%s has no property %s (%s)")
             % (obj.Label, prop, name)
         )

@@ -7111,7 +7111,7 @@ ConstraintTemperatureNormal,11,11,273.0
 *NODE FILE
 U, NT
 *EL FILE
-S, E
+S, E, HFL
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
