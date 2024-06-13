@@ -154,7 +154,7 @@ int main(int argc, char** argv)
             data.push_back(it->toUtf8());
             argv_.push_back(data.back().data());
         }
-        argv_.push_back(0); // 0-terminated string
+        argv_.push_back(0);  // 0-terminated string
     }
 
     +  // https://www.qt.io/blog/dark-mode-on-windows-11-with-qt-6.5
@@ -175,8 +175,8 @@ int main(int argc, char** argv)
     App::Application::Config()["StartWorkbench"] = "PartDesignWorkbench";
     // App::Application::Config()["HiddenDockWindow"] = "Property editor";
     App::Application::Config()["SplashAlignment"] = "Bottom|Left";
-    App::Application::Config()["SplashTextColor"] = "#8aadf4";  // light blue
-    App::Application::Config()["SplashInfoColor"] = "#8aadf4";  // light blue
+    App::Application::Config()["SplashTextColor"] = "#418FDE";
+    App::Application::Config()["SplashInfoColor"] = "#418FDE";
     App::Application::Config()["SplashInfoPosition"] = "6,75";
 
     QGuiApplication::setDesktopFileName(QStringLiteral("org.freecad.FreeCAD"));
