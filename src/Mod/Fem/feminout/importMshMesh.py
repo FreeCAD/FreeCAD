@@ -37,6 +37,7 @@ from builtins import open as pyopen
 
 
 
+
 # ********* module specific methods *********
 
 def read(filename):
@@ -232,7 +233,6 @@ def read_msh(file_name):
         elements.penta15[en] = [n[1], n[0], n[2], n[4], n[3], n[5],
                                 n[6], n[7], n[9], n[12], n[13], n[14], n[10],
                                 n[8], n[11]]
-      
      
     return {
         "Nodes": nodes,

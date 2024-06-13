@@ -533,6 +533,64 @@ class TestMeshEleTetra10(unittest.TestCase):
             file_extension
         )
 
+     # ********************************************************************************************
+    def test_tetra10_msh(
+        self
+    ):
+       # tetra10 element: reading from msh mesh file format
+
+        expected_volumes = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+        file_extension = "msh"
+        _, testfile = self.get_file_paths(file_extension)
+
+       
+        femmesh_testfile = Fem.read(testfile)  # read the mesh from test mesh
+
+        self.assertEqual(
+            femmesh_testfile.Nodes,
+            self.expected_nodes["nodes"],
+            "Test reading {} mesh to {} file failed. Nodes are different.\n")
+
+        self.assertEqual(
+            [
+                femmesh_testfile.Volumes[0],
+                expected_volumes
+            ],
+            self.expected_elem["volumes"],
+            "Test reading {} mesh to {} file failed. Volumes are different.\n"
+            )
+
+    def test_tetra10_msh(
+        self
+    ):
+       # tetra10 element: reading from msh mesh file format
+
+        expected_nodes_num = 519
+        expected_volumes_num = 216
+
+
+        file_extension = "msh"
+        testfile = join(testtools.get_fem_test_home_dir(),
+            "mesh", "beam_mesh.msh")
+            
+
+       
+        femmesh_testfile = Fem.read(testfile)  # read the mesh from test mesh
+
+        self.assertEqual(
+            len(femmesh_testfile.Nodes),
+            expected_nodes_num,
+            "Test reading {} mesh to {} file failed. Nodes are different.\n")
+
+        self.assertEqual(
+                len(femmesh_testfile.Volumes),
+                expected_volumes_num,
+            "Test reading {} mesh to {} file failed. Volumes are different.\n"
+            )
+        
+
+    
 
 # ************************************************************************************************
 # ************************************************************************************************
