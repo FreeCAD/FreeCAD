@@ -28,6 +28,9 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <unordered_set>
+#include <unordered_map>
+
 #include "Property.h"
 
 namespace Base {
@@ -38,6 +41,8 @@ namespace App
 {
 class DocumentObject;
 class Document;
+class GeoFeature;
+class SubObjectT;
 
 class DocInfo;
 using DocInfoPtr = std::shared_ptr<DocInfo>;
@@ -262,7 +267,7 @@ public:
 
     /// Helper function to return a map of linked object and its subname references
     void getLinkedElements(std::map<App::DocumentObject*, std::vector<std::string> > &elements,
-            bool newStyle=true, bool all=true) const
+            bool newStyle=true, bool all=false) const
     {
         std::vector<App::DocumentObject*> ret;
         std::vector<std::string> subs;
@@ -275,7 +280,7 @@ public:
 
     /// Helper function to return a map of linked object and its subname references
     std::map<App::DocumentObject*, std::vector<std::string> >
-        linkedElements(bool newStyle=true, bool all=true) const
+        linkedElements(bool newStyle=true, bool all=false) const
     {
         std::map<App::DocumentObject*, std::vector<std::string> > ret;
         getLinkedElements(ret,newStyle,all);
@@ -346,6 +351,8 @@ public:
     /// Update all element references in all link properties of \a feature
     static void updateElementReferences(DocumentObject *feature, bool reverse=false);
 
+    /// Obtain link properties that contain element references to a given object
+    static const std::unordered_set<PropertyLinkBase*>& getElementReferences(DocumentObject *);
 
     /** Helper function for update individual element reference
      *
@@ -1199,10 +1206,10 @@ class AppExport PropertyXLinkSubList: public PropertyLinkBase
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
+public:
     using atomic_change = typename AtomicPropertyChangeInterface<PropertyXLinkSubList>::AtomicPropertyChange;
     friend atomic_change;
 
-public:
     PropertyXLinkSubList();
     ~PropertyXLinkSubList() override;
 

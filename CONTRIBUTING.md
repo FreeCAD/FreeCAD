@@ -56,7 +56,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 8. A PR SHALL NOT include non-trivial code from other projects unless the Contributor is the original author of that code.
 9. A PR MUST compile cleanly and pass project self-tests on all target platforms.
 10. Each commit message in a PR MUST succinctly explain what the commit achieves. The commit message SHALL follow the suggestions in the `git commit --help` documentation, section DISCUSSION.
-11. The PR message MUST consist of a single short line, the PR Title, summarizing the problem being solved, followed by a blank line and then the proposed solution in the Body. If a PR consists of more than one commit, the PR Title MUST succinctly explain what the PR achieves. The Body MAY be as detailed as needed.
+11. The PR message MUST consist of a single short line, the PR Title, summarizing the problem being solved, followed by a blank line and then the proposed solution in the Body. If a PR consists of more than one commit, the PR Title MUST succinctly explain what the PR achieves. The Body MAY be as detailed as needed. If a PR changes the user interface (UI), the body of the text MUST include a presentation of these UI changes, preferably with screenshots of the previous and revised state.
 12. A “Valid PR” is one which satisfies the above requirements.
 
 ## 6. Process

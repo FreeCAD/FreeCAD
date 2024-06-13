@@ -298,7 +298,8 @@ inline void SketcherAddWorkspaceLines<Gui::MenuItem>(Gui::MenuItem& geom)
 template<>
 inline void SketcherAddWorkspaceLines<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
 {
-    geom << "Sketcher_CompLine";
+    geom << "Sketcher_CreatePolyline"
+         << "Sketcher_CreateLine";
 }
 
 template<typename T>

@@ -188,8 +188,7 @@ App::DocumentObjectExecReturn *Groove::execute()
             TopoDS_Shape subshape = refineShapeIfActive(mkCut.Shape());
             this->AddSubShape.setValue(subshape);
 
-            int resultCount = countSolids(result);
-            if (resultCount > 1) {
+            if (!isSingleSolidRuleSatisfied(result)) {
                 return new App::DocumentObjectExecReturn("Groove: Result has multiple solids. This is not supported at this time.");
             }
 
@@ -221,8 +220,7 @@ App::DocumentObjectExecReturn *Groove::execute()
             solRes = refineShapeIfActive(solRes);
             this->Shape.setValue(getSolid(solRes));
 
-            int solidCount = countSolids(solRes);
-            if (solidCount > 1) {
+            if (!isSingleSolidRuleSatisfied(solRes)) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
         }
@@ -262,7 +260,7 @@ App::DocumentObjectExecReturn *Groove::execute()
 
     TopoShape sketchshape;
     try {
-        sketchshape = getVerifiedFace();
+        sketchshape = getTopoShapeVerifiedFace();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
@@ -354,7 +352,11 @@ App::DocumentObjectExecReturn *Groove::execute()
             return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
         boolOp = refineShapeIfActive(boolOp);
-        Shape.setValue(getSolid(boolOp));
+        boolOp = getSolid(boolOp);
+        if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+        }
+        Shape.setValue(boolOp);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {

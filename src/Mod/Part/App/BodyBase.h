@@ -47,9 +47,8 @@ public:
     /**
      * The final feature of the body it is associated with.
      * Note: tip may either point to the BaseFeature or to some feature inside the Group list.
-     *       in case it points to the model the PartDesign::Body guaranties that it is a solid.
      */
-    App::PropertyLink       Tip;
+    App::PropertyLink Tip;
 
     /**
      * A base object of the body, serves as a base object for the first feature of the body.

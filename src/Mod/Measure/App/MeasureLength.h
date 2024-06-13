@@ -53,7 +53,7 @@ public:
     void recalculateLength();
 
     const char* getViewProviderName() const override {
-        return "MeasureGui::ViewProviderMeasure";
+        return "MeasureGui::ViewProviderMeasureLength";
     }
 
     static bool isValidSelection(const App::MeasureSelection& selection);

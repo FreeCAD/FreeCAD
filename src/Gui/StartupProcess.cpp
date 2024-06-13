@@ -43,6 +43,7 @@
 #include "MainWindow.h"
 #include "Language/Translator.h"
 #include <App/Application.h>
+#include <Base/Console.h>
 
 
 using namespace Gui;
@@ -228,11 +229,13 @@ void StartupPostProcess::execute()
     setWheelEventFilter();
     setLocale();
     setCursorFlashing();
+    setQtStyle();
     checkOpenGL();
     loadOpenInventor();
     setBranding();
     showMainWindow();
     activateWorkbench();
+    checkParameters();
 }
 
 void StartupPostProcess::setWindowTitle()
@@ -294,7 +297,6 @@ void StartupPostProcess::setLocale()
     else if (localeFormat == 2) {
         Translator::instance()->setLocale("C");
     }
-
 }
 
 void StartupPostProcess::setCursorFlashing()
@@ -303,6 +305,13 @@ void StartupPostProcess::setCursorFlashing()
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     int blinkTime = hGrp->GetBool("EnableCursorBlinking", true) ? -1 : 0;
     QApplication::setCursorFlashTime(blinkTime);
+}
+
+void StartupPostProcess::setQtStyle()
+{
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
+    auto qtStyle = hGrp->GetASCII("QtStyle");
+    QApplication::setStyle(QString::fromStdString(qtStyle));
 }
 
 void StartupPostProcess::checkOpenGL()
@@ -446,7 +455,7 @@ void StartupPostProcess::showMainWindow()
     // stop splash screen and set immediately the active window that may be of interest
     // for scripts using Python binding for Qt
     mainWindow->stopSplasher();
-    qtApp->setActiveWindow(mainWindow);
+    mainWindow->activateWindow();
 }
 
 void StartupPostProcess::activateWorkbench()
@@ -543,5 +552,17 @@ void StartupPostProcess::autoloadModules(const QStringList& wb)
         if (wb.contains(QString::fromLatin1(workbench.c_str()))) {
             guiApp.activateWorkbench(workbench.c_str());
         }
+    }
+}
+
+void StartupPostProcess::checkParameters()
+{
+    if (App::GetApplication().GetSystemParameter().IgnoreSave()) {
+        Base::Console().Warning("System parameter file couldn't be opened.\n"
+                                "Continue with an empty configuration that won't be saved.\n");
+    }
+    if (App::GetApplication().GetUserParameter().IgnoreSave()) {
+        Base::Console().Warning("User parameter file couldn't be opened.\n"
+                                "Continue with an empty configuration that won't be saved.\n");
     }
 }

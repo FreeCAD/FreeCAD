@@ -692,7 +692,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="174"/>
       <source>Curvature</source>
-      <translation type="unfinished">Curvature</translation>
+      <translation>Curvature</translation>
     </message>
   </context>
   <context>

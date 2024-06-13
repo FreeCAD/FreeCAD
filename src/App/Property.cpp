@@ -261,8 +261,9 @@ void Property::Paste(const Property& /*from*/)
 }
 
 void Property::setStatusValue(unsigned long status) {
+    // clang-format off
     static const unsigned long mask =
-        (1<<PropDynamic)
+         (1<<PropDynamic)
         |(1<<PropNoRecompute)
         |(1<<PropReadOnly)
         |(1<<PropTransient)
@@ -270,6 +271,7 @@ void Property::setStatusValue(unsigned long status) {
         |(1<<PropHidden)
         |(1<<PropNoPersist)
         |(1<<Busy);
+    // clang-format on
 
     status &= ~mask;
     status |= StatusBits.to_ulong() & mask;

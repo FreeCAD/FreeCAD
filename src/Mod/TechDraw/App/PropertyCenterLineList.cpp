@@ -95,19 +95,20 @@ PyObject *PropertyCenterLineList::getPyObject()
 void PropertyCenterLineList::setPyObject(PyObject *value)
 {
     if (PySequence_Check(value)) {
-        Py_ssize_t nSize = PySequence_Size(value);
+        Py::Sequence sequence(value);
+        Py_ssize_t nSize = sequence.size();
         std::vector<CenterLine*> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i < nSize; ++i) {
-            PyObject* item = PySequence_GetItem(value, i);
-            if (!PyObject_TypeCheck(item, &(CenterLinePy::Type))) {
+            Py::Object item = sequence.getItem(i);
+            if (!PyObject_TypeCheck(item.ptr(), &(CenterLinePy::Type))) {
                 std::string error = std::string("types in list must be 'CenterLine', not ");
-                error += item->ob_type->tp_name;
+                error += item.ptr()->ob_type->tp_name;
                 throw Base::TypeError(error);
             }
 
-            values[i] = static_cast<CenterLinePy*>(item)->getCenterLinePtr();
+            values[i] = static_cast<CenterLinePy*>(item.ptr())->getCenterLinePtr();
         }
 
         setValues(values);

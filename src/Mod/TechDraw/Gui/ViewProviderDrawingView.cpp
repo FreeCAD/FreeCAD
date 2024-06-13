@@ -227,7 +227,7 @@ void ViewProviderDrawingView::updateData(const App::Property* prop)
     if (prop == &obj->X
         || prop == &obj->Y) {
         QGIView* qgiv = getQView();
-        if (qgiv) {
+        if (qgiv && !qgiv->isSnapping()) {
             qgiv->QGIView::updateView(true);
 
             // Update also the owner/parent view, if there is any

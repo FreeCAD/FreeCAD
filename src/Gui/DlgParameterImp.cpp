@@ -160,7 +160,7 @@ void DlgParameterImp::onFindGroupTtextChanged(const QString &SearchStr)
 
     // at first reset all items to the default font and expand state
     if (!foundList.empty()) {
-        for (QTreeWidgetItem* item : qAsConst(foundList)) {
+        for (QTreeWidgetItem* item : std::as_const(foundList)) {
             item->setFont(0, defaultFont);
             item->setForeground(0, defaultColor);
             ExpandItem = item;
@@ -191,7 +191,7 @@ void DlgParameterImp::onFindGroupTtextChanged(const QString &SearchStr)
         // reset background style sheet
         if (!ui->findGroupLE->styleSheet().isEmpty())
             ui->findGroupLE->setStyleSheet(QString());
-        for (QTreeWidgetItem* item : qAsConst(foundList)) {
+        for (QTreeWidgetItem* item : std::as_const(foundList)) {
             item->setFont(0, boldFont);
             item->setForeground(0, Qt::red);
             // expand its parent to see the item

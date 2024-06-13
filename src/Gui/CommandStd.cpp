@@ -952,6 +952,33 @@ bool StdCmdUserEditMode::isActive()
     return true;
 }
 
+//===========================================================================
+// Std_ReloadStylesheet
+//===========================================================================
+DEF_STD_CMD(StdCmdReloadStyleSheet)
+
+StdCmdReloadStyleSheet::StdCmdReloadStyleSheet()
+  : Command("Std_ReloadStyleSheet")
+{
+    sGroup        = "View";
+    sMenuText     = QT_TR_NOOP("&Reload stylesheet");
+    sToolTipText  = QT_TR_NOOP("Reloads the current stylesheet");
+    sWhatsThis    = "Std_ReloadStyleSheet";
+    sStatusTip    = QT_TR_NOOP("Reloads the current stylesheet");
+    sPixmap       = "view-refresh";
+    sWhatsThis    = "Std_ReloadStyleSheet";
+}
+
+void StdCmdReloadStyleSheet::activated(int )
+{
+    auto mw = getMainWindow();
+
+    auto qssFile = mw->property("fc_currentStyleSheet").toString();
+    auto tiledBackground = mw->property("fc_tiledBackground").toBool();
+
+    Gui::Application::Instance->setStyleSheet(qssFile, tiledBackground);
+}
+
 namespace Gui {
 
 void CreateStdCommands()
@@ -983,6 +1010,7 @@ void CreateStdCommands()
     rcCmdMgr.addCommand(new StdCmdTextDocument());
     rcCmdMgr.addCommand(new StdCmdUnitsCalculator());
     rcCmdMgr.addCommand(new StdCmdUserEditMode());
+    rcCmdMgr.addCommand(new StdCmdReloadStyleSheet());
     //rcCmdMgr.addCommand(new StdCmdMeasurementSimple());
     //rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     //rcCmdMgr.addCommand(new StdCmdDescription());

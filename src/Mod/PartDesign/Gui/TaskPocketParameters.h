@@ -58,7 +58,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgPocketParameters : public TaskDlgSketchBasedParameters
+class TaskDlgPocketParameters : public TaskDlgExtrudeParameters
 {
     Q_OBJECT
 
@@ -67,6 +67,12 @@ public:
 
     ViewProviderPocket* getPocketView() const
     { return static_cast<ViewProviderPocket*>(vp); }
+
+protected:
+    TaskExtrudeParameters* getTaskParameters() override { return parameters; }
+
+private:
+    TaskPocketParameters* parameters;
 };
 
 } //namespace PartDesignGui

@@ -75,12 +75,12 @@
   <context>
     <name>CmdTechDraw3PtAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="750"/>
+      <location filename="../../CommandCreateDims.cpp" line="2112"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="751"/>
+      <location filename="../../CommandCreateDims.cpp" line="2113"/>
       <source>Insert 3-Point Angle Dimension</source>
       <translation>Уставіць вуглавое вымярэнне па трох кропках</translation>
     </message>
@@ -88,12 +88,12 @@
   <context>
     <name>CmdTechDrawActiveView</name>
     <message>
-      <location filename="../../Command.cpp" line="650"/>
+      <location filename="../../Command.cpp" line="651"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="651"/>
+      <location filename="../../Command.cpp" line="652"/>
       <source>Insert Active View (3D View)</source>
       <translation>Уставіць бягучы выгляд (трохмернае прадстаўленне)</translation>
     </message>
@@ -101,12 +101,12 @@
   <context>
     <name>CmdTechDrawAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="658"/>
+      <location filename="../../CommandCreateDims.cpp" line="2020"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="659"/>
+      <location filename="../../CommandCreateDims.cpp" line="2021"/>
       <source>Insert Angle Dimension</source>
       <translation>Уставіць вуглавое вымярэнне</translation>
     </message>
@@ -127,17 +127,17 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1601"/>
+      <location filename="../../Command.cpp" line="1603"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1602"/>
+      <location filename="../../Command.cpp" line="1604"/>
       <source>Insert Arch Workbench Object</source>
       <translation>Уставіць аб'ект варштату Архітэктура</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1603"/>
+      <location filename="../../Command.cpp" line="1605"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
       <translation>Уставіць выгляд плоскасці перасеку з варштату Архітэктура</translation>
     </message>
@@ -145,12 +145,12 @@
   <context>
     <name>CmdTechDrawBalloon</name>
     <message>
-      <location filename="../../Command.cpp" line="1227"/>
+      <location filename="../../Command.cpp" line="1228"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1228"/>
+      <location filename="../../Command.cpp" line="1229"/>
       <source>Insert Balloon Annotation</source>
       <translation>Уставіць заметку ў пазіцыйную зноску</translation>
     </message>
@@ -176,12 +176,12 @@
   <context>
     <name>CmdTechDrawClipGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1291"/>
+      <location filename="../../Command.cpp" line="1292"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1292"/>
+      <location filename="../../Command.cpp" line="1293"/>
       <source>Insert Clip Group</source>
       <translation>Уставіць суполку выразак</translation>
     </message>
@@ -189,12 +189,12 @@
   <context>
     <name>CmdTechDrawClipGroupAdd</name>
     <message>
-      <location filename="../../Command.cpp" line="1328"/>
+      <location filename="../../Command.cpp" line="1329"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1329"/>
+      <location filename="../../Command.cpp" line="1330"/>
       <source>Add View to Clip Group</source>
       <translation>Дадаць выгляд у суполку выразак</translation>
     </message>
@@ -202,12 +202,12 @@
   <context>
     <name>CmdTechDrawClipGroupRemove</name>
     <message>
-      <location filename="../../Command.cpp" line="1412"/>
+      <location filename="../../Command.cpp" line="1413"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1413"/>
+      <location filename="../../Command.cpp" line="1414"/>
       <source>Remove View from Clip Group</source>
       <translation>Выдаліць выгляд з суполкі выразак</translation>
     </message>
@@ -215,17 +215,17 @@
   <context>
     <name>CmdTechDrawComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="835"/>
+      <location filename="../../Command.cpp" line="836"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="836"/>
+      <location filename="../../Command.cpp" line="837"/>
       <source>Insert Complex Section</source>
       <translation>Уставіць складовы перасек</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="837"/>
+      <location filename="../../Command.cpp" line="838"/>
       <source>Insert a Complex Section</source>
       <translation>Уставіць складовы перасек</translation>
     </message>
@@ -295,12 +295,12 @@
   <context>
     <name>CmdTechDrawDetailView</name>
     <message>
-      <location filename="../../Command.cpp" line="961"/>
+      <location filename="../../Command.cpp" line="962"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="962"/>
+      <location filename="../../Command.cpp" line="963"/>
       <source>Insert Detail View</source>
       <translation>Уставіць вынасны элемент</translation>
     </message>
@@ -308,12 +308,12 @@
   <context>
     <name>CmdTechDrawDiameterDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="254"/>
+      <location filename="../../CommandCreateDims.cpp" line="1616"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="255"/>
+      <location filename="../../CommandCreateDims.cpp" line="1617"/>
       <source>Insert Diameter Dimension</source>
       <translation>Уставіць вымярэнне дыяметру</translation>
     </message>
@@ -321,30 +321,39 @@
   <context>
     <name>CmdTechDrawDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="102"/>
+      <location filename="../../CommandCreateDims.cpp" line="1403"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="103"/>
+      <location filename="../../CommandCreateDims.cpp" line="1404"/>
       <source>Insert Dimension</source>
       <translation>Уставіць вымярэнне</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1405"/>
+      <source>Dimension contextually based on your selection.
+Depending on your selection you might have several dimensions available. You can cycle through them using the M key.
+Left clicking on empty space will validate the current Dimension. Right clicking or pressing Esc will cancel.</source>
+      <translation type="unfinished">Dimension contextually based on your selection.
+Depending on your selection you might have several dimensions available. You can cycle through them using the M key.
+Left clicking on empty space will validate the current Dimension. Right clicking or pressing Esc will cancel.</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="1538"/>
+      <location filename="../../Command.cpp" line="1540"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1539"/>
+      <location filename="../../Command.cpp" line="1541"/>
       <source>Insert Draft Workbench Object</source>
       <translation>Уставіць аб'ект варштату Чарнавік</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1540"/>
+      <location filename="../../Command.cpp" line="1542"/>
       <source>Insert a View of a Draft Workbench object</source>
       <translation>Уставіць выгляд аб'ект з варштату Чарнавік</translation>
     </message>
@@ -352,22 +361,22 @@
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1777"/>
+      <location filename="../../Command.cpp" line="1779"/>
       <source>File</source>
       <translation>Файл</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1778"/>
+      <location filename="../../Command.cpp" line="1780"/>
       <source>Export Page as DXF</source>
       <translation>Экспартаваць старонку ў DXF</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1812"/>
+      <location filename="../../Command.cpp" line="1814"/>
       <source>Save DXF file</source>
       <translation>Захаваць файл DXF</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1813"/>
+      <location filename="../../Command.cpp" line="1815"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
@@ -375,12 +384,12 @@
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1736"/>
+      <location filename="../../Command.cpp" line="1738"/>
       <source>File</source>
       <translation>Файл</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1737"/>
+      <location filename="../../Command.cpp" line="1739"/>
       <source>Export Page as SVG</source>
       <translation>Экспартаваць старонку ў SVG</translation>
     </message>
@@ -388,17 +397,17 @@
   <context>
     <name>CmdTechDrawExtendShortenLineGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1632"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1662"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1633"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1663"/>
       <source>Extend Line</source>
       <translation>Выцягнуць лінію</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1634"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1664"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Выцягніце касметычную лінію ці цэнтральную лінію з абодвух канцоў:&lt;br&gt;- Пакажыце дэльта адлегласць (неабавязкова)&lt;br&gt;- Абярыце адну лінію&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -406,17 +415,17 @@
   <context>
     <name>CmdTechDrawExtensionAreaAnnotation</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1735"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1766"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1736"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1767"/>
       <source>Calculate the area of selected faces</source>
       <translation>Вылічыць плошчу абраных граней</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1737"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1768"/>
       <source>Select several faces&lt;br&gt;    - click this tool</source>
       <translation>Абярыце некалькі граней&lt;br&gt; - пстрыкніце інструмент</translation>
     </message>
@@ -424,17 +433,17 @@
   <context>
     <name>CmdTechDrawExtensionCascadeDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1150"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1154"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1151"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1155"/>
       <source>Cascade Horizontal Dimensions</source>
       <translation>Каскад гарызантальных вымярэнняў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1152"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1156"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Раўнамерна размяркуйце гарызантальныя вымярэнні:&lt;br&gt;- Пакажыце каскадную адлегласць (неабавязкова)&lt;br&gt;- Абярыце два ці болей гарызантальных вымярэнняў&lt;br&gt;- Першае вымярэнне вызначае становішча&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -442,19 +451,19 @@
   <context>
     <name>CmdTechDrawExtensionCascadeHorizDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="972"/>
+      <location filename="../../CommandExtensionDims.cpp" line="976"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="973"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1227"/>
+      <location filename="../../CommandExtensionDims.cpp" line="977"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1231"/>
       <source>Cascade Horizontal Dimensions</source>
       <translation>Каскад гарызантальных вымярэнняў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="974"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1228"/>
+      <location filename="../../CommandExtensionDims.cpp" line="978"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1232"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Раўнамерна размяркуйце гарызантальныя вымярэнні:&lt;br&gt;- Пакажыце каскадную адлегласць (неабавязкова)&lt;br&gt;- Абярыце два ці болей гарызантальных вымярэнняў&lt;br&gt;- Першае вымярэнне вызначае становішча&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -462,19 +471,19 @@
   <context>
     <name>CmdTechDrawExtensionCascadeObliqueDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1114"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1118"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1115"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1245"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1119"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1249"/>
       <source>Cascade Oblique Dimensions</source>
       <translation>Каскад нахіленых вымярэнняў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1116"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1246"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1120"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1250"/>
       <source>Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Раўнамерна размяркуйце нахіленыя вымярэнні:&lt;br&gt;- Пакажыце каскадную адлегласць (неабавязкова)&lt;br&gt;- Абярыце два ці болей паралельных нахіленых вымярэнняў&lt;br&gt;- Першае вымярэнне вызначае становішча&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -482,19 +491,19 @@
   <context>
     <name>CmdTechDrawExtensionCascadeVertDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1039"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1043"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1040"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1236"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1044"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1240"/>
       <source>Cascade Vertical Dimensions</source>
       <translation>Каскад вертыкальных вымярэнняў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1041"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1237"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1045"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1241"/>
       <source>Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Раўнамерна размяркуйце вертыкальныя вымярэнні:&lt;br&gt;- Пакажыце каскадную адлегласць (неабавязкова)&lt;br&gt;- Абярыце два ці болей вертыкальных вымярэнняў&lt;br&gt;- Першае вымярэнне вызначае становішча&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -502,17 +511,17 @@
   <context>
     <name>CmdTechDrawExtensionChamferDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2123"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2184"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2124"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2185"/>
       <source>Create Horizontal Chamfer Dimension</source>
       <translation>Стварыць гарызантальнае вымярэнне фаскі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2125"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2186"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
       <translation>Стварыце гарызантальны памер і вуглавое вымярэнне для фаскі:&lt;br&gt;- Абярыце дзве вяршыні&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -520,17 +529,17 @@
   <context>
     <name>CmdTechDrawExtensionChangeLineAttributes</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="774"/>
+      <location filename="../../CommandExtensionPack.cpp" line="780"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="775"/>
+      <location filename="../../CommandExtensionPack.cpp" line="781"/>
       <source>Change Line Attributes</source>
       <translation>Змяніць атрыбуты лініі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="776"/>
+      <location filename="../../CommandExtensionPack.cpp" line="782"/>
       <source>Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</source>
       <translation>Зменіце атрыбуты касметычных ліній і цэнтральных ліній:&lt;br&gt;- Пакажыце атрыбуты ліній (неабавязкова)&lt;br&gt;- Абярыце адну ці некалькі ліній&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -538,19 +547,19 @@
   <context>
     <name>CmdTechDrawExtensionCircleCenterLines</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="252"/>
+      <location filename="../../CommandExtensionPack.cpp" line="248"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="253"/>
-      <location filename="../../CommandExtensionPack.cpp" line="355"/>
+      <location filename="../../CommandExtensionPack.cpp" line="249"/>
+      <location filename="../../CommandExtensionPack.cpp" line="352"/>
       <source>Add Circle Centerlines</source>
       <translation>Дадаць цэнтральныя лініі акружнасці</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="254"/>
-      <location filename="../../CommandExtensionPack.cpp" line="356"/>
+      <location filename="../../CommandExtensionPack.cpp" line="250"/>
+      <location filename="../../CommandExtensionPack.cpp" line="353"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
       <translation>Дадайце цэнтральныя лініі да акружнасцяў і дуг:&lt;br&gt;- Пакажыце атрыбуты ліній (неабавязкова)&lt;br&gt;- Абяраце адзін ці некалькі акружнасцяў ці дуг&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -558,17 +567,17 @@
   <context>
     <name>CmdTechDrawExtensionCircleCenterLinesGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="286"/>
+      <location filename="../../CommandExtensionPack.cpp" line="282"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="287"/>
+      <location filename="../../CommandExtensionPack.cpp" line="283"/>
       <source>Add Circle Centerlines</source>
       <translation>Дадаць цэнтральныя лініі акружнасці</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="288"/>
+      <location filename="../../CommandExtensionPack.cpp" line="284"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
       <translation>Дадайце цэнтральныя лініі да акружнасцяў і дуг:&lt;br&gt;- Пакажыце атрыбуты ліній (неабавязкова)&lt;br&gt;- Абярыце адзін ці некалькі акружнасцяў ці дуг&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -576,17 +585,17 @@
   <context>
     <name>CmdTechDrawExtensionCreateChainDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1499"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1532"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1500"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1533"/>
       <source>Create Horizontal Chain Dimensions</source>
       <translation>Стварыць гарызантальнае вымярэнне ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1501"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1534"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
       <translation>Стварыце паслядоўнасць выраўнаваных гарызантальных вымярэнняў:&lt;br&gt;- Абярыце тры ці больш вяршынь&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -594,17 +603,17 @@
   <context>
     <name>CmdTechDrawExtensionCreateCoordDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1862"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1923"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1863"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1924"/>
       <source>Create Horizontal Coordinate Dimensions</source>
       <translation>Стварыць гарызантальнае вымярэнне каардынат</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1864"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1925"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
       <translation>Стварыце некалькі раўнамерна размешчаных гарызантальных вымярэнняў, пачынаючы з адной падставы:&lt;br&gt;- Пакажыце каскадную адлегласць (неабавязкова)&lt;br&gt;- Абярыце тры ці больш вяршынь&lt;br&gt;- Парадак выбару першых дзвюх вяршынь вызначае становішча падставы&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -612,19 +621,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateHorizChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1304"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1308"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1305"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1574"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1309"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1607"/>
       <source>Create Horizontal Chain Dimensions</source>
       <translation>Стварыць гарызантальнае вымярэнне ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1306"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1575"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1310"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1608"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
       <translation>Стварыце паслядоўнасць выраўнаваных гарызантальных вымярэнняў:&lt;br&gt;- Абярыце тры ці больш вяршынь&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -632,19 +641,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateHorizChamferDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2021"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2082"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2022"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2191"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2083"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2252"/>
       <source>Create Horizontal Chamfer Dimension</source>
       <translation>Стварыць гарызантальнае вымярэнне фаскі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2023"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2192"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2084"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2253"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
       <translation>Стварыце гарызантальны памер і вуглавое вымярэнне для фаскі:&lt;br&gt;- Абярыце дзве вяршыні&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -652,19 +661,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateHorizCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1652"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1685"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1653"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1939"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1686"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2000"/>
       <source>Create Horizontal Coordinate Dimensions</source>
       <translation>Стварыць гарызантальнае вымярэнне каардынат</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1654"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1940"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1687"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2001"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
       <translation>Стварыце некалькі раўнамерна размешчаных гарызантальных вымярэнняў, пачынаючы з адной падставы:&lt;br&gt;- Пакажыце каскадную адлегласць (неабавязкова)&lt;br&gt;- Абярыце тры ці больш вяршынь&lt;br&gt;- Парадак выбару першых дзвюх вяршынь вызначае становішча падставы&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -672,17 +681,17 @@
   <context>
     <name>CmdTechDrawExtensionCreateLengthArc</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2223"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2284"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2224"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2285"/>
       <source>Create Arc Length Dimension</source>
       <translation>Стварыць вымярэнне даўжыні дугі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2225"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2286"/>
       <source>Create an arc length dimension:&lt;br&gt;- Select a single arc&lt;br&gt;- Click this tool</source>
       <translation>Стварыце вымярэнне даўжыні дугі:&lt;br&gt;- Абярыце адну дугу&lt;br&gt;- Пстрыкніце  інструмент</translation>
     </message>
@@ -690,19 +699,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateObliqueChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1465"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1498"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1466"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1588"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1499"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1621"/>
       <source>Create Oblique Chain Dimensions</source>
       <translation>Стварыць нахіленае вымярэнне ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1467"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1589"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1500"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1622"/>
       <source>Create a sequence of aligned oblique dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The first two vertexes define the direction&lt;br&gt;- Click this tool</source>
       <translation>Стварыце паслядоўнасць выраўнаваных нахільных вымярэнняў:&lt;br&gt;- Абярыце тры і больш вяршынь&lt;br&gt;- Першыя дзве вяршыні вызначаюць напрамак&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -710,19 +719,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateObliqueCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1826"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1887"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1827"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1957"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1888"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2018"/>
       <source>Create Oblique Coordinate Dimensions</source>
       <translation>Стварыць нахіленае вымярэнне каардынат</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1828"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1958"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1889"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2019"/>
       <source>Create multiple evenly spaced oblique dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- The first two vertexes also define the direction&lt;br&gt;- Click this tool</source>
       <translation>Стварыце некалькі раўнамерна размешчаных нахіленых вымярэнняў, пачынаючы з адной падставы:&lt;br&gt;- Пакажыце каскадную адлегласць (неабавязкова)&lt;br&gt;- Абярыце тры ці больш вяршынь&lt;br&gt;- Парадак выбару першых дзвюх вяршынь вызначае становішча падставы&lt;br&gt;- Першыя дзве вяршыні таксама вызначаюць напрамак&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -730,19 +739,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateVertChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1371"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1375"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1372"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1581"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1376"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1614"/>
       <source>Create Vertical Chain Dimensions</source>
       <translation>Стварыць вертыкальнае вымярэнне ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1373"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1582"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1377"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1615"/>
       <source>Create a sequence of aligned vertical dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
       <translation>Стварыце паслядоўнасць выраўнаваных вертыкальных вымярэнняў:&lt;br&gt;- Абярыце тры ці больш вяршынь&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -750,19 +759,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateVertChamferDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2090"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2151"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2091"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2198"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2152"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2259"/>
       <source>Create Vertical Chamfer Dimension</source>
       <translation>Стварыць вертыкальнае вымярэнне фаскі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2092"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2199"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2153"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2260"/>
       <source>Create a vertical size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
       <translation>Стварыце вертыкальны памер і вуглавое вымярэнне для фаскі:&lt;br&gt;- Абярыце дзве вяршыні&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -770,19 +779,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateVertCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1725"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1758"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1726"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1948"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1759"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2009"/>
       <source>Create Vertical Coordinate Dimensions</source>
       <translation>Стварыць вертыкальнае вымярэнне каардынат</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1727"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1949"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1760"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2010"/>
       <source>Create multiple evenly spaced vertical dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
       <translation>Стварыце некалькі раўнамерна размешчаных вертыкальных вымярэнняў, пачынаючы з адной падставы:&lt;br&gt;- Пакажыце каскадную адлегласць (неабавязкова)&lt;br&gt;- Абярыце тры ці больш вяршынь&lt;br&gt;- Парадак выбару першых дзвюх вяршынь вызначае становішча падставы&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -790,17 +799,17 @@
   <context>
     <name>CmdTechDrawExtensionCustomizeFormat</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2303"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2335"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2304"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2336"/>
       <source>Customize Format Label</source>
       <translation>Карыстальніцкі фармат меткі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2305"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2337"/>
       <source>Select a dimension or a balloon&lt;br&gt;    - click this tool&lt;br&gt;    - edit the Format field, using the keyboard and/or the special buttons</source>
       <translation>Абярыце вымярэнне ці пазіцыйную зноску&lt;br&gt; - пстрыкніце інструмент&lt;br&gt; - змяніце поле фармату, ужывая клавіятуру і/ці спецыяльныя кнопкі</translation>
     </message>
@@ -808,19 +817,19 @@
   <context>
     <name>CmdTechDrawExtensionDecreaseDecimal</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="499"/>
+      <location filename="../../CommandExtensionDims.cpp" line="503"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="500"/>
-      <location filename="../../CommandExtensionDims.cpp" line="607"/>
+      <location filename="../../CommandExtensionDims.cpp" line="504"/>
+      <location filename="../../CommandExtensionDims.cpp" line="611"/>
       <source>Decrease Decimal Places</source>
       <translation>Паменшыць дзесятковыя разрады</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="501"/>
-      <location filename="../../CommandExtensionDims.cpp" line="608"/>
+      <location filename="../../CommandExtensionDims.cpp" line="505"/>
+      <location filename="../../CommandExtensionDims.cpp" line="612"/>
       <source>Decrease the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Паменшыце колькасць дзесятковых знакаў пасля коскі ў тэксце вымярэння:&lt;br&gt;- Абярыце адзін ці некалькі вымярэнняў&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -828,17 +837,17 @@
   <context>
     <name>CmdTechDrawExtensionDrawCirclesGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1086"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1106"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1087"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1107"/>
       <source>Add Cosmetic Circle</source>
       <translation>Дадаць касметычную акружнасць</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1088"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1108"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
       <translation>Дадайце касметычную акружнасць, якая заснаваная на дзвюх вяршынях:&lt;br&gt;- Пакажыце атрыбуты лініі (неабавязкова)&lt;br&gt;- Абярыце вяршыню 1 (цэнтральная кропка)&lt;br&gt;- Абярыце вяршыню 2 (радыус)&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -846,19 +855,19 @@
   <context>
     <name>CmdTechDrawExtensionDrawCosmArc</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="925"/>
+      <location filename="../../CommandExtensionPack.cpp" line="941"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="926"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1173"/>
+      <location filename="../../CommandExtensionPack.cpp" line="942"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1194"/>
       <source>Add Cosmetic Arc</source>
       <translation>Дадаць касметычную дугу</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="927"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1175"/>
+      <location filename="../../CommandExtensionPack.cpp" line="943"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1196"/>
       <source>Add a cosmetic counter clockwise arc based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius and start angle)&lt;br&gt;- Select vertex 3 (end angle)&lt;br&gt;- Click this tool</source>
       <translation>Дадайце касметычную дугу супраць гадзіннік, якая заснаваная на трох вяршынях:&lt;br&gt;- Пакажыце атрыбуты лініі (неабавязкова)&lt;br&gt;- Абярыце вяршыню 1 (цэнтральная кропка)&lt;br&gt;- Абярыце вяршыню 2 (радыус і пачатковы вугал)&lt;br&gt;- Абярыце вяршыню 3 (канчатковы вугал)&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -866,19 +875,19 @@
   <context>
     <name>CmdTechDrawExtensionDrawCosmCircle</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="987"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1005"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="988"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1164"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1006"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1185"/>
       <source>Add Cosmetic Circle</source>
       <translation>Дадаць касметычную акружнасць</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="989"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1165"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1007"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1186"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
       <translation>Дадайце касметычную акружнасць, якая заснаваная на дзвюх вяршынях:&lt;br&gt;- Пакажыце атрыбуты лініі (неабавязкова)&lt;br&gt;- Абярыце вяршыню 1 (цэнтральная кропка)&lt;br&gt;- Абярыце вяршыню 2 (радыус)&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -886,23 +895,23 @@
   <context>
     <name>CmdTechDrawExtensionDrawCosmCircle3Points</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1051"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1071"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1052"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1184"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1072"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1205"/>
       <source>Add Cosmetic Circle 3 Points</source>
       <translation>Дадаць касметычную акружнасць па трох кропках</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1053"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1073"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select 3 vertexes&lt;br&gt;- Click this tool</source>
       <translation>Дадайце касметычную акружнасць, якая заснаваная на трох вяршынях:&lt;br&gt;- Пакажыце атрыбуты лініі (неабавязкова)&lt;br&gt;- Абярыце тры вяршыні&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1186"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1207"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three vertexes&lt;br&gt;- Click this tool</source>
       <translation>Дадайце касметычную акружнасць, якая заснаваная на трох вяршынях:&lt;br&gt;- Пакажыце атрыбуты лініі (неабавязкова)&lt;br&gt;- Абярыце тры вяршыні&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -910,19 +919,19 @@
   <context>
     <name>CmdTechDrawExtensionExtendLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1562"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1592"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1563"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1701"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1593"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1732"/>
       <source>Extend Line</source>
       <translation>Выцягнуць лінію</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1564"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1702"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1594"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1733"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Выцягніце касметычную лінію ці цэнтральную лінію з абодвух канцоў:&lt;br&gt;- Пакажыце дэльта адлегласць (неабавязкова)&lt;br&gt;- Абярыце адну лінію&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -930,19 +939,19 @@
   <context>
     <name>CmdTechDrawExtensionHoleCircle</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="175"/>
+      <location filename="../../CommandExtensionPack.cpp" line="172"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="176"/>
-      <location filename="../../CommandExtensionPack.cpp" line="364"/>
+      <location filename="../../CommandExtensionPack.cpp" line="173"/>
+      <location filename="../../CommandExtensionPack.cpp" line="361"/>
       <source>Add Bolt Circle Centerlines</source>
       <translation>Дадаць цэнтральныя лініі адтуліны ў акружнасці</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="177"/>
-      <location filename="../../CommandExtensionPack.cpp" line="365"/>
+      <location filename="../../CommandExtensionPack.cpp" line="174"/>
+      <location filename="../../CommandExtensionPack.cpp" line="362"/>
       <source>Add centerlines to a circular pattern of circles:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three or more circles forming a circular pattern&lt;br&gt;- Click this tool</source>
       <translation>Дадайце цэнтральныя лініі да кругавога шаблону акружнасцяў:&lt;br&gt;- Пакажыце атрыбуты ліній (неабавязкова)&lt;br&gt;- Абярыце тры ці больш акружнасцяў, якія ўтвараюць кругавы шаблон&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -950,19 +959,19 @@
   <context>
     <name>CmdTechDrawExtensionIncreaseDecimal</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="466"/>
+      <location filename="../../CommandExtensionDims.cpp" line="470"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="467"/>
-      <location filename="../../CommandExtensionDims.cpp" line="600"/>
+      <location filename="../../CommandExtensionDims.cpp" line="471"/>
+      <location filename="../../CommandExtensionDims.cpp" line="604"/>
       <source>Increase Decimal Places</source>
       <translation>Павялічыць дзесятковыя разрады</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="468"/>
-      <location filename="../../CommandExtensionDims.cpp" line="601"/>
+      <location filename="../../CommandExtensionDims.cpp" line="472"/>
+      <location filename="../../CommandExtensionDims.cpp" line="605"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Павялічце колькасць дзесятковых знакаў пасля коскі ў тэксце вымярэння:&lt;br&gt; -Абярыце адзін ці некалькі вымярэнняў&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -970,17 +979,17 @@
   <context>
     <name>CmdTechDrawExtensionIncreaseDecreaseGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="532"/>
+      <location filename="../../CommandExtensionDims.cpp" line="536"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="533"/>
+      <location filename="../../CommandExtensionDims.cpp" line="537"/>
       <source>Increase Decimal Places</source>
       <translation>Павялічыць дзесятковыя разрады</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="534"/>
+      <location filename="../../CommandExtensionDims.cpp" line="538"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Павялічце колькасць дзесятковых знакаў пасля коскі ў тэксце вымярэння:&lt;br&gt; -Абярыце адзін ці некалькі вымярэнняў&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -988,19 +997,19 @@
   <context>
     <name>CmdTechDrawExtensionInsertDiameter</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="151"/>
+      <location filename="../../CommandExtensionDims.cpp" line="155"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="152"/>
-      <location filename="../../CommandExtensionDims.cpp" line="391"/>
+      <location filename="../../CommandExtensionDims.cpp" line="156"/>
+      <location filename="../../CommandExtensionDims.cpp" line="395"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
       <translation>Уставіць прыстаўку &apos;⌀&apos;</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="153"/>
-      <location filename="../../CommandExtensionDims.cpp" line="392"/>
+      <location filename="../../CommandExtensionDims.cpp" line="157"/>
+      <location filename="../../CommandExtensionDims.cpp" line="396"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Устаўце знак &apos;⌀&apos; у пачатку тэксту вымярэння:&lt;br&gt;- Абярыце адзін ці некалькі вымярэнняў&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1008,17 +1017,17 @@
   <context>
     <name>CmdTechDrawExtensionInsertPrefixGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="309"/>
+      <location filename="../../CommandExtensionDims.cpp" line="313"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="310"/>
+      <location filename="../../CommandExtensionDims.cpp" line="314"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
       <translation>Уставіць прыстаўку &apos;⌀&apos;</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="311"/>
+      <location filename="../../CommandExtensionDims.cpp" line="315"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Устаўце знак &apos;⌀&apos; у пачатку тэксту вымярэння:&lt;br&gt;- Абярыце адзін ці некалькі вымярэнняў&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1026,19 +1035,19 @@
   <context>
     <name>CmdTechDrawExtensionInsertSquare</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="184"/>
+      <location filename="../../CommandExtensionDims.cpp" line="188"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="185"/>
-      <location filename="../../CommandExtensionDims.cpp" line="398"/>
+      <location filename="../../CommandExtensionDims.cpp" line="189"/>
+      <location filename="../../CommandExtensionDims.cpp" line="402"/>
       <source>Insert &apos;□&apos; Prefix</source>
       <translation>Уставіць прыстаўку &apos;□&apos;</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="186"/>
-      <location filename="../../CommandExtensionDims.cpp" line="399"/>
+      <location filename="../../CommandExtensionDims.cpp" line="190"/>
+      <location filename="../../CommandExtensionDims.cpp" line="403"/>
       <source>Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Устаўце знак &apos;□&apos; у пачатку тэксту вымярэння:&lt;br&gt;- Абярыце адзін ці некалькі вымярэнняў&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1046,17 +1055,17 @@
   <context>
     <name>CmdTechDrawExtensionLinePPGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1331"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1356"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1332"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1357"/>
       <source>Add Cosmetic Parallel Line</source>
       <translation>Дадаць касметычную паралельную лінію</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1333"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1358"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>Дадайце касметычную лінію, якая паралельная іншай лініі, праз вяршыню:&lt;br&gt;- Абярыце лінію&lt;br&gt;- Абярыце вяршыню&lt;br&gt;- Пстрыкніце  інструмент</translation>
     </message>
@@ -1064,19 +1073,19 @@
   <context>
     <name>CmdTechDrawExtensionLineParallel</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1262"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1287"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1263"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1401"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1288"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1427"/>
       <source>Add Cosmetic Parallel Line</source>
       <translation>Дадаць касметычную паралельную лінію</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1264"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1403"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1289"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1429"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>Дадайце касметычную лінію, якая паралельная іншай лініі, праз вяршыню:&lt;br&gt;- Абярыце лінію&lt;br&gt;- Абярыце вяршыню&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1084,19 +1093,19 @@
   <context>
     <name>CmdTechDrawExtensionLinePerpendicular</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1296"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1321"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1297"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1410"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1322"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1436"/>
       <source>Add Cosmetic Perpendicular Line</source>
       <translation>Дадаць касметычную перпендыкулярную лінію</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1299"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1412"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1324"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1438"/>
       <source>Add a cosmetic line perpendicular to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>Дадайце касметычную лінію, якая перпендыкулярная іншай лініі, праз вяршыню:&lt;br&gt;- Абярыце лінію&lt;br&gt;- Абярыце вяршыню&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1104,17 +1113,17 @@
   <context>
     <name>CmdTechDrawExtensionLockUnlockView</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1438"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1464"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1439"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1465"/>
       <source>Lock/Unlock View</source>
       <translation>Заблакаваць/разблакаваць выгляд</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1440"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1466"/>
       <source>Lock or unlock the position of a view:&lt;br&gt;- Select a single view&lt;br&gt;- Click this tool</source>
       <translation>Заблакуйце ці разблакуйце становішча выгляду:&lt;br&gt;- Абярыце адзін выгляд&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1122,17 +1131,17 @@
   <context>
     <name>CmdTechDrawExtensionPosChainDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="823"/>
+      <location filename="../../CommandExtensionDims.cpp" line="827"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="824"/>
+      <location filename="../../CommandExtensionDims.cpp" line="828"/>
       <source>Position Horizontal Chain Dimensions</source>
       <translation>Становішча гарызантальнага вымярэння ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="825"/>
+      <location filename="../../CommandExtensionDims.cpp" line="829"/>
       <source>Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Выраўнуйце гарызантальныя памеры, каб стварыць вымярэнне ланцуга:&lt;br&gt;- Абярыце два ці больш гарызантальных вымярэнняў&lt;br&gt;- Першае вымярэнне вызначае становішча&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1140,19 +1149,19 @@
   <context>
     <name>CmdTechDrawExtensionPosHorizChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="659"/>
+      <location filename="../../CommandExtensionDims.cpp" line="663"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="660"/>
-      <location filename="../../CommandExtensionDims.cpp" line="899"/>
+      <location filename="../../CommandExtensionDims.cpp" line="664"/>
+      <location filename="../../CommandExtensionDims.cpp" line="903"/>
       <source>Position Horizontal Chain Dimensions</source>
       <translation>Становішча гарызантальнага вымярэння ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="661"/>
-      <location filename="../../CommandExtensionDims.cpp" line="900"/>
+      <location filename="../../CommandExtensionDims.cpp" line="665"/>
+      <location filename="../../CommandExtensionDims.cpp" line="904"/>
       <source>Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Выраўнуйце гарызантальныя вымярэнні, каб стварыць вымярэнне ланцуга:&lt;br&gt;- Абярыце два ці больш гарызантальных вымярэнняў&lt;br&gt;- Першае вымярэнне вызначае становішча&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1160,19 +1169,19 @@
   <context>
     <name>CmdTechDrawExtensionPosObliqueChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="788"/>
+      <location filename="../../CommandExtensionDims.cpp" line="792"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="789"/>
-      <location filename="../../CommandExtensionDims.cpp" line="915"/>
+      <location filename="../../CommandExtensionDims.cpp" line="793"/>
+      <location filename="../../CommandExtensionDims.cpp" line="919"/>
       <source>Position Oblique Chain Dimensions</source>
       <translation>Становішча нахіленых вымярэнняў ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="790"/>
-      <location filename="../../CommandExtensionDims.cpp" line="916"/>
+      <location filename="../../CommandExtensionDims.cpp" line="794"/>
+      <location filename="../../CommandExtensionDims.cpp" line="920"/>
       <source>Align oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Выраўнуйце нахільныя памеры, каб стварыць вымярэнне ланцуга:&lt;br&gt;- Абярыце два ці больш паралельных нахільных вымярэнняў&lt;br&gt;- Першае вымярэнне вызначае становішча&lt;br&gt;- Пстрыкніце  інструмент</translation>
     </message>
@@ -1180,19 +1189,19 @@
   <context>
     <name>CmdTechDrawExtensionPosVertChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="721"/>
+      <location filename="../../CommandExtensionDims.cpp" line="725"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="722"/>
-      <location filename="../../CommandExtensionDims.cpp" line="907"/>
+      <location filename="../../CommandExtensionDims.cpp" line="726"/>
+      <location filename="../../CommandExtensionDims.cpp" line="911"/>
       <source>Position Vertical Chain Dimensions</source>
       <translation>Становішча вертыкальнага вымярэння ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="723"/>
-      <location filename="../../CommandExtensionDims.cpp" line="908"/>
+      <location filename="../../CommandExtensionDims.cpp" line="727"/>
+      <location filename="../../CommandExtensionDims.cpp" line="912"/>
       <source>Align vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Выраўнуйце вертыкальныя памеры, каб стварыць вымярэнне ланцуга:&lt;br&gt;- Абярыце два ці больш вертыкальных вымярэнняў&lt;br&gt;- Першае вымярэнне вызначае становішча&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1200,17 +1209,17 @@
   <context>
     <name>CmdTechDrawExtensionRemovePrefixChar</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="276"/>
+      <location filename="../../CommandExtensionDims.cpp" line="280"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="277"/>
+      <location filename="../../CommandExtensionDims.cpp" line="281"/>
       <source>Remove Prefix</source>
       <translation>Выдаліць прыстаўку</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="278"/>
+      <location filename="../../CommandExtensionDims.cpp" line="282"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Выдаляе знак прыстаўкі ў пачатку тэксту вымярэння:&lt;br&gt;- Абярыце адзін ці некалькі вымярэнняў&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1218,17 +1227,17 @@
   <context>
     <name>CmdTechDrawExtensionSelectLineAttributes</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="739"/>
+      <location filename="../../CommandExtensionPack.cpp" line="745"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="740"/>
+      <location filename="../../CommandExtensionPack.cpp" line="746"/>
       <source>Select Line Attributes, Cascade Spacing and Delta Distance</source>
       <translation>Абраць атрыбуты лініі, каскадны інтэрвал і дэльта-адлегласць</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="741"/>
+      <location filename="../../CommandExtensionPack.cpp" line="747"/>
       <source>Select the attributes for new cosmetic lines and centerlines, and specify the cascade spacing and delta distance:&lt;br&gt;- Click this tool&lt;br&gt;- Specify the attributes, spacing and distance in the dialog box&lt;br&gt;- Press OK</source>
       <translation>Абярыце атрыбуты для новых касметычных ліній і цэнтральных ліній, пакажыце каскадны інтэрвал і дэльта-адлегласць:&lt;br&gt;- Пстрыкніце інструмент&lt;br&gt;- Пакажыце атрыбуты, інтэрвал і адлегласць у дыялогавым акне&lt;br&gt;- Націсніце OK</translation>
     </message>
@@ -1236,19 +1245,19 @@
   <context>
     <name>CmdTechDrawExtensionShortenLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1597"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1627"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1598"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1709"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1628"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1740"/>
       <source>Shorten Line</source>
       <translation>Скараціць лінію</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1599"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1710"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1629"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1741"/>
       <source>Shorten a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Скараціце касметычную лінію ці цэнтральную лінію з абодвух канцоў:&lt;br&gt;- Пакажыце дэльта адлегласць (неабавязкова)&lt;br&gt;- Абярыце адну лінію&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1256,19 +1265,19 @@
   <context>
     <name>CmdTechDrawExtensionThreadBoltBottom</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="564"/>
+      <location filename="../../CommandExtensionPack.cpp" line="569"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="565"/>
-      <location filename="../../CommandExtensionPack.cpp" line="711"/>
+      <location filename="../../CommandExtensionPack.cpp" line="570"/>
+      <location filename="../../CommandExtensionPack.cpp" line="717"/>
       <source>Add Cosmetic Thread Bolt Bottom View</source>
       <translation>Дадаць касметычны болт з разьбой, выгляд знізу</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="567"/>
-      <location filename="../../CommandExtensionPack.cpp" line="713"/>
+      <location filename="../../CommandExtensionPack.cpp" line="572"/>
+      <location filename="../../CommandExtensionPack.cpp" line="719"/>
       <source>Add a cosmetic thread to the top or bottom view of bolts/screws/rods:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
       <translation>Дадайце касметычную разьбу на выгляд зверху ці знізу балтоў/шруб/стрыжняў:&lt;br&gt;- Пакажыце атрыбуты лініі (неабавязкова)&lt;br&gt;- Абярыце адзін ці некалькі акружнасцяў&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1276,19 +1285,19 @@
   <context>
     <name>CmdTechDrawExtensionThreadBoltSide</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="460"/>
+      <location filename="../../CommandExtensionPack.cpp" line="461"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="461"/>
-      <location filename="../../CommandExtensionPack.cpp" line="701"/>
+      <location filename="../../CommandExtensionPack.cpp" line="462"/>
+      <location filename="../../CommandExtensionPack.cpp" line="707"/>
       <source>Add Cosmetic Thread Bolt Side View</source>
       <translation>Дадаць касметычны болт з разьбой, выгляд збоку</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="462"/>
-      <location filename="../../CommandExtensionPack.cpp" line="704"/>
+      <location filename="../../CommandExtensionPack.cpp" line="463"/>
+      <location filename="../../CommandExtensionPack.cpp" line="710"/>
       <source>Add a cosmetic thread to the side view of a bolt/screw/rod:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Дадайце касметычную разьбу на выгляд збоку балта/шрубы/стрыжня:&lt;br&gt;- Пакажыце атрыбуты лініі (неабавязкова)&lt;br&gt;- Абярыце дзве паралельныя лініі&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1296,19 +1305,19 @@
   <context>
     <name>CmdTechDrawExtensionThreadHoleBottom</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="512"/>
+      <location filename="../../CommandExtensionPack.cpp" line="515"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="513"/>
-      <location filename="../../CommandExtensionPack.cpp" line="691"/>
+      <location filename="../../CommandExtensionPack.cpp" line="516"/>
+      <location filename="../../CommandExtensionPack.cpp" line="697"/>
       <source>Add Cosmetic Thread Hole Bottom View</source>
       <translation>Дадаць касметычную адтуліну з разьбой, выгляд знізу</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="514"/>
-      <location filename="../../CommandExtensionPack.cpp" line="694"/>
+      <location filename="../../CommandExtensionPack.cpp" line="517"/>
+      <location filename="../../CommandExtensionPack.cpp" line="700"/>
       <source>Add a cosmetic thread to the top or bottom view of holes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
       <translation>Дадайце касметычную разьбу на выгляд зверху ці знізу адтуліны:&lt;br&gt;- Пакажыце атрыбуты лініі (неабавязкова)&lt;br&gt;- Абярыце адзін ці некалькі акружнасцяў&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1316,19 +1325,19 @@
   <context>
     <name>CmdTechDrawExtensionThreadHoleSide</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="408"/>
+      <location filename="../../CommandExtensionPack.cpp" line="407"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="409"/>
-      <location filename="../../CommandExtensionPack.cpp" line="682"/>
+      <location filename="../../CommandExtensionPack.cpp" line="408"/>
+      <location filename="../../CommandExtensionPack.cpp" line="688"/>
       <source>Add Cosmetic Thread Hole Side View</source>
       <translation>Дадаць касметычную адтуліну з разьбой, выгляд збоку</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="410"/>
-      <location filename="../../CommandExtensionPack.cpp" line="684"/>
+      <location filename="../../CommandExtensionPack.cpp" line="409"/>
+      <location filename="../../CommandExtensionPack.cpp" line="690"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Дадайце касметычную разьбу на выгляд збоку адтуліны:&lt;br&gt;- Пакажыце атрыбуты лініі (неабавязкова)&lt;br&gt;- Абярыце дзве паралельныя лініі&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1336,17 +1345,17 @@
   <context>
     <name>CmdTechDrawExtensionThreadsGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="599"/>
+      <location filename="../../CommandExtensionPack.cpp" line="604"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="600"/>
+      <location filename="../../CommandExtensionPack.cpp" line="605"/>
       <source>Add Cosmetic Thread Hole Side View</source>
       <translation>Дадаць касметычную адтуліну з разьбой, выгляд збоку</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="601"/>
+      <location filename="../../CommandExtensionPack.cpp" line="606"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Дадайце касметычную разьбу на выгляд збоку адтуліны:&lt;br&gt;- Пакажыце атрыбуты лініі (неабавязкова)&lt;br&gt;- Абярыце дзве паралельныя лініі&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1354,17 +1363,17 @@
   <context>
     <name>CmdTechDrawExtensionVertexAtIntersection</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="834"/>
+      <location filename="../../CommandExtensionPack.cpp" line="841"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="835"/>
+      <location filename="../../CommandExtensionPack.cpp" line="842"/>
       <source>Add Cosmetic Intersection Vertex(es)</source>
       <translation>Дадаць касметычнае перакрыжаванне вяршынь</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="837"/>
+      <location filename="../../CommandExtensionPack.cpp" line="844"/>
       <source>Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges&lt;br&gt;- Click this tool</source>
       <translation>Дадайце касметычныя вяршыні на перакрыжаванні абраных рэбраў:&lt;br&gt;- Абярыце два рабра&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -1372,22 +1381,22 @@
   <context>
     <name>CmdTechDrawExtentGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="926"/>
+      <location filename="../../CommandCreateDims.cpp" line="2377"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="927"/>
+      <location filename="../../CommandCreateDims.cpp" line="2378"/>
       <source>Insert Extent Dimension</source>
       <translation>Уставіць габарытнае вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="995"/>
+      <location filename="../../CommandCreateDims.cpp" line="2446"/>
       <source>Horizontal Extent</source>
       <translation>Гарызантальны габарытнае вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1000"/>
+      <location filename="../../CommandCreateDims.cpp" line="2451"/>
       <source>Vertical Extent</source>
       <translation>Вертыкальны габарытнае вымярэнне</translation>
     </message>
@@ -1408,12 +1417,12 @@
   <context>
     <name>CmdTechDrawGeometricHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="168"/>
+      <location filename="../../CommandDecorate.cpp" line="170"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="169"/>
+      <location filename="../../CommandDecorate.cpp" line="171"/>
       <source>Apply Geometric Hatch to Face</source>
       <translation>Прымяніць геаметрычную штрыхоўку на грані</translation>
     </message>
@@ -1421,12 +1430,12 @@
   <context>
     <name>CmdTechDrawHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="72"/>
+      <location filename="../../CommandDecorate.cpp" line="74"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="73"/>
+      <location filename="../../CommandDecorate.cpp" line="75"/>
       <source>Hatch a Face using Image File</source>
       <translation>Штрыхаваць грань з дапамогай файла выявы</translation>
     </message>
@@ -1434,12 +1443,12 @@
   <context>
     <name>CmdTechDrawHorizontalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="471"/>
+      <location filename="../../CommandCreateDims.cpp" line="1833"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="472"/>
+      <location filename="../../CommandCreateDims.cpp" line="1834"/>
       <source>Insert Horizontal Dimension</source>
       <translation>Уставіць гарызантальнае вымярэнне</translation>
     </message>
@@ -1447,12 +1456,12 @@
   <context>
     <name>CmdTechDrawHorizontalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1023"/>
+      <location filename="../../CommandCreateDims.cpp" line="2474"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1024"/>
+      <location filename="../../CommandCreateDims.cpp" line="2475"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Уставіць гарызантальнае габарытнае вымярэнне</translation>
     </message>
@@ -1460,28 +1469,28 @@
   <context>
     <name>CmdTechDrawImage</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="239"/>
+      <location filename="../../CommandDecorate.cpp" line="241"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="240"/>
+      <location filename="../../CommandDecorate.cpp" line="242"/>
       <source>Insert Bitmap Image</source>
       <translation>Уставіць растравую выяву</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="241"/>
       <location filename="../../CommandDecorate.cpp" line="243"/>
+      <location filename="../../CommandDecorate.cpp" line="245"/>
       <source>Insert Bitmap from a file into a page</source>
       <translation>Уставіць растравую выяву з файла на старонку</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="258"/>
+      <location filename="../../CommandDecorate.cpp" line="260"/>
       <source>Select an Image File</source>
       <translation>Абраць файл выявы</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="260"/>
+      <location filename="../../CommandDecorate.cpp" line="262"/>
       <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
       <translation>Файлы выяў (*.jpg *.jpeg *.png *.bmp);;Усе файлы (*)</translation>
     </message>
@@ -1489,12 +1498,12 @@
   <context>
     <name>CmdTechDrawLandmarkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1231"/>
+      <location filename="../../CommandCreateDims.cpp" line="2664"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1232"/>
+      <location filename="../../CommandCreateDims.cpp" line="2665"/>
       <source>Insert Landmark Dimension - EXPERIMENTAL</source>
       <translation>Уставіць прасторавае вымярэнне</translation>
     </message>
@@ -1515,12 +1524,12 @@
   <context>
     <name>CmdTechDrawLengthDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="376"/>
+      <location filename="../../CommandCreateDims.cpp" line="1738"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="377"/>
+      <location filename="../../CommandCreateDims.cpp" line="1739"/>
       <source>Insert Length Dimension</source>
       <translation>Уставіць вымярэнне даўжыні</translation>
     </message>
@@ -1528,12 +1537,12 @@
   <context>
     <name>CmdTechDrawLinkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="846"/>
+      <location filename="../../CommandCreateDims.cpp" line="2297"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="847"/>
+      <location filename="../../CommandCreateDims.cpp" line="2298"/>
       <source>Link Dimension to 3D Geometry</source>
       <translation>Злучыць вымярэнне з трохмернай геаметрыяй</translation>
     </message>
@@ -1603,12 +1612,12 @@
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1840"/>
+      <location filename="../../Command.cpp" line="1842"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1841"/>
+      <location filename="../../Command.cpp" line="1843"/>
       <source>Project shape...</source>
       <translation>Праекцыя фігуры...</translation>
     </message>
@@ -1616,17 +1625,17 @@
   <context>
     <name>CmdTechDrawProjectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1005"/>
+      <location filename="../../Command.cpp" line="1006"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1006"/>
+      <location filename="../../Command.cpp" line="1007"/>
       <source>Insert Projection Group</source>
       <translation>Уставіць суполку праекцый</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1007"/>
+      <location filename="../../Command.cpp" line="1008"/>
       <source>Insert multiple linked views of drawable object(s)</source>
       <translation>Уставіць некалькі звязаных выглядаў аб'ектаў чарцяжа</translation>
     </message>
@@ -1647,12 +1656,12 @@
   <context>
     <name>CmdTechDrawRadiusDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="132"/>
+      <location filename="../../CommandCreateDims.cpp" line="1492"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="133"/>
+      <location filename="../../CommandCreateDims.cpp" line="1493"/>
       <source>Insert Radius Dimension</source>
       <translation>Уставіць вымярэнне радыуса</translation>
     </message>
@@ -1686,22 +1695,22 @@
   <context>
     <name>CmdTechDrawSectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="680"/>
+      <location filename="../../Command.cpp" line="681"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="681"/>
+      <location filename="../../Command.cpp" line="682"/>
       <source>Insert a simple or complex Section View</source>
       <translation>Устаўка простага ці складовага выгляду перасеку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="746"/>
+      <location filename="../../Command.cpp" line="747"/>
       <source>Section View</source>
       <translation>Выгляд перасеку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="750"/>
+      <location filename="../../Command.cpp" line="751"/>
       <source>Complex Section</source>
       <translation>Складовы перасек</translation>
     </message>
@@ -1709,12 +1718,12 @@
   <context>
     <name>CmdTechDrawSectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="772"/>
+      <location filename="../../Command.cpp" line="773"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="773"/>
+      <location filename="../../Command.cpp" line="774"/>
       <source>Insert Section View</source>
       <translation>Уставіць выгляд перасеку</translation>
     </message>
@@ -1735,17 +1744,17 @@
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1672"/>
+      <location filename="../../Command.cpp" line="1674"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1673"/>
+      <location filename="../../Command.cpp" line="1675"/>
       <source>Insert Spreadsheet View</source>
       <translation>Уставіць выгляд аркуша</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1674"/>
+      <location filename="../../Command.cpp" line="1676"/>
       <source>Insert View to a spreadsheet</source>
       <translation>Уставіць выгляд аркуша</translation>
     </message>
@@ -1856,17 +1865,17 @@
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="1485"/>
+      <location filename="../../Command.cpp" line="1486"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1486"/>
+      <location filename="../../Command.cpp" line="1487"/>
       <source>Insert SVG Symbol</source>
       <translation>Уставіць знак SVG</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1487"/>
+      <location filename="../../Command.cpp" line="1488"/>
       <source>Insert symbol from an SVG file</source>
       <translation>Уставіць знак з файла SVG</translation>
     </message>
@@ -1874,13 +1883,13 @@
   <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="292"/>
+      <location filename="../../CommandDecorate.cpp" line="294"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="293"/>
-      <location filename="../../CommandDecorate.cpp" line="294"/>
+      <location filename="../../CommandDecorate.cpp" line="295"/>
+      <location filename="../../CommandDecorate.cpp" line="296"/>
       <source>Turn View Frames On/Off</source>
       <translation>Уключыць/адключыць рамку для змены чарцяжа</translation>
     </message>
@@ -1888,12 +1897,12 @@
   <context>
     <name>CmdTechDrawVerticalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="565"/>
+      <location filename="../../CommandCreateDims.cpp" line="1927"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="566"/>
+      <location filename="../../CommandCreateDims.cpp" line="1928"/>
       <source>Insert Vertical Dimension</source>
       <translation>Уставіць вертыкальнае вымярэнне</translation>
     </message>
@@ -1901,12 +1910,12 @@
   <context>
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1136"/>
+      <location filename="../../CommandCreateDims.cpp" line="2575"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1137"/>
+      <location filename="../../CommandCreateDims.cpp" line="2576"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Уставіць вертыкальнае габарытнае вымярэнне</translation>
     </message>
@@ -1966,61 +1975,61 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Стварэнне старонкі чарцяжа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="481"/>
+      <location filename="../../Command.cpp" line="482"/>
       <source>Create view</source>
       <translation>Стварыць выгляд</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="597"/>
+      <location filename="../../Command.cpp" line="598"/>
       <source>Create broken view</source>
       <translation>Стварыць выгляд разбіўкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1089"/>
+      <location filename="../../Command.cpp" line="1090"/>
       <source>Create Projection Group</source>
       <translation>Стварыць суполку праекцыі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1309"/>
+      <location filename="../../Command.cpp" line="1310"/>
       <source>Create Clip</source>
       <translation>Стварыць зрэз</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1381"/>
+      <location filename="../../Command.cpp" line="1382"/>
       <source>ClipGroupAdd</source>
       <translation>Дадаць выразку ў суполку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1452"/>
+      <location filename="../../Command.cpp" line="1453"/>
       <source>ClipGroupRemove</source>
       <translation>Выдаліць выразак з суполкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="448"/>
-      <location filename="../../Command.cpp" line="1511"/>
+      <location filename="../../Command.cpp" line="449"/>
+      <location filename="../../Command.cpp" line="1513"/>
       <source>Create Symbol</source>
       <translation>Стварыць знак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1574"/>
+      <location filename="../../Command.cpp" line="1576"/>
       <source>Create DraftView</source>
       <translation>Стварыць выгляд Чарнавіка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="359"/>
-      <location filename="../../Command.cpp" line="1648"/>
+      <location filename="../../Command.cpp" line="1650"/>
       <source>Create ArchView</source>
       <translation>Стварыць выгляд Архітэктуры</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="341"/>
-      <location filename="../../Command.cpp" line="1698"/>
+      <location filename="../../Command.cpp" line="1700"/>
       <source>Create spreadsheet view</source>
       <translation>Стварыць выгляд Аркуша</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1820"/>
-      <location filename="../../PagePrinter.cpp" line="388"/>
+      <location filename="../../Command.cpp" line="1822"/>
+      <location filename="../../PagePrinter.cpp" line="395"/>
       <source>Save page to dxf</source>
       <translation>Захаваць старонку ў файл dxf</translation>
     </message>
@@ -2040,44 +2049,216 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Стварыць заметку</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1279"/>
-      <location filename="../../CommandCreateDims.cpp" line="1362"/>
+      <location filename="../../CommandCreateDims.cpp" line="232"/>
+      <source>Insert Dimension</source>
+      <translation>Уставіць вымярэнне</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="460"/>
+      <location filename="../../CommandCreateDims.cpp" line="878"/>
+      <location filename="../../CommandCreateDims.cpp" line="893"/>
+      <location filename="../../CommandCreateDims.cpp" line="931"/>
+      <location filename="../../CommandCreateDims.cpp" line="946"/>
+      <location filename="../../CommandCreateDims.cpp" line="961"/>
+      <location filename="../../CommandCreateDims.cpp" line="997"/>
+      <location filename="../../CommandCreateDims.cpp" line="1033"/>
+      <location filename="../../CommandCreateDims.cpp" line="1054"/>
+      <source>Add Extent dimension</source>
+      <translation>Дадаць вымярэнне габарытаў</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="789"/>
+      <source>Add Area dimension</source>
+      <translation>Дадаць вымярэнне вобласці</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="800"/>
+      <location filename="../../CommandCreateDims.cpp" line="1099"/>
+      <location filename="../../CommandCreateDims.cpp" line="1200"/>
+      <source>Add Distance dimension</source>
+      <translation>Дадаць вымярэнне адлегласці</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="809"/>
+      <location filename="../../CommandCreateDims.cpp" line="915"/>
+      <location filename="../../CommandCreateDims.cpp" line="1180"/>
+      <source>Add DistanceX Chamfer dimension</source>
+      <translation>Дадаць вымярэнне адлегласці Х фаскі</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="820"/>
+      <location filename="../../CommandCreateDims.cpp" line="1281"/>
+      <source>Add horizontal chain dimensions</source>
+      <translation>Дадаць гарызантальныя вымярэнні ланцуга</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="825"/>
+      <location filename="../../CommandCreateDims.cpp" line="852"/>
+      <source>Add horizontal coordinate dimensions</source>
+      <translation>Дадаць гарызантальныя вымярэнні каардынат</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="829"/>
+      <location filename="../../CommandCreateDims.cpp" line="833"/>
+      <location filename="../../CommandCreateDims.cpp" line="837"/>
+      <source>Add 3-points angle dimension</source>
+      <translation>Дадаць вымярэнне вугла па трох кропках</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="847"/>
+      <source>Add horizontal chain dimension</source>
+      <translation>Дадаць гарызантальнае вымярэнне ланцуга</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="862"/>
+      <source>Add point to line Distance dimension</source>
+      <translation>Дадаць кропку да вымярэння адлегласці лініі</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="873"/>
+      <location filename="../../CommandCreateDims.cpp" line="888"/>
+      <location filename="../../CommandCreateDims.cpp" line="903"/>
+      <source>Add length dimension</source>
+      <translation>Дадаць вымярэнне даўжыні</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="926"/>
+      <source>Add Angle dimension</source>
+      <translation>Дадаць вымярэнне вугла</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="941"/>
+      <source>Add circle to line Distance dimension</source>
+      <translation>Дадаць акружнасць да вымярэння адлегласці лініі</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="956"/>
+      <source>Add ellipse to line Distance dimension</source>
+      <translation>Дадаць эліпс да вымярэння адлегласці лініі</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="970"/>
+      <location filename="../../CommandCreateDims.cpp" line="975"/>
+      <location filename="../../CommandCreateDims.cpp" line="1006"/>
+      <location filename="../../CommandCreateDims.cpp" line="1011"/>
+      <source>Add Radius dimension</source>
+      <translation>Дадаць вымярэнне радыуса</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="982"/>
+      <location filename="../../CommandCreateDims.cpp" line="1018"/>
+      <source>Add Arc Length dimension</source>
+      <translation>Дадаць вымярэнне даўжыні дугі</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="992"/>
+      <source>Add circle to circle Distance dimension</source>
+      <translation>Дадаць акружнасць да вымярэння адлегласці акружнасці</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1028"/>
+      <source>Add ellipse to ellipse Distance dimension</source>
+      <translation>Дадаць эліпс да вымярэння адлегласці эліпсу</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1043"/>
+      <source>Add edge length dimension</source>
+      <translation>Дадаць вымярэнне даўжыні рабра</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1183"/>
+      <source>Add DistanceX dimension</source>
+      <translation>Дадаць вымярэнне адлегласці X</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1190"/>
+      <source>Add DistanceY Chamfer dimension</source>
+      <translation>Дадаць вымярэнне адлегласці Y фаскі</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1193"/>
+      <source>Add DistanceY dimension</source>
+      <translation>Дадаць вымярэнне адлегласці Y</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1238"/>
+      <source>Add DistanceX extent dimension</source>
+      <translation>Дадаць вымярэнне адлегласці X габарытаў</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1243"/>
+      <source>Add DistanceY extent dimension</source>
+      <translation>Дадаць вымярэнне адлегласці Y габарытаў</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1285"/>
+      <source>Add horizontal coord dimensions</source>
+      <translation>Дадаць гарызантальныя каардынаты вымярэнняў</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1292"/>
+      <source>Add vertical chain dimensions</source>
+      <translation>Дадаць вертыкальныя вымярэнні ланцуга</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1296"/>
+      <source>Add vertical coord dimensions</source>
+      <translation>Дадаць вертыкальныя каардынаты вымярэнняў</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1302"/>
+      <source>Add oblique chain dimensions</source>
+      <translation>Дадаць нахіленыя вымярэнні ланцуга</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1306"/>
+      <source>Add oblique coord dimensions</source>
+      <translation>Дадаць нахіленыя каардынаты вымярэнняў</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1378"/>
+      <source>Dimension</source>
+      <translation>Вымярэнне</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="2712"/>
+      <location filename="../../CommandCreateDims.cpp" line="2791"/>
       <source>Create Dimension</source>
       <translation>Стварыць вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../TaskHatch.cpp" line="208"/>
+      <location filename="../../TaskHatch.cpp" line="202"/>
       <source>Create Hatch</source>
       <translation>Стварыць штрыхоўку</translation>
     </message>
     <message>
-      <location filename="../../TaskHatch.cpp" line="244"/>
+      <location filename="../../TaskHatch.cpp" line="237"/>
       <source>Update Hatch</source>
       <translation>Абнавіць штрыхоўку</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="119"/>
+      <location filename="../../CommandDecorate.cpp" line="121"/>
       <source>Remove old Hatch</source>
       <translation>Выдаліць старую штрыхоўку</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="198"/>
+      <location filename="../../CommandDecorate.cpp" line="200"/>
       <source>Create GeomHatch</source>
       <translation>Стварыць геаметрычную штрыхоўку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="463"/>
-      <location filename="../../CommandDecorate.cpp" line="267"/>
+      <location filename="../../Command.cpp" line="464"/>
+      <location filename="../../CommandDecorate.cpp" line="269"/>
       <source>Create Image</source>
       <translation>Стварыць выяву</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="494"/>
+      <location filename="../../QGIViewBalloon.cpp" line="497"/>
       <source>Drag Balloon</source>
       <translation>Перацягнуць пазіцыйную зноску</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="691"/>
+      <location filename="../../QGIViewDimension.cpp" line="819"/>
       <source>Drag Dimension</source>
       <translation>Перацягнуць вымярэнне</translation>
     </message>
@@ -2097,18 +2278,22 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Стварыць цэнтральную лінію</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.cpp" line="168"/>
-      <location filename="../../TaskCosmeticLine.cpp" line="187"/>
+      <location filename="../../TaskCosmeticLine.cpp" line="177"/>
       <source>Create Cosmetic Line</source>
       <translation>Стварыць касметычную лінію</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.cpp" line="230"/>
+      <location filename="../../TaskCosmeticCircle.cpp" line="193"/>
+      <source>Create Cosmetic Circle</source>
+      <translation>Стварыць касметычную акружнасць</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.cpp" line="267"/>
       <source>Update CosmeticCircle</source>
       <translation>Абнавіць касметычную акружнасць</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticLine.cpp" line="241"/>
+      <location filename="../../TaskCosmeticLine.cpp" line="253"/>
       <source>Update CosmeticLine</source>
       <translation>Абнавіць касметычную лінію</translation>
     </message>
@@ -2123,12 +2308,12 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Абнавіць дэталь</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="344"/>
+      <location filename="../../TaskLeaderLine.cpp" line="349"/>
       <source>Create Leader</source>
       <translation>Стварыць зноску</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="402"/>
+      <location filename="../../TaskLeaderLine.cpp" line="429"/>
       <source>Edit Leader</source>
       <translation>Змяніць зноску</translation>
     </message>
@@ -2174,132 +2359,132 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Дадаць касметычную вяршыню</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="106"/>
+      <location filename="../../CommandExtensionDims.cpp" line="110"/>
       <source>TechDraw Insert Prefix</source>
       <translation>TechDraw: Уставіць прыстаўку</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="132"/>
+      <location filename="../../CommandExtensionDims.cpp" line="136"/>
       <source>Insert Prefix</source>
       <translation>Уставіць прыстаўку</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="248"/>
+      <location filename="../../CommandExtensionDims.cpp" line="252"/>
       <source>TechDraw Remove Prefix</source>
       <translation>TechDraw: Выдаліць прыстаўку</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="252"/>
+      <location filename="../../CommandExtensionDims.cpp" line="256"/>
       <source>Remove Prefix</source>
       <translation>Выдаліць прыстаўку</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="438"/>
+      <location filename="../../CommandExtensionDims.cpp" line="442"/>
       <source>Increase/Decrease Decimal</source>
       <translation>Павялічыць/Паменшыць колькасць лічбаў пасля коскі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="633"/>
+      <location filename="../../CommandExtensionDims.cpp" line="637"/>
       <source>Pos Horiz Chain Dim</source>
       <translation>Становішча гарызантальнага вымярэння ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="694"/>
+      <location filename="../../CommandExtensionDims.cpp" line="698"/>
       <source>Pos Vert Chain Dim</source>
       <translation>Становішча вертыкальнага вымярэння ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="756"/>
+      <location filename="../../CommandExtensionDims.cpp" line="760"/>
       <source>Pos Oblique Chain Dim</source>
       <translation>Становішча нахіленага вымярэння ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="942"/>
+      <location filename="../../CommandExtensionDims.cpp" line="946"/>
       <source>Cascade Horiz Dim</source>
       <translation>Каскад гарызантальных вымярэнняў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1008"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1012"/>
       <source>Cascade Vert Dim</source>
       <translation>Каскад вертыкальных вымярэнняў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1075"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1079"/>
       <source>Cascade Oblique Dim</source>
       <translation>Каскад нахіленых вымярэнняў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1274"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1278"/>
       <source>Create Horiz Chain Dim</source>
       <translation>Стварыць гарызантальнае вымярэнне ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1340"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1344"/>
       <source>Create Vert Chain Dim</source>
       <translation>Стварыць вертыкальнае вымярэнне ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1406"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1410"/>
       <source>Create Oblique Chain Dim</source>
       <translation>Стварыць нахіленае вымярэнне ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1616"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1649"/>
       <source>Create Horiz Coord Dim</source>
       <translation>Стварыць гарызантальныя вымярэнні каардынат</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1688"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1721"/>
       <source>Create Vert Coord Dim</source>
       <translation>Стварыць вертыкальныя вымярэнні каардынат</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1762"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1795"/>
       <source>Create Oblique Coord Dim</source>
       <translation>Стварыць нахіленыя вымярэнні каардынат</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1987"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2048"/>
       <source>Create Horiz Chamfer Dim</source>
       <translation>Стварыць гарызантальныя вымярэнні фаскі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2056"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2117"/>
       <source>Create Vert Chamfer Dim</source>
       <translation>Стварыць вертыкальныя вымярэнні фаскі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2242"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2303"/>
       <source>Create Arc Length Dim</source>
       <translation>Стварыць вымярэнне даўжыні дугі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="105"/>
+      <location filename="../../CommandExtensionPack.cpp" line="107"/>
       <source>TechDraw Hole Circle</source>
       <translation>Тэхнічны чарцёж: Акружнасць адтуліны</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="125"/>
+      <location filename="../../CommandExtensionPack.cpp" line="128"/>
       <source>Bolt Circle Centerlines</source>
       <translation>Цэнтральныя лініі адтуліны ў акружнасці</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="209"/>
+      <location filename="../../CommandExtensionPack.cpp" line="206"/>
       <source>TechDraw Circle Centerlines</source>
       <translation>Тэхнічны чарцёж: Цэнтральныя лініі акружнасці</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="211"/>
+      <location filename="../../CommandExtensionPack.cpp" line="209"/>
       <source>Circle Centerlines</source>
       <translation>Цэнтральныя лініі акружнасці</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="389"/>
+      <location filename="../../CommandExtensionPack.cpp" line="387"/>
       <source>TechDraw Thread Hole Side</source>
       <translation>Тэхнічны чарцёж: Адтуліна з разьбой, выгляд збоку</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="391"/>
+      <location filename="../../CommandExtensionPack.cpp" line="390"/>
       <source>Cosmetic Thread Hole Side</source>
       <translation>Касметычная адтуліна з разьбой, выгляд збоку</translation>
     </message>
@@ -2309,127 +2494,127 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Тэхнічны чарцёж: Болт з разьбой, выгляд збоку</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="443"/>
+      <location filename="../../CommandExtensionPack.cpp" line="444"/>
       <source>Cosmetic Thread Bolt Side</source>
       <translation>Касметычны болт з разьбой, выгляд збоку</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="493"/>
+      <location filename="../../CommandExtensionPack.cpp" line="495"/>
       <source>TechDraw Thread Hole Bottom</source>
       <translation>Тэхнічны чарцёж: Адтуліна з разьбой, выгляд знізу</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="495"/>
+      <location filename="../../CommandExtensionPack.cpp" line="498"/>
       <source>Cosmetic Thread Hole Bottom</source>
       <translation>Касметычная адтуліна з разьбой, выгляд знізу</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="545"/>
+      <location filename="../../CommandExtensionPack.cpp" line="549"/>
       <source>TechDraw Thread Bolt Bottom</source>
       <translation>Тэхнічны чарцёж: Болт з разьбой, выгляд знізу</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="547"/>
+      <location filename="../../CommandExtensionPack.cpp" line="552"/>
       <source>Cosmetic Thread Bolt Bottom</source>
       <translation>Касметычны болт з разьбой, выгляд знізу</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="791"/>
+      <location filename="../../CommandExtensionPack.cpp" line="797"/>
       <source>TechDraw Change Line Attributes</source>
       <translation>Тэхнічны чарцёж: Змяніць атрыбуты лініі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="793"/>
+      <location filename="../../CommandExtensionPack.cpp" line="800"/>
       <source>Change Line Attributes</source>
       <translation>Змяніць атрыбуты лініі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="851"/>
+      <location filename="../../CommandExtensionPack.cpp" line="858"/>
       <source>TechDraw Cosmetic Intersection Vertex(es)</source>
       <translation>Тэхнічны чарцёж: Касметычнае перакрыжаванне вяршынь</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="853"/>
+      <location filename="../../CommandExtensionPack.cpp" line="861"/>
       <source>Cosmetic Intersection Vertex(es)</source>
       <translation>Касметычнае перакрыжаванне вяршынь</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="897"/>
+      <location filename="../../CommandExtensionPack.cpp" line="904"/>
       <source>TechDraw Cosmetic Arc</source>
       <translation>Тэхнічны чарцёж: Касметычная дуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="899"/>
+      <location filename="../../CommandExtensionPack.cpp" line="907"/>
       <source>Cosmetic Arc</source>
       <translation>Касметычная дуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="961"/>
+      <location filename="../../CommandExtensionPack.cpp" line="977"/>
       <source>TechDraw Cosmetic Circle</source>
       <translation>Тэхнічны чарцёж: Касметычная акружнасць</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="963"/>
+      <location filename="../../CommandExtensionPack.cpp" line="980"/>
       <source>Cosmetic Circle</source>
       <translation>Касметычная акружнасць</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1022"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1040"/>
       <source>TechDraw Cosmetic Circle 3 Points</source>
       <translation>Тэхнічны чарцёж: Касметычная акружнасць па трох кропках</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1024"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1043"/>
       <source>Cosmetic Circle 3 Points</source>
       <translation>Касметычная акружнасць па трох кропках</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1210"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1231"/>
       <source>TechDraw Cosmetic Line Parallel/Perpendicular</source>
       <translation>Тэхнічны чарцёж: Касметычная паралельная/перпендыкулярная лінія</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1212"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1234"/>
       <source>Cosmetic Line Parallel/Perpendicular</source>
       <translation>Касметычная паралельная/перпендыкулярная лінія</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1454"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1480"/>
       <source>TechDraw Lock/Unlock View</source>
       <translation>Тэхнічны чарцёж: Заблакаваць/разблавакаць выгляд</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1456"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1483"/>
       <source>Lock/Unlock View</source>
       <translation>Заблакаваць/разблакаваць выгляд</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1481"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1508"/>
       <source>TechDraw Extend/Shorten Line</source>
       <translation>Тэхнічны чарцёж: Выцягнуць/скараціць лінію</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1483"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1511"/>
       <source>Extend/Shorten Line</source>
       <translation>Выцягнуць/скараціць лінію</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1750"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1781"/>
       <source>TechDraw calculate selected area</source>
       <translation>Тэхнічны чарцёж: вылічыць абраную вобласць</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1791"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1823"/>
       <source>Calculate Face Area</source>
       <translation>Вылічыць вобласць грані</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1880"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1913"/>
       <source>TechDraw calculate selected arc length</source>
       <translation>Тэхнічны чарцёж: вылічыць абраную даўжыню дугі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1918"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1950"/>
       <source>Calculate Edge Length</source>
       <translation>Вылічыць даўжыню рабра</translation>
     </message>
@@ -2442,11 +2627,6 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="369"/>
       <source>Surface Finish Symbols</source>
       <translation>Знакі аздаблення паверхні</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimRepair.cpp" line="239"/>
-      <source>Repair Dimension</source>
-      <translation>Аднавіць вымярэнне</translation>
     </message>
   </context>
   <context>
@@ -2710,24 +2890,24 @@ Without a selection, a file browser lets you select a SVG or image file.</source
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="581"/>
-      <location filename="../../Command.cpp" line="591"/>
-      <location filename="../../Command.cpp" line="809"/>
-      <location filename="../../Command.cpp" line="926"/>
-      <location filename="../../Command.cpp" line="933"/>
-      <location filename="../../Command.cpp" line="938"/>
-      <location filename="../../Command.cpp" line="976"/>
-      <location filename="../../Command.cpp" line="1075"/>
-      <location filename="../../Command.cpp" line="1341"/>
-      <location filename="../../Command.cpp" line="1358"/>
-      <location filename="../../Command.cpp" line="1363"/>
-      <location filename="../../Command.cpp" line="1372"/>
-      <location filename="../../Command.cpp" line="1425"/>
-      <location filename="../../Command.cpp" line="1444"/>
-      <location filename="../../Command.cpp" line="1554"/>
-      <location filename="../../Command.cpp" line="1629"/>
-      <location filename="../../Command.cpp" line="1635"/>
-      <location filename="../../Command.cpp" line="1686"/>
+      <location filename="../../Command.cpp" line="582"/>
+      <location filename="../../Command.cpp" line="592"/>
+      <location filename="../../Command.cpp" line="810"/>
+      <location filename="../../Command.cpp" line="927"/>
+      <location filename="../../Command.cpp" line="934"/>
+      <location filename="../../Command.cpp" line="939"/>
+      <location filename="../../Command.cpp" line="977"/>
+      <location filename="../../Command.cpp" line="1076"/>
+      <location filename="../../Command.cpp" line="1342"/>
+      <location filename="../../Command.cpp" line="1359"/>
+      <location filename="../../Command.cpp" line="1364"/>
+      <location filename="../../Command.cpp" line="1373"/>
+      <location filename="../../Command.cpp" line="1426"/>
+      <location filename="../../Command.cpp" line="1445"/>
+      <location filename="../../Command.cpp" line="1556"/>
+      <location filename="../../Command.cpp" line="1631"/>
+      <location filename="../../Command.cpp" line="1637"/>
+      <location filename="../../Command.cpp" line="1688"/>
       <location filename="../../CommandAnnotate.cpp" line="319"/>
       <location filename="../../CommandAnnotate.cpp" line="420"/>
       <location filename="../../CommandAnnotate.cpp" line="1309"/>
@@ -2736,19 +2916,19 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <location filename="../../CommandAnnotate.cpp" line="1506"/>
       <location filename="../../CommandAnnotate.cpp" line="1513"/>
       <location filename="../../CommandAnnotate.cpp" line="1577"/>
-      <location filename="../../CommandCreateDims.cpp" line="1251"/>
-      <location filename="../../CommandCreateDims.cpp" line="1260"/>
+      <location filename="../../CommandCreateDims.cpp" line="2684"/>
+      <location filename="../../CommandCreateDims.cpp" line="2693"/>
       <source>Wrong selection</source>
       <translation>Няправільны выбар</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="592"/>
-      <location filename="../../Command.cpp" line="1076"/>
+      <location filename="../../Command.cpp" line="593"/>
+      <location filename="../../Command.cpp" line="1077"/>
       <source>No Shapes, Groups or Links in this selection</source>
       <translation>Без фігур, суполак і сувязяў у абраным</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="564"/>
+      <location filename="../../Command.cpp" line="565"/>
       <source>Empty selection</source>
       <translation>Пусты выбар</translation>
     </message>
@@ -2758,360 +2938,366 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Абярыце файл SVG ці файл выявы, каб адчыніць</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="441"/>
+      <location filename="../../Command.cpp" line="442"/>
       <source>SVG or Image files</source>
       <translation>Файл SVG ці файл выявы</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="565"/>
+      <location filename="../../Command.cpp" line="566"/>
       <source>Please select objects to break or a base view and break definition objects.</source>
       <translation>Калі ласка, абярыце аб'екты для разбіўкі ці асноўны выгляд і аб'екты вызначэння разбіўкі.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="582"/>
+      <location filename="../../Command.cpp" line="583"/>
       <source>No Break objects found in this selection</source>
       <translation>У гэтай выбарцы не знойдзена аб'ектаў разбіўкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="810"/>
-      <location filename="../../Command.cpp" line="977"/>
+      <location filename="../../Command.cpp" line="811"/>
+      <location filename="../../Command.cpp" line="978"/>
       <source>Select at least 1 DrawViewPart object as Base.</source>
       <translation>Абярыце хаця б адзін аб'ект выгляду дэталі як асноўны.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="927"/>
+      <location filename="../../Command.cpp" line="928"/>
       <source>I do not know what base view to use.</source>
       <translation>Я не ведаю, які асноўны выгляд патрэбна ўжываць.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="934"/>
+      <location filename="../../Command.cpp" line="935"/>
       <source>No Base View, Shapes, Groups or Links in this selection</source>
       <translation>Без асноўнага выгляду, суполак і сувязяў у абраным</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="939"/>
+      <location filename="../../Command.cpp" line="940"/>
       <source>No profile object found in selection</source>
       <translation>Аб'ект профілю не знойдзены ў абраным</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1143"/>
-      <location filename="../../Command.cpp" line="1150"/>
-      <location filename="../../Command.cpp" line="1158"/>
-      <location filename="../../Command.cpp" line="1170"/>
-      <location filename="../../CommandCreateDims.cpp" line="166"/>
-      <location filename="../../CommandCreateDims.cpp" line="288"/>
-      <location filename="../../CommandCreateDims.cpp" line="410"/>
-      <location filename="../../CommandCreateDims.cpp" line="506"/>
-      <location filename="../../CommandCreateDims.cpp" line="600"/>
-      <location filename="../../CommandCreateDims.cpp" line="692"/>
-      <location filename="../../CommandCreateDims.cpp" line="784"/>
-      <location filename="../../CommandCreateDims.cpp" line="1058"/>
-      <location filename="../../CommandCreateDims.cpp" line="1425"/>
-      <location filename="../../CommandCreateDims.cpp" line="1433"/>
-      <location filename="../../CommandCreateDims.cpp" line="1442"/>
-      <location filename="../../CommandDecorate.cpp" line="366"/>
-      <location filename="../../CommandDecorate.cpp" line="373"/>
-      <location filename="../../CommandDecorate.cpp" line="380"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1765"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1894"/>
+      <location filename="../../Command.cpp" line="1144"/>
+      <location filename="../../Command.cpp" line="1151"/>
+      <location filename="../../Command.cpp" line="1159"/>
+      <location filename="../../Command.cpp" line="1171"/>
+      <location filename="../../CommandCreateDims.cpp" line="1528"/>
+      <location filename="../../CommandCreateDims.cpp" line="1650"/>
+      <location filename="../../CommandCreateDims.cpp" line="1772"/>
+      <location filename="../../CommandCreateDims.cpp" line="1868"/>
+      <location filename="../../CommandCreateDims.cpp" line="1962"/>
+      <location filename="../../CommandCreateDims.cpp" line="2054"/>
+      <location filename="../../CommandCreateDims.cpp" line="2146"/>
+      <location filename="../../CommandCreateDims.cpp" line="2238"/>
+      <location filename="../../CommandCreateDims.cpp" line="2509"/>
+      <location filename="../../CommandCreateDims.cpp" line="2869"/>
+      <location filename="../../CommandCreateDims.cpp" line="2877"/>
+      <location filename="../../CommandCreateDims.cpp" line="2886"/>
+      <location filename="../../CommandDecorate.cpp" line="368"/>
+      <location filename="../../CommandDecorate.cpp" line="375"/>
+      <location filename="../../CommandDecorate.cpp" line="382"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1797"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1927"/>
       <source>Incorrect selection</source>
       <translation>Няправільны выбар</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1144"/>
-      <location filename="../../CommandCreateDims.cpp" line="1426"/>
+      <location filename="../../Command.cpp" line="1145"/>
+      <location filename="../../CommandCreateDims.cpp" line="2870"/>
       <source>Select an object first</source>
       <translation>Спачатку абярыце аб'ект</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1151"/>
-      <location filename="../../CommandCreateDims.cpp" line="1434"/>
+      <location filename="../../Command.cpp" line="1152"/>
+      <location filename="../../CommandCreateDims.cpp" line="2878"/>
       <source>Too many objects selected</source>
       <translation>Абрана зашмат аб'ектаў</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1159"/>
-      <location filename="../../CommandCreateDims.cpp" line="1443"/>
+      <location filename="../../Command.cpp" line="1160"/>
+      <location filename="../../CommandCreateDims.cpp" line="2887"/>
       <source>Create a page first.</source>
       <translation>Спачатку стварыць старонку.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1171"/>
-      <location filename="../../CommandCreateDims.cpp" line="167"/>
-      <location filename="../../CommandCreateDims.cpp" line="289"/>
-      <location filename="../../CommandCreateDims.cpp" line="411"/>
-      <location filename="../../CommandCreateDims.cpp" line="507"/>
-      <location filename="../../CommandCreateDims.cpp" line="601"/>
-      <location filename="../../CommandCreateDims.cpp" line="693"/>
-      <location filename="../../CommandCreateDims.cpp" line="785"/>
-      <location filename="../../CommandCreateDims.cpp" line="1059"/>
+      <location filename="../../Command.cpp" line="1172"/>
+      <location filename="../../CommandCreateDims.cpp" line="1529"/>
+      <location filename="../../CommandCreateDims.cpp" line="1651"/>
+      <location filename="../../CommandCreateDims.cpp" line="1773"/>
+      <location filename="../../CommandCreateDims.cpp" line="1869"/>
+      <location filename="../../CommandCreateDims.cpp" line="1963"/>
+      <location filename="../../CommandCreateDims.cpp" line="2055"/>
+      <location filename="../../CommandCreateDims.cpp" line="2147"/>
+      <location filename="../../CommandCreateDims.cpp" line="2239"/>
+      <location filename="../../CommandCreateDims.cpp" line="2510"/>
       <source>No View of a Part in selection.</source>
       <translation>Без выгляду дэталі ў абраным.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1342"/>
+      <location filename="../../Command.cpp" line="1343"/>
       <source>Select one Clip group and one View.</source>
       <translation>Абярыце адну суполку выразак і адзін выгляд.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1359"/>
+      <location filename="../../Command.cpp" line="1360"/>
       <source>Select exactly one View to add to group.</source>
       <translation>Абярыце толькі адзін выгляд, каб дадаць яго ў суполку.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1364"/>
+      <location filename="../../Command.cpp" line="1365"/>
       <source>Select exactly one Clip group.</source>
       <translation>Абярыце толькі адну суполку выразак.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1373"/>
+      <location filename="../../Command.cpp" line="1374"/>
       <source>Clip and View must be from same Page.</source>
       <translation>Зрэз і выгляд павінны быць на адной старонцы.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1426"/>
+      <location filename="../../Command.cpp" line="1427"/>
       <source>Select exactly one View to remove from Group.</source>
       <translation>Абярыце толькі адзін выгляд, каб выдаліць яго з суполкі.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1445"/>
+      <location filename="../../Command.cpp" line="1446"/>
       <source>View does not belong to a Clip</source>
       <translation>Выгляд не належыць да зрэзу</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1504"/>
+      <location filename="../../Command.cpp" line="1505"/>
       <source>Choose an SVG file to open</source>
       <translation>Абраць файл SVG, каб адчыніць</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1506"/>
+      <location filename="../../Command.cpp" line="1508"/>
       <source>Scalable Vector Graphic</source>
       <translation>Маштабаваная вектарная графіка (SVG)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="441"/>
-      <location filename="../../Command.cpp" line="1506"/>
+      <location filename="../../Command.cpp" line="442"/>
+      <location filename="../../Command.cpp" line="1508"/>
       <source>All Files</source>
       <translation>Усе файлы</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1555"/>
+      <location filename="../../Command.cpp" line="1557"/>
       <source>Select at least one object.</source>
       <translation>Абярыце хаця б адзін аб'ект.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1630"/>
+      <location filename="../../Command.cpp" line="1632"/>
       <source>Please select only 1 Arch Section.</source>
       <translation>Калі ласка, абярыце толькі адзін перасек Архітэктуры.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1636"/>
+      <location filename="../../Command.cpp" line="1638"/>
       <source>No Arch Sections in selection.</source>
       <translation>Без перасек Архітэктуры ў абраным.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1687"/>
+      <location filename="../../Command.cpp" line="1689"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Абярыце толькі адзін аб'ект Аркуша.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1761"/>
+      <location filename="../../Command.cpp" line="1763"/>
       <source>No Drawing View</source>
       <translation>Без выгляду чарцяжоў</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1762"/>
+      <location filename="../../Command.cpp" line="1764"/>
       <source>Open Drawing View before attempting export to SVG.</source>
       <translation>Адчыніце выгляд чарцяжа перад экспартаваннем у SVG.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1797"/>
+      <location filename="../../Command.cpp" line="1799"/>
       <source>Can not export selection</source>
       <translation>Не атрымалася экспартаваць абранае</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1798"/>
+      <location filename="../../Command.cpp" line="1800"/>
       <source>Page contains DrawViewArch which will not be exported. Continue?</source>
       <translation>Старонка ўтрымлівае DrawViewArch, які не будзе экспартаваны. Ці працягнуць?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="212"/>
-      <location filename="../../CommandCreateDims.cpp" line="334"/>
+      <location filename="../../CommandCreateDims.cpp" line="1574"/>
+      <location filename="../../CommandCreateDims.cpp" line="1696"/>
       <source>Ellipse Curve Warning</source>
       <translation>Папярэджанне крывой эліпса</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="213"/>
+      <location filename="../../CommandCreateDims.cpp" line="1575"/>
       <source>Selected edge is an Ellipse.  Radius will be approximate. Continue?</source>
       <translation>Абранае рабро ўяўляе сабой эліпс. Радыус будзе прыблізным. Ці працягнуць?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="223"/>
-      <location filename="../../CommandCreateDims.cpp" line="345"/>
+      <location filename="../../CommandCreateDims.cpp" line="1585"/>
+      <location filename="../../CommandCreateDims.cpp" line="1707"/>
       <source>BSpline Curve Warning</source>
       <translation>Папярэджанне крывой B-сплайна</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="224"/>
+      <location filename="../../CommandCreateDims.cpp" line="1586"/>
       <source>Selected edge is a BSpline.  Radius will be approximate. Continue?</source>
       <translation>Абранае рабро ўяўляе сабой B-сплайн. Радыус будзе прыблізным. Ці працягнуць?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="187"/>
-      <location filename="../../CommandCreateDims.cpp" line="202"/>
-      <location filename="../../CommandCreateDims.cpp" line="309"/>
-      <location filename="../../CommandCreateDims.cpp" line="324"/>
-      <location filename="../../CommandCreateDims.cpp" line="432"/>
-      <location filename="../../CommandCreateDims.cpp" line="448"/>
-      <location filename="../../CommandCreateDims.cpp" line="526"/>
-      <location filename="../../CommandCreateDims.cpp" line="542"/>
-      <location filename="../../CommandCreateDims.cpp" line="620"/>
-      <location filename="../../CommandCreateDims.cpp" line="635"/>
-      <location filename="../../CommandCreateDims.cpp" line="712"/>
-      <location filename="../../CommandCreateDims.cpp" line="727"/>
-      <location filename="../../CommandCreateDims.cpp" line="804"/>
-      <location filename="../../CommandCreateDims.cpp" line="819"/>
-      <location filename="../../CommandCreateDims.cpp" line="886"/>
-      <location filename="../../CommandCreateDims.cpp" line="893"/>
-      <location filename="../../CommandCreateDims.cpp" line="1086"/>
-      <location filename="../../CommandCreateDims.cpp" line="1100"/>
-      <location filename="../../CommandCreateDims.cpp" line="1192"/>
-      <location filename="../../CommandDecorate.cpp" line="387"/>
-      <location filename="../../CommandDecorate.cpp" line="393"/>
+      <location filename="../../CommandCreateDims.cpp" line="1549"/>
+      <location filename="../../CommandCreateDims.cpp" line="1564"/>
+      <location filename="../../CommandCreateDims.cpp" line="1671"/>
+      <location filename="../../CommandCreateDims.cpp" line="1686"/>
+      <location filename="../../CommandCreateDims.cpp" line="1794"/>
+      <location filename="../../CommandCreateDims.cpp" line="1810"/>
+      <location filename="../../CommandCreateDims.cpp" line="1888"/>
+      <location filename="../../CommandCreateDims.cpp" line="1904"/>
+      <location filename="../../CommandCreateDims.cpp" line="1982"/>
+      <location filename="../../CommandCreateDims.cpp" line="1997"/>
+      <location filename="../../CommandCreateDims.cpp" line="2074"/>
+      <location filename="../../CommandCreateDims.cpp" line="2089"/>
+      <location filename="../../CommandCreateDims.cpp" line="2166"/>
+      <location filename="../../CommandCreateDims.cpp" line="2181"/>
+      <location filename="../../CommandCreateDims.cpp" line="2258"/>
+      <location filename="../../CommandCreateDims.cpp" line="2273"/>
+      <location filename="../../CommandCreateDims.cpp" line="2337"/>
+      <location filename="../../CommandCreateDims.cpp" line="2344"/>
+      <location filename="../../CommandCreateDims.cpp" line="2536"/>
+      <location filename="../../CommandCreateDims.cpp" line="2551"/>
+      <location filename="../../CommandCreateDims.cpp" line="2631"/>
+      <location filename="../../CommandDecorate.cpp" line="389"/>
+      <location filename="../../CommandDecorate.cpp" line="395"/>
       <location filename="../../TaskDimension.cpp" line="442"/>
-      <location filename="../../TaskDimRepair.cpp" line="126"/>
-      <location filename="../../TaskDimRepair.cpp" line="138"/>
-      <location filename="../../TaskDimRepair.cpp" line="149"/>
+      <location filename="../../TaskDimRepair.cpp" line="125"/>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <source>Incorrect Selection</source>
       <translation>Няправільны выбар</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="188"/>
+      <location filename="../../CommandCreateDims.cpp" line="1550"/>
       <source>Can not make 2d radius dimension from selection</source>
       <translation>Не атрымалася зрабіць двухмернае вымярэнне радыусу з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="203"/>
+      <location filename="../../CommandCreateDims.cpp" line="1565"/>
       <source>Can not make 3d radius dimension from selection</source>
       <translation>Не атрымалася зрабіць трохмернае вымярэнне радыусу з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="234"/>
-      <location filename="../../CommandCreateDims.cpp" line="356"/>
+      <location filename="../../CommandCreateDims.cpp" line="1596"/>
+      <location filename="../../CommandCreateDims.cpp" line="1718"/>
       <source>BSpline Curve Error</source>
       <translation>Памылка крывой B-сплайна</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="235"/>
+      <location filename="../../CommandCreateDims.cpp" line="1597"/>
       <source>Selected edge is a BSpline and a radius can not be calculated.</source>
       <translation>Абранае рабро ўяўляе сабой B-сплайн, таму радыус вылічыць не атрымалася.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="310"/>
+      <location filename="../../CommandCreateDims.cpp" line="1672"/>
       <source>Can not make 2d diameter dimension from selection</source>
       <translation>Не атрымалася зрабіць двухмернае вымярэнне дыяметру з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="325"/>
+      <location filename="../../CommandCreateDims.cpp" line="1687"/>
       <source>Can not make 3d diameter dimension from selection</source>
       <translation>Не атрымалася зрабіць трохмернае вымярэнне дыяметру з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="335"/>
+      <location filename="../../CommandCreateDims.cpp" line="1697"/>
       <source>Selected edge is an Ellipse.  Diameter will be approximate. Continue?</source>
       <translation>Абранае рабро ўяўляе сабой эліпс. Дыяметр будзе прыблізным. Ці працягнуць?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="346"/>
+      <location filename="../../CommandCreateDims.cpp" line="1708"/>
       <source>Selected edge is a BSpline.  Diameter will be approximate. Continue?</source>
       <translation>Абранае рабро ўяўляе сабой B-сплайн. Дыяметр будзе прыблізным. Ці працягнуць?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="357"/>
+      <location filename="../../CommandCreateDims.cpp" line="1719"/>
       <source>Selected edge is a BSpline and a diameter can not be calculated.</source>
       <translation>Абранае рабро ўяўляе сабой B-сплайн, таму дыяметр вылічыць не атрымалася.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="433"/>
+      <location filename="../../CommandCreateDims.cpp" line="1795"/>
       <source>Can not make 2d linear dimension from selection</source>
       <translation>Не атрымалася зрабіць двухмернае лінейнае вымярэнне з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="449"/>
+      <location filename="../../CommandCreateDims.cpp" line="1811"/>
       <source>Can not make 3d linear dimension from selection</source>
       <translation>Не атрымалася зрабіць трохмернае лінейнае вымярэнне з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="527"/>
+      <location filename="../../CommandCreateDims.cpp" line="1889"/>
       <source>Can not make 2d horizontal dimension from selection</source>
       <translation>Не атрымалася зрабіць двухмернае гарызантальнае вымярэнне з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="543"/>
+      <location filename="../../CommandCreateDims.cpp" line="1905"/>
       <source>Can not make 3d horizontal dimension from selection</source>
       <translation>Не атрымалася зрабіць трохмернае гарызантальнае вымярэнне з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="621"/>
+      <location filename="../../CommandCreateDims.cpp" line="1983"/>
       <source>Can not make 2d vertical dimension from selection</source>
       <translation>Не атрымалася зрабіць двухмернае вертыкальнае вымярэнне з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="636"/>
+      <location filename="../../CommandCreateDims.cpp" line="1998"/>
       <source>Can not make 3d vertical dimension from selection</source>
       <translation>Не атрымалася зрабіць трохмернае вертыкальнае вымярэнне з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="713"/>
-      <location filename="../../CommandCreateDims.cpp" line="805"/>
+      <location filename="../../CommandCreateDims.cpp" line="2075"/>
+      <location filename="../../CommandCreateDims.cpp" line="2167"/>
+      <location filename="../../CommandCreateDims.cpp" line="2259"/>
       <source>Can not make 2d angle dimension from selection</source>
       <translation>Не атрымалася зрабіць двухмернае вымярэнне вугла з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="728"/>
-      <location filename="../../CommandCreateDims.cpp" line="820"/>
+      <location filename="../../CommandCreateDims.cpp" line="2090"/>
+      <location filename="../../CommandCreateDims.cpp" line="2182"/>
+      <location filename="../../CommandCreateDims.cpp" line="2274"/>
       <source>Can not make 3d angle dimension from selection</source>
       <translation>Не атрымалася зрабіць трохмернае вымярэнне вугла з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1087"/>
+      <location filename="../../CommandCreateDims.cpp" line="2537"/>
       <source>Can not make 2d extent dimension from selection</source>
       <translation>Не атрымалася зрабіць двухмернае габарытнае вымярэнне з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1101"/>
+      <location filename="../../CommandCreateDims.cpp" line="2552"/>
       <source>Can not make 3d extent dimension from selection</source>
       <translation>Не атрымалася зрабіць трохмернае габарытнае вымярэнне з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1193"/>
+      <location filename="../../CommandCreateDims.cpp" line="2632"/>
       <source>There is no Dimension in your selection</source>
       <translation>У вашым выбары няма вымярэння</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="887"/>
+      <location filename="../../CommandCreateDims.cpp" line="2338"/>
       <source>There is no 3D object in your selection</source>
       <translation>У вашым выбары няма трохмернага аб'екта</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="894"/>
+      <location filename="../../CommandCreateDims.cpp" line="2345"/>
       <source>There are no 3D Edges or Vertices in your selection</source>
       <translation>У вашым выбары няма трохмерных рэбраў ці вяршынь</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1252"/>
+      <location filename="../../CommandCreateDims.cpp" line="2685"/>
       <source>Select 2 point objects and 1 View. (1)</source>
       <translation>Абярыце два кропкавых аб'екта і адзін выгляд. (1)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1261"/>
+      <location filename="../../CommandCreateDims.cpp" line="2694"/>
       <source>Select 2 point objects and 1 View. (2)</source>
       <translation>Абярыце два кропкавых аб'екта і адзін выгляд. (2)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="692"/>
-      <location filename="../../Command.cpp" line="785"/>
-      <location filename="../../Command.cpp" line="848"/>
+      <location filename="../../Command.cpp" line="693"/>
+      <location filename="../../Command.cpp" line="786"/>
+      <location filename="../../Command.cpp" line="849"/>
       <location filename="../../CommandAnnotate.cpp" line="107"/>
       <location filename="../../CommandAnnotate.cpp" line="168"/>
       <location filename="../../CommandAnnotate.cpp" line="220"/>
@@ -3128,28 +3314,29 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <location filename="../../CommandAnnotate.cpp" line="1415"/>
       <location filename="../../CommandAnnotate.cpp" line="1493"/>
       <location filename="../../CommandAnnotate.cpp" line="1559"/>
-      <location filename="../../CommandCreateDims.cpp" line="146"/>
-      <location filename="../../CommandCreateDims.cpp" line="268"/>
-      <location filename="../../CommandCreateDims.cpp" line="390"/>
-      <location filename="../../CommandCreateDims.cpp" line="486"/>
-      <location filename="../../CommandCreateDims.cpp" line="580"/>
-      <location filename="../../CommandCreateDims.cpp" line="672"/>
-      <location filename="../../CommandCreateDims.cpp" line="764"/>
-      <location filename="../../CommandCreateDims.cpp" line="940"/>
-      <location filename="../../CommandCreateDims.cpp" line="1038"/>
-      <location filename="../../CommandCreateDims.cpp" line="1151"/>
-      <location filename="../../CommandExtensionDims.cpp" line="323"/>
-      <location filename="../../CommandExtensionDims.cpp" line="546"/>
-      <location filename="../../CommandExtensionDims.cpp" line="838"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1166"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1513"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1878"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2137"/>
-      <location filename="../../CommandExtensionPack.cpp" line="300"/>
-      <location filename="../../CommandExtensionPack.cpp" line="614"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1102"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1346"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1647"/>
+      <location filename="../../CommandCreateDims.cpp" line="1508"/>
+      <location filename="../../CommandCreateDims.cpp" line="1630"/>
+      <location filename="../../CommandCreateDims.cpp" line="1752"/>
+      <location filename="../../CommandCreateDims.cpp" line="1848"/>
+      <location filename="../../CommandCreateDims.cpp" line="1942"/>
+      <location filename="../../CommandCreateDims.cpp" line="2034"/>
+      <location filename="../../CommandCreateDims.cpp" line="2126"/>
+      <location filename="../../CommandCreateDims.cpp" line="2218"/>
+      <location filename="../../CommandCreateDims.cpp" line="2391"/>
+      <location filename="../../CommandCreateDims.cpp" line="2489"/>
+      <location filename="../../CommandCreateDims.cpp" line="2590"/>
+      <location filename="../../CommandExtensionDims.cpp" line="327"/>
+      <location filename="../../CommandExtensionDims.cpp" line="550"/>
+      <location filename="../../CommandExtensionDims.cpp" line="842"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1170"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1546"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1939"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2198"/>
+      <location filename="../../CommandExtensionPack.cpp" line="296"/>
+      <location filename="../../CommandExtensionPack.cpp" line="619"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1122"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1371"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1677"/>
       <location filename="../../CommandStack.cpp" line="75"/>
       <location filename="../../CommandStack.cpp" line="191"/>
       <location filename="../../CommandStack.cpp" line="251"/>
@@ -3159,9 +3346,9 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Задача ў працэсе</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="693"/>
-      <location filename="../../Command.cpp" line="786"/>
-      <location filename="../../Command.cpp" line="849"/>
+      <location filename="../../Command.cpp" line="694"/>
+      <location filename="../../Command.cpp" line="787"/>
+      <location filename="../../Command.cpp" line="850"/>
       <location filename="../../CommandAnnotate.cpp" line="108"/>
       <location filename="../../CommandAnnotate.cpp" line="169"/>
       <location filename="../../CommandAnnotate.cpp" line="221"/>
@@ -3178,28 +3365,29 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <location filename="../../CommandAnnotate.cpp" line="1416"/>
       <location filename="../../CommandAnnotate.cpp" line="1494"/>
       <location filename="../../CommandAnnotate.cpp" line="1560"/>
-      <location filename="../../CommandCreateDims.cpp" line="147"/>
-      <location filename="../../CommandCreateDims.cpp" line="269"/>
-      <location filename="../../CommandCreateDims.cpp" line="391"/>
-      <location filename="../../CommandCreateDims.cpp" line="487"/>
-      <location filename="../../CommandCreateDims.cpp" line="581"/>
-      <location filename="../../CommandCreateDims.cpp" line="673"/>
-      <location filename="../../CommandCreateDims.cpp" line="765"/>
-      <location filename="../../CommandCreateDims.cpp" line="941"/>
-      <location filename="../../CommandCreateDims.cpp" line="1039"/>
-      <location filename="../../CommandCreateDims.cpp" line="1152"/>
-      <location filename="../../CommandExtensionDims.cpp" line="324"/>
-      <location filename="../../CommandExtensionDims.cpp" line="547"/>
-      <location filename="../../CommandExtensionDims.cpp" line="839"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1167"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1514"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1879"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2138"/>
-      <location filename="../../CommandExtensionPack.cpp" line="301"/>
-      <location filename="../../CommandExtensionPack.cpp" line="615"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1103"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1347"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1648"/>
+      <location filename="../../CommandCreateDims.cpp" line="1509"/>
+      <location filename="../../CommandCreateDims.cpp" line="1631"/>
+      <location filename="../../CommandCreateDims.cpp" line="1753"/>
+      <location filename="../../CommandCreateDims.cpp" line="1849"/>
+      <location filename="../../CommandCreateDims.cpp" line="1943"/>
+      <location filename="../../CommandCreateDims.cpp" line="2035"/>
+      <location filename="../../CommandCreateDims.cpp" line="2127"/>
+      <location filename="../../CommandCreateDims.cpp" line="2219"/>
+      <location filename="../../CommandCreateDims.cpp" line="2392"/>
+      <location filename="../../CommandCreateDims.cpp" line="2490"/>
+      <location filename="../../CommandCreateDims.cpp" line="2591"/>
+      <location filename="../../CommandExtensionDims.cpp" line="328"/>
+      <location filename="../../CommandExtensionDims.cpp" line="551"/>
+      <location filename="../../CommandExtensionDims.cpp" line="843"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1171"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1547"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1940"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2199"/>
+      <location filename="../../CommandExtensionPack.cpp" line="297"/>
+      <location filename="../../CommandExtensionPack.cpp" line="620"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1123"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1372"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1678"/>
       <location filename="../../CommandStack.cpp" line="76"/>
       <location filename="../../CommandStack.cpp" line="192"/>
       <location filename="../../CommandStack.cpp" line="252"/>
@@ -3389,85 +3577,85 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Без %1 у абраным</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="107"/>
+      <location filename="../../CommandDecorate.cpp" line="109"/>
       <source>Replace Hatch?</source>
       <translation>Замяніць штрыхоўку?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="108"/>
+      <location filename="../../CommandDecorate.cpp" line="110"/>
       <source>Some Faces in selection are already hatched.  Replace?</source>
       <translation>Некаторыя грані ў абраным ужо заштрыхаваныя. Замяніць?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="314"/>
+      <location filename="../../CommandDecorate.cpp" line="316"/>
       <source>No TechDraw Page</source>
       <translation>Без старонкі Тэхнічнага чарцяжа</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="315"/>
+      <location filename="../../CommandDecorate.cpp" line="317"/>
       <source>Need a TechDraw Page for this command</source>
       <translation>Для каманды патрэбна старонка Тэхнічнага чарцяжа</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="367"/>
+      <location filename="../../CommandDecorate.cpp" line="369"/>
       <source>Select a Face first</source>
       <translation>Спачатку абярыце грань</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="374"/>
+      <location filename="../../CommandDecorate.cpp" line="376"/>
       <source>No TechDraw object in selection</source>
       <translation>Без аб'екту Тэхнічнага чарцяжа ў абраным</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="381"/>
+      <location filename="../../CommandDecorate.cpp" line="383"/>
       <source>Create a page to insert.</source>
       <translation>Стварыць старонку каб уставіць.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="388"/>
-      <location filename="../../CommandDecorate.cpp" line="394"/>
+      <location filename="../../CommandDecorate.cpp" line="390"/>
+      <location filename="../../CommandDecorate.cpp" line="396"/>
       <source>No Faces to hatch in this selection</source>
       <translation>Без граняў для штрыхоўкі ў абраным</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="187"/>
-      <location filename="../../DrawGuiUtil.cpp" line="220"/>
+      <location filename="../../DrawGuiUtil.cpp" line="189"/>
+      <location filename="../../DrawGuiUtil.cpp" line="222"/>
       <source>No page found</source>
       <translation>Старонка не знойдзена</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="188"/>
+      <location filename="../../DrawGuiUtil.cpp" line="190"/>
       <source>No Drawing Pages available.</source>
       <translation>Без даступных старонак Аркуша чарцяжа.</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="221"/>
+      <location filename="../../DrawGuiUtil.cpp" line="223"/>
       <source>No Drawing Pages in document.</source>
       <translation>Без старонак Аркуша чарцяжа ў дакуменце.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="311"/>
+      <location filename="../../MDIViewPage.cpp" line="312"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="312"/>
-      <location filename="../../MDIViewPage.cpp" line="497"/>
+      <location filename="../../MDIViewPage.cpp" line="313"/>
+      <location filename="../../MDIViewPage.cpp" line="500"/>
       <source>All Files (*.*)</source>
       <translation>Усе файлы (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="314"/>
+      <location filename="../../MDIViewPage.cpp" line="315"/>
       <source>Export Page As PDF</source>
       <translation>Экспартаваць старонку ў DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="496"/>
+      <location filename="../../MDIViewPage.cpp" line="499"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="499"/>
+      <location filename="../../MDIViewPage.cpp" line="502"/>
       <source>Export page as SVG</source>
       <translation>Экспартаваць старонку ў SVG</translation>
     </message>
@@ -3494,12 +3682,12 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Націснуць, каб абнавіць тэкст</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="217"/>
+      <location filename="../../TaskLeaderLine.cpp" line="220"/>
       <source>New Leader Line</source>
       <translation>Новая лінія зноскі</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="260"/>
+      <location filename="../../TaskLeaderLine.cpp" line="263"/>
       <source>Edit Leader Line</source>
       <translation>Змяніць лінію зноскі</translation>
     </message>
@@ -3614,7 +3802,7 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Стварыць касметычную лінію</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticLine.cpp" line="165"/>
+      <location filename="../../TaskCosmeticLine.cpp" line="155"/>
       <source>Edit Cosmetic Line</source>
       <translation>Змяніць касметычную лінію</translation>
     </message>
@@ -3635,158 +3823,158 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Змяніць %1</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="434"/>
+      <location filename="../../CommandExtensionDims.cpp" line="438"/>
       <source>TechDraw Increase/Decrease Decimal</source>
       <translation>Тэхнічны чарцёж: Павялічыць/паменшыць колькасць лічбаў пасля коскі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="629"/>
-      <location filename="../../CommandExtensionDims.cpp" line="638"/>
+      <location filename="../../CommandExtensionDims.cpp" line="633"/>
+      <location filename="../../CommandExtensionDims.cpp" line="642"/>
       <source>TechDraw PosHorizChainDimension</source>
       <translation>Тэхнічны чарцёж: Становішча гарызантальнага ланцуга вымярэнняў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="639"/>
-      <location filename="../../CommandExtensionDims.cpp" line="948"/>
+      <location filename="../../CommandExtensionDims.cpp" line="643"/>
+      <location filename="../../CommandExtensionDims.cpp" line="952"/>
       <source>No horizontal dimensions selected</source>
       <translation>Без абраных гарызантальных вымярэнняў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="690"/>
-      <location filename="../../CommandExtensionDims.cpp" line="699"/>
+      <location filename="../../CommandExtensionDims.cpp" line="694"/>
+      <location filename="../../CommandExtensionDims.cpp" line="703"/>
       <source>TechDraw PosVertChainDimension</source>
       <translation>Тэхнічны чарцёж: Становішча вертыкальнага ланцуга вымярэнняў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="700"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1014"/>
+      <location filename="../../CommandExtensionDims.cpp" line="704"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1018"/>
       <source>No vertical dimensions selected</source>
       <translation>Без абраных вертыкальных вымярэнняў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="752"/>
-      <location filename="../../CommandExtensionDims.cpp" line="761"/>
+      <location filename="../../CommandExtensionDims.cpp" line="756"/>
+      <location filename="../../CommandExtensionDims.cpp" line="765"/>
       <source>TechDraw PosObliqueChainDimension</source>
       <translation>Тэхнічны чарцёж: Становішча нахіленага вымярэння ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="762"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1081"/>
+      <location filename="../../CommandExtensionDims.cpp" line="766"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1085"/>
       <source>No oblique dimensions selected</source>
       <translation>Без абраных нахіленых вымярэнняў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="938"/>
-      <location filename="../../CommandExtensionDims.cpp" line="947"/>
+      <location filename="../../CommandExtensionDims.cpp" line="942"/>
+      <location filename="../../CommandExtensionDims.cpp" line="951"/>
       <source>TechDraw CascadeHorizDimension</source>
       <translation>Тэхнічны чарцёж: Каскад гарызантальных вымярэнняў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1004"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1013"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1008"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1017"/>
       <source>TechDraw CascadeVertDimension</source>
       <translation>Тэхнічны чарцёж: Каскад вертыкальных вымярэнняў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1071"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1080"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1075"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1084"/>
       <source>TechDraw CascadeObliqueDimension</source>
       <translation>Тэхнічны чарцёж: Каскад нахіленых вымярэнняў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1270"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1274"/>
       <source>TechDraw Create Horizontal Chain Dimension</source>
       <translation>Тэхнічны чарцёж: Стварыць гарызантальнае вымярэнне ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1336"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1340"/>
       <source>TechDraw Create Vertical Chain Dimension</source>
       <translation>Тэхнічны чарцёж: Стварыць вертыкальнае вымярэнне ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1402"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1406"/>
       <source>TechDraw Create Oblique Chain Dimension</source>
       <translation>Тэхнічны чарцёж: Становішча нахіленага вымярэння ланцуга</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1612"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1645"/>
       <source>TechDraw Create Horizontal Coord Dimension</source>
       <translation>Тэхнічны чарцёж: Стварыць гарызантальнае вымярэнне каардынаты</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1685"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1718"/>
       <source>TechDraw Create Vertical Coord Dimension</source>
       <translation>Тэхнічны чарцёж: Стварыць вертыкальнае вымярэнне каардынаты</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1758"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1791"/>
       <source>TechDraw Create Oblique Coord Dimension</source>
       <translation>Тэхнічны чарцёж: Стварыць нахіленае вымярэнне каардынаты</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1983"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2044"/>
       <source>TechDraw Create Horizontal Chamfer Dimension</source>
       <translation>Тэхнічны чарцёж: Стварыць гарызантальнае вымярэнне фаскі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2052"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
       <source>TechDraw Create Vertical Chamfer Dimension</source>
       <translation>Тэхнічны чарцёж: Стварыць вертыкальнае вымярэнне фаскі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2238"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2299"/>
       <source>TechDraw Create Arc Length Dimension</source>
       <translation>Тэхнічны чарцёж: Стварыць вымярэнне даўжыні дугі</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2317"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2349"/>
       <source>TechDraw Customize Format</source>
       <translation>Тэхнічны чарцёж: Налады фармату</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2381"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2458"/>
       <source>No subelements selected</source>
       <translation>Без абраных укладзеных элементаў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2345"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2036"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2422"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2067"/>
       <source>Selection is empty</source>
       <translation>Выбар пусты</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2361"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2043"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2438"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2074"/>
       <source>No object selected</source>
       <translation>Без абранага аб'екту</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="121"/>
+      <location filename="../../CommandExtensionPack.cpp" line="124"/>
       <source>TechDraw Hole Circle</source>
       <translation>Акружнасць адтуліны Тэхнічнага чарцяжа</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="122"/>
+      <location filename="../../CommandExtensionPack.cpp" line="125"/>
       <source>Fewer than three circles selected</source>
       <translation>Абрана менш чым тры акружнасці</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1766"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1798"/>
       <source>No faces in selection.</source>
       <translation>Без граней у абраным.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1895"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1928"/>
       <source>No edges in selection.</source>
       <translation>Без рэбраў у абраным.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2118"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2152"/>
       <source>TechDraw Thread Hole Side</source>
       <translation>Тэхнічны чарцёж: Адтуліна з разьбой, выгляд збоку</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2119"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2153"/>
       <source>Please select two straight lines</source>
       <translation>Калі ласка, абярыце дзве прамыя лініі</translation>
     </message>
@@ -3810,12 +3998,12 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Абярыце дзве вяршыні альбо адно рабро</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="207"/>
+      <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="211"/>
       <source>Please select a Line Group</source>
       <translation>Калі ласка, абярыце суполку ліній</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="218"/>
+      <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="222"/>
       <source>%1 defines these line widths:
  thin: %2
  graphic: %3
@@ -3876,17 +4064,17 @@ thick: %4</source>
       <translation>Аднаўленне вымярэння</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="127"/>
+      <location filename="../../TaskDimRepair.cpp" line="126"/>
       <source>Can not use references from a different View</source>
       <translation>Не атрымалася ўжыць спасылкі з іншага выгляду</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="139"/>
+      <location filename="../../TaskDimRepair.cpp" line="138"/>
       <source>Can not make a dimension from selection</source>
       <translation>Не атрымалася зрабіць вымярэнне з абранага</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="150"/>
+      <location filename="../../TaskDimRepair.cpp" line="149"/>
       <source>Can not make dimension from selection</source>
       <translation>Не атрымалася зрабіць вымярэнне з абранага</translation>
     </message>
@@ -3902,17 +4090,22 @@ thick: %4</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.cpp" line="112"/>
+      <location filename="../../TaskCosmeticCircle.cpp" line="119"/>
       <source>Create Cosmetic Circle</source>
       <translation>Стварыць касметычную акружнасць</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.cpp" line="146"/>
+      <location filename="../../TaskCosmeticCircle.cpp" line="163"/>
       <source>Edit Cosmetic Circle</source>
       <translation>Змяніць касметычную акружнасць</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="325"/>
+      <location filename="../../TaskCosmeticCircle.cpp" line="183"/>
+      <source>Parameter Error</source>
+      <translation type="unfinished">Parameter Error</translation>
+    </message>
+    <message>
+      <location filename="../../PagePrinter.cpp" line="332"/>
       <source>Document Name:</source>
       <translation>Назва дакументу:</translation>
     </message>
@@ -3930,18 +4123,18 @@ thick: %4</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="209"/>
+      <location filename="../../ViewProviderLeader.cpp" line="210"/>
       <source>You cannot delete this leader line because
 it has a weld symbol that would become broken.</source>
       <translation>Вы не можаце выдаліць лінію зноскі, бо на ёй ёсць знак зварнога шва, які можа стаць пашкоджаным.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="362"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="357"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Вы не можаце выдаліць выгляд, бо ў ім ёсць адзін ці некалькі залежных выглядаў, якія могуць стаць пашкоджанымі.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="212"/>
+      <location filename="../../ViewProviderLeader.cpp" line="213"/>
       <location filename="../../ViewProviderPage.cpp" line="215"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
@@ -3950,7 +4143,7 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="172"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="180"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="365"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="360"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>Залежнасці аб'екта</translation>
@@ -4002,7 +4195,7 @@ the following referencing objects might be lost:</source>
       <location filename="../../ViewProviderWeld.cpp" line="142"/>
       <source>You cannot delete this weld symbol because
 it has a tile weld that would become broken.</source>
-      <translation>Вы не можаце выдаліць знак зварнога шва, так як ён мае фрагмент шва, які можа стаць пашкоджаным.</translation>
+      <translation>Вы не можаце выдаліць знак зварнога шва, бо ён мае фрагмент шва, які можа стаць пашкоджаным.</translation>
     </message>
   </context>
   <context>
@@ -4430,7 +4623,7 @@ when hatching a face with a PAT pattern</source>
       <translation>Праходы інструмента для выдалення рэбраў, якія перакрываюцца</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="524"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="527"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Заўвага:&lt;/span&gt; Элементы, якія выдзеленыя &lt;span style=&quot; font-style:italic;&quot;&gt;курсівам&lt;/span&gt; з'яўляюцца першапачатковымі значэннямі для новых аб'ектаў. Яны не аказваюць аніякага ўплыву на існуючыя аб'екты.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -4444,254 +4637,274 @@ when hatching a face with a PAT pattern</source>
       <translation>Заметка</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="571"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="619"/>
       <source>Section Line Style</source>
       <translation>Стыль лініі перасеку</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="141"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="429"/>
       <source>Section Cut Surface</source>
       <translation>Паверхня разрэзаў перасеку</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="467"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="77"/>
       <source>Default appearance of cut surface in section view</source>
       <translation>Першапачатковы знешні выгляд паверхні разрэзу ў выглядзе перасеку</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="480"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="90"/>
       <source>Hide</source>
       <translation>Схаваць</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="485"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="95"/>
       <source>Solid Color</source>
       <translation>Суцэльны колер</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="490"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="100"/>
       <source>SVG Hatch</source>
       <translation>Штрыхоўка SVG</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="495"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="105"/>
       <source>PAT Hatch</source>
       <translation>Штрыхоўка PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="528"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="441"/>
+      <source>If checked, the section annotation will be drawn on the Source view.  If unchecked, no section line, arrows or symbol will be shown in the Source view.</source>
+      <translation type="unfinished">If checked, the section annotation will be drawn on the Source view.  If unchecked, no section line, arrows or symbol will be shown in the Source view.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="444"/>
+      <source>Show Section Line in Source View</source>
+      <translation type="unfinished">Show Section Line in Source View</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="473"/>
       <source>This checkbox controls whether or not to display a highlight around the detail area in the detail&apos;s source view.</source>
       <translation>Птушка вызначае, ці варта адлюстроўваць вылучэнне вакол вобласці звестак у выглядзе крыніцы дэталяў.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="531"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="476"/>
       <source>Detail Source Show Highlight</source>
       <translation>Паказаць вылучэнне крыніцы дэталяў</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="558"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="576"/>
+      <source>If checked, the cut line will be drawn on the Source view.  If unchecked, only the change marks, arrows and symbols will be displayed.</source>
+      <translation type="unfinished">If checked, the cut line will be drawn on the Source view.  If unchecked, only the change marks, arrows and symbols will be displayed.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="579"/>
+      <source>Include Cut Line in Section Annotation</source>
+      <translation type="unfinished">Include Cut Line in Section Annotation</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="606"/>
       <source>Lines</source>
       <translation>Лініі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="720"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="768"/>
       <source>Standard to be used to draw non-continuous lines.</source>
       <translation>Стандарт, які ўжываецца для чарчэння бесперапынных ліній.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="747"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="795"/>
       <source>Line group used to set line widths</source>
       <translation>Суполка ліній, якая ўжываюцца для ўстаноўкі шырыні ліній</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="750"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="798"/>
       <source>Line Width Group</source>
       <translation>Суполка шырыні лініі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="426"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="130"/>
       <source>Detail View Outline Shape</source>
       <translation>Форма контуру выноснага элемента</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="175"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="277"/>
       <source>Outline shape for detail views</source>
       <translation>Форму контуру для вынаснога элементу</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="185"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="287"/>
       <source>Circle</source>
       <translation>Акружнасць</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="194"/>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="273"/>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="861"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="223"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="296"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="909"/>
       <source>Square</source>
       <translation>Квадрат</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="608"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="656"/>
       <source>Line style of detail highlight on base view</source>
       <translation>Стыль лініі вылучэння дэталяў на асноўным выглядзе</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="611"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="659"/>
       <source>Detail Highlight Style</source>
       <translation>Стыль вылучэння дэталяў</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="651"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="699"/>
       <source>Center Line Style</source>
       <translation>Стыль цэнтральнай лініі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="414"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="258"/>
       <source>Balloon Shape</source>
       <translation>Форма пазіцыйнай зноскі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="218"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="168"/>
       <source>Shape of balloon annotations</source>
       <translation>Форма пазіцыйнай зноскі для заметак</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="228"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="178"/>
       <source>Circular</source>
       <translation>Кругавы</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="237"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="187"/>
       <source>None</source>
       <translation>Адсутнічае</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="246"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="196"/>
       <source>Triangle</source>
       <translation>Трыкутнік</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="255"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="205"/>
       <source>Inspection</source>
       <translation>Даўгаваты</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="264"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="214"/>
       <source>Hexagon</source>
       <translation>Шасцікутнік</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="282"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="232"/>
       <source>Rectangle</source>
       <translation>Прастакутнік</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="291"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="241"/>
       <source>Line</source>
       <translation>Лінія</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="383"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="118"/>
       <source>Balloon Leader End</source>
       <translation>Канец лініі пазіцыйнай зноскі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="390"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="137"/>
       <source>This checkbox controls whether or not to display the outline around a detail view.</source>
       <translation>Птушка вызначае, ці варта адлюстроўваць контур вакол вынаснога элементу.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="393"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="140"/>
       <source>Detail View Show Matting</source>
       <translation>Паказаць адпаведнасць вынаснога элементу</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="515"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="375"/>
       <source>Style for balloon leader line ends</source>
       <translation>Стыль для канцоў лініі пазіцыйнай зноскі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="153"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="497"/>
       <source>Length of horizontal portion of Balloon leader</source>
       <translation>Даўжыня гарызантальнай часткі пазіцыйнай зноскі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="156"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="500"/>
       <source>Ballon Leader Kink Length</source>
       <translation>Даўжыня залому пазіцыйнай зноскі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="315"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="52"/>
       <source>Length of balloon leader line kink</source>
       <translation>Даўжыня залому лініі пазіцыйнай зноскі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="346"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="344"/>
       <source>Restrict Filled Triangle line end to vertical or horizontal directions</source>
       <translation>Абмяжоўвае запоўнены канец лініі трыкутніка вертыкальным ці гарызантальным напрамкам</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="349"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="347"/>
       <source>Balloon Orthogonal Triangle</source>
       <translation>Артаганальны трыкутнік пазіцыйнай зноскі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="57"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="405"/>
       <source>Forces last leader line segment to be horizontal</source>
       <translation>Прымушае апошні сегмент лініі зноскі быць гарызантальным</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="60"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="408"/>
       <source>Leader Line Auto Horizontal</source>
       <translation>Аўтаматычная гарызантальная лінія зноскі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="93"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="524"/>
       <source>Show arc center marks in views</source>
       <translation>Паказвае пазнакі цэнтра дугі на выглядах</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="96"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="527"/>
       <source>Show Center Marks</source>
       <translation>Паказаць пазнакі цэнтру</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="445"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="555"/>
       <source>Show arc centers in printed output</source>
       <translation>Паказвае цэнтры дуг пры друку</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="448"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="558"/>
       <source>Print Center Marks</source>
       <translation>Друкаваць пазнакі цэнтру</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="117"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="313"/>
       <source>Show or hide marks at direction changes on ComplexSection lines.</source>
       <translation>Паказвае ці хавае пазнакі пры змене напрамку на лініях складовага перасеку.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="120"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="316"/>
       <source>Complex Section Line Marks</source>
       <translation>Пазнакі лініі складовага перасеку</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="757"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="805"/>
       <source>Hidden Line Style</source>
       <translation>Стыль схаванай лініі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="782"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="830"/>
       <source>Line Standard</source>
       <translation>Стандартная лінія</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="819"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="867"/>
       <source>Line End Cap Shape</source>
       <translation>Фігура канцавой вечкі лініі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="843"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="891"/>
       <source>Shape of line end caps.  The default (round) should almost
 always be the right choice.   Flat or square caps are useful 
 if you are planning to use a drawing as a 1:1 cutting guide.
@@ -4702,17 +4915,17 @@ if you are planning to use a drawing as a 1:1 cutting guide.
 </translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="856"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="904"/>
       <source>Round</source>
       <translation>Закруглены</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="866"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="914"/>
       <source>Flat</source>
       <translation>Плоскі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="885"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="933"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Заўвага:&lt;/span&gt; Элементы, якія выдзеленыя &lt;span style=&quot; font-style:italic;&quot;&gt;курсівам&lt;/span&gt; з'яўляюцца першапачатковымі значэннямі для новых аб'ектаў. Яны не аказваюць аніякага ўплыву на існуючыя аб'екты.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -4981,6 +5194,25 @@ if you are planning to use a drawing as a 1:1 cutting guide.
       <translation>Ужываць глабальныя дзесятковыя знакі</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="527"/>
+      <source>Controls the size of gap between dimension point and start of extension line for ISO dimensions.
+ Value * linewidth is the gap.
+ Normally, no gap is used. If using a gap, the recommended value 8.</source>
+      <translation>Кіруе памерам адлегласці паміж кропкай вымярэння і пачаткам вынасной лініі для вымярэнняў ASME.
+Велічыня зазору = Значэнне * шырыня лініі.
+Звычайна зазор не ўжываецца.
+Пры ўжыванні зазору, прапануецца ўжываць значэнне 8.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="548"/>
+      <source>Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap.
+ Normally, no gap is used. If a gap is used, the recommended value is 6.</source>
+      <translation>Кіруе памерам адлегласці паміж кропкай вымярэння і пачаткам вынасной лініі для вымярэнняў ASME.
+Велічыня зазору = Значэнне * шырыня лініі.
+Звычайна зазор не ўжываецца.
+Калі зазор ужываецца, прапануецца значэнне 6.</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
       <source>Controls the size of spacing between dimension line and dimension text for ISO dimensions.</source>
       <translation>Кіруе памерам адлегласці паміж лініяй вымярэння і тэкстам вымярэння для вымярэнняў ISO.</translation>
@@ -4989,6 +5221,45 @@ if you are planning to use a drawing as a 1:1 cutting guide.
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="576"/>
       <source>Line Spacing - ISO</source>
       <translation>Міжрадковы інтэрвал - ISO</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="630"/>
+      <source>Tools</source>
+      <translation>Інструменты</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="636"/>
+      <source>Dimensioning tools:</source>
+      <translation>Інструменты для вызначэння вымярэнняў:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="643"/>
+      <source>Select the type of dimensioning tools for your toolbar:
+&apos;Single tool&apos;: A single tool for all dimensioning in the toolbar: Distance, Distance X / Y, Angle, Radius. (Others in dropdown)
+&apos;Separated tools&apos;: Individual tools for each dimensioning tool.
+&apos;Both&apos;: You will have both the &apos;Dimension&apos; tool and the separated tools.
+This setting is only for the toolbar. Whichever you choose, all tools are always available in the menu and through shortcuts.</source>
+      <translation>Абярыце тып інструментаў вымярэння для вашай панэлі інструментаў:
+'Адзінкавы інструмент': адзіны інструмент для ўсіх вымярэнняў на панэлі інструментаў: Адлегласць, Адлегласць X / Y, Вугал, Радыус (іншыя ў выпадальным спісе).
+'Асобныя інструменты': асобныя інструменты для кожнага інструменту вымярэння.
+'Абодва': у вас будзе як інструмент 'Вымярэнне', так і асобныя інструменты.
+Гэтая налада прызначаная толькі для панэлі інструментаў. Што б вы ні абралі, усе інструменты заўсёды даступныя ў меню і з дапамогай спалучэнняў.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="654"/>
+      <source>Dimension tool diameter/radius mode:</source>
+      <translation>Рэжым вымярэння дыяметра/радыуса інструменту:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="661"/>
+      <source>While using the Dimension tool you may choose how to handle circles and arcs:
+&apos;Auto&apos;: The tool will apply radius to arcs and diameter to circles.
+&apos;Diameter&apos;: The tool will apply diameter to all.
+&apos;Radius&apos;: The tool will apply radius to all.</source>
+      <translation>Калі ўжываецца інструмент вымярэння, вы можаце выбраць спосаб апрацоўкі акружнасцяў і дуг:
+'Аўтаматычнае': інструмент прыменіць радыус да дугі і дыяметр да акружнасці.
+'Дыяметр': інструмент прыменіць дыяметр да ўсяго.
+'Радыус': інструмент прыменіць радыус да щсяго.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="199"/>
@@ -5094,25 +5365,6 @@ Multiplier of &apos;Font Size&apos;</source>
       <translation>Каэфіцыент зазору падаўжэння - ASME</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="527"/>
-      <source>Controls the size of gap between dimension point and start of extension line for ISO dimensions. 
-Value * linewidth is the gap. 
-Normally, no gap is used. If using a gap, the recommended value 8.</source>
-      <translation>Кіруе памерам адлегласці паміж кропкай вымярэння і пачаткам вынасной лініі для вымярэнняў ASME.
-Велічыня зазору = Значэнне * шырыня лініі.
-Звычайна зазор не ўжываецца.
-Калі зазор ужываецца, прапануецца значэнне 8.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="548"/>
-      <source>Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap. 
-Normally, no gap is used. If a gap is used, the recommended value is 6.</source>
-      <translation>Кіруе памерам адлегласці паміж кропкай вымярэння і пачаткам вынасной лініі для вымярэнняў ASME.
-Велічыня зазору = Значэнне * шырыня лініі.
-Звычайна зазор не ўжываецца.
-Калі зазор ужываецца, прапануецца значэнне 6.</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="583"/>
       <source>Controls the size of spacing between dimension line and dimension text.
  Value * linewidth is the line spacing.</source>
@@ -5123,6 +5375,36 @@ Normally, no gap is used. If a gap is used, the recommended value is 6.</source>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="614"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Заўвага:&lt;/span&gt; Элементы, якія выдзеленыя &lt;span style=&quot; font-style:italic;&quot;&gt;курсівам&lt;/span&gt; з'яўляюцца першапачатковымі значэннямі для новых аб'ектаў. Яны не аказваюць аніякага ўплыву на існуючыя аб'екты.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="163"/>
+      <source>Single tool</source>
+      <translation>Адзінкавы інструмент</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="164"/>
+      <source>Separated tools</source>
+      <translation>Асобныя інструменты</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="165"/>
+      <source>Both</source>
+      <translation>Абодва</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="183"/>
+      <source>Auto</source>
+      <translation>Аўтаматычнае</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="184"/>
+      <source>Diameter</source>
+      <translation>Дыяметр</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="185"/>
+      <source>Radius</source>
+      <translation>Радыус</translation>
     </message>
   </context>
   <context>
@@ -5271,122 +5553,132 @@ for ProjectionGroups</source>
       <translation>Файлы</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="507"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="538"/>
+      <source>Preferred SVG or bitmap file for hatching.  This value will also control the initial directory for choosing hatch patterns.  You can use this to get hatch files from a local directory.</source>
+      <translation type="unfinished">Preferred SVG or bitmap file for hatching.  This value will also control the initial directory for choosing hatch patterns.  You can use this to get hatch files from a local directory.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="689"/>
+      <source>Alternate directory to search for Svg symbol files.</source>
+      <translation type="unfinished">Alternate directory to search for Svg symbol files.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="729"/>
       <source>Default Template</source>
       <translation>Першапачатковы шаблон</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="526"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="582"/>
       <source>Default template file for new pages</source>
       <translation>Файл першапачатковага шаблону для новых старонак</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="545"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="682"/>
       <source>Template Directory</source>
       <translation>Каталог шаблонаў</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="571"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="660"/>
       <source>Starting directory for menu &apos;Insert Page using Template&apos;</source>
       <translation>Пачатковы каталог для меню &apos;Уставіць старонку, з ужываннем шаблону&apos;</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="598"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="716"/>
       <source>Hatch Pattern File</source>
       <translation>Файл шаблону штрыхоўкі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="611"/>
-      <source>Default SVG or bitmap file for hatching</source>
-      <translation>Першапачатковы SVG ці растравы файл для штрыхоўкі</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="635"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="790"/>
       <source>Line Group File</source>
       <translation>Файл суполкі ліній</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="648"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="557"/>
       <source>Alternate file for personal LineGroup definition</source>
       <translation>Альтэрнатыўны файл для вызначэння персанальнай суполкі ліній</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="672"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="606"/>
       <source>Welding Directory</source>
       <translation>Каталог знакаў зварнога злучэння</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="685"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="638"/>
       <source>Default directory for welding symbols</source>
       <translation>Першапачатковы каталог для знакаў зварнога злучэння</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="712"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="525"/>
       <source>PAT File</source>
       <translation>Файл PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="725"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="619"/>
       <source>Default PAT pattern definition file for geometric hatching</source>
       <translation>Першапачатковы файл вызначэння шаблону PAT для геаметрычнай штрыхоўкі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="749"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="808"/>
       <source>Pattern Name</source>
       <translation>Назва шаблону</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="768"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="760"/>
       <source>Name of the default PAT pattern</source>
       <translation>Першапачатковая назва шаблону PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="771"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="741"/>
+      <source>Symbol Directory</source>
+      <translation>Каталог знакаў</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="763"/>
       <source>Diamond</source>
       <translation>Дыямент</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="792"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="820"/>
       <source>Grid</source>
       <translation>Сетка</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="818"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="846"/>
       <source>Set ShowGrid property to true on new Pages.</source>
       <translation>Задае true для ўласцівасці ShowGrid на новых старонках.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="821"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="849"/>
       <source>Show Grid</source>
       <translation>Паказаць сетку</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="842"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="870"/>
       <source>Grid Spacing</source>
       <translation>Адлегласць сеткі</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="849"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="877"/>
       <source>Distance between Page grid lines.</source>
       <translation>Адлегласць паміж лініямі сеткі старонкі.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="891"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="919"/>
       <source>Selection</source>
       <translation>Выдзяленне</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="905"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="933"/>
       <source>If enabled, clicking without Ctrl does not clear existing vertex/edge/face selection</source>
       <translation>Калі ўключана, пстрычка без націску &lt;Ctrl> не выдаляе існуючы выбар вяршыні/рабра/грані</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="908"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="936"/>
       <source>Enable Multiselection Mode</source>
       <translation>Уключыць рэжым множнага выбару</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="935"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="963"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Заўвага:&lt;/span&gt; Элементы, якія выдзеленыя &lt;span style=&quot; font-style:italic;&quot;&gt;курсівам&lt;/span&gt; з'яўляюцца першапачатковымі значэннямі для новых аб'ектаў. Яны не аказваюць аніякага ўплыву на існуючыя аб'екты.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5642,61 +5934,61 @@ Fast, but result is a collection of short straight lines.</source>
       <translation>Надрукаваць усе старонкі</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="405"/>
+      <location filename="../../MDIViewPage.cpp" line="406"/>
       <source>Different orientation</source>
       <translation>Адрозная арыентацыя</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="406"/>
+      <location filename="../../MDIViewPage.cpp" line="407"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Друкарка ўжывае арыентацыю, якая выдатная ад арыентацыі чарцяжа.
 Ці жадаеце в вы працягнуць?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="415"/>
+      <location filename="../../MDIViewPage.cpp" line="416"/>
       <source>Different paper size</source>
       <translation>Адрозны памер паперы</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="416"/>
+      <location filename="../../MDIViewPage.cpp" line="417"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Друкарка ўжывае памер паперы, які адрозны ад чарцяжа.
 Ці жадаеце вы працягнуць?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="430"/>
+      <location filename="../../MDIViewPage.cpp" line="431"/>
       <source>Opening file failed</source>
       <translation>Немагчыма адчыніць файл</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="431"/>
+      <location filename="../../MDIViewPage.cpp" line="432"/>
       <source>Can not open file %1 for writing.</source>
       <translation>Не атрымалася адчыніць файл %1 для запісу.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="520"/>
+      <location filename="../../MDIViewPage.cpp" line="523"/>
       <source>Save DXF file</source>
       <translation>Захаваць файл у DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="521"/>
+      <location filename="../../MDIViewPage.cpp" line="524"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="541"/>
+      <location filename="../../MDIViewPage.cpp" line="544"/>
       <source>Save PDF file</source>
       <translation>Захаваць файл PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="542"/>
+      <location filename="../../MDIViewPage.cpp" line="545"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1016"/>
+      <location filename="../../MDIViewPage.cpp" line="1066"/>
       <source>Selected:</source>
       <translation>Абрана:</translation>
     </message>
@@ -6206,7 +6498,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="160"/>
-      <location filename="../../TaskCosVertex.cpp" line="254"/>
+      <location filename="../../TaskCosVertex.cpp" line="253"/>
       <source>Pick Points</source>
       <translation>Выбраць кропкі</translation>
     </message>
@@ -6226,7 +6518,7 @@ Do you want to continue?</source>
       <translation>Пстрыкніце &lt;левай кнопкай мышы>, каб задаць кропку</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="282"/>
+      <location filename="../../TaskCosVertex.cpp" line="281"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>Незавершаная змена пакінутая. Пачаць спачатку.</translation>
     </message>
@@ -6245,31 +6537,31 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="61"/>
-      <location filename="../../TaskCosmeticLine.ui" line="134"/>
+      <location filename="../../TaskCosmeticLine.ui" line="140"/>
       <source>2d Point</source>
       <translation>Дзвюхмерная кропка</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticLine.ui" line="74"/>
-      <location filename="../../TaskCosmeticLine.ui" line="147"/>
+      <location filename="../../TaskCosmeticLine.ui" line="77"/>
+      <location filename="../../TaskCosmeticLine.ui" line="156"/>
       <source>3d Point</source>
       <translation>Трохмерная кропка</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticLine.ui" line="88"/>
-      <location filename="../../TaskCosmeticLine.ui" line="161"/>
+      <location filename="../../TaskCosmeticLine.ui" line="94"/>
+      <location filename="../../TaskCosmeticLine.ui" line="173"/>
       <source>X:</source>
       <translation>X:</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticLine.ui" line="102"/>
-      <location filename="../../TaskCosmeticLine.ui" line="175"/>
+      <location filename="../../TaskCosmeticLine.ui" line="108"/>
+      <location filename="../../TaskCosmeticLine.ui" line="187"/>
       <source>Y:</source>
       <translation>Y:</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticLine.ui" line="116"/>
-      <location filename="../../TaskCosmeticLine.ui" line="189"/>
+      <location filename="../../TaskCosmeticLine.ui" line="122"/>
+      <location filename="../../TaskCosmeticLine.ui" line="201"/>
       <source>Z:</source>
       <translation>Z:</translation>
     </message>
@@ -7130,7 +7422,7 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="118"/>
-      <location filename="../../TaskLeaderLine.cpp" line="471"/>
+      <location filename="../../TaskLeaderLine.cpp" line="499"/>
       <source>Pick Points</source>
       <translation>Выбраць кропкі</translation>
     </message>
@@ -7205,57 +7497,57 @@ You can pick further points to get line segments.</source>
       <translation>Штрых-пункцірны з дзвюма кропкамі</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="224"/>
+      <location filename="../../TaskLeaderLine.cpp" line="227"/>
       <source>Pick points</source>
       <translation>Выбраць кропкі</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="273"/>
-      <location filename="../../TaskLeaderLine.cpp" line="636"/>
-      <location filename="../../TaskLeaderLine.cpp" line="688"/>
-      <location filename="../../TaskLeaderLine.cpp" line="705"/>
+      <location filename="../../TaskLeaderLine.cpp" line="276"/>
+      <location filename="../../TaskLeaderLine.cpp" line="686"/>
+      <location filename="../../TaskLeaderLine.cpp" line="743"/>
+      <location filename="../../TaskLeaderLine.cpp" line="765"/>
       <source>Edit points</source>
       <translation>Змяніць кропкі</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="483"/>
+      <location filename="../../TaskLeaderLine.cpp" line="513"/>
       <source>Edit Points</source>
       <translation>Змяніць кропкі</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="500"/>
-      <location filename="../../TaskLeaderLine.cpp" line="543"/>
+      <location filename="../../TaskLeaderLine.cpp" line="530"/>
+      <location filename="../../TaskLeaderLine.cpp" line="582"/>
       <source>Pick a starting point for leader line</source>
       <translation>Выберыце пачатковую кропку для лініі зноскі</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="503"/>
+      <location filename="../../TaskLeaderLine.cpp" line="533"/>
       <source>Save Points</source>
       <translation>Захаваць кропкі</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="526"/>
+      <location filename="../../TaskLeaderLine.cpp" line="565"/>
       <source>Click and drag markers to adjust leader line</source>
       <translation>Націсніце і перацягніце маркеры для рэгулявання лініі зноскі</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="529"/>
-      <location filename="../../TaskLeaderLine.cpp" line="546"/>
+      <location filename="../../TaskLeaderLine.cpp" line="568"/>
+      <location filename="../../TaskLeaderLine.cpp" line="585"/>
       <source>Save changes</source>
       <translation>Захаваць змены</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="574"/>
+      <location filename="../../TaskLeaderLine.cpp" line="616"/>
       <source>Left click to set a point</source>
       <translation>Пстрыкніце &lt;левай кнопкай мышы>, каб задаць кропку</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="600"/>
+      <location filename="../../TaskLeaderLine.cpp" line="642"/>
       <source>Press OK or Cancel to continue</source>
       <translation>Націсніце кнопку ОК ці Скасаваць, каб працягнуць</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="700"/>
+      <location filename="../../TaskLeaderLine.cpp" line="760"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>Незавершаная змена пакінутая. Пачаць спачатку.</translation>
     </message>
@@ -8015,7 +8307,7 @@ using the given X/Y Spacing</source>
       <translation>Дэльта адлегласці</translation>
     </message>
     <message>
-      <location filename="../../TaskSelectLineAttributes.cpp" line="119"/>
+      <location filename="../../TaskSelectLineAttributes.cpp" line="115"/>
       <source>Select line attributes</source>
       <translation>Абраць атрыбуты лініі</translation>
     </message>
@@ -8229,7 +8521,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_ComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="752"/>
+      <location filename="../../Command.cpp" line="753"/>
       <source>Insert complex Section View</source>
       <translation>Уставіць складовы выгляд перасеку</translation>
     </message>
@@ -8245,12 +8537,12 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_ExtensionremovePrefixChar</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="412"/>
+      <location filename="../../CommandExtensionDims.cpp" line="416"/>
       <source>Remove Prefix</source>
       <translation>Выдаліць прыстаўку</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="413"/>
+      <location filename="../../CommandExtensionDims.cpp" line="417"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Выдаляе знак прыстаўкі ў пачатку тэксту вымярэння:&lt;br&gt;- Абярыце адно ці некалькі вымярэнняў&lt;br&gt;- Пстрыкніце інструмент</translation>
     </message>
@@ -8266,7 +8558,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_HorizontalExtent</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="997"/>
+      <location filename="../../CommandCreateDims.cpp" line="2448"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Уставіць гарызантальнае габарытнае вымярэнне</translation>
     </message>
@@ -8290,7 +8582,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_SectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="747"/>
+      <location filename="../../Command.cpp" line="748"/>
       <source>Insert simple Section View</source>
       <translation>Уставіць просты выгляд перасеку</translation>
     </message>
@@ -8330,7 +8622,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_VerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1001"/>
+      <location filename="../../CommandCreateDims.cpp" line="2452"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Уставіць вертыкальнае габарытнае вымярэнне</translation>
     </message>
@@ -8338,132 +8630,132 @@ using the given X/Y Spacing</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Dimensions</source>
       <translation>Вымярэнні</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Extensions: Attributes/Modifications</source>
       <translation>Пашырэнне: атрыбуты/змены</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Extensions: Centerlines/Threading</source>
       <translation>Пашырэнне: цэнтральная лінія/разьба</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Extensions: Dimensions</source>
       <translation>Пашырэнне: вымярэнні</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Annotations</source>
       <translation>Заметкі</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Stacking</source>
       <translation>Зборка</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="44"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>Add Lines</source>
       <translation>Дадаць лініі</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="45"/>
+      <location filename="../../Workbench.cpp" line="46"/>
       <source>Add Vertices</source>
       <translation>Дадаць вяршыні</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="46"/>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>Page</source>
       <translation>Старонка</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="47"/>
+      <location filename="../../Workbench.cpp" line="48"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="50"/>
+      <location filename="../../Workbench.cpp" line="51"/>
       <source>TechDraw Attributes</source>
       <translation>Тэхнічны чарцёж: Атрыбуты</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>TechDraw Centerlines</source>
       <translation>Тэхнічны чарцёж: Цэнтральная лінія</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="54"/>
+      <location filename="../../Workbench.cpp" line="55"/>
       <source>TechDraw Extend Dimensions</source>
       <translation>Тэхнічны чарцёж: Пашырыць вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="56"/>
+      <location filename="../../Workbench.cpp" line="57"/>
       <source>TechDraw Pages</source>
       <translation>Тэхнічны чарцёж: Старонкі</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="57"/>
+      <location filename="../../Workbench.cpp" line="58"/>
       <source>TechDraw Stacking</source>
       <translation>Тэхнічны чарцёж: Зборка</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="59"/>
+      <location filename="../../Workbench.cpp" line="60"/>
       <source>TechDraw Views</source>
       <translation>Тэхнічны чарцёж: Выгляды</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="54"/>
       <source>TechDraw Dimensions</source>
       <translation>Тэхнічны чарцёж: Вымярэнні</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="59"/>
       <source>TechDraw Tool Attributes</source>
       <translation>Тэхнічны чарцёж: Атрыбуты інструменту</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="55"/>
+      <location filename="../../Workbench.cpp" line="56"/>
       <source>TechDraw File Access</source>
       <translation>Тэхнічны чарцёж: Доступ да файлу</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>TechDraw Decoration</source>
       <translation>Тэхнічны чарцёж: Афармленне</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="50"/>
       <source>TechDraw Annotation</source>
       <translation>Тэхнічны чарцёж: Заметкі</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="60"/>
+      <location filename="../../Workbench.cpp" line="61"/>
       <source>Views From Other Workbenches</source>
       <translation>Выгляды з іншых варштатаў</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="61"/>
+      <location filename="../../Workbench.cpp" line="62"/>
       <source>Clipped Views</source>
       <translation>Абрэзаныя выгляды</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="62"/>
+      <location filename="../../Workbench.cpp" line="63"/>
       <source>Hatching</source>
       <translation>Штрыхоўка</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="63"/>
+      <location filename="../../Workbench.cpp" line="64"/>
       <source>Symbols</source>
       <translation>Знакі</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="64"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Views</source>
       <translation>Выгляды</translation>
     </message>
@@ -8635,12 +8927,12 @@ using the given X/Y Spacing</source>
   <context>
     <name>CmdTechDrawDimensionRepair</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1176"/>
+      <location filename="../../CommandCreateDims.cpp" line="2615"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1177"/>
+      <location filename="../../CommandCreateDims.cpp" line="2616"/>
       <source>Repair Dimension References</source>
       <translation>Аднавіць спасылкі на вымярэнні</translation>
     </message>
@@ -8661,6 +8953,11 @@ using the given X/Y Spacing</source>
       <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>SubElement</source>
       <translation>Укладзены элемент</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.cpp" line="237"/>
+      <source>Repair Dimension</source>
+      <translation type="unfinished">Repair Dimension</translation>
     </message>
   </context>
   <context>
@@ -9039,44 +9336,59 @@ there is an open task dialog.</source>
       <translation>X:</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="118"/>
+      <location filename="../../TaskCosmeticCircle.ui" line="115"/>
       <source>Y:</source>
       <translation>Y:</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="135"/>
+      <location filename="../../TaskCosmeticCircle.ui" line="129"/>
       <source>Z:</source>
       <translation>Z:</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="156"/>
+      <location filename="../../TaskCosmeticCircle.ui" line="147"/>
       <source>Radius:</source>
       <translation>Радыус:</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="180"/>
+      <location filename="../../TaskCosmeticCircle.ui" line="205"/>
       <source>Start Angle:</source>
       <translation>Пачатковы вугал:</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="187"/>
+      <location filename="../../TaskCosmeticCircle.ui" line="212"/>
+      <source>Check this box to make an arc from atart angle to end angle in a clockwise direction.</source>
+      <translation type="unfinished">Check this box to make an arc from atart angle to end angle in a clockwise direction.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="215"/>
+      <source>Clockwise Angle</source>
+      <translation type="unfinished">Clockwise Angle</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="195"/>
       <source>End angle (conventional) of arc in degrees.</source>
       <translation>Канчатковы вугал (умоўны) дугі ў градусах.</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="200"/>
+      <location filename="../../TaskCosmeticCircle.ui" line="188"/>
       <source>End Angle:</source>
       <translation>Канчатковы вугал:</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="207"/>
+      <location filename="../../TaskCosmeticCircle.ui" line="171"/>
       <source>Start angle (conventional) of arc in degrees.</source>
       <translation>Пачатковы вугал (умоўны) дугі ў градусах.</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="220"/>
+      <location filename="../../TaskCosmeticCircle.ui" line="181"/>
       <source>Arc of Circle</source>
       <translation>Дуга акружнасці</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.cpp" line="182"/>
+      <source>Radius must be non-zero positive number</source>
+      <translation type="unfinished">Radius must be non-zero positive number</translation>
     </message>
   </context>
   <context>
@@ -9095,17 +9407,17 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawExtensionArcLengthAnnotation</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1864"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1897"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1865"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1898"/>
       <source>Calculate the arc length of selected edges</source>
       <translation>Вылічыць даўжыню дугі абраных рэбраў</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1866"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1899"/>
       <source>Select several edges&lt;br&gt;    - click this tool</source>
       <translation>Абярыце некалькі рэбраў&lt;br&gt; - пстрыкніце інструмент</translation>
     </message>
@@ -9475,19 +9787,19 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawExtensionInsertRepetition</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="217"/>
+      <location filename="../../CommandExtensionDims.cpp" line="221"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="218"/>
-      <location filename="../../CommandExtensionDims.cpp" line="405"/>
+      <location filename="../../CommandExtensionDims.cpp" line="222"/>
+      <location filename="../../CommandExtensionDims.cpp" line="409"/>
       <source>Insert &apos;n×&apos; Prefix</source>
       <translation>Уставіць прыстаўку &apos;n×&apos;</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="219"/>
-      <location filename="../../CommandExtensionDims.cpp" line="406"/>
+      <location filename="../../CommandExtensionDims.cpp" line="223"/>
+      <location filename="../../CommandExtensionDims.cpp" line="410"/>
       <source>Insert repeated feature count at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Устаўце колькасць элементаў, якія паўтараюцца, у пачатак тэксту вымярэння:
 - Абярыце адно ці некалькі вымярэнняў
@@ -9497,7 +9809,7 @@ there is an open task dialog.</source>
   <context>
     <name>Preferences</name>
     <message>
-      <location filename="../../../App/Preferences.cpp" line="433"/>
+      <location filename="../../../App/Preferences.cpp" line="451"/>
       <source>The LineStandard parameter is invalid. Using zero instead.</source>
       <translation>Налада LineStandard недапушчальная.
 Замест яго ўжываецца нуль.</translation>
@@ -9506,13 +9818,13 @@ there is an open task dialog.</source>
   <context>
     <name>TaskDimension</name>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="299"/>
+      <location filename="../../ViewProviderDimension.cpp" line="301"/>
       <source>You cannot delete this dimension now because
 there is an open task dialog.</source>
       <translation>Цяпер вы не можаце выдаліць вымярэнне, бо адчынена дыялогавае акно задачы.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="302"/>
+      <location filename="../../ViewProviderDimension.cpp" line="304"/>
       <source>Can Not Delete</source>
       <translation>Не атрымалася выдаліць</translation>
     </message>
@@ -9520,13 +9832,13 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawBrokenView</name>
     <message>
-      <location filename="../../Command.cpp" line="525"/>
+      <location filename="../../Command.cpp" line="526"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="526"/>
       <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="528"/>
       <source>Insert Broken View</source>
       <translation>Уставіць выгляд разбіўкі</translation>
     </message>
@@ -9567,6 +9879,32 @@ there is an open task dialog.</source>
       <location filename="../../TaskProjGroup.cpp" line="961"/>
       <source>Rotate by</source>
       <translation>Павярнуць па</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawCompDimensionTools</name>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1443"/>
+      <source>Dimension</source>
+      <translation>Вымярэнне</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1444"/>
+      <source>Dimension tools.</source>
+      <translation>Інструменты вымярэння.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawAreaDimension</name>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="2204"/>
+      <source>TechDraw</source>
+      <translation>Тэхнічны чарцёж</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="2205"/>
+      <source>Insert Area Dimension</source>
+      <translation>Уставіць вымярэнне вобласці</translation>
     </message>
   </context>
 </TS>

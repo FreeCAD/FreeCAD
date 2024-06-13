@@ -31,6 +31,7 @@
 # include <BRepGProp.hxx>
 # include <BRepIntCurveSurface_Inter.hxx>
 # include <BRepLProp_SLProps.hxx>
+# include <Geom_Line.hxx>
 # include <Geom_Plane.hxx>
 # include <GeomAdaptor.hxx>
 # include <GeomAPI.hxx>
@@ -132,6 +133,8 @@ const char* AttachEngine::eMapModeStrings[]= {
     "OXZ",
     "OYZ",
     "OYX",
+
+    "ParallelPlane",
 
     nullptr};
 
@@ -255,6 +258,11 @@ void AttachEngine::setUp(const AttachEngine &another)
     this->surfU = another.surfU;
     this->surfV = another.surfV;
     this->attachmentOffset = another.attachmentOffset;
+}
+
+void AttachEngine::setOffset(const Base::Placement &offset)
+{
+    this->attachmentOffset = offset;
 }
 
 Base::Placement AttachEngine::placementFactory(const gp_Dir &ZAxis,
@@ -1036,6 +1044,11 @@ AttachEngine3D::AttachEngine3D()
     modeRefTypes[mmObjectXZ] = ss;
     modeRefTypes[mmObjectYZ] = ss;
 
+    modeRefTypes[mmParallelPlane].push_back(
+        cat(eRefType(rtFlatFace | rtFlagHasPlacement), rtVertex));
+    modeRefTypes[mmParallelPlane].push_back(
+        cat(eRefType(rtAnything | rtFlagHasPlacement), rtVertex));
+
     modeRefTypes[mmInertialCS].push_back(cat(rtAnything));
     modeRefTypes[mmInertialCS].push_back(cat(rtAnything,rtAnything));
     modeRefTypes[mmInertialCS].push_back(cat(rtAnything,rtAnything,rtAnything));
@@ -1189,7 +1202,8 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
         } break;
         case mmObjectXY:
         case mmObjectXZ:
-        case mmObjectYZ: {
+        case mmObjectYZ:
+        case mmParallelPlane: {
             // DeepSOIC: could have been done much more efficiently, but I'm lazy...
             gp_Dir dirX, dirY, dirZ;
             if (types[0] & rtFlagHasPlacement) {
@@ -1249,6 +1263,32 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                     SketchNormal = dirX;
                     SketchXAxis = gp_Vec(dirY);
                     break;
+                case mmParallelPlane: {
+                    if (shapes.size() < 2) {
+                        throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: not "
+                                               "enough subshapes (need one plane and one vertex).");
+                    }
+
+                    TopoDS_Vertex vertex;
+                    try {
+                        vertex = TopoDS::Vertex(*(shapes[1]));
+                    }
+                    catch (...) {
+                    }
+                    if (vertex.IsNull()) {
+                        throw Base::ValueError(
+                            "Null vertex in AttachEngine3D::calculateAttachedPlacement()!");
+                    }
+
+                    SketchNormal = dirZ;
+                    SketchXAxis = gp_Vec(dirX);
+
+                    // The new origin will be the vertex projected onto the normal.
+                    Handle(Geom_Line) hCurve(new Geom_Line(SketchBasePoint, dirZ));
+                    gp_Pnt p = BRep_Tool::Pnt(vertex);
+                    GeomAPI_ProjectPointOnCurve projector(p, hCurve);
+                    SketchBasePoint = projector.NearestPoint();
+                } break;
                 default:
                     break;
             }
@@ -1355,7 +1395,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
         case mmTangentPlane: {
             if (shapes.size() < 2) {
                 throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: not enough "
-                                       "subshapes (need one false and one vertex).");
+                                       "subshapes (need one face and one vertex).");
             }
 
             bool bThruVertex = false;

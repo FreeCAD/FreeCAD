@@ -27,17 +27,17 @@
   <context>
     <name>StartGui::GeneralSettingsWidget</name>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="209"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
       <source>Language</source>
-      <translation type="unfinished">Language</translation>
+      <translation>언어</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="210"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
       <source>Unit System</source>
-      <translation type="unfinished">Unit System</translation>
+      <translation>단위계</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="223"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="226"/>
       <source>Navigation Style</source>
       <translation type="unfinished">Navigation Style</translation>
     </message>
@@ -61,17 +61,17 @@
     <message>
       <location filename="../../StartView.cpp" line="178"/>
       <source>Empty file</source>
-      <translation type="unfinished">Empty file</translation>
+      <translation>빈 파일</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="179"/>
       <source>Create a new empty FreeCAD file</source>
-      <translation type="unfinished">Create a new empty FreeCAD file</translation>
+      <translation>새로운 빈 프리캐드 파일을 생성하세요</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="181"/>
       <source>Open File</source>
-      <translation type="unfinished">Open File</translation>
+      <translation>파일 열기</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="182"/>
@@ -86,12 +86,12 @@
     <message>
       <location filename="../../StartView.cpp" line="185"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation type="unfinished">Create a part with the Part Design workbench</translation>
+      <translation>부품설계 작업대에서 부품 만들기</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="187"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>조립</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="188"/>
@@ -121,17 +121,17 @@
     <message>
       <location filename="../../StartView.cpp" line="434"/>
       <source>New File</source>
-      <translation type="unfinished">New File</translation>
+      <translation>새 파일</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="435"/>
       <source>Examples</source>
-      <translation type="unfinished">Examples</translation>
+      <translation>예제</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="436"/>
       <source>Recent Files</source>
-      <translation type="unfinished">Recent Files</translation>
+      <translation>최근 파일</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="440"/>
@@ -157,12 +157,12 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
       <source>Light</source>
-      <translation type="unfinished">Light</translation>
+      <translation>밝은</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
       <source>Dark</source>
-      <translation type="unfinished">Dark</translation>
+      <translation>어두운</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="137"/>
@@ -184,13 +184,13 @@
       <location filename="../../ThemeSelectorWidget.cpp" line="140"/>
       <source>Light</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Light</translation>
+      <translation>밝은</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="141"/>
       <source>Dark</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Dark</translation>
+      <translation>어두운</translation>
     </message>
   </context>
 </TS>

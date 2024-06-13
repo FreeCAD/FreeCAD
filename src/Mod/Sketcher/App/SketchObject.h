@@ -699,6 +699,9 @@ public:
         return convertSubName(subname.c_str(), postfix);
     }
 
+    static const std::string& internalPrefix();
+    static const char* convertInternalName(const char* name);
+
     std::string convertSubName(const Data::IndexedName&, bool postfix = true) const;
 
     std::pair<std::string, std::string> getElementName(const char* name,
@@ -746,6 +749,11 @@ public:
     void makeMissingPointOnPointCoincident(bool onebyone = false);
     void makeMissingVerticalHorizontal(bool onebyone = false);
     void makeMissingEquality(bool onebyone = true);
+
+    /// Detect degenerated geometries
+    int detectDegeneratedGeometries(double tolerance);
+    /// Remove degenerated geometries
+    int removeDegeneratedGeometries(double tolerance);
 
     // helper
     /// returns the number of redundant constraints detected

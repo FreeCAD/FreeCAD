@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <boost/core/ignore_unused.hpp>
 #include "Mod/Part/App/FeaturePartCommon.h"
@@ -215,4 +215,26 @@ TEST_F(FeaturePartTest, getSubObject)
     // Assert
     ASSERT_NE(result, nullptr);
     EXPECT_STREQ(result->getNameInDocument(), "Part__Box001");
+}
+
+TEST_F(FeaturePartTest, getElementTypes)
+{
+    Part::Feature pf;
+    std::vector<const char*> types = pf.getElementTypes();
+
+    EXPECT_EQ(types.size(), 3);
+    EXPECT_STREQ(types[0], "Face");
+    EXPECT_STREQ(types[1], "Edge");
+    EXPECT_STREQ(types[2], "Vertex");
+}
+
+TEST_F(FeaturePartTest, getComplexElementTypes)
+{
+    Part::TopoShape shape;
+    std::vector<const char*> types = shape.getElementTypes();
+
+    EXPECT_EQ(types.size(), 3);
+    EXPECT_STREQ(types[0], "Face");
+    EXPECT_STREQ(types[1], "Edge");
+    EXPECT_STREQ(types[2], "Vertex");
 }

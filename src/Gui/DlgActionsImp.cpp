@@ -409,7 +409,6 @@ IconDialog::IconDialog(QWidget* parent)
     QStringList names = BitmapFactory().findIconFiles();
     for (const auto & name : names) {
         item = new QListWidgetItem(ui->listWidget);
-        //item->setIcon(QIcon(*it));
         item->setIcon(QIcon(BitmapFactory().pixmap((const char*)name.toUtf8())));
         item->setText(QFileInfo(name).baseName());
         item->setToolTip(name);

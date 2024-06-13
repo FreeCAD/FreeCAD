@@ -75,6 +75,9 @@ endif()
 
 add_library(MeshPart SHARED ${MeshPart_SRCS} ${MeshPart_Scripts})
 target_link_libraries(MeshPart ${MeshPart_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(MeshPart)
+endif()
 
 
 fc_target_copy_resource_flat(MeshPart

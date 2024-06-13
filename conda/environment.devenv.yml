@@ -56,8 +56,6 @@ dependencies:
 - xorg-x11-server-common-cos7-aarch64  # [linux and aarch64]
 - xorg-x11-server-xvfb-cos7-aarch64    # [linux and aarch64]
 - sed                                  # [unix]
-- boost
-- boost-cpp
 - ccache
 - cmake
 - coin3d
@@ -73,6 +71,7 @@ dependencies:
 - gmsh
 - graphviz
 - hdf5
+- libboost-devel
 - libcxx
 - mamba
 - matplotlib
@@ -80,7 +79,7 @@ dependencies:
 - numpy
 - occt
 - openssl
-- pcl==1.13.1
+- pcl
 - pip
 - pivy
 - pkg-config
@@ -90,9 +89,7 @@ dependencies:
 - pyside2
 - python==3.11.*
 - pyyaml
-- qt
 - qt-main
-- qt-webengine
 - six
 - smesh
 - swig

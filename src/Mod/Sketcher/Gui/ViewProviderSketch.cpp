@@ -365,6 +365,20 @@ void ViewProviderSketch::ParameterObserver::initParameters()
               Client.viewProviderParameters.stdCountSegments = v;
           },
           nullptr}},
+        {"SketchEdgeColor",
+         {[this](const std::string& string, App::Property* property) {
+              if (Client.AutoColor.getValue()) {
+                  updateColorProperty(string, property, 1.0f, 1.0f, 1.0f);
+              }
+          },
+          &Client.LineColor}},
+        {"SketchVertexColor",
+         {[this](const std::string& string, App::Property* property) {
+              if (Client.AutoColor.getValue()) {
+                  updateColorProperty(string, property, 1.0f, 1.0f, 1.0f);
+              }
+          },
+          &Client.PointColor}},
     };
 
     for (auto& val : parameterMap) {
@@ -377,8 +391,6 @@ void ViewProviderSketch::ParameterObserver::initParameters()
 
     // unsubscribed parameters which update a property on just once upon construction (and before
     // restore if properties are being restored from a file)
-    updateColorProperty("SketchEdgeColor", &Client.LineColor, 1.0f, 1.0f, 1.0f);
-    updateColorProperty("SketchVertexColor", &Client.PointColor, 1.0f, 1.0f, 1.0f);
     updateBoolProperty("ShowGrid", &Client.ShowGrid, false);
     updateBoolProperty("GridAuto", &Client.GridAuto, true);
     updateGridSize("GridSize", &Client.GridSize);
@@ -538,6 +550,13 @@ ViewProviderSketch::ViewProviderSketch()
                       "Layers",
                       (App::PropertyType)(App::Prop_ReadOnly),
                       "Information about the Visual Representation of layers");
+
+    ADD_PROPERTY_TYPE(
+        AutoColor,
+        (true),
+        "Object Style",
+        (App::PropertyType)(App::Prop_None),
+        "If true, this sketch will be colored based on user preferences. Turn it off to set color explicitly.");
 
     // TODO: This is part of a naive minimal implementation to substitute rendering order
     // Three equally visual layers to enable/disable layer.
@@ -1766,7 +1785,7 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
             const Part::Geometry *geo2 = GeoList::getGeometryFromGeoId (geomlist, Constr->Second);
 
             if (isLineSegment(*geo2)) {
-                if (isCircleOrArc(*geo1)){
+                if (isCircleOrArc(*geo1) && Constr->FirstPos == Sketcher::PointPos::none){
                     std::swap(geo1, geo2); // see below
                 }
                 else {
@@ -1818,7 +1837,7 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
                 p2 = lineSeg->getEndPoint();
             }
             else if (geo->is<Part::GeomArcOfCircle>()) {
-                const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
+                auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                 double radius = arc->getRadius();
                 Base::Vector3d center = arc->getCenter();
                 double startangle, endangle;
@@ -2588,6 +2607,12 @@ void ViewProviderSketch::updateColor()
     editCoinManager->updateColor();
 }
 
+bool ViewProviderSketch::selectAll()
+{
+    // TODO: eventually implement "select all" logic
+    return true;
+}
+
 bool ViewProviderSketch::doubleClicked()
 {
     Gui::Application::Instance->activeDocument()->setEdit(this);
@@ -2889,8 +2914,56 @@ void ViewProviderSketch::onChanged(const App::Property* prop)
         }
         return;
     }
+
+    if (prop == &AutoColor) {
+        auto usesAutomaticColors = AutoColor.getValue();
+
+        // when auto color is enabled don't save color information in the document
+        // so it does not cause unnecessary updates if multiple users use different colors
+        LineColor.setStatus(App::Property::Transient, usesAutomaticColors);
+        PointColor.setStatus(App::Property::Transient, usesAutomaticColors);
+
+        // and mark this property as read-only hidden so it's not possible to change manually
+        LineColor.setStatus(App::Property::ReadOnly, usesAutomaticColors);
+        LineColor.setStatus(App::Property::Hidden, usesAutomaticColors);
+        PointColor.setStatus(App::Property::ReadOnly, usesAutomaticColors);
+        PointColor.setStatus(App::Property::Hidden, usesAutomaticColors);
+
+        return;
+    }
+
     // call father
     ViewProviderPart::onChanged(prop);
+}
+
+void SketcherGui::ViewProviderSketch::startRestoring()
+{
+    // small hack: before restoring mark AutoColor property as non-touched
+    // this allows us to test if this property was restored in the finishRestoring method
+    AutoColor.setStatus(App::Property::Touched, false);
+}
+
+void SketcherGui::ViewProviderSketch::finishRestoring()
+{
+    ViewProvider2DObject::finishRestoring();
+
+    // if AutoColor was not touched it means that the document is from older version of FreeCAD
+    // that meaans that we need to run migration strategy and come up with a proper value
+    if (!AutoColor.isTouched()) {
+        // white is the normally provided default for FreeCAD sketch colors
+        auto white = App::Color(1.f, 1.f, 1.f, 1.f);
+
+        auto colorWasNeverChanged =
+            LineColor.getValue() == white &&
+            PointColor.getValue() == white;
+
+        AutoColor.setValue(colorWasNeverChanged);
+    }
+
+    if (AutoColor.getValue()) {
+        // update colors according to current user preferences
+        pObserver->initParameters();
+    }
 }
 
 void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
@@ -3225,6 +3298,13 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         selection.reset();
         this->detachSelection();
 
+        ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/View");
+
+        auto headlightIntensityExisting = hGrpView->GetInt("HeadlightIntensityExisting", 100);
+        hGrpView->SetInt("HeadlightIntensity", headlightIntensityExisting);
+        hGrpView->RemoveInt("HeadlightIntensityExisting");
+
         App::AutoTransaction trans("Sketch recompute");
         try {
             // and update the sketch
@@ -3294,6 +3374,14 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
                 e.what());
         }
     }
+
+    ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View");
+
+    auto headlightIntensityExisting = hGrpView->GetInt("HeadlightIntensity", 100);
+    auto headlightIntensityTemp = 50;
+    hGrpView->SetInt("HeadlightIntensity", headlightIntensityTemp);
+    hGrpView->SetInt("HeadlightIntensityExisting", headlightIntensityExisting);
 
     auto editDoc = Gui::Application::Instance->editDocument();
     editDocName.clear();

@@ -105,7 +105,7 @@ are downloaded instead.
 INSTANCE = None
 
 
-class CommandAddonManager:
+class CommandAddonManager(QtCore.QObject):
     """The main Addon Manager class and FreeCAD command"""
 
     workers = [
@@ -125,7 +125,11 @@ class CommandAddonManager:
     lock = threading.Lock()
     restart_required = False
 
+    finished = QtCore.Signal()
+
     def __init__(self):
+        super().__init__()
+
         QT_TRANSLATE_NOOP("QObject", "Addon Manager")
         FreeCADGui.addPreferencePage(
             AddonManagerOptions,
@@ -228,6 +232,7 @@ class CommandAddonManager:
 
         # connect slots
         self.dialog.rejected.connect(self.reject)
+        self.dialog.accepted.connect(self.accept)
         self.button_bar.update_all_addons.clicked.connect(self.update_all)
         self.button_bar.close.clicked.connect(self.dialog.reject)
         self.button_bar.refresh_local_cache.clicked.connect(self.on_buttonUpdateCache_clicked)
@@ -284,6 +289,9 @@ class CommandAddonManager:
                                 ).format(worker)
                                 + "\n"
                             )
+
+    def accept(self) -> None:
+        self.finished.emit()
 
     def reject(self) -> None:
         """called when the window has been closed"""
@@ -355,6 +363,8 @@ class CommandAddonManager:
             if ret == m.Ok:
                 # restart FreeCAD after a delay to give time to this dialog to close
                 QtCore.QTimer.singleShot(1000, utils.restart_freecad)
+
+        self.finished.emit()
 
     def startup(self) -> None:
         """Downloads the available packages listings and populates the table

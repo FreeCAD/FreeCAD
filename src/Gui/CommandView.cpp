@@ -1648,6 +1648,11 @@ public:
     {
         return "StdCmdViewGroup";
     }
+
+    bool isActive() override
+    {
+        return hasActiveDocument();
+    }
 };
 
 //===========================================================================
@@ -3311,64 +3316,6 @@ void StdCmdDemoMode::activated(int iMsg)
     dlg->show();
 }
 
-//===========================================================================
-// Part_Measure_Clear_All
-//===========================================================================
-
-DEF_STD_CMD(CmdViewMeasureClearAll)
-
-CmdViewMeasureClearAll::CmdViewMeasureClearAll()
-  : Command("View_Measure_Clear_All")
-{
-    sGroup        = "Measure";
-    sMenuText     = QT_TR_NOOP("Clear measurement");
-    sToolTipText  = QT_TR_NOOP("Clear all visible measurements");
-    sWhatsThis    = "View_Measure_Clear_All";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Measure_Clear_All";
-}
-
-void CmdViewMeasureClearAll::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    auto view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->
-        activeDocument()->getActiveView());
-    if (!view)
-        return;
-    Gui::View3DInventorViewer *viewer = view->getViewer();
-    if (!viewer)
-        return;
-    viewer->eraseAllDimensions();
-}
-
-//===========================================================================
-// Part_Measure_Toggle_All
-//===========================================================================
-
-DEF_STD_CMD(CmdViewMeasureToggleAll)
-
-CmdViewMeasureToggleAll::CmdViewMeasureToggleAll()
-  : Command("View_Measure_Toggle_All")
-{
-    sGroup        = "Measure";
-    sMenuText     = QT_TR_NOOP("Toggle measurement");
-    sToolTipText  = QT_TR_NOOP("Turn on or off the display of all measurements");
-    sWhatsThis    = "View_Measure_Toggle_All";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Measure_Toggle_All";
-}
-
-void CmdViewMeasureToggleAll::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
-    bool visibility = group->GetBool("DimensionsVisible", true);
-    if (visibility)
-        group->SetBool("DimensionsVisible", false);
-    else
-      group->SetBool("DimensionsVisible", true);
-}
 
 //===========================================================================
 // Std_SelBack
@@ -4077,6 +4024,33 @@ bool StdRecallWorkingView::isActive()
 }
 
 //===========================================================================
+// Std_AlignToSelection
+//===========================================================================
+DEF_STD_CMD_A(StdCmdAlignToSelection)
+
+StdCmdAlignToSelection::StdCmdAlignToSelection()
+  : Command("Std_AlignToSelection")
+{
+    sGroup        = "View";
+    sMenuText     = QT_TR_NOOP("Align to selection");
+    sToolTipText  = QT_TR_NOOP("Align the view with the selection");
+    sWhatsThis    = "Std_AlignToSelection";
+    sPixmap       = "align-to-selection";
+    eType         = Alter3DView;
+}
+
+void StdCmdAlignToSelection::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"AlignToSelection\")");
+}
+
+bool StdCmdAlignToSelection::isActive()
+{
+    return getGuiApplication()->sendHasMsgToActiveView("AlignToSelection");
+}
+
+//===========================================================================
 // Instantiation
 //===========================================================================
 
@@ -4107,6 +4081,7 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdStoreWorkingView());
     rcCmdMgr.addCommand(new StdRecallWorkingView());
     rcCmdMgr.addCommand(new StdCmdViewGroup());
+    rcCmdMgr.addCommand(new StdCmdAlignToSelection());
 
     rcCmdMgr.addCommand(new StdCmdViewExample1());
     rcCmdMgr.addCommand(new StdCmdViewExample2());
@@ -4156,8 +4131,6 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdDemoMode());
     rcCmdMgr.addCommand(new StdCmdToggleNavigation());
     rcCmdMgr.addCommand(new StdCmdAxisCross());
-    rcCmdMgr.addCommand(new CmdViewMeasureClearAll());
-    rcCmdMgr.addCommand(new CmdViewMeasureToggleAll());
     rcCmdMgr.addCommand(new StdCmdSelBoundingBox());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
     rcCmdMgr.addCommand(new StdCmdDockOverlay());

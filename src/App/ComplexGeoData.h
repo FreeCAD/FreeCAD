@@ -53,6 +53,12 @@ namespace Data
 {
 
 //struct MappedChildElements;
+/// Option for App::GeoFeature::searchElementCache()
+enum class SearchOptions {
+    /// Whether to compare shape geometry
+    CheckGeometry = 1,
+    SingleResult = 2,
+};
 
 /** Segments
  *  Sub-element type of the ComplexGeoData type
@@ -290,7 +296,10 @@ public:
     // NOTE: getElementHistory is now in ElementMap
     long getElementHistory(const MappedName & name,
                            MappedName *original=nullptr, std::vector<MappedName> *history=nullptr) const {
-        return _elementMap->getElementHistory(name, Tag, original, history);
+        if ( _elementMap != nullptr ) {
+            return _elementMap->getElementHistory(name, Tag, original, history);
+        }
+        return 0;
     };
 
     void setMappedChildElements(const std::vector<Data::ElementMap::MappedChildElements> & children);

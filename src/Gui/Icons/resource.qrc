@@ -98,7 +98,6 @@
         <file>edge-selection.svg</file>
         <file>face-selection.svg</file>
         <file>clear-selection.svg</file>
-        <file>selection-filter.svg</file>
         <file>help-browser.svg</file>
         <file>preferences-system.svg</file>
         <file>process-stop.svg</file>
@@ -173,7 +172,6 @@
         <file>Param_Text.svg</file>
         <file>Param_UInt.svg</file>
         <file>PolygonPick.svg</file>
-        <file>Python.svg</file>
         <file>Std_CloseActiveWindow.svg</file>
         <file>Std_CloseAllWindows.svg</file>
         <file>Std_Export.svg</file>
@@ -235,6 +233,7 @@
         <file>colors.svg</file>
         <file>px.svg</file>
         <file>AddonManager.svg</file>
+        <file>align-to-selection.svg</file>
         <file>Group.svg</file>
         <file>Geofeaturegroup.svg</file>
         <file>Geoassembly.svg</file>
@@ -291,5 +290,6 @@
     </qresource>
     <qresource prefix="/doc">
         <file alias="CONTRIBUTORS">../../Doc/CONTRIBUTORS</file>
+        <file alias="PRIVACY_POLICY">../../../PRIVACY_POLICY.md</file>
     </qresource>
 </RCC>

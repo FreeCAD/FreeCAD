@@ -29,10 +29,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Draft_rc
-
-# The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
+from draftutils import gui_utils
 
 __title__ = "FreeCAD Draft Workbench GUI Tools - Working plane-related tools"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
@@ -45,18 +42,13 @@ class Draft_WorkingPlaneProxy:
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-
-        d = {'Pixmap': 'Draft_PlaneProxy',
-             'MenuText': QT_TRANSLATE_NOOP("Draft_WorkingPlaneProxy","Create working plane proxy"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_WorkingPlaneProxy","Creates a proxy object from the current working plane.\nOnce the object is created double click it in the tree view to restore the camera position and objects' visibilities.\nThen you can use it to save a different camera position and objects' states any time you need.")}
-        return d
+        return {"Pixmap": "Draft_PlaneProxy",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_WorkingPlaneProxy", "Create working plane proxy"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_WorkingPlaneProxy", "Creates a proxy object from the current working plane.\nOnce the object is created double click it in the tree view to restore the camera position and objects' visibilities.\nThen you can use it to save a different camera position and objects' states any time you need.")}
 
     def IsActive(self):
         """Return True when this command should be available."""
-        if Gui.ActiveDocument:
-            return True
-        else:
-            return False
+        return bool(gui_utils.get_3d_view())
 
     def Activated(self):
         """Execute when the command is called."""

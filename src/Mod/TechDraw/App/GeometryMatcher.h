@@ -39,10 +39,7 @@ namespace TechDraw
 class TechDrawExport GeometryMatcher
 {
 public:
-    GeometryMatcher() :
-            m_dimension(nullptr)  {}
-    explicit GeometryMatcher(DrawViewDimension* dim) :
-            m_dimension(dim)    {}
+    GeometryMatcher() = default;
 
     bool compareGeometry(const Part::TopoShape& geom1, const Part::TopoShape& geom2);
 
@@ -58,6 +55,7 @@ public:
 private:
     static bool comparePoints(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2);
     static bool compareEdges(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2);
+    static bool compareFaces(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2);
 
     static bool compareLines(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2);
     static bool compareCircles(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2);
@@ -69,7 +67,6 @@ private:
     static bool compareEllipseArcs(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2);
     static bool compareEndPoints(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2);
 
-    DrawViewDimension* m_dimension;
     double m_pointTolerance {EWTOLERANCE};
 };
 

@@ -70,6 +70,8 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
     ui->pfc_Welding->onSave();
     ui->pfc_FilePattern->onSave();
     ui->le_NamePattern->onSave();
+    ui->fcSymbolDir->onSave();
+
     ui->cb_ShowGrid->onSave();
     ui->psb_GridSpacing->onSave();
 
@@ -102,6 +104,8 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
     ui->pfc_Welding->onRestore();
     ui->pfc_FilePattern->onRestore();
     ui->le_NamePattern->onRestore();
+    ui->fcSymbolDir->onRestore();
+
 
     bool gridDefault = PreferencesGui::showGrid();
     ui->cb_ShowGrid->setChecked(gridDefault);
@@ -122,9 +126,7 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
 void DlgPrefsTechDrawGeneralImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        saveSettings();
         ui->retranslateUi(this);
-        loadSettings();
     }
     else {
         QWidget::changeEvent(e);

@@ -71,6 +71,20 @@ void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
     }
 }
 
+void ViewProviderPart::applyMaterial(const Part::ShapeHistory& hist,
+                                  const App::PropertyMaterialList& colBase,
+                                  std::vector<App::Material>& colBool)
+{
+    std::map<int, std::vector<int>>::const_iterator jt;
+    // apply color from modified faces
+    for (jt = hist.shapeMap.begin(); jt != hist.shapeMap.end(); ++jt) {
+        std::vector<int>::const_iterator kt;
+        for (kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
+            colBool[*kt] = colBase[jt->first];
+        }
+    }
+}
+
 void ViewProviderPart::applyTransparency(const float& transparency,
                                   std::vector<App::Color>& colors)
 {
@@ -81,6 +95,20 @@ void ViewProviderPart::applyTransparency(const float& transparency,
             // transparency hasn't been set for this face
             if (j->a == 0.0)
                 j->a = transparency/100.0; // transparency comes in percent
+        }
+    }
+}
+
+void ViewProviderPart::applyTransparency(const float& transparency, std::vector<App::Material>& colors)
+{
+    if (transparency != 0.0) {
+        // transparency has been set object-wide
+        std::vector<App::Material>::iterator j;
+        for (j = colors.begin(); j != colors.end(); ++j) {
+            // transparency hasn't been set for this face
+            if (j->transparency == 0.0) {
+                j->transparency = transparency / 100.0;  // transparency comes in percent
+            }
         }
     }
 }

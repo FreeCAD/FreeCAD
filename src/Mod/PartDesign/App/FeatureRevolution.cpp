@@ -99,7 +99,7 @@ App::DocumentObjectExecReturn* Revolution::execute()
 
     TopoShape sketchshape;
     try {
-        sketchshape = getVerifiedFace();
+        sketchshape = getTopoShapeVerifiedFace();
     }
     catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
@@ -161,7 +161,7 @@ App::DocumentObjectExecReturn* Revolution::execute()
 
         // Create a fresh support even when base exists so that it can be used for patterns
 #ifdef FC_USE_TNP_FIX
-        TopoShape result;
+        TopoShape result(0);
 #else
         TopoDS_Shape result;
 #endif
@@ -194,7 +194,6 @@ App::DocumentObjectExecReturn* Revolution::execute()
             if (!Ex.More()) {
                 supportface = TopoDS_Face();
             }
-            RevolMode mode = RevolMode::None;
 #ifdef FC_USE_TNP_FIX
             // revolve the face to a solid
             //            TopoShape result(0);
@@ -205,6 +204,7 @@ App::DocumentObjectExecReturn* Revolution::execute()
                 return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
             }
 #else
+            RevolMode mode = RevolMode::None;
             generateRevolution(result,
                                base.getShape(),
                                sketchshape.getShape(),
@@ -375,6 +375,7 @@ void Revolution::generateRevolution(TopoDS_Shape& revol,
 
 #ifdef FC_USE_TNP_FIX
         revol = TopoShape(from).makeElementRevolve(revolAx,angleTotal);
+        revol.Tag = -getID();
 #else
         // revolve the face to a solid
         // BRepPrimAPI is the only option that allows use of this shape for patterns.

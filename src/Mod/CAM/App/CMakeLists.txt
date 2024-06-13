@@ -17,7 +17,6 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 set(Path_LIBS
-#   Robot
     Part
     area-native
     FreeCADApp
@@ -120,6 +119,9 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
 add_library(Path SHARED ${Path_SRCS})
 target_link_libraries(Path ${Path_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Path)
+endif()
 
 # Boost >= 1.75.0
 if(NOT ${Boost_VERSION} LESS 107500)

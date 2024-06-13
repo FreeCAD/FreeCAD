@@ -605,22 +605,22 @@ void initInterpreter(int argc, char* argv[])
         throw Base::RuntimeError("Failed to init from config");
     }
 
+    // If FreeCAD was run from within a Python virtual environment, ensure that the site-packages
+    // directory from that environment is used.
+    const char* virtualenv = getenv("VIRTUAL_ENV");
+    if (virtualenv) {
+        std::wstringstream ss;
+        PyConfig_Read(&config);
+        ss << virtualenv << L"/lib/python" << PY_MAJOR_VERSION << "." << PY_MINOR_VERSION
+           << "/site-packages";
+        PyObject* venvLocation = PyUnicode_FromWideChar(ss.str().c_str(), ss.str().size());
+        PyObject* path = PySys_GetObject("path");
+        PyList_Append(path, venvLocation);
+    }
+
     PyConfig_Clear(&config);
 
     Py_Initialize();
-    const char* virtualenv = getenv("VIRTUAL_ENV");
-    if (virtualenv) {
-        PyRun_SimpleString(
-            "# Check for virtualenv, and activate if present.\n"
-            "# See "
-            "https://virtualenv.pypa.io/en/latest/userguide/#using-virtualenv-without-bin-python\n"
-            "import os\n"
-            "import sys\n"
-            "base_path = os.getenv(\"VIRTUAL_ENV\")\n"
-            "if not base_path is None:\n"
-            "    activate_this = os.path.join(base_path, \"bin\", \"activate_this.py\")\n"
-            "    exec(open(activate_this).read(), {'__file__':activate_this})\n");
-    }
 }
 }  // namespace
 const char* InterpreterSingleton::init(int argc, char* argv[])

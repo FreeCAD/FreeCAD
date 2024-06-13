@@ -184,7 +184,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="92"/>
       <source>Unable to explode %s</source>
-      <translation>Nie można rozbić %s</translation>
+      <translation>Nie można rozłożyć %s</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="139"/>
@@ -311,7 +311,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="100"/>
       <source>Explode Group</source>
-      <translation>Rozbij grupę</translation>
+      <translation>Rozłóż grupę</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="103"/>

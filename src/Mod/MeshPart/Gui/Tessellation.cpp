@@ -378,7 +378,7 @@ void Tessellation::setFaceColors(int method, App::Document* doc, App::DocumentOb
             auto svp = Base::freecad_dynamic_cast<PartGui::ViewProviderPartExt>(
                 Gui::Application::Instance->getViewProvider(obj));
             if (vpmesh && svp) {
-                std::vector<App::Color> diff_col = svp->DiffuseColor.getValues();
+                std::vector<App::Color> diff_col = svp->ShapeAppearance.getDiffuseColors();
                 if (ui->groupsFaceColors->isChecked()) {
                     diff_col = getUniqueColors(diff_col);
                 }

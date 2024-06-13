@@ -492,9 +492,10 @@ public:
     explicit RotateState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
-        ns.setRotationCenter(ns.getFocalPoint());
+        const auto inventorEvent = static_cast<const NS::Event*>(this->triggering_event())->inventor_event;
+        ns.saveCursorPosition(inventorEvent);
         ns.setViewingMode(NavigationStyle::DRAGGING);
-        this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
+        this->base_pos = inventorEvent->getPosition();
         if (ns.logging)
             Base::Console().Log(" -> RotateState\n");
     }

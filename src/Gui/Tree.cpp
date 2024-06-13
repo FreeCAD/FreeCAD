@@ -217,12 +217,14 @@ public:
     bool itemHidden;
     std::string label;
     std::string label2;
+    std::string internalName;
 
     using Connection = boost::signals2::scoped_connection;
 
     Connection connectIcon;
     Connection connectTool;
     Connection connectStat;
+    Connection connectHl;
 
     DocumentObjectData(DocumentItem* docItem, ViewProviderDocumentObject* vpd)
         : docItem(docItem)
@@ -236,12 +238,15 @@ public:
             std::bind(&DocumentObjectData::slotChangeToolTip, this, sp::_1));
         connectStat = viewObject->signalChangeStatusTip.connect(
             std::bind(&DocumentObjectData::slotChangeStatusTip, this, sp::_1));
+        connectHl = viewObject->signalChangeHighlight.connect(
+            std::bind(&DocumentObjectData::slotChangeHighlight, this, sp::_1, sp::_2));
         //NOLINTEND
 
         removeChildrenFromRoot = viewObject->canRemoveChildrenFromRoot();
         itemHidden = !viewObject->showInTree();
         label = viewObject->getObject()->Label.getValue();
         label2 = viewObject->getObject()->Label2.getValue();
+        internalName = viewObject->getObject()->getNameInDocument();
     }
 
     void insertItem(DocumentObjectItem* item)
@@ -359,6 +364,11 @@ public:
         for (auto item : items)
             item->setStatusTip(0, tip);
     }
+
+    void slotChangeHighlight(bool set, Gui::HighlightMode mode) {
+        for (auto item : items)
+            item->setHighlight(set, mode);
+    }
 };
 
 // ---------------------------------------------------------------------------
@@ -390,6 +400,21 @@ namespace Gui {
  */
 class TreeWidgetItemDelegate: public QStyledItemDelegate {
     typedef QStyledItemDelegate inherited;
+
+    // Beware, big scary hack incoming!
+    //
+    // This is artificial QTreeWidget that is not rendered and its sole goal is to be the source
+    // of style information that can be manipulated using QSS. From Qt6.5 tree branches also 
+    // have rendered background using ::item sub-control. Whole row also gets background from 
+    // the same sub-control. Only way to prevent this is to disable background of ::item,
+    // this however limits our ability to style tree items. As solution we create this widget
+    // that will be for painter to read information and draw proper backgrounds only when asked.
+    //
+    // More information: https://github.com/FreeCAD/FreeCAD/pull/13807
+    QTreeView *artificial;
+
+    QRect calculateItemRect(const QStyleOptionViewItem &option) const;
+
 public:
     explicit TreeWidgetItemDelegate(QObject* parent=nullptr);
 
@@ -408,6 +433,40 @@ public:
 TreeWidgetItemDelegate::TreeWidgetItemDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
 {
+    artificial = new QTreeView(qobject_cast<QWidget*>(parent));
+    artificial->setObjectName(QString::fromLatin1("DocumentTreeItems"));
+    artificial->setFixedSize(0, 0); // ensure that it does not render
+}
+
+
+QRect TreeWidgetItemDelegate::calculateItemRect(const QStyleOptionViewItem &option) const
+{
+    auto tree = static_cast<TreeWidget*>(parent());
+    auto style = tree->style();
+
+    QRect rect = option.rect;
+
+    const int margin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, &option, artificial) + 1;
+    
+    // 2 margin for text, 2 margin for decoration (icon) = 4 times margin
+    int width = 4 * margin 
+        + option.fontMetrics.boundingRect(option.text).width()
+        + option.decorationSize.width()
+        + TreeParams::getItemBackgroundPadding()
+    ;
+
+    if (TreeParams::getCheckBoxesSelection()) {
+        // another 2 margin for checkbox
+        width += 2 * margin 
+            + style->pixelMetric(QStyle::PM_IndicatorWidth)
+            + style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
+    }
+
+    if (width < rect.width()) {
+        rect.setWidth(width);
+    }
+
+    return rect;
 }
 
 void TreeWidgetItemDelegate::paint(QPainter *painter,
@@ -416,42 +475,29 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
     QStyleOptionViewItem opt = option;
     initStyleOption(&opt, index);
 
-    TreeWidget * tree = static_cast<TreeWidget*>(parent());
+    auto tree = static_cast<TreeWidget*>(parent());
     auto style = tree->style();
 
     // If the second column is not shown, we'll trim the color background when
     // rendering as transparent overlay.
-    bool trimBG = TreeParams::getHideColumn();
-    QRect rect = opt.rect;
 
+    bool trimBG = TreeParams::getHideColumn() || TreeParams::getHideInternalNames();
+    
     if (index.column() == 0) {
         if (tree->testAttribute(Qt::WA_NoSystemBackground)
                 && (trimBG || (opt.backgroundBrush.style() == Qt::NoBrush
                                 && _TreeItemBackground.style() != Qt::NoBrush)))
         {
-            const int margin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, &option, tree) + 1;
-            // 2 margin for text, 2 margin for decoration (icon)
-            int width = 4*margin + opt.fontMetrics.boundingRect(opt.text).width()
-                + opt.decorationSize.width() + TreeParams::getItemBackgroundPadding();
-            if (TreeParams::getCheckBoxesSelection()) {
-                // another 2 margin for checkbox
-                width += 2*margin + style->pixelMetric(QStyle::PM_IndicatorWidth)
-                    + style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
-            }
-            if (width < rect.width())
-                rect.setWidth(width);
-            if (trimBG) {
-                rect.setWidth(rect.width() + 5);
-                opt.rect = rect;
-                if (opt.backgroundBrush.style() == Qt::NoBrush)
-                    painter->fillRect(rect, _TreeItemBackground);
-            } else if (!opt.state.testFlag(QStyle::State_Selected))
+            QRect rect = calculateItemRect(option);
+
+            if (trimBG && opt.backgroundBrush.style() == Qt::NoBrush) {
                 painter->fillRect(rect, _TreeItemBackground);
+            } else if (!opt.state.testFlag(QStyle::State_Selected)) {
+                painter->fillRect(rect, _TreeItemBackground);
+            }
         }
-
     }
-
-    style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, tree);
+    style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, artificial);
 }
 
 void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
@@ -459,16 +505,35 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
 {
     inherited::initStyleOption(option, index);
 
-    TreeWidget * tree = static_cast<TreeWidget*>(parent());
-    QTreeWidgetItem * item = tree->itemFromIndex(index);
-    if (!item || item->type() != TreeWidget::ObjectType)
-        return;
+    auto tree = static_cast<TreeWidget*>(parent());
+    auto item = tree->itemFromIndex(index);
 
-    QSize size;
-    size = option->icon.actualSize(QSize(0xffff, 0xffff));
-    if (size.height())
-        option->decorationSize = QSize(size.width()*TreeWidget::iconSize()/size.height(),
-                                       TreeWidget::iconSize());
+    if (!item) {
+        return;
+    }
+
+    auto mousePos = option->widget->mapFromGlobal(QCursor::pos());
+    auto isHovered = option->rect.contains(mousePos);
+    if (!isHovered) {
+        option->state &= ~QStyle::State_MouseOver;
+    }
+
+    QSize size = option->icon.actualSize(QSize(0xffff, 0xffff));
+
+    if (size.height() > 0) {
+        option->decorationSize = QSize(
+            size.width() * TreeWidget::iconSize() / size.height(),
+            TreeWidget::iconSize()
+        );
+    }
+
+    if (TreeParams::getHideColumn()) {
+        option->rect = calculateItemRect(*option);
+
+        // we need to extend this shape a bit, 3px on each side
+        // this value was obtained experimentally
+        option->rect.setWidth(option->rect.width() + 3 * 2);
+    }
 }
 
 QWidget* TreeWidgetItemDelegate::createEditor(
@@ -526,8 +591,9 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
     this->setDragDropMode(QTreeWidget::InternalMove);
-    this->setColumnCount(2);
+    this->setColumnCount(3);
     this->setItemDelegate(new TreeWidgetItemDelegate(this));
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     this->showHiddenAction = new QAction(this);
     this->showHiddenAction->setCheckable(true);
@@ -605,12 +671,14 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     //NOLINTEND
 
     setupResizableColumn(this);
-    this->header()->setStretchLastSection(false);
+    this->header()->setStretchLastSection(true);
     QObject::connect(this->header(), &QHeaderView::sectionResized, [](int idx, int, int newSize) {
-        if (idx)
+        if (idx == 1)
             TreeParams::setColumnSize2(newSize);
-        else
-            TreeParams::setColumnSize1(newSize);
+        else if (idx == 2)
+                TreeParams::setColumnSize3(newSize);
+            else
+                TreeParams::setColumnSize1(newSize);
     });
 
     // Add the first main label
@@ -648,7 +716,8 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
         documentPartialPixmap = std::make_unique<QPixmap>(icon.pixmap(documentPixmap->size(), QIcon::Disabled));
     }
     setColumnHidden(1, TreeParams::getHideColumn());
-    header()->setVisible(!TreeParams::getHideColumn());
+    setColumnHidden(2, TreeParams::getHideInternalNames());
+    header()->setVisible(!TreeParams::getHideColumn() || !TreeParams::getHideInternalNames());
 }
 
 TreeWidget::~TreeWidget()
@@ -1040,6 +1109,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     contextMenu.addMenu(&settingsMenu);
 
     QAction* action = new QAction(tr("Show description column"), this);
+    QAction* internalNameAction = new QAction(tr("Show internal name"), this);
     action->setStatusTip(tr("Show an extra tree view column for item description. The item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property."));
     action->setCheckable(true);
 
@@ -1047,11 +1117,26 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     action->setChecked(!hGrp->GetBool("HideColumn", true));
 
     settingsMenu.addAction(action);
-    QObject::connect(action, &QAction::triggered, this, [this, action, hGrp]() {
+    QObject::connect(action, &QAction::triggered, this, [this, action, internalNameAction, hGrp]() {
         bool show = action->isChecked();
         hGrp->SetBool("HideColumn", !show);
         setColumnHidden(1, !show);
-        header()->setVisible(show);
+        header()->setVisible(action->isChecked()||internalNameAction->isChecked());
+    });
+
+
+    internalNameAction->setStatusTip(tr("Show an internal name column for items."));
+    internalNameAction->setCheckable(true);
+
+    internalNameAction->setChecked(!hGrp->GetBool("HideInternalNames", true));
+
+    settingsMenu.addAction(internalNameAction);
+
+    QObject::connect(internalNameAction, &QAction::triggered, this, [this, action, internalNameAction, hGrp]() {
+        bool show = internalNameAction->isChecked();
+        hGrp->SetBool("HideInternalNames", !show);
+        setColumnHidden(2, !show);
+        header()->setVisible(action->isChecked()||internalNameAction->isChecked());
     });
 
     if (contextMenu.actions().count() > 0) {
@@ -1365,12 +1450,15 @@ void TreeWidget::setupResizableColumn(TreeWidget *tree) {
         if(!tree || tree==inst) {
             inst->header()->setSectionResizeMode(0, mode);
             inst->header()->setSectionResizeMode(1, mode);
+            inst->header()->setSectionResizeMode(2, mode);
             if (TreeParams::getResizableColumn()) {
                 QSignalBlocker blocker(inst);
                 if (TreeParams::getColumnSize1() > 0)
                     inst->header()->resizeSection(0, TreeParams::getColumnSize1());
                 if (TreeParams::getColumnSize2() > 0)
                     inst->header()->resizeSection(1, TreeParams::getColumnSize2());
+               if (TreeParams::getColumnSize3() > 0)
+                    inst->header()->resizeSection(2, TreeParams::getColumnSize3());
             }
         }
     }
@@ -1614,12 +1702,25 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
 
             // If the visibility icon was clicked, toggle the DocumentObject visibility
             if (iconRect.contains(mousePos)) {
-                auto vp = objitem->object();
-                if (vp->isShow()) {
-                    vp->hide();
-                } else {
-                    vp->show();
+                auto obj = objitem->object()->getObject();
+                char const* objname = obj->getNameInDocument();
+
+                App::DocumentObject* parent = nullptr;
+                std::ostringstream subName;
+                objitem->getSubName(subName, parent);
+
+                // Try the ElementVisible API, if that is not supported toggle the Visibility property
+                int visible = -1;
+                if (parent) {
+                    visible = parent->isElementVisible(objname);
                 }
+                if (parent && visible >= 0) {
+                    parent->setElementVisible(objname, !visible);
+                } else {
+                    visible = obj->Visibility.getValue();
+                    obj->Visibility.setValue(!visible);
+                }
+
                 event->setAccepted(true);
                 return;
             }
@@ -1635,7 +1736,6 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
 
     try {
         if (item->type() == TreeWidget::DocumentType) {
-            //QTreeWidget::mouseDoubleClickEvent(event);
             Gui::Document* doc = static_cast<DocumentItem*>(item)->document();
             if (!doc)
                 return;
@@ -2654,7 +2754,7 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
         propGroup->setValue(sortedObjList);
     }
     else if (targetInfo.targetItem->type() == TreeWidget::DocumentType) {
-        objList = targetInfo.targetDoc->getRootObjects();
+        objList = targetInfo.targetDoc->getRootObjectsIgnoreLinks();
         // First we need to sort objList by treeRank.
         std::sort(objList.begin(), objList.end(),
             [](App::DocumentObject* a, App::DocumentObject* b) {
@@ -2683,19 +2783,6 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
 void TreeWidget::drawRow(QPainter* painter, const QStyleOptionViewItem& options, const QModelIndex& index) const
 {
     QTreeWidget::drawRow(painter, options, index);
-    // Set the text and highlighted text color of a hidden object to a dark
-    //QTreeWidgetItem * item = itemFromIndex(index);
-    //if (item->type() == ObjectType && !(static_cast<DocumentObjectItem*>(item)->previousStatus & 1)) {
-    //    QStyleOptionViewItem opt(options);
-    //    opt.state ^= QStyle::State_Enabled;
-    //    QColor c = opt.palette.color(QPalette::Inactive, QPalette::Dark);
-    //    opt.palette.setColor(QPalette::Inactive, QPalette::Text, c);
-    //    opt.palette.setColor(QPalette::Inactive, QPalette::HighlightedText, c);
-    //    QTreeWidget::drawRow(painter, opt, index);
-    //}
-    //else {
-    //    QTreeWidget::drawRow(painter, options, index);
-    //}
 }
 
 void TreeWidget::slotNewDocument(const Gui::Document& Doc, bool isMainDoc)
@@ -2710,16 +2797,6 @@ void TreeWidget::slotNewDocument(const Gui::Document& Doc, bool isMainDoc)
     DocumentMap[&Doc] = item;
 }
 
-void TreeWidget::slotStartOpenDocument() {
-    // No longer required. Visibility is now handled inside onUpdateStatus() by
-    // UpdateDisabler.
-    //
-    // setVisible(false);
-}
-
-void TreeWidget::slotFinishOpenDocument() {
-    // setVisible(true);
-}
 
 void TreeWidget::onReloadDoc() {
     if (!this->contextItem || this->contextItem->type() != DocumentType)
@@ -2834,11 +2911,11 @@ struct UpdateDisabler {
         focus = widget.hasFocus();
         visible = widget.isVisible();
         if (visible) {
-            // setUpdatesEnabled(false) does not seem to speed up anything.
-            // setVisible(false) on the other hand makes QTreeWidget::setData
-            // (i.e. any change to QTreeWidgetItem) faster by 10+ times.
-            //
-            // widget.setUpdatesEnabled(false);
+            // setUpdatesEnabled(false) does not seem to speed up anything. 
+            // setVisible(false) on the other hand makes QTreeWidget::setData 
+            // (i.e. any change to QTreeWidgetItem) faster by 10+ times. 
+            // 
+            // widget.setUpdatesEnabled(false); 
 
             widget.setVisible(false);
         }
@@ -2849,7 +2926,6 @@ struct UpdateDisabler {
 
         if (visible) {
             widget.setVisible(true);
-            // widget.setUpdatesEnabled(true);
             if (focus)
                 widget.setFocus();
         }
@@ -3185,6 +3261,7 @@ void TreeWidget::setupText()
 {
     this->headerItem()->setText(0, tr("Labels & Attributes"));
     this->headerItem()->setText(1, tr("Description"));
+    this->headerItem()->setText(2, tr("Internal name"));
 
     this->showHiddenAction->setText(tr("Show items hidden in tree view"));
     this->showHiddenAction->setStatusTip(tr("Show items that are marked as 'hidden' in the tree view"));
@@ -3780,6 +3857,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
     item->setText(0, QString::fromUtf8(data->label.c_str()));
     if (!data->label2.empty())
         item->setText(1, QString::fromUtf8(data->label2.c_str()));
+    item->setText(2, QString::fromUtf8(data->internalName.c_str()));
     if (!obj.showInTree() && !showHidden())
         item->setHidden(true);
     item->testStatus(true);
@@ -4536,21 +4614,6 @@ Gui::Document* DocumentItem::document() const
     return this->pDocument;
 }
 
-//void DocumentItem::markItem(const App::DocumentObject* Obj,bool mark)
-//{
-//    // never call without Object!
-//    assert(Obj);
-//
-//
-//    std::map<std::string,DocumentObjectItem*>::iterator pos;
-//    pos = ObjectMap.find(Obj);
-//    if (pos != ObjectMap.end()) {
-//        QFont f = pos->second->font(0);
-//        f.setUnderline(mark);
-//        pos->second->setFont(0,f);
-//    }
-//}
-
 void DocumentItem::testStatus()
 {
     for (const auto& v : ObjectMap)
@@ -4662,33 +4725,8 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
     if (!subname.empty()) {
         auto parentItem = item->getParentItem();
         assert(parentItem);
-        if (selected && parentItem->selected) {
-            // When a group item is selected, all its children objects are
-            // highlighted in the 3D view. So, when an item of some group is
-            // newly selected, we must force unselect its parent in order to
-            // show the selection highlight. Besides, select both the parent
-            // group and its children doesn't make much sense.
-            //
-            // UPDATE: There are legit use case of both parent and child
-            // selection, for example, to disambiguate under which group to
-            // operate on the child.
-            //
-            // TREE_TRACE("force unselect parent");
-            // parentItem->setSelected(false);
-            // updateItemSelection(parentItem);
-        }
     }
 
-    if (selected && item->isGroup()) {
-        // Same reasoning as above. When a group item is newly selected, We
-        // choose to force unselect all its children to void messing up the
-        // selection highlight
-        //
-        // UPDATE: same as above, child and parent selection is now re-enabled.
-        //
-        // TREE_TRACE("force unselect all children");
-        // updateSelection(item,true);
-    }
 
     if (!selected) {
         Gui::Selection().rmvSelection(docname, objname, subname.c_str());
@@ -5279,14 +5317,18 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
         // to black which will lead to unreadable text if the system background
         // hss already a dark color.
         // However, it works if we set the appropriate role to an empty QVariant().
-        this->setData(0, Qt::ForegroundRole, QVariant());
+        for (int column = 0; column < this->columnCount(); ++column) {
+            this->setData(column, Qt::ForegroundRole, QVariant());
+        }
     }
     else { // invisible
         QStyleOptionViewItem opt;
         // it can happen that a tree item is not attached to the tree widget (#0003025)
         if (this->treeWidget())
             opt.initFrom(this->treeWidget());
-        this->setForeground(0, opt.palette.color(QPalette::Disabled, QPalette::Text));
+        for (int column = 0; column < this->columnCount(); ++column) {
+            this->setForeground(column, opt.palette.color(QPalette::Disabled, QPalette::Text));
+        }
         mode = QIcon::Disabled;
     }
 

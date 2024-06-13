@@ -36,6 +36,7 @@ import WorkingPlane
 
 from FreeCAD import Units
 from drafttaskpanels import task_selectplane
+from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
 from draftutils.messages import _msg
@@ -60,10 +61,7 @@ class Draft_SelectPlane:
 
     def IsActive(self):
         """Return True when this command should be available."""
-        if Gui.ActiveDocument:
-            return True
-        else:
-            return False
+        return bool(gui_utils.get_3d_view())
 
     def Activated(self):
         """Execute when the command is called."""

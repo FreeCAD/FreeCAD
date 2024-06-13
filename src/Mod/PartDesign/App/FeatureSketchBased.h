@@ -57,6 +57,8 @@ public:
     App::PropertyBool    Midplane;
     /// Face to extrude up to
     App::PropertyLinkSub UpToFace;
+    /// Shape to extrude up to
+    App::PropertyLinkSubList UpToShape;
 
     App::PropertyBool AllowMultiFace;
 
@@ -127,7 +129,7 @@ public:
     // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
     TopoShape getTopoShapeSupportFace() const;
 
-    Base::Vector3d getProfileNormal() const;
+    virtual Base::Vector3d getProfileNormal() const;
 
     TopoShape getProfileShape() const;
 
@@ -163,6 +165,10 @@ protected:
     static void addOffsetToFace(TopoDS_Face& upToFace, const gp_Dir& dir, double offset);
     /// Extract a face from a given LinkSub
     static void getUpToFaceFromLinkSub(TopoShape& upToFace, const App::PropertyLinkSub& refFace);
+
+    /// Create a shape with shapes and faces from a given LinkSubList
+    /// return 0 if almost one full shape is selected else the face count
+    int getUpToShapeFromLinkSubList(TopoShape& upToShape, const App::PropertyLinkSubList& refShape); // TODO static
 
     /// Find a valid face to extrude up to
     static void getUpToFace(TopoShape& upToFace,
