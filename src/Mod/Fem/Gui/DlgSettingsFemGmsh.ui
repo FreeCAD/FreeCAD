@@ -109,7 +109,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="l_mesh_file_format">
           <property name="text">
-           <string>Mesh Format</string>
+           <string>Mesh format</string>
           </property>
          </widget>
         </item>
