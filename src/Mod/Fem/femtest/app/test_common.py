@@ -30,7 +30,7 @@ import unittest
 import FreeCAD
 
 import ObjectsFem
-import femsolver.solverbase as solverbas
+import femsolver.solverbase as solverbase
 from . import support_utils as testtools
 from .support_utils import fcc_print
 
@@ -144,7 +144,7 @@ class TestFemCommon(unittest.TestCase):
     def test_solver_mesh_format_property(self):
 
         solver = self.document.addObject("Fem::FemSolverObjectPython", "Solver")
-        proxy = solverbas.Proxy(solver)
+        proxy = solverbase.Proxy(solver)
 
         self.assertTrue(hasattr(solver, "MeshFormat"))
 

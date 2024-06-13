@@ -71,8 +71,6 @@ def read_msh(file_name):
 
     f = pyopen(file_name, "r")
     line = "\n"
-    include = ""
-    f_include = None
     total_num_nodes = 0
     node_ind = 1
     node_tag_array = []
@@ -85,14 +83,14 @@ def read_msh(file_name):
     elm_category = []
     point_elem = False
     number_of_nodes = 0
+    error_seg3 = False
+    error_not_supported_elemtype = False
     while line != "":
         line = f.readline()
         if line.strip() == "":
             continue
         
         elm_type = ""
-        error_seg3 = False
-        error_not_supported_elemtype = False
 
         # reading nodes
         if (line[:6].upper() == "$NODES"):

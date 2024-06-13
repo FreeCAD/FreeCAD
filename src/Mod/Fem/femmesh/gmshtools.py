@@ -950,7 +950,6 @@ class GmshTools():
         geo.close()
 
     def run_gmsh_with_geo(self):
-        FreeCAD.Console.PrintMessage("Run  Gmsh with GEO")
         command_list = [self.gmsh_bin, "-", self.temp_file_geo]
         # print(command_list)
         try:
