@@ -35,7 +35,7 @@ translate = FreeCAD.Qt.translate
 class BIM_ImagePlane:
     def GetResources(self):
         return {
-            "Pixmap": "Image_CreateImagePlane.svg",
+            "Pixmap": "BIM_ImagePlane.svg",
             "MenuText": QT_TRANSLATE_NOOP("BIM_ImagePlane", "Image plane"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_ImagePlane", "Creates a plane from an image"
