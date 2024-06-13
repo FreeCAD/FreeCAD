@@ -511,22 +511,22 @@ void DSHCircleController::adaptParameters(Base::Vector2d onSketchPos)
         case SelectMode::SeekSecond: {
             if (handler->constructionMethod()
                 == DrawSketchHandlerCircle::ConstructionMethod::Center) {
-                if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
-                    bool dimensioningDiameter = hGrp->GetBool("DimensioningDiameter", true);
-                    bool dimensioningRadius = hGrp->GetBool("DimensioningRadius", true);
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+                bool dimDiameter = hGrp->GetBool("DimensioningDiameter", true);
+                bool dimRadius = hGrp->GetBool("DimensioningRadius", true);
+                bool useRadius = dimRadius && !dimDiameter;
 
-                    if (dimensioningRadius && !dimensioningDiameter) {
-                        setOnViewParameterValue(OnViewParameter::Third, handler->radius);
-                    }
-                    else {
-                        setOnViewParameterValue(OnViewParameter::Third, handler->radius * 2);
-                    }
+                if (!onViewParameters[OnViewParameter::Third]->isSet) {
+                    double val = handler->radius * (useRadius ? 1 : 2);
+                    setOnViewParameterValue(OnViewParameter::Third, val);
                 }
 
                 Base::Vector3d start = toVector3d(handler->centerPoint);
                 Base::Vector3d end = toVector3d(onSketchPos);
+                if (!useRadius) {
+                    start = toVector3d(handler->centerPoint - (onSketchPos - handler->centerPoint));
+                }
 
                 onViewParameters[OnViewParameter::Third]->setPoints(start, end);
             }
