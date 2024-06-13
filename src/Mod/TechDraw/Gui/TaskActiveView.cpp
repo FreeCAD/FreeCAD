@@ -45,11 +45,15 @@
 #include "ui_TaskActiveView.h"
 #include "Grabber3d.h"
 #include "ViewProviderImage.h"
+#include "Rez.h"
 
 
 using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
+
+constexpr int SXGAWidth{1280};
+constexpr int SXGAHeight{1024};
 
 //ctor for creation
 TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
@@ -87,6 +91,9 @@ void TaskActiveView::setUiPrimary()
     setWindowTitle(QObject::tr("ActiveView to TD View"));
     ui->cbCrop->setChecked(false);
     enableCrop(false);
+    // cropping is in mm, but image size is in pixels/scene units
+    ui->qsbWidth->setValue(Rez::appX(SXGAWidth));
+    ui->qsbHeight->setValue(Rez::appX(SXGAHeight));
 }
 
 void TaskActiveView::blockButtons(bool b) { Q_UNUSED(b); }
@@ -183,9 +190,15 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
         bg = QColor(Qt::transparent);
     }
 
-    QImage image(100, 100,
-                 QImage::Format_RGB32);    //arbitrary initial image size. quickView will use
-                                           //MdiView size in pixels
+    int imageWidth{SXGAWidth};
+    int imageHeight{SXGAHeight};
+    if (ui->cbCrop->isChecked()) {
+        imageWidth = Rez::guiX(ui->qsbWidth->rawValue());
+        imageHeight = Rez::guiX(ui->qsbHeight->rawValue());
+    }
+
+    QImage image(imageWidth, imageHeight,
+                 QImage::Format_RGB32);    //arbitrary initial image size.
     image.fill(QColor(Qt::transparent));
     Grabber3d::quickView(view3d, bg, image);
     bool success = image.save(Base::Tools::fromStdString(tempName));
