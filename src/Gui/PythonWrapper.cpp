@@ -619,6 +619,25 @@ qsizetype PythonWrapper::toEnum(const Py::Object& pyobject)
     return toEnum(pyobject.ptr());
 }
 
+Py::Object PythonWrapper::tryToStandardButton(qsizetype value)
+{
+    std::stringstream cmd;
+    cmd << "from PySide import QtWidgets\n";
+    cmd << "btn = QtWidgets.QDialogButtonBox.StandardButton(" << value << ")";
+    return Py::asObject(Base::Interpreter().getValue(cmd.str().c_str(), "btn"));
+}
+
+Py::Object PythonWrapper::toStandardButton(qsizetype value)
+{
+    try {
+        return tryToStandardButton(value);
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        return Py::Long(value);
+    }
+}
+
 QGraphicsItem* PythonWrapper::toQGraphicsItem(PyObject* pyPtr)
 {
     return qt_getCppType<QGraphicsItem>(pyPtr);

@@ -56,6 +56,7 @@ public:
     QObject* toQObject(const Py::Object&);
     qsizetype toEnum(PyObject* pyPtr);
     qsizetype toEnum(const Py::Object& pyobject);
+    Py::Object toStandardButton(qsizetype);
     QGraphicsItem* toQGraphicsItem(PyObject* ptr);
     QGraphicsItem* toQGraphicsItem(const Py::Object& pyObject);
     QGraphicsObject* toQGraphicsObject(PyObject* pyPtr);
@@ -82,6 +83,7 @@ public:
 
 private:
     qsizetype tryEnum(PyObject* pyPtr);
+    Py::Object tryToStandardButton(qsizetype value);
 };
 
 } // namespace Gui
