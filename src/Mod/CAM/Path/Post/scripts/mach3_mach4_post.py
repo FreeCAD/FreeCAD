@@ -46,20 +46,14 @@ now = datetime.datetime.now()
 
 parser = argparse.ArgumentParser(prog="mach3_4", add_help=False)
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
-parser.add_argument(
-    "--no-comments", action="store_true", help="suppress comment output"
-)
-parser.add_argument(
-    "--line-numbers", action="store_true", help="prefix with line numbers"
-)
+parser.add_argument("--no-comments", action="store_true", help="suppress comment output")
+parser.add_argument("--line-numbers", action="store_true", help="prefix with line numbers")
 parser.add_argument(
     "--no-show-editor",
     action="store_true",
     help="don't pop up editor before writing output",
 )
-parser.add_argument(
-    "--precision", default="3", help="number of digits of precision, default=3"
-)
+parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
     help='set commands to be issued before the first command, default="G17\nG90"',
@@ -76,9 +70,7 @@ parser.add_argument(
     action="store_true",
     help="Output the Same G-command Name USE NonModal Mode",
 )
-parser.add_argument(
-    "--axis-modal", action="store_true", help="Output the Same Axis Value Mode"
-)
+parser.add_argument("--axis-modal", action="store_true", help="Output the Same Axis Value Mode")
 parser.add_argument(
     "--no-tlo",
     action="store_true",
@@ -94,9 +86,7 @@ OUTPUT_LINE_NUMBERS = False
 SHOW_EDITOR = True
 MODAL = False  # if true commands are suppressed if the same as previous line.
 USE_TLO = True  # if true G43 will be output following tool changes
-OUTPUT_DOUBLES = (
-    True  # if false duplicate axis values are suppressed if the same as previous line.
-)
+OUTPUT_DOUBLES = True  # if false duplicate axis values are suppressed if the same as previous line.
 COMMAND_SPACE = " "
 LINENR = 100  # line number starting value
 
@@ -128,8 +118,6 @@ POST_OPERATION = """"""
 
 # Tool Change commands will be inserted before a tool change
 TOOL_CHANGE = """"""
-
-
 
 
 def processArguments(argstring):
@@ -192,9 +180,7 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             print(
-                "the object "
-                + obj.Name
-                + " is not a path. Please select only path and Compounds."
+                "the object " + obj.Name + " is not a path. Please select only path and Compounds."
             )
             return None
 
@@ -236,11 +222,7 @@ def export(objectslist, filename, argstring):
 
         # get coolant mode
         coolantMode = "None"
-        if (
-            hasattr(obj, "CoolantMode")
-            or hasattr(obj, "Base")
-            and hasattr(obj.Base, "CoolantMode")
-        ):
+        if hasattr(obj, "CoolantMode") or hasattr(obj, "Base") and hasattr(obj.Base, "CoolantMode"):
             if hasattr(obj, "CoolantMode"):
                 coolantMode = obj.CoolantMode
             else:
@@ -418,9 +400,7 @@ def parse(pathobj):
                             "G0",
                             "G00",
                         ]:  # mach3_4 doesn't use rapid speeds
-                            speed = Units.Quantity(
-                                c.Parameters["F"], FreeCAD.Units.Velocity
-                            )
+                            speed = Units.Quantity(c.Parameters["F"], FreeCAD.Units.Velocity)
                             if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
                                 outstring.append(
                                     param
@@ -447,14 +427,9 @@ def parse(pathobj):
                         ):
                             continue
                         else:
-                            pos = Units.Quantity(
-                                c.Parameters[param], FreeCAD.Units.Length
-                            )
+                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                             outstring.append(
-                                param
-                                + format(
-                                    float(pos.getValueAs(UNIT_FORMAT)), precision_string
-                                )
+                                param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
                             )
 
             if adaptiveOp and c.Name in ["G0", "G00"]:

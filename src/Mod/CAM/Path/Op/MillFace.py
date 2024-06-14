@@ -108,9 +108,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                 "App::PropertyBool",
                 "ExcludeRaisedAreas",
                 "Face",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Exclude milling raised areas inside the face."
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Exclude milling raised areas inside the face."),
             )
 
         for n in self.propertyEnumerations():
@@ -174,9 +172,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                         # Limit to one model base per operation
                         if oneBase[0] is not b[0]:
                             oneBase[1] = False
-                        if numpy.isclose(
-                            abs(shape.normalAt(0, 0).z), 1
-                        ):  # horizontal face
+                        if numpy.isclose(abs(shape.normalAt(0, 0).z), 1):  # horizontal face
                             # Analyze internal closed wires to determine if raised or a recess
                             for wire in shape.Wires[1:]:
                                 if obj.ExcludeRaisedAreas:
@@ -187,17 +183,13 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                                     holes.append((b[0].Shape, wire))
                     else:
                         Path.Log.warning(
-                            'The base subobject, "{0}," is not a face. Ignoring "{0}."'.format(
-                                sub
-                            )
+                            'The base subobject, "{0}," is not a face. Ignoring "{0}."'.format(sub)
                         )
 
             if obj.ExcludeRaisedAreas and len(holes) > 0:
                 for shape, wire in holes:
                     f = Part.makeFace(wire, "Part::FaceMakerSimple")
-                    env = PathUtils.getEnvelope(
-                        shape, subshape=f, depthparams=self.depthparams
-                    )
+                    env = PathUtils.getEnvelope(shape, subshape=f, depthparams=self.depthparams)
                     holeEnvs.append(env)
                     holeShape = Part.makeCompound(holeEnvs)
 
@@ -233,9 +225,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             )
             env = PathUtils.getEnvelope(partshape=bbperim, depthparams=self.depthparams)
             if obj.ExcludeRaisedAreas and oneBase[1]:
-                includedFaces = self.getAllIncludedFaces(
-                    oneBase[0], env, faceZ=minHeight
-                )
+                includedFaces = self.getAllIncludedFaces(oneBase[0], env, faceZ=minHeight)
                 if len(includedFaces) > 0:
                     includedShape = Part.makeCompound(includedFaces)
                     includedEnv = PathUtils.getEnvelope(
@@ -249,13 +239,9 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             env = stock
 
             if obj.ExcludeRaisedAreas and oneBase[1]:
-                includedFaces = self.getAllIncludedFaces(
-                    oneBase[0], stock, faceZ=minHeight
-                )
+                includedFaces = self.getAllIncludedFaces(oneBase[0], stock, faceZ=minHeight)
                 if len(includedFaces) > 0:
-                    stockEnv = PathUtils.getEnvelope(
-                        partshape=stock, depthparams=self.depthparams
-                    )
+                    stockEnv = PathUtils.getEnvelope(partshape=stock, depthparams=self.depthparams)
                     includedShape = Part.makeCompound(includedFaces)
                     includedEnv = PathUtils.getEnvelope(
                         oneBase[0].Shape,
@@ -269,16 +255,10 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                 ofstShape = PathUtils.getOffsetArea(
                     planeshape, self.radius * 1.25, plane=planeshape
                 )
-                ofstShape.translate(
-                    FreeCAD.Vector(0.0, 0.0, psZMin - ofstShape.BoundBox.ZMin)
-                )
-                env = PathUtils.getEnvelope(
-                    partshape=ofstShape, depthparams=self.depthparams
-                )
+                ofstShape.translate(FreeCAD.Vector(0.0, 0.0, psZMin - ofstShape.BoundBox.ZMin))
+                env = PathUtils.getEnvelope(partshape=ofstShape, depthparams=self.depthparams)
             else:
-                env = PathUtils.getEnvelope(
-                    partshape=planeshape, depthparams=self.depthparams
-                )
+                env = PathUtils.getEnvelope(partshape=planeshape, depthparams=self.depthparams)
         elif obj.BoundaryShape == "Face Region":
             baseShape = planeshape  # oneBase[0].Shape
             psZMin = planeshape.BoundBox.ZMin
@@ -286,17 +266,13 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             if obj.ClearEdges:
                 ofst = self.tool.Diameter * 0.51
             ofstShape = PathUtils.getOffsetArea(planeshape, ofst, plane=planeshape)
-            ofstShape.translate(
-                FreeCAD.Vector(0.0, 0.0, psZMin - ofstShape.BoundBox.ZMin)
-            )
+            ofstShape.translate(FreeCAD.Vector(0.0, 0.0, psZMin - ofstShape.BoundBox.ZMin))
 
             # Calculate custom depth params for removal shape envelope, with start and final depth buffers
             custDepthparams = self._customDepthParams(
                 obj, obj.StartDepth.Value + 0.2, obj.FinalDepth.Value - 0.1
             )  # only an envelope
-            ofstShapeEnv = PathUtils.getEnvelope(
-                partshape=ofstShape, depthparams=custDepthparams
-            )
+            ofstShapeEnv = PathUtils.getEnvelope(partshape=ofstShape, depthparams=custDepthparams)
             if obj.ExcludeRaisedAreas:
                 env = ofstShapeEnv.cut(baseShape)
                 env.translate(
@@ -307,9 +283,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
 
         if holeShape:
             Path.Log.debug("Processing holes and face ...")
-            holeEnv = PathUtils.getEnvelope(
-                partshape=holeShape, depthparams=self.depthparams
-            )
+            holeEnv = PathUtils.getEnvelope(partshape=holeShape, depthparams=self.depthparams)
             newEnv = env.cut(holeEnv)
             tup = newEnv, False, "pathMillFace"
         else:
@@ -359,7 +333,8 @@ class ObjectFace(PathPocketBase.ObjectPocket):
 
     def getAllIncludedFaces(self, base, env, faceZ):
         """getAllIncludedFaces(base, env, faceZ)...
-        Return all `base` faces extending above `faceZ` whose boundboxes overlap with the `env` boundbox."""
+        Return all `base` faces extending above `faceZ` whose boundboxes overlap with the `env` boundbox.
+        """
         included = []
 
         eXMin = env.BoundBox.XMin

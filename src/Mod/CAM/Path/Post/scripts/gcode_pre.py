@@ -81,9 +81,6 @@ class PathNoJobException(Exception):
         super().__init__("No job object")
 
 
-
-
-
 def open(filename):
     """called when freecad opens a file."""
     Path.Log.track(filename)
@@ -104,7 +101,8 @@ def matchToolController(op, toolnumber):
 def _isImportEnvironmentReady():
     """_isImportEnvironmentReady(docname)...
     Helper function to verify an active document exists, and that a Job object is available
-    as a receiver for the Custom operation(s) that will be created as a result of the import process."""
+    as a receiver for the Custom operation(s) that will be created as a result of the import process.
+    """
 
     # Verify active document exists
     if FreeCAD.ActiveDocument is None:

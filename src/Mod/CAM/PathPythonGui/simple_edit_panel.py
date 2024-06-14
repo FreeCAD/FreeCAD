@@ -1,4 +1,3 @@
-
 import FreeCAD
 import FreeCADGui
 from PySide import QtGui
@@ -59,8 +58,7 @@ class SimpleEditPanel:
             enum = self.obj.getEnumerationsOfProperty(prop_name)
             # Populate the combo box with the enumeration elements, use the form context for translation
             elements = [
-                translate(self.form.objectName(), custom_lbls.get(itm, itm))
-                for itm in enum
+                translate(self.form.objectName(), custom_lbls.get(itm, itm)) for itm in enum
             ]
             widget.clear()
             widget.addItems(elements)
@@ -88,7 +86,9 @@ class SimpleEditPanel:
         )
 
     def getStandardButtons(self):
-        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel
+        return (
+            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel
+        )
 
     def clicked(self, button):
         # callback for standard buttons

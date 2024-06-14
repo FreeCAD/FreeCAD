@@ -147,9 +147,7 @@ class ToolBit(object):
             "App::PropertyLink",
             "BitBody",
             "Base",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The parametrized body representing the tool bit"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The parametrized body representing the tool bit"),
         )
         obj.addProperty(
             "App::PropertyFile",
@@ -167,9 +165,7 @@ class ToolBit(object):
             "App::PropertyStringList",
             "BitPropertyNames",
             "Base",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "List of all properties inherited from the bit"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "List of all properties inherited from the bit"),
         )
 
         if path:
@@ -205,9 +201,7 @@ class ToolBit(object):
                 "App::PropertyStringList",
                 "BitPropertyNames",
                 "Base",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "List of all properties inherited from the bit"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "List of all properties inherited from the bit"),
             )
             propNames = []
             for prop in obj.PropertiesList:
@@ -348,9 +342,7 @@ class ToolBit(object):
             (doc, docOpened) = self._loadBitBody(obj, path)
         except FileNotFoundError:
             Path.Log.error(
-                "Could not find shape file {} for tool bit {}".format(
-                    obj.BitShape, obj.Label
-                )
+                "Could not find shape file {} for tool bit {}".format(obj.BitShape, obj.Label)
             )
             return
 
@@ -366,23 +358,17 @@ class ToolBit(object):
         if bitBody.ViewObject:
             bitBody.ViewObject.Visibility = False
 
-        Path.Log.debug(
-            "bitBody.{} ({}): {}".format(bitBody.Label, bitBody.Name, type(bitBody))
-        )
+        Path.Log.debug("bitBody.{} ({}): {}".format(bitBody.Label, bitBody.Name, type(bitBody)))
 
         propNames = []
-        for attributes in [
-            o for o in bitBody.Group if PathPropertyBag.IsPropertyBag(o)
-        ]:
+        for attributes in [o for o in bitBody.Group if PathPropertyBag.IsPropertyBag(o)]:
             Path.Log.debug("Process properties from {}".format(attributes.Label))
             for prop in attributes.Proxy.getCustomProperties():
                 self._setupProperty(obj, prop, attributes)
                 propNames.append(prop)
         if not propNames:
             Path.Log.error(
-                "Did not find a PropertyBag in {} - not a ToolBit shape?".format(
-                    docName
-                )
+                "Did not find a PropertyBag in {} - not a ToolBit shape?".format(docName)
             )
 
         # has to happen last because it could trigger op.execute evaluations
@@ -445,9 +431,7 @@ class ToolBit(object):
                 obj.File = path
             return True
         except (OSError, IOError) as e:
-            Path.Log.error(
-                "Could not save tool {} to {} ({})".format(obj.Label, path, e)
-            )
+            Path.Log.error("Could not save tool {} to {} ({})".format(obj.Label, path, e))
             raise
 
     def templateAttrs(self, obj):

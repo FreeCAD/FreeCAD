@@ -50,13 +50,9 @@ class CommandCAMSanity:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Sanity",
-            "MenuText": QT_TRANSLATE_NOOP(
-                "CAM_Sanity", "Check the CAM job for common errors"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Sanity", "Check the CAM job for common errors"),
             "Accel": "P, S",
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_Sanity", "Check the CAM job for common errors"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Sanity", "Check the CAM job for common errors"),
         }
 
     def IsActive(self):
@@ -66,7 +62,6 @@ class CommandCAMSanity:
     def Activated(self):
         FreeCADGui.addIconPath(":/icons")
         obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-
 
         # Ask the user for a filename to save the report to
 
@@ -85,11 +80,9 @@ class CommandCAMSanity:
             return
 
         with open(file_location, "w") as fp:
-                fp.write(html)
+            fp.write(html)
 
-        FreeCAD.Console.PrintMessage(
-            "Sanity check report written to: {}\n".format(file_location)
-        )
+        FreeCAD.Console.PrintMessage("Sanity check report written to: {}\n".format(file_location))
 
         webbrowser.open_new_tab(file_location)
 

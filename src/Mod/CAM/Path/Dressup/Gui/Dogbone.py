@@ -55,9 +55,7 @@ def debugMarker(vector, label, color=None, radius=0.5):
         obj = FreeCAD.ActiveDocument.addObject("Part::Sphere", label)
         obj.Label = label
         obj.Radius = radius
-        obj.Placement = FreeCAD.Placement(
-            vector, FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0)
-        )
+        obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0))
         if color:
             obj.ViewObject.ShapeColor = color
 
@@ -68,9 +66,7 @@ def debugCircle(vector, r, label, color=None):
         obj.Label = label
         obj.Radius = r
         obj.Height = 1
-        obj.Placement = FreeCAD.Placement(
-            vector, FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0)
-        )
+        obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0))
         obj.ViewObject.Transparency = 90
         if color:
             obj.ViewObject.ShapeColor = color
@@ -118,9 +114,7 @@ def edgesForCommands(cmds, startPt):
             if cmd.Name in Path.Geom.CmdMoveStraight:
                 edges.append(Part.Edge(Part.LineSegment(lastPt, pt)))
             elif cmd.Name in Path.Geom.CmdMoveArc:
-                center = lastPt + pointFromCommand(
-                    cmd, FreeCAD.Vector(0, 0, 0), "I", "J", "K"
-                )
+                center = lastPt + pointFromCommand(cmd, FreeCAD.Vector(0, 0, 0), "I", "J", "K")
                 A = lastPt - center
                 B = pt - center
                 d = -B.x * A.y + B.y * A.x
@@ -307,9 +301,7 @@ class Chord(object):
 
     def isANoopMove(self):
         Path.Log.debug(
-            "{}.isANoopMove(): {}".format(
-                self, Path.Geom.pointsCoincide(self.Start, self.End)
-            )
+            "{}.isANoopMove(): {}".format(self, Path.Geom.pointsCoincide(self.Start, self.End))
         )
         return Path.Geom.pointsCoincide(self.Start, self.End)
 
@@ -450,9 +442,7 @@ class ObjectDressup(object):
             "App::PropertyEnumeration",
             "Incision",
             "Dressup",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The algorithm to determine the bone length"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The algorithm to determine the bone length"),
         )
         obj.Incision = Incision.All
         obj.Incision = Incision.Adaptive
@@ -528,9 +518,7 @@ class ObjectDressup(object):
                 Path.Log.debug("Taking tangent as intersect %s" % tangent)
                 ppt = pivot + tangent
             else:
-                Path.Log.debug(
-                    "Taking chord start as intersect %s" % edge.Vertexes[0].Point
-                )
+                Path.Log.debug("Taking chord start as intersect %s" % edge.Vertexes[0].Point)
                 ppt = edge.Vertexes[0].Point
             # debugMarker(ppt, "ptt.%d-%s.in" % (self.boneId, d), color, 0.2)
             Path.Log.debug("        -->  (%.2f, %.2f)" % (ppt.x, ppt.y))
@@ -540,9 +528,7 @@ class ObjectDressup(object):
         param = edge.Curve.parameter(point)
         return edge.FirstParameter <= param <= edge.LastParameter
 
-    def smoothChordCommands(
-        self, bone, inChord, outChord, edge, wire, corner, smooth, color=None
-    ):
+    def smoothChordCommands(self, bone, inChord, outChord, edge, wire, corner, smooth, color=None):
         if smooth == 0:
             Path.Log.info(" No smoothing requested")
             return [bone.lastCommand, outChord.g1Command(bone.F)]
@@ -587,9 +573,7 @@ class ObjectDressup(object):
                     % (e.Curve.Center.x, e.Curve.Center.y, e.Curve.Radius)
                 )
             for pt in DraftGeomUtils.findIntersection(edge, e, True, findAll=True):
-                if not Path.Geom.pointsCoincide(pt, corner) and self.pointIsOnEdge(
-                    pt, e
-                ):
+                if not Path.Geom.pointsCoincide(pt, corner) and self.pointIsOnEdge(pt, e):
                     # debugMarker(pt, "candidate-%d-%s" % (self.boneId, d), color, 0.05)
                     Path.Log.debug("         -> candidate")
                     distance = (pt - refPoint).Length
@@ -602,9 +586,7 @@ class ObjectDressup(object):
         if pivot:
             # debugCircle(pivot, self.toolRadius, "pivot.%d-%s" % (self.boneId, d), color)
 
-            pivotEdge = Part.Edge(
-                Part.Circle(pivot, FreeCAD.Vector(0, 0, 1), self.toolRadius)
-            )
+            pivotEdge = Part.Edge(Part.Circle(pivot, FreeCAD.Vector(0, 0, 1), self.toolRadius))
             t1 = self.findPivotIntersection(
                 pivot, pivotEdge, inChord.asEdge(), inChord.End, d, color
             )
@@ -699,9 +681,7 @@ class ObjectDressup(object):
         boneArc = Part.Arc(vt1, vm2, vb1)
         # boneArc = Part.Circle(FreeCAD.Vector(length, 0, 0), FreeCAD.Vector(0,0,1), self.toolRadius)
         boneWire = Part.Shape([boneTop, boneArc, boneBot, boneLid])
-        boneWire.rotate(
-            FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1), boneAngle * 180 / math.pi
-        )
+        boneWire.rotate(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1), boneAngle * 180 / math.pi)
         boneWire.translate(bone.inChord.End)
         self.boneShapes = [cornerShape, boneWire]
 
@@ -852,9 +832,7 @@ class ObjectDressup(object):
                         # debugCircle(e2.Curve.Center, e2.Curve.Radius, "bone.%d-2" % (self.boneId), (0.,1.,0.))
                         if Path.Geom.pointsCoincide(
                             pt, e1.valueAt(e1.LastParameter)
-                        ) or Path.Geom.pointsCoincide(
-                            pt, e2.valueAt(e2.FirstParameter)
-                        ):
+                        ) or Path.Geom.pointsCoincide(pt, e2.valueAt(e2.FirstParameter)):
                             continue
                         # debugMarker(pt, "it", (0.0, 1.0, 1.0))
                         # 1. remove all redundant commands
@@ -871,9 +849,7 @@ class ObjectDressup(object):
                             center = e2.Curve.Center
                             offset = center - pt
                             c2Params = c2.Parameters
-                            c2Params.update(
-                                {"I": offset.x, "J": offset.y, "K": offset.z}
-                            )
+                            c2Params.update({"I": offset.x, "J": offset.y, "K": offset.z})
                             c2 = Path.Command(c2.Name, c2Params)
                             bones = [c2]
                             bones.extend(bone2.commands[j + 1 :])
@@ -900,9 +876,7 @@ class ObjectDressup(object):
         lastChord = Chord()  # the last chord
         lastCommand = None  # the command that generated the last chord
         lastBone = None  # track last bone for optimizations
-        oddsAndEnds = (
-            []
-        )  # track chords that are connected to plunges - in case they form a loop
+        oddsAndEnds = []  # track chords that are connected to plunges - in case they form a loop
 
         boneId = 1
         self.bones = []
@@ -910,7 +884,7 @@ class ObjectDressup(object):
         self.length = 0
         # boneIserted = False
 
-        for (i, thisCommand) in enumerate(PathUtils.getPathWithPlacement(obj.Base).Commands):
+        for i, thisCommand in enumerate(PathUtils.getPathWithPlacement(obj.Base).Commands):
             # if i > 14:
             #    if lastCommand:
             #        commands.append(lastCommand)
@@ -942,23 +916,17 @@ class ObjectDressup(object):
                     if lastBone:
                         Path.Log.info("  removing potential path crossing")
                         # debugMarker(thisChord.Start, "it", (1.0, 0.0, 1.0))
-                        commands, bones = self.removePathCrossing(
-                            commands, lastBone, bone
-                        )
+                        commands, bones = self.removePathCrossing(commands, lastBone, bone)
                     commands.extend(bones[:-1])
                     lastCommand = bones[-1]
                     lastBone = bone
                 elif lastCommand and thisChord.isAPlungeMove():
                     Path.Log.info("  Looking for connection in odds and ends")
                     haveNewLastCommand = False
-                    for chord in (
-                        chord for chord in oddsAndEnds if lastChord.connectsTo(chord)
-                    ):
+                    for chord in (chord for chord in oddsAndEnds if lastChord.connectsTo(chord)):
                         if self.shouldInsertDogbone(obj, lastChord, chord):
                             Path.Log.info("    and there is one")
-                            Path.Log.debug(
-                                "    odd/end={} last={}".format(chord, lastChord)
-                            )
+                            Path.Log.debug("    odd/end={} last={}".format(chord, lastChord))
                             bone = Bone(
                                 boneId,
                                 obj,
@@ -973,9 +941,7 @@ class ObjectDressup(object):
                             if lastBone:
                                 Path.Log.info("    removing potential path crossing")
                                 # debugMarker(chord.Start, "it", (0.0, 1.0, 1.0))
-                                commands, bones = self.removePathCrossing(
-                                    commands, lastBone, bone
-                                )
+                                commands, bones = self.removePathCrossing(commands, lastBone, bone)
                             commands.extend(bones[:-1])
                             lastCommand = bones[-1]
                             haveNewLastCommand = True
@@ -1060,7 +1026,7 @@ class ObjectDressup(object):
         # If the receiver was loaded from file, then it never generated the bone list.
         if not hasattr(self, "bones"):
             self.execute(obj)
-        for (nr, loc, enabled, inaccessible) in self.bones:
+        for nr, loc, enabled, inaccessible in self.bones:
             item = state.get((loc[0], loc[1]))
             if item:
                 item[2].append(nr)
@@ -1176,10 +1142,7 @@ class TaskPanel(object):
                 item.setCheckState(QtCore.Qt.CheckState.Unchecked)
             flags = QtCore.Qt.ItemFlag.ItemIsSelectable
             if not inaccessible:
-                flags |= (
-                    QtCore.Qt.ItemFlag.ItemIsEnabled
-                    | QtCore.Qt.ItemFlag.ItemIsUserCheckable
-                )
+                flags |= QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable
             item.setFlags(flags)
             item.setData(self.DataIds, ids)
             item.setData(self.DataKey, ids[0])
@@ -1281,9 +1244,7 @@ class SelObserver(object):
         PST.clear()
 
     def addSelection(self, doc, obj, sub, pnt):
-        FreeCADGui.doCommand(
-            "Gui.Selection.addSelection(FreeCAD.ActiveDocument." + obj + ")"
-        )
+        FreeCADGui.doCommand("Gui.Selection.addSelection(FreeCAD.ActiveDocument." + obj + ")")
         FreeCADGui.updateGui()
 
 
@@ -1384,8 +1345,7 @@ class CommandDressupDogbone(object):
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(
-                translate("CAM_DressupDogbone", "The selected object is not a toolpath")
-                + "\n"
+                translate("CAM_DressupDogbone", "The selected object is not a toolpath") + "\n"
             )
             return
 
@@ -1393,8 +1353,7 @@ class CommandDressupDogbone(object):
         FreeCAD.ActiveDocument.openTransaction("Create Dogbone Dress-up")
         FreeCADGui.addModule("Path.Dressup.Gui.Dogbone")
         FreeCADGui.doCommand(
-            "Path.Dressup.Gui.Dogbone.Create(FreeCAD.ActiveDocument.%s)"
-            % baseObject.Name
+            "Path.Dressup.Gui.Dogbone.Create(FreeCAD.ActiveDocument.%s)" % baseObject.Name
         )
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()

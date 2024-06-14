@@ -86,10 +86,7 @@ class TestGeneratorDogboneII(PathTestUtils.PathTestBase):
         self.assertEqual(f"[{', '.join(kinks)}]", s)
 
     def assertBones(self, maneuver, threshold, s):
-        bones = [
-            f"({int(b.x())},{int(b.y())})"
-            for b in findDogboneKinks(maneuver, threshold)
-        ]
+        bones = [f"({int(b.x())},{int(b.y())})" for b in findDogboneKinks(maneuver, threshold)]
         self.assertEqual(f"[{', '.join(bones)}]", s)
 
     def assertBone(self, bone, s, digits=0):
@@ -124,9 +121,7 @@ class TestGeneratorDogboneII(PathTestUtils.PathTestBase):
 
     def test30(self):
         """Verify dogbone detection"""
-        self.assertBones(
-            MNVR("G1X1/G1Y1/G1X0/G1Y0"), PI / 4, "[(1,0), (1,1), (0,1), (0,0)]"
-        )
+        self.assertBones(MNVR("G1X1/G1Y1/G1X0/G1Y0"), PI / 4, "[(1,0), (1,1), (0,1), (0,0)]")
         self.assertBones(MNVR("G1X1/G1Y1/G1X0/G1Y0"), -PI / 4, "[]")
 
         # no bones on flat angle
@@ -138,9 +133,7 @@ class TestGeneratorDogboneII(PathTestUtils.PathTestBase):
         self.assertBones(MNVR("G1X1/G3Y2J1/G1X0/G1Y0"), -PI / 4, "[]")
 
         # a bone on perpendicular arc
-        self.assertBones(
-            MNVR("G1X1/G3X3I1/G1Y1/G1X0/G1Y0"), PI / 4, "[(3,1), (0,1), (0,0)]"
-        )
+        self.assertBones(MNVR("G1X1/G3X3I1/G1Y1/G1X0/G1Y0"), PI / 4, "[(3,1), (0,1), (0,0)]")
         self.assertBones(MNVR("G1X1/G3X3I1/G1Y1/G1X0/G1Y0"), -PI / 4, "[(1,0)]")
 
     def test40(self):

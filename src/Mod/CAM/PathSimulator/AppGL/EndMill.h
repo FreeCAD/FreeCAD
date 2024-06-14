@@ -26,7 +26,7 @@
 #include "SimShapes.h"
 #include <vector>
 
-#define PROFILE_BUFFER_POINTS(npoints) ((npoints) * 2 - 1)
+#define PROFILE_BUFFER_POINTS(npoints) ((npoints)*2 - 1)
 #define PROFILE_BUFFER_SIZE(npoints) (PROFILE_BUFFER_POINTS(npoints) * 2)
 #define MILL_HEIGHT 10
 

@@ -101,9 +101,7 @@ class CommandPathComment:
         return {
             "Pixmap": "CAM_Comment",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Comment", "Comment"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_Comment", "Add a Comment to your CNC program"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Comment", "Add a Comment to your CNC program"),
         }
 
     def IsActive(self):

@@ -36,9 +36,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
 
     def setUp(self):
         self.clone = None
-        self.doc = FreeCAD.open(
-            FreeCAD.getHomePath() + "Mod/CAM/Tests/test_holes00.fcstd"
-        )
+        self.doc = FreeCAD.open(FreeCAD.getHomePath() + "Mod/CAM/Tests/test_holes00.fcstd")
         self.job = PathJob.Create("Job", [self.doc.Body])
 
     def tearDown(self):
@@ -59,9 +57,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
             model = base[0]
             for sub in base[1]:
                 pos = proxy.holePosition(op, model, sub)
-                self.assertRoughly(
-                    round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub)
-                )
+                self.assertRoughly(round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub))
 
     def test02(self):
         """Verify Helix generates proper holes for rotated model"""
@@ -88,9 +84,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
 
         for deg in range(self.RotateBy, 360, self.RotateBy):
             self.tearDown()
-            self.doc = FreeCAD.open(
-                FreeCAD.getHomePath() + "Mod/CAM/Tests/test_holes00.fcstd"
-            )
+            self.doc = FreeCAD.open(FreeCAD.getHomePath() + "Mod/CAM/Tests/test_holes00.fcstd")
             self.doc.Body.Placement.Rotation = FreeCAD.Rotation(deg, 0, 0)
 
             self.job = PathJob.Create("Job", [self.doc.Body])
@@ -113,9 +107,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
         """Verify Helix generates proper holes for rotated clone base model"""
         for deg in range(self.RotateBy, 360, self.RotateBy):
             self.tearDown()
-            self.doc = FreeCAD.open(
-                FreeCAD.getHomePath() + "Mod/CAM/Tests/test_holes00.fcstd"
-            )
+            self.doc = FreeCAD.open(FreeCAD.getHomePath() + "Mod/CAM/Tests/test_holes00.fcstd")
             self.clone = Draft.clone(self.doc.Body)
             self.clone.Placement.Rotation = FreeCAD.Rotation(deg, 0, 0)
 

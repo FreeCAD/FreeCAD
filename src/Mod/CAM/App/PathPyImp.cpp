@@ -46,7 +46,7 @@ std::string PathPy::representation() const
     return str.str();
 }
 
-PyObject *PathPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* PathPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of PathPy and the Twin object
     return new PathPy(new Toolpath);
@@ -55,16 +55,18 @@ PyObject *PathPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pytho
 // constructor method
 int PathPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    PyObject *pcObj=nullptr;
-    char *gcode;
+    PyObject* pcObj = nullptr;
+    char* gcode;
     if (PyArg_ParseTuple(args, "|O!", &(PyList_Type), &pcObj)) {
         if (pcObj) {
             Py::List list(pcObj);
             for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Path::CommandPy::Type))) {
-                    Path::Command &cmd = *static_cast<Path::CommandPy*>((*it).ptr())->getCommandPtr();
+                    Path::Command& cmd =
+                        *static_cast<Path::CommandPy*>((*it).ptr())->getCommandPtr();
                     getToolpathPtr()->addCommand(cmd);
-                } else {
+                }
+                else {
                     PyErr_SetString(PyExc_TypeError, "The list must contain only Path Commands");
                     return -1;
                 }
@@ -72,7 +74,7 @@ int PathPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         return 0;
     }
-    PyErr_Clear(); // set by PyArg_ParseTuple()
+    PyErr_Clear();  // set by PyArg_ParseTuple()
     if (PyArg_ParseTuple(args, "|s", &gcode)) {
         getToolpathPtr()->setFromGCode(gcode);
         return 0;
@@ -87,8 +89,10 @@ int PathPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 Py::List PathPy::getCommands() const
 {
     Py::List list;
-    for(unsigned int i = 0; i < getToolpathPtr()->getSize(); i++)
-        list.append(Py::asObject(new Path::CommandPy(new Path::Command(getToolpathPtr()->getCommand(i)))));
+    for (unsigned int i = 0; i < getToolpathPtr()->getSize(); i++) {
+        list.append(
+            Py::asObject(new Path::CommandPy(new Path::Command(getToolpathPtr()->getCommand(i)))));
+    }
     return list;
 }
 
@@ -97,9 +101,10 @@ void PathPy::setCommands(Py::List list)
     getToolpathPtr()->clear();
     for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
         if (PyObject_TypeCheck((*it).ptr(), &(Path::CommandPy::Type))) {
-            Path::Command &cmd = *static_cast<Path::CommandPy*>((*it).ptr())->getCommandPtr();
+            Path::Command& cmd = *static_cast<Path::CommandPy*>((*it).ptr())->getCommandPtr();
             getToolpathPtr()->addCommand(cmd);
-        } else {
+        }
+        else {
             throw Py::TypeError("The list can only contain Path Commands");
         }
     }
@@ -134,7 +139,7 @@ Py::Object PathPy::getBoundBox() const
 
 // specific methods
 
-PyObject* PathPy::copy(PyObject * args)
+PyObject* PathPy::copy(PyObject* args)
 {
     if (PyArg_ParseTuple(args, "")) {
         return new PathPy(new Path::Toolpath(*getToolpathPtr()));
@@ -142,21 +147,21 @@ PyObject* PathPy::copy(PyObject * args)
     throw Py::TypeError("This method accepts no argument");
 }
 
-PyObject* PathPy::addCommands(PyObject * args)
+PyObject* PathPy::addCommands(PyObject* args)
 {
     PyObject* o;
     if (PyArg_ParseTuple(args, "O!", &(Path::CommandPy::Type), &o)) {
-        Path::Command &cmd = *static_cast<Path::CommandPy*>(o)->getCommandPtr();
+        Path::Command& cmd = *static_cast<Path::CommandPy*>(o)->getCommandPtr();
         getToolpathPtr()->addCommand(cmd);
         return new PathPy(new Path::Toolpath(*getToolpathPtr()));
-        //Py_Return;
+        // Py_Return;
     }
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O!", &(PyList_Type), &o)) {
         Py::List list(o);
         for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Path::CommandPy::Type))) {
-                Path::Command &cmd = *static_cast<Path::CommandPy*>((*it).ptr())->getCommandPtr();
+                Path::Command& cmd = *static_cast<Path::CommandPy*>((*it).ptr())->getCommandPtr();
                 getToolpathPtr()->addCommand(cmd);
             }
         }
@@ -165,19 +170,19 @@ PyObject* PathPy::addCommands(PyObject * args)
     Py_Error(PyExc_TypeError, "Wrong parameters - command or list of commands expected");
 }
 
-PyObject* PathPy::insertCommand(PyObject * args)
+PyObject* PathPy::insertCommand(PyObject* args)
 {
     PyObject* o;
     int pos = -1;
     if (PyArg_ParseTuple(args, "O!|i", &(Path::CommandPy::Type), &o, &pos)) {
-        Path::Command &cmd = *static_cast<Path::CommandPy*>(o)->getCommandPtr();
-        getToolpathPtr()->insertCommand(cmd,pos);
+        Path::Command& cmd = *static_cast<Path::CommandPy*>(o)->getCommandPtr();
+        getToolpathPtr()->insertCommand(cmd, pos);
         return new PathPy(new Path::Toolpath(*getToolpathPtr()));
     }
     Py_Error(PyExc_TypeError, "Wrong parameters - expected command and optional integer");
 }
 
-PyObject* PathPy::deleteCommand(PyObject * args)
+PyObject* PathPy::deleteCommand(PyObject* args)
 {
     int pos = -1;
     if (PyArg_ParseTuple(args, "|i", &pos)) {
@@ -187,10 +192,10 @@ PyObject* PathPy::deleteCommand(PyObject * args)
     Py_Error(PyExc_TypeError, "Wrong parameters - expected an integer (optional)");
 }
 
-PyObject* PathPy::getCycleTime(PyObject * args)
+PyObject* PathPy::getCycleTime(PyObject* args)
 {
     double hFeed, vFeed, hRapid, vRapid;
-    if (PyArg_ParseTuple(args, "dddd", &hFeed, &vFeed, &hRapid, &vRapid)){
+    if (PyArg_ParseTuple(args, "dddd", &hFeed, &vFeed, &hRapid, &vRapid)) {
         return PyFloat_FromDouble(getToolpathPtr()->getCycleTime(hFeed, vFeed, hRapid, vRapid));
     }
     return nullptr;
@@ -198,7 +203,7 @@ PyObject* PathPy::getCycleTime(PyObject * args)
 
 // GCode methods
 
-PyObject* PathPy::toGCode(PyObject * args)
+PyObject* PathPy::toGCode(PyObject* args)
 {
     if (PyArg_ParseTuple(args, "")) {
         std::string result = getToolpathPtr()->toGCode();
@@ -207,9 +212,9 @@ PyObject* PathPy::toGCode(PyObject * args)
     throw Py::TypeError("This method accepts no argument");
 }
 
-PyObject* PathPy::setFromGCode(PyObject * args)
+PyObject* PathPy::setFromGCode(PyObject* args)
 {
-    char *pstr=nullptr;
+    char* pstr = nullptr;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         std::string gcode(pstr);
         getToolpathPtr()->setFromGCode(gcode);
@@ -221,7 +226,7 @@ PyObject* PathPy::setFromGCode(PyObject * args)
 
 // custom attributes get/set
 
-PyObject *PathPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* PathPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
@@ -230,5 +235,3 @@ int PathPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
-
-

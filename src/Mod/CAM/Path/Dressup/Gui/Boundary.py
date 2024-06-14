@@ -59,7 +59,9 @@ class TaskPanel(object):
         self.stockEdit = None
 
     def getStandardButtons(self):
-        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel
+        return (
+            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel
+        )
 
     def modifyStandardButtons(self, buttonBox):
         self.buttonBox = buttonBox
@@ -122,9 +124,7 @@ class TaskPanel(object):
         def setupCreateBoxEdit():
             Path.Log.track(index, force)
             if force or not self.stockCreateBox:
-                self.stockCreateBox = PathJobGui.StockCreateBoxEdit(
-                    self.obj, self.form, force
-                )
+                self.stockCreateBox = PathJobGui.StockCreateBoxEdit(self.obj, self.form, force)
             self.stockEdit = self.stockCreateBox
 
         def setupCreateCylinderEdit():
@@ -147,9 +147,7 @@ class TaskPanel(object):
             return False
 
         if index == -1:
-            if self.obj.Stock is None or PathJobGui.StockFromBaseBoundBoxEdit.IsStock(
-                self.obj
-            ):
+            if self.obj.Stock is None or PathJobGui.StockFromBaseBoundBoxEdit.IsStock(self.obj):
                 setupFromBaseEdit()
             elif PathJobGui.StockCreateBoxEdit.IsStock(self.obj):
                 setupCreateBoxEdit()
@@ -159,8 +157,7 @@ class TaskPanel(object):
                 setupFromExisting()
             else:
                 Path.Log.error(
-                    translate("PathJob", "Unsupported stock object %s")
-                    % self.obj.Stock.Label
+                    translate("PathJob", "Unsupported stock object %s") % self.obj.Stock.Label
                 )
         else:
             if index == PathJobGui.StockFromBaseBoundBoxEdit.Index:
@@ -275,8 +272,7 @@ class CommandPathDressupPathBoundary:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             Path.Log.error(
-                translate("CAM_DressupPathBoundary", "Please select one toolpath object")
-                + "\n"
+                translate("CAM_DressupPathBoundary", "Please select one toolpath object") + "\n"
             )
             return
         baseObject = selection[0]

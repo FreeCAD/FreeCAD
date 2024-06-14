@@ -35,7 +35,7 @@
         <UserDocu>
           ResetSimulation():
 
-          Clear the simulation and all gcode commands 
+          Clear the simulation and all gcode commands
         </UserDocu>
       </Documentation>
     </Methode>

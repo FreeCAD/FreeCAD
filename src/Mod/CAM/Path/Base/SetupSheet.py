@@ -112,17 +112,13 @@ class SetupSheet:
             "App::PropertySpeed",
             "VertRapid",
             "ToolController",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Default speed for horizontal rapid moves."
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Default speed for horizontal rapid moves."),
         )
         obj.addProperty(
             "App::PropertySpeed",
             "HorizRapid",
             "ToolController",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Default speed for vertical rapid moves."
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Default speed for vertical rapid moves."),
         )
         obj.addProperty(
             "App::PropertyStringList",
@@ -149,9 +145,7 @@ class SetupSheet:
             "App::PropertyString",
             "SafeHeightExpression",
             "OperationHeights",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Expression for the safe height of new operations."
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Expression for the safe height of new operations."),
         )
         obj.addProperty(
             "App::PropertyLength",
@@ -191,31 +185,19 @@ class SetupSheet:
             "App::PropertyString",
             "StepDownExpression",
             "OperationDepths",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Expression used for step down of new operations."
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Expression used for step down of new operations."),
         )
 
         obj.SafeHeightOffset = self.decodeAttributeString(self.DefaultSafeHeightOffset)
-        obj.ClearanceHeightOffset = self.decodeAttributeString(
-            self.DefaultClearanceHeightOffset
-        )
-        obj.SafeHeightExpression = self.decodeAttributeString(
-            self.DefaultSafeHeightExpression
-        )
+        obj.ClearanceHeightOffset = self.decodeAttributeString(self.DefaultClearanceHeightOffset)
+        obj.SafeHeightExpression = self.decodeAttributeString(self.DefaultSafeHeightExpression)
         obj.ClearanceHeightExpression = self.decodeAttributeString(
             self.DefaultClearanceHeightExpression
         )
 
-        obj.StartDepthExpression = self.decodeAttributeString(
-            self.DefaultStartDepthExpression
-        )
-        obj.FinalDepthExpression = self.decodeAttributeString(
-            self.DefaultFinalDepthExpression
-        )
-        obj.StepDownExpression = self.decodeAttributeString(
-            self.DefaultStepDownExpression
-        )
+        obj.StartDepthExpression = self.decodeAttributeString(self.DefaultStartDepthExpression)
+        obj.FinalDepthExpression = self.decodeAttributeString(self.DefaultFinalDepthExpression)
+        obj.StepDownExpression = self.decodeAttributeString(self.DefaultStepDownExpression)
 
         obj.CoolantModes = self.DefaultCoolantModes
         obj.CoolantMode = self.DefaultCoolantModes
@@ -314,12 +296,8 @@ class SetupSheet:
         if includeHeights:
             attrs[Template.SafeHeightOffset] = self.obj.SafeHeightOffset.UserString
             attrs[Template.SafeHeightExpression] = self.obj.SafeHeightExpression
-            attrs[
-                Template.ClearanceHeightOffset
-            ] = self.obj.ClearanceHeightOffset.UserString
-            attrs[
-                Template.ClearanceHeightExpression
-            ] = self.obj.ClearanceHeightExpression
+            attrs[Template.ClearanceHeightOffset] = self.obj.ClearanceHeightOffset.UserString
+            attrs[Template.ClearanceHeightExpression] = self.obj.ClearanceHeightExpression
 
         if includeDepths:
             attrs[Template.StartDepthExpression] = self.obj.StartDepthExpression
@@ -333,9 +311,7 @@ class SetupSheet:
                 for propName in op.properties():
                     prop = OpPropertyName(opName, propName)
                     if hasattr(self.obj, prop):
-                        settings[propName] = PathUtil.getPropertyValueString(
-                            self.obj, prop
-                        )
+                        settings[propName] = PathUtil.getPropertyValueString(self.obj, prop)
                 attrs[opName] = settings
 
         return attrs
@@ -364,15 +340,11 @@ class SetupSheet:
 
     def encodeAttributeString(self, attr):
         """encodeAttributeString(attr) ... return the encoded string of a template attribute."""
-        return str(
-            attr.replace(self.expressionReference(), self.TemplateReference)
-        )
+        return str(attr.replace(self.expressionReference(), self.TemplateReference))
 
     def decodeAttributeString(self, attr):
         """decodeAttributeString(attr) ... return the decoded string of a template attribute."""
-        return str(
-            attr.replace(self.TemplateReference, self.expressionReference())
-        )
+        return str(attr.replace(self.TemplateReference, self.expressionReference()))
 
     def encodeTemplateAttributes(self, attrs):
         """encodeTemplateAttributes(attrs) ... return a dictionary with all values encoded."""

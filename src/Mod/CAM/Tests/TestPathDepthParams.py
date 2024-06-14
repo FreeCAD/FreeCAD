@@ -228,9 +228,7 @@ class depthTestCases(unittest.TestCase):
 
         d = PathUtils.depth_params(**args)
         r = [i for i in d]
-        self.assertListEqual(
-            r, expected, "Expected {}, but result of {}".format(expected, r)
-        )
+        self.assertListEqual(r, expected, "Expected {}, but result of {}".format(expected, r))
 
     def test010(self):
         """stepping down with single stepdown roughly equal to total depth"""
@@ -248,9 +246,7 @@ class depthTestCases(unittest.TestCase):
 
         d = PathUtils.depth_params(**args)
         r = [i for i in d]
-        self.assertListEqual(
-            r, expected, "Expected {}, but result of {}".format(expected, r)
-        )
+        self.assertListEqual(r, expected, "Expected {}, but result of {}".format(expected, r))
 
         args = {
             "clearance_height": 20.0,
@@ -264,6 +260,4 @@ class depthTestCases(unittest.TestCase):
 
         d = PathUtils.depth_params(**args)
         r = [i for i in d]
-        self.assertListEqual(
-            r, expected, "Expected {}, but result of {}".format(expected, r)
-        )
+        self.assertListEqual(r, expected, "Expected {}, but result of {}".format(expected, r))
