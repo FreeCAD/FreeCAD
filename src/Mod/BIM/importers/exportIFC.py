@@ -2108,7 +2108,7 @@ def getRepresentation(
             if l:
                 ev = FreeCAD.Vector(ev).normalize() # new since 0.20 - obj.Dir length is ignored
                 ev.multiply(l)
-                ev.multiply(preferences['SCALE_FACTOR'])
+            ev.multiply(preferences['SCALE_FACTOR'])
             ev = pl.Rotation.inverted().multVec(ev)
             xvc =       ifcbin.createIfcDirection(tuple(pl.Rotation.multVec(FreeCAD.Vector(1,0,0))))
             zvc =       ifcbin.createIfcDirection(tuple(pl.Rotation.multVec(FreeCAD.Vector(0,0,1))))
