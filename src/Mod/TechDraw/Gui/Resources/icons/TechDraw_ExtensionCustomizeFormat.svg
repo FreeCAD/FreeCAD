@@ -1,43 +1,206 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
-<svg width="17.2mm" height="17.2mm" fill-rule="evenodd" stroke-linejoin="round" stroke-width="28.222" preserveAspectRatio="xMidYMid" version="1.2" viewBox="0 0 1720 1720" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:ooo="http://xml.openoffice.org/svg/export">
- <defs class="ClipPathGroup">
-  <clipPath id="presentation_clip_path">
-   <rect width="1720" height="1720"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="64"
+   height="64"
+   fill-rule="evenodd"
+   stroke-linejoin="round"
+   stroke-width="28.222"
+   preserveAspectRatio="xMidYMid"
+   version="1.2"
+   viewBox="0 0 1693.3332 1693.3332"
+   xml:space="preserve"
+   id="svg24"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+ <defs
+   class="ClipPathGroup"
+   id="defs1">
+  <clipPath
+   id="presentation_clip_path">
+   <rect
+   width="1720"
+   height="1720"
+   id="rect1"
+   x="0"
+   y="0" />
   </clipPath>
  </defs>
- <g class="SlideGroup">
-   <g id="container-id1">
-    <g id="id1" class="Slide" clip-path="url(#presentation_clip_path)">
-     <g class="Page">
-      <g class="Graphic">
-       <g id="id3">
-        <rect class="BoundingBox" width="1720" height="1720" fill="none"/>
-        <path d="m1040 1541-374 1 187-355 187 354z" fill="#f00"/>
-        <path d="m1040 1541-374 1 187-355 187 354z" fill="none" stroke="#2b1100" stroke-linecap="round" stroke-linejoin="round" stroke-width="38"/>
-        <path d="m1236 796h-447v-751h893v751h-446z" fill="#ff0"/>
-        <path d="m1236 796h-447v-751h893v751h-446z" fill="none" stroke="#2b1100" stroke-linecap="round" stroke-linejoin="miter" stroke-width="30"/>
-        <path d="m412 796h-375v-751h751v751h-376z" fill="#ff0"/>
-        <path d="m412 796h-375v-751h751v751h-376z" fill="none" stroke="#2b1100" stroke-linecap="round" stroke-linejoin="miter" stroke-width="30"/>
-        <path d="m412 881v-94h40v189h-40v-95z" fill="#2b1100"/>
-        <path d="m835 1080v-131h40v261h-40v-130z" fill="#2b1100"/>
-        <path d="m650 935h224v40h-447v-40h223z" fill="#2b1100"/>
-        <path d="m858 1669h-816v-121h1633v121h-817z" fill="#ff0"/>
-        <path d="m858 1669h-816v-121h1633v121h-817z" fill="none" stroke="#2b1100" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
-        <path d="m615 424c0 37-10 73-28 105-19 32-45 59-77 77-33 19-69 29-106 29s-73-10-105-29c-32-18-59-45-78-77-18-32-28-68-28-105s10-74 28-106c19-32 46-59 78-77 32-19 68-28 105-28s73 9 106 28c32 18 58 45 77 77 18 32 28 69 28 106z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="70"/>
-        <path d="m406 732h-14v-635h28v635h-14z" fill="#f00"/>
-        <path d="m406 732h-14v-635h28v635h-14z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
-        <path d="m89 414v-14h635v28h-635v-14z" fill="#f00"/>
-        <path d="m89 414v-14h635v28h-635v-14z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
-        <path d="m1409 424c0 31-8 62-23 89-15 28-37 50-64 66-26 16-56 24-86 24-31 0-61-8-87-24s-48-38-63-66c-16-27-24-58-24-89 0-32 8-63 24-90 15-27 37-50 63-66s56-24 87-24c30 0 60 8 86 24 27 16 49 39 64 66s23 58 23 90z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="69"/>
-        <path d="m1303 693-9-7 327-422 17 15-326 422-9-8z" fill="#f00"/>
-        <path d="m1303 693-9-7 327-422 17 15-326 422-9-8z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
-        <path d="m841 575-9-7 326-422 18 15-326 421-9-7z" fill="#f00"/>
-        <path d="m841 575-9-7 326-422 18 15-326 421-9-7z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
+ <g
+   class="SlideGroup"
+   id="g24"
+   style="display:none">
+   <g
+   id="container-id1">
+    <g
+   id="id1"
+   class="Slide"
+   clip-path="url(#presentation_clip_path)">
+     <g
+   class="Page"
+   id="g23">
+      <g
+   class="Graphic"
+   id="g22">
+       <g
+   id="id3">
+        <rect
+   class="BoundingBox"
+   width="1720"
+   height="1720"
+   fill="none"
+   id="rect2"
+   x="0"
+   y="0" />
+        <path
+   d="m 1040,1541 -374,1 187,-355 z"
+   fill="#ff0000"
+   id="path2" />
+        <path
+   d="m 1040,1541 -374,1 187,-355 z"
+   fill="none"
+   stroke="#2b1100"
+   stroke-linecap="round"
+   stroke-linejoin="round"
+   stroke-width="38"
+   id="path3" />
+        <path
+   d="M 1236,796 H 789 V 45 h 893 v 751 z"
+   fill="#ffff00"
+   id="path4" />
+        <path
+   d="M 1236,796 H 789 V 45 h 893 v 751 z"
+   fill="none"
+   stroke="#2b1100"
+   stroke-linecap="round"
+   stroke-linejoin="miter"
+   stroke-width="30"
+   id="path5" />
+        <path
+   d="M 412,796 H 37 V 45 h 751 v 751 z"
+   fill="#ffff00"
+   id="path6" />
+        <path
+   d="M 412,796 H 37 V 45 h 751 v 751 z"
+   fill="none"
+   stroke="#2b1100"
+   stroke-linecap="round"
+   stroke-linejoin="miter"
+   stroke-width="30"
+   id="path7" />
+        <path
+   d="m 412,881 v -94 h 40 v 189 h -40 z"
+   fill="#2b1100"
+   id="path8" />
+        <path
+   d="M 835,1080 V 949 h 40 v 261 h -40 z"
+   fill="#2b1100"
+   id="path9" />
+        <path
+   d="m 650,935 h 224 v 40 H 427 v -40 z"
+   fill="#2b1100"
+   id="path10" />
+        <path
+   d="M 858,1669 H 42 v -121 h 1633 v 121 z"
+   fill="#ffff00"
+   id="path11" />
+        <path
+   d="M 858,1669 H 42 v -121 h 1633 v 121 z"
+   fill="none"
+   stroke="#2b1100"
+   stroke-linecap="round"
+   stroke-linejoin="miter"
+   stroke-width="40"
+   id="path12" />
+        <path
+   d="m 615,424 c 0,37 -10,73 -28,105 -19,32 -45,59 -77,77 -33,19 -69,29 -106,29 -37,0 -73,-10 -105,-29 -32,-18 -59,-45 -78,-77 -18,-32 -28,-68 -28,-105 0,-37 10,-74 28,-106 19,-32 46,-59 78,-77 32,-19 68,-28 105,-28 37,0 73,9 106,28 32,18 58,45 77,77 18,32 28,69 28,106 z"
+   fill="none"
+   stroke="#ff0000"
+   stroke-linecap="round"
+   stroke-linejoin="miter"
+   stroke-width="70"
+   id="path13" />
+        <path
+   d="M 406,732 H 392 V 97 h 28 v 635 z"
+   fill="#ff0000"
+   id="path14" />
+        <path
+   d="M 406,732 H 392 V 97 h 28 v 635 z"
+   fill="none"
+   stroke="#ff0000"
+   stroke-linecap="round"
+   stroke-linejoin="miter"
+   stroke-width="40"
+   id="path15" />
+        <path
+   d="m 89,414 v -14 h 635 v 28 H 89 Z"
+   fill="#ff0000"
+   id="path16" />
+        <path
+   d="m 89,414 v -14 h 635 v 28 H 89 Z"
+   fill="none"
+   stroke="#ff0000"
+   stroke-linecap="round"
+   stroke-linejoin="miter"
+   stroke-width="40"
+   id="path17" />
+        <path
+   d="m 1409,424 c 0,31 -8,62 -23,89 -15,28 -37,50 -64,66 -26,16 -56,24 -86,24 -31,0 -61,-8 -87,-24 -26,-16 -48,-38 -63,-66 -16,-27 -24,-58 -24,-89 0,-32 8,-63 24,-90 15,-27 37,-50 63,-66 26,-16 56,-24 87,-24 30,0 60,8 86,24 27,16 49,39 64,66 15,27 23,58 23,90 z"
+   fill="none"
+   stroke="#ff0000"
+   stroke-linecap="round"
+   stroke-linejoin="miter"
+   stroke-width="69"
+   id="path18" />
+        <path
+   d="m 1303,693 -9,-7 327,-422 17,15 -326,422 z"
+   fill="#ff0000"
+   id="path19" />
+        <path
+   d="m 1303,693 -9,-7 327,-422 17,15 -326,422 z"
+   fill="none"
+   stroke="#ff0000"
+   stroke-linecap="round"
+   stroke-linejoin="miter"
+   stroke-width="40"
+   id="path20" />
+        <path
+   d="m 841,575 -9,-7 326,-422 18,15 -326,421 z"
+   fill="#ff0000"
+   id="path21" />
+        <path
+   d="m 841,575 -9,-7 326,-422 18,15 -326,421 z"
+   fill="none"
+   stroke="#ff0000"
+   stroke-linecap="round"
+   stroke-linejoin="miter"
+   stroke-width="40"
+   id="path22" />
        </g>
       </g>
      </g>
     </g>
    </g>
  </g>
-</svg>
+<path
+   d="m 845.74284,308.83299 q -216.79848,0 -328.90368,118.59062 -111.1787,117.66414 -111.1787,346.50698 0,207.53358 75.97211,356.69831 76.89861,149.1648 240.8872,267.7554 v 136.1939 H 175.89113 V 1384.487 H 513.13321 Q 373.23333,1277.0142 299.11419,1117.6581 224.99505,958.30194 224.99505,768.37165 q 0,-285.35868 164.91509,-447.4943 164.91508,-162.13562 455.8327,-162.13562 294.62356,0 458.61216,161.20913 163.9886,161.20913 163.9886,446.56781 0,190.85678 -75.0456,351.13943 -74.1192,160.2826 -212.1661,266.8289 h 336.3156 v 150.0912 H 970.81889 v -136.1939 q 163.98861,-117.6641 240.88721,-268.6818 77.8251,-151.94428 77.8251,-355.77191 0,-227.91636 -113.0317,-346.50698 Q 1064.3943,308.83299 845.74284,308.83299 Z"
+   id="text24"
+   style="font-size:1897.45px;line-height:0px;text-align:end;letter-spacing:0px;word-spacing:0px;text-anchor:end;display:inline;fill:#fce94f;stroke:#302b00;stroke-width:52.909;stroke-linecap:square"
+   aria-label="Ω" /><text
+   xml:space="preserve"
+   style="font-size:527.893px;line-height:0px;text-align:end;letter-spacing:25.1465px;word-spacing:0px;text-anchor:end;display:none;fill:#302b00;stroke:#302b00;stroke-width:105.835;stroke-linecap:square;stroke-dasharray:none"
+   x="1596.0646"
+   y="1035.473"
+   id="text25"><tspan
+     id="tspan24"
+     style="font-size:527.893px;letter-spacing:25.1465px;fill:#302b00;stroke:#302b00;stroke-width:105.835;stroke-dasharray:none"
+     x="1621.2112"
+     y="1035.473">GD&amp;T</tspan></text><text
+   xml:space="preserve"
+   style="font-size:527.893px;line-height:0px;text-align:end;letter-spacing:25.1465px;word-spacing:0px;text-anchor:end;display:none;fill:#fce94f;stroke:#fce94f;stroke-width:52.9167;stroke-linecap:square;stroke-dasharray:none"
+   x="1596.0646"
+   y="1035.473"
+   id="text26"><tspan
+     id="tspan25"
+     style="font-size:527.893px;letter-spacing:25.1465px;fill:#fce94f;stroke:#fce94f;stroke-width:52.9167;stroke-dasharray:none"
+     x="1621.2112"
+     y="1035.473">GD&amp;T</tspan></text></svg>

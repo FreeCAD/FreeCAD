@@ -149,24 +149,34 @@
        cx="32"
        cy="32"
        r="30" />
+    <g
+       id="g1">
+      <circle
+         style="display:none;fill:none;stroke:#d3d7cf;stroke-width:2.30769;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="path3048-0"
+         transform="matrix(0.86666667,0,0,0.86666667,4.266666,4.2666665)"
+         cx="32"
+         cy="32"
+         r="30" />
+      <circle
+         style="display:none;fill:none;stroke:url(#linearGradient3894);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="path3048-7"
+         transform="matrix(0.83333334,0,0,0.83333333,5.3333329,5.3333335)"
+         cx="32"
+         cy="32"
+         r="30" />
+      <circle
+         style="display:none;fill:none;stroke:#fce94f;stroke-width:2.22222;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="path3048-7-4"
+         transform="matrix(0.9,0,0,0.9,3.2,3.2)"
+         cx="32"
+         cy="32"
+         r="30" />
+    </g>
     <circle
-       style="display:inline;fill:none;stroke:#d3d7cf;stroke-width:2.30769;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path3048-0"
-       transform="matrix(0.86666667,0,0,0.86666667,4.266666,4.2666665)"
-       cx="32"
-       cy="32"
-       r="30" />
-    <circle
-       style="display:inline;fill:none;stroke:url(#linearGradient3894);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path3048-7"
-       transform="matrix(0.83333334,0,0,0.83333333,5.3333329,5.3333335)"
-       cx="32"
-       cy="32"
-       r="30" />
-    <circle
-       style="display:inline;fill:none;stroke:#fce94f;stroke-width:2.22222;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path3048-7-4"
-       transform="matrix(0.9,0,0,0.9,3.2,3.2)"
+       style="display:inline;fill:none;stroke:#fce94f;stroke-width:4.6153846;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="circle1"
+       transform="matrix(0.86666667,0,0,0.86666667,4.2666666,4.2666666)"
        cx="32"
        cy="32"
        r="30" />

@@ -29,14 +29,17 @@
   <g
      id="layer6"
      transform="translate(8.6806425,5.0776916)">
-    <path
-       d="M -7.1010316,9.893237 H 5.6412379 V 8.818952 H -7.1010316 Z"
-       style="display:inline;fill:#d3d7cf;stroke:#babdb6;stroke-width:0.513215;enable-background:new"
-       id="path6" />
-    <path
-       d="M -7.3577258,9.6207066 H 5.3846519 V 9.0915399 H -7.3577258 Z"
-       style="display:inline;fill:#555753;stroke:none;stroke-width:0.360137;stroke-dasharray:none;enable-background:new"
-       id="path5" />
+    <g
+       id="g1">
+      <path
+         d="M -7.1010316,9.893237 H 5.6412379 V 8.818952 H -7.1010316 Z"
+         style="display:inline;fill:#d3d7cf;stroke:#babdb6;stroke-width:0.513215;enable-background:new"
+         id="path6" />
+      <path
+         d="M -7.3577258,9.6207066 H 5.3846519 V 9.0915399 H -7.3577258 Z"
+         style="display:inline;fill:#555753;stroke:none;stroke-width:0.360137;stroke-dasharray:none;enable-background:new"
+         id="path5" />
+    </g>
     <rect
        style="fill:#fce94f;stroke:#302b00;stroke-width:0.529167;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;enable-background:new"
        id="rect6"
