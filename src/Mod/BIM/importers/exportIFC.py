@@ -2103,10 +2103,10 @@ def getRepresentation(
             profile = getProfile(ifcfile,profile)
             if profile:
                 profiledefs[pstr] = profile
-            ev = obj.Dir
+            ev = FreeCAD.Vector(obj.Dir)
             l = obj.LengthFwd.Value
             if l:
-                ev = FreeCAD.Vector(ev).normalize() # new since 0.20 - obj.Dir length is ignored
+                ev = ev.normalize() # new since 0.20 - obj.Dir length is ignored
                 ev.multiply(l)
             ev.multiply(preferences['SCALE_FACTOR'])
             ev = pl.Rotation.inverted().multVec(ev)
