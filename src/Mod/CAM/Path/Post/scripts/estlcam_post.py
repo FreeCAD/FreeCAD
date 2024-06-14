@@ -3,7 +3,7 @@
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2018, 2019 Gauthier Briere                              *
 # *   Copyright (c) 2019, 2020 Schildkroet                                  *
-# *   Copyright (c) 2022 Harald Hartmann                                    *
+# *   Copyright (c) 2022, 2024 Harald Hartmann                              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -58,10 +58,9 @@ estlcam_post.export(object, "/path/to/file.nc")
 # Default values for command line arguments:
 OUTPUT_COMMENTS = True  # default output of comments in output gCode file
 OUTPUT_HEADER = True  # default output header in output gCode file
-OUTPUT_LINE_NUMBERS = False  # default doesn't output line numbers in output gCode file
 
 OUTPUT_TOOL_CHANGE = True  # default output tool change
-TOOL_CHANGE_USE_ALTCMD = False   # default doesn't use alternative command for tool change
+TOOL_CHANGE_USE_ALTCMD = False  # default doesn't use alternative command for tool change
 
 SHOW_EDITOR = True  # default show the resulting file dialog output in GUI
 PRECISION = 3  # Default precision for metric
@@ -79,18 +78,16 @@ POST_OPERATION = """
 POSTAMBLE = """M5
 """  # default postamble text will appear following the last operation.
 
-# Customisation with no command line argument
-LINENR = 100  # line number starting value
-LINEINCR = 10  # line number increment
-
 DRILL_RETRACT_MODE = "G98"  # Default value of drill retractations (CURRENT_Z) other possible value is G99
 
 MOTION_MODE = "G90"  # only G90 for absolute moves
-UNITS = "G21"  # G21 for metric, G20 for us standard
+UNITS = "G21"  # G21 for metric, G20 not supported
 UNIT_FORMAT = "mm"
 UNIT_SPEED_FORMAT = "mm/min"
 
-TOOL_CHANGE_ALTERNATIVE_CMD = "M0" # alternative Tool Change command, only if TOOL_CHANGE_USE_ALTCMD is true
+TOOL_CHANGE_ALTERNATIVE_CMD = (
+    "M0"  # alternative Tool Change command, only if TOOL_CHANGE_USE_ALTCMD is true
+)
 TOOL_CHANGE = """M5
 """  # Tool Change commands will be inserted before a tool change
 
@@ -104,9 +101,7 @@ parser.add_argument(
     "--no-comments", action="store_true", help="suppress comment output"
 )
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
-parser.add_argument(
-    "--line-numbers", action="store_true", help="prefix with line numbers"
-)
+
 parser.add_argument(
     "--no-show-editor",
     action="store_true",
@@ -114,11 +109,11 @@ parser.add_argument(
 )
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command',
+    help="set commands to be issued before the first command",
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command',
+    help="set commands to be issued after the last command",
 )
 parser.add_argument(
     "--precision", default="3", help="number of digits of precision, default=3"
@@ -130,7 +125,9 @@ parser.add_argument(
     "--no-tool-change", action="store_true", help="comment out tool changes"
 )
 parser.add_argument(
-    "--tool-change-use-altcmd", action="store_true", help="use alternative command for tool change"
+    "--tool-change-use-altcmd",
+    action="store_true",
+    help="use alternative command for tool change",
 )
 
 TOOLTIP_ARGS = parser.format_help()
@@ -157,11 +154,11 @@ CURRENT_X = 0
 CURRENT_Y = 0
 CURRENT_Z = 0
 
+
 def processArguments(argstring):
 
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
-    global OUTPUT_LINE_NUMBERS
     global SHOW_EDITOR
     global PRECISION
     global PREAMBLE
@@ -178,8 +175,6 @@ def processArguments(argstring):
             OUTPUT_HEADER = False
         if args.no_comments:
             OUTPUT_COMMENTS = False
-        if args.line_numbers:
-            OUTPUT_LINE_NUMBERS = True
         if args.no_show_editor:
             SHOW_EDITOR = False
         PRECISION = args.precision
@@ -226,9 +221,9 @@ def export(objectslist, filename, argstring):
 
     # write header
     if OUTPUT_HEADER:
-        gcode += linenumber() + "(Exported by FreeCAD)\n"
-        gcode += linenumber() + "(Post Processor: " + __name__ + ")\n"
-        gcode += linenumber() + "(Output Time:" + str(datetime.datetime.now()) + ")\n"
+        gcode += "(Exported by FreeCAD)\n"
+        gcode += "(Post Processor: " + __name__ + ")\n"
+        gcode += "(Output Time:" + str(datetime.datetime.now()) + ")\n"
 
     # Check canned cycles for drilling
     if TRANSLATE_DRILL_CYCLES:
@@ -239,9 +234,9 @@ def export(objectslist, filename, argstring):
 
     # Write the preamble
     if OUTPUT_COMMENTS:
-        gcode += linenumber() + "(Begin preamble)\n"
+        gcode += "(Begin preamble)\n"
     for line in PREAMBLE.splitlines(True):
-        gcode += linenumber() + line
+        gcode += line
     # verify if PREAMBLE have changed UNITS
     if "G21" in PREAMBLE:
         UNITS = "G21"
@@ -265,8 +260,8 @@ def export(objectslist, filename, argstring):
             )
             return
 
-        # Skip G54 operation
-        if obj.Label == "G54":
+        # Skip Fixture
+        if obj.Label == "Fixture":
             continue
 
         # Skip inactive operations
@@ -275,9 +270,9 @@ def export(objectslist, filename, argstring):
 
         # do the pre_op
         if OUTPUT_COMMENTS:
-            gcode += linenumber() + "(Begin operation: " + obj.Label + ")\n"
+            gcode += "(Begin operation: " + obj.Label + ")\n"
         for line in PRE_OPERATION.splitlines(True):
-            gcode += linenumber() + line
+            gcode += line
 
         # get coolant mode
         coolantMode = "None"
@@ -294,36 +289,35 @@ def export(objectslist, filename, argstring):
         # turn coolant on if required
         if OUTPUT_COMMENTS:
             if not coolantMode == "None":
-                gcode += linenumber() + "(Coolant On:" + coolantMode + ")\n"
+                gcode += "(Coolant On:" + coolantMode + ")\n"
         if coolantMode == "Flood":
-            gcode += linenumber() + "M8" + "\n"
+            gcode += "M8" + "\n"
         if coolantMode == "Mist":
-            gcode += linenumber() + "M10" + "\n"
+            gcode += "M10" + "\n"
 
         # Parse the op
         gcode += parse(obj)
 
         # do the post_op
         if OUTPUT_COMMENTS:
-            gcode += linenumber() + "(Finish operation: " + obj.Label + ")\n"
+            gcode += "(Finish operation: " + obj.Label + ")\n"
         for line in POST_OPERATION.splitlines(True):
-            gcode += linenumber() + line
+            gcode += line
 
         # turn coolant off if required
         if not coolantMode == "None":
             if OUTPUT_COMMENTS:
-                gcode += linenumber() + "(Coolant Off:" + coolantMode + ")\n"
+                gcode += "(Coolant Off:" + coolantMode + ")\n"
             if coolantMode == "Flood":
-                gcode += linenumber() + "M9" + "\n"
+                gcode += "M9" + "\n"
             if coolantMode == "Mist":
-                gcode += linenumber() + "M11" + "\n"
-
+                gcode += "M11" + "\n"
 
     # do the post_amble
     if OUTPUT_COMMENTS:
-        gcode += linenumber() + "(Begin postamble)\n"
+        gcode += "(Begin postamble)\n"
     for line in POSTAMBLE.splitlines(True):
-        gcode += linenumber() + line
+        gcode += line
 
     # show the gCode result dialog
     if FreeCAD.GuiUp and SHOW_EDITOR:
@@ -340,19 +334,11 @@ def export(objectslist, filename, argstring):
     print("Done postprocessing.")
 
     # write the file
-    gfile = pyopen(filename, "w")
-    gfile.write(final)
-    gfile.close()
+    if filename != "-":
+        with pyopen(filename, "w") as gfile:
+            gfile.write(final)
 
-
-def linenumber():
-    if not OUTPUT_LINE_NUMBERS:
-        return ""
-    global LINENR
-    global LINEINCR
-    s = "N" + str(LINENR) + " "
-    LINENR += LINEINCR
-    return s
+    return final
 
 
 def format_outstring(strTable):
@@ -400,7 +386,7 @@ def parse(pathobj):
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
         if OUTPUT_COMMENTS:
-            out += linenumber() + "(Compound: " + pathobj.Label + ")\n"
+            out += "(Compound: " + pathobj.Label + ")\n"
         for p in pathobj.Group:
             out += parse(p)
         return out
@@ -412,7 +398,7 @@ def parse(pathobj):
             return out
 
         if OUTPUT_COMMENTS:
-            out += linenumber() + "(Path: " + pathobj.Label + ")\n"
+            out += "(Path: " + pathobj.Label + ")\n"
 
         for c in PathUtils.getPathWithPlacement(pathobj).Commands:
             outstring = []
@@ -483,14 +469,13 @@ def parse(pathobj):
                     outstring.pop(0)
                     outstring.insert(0, TOOL_CHANGE_ALTERNATIVE_CMD)
                 if OUTPUT_COMMENTS:
-                    out += linenumber() + "(Begin toolchange)\n"
+                    out += "(Begin toolchange)\n"
                 if not OUTPUT_TOOL_CHANGE:
                     outstring.insert(0, "(")
                     outstring.append(")")
                 else:
                     for line in TOOL_CHANGE.splitlines(True):
-                        out += linenumber() + line
-
+                        out += line
 
             if command == "message":
                 if OUTPUT_COMMENTS is False:
@@ -504,13 +489,13 @@ def parse(pathobj):
 
             # prepend a line number and append a newline
             if len(outstring) >= 1:
-                out += linenumber() + format_outstring(outstring) + "\n"
+                out += format_outstring(outstring) + "\n"
 
             # Check for comments containing machine-specific commands to pass literally to the controller
             m = re.match(r"^\(MC_RUN_COMMAND: ([^)]+)\)$", command)
             if m:
                 raw_command = m.group(1)
-                out += linenumber() + raw_command + "\n"
+                out += raw_command + "\n"
 
     return out
 
@@ -532,7 +517,7 @@ def drill_translate(outstring, cmd, params):
     if OUTPUT_COMMENTS:  # Comment the original command
         outstring[0] = "(" + outstring[0]
         outstring[-1] = outstring[-1] + ")"
-        trBuff += linenumber() + format_outstring(outstring) + "\n"
+        trBuff += format_outstring(outstring) + "\n"
 
     # cycle conversion
     # currently only cycles in XY are provided (G17)
@@ -543,7 +528,7 @@ def drill_translate(outstring, cmd, params):
     RETRACT_Z = Units.Quantity(params["R"], FreeCAD.Units.Length)
     # R less than Z is error
     if RETRACT_Z < drill_Z:
-        trBuff += linenumber() + "(drill cycle error: R less than Z )\n"
+        trBuff += "(drill cycle error: R less than Z )\n"
         return trBuff
 
     if MOTION_MODE == "G91":  # G91 relative movements
@@ -579,10 +564,9 @@ def drill_translate(outstring, cmd, params):
 
         # preliminary movement(s)
         if CURRENT_Z < RETRACT_Z:
-            trBuff += linenumber() + strG0_RETRACT_Z
+            trBuff += strG0_RETRACT_Z
         trBuff += (
-            linenumber()
-            + "G0 X"
+            "G0 X"
             + format(float(drill_X.getValueAs(UNIT_FORMAT)), strFormat)
             + " Y"
             + format(float(drill_Y.getValueAs(UNIT_FORMAT)), strFormat)
@@ -591,8 +575,7 @@ def drill_translate(outstring, cmd, params):
         if CURRENT_Z > RETRACT_Z:
             # NIST GCODE 3.5.16.1 Preliminary and In-Between Motion says G0 to RETRACT_Z. Here use G1 since retract height may be below surface !
             trBuff += (
-                linenumber()
-                + "G1 Z"
+                "G1 Z"
                 + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat)
                 + strF_Feedrate
             )
@@ -601,15 +584,14 @@ def drill_translate(outstring, cmd, params):
         # drill moves
         if cmd in ("G81", "G82"):
             trBuff += (
-                linenumber()
-                + "G1 Z"
+                "G1 Z"
                 + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat)
                 + strF_Feedrate
             )
             # pause where applicable
             if cmd == "G82":
-                trBuff += linenumber() + "G4 P" + str(drill_DwellTime) + "\n"
-            trBuff += linenumber() + strG0_RETRACT_Z
+                trBuff += "G4 P" + str(drill_DwellTime) + "\n"
+            trBuff += strG0_RETRACT_Z
         else:  # 'G83'
             if params["Q"] != 0:
                 while 1:
@@ -618,8 +600,7 @@ def drill_translate(outstring, cmd, params):
                             last_Stop_Z + a_bit
                         )  # rapid move to just short of last drilling depth
                         trBuff += (
-                            linenumber()
-                            + "G0 Z"
+                            "G0 Z"
                             + format(
                                 float(clearance_depth.getValueAs(UNIT_FORMAT)),
                                 strFormat,
@@ -629,23 +610,21 @@ def drill_translate(outstring, cmd, params):
                     next_Stop_Z = last_Stop_Z - drill_Step
                     if next_Stop_Z > drill_Z:
                         trBuff += (
-                            linenumber()
-                            + "G1 Z"
+                            "G1 Z"
                             + format(
                                 float(next_Stop_Z.getValueAs(UNIT_FORMAT)), strFormat
                             )
                             + strF_Feedrate
                         )
-                        trBuff += linenumber() + strG0_RETRACT_Z
+                        trBuff += strG0_RETRACT_Z
                         last_Stop_Z = next_Stop_Z
                     else:
                         trBuff += (
-                            linenumber()
-                            + "G1 Z"
+                            "G1 Z"
                             + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat)
                             + strF_Feedrate
                         )
-                        trBuff += linenumber() + strG0_RETRACT_Z
+                        trBuff += strG0_RETRACT_Z
                         break
 
     except Exception as e:
