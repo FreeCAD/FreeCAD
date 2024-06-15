@@ -303,18 +303,18 @@ PyObject* MaterialManagerPy::filterMaterials(PyObject* args, PyObject* kwds)
 {
     PyObject* filterPy {};
     PyObject* includeLegacy = Py_False;
-    static char* kwds_save[] = {"filter",
-                                "includeLegacy",
-                                nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args,
-                                     kwds,
-                                     //  "O|O!",
-                                     "O!|O!",
-                                     kwds_save,
-                                     &MaterialFilterPy::Type,
-                                     &filterPy,
-                                     &PyBool_Type,
-                                     &includeLegacy)) {
+    static const std::array<const char*, 3> kwds_save{ "filter",
+                                                       "includeLegacy",
+                                                       nullptr };
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwds,
+                                             //  "O|O!",
+                                             "O!|O!",
+                                             kwds_save,
+                                             &MaterialFilterPy::Type,
+                                             &filterPy,
+                                             &PyBool_Type,
+                                             &includeLegacy)) {
         return nullptr;
     }
 
