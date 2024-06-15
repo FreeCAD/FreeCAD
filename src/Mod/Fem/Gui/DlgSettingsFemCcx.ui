@@ -550,7 +550,7 @@
          </widget>
         </item>
         <item row="7" column="1">
-         <spacer name="horizontalSpacer_2">
+         <spacer name="horizontalSpacer_3">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -605,7 +605,7 @@
          </widget>
         </item>
         <item row="8" column="1">
-         <spacer name="horizontalSpacer_2">
+         <spacer name="horizontalSpacer_4">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
