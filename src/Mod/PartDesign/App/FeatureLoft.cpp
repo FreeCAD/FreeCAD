@@ -523,7 +523,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         try {
             boolOp.makeElementBoolean(maker, {base,result});
         }
-        catch(Standard_Failure &e) {
+        catch(Standard_Failure&) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Failed to perform boolean operation"));
         }
         boolOp = this->getSolid(boolOp);

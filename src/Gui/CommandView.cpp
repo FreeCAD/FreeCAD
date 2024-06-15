@@ -926,7 +926,7 @@ void StdCmdToggleTransparency::activated(int iMsg)
         if (!obj)
             continue;
 
-        bool isGroup = dynamic_cast<App::Part*>(obj) 
+        bool isGroup = dynamic_cast<App::Part*>(obj)
                 || dynamic_cast<App::LinkGroup*>(obj)
                 || dynamic_cast<App::DocumentObjectGroup*>(obj);
 
@@ -2605,9 +2605,9 @@ private:
     bool prevSelectionEn;
 
 public:
-    // Creates a selection handler used to implement the common behaviour of BoxZoom, BoxSelection and BoxElementSelection. 
+    // Creates a selection handler used to implement the common behaviour of BoxZoom, BoxSelection and BoxElementSelection.
     // Takes the viewer, a selection mode, a cursor, a function pointer to be called on success and a void pointer for user data to be passed to the given function.
-    // The selection handler class stores all necessary previous states, registers a event callback and starts the selection in the given mode.    
+    // The selection handler class stores all necessary previous states, registers a event callback and starts the selection in the given mode.
     // If there is still a selection handler active, this call will generate a message and returns.
     static void Create(View3DInventorViewer* viewer, View3DInventorViewer::SelectionMode selectionMode,
                        const QCursor& cursor, FnCb doFunction= nullptr, void* ud=nullptr)
@@ -2637,8 +2637,8 @@ public:
         return userData;
     }
 
-    // Implements the event handler. In the normal case the provided function is called. 
-    // Also supports aborting the selection mode by pressing (releasing) the Escape key. 
+    // Implements the event handler. In the normal case the provided function is called.
+    // Also supports aborting the selection mode by pressing (releasing) the Escape key.
     static void selectionCallback(void * ud, SoEventCallback * n)
     {
         auto selectionHandler = static_cast<SelectionCallbackHandler*>(ud);
@@ -3708,7 +3708,7 @@ StdCmdDockOverlayAll::StdCmdDockOverlayAll()
 
 void StdCmdDockOverlayAll::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleAll);
 }
 
@@ -3733,7 +3733,7 @@ StdCmdDockOverlayTransparentAll::StdCmdDockOverlayTransparentAll()
 
 void StdCmdDockOverlayTransparentAll::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleTransparentAll);
 }
 
@@ -3757,7 +3757,7 @@ StdCmdDockOverlayToggle::StdCmdDockOverlayToggle()
 
 void StdCmdDockOverlayToggle::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleActive);
 }
 
@@ -3782,7 +3782,7 @@ StdCmdDockOverlayToggleTransparent::StdCmdDockOverlayToggleTransparent()
 
 void StdCmdDockOverlayToggleTransparent::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleTransparent);
 }
 
@@ -3801,13 +3801,13 @@ StdCmdDockOverlayToggleLeft::StdCmdDockOverlayToggleLeft()
     sWhatsThis    = "Std_DockOverlayToggleLeft";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Left";
-    sPixmap       = "qss:overlay/close.svg";
+    sPixmap       = "qss:overlay/icons/close.svg";
     eType         = 0;
 }
 
 void StdCmdDockOverlayToggleLeft::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleLeft);
 }
 
@@ -3826,13 +3826,13 @@ StdCmdDockOverlayToggleRight::StdCmdDockOverlayToggleRight()
     sWhatsThis    = "Std_DockOverlayToggleRight";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Right";
-    sPixmap       = "qss:overlay/close.svg";
+    sPixmap       = "qss:overlay/icons/close.svg";
     eType         = 0;
 }
 
 void StdCmdDockOverlayToggleRight::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleRight);
 }
 
@@ -3851,13 +3851,13 @@ StdCmdDockOverlayToggleTop::StdCmdDockOverlayToggleTop()
     sWhatsThis    = "Std_DockOverlayToggleTop";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Up";
-    sPixmap       = "qss:overlay/close.svg";
+    sPixmap       = "qss:overlay/icons/close.svg";
     eType         = 0;
 }
 
 void StdCmdDockOverlayToggleTop::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleTop);
 }
 
@@ -3876,13 +3876,13 @@ StdCmdDockOverlayToggleBottom::StdCmdDockOverlayToggleBottom()
     sWhatsThis    = "Std_DockOverlayToggleBottom";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Down";
-    sPixmap       = "qss:overlay/close.svg";
+    sPixmap       = "qss:overlay/icons/close.svg";
     eType         = 0;
 }
 
 void StdCmdDockOverlayToggleBottom::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleBottom);
 }
 

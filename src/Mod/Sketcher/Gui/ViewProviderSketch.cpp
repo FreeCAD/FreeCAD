@@ -632,8 +632,7 @@ void ViewProviderSketch::activateHandler(DrawSketchHandler* newHandler)
     // make sure receiver has focus so immediately pressing Escape will be handled by
     // ViewProviderSketch::keyPressed() and dismiss the active handler, and not the entire
     // sketcher editor
-    Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-    mdi->setFocus();
+    ensureFocus();
 }
 
 void ViewProviderSketch::deactivateHandler()
@@ -660,6 +659,9 @@ void ViewProviderSketch::purgeHandler()
         viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         viewer->setSelectionEnabled(false);
     }
+
+    // Give back the focus to the MDI to make sure VPSketch receive keyboard events.
+    ensureFocus();
 }
 
 void ViewProviderSketch::setAxisPickStyle(bool on)
@@ -700,9 +702,8 @@ void ViewProviderSketch::moveCursorToSketchPoint(Base::Vector2d point)
 
 void ViewProviderSketch::ensureFocus()
 {
-
     Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-           mdi->setFocus();
+    mdi->setFocus();
 }
 
 void ViewProviderSketch::preselectAtPoint(Base::Vector2d point)
@@ -3139,6 +3140,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     Gui::getMainWindow()->installEventFilter(listener);
 
     Workbench::enterEditMode();
+
+    // Give focus to the MDI so that keyboard events are caught after starting edit.
+    // Else pressing ESC right after starting edit will not be caught to exit edit mode.
+    ensureFocus();
 
     return true;
 }

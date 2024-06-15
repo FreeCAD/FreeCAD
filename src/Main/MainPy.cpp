@@ -155,8 +155,8 @@ PyMOD_INIT_FUNC(FreeCAD)
                 path += upDir;
                 break;
             }
-        }  // end for (i = PyList_Size(pySysPath) - 1; i >= 0 ; --i) {
-    }      // end if ( PyList_Check(pySysPath) ) {
+        }
+    }
 
     if (path.isEmpty()) {
         PyErr_SetString(PyExc_ImportError, "Cannot get path of the FreeCAD module!");
@@ -192,7 +192,6 @@ PyMOD_INIT_FUNC(FreeCAD)
     std::clog.rdbuf(&stdclog);
     std::cerr.rdbuf(&stdcerr);
 
-    // PyObject* module = _PyImport_FindBuiltin("FreeCAD");
     PyObject* modules = PyImport_GetModuleDict();
     PyObject* module = PyDict_GetItemString(modules, "FreeCAD");
     if (!module) {

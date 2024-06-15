@@ -45,71 +45,71 @@ class TestPathGeom(PathTestBase):
     def test01(self):
         """Verify diffAngle functionality."""
         self.assertRoughly(
-            Path.Geom.diffAngle(0, +0 * math.pi / 4, "CW") / math.pi, 0 / 4.0
+            Path.Geom.diffAngle(0, +0 * math.pi / 4, "Climb") / math.pi, 0 / 4.0
         )
         self.assertRoughly(
-            Path.Geom.diffAngle(0, +3 * math.pi / 4, "CW") / math.pi, 5 / 4.0
+            Path.Geom.diffAngle(0, +3 * math.pi / 4, "Climb") / math.pi, 5 / 4.0
         )
         self.assertRoughly(
-            Path.Geom.diffAngle(0, -3 * math.pi / 4, "CW") / math.pi, 3 / 4.0
+            Path.Geom.diffAngle(0, -3 * math.pi / 4, "Climb") / math.pi, 3 / 4.0
         )
         self.assertRoughly(
-            Path.Geom.diffAngle(0, +4 * math.pi / 4, "CW") / math.pi, 4 / 4.0
+            Path.Geom.diffAngle(0, +4 * math.pi / 4, "Climb") / math.pi, 4 / 4.0
         )
         self.assertRoughly(
-            Path.Geom.diffAngle(0, +0 * math.pi / 4, "CCW") / math.pi, 0 / 4.0
+            Path.Geom.diffAngle(0, +0 * math.pi / 4, "Conventional") / math.pi, 0 / 4.0
         )
         self.assertRoughly(
-            Path.Geom.diffAngle(0, +3 * math.pi / 4, "CCW") / math.pi, 3 / 4.0
+            Path.Geom.diffAngle(0, +3 * math.pi / 4, "Conventional") / math.pi, 3 / 4.0
         )
         self.assertRoughly(
-            Path.Geom.diffAngle(0, -3 * math.pi / 4, "CCW") / math.pi, 5 / 4.0
+            Path.Geom.diffAngle(0, -3 * math.pi / 4, "Conventional") / math.pi, 5 / 4.0
         )
         self.assertRoughly(
-            Path.Geom.diffAngle(0, +4 * math.pi / 4, "CCW") / math.pi, 4 / 4.0
-        )
-
-        self.assertRoughly(
-            Path.Geom.diffAngle(+math.pi / 4, +0 * math.pi / 4, "CW") / math.pi, 1 / 4.0
-        )
-        self.assertRoughly(
-            Path.Geom.diffAngle(+math.pi / 4, +3 * math.pi / 4, "CW") / math.pi, 6 / 4.0
-        )
-        self.assertRoughly(
-            Path.Geom.diffAngle(+math.pi / 4, -1 * math.pi / 4, "CW") / math.pi, 2 / 4.0
-        )
-        self.assertRoughly(
-            Path.Geom.diffAngle(-math.pi / 4, +0 * math.pi / 4, "CW") / math.pi, 7 / 4.0
-        )
-        self.assertRoughly(
-            Path.Geom.diffAngle(-math.pi / 4, +3 * math.pi / 4, "CW") / math.pi, 4 / 4.0
-        )
-        self.assertRoughly(
-            Path.Geom.diffAngle(-math.pi / 4, -1 * math.pi / 4, "CW") / math.pi, 0 / 4.0
+            Path.Geom.diffAngle(0, +4 * math.pi / 4, "Conventional") / math.pi, 4 / 4.0
         )
 
         self.assertRoughly(
-            Path.Geom.diffAngle(+math.pi / 4, +0 * math.pi / 4, "CCW") / math.pi,
+            Path.Geom.diffAngle(+math.pi / 4, +0 * math.pi / 4, "Climb") / math.pi, 1 / 4.0
+        )
+        self.assertRoughly(
+            Path.Geom.diffAngle(+math.pi / 4, +3 * math.pi / 4, "Climb") / math.pi, 6 / 4.0
+        )
+        self.assertRoughly(
+            Path.Geom.diffAngle(+math.pi / 4, -1 * math.pi / 4, "Climb") / math.pi, 2 / 4.0
+        )
+        self.assertRoughly(
+            Path.Geom.diffAngle(-math.pi / 4, +0 * math.pi / 4, "Climb") / math.pi, 7 / 4.0
+        )
+        self.assertRoughly(
+            Path.Geom.diffAngle(-math.pi / 4, +3 * math.pi / 4, "Climb") / math.pi, 4 / 4.0
+        )
+        self.assertRoughly(
+            Path.Geom.diffAngle(-math.pi / 4, -1 * math.pi / 4, "Climb") / math.pi, 0 / 4.0
+        )
+
+        self.assertRoughly(
+            Path.Geom.diffAngle(+math.pi / 4, +0 * math.pi / 4, "Conventional") / math.pi,
             7 / 4.0,
         )
         self.assertRoughly(
-            Path.Geom.diffAngle(+math.pi / 4, +3 * math.pi / 4, "CCW") / math.pi,
+            Path.Geom.diffAngle(+math.pi / 4, +3 * math.pi / 4, "Conventional") / math.pi,
             2 / 4.0,
         )
         self.assertRoughly(
-            Path.Geom.diffAngle(+math.pi / 4, -1 * math.pi / 4, "CCW") / math.pi,
+            Path.Geom.diffAngle(+math.pi / 4, -1 * math.pi / 4, "Conventional") / math.pi,
             6 / 4.0,
         )
         self.assertRoughly(
-            Path.Geom.diffAngle(-math.pi / 4, +0 * math.pi / 4, "CCW") / math.pi,
+            Path.Geom.diffAngle(-math.pi / 4, +0 * math.pi / 4, "Conventional") / math.pi,
             1 / 4.0,
         )
         self.assertRoughly(
-            Path.Geom.diffAngle(-math.pi / 4, +3 * math.pi / 4, "CCW") / math.pi,
+            Path.Geom.diffAngle(-math.pi / 4, +3 * math.pi / 4, "Conventional") / math.pi,
             4 / 4.0,
         )
         self.assertRoughly(
-            Path.Geom.diffAngle(-math.pi / 4, -1 * math.pi / 4, "CCW") / math.pi,
+            Path.Geom.diffAngle(-math.pi / 4, -1 * math.pi / 4, "Conventional") / math.pi,
             0 / 4.0,
         )
 
@@ -499,7 +499,7 @@ class TestPathGeom(PathTestBase):
             ),
             p1,
             p2,
-            "CW",
+            "Climb",
         )
         self.assertArc(
             Path.Geom.edgeForCmd(
@@ -510,7 +510,7 @@ class TestPathGeom(PathTestBase):
             ),
             p2,
             p1,
-            "CCW",
+            "Conventional",
         )
 
     def test30(self):

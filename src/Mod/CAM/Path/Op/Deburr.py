@@ -144,7 +144,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             "Deburr",
             QT_TRANSLATE_NOOP("App::Property", "Direction of toolpath"),
         )
-        # obj.Direction = ["CW", "CCW"]
+        # obj.Direction = ["Climb", "Conventional"]
         obj.addProperty(
             "App::PropertyEnumeration",
             "Side",
@@ -181,8 +181,8 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
             "Direction": [
-                (translate("Path", "CW"), "CW"),
-                (translate("Path", "CCW"), "CCW"),
+                (translate("Path", "Climb"), "Climb"),
+                (translate("Path", "Conventional"), "Conventional"),
             ],  # this is the direction that the profile runs
             "Join": [
                 (translate("PathDeburr", "Round"), "Round"),
@@ -414,7 +414,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                     wires.append(wire)
 
         # Set direction of op
-        forward = obj.Direction == "CW"
+        forward = obj.Direction == "Climb"
 
         # Set value of side
         obj.Side = side[0]
@@ -449,7 +449,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         obj.Join = "Round"
         obj.setExpression("StepDown", "0 mm")
         obj.StepDown = "0 mm"
-        obj.Direction = "CW"
+        obj.Direction = "Climb"
         obj.Side = "Outside"
         obj.EntryPoint = 0
 
