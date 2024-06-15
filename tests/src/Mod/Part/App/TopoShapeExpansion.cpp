@@ -785,7 +785,7 @@ TEST_F(TopoShapeExpansionTest, setElementComboName)
         topoShape.getMappedName(Data::IndexedName::fromConst("Face", 7), true);
     Data::MappedName faceName2 =
         topoShape.getMappedName(Data::IndexedName::fromConst("Face", 8), true);
-    char* op = "Copy";
+    const char* op = "Copy";
     // Act
     Data::MappedName result = topoShape.setElementComboName(Data::IndexedName::fromConst("Edge", 1),
                                                             {edgeName, faceName, faceName2},
@@ -810,7 +810,7 @@ TEST_F(TopoShapeExpansionTest, setElementComboNameCompound)
         topoShape.getMappedName(Data::IndexedName::fromConst("Face", 7), true);
     Data::MappedName faceName2 =
         topoShape.getMappedName(Data::IndexedName::fromConst("Face", 8), true);
-    char* op = "Copy";
+    const char* op = "Copy";
     // Act
     Data::MappedName result = topoShape.setElementComboName(Data::IndexedName::fromConst("Edge", 1),
                                                             {edgeName, faceName, faceName2},

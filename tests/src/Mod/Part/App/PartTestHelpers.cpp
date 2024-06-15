@@ -75,7 +75,7 @@ void ExecutePython(const std::vector<std::string>& python)
 }
 
 
-void rectangle(double height, double width, char* name)
+void rectangle(double height, double width, const char* name)
 {
     std::vector<std::string> rectstring {
         "import FreeCAD, Part",
