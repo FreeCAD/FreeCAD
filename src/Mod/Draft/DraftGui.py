@@ -205,7 +205,7 @@ class DraftToolBar:
 
         # add only a dummy widget, since widgets are created on demand
         self.baseWidget = DraftBaseWidget()
-        self.tray = QtWidgets.QToolBar(None)
+        self.tray = FreeCADGui.UiLoader().createWidget("Gui::ToolBar")
         self.tray.setObjectName("Draft tray")
         self.tray.setWindowTitle("Draft tray")
         self.toptray = self.tray

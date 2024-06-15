@@ -45,6 +45,7 @@
 #include "Command.h"
 #include "MainWindow.h"
 #include "OverlayWidgets.h"
+#include "WidgetFactory.h"
 
 
 using namespace Gui;
@@ -175,8 +176,7 @@ ToolBar::ToolBar()
 ToolBar::ToolBar(QWidget* parent)
     : QToolBar(parent)
 {
-    connect(this, &QToolBar::topLevelChanged, this, &ToolBar::updateCustomGripVisibility);
-    connect(this, &QToolBar::movableChanged, this, &ToolBar::updateCustomGripVisibility);
+    setupConnections();
 }
 
 void ToolBar::undock()
@@ -218,6 +218,12 @@ void ToolBar::updateCustomGripVisibility()
         // or is not present and should not be - nothing to do
         return;
     }
+}
+
+void Gui::ToolBar::setupConnections()
+{
+    connect(this, &QToolBar::topLevelChanged, this, &ToolBar::updateCustomGripVisibility);
+    connect(this, &QToolBar::movableChanged, this, &ToolBar::updateCustomGripVisibility);
 }
 
 // -----------------------------------------------------------
@@ -401,6 +407,8 @@ ToolBarManager::ToolBarManager()
     setupConnection();
     setupTimer();
     setupMenuBarTimer();
+
+    setupWidgetProducers();
 }
 
 ToolBarManager::~ToolBarManager() = default;
@@ -514,6 +522,11 @@ void ToolBarManager::setupMenuBarTimer()
             menuBar->adjustSize();
         }
     });
+}
+
+void Gui::ToolBarManager::setupWidgetProducers()
+{
+    new WidgetProducer<Gui::ToolBar>;
 }
 
 ToolBarArea ToolBarManager::toolBarArea(QWidget *widget) const
@@ -697,7 +710,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
             // Enable automatic handling of visibility via, for example, (contextual) menu
             toolbar->toggleViewAction()->setVisible(true);
         }
-        else { 
+        else {
             // ToolBarItem::DefaultVisibility::Unavailable
             // Prevent that the action to show/hide a toolbar appears on the (contextual) menus.
             // This is also managed by the client code for a toolbar with custom policy

@@ -117,18 +117,23 @@ private:
  * QToolBar from Qt lacks few abilities like ability to float toolbar from code.
  * This class allows us to provide custom behaviors for toolbars if needed.
  */
-class ToolBar: public QToolBar
+class GuiExport ToolBar: public QToolBar
 {
-Q_OBJECT
+    Q_OBJECT
+
+    friend class ToolBarGrip;
 
 public:
-    ToolBar(QWidget* parent);
+    ToolBar();
+    explicit ToolBar(QWidget* parent);
+
     virtual ~ToolBar() = default;
 
     void undock();
     void updateCustomGripVisibility();
 
-    friend class ToolBarGrip;
+protected:
+    void setupConnections();
 };
 
 /**
@@ -164,7 +169,7 @@ public:
 
     void setState(const QList<QString>& names, State state);
     void setState(const QString& name, State state);
-    
+
     int toolBarIconSize(QWidget *widget = nullptr) const;
     void setupToolBarIconSize();
 
@@ -202,6 +207,8 @@ private:
     void setupSizeTimer();
     void setupResizeTimer();
     void setupMenuBarTimer();
+    void setupWidgetProducers();
+
     void addToMenu(QLayout* layout, QWidget* area, QMenu* menu);
     QLayout* findLayoutOfObject(QObject* source, QWidget* area) const;
     ToolBarAreaWidget* findToolBarAreaWidget() const;
