@@ -24,6 +24,13 @@
 #ifndef BASE_BOUNDBOX_H
 #define BASE_BOUNDBOX_H
 
+#ifdef _WIN32
+#ifndef NOMINMAX  // Ensure there are no min and max macros defined
+#define NOMINMAX
+#endif
+#include <windows.h>
+#endif
+
 #include <array>
 #include <limits>
 #include "Matrix.h"
