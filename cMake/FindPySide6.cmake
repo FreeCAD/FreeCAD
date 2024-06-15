@@ -15,6 +15,7 @@ if(NOT PySide6_FOUND)
             set(PYSIDE_INCLUDE_DIR ${PySide6_INCLUDE_DIRS} CACHE INTERNAL "")
             set(PYSIDE_LIBRARY ${PySide6_LIBRARIES} CACHE INTERNAL "")
             set(PYSIDE_FOUND TRUE CACHE BOOL OFF)
+            set(PYSIDE_MAJOR_VERSION 6 CACHE INTERNAL 6)
         endif()
     endif()
 

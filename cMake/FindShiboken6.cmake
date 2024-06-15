@@ -12,6 +12,7 @@ if(NOT Shiboken6_FOUND)
         find_pip_package(Shiboken6)
         if (Shiboken6_FOUND)
             set(SHIBOKEN_LIBRARY ${Shiboken6_LIBRARIES} CACHE INTERNAL "")
+            set(SHIBOKEN_MAJOR_VERSION 6 CACHE INTERNAL 6)
             set(SHIBOKEN_FOUND ON CACHE BOOL OFF)
         endif()
         # The include directory we actually want is part of shiboken6-generator
