@@ -227,7 +227,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
     def cleanupPage(self, obj):
         try:
             self.obj.ViewObject.RootNode.removeChild(self.switch)
-        except ReferenceError:
+        except (ReferenceError, RuntimeError) as e:
             Path.Log.debug("obj already destroyed - no cleanup required")
 
     def getForm(self):

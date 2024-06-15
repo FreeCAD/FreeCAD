@@ -170,12 +170,22 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.FinishingPass = self.form.finishingPassEnabled.isChecked()
 
         if obj.OptimizeMovements != self.form.optimizeMovementsEnabled.isChecked():
-             obj.OptimizeMovements = self.form.optimizeMovementsEnabled.isChecked()
+            obj.OptimizeMovements = self.form.optimizeMovementsEnabled.isChecked()
 
         self.finishingPassZOffsetSpinBox.updateProperty()
 
-        self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
+
+        try:
+            self.updateToolController(obj, self.form.toolController)
+        except PathUtils.PathNoTCExistsException:
+            title = translate("CAM", "No valid toolcontroller")
+            message = translate(
+                "CAM",
+                "This operation requires a tool controller with a v-bit tool",
+            )
+
+            self.show_error_message(title, message)
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
@@ -200,7 +210,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.finishingPassZOffset.editingFinished)
 
         signals.append(self.form.optimizeMovementsEnabled.stateChanged)
-
 
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)

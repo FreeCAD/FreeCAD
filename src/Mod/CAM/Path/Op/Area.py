@@ -223,7 +223,9 @@ class ObjectOp(PathOp.ObjectOp):
         area.add(baseobject)
 
         areaParams = self.areaOpAreaParams(obj, isHole)
-        areaParams["SectionTolerance"] = FreeCAD.Base.Precision.confusion() * 10 # basically 1e-06
+        areaParams["SectionTolerance"] = (
+            FreeCAD.Base.Precision.confusion() * 10
+        )  # basically 1e-06
 
         heights = [i for i in self.depthparams]
         Path.Log.debug("depths: {}".format(heights))
@@ -238,7 +240,9 @@ class ObjectOp(PathOp.ObjectOp):
         Path.Log.debug("sections = %s" % sections)
 
         # Rest machining
-        self.sectionShapes = self.sectionShapes + [section.toTopoShape() for section in sections]
+        self.sectionShapes = self.sectionShapes + [
+            section.toTopoShape() for section in sections
+        ]
         if hasattr(obj, "UseRestMachining") and obj.UseRestMachining:
             restSections = []
             for section in sections:
@@ -246,15 +250,36 @@ class ObjectOp(PathOp.ObjectOp):
                 z = bbox.ZMin
                 sectionClearedAreas = []
                 for op in self.job.Operations.Group:
-                    if self in [x.Proxy for x in [op] + op.OutListRecursive if hasattr(x, "Proxy")]:
+                    if self in [
+                        x.Proxy
+                        for x in [op] + op.OutListRecursive
+                        if hasattr(x, "Proxy")
+                    ]:
                         break
                     if hasattr(op, "Active") and op.Active and op.Path:
-                        tool = op.Proxy.tool if hasattr(op.Proxy, "tool") else op.ToolController.Proxy.getTool(op.ToolController)
+                        tool = (
+                            op.Proxy.tool
+                            if hasattr(op.Proxy, "tool")
+                            else op.ToolController.Proxy.getTool(op.ToolController)
+                        )
                         diameter = tool.Diameter.getValueAs("mm")
-                        dz = 0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)  # for drills, dz translates to the full width part of the tool
-                        sectionClearedAreas.append(section.getClearedArea(op.Path, diameter, z+dz+self.job.GeometryTolerance.getValueAs("mm"), bbox))
-                restSection = section.getRestArea(sectionClearedAreas, self.tool.Diameter.getValueAs("mm"))
-                if (restSection is not None):
+                        dz = (
+                            0
+                            if not hasattr(tool, "TipAngle")
+                            else -PathUtils.drillTipLength(tool)
+                        )  # for drills, dz translates to the full width part of the tool
+                        sectionClearedAreas.append(
+                            section.getClearedArea(
+                                op.Path,
+                                diameter,
+                                z + dz + self.job.GeometryTolerance.getValueAs("mm"),
+                                bbox,
+                            )
+                        )
+                restSection = section.getRestArea(
+                    sectionClearedAreas, self.tool.Diameter.getValueAs("mm")
+                )
+                if restSection is not None:
                     restSections.append(restSection)
             sections = restSections
 
@@ -273,7 +298,12 @@ class ObjectOp(PathOp.ObjectOp):
         pathParams["preamble"] = False
 
         # disable path sorting for offset and zigzag-offset paths
-        if hasattr(obj, "OffsetPattern") and obj.OffsetPattern in ["ZigZagOffset", "Offset"] and hasattr(obj, "MinTravel") and not obj.MinTravel:
+        if (
+            hasattr(obj, "OffsetPattern")
+            and obj.OffsetPattern in ["ZigZagOffset", "Offset"]
+            and hasattr(obj, "MinTravel")
+            and not obj.MinTravel
+        ):
             pathParams["sort_mode"] = 0
 
         if not self.areaOpRetractTool(obj):

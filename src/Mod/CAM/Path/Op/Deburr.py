@@ -157,9 +157,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             "App::PropertyInteger",
             "EntryPoint",
             "Deburr",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The segment where the toolpath starts"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The segment where the toolpath starts"),
         )
 
         ENUMS = self.propertyEnumerations()
@@ -210,6 +208,10 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
     def opExecute(self, obj):
         Path.Log.track(obj.Label)
+
+        if not obj.Base:
+            return
+
         if not hasattr(self, "printInfo"):
             self.printInfo = True
         try:

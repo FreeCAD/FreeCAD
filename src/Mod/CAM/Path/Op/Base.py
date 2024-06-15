@@ -912,10 +912,7 @@ class ObjectOp(object):
                 obj.Base = baselist
             else:
                 Path.Log.notice(
-                    (
-                        translate("CAM", "Base object %s.%s rejected by operation")
-                        + "\n"
-                    )
+                    (translate("CAM", "Base object %s.%s rejected by operation") + "\n")
                     % (base.Label, sub)
                 )
 
