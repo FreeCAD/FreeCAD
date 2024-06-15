@@ -178,6 +178,9 @@ public:
     /** deletes all external geometry */
     int delAllExternal();
 
+    template<typename returnType>
+    returnType performActionByGeomType(const Part::Geometry* geo);
+
     /** returns a pointer to a given Geometry index, possible indexes are:
      *  id>=0 for user defined geometries,
      *  id==-1 for the horizontal sketch axis,
@@ -310,6 +313,11 @@ public:
     /// retrieves the coordinates of a point
     static Base::Vector3d getPoint(const Part::Geometry* geo, PointPos PosId);
     Base::Vector3d getPoint(int GeoId, PointPos PosId) const;
+    template<class geomType>
+    static Base::Vector3d getPointForGeometry(const geomType* geo, PointPos PosId)
+    {
+        return Base::Vector3d();
+    }
 
     /// toggle geometry to draft line
     int toggleConstruction(int GeoId);
