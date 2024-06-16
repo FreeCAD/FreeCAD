@@ -221,12 +221,55 @@ void AssemblyObject::doDragStep()
 
         auto dragPartsVec = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>(dragMbdParts);
         mbdAssembly->runDragStep(dragPartsVec);
-        setNewPlacements();
-        redrawJointPlacements(getJoints());
+        if (validateNewPlacements()) {
+            setNewPlacements();
+            redrawJointPlacements(getJoints());
+        }
     }
     catch (...) {
         // We do nothing if a solve step fails.
     }
+}
+
+Base::Placement AssemblyObject::getMbdPlacement(std::shared_ptr<ASMTPart> mbdPart)
+{
+    double x, y, z;
+    mbdPart->getPosition3D(x, y, z);
+    Base::Vector3d pos = Base::Vector3d(x, y, z);
+
+    double q0, q1, q2, q3;
+    mbdPart->getQuarternions(q3, q0, q1, q2);
+    Base::Rotation rot = Base::Rotation(q0, q1, q2, q3);
+
+    return Base::Placement(pos, rot);
+}
+
+bool AssemblyObject::validateNewPlacements()
+{
+    // First we check if a grounded object has moved. It can happen that they flip.
+    for (auto* obj : getGroundedParts()) {
+        auto* propPlacement =
+            dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+        if (propPlacement) {
+            Base::Placement oldPlc = propPlacement->getValue();
+
+            auto it = objectPartMap.find(obj);
+            if (it != objectPartMap.end()) {
+                std::shared_ptr<MbD::ASMTPart> mbdPart = it->second;
+                Base::Placement newPlacement = getMbdPlacement(mbdPart);
+                if (!oldPlc.isSame(newPlacement)) {
+                    Base::Console().Warning(
+                        "Assembly : Ignoring bad solve, a grounded object moved.\n");
+                    return false;
+                }
+            }
+        }
+    }
+
+    // TODO: We could do further tests
+    // For example check if the joints connectors are correctly aligned.
+
+    return true;
 }
 
 void AssemblyObject::postDrag()
@@ -320,31 +363,7 @@ void AssemblyObject::setNewPlacements()
             continue;
         }
 
-        double x, y, z;
-        mbdPart->getPosition3D(x, y, z);
-        // Base::Console().Warning("in set placement : (%f, %f, %f)\n", x, y, z);
-        Base::Vector3d pos = Base::Vector3d(x, y, z);
-
-        // TODO : replace with quaternion to simplify
-        auto& r0 = mbdPart->rotationMatrix->at(0);
-        auto& r1 = mbdPart->rotationMatrix->at(1);
-        auto& r2 = mbdPart->rotationMatrix->at(2);
-        Base::Vector3d row0 = Base::Vector3d(r0->at(0), r0->at(1), r0->at(2));
-        Base::Vector3d row1 = Base::Vector3d(r1->at(0), r1->at(1), r1->at(2));
-        Base::Vector3d row2 = Base::Vector3d(r2->at(0), r2->at(1), r2->at(2));
-        Base::Matrix4D mat;
-        mat.setRow(0, row0);
-        mat.setRow(1, row1);
-        mat.setRow(2, row2);
-        Base::Rotation rot = Base::Rotation(mat);
-
-        /*double q0, q1, q2, q3;
-        mbdPart->getQuarternions(q0, q1, q2, q3);
-        Base::Rotation rot = Base::Rotation(q0, q1, q2, q3);*/
-
-        Base::Placement newPlacement = Base::Placement(pos, rot);
-
-        propPlacement->setValue(newPlacement);
+        propPlacement->setValue(getMbdPlacement(mbdPart));
         obj->purgeTouched();
     }
 }
@@ -399,6 +418,10 @@ std::shared_ptr<ASMTAssembly> AssemblyObject::makeMbdAssembly()
     auto assembly = CREATE<ASMTAssembly>::With();
     assembly->setName("OndselAssembly");
 
+    ParameterGrp::handle hPgr = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Assembly");
+
+    assembly->setDebug(hPgr->GetBool("LogSolverDebug", false));
     return assembly;
 }
 
@@ -1124,53 +1147,73 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
         if (jointType == JointType::Slider || jointType == JointType::Cylindrical) {
             auto* propLenMin =
                 dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("LengthMin"));
-            if (propLenMin) {
+            auto* propLenMax =
+                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("LengthMax"));
+
+            if (propLenMin && propLenMax) {
+                // Swap the values if necessary.
+                double minLength = propLenMin->getValue();
+                double maxLength = propLenMax->getValue();
+                if (minLength > maxLength) {
+                    propLenMin->setValue(maxLength);
+                    propLenMax->setValue(minLength);
+                    minLength = maxLength;
+                    maxLength = propLenMax->getValue();
+                }
+
                 auto limit = ASMTTranslationLimit::With();
                 limit->setName(joint->getFullName() + "-LimitLenMin");
                 limit->setMarkerI(fullMarkerNameI);
                 limit->setMarkerJ(fullMarkerNameJ);
                 limit->settype("=>");
-                limit->setlimit(std::to_string(propLenMin->getValue()));
+                limit->setlimit(std::to_string(minLength));
                 limit->settol("1.0e-9");
                 mbdAssembly->addLimit(limit);
-            }
-            auto* propLenMax =
-                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("LengthMax"));
-            if (propLenMax) {
-                auto limit = ASMTTranslationLimit::With();
-                limit->setName(joint->getFullName() + "-LimitLenMax");
-                limit->setMarkerI(fullMarkerNameI);
-                limit->setMarkerJ(fullMarkerNameJ);
-                limit->settype("=<");
-                limit->setlimit(std::to_string(propLenMax->getValue()));
-                limit->settol("1.0e-9");
-                mbdAssembly->addLimit(limit);
+
+                auto limit2 = ASMTTranslationLimit::With();
+                limit2->setName(joint->getFullName() + "-LimitLenMax");
+                limit2->setMarkerI(fullMarkerNameI);
+                limit2->setMarkerJ(fullMarkerNameJ);
+                limit2->settype("=<");
+                limit2->setlimit(std::to_string(maxLength));
+                limit2->settol("1.0e-9");
+                mbdAssembly->addLimit(limit2);
             }
         }
         if (jointType == JointType::Revolute || jointType == JointType::Cylindrical) {
             auto* propRotMin =
                 dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("AngleMin"));
-            if (propRotMin) {
+            auto* propRotMax =
+                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("AngleMax"));
+
+            if (propRotMin && propRotMax) {
+                // Swap the values if necessary.
+                double minAngle = propRotMin->getValue();
+                double maxAngle = propRotMax->getValue();
+                if (minAngle > maxAngle) {
+                    propRotMin->setValue(maxAngle);
+                    propRotMax->setValue(minAngle);
+                    minAngle = maxAngle;
+                    maxAngle = propRotMax->getValue();
+                }
+
                 auto limit = ASMTRotationLimit::With();
                 limit->setName(joint->getFullName() + "-LimitRotMin");
                 limit->setMarkerI(fullMarkerNameI);
                 limit->setMarkerJ(fullMarkerNameJ);
                 limit->settype("=>");
-                limit->setlimit(std::to_string(propRotMin->getValue()) + "*pi/180.0");
+                limit->setlimit(std::to_string(minAngle) + "*pi/180.0");
                 limit->settol("1.0e-9");
                 mbdAssembly->addLimit(limit);
-            }
-            auto* propRotMax =
-                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("AngleMax"));
-            if (propRotMax) {
-                auto limit = ASMTRotationLimit::With();
-                limit->setName(joint->getFullName() + "-LimiRotMax");
-                limit->setMarkerI(fullMarkerNameI);
-                limit->setMarkerJ(fullMarkerNameJ);
-                limit->settype("=<");
-                limit->setlimit(std::to_string(propRotMax->getValue()) + "*pi/180.0");
-                limit->settol("1.0e-9");
-                mbdAssembly->addLimit(limit);
+
+                auto limit2 = ASMTRotationLimit::With();
+                limit2->setName(joint->getFullName() + "-LimiRotMax");
+                limit2->setMarkerI(fullMarkerNameI);
+                limit2->setMarkerJ(fullMarkerNameJ);
+                limit2->settype("=<");
+                limit2->setlimit(std::to_string(maxAngle) + "*pi/180.0");
+                limit2->settol("1.0e-9");
+                mbdAssembly->addLimit(limit2);
             }
         }
     }

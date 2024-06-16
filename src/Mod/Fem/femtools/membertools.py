@@ -289,6 +289,9 @@ class AnalysisMember():
         self.cons_centrif = self.get_several_member(
             "Fem::ConstraintCentrif"
         )
+        self.cons_bodyheatsource = self.get_several_member(
+            "Fem::ConstraintBodyHeatSource"
+        )
         self.cons_contact = self.get_several_member(
             "Fem::ConstraintContact"
         )

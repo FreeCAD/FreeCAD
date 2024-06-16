@@ -227,6 +227,8 @@ DlgCAMSimulator* DlgCAMSimulator::GetInstance()
 {
     if (mInstance == nullptr) {
         QSurfaceFormat format;
+        format.setVersion(4, 1);                         // Request OpenGL 4.1 - for MacOS
+        format.setProfile(QSurfaceFormat::CoreProfile);  // Use the core profile = for MacOS
         format.setSamples(16);
         format.setSwapInterval(2);
         format.setDepthBufferSize(24);

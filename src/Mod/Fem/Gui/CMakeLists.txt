@@ -305,6 +305,8 @@ SET(FemGui_SRCS_Module
     ActiveAnalysisObserver.cpp
     ActiveAnalysisObserver.h
     Command.cpp
+    FemGuiTools.cpp
+    FemGuiTools.h
     FemSettings.cpp
     FemSettings.h
     Resources/Fem.qrc
@@ -364,6 +366,7 @@ SET(FemGuiSymbol_IV
     Resources/symbols/ConstraintSectionPrint.iv
     Resources/symbols/ConstraintSpring.iv
     Resources/symbols/ConstraintTemperature.iv
+    Resources/symbols/ConstraintTransform.iv
     Resources/symbols/ConstraintTie.iv
 )
 

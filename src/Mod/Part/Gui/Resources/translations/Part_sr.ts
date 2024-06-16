@@ -226,7 +226,7 @@
       <location filename="../../AttacherTexts.cpp" line="295"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Теме</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="296"/>
@@ -1152,7 +1152,7 @@
     <message>
       <location filename="../../Command.cpp" line="2135"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2136"/>
@@ -1167,7 +1167,7 @@
     <message>
       <location filename="../../Command.cpp" line="2063"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2064"/>
@@ -1185,7 +1185,7 @@
     <message>
       <location filename="../../Command.cpp" line="2096"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2097"/>
@@ -1203,7 +1203,7 @@
     <message>
       <location filename="../../Command.cpp" line="1246"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1247"/>
@@ -1213,7 +1213,7 @@
     <message>
       <location filename="../../Command.cpp" line="1248"/>
       <source>Run a boolean operation with two shapes selected</source>
-      <translation>Изврши Булову операцију cа два одабрана облика</translation>
+      <translation>Изврши булову операцију cа два одабрана облика</translation>
     </message>
   </context>
   <context>
@@ -1221,7 +1221,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="106"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="107"/>
@@ -1241,7 +1241,7 @@
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="130"/>
@@ -1259,7 +1259,7 @@
     <message>
       <location filename="../../Command.cpp" line="170"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="171"/>
@@ -1277,7 +1277,7 @@
     <message>
       <location filename="../../Command.cpp" line="1537"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1538"/>
@@ -1295,7 +1295,7 @@
     <message>
       <location filename="../../Command.cpp" line="1442"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1443"/>
@@ -1313,7 +1313,7 @@
     <message>
       <location filename="../../Command.cpp" line="357"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="358"/>
@@ -1331,7 +1331,7 @@
     <message>
       <location filename="../../Command.cpp" line="734"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="735"/>
@@ -1349,7 +1349,7 @@
     <message>
       <location filename="../../Command.cpp" line="510"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="511"/>
@@ -1367,7 +1367,7 @@
     <message>
       <location filename="../../Command.cpp" line="1736"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1737"/>
@@ -1385,7 +1385,7 @@
     <message>
       <location filename="../../Command.cpp" line="616"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="617"/>
@@ -1403,7 +1403,7 @@
     <message>
       <location filename="../../Command.cpp" line="841"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="842"/>
@@ -1421,7 +1421,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="190"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="191"/>
@@ -1441,7 +1441,7 @@
     <message>
       <location filename="../../Command.cpp" line="1498"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1499"/>
@@ -1459,7 +1459,7 @@
     <message>
       <location filename="../../Command.cpp" line="298"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="299"/>
@@ -1477,7 +1477,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="64"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="65"/>
@@ -1497,7 +1497,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="412"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="413"/>
@@ -1515,7 +1515,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="324"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="325"/>
@@ -1533,7 +1533,7 @@
     <message>
       <location filename="../../Command.cpp" line="1009"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1010"/>
@@ -1551,7 +1551,7 @@
     <message>
       <location filename="../../Command.cpp" line="1277"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1278"/>
@@ -1569,7 +1569,7 @@
     <message>
       <location filename="../../Command.cpp" line="1414"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1415"/>
@@ -1587,7 +1587,7 @@
     <message>
       <location filename="../../Command.cpp" line="433"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="434"/>
@@ -1605,7 +1605,7 @@
     <message>
       <location filename="../../Command.cpp" line="946"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="947"/>
@@ -1623,7 +1623,7 @@
     <message>
       <location filename="../../Command.cpp" line="1057"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1058"/>
@@ -1641,7 +1641,7 @@
     <message>
       <location filename="../../Command.cpp" line="1566"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1567"/>
@@ -1659,7 +1659,7 @@
     <message>
       <location filename="../../Command.cpp" line="1334"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1335"/>
@@ -1677,7 +1677,7 @@
     <message>
       <location filename="../../Command.cpp" line="1105"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1106"/>
@@ -1695,7 +1695,7 @@
     <message>
       <location filename="../../Command.cpp" line="1470"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1471"/>
@@ -1713,7 +1713,7 @@
     <message>
       <location filename="../../Command.cpp" line="1624"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1625"/>
@@ -1731,7 +1731,7 @@
     <message>
       <location filename="../../Command.cpp" line="1681"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1682"/>
@@ -1749,7 +1749,7 @@
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -1767,7 +1767,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="134"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
@@ -1785,7 +1785,7 @@
     <message>
       <location filename="../../Command.cpp" line="211"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="212"/>
@@ -1803,7 +1803,7 @@
     <message>
       <location filename="../../Command.cpp" line="2165"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2166"/>
@@ -1827,7 +1827,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="352"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="353"/>
@@ -1845,7 +1845,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1184"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1185"/>
@@ -1863,7 +1863,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1386"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1387"/>
@@ -1881,7 +1881,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1958"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1959"/>
@@ -1899,7 +1899,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="898"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="899"/>
@@ -1930,7 +1930,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="105"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="106"/>
@@ -1948,7 +1948,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="221"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="222"/>
@@ -1966,7 +1966,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="55"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="56"/>
@@ -1984,7 +1984,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandParametric.cpp" line="148"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="149"/>
@@ -2004,7 +2004,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1595"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1596"/>
@@ -2022,7 +2022,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1828"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1829"/>
@@ -2050,7 +2050,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandParametric.cpp" line="232"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="233"/>
@@ -2070,7 +2070,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="296"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="297"/>
@@ -2476,7 +2476,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="397"/>
       <source>Cannot perform a boolean operation with the same shape</source>
-      <translation>Није могуће извршити Булову операцију са истим обликом</translation>
+      <translation>Није могуће извршити булову операцију са истим обликом</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="407"/>
@@ -2895,7 +2895,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="80"/>
       <source>All</source>
-      <translation>Сва</translation>
+      <translation>Сви</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="87"/>
@@ -3128,7 +3128,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::DlgImportExportStep</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.cpp" line="171"/>
+      <location filename="../../DlgSettingsGeneral.cpp" line="173"/>
       <source>STEP</source>
       <translation>STEP</translation>
     </message>
@@ -3327,7 +3327,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="92"/>
       <source>Direction:</source>
-      <translation>Правац:</translation>
+      <translation type="unfinished">Direction:</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="109"/>
@@ -4056,14 +4056,29 @@ during file reading (slower but higher details).</translation>
       <translation>Аутоматски пречисти модел након операције на бази скице</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="68"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="74"/>
       <source>Object naming</source>
       <translation>Именовање објекта</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="77"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
       <source>Add name of base object</source>
       <translation>Додај име основног објекта</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="99"/>
+      <source>Experimental</source>
+      <translation type="unfinished">Experimental</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</source>
+      <translation type="unfinished">These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="118"/>
+      <source>Allow multiple solids in Part Design Body by default (experimental)</source>
+      <translation type="unfinished">Allow multiple solids in Part Design Body by default (experimental)</translation>
     </message>
   </context>
   <context>
@@ -4374,7 +4389,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../Mirroring.ui" line="121"/>
       <source>Use selected reference</source>
-      <translation type="unfinished">Use selected reference</translation>
+      <translation>Изабери</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="142"/>
@@ -4405,12 +4420,12 @@ the sketch plane's normal vector will be used</source>
       <location filename="../../Mirroring.ui" line="150"/>
       <location filename="../../Mirroring.cpp" line="215"/>
       <source>Selecting</source>
-      <translation type="unfinished">Selecting</translation>
+      <translation>Изабери раван</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="166"/>
       <source>Mirror plane reference</source>
-      <translation type="unfinished">Mirror plane reference</translation>
+      <translation>Изабрана раван симетрије</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="20"/>
@@ -4479,7 +4494,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Permanent Section Cutting</source>
-      <translation type="unfinished">Permanent Section Cutting</translation>
+      <translation>Исеци пресек</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -5534,14 +5549,14 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../AppPartGui.cpp" line="231"/>
       <source>Part and Part Design workbench</source>
-      <translation>Part и Part Design радно окружење</translation>
+      <translation>Окружења Делови и Конструисање делова</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="232"/>
       <location filename="../../AppPartGui.cpp" line="233"/>
       <location filename="../../AppPartGui.cpp" line="234"/>
       <source>Part/Part Design</source>
-      <translation>Part/Part Design</translation>
+      <translation>Делови/Конструисање делова</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="235"/>
@@ -5578,7 +5593,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="476"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
-      <translation>Употреба објеката која нису пуна тела за Булове операције може довести до неочекиваних резултата.
+      <translation>Употреба објеката која нису пуна тела за булове операције може довести до неочекиваних резултата.
 Да ли желиш да наставиш?</translation>
     </message>
     <message>
@@ -5633,7 +5648,7 @@ Do you want to continue?</source>
       <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
-      <translation>Теме</translation>
+      <translation type="unfinished">Vertex</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
@@ -5976,7 +5991,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="33"/>
       <source>&amp;Part</source>
-      <translation>&amp;Part</translation>
+      <translation>&amp;Делови</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
@@ -6608,7 +6623,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation>Документ '%1' не постоји.</translation>
+      <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="254"/>
@@ -6624,7 +6639,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Део</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1306"/>

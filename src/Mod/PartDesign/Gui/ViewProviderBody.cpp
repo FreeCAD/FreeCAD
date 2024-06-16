@@ -33,6 +33,7 @@
 #include <App/Document.h>
 #include <App/Origin.h>
 #include <App/Part.h>
+#include <App/VarSet.h>
 #include <Base/Console.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
@@ -255,11 +256,11 @@ void ViewProviderBody::updateData(const App::Property* prop)
 }
 
 void ViewProviderBody::copyColorsfromTip(App::DocumentObject* tip) {
-    // update DiffuseColor
+    // update ShapeAppearance
     Gui::ViewProvider* vptip = Gui::Application::Instance->getViewProvider(tip);
     if (vptip && vptip->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
-        auto colors = static_cast<PartGui::ViewProviderPartExt*>(vptip)->DiffuseColor.getValues();
-        this->DiffuseColor.setValues(colors);
+        auto materials = static_cast<PartGui::ViewProviderPartExt*>(vptip)->ShapeAppearance.getValues();
+        this->ShapeAppearance.setValues(materials);
     }
 }
 
@@ -426,7 +427,6 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
     if (prop == &Visibility ||
         prop == &Selectable ||
         prop == &DisplayModeBody ||
-        prop == &DiffuseColor ||
         prop == &PointColorArray ||
         prop == &LineColorArray) {
         return;
@@ -495,6 +495,9 @@ bool ViewProviderBody::canDropObjects() const
 
 bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 {
+    if (obj->isDerivedFrom<App::VarSet>()) {
+        return true;
+    }
     if (!obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
         return false;
     }

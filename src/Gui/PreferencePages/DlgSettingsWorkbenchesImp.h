@@ -71,6 +71,7 @@ private:
 
     void saveWorkbenchSelector();
     void loadWorkbenchSelector();
+    void translateWorkbenchSelector();
 
 
     std::vector<std::string> _backgroundAutoloadedModules;

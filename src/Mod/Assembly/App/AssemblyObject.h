@@ -155,6 +155,8 @@ public:
 
     void exportAsASMT(std::string fileName);
 
+    Base::Placement getMbdPlacement(std::shared_ptr<MbD::ASMTPart> mbdPart);
+    bool validateNewPlacements();
     void setNewPlacements();
     void recomputeJointPlacements(std::vector<App::DocumentObject*> joints);
     void redrawJointPlacements(std::vector<App::DocumentObject*> joints);

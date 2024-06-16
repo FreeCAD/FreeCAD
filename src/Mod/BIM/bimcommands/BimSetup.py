@@ -687,7 +687,7 @@ class BIM_Setup:
                     elif sys.platform.startswith("darwin"):
                         plat = "macos"
                     else:
-                        print("Error - unknown platform")
+                        FreeCAD.Console.PrintError("Error - unknown platform")
                         return
                     if sys.maxsize > 2**32:
                         plat += "64"
@@ -721,7 +721,19 @@ class BIM_Setup:
                                 print("Successfully installed IfcOpenShell to", fp)
                                 break
                     else:
-                        print("Unable to find a build for your version")
-    
+                        FreeCAD.Console.PrintWarning(
+                            "Unable to find a build for your version therefore falling back to a pip install"
+                        )
+                        try:
+                            import pip
+                        except ModuleNotFoundError:
+                            FreeCAD.Console.PrintError(
+                                "Please install pip on your system, restart FreeCAD,"
+                                " change to BIM Wb and use Utils menu > ifcOpenShell update"
+                            )
+                            return
+                        from nativeifc import ifc_openshell
+
+                        FreeCADGui.runCommand('IFC_UpdateIOS',1)
 
 FreeCADGui.addCommand("BIM_Setup", BIM_Setup())

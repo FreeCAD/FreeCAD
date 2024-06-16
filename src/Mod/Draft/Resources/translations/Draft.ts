@@ -5166,24 +5166,24 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="453"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="495"/>
         <source>Activate this layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="459"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="501"/>
         <source>Select layer contents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="497"/>
-        <location filename="../../draftviewproviders/view_layer.py" line="511"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="539"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="553"/>
         <source>Merge layer duplicates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="503"/>
-        <location filename="../../draftviewproviders/view_layer.py" line="556"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="545"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="598"/>
         <source>Add new layer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5425,11 +5425,6 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/layer.py" line="81"/>
-        <source>added missing view properties</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../draftobjects/array.py" line="76"/>
         <source>added property &apos;Count&apos;</source>
         <translation type="unfinished"></translation>
@@ -5478,6 +5473,11 @@ of existing objects in all opened documents?</source>
     <message>
         <location filename="../../draftobjects/pointarray.py" line="142"/>
         <source>migrated &apos;PointList&apos; property to &apos;PointObject&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../draftobjects/layer.py" line="93"/>
+        <source>updated view properties</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7137,7 +7137,7 @@ set True for fusion or False for compound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/layer.py" line="55"/>
+        <location filename="../../draftobjects/layer.py" line="56"/>
         <source>The objects that are part of this layer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7947,7 +7947,7 @@ the &apos;First Angle&apos; and &apos;Last Angle&apos; properties.</source>
     </message>
     <message>
         <location filename="../../draftviewproviders/view_layer.py" line="78"/>
-        <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
+        <source>If it is true, the objects contained within this layer will adopt the shape appearance of the layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7966,22 +7966,27 @@ the &apos;First Angle&apos; and &apos;Last Angle&apos; properties.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="120"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="121"/>
+        <source>The shape appearance of the objects contained within this layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../draftviewproviders/view_layer.py" line="133"/>
         <source>The line width of the objects contained within this layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="130"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="143"/>
         <source>The draw style of the objects contained within this layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="141"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="154"/>
         <source>The transparency of the objects contained within this layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="152"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="165"/>
         <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
         <translation type="unfinished"></translation>
     </message>

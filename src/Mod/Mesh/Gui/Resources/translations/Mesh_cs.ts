@@ -1953,7 +1953,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="427"/>
       <source>Center</source>
-      <translation>Na střed</translation>
+      <translation>Střed</translation>
     </message>
   </context>
   <context>

@@ -369,7 +369,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>Shape Appearance:</string>
+           <string>Custom Appearance</string>
           </property>
          </widget>
         </item>
@@ -401,7 +401,7 @@
          <widget class="Gui::ColorButton" name="buttonLineColor"/>
         </item>
         <item row="0" column="1">
-         <widget class="QPushButton" name="buttonUserDefinedMaterial">
+         <widget class="QPushButton" name="buttonCustomAppearance">
           <property name="text">
            <string notr="true">...</string>
           </property>

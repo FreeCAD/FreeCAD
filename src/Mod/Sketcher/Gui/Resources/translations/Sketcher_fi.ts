@@ -71,12 +71,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1432"/>
       <source>Create carbon copy</source>
-      <translation type="unfinished">Create carbon copy</translation>
+      <translation>Luo jäljennös</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1433"/>
       <source>Copy the geometry of another sketch</source>
-      <translation type="unfinished">Copy the geometry of another sketch</translation>
+      <translation>Kopioi toisen luonnoksen geometria</translation>
     </message>
   </context>
   <context>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="8556"/>
       <source>Constrain auto radius/diameter</source>
-      <translation type="unfinished">Constrain auto radius/diameter</translation>
+      <translation>Rajoita automaattinen säde/halkaisija</translation>
     </message>
   </context>
   <context>
@@ -176,7 +176,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="526"/>
       <source>Create an arc in the sketch</source>
-      <translation type="unfinished">Create an arc in the sketch</translation>
+      <translation>Luo kaari luonnokseen</translation>
     </message>
   </context>
   <context>
@@ -197,7 +197,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="775"/>
       <source>Create conic</source>
-      <translation type="unfinished">Create conic</translation>
+      <translation>Luo kartio</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="776"/>
@@ -215,7 +215,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="329"/>
       <source>Creates a rectangle in the sketch</source>
-      <translation type="unfinished">Creates a rectangle in the sketch</translation>
+      <translation>Luo suorakulmio luonnokseen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="426"/>
@@ -225,12 +225,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="432"/>
       <source>Centered rectangle</source>
-      <translation type="unfinished">Centered rectangle</translation>
+      <translation>Keskitetty suorakulmio</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="438"/>
       <source>Rounded rectangle</source>
-      <translation type="unfinished">Rounded rectangle</translation>
+      <translation>Pyöristetty suorakulmio</translation>
     </message>
   </context>
   <context>
@@ -327,7 +327,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3514"/>
       <source>Block the selected edge from moving</source>
-      <translation type="unfinished">Block the selected edge from moving</translation>
+      <translation>Estää valitun reunan liikkumisen</translation>
     </message>
   </context>
   <context>
@@ -340,7 +340,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="4227"/>
       <source>Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</source>
-      <translation type="unfinished">Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</translation>
+      <translation>Luo pisteiden välinen yhteneväisyysrajoitus tai ympyröiden, kaarien ja ellipsien välinen konsentrinen rajoitus</translation>
     </message>
   </context>
   <context>
@@ -366,7 +366,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="4331"/>
       <source>Fix a length of a line or the distance between a line and a vertex or between two circles</source>
-      <translation type="unfinished">Fix a length of a line or the distance between a line and a vertex or between two circles</translation>
+      <translation>Määritä suoran pituus tai suoran ja kärkipisteen välinen etäisyys tai kahden ympyrän välinen etäisyys</translation>
     </message>
   </context>
   <context>
@@ -387,7 +387,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="5286"/>
       <source>Constrain vertical distance</source>
-      <translation type="unfinished">Constrain vertical distance</translation>
+      <translation>Pystysuuntaisen etäisyyden rajoittaminen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5287"/>
@@ -413,7 +413,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3135"/>
       <source>Constrain horizontal</source>
-      <translation type="unfinished">Constrain horizontal</translation>
+      <translation>Vaakasuora rajoite</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3136"/>
@@ -432,8 +432,8 @@
       <location filename="../../CommandConstraints.cpp" line="3227"/>
       <source>Create both a horizontal and a vertical distance constraint
 on the selected vertex</source>
-      <translation type="unfinished">Create both a horizontal and a vertical distance constraint
-on the selected vertex</translation>
+      <translation>Luo sekä vaaka- että pystysuora etäisyysrajoitus
+valitulle pisteelle</translation>
     </message>
   </context>
   <context>
@@ -467,7 +467,7 @@ on the selected vertex</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4278"/>
       <source>Constrain point on object</source>
-      <translation type="unfinished">Constrain point on object</translation>
+      <translation>Rajoita piste objektiin</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4279"/>
@@ -480,7 +480,7 @@ on the selected vertex</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8064"/>
       <source>Constrain auto radius/diameter</source>
-      <translation type="unfinished">Constrain auto radius/diameter</translation>
+      <translation>Rajoita automaattinen säde/halkaisija</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8065"/>
@@ -508,7 +508,7 @@ and an edge as an interface.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9288"/>
       <source>Constrain symmetric</source>
-      <translation type="unfinished">Constrain symmetric</translation>
+      <translation>Symmetrinen rajoite</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9289"/>
@@ -523,7 +523,7 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3180"/>
       <source>Constrain vertical</source>
-      <translation type="unfinished">Constrain vertical</translation>
+      <translation>Pystysuora rajoite</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3181"/>
@@ -562,7 +562,7 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="490"/>
       <source>Create arc by 3 points</source>
-      <translation type="unfinished">Create arc by 3 points</translation>
+      <translation>Luo kaari kolmella pisteeellä</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="491"/>
@@ -575,7 +575,7 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1130"/>
       <source>Create circle by 3 points</source>
-      <translation type="unfinished">Create circle by 3 points</translation>
+      <translation>Luo ympyrä kolmella pisteellä</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1131"/>
@@ -601,7 +601,7 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="687"/>
       <source>Create arc of ellipse</source>
-      <translation type="unfinished">Create arc of ellipse</translation>
+      <translation>Luo ellipsinen kaari</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="688"/>
@@ -653,7 +653,7 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="589"/>
       <source>Create circle by center</source>
-      <translation type="unfinished">Create circle by center</translation>
+      <translation>Luo ympyrä keskipisteen mukaan</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="590"/>
@@ -744,12 +744,12 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="294"/>
       <source>Create rounded rectangle</source>
-      <translation type="unfinished">Create rounded rectangle</translation>
+      <translation>Luo pyöristetty suorakulmio</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="295"/>
       <source>Create a rounded rectangle in the sketch</source>
-      <translation type="unfinished">Create a rounded rectangle in the sketch</translation>
+      <translation>Luo pyöristetty suorakulmio luonnokseen</translation>
     </message>
   </context>
   <context>
@@ -835,7 +835,7 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="260"/>
       <source>Create centered rectangle</source>
-      <translation type="unfinished">Create centered rectangle</translation>
+      <translation>Luo keskitetty suorakulmio</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="261"/>

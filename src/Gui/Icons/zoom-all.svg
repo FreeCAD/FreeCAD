@@ -152,11 +152,11 @@
        style="fill:none;stroke:#34e0e2;stroke-width:1.21052635;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:2.04" />
     <path
        style="fill:url(#linearGradient4221);fill-opacity:1;stroke:#042a2a;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 19,0 5,-9 5,9 z M 16,13 7,8 16,3 Z"
+       d="M 17,2 24,-9 31,2 Z M 18,15 7,8 18,1 Z"
        id="rect3871" />
     <path
        style="fill:url(#linearGradient1);fill-opacity:1;stroke:#042a2a;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 29,16 -5,9 -5,-9 z m 3,-13 9,5 -9,5 z"
+       d="M 31,14 24,25 17,14 Z M 30,1 41,8 30,15 Z"
        id="rect3871-7" />
   </g>
 </svg>

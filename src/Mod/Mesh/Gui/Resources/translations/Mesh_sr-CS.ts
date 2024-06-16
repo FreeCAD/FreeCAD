@@ -1756,7 +1756,7 @@ to a smoother appearance.
       <location filename="../../RemoveComponents.ui" line="52"/>
       <location filename="../../RemoveComponents.ui" line="138"/>
       <source>All</source>
-      <translation>Sva</translation>
+      <translation>Svi</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="72"/>

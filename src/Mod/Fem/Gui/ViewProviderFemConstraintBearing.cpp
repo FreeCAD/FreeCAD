@@ -31,6 +31,7 @@
 #endif
 
 #include "Gui/Control.h"
+#include "FemGuiTools.h"
 #include "TaskFemConstraintBearing.h"
 #include "ViewProviderFemConstraintBearing.h"
 #include <Base/Console.h>
@@ -131,9 +132,10 @@ void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
         SbVec3f dir(normal.x, normal.y, normal.z);
         SbRotation rot(SbVec3f(0, -1, 0), dir);
 
-        createPlacement(pShapeSep, b, rot);
-        pShapeSep->addChild(
-            createFixed(radius / 2, radius / 2 * 1.5, pcConstraint->AxialFree.getValue()));
+        GuiTools::createPlacement(pShapeSep, b, rot);
+        pShapeSep->addChild(GuiTools::createFixed(radius / 2,
+                                                  radius / 2 * 1.5,
+                                                  pcConstraint->AxialFree.getValue()));
     }
     else if (prop == &pcConstraint->AxialFree) {
         if (pShapeSep->getNumChildren() > 0) {
@@ -147,9 +149,13 @@ void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
             SbVec3f dir(normal.x, normal.y, normal.z);
             SbRotation rot(SbVec3f(0, -1, 0), dir);
 
-            updatePlacement(pShapeSep, 0, b, rot);
+            GuiTools::updatePlacement(pShapeSep, 0, b, rot);
             const SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(2));
-            updateFixed(sep, 0, radius / 2, radius / 2 * 1.5, pcConstraint->AxialFree.getValue());
+            GuiTools::updateFixed(sep,
+                                  0,
+                                  radius / 2,
+                                  radius / 2 * 1.5,
+                                  pcConstraint->AxialFree.getValue());
         }
     }
 

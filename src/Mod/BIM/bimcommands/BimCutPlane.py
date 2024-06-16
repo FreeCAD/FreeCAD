@@ -65,6 +65,7 @@ class Arch_CutPlane:
 class CutPlaneTaskPanel:
     def __init__(self):
         import ArchCutPlane
+        from PySide import QtCore, QtGui
         _, self.base, self.cutter = ArchCutPlane._getShapes(FreeCADGui.Selection.getSelectionEx("", 0))
 
         self.previewObj = FreeCAD.ActiveDocument.addObject("Part::Feature", "PreviewCutVolume")
@@ -93,9 +94,9 @@ class CutPlaneTaskPanel:
         FreeCAD.ActiveDocument.removeObject(self.previewObj.Name)
         side = self.combobox.currentIndex()
         FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Cutting"))
-        FreeCADGui.addModule("Arch")
+        FreeCADGui.addModule("ArchCutPlane")
         FreeCADGui.doCommand("sels = FreeCADGui.Selection.getSelectionEx('', 0)")
-        FreeCADGui.doCommand("Arch.cutComponentwithPlane(sels, side=" + str(side) + ")")
+        FreeCADGui.doCommand("ArchCutPlane.cutComponentwithPlane(sels, side=" + str(side) + ")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         return True

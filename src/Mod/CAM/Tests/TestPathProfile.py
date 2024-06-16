@@ -121,7 +121,7 @@ class TestPathProfile(PathTestBase):
         profile.processCircles = True
         profile.processHoles = True
         profile.UseComp = True
-        profile.Direction = "CW"
+        profile.Direction = "Climb"
         _addViewProvider(profile)
         self.doc.recompute()
 
@@ -158,7 +158,7 @@ class TestPathProfile(PathTestBase):
         profile.processCircles = True
         profile.processHoles = True
         profile.UseComp = False
-        profile.Direction = "CW"
+        profile.Direction = "Climb"
         _addViewProvider(profile)
         self.doc.recompute()
 
@@ -179,9 +179,9 @@ class TestPathProfile(PathTestBase):
 
         self.assertTrue(expected_moves == operationMoves,
                        "expected_moves: {}\noperationMoves: {}".format(expected_moves, operationMoves))
-        
+
     def test03(self):
-        """test03() Verify path generated on Face18, outside, 
+        """test03() Verify path generated on Face18, outside,
         with compensation and extra offset -radius."""
 
         # Instantiate a Profile operation and set Base Geometry
@@ -196,7 +196,7 @@ class TestPathProfile(PathTestBase):
         profile.processCircles = True
         profile.processHoles = True
         profile.UseComp = True
-        profile.Direction = "CW"
+        profile.Direction = "Climb"
         profile.OffsetExtra = -profile.OpToolDiameter / 2.0
         _addViewProvider(profile)
         self.doc.recompute()
@@ -227,4 +227,3 @@ def _addViewProvider(profileOp):
         profileOp.ViewObject.Proxy = PathOpGui.ViewProvider(
             profileOp.ViewObject, cmdRes
         )
-

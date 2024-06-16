@@ -159,29 +159,29 @@ class _Wall(ArchComponent.Component):
         if not "Length" in lp:
             obj.addProperty("App::PropertyLength","Length","Wall",QT_TRANSLATE_NOOP("App::Property","The length of this wall. Not used if this wall is based on an underlying object"))
         if not "Width" in lp:
-            obj.addProperty("App::PropertyLength","Width","Wall",QT_TRANSLATE_NOOP("App::Property","The width of this wall. Not used if this wall is based on a face"))
+            obj.addProperty("App::PropertyLength","Width","Wall",QT_TRANSLATE_NOOP("App::Property","The width of this wall. Not used if this wall is based on a face. Disabled and ignored if Base object (ArchSketch) provides the information."))
 
         # To be combined into Width when PropertyLengthList is available
         if not "OverrideWidth" in lp:
-            obj.addProperty("App::PropertyFloatList","OverrideWidth","Wall",QT_TRANSLATE_NOOP("App::Property","This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method  (If a value is zero, the value of 'Width' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Width' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used."))			# see DraftGeomUtils.offsetwire()
+            obj.addProperty("App::PropertyFloatList","OverrideWidth","Wall",QT_TRANSLATE_NOOP("App::Property","This overrides Width attribute to set width of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Widths information, with getWidths() method  (If a value is zero, the value of 'Width' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Width' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used."))			# see DraftGeomUtils.offsetwire()
         if not "OverrideAlign" in lp:
-            obj.addProperty("App::PropertyStringList","OverrideAlign","Wall",QT_TRANSLATE_NOOP("App::Property","This overrides Align attribute to set align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method  (If a value is not 'Left, Right, Center', the value of 'Align' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Align' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used."))			# see DraftGeomUtils.offsetwire()
+            obj.addProperty("App::PropertyStringList","OverrideAlign","Wall",QT_TRANSLATE_NOOP("App::Property","This overrides Align attribute to set align of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Aligns information, with getAligns() method  (If a value is not 'Left, Right, Center', the value of 'Align' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Align' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used."))			# see DraftGeomUtils.offsetwire()
         if not "OverrideOffset" in lp:
-            obj.addProperty("App::PropertyFloatList","OverrideOffset","Wall",QT_TRANSLATE_NOOP("App::Property","This overrides Offset attribute to set offset of each segment of wall.  Ignored if Base object provides Offsets information, with getOffsets() method  (If a value is zero, the value of 'Offset' will be followed).  [ENHANCED by ArchSketch] GUI 'Edit Wall Segment Offset' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges. "))			# see DraftGeomUtils.offsetwire()
+            obj.addProperty("App::PropertyFloatList","OverrideOffset","Wall",QT_TRANSLATE_NOOP("App::Property","This overrides Offset attribute to set offset of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Offsets information, with getOffsets() method  (If a value is zero, the value of 'Offset' will be followed).  [ENHANCED by ArchSketch] GUI 'Edit Wall Segment Offset' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges. "))			# see DraftGeomUtils.offsetwire()
         if not "Height" in lp:
             obj.addProperty("App::PropertyLength","Height","Wall",QT_TRANSLATE_NOOP("App::Property","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid"))
         if not "Area" in lp:
             obj.addProperty("App::PropertyArea","Area","Wall",QT_TRANSLATE_NOOP("App::Property","The area of this wall as a simple Height * Length calculation"))
             obj.setEditorMode("Area",1)
         if not "Align" in lp:
-            obj.addProperty("App::PropertyEnumeration","Align","Wall",QT_TRANSLATE_NOOP("App::Property","The alignment of this wall on its base object, if applicable"))
+            obj.addProperty("App::PropertyEnumeration","Align","Wall",QT_TRANSLATE_NOOP("App::Property","The alignment of this wall on its base object, if applicable. Disabled and ignored if Base object (ArchSketch) provides the information."))
             obj.Align = ['Left','Right','Center']
         if not "Normal" in lp:
             obj.addProperty("App::PropertyVector","Normal","Wall",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
         if not "Face" in lp:
             obj.addProperty("App::PropertyInteger","Face","Wall",QT_TRANSLATE_NOOP("App::Property","The face number of the base object used to build this wall"))
         if not "Offset" in lp:
-            obj.addProperty("App::PropertyDistance","Offset","Wall",QT_TRANSLATE_NOOP("App::Property","The offset between this wall and its baseline (only for left and right alignments)"))
+            obj.addProperty("App::PropertyDistance","Offset","Wall",QT_TRANSLATE_NOOP("App::Property","The offset between this wall and its baseline (only for left and right alignments). Disabled and ignored if Base object (ArchSketch) provides the information."))
 
         # See getExtrusionData(), removeSplitters are no longer used
         #if not "Refine" in lp:
@@ -207,6 +207,10 @@ class _Wall(ArchComponent.Component):
         if not "CountBroken" in lp:
             obj.addProperty("App::PropertyInteger","CountBroken","Blocks",QT_TRANSLATE_NOOP("App::Property","The number of broken blocks"))
             obj.setEditorMode("CountBroken",1)
+        if not "ArchSketchData" in lp:
+            obj.addProperty("App::PropertyBool","ArchSketchData","Wall",QT_TRANSLATE_NOOP("App::Property","Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties"))
+            obj.ArchSketchData = True
+
         self.Type = "Wall"
 
     def onDocumentRestored(self,obj):
@@ -214,6 +218,33 @@ class _Wall(ArchComponent.Component):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
+
+        if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
+            if hasattr(obj,"Width"):
+                obj.setEditorMode("Width", ["ReadOnly"])
+            if hasattr(obj,"Align"):
+                obj.setEditorMode("Align", ["ReadOnly"])
+            if hasattr(obj,"Offset"):
+                obj.setEditorMode("Offset", ["ReadOnly"])
+            if hasattr(obj,"OverrideWidth"):
+                obj.setEditorMode("OverrideWidth", ["ReadOnly"])
+            if hasattr(obj,"OverrideAlign"):
+                obj.setEditorMode("OverrideAlign", ["ReadOnly"])
+            if hasattr(obj,"OverrideOffset"):
+                obj.setEditorMode("OverrideOffset", ["ReadOnly"])
+        else:
+            if hasattr(obj,"Width"):
+                obj.setEditorMode("Width", 0)
+            if hasattr(obj,"Align"):
+                obj.setEditorMode("Align", 0)
+            if hasattr(obj,"Offset"):
+                obj.setEditorMode("Offset", 0)
+            if hasattr(obj,"OverrideWidth"):
+                obj.setEditorMode("OverrideWidth", 0)
+            if hasattr(obj,"OverrideAlign"):
+                obj.setEditorMode("OverrideAlign", 0)
+            if hasattr(obj,"OverrideOffset"):
+                obj.setEditorMode("OverrideOffset", 0)
 
     def execute(self,obj):
         """Method run when the object is recomputed.
@@ -486,6 +517,33 @@ class _Wall(ArchComponent.Component):
                                 else:
                                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
 
+        if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
+            if hasattr(obj,"Width"):
+                obj.setEditorMode("Width", ["ReadOnly"])
+            if hasattr(obj,"Align"):
+                obj.setEditorMode("Align", ["ReadOnly"])
+            if hasattr(obj,"Offset"):
+                obj.setEditorMode("Offset", ["ReadOnly"])
+            if hasattr(obj,"OverrideWidth"):
+                obj.setEditorMode("OverrideWidth", ["ReadOnly"])
+            if hasattr(obj,"OverrideAlign"):
+                obj.setEditorMode("OverrideAlign", ["ReadOnly"])
+            if hasattr(obj,"OverrideOffset"):
+                obj.setEditorMode("OverrideOffset", ["ReadOnly"])
+        else:
+            if hasattr(obj,"Width"):
+                obj.setEditorMode("Width", 0)
+            if hasattr(obj,"Align"):
+                obj.setEditorMode("Align", 0)
+            if hasattr(obj,"Offset"):
+                obj.setEditorMode("Offset", 0)
+            if hasattr(obj,"OverrideWidth"):
+                obj.setEditorMode("OverrideWidth", 0)
+            if hasattr(obj,"OverrideAlign"):
+                obj.setEditorMode("OverrideAlign", 0)
+            if hasattr(obj,"OverrideOffset"):
+                obj.setEditorMode("OverrideOffset", 0)
+
         self.hideSubobjects(obj,prop)
         ArchComponent.Component.onChanged(self,obj,prop)
 
@@ -543,7 +601,7 @@ class _Wall(ArchComponent.Component):
         # Get width of each edge segment from Base Objects if they store it
         # (Adding support in SketchFeaturePython, DWire...)
         widths = []  # [] or None are both False
-        if obj.Base:
+        if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
             if hasattr(obj.Base, 'Proxy'):
                 if hasattr(obj.Base.Proxy, 'getWidths'):
                     # Return a list of Width corresponding to indexes of sorted
@@ -554,7 +612,7 @@ class _Wall(ArchComponent.Component):
         # Base Object does not provide it
         if not widths:
             if obj.OverrideWidth:
-                if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                     # If Base Object is ordinary Sketch (or when ArchSketch.getWidth() not implemented yet):-
                     # sort the width list in OverrrideWidth to correspond to indexes of sorted edges of Sketch
                     try:
@@ -587,7 +645,7 @@ class _Wall(ArchComponent.Component):
         # Get align of each edge segment from Base Objects if they store it.
         # (Adding support in SketchFeaturePython, DWire...)
         aligns = []
-        if obj.Base:
+        if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
             if hasattr(obj.Base, 'Proxy'):
                 if hasattr(obj.Base.Proxy, 'getAligns'):
                     # Return a list of Align corresponds to indexes of sorted
@@ -597,7 +655,7 @@ class _Wall(ArchComponent.Component):
         # Base Object does not provide it
         if not aligns:
             if obj.OverrideAlign:
-                if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                     # If Base Object is ordinary Sketch (or when
                     # ArchSketch.getAligns() not implemented yet):- sort the
                     # align list in OverrideAlign to correspond to indexes of
@@ -624,7 +682,8 @@ class _Wall(ArchComponent.Component):
         # Get offset of each edge segment from Base Objects if they store it
         # (Adding support in SketchFeaturePython, DWire...)
         offsets = []  # [] or None are both False
-        if obj.Base:
+        if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
+
             if hasattr(obj.Base, 'Proxy'):
                 if hasattr(obj.Base.Proxy, 'getOffsets'):
                     # Return a list of Offset corresponding to indexes of sorted
@@ -634,7 +693,7 @@ class _Wall(ArchComponent.Component):
         # Base Object does not provide it
         if not offsets:
             if obj.OverrideOffset:
-                if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                     # If Base Object is ordinary Sketch (or when ArchSketch.getOffsets() not implemented yet):-
                     # sort the offset list in OverrideOffset to correspond to indexes of sorted edges of Sketch
                     if hasattr(ArchSketchObject, 'sortSketchOffset'):
@@ -659,11 +718,10 @@ class _Wall(ArchComponent.Component):
             return None
         if obj.Normal == Vector(0,0,0):
             if obj.Base:
-                baseshape = obj.Base.Shape
+                normal = DraftGeomUtils.get_shape_normal(obj.Base.Shape)
+                if normal is None:
+                    normal = Vector(0,0,1)
             else:
-                baseshape = Part.makeLine((0,0,0),(length,0,0))
-            normal = DraftGeomUtils.get_shape_normal(baseshape)
-            if normal == None:
                 normal = Vector(0,0,1)
         else:
             normal = Vector(obj.Normal)
@@ -727,8 +785,9 @@ class _Wall(ArchComponent.Component):
                         else:
                             base,placement = self.rebase(obj.Base.Shape)
 
-                    elif hasattr(obj.Base, 'Proxy') and \
+                    elif hasattr(obj.Base, 'Proxy') and obj.ArchSketchData and \
                     hasattr(obj.Base.Proxy, 'getWallBaseShapeEdgesInfo'):
+
                         wallBaseShapeEdgesInfo = obj.Base.Proxy.getWallBaseShapeEdgesInfo(obj.Base)
                         #get wall edges (not wires); use original edges if getWallBaseShapeEdgesInfo() provided none
                         if wallBaseShapeEdgesInfo:

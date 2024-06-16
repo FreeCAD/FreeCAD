@@ -2563,7 +2563,7 @@ void MainWindow::setWindowTitle(const QString& string)
     }
 
     // allow to disable version number
-    ParameterGrp::handle hGen = +App::GetApplication().GetParameterGroupByPath(
+    ParameterGrp::handle hGen = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/General");
     bool showVersion = hGen->GetBool("ShowVersionInTitle", true);
 

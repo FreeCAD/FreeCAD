@@ -487,6 +487,7 @@ void DlgSettingsWorkbenchesImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
+        translateWorkbenchSelector();
     }
     else {
         QWidget::changeEvent(e);
@@ -532,6 +533,16 @@ void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
     ui->WorkbenchSelectorItem->addItem(tr("Icon"));
     ui->WorkbenchSelectorItem->addItem(tr("Text"));
     ui->WorkbenchSelectorItem->setCurrentIndex(itemStyleIndex);
+}
+
+void DlgSettingsWorkbenchesImp::translateWorkbenchSelector()
+{
+    ui->WorkbenchSelectorType->setItemText(0, tr("ComboBox"));
+    ui->WorkbenchSelectorType->setItemText(1, tr("TabBar"));
+
+    ui->WorkbenchSelectorItem->setItemText(0, tr("Icon & Text"));
+    ui->WorkbenchSelectorItem->setItemText(1, tr("Icon"));
+    ui->WorkbenchSelectorItem->setItemText(2, tr("Text"));
 }
 
 void DlgSettingsWorkbenchesImp::wbToggled(const QString& wbName, bool enabled)

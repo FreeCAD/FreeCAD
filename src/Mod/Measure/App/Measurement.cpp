@@ -313,6 +313,10 @@ TopoDS_Shape Measurement::getShape(App::DocumentObject *obj , const char *subNam
         }
         return shape;
     }
+    catch (const Base::Exception&) {
+        // re-throw original exception
+        throw;
+    }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
     }

@@ -42,12 +42,9 @@ public:
     App::PropertyLinkList NameDispl;
     App::PropertyVector BasePoint;
     App::PropertyVector Axis;
-    App::PropertyAngle X_rot;
-    App::PropertyAngle Y_rot;
-    App::PropertyAngle Z_rot;
+
+    App::PropertyRotation Rotation;
     App::PropertyEnumeration TransformType;
-    // etc
-    /* */
 
     /// recalculate the object
     App::DocumentObjectExecReturn* execute() override;
@@ -56,9 +53,9 @@ public:
     const char* getViewProviderName() const override;
 
 protected:
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   App::Property* prop) override;
+    void handleChangedPropertyName(Base::XMLReader& reader,
+                                   const char* typeName,
+                                   const char* propName) override;
     void onChanged(const App::Property* prop) override;
 };
 

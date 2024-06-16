@@ -139,7 +139,13 @@ void PropertyVector::setPyObject(PyObject *value)
 
 void PropertyVector::Save (Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<PropertyVector valueX=\"" <<  _cVec.x << "\" valueY=\"" <<  _cVec.y << "\" valueZ=\"" <<  _cVec.z <<"\"/>" << endl;
+    // clang-format off
+    writer.Stream() << writer.ind()
+                    << "<PropertyVector valueX=\"" <<  _cVec.x
+                    << "\" valueY=\"" <<  _cVec.y
+                    << "\" valueZ=\"" <<  _cVec.z
+                    <<"\"/>" << endl;
+    // clang-format on
 }
 
 void PropertyVector::Restore(Base::XMLReader &reader)
@@ -437,12 +443,14 @@ void PropertyMatrix::setPyObject(PyObject *value)
 
 void PropertyMatrix::Save (Base::Writer &writer) const
 {
+    // clang-format off
     writer.Stream() << writer.ind() << "<PropertyMatrix";
     writer.Stream() << " a11=\"" <<  _cMat[0][0] << "\" a12=\"" <<  _cMat[0][1] << "\" a13=\"" <<  _cMat[0][2] << "\" a14=\"" <<  _cMat[0][3] << "\"";
     writer.Stream() << " a21=\"" <<  _cMat[1][0] << "\" a22=\"" <<  _cMat[1][1] << "\" a23=\"" <<  _cMat[1][2] << "\" a24=\"" <<  _cMat[1][3] << "\"";
     writer.Stream() << " a31=\"" <<  _cMat[2][0] << "\" a32=\"" <<  _cMat[2][1] << "\" a33=\"" <<  _cMat[2][2] << "\" a34=\"" <<  _cMat[2][3] << "\"";
     writer.Stream() << " a41=\"" <<  _cMat[3][0] << "\" a42=\"" <<  _cMat[3][1] << "\" a43=\"" <<  _cMat[3][2] << "\" a44=\"" <<  _cMat[3][3] << "\"";
     writer.Stream() <<"/>" << endl;
+    // clang-format on
 }
 
 void PropertyMatrix::Restore(Base::XMLReader &reader)

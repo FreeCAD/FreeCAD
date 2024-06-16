@@ -176,7 +176,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="526"/>
       <source>Create an arc in the sketch</source>
-      <translation type="unfinished">Create an arc in the sketch</translation>
+      <translation>Vytvoří oblouk v náčrtu</translation>
     </message>
   </context>
   <context>
@@ -413,7 +413,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3135"/>
       <source>Constrain horizontal</source>
-      <translation type="unfinished">Constrain horizontal</translation>
+      <translation>Vazba vodorovně</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3136"/>
@@ -466,7 +466,7 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4278"/>
       <source>Constrain point on object</source>
-      <translation type="unfinished">Constrain point on object</translation>
+      <translation>Vazba bodu na objekt</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4279"/>
@@ -507,7 +507,7 @@ dvěma koncovými body paprsků a hranou jako rozhraní.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9288"/>
       <source>Constrain symmetric</source>
-      <translation type="unfinished">Constrain symmetric</translation>
+      <translation>Vazba symetrie</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9289"/>
@@ -521,7 +521,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3180"/>
       <source>Constrain vertical</source>
-      <translation type="unfinished">Constrain vertical</translation>
+      <translation>Vazba svisle</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3181"/>
@@ -560,7 +560,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="490"/>
       <source>Create arc by 3 points</source>
-      <translation type="unfinished">Create arc by 3 points</translation>
+      <translation>Vytvořit oblouk třemi body</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="491"/>
@@ -573,7 +573,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1130"/>
       <source>Create circle by 3 points</source>
-      <translation type="unfinished">Create circle by 3 points</translation>
+      <translation>Vytvoř kružnici třemi body</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1131"/>
@@ -651,7 +651,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="589"/>
       <source>Create circle by center</source>
-      <translation type="unfinished">Create circle by center</translation>
+      <translation>Vytvořit kružnici podle středu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="590"/>
@@ -747,7 +747,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="295"/>
       <source>Create a rounded rectangle in the sketch</source>
-      <translation>Vytvořit zaoblený obdélník v náčrtu</translation>
+      <translation>Vytvoří zaoblený obdélník v náčrtu</translation>
     </message>
   </context>
   <context>
@@ -1054,7 +1054,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../Command.cpp" line="552"/>
       <source>Attach sketch...</source>
-      <translation type="unfinished">Attach sketch...</translation>
+      <translation>Připojit náčrt...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="553"/>
@@ -1170,7 +1170,7 @@ jakožto reference.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2193"/>
       <source>Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
-      <translation>Upraví vazby tak, aby se odstranilo zarovnání podle osy, zatímco vazby ve výběru zůstaly zachované</translation>
+      <translation>Upraví vazby tak, aby se odstranilo zarovnání k osám, zatímco vazby ve výběru se pokusí zachovat</translation>
     </message>
   </context>
   <context>
@@ -1178,7 +1178,7 @@ jakožto reference.</translation>
     <message>
       <location filename="../../Command.cpp" line="415"/>
       <source>Reorient sketch...</source>
-      <translation>Přeorientovat náčrtek...</translation>
+      <translation>Přeorientovat náčrt...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="416"/>
@@ -1418,7 +1418,7 @@ do řídícího nebo referenčního režimu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1284"/>
       <source>Trim an edge with respect to the picked position</source>
-      <translation>Oříznout hranu podle vybrané polohy</translation>
+      <translation>Ořízne hranu vzhledem k vybrané poloze</translation>
     </message>
   </context>
   <context>
@@ -1426,7 +1426,7 @@ do řídícího nebo referenčního režimu</translation>
     <message>
       <location filename="../../Command.cpp" line="786"/>
       <source>Validate sketch...</source>
-      <translation>Kontroluj náčrtek...</translation>
+      <translation>Zkontrolovat náčrt...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="787"/>
@@ -2002,12 +2002,12 @@ neplatných vazeb, degenerované geometrie atd.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="267"/>
       <source>Cut in Sketcher</source>
-      <translation type="unfinished">Cut in Sketcher</translation>
+      <translation>Vyjmout z náčrtu</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="312"/>
       <source>Paste in Sketcher</source>
-      <translation type="unfinished">Paste in Sketcher</translation>
+      <translation>Vložit do náčrtu</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1056"/>
@@ -2101,7 +2101,7 @@ neplatných vazeb, degenerované geometrie atd.</translation>
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="374"/>
       <source>Offset</source>
-      <translation>Odstup</translation>
+      <translation>Odsazení</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="112"/>
@@ -2116,22 +2116,22 @@ neplatných vazeb, degenerované geometrie atd.</translation>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="119"/>
       <source>Rotate geometries</source>
-      <translation type="unfinished">Rotate geometries</translation>
+      <translation>Otočit geometrii</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="115"/>
       <source>Scale geometries</source>
-      <translation type="unfinished">Scale geometries</translation>
+      <translation>Měřítko geometrie</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="114"/>
       <source>Translate geometries</source>
-      <translation type="unfinished">Translate geometries</translation>
+      <translation>Posunout geometrii</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="134"/>
       <source>Symmetry geometries</source>
-      <translation type="unfinished">Symmetry geometries</translation>
+      <translation>Symetrie geometrie</translation>
     </message>
   </context>
   <context>
@@ -3181,7 +3181,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="350"/>
       <source>Fillet/Chamfer parameters</source>
-      <translation type="unfinished">Fillet/Chamfer parameters</translation>
+      <translation>Parametry zaoblení/zkosení</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="215"/>
@@ -3226,22 +3226,22 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="178"/>
       <source>Rotate parameters</source>
-      <translation type="unfinished">Rotate parameters</translation>
+      <translation>Parametry otáčení</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="174"/>
       <source>Scale parameters</source>
-      <translation type="unfinished">Scale parameters</translation>
+      <translation>Parametry měřítka</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="173"/>
       <source>Translate parameters</source>
-      <translation type="unfinished">Translate parameters</translation>
+      <translation>Parametry posunutí</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="194"/>
       <source>Symmetry parameters</source>
-      <translation type="unfinished">Symmetry parameters</translation>
+      <translation>Parametry symetrie</translation>
     </message>
   </context>
   <context>
@@ -3407,7 +3407,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="132"/>
       <source>Reference</source>
-      <translation>Odkaz</translation>
+      <translation>Reference</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="133"/>
@@ -3832,7 +3832,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../InsertDatum.ui" line="79"/>
       <source>Reference</source>
-      <translation>Odkaz</translation>
+      <translation>Reference</translation>
     </message>
   </context>
   <context>
@@ -3977,7 +3977,7 @@ reflected on copies</source>
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="25"/>
       <source>Number of sides:</source>
-      <translation type="unfinished">Number of sides:</translation>
+      <translation>Počet stran:</translation>
     </message>
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="32"/>
@@ -4060,12 +4060,12 @@ Vyžaduje znovu otevření režimu úprav náčrtu, aby se aktivovalo.</translat
     <message>
       <location filename="../../SketcherSettings.ui" line="165"/>
       <source>Unify Coincident and PointOnObject in a single tool.</source>
-      <translation type="unfinished">Unify Coincident and PointOnObject in a single tool.</translation>
+      <translation>Sjednotí vazbu totožnosti a bodu na objektu do jediného nástroje.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="168"/>
       <source>Unify Coincident and PointOnObject</source>
-      <translation type="unfinished">Unify Coincident and PointOnObject</translation>
+      <translation>Sjednotit totožnost a bod na objektu</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="184"/>
@@ -4193,7 +4193,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="20"/>
       <source>Sketch editing</source>
-      <translation>Editace náčrtku</translation>
+      <translation>Editace náčrtu</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="208"/>
@@ -4821,7 +4821,7 @@ Nebyly nalezeny vazby připojené k těmto koncovým bodům.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="14"/>
       <source>Sketcher validation</source>
-      <translation>Kontrola náčrtku</translation>
+      <translation>Kontrola náčrtu</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
@@ -5247,12 +5247,12 @@ Toto se provádí analýzou geometrií a vazeb náčrtu.</translation>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="366"/>
       <source>Center</source>
-      <translation>Na střed</translation>
+      <translation>Střed</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="367"/>
       <source>3 rim points</source>
-      <translation>3 okrajové body</translation>
+      <translation>3 obvodové body</translation>
     </message>
   </context>
   <context>
@@ -5446,14 +5446,14 @@ Select the method to attach this sketch to selected objects.</source>
     <message>
       <location filename="../../Command.cpp" line="431"/>
       <source>Sketch has support</source>
-      <translation>Náčrtky jsou podporovány</translation>
+      <translation>Náčrt má podporu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="432"/>
       <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
-      <translation>Náčrtek s podporou průčelí nemůže být přeorientována.
-Přeješ si odstranit podporu průčelí?</translation>
+      <translation>Náčrt s podpůrnou plochou nemůže být přeorientován.
+Přejete si ho odpojit od podpory?</translation>
     </message>
   </context>
   <context>
@@ -6254,22 +6254,22 @@ Rozteč mřížky se změní, pokud bude menší než tento počet pixelů.</tra
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="135"/>
       <source>Failed to rotate</source>
-      <translation type="unfinished">Failed to rotate</translation>
+      <translation>Nepodařilo se otočit</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="131"/>
       <source>Failed to scale</source>
-      <translation type="unfinished">Failed to scale</translation>
+      <translation>Nepodařilo se změnit měřítko</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="130"/>
       <source>Failed to translate</source>
-      <translation type="unfinished">Failed to translate</translation>
+      <translation>Nepodařilo se posunout</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="151"/>
       <source>Failed to create symmetry</source>
-      <translation type="unfinished">Failed to create symmetry</translation>
+      <translation>Nepodařilo se vytvořit symetrii</translation>
     </message>
   </context>
   <context>
@@ -6580,7 +6580,7 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2312"/>
       <source>Offset geometry</source>
-      <translation type="unfinished">Offset geometry</translation>
+      <translation>Odsadit geometrii</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2313"/>
@@ -6598,12 +6598,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="477"/>
       <source>Clone constraints</source>
-      <translation type="unfinished">Clone constraints</translation>
+      <translation>Klonovat vazby</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="481"/>
       <source>This concerns the datum constraints (e.g. distance).If you activate Clone, the tool will copy the datum.Else it will try to replace them with equalities.</source>
-      <translation type="unfinished">This concerns the datum constraints (e.g. distance).If you activate Clone, the tool will copy the datum.Else it will try to replace them with equalities.</translation>
+      <translation>Toto se týká referenčních vazeb (např. vzdáleností). Pokud aktivujete klonování, nástroj zkopíruje referenci. Jinak se ji pokusí nahradit vazbami shodnosti.</translation>
     </message>
   </context>
   <context>
@@ -6611,7 +6611,7 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="1101"/>
       <source>Add offset constraint (J)</source>
-      <translation>Přidat vazbu odsazení (J)</translation>
+      <translation>Zavazbit odsazení (J)</translation>
     </message>
   </context>
   <context>
@@ -6619,22 +6619,22 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1651"/>
       <source>Corner, width, height</source>
-      <translation type="unfinished">Corner, width, height</translation>
+      <translation>Roh, šířka, výška</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1652"/>
       <source>Center, width, height</source>
-      <translation type="unfinished">Center, width, height</translation>
+      <translation>Střed, šířka, výška</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1653"/>
       <source>3 corners</source>
-      <translation type="unfinished">3 corners</translation>
+      <translation>3 rohy</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1654"/>
       <source>Center, 2 corners</source>
-      <translation type="unfinished">Center, 2 corners</translation>
+      <translation>Střed, 2 rohy</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1659"/>
@@ -6644,7 +6644,7 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1662"/>
       <source>Create a rectangle with rounded corners.</source>
-      <translation>Vytvořit obdélník se zaoblenými rohy.</translation>
+      <translation>Vytvoří obdélník se zaoblenými rohy.</translation>
     </message>
   </context>
   <context>
@@ -6657,7 +6657,7 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1671"/>
       <source>Create two rectangles with a constant offset.</source>
-      <translation type="unfinished">Create two rectangles with a constant offset.</translation>
+      <translation>Vytvoří dva obdélníky s konstantním odsazením.</translation>
     </message>
   </context>
   <context>
@@ -6673,7 +6673,7 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../CommandConstraints.cpp" line="2779"/>
       <source>Constrain horizontal/vertical</source>
-      <translation type="unfinished">Constrain horizontal/vertical</translation>
+      <translation>Vazba vodorovně/svisle</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2780"/>
@@ -6686,7 +6686,7 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../CommandConstraints.cpp" line="3089"/>
       <source>Constrain horizontal/vertical</source>
-      <translation type="unfinished">Constrain horizontal/vertical</translation>
+      <translation>Vazba vodorovně/svisle</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3090"/>
@@ -6751,12 +6751,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2390"/>
       <source>Polar transform</source>
-      <translation type="unfinished">Polar transform</translation>
+      <translation>Transformace rotací</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2391"/>
       <source>Rotate selected geometries, making n copies, enable creation of circular patterns.</source>
-      <translation type="unfinished">Rotate selected geometries, making n copies, enable creation of circular patterns.</translation>
+      <translation>Otočí vybrané geometrie, vytvoří nové kopie a umožňuje vytvořit kruhový vzor.</translation>
     </message>
   </context>
   <context>
@@ -6836,7 +6836,7 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="238"/>
       <source>Color of normal geometry in edit mode</source>
-      <translation type="unfinished">Color of normal geometry in edit mode</translation>
+      <translation>Barva normální geometrie v režimu úprav</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="306"/>
@@ -6861,7 +6861,7 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="555"/>
       <source>Fully constrained sketch</source>
-      <translation type="unfinished">Fully constrained sketch</translation>
+      <translation>Plně zavazbený náčrt</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="568"/>
@@ -7029,7 +7029,7 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="499"/>
       <source>Copies (+'U'/ -'J')</source>
-      <translation type="unfinished">Copies (+'U'/ -'J')</translation>
+      <translation>Kopie (+'U'/ -'J')</translation>
     </message>
   </context>
   <context>
@@ -7037,7 +7037,7 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="307"/>
       <source>Sides (+'U'/ -'J')</source>
-      <translation type="unfinished">Sides (+'U'/ -'J')</translation>
+      <translation>Strany (+'U'/ -'J')</translation>
     </message>
   </context>
   <context>
@@ -7045,7 +7045,7 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="405"/>
       <source>Keep original geometries (U)</source>
-      <translation type="unfinished">Keep original geometries (U)</translation>
+      <translation>Zachovat původní geometrii (U)</translation>
     </message>
   </context>
   <context>
@@ -7066,12 +7066,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="218"/>
       <source>C&amp;opy in sketcher</source>
-      <translation type="unfinished">C&amp;opy in sketcher</translation>
+      <translation>K&amp;opírovat v náčrtu</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="219"/>
       <source>Copy selected geometries and constraints to the clipboard</source>
-      <translation type="unfinished">Copy selected geometries and constraints to the clipboard</translation>
+      <translation>Zkopíruje vybrané geometrie a vazby do schránky</translation>
     </message>
   </context>
   <context>
@@ -7079,12 +7079,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="249"/>
       <source>C&amp;ut in sketcher</source>
-      <translation type="unfinished">C&amp;ut in sketcher</translation>
+      <translation>Vyjmo&amp;ut z náčrtu</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="250"/>
       <source>Cut selected geometries and constraints to the clipboard</source>
-      <translation type="unfinished">Cut selected geometries and constraints to the clipboard</translation>
+      <translation>Vyjme vybrané geometrie a vazby do schránky</translation>
     </message>
   </context>
   <context>
@@ -7092,12 +7092,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="289"/>
       <source>P&amp;aste in sketcher</source>
-      <translation type="unfinished">P&amp;aste in sketcher</translation>
+      <translation>Vložit do n&amp;áčrtu</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="290"/>
       <source>Paste selected geometries and constraints from the clipboard</source>
-      <translation type="unfinished">Paste selected geometries and constraints from the clipboard</translation>
+      <translation>Vloží vybrané geometrie a vazby ze schránky</translation>
     </message>
   </context>
   <context>
@@ -7105,12 +7105,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2424"/>
       <source>Scale transform</source>
-      <translation type="unfinished">Scale transform</translation>
+      <translation>Transformace měřítka</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2425"/>
       <source>Scale selected geometries. After selecting the center point you can either enter the scale factor, or select two reference points then scale factor = length(p2-center) / length(p1-center).</source>
-      <translation type="unfinished">Scale selected geometries. After selecting the center point you can either enter the scale factor, or select two reference points then scale factor = length(p2-center) / length(p1-center).</translation>
+      <translation>Změní měřítko vybraných geometrií. Po výběru středového a prvního referenčního bodu můžete buď zadat měrný faktor nebo zvolit druhý referenční bod, pak měrný faktor = délka(p2-střed) / délka(p1-střed).</translation>
     </message>
   </context>
   <context>
@@ -7118,12 +7118,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2458"/>
       <source>Array transform</source>
-      <translation type="unfinished">Array transform</translation>
+      <translation>Transformace polem</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2459"/>
       <source>Translate selected geometries. Enable creation of i * j copies.</source>
-      <translation type="unfinished">Translate selected geometries. Enable creation of i * j copies.</translation>
+      <translation>Posune vybrané geometrie. Umožňuje vytvoření i * j kopií.</translation>
     </message>
   </context>
   <context>
@@ -7131,12 +7131,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="488"/>
       <source>Clone constraints</source>
-      <translation type="unfinished">Clone constraints</translation>
+      <translation>Klonovat vazby</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="491"/>
       <source>This concerns the datum constraints like distances. If you activate Clone, then the tool will copy the datum. Else it will try to replace them with equalities between the initial geometries and the new copies.</source>
-      <translation type="unfinished">This concerns the datum constraints like distances. If you activate Clone, then the tool will copy the datum. Else it will try to replace them with equalities between the initial geometries and the new copies.</translation>
+      <translation>Toto se týká referenčních vazeb jako jsou vzdálenosti. Pokud aktivujete klonování, nástroj zkopíruje referenci. Jinak se ji pokusí nahradit vazbami shodnosti mezi počáteční geometrií a novými kopiemi.</translation>
     </message>
   </context>
   <context>
@@ -7144,7 +7144,7 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="516"/>
       <source>Copies (+'U'/-'J')</source>
-      <translation type="unfinished">Copies (+'U'/-'J')</translation>
+      <translation>Kopie (+'U'/-'J')</translation>
     </message>
   </context>
   <context>
@@ -7152,7 +7152,7 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="519"/>
       <source>Rows (+'R'/-'F')</source>
-      <translation type="unfinished">Rows (+'R'/-'F')</translation>
+      <translation>Řádky (+'R'/-'F')</translation>
     </message>
   </context>
   <context>
@@ -7160,12 +7160,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="468"/>
       <source>Center</source>
-      <translation>Na střed</translation>
+      <translation>Střed</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="469"/>
       <source>3 rim points</source>
-      <translation>3 okrajové body</translation>
+      <translation>3 obvodové body</translation>
     </message>
   </context>
   <context>
@@ -7178,7 +7178,7 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1225"/>
       <source>Create a chamfer between two lines or at a coincident point</source>
-      <translation type="unfinished">Create a chamfer between two lines or at a coincident point</translation>
+      <translation>Vytvoří zkosení mezi dvěma úsečkami nebo v bodě totožnosti</translation>
     </message>
   </context>
   <context>
@@ -7186,12 +7186,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1255"/>
       <source>Create fillet or chamfer</source>
-      <translation type="unfinished">Create fillet or chamfer</translation>
+      <translation>Vytvořit zaoblení nebo zkosení</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1256"/>
       <source>Create a fillet or chamfer between two lines</source>
-      <translation type="unfinished">Create a fillet or chamfer between two lines</translation>
+      <translation>Vytvoří zaoblení mezi dvěma úsečkami</translation>
     </message>
   </context>
   <context>
@@ -7199,12 +7199,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="549"/>
       <source>Arc ends</source>
-      <translation type="unfinished">Arc ends</translation>
+      <translation>Obloukové konce</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="550"/>
       <source>Flat ends</source>
-      <translation type="unfinished">Flat ends</translation>
+      <translation>Ploché konce</translation>
     </message>
   </context>
   <context>
@@ -7212,12 +7212,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="433"/>
       <source>Center</source>
-      <translation>Na střed</translation>
+      <translation>Střed</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="434"/>
       <source>Axis endpoints</source>
-      <translation type="unfinished">Axis endpoints</translation>
+      <translation>Koncové body os</translation>
     </message>
   </context>
   <context>
@@ -7225,12 +7225,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="432"/>
       <source>Preserve corner (U)</source>
-      <translation type="unfinished">Preserve corner (U)</translation>
+      <translation>Zachovat roh (U)</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="435"/>
       <source>Preserves intersection point and most constraints</source>
-      <translation type="unfinished">Preserves intersection point and most constraints</translation>
+      <translation>Zachová průsečík a většinu vazeb</translation>
     </message>
   </context>
   <context>
@@ -7248,7 +7248,7 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="281"/>
       <source>2 points</source>
-      <translation>body</translation>
+      <translation>2 body</translation>
     </message>
   </context>
   <context>
@@ -7277,7 +7277,7 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="266"/>
       <source>Create Symmetry Constraints (J)</source>
-      <translation type="unfinished">Create Symmetry Constraints (J)</translation>
+      <translation>Zavazbit symetrii (J)</translation>
     </message>
   </context>
   <context>

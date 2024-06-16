@@ -182,12 +182,12 @@ class ObjectDressup:
     def getDirectionOfPath(self, obj):
         op = PathDressup.baseOp(obj.Base)
         side = op.Side if hasattr(op, "Side") else "Inside"
-        direction = op.Direction if hasattr(op, "Direction") else "CCW"
+        direction = op.Direction if hasattr(op, "Direction") else "Conventional"
 
         if side == "Outside":
-            return "left" if direction == "CW" else "right"
+            return "left" if direction == "Climb" else "right"
         else:
-            return "right" if direction == "CW" else "left"
+            return "right" if direction == "Climb" else "left"
 
     def getArcDirection(self, obj):
         direction = self.getDirectionOfPath(obj)
@@ -328,7 +328,7 @@ class ObjectDressup:
             else:  # obj.StyleOff == "Perpendicular"
                 append(self.createStraightMove(obj, end, end + normal))
 
-            extend = obj.ExtendLeadOut.Value 
+            extend = obj.ExtendLeadOut.Value
             if extend != 0:
                 # append extension
                 extendend = end + normal / length * extend

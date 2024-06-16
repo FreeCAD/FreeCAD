@@ -296,7 +296,10 @@ public:
     // NOTE: getElementHistory is now in ElementMap
     long getElementHistory(const MappedName & name,
                            MappedName *original=nullptr, std::vector<MappedName> *history=nullptr) const {
-        return _elementMap->getElementHistory(name, Tag, original, history);
+        if ( _elementMap != nullptr ) {
+            return _elementMap->getElementHistory(name, Tag, original, history);
+        }
+        return 0;
     };
 
     void setMappedChildElements(const std::vector<Data::ElementMap::MappedChildElements> & children);

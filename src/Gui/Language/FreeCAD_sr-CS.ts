@@ -476,7 +476,7 @@
     <message>
       <location filename="../QuantitySpinBox_p.h" line="54"/>
       <source>Expression:</source>
-      <translation type="unfinished">Expression:</translation>
+      <translation>Izraz:</translation>
     </message>
   </context>
   <context>
@@ -1394,7 +1394,7 @@ pokrenuće se ona sa najvećim prioritetom.</translation>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="395"/>
       <source>All</source>
-      <translation>Sva</translation>
+      <translation>Svi</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="433"/>
@@ -2754,7 +2754,7 @@ prijavite ovu postavku kao omogućenu kada tražite podršku na FreeCAD forumim
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
       <source>Relative size:</source>
-      <translation type="unfinished">Relative size:</translation>
+      <translation>Relativna veličina:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="99"/>
@@ -2866,7 +2866,7 @@ but slower response to any scene changes.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="344"/>
       <source>Size of vertices in the Sketcher, TechDraw and other workbenches</source>
-      <translation>Veličina tačaka u Sketcher, Techdraw i ostalim radnim okruženjima</translation>
+      <translation>Veličina tačaka u okruženjima Skice, Tehnički crteži itd.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="351"/>
@@ -5087,7 +5087,7 @@ Kolona „Status“ pokazuje da li se dokument može oporaviti.</translation>
     <message>
       <location filename="../DlgParameterImp.cpp" line="675"/>
       <source>New Boolean item</source>
-      <translation>Nova Bulova stavka</translation>
+      <translation>Nova bulova stavka</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="785"/>
@@ -5461,7 +5461,7 @@ Kolona „Status“ pokazuje da li se dokument može oporaviti.</translation>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="130"/>
       <source>All</source>
-      <translation>Sva</translation>
+      <translation>Svi</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="157"/>
@@ -5876,7 +5876,7 @@ Da li želiš da sačuvaš promene?</translation>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="860"/>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
-      <translation>Prevuci po ekranu jednim prstom ILI pritisni levi taster miša. U ostalim Sketcher režimima za uređivanje, dodatno drži Alt.</translation>
+      <translation>Prevuci po ekranu jednim prstom ILI pritisni levi taster miša. U ostalim režimima za uređivanje skica, dodatno drži Alt.</translation>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="862"/>
@@ -6319,7 +6319,7 @@ Kako želiš da nastaviš?</translation>
     <message>
       <location filename="../MayaGestureNavigationStyle.cpp" line="98"/>
       <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Prevuci po ekranu sa dva prsta ILI pritisni ALT + levi taster miša. U ostalim Sketcher režimima za uređivanje, dodatno drži Alt.</translation>
+      <translation>Prevuci po ekranu sa dva prsta ILI pritisni ALT + levi taster miša. U ostalim režimima za uređivanje skica, dodatno drži Alt.</translation>
     </message>
     <message>
       <location filename="../MayaGestureNavigationStyle.cpp" line="100"/>
@@ -6860,7 +6860,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskDlgRelocation.cpp" line="42"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Položaj</translation>
     </message>
   </context>
   <context>
@@ -8103,7 +8103,7 @@ Da li želiš da nastaviš?</translation>
     <message>
       <location filename="../DlgParameterImp.cpp" line="899"/>
       <source>New Boolean item</source>
-      <translation>Nova Bulova stavka</translation>
+      <translation>Nova bulova stavka</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="917"/>
@@ -8745,7 +8745,7 @@ the current copy will be lost.
     <message>
       <location filename="../OverlayManager.cpp" line="1047"/>
       <source>Toggle overlay</source>
-      <translation>Običan/Iskakajući</translation>
+      <translation>Običan/prekrivajući</translation>
     </message>
     <message>
       <location filename="../OverlayManager.cpp" line="1048"/>
@@ -8762,7 +8762,7 @@ the current copy will be lost.
       <location filename="../OverlayWidgets.cpp" line="117"/>
       <location filename="../OverlayWidgets.cpp" line="147"/>
       <source>Press ESC to hide hint</source>
-      <translation type="unfinished">Press ESC to hide hint</translation>
+      <translation>Pritisni tipku ESC da sakriješ pokazivač</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="530"/>
@@ -8827,12 +8827,12 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="557"/>
       <source>Overlay</source>
-      <translation>Iskakajući</translation>
+      <translation>Prekrivajući</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="559"/>
       <source>Hide tab bar</source>
-      <translation type="unfinished">Hide tab bar</translation>
+      <translation>Sakrij traku sa jezičcima</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="561"/>
@@ -8842,17 +8842,17 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="563"/>
       <source>Auto hide in non 3D view</source>
-      <translation type="unfinished">Auto hide in non 3D view</translation>
+      <translation>Automatski sakrivaj i van 3D pogleda</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="565"/>
       <source>Auto mouse pass through</source>
-      <translation type="unfinished">Auto mouse pass through</translation>
+      <translation>Propusti aktivnosti tastera miša</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="567"/>
       <source>Auto mouse wheel pass through</source>
-      <translation type="unfinished">Auto mouse wheel pass through</translation>
+      <translation>Propusti aktivnosti točkića miša</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="569"/>
@@ -8872,62 +8872,62 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="577"/>
       <source>Hint trigger size</source>
-      <translation type="unfinished">Hint trigger size</translation>
+      <translation>Aktivaciona udaljenost od pokazivača</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="580"/>
       <source>Hint width</source>
-      <translation type="unfinished">Hint width</translation>
+      <translation>Širina pokazivača</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="583"/>
       <source>Left panel hint offset</source>
-      <translation type="unfinished">Left panel hint offset</translation>
+      <translation>Odmak pokazivača levih panela</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="586"/>
       <source>Left panel hint length</source>
-      <translation type="unfinished">Left panel hint length</translation>
+      <translation>Dužina pokazivača levih panela</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="589"/>
       <source>Right panel hint offset</source>
-      <translation type="unfinished">Right panel hint offset</translation>
+      <translation>Odmak pokazivača desnih panela</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="592"/>
       <source>Right panel hint length</source>
-      <translation type="unfinished">Right panel hint length</translation>
+      <translation>Dužina pokazivača desnih panela</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="595"/>
       <source>Top panel hint offset</source>
-      <translation type="unfinished">Top panel hint offset</translation>
+      <translation>Odmak pokazivača gornjih panela</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="598"/>
       <source>Top panel hint length</source>
-      <translation type="unfinished">Top panel hint length</translation>
+      <translation>Dužina pokazivača gornjih panela</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="601"/>
       <source>Bottom panel hint offset</source>
-      <translation type="unfinished">Bottom panel hint offset</translation>
+      <translation>Odmak pokazivača donjih panela</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="604"/>
       <source>Bottom panel hint length</source>
-      <translation type="unfinished">Bottom panel hint length</translation>
+      <translation>Dužina pokazivača donjih panela</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="607"/>
       <source>Hint show tab bar</source>
-      <translation type="unfinished">Hint show tab bar</translation>
+      <translation>Pokazivač prikazuje traku sa jezičcima</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="609"/>
       <source>Hint delay (ms)</source>
-      <translation type="unfinished">Hint delay (ms)</translation>
+      <translation>Kašnjenje pokazivača (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="612"/>
@@ -12063,7 +12063,7 @@ nakon pokretanja FreeCAD-a</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="92"/>
       <source>This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</source>
-      <translation>Ovo je trenutni modul za pokretanje i mora biti omogućen. Pogledajte Podešavanja/Opšte/Automatsko učitavanje ako želiš da promeniš.</translation>
+      <translation>Ovo je trenutni modul za pokretanje i mora biti omogućen. Ako želiš da promeniš pogledaj Podešavanja/Opšte/Automatsko učitavanje.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="115"/>
@@ -12083,7 +12083,7 @@ nakon pokretanja FreeCAD-a</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="137"/>
       <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
-      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+      <translation>Ovo je trenutni modul za pokretanje i mora biti automatski učitan. Ako želiš da promeniš pogledaj Podešavanja/Opšte/Automatsko učitavanje.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="144"/>
@@ -12116,7 +12116,7 @@ nakon pokretanja FreeCAD-a</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="525"/>
       <source>TabBar</source>
-      <translation type="unfinished">TabBar</translation>
+      <translation>Traka sa karticama</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="531"/>
@@ -13001,7 +13001,7 @@ sa Python konzole na tablu za prikaz izveštaja</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="156"/>
       <source>Overlay style sheet:</source>
-      <translation>Prekrij stilski list:</translation>
+      <translation>Stilski list prekrivanja:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="47"/>
@@ -13097,12 +13097,12 @@ sa Python konzole na tablu za prikaz izveštaja</translation>
     <message>
       <location filename="../CommandView.cpp" line="3754"/>
       <source>Toggle overlay for all</source>
-      <translation>Svi obični/iskakajući</translation>
+      <translation>Svi obični/prekrivajući</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3755"/>
       <source>Toggle overlay mode for all docked windows</source>
-      <translation>Običan/Iskakajući režim za sve usidrene prozore</translation>
+      <translation>Običan/prekrivajući režim za sve usidrene prozore</translation>
     </message>
   </context>
   <context>
@@ -13116,7 +13116,7 @@ sa Python konzole na tablu za prikaz izveštaja</translation>
       <location filename="../CommandView.cpp" line="3779"/>
       <source>Toggle transparent mode for all docked overlay windows.
 This makes the docked windows stay transparent at all times.</source>
-      <translation>Uključi /Isključi providni režim za sve usidrene iskakajuće prozore.
+      <translation>Uključi/Isključi providni režim za sve usidrene prekrivajuće prozore.
 Ovo omogućava da usidreni prozori budu providni svo vreme.</translation>
     </message>
   </context>
@@ -13125,12 +13125,12 @@ Ovo omogućava da usidreni prozori budu providni svo vreme.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3803"/>
       <source>Toggle overlay</source>
-      <translation>Običan/Iskakajući</translation>
+      <translation>Običan/prekrivajući</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3804"/>
       <source>Toggle overlay mode for the docked window under the cursor</source>
-      <translation>Običan/Iskakajući režim za usidren prozor ispod miša</translation>
+      <translation>Običan/prekrivajući režim za usidren prozor ispod miša</translation>
     </message>
   </context>
   <context>
@@ -13158,7 +13158,7 @@ Ovo omogućava da usidreni prozori budu providni svo vreme.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3853"/>
       <source>Show/hide left overlay panel</source>
-      <translation>Sakrij/Prikaži levi iskakajući panel</translation>
+      <translation>Sakrij/Prikaži levi prekrivajući panel</translation>
     </message>
   </context>
   <context>
@@ -13171,7 +13171,7 @@ Ovo omogućava da usidreni prozori budu providni svo vreme.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3878"/>
       <source>Show/hide right overlay panel</source>
-      <translation>Sakrij/Prikaži desni iskakajući panel</translation>
+      <translation>Sakrij/Prikaži desni prekrivajući panel</translation>
     </message>
   </context>
   <context>
@@ -13184,7 +13184,7 @@ Ovo omogućava da usidreni prozori budu providni svo vreme.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3903"/>
       <source>Show/hide top overlay panel</source>
-      <translation>Sakrij/Prikaži gornji iskakajući panel</translation>
+      <translation>Sakrij/Prikaži gornji prekrivajući panel</translation>
     </message>
   </context>
   <context>
@@ -13197,7 +13197,7 @@ Ovo omogućava da usidreni prozori budu providni svo vreme.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3928"/>
       <source>Show/hide bottom overlay panel</source>
-      <translation>Sakrij/Prikaži donji iskakajući panel</translation>
+      <translation>Sakrij/Prikaži donji prekrivajući panel</translation>
     </message>
   </context>
   <context>
@@ -13205,12 +13205,12 @@ Ovo omogućava da usidreni prozori budu providni svo vreme.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3952"/>
       <source>Bypass mouse events in docked overlay windows</source>
-      <translation>Zaobiđi aktivnost miša u usidrenom iskakajućem prozoru</translation>
+      <translation>Zaobiđi aktivnost miša u usidrenom prekrivajućem prozoru</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3953"/>
       <source>Bypass all mouse events in docked overlay windows</source>
-      <translation>Zaobiđi svu aktivnost miša u usidrenom iskakajućem prozoru</translation>
+      <translation>Zaobiđi svu aktivnost miša u usidrenom prekrivajućem prozoru</translation>
     </message>
   </context>
   <context>
@@ -13218,12 +13218,12 @@ Ovo omogućava da usidreni prozori budu providni svo vreme.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3994"/>
       <source>Dock window overlay</source>
-      <translation>Iskakanje usidrenih prozora</translation>
+      <translation>Prekrivanje usidrenih prozora</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3995"/>
       <source>Setting docked window overlay mode</source>
-      <translation>Podešavanje režima iskakanja usidrenog prozora</translation>
+      <translation>Podešavanje režima prekrivanja usidrenog prozora</translation>
     </message>
   </context>
   <context>
@@ -13231,7 +13231,7 @@ Ovo omogućava da usidreni prozori budu providni svo vreme.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="317"/>
       <source>Overlay dock (re),layout delay.</source>
-      <translation>Iskakanje sidrišta, kašnjenje.</translation>
+      <translation>Prekrivanje sidrišta, kašnjenje.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="372"/>
@@ -13248,12 +13248,12 @@ Ako je onemogućeno, onda se prikazuje klikom miša.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="429"/>
       <source>Auto mouse click through transparent part of dock overlay.</source>
-      <translation type="unfinished">Auto mouse click through transparent part of dock overlay.</translation>
+      <translation>Propusti aktivnosti tastera miša kroz providni deo prekrivajućeg sidrišta.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="457"/>
       <source>Auto pass through mouse wheel event on transparent dock overlay.</source>
-      <translation type="unfinished">Auto pass through mouse wheel event on transparent dock overlay.</translation>
+      <translation>Propusti aktivnosti točkića miša kroz providni deo prekrivajućeg sidrišta.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="485"/>
@@ -13276,72 +13276,72 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="545"/>
       <source>Leave space for Navigation Cube in dock overlay</source>
-      <translation>Ostavi prostor za navigacionu kocku u iskakajućem sidrištu</translation>
+      <translation>Ostavi prostor za navigacionu kocku u prekrivajućem sidrištu</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="573"/>
       <source>Auto hide hint visual display triggering width</source>
-      <translation type="unfinished">Auto hide hint visual display triggering width</translation>
+      <translation>Udaljenost miša koja aktivira pokazivač automatski sakrivenih panela</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="601"/>
       <source>Auto hide hint visual display width</source>
-      <translation type="unfinished">Auto hide hint visual display width</translation>
+      <translation>Širina pokazivača automatski sakrivenih panela</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="629"/>
       <source>Auto hide hint visual display length for left panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for left panel. Set to zero to fill the space.</translation>
+      <translation>Dužina pokazivača levih automatski sakrivenih panela. Stavi nulu da popuniš ceo prostor.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="657"/>
       <source>Auto hide hint visual display length for right panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for right panel. Set to zero to fill the space.</translation>
+      <translation>Dužina pokazivača desnih automatski sakrivenih panela. Stavi nulu da popuniš ceo prostor.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="685"/>
       <source>Auto hide hint visual display length for top panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for top panel. Set to zero to fill the space.</translation>
+      <translation>Dužina pokazivača gornjih automatski sakrivenih panela. Stavi nulu da popuniš ceo prostor.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="713"/>
       <source>Auto hide hint visual display length for bottom panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for bottom panel. Set to zero to fill the space.</translation>
+      <translation>Dužina pokazivača donjih automatski sakrivenih panela. Stavi nulu da popuniš ceo prostor.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="741"/>
       <source>Auto hide hint visual display offset for left panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for left panel</translation>
+      <translation>Odmak pokazivača levih automatski sakrivenih panela</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="769"/>
       <source>Auto hide hint visual display offset for right panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for right panel</translation>
+      <translation>Odmak pokazivača desnih automatski sakrivenih panela</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="797"/>
       <source>Auto hide hint visual display offset for top panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for top panel</translation>
+      <translation>Odmak pokazivača gornjih automatski sakrivenih panela</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="825"/>
       <source>Auto hide hint visual display offset for bottom panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for bottom panel</translation>
+      <translation>Odmak pokazivača donjih automatski sakrivenih panela</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="853"/>
       <source>Show tab bar on mouse over when auto hide</source>
-      <translation type="unfinished">Show tab bar on mouse over when auto hide</translation>
+      <translation>Prikaži traku sa jezičcima na pokazivaču automatski sakrivenih panela</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="881"/>
       <source>Hide tab bar in dock overlay</source>
-      <translation>Sakrij traku s karticama iskakajućeg sidrišta</translation>
+      <translation>Sakrij traku sa karticama prekrivajućeg sidrišta</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="909"/>
       <source>Delay before show hint visual</source>
-      <translation type="unfinished">Delay before show hint visual</translation>
+      <translation>Kašnjenje pre vizuelnog prikaza pokazivača</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="937"/>
@@ -13379,7 +13379,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="858"/>
       <source>Turn off auto hide/show</source>
-      <translation type="unfinished">Turn off auto hide/show</translation>
+      <translation>Uključi/Isključi automatsko sakrivanje</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="859"/>
@@ -13389,7 +13389,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="860"/>
       <source>Auto hide docked widgets on leave</source>
-      <translation type="unfinished">Auto hide docked widgets on leave</translation>
+      <translation>Automatsko sakrivanje usidrenih panela posle odlaska</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="861"/>
@@ -13399,7 +13399,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="862"/>
       <source>Auto hide docked widgets on editing</source>
-      <translation type="unfinished">Auto hide docked widgets on editing</translation>
+      <translation>Automatsko sakrivanje usidrenih panela prilikom uređivanja</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="863"/>
@@ -13419,17 +13419,17 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="866"/>
       <source>Auto show task view for any current task, and hide the view when there is no task.</source>
-      <translation type="unfinished">Auto show task view for any current task, and hide the view when there is no task.</translation>
+      <translation>Automatski prikaži Panel zadataka ako on trenutno postoji ili sakrij ako ne postoji.</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="867"/>
       <source>Toggle overlay</source>
-      <translation>Običan/Iskakajući</translation>
+      <translation>Običan/Prekrivajući</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="893"/>
       <source>Select auto show/hide mode</source>
-      <translation type="unfinished">Select auto show/hide mode</translation>
+      <translation>Izaberi režim automatskog prikazivanja/sakrivanja</translation>
     </message>
   </context>
   <context>
@@ -13473,7 +13473,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="352"/>
       <source>Lock toolbars</source>
-      <translation type="unfinished">Lock toolbars</translation>
+      <translation>Zaključaj palete alatki</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="353"/>
@@ -13549,7 +13549,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="51"/>
       <source>Measurement</source>
-      <translation type="unfinished">Measurement</translation>
+      <translation>Mera</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="77"/>
@@ -13564,12 +13564,12 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="107"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>Sačuvaj</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="108"/>
       <source>Save the measurement in the active document.</source>
-      <translation type="unfinished">Save the measurement in the active document.</translation>
+      <translation>Sačuvaj meru u aktivnom dokumentu.</translation>
     </message>
     <message>
       <location filename="../TaskMeasure.cpp" line="114"/>
@@ -13579,7 +13579,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskMeasure.cpp" line="115"/>
       <source>Close the measurement task.</source>
-      <translation type="unfinished">Close the measurement task.</translation>
+      <translation>Zatvori</translation>
     </message>
   </context>
   <context>
