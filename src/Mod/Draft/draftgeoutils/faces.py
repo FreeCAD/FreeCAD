@@ -118,7 +118,7 @@ def bind(w1, w2, per_segment=False):
     avoids problems with walls based on wires that selfintersect, or that have
     a loop that ends in a T-connection (f.e. a wire shaped like a number 6).
 
-    2 wires can result in multple faces:
+    2 wires can result in multiple faces:
 
     w1 ----------+
                  |
