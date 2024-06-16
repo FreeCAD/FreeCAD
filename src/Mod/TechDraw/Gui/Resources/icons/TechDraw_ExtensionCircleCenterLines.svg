@@ -68,7 +68,7 @@
      transform="translate(0.57899503,-278.01443)"
      style="display:inline">
     <ellipse
-       style="fill:none;stroke:#d3d7cf;stroke-width:1.5875;stroke-linecap:square;stroke-dasharray:none;paint-order:fill markers stroke"
+       style="fill:none;stroke:#555753;stroke-width:1.5875;stroke-linecap:square;stroke-dasharray:none;paint-order:fill markers stroke"
        id="path1"
        cx="8.4667006"
        cy="8.4666986"
@@ -76,17 +76,13 @@
        ry="6.614615"
        transform="translate(-0.57899503,278.01443)" />
     <ellipse
-       style="display:inline;fill:none;stroke:#555753;stroke-width:0.52916667;stroke-linecap:square;stroke-dasharray:none;paint-order:fill markers stroke"
+       style="display:inline;fill:none;stroke:#d3d7cf;stroke-width:0.52916667;stroke-linecap:square;stroke-dasharray:none;paint-order:fill markers stroke"
        id="ellipse1"
        cx="8.4667006"
        cy="8.4666986"
        rx="6.6146169"
        ry="6.614615"
        transform="translate(-0.57899503,278.01443)" />
-    <path
-       style="display:none;fill:none;fill-opacity:1;stroke:#fce94f;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:5.29167, 2.11667, 1.05833, 2.11667;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 7.9413354,278.54354 -0.10738,15.86784"
-       id="path4" />
     <g
        id="g1">
       <path
@@ -94,7 +90,7 @@
          d="M 15.031422,286.4811 H 0.74392165"
          id="path5" />
       <path
-         style="display:inline;fill:#ffff00;fill-opacity:1;stroke:#729fcf;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:5.29167, 2.11667, 1.05833, 2.11667;stroke-dashoffset:0;stroke-opacity:1"
+         style="display:inline;fill:#ffff00;fill-opacity:1;stroke:#729fcf;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:5.29166997,2.11666799,1.05833399,2.11666799;stroke-dashoffset:0;stroke-opacity:1"
          d="M 15.825233,286.4811 H -0.04982836"
          id="path2" />
     </g>
@@ -111,19 +107,12 @@
          id="path6" />
     </g>
   </g>
-  <g
-     id="g7"
-     style="display:inline;enable-background:new"
-     transform="translate(-5.7792933,-5.0519545)">
-    <circle
-       style="fill:#729fcf;stroke:#0b1521;stroke-width:0.529167;stroke-dasharray:none"
-       id="path3-1"
-       cx="14.24596"
-       cy="13.518621"
-       r="1.3229166" />
-    <path
-       style="fill:#0b1521;stroke:#729fcf;stroke-width:0.529167;stroke-dasharray:none"
-       id="circle1"
-       d="m 14.246094,12.724609 c 0.435056,0 0.792968,0.358894 0.792969,0.794922 0,0.436029 -0.356941,0.792969 -0.792969,0.792969 -0.436029,0 -0.792969,-0.35694 -0.792969,-0.792969 0,-0.436028 0.357913,-0.794922 0.792969,-0.794922 z" />
-  </g>
+  <path
+     style="fill:#d3d7cf;stroke:#729fcf;stroke-width:0.529167;stroke-dasharray:5.29167, 2.11667, 1.05833, 2.11667;stroke-dashoffset:0;paint-order:fill markers stroke"
+     d="m 7.2760453,8.4666669 2.381243,3.2e-5"
+     id="path4" />
+  <path
+     style="fill:#d3d7cf;stroke:#729fcf;stroke-width:0.529167;stroke-dasharray:5.29167, 2.11667, 1.05833, 2.11667;stroke-dashoffset:0;paint-order:fill markers stroke"
+     d="m 8.4666508,9.6573044 3.2e-5,-2.381243"
+     id="path7" />
 </svg>

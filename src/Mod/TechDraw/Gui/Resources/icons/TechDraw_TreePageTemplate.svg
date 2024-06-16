@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    version="1.1"
    id="svg3052"
    height="64px"
-   width="64px">
+   width="64px"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <title
      id="title868">TechDraw_TreePageTemplate</title>
   <defs
@@ -154,7 +154,7 @@
        id="linearGradient3833-1"
        xlink:href="#linearGradient3827-1" />
     <linearGradient
-       gradientTransform="matrix(1.2857143,0,0,0.99999993,-9.1428581,4.1679097e-6)"
+       gradientTransform="matrix(1.4340659,0,0,1.1153845,-13.890111,-3.6923033)"
        gradientUnits="userSpaceOnUse"
        y2="6"
        x2="27"
@@ -212,39 +212,41 @@
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1">
+     id="layer1"
+     transform="matrix(0.89655172,0,0,0.89655172,3.3103452,3.310345)"
+     style="stroke-width:1.11538">
     <rect
        y="3.0000002"
        x="3"
        height="58.000004"
        width="58"
        id="rect2987"
-       style="fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+       style="fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2.23077;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <rect
        y="5"
        x="5"
        height="54"
        width="54"
        id="rect2987-1"
-       style="fill:url(#linearGradient3781);fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+       style="fill:url(#linearGradient3781);fill-opacity:1;stroke:#ffffff;stroke-width:2.23077;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <rect
        y="9"
        x="9"
        height="46"
        width="46"
        id="rect4138-7"
-       style="fill:none;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:2, 4;stroke-dashoffset:2.4;stroke-opacity:1" />
+       style="fill:none;stroke:#2e3436;stroke-width:2.23077;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:2.23077, 4.46154;stroke-dashoffset:2.67692;stroke-opacity:1" />
     <path
        id="path3806-3"
        d="M 31,47 H 51.000001"
-       style="fill:none;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#2e3436;stroke-width:2.23077;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
     <path
        id="rect4138-5-7"
        d="M 27,54.999997 V 42.999999 h 28.000002"
-       style="fill:none;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:2, 4;stroke-dashoffset:2;stroke-opacity:1" />
+       style="fill:none;stroke:#2e3436;stroke-width:2.23077;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:2.23077, 4.46154;stroke-dashoffset:2.23077;stroke-opacity:1" />
     <path
        id="path3806-3-4"
        d="M 31,51 H 51"
-       style="fill:none;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#2e3436;stroke-width:2.23077;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
   </g>
 </svg>

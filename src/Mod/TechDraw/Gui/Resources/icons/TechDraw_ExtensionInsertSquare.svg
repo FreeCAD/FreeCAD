@@ -56,15 +56,10 @@
        style="fill:#fce94f;stroke:#302b00;stroke-width:0.529167;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:3;paint-order:fill markers stroke"
        d="M 4.2333333,11.641667 1.5875,13.493725 4.2333333,15.345809 V 14.022892 H 12.7 v 1.322917 L 15.345833,13.493725 12.7,11.641642 v 1.322917 H 4.2333333 Z"
        id="path1" />
-    <text
-       xml:space="preserve"
-       style="font-size:12.7001px;line-height:0px;text-align:end;text-anchor:end;fill:#fce94f;stroke:#302b00;stroke-width:0.529175;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:3;paint-order:fill markers stroke"
-       x="14.791887"
-       y="10.864527"
-       id="text4"><tspan
-         id="tspan4"
-         style="font-size:12.7001px;fill:#fce94f;stroke:#302b00;stroke-width:0.529175"
-         x="14.791887"
-         y="10.864527">〼</tspan></text>
+    <path
+       d="M 5.3660319,10.12038 H 12.212179 V 3.2742326 Z M 4.7211049,2.5300862 V 9.3762338 L 11.567253,2.5300862 Z M 3.7289096,1.5875006 H 13.204375 V 11.062966 H 3.7289096 Z"
+       id="text4"
+       style="font-size:12.7001px;line-height:0px;text-align:end;text-anchor:end;fill:#fce94f;stroke:#302b00;stroke-width:0.529175;stroke-linecap:square;stroke-dashoffset:3;paint-order:fill markers stroke"
+       aria-label="〼" />
   </g>
 </svg>

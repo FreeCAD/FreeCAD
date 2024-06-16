@@ -48,9 +48,9 @@
          id="path6" />
     </g>
     <path
-       d="M 8.2134604,11.273896 7.6842937,9.6863958 10.62064,11.803062 7.6842937,13.919729 8.2134604,12.332229 H 1.5874871 v -1.058333 z"
+       d="M 8.2020834,11.1125 V 9.5250001 L 10.62064,11.803062 8.2020834,14.022917 v -1.5875 H 1.5874871 V 11.1125 Z"
        id="text6"
-       style="font-size:14.8167px;line-height:0px;text-align:end;text-anchor:end;fill:#fce94f;stroke:#302b00;stroke-width:0.529166;stroke-linecap:square;stroke-linejoin:round"
+       style="font-size:14.8167px;line-height:0px;text-align:end;text-anchor:end;fill:#fce94f;stroke:#302b00;stroke-width:0.529166;stroke-linecap:round;stroke-linejoin:round"
        aria-label="→" />
     <g
        id="g10">

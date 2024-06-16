@@ -26,32 +26,6 @@
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1"
-     transform="translate(0,-288.53332)"
-     style="display:none">
-    <g
-       id="g818"
-       transform="matrix(0.51353284,0,0,0.51353284,-0.0983307,144.66326)">
-      <rect
-         style="opacity:1;fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:#2b2200;stroke-width:0.60006;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="rect825"
-         width="1.5705374"
-         height="15.777605"
-         x="294.5943"
-         y="-20.915379"
-         transform="matrix(-0.01554413,0.99987918,-0.99999007,0.00445675,0,0)" />
-      <path
-         transform="matrix(-0.03564269,0.9993646,-0.99964309,-0.0267149,0,0)"
-         d="m 280.3783,-18.529088 a 1.6844164,1.7173343 0 0 1 1.68482,-1.714997 1.6844164,1.7173343 0 0 1 1.68401,1.71582 1.6844164,1.7173343 0 0 1 -1.68104,1.718845 1.6844164,1.7173343 0 0 1 -1.68778,-1.711965 l 1.6844,-0.0054 z"
-         id="path827"
-         style="opacity:1;fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:#2b2200;stroke-width:0.600012;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke" />
-      <path
-         id="path845-6"
-         d="M 8.5002418,281.3705 C 8.3163896,294.17878 8.3163896,294.17878 8.3163896,294.17878"
-         style="fill:none;stroke:#ff0000;stroke-width:1.4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:2.8, 1.4, 0.7, 1.4;stroke-dashoffset:1.39048;stroke-opacity:1" />
-    </g>
-  </g>
-  <g
      id="g3"
      transform="matrix(1.688137,0,0,1.7516193,1.342005,1.17965)">
     <g
@@ -75,12 +49,12 @@
       <path
          id="path845-6-5"
          d="M 13.37281,280.83818 C 0.65746922,290.72811 0.65746922,290.72811 0.65746922,290.72811"
-         style="fill:none;stroke:#d3d7cf;stroke-width:1.86291;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:2.16674;stroke-opacity:1"
+         style="fill:none;stroke:#555753;stroke-width:1.86291;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:2.16674;stroke-opacity:1"
          transform="matrix(0.49556143,0,0,0.49556143,-0.024424,-138.7538)" />
       <path
          id="path1"
          d="M 13.37281,280.83818 C 0.65746922,290.72811 0.65746922,290.72811 0.65746922,290.72811"
-         style="display:inline;fill:none;stroke:#555753;stroke-width:0.620971;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:2.16674;stroke-opacity:1"
+         style="display:inline;fill:none;stroke:#d3d7cf;stroke-width:0.620971;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:2.16674;stroke-opacity:1"
          transform="matrix(0.49556143,0,0,0.49556143,-0.02442399,-138.7538)" />
     </g>
     <g
@@ -89,7 +63,7 @@
       <ellipse
          transform="matrix(0.3080251,0.38820316,-0.38543637,0.31148024,-0.02442399,-138.7538)"
          id="path827-1"
-         style="opacity:1;fill:#729fcf;fill-opacity:1;fill-rule:nonzero;stroke:#0b1521;stroke-width:0.620983;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+         style="opacity:1;fill:#d3d7cf;fill-opacity:1;fill-rule:nonzero;stroke:#555753;stroke-width:0.620983;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
          cx="226.61226"
          cy="172.26399"
          rx="1.6844164"
@@ -98,7 +72,7 @@
          transform="matrix(0.3080251,0.38820316,-0.38543637,0.31148024,-0.02442399,-138.7538)"
          d="m 226.61133,171.16797 c 0.57751,0 1.06445,0.48766 1.06445,1.0957 0,0.60804 -0.48694,1.0957 -1.06445,1.0957 -0.57752,0 -1.0625,-0.48678 -1.0625,-1.0957 0,-0.60892 0.48498,-1.0957 1.0625,-1.0957 z"
          id="path2"
-         style="opacity:1;fill:#204a87;fill-opacity:1;fill-rule:nonzero;stroke:#729fcf;stroke-width:0.620983;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke" />
+         style="opacity:1;fill:#888a85;fill-opacity:1;fill-rule:nonzero;stroke:#d3d7cf;stroke-width:0.620983;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke" />
     </g>
   </g>
 </svg>

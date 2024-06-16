@@ -33,11 +33,11 @@
        id="g67"
        style="stroke-width:1.00012;stroke-dasharray:none">
       <path
-         style="fill:none;stroke:#d3d7cf;stroke-width:1.5875;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
+         style="fill:none;stroke:#555753;stroke-width:1.5875;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
          d="M 1.3229166,2.9104166 H 15.610416"
          id="path66" />
       <path
-         style="display:inline;fill:none;stroke:#555753;stroke-width:0.529167;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
+         style="display:inline;fill:none;stroke:#d3d7cf;stroke-width:0.529167;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
          d="M 0.79374998,2.9104166 H 16.139583"
          id="path67" />
     </g>

@@ -355,7 +355,7 @@
    id="layer1"
    style="display:inline"><g
      id="g10"><rect
-       style="fill:none;stroke:#d3d7cf;stroke-width:158.812;stroke-dasharray:none;paint-order:fill markers stroke"
+       style="fill:none;stroke:#555753;stroke-width:158.812;stroke-dasharray:none;paint-order:fill markers stroke"
        id="rect10"
        width="1058.7605"
        height="1058.7604"
@@ -363,7 +363,7 @@
        y="317.61981"
        rx="39.90107"
        ry="37.437733" /><rect
-       style="fill:none;stroke:#555753;stroke-width:52.9271;stroke-dasharray:none;paint-order:fill markers stroke"
+       style="fill:none;stroke:#d3d7cf;stroke-width:52.9271;stroke-dasharray:none;paint-order:fill markers stroke"
        id="rect9"
        width="1058.7605"
        height="1058.7604"

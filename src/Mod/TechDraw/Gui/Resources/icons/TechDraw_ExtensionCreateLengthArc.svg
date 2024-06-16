@@ -117,15 +117,15 @@
        id="g9"
        transform="matrix(1.1315124,0,0,0.99732515,-1.208824,-0.15958029)">
       <path
-         style="display:inline;fill:none;stroke:#555753;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none"
+         style="display:inline;fill:none;stroke:#d3d7cf;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none"
          id="circle1"
          d="m 3.5280876,15.709636 a 5,5 0 0 1 5,-5 5,5 0 0 1 5.0000004,5" />
       <path
-         style="display:inline;fill:none;stroke:#d3d7cf;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none"
+         style="display:inline;fill:none;stroke:#555753;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none"
          id="path2"
          d="m 14.02622,15.709636 c 0,-3.039047 -2.459085,-5.498132 -5.4981324,-5.498132 -3.0390471,0 -5.498132,2.459085 -5.498132,5.498132" />
       <path
-         style="display:inline;fill:none;stroke:#d3d7cf;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none"
+         style="display:inline;fill:none;stroke:#555753;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none"
          id="path3"
          d="m 4.0262196,15.709636 c 0,-2.483801 2.0180676,-4.501868 4.501868,-4.501868 2.4838004,0 4.5018684,2.018067 4.5018684,4.501868" />
     </g>

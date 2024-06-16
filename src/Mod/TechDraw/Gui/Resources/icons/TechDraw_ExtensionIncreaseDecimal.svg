@@ -44,12 +44,12 @@
            transform="matrix(0.26458333,0,0,0.26458333,-7.3814612,-3.0506128)"
            id="path6-3" />
       </g>
-      <path
-         d="M 3.9946479,11.273896 4.5238146,9.6863958 1.5874683,11.803062 4.5238146,13.919729 3.9946479,12.332229 H 10.620621 V 11.273896 Z"
-         id="text6-6"
-         style="font-size:14.8167px;line-height:0px;text-align:end;text-anchor:end;fill:#fce94f;stroke:#302b00;stroke-width:0.529166;stroke-linecap:square;stroke-linejoin:round"
-         aria-label="→" />
     </g>
+    <path
+       d="M 4.0060442,3.693914 V 2.1064141 L 1.5874873,4.384476 4.0060442,6.6043308 V 5.016831 H 10.62064 V 3.693914 Z"
+       id="text6"
+       style="font-size:14.8167px;line-height:0px;text-align:end;text-anchor:end;fill:#fce94f;stroke:#302b00;stroke-width:0.529166;stroke-linecap:round;stroke-linejoin:round"
+       aria-label="→" />
     <g
        id="g10"
        transform="translate(0,7.4993503)">

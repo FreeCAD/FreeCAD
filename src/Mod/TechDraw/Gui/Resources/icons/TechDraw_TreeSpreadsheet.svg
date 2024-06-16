@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    id="svg2985"
    height="64"
    width="64"
-   version="1.1">
+   version="1.1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <title
      id="title945">TechDraw_TreeSpreadsheet</title>
   <defs
@@ -690,6 +690,15 @@
          offset="1"
          style="stop-color:#babdb6;stop-opacity:1" />
     </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3866"
+       id="linearGradient3771"
+       x1="98"
+       y1="1047.3622"
+       x2="81"
+       y2="993.36218"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0,-0.9985263,0.91482248,0,-901.45028,123.86442)" />
   </defs>
   <metadata
      id="metadata2990">
@@ -731,43 +740,26 @@
   <g
      id="layer1">
     <g
-       style="fill:#d3d7cf"
-       id="g4153">
+       id="layer3-3"
+       style="display:inline;stroke-width:0.955759"
+       transform="matrix(0,1.0931083,-1.0014759,0,64.047226,-2.9794366)">
       <path
-         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:url(#linearGradient3872);fill-opacity:1;fill-rule:evenodd;stroke:#3f3f3f;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-         id="rect3005"
-         d="M 3,9 V 53 H 51 L 61,43 V 9 Z" />
+         style="fill:url(#linearGradient3771);fill-opacity:1;stroke:#2e3436;stroke-width:1.91153;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         d="m 11,3 v 58.00002 h 42 v -48 L 43,3 Z"
+         id="path2991" />
       <path
-         id="path3096"
-         d="M 5,51 V 11 h 54 v 32 l -6,8 z"
-         style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+         style="fill:none;stroke:#ffffff;stroke-width:1.91153;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 13,5 V 59.00002 H 51 V 13.81392 L 41.99741,5 Z"
+         id="path3763" />
       <path
-         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:url(#linearGradient3880);fill-opacity:1;fill-rule:evenodd;stroke:#3f3f3f;stroke-width:1.95121;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-         id="path3778"
-         d="m 61,43 c 0,-1 -4,-4 -8,-4 0,0 2,10 -2,14 z" />
-      <path
-         id="path3125"
-         d="m 53.085507,48.1244 6.658435,-6.453618"
-         style="fill:none;stroke:#babdb6;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#3f3f3f;stroke-width:1.95121;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-         id="path3778-3"
-         d="m 61,43 c 0,-1 -4,-4 -8,-4 0,0 2,10 -2,14 z" />
+         style="fill:#2e3436;fill-opacity:0.392157;stroke:#2e3436;stroke-width:1.91153;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         d="M 43,3 V 13.00002 H 53 Z"
+         id="path2993" />
     </g>
-    <g
-       id="layer2"
-       transform="translate(-562.78983,-342.8385)" />
     <g
        style="fill:#ffffff;stroke:#2e3436"
        id="layer1-7"
-       transform="matrix(0.6115108,0,0,0.6115108,7.5206005,11.370829)">
-      <rect
-         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#2e3436;stroke-width:4;marker:none;enable-background:accumulate"
-         id="rect3002"
-         y="9.272728"
-         x="4"
-         height="46.545456"
-         width="56.18182" />
+       transform="matrix(0.6115108,0,0,0.6115108,6.743622,10.593851)">
       <rect
          style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#ffffff;stroke:#2e3436;stroke-width:4;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
          id="rect3002-9"

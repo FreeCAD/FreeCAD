@@ -152,12 +152,12 @@
        style="display:inline;enable-background:new"
        transform="matrix(0,1.0000024,1.0000152,0,-0.6126779,-0.73663088)">
       <path
-         style="display:inline;fill:none;stroke:#d3d7cf;stroke-width:1.5875;stroke-linecap:square;stroke-dasharray:none;paint-order:fill markers stroke;enable-background:new"
+         style="display:inline;fill:none;stroke:#555753;stroke-width:1.5875;stroke-linecap:square;stroke-dasharray:none;paint-order:fill markers stroke;enable-background:new"
          d="M 6.6145835,14.022917 6.6145167,9.2604171 12.43535,3.4397129 15.610417,3.4395834"
          id="path5"
          transform="matrix(0,0.99998479,0.99999759,0,0.73662911,0.61266859)" />
       <path
-         style="display:inline;fill:none;stroke:#555753;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;paint-order:fill markers stroke;enable-background:new"
+         style="display:inline;fill:none;stroke:#d3d7cf;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none;paint-order:fill markers stroke;enable-background:new"
          d="M 6.6145835,14.552084 6.6145167,9.2604171 12.43535,3.4397129 16.139584,3.4395834"
          id="path6"
          transform="matrix(0,0.99998479,0.99999759,0,0.73662911,0.61266859)" />

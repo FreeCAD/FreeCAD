@@ -153,9 +153,10 @@
          id="path3" />
     </g>
     <path
-       style="display:none;fill:#fce94f;stroke:#302b00;stroke-width:1.73201;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;paint-order:fill markers stroke"
-       d="M 32.000006,53.134123 39.384087,43.000051 H 34.953639 V 21.000024 h 4.430448 L 32.000006,10.865955 24.615924,21.000024 h 4.384082 v 22.000027 h -4.384082 z"
-       id="path6" />
+       style="fill:#fce94f;stroke:#302b00;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;paint-order:fill markers stroke"
+       d="m 22.15456,43 9.845439,10 9.845437,-10 H 36 V 21 h 5.845436 L 31.999999,11 22.15456,21 H 28 v 22 z"
+       id="path1"
+       transform="matrix(0.7500003,0,0,1.0000012,7.9999974,-2.4800031e-6)" />
     <g
        id="g5"
        transform="matrix(0.7500003,0,0,1.0000012,7.9999974,-52.00012)">
@@ -169,8 +170,4 @@
          id="path5" />
     </g>
   </g>
-  <path
-     style="fill:#fce94f;stroke:#302b00;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;paint-order:fill markers stroke"
-     d="m 22.15456,43 9.845439,10 9.845437,-10 H 36 V 21 h 5.845436 L 31.999999,11 22.15456,21 H 28 v 22 z"
-     id="path1" />
 </svg>

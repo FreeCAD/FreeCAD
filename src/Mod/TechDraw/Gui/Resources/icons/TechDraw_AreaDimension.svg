@@ -146,7 +146,7 @@
      id="g10"
      style="display:inline"
      transform="translate(132.34376,-242.05672)"><rect
-       style="display:inline;fill:none;stroke:#d3d7cf;stroke-width:158.805;stroke-dasharray:none"
+       style="display:inline;fill:none;stroke:#555753;stroke-width:158.805;stroke-dasharray:none"
        id="rect20"
        width="502.91367"
        height="502.91348"
@@ -154,7 +154,7 @@
        y="1141.9905"
        rx="19.714392"
        ry="14.09264" /><rect
-       style="display:inline;fill:none;stroke:#555753;stroke-width:52.9375;stroke-dasharray:none"
+       style="display:inline;fill:none;stroke:#d3d7cf;stroke-width:52.9375;stroke-dasharray:none"
        id="rect6"
        width="502.91367"
        height="502.91348"
