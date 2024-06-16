@@ -110,13 +110,22 @@ isCoplanar = is_coplanar
 
 
 def bind(w1, w2, per_segment=False):
-    """Bind 2 wires by their endpoints and returns a face.
+    """Bind 2 wires by their endpoints and returns a list of faces.
 
     If per_segment is True and the wires have the same number of edges, the
     wires are processed per segment: a separate face is created for each pair
     of edges (one from w1 and one from w2), and the faces are then fused. This
     avoids problems with walls based on wires that selfintersect, or that have
     a loop that ends in a T-connection (f.e. a wire shaped like a number 6).
+
+    2 wires can result in multple faces:
+
+    w1 ----------+
+                 |
+    w2 ----------+---------- w1
+                 |
+                 +---------- w2
+
     """
 
     def create_face(w1, w2):
@@ -143,23 +152,22 @@ def bind(w1, w2, per_segment=False):
             if face is None:
                 return None
             faces.append(face)
-        # return concatenate(faces[0].fuse(faces[1:])) # Also works.
-        return faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+        return faces[0].fuse(faces[1:]).removeSplitter().Faces
     elif w1.isClosed() and w2.isClosed():
         d1 = w1.BoundBox.DiagonalLength
         d2 = w2.BoundBox.DiagonalLength
         if d1 < d2:
             w1, w2 = w2, w1
-        # return Part.Face(w1).cut(Part.Face(w2)).Faces[0] # Only works if wires do not self-intersect.
+        # return [Part.Face(w1).cut(Part.Face(w2)).Faces[0]]  # Only works if wires do not self-intersect.
         try:
             face = Part.Face([w1, w2])
             face.fix(1e-7, 0, 1)
-            return face
+            return [face]
         except Part.OCCError:
             print("DraftGeomUtils: unable to bind wires")
             return None
     else:
-        return create_face(w1, w2)
+        return [create_face(w1, w2)]
 
 
 def cleanFaces(shape):

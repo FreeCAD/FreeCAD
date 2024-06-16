@@ -861,7 +861,7 @@ class _Wall(ArchComponent.Component):
                         if (len(self.basewires) == 1) and layers:
                             self.basewires = [self.basewires[0] for l in layers]
                         layeroffset = 0
-                        baseface = None
+                        basefaces = []
 
                         for i,wire in enumerate(self.basewires):
 
@@ -959,7 +959,7 @@ class _Wall(ArchComponent.Component):
                                                                alignList=aligns,
                                                                normal=normal,
                                                                basewireOffset=offsets)
-                                face = DraftGeomUtils.bind(w1, w2, per_segment=True)
+                                faces = DraftGeomUtils.bind(w1, w2, per_segment=True)
 
                             elif curAligns == "Right":
                                 dvec = dvec.negative()
@@ -999,7 +999,7 @@ class _Wall(ArchComponent.Component):
                                                                alignList=aligns,
                                                                normal=normal,
                                                                basewireOffset=offsets)
-                                face = DraftGeomUtils.bind(w1, w2, per_segment=True)
+                                faces = DraftGeomUtils.bind(w1, w2, per_segment=True)
 
                             #elif obj.Align == "Center":
                             elif curAligns == "Center":
@@ -1032,49 +1032,40 @@ class _Wall(ArchComponent.Component):
                                                                    alignList=aligns,
                                                                    normal=normal,
                                                                    basewireOffset=offsets)
-                                face = DraftGeomUtils.bind(w1, w2, per_segment=True)
+                                faces = DraftGeomUtils.bind(w1, w2, per_segment=True)
 
                             del widths[0:edgeNum]
                             del aligns[0:edgeNum]
                             del offsets[0:edgeNum]
 
-                            if face:
+                            if faces:
 
                                 if layers and (layers[i] < 0):
                                     # layers with negative values are not drawn
                                     continue
 
-                                if baseface:
+                                # To allow exportIFC.py to work properly on
+                                # sketch, which use only 1st face / wire,
+                                # do not fuse basefaces here So for a sketch
+                                # with multiple wires, each returns
+                                # individual face (rather than fusing
+                                # together) for exportIFC.py to work
+                                # properly
+                                # "ArchWall - Based on Sketch Issues" - https://forum.freecad.org/viewtopic.php?f=39&t=31235
 
-                                    # To allow exportIFC.py to work properly on
-                                    # sketch, which use only 1st face / wire,
-                                    # do not fuse baseface here So for a sketch
-                                    # with multiple wires, each returns
-                                    # individual face (rather than fusing
-                                    # together) for exportIFC.py to work
-                                    # properly
-                                    # "ArchWall - Based on Sketch Issues" - https://forum.freecad.org/viewtopic.php?f=39&t=31235
+                                # "Bug #2408: [PartDesign] .fuse is splitting edges it should not"
+                                # - https://forum.freecad.org/viewtopic.php?f=10&t=20349&p=346237#p346237
+                                # - bugtracker - https://freecad.org/tracker/view.php?id=2408
 
-                                    # "Bug #2408: [PartDesign] .fuse is splitting edges it should not"
-                                    # - https://forum.freecad.org/viewtopic.php?f=10&t=20349&p=346237#p346237
-                                    # - bugtracker - https://freecad.org/tracker/view.php?id=2408
+                                # Try Part.Shell before removeSplitter
+                                # - https://forum.freecad.org/viewtopic.php?f=10&t=20349&start=10
+                                # - 1st finding : if a rectangle + 1 line, can't removesSplitter properly...
+                                # - 2nd finding : if 2 faces do not touch, can't form a shell; then, subsequently for remaining faces even though touch each faces, can't form a shell
 
-                                    # Try Part.Shell before removeSplitter
-                                    # - https://forum.freecad.org/viewtopic.php?f=10&t=20349&start=10
-                                    # - 1st finding : if a rectangle + 1 line, can't removesSplitter properly...
-                                    # - 2nd finding : if 2 faces do not touch, can't form a shell; then, subsequently for remaining faces even though touch each faces, can't form a shell
+                                basefaces.extend(faces)
 
-                                    baseface.append(face)
-                                    # The above make Refine methods below (in else) useless, regardless removeSpitters yet to be improved for cases do not work well
-                                    '''  Whether layers or not, all baseface.append(face) '''
-
-                                else:
-                                    baseface = [face]
-
-                                    '''  Whether layers or not, all baseface = [face] '''
-
-                        if baseface:
-                            base,placement = self.rebase(baseface)
+                        if basefaces:
+                            base,placement = self.rebase(basefaces)
         else:
             if layers:
                 totalwidth = sum([abs(l) for l in layers])
