@@ -66,7 +66,7 @@
        x2="19.481165"
        y2="24.769613"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(-1.0763547,0,0,1.2275803,45.604897,-18.176113)" />
+       gradientTransform="matrix(1.0763547,0,0,1.2275803,18.395103,-18.176113)" />
     <linearGradient
        xlink:href="#linearGradient3790-4"
        id="linearGradient3796-7"
@@ -189,52 +189,52 @@
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1"
-     transform="matrix(-0.993217,0,0,0.88219388,63.782979,2.887596)"
-     style="stroke-width:1.06828">
+     id="layer2"
+     style="display:inline">
     <path
-       style="fill:url(#linearGradient3796);fill-opacity:1;stroke:none;stroke-width:1.06828"
+       style="stroke-width:1.06828;display:inline;fill:url(#linearGradient3796);fill-opacity:1;stroke:none"
        d="m 26.000914,10.342265 -0.0078,25.890801 32.019171,9.435404 3e-6,-25.954406 z"
-       id="path3002-1" />
+       id="path3002-1"
+       transform="matrix(0.993217,0,0,0.88219388,0.217091,2.887596)" />
     <path
-       style="fill:none;stroke:#2e3436;stroke-width:6.40984;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
-       d="M 25,9 V 37 L 59,47 V 19 Z"
-       id="path3002-5" />
+       style="display:inline;opacity:1;fill:none;stroke:#2e3436;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:1"
+       d="M 25,35 V 11 l 34,9 v 24 z"
+       id="path1" />
     <path
-       style="fill:none;stroke:#2e3436;stroke-width:6.40984;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
-       d="M 39,29 5,19 25,9 59,19 Z"
-       id="path3000" />
+       style="display:inline;opacity:1;fill:none;stroke:#2e3436;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:1"
+       d="m 5,20 20,-9 34,9 -20,9 z"
+       id="path2" />
     <path
-       style="fill:none;stroke:#2e3436;stroke-width:6.40984;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
-       d="M 39,57 5,47 25,37 59,47 Z"
-       id="path3000-5" />
+       style="display:inline;opacity:1;fill:none;stroke:#2e3436;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:1"
+       d="m 5,44 20,-9 34,9 -20,9 z"
+       id="path3" />
     <path
-       style="fill:none;stroke:#babdb6;stroke-width:2.13661;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
-       d="M 25,9 V 37 L 59,47 V 19 Z"
-       id="path3002-7-3" />
+       style="display:inline;opacity:1;fill:none;stroke:#babdb6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:1"
+       d="M 25,35 V 11 l 34,9 v 24 z"
+       id="path6" />
     <path
-       style="fill:none;stroke:#d3d7cf;stroke-width:2.13661;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
-       d="M 39,57 5,47 25,37 59,47 Z"
-       id="path3000-6-6" />
+       style="display:inline;opacity:1;fill:none;stroke:#d3d7cf;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:1"
+       d="m 5,44 20,-9 34,9 -20,9 z"
+       id="path8" />
     <path
-       style="fill:none;stroke:#2e3436;stroke-width:6.40984;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
-       d="M 39,29 59,19 V 47 L 39,57 Z"
-       id="path2998" />
+       style="display:inline;opacity:1;fill:none;stroke:#2e3436;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:1"
+       d="M 59.000004,44 V 20 L 39,29 v 24 z"
+       id="path4" />
     <path
-       style="fill:none;stroke:#2e3436;stroke-width:6.40984;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
-       d="M 5,19 V 47 L 39,57 V 29 Z"
-       id="path3002" />
+       style="display:inline;opacity:1;fill:none;stroke:#2e3436;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:1"
+       d="m 5,43.999903 v -24 l 34,9 V 53 Z"
+       id="path5" />
     <path
-       style="fill:none;stroke:#d3d7cf;stroke-width:2.13661;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
-       d="M 5,19 V 47 L 39,57 V 29 Z"
-       id="path3002-7" />
+       style="display:inline;opacity:1;fill:none;stroke:#d3d7cf;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:1"
+       d="m 5,43.999903 v -24 l 34,9 V 53 Z"
+       id="path10" />
     <path
-       style="fill:none;stroke:#babdb6;stroke-width:2.13661;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
-       d="M 39,29 59,19 V 47 L 39,57 Z"
-       id="path2998-3" />
+       style="display:inline;opacity:1;fill:none;stroke:#babdb6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:1"
+       d="M 59.000004,44 V 20 L 39,29 v 24 z"
+       id="path9" />
     <path
-       style="fill:none;stroke:#ffffff;stroke-width:2.13661;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
-       d="M 39,29 5,19 25,9 59,19 Z"
-       id="path3000-6" />
+       style="display:inline;opacity:1;fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:1"
+       d="m 5,20 20,-9 34,9 -20,9 z"
+       id="path7" />
   </g>
 </svg>
