@@ -157,9 +157,16 @@ private:
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
             if (file.hasExtension({"stp", "step"})) {
+#if OCC_VERSION_HEX >= 0x070800
+                Resource_FormatType cp = Resource_FormatType_UTF8;
+#endif
                 try {
                     Import::ReaderStep reader(file);
+#if OCC_VERSION_HEX < 0x070800
                     reader.read(hDoc);
+#else
+                    reader.read(hDoc, cp);
+#endif
                 }
                 catch (OSD_Exception& e) {
                     Base::Console().Error("%s\n", e.GetMessageString());
