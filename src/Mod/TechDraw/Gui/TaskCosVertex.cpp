@@ -70,7 +70,7 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
     m_inProgressLock(false),
     m_btnOK(nullptr),
     m_btnCancel(nullptr),
-    m_pbTrackerState(TRACKERPICK),
+    m_pbTrackerState(TrackerAction::PICK),
     m_savePoint(QPointF(0.0, 0.0))
 {
     //baseFeat and page existence checked in cosmetic vertex command (CommandAnnotate.cpp)
@@ -132,14 +132,14 @@ void TaskCosVertex::updateUi()
     ui->dsbY->setValue(y);
 }
 
+//! create the cv as entered, addCosmeticVertex will invert it
 void TaskCosVertex::addCosVertex(QPointF qPos)
 {
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Cosmetic Vertex"));
 
-//    Base::Console().Message("TCV::addCosVertex(%s)\n", TechDraw::DrawUtil::formatVector(qPos).c_str());
-    Base::Vector3d pos(qPos.x(), -qPos.y());
+//    Base::Vector3d pos = DU::invertY(DU::toVector3d(qPos));
 //    int idx =
-    (void) m_baseFeat->addCosmeticVertex(pos);
+    (void) m_baseFeat->addCosmeticVertex(DU::toVector3d(qPos));
     m_baseFeat->requestPaint();
 
     Gui::Command::commitCommand();
@@ -155,8 +155,8 @@ void TaskCosVertex::onTrackerClicked(bool clicked)
 
     removeTracker();
 
-    if (m_pbTrackerState == TRACKERCANCEL) {
-        m_pbTrackerState = TRACKERPICK;
+    if (m_pbTrackerState == TrackerAction::CANCEL) {
+        m_pbTrackerState = TrackerAction::PICK;
         ui->pbTracker->setText(tr("Pick Points"));
         enableTaskButtons(true);
 
@@ -176,7 +176,7 @@ void TaskCosVertex::onTrackerClicked(bool clicked)
     Gui::getMainWindow()->showMessage(msg, 3000);
     ui->pbTracker->setText(tr("Escape picking"));
     ui->pbTracker->setEnabled(true);
-    m_pbTrackerState = TRACKERCANCEL;
+    m_pbTrackerState = TrackerAction::CANCEL;
     enableTaskButtons(false);
 }
 
@@ -215,7 +215,6 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
 
     QPointF dragEnd = pts.front();            //scene pos of mouse click
 
-    double scale = m_baseFeat->getScale();
     double x = Rez::guiX(m_baseFeat->X.getValue());
     double y = Rez::guiX(m_baseFeat->Y.getValue());
 
@@ -234,27 +233,23 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     //x, y are scene pos of dvp/dpgi
 
     QPointF basePosScene(x, -y);                 //base position in scene coords
-    QPointF displace = dragEnd - basePosScene;
-    QPointF scenePosCV = displace / scale;
+    QPointF scenePosCV = dragEnd - basePosScene;
 
-    // if the base view is rotated, we need to unrotate it before saving
-    double rotDeg = m_baseFeat->Rotation.getValue();
-    if (rotDeg != 0.0) {
-        //  Invert Y value so the math works.
-        Base::Vector3d posToRotate = DU::invertY(DU::toVector3d(scenePosCV));
-        double rotRad = rotDeg * M_PI / 180.0;
-        // we always rotate around the origin.
-        posToRotate.RotateZ(-rotRad);
-        // now put Y value back to display form
-        scenePosCV = DU::toQPointF(DU::invertY(posToRotate));
-    }
+    // Invert Y value so the math works.
+    // scenePosCV is effectively a scaled (and rotated), inverted value
+    // Base::Vector3d posToRotate = DU::invertY(DU::toVector3d(scenePosCV));
+
+    // unscale and rotate the picked point
+    Base::Vector3d posToRotate = CosmeticVertex::makeCanonicalPointInverted(m_baseFeat, DU::toVector3d(scenePosCV));
+    // now put Y value back to display form
+    scenePosCV = DU::toQPointF(posToRotate);
 
     m_savePoint = Rez::appX(scenePosCV);
     updateUi();
 
     m_tracker->sleep(true);
     m_inProgressLock = false;
-    m_pbTrackerState = TRACKERPICK;
+    m_pbTrackerState = TrackerAction::PICK;
     ui->pbTracker->setText(tr("Pick Points"));
     ui->pbTracker->setEnabled(true);
     enableTaskButtons(true);
@@ -313,11 +308,12 @@ bool TaskCosVertex::accept()
         return false;
 
     removeTracker();
-    // whatever is in the ui for x,y is treated as an unscaled, unrotated, invertedY position.
+    // whatever is in the ui for x,y is treated as an unscaled, unrotated, conventional Y position.
     // the position from the tracker is unscaled & unrotated before updating the ui
     double x = ui->dsbX->value().getValue();
     double y = ui->dsbY->value().getValue();
-    QPointF uiPoint(x, -y);
+    QPointF uiPoint(x, y);
+
     addCosVertex(uiPoint);
 
     m_baseFeat->recomputeFeature();

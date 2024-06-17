@@ -139,7 +139,13 @@ void PropertyVector::setPyObject(PyObject *value)
 
 void PropertyVector::Save (Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<PropertyVector valueX=\"" <<  _cVec.x << "\" valueY=\"" <<  _cVec.y << "\" valueZ=\"" <<  _cVec.z <<"\"/>" << endl;
+    // clang-format off
+    writer.Stream() << writer.ind()
+                    << "<PropertyVector valueX=\"" <<  _cVec.x
+                    << "\" valueY=\"" <<  _cVec.y
+                    << "\" valueZ=\"" <<  _cVec.z
+                    <<"\"/>" << endl;
+    // clang-format on
 }
 
 void PropertyVector::Restore(Base::XMLReader &reader)
@@ -437,12 +443,14 @@ void PropertyMatrix::setPyObject(PyObject *value)
 
 void PropertyMatrix::Save (Base::Writer &writer) const
 {
+    // clang-format off
     writer.Stream() << writer.ind() << "<PropertyMatrix";
     writer.Stream() << " a11=\"" <<  _cMat[0][0] << "\" a12=\"" <<  _cMat[0][1] << "\" a13=\"" <<  _cMat[0][2] << "\" a14=\"" <<  _cMat[0][3] << "\"";
     writer.Stream() << " a21=\"" <<  _cMat[1][0] << "\" a22=\"" <<  _cMat[1][1] << "\" a23=\"" <<  _cMat[1][2] << "\" a24=\"" <<  _cMat[1][3] << "\"";
     writer.Stream() << " a31=\"" <<  _cMat[2][0] << "\" a32=\"" <<  _cMat[2][1] << "\" a33=\"" <<  _cMat[2][2] << "\" a34=\"" <<  _cMat[2][3] << "\"";
     writer.Stream() << " a41=\"" <<  _cMat[3][0] << "\" a42=\"" <<  _cMat[3][1] << "\" a43=\"" <<  _cMat[3][2] << "\" a44=\"" <<  _cMat[3][3] << "\"";
     writer.Stream() <<"/>" << endl;
+    // clang-format on
 }
 
 void PropertyMatrix::Restore(Base::XMLReader &reader)
@@ -589,7 +597,7 @@ double toDouble(const boost::any &value)
 
 void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
-    auto updateAxis = [=](int index, double coord) {
+    auto updateAxis = [this](int index, double coord) {
         Base::Vector3d axis;
         double angle;
         Base::Vector3d base = _cPos.getPosition();
@@ -601,7 +609,7 @@ void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::
         setValue(plm);
     };
 
-    auto updateYawPitchRoll = [=](int index, double angle) {
+    auto updateYawPitchRoll = [this](int index, double angle) {
         Base::Vector3d base = _cPos.getPosition();
         Base::Rotation rot = _cPos.getRotation();
         double yaw, pitch, roll;
@@ -1076,7 +1084,7 @@ void PropertyRotation::getPaths(std::vector<ObjectIdentifier> &paths) const
 
 void PropertyRotation::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
-    auto updateAxis = [=](int index, double coord) {
+    auto updateAxis = [this](int index, double coord) {
         Base::Vector3d axis;
         double angle;
         _rot.getRawValue(axis, angle);
@@ -1243,6 +1251,40 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyComplexGeoData , App::PropertyGeometry)
 PropertyComplexGeoData::PropertyComplexGeoData() = default;
 
 PropertyComplexGeoData::~PropertyComplexGeoData() = default;
+
+std::string PropertyComplexGeoData::getElementMapVersion(bool) const {
+    auto data = getComplexData();
+    if(!data)
+        return std::string();
+    auto owner = Base::freecad_dynamic_cast<DocumentObject>(getContainer());
+    std::ostringstream ss;
+    if(owner && owner->getDocument()
+        && owner->getDocument()->getStringHasher()==data->Hasher)
+        ss << "1.";
+    else
+        ss << "0.";
+    ss << data->getElementMapVersion();
+    return ss.str();
+}
+
+bool PropertyComplexGeoData::checkElementMapVersion(const char * ver) const
+{
+    auto data = getComplexData();
+    if(!data)
+        return false;
+    auto owner = Base::freecad_dynamic_cast<DocumentObject>(getContainer());
+    std::ostringstream ss;
+    const char *prefix;
+    if(owner && owner->getDocument()
+        && owner->getDocument()->getStringHasher() == data->Hasher)
+        prefix = "1.";
+    else
+        prefix = "0.";
+    if (!boost::starts_with(ver, prefix))
+        return true;
+    return data->checkElementMapVersion(ver+2);
+}
+
 
 void PropertyComplexGeoData::afterRestore()
 {

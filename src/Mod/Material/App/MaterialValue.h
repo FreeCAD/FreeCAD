@@ -58,7 +58,8 @@ public:
         URL = 13,
         MultiLineString = 14,
         FileList = 15,
-        ImageList = 16
+        ImageList = 16,
+        SVG
     };
     MaterialValue();
     explicit MaterialValue(const MaterialValue& other);
@@ -104,6 +105,7 @@ public:
 
     virtual QString getYAMLString() const;
     static QString escapeString(const QString& source);
+    static ValueType mapType(const QString& stringType);
 
 protected:
     MaterialValue(ValueType type, ValueType inherited);
@@ -121,6 +123,9 @@ protected:
 
     ValueType _valueType;
     QVariant _value;
+
+private:
+    static QMap<QString, ValueType> _typeMap;
 };
 
 class MaterialsExport Material2DArray: public MaterialValue

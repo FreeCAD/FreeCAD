@@ -180,13 +180,8 @@ void DlgSettingsGeneral::setDecimalPointConversion(bool on)
     }
 }
 
-void DlgSettingsGeneral::saveSettings()
+void DlgSettingsGeneral::saveUnitSystemSettings()
 {
-    // must be done as very first because we create a new instance of NavigatorStyle
-    // where we set some attributes afterwards
-    int FracInch;  // minimum fractional inch to display
-    int viewSystemIndex; // currently selected View System (unit system)
-
     ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath
     ("User parameter:BaseApp/Preferences/Units");
     hGrpu->SetInt("UserSchema", ui->comboBox_UnitSystem->currentIndex());
@@ -202,25 +197,37 @@ void DlgSettingsGeneral::saveSettings()
     //
     // The inverse conversion is done when loaded. That way only one thing (the
     // numerical fractional inch value) needs to be stored.
-    FracInch = std::pow(2, ui->comboBox_FracInch->currentIndex() + 1);
+
+    // minimum fractional inch to display
+    int FracInch = std::pow(2, ui->comboBox_FracInch->currentIndex() + 1);
     hGrpu->SetInt("FracInch", FracInch);
 
     // Set the actual format value
     Base::QuantityFormat::setDefaultDenominator(FracInch);
 
     // Set and save the Unit System
-    if ( ui->checkBox_projectUnitSystemIgnore->isChecked() ) {
-        viewSystemIndex = ui->comboBox_UnitSystem->currentIndex();
+    if (ui->checkBox_projectUnitSystemIgnore->isChecked()) {
+        // currently selected View System (unit system)
+        int viewSystemIndex = ui->comboBox_UnitSystem->currentIndex();
         UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
-    } else {
-        App::Document* doc = App::GetApplication().getActiveDocument();
-        if ( doc != nullptr ) {
-            UnitsApi::setSchema(static_cast<UnitSystem>(doc->UnitSystem.getValue()));
-        }
+    }
+    else if (App::Document* doc = App::GetApplication().getActiveDocument()) {
+        UnitsApi::setSchema(static_cast<UnitSystem>(doc->UnitSystem.getValue()));
+    }
+    else {
+        // if there is no existing document then the unit must still be set
+        int viewSystemIndex = ui->comboBox_UnitSystem->currentIndex();
+        UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
     }
 
     ui->SubstituteDecimal->onSave();
     ui->UseLocaleFormatting->onSave();
+}
+
+void DlgSettingsGeneral::saveSettings()
+{
+    saveUnitSystemSettings();
+
     ui->RecentFiles->onSave();
     ui->EnableCursorBlinking->onSave();
     ui->SplashScreen->onSave();
@@ -243,6 +250,9 @@ void DlgSettingsGeneral::saveSettings()
 
     int blinkTime{hGrp->GetBool("EnableCursorBlinking", true) ? -1 : 0};
     qApp->setCursorFlashTime(blinkTime);
+
+    std::string qtStyle = hGrp->GetASCII("QtStyle");
+    qApp->setStyle(QString::fromStdString(qtStyle));
 
     saveDockWindowVisibility();
 
@@ -318,19 +328,7 @@ void DlgSettingsGeneral::loadSettings()
     if (model)
         model->sort(0);
 
-    int current = getMainWindow()->iconSize().width();
-    current = hGrp->GetInt("ToolbarIconSize", current);
-    ui->toolbarIconSize->clear();
-    ui->toolbarIconSize->addItem(tr("Small (%1px)").arg(16), QVariant((int)16));
-    ui->toolbarIconSize->addItem(tr("Medium (%1px)").arg(24), QVariant((int)24));
-    ui->toolbarIconSize->addItem(tr("Large (%1px)").arg(32), QVariant((int)32));
-    ui->toolbarIconSize->addItem(tr("Extra large (%1px)").arg(48), QVariant((int)48));
-    index = ui->toolbarIconSize->findData(QVariant(current));
-    if (index < 0) {
-        ui->toolbarIconSize->addItem(tr("Custom (%1px)").arg(current), QVariant((int)current));
-        index = ui->toolbarIconSize->findData(QVariant(current));
-    }
-    ui->toolbarIconSize->setCurrentIndex(index);
+    addIconSizes(getCurrentIconSize());
 
     //TreeMode combobox setup.
     loadDockWindowVisibility();
@@ -339,6 +337,44 @@ void DlgSettingsGeneral::loadSettings()
     ui->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
 
     loadThemes();
+}
+
+void DlgSettingsGeneral::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hGrp;
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
+    //reset "UserSchema" parameter
+    hGrp->RemoveInt("UserSchema");
+    //reset "Decimals" parameter
+    hGrp->RemoveInt("Decimals");
+    //reset "IgnoreProjectSchema" parameter
+    hGrp->RemoveBool("IgnoreProjectSchema");
+    //reset "FracInch" parameter
+    hGrp->RemoveInt("FracInch");
+
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+    //reset "Theme" parameter
+    hGrp->RemoveASCII("Theme");
+    //reset "TiledBackground" parameter
+    hGrp->RemoveBool("TiledBackground");
+
+
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
+    //reset "ComboView" parameters
+    hGrp->GetGroup("ComboView")->RemoveBool("Enabled");
+    //reset "TreeView" parameters
+    hGrp->GetGroup("TreeView")->RemoveBool("Enabled");
+    //reset "PropertyView" parameters
+    hGrp->GetGroup("PropertyView")->RemoveBool("Enabled");
+
+    hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
+    //reset "Language" parameter
+    hGrp->RemoveASCII("Language");
+    //reset "ToolbarIconSize" parameter
+    hGrp->RemoveInt("ToolbarIconSize");
+
+    //finally reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
 }
 
 void DlgSettingsGeneral::saveThemes()
@@ -403,14 +439,68 @@ void DlgSettingsGeneral::loadThemes()
     }
 }
 
+int DlgSettingsGeneral::getCurrentIconSize() const
+{
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
+    int current = getMainWindow()->iconSize().width();
+    return hGrp->GetInt("ToolbarIconSize", current);
+}
+
+void DlgSettingsGeneral::addIconSizes(int current)
+{
+    ui->toolbarIconSize->clear();
+
+    QList<int> sizes{16, 24, 32, 48};
+    if (!sizes.contains(current)) {
+        sizes.append(current);
+    }
+
+    for (int size : sizes) {
+        ui->toolbarIconSize->addItem(QString(), QVariant(size));
+    }
+
+    int index = ui->toolbarIconSize->findData(QVariant(current));
+    ui->toolbarIconSize->setCurrentIndex(index);
+    translateIconSizes();
+}
+
+void DlgSettingsGeneral::translateIconSizes()
+{
+    auto getSize = [this](int index) {
+        return ui->toolbarIconSize->itemData(index).toInt();
+    };
+
+    QStringList sizes;
+    sizes << tr("Small (%1px)").arg(getSize(0));
+    sizes << tr("Medium (%1px)").arg(getSize(1));
+    sizes << tr("Large (%1px)").arg(getSize(2));
+    sizes << tr("Extra large (%1px)").arg(getSize(3));
+    if (ui->toolbarIconSize->count() > 4) {
+        sizes << tr("Custom (%1px)").arg(getSize(4));
+    }
+
+    for (int index = 0; index < sizes.size(); index++) {
+        ui->toolbarIconSize->setItemText(index, sizes[index]);
+    }
+}
+
+void DlgSettingsGeneral::retranslateUnits()
+{
+    int num = ui->comboBox_UnitSystem->count();
+    for (int i = 0; i < num; i++) {
+        QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
+        ui->comboBox_UnitSystem->setItemText(i, item);
+    }
+}
+
 void DlgSettingsGeneral::changeEvent(QEvent *event)
 {
     if (event->type() == QEvent::LanguageChange) {
+        translateIconSizes();
+        retranslateUnits();
         int index = ui->UseLocaleFormatting->currentIndex();
-        int index2 = ui->comboBox_UnitSystem->currentIndex();
         ui->retranslateUi(this);
         ui->UseLocaleFormatting->setCurrentIndex(index);
-        ui->comboBox_UnitSystem->setCurrentIndex(index2);
     }
     else {
         QWidget::changeEvent(event);
@@ -423,6 +513,19 @@ void DlgSettingsGeneral::saveDockWindowVisibility()
     bool treeView = hGrp->GetGroup("TreeView")->GetBool("Enabled", false);
     bool propertyView = hGrp->GetGroup("PropertyView")->GetBool("Enabled", false);
     bool comboView = hGrp->GetGroup("ComboView")->GetBool("Enabled", true);
+
+    int index = -1;
+    if (propertyView || treeView) {
+        index = 1;
+    }
+    else if (comboView) {
+        index = 0;
+    }
+
+    if (index != ui->treeMode->currentIndex()) {
+        requireRestart();
+    }
+
     switch (ui->treeMode->currentIndex()) {
     case 0:
         comboView = true;

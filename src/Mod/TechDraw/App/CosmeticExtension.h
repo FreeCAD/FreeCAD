@@ -56,7 +56,7 @@ public:
     virtual CosmeticVertex* getCosmeticVertex(const std::string& tag) const;
     virtual int             add1CVToGV(const std::string& tag);
     virtual int             getCVIndex(const std::string& tag);
-    virtual std::string     addCosmeticVertex(const Base::Vector3d& pos);
+    virtual std::string     addCosmeticVertex(const Base::Vector3d& pos, bool invert = true);
     virtual void            addCosmeticVertexesToGeom();
     virtual void            clearCosmeticVertexes();
     virtual void            refreshCVGeoms();
@@ -95,14 +95,11 @@ public:
     virtual void            removeGeomFormat(const std::string& tag);
     virtual void            clearGeomFormats();
 
+    void deleteCosmeticElements(std::vector<std::string> removables);
+
     TechDraw::DrawViewPart* getOwner();
 
     PyObject* getExtensionPyObject() override;
-
-protected:
-/*    virtual void extHandleChangedPropertyName(Base::XMLReader &reader, */
-/*                                              const char* TypeName, */
-/*                                              const char* PropName);*/
 
 private:
 

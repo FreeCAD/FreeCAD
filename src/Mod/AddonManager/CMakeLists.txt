@@ -1,10 +1,12 @@
 IF (BUILD_GUI)
     PYSIDE_WRAP_RC(AddonManager_QRC_SRCS Resources/AddonManager.qrc)
+    add_subdirectory(Widgets)
 ENDIF (BUILD_GUI)
 
 SET(AddonManager_SRCS
     add_toolbar_button_dialog.ui
     Addon.py
+    AddonStats.py
     AddonManager.py
     AddonManager.ui
     addonmanager_cache.py
@@ -24,10 +26,14 @@ SET(AddonManager_SRCS
     addonmanager_git.py
     addonmanager_installer.py
     addonmanager_installer_gui.py
+    addonmanager_licenses.py
     addonmanager_macro.py
     addonmanager_macro_parser.py
     addonmanager_metadata.py
+    addonmanager_package_details_controller.py
+    addonmanager_preferences_defaults.json
     addonmanager_pyside_interface.py
+    addonmanager_readme_controller.py
     addonmanager_update_all_gui.py
     addonmanager_uninstaller.py
     addonmanager_uninstaller_gui.py
@@ -42,6 +48,7 @@ SET(AddonManager_SRCS
     change_branch.py
     change_branch.ui
     compact_view.py
+    composite_view.py
     dependency_resolution_dialog.ui
     developer_mode.ui
     developer_mode_add_content.ui
@@ -64,7 +71,6 @@ SET(AddonManager_SRCS
     loading.html
     manage_python_dependencies.py
     NetworkManager.py
-    package_details.py
     package_list.py
     PythonDependencyUpdateDialog.ui
     select_toolbar_dialog.ui

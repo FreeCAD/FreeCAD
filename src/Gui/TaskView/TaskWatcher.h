@@ -44,6 +44,10 @@ public:
     explicit TaskWatcher(const char* Filter);
     ~TaskWatcher() override;
 
+    QWidget* addTaskBox(QWidget* widget, bool expandable = true, QWidget* parent = nullptr);
+    QWidget* addTaskBox(const QPixmap& icon, QWidget* widget, bool expandable = true, QWidget* parent = nullptr);
+    QWidget* addTaskBoxWithoutHeader(QWidget* widget);
+
     std::vector<QWidget*> &getWatcherContent();
 
 public:

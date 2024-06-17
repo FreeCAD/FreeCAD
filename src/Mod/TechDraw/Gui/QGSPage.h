@@ -65,9 +65,8 @@ class QGIViewDimension;
 class QGITemplate;
 class ViewProviderPage;
 class QGIViewBalloon;
-class QGILeaderLine;
-class QGIRichAnno;
 class QGITile;
+class QGILeaderLine;
 
 class TechDrawGuiExport QGSPage: public QGraphicsScene
 {
@@ -102,7 +101,7 @@ public:
     void redraw1View(TechDraw::DrawView* dView);
 
     QGIView* findQViewForDocObj(App::DocumentObject* obj) const;
-    QGIView* getQGIVByName(std::string name);
+    QGIView* getQGIVByName(std::string name) const;
     QGIView* findParent(QGIView*) const;
     void findMissingViews(const std::vector<App::DocumentObject*>& list,
                           std::vector<App::DocumentObject*>& missing);
@@ -112,8 +111,7 @@ public:
     void createBalloon(QPointF origin, TechDraw::DrawView* parent);
 
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
-    void addLeaderToParent(QGILeaderLine* lead, QGIView* parent);
-    void addAnnoToParent(QGIRichAnno* anno, QGIView* parent);
+    void addLeaderToParent(QGILeaderLine* leader, QGIView* parent);
 
     std::vector<QGIView*> getViews() const;
 
@@ -133,16 +131,22 @@ public:
     TechDraw::DrawPage* getDrawPage();
 
     void setExportingSvg(bool enable);
+    bool getExportingSvg() { return m_exportingSvg; }
+
+    void setExportingPdf(bool enable) { m_exportingPdf = enable; };
+    bool getExportingPdf() const { return m_exportingPdf; }
+
     virtual void refreshViews();
 
     /// Renders the page to SVG with filename.
     void saveSvg(QString filename);
     void postProcessXml(QTemporaryFile& temporaryFile, QString filename, QString pagename);
 
+    // scene parentage fixups
     void setDimensionGroups();
     void setBalloonGroups();
-    void setLeaderGroups();
-    void setRichAnnoGroups();
+    void setLeaderParentage();
+
 
 protected:
     QColor getBackgroundColor();
@@ -151,6 +155,9 @@ protected:
 private:
     QGITemplate* pageTemplate;
     ViewProviderPage* m_vpPage;
+
+    bool m_exportingSvg{false};
+    bool m_exportingPdf{false};
 };
 
 }// namespace TechDrawGui

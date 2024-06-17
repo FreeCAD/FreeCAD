@@ -96,7 +96,7 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
     BSpline(obj)
     obj.Closed = closed
     obj.Points = pointslist
-    obj.Support = support
+    obj.AttachmentSupport = support
     if face is not None:
         obj.MakeFace = face
     if placement: obj.Placement = placement

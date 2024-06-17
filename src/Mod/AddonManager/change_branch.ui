@@ -20,7 +20,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Change to branch or tag:</string>
+      <string>Change to branch:</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

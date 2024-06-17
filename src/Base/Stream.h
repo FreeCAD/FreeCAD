@@ -30,6 +30,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include "FileInfo.h"
@@ -94,6 +95,8 @@ public:
     OutputStream& operator<<(float f);
     OutputStream& operator<<(double d);
 
+    OutputStream& write(const char* s, int n);
+
     OutputStream(const OutputStream&) = delete;
     OutputStream(OutputStream&&) = delete;
     void operator=(const OutputStream&) = delete;
@@ -125,6 +128,8 @@ public:
     InputStream& operator>>(float& f);
     InputStream& operator>>(double& d);
 
+    InputStream& read(char* s, int n);
+
     explicit operator bool() const
     {
         // test if _Ipfx succeeded
@@ -138,6 +143,212 @@ public:
 
 private:
     std::istream& _in;
+};
+
+/**
+ * The TextInputStream class provides reading of ASCII data from an istream, with custom handling
+ * for std::string to make it easier to read a single multi-line (or multi-word) string. This is
+ * designed for easy compatibility with the LinkStage3 implementation of the InputStream class, used
+ * to store StringHashers for the toponaming mitigation technique.
+ */
+class BaseExport TextInputStream: public Stream
+{
+public:
+    /** Constructor
+     * @param rin: upstream input
+     */
+    explicit TextInputStream(std::istream& rin)
+        : _in(rin)
+    {}
+
+    TextInputStream(const TextInputStream&) = delete;
+
+    TextInputStream(const TextInputStream&&) noexcept = delete;
+
+    void operator=(const TextInputStream&) = delete;
+
+    void operator=(const TextInputStream&&) = delete;
+
+    ~TextInputStream() override = default;
+
+    TextInputStream& operator>>(bool& input)
+    {
+        _in >> input;
+        return *this;
+    }
+
+    TextInputStream& operator>>(int8_t& ch)
+    {
+        int index {};
+        _in >> index;
+        ch = (int8_t)index;
+        return *this;
+    }
+
+    TextInputStream& operator>>(uint8_t& uch)
+    {
+        unsigned uns {};
+        _in >> uns;
+        uch = (uint8_t)uns;
+        return *this;
+    }
+
+    TextInputStream& operator>>(int16_t& int16)
+    {
+        _in >> int16;
+        return *this;
+    }
+
+    TextInputStream& operator>>(uint16_t& us)
+    {
+        _in >> us;
+        return *this;
+    }
+
+    TextInputStream& operator>>(int32_t& int32)
+    {
+        _in >> int32;
+        return *this;
+    }
+
+    TextInputStream& operator>>(uint32_t& ui)
+    {
+        _in >> ui;
+        return *this;
+    }
+
+    TextInputStream& operator>>(int64_t& int64)
+    {
+        _in >> int64;
+        return *this;
+    }
+
+    TextInputStream& operator>>(uint64_t& ul)
+    {
+        _in >> ul;
+        return *this;
+    }
+
+    TextInputStream& operator>>(float& flt)
+    {
+        _in >> flt;
+        return *this;
+    }
+
+    TextInputStream& operator>>(double& dbl)
+    {
+        _in >> dbl;
+        return *this;
+    }
+
+    TextInputStream& operator>>(std::string& str);
+
+    TextInputStream& operator>>(char& chr)
+    {
+        chr = (char)_in.get();
+        return *this;
+    }
+
+    explicit operator bool() const
+    {
+        // test if _Ipfx succeeded
+        return !_in.eof();
+    }
+
+private:
+    std::istream& _in;
+    std::ostringstream _ss;
+};
+
+/**
+ * The TextOutputStream class provides writing of ASCII data to an ostream, with custom handling
+ * for std::string to make it easier to write a single multi-line (or multi-word) string. This is
+ * designed for easy compatibility with the LinkStage3 implementation of the OutputStream class,
+ * used to store StringHashers for the toponaming mitigation technique.
+ */
+class BaseExport TextOutputStream: public Stream
+{
+public:
+    /** Constructor
+     * @param rout: upstream output
+     */
+    explicit TextOutputStream(std::ostream& rout)
+        : _out(rout)
+    {}
+
+    TextOutputStream(const TextOutputStream&) = delete;
+
+    TextOutputStream(const TextOutputStream&&) noexcept = delete;
+
+    void operator=(const TextOutputStream&) = delete;
+
+    void operator=(const TextOutputStream&&) = delete;
+
+    ~TextOutputStream() override = default;
+
+    template<typename T>
+    TextOutputStream& operator<<(T object)
+    {
+        _out << object << '\n';
+        return *this;
+    }
+
+    TextOutputStream& operator<<(const char* object)
+    {
+        std::string_view str(object);
+
+        // Count the lines so that we can deal with potential EOL conversions by external software
+        uint32_t lineCount = 0;
+        for (const auto character : str) {
+            if (character == '\n') {
+                ++lineCount;
+            }
+        }
+        // Stores the line count followed by a colon as the delimiter. We don't use
+        // whitespace because the input stream may also start with whitespace.
+        _out << lineCount << ':';
+
+        // Store the text, and normalize the end of line to a single '\n'.
+        bool foundSlashR = false;
+        for (const auto character : str) {
+            if (character == '\r') {
+                foundSlashR = true;
+                continue;
+            }
+            if (foundSlashR) {
+                if (character != '\n') {
+                    // We allow '\r' if it is not at the end of a line
+                    _out.put('\r');
+                }
+                foundSlashR = false;  // Reset for next time
+            }
+            _out.put(character);
+        }
+
+        // Add an extra newline as the delimiter for the following data.
+        _out.put('\n');
+        return *this;
+    }
+
+    TextOutputStream& operator<<(const std::string& object)
+    {
+        return (*this) << object.c_str();
+    }
+
+    TextOutputStream& operator<<(char object)
+    {
+        _out.put(object);
+        return *this;
+    }
+
+    explicit operator bool() const
+    {
+        // test if _Ipfx succeeded
+        return !_out.eof();
+    }
+
+private:
+    std::ostream& _out;
 };
 
 // ----------------------------------------------------------------------------

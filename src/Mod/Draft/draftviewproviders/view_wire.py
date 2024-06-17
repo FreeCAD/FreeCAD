@@ -44,7 +44,6 @@ from draftgeoutils import wires
 from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
-from draftutils.messages import _msg
 from draftutils.translate import translate
 from draftviewproviders.view_base import ViewProviderDraft
 

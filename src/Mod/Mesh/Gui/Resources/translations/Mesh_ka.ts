@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="1438"/>
       <source>Mesh</source>
-      <translation>ბადე</translation>
+      <translation type="unfinished">Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1439"/>
@@ -102,7 +102,7 @@
     <message>
       <location filename="../../Command.cpp" line="165"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="166"/>
@@ -334,17 +334,17 @@
   <context>
     <name>CmdMeshMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="1689"/>
+      <location filename="../../Command.cpp" line="1692"/>
       <source>Mesh</source>
       <translation>ბადე</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1690"/>
+      <location filename="../../Command.cpp" line="1693"/>
       <source>Merge</source>
       <translation>შერწყმა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1691"/>
+      <location filename="../../Command.cpp" line="1694"/>
       <source>Merges selected meshes into one</source>
       <translation>მონიშნული მრავალკუთხა ბადეების შერწყმა</translation>
     </message>
@@ -485,17 +485,17 @@
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1784"/>
+      <location filename="../../Command.cpp" line="1787"/>
       <source>Mesh</source>
       <translation>ბადე</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1785"/>
+      <location filename="../../Command.cpp" line="1788"/>
       <source>Scale...</source>
       <translation>მასშტაბირება...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1786"/>
+      <location filename="../../Command.cpp" line="1789"/>
       <source>Scale selected meshes</source>
       <translation>მონიშნული მრავალკუთხა ბადეების მასშტაბირება</translation>
     </message>
@@ -522,18 +522,18 @@
   <context>
     <name>CmdMeshSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="1617"/>
+      <location filename="../../Command.cpp" line="1620"/>
       <source>Mesh</source>
       <translation>ბადე</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1618"/>
+      <location filename="../../Command.cpp" line="1621"/>
       <source>Create mesh segments...</source>
       <translation>მრავალკუთხა ბადის სეგმენტის შექმნა...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1619"/>
-      <location filename="../../Command.cpp" line="1621"/>
+      <location filename="../../Command.cpp" line="1622"/>
+      <location filename="../../Command.cpp" line="1624"/>
       <source>Create mesh segments</source>
       <translation>მრავალკუთხა ბადის სეგმენების შექმნა</translation>
     </message>
@@ -541,18 +541,18 @@
   <context>
     <name>CmdMeshSegmentationBestFit</name>
     <message>
-      <location filename="../../Command.cpp" line="1653"/>
+      <location filename="../../Command.cpp" line="1656"/>
       <source>Mesh</source>
       <translation>ბადე</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1654"/>
+      <location filename="../../Command.cpp" line="1657"/>
       <source>Create mesh segments from best-fit surfaces...</source>
       <translation>მრავალკუთხა ბადის სეგმენტების შექმნა ზედაპირების საუკეთესო თანხვედრით...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1655"/>
-      <location filename="../../Command.cpp" line="1657"/>
+      <location filename="../../Command.cpp" line="1658"/>
+      <location filename="../../Command.cpp" line="1660"/>
       <source>Create mesh segments from best-fit surfaces</source>
       <translation>მრავალკუთხა ბადის სეგმენტების შექმნა ზედაპირების საუკეთესო თანხვედრით</translation>
     </message>
@@ -579,17 +579,17 @@
   <context>
     <name>CmdMeshSplitComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1735"/>
+      <location filename="../../Command.cpp" line="1738"/>
       <source>Mesh</source>
       <translation>ბადე</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1736"/>
+      <location filename="../../Command.cpp" line="1739"/>
       <source>Split by components</source>
       <translation>კომპონენტებად დაყოფა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1737"/>
+      <location filename="../../Command.cpp" line="1740"/>
       <source>Split selected mesh into its components</source>
       <translation>მონიშნული მრავალკუთხა ბადის კომპონენტებად დაყოფა</translation>
     </message>
@@ -692,7 +692,7 @@
       <translation>ბადის წვეროების სიმრუდე</translation>
     </message>
     <message>
-      <location filename="../../DlgSmoothing.cpp" line="180"/>
+      <location filename="../../DlgSmoothing.cpp" line="175"/>
       <source>Mesh Smoothing</source>
       <translation>ბადის მოგლუვება</translation>
     </message>
@@ -712,67 +712,67 @@
       <translation>ხვრელების შევსება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1704"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Mesh merge</source>
       <translation>ბადეების შერწყმა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1750"/>
+      <location filename="../../Command.cpp" line="1753"/>
       <source>Mesh split</source>
       <translation>ბადის გაყოფა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1813"/>
+      <location filename="../../Command.cpp" line="1816"/>
       <source>Mesh scale</source>
       <translation>ბადის მასშტაბირება</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="160"/>
+      <location filename="../../DlgDecimating.cpp" line="156"/>
       <source>Mesh Decimating</source>
       <translation>ბადის დეციმაცია</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="550"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="548"/>
       <source>Harmonize normals</source>
       <translation>ნორმალების შეთანხმება</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="661"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
       <source>Remove non-manifolds</source>
       <translation>არაერთგვაროვნების მოცილება</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="766"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="763"/>
       <source>Fix indices</source>
       <translation>ინდექსების გასწორება</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="836"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="832"/>
       <source>Remove degenerated faces</source>
       <translation>დაზიანებული ზედაპირების მოცილება</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="908"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="903"/>
       <source>Remove duplicated faces</source>
       <translation>დუბლირებული ზედაპირების მოცილება</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="978"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="972"/>
       <source>Remove duplicated points</source>
       <translation>დუბლირებული წერტილების მოცილება</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1064"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1057"/>
       <source>Fix self-intersections</source>
       <translation>თვითკვეთების მოცილება</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1143"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1135"/>
       <source>Remove folds</source>
       <translation>ნაოჭების მოცილება</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1187"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1179"/>
       <source>Repair mesh</source>
       <translation>ბადის აღდგენა</translation>
     </message>
@@ -782,34 +782,34 @@
       <translation>მონიშნულის წაშლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="958"/>
-      <location filename="../../ViewProvider.cpp" line="1019"/>
+      <location filename="../../ViewProvider.cpp" line="963"/>
+      <location filename="../../ViewProvider.cpp" line="1024"/>
       <source>Cut</source>
       <translation>ამოჭრა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="968"/>
-      <location filename="../../ViewProvider.cpp" line="1089"/>
+      <location filename="../../ViewProvider.cpp" line="973"/>
+      <location filename="../../ViewProvider.cpp" line="1094"/>
       <source>Trim</source>
       <translation>მოკვეცა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1176"/>
+      <location filename="../../ViewProvider.cpp" line="1181"/>
       <source>Split</source>
       <translation>გაყოფა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1249"/>
+      <location filename="../../ViewProvider.cpp" line="1254"/>
       <source>Segment</source>
       <translation>სეგმენტი</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1848"/>
+      <location filename="../../ViewProvider.cpp" line="1856"/>
       <source>Delete</source>
       <translation>წაშლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1977"/>
+      <location filename="../../ViewProvider.cpp" line="1985"/>
       <source>Fill hole</source>
       <translation>ხვრელების შევსება</translation>
     </message>
@@ -838,7 +838,7 @@
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
-      <location filename="../../DlgDecimating.cpp" line="102"/>
+      <location filename="../../DlgDecimating.cpp" line="101"/>
       <source>Absolute number</source>
       <translation>აბსოლუტური რიცხვი</translation>
     </message>
@@ -848,7 +848,7 @@
       <translation>დაშვება</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="96"/>
+      <location filename="../../DlgDecimating.cpp" line="95"/>
       <source>Absolute number (Maximum: %1)</source>
       <translation>აბსოლუტური რიცხვი (მაქს: %1)</translation>
     </message>
@@ -986,11 +986,12 @@
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="253"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="421"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="420"/>
       <source>No selection</source>
       <translation>არაფერია მონიშნული</translation>
     </message>
     <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="450"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="451"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="452"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="453"/>
@@ -1001,145 +1002,144 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="458"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="459"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="460"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="461"/>
       <source>No information</source>
       <translation>მონაცემები არაა</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="558"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="556"/>
       <source>Orientation</source>
       <translation>ორიენტაცია</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="526"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="524"/>
       <source>No flipped normals</source>
       <translation>ამობრუნებული ნორმალები ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="532"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="530"/>
       <source>%1 flipped normals</source>
       <translation>%1 ამობრუნებული ნორმალი</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="618"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="616"/>
       <source>No non-manifolds</source>
       <translation>არაერთგვაროვნები ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="626"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="624"/>
       <source>%1 non-manifolds</source>
       <translation>%1 არაერთგვაროვანი</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="677"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="680"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="675"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="678"/>
       <source>Non-manifolds</source>
       <translation>არაერთგვაროვნები</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="680"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="678"/>
       <source>Cannot remove non-manifolds</source>
       <translation>არაერთგვაროვნების წაშლა შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="721"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="718"/>
       <source>Invalid face indices</source>
       <translation>არასწორი ზედაპირების ინდექსები</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="728"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="725"/>
       <source>Invalid point indices</source>
       <translation>წერტილების არასწორი ინდექსები</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="735"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="732"/>
       <source>Multiple point indices</source>
       <translation>ბევრი წერტილის ინდექსები</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="742"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="739"/>
       <source>Invalid neighbour indices</source>
       <translation>ახლომდებარე ელემენტების ინდექსები არასწორია</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="749"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="746"/>
       <source>No invalid indices</source>
       <translation>არასწორი ინდექსები ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="774"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="771"/>
       <source>Indices</source>
       <translation>ინდექსები</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="812"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="808"/>
       <source>No degenerations</source>
       <translation>დაზიანებები ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="818"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="814"/>
       <source>%1 degenerated faces</source>
       <translation>%1 დაზიანებული ზედაპირები</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="845"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="841"/>
       <source>Degenerations</source>
       <translation>დაზიანებული</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="883"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="878"/>
       <source>No duplicated faces</source>
       <translation>განმეორებადი ზედაპირები ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="889"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="884"/>
       <source>%1 duplicated faces</source>
       <translation>%1 განმეორებადი ზედაპირები</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="917"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="912"/>
       <source>Duplicated faces</source>
       <translation>განმეორებადი ზედაპირები</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="954"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="948"/>
       <source>No duplicated points</source>
       <translation>განმეორებადი წერტილები ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="960"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="987"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="954"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="981"/>
       <source>Duplicated points</source>
       <translation>განმეორებადი წერტილები</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1031"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1024"/>
       <source>No self-intersections</source>
       <translation>თვითკვეთები ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1037"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1030"/>
       <source>Self-intersections</source>
       <translation>თვით-თანაკვეთები</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1108"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1100"/>
       <source>No folds on surface</source>
       <translation>ზედაპირზე ნაოჭები ნაპოვნი არაა</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1124"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1116"/>
       <source>%1 folds on surface</source>
       <translation>ზედაპირზე ნაპოვნია %1 ნაოჭი</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1152"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1144"/>
       <source>Folds</source>
       <translation>ნაოჭები</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1286"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1289"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1278"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1281"/>
       <source>Mesh repair</source>
       <translation>მრავალკუთხა ბადის აღდგენა</translation>
     </message>
@@ -1622,7 +1622,7 @@ to a smoother appearance.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="766"/>
+      <location filename="../../MeshEditor.cpp" line="767"/>
       <source>Finish</source>
       <translation>დასრულება</translation>
     </message>
@@ -1890,12 +1890,12 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
       <source>Mesh segmentation</source>
-      <translation>ბადის სეგმენტაცია</translation>
+      <translation>მრავალკუთხა ბადის სეგმენტაცია</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
       <source>Plane</source>
-      <translation>სიბრტყე</translation>
+      <translation>ზედაპირი</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
@@ -1999,13 +1999,13 @@ to a smoother appearance.
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
       <location filename="../../RemoveComponents.cpp" line="208"/>
-      <location filename="../../RemoveComponents.cpp" line="255"/>
+      <location filename="../../RemoveComponents.cpp" line="253"/>
       <source>Delete</source>
       <translation>წაშლა</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="209"/>
-      <location filename="../../RemoveComponents.cpp" line="256"/>
+      <location filename="../../RemoveComponents.cpp" line="254"/>
       <source>Invert</source>
       <translation>დაბრუნება</translation>
     </message>
@@ -2038,13 +2038,13 @@ to a smoother appearance.
       <translation>ბადის ინფორმაციის ფანჯარა</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="101"/>
+      <location filename="../../Workbench.cpp" line="88"/>
       <source>Mesh info</source>
       <translation>ბადის ინფორმაცია</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="123"/>
-      <location filename="../../Workbench.cpp" line="124"/>
+      <location filename="../../Workbench.cpp" line="121"/>
+      <location filename="../../Workbench.cpp" line="122"/>
       <source>X: %1	Y: %2	Z: %3</source>
       <translation>X: %1	Y: %2	Z: %3</translation>
     </message>
@@ -2089,7 +2089,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1336"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1328"/>
       <source>Evaluate &amp; Repair Mesh</source>
       <translation>მრავალკუთხა ბადის შეფასება &amp; აღდგენა</translation>
     </message>
@@ -2097,12 +2097,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="161"/>
+      <location filename="../../AppMeshGui.cpp" line="157"/>
       <source>Display</source>
       <translation>ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="163"/>
+      <location filename="../../AppMeshGui.cpp" line="159"/>
       <source>Import-Export</source>
       <translation>შეტანა-გატანა</translation>
     </message>
@@ -2270,12 +2270,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>შესავსები ხვრელების წიბოების მაქსიმალური რაოდენობა:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1801"/>
+      <location filename="../../Command.cpp" line="1804"/>
       <source>Scaling</source>
       <translation>მასშტაბირება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1802"/>
+      <location filename="../../Command.cpp" line="1805"/>
       <source>Enter scaling factor:</source>
       <translation>შეიყვანეთ მასშტაბირების კოეფიციენტი:</translation>
     </message>
@@ -2285,48 +2285,48 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>[წერტილი: %1, წიბო: %2, ზედაპირი: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="804"/>
+      <location filename="../../ViewProvider.cpp" line="809"/>
       <source>Display components</source>
       <translation>კომპონენტების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="812"/>
+      <location filename="../../ViewProvider.cpp" line="817"/>
       <source>Display segments</source>
       <translation>სეგმენტების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="820"/>
+      <location filename="../../ViewProvider.cpp" line="825"/>
       <source>Display colors</source>
       <translation>ფერების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1679"/>
+      <location filename="../../ViewProvider.cpp" line="1687"/>
       <location filename="../../ViewProviderCurvature.cpp" line="522"/>
       <source>Leave info mode</source>
       <translation>საინფორმაციო რეჟიმიდან გასვლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1746"/>
+      <location filename="../../ViewProvider.cpp" line="1754"/>
       <source>Index: %1</source>
       <translation>ინდექსი: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1772"/>
+      <location filename="../../ViewProvider.cpp" line="1780"/>
       <source>Leave hole-filling mode</source>
       <translation>ნახვრეტების შევსების რეჟიმიდან გასვლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1822"/>
+      <location filename="../../ViewProvider.cpp" line="1830"/>
       <source>Leave removal mode</source>
       <translation>წაშლის რეჟიმიდან გამოსვლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1823"/>
+      <location filename="../../ViewProvider.cpp" line="1831"/>
       <source>Delete selected faces</source>
       <translation>მონიშნული ზედაპირების წაშლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1824"/>
+      <location filename="../../ViewProvider.cpp" line="1832"/>
       <source>Clear selected faces</source>
       <translation>ზედაპირებზე მონიშვნის მოხსნა</translation>
     </message>
@@ -2381,7 +2381,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh segmentation</source>
-      <translation>მრავალკუთხა ბადის სეგმენტაცია</translation>
+      <translation>ბადის სეგმენტაცია</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

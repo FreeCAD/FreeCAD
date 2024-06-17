@@ -90,7 +90,6 @@ public:
     static Base::Vector3d findCentroidVec(const TopoDS_Shape& shape,
                                               const Base::Vector3d& direction);
     static Base::Vector3d findCentroidVec(const TopoDS_Shape& shape, const gp_Ax2& cs);
-    static gp_Pnt findCentroidXY(const TopoDS_Shape& shape, const gp_Ax2& coordSys);
 
 
 //! creates a RH coordinate system with the origin at origin and the Z axis along direction.
@@ -109,6 +108,11 @@ public:
     static std::pair<Base::Vector3d, Base::Vector3d> getEdgeEnds(TopoDS_Edge edge);
 
     static bool isShapeReallyNull(TopoDS_Shape shape);
+
+    static bool edgesAreParallel(TopoDS_Edge edge0, TopoDS_Edge edge1);
+
+    static TopoDS_Shape fromQt(const TopoDS_Shape& inShape);
+    static TopoDS_Shape toQt(const TopoDS_Shape& inShape);
 };
 
 }

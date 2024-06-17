@@ -48,43 +48,8 @@ static Py::List getList(const QVariant& value);
 // returns a string which represents the object e.g. when printed in python
 std::string MaterialPy::representation() const
 {
-    MaterialPy::PointerType ptr = getMaterialPtr();
-    std::stringstream str;
-    str << "Property [Name=(";
-    str << ptr->getName().toStdString();
-    str << "), UUID=(";
-    str << ptr->getUUID().toStdString();
-    auto library = ptr->getLibrary();
-    if (library) {
-        str << "), Library Name=(";
-        str << ptr->getLibrary()->getName().toStdString();
-        str << "), Library Root=(";
-        str << ptr->getLibrary()->getDirectoryPath().toStdString();
-        str << "), Library Icon=(";
-        str << ptr->getLibrary()->getIconPath().toStdString();
-    }
-    str << "), Directory=(";
-    str << ptr->getDirectory().toStdString();
-    // str << "), URL=(";
-    // str << ptr->getURL();
-    // str << "), DOI=(";
-    // str << ptr->getDOI();
-    // str << "), Description=(";
-    // str << ptr->getDescription();
-    // str << "), Inherits=[";
-    // const std::vector<std::string> &inherited = getMaterialPtr()->getInheritance();
-    // for (auto it = inherited.begin(); it != inherited.end(); it++)
-    // {
-    //     std::string uuid = *it;
-    //     if (it != inherited.begin())
-    //         str << "), UUID=(";
-    //     else
-    //         str << "UUID=(";
-    //     str << uuid << ")";
-    // }
-    // str << "]]";
-    str << ")]";
-
+    std::ostringstream str;
+    str << "<Material at " << getMaterialPtr() << ">";
     return str.str();
 }
 
@@ -103,69 +68,99 @@ int MaterialPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 Py::String MaterialPy::getLibraryName() const
 {
     auto library = getMaterialPtr()->getLibrary();
-    return Py::String(library ? library->getName().toStdString() : "");
+    return {library ? library->getName().toStdString() : ""};
 }
 
 Py::String MaterialPy::getLibraryRoot() const
 {
     auto library = getMaterialPtr()->getLibrary();
-    return Py::String(library ? library->getDirectoryPath().toStdString() : "");
+    return {library ? library->getDirectoryPath().toStdString() : ""};
 }
 
 Py::String MaterialPy::getLibraryIcon() const
 {
     auto library = getMaterialPtr()->getLibrary();
-    return Py::String(library ? library->getIconPath().toStdString() : "");
+    return {library ? library->getIconPath().toStdString() : ""};
 }
 
 Py::String MaterialPy::getName() const
 {
-    return Py::String(getMaterialPtr()->getName().toStdString());
+    return {getMaterialPtr()->getName().toStdString()};
+}
+
+void MaterialPy::setName(Py::String arg)
+{
+    getMaterialPtr()->setName(QString::fromStdString(arg));
 }
 
 Py::String MaterialPy::getDirectory() const
 {
-    return Py::String(getMaterialPtr()->getDirectory().toStdString());
+    return {getMaterialPtr()->getDirectory().toStdString()};
 }
 
 Py::String MaterialPy::getUUID() const
 {
-    return Py::String(getMaterialPtr()->getUUID().toStdString());
+    return {getMaterialPtr()->getUUID().toStdString()};
 }
 
 Py::String MaterialPy::getDescription() const
 {
-    return Py::String(getMaterialPtr()->getDescription().toStdString());
+    return {getMaterialPtr()->getDescription().toStdString()};
+}
+
+void MaterialPy::setDescription(Py::String arg)
+{
+    getMaterialPtr()->setDescription(QString::fromStdString(arg));
 }
 
 Py::String MaterialPy::getURL() const
 {
-    return Py::String(getMaterialPtr()->getURL().toStdString());
+    return {getMaterialPtr()->getURL().toStdString()};
+}
+
+void MaterialPy::setURL(Py::String arg)
+{
+    getMaterialPtr()->setURL(QString::fromStdString(arg));
 }
 
 Py::String MaterialPy::getReference() const
 {
-    return Py::String(getMaterialPtr()->getReference().toStdString());
+    return {getMaterialPtr()->getReference().toStdString()};
+}
+
+void MaterialPy::setReference(Py::String arg)
+{
+    getMaterialPtr()->setReference(QString::fromStdString(arg));
 }
 
 Py::String MaterialPy::getParent() const
 {
-    return Py::String(getMaterialPtr()->getParentUUID().toStdString());
+    return {getMaterialPtr()->getParentUUID().toStdString()};
 }
 
 Py::String MaterialPy::getAuthorAndLicense() const
 {
-    return Py::String(getMaterialPtr()->getAuthorAndLicense().toStdString());
+    return {getMaterialPtr()->getAuthorAndLicense().toStdString()};
 }
 
 Py::String MaterialPy::getAuthor() const
 {
-    return Py::String(getMaterialPtr()->getAuthor().toStdString());
+    return {getMaterialPtr()->getAuthor().toStdString()};
+}
+
+void MaterialPy::setAuthor(Py::String arg)
+{
+    getMaterialPtr()->setAuthor(QString::fromStdString(arg));
 }
 
 Py::String MaterialPy::getLicense() const
 {
-    return Py::String(getMaterialPtr()->getLicense().toStdString());
+    return {getMaterialPtr()->getLicense().toStdString()};
+}
+
+void MaterialPy::setLicense(Py::String arg)
+{
+    getMaterialPtr()->setLicense(QString::fromStdString(arg));
 }
 
 Py::List MaterialPy::getPhysicalModels() const
@@ -173,8 +168,8 @@ Py::List MaterialPy::getPhysicalModels() const
     auto models = getMaterialPtr()->getPhysicalModels();
     Py::List list;
 
-    for (auto it = models->begin(); it != models->end(); it++) {
-        list.append(Py::String(it->toStdString()));
+    for (auto it : *models) {
+        list.append(Py::String(it.toStdString()));
     }
 
     return list;
@@ -185,8 +180,8 @@ Py::List MaterialPy::getAppearanceModels() const
     auto models = getMaterialPtr()->getAppearanceModels();
     Py::List list;
 
-    for (auto it = models->begin(); it != models->end(); it++) {
-        list.append(Py::String(it->toStdString()));
+    for (auto it : *models) {
+        list.append(Py::String(it.toStdString()));
     }
 
     return list;
@@ -197,8 +192,8 @@ Py::List MaterialPy::getTags() const
     auto& tags = getMaterialPtr()->getTags();
     Py::List list;
 
-    for (auto it = tags.begin(); it != tags.end(); it++) {
-        list.append(Py::String(it->toStdString()));
+    for (auto it : tags) {
+        list.append(Py::String(it.toStdString()));
     }
 
     return list;
@@ -214,6 +209,30 @@ int MaterialPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0;
 }
 
+PyObject* MaterialPy::addPhysicalModel(PyObject* args)
+{
+    char* uuid;
+    if (!PyArg_ParseTuple(args, "s", &uuid)) {
+        return nullptr;
+    }
+
+    getMaterialPtr()->addPhysical(QString::fromStdString(uuid));
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* MaterialPy::removePhysicalModel(PyObject* args)
+{
+    char* uuid;
+    if (!PyArg_ParseTuple(args, "s", &uuid)) {
+        return nullptr;
+    }
+
+    getMaterialPtr()->removePhysical(QString::fromStdString(uuid));
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
 PyObject* MaterialPy::hasPhysicalModel(PyObject* args)
 {
     char* uuid;
@@ -222,7 +241,31 @@ PyObject* MaterialPy::hasPhysicalModel(PyObject* args)
     }
 
     bool hasProperty = getMaterialPtr()->hasPhysicalModel(QString::fromStdString(uuid));
-    return hasProperty ? Py_True : Py_False;
+    return PyBool_FromLong(hasProperty ? 1 : 0);
+}
+
+PyObject* MaterialPy::addAppearanceModel(PyObject* args)
+{
+    char* uuid;
+    if (!PyArg_ParseTuple(args, "s", &uuid)) {
+        return nullptr;
+    }
+
+    getMaterialPtr()->addAppearance(QString::fromStdString(uuid));
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* MaterialPy::removeAppearanceModel(PyObject* args)
+{
+    char* uuid;
+    if (!PyArg_ParseTuple(args, "s", &uuid)) {
+        return nullptr;
+    }
+
+    getMaterialPtr()->removeAppearance(QString::fromStdString(uuid));
+    Py_INCREF(Py_None);
+    return Py_None;
 }
 
 PyObject* MaterialPy::hasAppearanceModel(PyObject* args)
@@ -233,7 +276,7 @@ PyObject* MaterialPy::hasAppearanceModel(PyObject* args)
     }
 
     bool hasProperty = getMaterialPtr()->hasAppearanceModel(QString::fromStdString(uuid));
-    return hasProperty ? Py_True : Py_False;
+    return PyBool_FromLong(hasProperty ? 1 : 0);
 }
 
 PyObject* MaterialPy::isPhysicalModelComplete(PyObject* args)
@@ -244,7 +287,7 @@ PyObject* MaterialPy::isPhysicalModelComplete(PyObject* args)
     }
 
     bool isComplete = getMaterialPtr()->isPhysicalModelComplete(QString::fromStdString(name));
-    return isComplete ? Py_True : Py_False;
+    return PyBool_FromLong(isComplete ? 1 : 0);
 }
 
 PyObject* MaterialPy::isAppearanceModelComplete(PyObject* args)
@@ -255,7 +298,7 @@ PyObject* MaterialPy::isAppearanceModelComplete(PyObject* args)
     }
 
     bool isComplete = getMaterialPtr()->isAppearanceModelComplete(QString::fromStdString(name));
-    return isComplete ? Py_True : Py_False;
+    return PyBool_FromLong(isComplete ? 1 : 0);
 }
 
 PyObject* MaterialPy::hasPhysicalProperty(PyObject* args)
@@ -266,7 +309,7 @@ PyObject* MaterialPy::hasPhysicalProperty(PyObject* args)
     }
 
     bool hasProperty = getMaterialPtr()->hasPhysicalProperty(QString::fromStdString(name));
-    return hasProperty ? Py_True : Py_False;
+    return PyBool_FromLong(hasProperty ? 1 : 0);
 }
 
 PyObject* MaterialPy::hasAppearanceProperty(PyObject* args)
@@ -277,7 +320,17 @@ PyObject* MaterialPy::hasAppearanceProperty(PyObject* args)
     }
 
     bool hasProperty = getMaterialPtr()->hasAppearanceProperty(QString::fromStdString(name));
-    return hasProperty ? Py_True : Py_False;
+    return PyBool_FromLong(hasProperty ? 1 : 0);
+}
+
+PyObject* MaterialPy::hasLegacyProperties(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    bool hasProperty = getMaterialPtr()->hasLegacyProperties();
+    return PyBool_FromLong(hasProperty ? 1 : 0);
 }
 
 Py::Dict MaterialPy::getProperties() const
@@ -298,23 +351,33 @@ Py::Dict MaterialPy::getProperties() const
     dict.setItem(Py::String("SourceURL"), Py::String(getMaterialPtr()->getURL().toStdString()));
 
     auto properties = getMaterialPtr()->getPhysicalProperties();
-    for (auto it = properties.begin(); it != properties.end(); it++) {
-        QString key = it->first;
-        auto materialProperty = it->second;
+    for (auto& it : properties) {
+        QString key = it.first;
+        auto materialProperty = it.second;
 
         if (!materialProperty->isNull()) {
-            auto value = materialProperty->getString();
+            auto value = materialProperty->getDictionaryString();
             dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
         }
     }
 
     properties = getMaterialPtr()->getAppearanceProperties();
-    for (auto it = properties.begin(); it != properties.end(); it++) {
-        QString key = it->first;
-        auto materialProperty = it->second;
+    for (auto& it : properties) {
+        QString key = it.first;
+        auto materialProperty = it.second;
 
         if (!materialProperty->isNull()) {
-            auto value = materialProperty->getString();
+            auto value = materialProperty->getDictionaryString();
+            dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
+        }
+    }
+
+    auto legacy = getMaterialPtr()->getLegacyProperties();
+    for (auto& it : legacy) {
+        auto key = it.first;
+        auto value = it.second;
+
+        if (!value.isEmpty()) {
             dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
         }
     }
@@ -327,12 +390,12 @@ Py::Dict MaterialPy::getPhysicalProperties() const
     Py::Dict dict;
 
     auto properties = getMaterialPtr()->getPhysicalProperties();
-    for (auto it = properties.begin(); it != properties.end(); it++) {
-        QString key = it->first;
-        auto materialProperty = it->second;
+    for (auto& it : properties) {
+        QString key = it.first;
+        auto materialProperty = it.second;
 
         if (!materialProperty->isNull()) {
-            auto value = materialProperty->getString();
+            auto value = materialProperty->getDictionaryString();
             dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
         }
     }
@@ -345,12 +408,29 @@ Py::Dict MaterialPy::getAppearanceProperties() const
     Py::Dict dict;
 
     auto properties = getMaterialPtr()->getAppearanceProperties();
-    for (auto it = properties.begin(); it != properties.end(); it++) {
-        QString key = it->first;
-        auto materialProperty = it->second;
+    for (auto& it : properties) {
+        QString key = it.first;
+        auto materialProperty = it.second;
 
         if (!materialProperty->isNull()) {
-            auto value = materialProperty->getString();
+            auto value = materialProperty->getDictionaryString();
+            dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
+        }
+    }
+
+    return dict;
+}
+
+Py::Dict MaterialPy::getLegacyProperties() const
+{
+    Py::Dict dict;
+
+    auto legacy = getMaterialPtr()->getLegacyProperties();
+    for (auto& it : legacy) {
+        auto key = it.first;
+        auto value = it.second;
+
+        if (!value.isEmpty()) {
             dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
         }
     }
@@ -425,7 +505,7 @@ PyObject* MaterialPy::getPhysicalValue(PyObject* args)
             std::static_pointer_cast<Materials::Material2DArray>(property->getMaterialValue());
         return new Array2DPy(new Material2DArray(*value));
     }
-    else if (property->getType() == MaterialValue::Array3D) {
+    if (property->getType() == MaterialValue::Array3D) {
         auto value =
             std::static_pointer_cast<Materials::Material3DArray>(property->getMaterialValue());
         return new Array3DPy(new Material3DArray(*value));
@@ -433,6 +513,20 @@ PyObject* MaterialPy::getPhysicalValue(PyObject* args)
 
     QVariant value = property->getValue();
     return _pyObjectFromVariant(value);
+}
+
+PyObject* MaterialPy::setPhysicalValue(PyObject* args)
+{
+    char* name;
+    char* value;
+    if (!PyArg_ParseTuple(args, "ss", &name, &value)) {
+        return nullptr;
+    }
+
+    getMaterialPtr()->setPhysicalValue(QString::fromStdString(name),
+                                         QString::fromStdString(value));
+    Py_INCREF(Py_None);
+    return Py_None;
 }
 
 PyObject* MaterialPy::getAppearanceValue(PyObject* args)
@@ -444,4 +538,18 @@ PyObject* MaterialPy::getAppearanceValue(PyObject* args)
 
     QVariant value = getMaterialPtr()->getAppearanceValue(QString::fromStdString(name));
     return _pyObjectFromVariant(value);
+}
+
+PyObject* MaterialPy::setAppearanceValue(PyObject* args)
+{
+    char* name;
+    char* value;
+    if (!PyArg_ParseTuple(args, "ss", &name, &value)) {
+        return nullptr;
+    }
+
+    getMaterialPtr()->setAppearanceValue(QString::fromStdString(name),
+                                         QString::fromStdString(value));
+    Py_INCREF(Py_None);
+    return Py_None;
 }

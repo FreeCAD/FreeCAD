@@ -350,6 +350,7 @@ def fill_femresult_mechanical(
         step_time = result_set["time"]
         step_time = round(step_time, 2)
 
+    disp = None
     # if disp exists, fill res_obj.NodeNumbers and
     # res_obj.DisplacementVectors as well as stress and strain
     # furthermore the eigenmode number
@@ -430,26 +431,34 @@ def fill_femresult_mechanical(
         if eigenmode_number > 0:
             res_obj.Eigenmode = eigenmode_number
 
-        # it is assumed Temperature can not exist without disp
-        # TODO really proof this
-        # if temperature can exist without disp:
-        # move them out of disp if conditiona and set NodeNumbers
-        if "temp" in result_set:
-            Temperature = result_set["temp"]
-            if len(Temperature) > 0:
-                if len(Temperature.values()) != len(disp.values()):
-                    Temp = []
-                    Temp_extra_nodes = list(Temperature.values())
-                    nodes = len(disp.values())
-                    for i in range(nodes):
-                        # how is this possible? An example is needed!
-                        Console.PrintError("Temperature seams to have exptra nodes.\n")
-                        Temp_value = Temp_extra_nodes[i]
-                        Temp.append(Temp_value)
-                    res_obj.Temperature = list(map((lambda x: x), Temp))
-                else:
-                    res_obj.Temperature = list(map((lambda x: x), Temperature.values()))
-                res_obj.Time = step_time
+    # it is assumed Temperature can not exist without disp
+    # TODO really proof this
+    # if temperature can exist without disp:
+    # move them out of disp if conditiona and set NodeNumbers
+    if "temp" in result_set:
+        Temperature = result_set["temp"]
+        if len(Temperature) > 0:
+            if disp is None:
+                res_obj.Temperature = list(Temperature.values())
+                res_obj.NodeNumbers = list(Temperature.keys())
+            elif len(Temperature.values()) != len(disp.values()):
+                Temp = []
+                Temp_extra_nodes = list(Temperature.values())
+                nodes = len(disp.values())
+                for i in range(nodes):
+                    # how is this possible? An example is needed!
+                    Console.PrintError("Temperature seems to have extra nodes.\n")
+                    Temp_value = Temp_extra_nodes[i]
+                    Temp.append(Temp_value)
+                res_obj.Temperature = list(map((lambda x: x), Temp))
+            else:
+                res_obj.Temperature = list(map((lambda x: x), Temperature.values()))
+            res_obj.Time = step_time
+
+    if "heatflux" in result_set:
+        HeatFlux = result_set["heatflux"]
+        if HeatFlux:
+            res_obj.HeatFlux = list(map((lambda x: x), HeatFlux.values()))
 
     # fill res_obj.MassFlow
     if "mflow" in result_set:

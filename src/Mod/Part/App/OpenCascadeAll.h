@@ -50,7 +50,6 @@
 #include <Standard_LicenseError.hxx>
 #include <Standard_LicenseNotFound.hxx>
 #include <Standard_Macro.hxx>
-#include <Standard_math.hxx>
 #include <Standard_MultiplyDefined.hxx>
 #include <Standard_NegativeValue.hxx>
 #include <Standard_NoMoreObject.hxx>
@@ -112,6 +111,7 @@
 
 #include <BRepAlgo.hxx>
 #include <BRepAlgo_NormalProjection.hxx>
+#include <BRepAlgoAPI_BooleanOperation.hxx>
 #include <BRepAlgoAPI_Common.hxx>
 #include <BRepAlgoAPI_Cut.hxx>
 # include <BRepAlgoAPI_Defeaturing.hxx>
@@ -150,6 +150,7 @@
 #include <BRepFeat_SplitShape.hxx>
 #include <BRepFill.hxx>
 #include <BRepFill_Filling.hxx>
+#include <BRepFill_Generator.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
 #include <BRepFilletAPI_MakeFillet.hxx>
 #include <BRepGProp.hxx>
@@ -173,6 +174,8 @@
 
 #include <BRepOffset_MakeOffset.hxx>
 #include <BRepOffsetAPI_DraftAngle.hxx>
+#include <BRepOffsetAPI_MakeEvolved.hxx>
+#include <BRepOffsetAPI_MakeFilling.hxx>
 #include <BRepOffsetAPI_MakeOffset.hxx>
 #include <BRepOffsetAPI_MakePipe.hxx>
 #include <BRepOffsetAPI_MakePipeShell.hxx>

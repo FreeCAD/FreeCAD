@@ -75,7 +75,7 @@ class TestPocket(unittest.TestCase):
         self.PocketSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
         self.Body.addObject(self.PocketSketch1)
         self.PocketSketch1.MapMode = 'FlatFace'
-        self.PocketSketch1.Support = (self.Doc.XZ_Plane, [''])
+        self.PocketSketch1.AttachmentSupport = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
         TestSketcherApp.CreateRectangleSketch(self.PocketSketch1, (2.5, -0.75), (5, 0.50))
         self.Doc.recompute()
@@ -110,7 +110,7 @@ class TestPocket(unittest.TestCase):
         self.PocketSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
         self.Body.addObject(self.PocketSketch1)
         self.PocketSketch1.MapMode = 'FlatFace'
-        self.PocketSketch1.Support = (self.Doc.XZ_Plane, [''])
+        self.PocketSketch1.AttachmentSupport = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
         TestSketcherApp.CreateRectangleSketch(self.PocketSketch1, (2.5, -1), (5, 1))
         self.Doc.recompute()
@@ -145,7 +145,7 @@ class TestPocket(unittest.TestCase):
         self.PocketSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'PocketSketch')
         self.Body.addObject(self.PocketSketch1)
         self.PocketSketch1.MapMode = 'FlatFace'
-        self.PocketSketch1.Support = (self.Doc.XZ_Plane, [''])
+        self.PocketSketch1.AttachmentSupport = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
         TestSketcherApp.CreateRectangleSketch(self.PocketSketch1, (0, -1), (10, 1))
         self.Doc.recompute()

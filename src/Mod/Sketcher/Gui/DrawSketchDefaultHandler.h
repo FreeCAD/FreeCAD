@@ -219,7 +219,10 @@ protected:
         }
     }
 
-    virtual void onModeChanged() {};
+    virtual bool onModeChanged()
+    {
+        return true;
+    };
 
 private:
     SelectModeT Mode;
@@ -479,8 +482,10 @@ protected:
      * 3. createAutoConstraints() : Must be provided with the commands to create autoconstraints
      *
      * It recomputes if not solves and handles continuous mode automatically
+     *
+     * It returns true if the handler has been purged.
      */
-    void finish()
+    bool finish()
     {
         if (this->isState(SelectMode::End)) {
             unsetCursor();
@@ -507,8 +512,9 @@ protected:
                 Base::Console().Error(e.what());
             }
 
-            handleContinuousMode();
+            return handleContinuousMode();
         }
+        return false;
     }
 
     /** @brief This function resets the handler to the initial state.
@@ -547,16 +553,18 @@ protected:
      *
      * It performs all the operations in reset().
      */
-    void handleContinuousMode()
+    bool handleContinuousMode()
     {
         if (continuousMode) {
             // This code enables the continuous creation mode.
             reset();
             // It is ok not to call to purgeHandler in continuous creation mode because the
             // handler is destroyed by the quit() method on pressing the right button of the mouse
+            return false;
         }
         else {
             sketchgui->purgeHandler();  // no code after, Handler get deleted in ViewProvider
+            return true;
         }
     }
     //@}
@@ -627,10 +635,11 @@ protected:
 
     /** @brief Default behaviour that upon arriving to the End state of the state machine, the
      * command is finished. */
-    void onModeChanged() override
+    bool onModeChanged() override
     {
         angleSnappingControl();
-        finish();  // internally checks that state is SelectMode::End, and only finishes then.
+        // internally checks that state is SelectMode::End, and only finishes then.
+        return !finish();
     };
     //@}
 
@@ -719,6 +728,17 @@ protected:
                             c->Second = geoId2;
                             AutoConstraints.push_back(std::move(c));
                         }
+                    } break;
+                    case Sketcher::Symmetric: {
+                        auto c = std::make_unique<Sketcher::Constraint>();
+                        c->Type = Sketcher::Symmetric;
+                        c->First = geoId2;
+                        c->FirstPos = Sketcher::PointPos::start;
+                        c->Second = geoId2;
+                        c->SecondPos = Sketcher::PointPos::end;
+                        c->Third = geoId1;
+                        c->ThirdPos = posId1;
+                        AutoConstraints.push_back(std::move(c));
                     } break;
                     // In special case of Horizontal/Vertical constraint, geoId2 is normally unused
                     // and should be 'Constraint::GeoUndef' However it can be used as a way to
@@ -1110,11 +1130,12 @@ protected:
     void commandAddShapeGeometryAndConstraints()
     {
         auto shapeGeometry = toPointerVector(ShapeGeometry);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            Sketcher::PythonConverter::convert(Gui::Command::getObjectCmd(sketchgui->getObject()),
-                                               shapeGeometry)
-                .c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                Sketcher::PythonConverter::convert(
+                                    Gui::Command::getObjectCmd(sketchgui->getObject()),
+                                    shapeGeometry,
+                                    Sketcher::PythonConverter::Mode::OmitInternalGeometry)
+                                    .c_str());
 
         auto shapeConstraints = toPointerVector(ShapeConstraints);
         Gui::Command::doCommand(

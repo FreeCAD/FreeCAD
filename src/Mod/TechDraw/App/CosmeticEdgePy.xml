@@ -15,16 +15,6 @@
       <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
       <UserDocu>CosmeticEdge specifies an extra (cosmetic) edge in Views</UserDocu>
     </Documentation>
-    <Methode Name="clone" Const="true">
-        <Documentation>
-            <UserDocu>Create a clone of this CosmeticEdge</UserDocu>
-        </Documentation>
-    </Methode>
-    <Methode Name="copy" Const="true">
-        <Documentation>
-            <UserDocu>Create a copy of this CosmeticEdge</UserDocu>
-        </Documentation>
-    </Methode>
     <Attribute Name="Tag" ReadOnly="true">
       <Documentation>
         <UserDocu>Gives the tag of the CosmeticEdge as string.</UserDocu>

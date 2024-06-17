@@ -27,13 +27,17 @@
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 
-// #include "Model.h"
+#include <App/CleanupProcess.h>
+
+#include "MaterialFilterPy.h"
+#include "MaterialLoader.h"
 #include "MaterialManagerPy.h"
 #include "MaterialPy.h"
 #include "ModelManagerPy.h"
 #include "ModelPropertyPy.h"
 #include "ModelPy.h"
 #include "UUIDsPy.h"
+#include "PropertyMaterial.h"
 
 namespace Materials
 {
@@ -41,9 +45,9 @@ class Module: public Py::ExtensionModule<Module>
 {
 public:
     Module()
-        : Py::ExtensionModule<Module>("Material")
+        : Py::ExtensionModule<Module>("Materials")
     {
-        initialize("This module is the Material module.");  // register with Python
+        initialize("This module is the Materials module.");  // register with Python
     }
 
     ~Module() override = default;
@@ -58,18 +62,49 @@ PyObject* initModule()
 
 }  // namespace Materials
 
-PyMOD_INIT_FUNC(Material)
+PyMOD_INIT_FUNC(Materials)
 {
+#ifdef FC_DEBUG
+    App::CleanupProcess::registerCleanup([](){
+        Materials::MaterialManager::cleanup();
+        Materials::ModelManager::cleanup();
+    });
+#endif
     PyObject* module = Materials::initModule();
 
     Base::Console().Log("Loading Material module... done\n");
 
-    Base::Interpreter().addType(&Materials::MaterialManagerPy ::Type, module, "MaterialManager");
-    Base::Interpreter().addType(&Materials::MaterialPy ::Type, module, "Material");
-    Base::Interpreter().addType(&Materials::ModelManagerPy ::Type, module, "ModelManager");
-    Base::Interpreter().addType(&Materials::ModelPropertyPy ::Type, module, "ModelProperty");
-    Base::Interpreter().addType(&Materials::ModelPy ::Type, module, "Model");
-    Base::Interpreter().addType(&Materials::UUIDsPy ::Type, module, "UUIDs");
+    Base::Interpreter().addType(&Materials::MaterialManagerPy::Type, module, "MaterialManager");
+    Base::Interpreter().addType(&Materials::MaterialFilterPy::Type, module, "MaterialFilter");
+    Base::Interpreter().addType(&Materials::MaterialPy::Type, module, "Material");
+    Base::Interpreter().addType(&Materials::ModelManagerPy::Type, module, "ModelManager");
+    Base::Interpreter().addType(&Materials::ModelPropertyPy::Type, module, "ModelProperty");
+    Base::Interpreter().addType(&Materials::ModelPy::Type, module, "Model");
+    Base::Interpreter().addType(&Materials::UUIDsPy::Type, module, "UUIDs");
+
+
+    // Initialize types
+
+    Materials::Material                 ::init();
+    Materials::MaterialFilter           ::init();
+    Materials::MaterialManager          ::init();
+    Materials::Model                    ::init();
+    Materials::ModelManager             ::init();
+    Materials::ModelUUIDs               ::init();
+
+    Materials::LibraryBase              ::init();
+    Materials::MaterialLibrary          ::init();
+    Materials::ModelLibrary             ::init();
+    Materials::MaterialExternalLibrary  ::init();
+
+    Materials::ModelProperty            ::init();
+    Materials::MaterialProperty         ::init();
+
+    Materials::MaterialValue            ::init();
+    Materials::Material2DArray          ::init();
+    Materials::Material3DArray          ::init();
+
+    Materials::PropertyMaterial         ::init();
 
     PyMOD_Return(module);
 }

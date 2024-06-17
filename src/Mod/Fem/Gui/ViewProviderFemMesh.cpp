@@ -186,6 +186,8 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemMesh, Gui::ViewProviderGeometryObject)
 
 App::PropertyFloatConstraint::Constraints ViewProviderFemMesh::floatRange = {1.0, 64.0, 1.0};
 
+const char* ViewProviderFemMesh::colorModeEnum[] = {"Overall", "ByElement", "ByNode", nullptr};
+
 ViewProviderFemMesh::ViewProviderFemMesh()
 {
     sPixmap = "fem-femmesh-from-shape";
@@ -196,11 +198,29 @@ ViewProviderFemMesh::ViewProviderFemMesh()
     ADD_PROPERTY(LineWidth, (2.0f));
     LineWidth.setConstraints(&floatRange);
 
-    ShapeColor.setValue(App::Color(1.0f, 0.7f, 0.0f));
+    ShapeAppearance.setDiffuseColor(App::Color(1.0f, 0.7f, 0.0f));
+    Transparency.setValue(0);
     ADD_PROPERTY(BackfaceCulling, (true));
     ADD_PROPERTY(ShowInner, (false));
     ADD_PROPERTY(MaxFacesShowInner, (50000));
 
+    ADD_PROPERTY_TYPE(ColorMode,
+                      ("Overall"),
+                      "Display Options",
+                      App::Prop_None,
+                      "Set the color mode");
+    ADD_PROPERTY_TYPE(NodeColorArray,
+                      (PointColor.getValue()),
+                      "Object Style",
+                      App::Prop_Hidden,
+                      "Node diffuse color array");
+    ADD_PROPERTY_TYPE(ElementColorArray,
+                      (ShapeAppearance.getDiffuseColor()),
+                      "Object Style",
+                      App::Prop_Hidden,
+                      "Node diffuse color array");
+
+    ColorMode.setEnums(colorModeEnum);
     onlyEdges = false;
 
     pcDrawStyle = new SoDrawStyle();
@@ -379,6 +399,16 @@ void ViewProviderFemMesh::updateData(const App::Property* prop)
 
 void ViewProviderFemMesh::onChanged(const App::Property* prop)
 {
+    auto matchTransparency = [&]() {
+        if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange)) {
+            getObject()->touch(true);
+        }
+        long value = static_cast<long>(100 * ShapeAppearance.getTransparency() + 0.5);
+        if (value != Transparency.getValue()) {
+            Transparency.setValue(value);
+        }
+    };
+
     if (prop == &PointSize) {
         pcPointStyle->pointSize = PointSize.getValue();
     }
@@ -411,6 +441,31 @@ void ViewProviderFemMesh::onChanged(const App::Property* prop)
     }
     else if (prop == &LineWidth) {
         pcDrawStyle->lineWidth = LineWidth.getValue();
+    }
+    else if (prop == &ColorMode) {
+        switch (ColorMode.getValue()) {
+            case 1:  // ByElement
+                setMaterialByColorArray(&ElementColorArray, vFaceElementIdx);
+                break;
+            case 2:  // ByNode
+                setMaterialByColorArray(&NodeColorArray, vNodeElementIdx);
+                break;
+            default:  // Overall
+                setMaterialOverall();
+        }
+    }
+    else if (prop == &ShapeAppearance && ColorMode.getValue() == 0) {
+        matchTransparency();
+        setMaterialOverall();
+    }
+    else if ((prop == &ElementColorArray || prop == &ShapeAppearance)
+             && ColorMode.getValue() == 1) {
+        matchTransparency();
+        setMaterialByColorArray(&ElementColorArray, vFaceElementIdx);
+    }
+    else if ((prop == &NodeColorArray || prop == &ShapeAppearance) && ColorMode.getValue() == 2) {
+        matchTransparency();
+        setMaterialByColorArray(&NodeColorArray, vNodeElementIdx);
     }
     else {
         ViewProviderGeometryObject::onChanged(prop);
@@ -548,58 +603,6 @@ PyObject* ViewProviderFemMesh::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
-void ViewProviderFemMesh::setColorByNodeId(const std::map<long, App::Color>& NodeColorMap)
-{
-    long endId = (--NodeColorMap.end())->first;
-
-    std::vector<App::Color> colorVec(endId + 1, App::Color(0, 1, 0));
-    for (const auto& it : NodeColorMap) {
-        colorVec[it.first] = it.second;
-    }
-
-    setColorByNodeIdHelper(colorVec);
-}
-void ViewProviderFemMesh::setColorByNodeId(const std::vector<long>& NodeIds,
-                                           const std::vector<App::Color>& NodeColors)
-{
-
-    long endId = *(std::max_element(NodeIds.begin(), NodeIds.end()));
-
-    std::vector<App::Color> colorVec(endId + 1, App::Color(0, 1, 0));
-    long i = 0;
-    for (std::vector<long>::const_iterator it = NodeIds.begin(); it != NodeIds.end(); ++it, i++) {
-        colorVec[*it] = NodeColors[i];
-    }
-
-    setColorByNodeIdHelper(colorVec);
-}
-
-void ViewProviderFemMesh::setColorByNodeIdHelper(const std::vector<App::Color>& colorVec)
-{
-    pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
-
-    // resizing and writing the color vector:
-    pcShapeMaterial->diffuseColor.setNum(vNodeElementIdx.size());
-    SbColor* colors = pcShapeMaterial->diffuseColor.startEditing();
-
-    long i = 0;
-    for (std::vector<unsigned long>::const_iterator it = vNodeElementIdx.begin();
-         it != vNodeElementIdx.end();
-         ++it, i++) {
-        colors[i] = SbColor(colorVec[*it].r, colorVec[*it].g, colorVec[*it].b);
-    }
-
-    pcShapeMaterial->diffuseColor.finishEditing();
-}
-
-void ViewProviderFemMesh::resetColorByNodeId()
-{
-    pcMatBinding->value = SoMaterialBinding::OVERALL;
-    pcShapeMaterial->diffuseColor.setNum(0);
-    const App::Color& c = ShapeColor.getValue();
-    pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
-}
-
 void ViewProviderFemMesh::setDisplacementByNodeId(const std::map<long, Base::Vector3d>& NodeDispMap)
 {
     long startId = NodeDispMap.begin()->first;
@@ -680,37 +683,192 @@ void ViewProviderFemMesh::applyDisplacementToNodes(double factor)
     DisplacementFactor = factor;
 }
 
-void ViewProviderFemMesh::setColorByElementId(const std::map<long, App::Color>& ElementColorMap)
+void ViewProviderFemMesh::setColorByNodeId(const std::vector<long>& NodeIds,
+                                           const std::vector<App::Color>& NodeColors)
 {
-    pcMatBinding->value = SoMaterialBinding::PER_FACE;
+    long endId = *(std::max_element(NodeIds.begin(), NodeIds.end()));
+
+    std::vector<App::Color> colorVec(endId + 1, App::Color(0, 1, 0));
+    long i = 0;
+    for (std::vector<long>::const_iterator it = NodeIds.begin(); it != NodeIds.end(); ++it, i++) {
+        colorVec[*it] = NodeColors[i];
+    }
+
+    setColorByNodeIdHelper(colorVec);
+}
+
+void ViewProviderFemMesh::setColorByNodeIdHelper(const std::vector<App::Color>& colorVec)
+{
+    pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
 
     // resizing and writing the color vector:
-    pcShapeMaterial->diffuseColor.setNum(vFaceElementIdx.size());
+    pcShapeMaterial->diffuseColor.setNum(vNodeElementIdx.size());
     SbColor* colors = pcShapeMaterial->diffuseColor.startEditing();
 
-    int i = 0;
-    for (std::vector<unsigned long>::const_iterator it = vFaceElementIdx.begin();
-         it != vFaceElementIdx.end();
+    long i = 0;
+    for (std::vector<unsigned long>::const_iterator it = vNodeElementIdx.begin();
+         it != vNodeElementIdx.end();
          ++it, i++) {
-        unsigned long ElemIdx = ((*it) >> 3);
-        const std::map<long, App::Color>::const_iterator pos = ElementColorMap.find(ElemIdx);
-        if (pos == ElementColorMap.end()) {
-            colors[i] = SbColor(0, 1, 0);
-        }
-        else {
-            colors[i] = SbColor(pos->second.r, pos->second.g, pos->second.b);
-        }
+        colors[i] = SbColor(colorVec[*it].r, colorVec[*it].g, colorVec[*it].b);
     }
 
     pcShapeMaterial->diffuseColor.finishEditing();
 }
 
-void ViewProviderFemMesh::resetColorByElementId()
+void ViewProviderFemMesh::resetColorByNodeId()
 {
+    const App::Color& c = ShapeAppearance.getDiffuseColor();
+    NodeColorArray.setValue(c);
+}
+
+void ViewProviderFemMesh::setColorByNodeId(
+    const std::map<std::vector<long>, App::Color>& elemColorMap)
+{
+    setColorByIdHelper(elemColorMap, vNodeElementIdx, 0, NodeColorArray);
+}
+
+void ViewProviderFemMesh::setColorByElementId(
+    const std::map<std::vector<long>, App::Color>& elemColorMap)
+{
+    setColorByIdHelper(elemColorMap, vFaceElementIdx, 3, ElementColorArray);
+}
+
+void ViewProviderFemMesh::setColorByIdHelper(
+    const std::map<std::vector<long>, App::Color>& elemColorMap,
+    const std::vector<unsigned long>& vElementIdx,
+    int rShift,
+    App::PropertyColorList& prop)
+{
+    std::vector<App::Color> vecColor(vElementIdx.size());
+    std::map<long, const App::Color*> colorMap;
+    for (const auto& m : elemColorMap) {
+        for (long i : m.first) {
+            colorMap[i] = &m.second;
+        }
+    }
+
+    App::Color baseDif = ShapeAppearance.getDiffuseColor();
+    int i = 0;
+    for (std::vector<unsigned long>::const_iterator it = vElementIdx.begin();
+         it != vElementIdx.end();
+         ++it, i++) {
+        unsigned long ElemIdx = ((*it) >> rShift);
+        const std::map<long, const App::Color*>::const_iterator pos = colorMap.find(ElemIdx);
+        vecColor[i] = pos == colorMap.end() ? baseDif : *pos->second;
+    }
+
+    prop.setValue(vecColor);
+}
+
+void ViewProviderFemMesh::setMaterialOverall() const
+{
+    const App::Material& mat = ShapeAppearance[0];
+    App::Color baseDif = mat.diffuseColor;
+    App::Color baseAmb = mat.ambientColor;
+    App::Color baseSpe = mat.specularColor;
+    App::Color baseEmi = mat.emissiveColor;
+    float baseShi = mat.shininess;
+    float baseTra = mat.transparency;
+
     pcMatBinding->value = SoMaterialBinding::OVERALL;
     pcShapeMaterial->diffuseColor.setNum(0);
-    const App::Color& c = ShapeColor.getValue();
-    pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
+    pcShapeMaterial->ambientColor.setNum(0);
+    pcShapeMaterial->specularColor.setNum(0);
+    pcShapeMaterial->emissiveColor.setNum(0);
+    pcShapeMaterial->shininess.setNum(0);
+    pcShapeMaterial->transparency.setNum(0);
+    pcShapeMaterial->diffuseColor.setValue(baseDif.r, baseDif.g, baseDif.b);
+    pcShapeMaterial->ambientColor.setValue(baseAmb.r, baseAmb.g, baseAmb.b);
+    pcShapeMaterial->specularColor.setValue(baseSpe.r, baseSpe.g, baseSpe.b);
+    pcShapeMaterial->emissiveColor.setValue(baseEmi.r, baseEmi.g, baseEmi.b);
+    pcShapeMaterial->shininess.setValue(baseShi);
+    pcShapeMaterial->transparency.setValue(baseTra);
+
+    pcFaces->touch();
+
+    return;
+}
+
+void ViewProviderFemMesh::setMaterialByColorArray(
+    const App::PropertyColorList* prop,
+    const std::vector<unsigned long>& vElementIdx) const
+{
+    const App::Material& baseMat = ShapeAppearance[0];
+    App::Color baseDif = baseMat.diffuseColor;
+    App::Color baseAmb = baseMat.ambientColor;
+    App::Color baseSpe = baseMat.specularColor;
+    App::Color baseEmi = baseMat.emissiveColor;
+    float baseShi = baseMat.shininess;
+    float baseTra = baseMat.transparency;
+
+    // resizing and writing the color vector:
+    std::vector<App::Color> vecColor = prop->getValue();
+    size_t elemSize = vElementIdx.size();
+    if (vecColor.size() == 1) {
+        pcMatBinding->value = SoMaterialBinding::OVERALL;
+        pcShapeMaterial->diffuseColor.setNum(0);
+        pcShapeMaterial->ambientColor.setNum(0);
+        pcShapeMaterial->specularColor.setNum(0);
+        pcShapeMaterial->emissiveColor.setNum(0);
+        pcShapeMaterial->shininess.setNum(0);
+        pcShapeMaterial->transparency.setNum(0);
+        pcShapeMaterial->diffuseColor.setValue(vecColor[0].r, vecColor[0].g, vecColor[0].b);
+        pcShapeMaterial->ambientColor.setValue(baseAmb.r, baseAmb.g, baseAmb.b);
+        pcShapeMaterial->specularColor.setValue(baseSpe.r, baseSpe.g, baseSpe.b);
+        pcShapeMaterial->emissiveColor.setValue(baseEmi.r, baseEmi.g, baseEmi.b);
+        pcShapeMaterial->shininess.setValue(baseShi);
+        pcShapeMaterial->transparency.setValue(baseTra);
+
+        return;
+    }
+
+    if (prop == &ElementColorArray) {
+        pcMatBinding->value = SoMaterialBinding::PER_FACE;
+    }
+    else if (prop == &NodeColorArray) {
+        pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
+    }
+
+    pcShapeMaterial->diffuseColor.setNum(elemSize);
+    SbColor* diffuse = pcShapeMaterial->diffuseColor.startEditing();
+    pcShapeMaterial->ambientColor.setNum(elemSize);
+    SbColor* ambient = pcShapeMaterial->ambientColor.startEditing();
+    pcShapeMaterial->specularColor.setNum(elemSize);
+    SbColor* specular = pcShapeMaterial->specularColor.startEditing();
+    pcShapeMaterial->emissiveColor.setNum(elemSize);
+    SbColor* emissive = pcShapeMaterial->emissiveColor.startEditing();
+    pcShapeMaterial->shininess.setNum(elemSize);
+    float* shininess = pcShapeMaterial->shininess.startEditing();
+    pcShapeMaterial->transparency.setNum(elemSize);
+    float* transparency = pcShapeMaterial->transparency.startEditing();
+
+    vecColor.resize(elemSize, baseDif);
+
+    int i = 0;
+    for (const App::Color& c : vecColor) {
+        diffuse[i] = SbColor(c.r, c.g, c.b);
+        ambient[i] = SbColor(baseAmb.r, baseAmb.g, baseAmb.b);
+        specular[i] = SbColor(baseSpe.r, baseSpe.g, baseSpe.b);
+        emissive[i] = SbColor(baseEmi.r, baseEmi.g, baseEmi.b);
+        shininess[i] = baseShi;
+        transparency[i] = baseTra;
+        ++i;
+    }
+
+    pcShapeMaterial->diffuseColor.finishEditing();
+    pcShapeMaterial->ambientColor.finishEditing();
+    pcShapeMaterial->specularColor.finishEditing();
+    pcShapeMaterial->emissiveColor.finishEditing();
+    pcShapeMaterial->shininess.finishEditing();
+    pcShapeMaterial->transparency.finishEditing();
+
+    pcFaces->touch();
+}
+
+void ViewProviderFemMesh::resetColorByElementId()
+{
+    const App::Color& c = ShapeAppearance.getDiffuseColor();
+    ElementColorArray.setValue(c);
 }
 
 // ----------------------------------------------------------------------------
@@ -795,7 +953,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
         lines->coordIndex.setNum(0);
         return;
     }
-    Base::TimeInfo Start;
+    Base::TimeElapsed Start;
     Base::Console().Log(
         "Start: ViewProviderFEMMeshBuilder::createMesh() =================================\n");
 
@@ -833,7 +991,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     std::vector<FemFace> facesHelper(numTries);
 
     Base::Console().Log("    %f: Start build up %i face helper\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()),
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()),
                         facesHelper.size());
     Base::BoundBox3d BndBox;
 
@@ -1358,7 +1516,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     if (FaceSize < MaxFacesShowInner) {
         Base::Console().Log("    %f: Start eliminate internal faces SIMPLE\n",
-                            Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                            Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
         // search for double (inside) faces and hide them
         if (!ShowInner) {
@@ -1375,7 +1533,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     }
     else {
         Base::Console().Log("    %f: Start eliminate internal faces GRID\n",
-                            Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                            Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
         BndBox.Enlarge(BndBox.CalcDiagonalLength() / 10000.0);
         // calculate grid properties
         double edge = pow(FaceSize, 1.0 / 3.0);
@@ -1443,7 +1601,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
 
     Base::Console().Log("    %f: Start build up node map\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
     // sort out double nodes and build up index map
     std::map<const SMDS_MeshNode*, int> mapNodeIndex;
@@ -1476,7 +1634,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
         }
     }
     Base::Console().Log("    %f: Start set point vector\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 
     // set the point coordinates
     coords->point.setNum(mapNodeIndex.size());
@@ -1494,7 +1652,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     // count triangle size
     Base::Console().Log("    %f: Start count triangle size\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     int triangleCount = 0;
     for (int l = 0; l < FaceSize; l++) {
         if (!facesHelper[l].hide) {
@@ -1550,7 +1708,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     }
 
     Base::Console().Log("    %f: Start build up triangle vector\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     // set the triangle face indices
     faces->coordIndex.setNum(4 * triangleCount);
     vFaceElementIdx.resize(triangleCount);
@@ -2970,7 +3128,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     faces->coordIndex.finishEditing();
 
     Base::Console().Log("    %f: Start build up edge vector\n",
-                        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+                        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     // std::map<int,std::set<int> > EdgeMap;
     // count edges
     int EdgeSize = 0;
@@ -2999,7 +3157,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     Base::Console().Log(
         "    %f: Finish =========================================================\n",
-        Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+        Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 

@@ -38,11 +38,6 @@ public:
     /// Constructor
     ConstraintPlaneRotation();
 
-    // Read-only (calculated values). These trigger changes in the ViewProvider
-    App::PropertyVectorList Points;
-    App::PropertyVectorList Normals;
-
-
     /// recalculate the object
     App::DocumentObjectExecReturn* execute() override;
 

@@ -86,7 +86,6 @@ private:
     Handle(XCAFDoc_ColorTool) aColorTool;
     std::string default_name;
     std::set<int> myRefShapes;
-    static const int HashUpper = INT_MAX;
 };
 
 

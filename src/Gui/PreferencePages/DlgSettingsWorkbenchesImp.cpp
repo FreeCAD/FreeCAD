@@ -33,7 +33,6 @@
 #endif
 
 #include <Gui/Application.h>
-#include <Gui/UserSettings.h>
 #include <Gui/Workbench.h>
 #include <Gui/WorkbenchManager.h>
 
@@ -249,7 +248,6 @@ DlgSettingsWorkbenchesImp::DlgSettingsWorkbenchesImp( QWidget* parent )
 
     connect(ui->wbList->model(), &QAbstractItemModel::rowsMoved, this, &DlgSettingsWorkbenchesImp::wbItemMoved);
     connect(ui->AutoloadModuleCombo, qOverload<int>(&QComboBox::activated), this, &DlgSettingsWorkbenchesImp::onStartWbChanged);
-    connect(ui->WorkbenchSelectorPosition, qOverload<int>(&QComboBox::activated), this, &DlgSettingsWorkbenchesImp::onWbSelectorChanged);
     connect(ui->CheckBox_WbByTab, &QCheckBox::toggled, this, &DlgSettingsWorkbenchesImp::onWbByTabToggled);
 }
 
@@ -351,6 +349,31 @@ void DlgSettingsWorkbenchesImp::loadSettings()
     }
 }
 
+void DlgSettingsWorkbenchesImp::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hGrp;
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
+    hGrp->RemoveASCII("Ordered");
+    hGrp->RemoveASCII("Disabled");
+    hGrp->RemoveASCII("WorkbenchSelectorType");
+    hGrp->RemoveASCII("WorkbenchSelectorItem");
+
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
+    hGrp->RemoveASCII("BackgroundAutoloadModules");
+    hGrp->RemoveASCII("AutoloadModule");
+
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+    hGrp->RemoveASCII("WSPosition");
+
+    //finally reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
+
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    if  (ui->CheckBox_WbByTab->isChecked() != hGrp->GetBool("SaveWBbyTab", 0)) {
+        requireRestart();
+    }
+}
+
 /**
 Build the list of unloaded workbenches.
 */
@@ -434,7 +457,7 @@ QStringList DlgSettingsWorkbenchesImp::getDisabledWorkbenches()
     ParameterGrp::handle hGrp;
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
-    disabled_wbs = QString::fromStdString(hGrp->GetASCII("Disabled", "NoneWorkbench,TestWorkbench,AssemblyWorkbench"));
+    disabled_wbs = QString::fromStdString(hGrp->GetASCII("Disabled", "NoneWorkbench,TestWorkbench"));
 #if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
     unfiltered_disabled_wbs_list = disabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
 #else
@@ -464,6 +487,7 @@ void DlgSettingsWorkbenchesImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
+        translateWorkbenchSelector();
     }
     else {
         QWidget::changeEvent(e);
@@ -472,21 +496,53 @@ void DlgSettingsWorkbenchesImp::changeEvent(QEvent *e)
 
 void DlgSettingsWorkbenchesImp::saveWorkbenchSelector()
 {
-    //save workbench selector position
-    auto index = ui->WorkbenchSelectorPosition->currentIndex();
-    WorkbenchSwitcher::setIndex(index);
+    //save workbench selector type
+    ParameterGrp::handle hGrp;
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
+    int prevIndex = hGrp->GetInt("WorkbenchSelectorType", 0);
+    int index = ui->WorkbenchSelectorType->currentIndex();
+    if (prevIndex != index) {
+        hGrp->SetInt("WorkbenchSelectorType", index);
+        requireRestart();
+    }
+
+    // save workbench selector items style
+    prevIndex = hGrp->GetInt("WorkbenchSelectorItem", 0);
+    index = ui->WorkbenchSelectorItem->currentIndex();
+    if (prevIndex != index) {
+        hGrp->SetInt("WorkbenchSelectorItem", index);
+        requireRestart();
+    }
 }
 
 void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
 {
-    QSignalBlocker sigblk(ui->WorkbenchSelectorPosition);
+    //workbench selector type setup
+    ParameterGrp::handle hGrp;
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
+    int widgetTypeIndex = hGrp->GetInt("WorkbenchSelectorType", 0);
+    ui->WorkbenchSelectorType->clear();
+    ui->WorkbenchSelectorType->addItem(tr("ComboBox"));
+    ui->WorkbenchSelectorType->addItem(tr("TabBar"));
+    ui->WorkbenchSelectorType->setCurrentIndex(widgetTypeIndex);
 
-    //workbench selector position combobox setup
-    ui->WorkbenchSelectorPosition->clear();
-    ui->WorkbenchSelectorPosition->addItem(tr("Toolbar"));
-    ui->WorkbenchSelectorPosition->addItem(tr("Left corner"));
-    ui->WorkbenchSelectorPosition->addItem(tr("Right corner"));
-    ui->WorkbenchSelectorPosition->setCurrentIndex(WorkbenchSwitcher::getIndex());
+    // workbench selector items style
+    int itemStyleIndex = hGrp->GetInt("WorkbenchSelectorItem", 0);
+    ui->WorkbenchSelectorItem->clear();
+    ui->WorkbenchSelectorItem->addItem(tr("Icon & Text"));
+    ui->WorkbenchSelectorItem->addItem(tr("Icon"));
+    ui->WorkbenchSelectorItem->addItem(tr("Text"));
+    ui->WorkbenchSelectorItem->setCurrentIndex(itemStyleIndex);
+}
+
+void DlgSettingsWorkbenchesImp::translateWorkbenchSelector()
+{
+    ui->WorkbenchSelectorType->setItemText(0, tr("ComboBox"));
+    ui->WorkbenchSelectorType->setItemText(1, tr("TabBar"));
+
+    ui->WorkbenchSelectorItem->setItemText(0, tr("Icon & Text"));
+    ui->WorkbenchSelectorItem->setItemText(1, tr("Icon"));
+    ui->WorkbenchSelectorItem->setItemText(2, tr("Text"));
 }
 
 void DlgSettingsWorkbenchesImp::wbToggled(const QString& wbName, bool enabled)
@@ -585,12 +641,6 @@ void DlgSettingsWorkbenchesImp::onStartWbChanged(int index)
             wbItem->setStartupWb(wbItem->objectName() == wbName);
         }
     }
-}
-
-void DlgSettingsWorkbenchesImp::onWbSelectorChanged(int index)
-{
-    Q_UNUSED(index);
-    requireRestart();
 }
 
 void DlgSettingsWorkbenchesImp::onWbByTabToggled(bool val)

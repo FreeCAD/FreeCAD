@@ -23,8 +23,10 @@
 
 #include "PreCompiled.h"
 
-#include "FemConstraintTransform.h"
+#include <Mod/Part/App/PartFeature.h>
 
+#include "FemConstraintTransform.h"
+#include "FemTools.h"
 
 using namespace Fem;
 
@@ -34,9 +36,11 @@ static const char* TransformTypes[] = {"Cylindrical", "Rectangular", nullptr};
 
 ConstraintTransform::ConstraintTransform()
 {
-    ADD_PROPERTY(X_rot, (0.0));
-    ADD_PROPERTY(Y_rot, (0.0));
-    ADD_PROPERTY(Z_rot, (0.0));
+    ADD_PROPERTY_TYPE(Rotation,
+                      (Base::Rotation(0.0, 0.0, 0.0, 1.0)),
+                      "ConstraintTransform",
+                      App::Prop_Output,
+                      "Rectangular system transform");
     ADD_PROPERTY_TYPE(TransformType,
                       (1),
                       "ConstraintTransform",
@@ -66,18 +70,6 @@ ConstraintTransform::ConstraintTransform()
                       "ConstraintTransform",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Axis of cylindrical surface");
-    ADD_PROPERTY_TYPE(Points,
-                      (Base::Vector3d()),
-                      "ConstraintTransform",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Points where symbols are drawn");
-    ADD_PROPERTY_TYPE(Normals,
-                      (Base::Vector3d()),
-                      "ConstraintTransform",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Normals where symbols are drawn");
-    Points.setValues(std::vector<Base::Vector3d>());
-    Normals.setValues(std::vector<Base::Vector3d>());
 }
 
 App::DocumentObjectExecReturn* ConstraintTransform::execute()
@@ -90,55 +82,141 @@ const char* ConstraintTransform::getViewProviderName() const
     return "FemGui::ViewProviderFemConstraintTransform";
 }
 
-void ConstraintTransform::handleChangedPropertyType(Base::XMLReader& reader,
-                                                    const char* TypeName,
-                                                    App::Property* prop)
-{
-    // properties _rot had App::PropertyFloat and were changed to App::PropertyAngle
-    if (prop == &X_rot && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyFloat X_rotProperty;
-        X_rotProperty.Restore(reader);
-        X_rot.setValue(X_rotProperty.getValue());
-    }
-    else if (prop == &Y_rot && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyFloat Y_rotProperty;
-        Y_rotProperty.Restore(reader);
-        Y_rot.setValue(Y_rotProperty.getValue());
-    }
-    else if (prop == &Z_rot && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyFloat Z_rotProperty;
-        Z_rotProperty.Restore(reader);
-        Z_rot.setValue(Z_rotProperty.getValue());
-    }
-}
-
 void ConstraintTransform::onChanged(const App::Property* prop)
 {
-    Constraint::onChanged(prop);
-
     if (prop == &References) {
-        std::vector<Base::Vector3d> points;
-        std::vector<Base::Vector3d> normals;
-        int scale = 1;  // OvG: Enforce use of scale
-        if (getPoints(points, normals, &scale)) {
-            Points.setValues(points);
-            Normals.setValues(normals);
-            Scale.setValue(scale);  // OvG: Scale
-            Points.touch();         // This triggers ViewProvider::updateData()
-            std::string transform_type = TransformType.getValueAsString();
-            if (transform_type == "Cylindrical") {
-                // Find data of cylinder
-                double radius, height;
-                Base::Vector3d base, axis;
-                if (!getCylinder(radius, height, base, axis)) {
-                    return;
-                }
-                Axis.setValue(axis);
-                // Update base point
-                base = base + axis * height / 2;
-                BasePoint.setValue(base);
-                BasePoint.touch();  // This triggers ViewProvider::updateData()
+        std::string transform_type = TransformType.getValueAsString();
+        if (transform_type == "Cylindrical") {
+            // Extract geometry from References
+            std::vector<App::DocumentObject*> ref = References.getValues();
+            std::vector<std::string> subRef = References.getSubValues();
+            if (ref.empty()) {
+                return;
             }
+
+            Part::Feature* feat = static_cast<Part::Feature*>(ref.front());
+            TopoDS_Shape sh = Tools::getFeatureSubShape(feat, subRef.front().c_str(), true);
+
+            Base::Vector3d axis, base;
+            double height, radius;
+            if (!Tools::getCylinderParams(sh, base, axis, height, radius)) {
+                return;
+            }
+
+            BasePoint.setValue(base);
+            Axis.setValue(axis);
         }
+    }
+
+    Constraint::onChanged(prop);
+}
+
+namespace
+{
+
+Base::Rotation anglesToRotation(double xAngle, double yAngle, double zAngle)
+{
+    static Base::Vector3d a(1, 0, 0);
+    static Base::Vector3d b(0, 1, 0);
+    static int count = 0;
+    double xRad = xAngle * D_PI / 180.0;
+    double yRad = yAngle * D_PI / 180.0;
+    double zRad = zAngle * D_PI / 180.0;
+    if (xAngle != 0) {
+        a[1] = 0;
+        a[2] = 0;
+        b[1] = std::cos(xRad);
+        b[2] = -std::sin(xRad);
+    }
+    if (yAngle != 0) {
+        a[0] = std::cos(yRad);
+        a[2] = std::sin(yRad);
+        b[0] = 0;
+        b[2] = 0;
+    }
+    if (zAngle != 0) {
+        a[0] = std::cos(zRad);
+        a[1] = -std::sin(zRad);
+        b[0] = 0;
+        b[1] = 0;
+    }
+
+    ++count;
+    count %= 3;
+    if (!count) {
+        Base::Vector3d X = a.Normalize();
+        Base::Vector3d Y = b.Normalize();
+        Base::Vector3d Z = X.Cross(Y);
+        Z.Normalize();
+        Y = Z.Cross(X);
+
+        a.x = 1;
+        a.y = 0;
+        a.z = 0;
+        b.x = 0;
+        b.y = 1;
+        b.z = 0;
+
+        Base::Matrix4D m;
+        m.setCol(0, X);
+        m.setCol(1, Y);
+        m.setCol(2, Z);
+
+        return Base::Rotation(m);
+    }
+    return Base::Rotation();
+}
+
+}  // namespace
+
+
+void ConstraintTransform::handleChangedPropertyName(Base::XMLReader& reader,
+                                                    const char* typeName,
+                                                    const char* propName)
+{
+    if (strcmp(propName, "X_rot") == 0) {
+        double xAngle {};
+        if (strcmp(typeName, "App::PropertyFloat") == 0) {
+            App::PropertyFloat X_rotProperty;
+            X_rotProperty.Restore(reader);
+            xAngle = X_rotProperty.getValue();
+        }
+        else if (strcmp(typeName, "App::PropertyAngle") == 0) {
+            App::PropertyAngle X_rotProperty;
+            X_rotProperty.Restore(reader);
+            xAngle = X_rotProperty.getValue();
+        }
+        anglesToRotation(xAngle, 0, 0);
+    }
+    else if (strcmp(propName, "Y_rot") == 0) {
+        double yAngle {};
+        if (strcmp(typeName, "App::PropertyFloat") == 0) {
+            App::PropertyFloat Y_rotProperty;
+            Y_rotProperty.Restore(reader);
+            yAngle = Y_rotProperty.getValue();
+        }
+        else if (strcmp(typeName, "App::PropertyAngle") == 0) {
+            App::PropertyAngle Y_rotProperty;
+            Y_rotProperty.Restore(reader);
+            yAngle = Y_rotProperty.getValue();
+        }
+        anglesToRotation(0, yAngle, 0);
+    }
+    else if (strcmp(propName, "Z_rot") == 0) {
+        double zAngle {};
+        if (strcmp(typeName, "App::PropertyFloat") == 0) {
+            App::PropertyFloat Z_rotProperty;
+            Z_rotProperty.Restore(reader);
+            zAngle = Z_rotProperty.getValue();
+        }
+        else if (strcmp(typeName, "App::PropertyAngle") == 0) {
+            App::PropertyAngle Z_rotProperty;
+            Z_rotProperty.Restore(reader);
+            zAngle = Z_rotProperty.getValue();
+        }
+        Rotation.setValue(anglesToRotation(0, 0, zAngle));
+    }
+    else {
+        Constraint::handleChangedPropertyName(reader, typeName, propName);
     }
 }

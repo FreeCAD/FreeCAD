@@ -157,13 +157,15 @@ private:
         toolWidgetManager.resetControls();
     }
 
-    void onModeChanged() override
+    bool onModeChanged() override
     {
         DrawSketchHandler::resetPositionText();
         toolWidgetManager.onHandlerModeChanged();
-        DSDefaultHandler::onModeChanged();
-
-        toolWidgetManager.afterHandlerModeChanged();
+        if (DSDefaultHandler::onModeChanged()) {
+            // If onModeChanged returns false, then the handler has been purged.
+            toolWidgetManager.afterHandlerModeChanged();
+        }
+        return true;
     }
 
     void onConstructionMethodChanged() override
@@ -181,6 +183,14 @@ private:
 
         if (key == SoKeyboardEvent::J && !pressed && !this->isLastState()) {
             toolWidgetManager.secondKeyShortcut();
+        }
+
+        if (key == SoKeyboardEvent::R && !pressed && !this->isLastState()) {
+            toolWidgetManager.thirdKeyShortcut();
+        }
+
+        if (key == SoKeyboardEvent::F && !pressed && !this->isLastState()) {
+            toolWidgetManager.fourthKeyShortcut();
         }
 
         if (key == SoKeyboardEvent::TAB && !pressed) {

@@ -21,16 +21,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QString>
-#endif
-
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QList>
 #include <QMetaType>
+#include <QRegularExpression>
+#include <QString>
+#endif
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
+#include <Base/Stream.h>
 #include <Gui/MetaTypes.h>
 
 #include "Materials.h"
@@ -81,7 +82,7 @@ std::shared_ptr<QList<QVariant>> MaterialYamlEntry::readList(const YAML::Node& n
         QVariant nodeValue;
         if (isImageList) {
             nodeValue = QString::fromStdString(it->as<std::string>())
-                            .remove(QRegExp(QString::fromStdString("[\r\n]")));
+                            .remove(QRegularExpression(QString::fromStdString("[\r\n]")));
         }
         else {
             nodeValue = QString::fromStdString(it->as<std::string>());
@@ -242,8 +243,8 @@ void MaterialYamlEntry::addToTree(
                             QString propertyValue =
                                 QString::fromStdString((itp->second).as<std::string>());
                             if (type == MaterialValue::Image) {
-                                propertyValue =
-                                    propertyValue.remove(QRegExp(QString::fromStdString("[\r\n]")));
+                                propertyValue = propertyValue.remove(
+                                    QRegularExpression(QString::fromStdString("[\r\n]")));
                             }
                             finalModel->setPhysicalValue(QString::fromStdString(propertyName),
                                                          propertyValue);
@@ -309,8 +310,8 @@ void MaterialYamlEntry::addToTree(
                             QString propertyValue =
                                 QString::fromStdString((itp->second).as<std::string>());
                             if (type == MaterialValue::Image) {
-                                propertyValue =
-                                    propertyValue.remove(QRegExp(QString::fromStdString("[\r\n]")));
+                                propertyValue = propertyValue.remove(
+                                    QRegularExpression(QString::fromStdString("[\r\n]")));
                             }
                             finalModel->setAppearanceValue(QString::fromStdString(propertyName),
                                                            propertyValue);
@@ -405,9 +406,16 @@ MaterialLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibrary>& libr
         return model;
     }
 
+    Base::FileInfo info(pathName);
+    Base::ifstream fin(info);
+    if (!fin) {
+        Base::Console().Error("YAML file open error: '%s'\n", pathName.c_str());
+        return model;
+    }
+
     YAML::Node yamlroot;
     try {
-        yamlroot = YAML::LoadFile(pathName);
+        yamlroot = YAML::Load(fin);
 
         model = getMaterialFromYAML(library, yamlroot, path);
     }

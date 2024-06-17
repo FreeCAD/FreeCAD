@@ -49,6 +49,7 @@ public:
 
     void saveSettings() override;
     void loadSettings() override;
+    void resetSettingsToDefaults() override;
 
 private:
     void onMouseButtonClicked();
@@ -57,6 +58,8 @@ private:
 protected:
     void changeEvent(QEvent *e) override;
     void retranslate();
+    void addOrientations();
+    void translateOrientations();
 
 private:
     std::unique_ptr<Ui_DlgSettingsNavigation> ui;

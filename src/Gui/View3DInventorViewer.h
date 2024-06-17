@@ -41,6 +41,8 @@
 
 #include "Namespace.h"
 #include "Selection.h"
+
+#include "CornerCrossLetters.h"
 #include "View3DInventorSelection.h"
 #include "Quarter/SoQTQuarterAdaptor.h"
 
@@ -115,11 +117,12 @@ public:
       */
     //@{
     enum AntiAliasing {
-        None,
-        Smoothing,
-        MSAA2x,
-        MSAA4x,
-        MSAA8x
+        None = 0,
+        Smoothing = 1,
+        MSAA2x = 2,
+        MSAA4x = 3,
+        MSAA6x = 5,
+        MSAA8x = 4
     };
     //@}
 
@@ -217,6 +220,8 @@ public:
     void setEditingViewProvider(Gui::ViewProvider* vp, int ModNum);
     /// return whether a view provider is edited
     bool isEditingViewProvider() const;
+    /// return currently editing view provider
+    ViewProvider* getEditingViewProvider() const;
     /// reset from edit mode
     void resetEditingViewProvider();
     void setupEditingRoot(SoNode *node=nullptr, const Base::Matrix4D *mat=nullptr);
@@ -316,6 +321,12 @@ public:
     /** Returns the 3d point on the focal plane to the given 2d point. */
     SbVec3f getPointOnFocalPlane(const SbVec2s&) const;
 
+    /** Returns the 3d point on a line to the given 2d point. */
+    SbVec3f getPointOnLine(const SbVec2s&, const SbVec3f& axisCenter, const SbVec3f& axis) const;
+
+    /** Returns the 3d point on the XY plane of a placement to the given 2d point. */
+    SbVec3f getPointOnXYPlaneOfPlacement(const SbVec2s&, Base::Placement&) const;
+
     /** Returns the 2d coordinates on the viewport to the given 3d point. */
     SbVec2s getPointOnViewport(const SbVec3f&) const;
 
@@ -405,6 +416,8 @@ public:
      */
     void viewSelection();
 
+    void alignToSelection();
+
     void setGradientBackground(Background);
     Background getGradientBackground() const;
     void setGradientBackgroundColor(const SbColor& fromColor,
@@ -414,6 +427,7 @@ public:
                                     const SbColor& midColor);
     void setNavigationType(Base::Type);
 
+    void setAxisLetterColor(const SbColor& color);
     void setAxisCross(bool on);
     bool hasAxisCross();
 
@@ -536,7 +550,11 @@ private:
 
     ViewerEventFilter* viewerEventFilter;
 
-    PyObject *_viewerPy;
+    PyObject* _viewerPy;
+
+    static unsigned char XPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1];
+    static unsigned char YPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1];
+    static unsigned char ZPM_pixel_data[ZPM_WIDTH * ZPM_HEIGHT * ZPM_BYTES_PER_PIXEL + 1];
 
     // friends
     friend class NavigationStyle;

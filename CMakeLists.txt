@@ -10,6 +10,12 @@ if (POLICY CMP0072)
     set(OpenGL_GL_PREFERENCE LEGACY)
 endif(POLICY CMP0072)
 
+# FindPythonInterp and FindPythonLibs modules are deprecated.
+# Currently, they are still used by shiboken's CMake files
+if (POLICY CMP0148)
+    cmake_policy(SET CMP0148 OLD)
+endif()
+
 option(FREECAD_USE_CCACHE "Auto detect and use ccache during compilation" ON)
 
 if(FREECAD_USE_CCACHE)

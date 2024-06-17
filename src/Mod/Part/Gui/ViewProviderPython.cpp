@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 
-#include <Standard_math.hxx>
 #ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
 #endif

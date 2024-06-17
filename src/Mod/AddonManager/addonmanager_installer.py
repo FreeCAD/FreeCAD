@@ -24,7 +24,7 @@
 """ Contains the classes to manage Addon installation: intended as a stable API, safe for external
 code to call and to rely upon existing. See classes AddonInstaller and MacroInstaller for details.
 """
-
+import json
 from datetime import datetime, timezone
 from enum import IntEnum, auto
 import os
@@ -40,6 +40,7 @@ from PySide import QtCore
 
 from Addon import Addon
 import addonmanager_utilities as utils
+from addonmanager_metadata import get_branch_from_metadata
 from addonmanager_git import initialize_git, GitFailed
 
 if FreeCAD.GuiUp:
@@ -281,7 +282,13 @@ class AddonInstaller(QtCore.QObject):
         install_path = os.path.join(self.installation_path, self.addon_to_install.name)
         try:
             if os.path.isdir(install_path):
-                self.git_manager.update(install_path)
+                old_branch = get_branch_from_metadata(self.addon_to_install.installed_metadata)
+                new_branch = get_branch_from_metadata(self.addon_to_install.metadata)
+                if old_branch != new_branch:
+                    utils.rmdir(install_path)
+                    self.git_manager.clone(self.addon_to_install.url, install_path)
+                else:
+                    self.git_manager.update(install_path)
             else:
                 self.git_manager.clone(self.addon_to_install.url, install_path)
             self.git_manager.checkout(install_path, self.addon_to_install.branch)
@@ -368,23 +375,36 @@ class AddonInstaller(QtCore.QObject):
         # after the branch. If that is the setup that we just extracted, move all files out of
         # that subdirectory.
         if self._code_in_branch_subdirectory(destination):
+            actual_path = os.path.join(
+                destination, f"{self.addon_to_install.name}-{self.addon_to_install.branch}"
+            )
+            FreeCAD.Console.PrintLog(
+                f"ZIP installation moving code from {actual_path} to {destination}"
+            )
             self._move_code_out_of_subdirectory(destination)
 
         FreeCAD.Console.PrintLog("ZIP installation complete.\n")
         self._finalize_successful_installation()
 
     def _code_in_branch_subdirectory(self, destination: str) -> bool:
-        subdirectories = os.listdir(destination)
-        if len(subdirectories) == 1:
-            subdir_name = subdirectories[0]
-            if subdir_name.endswith(os.path.sep):
-                subdir_name = subdir_name[:-1]  # Strip trailing slash if present
-            if subdir_name.endswith(self.addon_to_install.branch):
-                return True
+        test_path = os.path.join(destination, self._expected_subdirectory_name())
+        FreeCAD.Console.PrintLog(f"Checking for possible zip sub-path {test_path}...")
+        if os.path.isdir(test_path):
+            FreeCAD.Console.PrintLog(f"path exists.\n")
+            return True
+        FreeCAD.Console.PrintLog(f"path does not exist.\n")
         return False
 
+    def _expected_subdirectory_name(self) -> str:
+        url = self.addon_to_install.url
+        if url.endswith(".git"):
+            url = url[:-4]
+        _, _, name = url.rpartition("/")
+        branch = self.addon_to_install.branch
+        return f"{name}-{branch}"
+
     def _move_code_out_of_subdirectory(self, destination):
-        subdirectory = os.listdir(destination)[0]
+        subdirectory = os.path.join(destination, self._expected_subdirectory_name())
         for extracted_filename in os.listdir(os.path.join(destination, subdirectory)):
             shutil.move(
                 os.path.join(destination, subdirectory, extracted_filename),
@@ -503,15 +523,33 @@ class MacroInstaller(QtCore.QObject):
                 self.finished.emit()
                 return False
 
-            # If it succeeded, move all of the files to the macro install location
+            # If it succeeded, move all the files to the macro install location,
+            # keeping a list of all the files we installed, so they can be removed later
+            # if this macro is uninstalled.
+            manifest = []
             for item in os.listdir(temp_dir):
                 src = os.path.join(temp_dir, item)
                 dst = os.path.join(self.installation_path, item)
                 shutil.move(src, dst)
+                manifest.append(dst)
+            self._write_installation_manifest(manifest)
         self.success.emit(self.addon_to_install)
         self.addon_to_install.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
         self.finished.emit()
         return True
+
+    def _write_installation_manifest(self, manifest):
+        manifest_file = os.path.join(
+            self.installation_path, self.addon_to_install.macro.filename + ".manifest"
+        )
+        try:
+            with open(manifest_file, "w", encoding="utf-8") as f:
+                f.write(json.dumps(manifest, indent="  "))
+        except OSError as e:
+            FreeCAD.Console.PrintWarning(
+                translate("AddonsInstaller", "Failed to create installation manifest " "file:\n")
+            )
+            FreeCAD.Console.PrintWarning(manifest_file)
 
     @classmethod
     def _validate_object(cls, addon: object):

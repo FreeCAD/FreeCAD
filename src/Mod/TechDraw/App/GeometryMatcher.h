@@ -33,32 +33,42 @@ namespace Part
 class TopoShape;
 }
 
-namespace TechDraw {
+namespace TechDraw
+{
 
-class TechDrawExport GeometryMatcher {
+class TechDrawExport GeometryMatcher
+{
 public:
-    GeometryMatcher() {}
-    explicit GeometryMatcher(DrawViewDimension* dim) { m_dimension = dim; }
-    ~GeometryMatcher() = default;
+    GeometryMatcher() = default;
 
-    bool compareGeometry(Part::TopoShape geom1,  Part::TopoShape geom2);
-    bool comparePoints(TopoDS_Shape& shape1,  TopoDS_Shape& shape2);
-    bool compareEdges(TopoDS_Shape& shape1,  TopoDS_Shape& shape2);
+    bool compareGeometry(const Part::TopoShape& geom1, const Part::TopoShape& geom2);
 
-    bool compareLines(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
-    bool compareCircles(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
-    bool compareEllipses(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
-    bool compareBSplines(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
-    bool compareDifferent(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
-    bool compareCircleArcs(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
-    bool compareEllipseArcs(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
+    double getPointTolerance() const
+    {
+        return m_pointTolerance;
+    }
+    void setPointTolerance(double tol)
+    {
+        m_pointTolerance = tol;
+    }
 
 private:
-    bool compareEndPoints(TopoDS_Edge& edge1, TopoDS_Edge& edge2);
+    static bool comparePoints(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2);
+    static bool compareEdges(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2);
+    static bool compareFaces(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2);
 
-    DrawViewDimension* m_dimension;
+    static bool compareLines(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2);
+    static bool compareCircles(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2);
+    static bool compareEllipses(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2);
+    static bool compareBSplines(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2);
+    static bool compareDifferent(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2);
+
+    static bool compareCircleArcs(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2);
+    static bool compareEllipseArcs(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2);
+    static bool compareEndPoints(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2);
+
+    double m_pointTolerance {EWTOLERANCE};
 };
 
-} //end namespace TechDraw
+}  // end namespace TechDraw
 #endif
-

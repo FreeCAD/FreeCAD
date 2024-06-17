@@ -37,10 +37,28 @@ class TestPad(unittest.TestCase):
         self.Doc.recompute()
         self.assertEqual(len(self.Pad.Shape.Faces), 6)
 
-    def testSketchOnPlane(self):
+    def testSketchOnBasePlane(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.PadSketch = self.Doc.addObject('Sketcher::SketchObject','SketchPad')
-        self.PadSketch.Support = (self.Doc.XY_Plane, [''])
+        self.PadSketch.AttachmentSupport = (self.Doc.XY_Plane, [''])
+        self.PadSketch.MapMode = 'FlatFace'
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateSlotPlateSet(self.PadSketch)
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
+        self.Pad.Profile = self.PadSketch
+        self.Body.addObject(self.Pad)
+        self.Doc.recompute()
+        self.assertEqual(len(self.Pad.Shape.Faces), 6)
+
+    def testSketchOnDatumPlane(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        self.DatumPlane = self.Doc.addObject('PartDesign::Plane','DatumPlane')
+        self.DatumPlane.AttachmentSupport = (self.Doc.XY_Plane, [''])
+        self.DatumPlane.MapMode = 'FlatFace'
+        self.Body.addObject(self.DatumPlane)
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject','SketchPad')
+        self.PadSketch.AttachmentSupport = (self.DatumPlane, [''])
         self.PadSketch.MapMode = 'FlatFace'
         self.Body.addObject(self.PadSketch)
         TestSketcherApp.CreateSlotPlateSet(self.PadSketch)
@@ -67,7 +85,7 @@ class TestPad(unittest.TestCase):
         self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
         self.Body.addObject(self.PadSketch1)
         self.PadSketch1.MapMode = 'FlatFace'
-        self.PadSketch1.Support = (self.Doc.XZ_Plane, [''])
+        self.PadSketch1.AttachmentSupport = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
         TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1))
         self.Doc.recompute()
@@ -95,7 +113,7 @@ class TestPad(unittest.TestCase):
         self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
         self.Body.addObject(self.PadSketch1)
         self.PadSketch1.MapMode = 'FlatFace'
-        self.PadSketch1.Support = (self.Doc.XZ_Plane, [''])
+        self.PadSketch1.AttachmentSupport = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
         TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1))
         self.Doc.recompute()
@@ -123,7 +141,7 @@ class TestPad(unittest.TestCase):
         self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
         self.Body.addObject(self.PadSketch1)
         self.PadSketch1.MapMode = 'FlatFace'
-        self.PadSketch1.Support = (self.Doc.XZ_Plane, [''])
+        self.PadSketch1.AttachmentSupport = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
         TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1))
         self.Doc.recompute()
@@ -152,7 +170,7 @@ class TestPad(unittest.TestCase):
         self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
         self.Body.addObject(self.PadSketch1)
         self.PadSketch1.MapMode = 'FlatFace'
-        self.PadSketch1.Support = (self.Doc.XZ_Plane, [''])
+        self.PadSketch1.AttachmentSupport = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
         TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (0, 0), (1, 1))
         self.Doc.recompute()

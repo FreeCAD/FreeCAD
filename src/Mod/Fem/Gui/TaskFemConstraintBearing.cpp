@@ -108,10 +108,10 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint* Co
             qOverload<double>(&QDoubleSpinBox::valueChanged),
             this,
             &TaskFemConstraintBearing::onDistanceChanged);
-    connect(ui->buttonReference, &QPushButton::pressed, this, [=] {
+    connect(ui->buttonReference, &QPushButton::pressed, this, [this] {
         onButtonReference(true);
     });
-    connect(ui->buttonLocation, &QPushButton::pressed, this, [=] {
+    connect(ui->buttonLocation, &QPushButton::pressed, this, [this] {
         onButtonLocation(true);
     });
     connect(ui->checkAxial, &QCheckBox::toggled, this, &TaskFemConstraintBearing::onCheckAxial);

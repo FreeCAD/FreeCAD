@@ -76,6 +76,7 @@ public:
     void setPosFromCenter(const double &xCenter, const double &yCenter);
     double X() const { return posX; }
     double Y() const { return posY; }              //minus posY?
+    Base::Vector2d getPosToCenterVec();
 
     void setFont(QFont font);
     QFont getFont() const { return m_dimText->font(); }
@@ -87,6 +88,7 @@ public:
     void setPrettyPre();
     void setPrettyNormal();
     void setColor(QColor color);
+    void setSelectability(bool val);
 
     QGCustomText* getDimText() { return m_dimText; }
     void setDimText(QGCustomText* newText) { m_dimText = newText; }
@@ -119,6 +121,8 @@ protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
 
     int getPrecision();
+
+    void snapPosition(QPointF& position);
 
     bool getVerticalSep() const { return verticalSep; }
     void setVerticalSep(bool sep) { verticalSep = sep; }
@@ -176,6 +180,7 @@ public:
     void setPrettySel();
     void setPrettyNormal();
 
+    bool getGroupSelection() override;
     void setGroupSelection(bool isSelected) override;
     virtual QGIDatumLabel* getDatumLabel() const { return datumLabel; }
 
@@ -231,7 +236,7 @@ protected:
     void draw() override;
 
     void resetArrows() const;
-    void drawArrows(int count, const Base::Vector2d positions[], double angles[], bool flipped) const;
+    void drawArrows(int count, const Base::Vector2d positions[], double angles[], bool flipped, bool forcePoint = false) const;
 
     void drawSingleLine(QPainterPath &painterPath, const Base::Vector2d &lineOrigin, double lineAngle,
                         double startPosition, double endPosition) const;
@@ -244,7 +249,7 @@ protected:
 
     void drawDimensionLine(QPainterPath &painterPath, const Base::Vector2d &targetPoint, double lineAngle,
                            double startPosition, double jointPosition, const Base::BoundBox2d &labelRectangle,
-                           int arrowCount, int standardStyle, bool flipArrows) const;
+                           int arrowCount, int standardStyle, bool flipArrows, bool forcePointStyle = false) const;
     void drawDimensionArc(QPainterPath &painterPath, const Base::Vector2d &arcCenter, double arcRadius,
                           double endAngle, double startRotation, double jointAngle,
                           const Base::BoundBox2d &labelRectangle, int arrowCount,
@@ -260,10 +265,14 @@ protected:
                              double endAngle, double startRotation, const Base::BoundBox2d &labelRectangle,
                              double centerOverhang, int standardStyle, int renderExtent, bool flipArrow) const;
 
+    void drawAreaExecutive(const Base::Vector2d &centerPoint, double area, const Base::BoundBox2d &labelRectangle,
+                             double centerOverhang, int standardStyle, int renderExtent, bool flipArrow) const;
+
     void drawDistance(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawRadius(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawDiameter(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawAngle(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
+    void drawArea(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
 
     QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;

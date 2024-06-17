@@ -59,7 +59,10 @@ def get_member(analysis, t):
     for m in analysis.Group:
         # since is _derived_from is used the father could be used
         # to test too (ex. "Fem::FemMeshObject")
-        if femutils.is_derived_from(m, t):
+        if (femutils.is_derived_from(m, t)
+            and not (m.hasExtension("App::SuppressibleExtension")
+                     and m.Suppressed)
+           ):
             matching.append(m)
     return matching
 
@@ -204,6 +207,10 @@ class AnalysisMember():
             list of fixed constraints from the analysis.
             [{"Object":fixed_obj, "NodeSupports":bool}, {}, ...]
 
+        constraints_rigidbody : list of dictionaries
+            list of displacements for the analysis.
+            [{"Object":rigidbody_obj, "xxxxxxxx":value}, {}, ...]
+
         constraints_force : list of dictionaries
             list of force constraints from the analysis.
             [{"Object":force_obj, "NodeLoad":value}, {}, ...
@@ -282,6 +289,9 @@ class AnalysisMember():
         self.cons_centrif = self.get_several_member(
             "Fem::ConstraintCentrif"
         )
+        self.cons_bodyheatsource = self.get_several_member(
+            "Fem::ConstraintBodyHeatSource"
+        )
         self.cons_contact = self.get_several_member(
             "Fem::ConstraintContact"
         )
@@ -290,6 +300,12 @@ class AnalysisMember():
         )
         self.cons_fixed = self.get_several_member(
             "Fem::ConstraintFixed"
+        )
+        self.cons_rigidbody = self.get_several_member(
+            "Fem::ConstraintRigidBody"
+        )
+        self.cons_rigidbody_step = self.get_several_member(
+            "Fem::ConstraintRigidBody"
         )
         self.cons_force = self.get_several_member(
             "Fem::ConstraintForce"

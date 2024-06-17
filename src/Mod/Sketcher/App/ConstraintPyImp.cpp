@@ -116,6 +116,15 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 else if (strstr(ConstraintType, "EllipseMinorDiameter")) {
                     this->getConstraintPtr()->AlignmentType = EllipseMinorDiameter;
                 }
+                else if (strstr(ConstraintType, "HyperbolaMajor")) {
+                    this->getConstraintPtr()->AlignmentType = HyperbolaMajor;
+                }
+                else if (strstr(ConstraintType, "HyperbolaMinor")) {
+                    this->getConstraintPtr()->AlignmentType = HyperbolaMinor;
+                }
+                else if (strstr(ConstraintType, "ParabolaFocalAxis")) {
+                    this->getConstraintPtr()->AlignmentType = ParabolaFocalAxis;
+                }
                 else {
                     this->getConstraintPtr()->AlignmentType = Undef;
                     valid = false;
@@ -213,6 +222,12 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 }
                 else if (strstr(ConstraintType, "EllipseFocus2")) {
                     this->getConstraintPtr()->AlignmentType = EllipseFocus2;
+                }
+                else if (strstr(ConstraintType, "HyperbolaFocus")) {
+                    this->getConstraintPtr()->AlignmentType = HyperbolaFocus;
+                }
+                else if (strstr(ConstraintType, "ParabolaFocus")) {
+                    this->getConstraintPtr()->AlignmentType = ParabolaFocus;
                 }
                 else {
                     this->getConstraintPtr()->AlignmentType = Undef;
@@ -589,6 +604,27 @@ std::string ConstraintPy::representation() const
                 case EllipseFocus2:
                     result << "'InternalAlignment:EllipseFocus2'>";
                     break;
+                case HyperbolaMajor:
+                    result << "'InternalAlignment:HyperbolaMajor'>";
+                    break;
+                case HyperbolaMinor:
+                    result << "'InternalAlignment:HyperbolaMinor'>";
+                    break;
+                case HyperbolaFocus:
+                    result << "'InternalAlignment:HyperbolaFocus'>";
+                    break;
+                case ParabolaFocalAxis:
+                    result << "'InternalAlignment:ParabolaFocalAxis'>";
+                    break;
+                case ParabolaFocus:
+                    result << "'InternalAlignment:ParabolaFocus'>";
+                    break;
+                case BSplineControlPoint:
+                    result << "'InternalAlignment:BSplineControlPoint'>";
+                    break;
+                case BSplineKnotPoint:
+                    result << "'InternalAlignment:BSplineKnotPoint'>";
+                    break;
                 default:
                     result << "'InternalAlignment:?'>";
                     break;
@@ -784,6 +820,16 @@ void ConstraintPy::setName(Py::String arg)
 Py::Float ConstraintPy::getValue() const
 {
     return Py::Float(this->getConstraintPtr()->getValue());
+}
+
+Py::Float ConstraintPy::getLabelDistance() const
+{
+    return Py::Float(this->getConstraintPtr()->LabelDistance);
+}
+
+Py::Float ConstraintPy::getLabelPosition() const
+{
+    return Py::Float(this->getConstraintPtr()->LabelPosition);
 }
 
 Py::Boolean ConstraintPy::getDriving() const

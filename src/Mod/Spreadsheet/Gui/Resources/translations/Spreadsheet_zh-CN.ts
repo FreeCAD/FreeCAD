@@ -463,12 +463,12 @@ Useful to avoid cyclic dependencies, but use with caution!</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
       <source>Hide dependency of binding</source>
-      <translation type="unfinished">Hide dependency of binding</translation>
+      <translation>隐藏绑定的依赖关系</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
       <source>Unbind</source>
-      <translation type="unfinished">Unbind</translation>
+      <translation>取消绑定</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
@@ -486,12 +486,12 @@ Useful to avoid cyclic dependencies, but use with caution!</translation>
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation type="unfinished">Setup Configuration Table</translation>
+      <translation>设置配置表</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
+      <translation>单元格范围</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -538,7 +538,7 @@ by that property.
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation type="unfinished">Property:</translation>
+      <translation>属性:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
@@ -550,7 +550,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
       <source>Group:</source>
-      <translation type="unfinished">Group:</translation>
+      <translation>分组:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
@@ -560,7 +560,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
       <source>Unsetup</source>
-      <translation type="unfinished">Unsetup</translation>
+      <translation>取消设置</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
@@ -696,7 +696,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>导出文件</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>显示电子表格</translation>
     </message>
@@ -740,7 +740,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>电子表格</translation>
     </message>
@@ -881,7 +881,7 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="226"/>
       <source>Bind cells</source>
-      <translation type="unfinished">Bind cells</translation>
+      <translation>绑定单元格：</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="227"/>
@@ -901,13 +901,13 @@ Do you want to continue?</translation>
       <location filename="../../DlgBindSheet.cpp" line="276"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>错误：
 </translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="303"/>
       <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <translation>取消绑定单元格</translation>
     </message>
   </context>
   <context>
@@ -952,8 +952,18 @@ Defaults to: %V = %A
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>分隔符字符： </translation>
+      <source>Delimiter Character:</source>
+      <translation type="unfinished">Delimiter Character:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation type="unfinished">Quote Character:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation type="unfinished">Escape Character:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -966,19 +976,9 @@ Defaults to: %V = %A
       <translation>制表符</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>引号字符</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;用于划分字符串的字符，通常是单引号 (') 或双引号 (&amp;quot;)。 必须是单个字符。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Escape 字符</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -991,12 +991,12 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSheetConf.cpp" line="283"/>
       <source>Setup configuration table</source>
-      <translation type="unfinished">Setup configuration table</translation>
+      <translation>设置配置表</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="341"/>
       <source>Unsetup configuration table</source>
-      <translation type="unfinished">Unsetup configuration table</translation>
+      <translation>取消配置表格</translation>
     </message>
   </context>
   <context>
@@ -1073,13 +1073,13 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="193"/>
       <location filename="../../SheetTableView.cpp" line="665"/>
       <source>Bind...</source>
-      <translation type="unfinished">Bind...</translation>
+      <translation>绑定...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="197"/>
       <location filename="../../SheetTableView.cpp" line="658"/>
       <source>Configuration table...</source>
-      <translation type="unfinished">Configuration table...</translation>
+      <translation>配置表...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="205"/>
@@ -1123,7 +1123,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../SpreadsheetView.cpp" line="294"/>
       <source>Export PDF</source>
-      <translation>导出PDF</translation>
+      <translation>导出 PDF</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="296"/>
@@ -1151,13 +1151,13 @@ Defaults to: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Styles</source>
-      <translation type="unfinished">&amp;Styles</translation>
+      <translation>样式(&amp;S)</translation>
     </message>
   </context>
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>未命名</translation>
     </message>

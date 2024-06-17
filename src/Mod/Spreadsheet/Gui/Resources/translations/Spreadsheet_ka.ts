@@ -687,7 +687,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>ფაილის გატანა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>ცხრილის ჩვენება</translation>
     </message>
@@ -731,7 +731,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.my_alias_name ნაცვლად Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>ელცხრილი</translation>
     </message>
@@ -944,8 +944,18 @@ Defaults to: %V = %A
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>გამყოფი სიმბოლო: </translation>
+      <source>Delimiter Character:</source>
+      <translation>გამყოფი სიმბოლო:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation>ბრჭყალის სიბოლო:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation>სპეციალური სიმბოლო:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -958,19 +968,9 @@ Defaults to: %V = %A
       <translation>tab</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>ბრჭყალის სიბოლო: </translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;სტრიქონებს გამომყოფი სიმბოლო. ჩვეულებრივ ერთმაგი (') ან ორმაგი (&amp;quot;) ბრჭყალი. უნდა იყოს ერთი სიმბოლო.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Esc სიმბოლო: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -1157,7 +1157,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>უსახელო</translation>
     </message>

@@ -117,7 +117,8 @@ from draftutils.gui_utils import (get3DView,
                                   select,
                                   loadTexture,
                                   load_texture,
-                                  get_bbox)
+                                  get_bbox,
+                                  end_all_events)
 
 from draftutils.gui_utils import (dim_symbol,
                                   dimSymbol,
@@ -379,8 +380,7 @@ if App.GuiUp:
 from draftobjects.layer import (Layer,
                                 _VisGroup)
 
-from draftmake.make_layer import (make_layer,
-                                  makeLayer)
+from draftmake.make_layer import make_layer
 
 if App.GuiUp:
     from draftviewproviders.view_layer import (ViewProviderLayer,

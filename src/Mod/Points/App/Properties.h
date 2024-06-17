@@ -156,7 +156,7 @@ private:
 /** Curvature information. */
 struct PointsExport CurvatureInfo
 {
-    float fMaxCurvature, fMinCurvature;
+    float fMaxCurvature {}, fMinCurvature {};
     Base::Vector3f cMaxCurvDir, cMinCurvDir;
 };
 

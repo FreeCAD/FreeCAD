@@ -247,9 +247,9 @@ int RotationPy::PyInit(PyObject* args, PyObject* kwds)
     PyErr_SetString(PyExc_TypeError,
                     "Rotation constructor accepts:\n"
                     "-- empty parameter list\n"
-                    "-- Rotation object"
+                    "-- Rotation object\n"
                     "-- four floats (a quaternion)\n"
-                    "-- three floats (yaw, pitch, roll)"
+                    "-- three floats (yaw, pitch, roll)\n"
                     "-- Vector (rotation axis) and float (rotation angle)\n"
                     "-- two Vectors (two axes)\n"
                     "-- Matrix object\n"
@@ -271,22 +271,18 @@ PyObject* RotationPy::richCompare(PyObject* v, PyObject* w, int op)
             PyErr_SetString(PyExc_TypeError, "no ordering relation is defined for Rotation");
             return nullptr;
         }
-        else if (op == Py_EQ) {
+        if (op == Py_EQ) {
             res = (r1 == r2) ? Py_True : Py_False;
             Py_INCREF(res);
             return res;
         }
-        else {
-            res = (r1 != r2) ? Py_True : Py_False;
-            Py_INCREF(res);
-            return res;
-        }
+        res = (r1 != r2) ? Py_True : Py_False;
+        Py_INCREF(res);
+        return res;
     }
-    else {
-        // This always returns False
-        Py_INCREF(Py_NotImplemented);
-        return Py_NotImplemented;
-    }
+    // This always returns False
+    Py_INCREF(Py_NotImplemented);
+    return Py_NotImplemented;
 }
 
 PyObject* RotationPy::invert(PyObject* args)
@@ -580,14 +576,18 @@ int RotationPy::setCustomAttributes(const char* attr, PyObject* obj)
         }
     }
     else if (strcmp(attr, "Axes") == 0) {
-        if (PySequence_Check(obj) && PySequence_Size(obj) == 2) {
-            PyObject* vec1 = PySequence_GetItem(obj, 0);
-            PyObject* vec2 = PySequence_GetItem(obj, 1);
-            if (PyObject_TypeCheck(vec1, &(VectorPy::Type))
-                && PyObject_TypeCheck(vec2, &(VectorPy::Type))) {
-                this->getRotationPtr()->setValue(*static_cast<VectorPy*>(vec1)->getVectorPtr(),
-                                                 *static_cast<VectorPy*>(vec2)->getVectorPtr());
-                return 1;
+        if (PySequence_Check(obj)) {
+            Py::Sequence sequence(obj);
+            if (sequence.size() == 2) {
+                Py::Object vec1 = sequence.getItem(0);
+                Py::Object vec2 = sequence.getItem(1);
+                if (PyObject_TypeCheck(vec1.ptr(), &(VectorPy::Type))
+                    && PyObject_TypeCheck(vec2.ptr(), &(VectorPy::Type))) {
+                    Base::Vector3d* pt1 = static_cast<VectorPy*>(vec1.ptr())->getVectorPtr();
+                    Base::Vector3d* pt2 = static_cast<VectorPy*>(vec2.ptr())->getVectorPtr();
+                    this->getRotationPtr()->setValue(*pt1, *pt2);
+                    return 1;
+                }
             }
         }
     }

@@ -55,6 +55,7 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(ReferenceAxis, (nullptr), "Pad", App::Prop_None, "Reference axis of direction");
     ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pad", App::Prop_None, "Measure pad length along the sketch normal direction");
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Pad", App::Prop_None, "Face where pad will end");
+    ADD_PROPERTY_TYPE(UpToShape, (nullptr), "Pad", App::Prop_None, "Faces or shape(s) where pad will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
     Offset.setConstraints(&signedLengthConstraint);
     ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Pad", App::Prop_None, "Taper angle");
@@ -67,6 +68,13 @@ Pad::Pad()
     Length2.setConstraints(nullptr);
 }
 
+#ifdef FC_USE_TNP_FIX
+
+App::DocumentObjectExecReturn* Pad::execute()
+{
+    return buildExtrusion(ExtrudeOption::MakeFace | ExtrudeOption::MakeFuse);
+}
+#else
 App::DocumentObjectExecReturn *Pad::execute()
 {
     double L = Length.getValue();
@@ -109,7 +117,7 @@ App::DocumentObjectExecReturn *Pad::execute()
 
         base.Move(invObjLoc);
 
-        Base::Vector3d paddingDirection = computeDirection(SketchVector);
+        Base::Vector3d paddingDirection = computeDirection(SketchVector, false);
 
         // create vector in padding direction with length 1
         gp_Dir dir(paddingDirection.x, paddingDirection.y, paddingDirection.z);
@@ -228,8 +236,7 @@ App::DocumentObjectExecReturn *Pad::execute()
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
-            int solidCount = countSolids(result);
-            if (solidCount > 1) {
+            if (!isSingleSolidRuleSatisfied(result)) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
@@ -237,8 +244,7 @@ App::DocumentObjectExecReturn *Pad::execute()
             this->Shape.setValue(getSolid(solRes));
         }
         else {
-            int solidCount = countSolids(prism);
-            if (solidCount > 1) {
+            if (!isSingleSolidRuleSatisfied(prism)) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
 
@@ -262,3 +268,4 @@ App::DocumentObjectExecReturn *Pad::execute()
     }
 
 }
+#endif

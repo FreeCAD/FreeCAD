@@ -87,7 +87,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         current_thread = QtCore.QThread.currentThread()
 
         for repo in self.repos:
-            if repo.url and utils.recognized_git_location(repo):
+            if not repo.macro and repo.url and utils.recognized_git_location(repo):
                 # package.xml
                 index = NetworkManager.AM_NETWORK_MANAGER.submit_unmonitored_get(
                     utils.construct_git_url(repo, "package.xml")
@@ -120,7 +120,6 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
 
         while self.requests:
             if current_thread.isInterruptionRequested():
-                NetworkManager.AM_NETWORK_MANAGER.completed.disconnect(self.download_completed)
                 for request in self.requests:
                     NetworkManager.AM_NETWORK_MANAGER.abort(request)
                 return

@@ -264,6 +264,15 @@ public:
     /// toggle the driving status of this constraint
     int toggleActive(int ConstrId);
 
+    /// set the label position of the constraint
+    int setLabelPosition(int ConstrId, float value);
+    /// get the label position of the constraint
+    int getLabelPosition(int ConstrId, float& value);
+    /// set the label distance of the constraint
+    int setLabelDistance(int ConstrId, float value);
+    /// get the label distance of the constraint
+    int getLabelDistance(int ConstrId, float& value);
+
     /// Make all dimensionals Driving/non-Driving
     int setDatumsDriving(bool isdriving);
     /// Move Dimensional constraints at the end of the properties array
@@ -314,8 +323,12 @@ public:
      \param createCorner - keep geoId/pos as a Point and keep as many constraints as possible
      \retval - 0 on success, -1 on failure
      */
-    int
-    fillet(int geoId, PointPos pos, double radius, bool trim = true, bool preserveCorner = false);
+    int fillet(int geoId,
+               PointPos pos,
+               double radius,
+               bool trim = true,
+               bool preserveCorner = false,
+               bool chamfer = false);
     /*!
      \brief More general form of fillet
      \param geoId1, geoId2 - geoId for two lines (which don't necessarily have to coincide)
@@ -331,7 +344,8 @@ public:
                const Base::Vector3d& refPnt2,
                double radius,
                bool trim = true,
-               bool createCorner = false);
+               bool createCorner = false,
+               bool chamfer = false);
 
     /// trim a curve
     int trim(int geoId, const Base::Vector3d& point);
@@ -345,12 +359,25 @@ public:
       \param geoId1, posId1, geoId2, posId2: the end points to join
       \retval - 0 on success, -1 on failure
     */
-    int join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketcher::PointPos posId2);
+    int join(int geoId1,
+             Sketcher::PointPos posId1,
+             int geoId2,
+             Sketcher::PointPos posId2,
+             int continuity = 0);
 
     /// adds symmetric geometric elements with respect to the refGeoId (line or point)
     int addSymmetric(const std::vector<int>& geoIdList,
                      int refGeoId,
-                     Sketcher::PointPos refPosId = Sketcher::PointPos::none);
+                     Sketcher::PointPos refPosId = Sketcher::PointPos::none,
+                     bool addSymmetryConstraints = false);
+    // get the symmetric geometries of the geoIdList
+    std::vector<Part::Geometry*>
+    getSymmetric(const std::vector<int>& geoIdList,
+                 std::map<int, int>& geoIdMap,
+                 std::map<int, bool>& isStartEndInverted,
+                 int refGeoId,
+                 Sketcher::PointPos refPosId = Sketcher::PointPos::none);
+
     /// with default parameters adds a copy of the geometric elements displaced by the displacement
     /// vector. It creates an array of csize elements in the direction of the displacement vector by
     /// rsize elements in the direction perpendicular to the displacement vector, wherein the
@@ -672,7 +699,13 @@ public:
         return convertSubName(subname.c_str(), postfix);
     }
 
+    static const std::string& internalPrefix();
+    static const char* convertInternalName(const char* name);
+
     std::string convertSubName(const Data::IndexedName&, bool postfix = true) const;
+
+    std::pair<std::string, std::string> getElementName(const char* name,
+                                                       ElementNameType type) const override;
 
     bool isPerformingInternalTransaction() const
     {
@@ -716,6 +749,11 @@ public:
     void makeMissingPointOnPointCoincident(bool onebyone = false);
     void makeMissingVerticalHorizontal(bool onebyone = false);
     void makeMissingEquality(bool onebyone = true);
+
+    /// Detect degenerated geometries
+    int detectDegeneratedGeometries(double tolerance);
+    /// Remove degenerated geometries
+    int removeDegeneratedGeometries(double tolerance);
 
     // helper
     /// returns the number of redundant constraints detected

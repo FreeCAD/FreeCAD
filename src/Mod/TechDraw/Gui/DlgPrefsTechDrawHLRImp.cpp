@@ -78,9 +78,7 @@ void DlgPrefsTechDrawHLRImp::loadSettings()
 void DlgPrefsTechDrawHLRImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        saveSettings();
         ui->retranslateUi(this);
-        loadSettings();
     }
     else {
         QWidget::changeEvent(e);

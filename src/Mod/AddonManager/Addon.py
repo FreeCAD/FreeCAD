@@ -25,6 +25,7 @@
 
 import os
 import re
+from datetime import datetime
 from urllib.parse import urlparse
 from typing import Dict, Set, List, Optional
 from threading import Lock
@@ -41,18 +42,21 @@ from addonmanager_metadata import (
     Version,
     DependencyType,
 )
+from AddonStats import AddonStats
 
 translate = fci.translate
 
+#  A list of internal workbenches that can be used as a dependency of an Addon
 INTERNAL_WORKBENCHES = {
     "arch": "Arch",
+    "assembly": "Assembly",
     "draft": "Draft",
     "fem": "FEM",
     "mesh": "Mesh",
     "openscad": "OpenSCAD",
     "part": "Part",
     "partdesign": "PartDesign",
-    "path": "Path",
+    "cam": "CAM",
     "plot": "Plot",
     "points": "Points",
     "robot": "Robot",
@@ -163,6 +167,8 @@ class Addon:
         self.description = None
         self.tags = set()  # Just a cache, loaded from Metadata
         self.last_updated = None
+        self.stats = AddonStats()
+        self.score = 0
 
         # To prevent multiple threads from running git actions on this repo at the
         # same time
@@ -172,14 +178,7 @@ class Addon:
         self.status_lock = Lock()
         self.update_status = status
 
-        # The url should never end in ".git", so strip it if it's there
-        parsed_url = urlparse(self.url)
-        if parsed_url.path.endswith(".git"):
-            self.url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path[:-4]
-            if parsed_url.query:
-                self.url += "?" + parsed_url.query
-            if parsed_url.fragment:
-                self.url += "#" + parsed_url.fragment
+        self._clean_url()
 
         if utils.recognized_git_location(self):
             self.metadata_url = construct_git_url(self, "package.xml")
@@ -192,6 +191,7 @@ class Addon:
         self.macro = None  # Bridge to Gaël Écorchard's macro management class
         self.updated_timestamp = None
         self.installed_version = None
+        self.installed_metadata = None
 
         # Each repo is also a node in a directed dependency graph (referenced by name so
         # they can be serialized):
@@ -204,6 +204,18 @@ class Addon:
         self.python_min_version = {"major": 3, "minor": 0}
 
         self._icon_file = None
+        self._cached_license: str = ""
+        self._cached_update_date = None
+
+    def _clean_url(self):
+        # The url should never end in ".git", so strip it if it's there
+        parsed_url = urlparse(self.url)
+        if parsed_url.path.endswith(".git"):
+            self.url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path[:-4]
+            if parsed_url.query:
+                self.url += "?" + parsed_url.query
+            if parsed_url.fragment:
+                self.url += "#" + parsed_url.fragment
 
     def __str__(self) -> str:
         result = f"FreeCAD {self.repo_type}\n"
@@ -213,6 +225,73 @@ class Addon:
         if self.macro is not None:
             result += "Has linked Macro object\n"
         return result
+
+    @property
+    def license(self):
+        if not self._cached_license:
+            self._cached_license = "UNLICENSED"
+            if self.metadata and self.metadata.license:
+                self._cached_license = self.metadata.license
+            elif self.stats and self.stats.license:
+                self._cached_license = self.stats.license
+            elif self.macro:
+                if self.macro.license:
+                    self._cached_license = self.macro.license
+                elif self.macro.on_wiki:
+                    self._cached_license = "CC-BY-3.0"
+        return self._cached_license
+
+    @property
+    def update_date(self):
+        if self._cached_update_date is None:
+            self._cached_update_date = 0
+            if self.stats and self.stats.last_update_time:
+                self._cached_update_date = self.stats.last_update_time
+            elif self.macro and self.macro.date:
+                # Try to parse the date:
+                try:
+                    self._cached_update_date = self._process_date_string_to_python_datetime(
+                        self.macro.date
+                    )
+                except SyntaxError as e:
+                    fci.Console.PrintWarning(str(e) + "\n")
+            else:
+                fci.Console.PrintWarning(f"No update date info for {self.name}\n")
+        return self._cached_update_date
+
+    def _process_date_string_to_python_datetime(self, date_string: str) -> datetime:
+        split_result = re.split(r"[ ./-]+", date_string.strip())
+        if len(split_result) != 3:
+            raise SyntaxError(
+                f"In macro {self.name}, unrecognized date string '{date_string}' (expected YYYY-MM-DD)"
+            )
+
+        if int(split_result[0]) > 2000:  # Assume YYYY-MM-DD
+            try:
+                year = int(split_result[0])
+                month = int(split_result[1])
+                day = int(split_result[2])
+                return datetime(year, month, day)
+            except (OverflowError, OSError, ValueError):
+                raise SyntaxError(
+                    f"In macro {self.name}, unrecognized date string {date_string} (expected YYYY-MM-DD)"
+                )
+        elif int(split_result[2]) > 2000:
+            # Two possibilities, impossible to distinguish in the general case: DD-MM-YYYY and
+            # MM-DD-YYYY. See if the first one makes sense, and if not, try the second
+            if int(split_result[1]) <= 12:
+                year = int(split_result[2])
+                month = int(split_result[1])
+                day = int(split_result[0])
+            else:
+                year = int(split_result[2])
+                month = int(split_result[0])
+                day = int(split_result[1])
+            return datetime(year, month, day)
+        else:
+            raise SyntaxError(
+                f"In macro {self.name}, unrecognized date string '{date_string}' (expected YYYY-MM-DD)"
+            )
 
     @classmethod
     def from_macro(cls, macro: Macro):
@@ -241,7 +320,8 @@ class Addon:
         instance = Addon(cache_dict["name"], cache_dict["url"], status, cache_dict["branch"])
 
         for key, value in cache_dict.items():
-            instance.__dict__[key] = value
+            if not str(key).startswith("_"):
+                instance.__dict__[key] = value
 
         instance.repo_type = Addon.Kind(cache_dict["repo_type"])
         if instance.repo_type == Addon.Kind.PACKAGE:
@@ -254,11 +334,15 @@ class Addon:
             if os.path.isfile(cached_package_xml_file):
                 instance.load_metadata_file(cached_package_xml_file)
 
+        instance._load_installed_metadata()
+
         if "requires" in cache_dict:
             instance.requires = set(cache_dict["requires"])
             instance.blocks = set(cache_dict["blocks"])
             instance.python_requires = set(cache_dict["python_requires"])
             instance.python_optional = set(cache_dict["python_optional"])
+
+        instance._clean_url()
 
         return instance
 
@@ -290,8 +374,17 @@ class Addon:
         if os.path.exists(file):
             metadata = MetadataReader.from_file(file)
             self.set_metadata(metadata)
+            self._clean_url()
         else:
             fci.Console.PrintLog(f"Internal error: {file} does not exist")
+
+    def _load_installed_metadata(self) -> None:
+        # If it is actually installed, there is a SECOND metadata file, in the actual installation,
+        # that may not match the cached one if the Addon has not been updated but the cache has.
+        mod_dir = os.path.join(self.mod_directory, self.name)
+        installed_metadata_path = os.path.join(mod_dir, "package.xml")
+        if os.path.isfile(installed_metadata_path):
+            self.installed_metadata = MetadataReader.from_file(installed_metadata_path)
 
     def set_metadata(self, metadata: Metadata) -> None:
         """Set the given metadata object as this object's metadata, updating the
@@ -307,6 +400,7 @@ class Addon:
             if url.type == UrlType.repository:
                 self.url = url.location
                 self.branch = url.branch if url.branch else "master"
+        self._clean_url()
         self.extract_tags(self.metadata)
         self.extract_metadata_dependencies(self.metadata)
 
@@ -610,7 +704,7 @@ class Addon:
         wbName = self.get_workbench_name()
 
         # Add the wb to the list of disabled if it was not already
-        disabled_wbs = pref.GetString("Disabled", "NoneWorkbench,TestWorkbench,AssemblyWorkbench")
+        disabled_wbs = pref.GetString("Disabled", "NoneWorkbench,TestWorkbench")
         # print(f"start disabling {disabled_wbs}")
         disabled_wbs_list = disabled_wbs.split(",")
         if not (wbName in disabled_wbs_list):
@@ -641,7 +735,7 @@ class Addon:
     def remove_from_disabled_wbs(self, wbName: str):
         pref = fci.ParamGet("User parameter:BaseApp/Preferences/Workbenches")
 
-        disabled_wbs = pref.GetString("Disabled", "NoneWorkbench,TestWorkbench,AssemblyWorkbench")
+        disabled_wbs = pref.GetString("Disabled", "NoneWorkbench,TestWorkbench")
         # print(f"start enabling : {disabled_wbs}")
         disabled_wbs_list = disabled_wbs.split(",")
         disabled_wbs = ""
@@ -683,9 +777,7 @@ class Addon:
                     filename, extension = os.path.splitext(current_file)
                     if extension == ".py":
                         wb_classname = self._find_classname_in_file(current_file)
-                        print(f"Current file: {current_file} ")
                         if wb_classname:
-                            print(f"Found name {wb_classname} \n")
                             return wb_classname
         return ""
 

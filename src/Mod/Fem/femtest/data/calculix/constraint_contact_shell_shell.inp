@@ -38348,6 +38348,9 @@ Efaces
 15603,S2
 15604,S2
 
+** Physical constants for SI(mm) unit system with Kelvins
+*PHYSICAL CONSTANTS, ABSOLUTE ZERO=0, STEFAN BOLTZMANN=5.670374419e-11
+
 ***********************************************************
 ** Materials
 ** see information about units at file end
@@ -38365,15 +38368,15 @@ Efaces
 ***********************************************************
 ** Contact Constraints
 ** ConstraintContact
-*CONTACT PAIR, INTERACTION=INTConstraintContact,TYPE=SURFACE TO SURFACE
-DEPConstraintContact,INDConstraintContact
+*CONTACT PAIR, INTERACTION=INTConstraintContact, TYPE=SURFACE TO SURFACE
+DEPConstraintContact, INDConstraintContact
 *SURFACE INTERACTION, NAME=INTConstraintContact
-*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR
+*SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=LINEAR
 1000000
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-*STEP
+*STEP, INC=2000
 *STATIC
 
 
@@ -38394,7 +38397,7 @@ ConstraintFixed,6
 *CLOAD
 ** ConstraintForce
 ** node load on shape: Load_place_point:Vertex1
-5,2,-5000.0
+5,2,-5000
 
 
 
@@ -38409,7 +38412,7 @@ S, E
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
 *END STEP 
 

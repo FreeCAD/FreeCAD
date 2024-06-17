@@ -62,9 +62,9 @@ public:
     void setDirection(Base::Vector3d dir);
     void setArrowDirections(Base::Vector3d dir1, Base::Vector3d dir2);
     void setFont(QFont f, double fsize);
-    void setSectionStyle(int style);
     void setSectionColor(QColor c);
     void setPathMode(bool mode) { m_pathMode = mode; }
+    void setShowLine(bool state) { m_showLine = state; }
     bool pathMode() { return m_pathMode; }
     void setChangePoints(TechDraw::ChangePointVector changePoints);
     void clearChangePoints();
@@ -86,7 +86,6 @@ protected:
     void makeSymbolsISO();
     void makeChangePointMarks();
     void setTools();
-    int  getPrefSectionStandard();
     void extensionEndsISO();
     void extensionEndsTrad();
     double getArrowRotation(Base::Vector3d arrowDir);
@@ -125,6 +124,8 @@ private:
     QPointF            m_arrowPos2;
     std::vector<QGraphicsPathItem*> m_changePointMarks;
     TechDraw::ChangePointVector m_changePointData;
+
+    bool m_showLine{true};
 };
 
 }

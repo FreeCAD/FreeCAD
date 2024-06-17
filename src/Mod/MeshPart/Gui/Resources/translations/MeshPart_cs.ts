@@ -62,7 +62,7 @@ Tento příkaz funguje pouze se 'síťovým' objektem.</translation>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -80,7 +80,7 @@ Tento příkaz funguje pouze se 'síťovým' objektem.</translation>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -491,27 +491,27 @@ Hodnota v rozmezí 0.2-10.</translation>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="235"/>
-      <location filename="../../Tessellation.cpp" line="241"/>
+      <location filename="../../Tessellation.cpp" line="237"/>
+      <location filename="../../Tessellation.cpp" line="243"/>
       <source>No active document</source>
       <translation>Žádný aktivní dokument</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="272"/>
+      <location filename="../../Tessellation.cpp" line="273"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Vybrali jste těleso bez špičky.
 Buď nastavte špičku tělesa nebo vyberte jiný tvar, prosím.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="278"/>
+      <location filename="../../Tessellation.cpp" line="279"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Vybrali jste tvar bez ploch.
 Vyberte jiný tvar, prosím.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="282"/>
+      <location filename="../../Tessellation.cpp" line="283"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Nejprve vyber tvar pro síťování.</translation>
     </message>
@@ -580,7 +580,7 @@ Vyberte jiný tvar, prosím.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>Rozbalit síť</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -593,7 +593,7 @@ Vyberte jiný tvar, prosím.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation type="unfinished">Unwrap face</translation>
+      <translation>Rozbalit plochu</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

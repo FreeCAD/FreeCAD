@@ -696,7 +696,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>Dosyayı Dışarı Aktar</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Hesap tablosunu göster</translation>
     </message>
@@ -739,7 +739,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Hücreye alias'lı bir isim atayın, örneğin Spreadsheet.B1 yerine Spreadsheet.my_alias_name</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Hesap Tablosu</translation>
     </message>
@@ -950,8 +950,18 @@ Defaults to: %V = %A
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>Sınırlayıcı Karakter: </translation>
+      <source>Delimiter Character:</source>
+      <translation type="unfinished">Delimiter Character:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation type="unfinished">Quote Character:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation type="unfinished">Escape Character:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -964,19 +974,9 @@ Defaults to: %V = %A
       <translation>sekme</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>Alıntı Karakteri: </translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dizgileri sınırlamak için kullanılan karakter, genellikle tek tırnak (') veya çift tırnaktır (&amp;quot;). Tek bir karakter olmalıdır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Kaçış Karakteri: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -1163,9 +1163,9 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
-      <translation>Adsız</translation>
+      <translation>İsimsiz</translation>
     </message>
   </context>
 </TS>

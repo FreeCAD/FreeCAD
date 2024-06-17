@@ -4,17 +4,17 @@
   <context>
     <name>CmdFemConstraintBearing</name>
     <message>
-      <location filename="../../Command.cpp" line="182"/>
+      <location filename="../../Command.cpp" line="183"/>
       <source>Fem</source>
       <translation type="unfinished">Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="183"/>
+      <location filename="../../Command.cpp" line="184"/>
       <source>Bearing constraint</source>
       <translation>Абмежаванне падшыпніка</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="184"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Creates a bearing constraint</source>
       <translation>Стварыць абмежаванне падшыпніка</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdFemConstraintContact</name>
     <message>
-      <location filename="../../Command.cpp" line="230"/>
+      <location filename="../../Command.cpp" line="231"/>
       <source>Fem</source>
-      <translation>МКЭ</translation>
+      <translation type="unfinished">Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="231"/>
+      <location filename="../../Command.cpp" line="232"/>
       <source>Contact constraint</source>
       <translation>Абмежаванне кантакту</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="232"/>
+      <location filename="../../Command.cpp" line="233"/>
       <source>Creates a contact constraint between faces</source>
       <translation>Стварыць абмежаванне кантакту паміж гранямі</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdFemConstraintDisplacement</name>
     <message>
-      <location filename="../../Command.cpp" line="287"/>
+      <location filename="../../Command.cpp" line="297"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="288"/>
+      <location filename="../../Command.cpp" line="298"/>
       <source>Displacement boundary condition</source>
       <translation>Межавая ўмову зрушэння</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="289"/>
+      <location filename="../../Command.cpp" line="299"/>
       <source>Creates a displacement boundary condition for a geometric entity</source>
       <translation>Стварыць межавую ўмову зрушэння для геаметрычнай сутнасці</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdFemConstraintFixed</name>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="347"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="338"/>
+      <location filename="../../Command.cpp" line="348"/>
       <source>Fixed boundary condition</source>
       <translation>Фіксаваная межавая ўмова</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="349"/>
       <source>Creates a fixed boundary condition for a geometric entity</source>
       <translation>Стварыць фіксаваную межавую ўмову для геаметрычнай сутнасці</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../Command.cpp" line="387"/>
+      <location filename="../../Command.cpp" line="449"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="388"/>
+      <location filename="../../Command.cpp" line="450"/>
       <source>Fluid boundary condition</source>
       <translation>Межавая ўмова вадкасці</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="390"/>
+      <location filename="../../Command.cpp" line="452"/>
       <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
       <translation>Стварыць межавую ўмову вадкасці на сутнасці грані для вылічальнай гідрадынамікі</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdFemConstraintForce</name>
     <message>
-      <location filename="../../Command.cpp" line="439"/>
+      <location filename="../../Command.cpp" line="501"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="440"/>
+      <location filename="../../Command.cpp" line="502"/>
       <source>Force load</source>
       <translation>Сілавая нагрузка</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="441"/>
+      <location filename="../../Command.cpp" line="503"/>
       <source>Creates a force load applied to a geometric entity</source>
       <translation>Стварыць сілавую нагрузку, якая прыкладзеная да геаметрычнай сутнасці</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdFemConstraintGear</name>
     <message>
-      <location filename="../../Command.cpp" line="496"/>
+      <location filename="../../Command.cpp" line="558"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="497"/>
+      <location filename="../../Command.cpp" line="559"/>
       <source>Gear constraint</source>
       <translation>Абмежаванне шасцерні</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="498"/>
+      <location filename="../../Command.cpp" line="560"/>
       <source>Creates a gear constraint</source>
       <translation>Стварыць абмежаванне шасцерні</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdFemConstraintHeatflux</name>
     <message>
-      <location filename="../../Command.cpp" line="544"/>
+      <location filename="../../Command.cpp" line="606"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="545"/>
+      <location filename="../../Command.cpp" line="607"/>
       <source>Heat flux load</source>
       <translation>Нагрузка на цеплавы паток</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="546"/>
+      <location filename="../../Command.cpp" line="608"/>
       <source>Creates a heat flux load acting on a face</source>
       <translation>Стварыць нагрузку цеплавога патоку, якая дзейнічае на грань</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdFemConstraintInitialTemperature</name>
     <message>
-      <location filename="../../Command.cpp" line="601"/>
+      <location filename="../../Command.cpp" line="666"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="602"/>
+      <location filename="../../Command.cpp" line="667"/>
       <source>Initial temperature</source>
       <translation>Пачатковая тэмпература</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="603"/>
+      <location filename="../../Command.cpp" line="668"/>
       <source>Creates an initial temperature acting on a body</source>
       <translation>Стварае пачатковую тэмпературу, якая дзейнічае на цела</translation>
     </message>
@@ -166,17 +166,17 @@
   <context>
     <name>CmdFemConstraintPlaneRotation</name>
     <message>
-      <location filename="../../Command.cpp" line="652"/>
+      <location filename="../../Command.cpp" line="717"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="653"/>
+      <location filename="../../Command.cpp" line="718"/>
       <source>Plane multi-point constraint</source>
       <translation>Абмежаванне шматкропкавай плоскасці</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="654"/>
+      <location filename="../../Command.cpp" line="719"/>
       <source>Creates a plane multi-point constraint for a face</source>
       <translation>Стварыць абмежаванне шматкропкавай плоскасці для грані</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdFemConstraintPressure</name>
     <message>
-      <location filename="../../Command.cpp" line="703"/>
+      <location filename="../../Command.cpp" line="768"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="704"/>
+      <location filename="../../Command.cpp" line="769"/>
       <source>Pressure load</source>
       <translation>Нагрузка ціску</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="705"/>
+      <location filename="../../Command.cpp" line="770"/>
       <source>Creates a pressure load acting on a face</source>
       <translation>Стварыць нагрузку ціску, якая дзейнічае на грань</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdFemConstraintPulley</name>
     <message>
-      <location filename="../../Command.cpp" line="814"/>
+      <location filename="../../Command.cpp" line="879"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="815"/>
+      <location filename="../../Command.cpp" line="880"/>
       <source>Pulley constraint</source>
       <translation>Абмежаванне шківу</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="816"/>
+      <location filename="../../Command.cpp" line="881"/>
       <source>Creates a pulley constraint</source>
       <translation>Стварыць абмежаванне шківу</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdFemConstraintSpring</name>
     <message>
-      <location filename="../../Command.cpp" line="759"/>
+      <location filename="../../Command.cpp" line="824"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="760"/>
+      <location filename="../../Command.cpp" line="825"/>
       <source>Spring</source>
       <translation>Спружына</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="761"/>
+      <location filename="../../Command.cpp" line="826"/>
       <source>Creates a spring acting on a face</source>
       <translation>Стварыць спружыну, якая дзейнічае на грань</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdFemConstraintTemperature</name>
     <message>
-      <location filename="../../Command.cpp" line="867"/>
+      <location filename="../../Command.cpp" line="932"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="868"/>
+      <location filename="../../Command.cpp" line="933"/>
       <source>Temperature boundary condition</source>
       <translation>Межавая ўмова тэмпературы</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="869"/>
+      <location filename="../../Command.cpp" line="934"/>
       <source>Creates a temperature/concentrated heat flux load acting on a face</source>
       <translation>Стварыць тэмпературную нагрузку/канцэнтраваны цеплавы паток, якія дзейнічаюць на грань</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdFemConstraintTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="918"/>
+      <location filename="../../Command.cpp" line="983"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="919"/>
+      <location filename="../../Command.cpp" line="984"/>
       <source>Local coordinate system</source>
       <translation>Лакальная сістэма каардынат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="920"/>
+      <location filename="../../Command.cpp" line="985"/>
       <source>Create a local coordinate system on a face</source>
       <translation>Стварыць лакальную сістэму каардынат на грані</translation>
     </message>
@@ -274,27 +274,27 @@
   <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1135"/>
+      <location filename="../../Command.cpp" line="1200"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1136"/>
+      <location filename="../../Command.cpp" line="1201"/>
       <source>Nodes set</source>
       <translation>Набор вузлоў</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1137"/>
+      <location filename="../../Command.cpp" line="1202"/>
       <source>Creates a FEM mesh nodes set</source>
       <translation>Стварае набор вузлоў паліганальнай сеткі МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1172"/>
+      <location filename="../../Command.cpp" line="1237"/>
       <source>Wrong selection</source>
       <translation>Няправільны выбар</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1173"/>
+      <location filename="../../Command.cpp" line="1238"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
       <translation>Калі ласка, абярыце адну паліганальную сетку МКЭ ці набор вузлоў.</translation>
     </message>
@@ -302,18 +302,18 @@
   <context>
     <name>CmdFemDefineNodesSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1076"/>
+      <location filename="../../Command.cpp" line="1141"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1077"/>
+      <location filename="../../Command.cpp" line="1142"/>
       <source>Node set by poly</source>
       <translation>Набор вузлоў па шматкутніку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1078"/>
-      <location filename="../../Command.cpp" line="1080"/>
+      <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../Command.cpp" line="1145"/>
       <source>Create node set by Poly</source>
       <translation>Стварыць набор вузлоў з шматкутніка</translation>
     </message>
@@ -321,17 +321,17 @@
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="2442"/>
+      <location filename="../../Command.cpp" line="2523"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2443"/>
+      <location filename="../../Command.cpp" line="2524"/>
       <source>Apply changes to pipeline</source>
       <translation>Прымяніць змены да канвееру</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2444"/>
+      <location filename="../../Command.cpp" line="2525"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
       <translation>Прымяніць змены да налад напрамую, а не толькі пры пераліку...</translation>
     </message>
@@ -339,27 +339,27 @@
   <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1791"/>
+      <location filename="../../Command.cpp" line="1869"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1792"/>
+      <location filename="../../Command.cpp" line="1870"/>
       <source>Region clip filter</source>
       <translation>Фільтр абрэзкі вобласці</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1794"/>
+      <location filename="../../Command.cpp" line="1872"/>
       <source>Define/create a clip filter which uses functions to define the clipped region</source>
       <translation>Вызначыць/стварыць фільтр абрэзкі, які ўжывае функцыі для вызначэння вобласці абрэзкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2344"/>
+      <location filename="../../Command.cpp" line="2425"/>
       <source>Wrong selection</source>
       <translation>Няправільны выбар</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2345"/>
+      <location filename="../../Command.cpp" line="2426"/>
       <source>Select a pipeline, please.</source>
       <translation>Калі ласка, абярыце канвеер.</translation>
     </message>
@@ -367,17 +367,17 @@
   <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1844"/>
+      <location filename="../../Command.cpp" line="1922"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1845"/>
+      <location filename="../../Command.cpp" line="1923"/>
       <source>Function cut filter</source>
       <translation>Функцыя рэзкі фільтра</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1846"/>
+      <location filename="../../Command.cpp" line="1924"/>
       <source>Cut the data along an implicit function</source>
       <translation>Рэзаць дадзеныя па няяўнай функцыі</translation>
     </message>
@@ -385,17 +385,17 @@
   <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1896"/>
+      <location filename="../../Command.cpp" line="1974"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1897"/>
+      <location filename="../../Command.cpp" line="1975"/>
       <source>Line clip filter</source>
       <translation>Фільтр абрэзкі лініі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1898"/>
+      <location filename="../../Command.cpp" line="1976"/>
       <source>Define/create a clip filter which clips a field along a line</source>
       <translation>Вызначыць/стварыць фільтр абрэзкі, які абразае поле наўздоўж лініі</translation>
     </message>
@@ -403,17 +403,17 @@
   <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1945"/>
+      <location filename="../../Command.cpp" line="2023"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1946"/>
+      <location filename="../../Command.cpp" line="2024"/>
       <source>Data at point clip filter</source>
       <translation>Дадзеныя ў фільтры абрэзкі кропкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1947"/>
+      <location filename="../../Command.cpp" line="2025"/>
       <source>Define/create a clip filter which clips a field data at point</source>
       <translation>Вызначыць/стварыць фільтр абрэзкі, які абразае дадзеныя палі ў кропцы</translation>
     </message>
@@ -421,103 +421,103 @@
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2215"/>
+      <location filename="../../Command.cpp" line="2296"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2216"/>
+      <location filename="../../Command.cpp" line="2297"/>
       <source>Filter functions</source>
       <translation>Функцыі фільтра</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2217"/>
+      <location filename="../../Command.cpp" line="2298"/>
       <source>Functions for use in postprocessing filter...</source>
       <translation>Функцыі, якія ўжываюцца ў фільтры пасляапрацоўкі...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2396"/>
+      <location filename="../../Command.cpp" line="2477"/>
       <source>Plane</source>
       <translation>Плоскасць</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2403"/>
+      <location filename="../../Command.cpp" line="2484"/>
       <source>Sphere</source>
       <translation>Сфера</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2410"/>
+      <location filename="../../Command.cpp" line="2491"/>
       <source>Cylinder</source>
       <translation>Цыліндр</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2417"/>
+      <location filename="../../Command.cpp" line="2498"/>
       <source>Box</source>
-      <translation>Каробка</translation>
+      <translation>Паралелепіпед</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1690"/>
+      <location filename="../../Command.cpp" line="1768"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
       <translation>Таўшчыня [mm]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1694"/>
+      <location filename="../../Command.cpp" line="1772"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
       <translation>Напружанне [MPa]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1698"/>
+      <location filename="../../Command.cpp" line="1776"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
       <translation>Лінеарызаваныя напружанні</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1702"/>
+      <location filename="../../Command.cpp" line="1780"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
       <translation>Мембрана</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1706"/>
+      <location filename="../../Command.cpp" line="1784"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
       <translation>Мембрана і выгіб</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1710"/>
+      <location filename="../../Command.cpp" line="1788"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
       <translation>Агулам</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1995"/>
+      <location filename="../../Command.cpp" line="2073"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1996"/>
+      <location filename="../../Command.cpp" line="2074"/>
       <source>Stress linearization plot</source>
       <translation>Графік лінеарызацыі напружання</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1997"/>
+      <location filename="../../Command.cpp" line="2075"/>
       <source>Define/create stress linearization plots</source>
       <translation>Вызначае/стварае графікі лінеарызацыі напружання</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2031"/>
-      <location filename="../../Command.cpp" line="2040"/>
+      <location filename="../../Command.cpp" line="2112"/>
+      <location filename="../../Command.cpp" line="2121"/>
       <source>Wrong selection</source>
       <translation>Няправільны выбар</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2032"/>
-      <location filename="../../Command.cpp" line="2041"/>
+      <location filename="../../Command.cpp" line="2113"/>
+      <location filename="../../Command.cpp" line="2122"/>
       <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
       <translation>Калі ласка, абярыце фільтр абрэзкі, які абразае поле напружання наўздоўж лініі.</translation>
     </message>
@@ -525,27 +525,27 @@
   <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-      <location filename="../../Command.cpp" line="2483"/>
+      <location filename="../../Command.cpp" line="2564"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2484"/>
+      <location filename="../../Command.cpp" line="2565"/>
       <source>Post pipeline from result</source>
       <translation>Паслаць канвеер з выніку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2485"/>
+      <location filename="../../Command.cpp" line="2566"/>
       <source>Creates a post processing pipeline from a result object</source>
       <translation>Стварае канвеер пасляапрацоўкі з аб'екта выніку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2563"/>
+      <location filename="../../Command.cpp" line="2644"/>
       <source>Wrong selection type</source>
       <translation>Няправільны тып выбару</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2564"/>
+      <location filename="../../Command.cpp" line="2645"/>
       <source>Select a result object, please.</source>
       <translation>Калі ласка, абярыце аб'ект выніку.</translation>
     </message>
@@ -553,17 +553,17 @@
   <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2067"/>
+      <location filename="../../Command.cpp" line="2148"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2068"/>
+      <location filename="../../Command.cpp" line="2149"/>
       <source>Scalar clip filter</source>
       <translation>Скалярны фільтр зрэзу</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2070"/>
+      <location filename="../../Command.cpp" line="2151"/>
       <source>Define/create a clip filter which clips a field with a scalar value</source>
       <translation>Вызначае/стварае фільтр зрэзу, які абразае поле са скалярным значэннем</translation>
     </message>
@@ -571,17 +571,17 @@
   <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2117"/>
+      <location filename="../../Command.cpp" line="2198"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2118"/>
+      <location filename="../../Command.cpp" line="2199"/>
       <source>Warp filter</source>
       <translation>Фільтр дэфармацыі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2119"/>
+      <location filename="../../Command.cpp" line="2200"/>
       <source>Warp the geometry along a vector field by a certain factor</source>
       <translation>Дэфармаваць геаметрыю наўздоўж вектарнага полю па пэўнаму каэфіцыенту</translation>
     </message>
@@ -589,107 +589,112 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="468"/>
       <source>Create fluid boundary condition</source>
       <translation>Стварыць межавую щмову вадкасці</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="200"/>
+      <location filename="../../Command.cpp" line="201"/>
       <source>Make bearing constraint</source>
       <translation>Зрабіць абмежаванне падшыпніка</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="248"/>
+      <location filename="../../Command.cpp" line="249"/>
       <source>Make contact constraint on a face</source>
       <translation>Зрабіць абмежаванне кантакту на грані</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="315"/>
       <source>Make displacement boundary condition on face</source>
       <translation>Зрабіць межавую ўмову зрушэння на грані</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="355"/>
+      <location filename="../../Command.cpp" line="365"/>
       <source>Make fixed boundary condition for geometry</source>
       <translation>Зрабіць фіксаваную межавую ўмову для геаметрыі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
+      <location filename="../../Command.cpp" line="415"/>
+      <source>Make rigid body constraint</source>
+      <translation type="unfinished">Make rigid body constraint</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="519"/>
       <source>Make force load on geometry</source>
       <translation>Зрабіць сілавую нагрузку на геаметрыю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="513"/>
+      <location filename="../../Command.cpp" line="575"/>
       <source>Make gear constraint</source>
       <translation>Зрабіць абмежаванне шасцерні</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="562"/>
+      <location filename="../../Command.cpp" line="624"/>
       <source>Make heat flux load on face</source>
       <translation>Зрабіць нагрузку на цеплавы паток</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="619"/>
+      <location filename="../../Command.cpp" line="684"/>
       <source>Make initial temperature condition on body</source>
       <translation>Зрабіць пачатковы тэмпературны рэжым на целе</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="670"/>
+      <location filename="../../Command.cpp" line="735"/>
       <source>Make plane multi-point constraint on face</source>
       <translation>Зрабіць абмежаванне шматкропкавай плоскасці на грані</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="721"/>
+      <location filename="../../Command.cpp" line="786"/>
       <source>Make pressure load on face</source>
       <translation>Зрабіць нагрузку ціскам на грань</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="777"/>
+      <location filename="../../Command.cpp" line="842"/>
       <source>Make spring on face</source>
       <translation>Зрабіць спружыну на грані</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="832"/>
+      <location filename="../../Command.cpp" line="897"/>
       <source>Make pulley constraint</source>
       <translation>Зрабіць абмежаванне шківу</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="885"/>
+      <location filename="../../Command.cpp" line="950"/>
       <source>Make temperature boundary condition on face</source>
       <translation>Зрабіць межавую ўмову тэмпературы на грані</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="936"/>
+      <location filename="../../Command.cpp" line="1001"/>
       <source>Make local coordinate system on face</source>
       <translation>Зрабіць лакальную сістэму каардынат на грані</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1041"/>
+      <location filename="../../Command.cpp" line="1106"/>
       <source>Place robot</source>
       <translation>Месца робата</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1151"/>
+      <location filename="../../Command.cpp" line="1216"/>
       <source>Edit nodes set</source>
       <translation>Змяніць набор вузлоў</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1160"/>
+      <location filename="../../Command.cpp" line="1225"/>
       <source>Create nodes set</source>
       <translation>Стварыць набор вузлоў</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1651"/>
+      <location filename="../../Command.cpp" line="1710"/>
       <source>Create filter</source>
       <translation>Стварыць фільтр</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2249"/>
+      <location filename="../../Command.cpp" line="2330"/>
       <source>Create function</source>
       <translation>Стварыць функцыю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2535"/>
+      <location filename="../../Command.cpp" line="2616"/>
       <source>Create pipeline from result</source>
       <translation>Стварыць канвеер з выніку</translation>
     </message>
@@ -740,8 +745,8 @@
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="26"/>
-      <source>Select the vertices, lines and surfaces: </source>
-      <translation>Абярыце вяршыні, лініі і паверхні: </translation>
+      <source>Select the vertices, lines and surfaces:</source>
+      <translation>Абярыце вяршыні, лініі і паверхні:</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
@@ -775,24 +780,24 @@
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2398"/>
+      <location filename="../../Command.cpp" line="2479"/>
       <source>Create a plane function, defined by its origin and normal</source>
       <translation>Стварыць функцыю плоскасці, якая вызначаная яе пачаткам і напрамкам вектара нармалі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2405"/>
+      <location filename="../../Command.cpp" line="2486"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>Стварыць функцыю сферы, якая вызначаная яе цэнтрам і радыусам</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2411"/>
+      <location filename="../../Command.cpp" line="2492"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
       <translation>Стварыць функцыю цыліндра, якая вызначаная яе цэнтрам, воссю і радыусам</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2418"/>
+      <location filename="../../Command.cpp" line="2499"/>
       <source>Create a box function, defined by its center, length, width and height</source>
-      <translation>Стварыць функцыю прастакутніка, якая вызначаная яе цэнтрам, даўжынёй, шырынёй і вышынёй</translation>
+      <translation>Стварыць функцыю паралелепіпеда, якая вызначаная яе цэнтрам, даўжынёй, шырынёй і вышынёй</translation>
     </message>
   </context>
   <context>
@@ -910,118 +915,140 @@
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="348"/>
+      <source>PaStiX</source>
+      <translation>PaStiX</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="353"/>
+      <source>Pardiso</source>
+      <translation>Pardiso</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
       <source>Spooles</source>
       <translation>Рашальнік раўнанняў Spooles</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="353"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
       <source>Iterative Scaling</source>
       <translation>Паўторнае маштабаванне</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
       <source>Iterative Cholesky</source>
       <translation>Інтэрактыўнае раскладанне Халецкага</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="366"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="376"/>
       <source>Non-linear geometry</source>
       <translation>Нелінейная геаметрыя</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="373"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="383"/>
       <source>Use non-linear geometry</source>
       <translation>Ужываць нелінейную геаметрыю</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="389"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="399"/>
       <source>Time incrementation control parameter</source>
       <translation>Налада кіравання прырашчэннем часу</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="396"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="406"/>
       <source>Use non ccx defaults</source>
       <translation>Ужываць першапачатковыя значэнні, якія адрозныя ад CalculiX</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="412"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="454"/>
       <source>Time Initial Step</source>
       <translation>Пачатковы крок часу</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="460"/>
-      <location filename="../../DlgSettingsFemCcx.ui" line="499"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="502"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="541"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="596"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="651"/>
       <source>s</source>
       <translation>с</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="467"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="509"/>
       <source>Time End</source>
       <translation>Канец часу</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="506"/>
-      <source>Beam, shell element 3D output format </source>
-      <translation>Фармат вываду трохмерных элементаў, такі як бэлька і абалонка </translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="513"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="665"/>
       <source>3D Output, unchecked for 2D</source>
       <translation>Трохмерны вывад, двухмерны адключаны</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="534"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="686"/>
       <source>Thermo mechanical defaults</source>
       <translation>Першапачатковыя значэнні тэрмамеханікі</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="542"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="694"/>
       <source>Analysis type (transient or steady state)</source>
       <translation>Тып даследавання (пераходны ці ўстойлівы стан)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="549"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="701"/>
       <source>Use steady state</source>
       <translation>Ужываць устойлівы стан</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="565"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="422"/>
       <source>Maximum number of iterations</source>
       <translation>Найбольшая колькасць паўтораў</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="599"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="548"/>
+      <source>Time Minimum Step</source>
+      <translation>Найменшы крок часу</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="603"/>
+      <source>Time Maximum Step</source>
+      <translation>Найбольшы крок часу</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="658"/>
+      <source>Beam, shell element 3D output format</source>
+      <translation>Фармат вываду трохмерных элементаў, такі як бэлька і абалонка</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="722"/>
       <source>Frequency defaults</source>
       <translation>Першапачатковая частата</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="607"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="730"/>
       <source>Eigenmode number</source>
       <translation>Нумар абертона</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="652"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="775"/>
       <source>High frequency limit</source>
       <translation>Мяжа высокай частаты</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="690"/>
-      <location filename="../../DlgSettingsFemCcx.ui" line="738"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="813"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="861"/>
       <source>Hz</source>
       <translation>Гц</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="697"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="820"/>
       <source>Low frequency limit</source>
       <translation>Мяжа нізкай частаты</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcxImp.cpp" line="145"/>
+      <location filename="../../DlgSettingsFemCcxImp.cpp" line="149"/>
       <source>File does not exist</source>
       <translation>Файл не існуе</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcxImp.cpp" line="146"/>
+      <location filename="../../DlgSettingsFemCcxImp.cpp" line="150"/>
       <source>The specified executable
 '%1'
  does not exist!
@@ -1638,7 +1665,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskCreateNodeSet</name>
     <message>
-      <location filename="../../TaskCreateNodeSet.cpp" line="57"/>
+      <location filename="../../TaskCreateNodeSet.cpp" line="56"/>
       <source>Nodes set</source>
       <translation>Набор вузлоў</translation>
     </message>
@@ -1668,7 +1695,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintContact</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="514"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="573"/>
       <source>Input error</source>
       <translation>Памылка ўводу</translation>
     </message>
@@ -1708,7 +1735,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="475"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="553"/>
       <source>Input error</source>
       <translation>Памылка ўводу</translation>
     </message>
@@ -1780,7 +1807,7 @@ Specify another file please.</source>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="333"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Памылка ўводу</translation>
     </message>
   </context>
   <context>
@@ -1856,72 +1883,72 @@ Specify another file please.</source>
       <translation>Выдаліць</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="110"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="166"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="172"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="177"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="189"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="197"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="205"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="241"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="251"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="298"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="304"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="309"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="321"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="328"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="132"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="193"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="199"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="204"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="216"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="224"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="232"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="268"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="278"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="325"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="331"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="336"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="372"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="382"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="348"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="355"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="363"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="399"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="409"/>
       <source>Selection error</source>
       <translation>Памылка выбару</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="111"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="133"/>
       <source>Only one face in object! - moved to master face</source>
       <translation>Толькі адна грань у аб'екце! - перанесена на галоўную грань</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="167"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="299"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="194"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="326"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
       <translation>Толькі адна галоўная грань і адна залежная грань для абмежавання кантакту!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="172"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="241"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="304"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="372"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="199"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="268"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="331"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="399"/>
       <source>Nothing selected!</source>
       <translation>Нічога не абрана!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="178"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="198"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="205"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="225"/>
       <source>Only one slave face for a contact constraint!</source>
       <translation>Толькі адна залежная грань для абмежавання кантакту!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="189"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="251"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="321"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="382"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="216"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="278"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="348"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="409"/>
       <source>Selected object is not a part!</source>
       <translation>Абраны аб'ект не з'яўляецца дэталлю!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="205"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="336"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="232"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="363"/>
       <source>Only faces can be picked</source>
       <translation>Можна абраць толькі грані</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="310"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="337"/>
       <source>Only one master for a contact constraint!</source>
       <translation>Толькі адна асноўная грань для абмежавання кантакту!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="329"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="356"/>
       <source>Only one master face for a contact constraint!</source>
       <translation>Толькі адна асноўная грань для абмежавання кантакту!</translation>
     </message>
@@ -2181,30 +2208,30 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="217"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="227"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="237"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="293"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="303"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="270"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="280"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="290"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="335"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="346"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="356"/>
       <source>Selection error</source>
       <translation>Памылка выбару</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="217"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="270"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="335"/>
       <source>Nothing selected!</source>
       <translation>Нічога не абрана!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="227"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="293"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="280"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="346"/>
       <source>Selected object is not a part!</source>
       <translation>Абраны аб'ект не з'яўляецца дэталлю!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="238"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="304"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="291"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="357"/>
       <source>Selection must only consist of faces!</source>
       <translation>Выбар павінен складацца толькі з граняў!</translation>
     </message>
@@ -2506,7 +2533,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::ViewProviderFemAnalysis</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="161"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="168"/>
       <source>Activate analysis</source>
       <translation>Задзейнічаць даследаванне</translation>
     </message>
@@ -2527,15 +2554,15 @@ Specify another file please.</source>
   <context>
     <name>FemMaterial</name>
     <message>
-      <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <location filename="../ui/Material.ui" line="14"/>
+      <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <source>FEM material</source>
       <translation>Матэрыял МКЭ</translation>
     </message>
     <message>
+      <location filename="../ui/Material.ui" line="26"/>
       <location filename="../ui/MaterialReinforcement.ui" line="37"/>
       <location filename="../ui/MaterialReinforcement.ui" line="110"/>
-      <location filename="../ui/Material.ui" line="26"/>
       <source>Material</source>
       <translation>Матэрыял</translation>
     </message>
@@ -2560,9 +2587,9 @@ Specify another file please.</source>
       <translation>Назва матэрыялу</translation>
     </message>
     <message>
+      <location filename="../ui/Material.ui" line="71"/>
       <location filename="../ui/MaterialReinforcement.ui" line="74"/>
       <location filename="../ui/MaterialReinforcement.ui" line="147"/>
-      <location filename="../ui/Material.ui" line="71"/>
       <source>TextLabel</source>
       <translation>ТэкставыНадпіс</translation>
     </message>
@@ -2593,8 +2620,8 @@ Specify another file please.</source>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="155"/>
-      <source>Density                     </source>
-      <translation>Шчыльнасць                     </translation>
+      <source>Density</source>
+      <translation>Шчыльнасць</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="177"/>
@@ -2731,11 +2758,6 @@ Specify another file please.</source>
       <translation>Налады падзелу асяроддзя</translation>
     </message>
     <message>
-      <location filename="../ui/ElementFluid1D.ui" line="64"/>
-      <source>Pipe Area </source>
-      <translation>Паверхня трубы </translation>
-    </message>
-    <message>
       <location filename="../ui/ElementFluid1D.ui" line="71"/>
       <location filename="../ui/ElementFluid1D.ui" line="141"/>
       <location filename="../ui/ElementFluid1D.ui" line="162"/>
@@ -2823,6 +2845,7 @@ Specify another file please.</source>
       <translation>Выходны масавы расход</translation>
     </message>
     <message>
+      <location filename="../ui/ElementFluid1D.ui" line="64"/>
       <location filename="../ui/ElementFluid1D.ui" line="369"/>
       <location filename="../ui/ElementFluid1D.ui" line="415"/>
       <location filename="../ui/ElementFluid1D.ui" line="461"/>
@@ -2902,25 +2925,29 @@ Specify another file please.</source>
       <translation>Налада прывязкі</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintTie.ui" line="52"/>
-      <location filename="../ui/MeshRegion.ui" line="56"/>
+      <location filename="../ui/ConstraintTie.ui" line="56"/>
+      <source>Tolerance</source>
+      <translation>Дакладнасць</translation>
+    </message>
+    <message>
+      <location filename="../ui/ConstraintTie.ui" line="63"/>
+      <source>Enable Adjust</source>
+      <translation>Уключыць рэгуляванне</translation>
+    </message>
+    <message>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
       <location filename="../ui/ElementGeometry1D.ui" line="90"/>
       <location filename="../ui/ElementGeometry1D.ui" line="134"/>
       <location filename="../ui/ElementGeometry1D.ui" line="200"/>
       <location filename="../ui/ElementGeometry1D.ui" line="262"/>
       <location filename="../ui/ElementGeometry1D.ui" line="306"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
+      <location filename="../ui/MeshRegion.ui" line="56"/>
       <source>0 mm</source>
       <translation>0 мм</translation>
-    </message>
-    <message>
-      <location filename="../ui/ConstraintTie.ui" line="77"/>
-      <source>Tolerance:     </source>
-      <translation>Дакладнасць:     </translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="14"/>
@@ -2928,11 +2955,12 @@ Specify another file please.</source>
       <translation>Налада цэнтрыфугавання</translation>
     </message>
     <message>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
       <source>Parameter</source>
       <translation>Налада</translation>
     </message>
@@ -2962,13 +2990,18 @@ Specify another file please.</source>
       <translation>Налада вынікаў падзелу</translation>
     </message>
     <message>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="34"/>
+      <source>Variable</source>
+      <translation type="unfinished">Variable</translation>
+    </message>
+    <message>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
       <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <source>Analysis feature properties</source>
       <translation>Уласцівасці элементаў аналізу</translation>
     </message>
@@ -2983,9 +3016,12 @@ Specify another file please.</source>
       <translation>Патэнцыял:</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
+      <location filename="../ui/CurrentDensity.ui" line="94"/>
+      <location filename="../ui/CurrentDensity.ui" line="141"/>
+      <location filename="../ui/CurrentDensity.ui" line="197"/>
+      <location filename="../ui/CurrentDensity.ui" line="243"/>
+      <location filename="../ui/CurrentDensity.ui" line="297"/>
+      <location filename="../ui/CurrentDensity.ui" line="341"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="76"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="218"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="273"/>
@@ -2998,18 +3034,15 @@ Specify another file please.</source>
       <location filename="../ui/FlowVelocity.ui" line="32"/>
       <location filename="../ui/FlowVelocity.ui" line="87"/>
       <location filename="../ui/FlowVelocity.ui" line="118"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <location filename="../ui/Magnetization.ui" line="91"/>
       <location filename="../ui/Magnetization.ui" line="135"/>
       <location filename="../ui/Magnetization.ui" line="189"/>
       <location filename="../ui/Magnetization.ui" line="233"/>
       <location filename="../ui/Magnetization.ui" line="287"/>
       <location filename="../ui/Magnetization.ui" line="331"/>
-      <location filename="../ui/CurrentDensity.ui" line="94"/>
-      <location filename="../ui/CurrentDensity.ui" line="141"/>
-      <location filename="../ui/CurrentDensity.ui" line="197"/>
-      <location filename="../ui/CurrentDensity.ui" line="243"/>
-      <location filename="../ui/CurrentDensity.ui" line="297"/>
-      <location filename="../ui/CurrentDensity.ui" line="341"/>
       <source>unspecified</source>
       <translation>не ўдакладнены</translation>
     </message>
@@ -3050,16 +3083,22 @@ with a harmonic/oscillating driving force</source>
       <translation>Калі межавая ўмова для электрастатычнай сілы</translation>
     </message>
     <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="566"/>
+      <source>Capacity Body:</source>
+      <extracomment>Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</extracomment>
+      <translation>Ёмістасць цела:</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="120"/>
       <location filename="../ui/Magnetization.ui" line="30"/>
-      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <source>Real</source>
       <translation>Сапраўдная частка</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="130"/>
       <location filename="../ui/Magnetization.ui" line="40"/>
-      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <source>Imaginary</source>
       <translation>Уяўная частка</translation>
     </message>
@@ -3079,9 +3118,9 @@ with a harmonic/oscillating driving force</source>
       <translation>Уяўная частка скалярнага патэнцыялу</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="231"/>
       <location filename="../ui/Magnetization.ui" line="50"/>
-      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <source>x</source>
       <translation>x</translation>
     </message>
@@ -3100,9 +3139,9 @@ Note: has no effect if a solid was selected</source>
 Заўвага: не мае аніякага эфекту, калі было абрана суцэльнае цела</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="331"/>
       <location filename="../ui/Magnetization.ui" line="148"/>
-      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <source>y</source>
       <translation>y</translation>
     </message>
@@ -3121,9 +3160,9 @@ Note: has no effect if a solid was selected</source>
 Заўвага: не мае аніякага эфекту, калі было абрана суцэльнае цела</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="431"/>
       <location filename="../ui/Magnetization.ui" line="246"/>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <source>z</source>
       <translation>z</translation>
     </message>
@@ -3157,12 +3196,6 @@ Note: has no effect if a solid was selected</source>
       <translation>Вылічыць электрастатычную сілу</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="566"/>
-      <source>Capacity Body: </source>
-      <extracomment>Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</extracomment>
-      <translation>Ёмістасць цела: </translation>
-    </message>
-    <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="602"/>
       <source>Counter of the body (or face) with a capacitance</source>
       <translation>Лічыльнік цела (ці грані) з ёмістасцю</translation>
@@ -3173,29 +3206,34 @@ Note: has no effect if a solid was selected</source>
       <translation>Налада перасеку бэлькі</translation>
     </message>
     <message>
-      <location filename="../ui/ElementRotation1D.ui" line="20"/>
       <location filename="../ui/ElementGeometry1D.ui" line="20"/>
+      <location filename="../ui/ElementRotation1D.ui" line="20"/>
       <source>Cross section parameter</source>
       <translation>Налада папярочнага перасеку</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="71"/>
-      <source>Width:   </source>
-      <translation>Шырыня:   </translation>
+      <source>Width:</source>
+      <translation>Шырыня:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="115"/>
-      <source>Height:     </source>
-      <translation>Вышыня:     </translation>
+      <source>Height:</source>
+      <translation>Вышыня:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="225"/>
+      <source>Diameter:</source>
+      <translation>Дыяметр:</translation>
+    </message>
+    <message>
       <location filename="../ui/ElementGeometry1D.ui" line="243"/>
-      <source>Diameter:   </source>
-      <translation>Дыяметр:   </translation>
+      <source>Outer diameter:</source>
+      <translation>Вонкавы дыяметр:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="287"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="77"/>
       <source>Thickness:</source>
       <translation>Таўшчыня:</translation>
     </message>
@@ -3203,11 +3241,6 @@ Note: has no effect if a solid was selected</source>
       <location filename="../ui/ElementGeometry2D.ui" line="14"/>
       <source>Shell thickness parameter</source>
       <translation>Налада таўшчыні абалонкі</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementGeometry2D.ui" line="77"/>
-      <source>Thickness:     </source>
-      <translation>Таўшчыня:     </translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="14"/>
@@ -3221,34 +3254,34 @@ Note: has no effect if a solid was selected</source>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="89"/>
-      <source>Rotation:     </source>
-      <translation>Вярчэнне:     </translation>
+      <source>Rotation:</source>
+      <translation>Вярчэнне:</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
       <location filename="../ui/FlowVelocity.ui" line="25"/>
       <location filename="../ui/FlowVelocity.ui" line="73"/>
       <location filename="../ui/FlowVelocity.ui" line="131"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
       <source>formula</source>
       <translation>формула</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
       <location filename="../ui/FlowVelocity.ui" line="42"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
       <source>Velocity x:</source>
       <translation>Хуткасць па восі x:</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
       <location filename="../ui/FlowVelocity.ui" line="80"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
       <source>Velocity y:</source>
       <translation>Хуткасць па восі y:</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
       <location filename="../ui/FlowVelocity.ui" line="138"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
       <source>Velocity z:</source>
       <translation>Хуткасць па восі z:</translation>
     </message>
@@ -3294,8 +3327,8 @@ Note: has no effect if a solid was selected</source>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="14"/>
-      <source>Mesh region</source>
-      <translation>Вобласць паліганальнай сеткі</translation>
+      <source>Mesh refinement</source>
+      <translation>Удасканаліць паліганальную сетку</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="37"/>
@@ -3376,14 +3409,14 @@ Note: for 2D only setting for x is possible,
       <translation>Уяўная частка кампаненты y комплекснага патэнцыялу</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="262"/>
       <location filename="../ui/CurrentDensity.ui" line="272"/>
+      <location filename="../ui/Magnetization.ui" line="262"/>
       <source>Real part of potential z-component</source>
       <translation>Сапраўдная частка кампаненты z комплекснага патэнцыялу</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="306"/>
       <location filename="../ui/CurrentDensity.ui" line="316"/>
+      <location filename="../ui/Magnetization.ui" line="306"/>
       <source>Imaginary part of potential z-component</source>
       <translation>Уяўная частка кампаненты z комплекснага патэнцыялу</translation>
     </message>
@@ -3481,12 +3514,12 @@ Note: for 2D only setting for x is possible,
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="73"/>
+      <location filename="../../Command.cpp" line="74"/>
       <source>No active Analysis</source>
       <translation>Без бягучых даследаванняў</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="75"/>
       <source>You need to create or activate a Analysis</source>
       <translation>Вам неабходна стварыць ці задзейнічаць даследаванне</translation>
     </message>
@@ -3501,26 +3534,28 @@ Note: for 2D only setting for x is possible,
       <translation>Скасаваць</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="70"/>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="337"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="69"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="71"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="862"/>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="70"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="67"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="70"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="69"/>
+      <location filename="../../ViewProviderFemConstraintRigidBody.cpp" line="70"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="337"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="946"/>
       <source>A dialog is already open in the task panel</source>
       <translation>На панэлі задач дыялогавае акно ўжо адчыненае</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="71"/>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="338"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="863"/>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="68"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="71"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
+      <location filename="../../ViewProviderFemConstraintRigidBody.cpp" line="71"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="338"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="947"/>
       <source>Do you want to close this dialog?</source>
       <translation>Ці жадаеце вы зачыніць дыялогавае акно?</translation>
     </message>
@@ -3530,18 +3565,18 @@ Note: for 2D only setting for x is possible,
       <translation>Пабудаваць паліганальную сетку</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="174"/>
-      <location filename="../../AppFemGui.cpp" line="175"/>
       <location filename="../../AppFemGui.cpp" line="176"/>
       <location filename="../../AppFemGui.cpp" line="177"/>
       <location filename="../../AppFemGui.cpp" line="178"/>
       <location filename="../../AppFemGui.cpp" line="179"/>
+      <location filename="../../AppFemGui.cpp" line="180"/>
+      <location filename="../../AppFemGui.cpp" line="181"/>
       <source>FEM</source>
       <translation>МКЭ (Метад канчатковых элементаў)</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="182"/>
-      <location filename="../../AppFemGui.cpp" line="183"/>
+      <location filename="../../AppFemGui.cpp" line="184"/>
+      <location filename="../../AppFemGui.cpp" line="185"/>
       <source>Import-Export</source>
       <translation>Імпарт-Экспарт</translation>
     </message>
@@ -3601,12 +3636,12 @@ Note: for 2D only setting for x is possible,
       <translation>Суполкі</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="325"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="332"/>
       <source>Are you sure you want to continue?</source>
       <translation>Ці ўпэўненыя вы, што жадаеце працягнуць?</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="480"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="527"/>
       <source>Contact constraint</source>
       <translation>Абмежаванне кантакту</translation>
     </message>
@@ -3631,7 +3666,7 @@ Note: for 2D only setting for x is possible,
       <translation>Сілавая нагрузка</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="438"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="511"/>
       <source>Heat flux load</source>
       <translation>Нагрузка на цеплавы паток</translation>
     </message>
@@ -3656,9 +3691,14 @@ Note: for 2D only setting for x is possible,
       <translation>Лакальная сістэма каардынат</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraint.cpp" line="140"/>
+      <location filename="../../ViewProviderFemConstraint.cpp" line="169"/>
       <source>Edit analysis feature</source>
       <translation>Змяніць элемент аналізу</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="659"/>
+      <source>Constraint RigidBody</source>
+      <translation>Абмежаванне цвёрдага цела</translation>
     </message>
   </context>
   <context>
@@ -3994,7 +4034,7 @@ For possible variables, see the description box below.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="329"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="336"/>
       <source>Object dependencies</source>
       <translation>Залежнасці аб'екта</translation>
     </message>
@@ -4037,7 +4077,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>Паралелепіпед</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -4206,14 +4246,34 @@ For possible variables, see the description box below.</source>
       <translation>Абярыце залежную грань, націсніце Дадаць ці Выдаліць</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="143"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="151"/>
+      <source>Parameters</source>
+      <translation>Налады</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.ui" line="157"/>
       <source>Contact Stiffness</source>
       <translation>Калянасць кантакту</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="170"/>
-      <source>Friction coefficient</source>
+      <location filename="../../TaskFemConstraintContact.ui" line="180"/>
+      <source>Clearance Adjustment</source>
+      <translation>Рэгуляванне зазору</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.ui" line="203"/>
+      <source>Enable Friction</source>
+      <translation>Уключыць трэнне</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.ui" line="210"/>
+      <source>Friction Coefficient</source>
       <translation>Каэфіцыент трэння</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.ui" line="233"/>
+      <source>Stick Slope</source>
+      <translation>Ухіл крывой адгезіі</translation>
     </message>
   </context>
   <context>
@@ -4225,8 +4285,8 @@ For possible variables, see the description box below.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="41"/>
-      <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Абярыце некалькі граняў, націсніце кнопку Дадаць ці Выдаліць</translation>
+      <source>Click Add or Remove and select geometric element(s)</source>
+      <translation>Націсніце кнопку Дадаць ці Выдаліць, і абярыце геаметрычныя элементы</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="58"/>
@@ -4321,8 +4381,8 @@ generated by the flow
     <name>TaskFemConstraintFixed</name>
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
-      <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Абярыце некалькі граняў, націсніце кнопку Дадаць ці Выдаліць</translation>
+      <source>Click Add or Remove and select geometric element(s)</source>
+      <translation>Націсніце кнопку Дадаць ці Выдаліць, і абярыце геаметрычныя элементы</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="35"/>
@@ -4339,8 +4399,8 @@ generated by the flow
     <name>TaskFemConstraintFluidBoundary</name>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="28"/>
-      <source>Boundary </source>
-      <translation>Мяжа </translation>
+      <source>Boundary</source>
+      <translation>Мяжа</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="51"/>
@@ -4384,8 +4444,18 @@ generated by the flow
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="242"/>
-      <source>Direction </source>
-      <translation>Напрамак </translation>
+      <source>Direction</source>
+      <translation>Напрамак</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="334"/>
+      <source>Intensity</source>
+      <translation>Інтэнсіўнасць</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="394"/>
+      <source>Type</source>
+      <translation>Тып</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
@@ -4409,11 +4479,6 @@ normal vector of the face is used as direction</source>
       <translation>Спецыфікацыя турбулентнасці</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="334"/>
-      <source>Intensity    </source>
-      <translation>Інтэнсіўнасць    </translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="357"/>
       <source>Length [m]</source>
       <translation>Даўжыня [м]</translation>
@@ -4422,11 +4487,6 @@ normal vector of the face is used as direction</source>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="383"/>
       <source>Tab 2</source>
       <translation>Укладка 2</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="394"/>
-      <source> Type </source>
-      <translation> Тып </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
@@ -4453,8 +4513,8 @@ normal vector of the face is used as direction</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
-      <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Абярыце некалькі граняў, націсніце кнопку Дадаць ці Выдаліць</translation>
+      <source>Click Add or Remove and select geometric element(s)</source>
+      <translation>Націсніце кнопку Дадаць ці Выдаліць, і абярыце геаметрычныя элементы</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="47"/>
@@ -4507,8 +4567,8 @@ normal vector of the face is used as direction</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="20"/>
-      <source>Select multiple face(s), click Add or Remove:</source>
-      <translation>Абярыце некалькі граняў, націсніце кнопку Дадаць ці Выдаліць:</translation>
+      <source>Click Add or Remove and select face(s)</source>
+      <translation>Націсніце кнопку Дадаць ці Выдаліць, і абярыце грані</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="35"/>
@@ -4527,32 +4587,49 @@ normal vector of the face is used as direction</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="75"/>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="149"/>
+      <source>Surface Radiation</source>
+      <translation>Павярхоўнае выпраменьванне</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="82"/>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="215"/>
       <source>Surface heat flux</source>
       <translation>Канвекцыя цеплавога патоку</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="95"/>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="102"/>
       <source>Film coefficient</source>
       <translation>Каэфіцыент Канвекцыйнага цеплаабмену</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="102"/>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="109"/>
       <source>1 W/m^2/K</source>
       <translation>1 Вт/м^2/К</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="119"/>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="126"/>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="182"/>
       <source>Ambient Temperature</source>
       <translation>Тэмпература навакольнага асяроддзя</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="126"/>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="133"/>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="189"/>
       <source>300 K</source>
       <translation>300 K</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.ui" line="156"/>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="161"/>
+      <source>Emissivity</source>
+      <translation>Каэфіцыент выпраменьвання</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="168"/>
+      <source>1 </source>
+      <translation>1 </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintHeatflux.ui" line="222"/>
       <source>1 W/m^2</source>
       <translation>1 Вт/м^2</translation>
     </message>
@@ -4592,8 +4669,8 @@ normal vector of the face is used as direction</source>
     <name>TaskFemConstraintPressure</name>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
-      <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Абярыце некалькі граняў, націсніце кнопку Дадаць ці Выдаліць</translation>
+      <source>Click Add or Remove and select face(s)</source>
+      <translation>Націсніце кнопку Дадаць ці Выдаліць, і абярыце грані</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="35"/>
@@ -4620,8 +4697,8 @@ normal vector of the face is used as direction</source>
     <name>TaskFemConstraintSpring</name>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
-      <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Абярыце некалькі граняў, націсніце кнопку Дадаць ці Выдаліць</translation>
+      <source>Click Add or Remove and select face(s)</source>
+      <translation>Націсніце кнопку Дадаць ці Выдаліць, і абярыце грані</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="35"/>
@@ -4659,8 +4736,8 @@ used for the Elmer solver</source>
     <name>TaskFemConstraintTemperature</name>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="20"/>
-      <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Абярыце некалькі граняў, націсніце кнопку Дадаць ці Выдаліць</translation>
+      <source>Click Add or Remove and select geometric element(s)</source>
+      <translation>Націсніце кнопку Дадаць ці Выдаліць, і абярыце геаметрычныя элементы</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="29"/>
@@ -5025,77 +5102,82 @@ used for the Elmer solver</source>
       <translation>Найбольшы памер:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="44"/>
+      <location filename="../../TaskTetParameter.ui" line="46"/>
+      <source>Min. Size:</source>
+      <translation>Найменьшы памер:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTetParameter.ui" line="62"/>
       <source>Second order</source>
       <translation>Другі парадак</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="53"/>
+      <location filename="../../TaskTetParameter.ui" line="71"/>
       <source>Fineness:</source>
       <translation>Дакладнасць:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="64"/>
+      <location filename="../../TaskTetParameter.ui" line="82"/>
       <source>VeryCoarse</source>
       <translation>Вельмі груба</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="69"/>
+      <location filename="../../TaskTetParameter.ui" line="87"/>
       <source>Coarse</source>
       <translation>Груба</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="74"/>
+      <location filename="../../TaskTetParameter.ui" line="92"/>
       <source>Moderate</source>
       <translation>Умерана</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="79"/>
+      <location filename="../../TaskTetParameter.ui" line="97"/>
       <source>Fine</source>
       <translation>Дакладна</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="84"/>
+      <location filename="../../TaskTetParameter.ui" line="102"/>
       <source>VeryFine</source>
       <translation>Вельмі дакладна</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="89"/>
+      <location filename="../../TaskTetParameter.ui" line="107"/>
       <source>UserDefined</source>
       <translation>Зададзена карыстальнікам</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="97"/>
+      <location filename="../../TaskTetParameter.ui" line="115"/>
       <source>Growth Rate:</source>
       <translation>Тэмп росту:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="111"/>
+      <location filename="../../TaskTetParameter.ui" line="129"/>
       <source>Nbr. Segs per Edge:</source>
       <translation>Колькасць адрэзкаў на рабро:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="128"/>
+      <location filename="../../TaskTetParameter.ui" line="146"/>
       <source>Nbr. Segs per Radius:</source>
       <translation>Колькасць адрэзкаў на радыус:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="144"/>
+      <location filename="../../TaskTetParameter.ui" line="162"/>
       <source>Optimize</source>
       <translation>Аптымізаваць</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="166"/>
-      <source>Node count: </source>
-      <translation>Колькасць вузлоў: </translation>
+      <location filename="../../TaskTetParameter.ui" line="184"/>
+      <source>Node count:</source>
+      <translation>Колькасць вузлоў:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="180"/>
+      <location filename="../../TaskTetParameter.ui" line="198"/>
       <source>Triangle count:</source>
       <translation>Колькасць трыкутнікаў:</translation>
     </message>
     <message>
-      <location filename="../../TaskTetParameter.ui" line="194"/>
+      <location filename="../../TaskTetParameter.ui" line="212"/>
       <source>Tetrahedron count:</source>
       <translation>Колькасць тэтраэдраў:</translation>
     </message>
@@ -5225,7 +5307,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../Workbench.cpp" line="66"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Паліганальная сетка</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="67"/>
@@ -5271,20 +5353,20 @@ used for the Elmer solver</source>
   <context>
     <name>setupFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1598"/>
+      <location filename="../../Command.cpp" line="1663"/>
       <source>Error: A filter can only be applied to a single object.</source>
       <translation>Памылка: фільтр можа быць ужыты толькі да аднаго аб'екту.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1600"/>
-      <location filename="../../Command.cpp" line="1617"/>
-      <location filename="../../Command.cpp" line="1646"/>
+      <location filename="../../Command.cpp" line="1665"/>
+      <location filename="../../Command.cpp" line="1676"/>
+      <location filename="../../Command.cpp" line="1705"/>
       <source>The filter could not be set up.</source>
       <translation>Фільтр не атрымалася наладзіць.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1616"/>
-      <location filename="../../Command.cpp" line="1645"/>
+      <location filename="../../Command.cpp" line="1675"/>
+      <location filename="../../Command.cpp" line="1704"/>
       <source>Error: no post processing object selected.</source>
       <translation>Памылка: аб'ект пасляапрацоўкі не абраны.</translation>
     </message>
@@ -5527,12 +5609,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_MaterialReinforced</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="737"/>
+      <location filename="../../../femcommands/commands.py" line="734"/>
       <source>Reinforced material (concrete)</source>
       <translation>Арміраваны матэрыял (бетон)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="741"/>
+      <location filename="../../../femcommands/commands.py" line="738"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
       <translation>Стварае матэрыял для арміраванага матрычнага матэрыялу, такога як бетон</translation>
     </message>
@@ -5540,12 +5622,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="754"/>
+      <location filename="../../../femcommands/commands.py" line="751"/>
       <source>Material for solid</source>
       <translation>Матэрыял для суцэльнага цела</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="759"/>
+      <location filename="../../../femcommands/commands.py" line="756"/>
       <source>Creates a FEM material for solid</source>
       <translation>Стварае матэрыял МКЭ для суцэльнага цела</translation>
     </message>
@@ -5553,12 +5635,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_FEMMesh2Mesh</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="772"/>
+      <location filename="../../../femcommands/commands.py" line="769"/>
       <source>FEM mesh to mesh</source>
       <translation>Паліганальная сетка МКЭ у паліганальную сетку</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="776"/>
+      <location filename="../../../femcommands/commands.py" line="773"/>
       <source>Converts the surface of a FEM mesh to a mesh</source>
       <translation>Пераўтварае паверхню паліганальнай сеткі МКЭ у паліганальную сетку</translation>
     </message>
@@ -5566,12 +5648,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_MeshBoundaryLayer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="820"/>
+      <location filename="../../../femcommands/commands.py" line="817"/>
       <source>FEM mesh boundary layer</source>
       <translation>Мяжа пласту паліганальнай сеткі МКЭ</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="824"/>
+      <location filename="../../../femcommands/commands.py" line="821"/>
       <source>Creates a FEM mesh boundary layer</source>
       <translation>Стварае мяжу пласту паліганальнай сеткі МКЭ</translation>
     </message>
@@ -5579,12 +5661,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_MeshClear</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="837"/>
+      <location filename="../../../femcommands/commands.py" line="834"/>
       <source>Clear FEM mesh</source>
       <translation>Ачысціць паліганальную сетку МКЭ</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="841"/>
+      <location filename="../../../femcommands/commands.py" line="838"/>
       <source>Clears the Mesh of a FEM mesh object</source>
       <translation>Ачышчае паліганальную сетку аб'екта паліганальнай сеткі МКЭ</translation>
     </message>
@@ -5592,12 +5674,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_MeshDisplayInfo</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="863"/>
+      <location filename="../../../femcommands/commands.py" line="860"/>
       <source>Display FEM mesh info</source>
       <translation>Адлюстраваць інфармацыю аб паліганальнай сетцы МКЭ</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="867"/>
+      <location filename="../../../femcommands/commands.py" line="864"/>
       <source>Displays FEM mesh information</source>
       <translation>Адлюстроўвае інфармацыю аб паліганальнай сетцы МКЭ</translation>
     </message>
@@ -5605,12 +5687,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_MeshGmshFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="893"/>
+      <location filename="../../../femcommands/commands.py" line="890"/>
       <source>FEM mesh from shape by Gmsh</source>
       <translation>Паліганальная сетка МКЭ ад фігуры Gmsh</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="897"/>
+      <location filename="../../../femcommands/commands.py" line="894"/>
       <source>Creates a FEM mesh from a shape by Gmsh mesher</source>
       <translation>Стварае паліганальную сетку МКЭ ад фігуры, якая створаная стваральнікам паліганальных сетак Gmsh</translation>
     </message>
@@ -5618,12 +5700,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_MeshGroup</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="939"/>
+      <location filename="../../../femcommands/commands.py" line="936"/>
       <source>FEM mesh group</source>
       <translation>Суполка паліганальнай сеткі МКЭ</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="943"/>
+      <location filename="../../../femcommands/commands.py" line="940"/>
       <source>Creates a FEM mesh group</source>
       <translation>Стварае суполку паліганальнай сеткі МКЭ</translation>
     </message>
@@ -5631,38 +5713,25 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="956"/>
+      <location filename="../../../femcommands/commands.py" line="953"/>
       <source>FEM mesh from shape by Netgen</source>
       <translation>Паліганальная сетка МКЭ ад фігуры Netgen</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="960"/>
+      <location filename="../../../femcommands/commands.py" line="957"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
       <translation>Стварае паліганальную сетку МКЭ з суцэльнага цела ці грані фігуры з дапамогай унутранага стваральніка паліганальных сетак Netgen</translation>
     </message>
   </context>
   <context>
-    <name>FEM_MeshRegion</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1002"/>
-      <source>FEM mesh region</source>
-      <translation>Вобласць паліганальнай сеткі МКЭ</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1006"/>
-      <source>Creates a FEM mesh region</source>
-      <translation>Стварае вобласць паліганальнай сеткі МКЭ</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_ResultShow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1019"/>
+      <location filename="../../../femcommands/commands.py" line="1016"/>
       <source>Show result</source>
       <translation>Паказаць вынік</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1024"/>
+      <location filename="../../../femcommands/commands.py" line="1021"/>
       <source>Shows and visualizes selected result data</source>
       <translation>Паказвае і візуалізуе абраныя выніковыя дадзеныя</translation>
     </message>
@@ -5670,25 +5739,25 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_ResultsPurge</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1039"/>
+      <location filename="../../../femcommands/commands.py" line="1036"/>
       <source>Purge results</source>
       <translation>Ачысціць вынікі</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1044"/>
+      <location filename="../../../femcommands/commands.py" line="1041"/>
       <source>Purges all results from active analysis</source>
       <translation>Ачысціць усе вынікі актыўнага даследавання</translation>
     </message>
   </context>
   <context>
-    <name>FEM_SolverCalculixCxxtools</name>
+    <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1061"/>
+      <location filename="../../../femcommands/commands.py" line="1058"/>
       <source>Solver CalculiX Standard</source>
       <translation>Стандартны сродак рашэння CalculiX</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1066"/>
+      <location filename="../../../femcommands/commands.py" line="1063"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation>Стварае стандартны сродак рашэння МКЭ CalculiX з дапамогай інструментаў CalculiX</translation>
     </message>
@@ -5696,12 +5765,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1123"/>
+      <location filename="../../../femcommands/commands.py" line="1120"/>
       <source>Solver job control</source>
       <translation>Кіраванне заданнямі сродку рашэння</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1128"/>
+      <location filename="../../../femcommands/commands.py" line="1125"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Змяняе атрыбуты сродку рашэння і выконвае вылічэнні для абранага сродку рашэння</translation>
     </message>
@@ -5709,12 +5778,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1140"/>
+      <location filename="../../../femcommands/commands.py" line="1137"/>
       <source>Solver Elmer</source>
       <translation>Сродак рашэння Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1145"/>
+      <location filename="../../../femcommands/commands.py" line="1142"/>
       <source>Creates a FEM solver Elmer</source>
       <translation>Стварае задачу МКЭ для сродку рашэння Elmer</translation>
     </message>
@@ -5722,12 +5791,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1156"/>
+      <location filename="../../../femcommands/commands.py" line="1153"/>
       <source>Solver Mystran</source>
       <translation>Сродак рашэння Mystran</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1158"/>
+      <location filename="../../../femcommands/commands.py" line="1155"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>Стварае задачу МКЭ для сродку рашэння Mystran</translation>
     </message>
@@ -5735,12 +5804,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1168"/>
+      <location filename="../../../femcommands/commands.py" line="1165"/>
       <source>Run solver calculations</source>
       <translation>Запусціць вылічэнні сродку рашэння</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1173"/>
+      <location filename="../../../femcommands/commands.py" line="1170"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>Выконвае вылічэнні для абранага сродку рашэння</translation>
     </message>
@@ -5748,12 +5817,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1188"/>
+      <location filename="../../../femcommands/commands.py" line="1185"/>
       <source>Solver Z88</source>
       <translation>Сродак рашэння Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1190"/>
+      <location filename="../../../femcommands/commands.py" line="1187"/>
       <source>Creates a FEM solver Z88</source>
       <translation>Стварае задачу МКЭ для сродку рашэння Z88</translation>
     </message>
@@ -5997,13 +6066,13 @@ Please select a result type first.</source>
   <context>
     <name>CmdFemCompEmConstraints</name>
     <message>
-      <location filename="../../Command.cpp" line="1194"/>
+      <location filename="../../Command.cpp" line="1259"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1195"/>
-      <location filename="../../Command.cpp" line="1196"/>
+      <location filename="../../Command.cpp" line="1260"/>
+      <location filename="../../Command.cpp" line="1261"/>
       <source>Electromagnetic boundary conditions</source>
       <translation>Электрамагнетычныя межавыя ўмовы</translation>
     </message>
@@ -6048,17 +6117,17 @@ Please select a result type first.</source>
   <context>
     <name>CmdFemCompEmEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1318"/>
+      <location filename="../../Command.cpp" line="1383"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1319"/>
+      <location filename="../../Command.cpp" line="1384"/>
       <source>Electromagnetic equations</source>
       <translation>Ураўненні электрамагнітнага полю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1320"/>
+      <location filename="../../Command.cpp" line="1385"/>
       <source>Electromagnetic equations for the Elmer solver</source>
       <translation>Ураўненні электрамагнітнага полю для сродку рашэння Elmer</translation>
     </message>
@@ -6066,17 +6135,17 @@ Please select a result type first.</source>
   <context>
     <name>CmdFemPostContoursFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2166"/>
+      <location filename="../../Command.cpp" line="2247"/>
       <source>Fem</source>
       <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2167"/>
+      <location filename="../../Command.cpp" line="2248"/>
       <source>Contours filter</source>
       <translation>Фільтр контураў</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2168"/>
+      <location filename="../../Command.cpp" line="2249"/>
       <source>Define/create a contours filter which displays iso contours</source>
       <translation>Вызначыць/стварыць фільтр контураў, які адлюстроўвае ізаметрычныя контуры</translation>
     </message>
@@ -6180,17 +6249,17 @@ Please select a result type first.</source>
   <context>
     <name>CmdFemCompMechEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1470"/>
+      <location filename="../../Command.cpp" line="1535"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>МКЭ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1471"/>
+      <location filename="../../Command.cpp" line="1536"/>
       <source>Mechanical equations</source>
       <translation>Ураўненні механікі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1472"/>
+      <location filename="../../Command.cpp" line="1537"/>
       <source>Mechanical equations for the Elmer solver</source>
       <translation>Ураўненні механікі для сродку рашэння Elmer</translation>
     </message>
@@ -6198,12 +6267,12 @@ Please select a result type first.</source>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1104"/>
+      <location filename="../../../femcommands/commands.py" line="1101"/>
       <source>Solver CalculiX (new framework)</source>
       <translation>Cродак рашэння CalculiX (новы фрэймворк)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1109"/>
+      <location filename="../../../femcommands/commands.py" line="1106"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
       <translation>Стварае новы фреймворк сродку рашэння МКЭ CalculiX (менш апрацоўкі памылак у выніку)</translation>
     </message>
@@ -6349,6 +6418,170 @@ Please select a result type first.</source>
       <location filename="../../../femcommands/commands.py" line="373"/>
       <source>Creates a tie constraint</source>
       <translation>Стварае абмежаванне сувязі</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshRegion</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="999"/>
+      <source>FEM mesh refinement</source>
+      <translation>Удасканаліць паліганальную сетку МКЭ</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1003"/>
+      <source>Creates a FEM mesh refinement</source>
+      <translation>Стварае ўдасканаленую паліганальную сетку МКЭ</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskFemConstraintRigidBody</name>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="14"/>
+      <source>Form</source>
+      <translation>Форма</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="20"/>
+      <source>Click Add or Remove and select geometric element(s)</source>
+      <translation>Націсніце кнопку Дадаць ці Выдаліць, і абярыце геаметрычныя элементы</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="35"/>
+      <source>Add</source>
+      <translation>Дадаць</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="51"/>
+      <source>Remove</source>
+      <translation>Выдаліць</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="77"/>
+      <source>Reference Node</source>
+      <translation>Апорны вузел</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="83"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="183"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="231"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="309"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="400"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="448"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="537"/>
+      <source>X:</source>
+      <translation>X:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="106"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="190"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="238"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="316"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="407"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="455"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="544"/>
+      <source>Y:</source>
+      <translation>Y:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="129"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="197"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="245"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="323"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="414"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="462"/>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="551"/>
+      <source>Z:</source>
+      <translation>Z:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="177"/>
+      <source>Translational Mode</source>
+      <translation>Рэжым перамяшчэння</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="225"/>
+      <source>Displacement</source>
+      <translation>Зрушэнне</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="303"/>
+      <source>Force</source>
+      <translation>Сіла</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="394"/>
+      <source>Rotational Mode</source>
+      <translation>Рэжым вярчэння</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="442"/>
+      <source>Rotation</source>
+      <translation>Вярчэнне</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="499"/>
+      <source>Angle:</source>
+      <translation>Вугал:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.ui" line="531"/>
+      <source>Moment</source>
+      <translation>Імгненне</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemConstraintRigidBody</name>
+    <message>
+      <location filename="../../Command.cpp" line="397"/>
+      <source>Fem</source>
+      <translation>МКЭ</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="398"/>
+      <source>Rigid body constraint</source>
+      <translation type="unfinished">Rigid body constraint</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="399"/>
+      <source>Creates a rigid body constraint for a geometric entity</source>
+      <translation type="unfinished">Creates a rigid body constraint for a geometric entity</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskFemConstraintRigidBody</name>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="272"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="283"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="323"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="346"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="357"/>
+      <source>Selection error</source>
+      <translation>Памылка выбару</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="272"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="346"/>
+      <source>Nothing selected!</source>
+      <translation>Нічога не абрана!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="283"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="357"/>
+      <source>Selected object is not a part!</source>
+      <translation>Абраны аб'ект не з'яўляецца дэталлю!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="321"/>
+      <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
+      <translation>Дапускаецца толькі адзін тып выбару (вяршыня, грань ці рабро) для кожнага абмежавання!</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="767"/>
+      <source>Input error</source>
+      <translation>Памылка ўводу</translation>
     </message>
   </context>
 </TS>

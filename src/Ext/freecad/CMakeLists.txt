@@ -25,9 +25,20 @@ else()
 endif()
 
 configure_file(__init__.py.template ${NAMESPACE_INIT})
-configure_file(project_utility.py ${NAMESPACE_DIR}/project_utility.py)
-configure_file(UiTools.py ${NAMESPACE_DIR}/UiTools.py)
-configure_file(utils.py ${NAMESPACE_DIR}/utils.py)
+
+set(EXT_FILES
+    freecad_doc.py
+    part.py
+    partdesign.py
+    project_utility.py
+    sketcher.py
+    UiTools.py
+    utils.py
+)
+
+foreach (it ${EXT_FILES})
+    configure_file(${it} ${NAMESPACE_DIR}/${it})
+endforeach()
 
 if (INSTALL_TO_SITEPACKAGES)
     SET(SITE_PACKAGE_DIR ${PYTHON_MAIN_DIR}/freecad)
@@ -38,9 +49,7 @@ endif()
 INSTALL(
     FILES
         ${NAMESPACE_INIT}
-        project_utility.py
-        UiTools.py
-        utils.py
+        ${EXT_FILES}
     DESTINATION
         ${SITE_PACKAGE_DIR}
 )

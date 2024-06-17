@@ -28,6 +28,7 @@
 #include <array>
 #endif
 
+#include <Base/Tools.h>
 #include "Quantity.h"
 #include "Exception.h"
 #include "UnitsApi.h"
@@ -255,6 +256,8 @@ QString Quantity::getSafeUserString() const
             retString = QStringLiteral("%1 %2").arg(this->myValue).arg(this->getUnit().getString());
         }
     }
+    retString =
+        QString::fromStdString(Base::Tools::escapeQuotesFromString(retString.toStdString()));
     return retString;
 }
 
@@ -529,6 +532,28 @@ int QuantityLexer();
 // NOLINTNEXTLINE
 #include "QuantityLexer.c"
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
+
+class StringBufferCleaner
+{
+public:
+    explicit StringBufferCleaner(YY_BUFFER_STATE buffer)
+        : my_string_buffer {buffer}
+    {}
+    ~StringBufferCleaner()
+    {
+        // free the scan buffer
+        yy_delete_buffer(my_string_buffer);
+    }
+
+    StringBufferCleaner(const StringBufferCleaner&) = delete;
+    StringBufferCleaner(StringBufferCleaner&&) = delete;
+    StringBufferCleaner& operator=(const StringBufferCleaner&) = delete;
+    StringBufferCleaner& operator=(StringBufferCleaner&&) = delete;
+
+private:
+    YY_BUFFER_STATE my_string_buffer;
+};
+
 }  // namespace QuantityParser
 
 #if defined(__clang__)
@@ -542,12 +567,11 @@ Quantity Quantity::parse(const QString& string)
     // parse from buffer
     QuantityParser::YY_BUFFER_STATE my_string_buffer =
         QuantityParser::yy_scan_string(string.toUtf8().data());
+    QuantityParser::StringBufferCleaner cleaner(my_string_buffer);
     // set the global return variables
     QuantResult = Quantity(DOUBLE_MIN);
     // run the parser
     QuantityParser::yyparse();
-    // free the scan buffer
-    QuantityParser::yy_delete_buffer(my_string_buffer);
 
     return QuantResult;
 }

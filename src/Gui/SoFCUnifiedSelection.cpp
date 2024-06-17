@@ -71,6 +71,7 @@
 #endif
 
 #include <App/Document.h>
+#include <App/GeoFeature.h>
 #include <App/ElementNamingUtils.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
@@ -396,8 +397,14 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
             if (vp && (useNewSelection.getValue()||vp->useNewSelectionModel()) && vp->isSelectable()) {
                 SoDetail *detail = nullptr;
                 detailPath->truncate(0);
+                auto subName = selaction->SelChange.pSubName;
+#ifdef FC_USE_TNP_FIX
+                std::pair<std::string, std::string> elementName;
+                App::GeoFeature::resolveElement(obj,subName,elementName);
+                subName = elementName.second.c_str();  // Use the shortened element name not the full one.
+#endif
                 if(!selaction->SelChange.pSubName || !selaction->SelChange.pSubName[0] ||
-                    vp->getDetailPath(selaction->SelChange.pSubName,detailPath,true,detail))
+                    vp->getDetailPath(subName,detailPath,true,detail))
                 {
                     SoSelectionElementAction::Type type = SoSelectionElementAction::None;
                     if (selaction->SelChange.Type == SelectionChanges::AddSelection) {
@@ -742,7 +749,8 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
             // check to see if the mouse is over a geometry...
             auto infos = this->getPickedList(action,!Selection().needPickedList());
             bool greedySel = Gui::Selection().getSelectionStyle() == Gui::SelectionSingleton::SelectionStyle::GreedySelection;
-            if(setSelection(infos, event->wasCtrlDown() || greedySel))
+            greedySel = greedySel || event->wasCtrlDown();
+            if(setSelection(infos, greedySel) || greedySel)
                 action->setHandled();
         } // mouse release
     }
@@ -782,6 +790,7 @@ void SoHighlightElementAction::initClass()
     SO_ACTION_INIT_CLASS(SoHighlightElementAction,SoAction);
 
     SO_ENABLE(SoHighlightElementAction, SoSwitchElement);
+    SO_ENABLE(SoHighlightElementAction, SoModelMatrixElement);
 
     SO_ACTION_ADD_METHOD(SoNode,nullAction);
 
@@ -849,6 +858,7 @@ void SoSelectionElementAction::initClass()
     SO_ACTION_INIT_CLASS(SoSelectionElementAction,SoAction);
 
     SO_ENABLE(SoSelectionElementAction, SoSwitchElement);
+    SO_ENABLE(SoSelectionElementAction, SoModelMatrixElement);
 
     SO_ACTION_ADD_METHOD(SoNode,nullAction);
 
@@ -1710,7 +1720,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
 
     if(path->getLength() != tmpPath->getLength()) {
         // The auditing SoPath may be truncated due to harmless things such as
-        // fliping a SoSwitch sibling node. So we keep an unauditing SoTempPath
+        // flipping a SoSwitch sibling node. So we keep an unauditing SoTempPath
         // around to try to restore the path.
         for(int i=path->getLength()-1;i<tmpPath->getLength()-1;++i) {
             auto children = path->getNode(i)->getChildren();

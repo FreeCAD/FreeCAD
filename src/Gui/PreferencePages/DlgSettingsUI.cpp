@@ -93,11 +93,11 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
     ResizableColumn->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
-    CheckBoxesSelection = new Gui::PrefCheckBox(this);
-    layoutTreeview->addWidget(CheckBoxesSelection, 3, 0);
-    CheckBoxesSelection->setChecked(Gui::TreeParams::defaultCheckBoxesSelection());
-    CheckBoxesSelection->setEntryName("CheckBoxesSelection");
-    CheckBoxesSelection->setParamGrpPath("TreeView");
+    VisibilityIcon = new Gui::PrefCheckBox(this);
+    layoutTreeview->addWidget(VisibilityIcon, 3, 0);
+    VisibilityIcon->setChecked(Gui::TreeParams::defaultVisibilityIcon());
+    VisibilityIcon->setEntryName("VisibilityIcon");
+    VisibilityIcon->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
     HideColumn = new Gui::PrefCheckBox(this);
@@ -107,42 +107,49 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
     HideColumn->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
+    HideInternalNames = new Gui::PrefCheckBox(this);
+    layoutTreeview->addWidget(HideInternalNames, 5, 0);
+    HideInternalNames->setChecked(Gui::TreeParams::defaultHideInternalNames());
+    HideInternalNames->setEntryName("HideInternalNames");
+    HideInternalNames->setParamGrpPath("TreeView");
+
+    // Auto generated code (Tools/params_utils.py:433)
     HideScrollBar = new Gui::PrefCheckBox(this);
-    layoutTreeview->addWidget(HideScrollBar, 5, 0);
+    layoutTreeview->addWidget(HideScrollBar, 6, 0);
     HideScrollBar->setChecked(Gui::TreeParams::defaultHideScrollBar());
     HideScrollBar->setEntryName("HideScrollBar");
     HideScrollBar->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
     HideHeaderView = new Gui::PrefCheckBox(this);
-    layoutTreeview->addWidget(HideHeaderView, 6, 0);
+    layoutTreeview->addWidget(HideHeaderView, 7, 0);
     HideHeaderView->setChecked(Gui::TreeParams::defaultHideHeaderView());
     HideHeaderView->setEntryName("HideHeaderView");
     HideHeaderView->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
     labelIconSize = new QLabel(this);
-    layoutTreeview->addWidget(labelIconSize, 7, 0);
+    layoutTreeview->addWidget(labelIconSize, 8, 0);
     IconSize = new Gui::PrefSpinBox(this);
-    layoutTreeview->addWidget(IconSize, 7, 1);
+    layoutTreeview->addWidget(IconSize, 8, 1);
     IconSize->setValue(Gui::TreeParams::defaultIconSize());
     IconSize->setEntryName("IconSize");
     IconSize->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
     labelFontSize = new QLabel(this);
-    layoutTreeview->addWidget(labelFontSize, 8, 0);
+    layoutTreeview->addWidget(labelFontSize, 9, 0);
     FontSize = new Gui::PrefSpinBox(this);
-    layoutTreeview->addWidget(FontSize, 8, 1);
+    layoutTreeview->addWidget(FontSize, 9, 1);
     FontSize->setValue(Gui::TreeParams::defaultFontSize());
     FontSize->setEntryName("FontSize");
     FontSize->setParamGrpPath("TreeView");
 
     // Auto generated code (Tools/params_utils.py:433)
     labelItemSpacing = new QLabel(this);
-    layoutTreeview->addWidget(labelItemSpacing, 9, 0);
+    layoutTreeview->addWidget(labelItemSpacing, 10, 0);
     ItemSpacing = new Gui::PrefSpinBox(this);
-    layoutTreeview->addWidget(ItemSpacing, 9, 1);
+    layoutTreeview->addWidget(ItemSpacing, 10, 1);
     ItemSpacing->setValue(Gui::TreeParams::defaultItemSpacing());
     ItemSpacing->setEntryName("ItemSpacing");
     ItemSpacing->setParamGrpPath("TreeView");
@@ -449,8 +456,9 @@ void DlgSettingsUI::saveSettings()
     ItemBackground->onSave();
     ItemBackgroundPadding->onSave();
     ResizableColumn->onSave();
-    CheckBoxesSelection->onSave();
+    VisibilityIcon->onSave();
     HideColumn->onSave();
+    HideInternalNames->onSave();
     HideScrollBar->onSave();
     HideHeaderView->onSave();
     IconSize->onSave();
@@ -490,8 +498,9 @@ void DlgSettingsUI::loadSettings()
     ItemBackground->onRestore();
     ItemBackgroundPadding->onRestore();
     ResizableColumn->onRestore();
-    CheckBoxesSelection->onRestore();
+    VisibilityIcon->onRestore();
     HideColumn->onRestore();
+    HideInternalNames->onRestore();
     HideScrollBar->onRestore();
     HideHeaderView->onRestore();
     IconSize->onRestore();
@@ -537,10 +546,12 @@ void DlgSettingsUI::retranslateUi()
     labelItemBackgroundPadding->setToolTip(ItemBackgroundPadding->toolTip());
     ResizableColumn->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docResizableColumn()));
     ResizableColumn->setText(QObject::tr("Resizable columns"));
-    CheckBoxesSelection->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docCheckBoxesSelection()));
-    CheckBoxesSelection->setText(QObject::tr("Show item checkbox"));
+    VisibilityIcon->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docVisibilityIcon()));
+    VisibilityIcon->setText(QObject::tr("Show visibility icon"));
     HideColumn->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docHideColumn()));
-    HideColumn->setText(QObject::tr("Hide extra column"));
+    HideColumn->setText(QObject::tr("Hide Description"));
+    HideInternalNames->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docHideInternalNames()));
+    HideInternalNames->setText(QObject::tr("Hide Internal Names"));
     HideScrollBar->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docHideScrollBar()));
     HideScrollBar->setText(QObject::tr("Hide scroll bar"));
     HideHeaderView->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docHideHeaderView()));
@@ -654,7 +665,7 @@ void DlgSettingsUI::init()
     QObject::connect(DockOverlayAnimationCurve, QOverload<int>::of(&QComboBox::currentIndexChanged),
                      this, &DlgSettingsUI::onCurveChange);
 
-    QObject::connect(timer, &QTimer::timeout, [=]() {
+    QObject::connect(timer, &QTimer::timeout, [this]() {
         if (animator1->state() != QAbstractAnimation::Running) {
             this->setOffset1(1);
             this->a1 = this->b1 = 0;

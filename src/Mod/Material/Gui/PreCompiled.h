@@ -44,6 +44,7 @@
 // standard
 #include <cfloat>
 #include <cmath>
+#include <limits>
 
 // STL
 #include <algorithm>
@@ -60,10 +61,10 @@
 #include <Gui/QtAll.h>
 #endif
 
-// // Inventor includes OpenGL
-// #ifndef __InventorAll__
-// # include <Gui/InventorAll.h>
-// #endif
+// Inventor includes OpenGL
+#ifndef __InventorAll__
+# include <Gui/InventorAll.h>
+#endif
 
 #endif  //_PreComp_
 

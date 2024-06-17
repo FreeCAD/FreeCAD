@@ -334,12 +334,15 @@ private:
     bool _valid {false};
     bool _verbose {true};
 
+public:
     struct FileEntry
     {
         std::string FileName;
         Base::Persistence* Object;
     };
     std::vector<FileEntry> FileList;
+
+private:
     std::vector<std::string> FileNames;
 
     std::bitset<32> StatusBits;

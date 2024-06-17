@@ -5,13 +5,13 @@
     <name>UnitsApi</name>
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
-      <source>Standard (mm, kg, s, degree)</source>
-      <translation>Стандартная (мм, кг, с, градус)</translation>
+      <source>Standard (mm, kg, s, °)</source>
+      <translation>Стандартная (мм, кг, с, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
-      <source>MKS (m, kg, s, degree)</source>
-      <translation>Сістэма МКС (м, кг, с, градус)</translation>
+      <source>MKS (m, kg, s, °)</source>
+      <translation>Сістэма МКС (м, кг, с, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="73"/>
@@ -40,7 +40,7 @@
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>
-      <source>Imperial for Civil Eng (ft, ft/sec)</source>
+      <source>Imperial for Civil Eng (ft, ft/s)</source>
       <translation>Брытанская для грамадскіх інжынераў (футы, футы/с)</translation>
     </message>
     <message>

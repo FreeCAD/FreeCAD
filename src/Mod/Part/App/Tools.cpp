@@ -741,7 +741,6 @@ TopLoc_Location Part::Tools::fromPlacement(const Base::Placement& plm)
     Base::Vector3d t = plm.getPosition();
 
     gp_Trsf trf;
-    trf.SetTranslation(gp_Vec(t.x, t.y, t.z));
-    trf.SetRotation(gp_Quaternion(q1, q2, q3, q4));
+    trf.SetTransformation(gp_Quaternion(q1, q2, q3, q4), gp_Vec(t.x, t.y, t.z));
     return {trf};
 }

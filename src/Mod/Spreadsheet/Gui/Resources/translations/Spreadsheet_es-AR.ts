@@ -696,7 +696,7 @@ la configuración de diseño. La propiedad se creará si no existe.</translation
       <translation>Exportar archivo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Mostrar hoja de cálculo</translation>
     </message>
@@ -741,7 +741,7 @@ Spreadsheet.mi_nombre_de_alias en lugar de Spreadsheet.B1
 </translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Hoja de cálculo</translation>
     </message>
@@ -954,8 +954,18 @@ Por defecto a: %V = %A
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>Carácter delimitador: </translation>
+      <source>Delimiter Character:</source>
+      <translation>Carácter delimitador:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation>Carácter de comilla:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation>Carácter de escape:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -968,19 +978,9 @@ Por defecto a: %V = %A
       <translation>pestaña</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>Carácter de cita: </translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Carácter utilizado para delimitar cadenas, normalmente es una comilla simple (') o una comilla doble (&amp;quot;). Debe ser un solo carácter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Carácter de Escape: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -1167,7 +1167,7 @@ Por defecto a: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Sin nombre</translation>
     </message>

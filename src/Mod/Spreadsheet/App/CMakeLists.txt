@@ -57,6 +57,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(Spreadsheet SHARED ${Spreadsheet_SRCS})
 target_link_libraries(Spreadsheet ${Spreadsheet_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Spreadsheet)
+endif()
 
 
 SET_BIN_DIR(Spreadsheet Spreadsheet /Mod/Spreadsheet)

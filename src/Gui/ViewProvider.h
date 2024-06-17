@@ -36,6 +36,7 @@
 #include <Base/BoundBox.h>
 #include <Base/Vector3D.h>
 
+#include "TreeItemMode.h"
 
 class SbVec2s;
 class SbVec3f;
@@ -310,6 +311,8 @@ public:
      * */
     virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
             const char *subname, const std::vector<std::string> &elements) const;
+    /* Check whether the object accept reordering of its children during drop.*/
+    virtual bool acceptReorderingObjects() const { return false; };
 
     /// return a subname referencing the sub-object holding the dropped objects
     virtual std::string getDropPrefix() const { return {}; }
@@ -357,6 +360,8 @@ public:
     boost::signals2::signal<void (const QString&)> signalChangeToolTip;
     /// signal on status tip change
     boost::signals2::signal<void (const QString&)> signalChangeStatusTip;
+    /// signal on highlight change
+    boost::signals2::signal<void (bool, Gui::HighlightMode)> signalChangeHighlight;
     //@}
 
     /** update the content of the ViewProvider
@@ -457,6 +462,9 @@ public:
     virtual void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>&) const {}
     //@}
 
+    /// is called when the provider is in edit and a "Select All" command was issued
+    /// Provider shall return 'false' is it ignores the command, 'true' otherwise
+    virtual bool selectAll() { return false; }
     /// is called when the provider is in edit and a key event occurs. Only ESC ends edit.
     virtual bool keyPressed(bool pressed, int key);
     /// Is called by the tree if the user double clicks on the object. It returns the string

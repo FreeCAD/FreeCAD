@@ -691,7 +691,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Экспартаваць файл</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Паказаць аркуш</translation>
     </message>
@@ -735,7 +735,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Аркуш.імя_псеўданіма замест Аркуш.В1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Аркуш</translation>
     </message>
@@ -947,8 +947,18 @@ Defaults to: %V = %A
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>Знакі падзельнікі: </translation>
+      <source>Delimiter Character:</source>
+      <translation>Знак падзельніка:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation>Знак цытаты:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation>Знак экранавання:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -961,19 +971,9 @@ Defaults to: %V = %A
       <translation>табуляцыя</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>Знак цытаты: </translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Знак, які ўжываецца для падзелу радкоў, звычайна ўяўляе сабой адзінарнае двукоссе (') ці падвоенае двукоссе (&amp;quot;). Павінен складацца з аднаго знака.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Знак экранавання: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -1176,7 +1176,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Без назвы</translation>
     </message>

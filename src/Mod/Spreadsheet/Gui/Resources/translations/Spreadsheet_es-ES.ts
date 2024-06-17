@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="962"/>
       <source>Create a new spreadsheet</source>
-      <translation>Crear hoja de cálculo nueva</translation>
+      <translation>Crear una hoja de cálculo nueva</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="527"/>
       <source>Align bottom</source>
-      <translation>Alinear inferior</translation>
+      <translation>Alinear abajo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="528"/>
       <source>Bottom-align contents of selected cells</source>
-      <translation>Alinear inferior celdas seleccionadas</translation>
+      <translation>Alinear hacia abajo el contenido de las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="356"/>
       <source>Align center</source>
-      <translation>Alinear centro</translation>
+      <translation>Alinear al centro</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="357"/>
       <source>Center-align contents of selected cells</source>
-      <translation>Alinear al centro celdas seleccionadas</translation>
+      <translation>Alinear al centro el contenido de las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="299"/>
       <source>Align left</source>
-      <translation>Alinear izquierda</translation>
+      <translation>Alinear a la izquierda</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="300"/>
       <source>Left-align contents of selected cells</source>
-      <translation>Alinear izquierda celdas seleccionadas</translation>
+      <translation>Alinear a la izquierda el contenido de las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="413"/>
       <source>Align right</source>
-      <translation>Alinear derecha</translation>
+      <translation>Alinear a la derecha</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="414"/>
       <source>Right-align contents of selected cells</source>
-      <translation>Alinear derecha celdas seleccionadas</translation>
+      <translation>Alinear a la derecha el contenido de las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="470"/>
       <source>Align top</source>
-      <translation>Alineado superior</translation>
+      <translation>Alinear arriba</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="471"/>
       <source>Top-align contents of selected cells</source>
-      <translation>Alineado superior en celdas seleccionadas</translation>
+      <translation>Alinear hacia arriba el contenido de las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="585"/>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Contenido alineado verticalmente centrado en celdas seleccionadas</translation>
+      <translation>Centrar verticalmente el contenido de las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -227,7 +227,7 @@
     <message>
       <location filename="../../Command.cpp" line="641"/>
       <source>Bold text</source>
-      <translation>Negrita</translation>
+      <translation>Texto en negrita</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="642"/>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../Command.cpp" line="807"/>
       <source>Underline text</source>
-      <translation>Subrayado</translation>
+      <translation>Texto subrayado</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="808"/>
       <source>Underline text in selected cells</source>
-      <translation>Texto subrayado en las celdas seleccionadas</translation>
+      <translation>Establecer texto subrayado en las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../../qtcolorpicker.cpp" line="920"/>
       <source>Custom Color</source>
-      <translation>Color Personalizado</translation>
+      <translation>Color personalizado</translation>
     </message>
   </context>
   <context>
@@ -294,7 +294,7 @@
     <message>
       <location filename="../../Command.cpp" line="321"/>
       <source>Left-align cell</source>
-      <translation>Izquierda</translation>
+      <translation>Celda alineada a la izquierda</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="378"/>
@@ -304,17 +304,17 @@
     <message>
       <location filename="../../Command.cpp" line="435"/>
       <source>Right-align cell</source>
-      <translation>Derecha</translation>
+      <translation>Celda alineada a la derecha</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="492"/>
       <source>Top-align cell</source>
-      <translation>Superior</translation>
+      <translation>Celda alineada arriba</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="549"/>
       <source>Bottom-align cell</source>
-      <translation>Inferior</translation>
+      <translation>Celda alineada abajo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="606"/>
@@ -598,7 +598,7 @@ la configuración de diseño. La propiedad se creará si no existe.</translation
     <message>
       <location filename="../../PropertiesDialog.ui" line="80"/>
       <source>&amp;Alignment</source>
-      <translation>&amp;Alineacion</translation>
+      <translation>&amp;Alineación</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="88"/>
@@ -696,7 +696,7 @@ la configuración de diseño. La propiedad se creará si no existe.</translation
       <translation>Exportar archivo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Mostrar la hoja de cálculo</translation>
     </message>
@@ -740,7 +740,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Hoja de cálculo</translation>
     </message>
@@ -853,7 +853,7 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="450"/>
       <source>Custom Color</source>
-      <translation>Color Personalizado</translation>
+      <translation>Color personalizado</translation>
     </message>
   </context>
   <context>
@@ -948,12 +948,22 @@ Por defecto: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="84"/>
       <source>Import/Export Settings</source>
-      <translation>Opciones de Importar/Exportar</translation>
+      <translation>Opciones para Importar/Exportar</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>Carácter delimitador: </translation>
+      <source>Delimiter Character:</source>
+      <translation>Carácter delimitador:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation>Carácter de comilla:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation>Carácter de escape:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -966,19 +976,9 @@ Por defecto: %V = %A
       <translation>tab</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>Carácter de comilla: </translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Carácter utilizado para delimitar cadenas, normalmente es una comilla simple (') o una comilla doble (&amp;quot;). Debe ser un solo carácter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Carácter de Escape: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -1014,7 +1014,7 @@ Por defecto: %V = %A
       <source>Insert %n row(s) below</source>
       <translation>
         <numerusform>Insertar %n fila(s) debajo</numerusform>
-        <numerusform>Insertar %n filas debajo</numerusform>
+        <numerusform>Insertar %n fila(s) debajo</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1154,7 +1154,7 @@ Por defecto: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Alignment</source>
-      <translation>&amp;Alineacion</translation>
+      <translation>&amp;Alineación</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
@@ -1165,7 +1165,7 @@ Por defecto: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Sin nombre</translation>
     </message>

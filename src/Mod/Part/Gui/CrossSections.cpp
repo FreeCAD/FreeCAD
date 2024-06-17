@@ -28,7 +28,6 @@
 # include <QKeyEvent>
 
 # include <BRep_Builder.hxx>
-# include <Standard_math.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
 
@@ -539,11 +538,7 @@ void CrossSections::makePlanes(Plane type, const std::vector<double>& d, double 
 TaskCrossSections::TaskCrossSections(const Base::BoundBox3d& bb)
 {
     widget = new CrossSections(bb);
-    taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Part_CrossSections"),
-        widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Part_CrossSections"), widget);
 }
 
 bool TaskCrossSections::accept()

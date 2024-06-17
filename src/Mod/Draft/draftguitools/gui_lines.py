@@ -44,7 +44,7 @@ from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
 from draftutils import todo
-from draftutils.messages import _err, _msg, _toolmsg
+from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
 
 
@@ -77,6 +77,7 @@ class Line(gui_base_original.Creator):
 
         self.obj = self.doc.addObject("Part::Feature", self.featureName)
         gui_utils.format_object(self.obj)
+        self.obj.ViewObject.ShowInTree = False
 
         self.call = self.view.addEventCallback("SoEvent", self.action)
         _toolmsg(translate("draft", "Pick first point"))
@@ -92,21 +93,28 @@ class Line(gui_base_original.Creator):
             Dictionary with strings that indicates the type of event received
             from the 3D view.
         """
-        if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
-            self.finish()
-        elif arg["Type"] == "SoLocation2Event":
+        if arg["Type"] == "SoKeyboardEvent":
+            if arg["Key"] == "ESCAPE":
+                self.finish()
+            return
+        if arg["Type"] == "SoLocation2Event":
             self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
             gui_tool_utils.redraw3DView()
-        elif (arg["Type"] == "SoMouseButtonEvent"
-              and arg["State"] == "DOWN"
-              and arg["Button"] == "BUTTON1"):
+            return
+        if arg["Type"] != "SoMouseButtonEvent":
+            return
+        if arg["State"] == "UP":
+            self.obj.ViewObject.Selectable = True
+            return
+        if arg["State"] == "DOWN" and arg["Button"] == "BUTTON1":
+            # Stop self.obj from being selected to avoid its display in the tree:
+            self.obj.ViewObject.Selectable = False
             if arg["Position"] == self.pos:
                 self.finish(cont=None)
                 return
             if (not self.node) and (not self.support):
                 gui_tool_utils.getSupport(arg)
-                (self.point,
-                 ctrlPoint, info) = gui_tool_utils.getPoint(self, arg)
+                self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
             if self.point:
                 self.ui.redraw()
                 self.pos = arg["Position"]
@@ -134,6 +142,7 @@ class Line(gui_base_original.Creator):
         closed: bool, optional
             Close the line if `True`.
         """
+        self.end_callbacks(self.call)
         self.removeTemporaryObject()
 
         if len(self.node) > 1:
@@ -156,6 +165,7 @@ class Line(gui_base_original.Creator):
                              'line.Y2 = ' + str(p2.y),
                              'line.Z2 = ' + str(p2.z),
                              'Draft.autogroup(line)',
+                             'Draft.select(line)',
                              'FreeCAD.ActiveDocument.recompute()']
                 self.commit(translate("draft", "Create Line"),
                             _cmd_list)
@@ -313,7 +323,7 @@ class Wire(Line):
                 edges.extend(o.Shape.Edges)
             if edges:
                 try:
-                    w = Part.Wire(edges)
+                    w = Part.Wire(Part.__sortEdges__(edges))
                 except Exception:
                     _err(translate("draft",
                                    "Unable to create a Wire "
@@ -333,7 +343,10 @@ class Wire(Line):
                     Gui.addModule("Draft")
                     # The command to run is built as a series of text strings
                     # to be committed through the `draftutils.todo.ToDo` class
-                    _cmd_list = ['wire = Draft.make_wire([' + pts + '])']
+                    _cmd = 'wire = Draft.make_wire('
+                    _cmd += '[' + pts + '], closed=' + str(w.isClosed())
+                    _cmd += ')'
+                    _cmd_list = [_cmd]
                     _cmd_list.extend(rems)
                     _cmd_list.append('Draft.autogroup(wire)')
                     _cmd_list.append('FreeCAD.ActiveDocument.recompute()')

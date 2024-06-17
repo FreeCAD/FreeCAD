@@ -48,18 +48,18 @@ public:
     /// constructor
     ViewProviderLeader();
     /// destructor
-    ~ViewProviderLeader() override;
+    ~ViewProviderLeader() override = default;
 
     App::PropertyLength             LineWidth;
     App::PropertyEnumeration        LineStyle;
     App::PropertyColor              Color;
+    App::PropertyBool               UseOldCoords;
 
     bool useNewSelectionModel() const override {return false;}
-    void updateData(const App::Property*) override;
     void onChanged(const App::Property* p) override;
     bool setEdit(int ModNum) override;
     bool doubleClicked() override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string> &parameters) override;
     bool canDelete(App::DocumentObject* obj) const override;
 
     static const char* LineStyleEnums[];

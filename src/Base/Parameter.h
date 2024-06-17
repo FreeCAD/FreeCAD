@@ -102,9 +102,9 @@ public:
     /** @name copy and insertation */
     //@{
     /// make a deep copy to the other group
-    void copyTo(Base::Reference<ParameterGrp>);
+    void copyTo(const Base::Reference<ParameterGrp>&);
     /// overwrite everything similar, leave the others alone
-    void insertTo(Base::Reference<ParameterGrp>);
+    void insertTo(const Base::Reference<ParameterGrp>&);
     /// export this group to a file
     void exportTo(const char* FileName);
     /// import from a file to this group
@@ -114,7 +114,7 @@ public:
     /// revert to default value by deleting any parameter that has the same value in the given file
     void revert(const char* FileName);
     /// revert to default value by deleting any parameter that has the same value in the given group
-    void revert(Base::Reference<ParameterGrp>);
+    void revert(const Base::Reference<ParameterGrp>&);
     //@}
 
     /** @name methods for group handling */
@@ -351,7 +351,7 @@ protected:
 class BaseExport ParameterSerializer
 {
 public:
-    explicit ParameterSerializer(const std::string& fn);
+    explicit ParameterSerializer(std::string fn);
     ParameterSerializer(const ParameterSerializer&) = delete;
     ParameterSerializer(ParameterSerializer&&) = delete;
     virtual ~ParameterSerializer();
@@ -434,12 +434,15 @@ public:
     bool LoadOrCreateDocument();
     /// Saves an XML document by calling the serializer's save method.
     void SaveDocument() const;
+    void SetIgnoreSave(bool value);
+    bool IgnoreSave() const;
     //@}
 
 private:
     XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument* _pDocument {nullptr};
     ParameterSerializer* paramSerializer {nullptr};
 
+    bool gIgnoreSave;
     bool gDoNamespaces;
     bool gDoSchema;
     bool gSchemaFullChecking;

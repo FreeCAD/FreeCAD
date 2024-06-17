@@ -144,16 +144,17 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
             // If we are in edit mode then simply ignore the RMB events
             // to pass the event to the base class.
             this->lockrecenter = true;
-            if (!viewer->isEditing()) {
-                // If we are in zoom or pan mode ignore RMB events otherwise
-                // the canvas doesn't get any release events
+
+            // Don't show the context menu after dragging, panning or zooming
+            if (!press && (hasDragged || hasPanned || hasZoomed)) {
+                processed = true;
+            }
+            if (!press && !viewer->isEditing()) {
                 if (this->currentmode != NavigationStyle::ZOOMING &&
                     this->currentmode != NavigationStyle::PANNING &&
                     this->currentmode != NavigationStyle::DRAGGING) {
                     if (this->isPopupMenuEnabled()) {
-                        if (!press) { // release right mouse button
-                            this->openPopupMenu(event->getPosition());
-                        }
+                        this->openPopupMenu(event->getPosition());
                     }
                 }
             }
@@ -178,9 +179,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
         case SoMouseButtonEvent::BUTTON3:
             if (press) {
                 this->centerTime = ev->getTime();
-                float ratio = vp.getViewportAspectRatio();
-                SbViewVolume vv = viewer->getSoRenderManager()->getCamera()->getViewVolume(ratio);
-                this->panningplane = vv.getPlane(viewer->getSoRenderManager()->getCamera()->focalDistance.getValue());
+                setupPanningPlane(getCamera());
                 this->lockrecenter = false;
             }
             else {
@@ -188,10 +187,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
                 float dci = (float)QApplication::doubleClickInterval()/1000.0f;
                 // is it just a middle click?
                 if (tmp.getValue() < dci && !this->lockrecenter) {
-                    if (!this->lookAtPoint(pos)) {
-                        panToCenter(panningplane, posn);
-                        this->interactiveCountDec();
-                    }
+                    lookAtPoint(pos);
                     processed = true;
                 }
             }
@@ -249,19 +245,23 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     case 0:
         if (curmode == NavigationStyle::SPINNING) { break; }
         newmode = NavigationStyle::IDLE;
-        // The left mouse button has been released right now but
-        // we want to avoid that the event is processed elsewhere
+        // The left mouse button has been released right now
         if (this->lockButton1) {
             this->lockButton1 = false;
-            processed = true;
+            if (curmode != NavigationStyle::SELECTION) {
+                processed = true;
+            }
         }
         break;
     case BUTTON1DOWN:
         // make sure not to change the selection when stopping spinning
-        if (curmode == NavigationStyle::SPINNING || this->lockButton1)
+        if (curmode == NavigationStyle::SPINNING
+            || (this->lockButton1 && curmode != NavigationStyle::SELECTION)) {
             newmode = NavigationStyle::IDLE;
-        else
+        }
+        else {
             newmode = NavigationStyle::SELECTION;
+        }
         break;
     case BUTTON3DOWN:
         if (curmode == NavigationStyle::SPINNING) { break; }
@@ -301,15 +301,23 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
         break;
     }
 
+    // If the selection button is pressed together with another button
+    // and the other button is released, don't switch to selection mode.
+    // Process when selection button is pressed together with other buttons that could trigger different actions.
+    if (this->button1down && (this->button2down || this->button3down)) {
+        this->lockButton1 = true;
+        processed = true;
+    }
+
+    // Prevent interrupting rubber-band selection in sketcher
+    if (viewer->isEditing() && curmode == NavigationStyle::SELECTION && newmode != NavigationStyle::IDLE) {
+        newmode = NavigationStyle::SELECTION;
+        processed = false;
+    }
+
     if (newmode != curmode) {
         this->setViewingMode(newmode);
     }
-
-    // If for dragging the buttons 1 and 3 are pressed
-    // but then button 3 is released we shouldn't switch
-    // into selection mode.
-    if (this->button1down && this->button3down)
-        this->lockButton1 = true;
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.

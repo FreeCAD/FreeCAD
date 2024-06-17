@@ -517,6 +517,7 @@ public:
     App::PropertyBool RestoreCamera;
     App::PropertyBool ForceOrtho;
     App::PropertyBool SectionView;
+    App::PropertyBool AutoColor;
     App::PropertyString EditingWorkbench;
     SketcherGui::PropertyVisualLayerList VisualLayerList;
     //@}
@@ -549,6 +550,7 @@ public:
         STATUS_SELECT_Edge,            /**< enum value an edge was selected. */
         STATUS_SELECT_Constraint,      /**< enum value a constraint was selected. */
         STATUS_SELECT_Cross,           /**< enum value the base coordinate system was selected. */
+        STATUS_SELECT_Wire,            /**< enum value and edge was double clicked. */
         STATUS_SKETCH_DragPoint,       /**< enum value while dragging a point. */
         STATUS_SKETCH_DragCurve,       /**< enum value while dragging a curve. */
         STATUS_SKETCH_DragConstraint,  /**< enum value while dragging a compatible constraint. */
@@ -567,6 +569,10 @@ public:
     {
         return Mode;
     }
+
+    // create right click context menu based on selection in the 3D view
+    void generateContextMenu();
+
     //@}
 
     /** @name Drawing functions */
@@ -651,6 +657,9 @@ public:
     {
         return nullptr;
     }
+    /// is called when the provider is in edit and a "Select All" command was issued
+    /// Provider shall return 'false' is it ignores the command, 'true' otherwise
+    bool selectAll() override;
     /// is called by the tree if the user double clicks on the object
     bool doubleClicked() override;
     /// is called when the Provider is in edit and the mouse is moved
@@ -667,6 +676,7 @@ public:
                          const Gui::View3DInventorViewer* viewer) override;
     //@}
 
+    void deleteSelected();
 
     /// Control the overlays appearing on the Tree and reflecting different sketcher states
     QIcon mergeColorfulOverlayIcons(const QIcon& orig) const override;
@@ -697,7 +707,6 @@ public:
     friend class ViewProviderSketchDrawSketchHandlerAttorney;
     friend class ViewProviderSketchCoinAttorney;
     friend class ViewProviderSketchSnapAttorney;
-    friend class ViewProviderSketchShortcutListenerAttorney;
     //@}
 protected:
     /** @name enter/exit edit mode */
@@ -716,6 +725,8 @@ protected:
     void deactivateHandler();
     /// get called if a subelement is double clicked while editing
     void editDoubleClicked();
+    /// get called when an edge is double clicked to select/unselect the whole wire
+    void toggleWireSelelection(int geoId);
     //@}
 
     /** @name Solver Information */
@@ -742,6 +753,10 @@ protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
     //@}
+
+    /// hook after property restoring to change some property statuses
+    void startRestoring() override;
+    void finishRestoring() override;
 
 private:
     /// function to handle OCCT BSpline weight calculation singularities and representation
@@ -788,13 +803,17 @@ private:
     void rmvSelection(const std::string& subNameSuffix);
     bool addSelection(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
     bool addSelection2(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
+    void preselectToSelection(const std::stringstream& ss,
+                              boost::scoped_ptr<SoPickedPoint>& pp,
+                              bool toggle);
     //@}
 
     /** @name miscelanea utilities */
     //@{
     /// moves a selected constraint
     void moveConstraint(int constNum, const Base::Vector2d& toPos);
-    void moveAngleConstraint(int constNum, const Base::Vector2d& toPos);
+    void moveConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
+    void moveAngleConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
 
     /// returns whether the sketch is in edit mode.
     bool isInEditMode() const;
@@ -820,6 +839,9 @@ private:
     bool constraintHasExpression(int constrid) const;
 
     const std::vector<Sketcher::Constraint*> getConstraints() const;
+    /// gets the corresponding constraint to the given \a constid
+    /// or null if it doesn't exist.
+    Sketcher::Constraint* getConstraint(int constid) const;
 
     // gets the list of geometry of the sketchobject or of the solver instance
     const GeoList getGeoList() const;
@@ -859,9 +881,6 @@ private:
     bool isCurveSelected(int curveId) const;
 
     bool isConstraintSelected(int constraintId) const;
-
-    //********* ViewProviderSketchShortcutListenerAttorney ***********//
-    void deleteSelected();
 
     //********* ViewProviderSketchDrawSketchHandlerAttorney **********//
     void setConstraintSelectability(bool enabled = true);

@@ -42,7 +42,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["pressure", "displacement", "transform"],
-        "solvers": ["calculix", "ccxtools"],
+        "solvers": ["ccxtools"],
         "material": "solid",
         "equations": ["mechanical"]
     }
@@ -116,17 +116,15 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    if solvertype == "calculix":
-        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-    elif solvertype == "ccxtools":
-        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+    if solvertype == "ccxtools":
+        solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
         solver_obj.WorkingDir = u""
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
-    if solvertype == "calculix" or solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj.SplitInputWriter = False
         solver_obj.AnalysisType = "static"
         solver_obj.GeometricalNonlinearity = "linear"
@@ -162,17 +160,11 @@ def setup(doc=None, solvertype="ccxtools"):
     con_transform1 = ObjectsFem.makeConstraintTransform(doc, name="FemConstraintTransform1")
     con_transform1.References = [(geom_obj, "Face4")]
     con_transform1.TransformType = "Cylindrical"
-    con_transform1.X_rot = 0.0
-    con_transform1.Y_rot = 0.0
-    con_transform1.Z_rot = 0.0
     analysis.addObject(con_transform1)
 
     con_transform2 = ObjectsFem.makeConstraintTransform(doc, name="FemConstraintTransform2")
     con_transform2.References = [(geom_obj, "Face5")]
     con_transform2.TransformType = "Cylindrical"
-    con_transform2.X_rot = 0.0
-    con_transform2.Y_rot = 0.0
-    con_transform2.Z_rot = 0.0
     analysis.addObject(con_transform2)
 
     # mesh

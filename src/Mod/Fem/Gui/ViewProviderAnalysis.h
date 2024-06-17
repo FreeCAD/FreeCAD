@@ -41,6 +41,7 @@ public:
 
     void attach(ViewProviderFemAnalysis*);
     void highlightView(Gui::ViewProviderDocumentObject*);
+    void removeView(Gui::ViewProviderDocumentObject*);
 
 private:
     SoSeparator* annotate;
@@ -49,7 +50,7 @@ private:
 class FemGuiExport ViewProviderFemAnalysis: public Gui::ViewProviderDocumentObjectGroup
 {
     Q_DECLARE_TR_FUNCTIONS(FemGui::ViewProviderFemAnalysis)
-    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderAnalysis);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemAnalysis);
 
 public:
     /// constructor
@@ -87,6 +88,8 @@ public:
     void show() override;
 
     void highlightView(Gui::ViewProviderDocumentObject*);
+
+    void removeView(Gui::ViewProviderDocumentObject*);
 
     /** @name Drag and drop */
     //@{

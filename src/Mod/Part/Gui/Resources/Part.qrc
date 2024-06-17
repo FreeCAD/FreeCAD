@@ -21,23 +21,8 @@
         <file>icons/booleans/Part_XOR.svg</file>
     </qresource>
     <qresource>
-        <file>icons/create/Part_Box.svg</file>
-        <file>icons/create/Part_Cone.svg</file>
-        <file>icons/create/Part_Cylinder.svg</file>
         <file>icons/create/Part_Primitives.svg</file>
         <file>icons/create/Part_Shapebuilder.svg</file>
-        <file>icons/create/Part_Sphere.svg</file>
-        <file>icons/create/Part_Torus.svg</file>
-        <file>icons/create/Part_Tube.svg</file>
-    </qresource>
-    <qresource>
-        <file>icons/measure/Part_Measure_Angular.svg</file>
-        <file>icons/measure/Part_Measure_Linear.svg</file>
-        <file>icons/measure/Part_Measure_Refresh.svg</file>
-        <file>icons/measure/Part_Measure_Step_Active.svg</file>
-        <file>icons/measure/Part_Measure_Step_Done.svg</file>
-        <file>icons/measure/Part_Measure_Toggle_3D.svg</file>
-        <file>icons/measure/Part_Measure_Toggle_Delta.svg</file>
     </qresource>
     <qresource>
         <file>icons/parametric/Part_Box_Parametric.svg</file>
@@ -96,5 +81,6 @@
         <file>icons/Part_SectionCut.svg</file>
         <file>icons/PartWorkbench.svg</file>
         <file>icons/preferences-part_design.svg</file>
+        <file>icons/Part_Detached.svg</file>
     </qresource>
 </RCC>

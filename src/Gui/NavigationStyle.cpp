@@ -257,6 +257,10 @@ void NavigationStyle::initialize()
         setRotationCenterMode(NavigationStyle::RotationCenterMode::ScenePointAtCursor |
                               NavigationStyle::RotationCenterMode::BoundingBoxCenter);
     }
+
+    this->hasDragged = false;
+    this->hasPanned = false;
+    this->hasZoomed = false;
 }
 
 void NavigationStyle::finalize()
@@ -323,27 +327,41 @@ void NavigationStyle::seekToPoint(const SbVec3f& scenepos)
     viewer->seekToPoint(scenepos);
 }
 
-SbBool NavigationStyle::lookAtPoint(const SbVec2s screenpos)
+void NavigationStyle::lookAtPoint(const SbVec2s screenpos)
 {
-    SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (!cam)
-        return false;
+    const SoCamera* camera = viewer->getCamera();
+    if (!camera) {
+        return;
+    }
 
-    SoRayPickAction rpaction(viewer->getSoRenderManager()->getViewportRegion());
+    SoRayPickAction rpaction(viewer->getViewportRegion());
     rpaction.setPoint(screenpos);
     rpaction.setRadius(viewer->getPickRadius());
     rpaction.apply(viewer->getSoRenderManager()->getSceneGraph());
 
-    SoPickedPoint * picked = rpaction.getPickedPoint();
-    if (!picked) {
-        this->interactiveCountInc();
-        return false;
+    const SoPickedPoint* picked = rpaction.getPickedPoint();
+
+    // Point is either the hitpoint or the projected point on the panning plane
+    SbVec3f point;
+    if (picked) {
+        point = picked->getPoint();
+    }
+    else {
+        const SbViewportRegion& vp = viewer->getViewportRegion();
+        const float aspectratio = vp.getViewportAspectRatio();
+        SbViewVolume vv = camera->getViewVolume(aspectratio);
+
+        // See note in Coin docs for SoCamera::getViewVolume re:viewport mapping
+        if (aspectratio < 1.0) {
+            vv.scale(1.0 / aspectratio);
+        }
+
+        SbLine line;
+        vv.projectPointToLine(normalizePixelPos(screenpos), line);
+        panningplane.intersect(line, point);
     }
 
-    SbVec3f hitpoint;
-    hitpoint = picked->getPoint();
-    lookAtPoint(hitpoint);
-    return true;
+    lookAtPoint(point);
 }
 
 void NavigationStyle::lookAtPoint(const SbVec3f& position)
@@ -583,35 +601,32 @@ void NavigationStyle::panCamera(SoCamera * cam, float aspectratio, const SbPlane
     // Reposition camera according to the vector difference between the
     // projected points.
     cam->position = cam->position.getValue() - (current_planept - old_planept);
+
+    if (this->currentmode != NavigationStyle::IDLE) {
+        hasPanned = true;
+    }
 }
 
-void NavigationStyle::pan(SoCamera* camera)
+void NavigationStyle::setupPanningPlane(const SoCamera* camera)
 {
     // The plane we're projecting the mouse coordinates to get 3D
     // coordinates should stay the same during the whole pan
     // operation, so we should calculate this value here.
-    if (!camera) { // can happen for empty scenegraph
+    if (!camera) {  // can happen for empty scenegraph
         this->panningplane = SbPlane(SbVec3f(0, 0, 1), 0);
     }
     else {
-        const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
-        float aspectratio = vp.getViewportAspectRatio();
+        const SbViewportRegion& vp = viewer->getViewportRegion();
+        const float aspectratio = vp.getViewportAspectRatio();
         SbViewVolume vv = camera->getViewVolume(aspectratio);
 
         // See note in Coin docs for SoCamera::getViewVolume re:viewport mapping
-        if(aspectratio < 1.0)
+        if (aspectratio < 1.0) {
             vv.scale(1.0 / aspectratio);
+        }
 
         this->panningplane = vv.getPlane(camera->focalDistance.getValue());
     }
-}
-
-void NavigationStyle::panToCenter(const SbPlane & pplane, const SbVec2f & currpos)
-{
-    const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
-    float ratio = vp.getViewportAspectRatio();
-    panCamera(viewer->getSoRenderManager()->getCamera(), ratio, pplane, SbVec2f(0.5,0.5), currpos);
-    this->rotationCenterFound = false;
 }
 
 /** Dependent on the camera type this will either shrink or expand the
@@ -690,6 +705,10 @@ void NavigationStyle::zoom(SoCamera * cam, float diffvalue)
             cam->position = newpos;
             cam->focalDistance = newfocaldist;
         }
+    }
+
+    if (this->currentmode != NavigationStyle::IDLE) {
+        hasZoomed = true;
     }
 }
 
@@ -895,6 +914,10 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     // when the user quickly trigger (as in "click-drag-release") a spin
     // animation.
     if (this->spinsamplecounter > 3) this->spinsamplecounter = 3;
+
+    if (this->currentmode != NavigationStyle::IDLE) {
+        hasDragged = true;
+    }
 }
 
 /*!
@@ -907,8 +930,18 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
  * \param curpos  current normalized position or mouse pointer
  * \param prevpos  previous normalized position of mouse pointer
  */
-void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f prevpos){
+void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f prevpos)
+{
     assert(this->spinprojector);
+
+    if (this->rotationCenterMode && this->rotationCenterFound) {
+        SbVec3f hitpoint = this->rotationCenter;
+
+        // set to the given position
+        SbVec3f direction;
+        viewer->getSoRenderManager()->getCamera()->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+        viewer->getSoRenderManager()->getCamera()->position = hitpoint - viewer->getSoRenderManager()->getCamera()->focalDistance.getValue() * direction;
+    }
 
     // 0000333: Turntable camera rotation
     SbMatrix mat;
@@ -929,6 +962,20 @@ void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f pre
     r.invert();
     this->reorientCamera(cam, r);
 
+    if (this->rotationCenterMode && this->rotationCenterFound) {
+        const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
+        SbVec2s glsize(vp.getViewportSizePixels());
+
+        float ratio = vp.getViewportAspectRatio();
+        SbViewVolume vv = viewer->getSoRenderManager()->getCamera()->getViewVolume(vp.getViewportAspectRatio());
+        SbPlane panplane = vv.getPlane(viewer->getSoRenderManager()->getCamera()->focalDistance.getValue());
+        SbVec2f posn;
+        posn[0] = float(this->localPos[0]) / float(std::max((int)(glsize[0]-1), 1));
+        posn[1] = float(this->localPos[1]) / float(std::max((int)(glsize[1]-1), 1));
+        panCamera(viewer->getSoRenderManager()->getCamera(), ratio, panplane, posn, SbVec2f(0.5,0.5));
+    }
+
+    hasDragged = true;
 }
 
 SbBool NavigationStyle::doSpin()
@@ -1065,11 +1112,6 @@ void NavigationStyle::moveCursorPosition()
     }
 }
 
-void NavigationStyle::redraw()
-{
-    if (mouseSelection)
-        mouseSelection->redraw();
-}
 
 SbBool NavigationStyle::handleEventInForeground(const SoEvent* const e)
 {
@@ -1342,7 +1384,19 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
 {
     const ViewerMode oldmode = this->currentmode;
     if (newmode == oldmode) {
+
+        // The rotation center could have been changed even if the mode has not changed
+        if (newmode == NavigationStyle::DRAGGING && rotationCenterFound) {
+            viewer->changeRotationCenterPosition(rotationCenter);
+        }
+
         return;
+    }
+
+    if (newmode == NavigationStyle::IDLE) {
+        hasPanned = false;
+        hasDragged = false;
+        hasZoomed = false;
     }
 
     switch (newmode) {
@@ -1364,7 +1418,7 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
 
     case PANNING:
         animator->stop();
-        pan(viewer->getSoRenderManager()->getCamera());
+        setupPanningPlane(viewer->getSoRenderManager()->getCamera());
         this->interactiveCountInc();
         break;
 

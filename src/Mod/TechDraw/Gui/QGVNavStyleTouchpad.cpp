@@ -46,7 +46,6 @@ QGVNavStyleTouchpad::~QGVNavStyleTouchpad()
 
 void QGVNavStyleTouchpad::handleKeyPressEvent(QKeyEvent *event)
 {
-//    Q_UNUSED(event)
     if (event->key() == Qt::Key_PageUp) {
         zoomIn();
         event->accept();

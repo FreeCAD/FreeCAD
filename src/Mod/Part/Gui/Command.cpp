@@ -26,7 +26,6 @@
 # include <QFileInfo>
 # include <QPointer>
 # include <QString>
-# include <Standard_math.hxx>
 # include <Standard_Version.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Shape.hxx>
@@ -64,7 +63,6 @@
 #include "Mirroring.h"
 #include "SectionCutting.h"
 #include "TaskCheckGeometry.h"
-#include "TaskDimension.h"
 #include "TaskLoft.h"
 #include "TaskShapeBuilder.h"
 #include "TaskSweep.h"
@@ -133,7 +131,7 @@ CmdPartBox2::CmdPartBox2()
     sToolTipText  = QT_TR_NOOP("Create a box solid without dialog");
     sWhatsThis    = "Part_Box2";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Box";
+    sPixmap       = "Part_Box_Parametric";
 }
 
 void CmdPartBox2::activated(int iMsg)
@@ -174,7 +172,7 @@ CmdPartBox3::CmdPartBox3()
     sToolTipText  = QT_TR_NOOP("Create a box solid without dialog");
     sWhatsThis    = "Part_Box3";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Box";
+    sPixmap       = "Part_Box_Parametric";
 }
 
 void CmdPartBox3::activated(int iMsg)
@@ -926,7 +924,7 @@ void CmdPartSection::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),ToolName.c_str());
     doCommand(Gui,"Gui.activeDocument().hide('%s')",BaseName.c_str());
     doCommand(Gui,"Gui.activeDocument().hide('%s')",ToolName.c_str());
-    doCommand(Gui,"Gui.activeDocument().%s.LineColor = Gui.activeDocument().%s.ShapeColor", FeatName.c_str(),BaseName.c_str());
+    doCommand(Gui,"Gui.activeDocument().%s.LineMaterial = Gui.activeDocument().%s.ShapeAppearance[0]",FeatName.c_str(),BaseName.c_str());
     updateActive();
     commitCommand();
 }
@@ -1061,7 +1059,7 @@ CmdPartImportCurveNet::CmdPartImportCurveNet()
     sToolTipText= QT_TR_NOOP("Import a curve network");
     sWhatsThis  = "Part_ImportCurveNet";
     sStatusTip  = sToolTipText;
-    sPixmap     = "Part_Box";
+    sPixmap     = "Part_Box_Parametric";
 }
 
 void CmdPartImportCurveNet::activated(int iMsg)
@@ -1216,7 +1214,7 @@ void CmdPartReverseShape::activated(int iMsg)
 
             try {
                 runCommand(Doc, str.toLatin1());
-                copyVisual(name.c_str(), "ShapeColor", it->getNameInDocument());
+                copyVisual(name.c_str(), "ShapeAppearance", it->getNameInDocument());
                 copyVisual(name.c_str(), "LineColor" , it->getNameInDocument());
                 copyVisual(name.c_str(), "PointColor", it->getNameInDocument());
             }
@@ -1657,7 +1655,7 @@ void CmdPartOffset::activated(int iMsg)
 
     adjustCameraPosition();
 
-    copyVisual(offset.c_str(), "ShapeColor", shape->getNameInDocument());
+    copyVisual(offset.c_str(), "ShapeAppearance", shape->getNameInDocument());
     copyVisual(offset.c_str(), "LineColor" , shape->getNameInDocument());
     copyVisual(offset.c_str(), "PointColor", shape->getNameInDocument());
 }
@@ -1713,7 +1711,7 @@ void CmdPartOffset2D::activated(int iMsg)
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",offset.c_str());
     adjustCameraPosition();
 
-    copyVisual(offset.c_str(), "ShapeColor", shape->getNameInDocument());
+    copyVisual(offset.c_str(), "ShapeAppearance", shape->getNameInDocument());
     copyVisual(offset.c_str(), "LineColor" , shape->getNameInDocument());
     copyVisual(offset.c_str(), "PointColor", shape->getNameInDocument());
 }
@@ -1897,7 +1895,7 @@ void CmdPartThickness::activated(int iMsg)
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",thick.c_str());
     adjustCameraPosition();
 
-    copyVisual(thick.c_str(), "ShapeColor", obj->getNameInDocument());
+    copyVisual(thick.c_str(), "ShapeAppearance", obj->getNameInDocument());
     copyVisual(thick.c_str(), "LineColor" , obj->getNameInDocument());
     copyVisual(thick.c_str(), "PointColor", obj->getNameInDocument());
 }
@@ -2114,7 +2112,7 @@ void CmdColorPerFace::activated(int iMsg)
         return;
     PartGui::ViewProviderPartExt* vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(sel.front()));
     if (vp)
-        vp->changeFaceColors();
+        vp->changeFaceAppearances();
 }
 
 bool CmdColorPerFace::isActive()
@@ -2122,225 +2120,6 @@ bool CmdColorPerFace::isActive()
     Base::Type partid = Base::Type::fromName("Part::Feature");
     bool objectSelected = Gui::Selection().countObjectsOfType(partid) == 1;
     return (hasActiveDocument() && !Gui::Control().activeDialog() && objectSelected);
-}
-
-//===========================================================================
-// Part_Measure_Linear
-//===========================================================================
-
-DEF_STD_CMD_A(CmdMeasureLinear)
-
-CmdMeasureLinear::CmdMeasureLinear()
-  : Command("Part_Measure_Linear")
-{
-    sAppModule    = "Part";
-    sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Measure Linear");
-    sToolTipText  = QT_TR_NOOP("Measure the linear distance between two points;\n"
-                               "if edges or faces are picked, it will measure\n"
-                               "between two vertices of them.");
-    sWhatsThis    = "Part_Measure_Linear";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Measure_Linear";
-}
-
-void CmdMeasureLinear::activated(int iMsg)
-{
-  Q_UNUSED(iMsg);
-  PartGui::goDimensionLinearRoot();
-}
-
-bool CmdMeasureLinear::isActive()
-{
-  return hasActiveDocument();
-}
-
-//===========================================================================
-// Part_Measure_Angular
-//===========================================================================
-
-DEF_STD_CMD_A(CmdMeasureAngular)
-
-CmdMeasureAngular::CmdMeasureAngular()
-  : Command("Part_Measure_Angular")
-{
-    sAppModule    = "Part";
-    sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Measure Angular");
-    sToolTipText  = QT_TR_NOOP("Measure the angle between two edges.");
-    sWhatsThis    = "Part_Measure_Angular";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Measure_Angular";
-}
-
-void CmdMeasureAngular::activated(int iMsg)
-{
-  Q_UNUSED(iMsg);
-  PartGui::goDimensionAngularRoot();
-}
-
-bool CmdMeasureAngular::isActive()
-{
-  return hasActiveDocument();
-}
-
-//===========================================================================
-// Part_Measure_Refresh
-//===========================================================================
-
-DEF_STD_CMD_A(CmdMeasureRefresh)
-
-CmdMeasureRefresh::CmdMeasureRefresh()
-  : Command("Part_Measure_Refresh")
-{
-    sAppModule    = "Part";
-    sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Refresh");
-    sToolTipText  = QT_TR_NOOP("Recalculate the dimensions\n"
-                               "if the measured points have moved.");
-    sWhatsThis    = "Part_Measure_Refresh";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Measure_Refresh";
-}
-
-void CmdMeasureRefresh::activated(int iMsg)
-{
-  Q_UNUSED(iMsg);
-  PartGui::refreshDimensions();
-}
-
-bool CmdMeasureRefresh::isActive()
-{
-  return hasActiveDocument();
-}
-
-//===========================================================================
-// Part_Measure_Clear_All
-//===========================================================================
-
-DEF_STD_CMD_A(CmdMeasureClearAll)
-
-CmdMeasureClearAll::CmdMeasureClearAll()
-  : Command("Part_Measure_Clear_All")
-{
-    sAppModule    = "Part";
-    sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Clear All");
-    sToolTipText  = QT_TR_NOOP("Clear all dimensions from the active 3D view.");
-    sWhatsThis    = "Part_Measure_Clear_All";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Measure_Clear_All";
-}
-
-void CmdMeasureClearAll::activated(int iMsg)
-{
-  Q_UNUSED(iMsg);
-  PartGui::eraseAllDimensions();
-}
-
-bool CmdMeasureClearAll::isActive()
-{
-  return hasActiveDocument();
-}
-
-//===========================================================================
-// Part_Measure_Toggle_All
-//===========================================================================
-
-DEF_STD_CMD_A(CmdMeasureToggleAll)
-
-CmdMeasureToggleAll::CmdMeasureToggleAll()
-  : Command("Part_Measure_Toggle_All")
-{
-    sAppModule    = "Part";
-    sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Toggle All");
-    sToolTipText  = QT_TR_NOOP("Toggle on and off "
-                               "all currently visible dimensions,\n"
-                               "direct, orthogonal, and angular.");
-    sWhatsThis    = "Part_Measure_Toggle_All";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Measure_Toggle_All";
-}
-
-void CmdMeasureToggleAll::activated(int iMsg)
-{
-  Q_UNUSED(iMsg);
-  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
-  bool visibility = group->GetBool("DimensionsVisible", true);
-  if (visibility)
-    group->SetBool("DimensionsVisible", false);
-  else
-    group->SetBool("DimensionsVisible", true);
-}
-
-bool CmdMeasureToggleAll::isActive()
-{
-  return hasActiveDocument();
-}
-
-//===========================================================================
-// Part_Measure_Toggle_3D
-//===========================================================================
-
-DEF_STD_CMD_A(CmdMeasureToggle3d)
-
-CmdMeasureToggle3d::CmdMeasureToggle3d()
-  : Command("Part_Measure_Toggle_3D")
-{
-    sAppModule    = "Part";
-    sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Toggle 3D");
-    sToolTipText  = QT_TR_NOOP("Toggle on and off "
-                               "all direct dimensions,\n"
-                               "including angular.");
-    sWhatsThis    = "Part_Measure_Toggle_3D";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Measure_Toggle_3D";
-}
-
-void CmdMeasureToggle3d::activated(int iMsg)
-{
-  Q_UNUSED(iMsg);
-  PartGui::toggle3d();
-}
-
-bool CmdMeasureToggle3d::isActive()
-{
-  return hasActiveDocument();
-}
-
-//===========================================================================
-// Part_Measure_Toggle_Delta
-//===========================================================================
-
-DEF_STD_CMD_A(CmdMeasureToggleDelta)
-
-CmdMeasureToggleDelta::CmdMeasureToggleDelta()
-  : Command("Part_Measure_Toggle_Delta")
-{
-    sAppModule    = "Part";
-    sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Toggle Delta");
-    sToolTipText  = QT_TR_NOOP("Toggle on and off "
-                               "all orthogonal dimensions,\n"
-                               "meaning that a direct dimension will be decomposed\n"
-                               "into its X, Y, and Z components.");
-    sWhatsThis    = "Part_Measure_Toggle_Delta";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Measure_Toggle_Delta";
-}
-
-void CmdMeasureToggleDelta::activated(int iMsg)
-{
-  Q_UNUSED(iMsg);
-  PartGui::toggleDelta();
-}
-
-bool CmdMeasureToggleDelta::isActive()
-{
-  return hasActiveDocument();
 }
 
 //===========================================================================
@@ -2397,7 +2176,7 @@ CmdPartProjectionOnSurface::CmdPartProjectionOnSurface()
 void CmdPartProjectionOnSurface::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    PartGui::TaskProjectionOnSurface* dlg = new PartGui::TaskProjectionOnSurface();
+    auto dlg = new PartGui::TaskProjectOnSurface(getDocument(nullptr));
     Gui::Control().showDialog(dlg);
 }
 
@@ -2487,13 +2266,6 @@ void CreatePartCommands()
     rcCmdMgr.addCommand(new CmdPartThickness());
     rcCmdMgr.addCommand(new CmdCheckGeometry());
     rcCmdMgr.addCommand(new CmdColorPerFace());
-    rcCmdMgr.addCommand(new CmdMeasureLinear());
-    rcCmdMgr.addCommand(new CmdMeasureAngular());
-    rcCmdMgr.addCommand(new CmdMeasureRefresh());
-    rcCmdMgr.addCommand(new CmdMeasureClearAll());
-    rcCmdMgr.addCommand(new CmdMeasureToggleAll());
-    rcCmdMgr.addCommand(new CmdMeasureToggle3d());
-    rcCmdMgr.addCommand(new CmdMeasureToggleDelta());
     rcCmdMgr.addCommand(new CmdBoxSelection());
     rcCmdMgr.addCommand(new CmdPartProjectionOnSurface());
     rcCmdMgr.addCommand(new CmdPartSectionCut());

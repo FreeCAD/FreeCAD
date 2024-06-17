@@ -27,7 +27,7 @@
 #endif
 
 #include "FeaturePartSection.h"
-
+#include "TopoShapeOpCode.h"
 
 using namespace Part;
 
@@ -44,6 +44,12 @@ short Section::mustExecute() const
     if (Approximation.isTouched())
         return 1;
     return 0;
+}
+
+
+const char *Section::opCode() const
+{
+    return Part::OpCodes::Section;
 }
 
 BRepAlgoAPI_BooleanOperation* Section::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const

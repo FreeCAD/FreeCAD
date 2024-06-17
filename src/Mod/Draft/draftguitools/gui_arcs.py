@@ -35,20 +35,17 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
-import Draft_rc
 import DraftVecUtils
 from FreeCAD import Units as U
 from draftguitools import gui_base
 from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
 from draftguitools import gui_trackers as trackers
+from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
 from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
-
-# The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
 
 
 class Arc(gui_base_original.Creator):
@@ -61,10 +58,10 @@ class Arc(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {'Pixmap': 'Draft_Arc',
-                'Accel': "A, R",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Arc", "Arc"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Arc", "Creates a circular arc by a center point and a radius.\nCTRL to snap, SHIFT to constrain.")}
+        return {"Pixmap": "Draft_Arc",
+                "Accel": "A, R",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Arc", "Arc"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc", "Creates a circular arc by a center point and a radius.\nCTRL to snap, SHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -96,11 +93,11 @@ class Arc(gui_base_original.Creator):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
-        super().finish()
+        self.end_callbacks(self.call)
         if self.ui:
             self.linetrack.finalize()
             self.arctrack.finalize()
-            self.doc.recompute()
+        super().finish()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
@@ -314,6 +311,7 @@ class Arc(gui_base_original.Creator):
                                  'pl.Base = ' + _base,
                                  'circle.Placement = pl',
                                  'Draft.autogroup(circle)',
+                                 'Draft.select(circle)',
                                  'FreeCAD.ActiveDocument.recompute()']
                     self.commit(translate("draft", "Create Circle (Part)"),
                                 _cmd_list)
@@ -362,6 +360,7 @@ class Arc(gui_base_original.Creator):
                                  'pl.Base = ' + _base,
                                  'circle.Placement = pl',
                                  'Draft.autogroup(circle)',
+                                 'Draft.select(circle)',
                                  'FreeCAD.ActiveDocument.recompute()']
                     self.commit(translate("draft", "Create Arc (Part)"),
                                 _cmd_list)
@@ -468,22 +467,22 @@ class Arc(gui_base_original.Creator):
 Gui.addCommand('Draft_Arc', Arc())
 
 
-class Arc_3Points(gui_base.GuiCommandSimplest):
+class Arc_3Points(gui_base.GuiCommandBase):
     """GuiCommand for the Draft_Arc_3Points tool."""
-
-    def __init__(self):
-        super().__init__(name="Arc by 3 points")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {'Pixmap': "Draft_Arc_3Points",
-                'Accel': "A,T",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Arc by 3 points"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates a circular arc by picking 3 points.\nCTRL to snap, SHIFT to constrain.")}
+        return {"Pixmap": "Draft_Arc_3Points",
+                "Accel": "A,T",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Arc by 3 points"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates a circular arc by picking 3 points.\nCTRL to snap, SHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated()
+        if App.activeDraftCommand:
+            App.activeDraftCommand.finish()
+        App.activeDraftCommand = self
+        self.featureName = "Arc_3Points"
 
         # Reset the values
         self.points = []
@@ -550,15 +549,18 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
             # If three points were already picked in the 3D view
             # proceed with creating the final object.
             # Draw a simple `Part::Feature` if the parameter is `True`.
+            Gui.addModule("Draft")
+            _cmd = "Draft.make_arc_3points(["
+            _cmd += "FreeCAD." + str(self.points[0])
+            _cmd += ", FreeCAD." + str(self.points[1])
+            _cmd += ", FreeCAD." + str(self.points[2])
+            _cmd += "], primitive=" + str(params.get_param("UsePartPrimitives")) + ")"
+            _cmd_list = ["circle = " + _cmd,
+                         "Draft.autogroup(circle)"]
             if params.get_param("UsePartPrimitives"):
-                Draft.make_arc_3points([self.points[0],
-                                        self.points[1],
-                                        self.points[2]], primitive=True)
-            else:
-                Draft.make_arc_3points([self.points[0],
-                                        self.points[1],
-                                        self.points[2]], primitive=False)
-
+                _cmd_list.append("Draft.select(circle)")
+            _cmd_list.append("FreeCAD.ActiveDocument.recompute()")
+            self.commit(translate("draft", "Create Arc by 3 points"), _cmd_list)
             self.finish(cont=None)
 
     def drawArc(self, point, info):
@@ -590,8 +592,9 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
+        App.activeDraftCommand = None
         self.tracker.finalize()
-        self.doc.recompute()
+        super().finish()
         if cont or (cont is None and Gui.Snapper.ui and Gui.Snapper.ui.continueMode):
             self.Activated()
 
@@ -605,22 +608,16 @@ class ArcGroup:
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {'MenuText': QT_TRANSLATE_NOOP("Draft_ArcTools", "Arc tools"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_ArcTools", "Create various types of circular arcs.")}
+        return {"MenuText": QT_TRANSLATE_NOOP("Draft_ArcTools", "Arc tools"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_ArcTools", "Create various types of circular arcs.")}
 
     def GetCommands(self):
         """Return a tuple of commands in the group."""
         return ('Draft_Arc', 'Draft_Arc_3Points')
 
     def IsActive(self):
-        """Return True when this command should be available.
-
-        It is `True` when there is a document.
-        """
-        if Gui.ActiveDocument:
-            return True
-        else:
-            return False
+        """Return True when this command should be available."""
+        return bool(gui_utils.get_3d_view())
 
 
 Gui.addCommand('Draft_ArcTools', ArcGroup())

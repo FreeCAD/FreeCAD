@@ -23,6 +23,7 @@ qt_create_resource_file(${ReverseEngineering_TR_QRC} ${QM_SRCS})
 qt_add_resources(ReenGui_QRC_SRCS Resources/ReverseEngineering.qrc ${ReverseEngineering_TR_QRC})
 
 set(Dialogs_UIC_SRCS
+    FitBSplineCurve.ui
     FitBSplineSurface.ui
     Poisson.ui
     Segmentation.ui
@@ -32,6 +33,8 @@ set(Dialogs_UIC_SRCS
 SET(Dialogs_SRCS
     ${Dialogs_UIC_HDRS}
     ${Dialogs_UIC_SRCS}
+    FitBSplineCurve.cpp
+    FitBSplineCurve.h
     FitBSplineSurface.cpp
     FitBSplineSurface.h
     Poisson.cpp
@@ -67,6 +70,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(ReverseEngineeringGui SHARED ${ReenGui_SRCS} ${ReverseEngineeringGuiIcon_SVG})
 target_link_libraries(ReverseEngineeringGui ${ReenGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(ReverseEngineeringGui)
+endif()
 
 SET_BIN_DIR(ReverseEngineeringGui ReverseEngineeringGui /Mod/ReverseEngineering)
 SET_PYTHON_PREFIX_SUFFIX(ReverseEngineeringGui)

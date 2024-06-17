@@ -271,7 +271,9 @@ void GridExtensionP::createGrid(bool cameraUpdate)
 
 void GridExtensionP::createGridPart(int numberSubdiv, bool subDivLines, bool divLines, int pattern, SoBaseColor* color, int lineWidth)
 {
-    SoGroup* parent = new Gui::SoSkipBoundingGroup();
+    auto* parent = new Gui::SoSkipBoundingGroup();
+    parent->mode = Gui::SoSkipBoundingGroup::EXCLUDE_BBOX;
+
     GridRoot->addChild(parent);
     SoVertexProperty* vts;
 
@@ -549,7 +551,7 @@ bool ViewProviderGridExtension::extensionHandleChangedPropertyType(Base::XMLRead
         return true;
     }
 
-    return false;
+    return Gui::ViewProviderExtension::extensionHandleChangedPropertyType(reader, TypeName, prop);
 }
 
 namespace Gui {

@@ -683,7 +683,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
+      <translation>CSV (*.csv *.CSV);;Сви (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -696,7 +696,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>Извези датотеку</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Прикажи табелу</translation>
     </message>
@@ -740,7 +740,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.моје_алтернативно_име уместо Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Табела</translation>
     </message>
@@ -952,8 +952,18 @@ Defaults to: %V = %A
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>Знак за раздвајање: </translation>
+      <source>Delimiter Character:</source>
+      <translation>Знак за раздвајање:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation type="unfinished">Quote Character:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation type="unfinished">Escape Character:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -966,19 +976,9 @@ Defaults to: %V = %A
       <translation>табулатор</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>Quote знак: </translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Знак који се користи за разграничење знаковних низова, обично је апостроф (') или наводници (&amp;quot;). Мора бити један знак.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Escape знак: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -1157,7 +1157,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Spreadsheet</source>
-      <translation>&amp;Табела</translation>
+      <translation>&amp;Табеле</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -1173,7 +1173,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Без имена</translation>
     </message>

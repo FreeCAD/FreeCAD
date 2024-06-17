@@ -5,6 +5,7 @@
 files: |
     (?x)^(
         src/Base|
+        src/Main|
         src/Tools|
         tests/src|
         src/Mod/AddonManager|
@@ -36,6 +37,10 @@ exclude: |
     (?x)^(
         .*vcproj.*|
         .*vcxproj.*|
+        src/App/ExpressionParser.tab.c|
+        src/App/ExpressionParser.tab.h|
+        src/App/ExpressionParser.y|
+        src/App/lex.ExpressionParser.c|
         src/Mod/Import/App/SCL|
         src/Mod/Import/App/SCL_output|
         src/Mod/Mesh/App/TestData|
@@ -45,7 +50,7 @@ exclude: |
     )
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0
+    rev: v4.5.0
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -53,7 +58,7 @@ repos:
     -   id: check-added-large-files
     -   id: mixed-line-ending
 -   repo: https://github.com/psf/black
-    rev: 22.12.0
+    rev: 24.3.0
     hooks:
         -   id: black
             args: ['--line-length', '100']

@@ -33,7 +33,7 @@ import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _err
 from draftutils.translate import translate
 from draftobjects.text import Text
 
@@ -86,14 +86,12 @@ def make_text(string, placement=None, screen=False, height=None, line_spacing=1)
         If there is a problem it will return `None`.
     """
     _name = "make_text"
-    utils.print_header(_name, "Text")
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
         _err(translate("draft","No active document. Aborting."))
         return None
 
-    _msg("string: {}".format(string))
     try:
         utils.type_check([(string, (str, list))], name=_name)
     except TypeError:
@@ -105,7 +103,6 @@ def make_text(string, placement=None, screen=False, height=None, line_spacing=1)
         _err(translate("draft","Wrong input: must be a list of strings or a single string."))
         return None
 
-    _msg("placement: {}".format(placement))
     if not placement:
         placement = App.Placement()
     try:
@@ -175,7 +172,6 @@ def convert_draft_texts(textslist=None):
         If it is `None` it will convert all objects in the current document.
     """
     _name = "convert_draft_texts"
-    utils.print_header(_name, "Convert Draft texts")
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:

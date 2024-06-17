@@ -42,11 +42,9 @@ public:
     App::PropertyFloat AmbientTemp;
     /*App::PropertyFloat FaceTemp;*/
     App::PropertyFloat FilmCoef;
+    App::PropertyFloat Emissivity;
     App::PropertyFloat DFlux;
     App::PropertyEnumeration ConstraintType;
-
-    App::PropertyVectorList Points;
-    App::PropertyVectorList Normals;
 
     /// recalculate the object
     App::DocumentObjectExecReturn* execute() override;

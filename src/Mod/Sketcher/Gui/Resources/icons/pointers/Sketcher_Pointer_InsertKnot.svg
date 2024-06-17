@@ -4,11 +4,33 @@
    height="64"
    width="64"
    id="svg10"
+   sodipodi:docname="Sketcher_Pointer_InsertKnot.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="7.296875"
+     inkscape:cx="31.931478"
+     inkscape:cy="31.931478"
+     inkscape:window-width="1368"
+     inkscape:window-height="842"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg10" />
   <title
      id="title839">Sketcher_PointerInsertKnot</title>
   <metadata
@@ -42,32 +64,18 @@
   <defs
      id="defs14" />
   <g
-     id="symbol"
-     style="fill:none;stroke:#cc0000;stroke-width:2">
+     id="g1"
+     inkscape:label="symbol">
     <path
-       d="M 54.992381,9.9648713 C 63.989736,34.998545 7.0064885,30.993157 14.004432,57.028178"
-       id="path2"
-       style="stroke-width:2.00106;stroke:#dddddd;stroke-opacity:1" />
+       style="display:inline;fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 53.080401,28.249148 c -1.43085,26.470727 -26.470692,0 -28.616967,28.617002"
+       id="path3266-9-2" />
     <circle
-       cx="46.915485"
-       cy="27.210726"
-       r="3"
-       id="circle4"
-       style="fill:#cc0000" />
-    <circle
-       id="circle4-8"
-       r="6.8303161"
-       cy="27.138775"
-       cx="46.828571"
-       style="fill:none;stroke:#cc0000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none" />
-    <path
-       style="fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 46,38 c 5.985948,0.01349 9.389948,-2.960925 11,-8"
-       id="path860" />
-    <path
-       id="path860-4"
-       d="m 36,28 c -0.01349,-5.985948 2.960925,-9.389948 8,-11"
-       style="fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+       cx="46.92411"
+       cy="40.59425"
+       id="circle8-8"
+       style="fill:#cc0000;stroke:#cc0000;stroke-width:2;fill-opacity:1"
+       r="4" />
   </g>
   <g
      id="crosshair"
@@ -76,4 +84,14 @@
        d="m16,3v9m0,8v9m-13-13h9m8,0h9"
        id="path7" />
   </g>
+  <path
+     id="path1"
+     style="fill:none;stroke:#cc0000;stroke-width:2"
+     d="m 55.92411,40.59425 a 9,9 0 0 1 -9,9" />
+  <path
+     id="path1-4"
+     style="fill:none;stroke:#cc0000;stroke-width:2"
+     d="M 38.230778,38.264878 A 9,9 0 0 1 49.253482,31.900917"
+     inkscape:transform-center-x="3.1819804"
+     inkscape:transform-center-y="-5.664686" />
 </svg>

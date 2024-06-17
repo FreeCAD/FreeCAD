@@ -33,6 +33,7 @@
 
 namespace TechDraw
 {
+class DrawViewPart;
 
 class TechDrawExport DrawLeaderLine : public TechDraw::DrawView
 {
@@ -47,14 +48,13 @@ public:
     App::PropertyEnumeration  StartSymbol;
     App::PropertyEnumeration  EndSymbol;
 
-/*    App::PropertyInteger      StartSymbol;          //see Gui/QGIArrow for values*/
-/*    App::PropertyInteger      EndSymbol;*/
-
     App::PropertyBool         Scalable;
     App::PropertyBool         AutoHorizontal;
+    App::PropertyBool         RotatesWithParent;
 
     short mustExecute() const override;
     App::DocumentObjectExecReturn *execute() override;
+    App::PropertyLink *getOwnerProperty() override { return &LeaderParent; }
 
     const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderLeader";
@@ -65,15 +65,28 @@ public:
     Base::Vector3d getAttachPoint();
     DrawView* getBaseView() const;
     virtual App::DocumentObject* getBaseObject() const;
+
     bool keepUpdated() override;
     double getScale() const override;
     double getBaseScale() const;
-    void adjustLastSegment();
+    void horizLastSegment();
+    static std::vector<Base::Vector3d> horizLastSegment(const std::vector<Base::Vector3d>& inDeltas);
     bool getDefAuto() const;
 
     Base::Vector3d getTileOrigin() const;
     Base::Vector3d getKinkPoint() const;
     Base::Vector3d getTailPoint() const;
+
+    static DrawLeaderLine* makeLeader(DrawViewPart* parent, std::vector<Base::Vector3d> points, int iStartSymbol = 0, int iEndSymbol = 0);
+    std::vector<Base::Vector3d>  getScaledAndRotatedPoints(bool doScale = true, bool doRotate = true) const;
+    std::vector<Base::Vector3d> makeCanonicalPoints(const std::vector<Base::Vector3d>& inPoints,
+                                                    bool doScale = true,
+                                                    bool doRotate = true) const;
+    std::vector<Base::Vector3d> makeCanonicalPointsInverted(const std::vector<Base::Vector3d>& inPoints,
+                                                    bool doScale = true,
+                                                    bool doRotate = true) const;
+
+    bool isParentReady() const;
 
 protected:
     void onChanged(const App::Property* prop) override;

@@ -672,7 +672,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
+      <translation>CSV (*.csv *.CSV);;Alle (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -685,7 +685,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Bestand exporteren</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Rekenblad tonen</translation>
     </message>
@@ -729,7 +729,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.mijn_alias_naam in plaats van Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Rekenblad</translation>
     </message>
@@ -941,8 +941,18 @@ waarbij:
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>Scheidingsteken: </translation>
+      <source>Delimiter Character:</source>
+      <translation>Scheidingsteken:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation>Aanhalingsteken:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation>Escape-teken:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -955,19 +965,9 @@ waarbij:
       <translation>tab</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>Aanhalingsteken: </translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Teken dat wordt gebruikt om tekenreeksen te scheiden, meestal is het een enkele aanhalingsteken (') of een dubbel aanhalingsteken ("). Het moet een enkel teken zijn</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Escape-teken: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -1010,7 +1010,7 @@ waarbij:
       <location filename="../../SheetTableView.cpp" line="139"/>
       <source>Insert %n non-contiguous rows</source>
       <translation type="unfinished">
-        <numerusform>Voeg %n afzonderlijke rijen in</numerusform>
+        <numerusform>%n Afzonderlijke rijen invoegen</numerusform>
         <numerusform>Insert %n non-contiguous rows</numerusform>
       </translation>
     </message>
@@ -1042,7 +1042,7 @@ waarbij:
       <location filename="../../SheetTableView.cpp" line="169"/>
       <source>Insert %n non-contiguous columns</source>
       <translation type="unfinished">
-        <numerusform>Voeg %n afzonderlijke kolommen in</numerusform>
+        <numerusform>%n Afzonderlijke kolommen invoegen</numerusform>
         <numerusform>Insert %n non-contiguous columns</numerusform>
       </translation>
     </message>
@@ -1154,7 +1154,7 @@ waarbij:
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Naamloos</translation>
     </message>

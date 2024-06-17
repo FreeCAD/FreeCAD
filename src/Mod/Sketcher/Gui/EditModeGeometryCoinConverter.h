@@ -152,7 +152,9 @@ public:
 
 private:
     template<typename GeoType, PointsMode pointmode, CurveMode curvemode, AnalyseMode analysemode>
-    void convert(const Sketcher::GeometryFacade* geometryfacade, [[maybe_unused]] int geoId);
+    void convert(const Sketcher::GeometryFacade* geometryfacade,
+                 [[maybe_unused]] int geoId,
+                 int subLayerId = 0);
 
 private:
     /// Reference to ViewProviderSketch in order to access the public and the Attorney Interface
@@ -160,13 +162,12 @@ private:
 
     GeometryLayerNodes& geometryLayerNodes;
 
-    std::vector<std::vector<Base::Vector3d>> Coords;
     std::vector<std::vector<Base::Vector3d>> Points;
-    std::vector<std::vector<unsigned int>> Index;
+    std::vector<std::vector<std::vector<Base::Vector3d>>> Coords;
+    std::vector<std::vector<std::vector<unsigned int>>> Index;
 
     // temporal counters, one per layer
     std::vector<int> pointCounter;
-    std::vector<int> curveCounter;
 
     // temporal global vertex counter
     int vertexCounter = 0;

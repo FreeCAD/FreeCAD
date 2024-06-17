@@ -51,7 +51,6 @@ public:
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
     QPainterPath shape() const override { return path(); }
 
-    void setHighlighted(bool state);
     virtual void setPrettyNormal();
     virtual void setPrettyPre();
     virtual void setPrettySel();

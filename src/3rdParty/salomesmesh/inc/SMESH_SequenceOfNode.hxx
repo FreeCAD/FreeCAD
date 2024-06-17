@@ -28,10 +28,11 @@
 
 #include "SMESH_SMESH.hxx"
 
-#include <NCollection_DefineSequence.hxx>
 #if OCC_VERSION_HEX >= 0x060703
 #include <NCollection_IncAllocator.hxx>
 #include <NCollection_Sequence.hxx>
+#else
+#include <NCollection_DefineSequence.hxx>
 #endif
 
 typedef const SMDS_MeshNode* SMDS_MeshNodePtr;

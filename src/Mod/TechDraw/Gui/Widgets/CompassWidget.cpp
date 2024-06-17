@@ -179,7 +179,7 @@ void CompassWidget::paintEvent(QPaintEvent* event)
     QWidget::paintEvent(event);
 }
 
-//general purpose angle update from external source.
+// set the compass dial and spinbox to a new angle
 void CompassWidget::setDialAngle(double newAngle)
 {
     //    Base::Console().Message("CW::setDialAngle(%.3f)\n", newAngle);
@@ -212,6 +212,7 @@ void CompassWidget::slotCWAdvance()
         angle = angle + 360.0;
     }
     setDialAngle(angle);
+    Q_EMIT angleChanged(angle);
 }
 
 void CompassWidget::slotCCWAdvance()
@@ -224,6 +225,7 @@ void CompassWidget::slotCCWAdvance()
         angle = angle + dsbAngle->minimum();
     }
     setDialAngle(angle);
+    Q_EMIT angleChanged(angle);
 }
 
 void CompassWidget::setAdvanceIncrement(double newIncrement) { m_advanceIncrement = newIncrement; }

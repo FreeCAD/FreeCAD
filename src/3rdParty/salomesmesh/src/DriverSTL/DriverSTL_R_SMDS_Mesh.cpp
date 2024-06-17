@@ -33,10 +33,33 @@
 #include "SMDS_MeshNode.hxx"
 #include "SMESH_File.hxx"
 
+#include <Standard_Version.hxx>
+
 namespace
 {
   struct Hasher
   {
+#if OCC_VERSION_HEX >= 0x070800
+    size_t operator()(const gp_Pnt& point) const noexcept
+    {
+      union
+      {
+        Standard_Real    R[3];
+        Standard_Integer I[6];
+      } U;
+
+      point.Coord( U.R[0], U.R[1], U.R[2] );
+      return std::hash<Standard_Integer>{}(U.I[0]/23+U.I[1]/19+U.I[2]/17+U.I[3]/13+U.I[4]/11+U.I[5]/7);
+    }
+
+    size_t operator()(const gp_Pnt& point1, const gp_Pnt& point2) const noexcept
+    {
+      static Standard_Real tab1[3], tab2[3];
+      point1.Coord(tab1[0],tab1[1],tab1[2]);
+      point2.Coord(tab2[0],tab2[1],tab2[2]);
+      return (memcmp(tab1,tab2,sizeof(tab1)) == 0);
+    }
+#else
     //=======================================================================
     //function : HashCode
     //purpose  :
@@ -51,9 +74,9 @@ namespace
       } U;
 
       point.Coord( U.R[0], U.R[1], U.R[2] );
-
-      return ::HashCode(U.I[0]/23+U.I[1]/19+U.I[2]/17+U.I[3]/13+U.I[4]/11+U.I[5]/7,Upper);
+      return std::hash<Standard_Integer>{}(U.I[0]/23+U.I[1]/19+U.I[2]/17+U.I[3]/13+U.I[4]/11+U.I[5]/7);
     }
+ 
     //=======================================================================
     //function : IsEqual
     //purpose  :
@@ -66,7 +89,9 @@ namespace
       point2.Coord(tab2[0],tab2[1],tab2[2]);
       return (memcmp(tab1,tab2,sizeof(tab1)) == 0);
     }
+#endif
   };
+
   typedef NCollection_DataMap<gp_Pnt,SMDS_MeshNode*,Hasher> TDataMapOfPntNodePtr;
 
   const int HEADER_SIZE           = 84;

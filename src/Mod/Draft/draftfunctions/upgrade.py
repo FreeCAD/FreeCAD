@@ -93,7 +93,6 @@ def upgrade(objects, delete=False, force=None):
     downgrade
     """
     _name = "upgrade"
-    utils.print_header(_name, "Upgrade objects")
 
     if not isinstance(objects, list):
         objects = [objects]

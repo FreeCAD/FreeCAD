@@ -34,11 +34,11 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
 import Draft_rc  # include resources, icons, ui files
-import draftutils.todo as todo
-
-from draftutils.messages import _msg, _log
-from draftutils.translate import translate
 from draftguitools import gui_base
+from draftutils import gui_utils
+from draftutils import todo
+from draftutils.messages import _log
+from draftutils.translate import translate
 from drafttaskpanels import task_polararray
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -49,7 +49,7 @@ class PolarArray(gui_base.GuiCommandBase):
     """Gui command for the PolarArray tool."""
 
     def __init__(self):
-        super(PolarArray, self).__init__()
+        super().__init__()
         self.command_name = "Polar array"
         self.location = None
         self.mouse_event = None
@@ -72,8 +72,6 @@ class PolarArray(gui_base.GuiCommandBase):
         the widgets of the task panel.
         """
         _log("GuiCommand: {}".format(self.command_name))
-        #_msg("{}".format(16*"-"))
-        #_msg("GuiCommand: {}".format(self.command_name))
 
         self.location = coin.SoLocation2Event.getClassTypeId()
         self.mouse_event = coin.SoMouseButtonEvent.getClassTypeId()
@@ -130,6 +128,7 @@ class PolarArray(gui_base.GuiCommandBase):
                                           self.callback_move)
         self.view.removeEventCallbackPivy(self.mouse_event,
                                           self.callback_click)
+        gui_utils.end_all_events()
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
             self.finish()

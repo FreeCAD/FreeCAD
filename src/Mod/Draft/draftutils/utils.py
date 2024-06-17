@@ -40,7 +40,7 @@ import PySide.QtCore as QtCore
 
 import FreeCAD as App
 from draftutils import params
-from draftutils.messages import _msg, _wrn, _err, _log
+from draftutils.messages import  _wrn, _err, _log
 from draftutils.translate import translate
 
 # TODO: move the functions that require the graphical interface
@@ -88,15 +88,26 @@ def get_default_shape_style():
     display_mode_index = params.get_param("DefaultDisplayMode")
     draw_style_index = params.get_param("DefaultDrawStyle")
     return {
-        "DisplayMode":  ("index", display_mode_index, DISPLAY_MODES[display_mode_index]),
-        "DrawStyle":    ("index", draw_style_index, DRAW_STYLES[draw_style_index]),
-        "LineColor":    ("color", params.get_param_view("DefaultShapeLineColor")),
-        "LineWidth":    ("int",   params.get_param_view("DefaultShapeLineWidth")),
-        "PointColor":   ("color", params.get_param_view("DefaultShapeVertexColor")),
-        "PointSize":    ("int",   params.get_param_view("DefaultShapePointSize")),
-        "ShapeColor":   ("color", params.get_param_view("DefaultShapeColor")),
-        "Transparency": ("int",   params.get_param_view("DefaultShapeTransparency"))
+        "DisplayMode":     ("index",    display_mode_index, DISPLAY_MODES[display_mode_index]),
+        "DrawStyle":       ("index",    draw_style_index, DRAW_STYLES[draw_style_index]),
+        "LineColor":       ("color",    params.get_param_view("DefaultShapeLineColor")),
+        "LineWidth":       ("int",      params.get_param_view("DefaultShapeLineWidth")),
+        "PointColor":      ("color",    params.get_param_view("DefaultShapeVertexColor")),
+        "PointSize":       ("int",      params.get_param_view("DefaultShapePointSize")),
+        "ShapeAppearance": ("material", (get_view_material(), ))
     }
+
+
+def get_view_material():
+    """Return a ShapeAppearance material with properties based on the preferences."""
+    material = App.Material()
+    material.AmbientColor  = params.get_param_view("DefaultAmbientColor") & 0xFFFFFF00
+    material.DiffuseColor  = params.get_param_view("DefaultShapeColor") & 0xFFFFFF00
+    material.EmissiveColor = params.get_param_view("DefaultEmissiveColor") & 0xFFFFFF00
+    material.Shininess     = params.get_param_view("DefaultShapeShininess") / 100
+    material.SpecularColor = params.get_param_view("DefaultSpecularColor") & 0xFFFFFF00
+    material.Transparency  = params.get_param_view("DefaultShapeTransparency") / 100
+    return material
 
 
 def string_encode_coin(ustr):
@@ -426,6 +437,8 @@ def get_type(obj):
         return None
     if isinstance(obj, Part.Shape):
         return "Shape"
+    if hasattr(obj, "Class") and "Ifc" in str(obj.Class):
+        return obj.Class
     if hasattr(obj, 'Proxy') and hasattr(obj.Proxy, "Type"):
         return obj.Proxy.Type
     if hasattr(obj, 'TypeId'):
@@ -705,8 +718,8 @@ def compare_objects(obj1, obj2):
                 elif p == "Placement":
                     delta = obj1.Placement.Base.sub(obj2.Placement.Base)
                     text = translate("draft", "Objects have different placements. "
-                                              "Distance between the two base points: ")
-                    _msg(text + str(delta.Length))
+                                              "Distance between the two base points:")
+                    _msg(text + " " + str(delta.Length))
                 else:
                     if getattr(obj1, p) != getattr(obj2, p):
                         _msg("'{}' ".format(p) + translate("draft", "has a different value"))
@@ -1029,8 +1042,7 @@ def find_doc(doc=None):
         try:
             doc = App.getDocument(doc)
         except NameError:
-            _msg("document: {}".format(doc))
-            _err(translate("draft", "Wrong input: unknown document."))
+            _err(translate("draft", "Wrong input: unknown document {}").format(doc))
             return not FOUND, None
 
     return FOUND, doc
@@ -1107,11 +1119,8 @@ def use_instead(function, version=""):
         then we should not give a version.
     """
     if version:
-        _wrn(translate("draft", "This function will be deprecated in ")
-             + "{}. ".format(version)
-             + translate("draft", "Please use ") + "'{}'.".format(function))
+        _wrn(translate("draft", "This function will be deprecated in {}. Please use '{}'.") .format(version, function))
     else:
-        _wrn(translate("draft", "This function will be deprecated. ")
-             + translate("draft", "Please use ") + "'{}'.".format(function))
+        _wrn(translate("draft", "This function will be deprecated. Please use '{}'.") .format(function))
 
 ## @}

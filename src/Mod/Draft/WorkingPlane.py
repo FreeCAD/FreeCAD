@@ -1601,8 +1601,7 @@ class PlaneGui(PlaneBase):
         """Align the view to the WP."""
         if self._view is not None:
             try:
-                param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
-                default_cam_dist = abs(param.GetFloat("NewDocumentCameraScale", 100.0))
+                default_cam_dist = abs(params.get_param_view("NewDocumentCameraScale"))
                 cam = self._view.getCameraNode()
                 cur_cam_dist = abs(self.get_local_coords(Vector(cam.position.getValue().getValue())).z)
                 cam_dist = max(default_cam_dist, cur_cam_dist)
@@ -1678,7 +1677,7 @@ class PlaneGui(PlaneBase):
         return FreeCAD.Units.Quantity(coord, FreeCAD.Units.Length).UserString
 
     def _format_vector(self, vec):
-        dec = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals", 2)
+        dec = params.get_param("Decimals", path="Units")
         return f"({vec.x:.{dec}f}  {vec.y:.{dec}f}  {vec.z:.{dec}f})"
 
     def _update_all(self, _hist_add=True):
@@ -1766,7 +1765,7 @@ def get_working_plane(update=True):
 
 # View observer code to update the Draft Tray:
 if FreeCAD.GuiUp:
-    from PySide2 import QtWidgets
+    from PySide import QtWidgets
     from draftutils.todo import ToDo
 
     def _update_gui():
@@ -1820,7 +1819,7 @@ if FreeCAD.GuiUp:
             _view_observer_active = False
 
 
-# Compatibility function (V0.22, 2023):
+# Compatibility function (v1.0, 2023):
 def getPlacementFromPoints(points):
     """Return a placement from a list of 3 or 4 points. The 4th point is no longer used.
 
@@ -1830,7 +1829,7 @@ def getPlacementFromPoints(points):
     return DraftGeomUtils.placement_from_points(*points[:3])
 
 
-# Compatibility function (V0.22, 2023):
+# Compatibility function (v1.0, 2023):
 def getPlacementFromFace(face, rotated=False):
     """Return a placement from a face.
 

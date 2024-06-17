@@ -106,7 +106,6 @@ void TaskSketchBasedParameters::finishReferenceSelection(App::DocumentObject* pr
 
 void TaskSketchBasedParameters::onSelectReference(AllowSelectionFlags allow) {
     // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
-
     PartDesign::ProfileBased* pcSketchBased = dynamic_cast<PartDesign::ProfileBased*>(vp->getObject());
     if (pcSketchBased) {
         // The solid this feature will be fused to

@@ -183,7 +183,6 @@ private:
         float x=0.0f,y=0.0f,z=1.0f,size = 0.1f;
 
         if (!PyArg_ParseTuple(args.ptr(), "O!O(fff)f", &(Part::TopoShapePy::Type), &pcTopoObj,&pcListObj,&x,&y,&z,&size))
-//      if (!PyArg_ParseTuple(args, "O!O!", &(App::TopoShapePy::Type), &pcTopoObj,&PyList_Type,&pcListObj,x,y,z,size))
             throw Py::Exception();
 
         pcObject = static_cast<Part::TopoShapePy*>(pcTopoObj);
@@ -474,6 +473,15 @@ private:
     {
         PyObject *shape;
 
+        auto runMesher = [](const MeshPart::Mesher& mesher) {
+            Mesh::MeshObject* mesh;
+            {
+                Base::PyGILStateRelease releaser{};
+                mesh = mesher.createMesh();
+            }
+            return Py::asObject(new Mesh::MeshPy(mesh));
+        };
+
         static const std::array<const char *, 7> kwds_lindeflection{"Shape", "LinearDeflection", "AngularDeflection",
                                                                     "Relative", "Segments", "GroupColors", nullptr};
         PyErr_Clear();
@@ -509,7 +517,7 @@ private:
                 }
                 mesher.setColors(colors);
             }
-            return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
+            return runMesher(mesher);
         }
 
         static const std::array<const char *, 3> kwds_maxLength{"Shape", "MaxLength", nullptr};
@@ -521,7 +529,7 @@ private:
             mesher.setMethod(MeshPart::Mesher::Mefisto);
             mesher.setMaxLength(maxLength);
             mesher.setRegular(true);
-            return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
+            return runMesher(mesher);
         }
 
         static const std::array<const char *, 3> kwds_maxArea{"Shape", "MaxArea", nullptr};
@@ -533,7 +541,7 @@ private:
             mesher.setMethod(MeshPart::Mesher::Mefisto);
             mesher.setMaxArea(maxArea);
             mesher.setRegular(true);
-            return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
+            return runMesher(mesher);
         }
 
         static const std::array<const char *, 3> kwds_localLen{"Shape", "LocalLength", nullptr};
@@ -545,7 +553,7 @@ private:
             mesher.setMethod(MeshPart::Mesher::Mefisto);
             mesher.setLocalLength(localLen);
             mesher.setRegular(true);
-            return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
+            return runMesher(mesher);
         }
 
         static const std::array<const char *, 3> kwds_deflection{"Shape", "Deflection", nullptr};
@@ -557,7 +565,7 @@ private:
             mesher.setMethod(MeshPart::Mesher::Mefisto);
             mesher.setDeflection(deflection);
             mesher.setRegular(true);
-            return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
+            return runMesher(mesher);
         }
 
         static const std::array<const char *, 4> kwds_minmaxLen{"Shape", "MinLength", "MaxLength", nullptr};
@@ -569,7 +577,7 @@ private:
             mesher.setMethod(MeshPart::Mesher::Mefisto);
             mesher.setMinMaxLengths(minLen, maxLen);
             mesher.setRegular(true);
-            return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
+            return runMesher(mesher);
         }
 
         static const std::array<const char *, 8> kwds_fineness{"Shape", "Fineness", "SecondOrder", "Optimize",
@@ -587,7 +595,7 @@ private:
             mesher.setOptimize(optimize != 0);
             mesher.setQuadAllowed(allowquad != 0);
             mesher.setMinMaxLengths(minLen, maxLen);
-            return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
+            return runMesher(mesher);
 #else
             throw Py::RuntimeError("SMESH was built without NETGEN support");
 #endif
@@ -612,7 +620,7 @@ private:
             mesher.setOptimize(optimize != 0);
             mesher.setQuadAllowed(allowquad != 0);
             mesher.setMinMaxLengths(minLen, maxLen);
-            return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
+            return runMesher(mesher);
 #else
             throw Py::RuntimeError("SMESH was built without NETGEN support");
 #endif
@@ -627,7 +635,7 @@ private:
             mesher.setMethod(MeshPart::Mesher::Mefisto);
             mesher.setRegular(true);
 #endif
-            return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
+            return runMesher(mesher);
         }
 
         throw Py::TypeError("Wrong arguments");

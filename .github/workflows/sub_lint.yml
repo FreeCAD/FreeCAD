@@ -77,7 +77,7 @@ on:
         type: boolean
         required: false
       cpplintFilters:
-        default: -build/c++11,-build/header_guard,-build/include,-build/include_alpha,-build/include_order,-build/include_subdir,-build/include_what_you_use,-build/namespaces,-legal/copyright,-readability/braces,-readability-braces-around-statements,-readability/casting,-readability/namespace,-readability/todo,-runtime/indentation_namespace,-runtime/int,-runtime/references,-whitespace/blank_line,-whitespace/braces,-whitespace/comma,-whitespace/comments,-whitespace/end_of_line,-whitespace/indent,-whitespace/line_length,-whitespace/newline,-whitespace/operators,-whitespace/parens,-whitespace/semicolon,-whitespace/tab,-whitespace/todo
+        default: -build/c++17,-build/header_guard,-build/include,-build/include_alpha,-build/include_order,-build/include_subdir,-build/include_what_you_use,-build/namespaces,-legal/copyright,-readability/braces,-readability-braces-around-statements,-readability/casting,-readability/namespace,-readability/todo,-runtime/indentation_namespace,-runtime/int,-runtime/references,-whitespace/blank_line,-whitespace/braces,-whitespace/comma,-whitespace/comments,-whitespace/end_of_line,-whitespace/indent,-whitespace/line_length,-whitespace/newline,-whitespace/operators,-whitespace/parens,-whitespace/semicolon,-whitespace/tab,-whitespace/todo
         type: string
         required: false
       cpplintLineLength:
@@ -198,7 +198,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
       - name: Make needed directories, files and initializations
@@ -466,14 +466,9 @@ jobs:
                             python3-pyside2.qtgui                       \
                             python3-pyside2.qtnetwork                   \
                             python3-pyside2.qtsvg                       \
-                            python3-pyside2.qtwebengine                 \
-                            python3-pyside2.qtwebenginecore             \
-                            python3-pyside2.qtwebenginewidgets          \
-                            python3-pyside2.qtwebchannel                \
                             python3-pyside2.qtwidgets                   \
                             qtbase5-dev                                 \
                             qttools5-dev                                \
-                            qtwebengine5-dev                            \
                             shiboken2                                   \
                             swig                                        \
                             ccache                                      \
@@ -761,7 +756,7 @@ jobs:
           [ $clazyQT6Errors -eq 0 ]
       - name: Upload logs and fixes
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
@@ -769,7 +764,7 @@ jobs:
             ${{ env.fixesdir }}
       - name: Upload report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.reportfilename }}
           path: |

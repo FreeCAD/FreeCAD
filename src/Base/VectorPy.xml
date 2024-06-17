@@ -147,6 +147,28 @@ vector2 : Base.Vector
 tol : float</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="isParallel" Const="true">
+            <Documentation>
+                <UserDocu>isParallel(vector2, tol=0) -> bool
+
+Checks if this vector and `vector2` are
+parallel less or equal to the given tolerance.
+
+vector2 : Base.Vector
+tol : float</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="isNormal" Const="true">
+            <Documentation>
+                <UserDocu>isNormal(vector2, tol=0) -> bool
+
+Checks if this vector and `vector2` are
+normal less or equal to the given tolerance.
+
+vector2 : Base.Vector
+tol : float</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="projectToLine">
             <Documentation>
                 <UserDocu>projectToLine(point, dir) -> Base.Vector

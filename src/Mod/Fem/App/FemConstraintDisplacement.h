@@ -40,10 +40,6 @@ public:
     /// Constructor
     ConstraintDisplacement();
 
-    // Read-only (calculated values). These trigger changes in the ViewProvider
-    App::PropertyVectorList Points;
-    App::PropertyVectorList Normals;
-
     // Displacement parameters
     App::PropertyDistance xDisplacement;
     App::PropertyDistance yDisplacement;

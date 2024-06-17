@@ -43,7 +43,8 @@ import draftutils.utils as utils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 
-from draftutils.messages import _msg, _err, _toolmsg
+from draftmake import make_fillet
+from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -104,7 +105,7 @@ class Fillet(gui_base_original.Creator):
             # self.linetrack = trackers.lineTracker(dotted=True)
             # self.arctrack = trackers.arcTracker()
             # self.call = self.view.addEventCallback("SoEvent", self.action)
-            _toolmsg(translate("draft","Enter radius."))
+            _toolmsg(translate("draft", "Enter radius."))
 
     def action(self, arg):
         """Scene event handler. CURRENTLY NOT USED.
@@ -123,12 +124,10 @@ class Fillet(gui_base_original.Creator):
     def set_delete(self):
         """Execute as a callback when the delete checkbox changes."""
         self.delete = self.ui.check_delete.isChecked()
-        _toolmsg(translate("draft","Delete original objects:") + " " + str(self.delete))
 
     def set_chamfer(self):
         """Execute as a callback when the chamfer checkbox changes."""
         self.chamfer = self.ui.check_chamfer.isChecked()
-        _toolmsg(translate("draft","Chamfer mode:") + " " + str(self.chamfer))
 
     def numericRadius(self, rad):
         """Validate the entry radius in the user interface.
@@ -138,43 +137,27 @@ class Fillet(gui_base_original.Creator):
         """
         self.rad = rad
         self.draw_arc(rad, self.chamfer, self.delete)
-        self.finish()
 
     def draw_arc(self, rad, chamfer, delete):
         """Process the selection and draw the actual object."""
-        wires = Gui.Selection.getSelection()
-
-        if not wires or len(wires) != 2:
-            _err(translate("draft","Two elements needed."))
+        objs = Gui.Selection.getSelection()
+        edges = make_fillet._preprocess(objs, rad, chamfer)
+        if edges is None:
+            _err(translate("draft", "Fillet cannot be created"))
             return
-
-        for o in wires:
-            _toolmsg(utils.get_type(o))
-
-        _test = translate("draft", "Test object")
-        _test_off = translate("draft", "Test object removed")
-        _cant = translate("draft", "Fillet cannot be created")
-
-        _toolmsg(4*"=" + _test)
-        arc = Draft.make_fillet(wires, rad)
-        if not arc:
-            _err(_cant)
-            return
-        self.doc.removeObject(arc.Name)
-        _toolmsg(4*"=" + _test_off)
 
         _doc = 'FreeCAD.ActiveDocument.'
 
-        _wires = '['
-        _wires += _doc + wires[0].Name + ', '
-        _wires += _doc + wires[1].Name
-        _wires += ']'
+        _objs = '['
+        _objs += _doc + objs[0].Name + ', '
+        _objs += _doc + objs[1].Name
+        _objs += ']'
 
         Gui.addModule("Draft")
 
         _cmd = 'Draft.make_fillet'
         _cmd += '('
-        _cmd += _wires + ', '
+        _cmd += _objs + ', '
         _cmd += 'radius=' + str(rad)
         if chamfer:
             _cmd += ', chamfer=' + str(chamfer)
@@ -185,16 +168,8 @@ class Fillet(gui_base_original.Creator):
                      'Draft.autogroup(arc)',
                      'FreeCAD.ActiveDocument.recompute()']
 
-        self.commit(translate("draft", "Create fillet"),
-                    _cmd_list)
-
-    def finish(self, cont=False):
-        """Terminate the operation."""
-        super(Fillet, self).finish()
-        if self.ui:
-            # self.linetrack.finalize()
-            # self.arctrack.finalize()
-            self.doc.recompute()
+        self.commit(translate("draft", "Create fillet"), _cmd_list)
+        self.finish()
 
 
 Gui.addCommand('Draft_Fillet', Fillet())

@@ -18,7 +18,7 @@
     <Attribute Name="Value" ReadOnly="false">
         <Documentation>
             <UserDocu>
-                returns the value of the GeometryBoolExtension.
+                Returns the value of the GeometryBoolExtension.
             </UserDocu>
         </Documentation>
         <Parameter Name="Value" Type="Boolean"/>

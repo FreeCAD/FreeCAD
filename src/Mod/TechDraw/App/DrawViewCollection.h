@@ -48,8 +48,9 @@ public:
     ~DrawViewCollection() override;
     short mustExecute() const override;
 
-    int addView(DrawView *view);
-    int removeView(DrawView *view);
+    int addView(App::DocumentObject* obj);
+    int removeView(App::DocumentObject* obj);
+    std::vector<App::DocumentObject*> getViews() const;
     void rebuildViewList();
     bool isUnsetting() { return nowUnsetting; }
 

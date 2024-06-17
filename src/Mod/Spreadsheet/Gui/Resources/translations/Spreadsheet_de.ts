@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="357"/>
       <source>Center-align contents of selected cells</source>
-      <translation>Inhalt der gewählten Zellen zentrieren</translation>
+      <translation>Zentriert den Inhalt der gewählten Zellen</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="585"/>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Inhalt der gewählten Zellen vertikal zentrieren</translation>
+      <translation>Zentriert den Inhalt der gewählten Zellen vertikal</translation>
     </message>
   </context>
   <context>
@@ -605,7 +605,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
       <source>Left</source>
-      <translation>Links</translation>
+      <translation>Linksbündig</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="102"/>
@@ -616,7 +616,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
       <source>Right</source>
-      <translation>Rechts</translation>
+      <translation>Rechtsbündig</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>
@@ -693,7 +693,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Datei exportieren</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Kalkulationstabelle anzeigen</translation>
     </message>
@@ -737,7 +737,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Tabelle</translation>
     </message>
@@ -949,8 +949,18 @@ Standard: %V = %A
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>Trennzeichen: </translation>
+      <source>Delimiter Character:</source>
+      <translation>Trennzeichen:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation>Anführungszeichen:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation>Escape-Zeichen:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -963,19 +973,9 @@ Standard: %V = %A
       <translation>tab</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>Anführungszeichen: </translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zeichen, das verwendet wird, um Zeichenketten abzugrenzen, typischerweise ein einfaches Anführungszeichen (') oder ein doppeltes Anführungszeichen (&amp;quot;). Muss ein einzelnes Zeichen sein.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Escape-Zeichen: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -1162,7 +1162,7 @@ Standard: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Unbenannt</translation>
     </message>

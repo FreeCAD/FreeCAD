@@ -24,18 +24,17 @@
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QString>
-#endif
-
-#include <memory>
-
 #include <QFile>
 #include <QIODevice>
 #include <QTextStream>
 #include <QUuid>
+#include <memory>
+#include <fstream>
+#endif
+
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
-#include <fstream>
 
 
 #include "Exceptions.h"
@@ -82,8 +81,9 @@ bool MaterialConfigLoader::readFile(const QString& path, QMap<QString, QString>&
     QFile infile(path);
     if (infile.open(QIODevice::ReadOnly)) {
         QTextStream in(&infile);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         in.setCodec("UTF-8");
-
+#endif
         QString line;
         QString prefix;
         while (!in.atEnd()) {
@@ -1017,6 +1017,22 @@ void MaterialConfigLoader::addMechanical(const QMap<QString, QString>& fcmat,
     setPhysicalValue(finalModel, "Stiffness", stiffness);
 }
 
+void MaterialConfigLoader::addLegacy(const QMap<QString, QString>& fcmat,
+                                     const std::shared_ptr<Material>& finalModel)
+{
+    for (auto const& legacy : fcmat.keys()) {
+        auto name = legacy;
+        int last = name.lastIndexOf(QLatin1String("/"));
+        if (last > 0) {
+            name = name.mid(last + 1);
+        }
+
+        if (!finalModel->hasNonLegacyProperty(name)) {
+            setLegacyValue(finalModel, name.toStdString(), fcmat[legacy]);
+        }
+    }
+}
+
 std::shared_ptr<Material>
 MaterialConfigLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibrary>& library,
                                           const QString& path)
@@ -1081,6 +1097,7 @@ MaterialConfigLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibrary>
     addRendering(fcmat, finalModel);
     addVectorRendering(fcmat, finalModel);
     addRenderWB(fcmat, finalModel);
+    addLegacy(fcmat, finalModel);
 
     return finalModel;
 }

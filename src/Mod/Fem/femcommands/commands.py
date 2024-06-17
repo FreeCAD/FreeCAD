@@ -696,8 +696,6 @@ class _MaterialMechanicalNonlinear(CommandManager):
         # set some property of the solver to nonlinear
         # (only if one solver is available and if this solver is a CalculiX solver):
         # nonlinear material
-        # nonlinear geometry --> it is triggered anyway
-        # https://forum.freecad.org/viewtopic.php?f=18&t=23101&p=180489#p180489
         solver_object = None
         for m in self.active_analysis.Group:
             if m.isDerivedFrom("Fem::FemSolverObjectPython"):
@@ -715,11 +713,10 @@ class _MaterialMechanicalNonlinear(CommandManager):
             or is_of_type(solver_object, "Fem::SolverCalculix")
         ):
             FreeCAD.Console.PrintMessage(
-                "Set MaterialNonlinearity and GeometricalNonlinearity to nonlinear for {}\n"
+                "Set MaterialNonlinearity to nonlinear for {}\n"
                 .format(solver_object.Label)
             )
             solver_object.MaterialNonlinearity = "nonlinear"
-            solver_object.GeometricalNonlinearity = "nonlinear"
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
@@ -1047,48 +1044,142 @@ class _ResultsPurge(CommandManager):
         import femresult.resulttools as resulttools
         resulttools.purge_results(self.active_analysis)
 
+class _SolverCalculixContextManager:
 
-class _SolverCxxtools(CommandManager):
+    def __init__(self, make_name, cli_obj_ref_name):
+        self.make_name = make_name
+        self.cli_name = cli_obj_ref_name
+
+    def __enter__(self):
+        ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+        FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
+        FreeCADGui.addModule("ObjectsFem")
+        FreeCADGui.addModule("FemGui")
+        FreeCADGui.doCommand(
+            "{} = ObjectsFem.{}(FreeCAD.ActiveDocument)".format(
+                self.cli_name, self.make_name
+            )
+        )
+        FreeCADGui.doCommand(
+            "{}.AnalysisType = {}".format(
+                self.cli_name, ccx_prefs.GetInt("AnalysisType", 0)
+            )
+        )
+        FreeCADGui.doCommand(
+            "{}.EigenmodesCount = {}".format(
+                self.cli_name, ccx_prefs.GetInt("EigenmodesCount", 10)
+            )
+        )
+        FreeCADGui.doCommand(
+            "{}.EigenmodeLowLimit = {}".format(
+                self.cli_name, ccx_prefs.GetFloat("EigenmodeLowLimit", 0.0)
+            )
+        )
+        FreeCADGui.doCommand(
+            "{}.EigenmodeHighLimit = {}".format(
+                self.cli_name, ccx_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
+            )
+        )
+        FreeCADGui.doCommand(
+            "{}.IterationsMaximum = {}".format(
+                self.cli_name, ccx_prefs.GetInt("AnalysisMaxIterations", 2000)
+            )
+        )
+        FreeCADGui.doCommand(
+            "{}.TimeInitialStep = {}".format(
+                self.cli_name, ccx_prefs.GetFloat("AnalysisTimeInitialStep", 1.0)
+            )
+        )
+        FreeCADGui.doCommand(
+            "{}.TimeEnd = {}".format(
+                self.cli_name, ccx_prefs.GetFloat("AnalysisTime", 1.0)
+            )
+        )
+        FreeCADGui.doCommand(
+            "{}.TimeMinimumStep = {}".format(
+                self.cli_name, ccx_prefs.GetFloat("AnalysisTimeMinimumStep", 0.00001)
+            )
+        )
+        FreeCADGui.doCommand(
+            "{}.TimeMaximumStep = {}".format(
+                self.cli_name, ccx_prefs.GetFloat("AnalysisTimeMaximumStep", 1.0)
+            )
+        )
+        FreeCADGui.doCommand(
+            "{}.ThermoMechSteadyState = {}".format(
+                self.cli_name, ccx_prefs.GetBool("StaticAnalysis", True)
+            )
+        )
+        FreeCADGui.doCommand(
+            "{}.IterationsControlParameterTimeUse = {}".format(
+                self.cli_name, ccx_prefs.GetInt("UseNonCcxIterationParam", False)
+            )
+        )
+        FreeCADGui.doCommand(
+            "{}.SplitInputWriter = {}".format(
+                self.cli_name, ccx_prefs.GetBool("SplitInputWriter", False)
+            )
+        )
+        FreeCADGui.doCommand(
+            "{}.MatrixSolverType = {}".format(
+                self.cli_name, ccx_prefs.GetInt("Solver", 0)
+            )
+        )
+        FreeCADGui.doCommand(
+            "{}.BeamShellResultOutput3D = {}".format(
+                self.cli_name, ccx_prefs.GetBool("BeamShellOutput", True)
+            )
+        )
+        FreeCADGui.doCommand(
+            "{}.GeometricalNonlinearity = \"{}\"".format(
+                self.cli_name,
+                "nonlinear" if ccx_prefs.GetBool("NonlinearGeometry", False) else "linear"
+            )
+        )
+
+        return self
+
+    def __exit__(self, exc_type, exc_value, trace):
+        FreeCADGui.doCommand(
+            "FemGui.getActiveAnalysis().addObject({})".format(self.cli_name)
+        )
+        FreeCAD.ActiveDocument.commitTransaction()
+        # expand analysis object in tree view
+        expandParentObject()
+        FreeCAD.ActiveDocument.recompute()
+
+
+class _SolverCcxTools(CommandManager):
     "The FEM_SolverCalculix ccx tools command definition"
 
     def __init__(self):
-        super(_SolverCxxtools, self).__init__()
+        super(_SolverCcxTools, self).__init__()
         self.pixmap = "FEM_SolverStandard"
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_SolverCalculixCxxtools",
+            "FEM_SolverCalculiXCcxTools",
             "Solver CalculiX Standard"
         )
         self.accel = "S, X"
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_SolverCalculixCxxtools",
+            "FEM_SolverCalculiXCcxTools",
             "Creates a standard FEM solver CalculiX with ccx tools"
         )
         self.is_active = "with_analysis"
 
     def Activated(self):
-        has_nonlinear_material_obj = False
-        for m in self.active_analysis.Group:
-            if is_of_type(m, "Fem::MaterialMechanicalNonlinear"):
-                has_nonlinear_material_obj = True
-        FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
-        FreeCADGui.addModule("ObjectsFem")
-        FreeCADGui.addModule("FemGui")
-        if has_nonlinear_material_obj:
-            FreeCADGui.doCommand(
-                "solver = ObjectsFem.makeSolverCalculixCcxTools(FreeCAD.ActiveDocument)"
-            )
-            FreeCADGui.doCommand("solver.GeometricalNonlinearity = 'nonlinear'")
-            FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
-            FreeCADGui.doCommand("FemGui.getActiveAnalysis().addObject(solver)")
-        else:
-            FreeCADGui.doCommand(
-                "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-                "makeSolverCalculixCcxTools(FreeCAD.ActiveDocument))"
-            )
-        FreeCAD.ActiveDocument.commitTransaction()
-        # expand analysis object in tree view
-        expandParentObject()
-        FreeCAD.ActiveDocument.recompute()
+        with _SolverCalculixContextManager("makeSolverCalculiXCcxTools", "solver") as cm:
+            has_nonlinear_material_obj = False
+            for m in self.active_analysis.Group:
+                if is_of_type(m, "Fem::MaterialMechanicalNonlinear"):
+                    has_nonlinear_material_obj = True
+
+            if has_nonlinear_material_obj:
+                FreeCADGui.doCommand(
+                    "{}.GeometricalNonlinearity = 'nonlinear'".format(cm.cli_name)
+                )
+                FreeCADGui.doCommand(
+                    "{}.MaterialNonlinearity = 'nonlinear'".format(cm.cli_name)
+                )
 
 
 class _SolverCalculix(CommandManager):
@@ -1107,8 +1198,21 @@ class _SolverCalculix(CommandManager):
             "Creates a FEM solver CalculiX new framework (less result error handling)"
         )
         self.is_active = "with_analysis"
-        self.is_active = "with_analysis"
-        self.do_activated = "add_obj_on_gui_expand_noset_edit"
+
+    def Activated(self):
+        with _SolverCalculixContextManager("makeSolverCalculix", "solver") as cm:
+            has_nonlinear_material_obj = False
+            for m in self.active_analysis.Group:
+                if is_of_type(m, "Fem::MaterialMechanicalNonlinear"):
+                    has_nonlinear_material_obj = True
+
+            if has_nonlinear_material_obj:
+                FreeCADGui.doCommand(
+                    "{}.GeometricalNonlinearity = 'nonlinear'".format(cm.cli_name)
+                )
+                FreeCADGui.doCommand(
+                    "{}.MaterialNonlinearity = 'nonlinear'".format(cm.cli_name)
+                )
 
 
 class _SolverControl(CommandManager):
@@ -1369,8 +1473,8 @@ FreeCADGui.addCommand(
     _ResultsPurge()
 )
 FreeCADGui.addCommand(
-    "FEM_SolverCalculixCxxtools",
-    _SolverCxxtools()
+    "FEM_SolverCalculiXCcxTools",
+    _SolverCcxTools()
 )
 FreeCADGui.addCommand(
     "FEM_SolverCalculiX",

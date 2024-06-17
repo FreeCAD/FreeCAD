@@ -50,7 +50,6 @@ import FreeCAD as App
 import FreeCADGui as Gui
 from draftutils import params
 from draftutils import utils
-from draftutils.messages import _msg
 from draftutils.translate import translate
 
 
@@ -196,8 +195,6 @@ class ViewProviderDraftAnnotation(object):
         if prop == "AnnotationStyle" and "AnnotationStyle" in properties:
             if not vobj.AnnotationStyle or vobj.AnnotationStyle == "":
                 # unset style
-                _msg(16 * "-")
-                _msg("Unset style")
                 for visprop in utils.get_default_annotation_style().keys():
                     if visprop in properties:
                         # make property writable
@@ -210,8 +207,6 @@ class ViewProviderDraftAnnotation(object):
                         styles[key[12:]] = json.loads(value)
 
                 if vobj.AnnotationStyle in styles:
-                    _msg(16 * "-")
-                    _msg("Style: {}".format(vobj.AnnotationStyle))
                     style = styles[vobj.AnnotationStyle]
                     for visprop in style.keys():
                         if visprop in properties:
@@ -222,7 +217,6 @@ class ViewProviderDraftAnnotation(object):
                                 if vobj.getTypeIdOfProperty(visprop) == "App::PropertyColor":
                                     value = value & 0xFFFFFF00
                                 setattr(vobj, visprop, value)
-                                _msg("setattr: '{}', '{}'".format(visprop, value))
                             except:
                                 pass
 

@@ -34,6 +34,7 @@ from .TDToolsUtil import *
 from .CommandShareView import CommandShareView
 from .CommandMoveView import CommandMoveView
 from .CommandAxoLengthDimension import CommandAxoLengthDimension
+from .CommandPositionSectionView import CommandPositionSectionView
 from .CommandVertexCreations import CommandVertexCreationGroup
 from .CommandHoleShaftFit import CommandHoleShaftFit
 from .CommandFillTemplateFields import CommandFillTemplateFields

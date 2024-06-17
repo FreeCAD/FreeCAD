@@ -28,10 +28,12 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 
 #include "DimensionGeometry.h"
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
+#include "DrawViewDetail.h"
 
 
 using namespace TechDraw;
@@ -60,9 +62,26 @@ void pointPair::move(const Base::Vector3d& offset)
     m_overrideSecond = m_overrideSecond - offset;
 }
 
+//move the points by factor
+void pointPair::scale(double factor)
+{
+    m_first = m_first * factor;
+    m_second = m_second * factor;
+    m_overrideFirst = m_overrideFirst * factor;
+    m_overrideSecond = m_overrideSecond * factor;
+}
+
 // project the points onto the dvp's paper plane.
 void pointPair::project(const DrawViewPart* dvp)
 {
+    auto detailView = dynamic_cast<const DrawViewDetail*>(dvp);
+    if (detailView) {
+        m_first = detailView->mapPoint3dToDetail(m_first) * detailView->getScale();
+        m_second = detailView->mapPoint3dToDetail(m_second) * detailView->getScale();
+        m_overrideFirst = detailView->mapPoint3dToDetail(m_overrideFirst) * detailView->getScale();
+        m_overrideSecond = detailView->mapPoint3dToDetail(m_overrideSecond) * detailView->getScale();
+        return;
+    }
     m_first = dvp->projectPoint(m_first) * dvp->getScale();
     m_second = dvp->projectPoint(m_second) * dvp->getScale();
     m_overrideFirst = dvp->projectPoint(m_overrideFirst) * dvp->getScale();
@@ -98,6 +117,43 @@ void pointPair::dump(const std::string& text) const
     Base::Console().Message("pointPair - first: %s  second: %s\n",
                             DU::formatVector(first()).c_str(), DU::formatVector(second()).c_str());
 }
+
+//! return unscaled, unrotated version of this pointPair.  caller is responsible for
+//! for ensuring this pointPair is in scaled, rotated form before calling this method.
+pointPair pointPair::toCanonicalForm(DrawViewPart* dvp) const
+{
+    pointPair result;
+    // invert points?
+    result.m_first = CosmeticVertex::makeCanonicalPoint(dvp, m_first);
+    result.m_second = CosmeticVertex::makeCanonicalPoint(dvp, m_second);
+    result.m_overrideFirst = CosmeticVertex::makeCanonicalPoint(dvp, m_overrideFirst);
+    result.m_overrideSecond = CosmeticVertex::makeCanonicalPoint(dvp, m_overrideSecond);
+    return result;
+}
+
+//! return scaled and rotated version of this pointPair.  caller is responsible for
+//! for ensuring this pointPair is in canonical form before calling this method.
+pointPair pointPair::toDisplayForm(DrawViewPart* dvp) const
+{
+    pointPair result;
+
+    // invert points?
+    result.m_first = m_first * dvp->getScale();
+    result.m_second = m_second * dvp->getScale();
+    result.m_overrideFirst = m_overrideFirst * dvp->getScale();
+    result.m_overrideSecond = m_overrideSecond * dvp->getScale();
+    auto rotationDeg = dvp->Rotation.getValue();
+    if (rotationDeg != 0.0) {
+        auto rotationRad = Base::toRadians(rotationDeg);
+        result.m_first.RotateZ(rotationRad);
+        result.m_second.RotateZ(rotationRad);
+        result.m_overrideFirst.RotateZ(rotationRad);
+        result.m_overrideSecond.RotateZ(rotationRad);
+    }
+    return result;
+}
+
+
 
 anglePoints::anglePoints()
 {
@@ -150,6 +206,30 @@ void anglePoints::invertY()
     m_vertex = DU::invertY(m_vertex);
 }
 
+//! return unscaled, unrotated version of this anglePoints.  caller is responsible for
+//! for ensuring this anglePoints is in scaled, rotated form before calling this method.
+anglePoints anglePoints::toCanonicalForm(DrawViewPart* dvp) const
+{
+    anglePoints result;
+    result.m_ends = m_ends.toCanonicalForm(dvp);
+    result.m_vertex = CosmeticVertex::makeCanonicalPoint(dvp, m_vertex);
+    return result;
+}
+
+//! return scaled and rotated version of this anglePoints.  caller is responsible for
+//! for ensuring this anglePoints is in canonical form before calling this method.
+anglePoints anglePoints::toDisplayForm(DrawViewPart* dvp) const
+{
+    anglePoints result;
+    result.m_ends = m_ends.toDisplayForm(dvp);
+    result.m_vertex = m_vertex * dvp->getScale();
+    auto rotationDeg = dvp->Rotation.getValue();
+    if (rotationDeg != 0.0) {
+        auto rotationRad = Base::toRadians(rotationDeg);
+        result.m_vertex.RotateZ(rotationRad);
+    }
+    return result;
+}
 void anglePoints::dump(const std::string& text) const
 {
     Base::Console().Message("anglePoints - %s\n", text.c_str());
@@ -234,6 +314,39 @@ void arcPoints::invertY()
     midArc = DU::invertY(midArc);
 }
 
+//! return scaled and rotated version of this arcPoints.  caller is responsible for
+//! for ensuring this arcPoints is in canonical form before calling this method.
+arcPoints arcPoints::toDisplayForm(DrawViewPart* dvp) const
+{
+    arcPoints result;
+    result.onCurve = onCurve.toDisplayForm(dvp);
+    result.arcEnds = arcEnds.toDisplayForm(dvp);
+    result.center = center * dvp->getScale();
+    result.midArc = midArc * dvp->getScale();
+    result.radius = radius * dvp->getScale();
+    auto rotationDeg = dvp->Rotation.getValue();
+    if (rotationDeg != 0.0) {
+        auto rotationRad = Base::toRadians(rotationDeg);
+        result.center.RotateZ(rotationRad);
+        result.midArc.RotateZ(rotationRad);
+    }
+    return result;
+}
+
+//! return unscaled, unrotated version of this arcPoints.  caller is responsible for
+//! for ensuring this arcPoints is in scaled, rotated form before calling this method.
+arcPoints arcPoints::toCanonicalForm(DrawViewPart* dvp) const
+{
+    arcPoints result;
+    result.onCurve = onCurve.toCanonicalForm(dvp);
+    result.arcEnds = arcEnds.toCanonicalForm(dvp);
+    result.center = CosmeticVertex::makeCanonicalPoint(dvp, center);
+    result.midArc = CosmeticVertex::makeCanonicalPoint(dvp, midArc);
+    result.radius = radius / dvp->getScale();
+    return result;
+}
+
+
 void arcPoints::dump(const std::string& text) const
 {
     Base::Console().Message("arcPoints - %s\n", text.c_str());
@@ -247,4 +360,36 @@ void arcPoints::dump(const std::string& text) const
                             DrawUtil::formatVector(arcEnds.first()).c_str(),
                             DrawUtil::formatVector(arcEnds.second()).c_str());
     Base::Console().Message("arcPoints - midArc: %s\n", DrawUtil::formatVector(midArc).c_str());
+}
+
+
+areaPoint::areaPoint() :
+    area(0.0),
+    center(Base::Vector3d())
+{
+}
+
+areaPoint& areaPoint::operator=(const areaPoint& ap)
+{
+    area = ap.area;
+    center = ap.center;
+    return *this;
+}
+
+void areaPoint::move(const Base::Vector3d& offset)
+{
+    center = center - offset;
+}
+
+void areaPoint::project(const DrawViewPart* dvp)
+{
+    area = area * dvp->getScale();
+    center = dvp->projectPoint(center) * dvp->getScale();
+}
+
+void areaPoint::dump(const std::string& text) const
+{
+    Base::Console().Message("areaPoint - %s\n", text.c_str());
+    Base::Console().Message("areaPoint - area: %.3f center: %s\n", area,
+        DrawUtil::formatVector(center).c_str());
 }

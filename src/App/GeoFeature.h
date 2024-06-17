@@ -26,7 +26,9 @@
 
 #include "DocumentObject.h"
 #include "PropertyGeo.h"
-
+#include "MappedElement.h"
+#include "Material.h"
+#include "ComplexGeoData.h"
 
 namespace App
 {
@@ -120,6 +122,72 @@ public:
      * @return Base::Placement The transformation from the global reference coordinate system
      */
     Base::Placement globalPlacement() const;
+    /**
+     * @brief Virtual function to get an App::Material object describing the appearance
+     *
+     * The appearance properties are described by the underlying features material. This can not
+     * be accessed directly from within the Gui module. This virtual function will return a
+     * App::Material object describing the appearance properties of the material.
+     *
+     * @return App::Material the appearance properties of the object material
+     */
+    virtual App::Material getMaterialAppearance() const;
+
+    /**
+     * @brief Virtual function to set the appearance with an App::Material object
+     *
+     * The appearance properties are described by the underlying features material. This cannot
+     * be accessed directly from within the Gui module. This virtual function will set the
+     * appearance from an App::Material object.
+     */
+    virtual void setMaterialAppearance(const App::Material& material);
+
+    /**
+     * @brief Virtual function to get the camera alignment direction
+     *
+     * Finds a direction to align the camera with.
+     *
+     * @return bool whether or not a direction is found.
+     */
+    virtual bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname = nullptr) const;
+#ifdef FC_USE_TNP_FIX
+    /** Search sub element using internal cached geometry
+     *
+     * @param element: element name
+     * @param options: search options
+     * @param tol: coordinate tolerance
+     * @param atol: angle tolerance
+     *
+     * @return Returns a list of found element reference to the new geometry.
+     * The returned value will be invalidated when the geometry is changed.
+     *
+     * Before changing the property of geometry, GeoFeature will internally
+     * make a snapshot of all referenced element geometry. After change, user
+     * code may call this function to search for the new element name that
+     * reference to the same geometry of the old element.
+     */
+    virtual const std::vector<std::string>& searchElementCache(const std::string &element,
+                                                               Data::SearchOptions options = Data::SearchOptions::CheckGeometry,
+                                                               double tol = 1e-7,
+                                                               double atol = 1e-10) const;
+
+    static bool hasMissingElement(const char *subname);
+
+    /// Return the object that owns the shape that contains the give element name
+    virtual DocumentObject *getElementOwner(const Data::MappedName & /*name*/) const
+    {return nullptr;}
+
+    virtual std::vector<const char *> getElementTypes(bool all=true) const;
+
+
+protected:
+    void onChanged(const Property* prop) override;
+//    void onDocumentRestored() override;
+    void updateElementReference();
+#endif
+protected:
+    std::pair<std::string, std::string> _getElementName(const char* name,
+                                                        const Data::MappedElement& mapped) const;
 };
 
 } //namespace App

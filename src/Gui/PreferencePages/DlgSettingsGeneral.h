@@ -53,6 +53,7 @@ public:
 
     void saveSettings() override;
     void loadSettings() override;
+    void resetSettingsToDefaults() override;
 
     void saveThemes();
     void loadThemes();
@@ -74,6 +75,7 @@ public Q_SLOTS:
     void onUnitSystemIndexChanged(int index);
 
 private:
+    void saveUnitSystemSettings();
     void saveDockWindowVisibility();
     void loadDockWindowVisibility();
     void setRecentFileSize();
@@ -82,6 +84,10 @@ private:
     bool setLanguage(); //Returns true if language has been changed
     void setNumberLocale(bool force = false);
     void setDecimalPointConversion(bool on);
+    void retranslateUnits();
+    int getCurrentIconSize() const;
+    void addIconSizes(int current);
+    void translateIconSizes();
 
 private:
     int localeIndex;

@@ -115,7 +115,7 @@ void PlacementHandler::openTransactionIfNeeded()
 void PlacementHandler::setPropertyName(const std::string& name)
 {
     propertyName = name;
-    // Only the Placement property it's possible to directly change the Inventor representation.
+    // Only with the Placement property it's possible to directly change the Inventor representation.
     // For other placement properties with a different name the standard property handling must be used.
     changeProperty = (propertyName != "Placement");
 }
@@ -786,22 +786,25 @@ void Placement::bindObject()
         App::DocumentObject* obj = selectionObjects.front().getObject();
 
         std::string propertyName = handler.getPropertyName();
-        ui->xPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.x")));
-        ui->yPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.y")));
-        ui->zPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.z")));
+        App::ObjectIdentifier path = App::ObjectIdentifier::parse(obj, propertyName);
+        if (path.getProperty()) {
+            ui->xPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.x")));
+            ui->yPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.y")));
+            ui->zPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.z")));
 
-        ui->xAxis->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Axis.x")));
-        ui->yAxis->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Axis.y")));
-        ui->zAxis->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Axis.z")));
-        ui->angle->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Angle")));
+            ui->xAxis->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Axis.x")));
+            ui->yAxis->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Axis.y")));
+            ui->zAxis->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Axis.z")));
+            ui->angle->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Angle")));
 
-        ui->yawAngle  ->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Yaw")));
-        ui->pitchAngle->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Pitch")));
-        ui->rollAngle ->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Roll")));
+            ui->yawAngle  ->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Yaw")));
+            ui->pitchAngle->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Pitch")));
+            ui->rollAngle ->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Roll")));
 
-        ui->yawAngle->evaluateExpression();
-        ui->pitchAngle->evaluateExpression();
-        ui->rollAngle->evaluateExpression();
+            ui->yawAngle->evaluateExpression();
+            ui->pitchAngle->evaluateExpression();
+            ui->rollAngle->evaluateExpression();
+        }
     }
 }
 
@@ -1017,10 +1020,7 @@ TaskPlacement::TaskPlacement()
     this->setButtonPosition(TaskPlacement::South);
     widget = new Placement();
     widget->showDefaultButtons(false);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(),true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-
-    Content.push_back(taskbox);
+    addTaskBox(widget);
     connect(widget, &Placement::placementChanged, this, &TaskPlacement::slotPlacementChanged);
 }
 

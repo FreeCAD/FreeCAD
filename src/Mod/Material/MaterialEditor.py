@@ -27,7 +27,7 @@ __url__ = "https://www.freecad.org"
 import os
 from pathlib import PurePath
 import sys
-from PySide import QtCore, QtGui, QtSvg
+from PySide import QtCore, QtGui, QtSvgWidgets
 
 import FreeCAD
 import FreeCADGui
@@ -92,11 +92,11 @@ class MaterialEditor:
         treeView = widget.treeView
 
         # create preview svg slots
-        self.widget.PreviewRender = QtSvg.QSvgWidget(self.iconPath + "preview-rendered.svg")
+        self.widget.PreviewRender = QtSvgWidgets.QSvgWidget(self.iconPath + "preview-rendered.svg")
         self.widget.PreviewRender.setMaximumWidth(64)
         self.widget.PreviewRender.setMinimumHeight(64)
         self.widget.topLayout.addWidget(self.widget.PreviewRender)
-        self.widget.PreviewVector = QtSvg.QSvgWidget(self.iconPath + "preview-vector.svg")
+        self.widget.PreviewVector = QtSvgWidgets.QSvgWidget(self.iconPath + "preview-vector.svg")
         self.widget.PreviewVector.setMaximumWidth(64)
         self.widget.PreviewVector.setMinimumHeight(64)
         self.widget.topLayout.addWidget(self.widget.PreviewVector)
@@ -298,6 +298,7 @@ class MaterialEditor:
                 card_name_list.append([a_name, a_path, self.icons[a_path]])
 
         card_name_list.insert(0, [None, "", ""])
+        self.widget.ComboMaterial.clear()
         for mat in card_name_list:
             self.widget.ComboMaterial.addItem(QtGui.QIcon(mat[2]), mat[0], mat[1])
 
@@ -684,8 +685,15 @@ class MaterialEditor:
 
                 from importFCMat import write
                 write(filename, d)
+                import Materials
+                # Load the material
+                manager = Materials.MaterialManager()
+                manager.getMaterialByPath(filename)
                 self.edited = False
                 self.updateCardsInCombo()
+
+                # Ensure our card is selected
+                self.widget.ComboMaterial.setCurrentText(path.stem)
 
     def show(self):
         return self.widget.show()
@@ -936,13 +944,13 @@ def translate(context, text):
 def openEditor(obj=None, prop=None):
     """openEditor([obj,prop]): opens the editor, optionally with
     an object name and material property name to edit"""
-    param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Cards")
-    legacy = param.GetBool("LegacyEditor", True)
-    if legacy:
-        editor = MaterialEditor(obj, prop)
-        editor.exec_()
-    else:
-        FreeCADGui.runCommand('Materials_Edit',0)
+    # param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Cards")
+    # legacy = param.GetBool("LegacyEditor", True)
+    # if legacy:
+    #     editor = MaterialEditor(obj, prop)
+    #     editor.exec_()
+    # else:
+    FreeCADGui.runCommand('Materials_Edit',0)
 
 
 def editMaterial(material=None, card_path=None, category="Solid"):

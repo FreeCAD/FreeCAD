@@ -28,7 +28,7 @@ mw = Gui.getMainWindow()
 statusBar = mw.statusBar()
 p = App.ParamGet("User parameter:Tux/NavigationIndicator")
 pView = App.ParamGet("User parameter:BaseApp/Preferences/View")
-
+pMWin = App.ParamGet("User parameter:BaseApp/Preferences/MainWindow")
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
@@ -61,6 +61,29 @@ class IndicatorButton(QtGui.QPushButton):
     def onChange(self, paramGrp, param):
         if param == "NavigationStyle":
             setCurrent()
+
+    def mousePressEvent(self, event):
+        RePopulateIcons()
+        return super(IndicatorButton, self).mousePressEvent(event)
+
+
+def RePopulateIcons():
+    curStyleSheet = pMWin.GetString("StyleSheet")
+    if "dark" in curStyleSheet.lower():
+        StyleSheetType = "light"
+    else:
+        StyleSheetType = "dark"
+
+    a1.setIcon(QtGui.QIcon(":/icons/NavigationBlender_" + StyleSheetType + ".svg"))
+    a2.setIcon(QtGui.QIcon(":/icons/NavigationCAD_" + StyleSheetType + ".svg"))
+    a3.setIcon(QtGui.QIcon(":/icons/NavigationGesture_" + StyleSheetType + ".svg"))
+    a4.setIcon(QtGui.QIcon(":/icons/NavigationMayaGesture_" + StyleSheetType + ".svg"))
+    a5.setIcon(QtGui.QIcon(":/icons/NavigationOpenCascade_" + StyleSheetType + ".svg"))
+    a6.setIcon(QtGui.QIcon(":/icons/NavigationOpenInventor_" + StyleSheetType + ".svg"))
+    a7.setIcon(QtGui.QIcon(":/icons/NavigationOpenSCAD_" + StyleSheetType + ".svg"))
+    a8.setIcon(QtGui.QIcon(":/icons/NavigationRevit_" + StyleSheetType + ".svg"))
+    a9.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_" + StyleSheetType + ".svg"))
+    a10.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_" + StyleSheetType + ".svg"))
 
 
 def retranslateUi():
@@ -104,11 +127,11 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationBlender_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationBlender_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationBlender_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationBlender_Pan.svg'></td>
-      <td align='center'><img src=':/icons/NavigationBlender_PanAlt.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftMiddle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_LeftRight.svg'></td>
      </tr>
     </table>
     <b>"""
@@ -142,11 +165,11 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationCAD_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationCAD_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationCAD_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationCAD_RotateAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationCAD_Pan.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_MiddleLeft.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_MiddleRight.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
      </tr>
     </table>
     <b>"""
@@ -183,12 +206,12 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationGesture_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_RotateAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_Pan.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_Tilt.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_LeftMove.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_AltLeft.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Right.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_LeftRight.svg'></td>
      </tr>
      <tr>
       <th><small>"""
@@ -211,12 +234,12 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationGesture_SelectTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_ZoomTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_RotateTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_PanTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_PanTouchAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationGesture_TiltTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_SelectTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_ZoomTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_RotateTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_PanTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_PanTouchAlt.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_TiltTouch.svg'></td>
      </tr>
     </table>
     <p><small><b>"""
@@ -258,12 +281,12 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_ZoomAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_Pan.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_Tilt.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_AltRight.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_AltLeft.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_AltMiddle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_AltLeftRight.svg'></td>
      </tr>
      <tr>
       <th><small>"""
@@ -286,12 +309,12 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_SelectTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_ZoomTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_RotateTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_PanTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_PanTouchAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationMayaGesture_TiltTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_SelectTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_ZoomTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_RotateTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_PanTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_PanTouchAlt.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Gesture_TiltTouch.svg'></td>
      </tr>
     </table>
     <p><small><b>"""
@@ -333,12 +356,12 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationOpenCascade_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenCascade_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenCascade_ZoomAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenCascade_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenCascade_Pan.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenCascade_PanAlt.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_CtrlLeft.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_CtrlRight.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_CtrlMiddle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
      </tr>
     </table>"""
     )
@@ -367,11 +390,11 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationOpenInventor_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenInventor_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenInventor_ZoomAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenInventor_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenInventor_Pan.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftLeft.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_MiddleLeft.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
      </tr>
     </table>
     <b>"""
@@ -401,15 +424,19 @@ def retranslateUi():
         + text03
         + """</small></th>
       <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
         + text04
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationOpenSCAD_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenSCAD_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenSCAD_ZoomAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenSCAD_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationOpenSCAD_Pan.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_MiddleRight.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Right.svg'></td>
      </tr>
     </table>"""
     )
@@ -438,11 +465,11 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationBlender_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationBlender_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationRevit_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationRevit_Pan.svg'></td>
-      <td align='center'><img src=':/icons/NavigationBlender_PanAlt.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftMiddle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_LeftRight.svg'></td>
      </tr>
     </table>
     <b>"""
@@ -473,10 +500,10 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationTinkerCAD_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTinkerCAD_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTinkerCAD_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTinkerCAD_Pan.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Right.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
      </tr>
     </table>"""
     )
@@ -508,12 +535,12 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationTouchpad_Select.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_Zoom.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_ZoomAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_Rotate.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_RotateAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_Pan.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftCtrlMove.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_AltMove.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftLeft.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftMove.svg'></td>
      </tr>
      <tr>
       <th><small>"""
@@ -533,11 +560,11 @@ def retranslateUi():
         + """</small></th>
      </tr>
      <tr>
-      <td align='center'><img src=':/icons/NavigationTouchpad_SelectTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_ZoomTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_RotateTouch.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_RotateTouchAlt.svg'></td>
-      <td align='center'><img src=':/icons/NavigationTouchpad_PanTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Touchpad_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Touchpad_ShiftCtrlTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Touchpad_AltTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Touchpad_ShiftLeftTouch.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Touchpad_ShiftTouch.svg'></td>
      </tr>
     </table>
     <p><small><b>"""
@@ -602,64 +629,56 @@ a0.setData("Undefined  ")
 a0.setObjectName("Indicator_NavigationUndefined")
 
 a1 = QtGui.QAction(gStyle)
-a1.setIcon(QtGui.QIcon(":/icons/NavigationBlender_dark.svg"))
 a1.setText("Blender  ")
 a1.setData("Gui::BlenderNavigationStyle")
 a1.setObjectName("Indicator_NavigationBlender")
 
 a2 = QtGui.QAction(gStyle)
-a2.setIcon(QtGui.QIcon(":/icons/NavigationCAD_dark.svg"))
 a2.setText("CAD  ")
 a2.setData("Gui::CADNavigationStyle")
 a2.setObjectName("Indicator_NavigationCAD")
 
 a3 = QtGui.QAction(gStyle)
-a3.setIcon(QtGui.QIcon(":/icons/NavigationGesture_dark.svg"))
 a3.setText("Gesture  ")
 a3.setData("Gui::GestureNavigationStyle")
 a3.setObjectName("Indicator_NavigationGesture")
 
 a4 = QtGui.QAction(gStyle)
-a4.setIcon(QtGui.QIcon(":/icons/NavigationMayaGesture_dark.svg"))
 a4.setText("MayaGesture  ")
 a4.setData("Gui::MayaGestureNavigationStyle")
 a4.setObjectName("Indicator_NavigationMayaGesture")
 
 a5 = QtGui.QAction(gStyle)
-a5.setIcon(QtGui.QIcon(":/icons/NavigationOpenCascade_dark.svg"))
 a5.setText("OpenCascade  ")
 a5.setData("Gui::OpenCascadeNavigationStyle")
 a5.setObjectName("Indicator_NavigationOpenCascade")
 
 a6 = QtGui.QAction(gStyle)
-a6.setIcon(QtGui.QIcon(":/icons/NavigationOpenInventor_dark.svg"))
 a6.setText("OpenInventor  ")
 a6.setData("Gui::InventorNavigationStyle")
 a6.setObjectName("Indicator_NavigationOpenInventor")
 
 a7 = QtGui.QAction(gStyle)
-a7.setIcon(QtGui.QIcon(":/icons/NavigationOpenSCAD_dark.svg"))
 a7.setText("OpenSCAD  ")
 a7.setData("Gui::OpenSCADNavigationStyle")
 a7.setObjectName("Indicator_NavigationOpenSCAD")
 
 a8 = QtGui.QAction(gStyle)
-a8.setIcon(QtGui.QIcon(":/icons/NavigationRevit_dark.svg"))
 a8.setText("Revit  ")
 a8.setData("Gui::RevitNavigationStyle")
 a8.setObjectName("Indicator_NavigationRevit")
 
 a9 = QtGui.QAction(gStyle)
-a9.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_dark.svg"))
 a9.setText("TinkerCAD  ")
 a9.setData("Gui::TinkerCADNavigationStyle")
 a9.setObjectName("Indicator_NavigationTinkerCAD")
 
 a10 = QtGui.QAction(gStyle)
-a10.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_dark.svg"))
 a10.setText("Touchpad  ")
 a10.setData("Gui::TouchpadNavigationStyle")
 a10.setObjectName("Indicator_NavigationTouchpad")
+
+RePopulateIcons()
 
 menu.addMenu(menuSettings)
 menu.addSeparator()

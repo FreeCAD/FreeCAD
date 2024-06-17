@@ -92,7 +92,7 @@ LEGACY_NAMING_MAP = {"Draft.ts": "draft.ts"}
 # Locations that require QM file generation (predominantly Python workbenches)
 GENERATE_QM = {
     "AddonManager",
-    "Arch",
+    "BIM",
     "Cloud",
     "Draft",
     "Inspection",
@@ -110,7 +110,12 @@ locations = [
         "../Mod/AddonManager/Resources/AddonManager.qrc",
     ],
     ["App", "../App/Resources/translations", "../App/Resources/App.qrc"],
-    ["Arch", "../Mod/Arch/Resources/translations", "../Mod/Arch/Resources/Arch.qrc"],
+    ["BIM", "../Mod/Arch/Resources/translations", "../Mod/Arch/Resources/Arch.qrc"],
+    [
+        "Assembly",
+        "../Mod/Assembly/Gui/Resources/translations",
+        "../Mod/Assembly/Gui/Resources/Assembly.qrc",
+    ],
     [
         "draft",
         "../Mod/Draft/Resources/translations",
@@ -136,8 +141,8 @@ locations = [
     ],
     [
         "Material",
-        "../Mod/Material/Gui/Resources/translations",
-        "../Mod/Material/Gui/Resources/Material.qrc",
+        "../Mod/Material/Resources/translations",
+        "../Mod/Material/Resources/Material.qrc",
     ],
     [
         "Mesh",
@@ -165,9 +170,9 @@ locations = [
         "../Mod/PartDesign/Gui/Resources/PartDesign.qrc",
     ],
     [
-        "Path",
-        "../Mod/Path/Gui/Resources/translations",
-        "../Mod/Path/Gui/Resources/Path.qrc",
+        "CAM",
+        "../Mod/CAM/Gui/Resources/translations",
+        "../Mod/CAM/Gui/Resources/CAM.qrc",
     ],
     [
         "Points",
@@ -210,11 +215,6 @@ locations = [
         "../Mod/TechDraw/Gui/Resources/TechDraw.qrc",
     ],
     ["Tux", "../Mod/Tux/Resources/translations", "../Mod/Tux/Resources/Tux.qrc"],
-    [
-        "Web",
-        "../Mod/Web/Gui/Resources/translations",
-        "../Mod/Web/Gui/Resources/Web.qrc",
-    ],
 ]
 
 THRESHOLD = 25  # how many % must be translated for the translation to be included in FreeCAD
@@ -399,7 +399,7 @@ def updateTranslatorCpp(lncode):
 
     cppfile = os.path.join(os.path.dirname(__file__), "..", "Gui", "Language", "Translator.cpp")
     l = QtCore.QLocale(lncode)
-    lnname = l.languageToString(l.language())
+    lnname = QtCore.QLocale.languageToString(l.language())
 
     # read file contents
     f = open(cppfile, "r")
@@ -447,12 +447,11 @@ def doFile(tsfilepath, targetpath, lncode, qrcpath):
         ][:-3]
     newname = basename + "_" + lncode + ".ts"
     newpath = targetpath + os.sep + newname
-    if not os.path.exists(newpath):
+    if not os.path.exists(tsfilepath):
         # If this language code does not exist for the given TS file, bail out
         return
     shutil.copyfile(tsfilepath, newpath)
     if basename in GENERATE_QM:
-        print(f"Generating QM for {basename}")
         try:
             subprocess.run(
                 [

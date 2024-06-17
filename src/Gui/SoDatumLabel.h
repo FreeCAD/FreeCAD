@@ -54,7 +54,8 @@ public:
         DISTANCEY,
         RADIUS,
         DIAMETER,
-        SYMMETRIC
+        SYMMETRIC,
+        ARCLENGTH
     };
 
     static void initClass();
@@ -77,6 +78,9 @@ public:
     SoSFFloat  param3;
     SoSFFloat  param4;
     SoSFFloat  param5;
+    SoSFFloat  param6;
+    SoSFFloat  param7;
+    SoSFFloat  param8;
     SoMFVec3f  pnts;
     SoSFVec3f  norm;
     SoSFImage  image;
@@ -96,9 +100,20 @@ private:
     void generateDiameterPrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
     void generateAnglePrimitives(SoAction * action, const SbVec3f&);
     void generateSymmetricPrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
+    void generateArcLengthPrimitives(SoAction * action, const SbVec3f&, const SbVec3f&, const SbVec3f&);
     SbVec3f getLabelTextCenterDistance(const SbVec3f&, const SbVec3f&);
     SbVec3f getLabelTextCenterDiameter(const SbVec3f&, const SbVec3f&);
     SbVec3f getLabelTextCenterAngle(const SbVec3f&);
+    SbVec3f getLabelTextCenterArcLength(const SbVec3f&, const SbVec3f&, const SbVec3f&);
+    bool hasDatumText() const;
+    void getDimension(float scale, int& srcw, int& srch);
+    void drawDistance(const SbVec3f* points, float scale, int srch, float& angle, SbVec3f& textOffset);
+    void drawDistance(const SbVec3f* points);
+    void drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbVec3f& textOffset);
+    void drawAngle(const SbVec3f* points, float& angle, SbVec3f& textOffset);
+    void drawSymmetric(const SbVec3f* points);
+    void drawArcLength(const SbVec3f* points, float& angle, SbVec3f& textOffset);
+    void drawText(SoState *state, int srcw, int srch, float angle, const SbVec3f& textOffset);
 
 private:
     void drawImage();

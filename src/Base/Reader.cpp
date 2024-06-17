@@ -116,12 +116,10 @@ long Base::XMLReader::getAttributeAsInteger(const char* AttrName) const
     if (pos != AttrMap.end()) {
         return atol(pos->second.c_str());
     }
-    else {
-        // wrong name, use hasAttribute if not sure!
-        std::ostringstream msg;
-        msg << "XML Attribute: \"" << AttrName << "\" not found";
-        throw Base::XMLAttributeError(msg.str());
-    }
+    // wrong name, use hasAttribute if not sure!
+    std::ostringstream msg;
+    msg << "XML Attribute: \"" << AttrName << "\" not found";
+    throw Base::XMLAttributeError(msg.str());
 }
 
 unsigned long Base::XMLReader::getAttributeAsUnsigned(const char* AttrName) const
@@ -131,12 +129,10 @@ unsigned long Base::XMLReader::getAttributeAsUnsigned(const char* AttrName) cons
     if (pos != AttrMap.end()) {
         return strtoul(pos->second.c_str(), nullptr, 10);
     }
-    else {
-        // wrong name, use hasAttribute if not sure!
-        std::ostringstream msg;
-        msg << "XML Attribute: \"" << AttrName << "\" not found";
-        throw Base::XMLAttributeError(msg.str());
-    }
+    // wrong name, use hasAttribute if not sure!
+    std::ostringstream msg;
+    msg << "XML Attribute: \"" << AttrName << "\" not found";
+    throw Base::XMLAttributeError(msg.str());
 }
 
 double Base::XMLReader::getAttributeAsFloat(const char* AttrName) const
@@ -146,12 +142,10 @@ double Base::XMLReader::getAttributeAsFloat(const char* AttrName) const
     if (pos != AttrMap.end()) {
         return atof(pos->second.c_str());
     }
-    else {
-        // wrong name, use hasAttribute if not sure!
-        std::ostringstream msg;
-        msg << "XML Attribute: \"" << AttrName << "\" not found";
-        throw Base::XMLAttributeError(msg.str());
-    }
+    // wrong name, use hasAttribute if not sure!
+    std::ostringstream msg;
+    msg << "XML Attribute: \"" << AttrName << "\" not found";
+    throw Base::XMLAttributeError(msg.str());
 }
 
 const char* Base::XMLReader::getAttribute(const char* AttrName) const
@@ -161,12 +155,10 @@ const char* Base::XMLReader::getAttribute(const char* AttrName) const
     if (pos != AttrMap.end()) {
         return pos->second.c_str();
     }
-    else {
-        // wrong name, use hasAttribute if not sure!
-        std::ostringstream msg;
-        msg << "XML Attribute: \"" << AttrName << "\" not found";
-        throw Base::XMLAttributeError(msg.str());
-    }
+    // wrong name, use hasAttribute if not sure!
+    std::ostringstream msg;
+    msg << "XML Attribute: \"" << AttrName << "\" not found";
+    throw Base::XMLAttributeError(msg.str());
 }
 
 bool Base::XMLReader::hasAttribute(const char* AttrName) const
@@ -216,7 +208,7 @@ void Base::XMLReader::readElement(const char* ElementName)
             // thus we must stop reading on.
             break;
         }
-        else if (ReadType == EndDocument) {
+        if (ReadType == EndDocument) {
             // the end of the document has been reached but we still try to continue on reading
             throw Base::XMLParseException("End of document reached");
         }
@@ -276,7 +268,7 @@ void Base::XMLReader::readEndElement(const char* ElementName, int level)
         && (level < 0 || level == Level)) {
         return;
     }
-    else if (ReadType == EndDocument) {
+    if (ReadType == EndDocument) {
         // the end of the document has been reached but we still try to continue on reading
         throw Base::XMLParseException("End of document reached");
     }

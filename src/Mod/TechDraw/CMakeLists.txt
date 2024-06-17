@@ -21,6 +21,7 @@ set(TechDraw_ToolsScripts
     TechDrawTools/CommandMoveView.py
     TechDrawTools/CommandShareView.py
     TechDrawTools/CommandAxoLengthDimension.py
+    TechDrawTools/CommandPositionSectionView.py
     TechDrawTools/CommandFillTemplateFields.py
     TechDrawTools/CommandVertexCreations.py
     TechDrawTools/CommandHoleShaftFit.py
@@ -110,7 +111,7 @@ INSTALL(
 
 INSTALL(
     DIRECTORY
-        CSVData
+        CSVdata
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
     FILES_MATCHING

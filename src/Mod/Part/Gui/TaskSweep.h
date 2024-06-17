@@ -80,7 +80,6 @@ public:
 private:
     SweepWidget* widget;
     Gui::StatusWidget* label;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } //namespace PartGui

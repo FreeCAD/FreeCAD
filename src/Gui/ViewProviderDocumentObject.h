@@ -94,6 +94,8 @@ public:
     App::DocumentObject *getObject() const {return pcObject;}
     /// Asks the view provider if the given object can be deleted.
     bool canDelete(App::DocumentObject* obj) const override;
+    /// Ask the view provider if it accepts object deletions while in edit
+    virtual bool acceptDeletionsInEdit() { return false; }
     /// Get the GUI document to this ViewProvider object
     Gui::Document* getDocument() const;
     /// Get the python wrapper for that ViewProvider
@@ -119,6 +121,18 @@ public:
     //@{
     virtual void startRestoring();
     virtual void finishRestoring();
+    //@}
+
+    /** @name Tree rank */
+    //@{
+    int getTreeRank() const
+    {
+        return treeRank;
+    }
+    void setTreeRank(int value)
+    {
+        treeRank = value;
+    }
     //@}
 
     bool removeDynamicProperty(const char* prop) override;
@@ -215,6 +229,7 @@ protected:
 
 private:
     bool _Showable = true;
+    int treeRank = -1;
 
     std::vector<const char*> aDisplayEnumsArray;
     std::vector<std::string> aDisplayModesArray;

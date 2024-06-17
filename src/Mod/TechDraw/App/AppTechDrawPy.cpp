@@ -71,7 +71,8 @@
 #include "GeometryObject.h"
 #include "ProjectionAlgos.h"
 #include "TechDrawExport.h"
-
+#include "CosmeticVertexPy.h"
+#include "DrawLeaderLinePy.h"
 
 namespace TechDraw {
 //module level static C++ functions go here
@@ -185,7 +186,13 @@ public:
         );
         add_varargs_method("build3dCurves", &Module::build3dCurves,
             "TopoShape = build3dCurves(TopoShape) -- convert the edges to a 3D curve\n"
-	    "which is useful for shapes obtained Part.HLRBRep.Algo"
+            "which is useful for shapes obtained Part.HLRBRep.Algo"
+        );
+        add_varargs_method("makeCanonicalPoint", &Module::makeCanonicalPoint,
+            "makeCanonicalPoint(DrawViewPart, Vector3d) - Returns the unscaled, unrotated version of the input point)"
+        );
+        add_varargs_method("makeLeader", &Module::makeLeader,
+            "makeLeader(parent - DrawViewPart, points - [Vector], startSymbol - int, endSymbol - int) - Creates a leader line attached to parent. Points are in page coordinates with (0, 0) at lowerleft.s"
         );
         initialize("This is a module for making drawings"); // register with Python
     }
@@ -863,10 +870,15 @@ private:
             throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());
         }
 
+        DrawViewDimension* dvde =
         DrawDimHelper::makeExtentDim(dvp,
                                      edgeList,
                                      direction);
-        return Py::None();
+        if (!dvde){
+            return Py::None();
+        }
+        PyObject* dvdePy = dvde->getPyObject();
+        return Py::asObject(dvdePy);
     }
 
     Py::Object makeDistanceDim(const Py::Tuple& args)
@@ -1234,14 +1246,14 @@ private:
         PyObject *pcObjShape(nullptr);
 
         if (!PyArg_ParseTuple(args.ptr(), "O!",
-			      &(TopoShapePy::Type), &pcObjShape))
+                  &(TopoShapePy::Type), &pcObjShape))
             throw Py::Exception();
 
         TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
-	SVGOutput output;
-	Py::String result(output.exportEdges(pShape->getTopoShapePtr()->getShape()));
+    SVGOutput output;
+    Py::String result(output.exportEdges(pShape->getTopoShapePtr()->getShape()));
 
-	return result;
+    return result;
     }
 
     Py::Object build3dCurves(const Py::Tuple& args)
@@ -1249,15 +1261,70 @@ private:
         PyObject *pcObjShape(nullptr);
 
         if (!PyArg_ParseTuple(args.ptr(), "O!",
-			      &(TopoShapePy::Type), &pcObjShape))
+                  &(TopoShapePy::Type), &pcObjShape))
             throw Py::Exception();
 
         TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
-	const TopoShape& nShape =
-	    TechDraw::build3dCurves(pShape->getTopoShapePtr()->getShape());
-	
-	return Py::Object(new TopoShapePy(new TopoShape(nShape)));
+    const TopoShape& nShape =
+        TechDraw::build3dCurves(pShape->getTopoShapePtr()->getShape());
+
+    return Py::Object(new TopoShapePy(new TopoShape(nShape)));
     }
+
+
+    Py::Object makeCanonicalPoint(const Py::Tuple& args)
+{
+    PyObject* pyDocObj{nullptr};
+    PyObject* pyPointIn{nullptr};
+    PyObject *pyUnscale{Py_True};
+
+    if (!PyArg_ParseTuple(args.ptr(), "O!O!|O", &(TechDraw::DrawViewPartPy::Type), &pyDocObj,
+                                        &(Base::VectorPy::Type), &pyPointIn, &pyUnscale)) {
+        return Py::None();
+    }
+    bool unscale = pyUnscale == Py_True ? true : false;
+    DrawViewPartPy* pyDvp = static_cast<TechDraw::DrawViewPartPy*>(pyDocObj);
+    DrawViewPart* dvp = pyDvp->getDrawViewPartPtr();
+    Base::Vector3d cPoint = static_cast<Base::VectorPy*>(pyPointIn)->value();
+    cPoint = CosmeticVertex::makeCanonicalPoint(dvp, cPoint, unscale);
+    return Py::asObject(new Base::VectorPy(cPoint));
+}
+
+    Py::Object makeLeader(const Py::Tuple& args)
+    {
+        PyObject* pDvp(nullptr);
+        PyObject* pPointList(nullptr);
+        int iStartSymbol = 0;
+        int iEndSymbol = 0;
+        TechDraw::DrawViewPart* dvp = nullptr;
+
+        if (!PyArg_ParseTuple(args.ptr(), "OO!|ii", &pDvp, &(PyList_Type), &pPointList, &iStartSymbol, &iEndSymbol)) {
+            throw Py::TypeError("expected (DrawViewPart, listofpoints, startsymbolindex, endsymbolindex");
+        }
+        if (PyObject_TypeCheck(pDvp, &(TechDraw::DrawViewPartPy::Type))) {
+            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
+            dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+        }
+
+        std::vector<Base::Vector3d> pointList;
+        try {
+            Py::Sequence list(pPointList);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                    if (PyObject_TypeCheck((*it).ptr(), &(Base::VectorPy::Type))) {
+                        Base::Vector3d temp = static_cast<Base::VectorPy*>((*it).ptr())->value();
+                        pointList.push_back(temp);
+                    }
+            }
+        }
+        catch (Standard_Failure& e) {
+            throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());
+        }
+        auto newLeader = DrawLeaderLine::makeLeader(dvp, pointList, iStartSymbol, iEndSymbol);
+
+        // return the new leader as DrawLeaderPy
+        return Py::asObject(new DrawLeaderLinePy(newLeader));
+   }
+
  };
 
  PyObject* initModule()

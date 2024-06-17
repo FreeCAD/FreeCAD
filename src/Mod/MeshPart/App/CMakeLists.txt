@@ -1,5 +1,8 @@
 if (BUILD_SMESH)
-    add_definitions(-DHAVE_SMESH -DHAVE_MEFISTO)
+    add_definitions(-DHAVE_SMESH)
+    if(SMESH_VERSION_MAJOR LESS_EQUAL 9 AND SMESH_VERSION_MINOR LESS 10 )
+      add_definitions(-DHAVE_MEFISTO)
+    endif()
 endif(BUILD_SMESH)
 
 if(BUILD_FEM_NETGEN)
@@ -72,6 +75,9 @@ endif()
 
 add_library(MeshPart SHARED ${MeshPart_SRCS} ${MeshPart_Scripts})
 target_link_libraries(MeshPart ${MeshPart_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(MeshPart)
+endif()
 
 
 fc_target_copy_resource_flat(MeshPart

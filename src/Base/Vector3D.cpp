@@ -25,6 +25,7 @@
 
 #include <cmath>
 #include <limits>
+#include <boost/math/special_functions/fpclassify.hpp>
 
 #include "Vector3D.h"
 #include "Tools.h"
@@ -225,6 +226,29 @@ template<class float_type>
 bool Vector3<float_type>::IsEqual(const Vector3<float_type>& rclPnt, float_type tol) const
 {
     return Distance(*this, rclPnt) <= tol;
+}
+
+template<class float_type>
+bool Vector3<float_type>::IsParallel(const Vector3<float_type>& rclDir, float_type tol) const
+{
+    float_type angle = GetAngle(rclDir);
+    if (boost::math::isnan(angle)) {
+        return false;
+    }
+
+    return angle <= tol || traits_type::pi() - angle <= tol;
+}
+
+template<class float_type>
+bool Vector3<float_type>::IsNormal(const Vector3<float_type>& rclDir, float_type tol) const
+{
+    float_type angle = GetAngle(rclDir);
+    if (boost::math::isnan(angle)) {
+        return false;
+    }
+
+    float_type diff = std::abs(traits_type::pi() / 2.0 - angle);  // NOLINT
+    return diff <= tol;
 }
 
 template<class float_type>
@@ -438,6 +462,22 @@ float_type Vector3<float_type>::GetAngle(const Vector3& rcVect) const
     }
 
     return float_type(acos(dot));
+}
+
+template<class float_type>
+float_type Vector3<float_type>::GetAngleOriented(const Vector3& rcVect, const Vector3& norm) const
+{
+    float_type angle = GetAngle(rcVect);
+
+    Vector3<float_type> crossProduct = Cross(rcVect);
+
+    // Use dot product to determine the sign
+    float_type dot = crossProduct.Dot(norm);
+    if (dot < 0) {
+        angle = 2 * traits_type::pi() - angle;
+    }
+
+    return angle;
 }
 
 template<class float_type>

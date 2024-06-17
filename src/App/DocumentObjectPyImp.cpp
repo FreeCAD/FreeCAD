@@ -100,14 +100,8 @@ PyObject*  DocumentObjectPy::addProperty(PyObject *args, PyObject *kwd)
 
     // enum support
     auto* propEnum = dynamic_cast<App::PropertyEnumeration*>(prop);
-    if (propEnum) {
-        if (enumVals && PySequence_Check(enumVals)) {
-            std::vector<std::string> enumValsAsVector;
-            for (Py_ssize_t i = 0; i < PySequence_Length(enumVals); ++i) {
-                enumValsAsVector.emplace_back(PyUnicode_AsUTF8(PySequence_GetItem(enumVals,i)));
-            }
-            propEnum->setEnums(enumValsAsVector);
-        }
+    if (propEnum && enumVals) {
+        propEnum->setPyObject(enumVals);
     }
 
     return Py::new_reference_to(this);
@@ -743,6 +737,22 @@ PyObject*  DocumentObjectPy::getPathsByOutList(PyObject *args)
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
     }
+}
+
+PyObject* DocumentObjectPy::getElementMapVersion(PyObject* args)
+{
+    const char* name;
+    PyObject* restored = Py_False;
+    if (!PyArg_ParseTuple(args, "s|O", &name, &restored)) {
+        return NULL;
+    }
+
+    Property* prop = getDocumentObjectPtr()->getPropertyByName(name);
+    if (!prop) {
+        throw Py::ValueError("property not found");
+    }
+    return Py::new_reference_to(
+        Py::String(getDocumentObjectPtr()->getElementMapVersion(prop, Base::asBoolean(restored))));
 }
 
 PyObject *DocumentObjectPy::getCustomAttributes(const char* ) const

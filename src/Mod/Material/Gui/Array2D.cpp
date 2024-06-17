@@ -21,10 +21,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QMenu>
 #include <QMessageBox>
 #endif
-
-#include <QMenu>
 
 #include <Gui/MainWindow.h>
 
@@ -63,6 +62,7 @@ Array2D::Array2D(const QString& propertyName,
     if (_property) {
         _value =
             std::static_pointer_cast<Materials::Material2DArray>(_property->getMaterialValue());
+        setWindowTitle(_property->getDisplayName());
     }
     else {
         _value = nullptr;
@@ -80,16 +80,6 @@ Array2D::Array2D(const QString& propertyName,
 
     connect(ui->standardButtons, &QDialogButtonBox::accepted, this, &Array2D::accept);
     connect(ui->standardButtons, &QDialogButtonBox::rejected, this, &Array2D::reject);
-}
-
-void Array2D::setHeaders(QStandardItemModel* model)
-{
-    QStringList headers;
-    auto columns = _property->getColumns();
-    for (auto column = columns.begin(); column != columns.end(); column++) {
-        headers.append(column->getName());
-    }
-    model->setHorizontalHeaderLabels(headers);
 }
 
 void Array2D::setColumnWidths(QTableView* table)
@@ -141,8 +131,6 @@ void Array2D::onDataChanged(const QModelIndex& topLeft,
 
 void Array2D::onContextMenu(const QPoint& pos)
 {
-    QModelIndex index = ui->tableView->indexAt(pos);
-
     QMenu contextMenu(tr("Context menu"), this);
 
     contextMenu.addAction(&_deleteAction);

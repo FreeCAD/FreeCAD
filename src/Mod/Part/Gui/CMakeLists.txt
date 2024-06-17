@@ -15,6 +15,7 @@ link_directories(${OCC_LIBRARY_DIR})
 set(PartGui_LIBS
     Part
     FreeCADGui
+    MatGui
 )
 
 if(MSVC)
@@ -29,6 +30,8 @@ include_directories(
 list(APPEND PartGui_LIBS
     ${QtConcurrent_LIBRARIES}
 )
+
+generate_from_xml(ViewProviderPartExtPy)
 
 set (Part_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Part_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
@@ -56,12 +59,11 @@ set(PartGui_UIC_SRCS
     DlgRevolution.ui
     DlgSettings3DViewPart.ui
     DlgSettingsGeneral.ui
-    DlgSettingsMeasure.ui
     DlgSettingsObjectColor.ui
     DlgProjectionOnSurface.ui
     SectionCutting.ui
     ShapeFromMesh.ui
-    TaskFaceColors.ui
+    TaskFaceAppearances.ui
     TaskShapeBuilder.ui
     TaskLoft.ui
     TaskOffset.ui
@@ -69,9 +71,16 @@ set(PartGui_UIC_SRCS
     TaskAttacher.ui
 )
 
+SET(Python_SRCS
+    ViewProviderPartExtPy.xml
+    ViewProviderPartExtPyImp.cpp
+)
+SOURCE_GROUP("Python" FILES ${Python_SRCS})
+
 SET(PartGui_SRCS
     ${PartGui_QRC_SRCS}
     ${PartGui_UIC_HDRS}
+    ${Python_SRCS}
     AppPartGui.cpp
     AttacherTexts.h
     AttacherTexts.cpp
@@ -132,15 +141,9 @@ SET(PartGui_SRCS
     DlgSettingsGeneral.cpp
     DlgSettingsGeneral.h
     DlgSettingsGeneral.ui
-    DlgSettingsMeasure.cpp
-    DlgSettingsMeasure.h
-    DlgSettingsMeasure.ui
     DlgSettingsObjectColor.cpp
     DlgSettingsObjectColor.h
     DlgSettingsObjectColor.ui
-    DlgSettingsMeasure.cpp
-    DlgSettingsMeasure.h
-    DlgSettingsMeasure.ui
     DlgProjectionOnSurface.cpp
     DlgProjectionOnSurface.h
     DlgProjectionOnSurface.ui
@@ -213,6 +216,8 @@ SET(PartGui_SRCS
     ViewProviderPython.h
     ViewProviderBoolean.cpp
     ViewProviderBoolean.h
+    ViewProviderProjectOnSurface.cpp
+    ViewProviderProjectOnSurface.h
     ViewProviderRuledSurface.cpp
     ViewProviderRuledSurface.h
     ViewProviderPrimitive.cpp
@@ -228,9 +233,9 @@ SET(PartGui_SRCS
     SectionCutting.ui
     ShapeFromMesh.cpp
     ShapeFromMesh.h
-    TaskFaceColors.cpp
-    TaskFaceColors.h
-    TaskFaceColors.ui
+    TaskFaceAppearances.cpp
+    TaskFaceAppearances.h
+    TaskFaceAppearances.ui
     TaskShapeBuilder.cpp
     TaskShapeBuilder.h
     TaskShapeBuilder.ui
@@ -245,8 +250,6 @@ SET(PartGui_SRCS
     TaskSweep.ui
     TaskThickness.cpp
     TaskThickness.h
-    TaskDimension.cpp
-    TaskDimension.h
     TaskCheckGeometry.cpp
     TaskCheckGeometry.h
     TaskAttacher.h
@@ -265,6 +268,9 @@ SET(PartGuiIcon_SVG
 
 add_library(PartGui SHARED ${PartGui_SRCS} ${PartGuiIcon_SVG})
 target_link_libraries(PartGui ${PartGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(PartGui)
+endif()
 
 
 SET_BIN_DIR(PartGui PartGui /Mod/Part)

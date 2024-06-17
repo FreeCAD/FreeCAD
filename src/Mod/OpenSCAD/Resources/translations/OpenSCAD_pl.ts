@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="14"/>
       <source>General settings</source>
-      <translation>Ustawienia ogólne</translation>
+      <translation>Ustawienia ogólneustawienia</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="35"/>
@@ -184,7 +184,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="92"/>
       <source>Unable to explode %s</source>
-      <translation>Nie można rozbić %s</translation>
+      <translation>Nie można rozłożyć %s</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="139"/>
@@ -294,14 +294,14 @@
       <translation>Błąd: wszystkie kształty muszą być obiektami 2D lub wszystkie kształty muszą być obiektami 3D</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Unsupported Function</source>
       <translation>Funkcja nieobsługiwana</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Press OK</source>
       <translation>Naciśnij OK</translation>
     </message>
@@ -311,7 +311,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="100"/>
       <source>Explode Group</source>
-      <translation>Rozbij grupę</translation>
+      <translation>Rozłóż grupę</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="103"/>

@@ -21,10 +21,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#endif
-
 #include <QList>
 #include <QMetaType>
+#endif
 
 #include <Base/Console.h>
 #include <Gui/MainWindow.h>
@@ -112,7 +111,7 @@ QVariant Array2DModel::headerData(int section, Qt::Orientation orientation, int 
     if (role == Qt::DisplayRole) {
         if (orientation == Qt::Horizontal) {
             const Materials::MaterialProperty& column = _property->getColumn(section);
-            return column.getName();
+            return column.getDisplayName();
         }
         else if (orientation == Qt::Vertical) {
             // Vertical header
@@ -252,7 +251,7 @@ QVariant Array3DDepthModel::headerData(int section, Qt::Orientation orientation,
     if (role == Qt::DisplayRole) {
         if (orientation == Qt::Horizontal) {
             const Materials::MaterialProperty& column = _property->getColumn(section);
-            return column.getName();
+            return column.getDisplayName();
         }
         if (orientation == Qt::Vertical) {
             // Vertical header
@@ -407,7 +406,7 @@ QVariant Array3DModel::headerData(int section, Qt::Orientation orientation, int 
     if (role == Qt::DisplayRole) {
         if (orientation == Qt::Horizontal) {
             const Materials::MaterialProperty& column = _property->getColumn(section + 1);
-            return column.getName();
+            return column.getDisplayName();
         }
         if (orientation == Qt::Vertical) {
             // Vertical header

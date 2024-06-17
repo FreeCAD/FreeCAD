@@ -37,6 +37,7 @@ namespace TechDraw
 {
 
 class DrawPage;
+class DrawViewCollection;
 class DrawViewClip;
 class DrawLeaderLine;
 /*class CosmeticVertex;*/
@@ -74,6 +75,7 @@ public:
 
     bool isInClip();
     DrawViewClip* getClipGroup();
+    DrawViewCollection *getCollection() const;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
@@ -84,6 +86,8 @@ public:
 
     virtual DrawPage* findParentPage() const;
     virtual std::vector<DrawPage*> findAllParentPages() const;
+    virtual DrawView *claimParent() const;
+
     virtual int countParentPages() const;
     virtual QRectF getRect() const;                      //must be overridden by derived class
     QRectF getRectAligned() const;
@@ -100,6 +104,7 @@ public:
     void showProgressMessage(std::string featureName, std::string text);
 
     virtual double getScale(void) const;
+    virtual int getScaleType() const { return ScaleType.getValue(); };
     void checkScale(void);
 
     virtual void handleXYLock(void);
@@ -115,7 +120,10 @@ public:
 
     void translateLabel(std::string context, std::string baseName, std::string uniqueName);
 
+    virtual App::PropertyLink *getOwnerProperty() { return nullptr; }
+
 protected:
+    void onBeforeChange(const App::Property *prop) override;
     void onChanged(const App::Property* prop) override;
     virtual void validateScale();
     std::string pageFeatName;
@@ -124,6 +132,8 @@ protected:
 
     int prefScaleType();
     double prefScale();
+
+    void touchTreeOwner(App::DocumentObject *owner) const;
 
 private:
     static const char* ScaleTypeEnums[];

@@ -161,22 +161,23 @@ void ViewProviderSections::highlightReferences(ShapeType type, const References&
                         break;
                     case ViewProviderSections::Face:
                         if (on) {
-                            std::vector<App::Color> colors;
+                            std::vector<App::Material> materials;
                             TopTools_IndexedMapOfShape fMap;
                             TopExp::MapShapes(base->Shape.getValue(), TopAbs_FACE, fMap);
-                            colors.resize(fMap.Extent(), svp->ShapeColor.getValue());
+                            materials.resize(fMap.Extent(), svp->ShapeAppearance[0]);
 
                             for (const auto& jt : it.second) {
                                 std::size_t idx =
                                     static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
                                 // check again that the index is in range because it's possible that
                                 // the sub-names are invalid
-                                if (idx < colors.size()) {
-                                    colors[idx] = App::Color(1.0, 0.0, 1.0);  // magenta
+                                if (idx < materials.size()) {
+                                    // magenta
+                                    materials[idx].diffuseColor = App::Color(1.0, 0.0, 1.0);
                                 }
                             }
 
-                            svp->setHighlightedFaces(colors);
+                            svp->setHighlightedFaces(materials);
                         }
                         else {
                             svp->unsetHighlightedFaces();
@@ -606,13 +607,7 @@ TaskSections::TaskSections(ViewProviderSections* vp, Surface::Sections* obj)
 {
     // first task box
     widget1 = new SectionsPanel(vp, obj);
-    Gui::TaskView::TaskBox* taskbox1 =
-        new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Surface_Sections"),
-                                   widget1->windowTitle(),
-                                   true,
-                                   nullptr);
-    taskbox1->groupLayout()->addWidget(widget1);
-    Content.push_back(taskbox1);
+    addTaskBox(Gui::BitmapFactory().pixmap("Surface_Sections"), widget1);
 }
 
 void TaskSections::setEditedObject(Surface::Sections* obj)

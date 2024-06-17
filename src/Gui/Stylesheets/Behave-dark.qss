@@ -250,6 +250,45 @@ QMenu QCheckBox::indicator:disabled {
     border: 1px solid  @ThemeAccentColor3;
 }
 
+/* QStatusBar -------------------------------------------------------------
+
+https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qstatusbar
+
+--------------------------------------------------------------------------- */
+QStatusBar {
+  border: 0px solid #3c3c3c;
+  /* Fixes Spyder #9120, #9121 */
+  background: transparent;
+  /* Fixes #205, white vertical borders separating items */
+}
+
+QStatusBar::item {
+  border: none;
+}
+
+
+QStatusBar > QToolButton:checked:disabled {
+  background-color: #b65555;
+  color: #b8aba0;
+  border-radius: 1.9px;
+  padding: 0px;
+  outline: none;
+}
+
+QStatusBar QToolTip {
+  color: #61D29D;
+  background-color: #2C333D;
+  border: 1px solid #696968;
+  /* Remove padding, for fix combo box tooltip */
+  padding: 0px;
+  /* Reducing transparency to read better */
+  opacity: 230;
+}
+
+QStatusBar QLabel {
+  /* Fixes Spyder #9120, #9121 */
+  background: transparent;
+}
 
 /*==================================================================================================
 Tool bar
@@ -328,11 +367,12 @@ QGroupBox::indicator:unchecked {
 Tooltip
 ==================================================================================================*/
 QToolTip {
-    color: #1e1e1e;
-    background-color: #b4b4b4;
+    color: #61D29D;
+    background-color: #2C333D;
     /*opacity: 90%; doesn't correctly work */
     padding: 4px;
     border-radius: 3px; /* has no effect */
+    font: 8pt;
 }
 
 

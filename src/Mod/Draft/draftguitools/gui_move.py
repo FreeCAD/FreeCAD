@@ -52,9 +52,6 @@ True if Draft_rc.__name__ else False
 class Move(gui_base_original.Modifier):
     """Gui Command for the Move tool."""
 
-    def __init__(self):
-        super(Move, self).__init__()
-
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
@@ -65,9 +62,9 @@ class Move(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Move, self).Activated(name="Move",
-                                    is_subtool=isinstance(App.activeDraftCommand,
-                                                          SubelementHighlight))
+        super().Activated(name="Move",
+                          is_subtool=isinstance(App.activeDraftCommand,
+                                                SubelementHighlight))
         if not self.ui:
             return
         self.ghosts = []
@@ -111,11 +108,12 @@ class Move(gui_base_original.Modifier):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
+        self.end_callbacks(self.call)
         for ghost in self.ghosts:
             ghost.finalize()
+        super().finish()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             todo.ToDo.delayAfter(self.Activated, [])
-        super(Move, self).finish()
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -144,9 +142,13 @@ class Move(gui_base_original.Modifier):
         self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
         if len(self.node) > 0:
             last = self.node[len(self.node) - 1]
-            self.vector = self.point.sub(last)
+            if self.point:
+                self.vector = self.point.sub(last)
+            else:
+                self.vector = None
             for ghost in self.ghosts:
-                ghost.move(self.vector)
+                if self.vector:
+                    ghost.move(self.vector)
                 ghost.on()
         if self.extendedCopy:
             if not gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):

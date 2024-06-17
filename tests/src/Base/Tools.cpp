@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <Base/Tools.h>
 #include <bitset>
 
@@ -144,5 +144,11 @@ TEST(BaseToolsSuite, TestQuote)
 TEST(BaseToolsSuite, TestJoinList)
 {
     EXPECT_EQ(Base::Tools::joinList({"AB", "CD"}), "AB, CD, ");
+}
+TEST(BaseToolsSuite, TestEscapeQuotesFromString)
+{
+    EXPECT_EQ(Base::Tools::escapeQuotesFromString("\'"), "\\\'");
+    EXPECT_EQ(Base::Tools::escapeQuotesFromString("\""), "\\\"");
+    EXPECT_EQ(Base::Tools::escapeQuotesFromString("\\"), "\\");
 }
 // NOLINTEND(cppcoreguidelines-*,readability-*)

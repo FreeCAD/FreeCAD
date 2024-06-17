@@ -959,25 +959,18 @@ void ExpressionLineEdit::keyPressEvent(QKeyEvent* e)
 void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent* event)
 {
     QMenu* menu = createStandardContextMenu();
-    menu->addSeparator();
-    QAction* match = menu->addAction(tr("Exact match"));
 
     if (completer) {
+        menu->addSeparator();
+        QAction *match = menu->addAction(tr("Exact match"));
         match->setCheckable(true);
         match->setChecked(completer->filterMode() == Qt::MatchStartsWith);
+        QObject::connect(match, &QAction::toggled,
+                         this, &Gui::ExpressionLineEdit::setExactMatch);
     }
-    else {
-        match->setVisible(false);
-    }
+    menu->setAttribute(Qt::WA_DeleteOnClose);
 
-    QAction* action = menu->exec(event->globalPos());
-
-    if (completer) {
-        if (action == match)
-            setExactMatch(match->isChecked());
-    }
-
-    delete menu;
+    menu->popup(event->globalPos());
 }
 
 

@@ -39,8 +39,6 @@ public:
 
     App::PropertyPressure Pressure;
     App::PropertyBool Reversed;
-    App::PropertyVectorList Points;
-    App::PropertyVectorList Normals;
 
     /// recalculate the object
     App::DocumentObjectExecReturn* execute() override;
@@ -49,9 +47,9 @@ public:
     const char* getViewProviderName() const override;
 
 protected:
-    void
-    handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
-    void onChanged(const App::Property* prop) override;
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
 };
 
 }  // namespace Fem

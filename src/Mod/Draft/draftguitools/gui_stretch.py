@@ -66,7 +66,7 @@ class Stretch(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Stretch, self).Activated(name="Stretch")
+        super().Activated(name="Stretch")
         self.rectracker = None
         self.nodetracker = None
         if self.ui:
@@ -255,12 +255,13 @@ class Stretch(gui_base_original.Modifier):
 
     def finish(self, cont=False):
         """Terminate the operation of the command. and clean up."""
+        self.end_callbacks(self.call)
         if self.rectracker:
             self.rectracker.finalize()
         if self.nodetracker:
             for n in self.nodetracker:
                 n.finalize()
-        super(Stretch, self).finish()
+        super().finish()
 
     def doStretch(self):
         """Do the actual stretching once the points are selected."""

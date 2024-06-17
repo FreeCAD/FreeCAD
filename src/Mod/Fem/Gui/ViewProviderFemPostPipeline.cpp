@@ -107,18 +107,35 @@ void ViewProviderFemPostPipeline::updateFunctionSize()
     }
 }
 
+namespace
+{
+// Function to get the analysis container related to the object
+ViewProviderFemAnalysis* getAnalyzeView(App::DocumentObject* obj)
+{
+    ViewProviderFemAnalysis* analyzeView = nullptr;
+    App::DocumentObject* grp = App::GroupExtension::getGroupOfObject(obj);
+
+    if (Fem::FemAnalysis* analyze = Base::freecad_dynamic_cast<Fem::FemAnalysis>(grp)) {
+        analyzeView = Base::freecad_dynamic_cast<ViewProviderFemAnalysis>(
+            Gui::Application::Instance->getViewProvider(analyze));
+    }
+
+    return analyzeView;
+};
+}  // namespace
+
+bool ViewProviderFemPostPipeline::onDelete(const std::vector<std::string>& objs)
+{
+    ViewProviderFemAnalysis* analyzeView = getAnalyzeView(this->getObject());
+    if (analyzeView) {
+        analyzeView->removeView(this);
+    }
+
+    return ViewProviderFemPostObject::onDelete(objs);
+}
+
 void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges& sel)
 {
-    auto getAnalyzeView = [](App::DocumentObject* obj) {
-        ViewProviderFemAnalysis* analyzeView = nullptr;
-        App::DocumentObject* grp = App::GroupExtension::getGroupOfObject(obj);
-        if (Fem::FemAnalysis* analyze = Base::freecad_dynamic_cast<Fem::FemAnalysis>(grp)) {
-            analyzeView = Base::freecad_dynamic_cast<ViewProviderFemAnalysis>(
-                Gui::Application::Instance->getViewProvider(analyze));
-        }
-        return analyzeView;
-    };
-
     // If a FemPostObject is selected in the document tree we must refresh its
     // color bar.
     // But don't do this if the object is invisible because other objects with a

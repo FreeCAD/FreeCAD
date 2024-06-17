@@ -40,25 +40,34 @@ using namespace TechDrawGui;
 TemplateTextField::TemplateTextField(QGraphicsItem *parent,
                                      TechDraw::DrawTemplate *myTmplte,
                                      const std::string &myFieldName)
-    : QGraphicsRectItem(parent),
+    : QGraphicsItemGroup(parent),
       tmplte(myTmplte),
       fieldNameStr(myFieldName)
 {
     setToolTip(QObject::tr("Click to update text"));
+    m_rect = new QGraphicsRectItem();
+    addToGroup(m_rect);
+    QPen rectPen(Qt::transparent);
+    QBrush rectBrush(Qt::NoBrush);
+    m_rect->setPen(rectPen);
+    m_rect->setBrush(rectBrush);
+
+    m_line = new QGraphicsPathItem();
+    addToGroup(m_line);
  }
 
 void TemplateTextField::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if ( tmplte && rect().contains(event->pos()) ) {
+    if ( tmplte && m_rect->rect().contains(event->pos()) ) {
         event->accept();
     } else {
-        QGraphicsRectItem::mousePressEvent(event);
+        QGraphicsItemGroup::mousePressEvent(event);
     }
 }
 
 void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    if ( tmplte && rect().contains(event->pos()) ) {
+    if ( tmplte && m_rect->rect().contains(event->pos()) ) {
         event->accept();
 
         DlgTemplateField ui;
@@ -77,7 +86,25 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         }
 
     } else {
-        QGraphicsRectItem::mouseReleaseEvent(event);
+        QGraphicsItemGroup::mouseReleaseEvent(event);
     }
 }
 
+void TemplateTextField::setRectangle(QRectF rect)
+{
+    m_rect->setRect(rect);
+}
+
+void TemplateTextField::setLine(QPointF from, QPointF to)
+{
+    QPainterPath path(from);
+    path.lineTo(to);
+    m_line->setPath(path);
+}
+
+void TemplateTextField::setLineColor(QColor color)
+{
+    QPen pen(color);
+    pen.setWidth(5);
+    m_line->setPen(pen);
+}

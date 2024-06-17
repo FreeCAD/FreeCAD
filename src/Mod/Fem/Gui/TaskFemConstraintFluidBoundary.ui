@@ -25,7 +25,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Boundary </string>
+        <string>Boundary</string>
        </property>
       </widget>
      </item>
@@ -239,7 +239,7 @@
             <string>Select a planar edge or face, then press this button</string>
            </property>
            <property name="text">
-            <string>Direction </string>
+            <string>Direction</string>
            </property>
           </widget>
          </item>
@@ -331,7 +331,7 @@ normal vector of the face is used as direction</string>
          <item row="0" column="0">
           <widget class="QLabel" name="labelTurbulentIntensityValue">
            <property name="text">
-            <string>Intensity    </string>
+            <string>Intensity</string>
            </property>
           </widget>
          </item>
@@ -391,7 +391,7 @@ normal vector of the face is used as direction</string>
          <item row="0" column="0">
           <widget class="QLabel" name="labelThermalBoundaryType">
            <property name="text">
-            <string> Type </string>
+            <string>Type</string>
            </property>
           </widget>
          </item>

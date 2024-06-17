@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="281"/>
       <source>Cross-sections...</source>
-      <translation>Poprečni presek...</translation>
+      <translation>Poprečni preseci...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="282"/>
       <source>Cross-sections</source>
-      <translation>Poprečni presek</translation>
+      <translation>Poprečni preseci</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mreža</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="317"/>
@@ -44,7 +44,7 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mreža</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
@@ -62,7 +62,7 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mreža</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -80,7 +80,7 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mreža</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -112,7 +112,7 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross sections</source>
-      <translation>Poprečni presek</translation>
+      <translation>Poprečni preseci</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
@@ -180,7 +180,7 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="362"/>
       <source>Create</source>
-      <translation>Napravi</translation>
+      <translation>Spakuj</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="364"/>
@@ -491,27 +491,27 @@ Vrednost u opsegu od 0,2-10.</translation>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="235"/>
-      <location filename="../../Tessellation.cpp" line="241"/>
+      <location filename="../../Tessellation.cpp" line="237"/>
+      <location filename="../../Tessellation.cpp" line="243"/>
       <source>No active document</source>
       <translation>Nema aktivnog dokumenta</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="272"/>
+      <location filename="../../Tessellation.cpp" line="273"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Izabrao si telo koje nema krajnji tipski oblik.
 Ili zadaj krajnji tipski oblik ili izaberi drugo telo.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="278"/>
+      <location filename="../../Tessellation.cpp" line="279"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Izabrao si oblik bez stranica.
 Izaberi drugi oblik.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="282"/>
+      <location filename="../../Tessellation.cpp" line="283"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Prvo izaberi oblik za pravljenje mreže.</translation>
     </message>
@@ -580,12 +580,12 @@ Izaberi drugi oblik.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>Odmotaj mrežu</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>Pronađi ravanski prikaz mreže.</translation>
     </message>
   </context>
   <context>
@@ -593,12 +593,12 @@ Izaberi drugi oblik.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation type="unfinished">Unwrap face</translation>
+      <translation>Odmotaj stranicu</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>
       <source>Find a flat representation of a face.</source>
-      <translation type="unfinished">Find a flat representation of a face.</translation>
+      <translation>Pronađi ravanski prikaz stranice.</translation>
     </message>
   </context>
 </TS>

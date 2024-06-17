@@ -37,12 +37,15 @@ namespace ImportGui
 class ImpExpDxfReadGui: public Import::ImpExpDxfRead
 {
 public:
-    ImpExpDxfReadGui(std::string filepath, App::Document* pcDoc);
+    ImpExpDxfReadGui(const std::string& filepath, App::Document* pcDoc);
 
 protected:
-    void ApplyGuiStyles(Part::Feature*);
-    void ApplyGuiStyles(App::FeaturePython*);
+    void ApplyGuiStyles(Part::Feature* object) const override;
+    void ApplyGuiStyles(App::FeaturePython* object) const override;
+
+private:
     Gui::Document* GuiDocument;
+    int GetDrawStyle() const;
 };
 }  // namespace ImportGui
 

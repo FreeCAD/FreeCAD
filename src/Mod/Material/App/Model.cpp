@@ -21,9 +21,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#endif
-
 #include <string>
+#endif
 
 #include <App/Application.h>
 
@@ -40,11 +39,13 @@ ModelProperty::ModelProperty()
 {}
 
 ModelProperty::ModelProperty(const QString& name,
+                             const QString& header,
                              const QString& type,
                              const QString& units,
                              const QString& url,
                              const QString& description)
     : _name(name)
+    , _displayName(header)
     , _propertyType(type)
     , _units(units)
     , _url(url)
@@ -53,6 +54,7 @@ ModelProperty::ModelProperty(const QString& name,
 
 ModelProperty::ModelProperty(const ModelProperty& other)
     : _name(other._name)
+    , _displayName(other._displayName)
     , _propertyType(other._propertyType)
     , _units(other._units)
     , _url(other._url)
@@ -64,6 +66,14 @@ ModelProperty::ModelProperty(const ModelProperty& other)
     }
 }
 
+const QString ModelProperty::getDisplayName() const
+{
+    if (_displayName.isEmpty()) {
+        return getName();
+    }
+    return _displayName;
+}
+
 ModelProperty& ModelProperty::operator=(const ModelProperty& other)
 {
     if (this == &other) {
@@ -71,6 +81,7 @@ ModelProperty& ModelProperty::operator=(const ModelProperty& other)
     }
 
     _name = other._name;
+    _displayName = other._displayName;
     _propertyType = other._propertyType;
     _units = other._units;
     _url = other._url;
@@ -90,7 +101,7 @@ bool ModelProperty::operator==(const ModelProperty& other) const
         return true;
     }
 
-    return (_name == other._name) && (_propertyType == other._propertyType)
+    return (_name == other._name) && (_displayName == other._displayName) && (_propertyType == other._propertyType)
         && (_units == other._units) && (_url == other._url) && (_description == other._description)
         && (_inheritance == other._inheritance);
 }

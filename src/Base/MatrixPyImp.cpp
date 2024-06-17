@@ -256,11 +256,9 @@ PyObject* MatrixPy::richCompare(PyObject* v, PyObject* w, int op)
         Py_INCREF(res);
         return res;
     }
-    else {
-        // This always returns False
-        Py_INCREF(Py_NotImplemented);
-        return Py_NotImplemented;
-    }
+    // This always returns False
+    Py_INCREF(Py_NotImplemented);
+    return Py_NotImplemented;
 }
 
 PyObject* MatrixPy::move(PyObject* args)
@@ -993,7 +991,7 @@ Py::Sequence MatrixPy::getA() const
     for (int i = 0; i < 16; i++) {
         tuple[i] = Py::Float(mat[i]);
     }
-    return std::move(tuple);
+    return tuple;
 }
 
 void MatrixPy::setA(Py::Sequence arg)

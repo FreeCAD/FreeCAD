@@ -45,6 +45,7 @@
 #include "FemConstraintPlaneRotation.h"
 #include "FemConstraintPressure.h"
 #include "FemConstraintPulley.h"
+#include "FemConstraintRigidBody.h"
 #include "FemConstraintSpring.h"
 #include "FemConstraintTemperature.h"
 #include "FemConstraintTransform.h"
@@ -82,7 +83,6 @@ PyMOD_INIT_FUNC(Fem)
     // load dependent module
     try {
         Base::Interpreter().loadModule("Part");
-        // Base::Interpreter().loadModule("Mesh");
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
@@ -108,7 +108,9 @@ PyMOD_INIT_FUNC(Fem)
     Fem::StdMeshers_LayerDistributionPy         ::init_type(femModule);
     Fem::StdMeshers_LengthFromEdgesPy           ::init_type(femModule);
     Fem::StdMeshers_MaxElementVolumePy          ::init_type(femModule);
+#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
     Fem::StdMeshers_MEFISTO_2DPy                ::init_type(femModule);
+#endif
     Fem::StdMeshers_NumberOfLayersPy            ::init_type(femModule);
     Fem::StdMeshers_NumberOfSegmentsPy          ::init_type(femModule);
     Fem::StdMeshers_Prism_3DPy                  ::init_type(femModule);
@@ -123,9 +125,6 @@ PyMOD_INIT_FUNC(Fem)
     Fem::StdMeshers_SegmentAroundVertex_0DPy    ::init_type(femModule);
     Fem::StdMeshers_SegmentLengthAroundVertexPy ::init_type(femModule);
     Fem::StdMeshers_StartEndLengthPy            ::init_type(femModule);
-#if SMESH_VERSION_MAJOR < 7
-    Fem::StdMeshers_TrianglePreferencePy        ::init_type(femModule);
-#endif
     Fem::StdMeshers_Hexa_3DPy                   ::init_type(femModule);
 
     // Add Types to module
@@ -149,6 +148,7 @@ PyMOD_INIT_FUNC(Fem)
     Fem::ConstraintContact                    ::init();
     Fem::ConstraintDisplacement               ::init();
     Fem::ConstraintFixed                      ::init();
+    Fem::ConstraintRigidBody                  ::init();
     Fem::ConstraintFluidBoundary              ::init();
     Fem::ConstraintForce                      ::init();
     Fem::ConstraintGear                       ::init();

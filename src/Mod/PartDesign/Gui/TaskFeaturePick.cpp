@@ -76,8 +76,8 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
                                  const std::vector<featureStatus>& status,
                                  bool singleFeatureSelect,
                                  QWidget* parent)
-  : TaskBox(Gui::BitmapFactory().pixmap("edit-select-box"),
-            tr("Select feature"), true, parent)
+  : TaskBox(Gui::BitmapFactory().pixmap("edit-select-all"),
+            tr("Select attachment"), true, parent)
   , ui(new Ui_TaskFeaturePick)
   , doSelection(false)
 {
@@ -392,7 +392,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
 
             // TODO Recheck this. This looks strange in case of independent copy (2015-10-31, Fat-Zer)
             if(!independent) {
-                datumCopy->Support.setValue(obj, entity.c_str());
+                datumCopy->AttachmentSupport.setValue(obj, entity.c_str());
                 datumCopy->MapMode.setValue(mode);
             }
             else if(!entity.empty()) {

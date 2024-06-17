@@ -29,7 +29,8 @@
 #include <Gui/PropertyPage.h>
 #include <memory>
 
-namespace Gui::Dialog {
+namespace Gui{
+namespace Dialog {
 class Ui_DlgSettingsWorkbenches;
 
 /**
@@ -47,6 +48,7 @@ public:
 
     void saveSettings() override;
     void loadSettings() override;
+    void resetSettingsToDefaults() override;
 
     static QStringList getEnabledWorkbenches();
     static QStringList getDisabledWorkbenches();
@@ -54,7 +56,6 @@ public:
 protected Q_SLOTS:
     void wbToggled(const QString& wbName, bool enabled);
     void wbItemMoved();
-    void onWbSelectorChanged(int index);
     void onStartWbChanged(int index);
     void onWbByTabToggled(bool val);
 
@@ -70,6 +71,7 @@ private:
 
     void saveWorkbenchSelector();
     void loadWorkbenchSelector();
+    void translateWorkbenchSelector();
 
 
     std::vector<std::string> _backgroundAutoloadedModules;
@@ -78,6 +80,7 @@ private:
     std::unique_ptr<Ui_DlgSettingsWorkbenches> ui;
 };
 
-} // namespace Gui::Dialog
+} // namespace Dialog
+} // namespace Gui
 
 #endif // GUI_DIALOG_DLGSETTINGSWORKBENCHES_IMP_H

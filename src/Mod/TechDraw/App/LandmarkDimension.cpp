@@ -87,19 +87,16 @@ short LandmarkDimension::mustExecute() const
 
 App::DocumentObjectExecReturn *LandmarkDimension::execute()
 {
-    Base::Console().Message("LD::execute() - %s\n", getNameInDocument());
-    if (!keepUpdated()) {
+    // Base::Console().Message("LD::execute() - %s\n", getNameInDocument());
+    if (!okToProceed()) {
         return App::DocumentObject::StdReturn;
     }
 
     DrawViewPart* dvp = getViewPart();
-    if (!dvp) {
-        return App::DocumentObject::StdReturn;
-    }
     References2D.setValue(dvp);
 
     std::vector<DocumentObject*> features = References3D.getValues();
-    Base::Console().Message("LD::execute - features: %d\n", features.size());
+    // Base::Console().Message("LD::execute - features: %d\n", features.size());
     //if distance, required size = 2
     //if angle, required size = 3;    //not implemented yet
     unsigned int requiredSize = 2;
@@ -130,18 +127,18 @@ App::DocumentObjectExecReturn *LandmarkDimension::execute()
             index++;
         }
     }
-    Base::Console().Message("LD::execute - front: %s back: %s\n",
-                            DrawUtil::formatVector(points.front()).c_str(),
-                            DrawUtil::formatVector(points.back()).c_str());
+    // Base::Console().Message("LD::execute - front: %s back: %s\n",
+    //                         DrawUtil::formatVector(points.front()).c_str(),
+    //                         DrawUtil::formatVector(points.back()).c_str());
     setLinearPoints(points.front(), points.back());
 
-    App::DocumentObjectExecReturn* dvdResult = DrawViewDimension::execute();
+    // App::DocumentObjectExecReturn* dvdResult = DrawViewDimension::execute();
 
     dvp->addReferencesToGeom();
-    dvp->requestPaint();
+    // dvp->requestPaint();
 
     overrideKeepUpdated(false);
-    return dvdResult;
+    return DrawView::execute();
 }
 
 Base::Vector3d LandmarkDimension::projectPoint(const Base::Vector3d& pt, DrawViewPart* dvp) const

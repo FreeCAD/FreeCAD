@@ -32,6 +32,7 @@
 #endif
 
 #include "Gui/Control.h"
+#include "FemGuiTools.h"
 #include "TaskFemConstraintPulley.h"
 #include "ViewProviderFemConstraintPulley.h"
 #include <Mod/Fem/App/FemConstraintPulley.h>
@@ -138,32 +139,34 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
             SbVec3f b(base.x, base.y, base.z);
             SbVec3f ax(axis.x, axis.y, axis.z);
 
-            createPlacement(pShapeSep, b, SbRotation(SbVec3f(0, 1, 0), ax));  // child 0 and 1
-            pShapeSep->addChild(
-                createCylinder(pcConstraint->Height.getValue() * 0.8, dia / 2));  // child 2
+            GuiTools::createPlacement(pShapeSep,
+                                      b,
+                                      SbRotation(SbVec3f(0, 1, 0), ax));  // child 0 and 1
+            pShapeSep->addChild(GuiTools::createCylinder(pcConstraint->Height.getValue() * 0.8,
+                                                         dia / 2));  // child 2
             SoSeparator* sep = new SoSeparator();
-            createPlacement(sep,
-                            SbVec3f(dia / 2 * sin(forceAngle + beltAngle),
-                                    0,
-                                    dia / 2 * cos(forceAngle + beltAngle)),
-                            SbRotation(SbVec3f(0, 1, 0),
-                                       SbVec3f(sin(forceAngle + beltAngle + M_PI_2),
-                                               0,
-                                               cos(forceAngle + beltAngle + M_PI_2))));
-            createPlacement(sep, SbVec3f(0, dia / 8 + dia / 2 * rat1, 0), SbRotation());
-            sep->addChild(createArrow(dia / 8 + dia / 2 * rat1, dia / 8));
+            GuiTools::createPlacement(sep,
+                                      SbVec3f(dia / 2 * sin(forceAngle + beltAngle),
+                                              0,
+                                              dia / 2 * cos(forceAngle + beltAngle)),
+                                      SbRotation(SbVec3f(0, 1, 0),
+                                                 SbVec3f(sin(forceAngle + beltAngle + M_PI_2),
+                                                         0,
+                                                         cos(forceAngle + beltAngle + M_PI_2))));
+            GuiTools::createPlacement(sep, SbVec3f(0, dia / 8 + dia / 2 * rat1, 0), SbRotation());
+            sep->addChild(GuiTools::createArrow(dia / 8 + dia / 2 * rat1, dia / 8));
             pShapeSep->addChild(sep);  // child 3
             sep = new SoSeparator();
-            createPlacement(sep,
-                            SbVec3f(-dia / 2 * sin(forceAngle - beltAngle),
-                                    0,
-                                    -dia / 2 * cos(forceAngle - beltAngle)),
-                            SbRotation(SbVec3f(0, 1, 0),
-                                       SbVec3f(-sin(forceAngle - beltAngle - M_PI_2),
-                                               0,
-                                               -cos(forceAngle - beltAngle - M_PI_2))));
-            createPlacement(sep, SbVec3f(0, dia / 8 + dia / 2 * rat2, 0), SbRotation());
-            sep->addChild(createArrow(dia / 8 + dia / 2 * rat2, dia / 8));
+            GuiTools::createPlacement(sep,
+                                      SbVec3f(-dia / 2 * sin(forceAngle - beltAngle),
+                                              0,
+                                              -dia / 2 * cos(forceAngle - beltAngle)),
+                                      SbRotation(SbVec3f(0, 1, 0),
+                                                 SbVec3f(-sin(forceAngle - beltAngle - M_PI_2),
+                                                         0,
+                                                         -cos(forceAngle - beltAngle - M_PI_2))));
+            GuiTools::createPlacement(sep, SbVec3f(0, dia / 8 + dia / 2 * rat2, 0), SbRotation());
+            sep->addChild(GuiTools::createArrow(dia / 8 + dia / 2 * rat2, dia / 8));
             pShapeSep->addChild(sep);  // child 4
         }
     }
@@ -186,33 +189,39 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
             }
 
             const SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(2));
-            updateCylinder(sep, 0, pcConstraint->Height.getValue() * 0.8, dia / 2);
+            GuiTools::updateCylinder(sep, 0, pcConstraint->Height.getValue() * 0.8, dia / 2);
             sep = static_cast<SoSeparator*>(pShapeSep->getChild(3));
-            updatePlacement(sep,
-                            0,
-                            SbVec3f(dia / 2 * sin(forceAngle + beltAngle),
-                                    0,
-                                    dia / 2 * cos(forceAngle + beltAngle)),
-                            SbRotation(SbVec3f(0, 1, 0),
-                                       SbVec3f(sin(forceAngle + beltAngle + M_PI_2),
-                                               0,
-                                               cos(forceAngle + beltAngle + M_PI_2))));
-            updatePlacement(sep, 2, SbVec3f(0, dia / 8 + dia / 2 * rat1, 0), SbRotation());
+            GuiTools::updatePlacement(sep,
+                                      0,
+                                      SbVec3f(dia / 2 * sin(forceAngle + beltAngle),
+                                              0,
+                                              dia / 2 * cos(forceAngle + beltAngle)),
+                                      SbRotation(SbVec3f(0, 1, 0),
+                                                 SbVec3f(sin(forceAngle + beltAngle + M_PI_2),
+                                                         0,
+                                                         cos(forceAngle + beltAngle + M_PI_2))));
+            GuiTools::updatePlacement(sep,
+                                      2,
+                                      SbVec3f(0, dia / 8 + dia / 2 * rat1, 0),
+                                      SbRotation());
             const SoSeparator* subsep = static_cast<SoSeparator*>(sep->getChild(4));
-            updateArrow(subsep, 0, dia / 8 + dia / 2 * rat1, dia / 8);
+            GuiTools::updateArrow(subsep, 0, dia / 8 + dia / 2 * rat1, dia / 8);
             sep = static_cast<SoSeparator*>(pShapeSep->getChild(4));
-            updatePlacement(sep,
-                            0,
-                            SbVec3f(-dia / 2 * sin(forceAngle - beltAngle),
-                                    0,
-                                    -dia / 2 * cos(forceAngle - beltAngle)),
-                            SbRotation(SbVec3f(0, 1, 0),
-                                       SbVec3f(-sin(forceAngle - beltAngle - M_PI_2),
-                                               0,
-                                               -cos(forceAngle - beltAngle - M_PI_2))));
-            updatePlacement(sep, 2, SbVec3f(0, dia / 8 + dia / 2 * rat2, 0), SbRotation());
+            GuiTools::updatePlacement(sep,
+                                      0,
+                                      SbVec3f(-dia / 2 * sin(forceAngle - beltAngle),
+                                              0,
+                                              -dia / 2 * cos(forceAngle - beltAngle)),
+                                      SbRotation(SbVec3f(0, 1, 0),
+                                                 SbVec3f(-sin(forceAngle - beltAngle - M_PI_2),
+                                                         0,
+                                                         -cos(forceAngle - beltAngle - M_PI_2))));
+            GuiTools::updatePlacement(sep,
+                                      2,
+                                      SbVec3f(0, dia / 8 + dia / 2 * rat2, 0),
+                                      SbRotation());
             subsep = static_cast<SoSeparator*>(sep->getChild(4));
-            updateArrow(subsep, 0, dia / 8 + dia / 2 * rat2, dia / 8);
+            GuiTools::updateArrow(subsep, 0, dia / 8 + dia / 2 * rat2, dia / 8);
         }
     }
     else if ((prop == &pcConstraint->ForceAngle) || (prop == &pcConstraint->BeltAngle)) {
@@ -226,25 +235,25 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
             double beltAngle = pcConstraint->BeltAngle.getValue();
 
             const SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(3));
-            updatePlacement(sep,
-                            0,
-                            SbVec3f(dia / 2 * sin(forceAngle + beltAngle),
-                                    0,
-                                    dia / 2 * cos(forceAngle + beltAngle)),
-                            SbRotation(SbVec3f(0, 1, 0),
-                                       SbVec3f(sin(forceAngle + beltAngle + M_PI_2),
-                                               0,
-                                               cos(forceAngle + beltAngle + M_PI_2))));
+            GuiTools::updatePlacement(sep,
+                                      0,
+                                      SbVec3f(dia / 2 * sin(forceAngle + beltAngle),
+                                              0,
+                                              dia / 2 * cos(forceAngle + beltAngle)),
+                                      SbRotation(SbVec3f(0, 1, 0),
+                                                 SbVec3f(sin(forceAngle + beltAngle + M_PI_2),
+                                                         0,
+                                                         cos(forceAngle + beltAngle + M_PI_2))));
             sep = static_cast<SoSeparator*>(pShapeSep->getChild(4));
-            updatePlacement(sep,
-                            0,
-                            SbVec3f(-dia / 2 * sin(forceAngle - beltAngle),
-                                    0,
-                                    -dia / 2 * cos(forceAngle - beltAngle)),
-                            SbRotation(SbVec3f(0, 1, 0),
-                                       SbVec3f(-sin(forceAngle - beltAngle - M_PI_2),
-                                               0,
-                                               -cos(forceAngle - beltAngle - M_PI_2))));
+            GuiTools::updatePlacement(sep,
+                                      0,
+                                      SbVec3f(-dia / 2 * sin(forceAngle - beltAngle),
+                                              0,
+                                              -dia / 2 * cos(forceAngle - beltAngle)),
+                                      SbRotation(SbVec3f(0, 1, 0),
+                                                 SbVec3f(-sin(forceAngle - beltAngle - M_PI_2),
+                                                         0,
+                                                         -cos(forceAngle - beltAngle - M_PI_2))));
         }
     }
     else if ((prop == &pcConstraint->BeltForce1) || (prop == &pcConstraint->BeltForce2)) {
@@ -263,13 +272,19 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
             }
 
             const SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(3));
-            updatePlacement(sep, 2, SbVec3f(0, dia / 8 + dia / 2 * rat1, 0), SbRotation());
+            GuiTools::updatePlacement(sep,
+                                      2,
+                                      SbVec3f(0, dia / 8 + dia / 2 * rat1, 0),
+                                      SbRotation());
             const SoSeparator* subsep = static_cast<SoSeparator*>(sep->getChild(4));
-            updateArrow(subsep, 0, dia / 8 + dia / 2 * rat1, dia / 8);
+            GuiTools::updateArrow(subsep, 0, dia / 8 + dia / 2 * rat1, dia / 8);
             sep = static_cast<SoSeparator*>(pShapeSep->getChild(4));
-            updatePlacement(sep, 2, SbVec3f(0, dia / 8 + dia / 2 * rat2, 0), SbRotation());
+            GuiTools::updatePlacement(sep,
+                                      2,
+                                      SbVec3f(0, dia / 8 + dia / 2 * rat2, 0),
+                                      SbRotation());
             subsep = static_cast<SoSeparator*>(sep->getChild(4));
-            updateArrow(subsep, 0, dia / 8 + dia / 2 * rat2, dia / 8);
+            GuiTools::updateArrow(subsep, 0, dia / 8 + dia / 2 * rat2, dia / 8);
         }
     }
 

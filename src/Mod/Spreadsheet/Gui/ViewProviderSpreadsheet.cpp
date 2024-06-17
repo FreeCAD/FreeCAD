@@ -31,12 +31,12 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 
-#include "SpreadsheetView.h"
 #include "ViewProviderSpreadsheet.h"
 #include "ViewProviderSpreadsheetPy.h"
 
@@ -49,15 +49,12 @@ using namespace Spreadsheet;
 
 PROPERTY_SOURCE(SpreadsheetGui::ViewProviderSheet, Gui::ViewProviderDocumentObject)
 
-ViewProviderSheet::ViewProviderSheet()
-    : Gui::ViewProviderDocumentObject()
-{}
+ViewProviderSheet::ViewProviderSheet() = default;
 
 ViewProviderSheet::~ViewProviderSheet()
 {
     if (!view.isNull()) {
         Gui::getMainWindow()->removeWindow(view);
-        //        delete view;
     }
 }
 
@@ -75,14 +72,31 @@ std::vector<std::string> ViewProviderSheet::getDisplayModes() const
 
 QIcon ViewProviderSheet::getIcon() const
 {
+    // clang-format off
     static const char* const Points_Feature_xpm[] = {
-        "16 16 3 1",        "       c None",    ".      c #000000", "+      c #FFFFFF",
-        "                ", "                ", "................", ".++++.++++.++++.",
-        ".++++.++++.++++.", "................", ".++++.++++.++++.", ".++++.++++.++++.",
-        "................", ".++++.++++.++++.", ".++++.++++.++++.", "................",
-        ".++++.++++.++++.", ".++++.++++.++++.", "................", "                "};
+        "16 16 3 1",
+        "       c None",
+        ".      c #000000",
+        "+      c #FFFFFF",
+        "                ",
+        "                ",
+        "................",
+        ".++++.++++.++++.",
+        ".++++.++++.++++.",
+        "................",
+        ".++++.++++.++++.",
+        ".++++.++++.++++.",
+        "................",
+        ".++++.++++.++++.",
+        ".++++.++++.++++.",
+        "................",
+        ".++++.++++.++++.",
+        ".++++.++++.++++.",
+        "................",
+        "                "};
     QPixmap px(Points_Feature_xpm);
     return px;
+    // clang-format on
 }
 
 bool ViewProviderSheet::setEdit(int ModNum)
@@ -99,6 +113,16 @@ bool ViewProviderSheet::setEdit(int ModNum)
 
 bool ViewProviderSheet::doubleClicked()
 {
+    // assure the SpreadSheet workbench
+    if (App::GetApplication()
+            .GetUserParameter()
+            .GetGroup("BaseApp")
+            ->GetGroup("Preferences")
+            ->GetGroup("Mod/Spreadsheet")
+            ->GetBool("SwitchToWB", true)) {
+        Gui::Command::assureWorkbench("SpreadsheetWorkbench");
+    }
+
     if (!this->view) {
         showSpreadsheetView();
         view->viewAll();

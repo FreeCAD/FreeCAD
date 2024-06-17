@@ -126,9 +126,10 @@ public:
 
     void reset();
 
-    void initNParameters(int nparameters);
+    void initNParameters(int nparameters, QObject* filteringObject = nullptr);
 
     void setParameterLabel(int parameterindex, const QString& string);
+    void setParameterFilteringObject(int parameterindex, QObject* filteringObject);
 
     void setNoticeText(const QString& string);
     void setNoticeVisible(bool visible);
@@ -152,6 +153,12 @@ public:
     void setComboboxItemIcon(int comboboxindex, int index, QIcon icon);
     void setComboboxPrefEntry(int comboboxindex, const std::string& prefEntry);
     void restoreComboboxPref(int comboboxindex);
+
+    template<typename F>
+    boost::signals2::connection registerParameterTabOrEnterPressed(F&& fn)
+    {
+        return signalParameterTabOrEnterPressed.connect(std::forward<F>(fn));
+    }
 
     template<typename F>
     boost::signals2::connection registerParameterValueChanged(F&& fn)
@@ -210,6 +217,7 @@ private:
 private:
     std::unique_ptr<Ui_SketcherToolDefaultWidget> ui;
 
+    boost::signals2::signal<void(int parameterindex)> signalParameterTabOrEnterPressed;
     boost::signals2::signal<void(int parameterindex, double value)> signalParameterValueChanged;
     boost::signals2::signal<void(int checkboxindex, bool value)> signalCheckboxCheckedChanged;
     boost::signals2::signal<void(int comboindex, int value)> signalComboboxSelectionChanged;

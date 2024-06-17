@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="14"/>
       <source>General settings</source>
-      <translation>Загальні параметри</translation>
+      <translation>Загальні налаштування</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="35"/>
@@ -294,14 +294,14 @@
       <translation type="unfinished">Error: either all shapes must be 2D or all shapes must be 3D</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Unsupported Function</source>
       <translation type="unfinished">Unsupported Function</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Press OK</source>
       <translation>Натисніть OK</translation>
     </message>

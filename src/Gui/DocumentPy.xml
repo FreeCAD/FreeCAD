@@ -237,11 +237,17 @@ obj : Gui.ViewProvider</UserDocu>
       </Documentation>
       <Parameter Name="Transacting" Type="Boolean" />
     </Attribute>
-    <Attribute Name="Modified" ReadOnly="true">
+    <Attribute Name="Modified">
       <Documentation>
         <UserDocu>Returns True if the document is marked as modified, and False otherwise.</UserDocu>
       </Documentation>
       <Parameter Name="Modified" Type="Boolean" />
+    </Attribute>
+    <Attribute Name="TreeRootObjects" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The list of tree root objects.</UserDocu>
+      </Documentation>
+      <Parameter Name="TreeRootObjects" Type="List" />
     </Attribute>
   </PythonExport>
 </GenerateModel>

@@ -299,6 +299,7 @@ void PropertiesDialog::apply()
             if (orgDisplayUnit != displayUnit) {
                 std::string escapedstr =
                     Base::Tools::escapedUnicodeFromUtf8(displayUnit.stringRep.c_str());
+                escapedstr = Base::Tools::escapeQuotesFromString(escapedstr);
                 Gui::cmdAppObjectArgs(sheet,
                                       "setDisplayUnit('%s', '%s')",
                                       i->rangeString().c_str(),

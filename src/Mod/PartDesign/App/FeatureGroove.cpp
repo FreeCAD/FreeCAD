@@ -36,6 +36,7 @@
 #include <Base/Tools.h>
 
 #include "FeatureGroove.h"
+#include "Mod/Part/App/TopoShapeOpCode.h"
 
 
 using namespace PartDesign;
@@ -78,6 +79,7 @@ short Groove::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
+#ifndef FC_USE_TNP_FIX
 App::DocumentObjectExecReturn *Groove::execute()
 {
     // Validate parameters
@@ -186,8 +188,7 @@ App::DocumentObjectExecReturn *Groove::execute()
             TopoDS_Shape subshape = refineShapeIfActive(mkCut.Shape());
             this->AddSubShape.setValue(subshape);
 
-            int resultCount = countSolids(result);
-            if (resultCount > 1) {
+            if (!isSingleSolidRuleSatisfied(result)) {
                 return new App::DocumentObjectExecReturn("Groove: Result has multiple solids. This is not supported at this time.");
             }
 
@@ -219,8 +220,7 @@ App::DocumentObjectExecReturn *Groove::execute()
             solRes = refineShapeIfActive(solRes);
             this->Shape.setValue(getSolid(solRes));
 
-            int solidCount = countSolids(solRes);
-            if (solidCount > 1) {
+            if (!isSingleSolidRuleSatisfied(solRes)) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
         }
@@ -242,6 +242,137 @@ App::DocumentObjectExecReturn *Groove::execute()
         return new App::DocumentObjectExecReturn(e.what());
     }
 }
+#else
+App::DocumentObjectExecReturn *Groove::execute()
+{
+    // Validate parameters
+    double angle = Angle.getValue();
+    if (angle > 360.0)
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Angle of groove too large"));
+
+    angle = Base::toRadians<double>(angle);
+    if (angle < Precision::Angular())
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Angle of groove too small"));
+
+    // Reverse angle if selected
+    if (Reversed.getValue() && !Midplane.getValue())
+        angle *= (-1.0);
+
+    TopoShape sketchshape;
+    try {
+        sketchshape = getTopoShapeVerifiedFace();
+    } catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
+
+    // if the Base property has a valid shape, fuse the prism into it
+    TopoShape base;
+    try {
+        base = getBaseTopoShape();
+    }
+    catch (const Base::Exception&) {
+        std::string text(QT_TRANSLATE_NOOP("Exception", "The requested feature cannot be created. The reason may be that:\n"
+                                                        "  - the active Body does not contain a base shape, so there is no\n"
+                                                        "  material to be removed;\n"
+                                                        "  - the selected sketch does not belong to the active Body."));
+        return new App::DocumentObjectExecReturn(text);
+    }
+
+    updateAxis();
+
+    // get revolve axis
+    Base::Vector3d b = Base.getValue();
+    gp_Pnt pnt(b.x,b.y,b.z);
+    Base::Vector3d v = Axis.getValue();
+    gp_Dir dir(v.x,v.y,v.z);
+
+    try {
+        if (sketchshape.isNull())
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Creating a face from sketch failed"));
+
+        // Rotate the face by half the angle to get Groove symmetric to sketch plane
+        if (Midplane.getValue()) {
+            gp_Trsf mov;
+            mov.SetRotation(gp_Ax1(pnt, dir), Base::toRadians<double>(Angle.getValue()) * (-1.0) / 2.0);
+            TopLoc_Location loc(mov);
+            sketchshape.move(loc);
+        }
+
+        this->positionByPrevious();
+        auto invObjLoc = getLocation().Inverted();
+        pnt.Transform(invObjLoc.Transformation());
+        dir.Transform(invObjLoc.Transformation());
+        base.move(invObjLoc);
+        sketchshape.move(invObjLoc);
+
+        // Check distance between sketchshape and axis - to avoid failures and crashes
+        TopExp_Explorer xp;
+        xp.Init(sketchshape.getShape(), TopAbs_FACE);
+        for (;xp.More(); xp.Next()) {
+            if (checkLineCrossesFace(gp_Lin(pnt, dir), TopoDS::Face(xp.Current())))
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Revolve axis intersects the sketch"));
+        }
+
+        // revolve the face to a solid
+        TopoShape result(0);
+        try {
+            result.makeElementRevolve(sketchshape, gp_Ax1(pnt, dir), angle);
+        }catch(Standard_Failure &) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Could not revolve the sketch!"));
+        }
+        this->AddSubShape.setValue(result);
+
+        if(base.isNull()) {
+            Shape.setValue(getSolid(result));
+            return App::DocumentObject::StdReturn;
+        }
+
+        result.Tag = -getID();
+        TopoShape boolOp(0);
+
+        try {
+            const char *maker;
+            switch (getAddSubType()) {
+                case Additive:
+                    maker = Part::OpCodes::Fuse;
+                    break;
+//                case Intersecting:
+//                    maker = Part::OpCodes::Common;
+//                    break;
+                default:
+                    maker = Part::OpCodes::Cut;
+            }
+//            this->fixShape(result);
+            boolOp.makeElementBoolean(maker, {base,result});
+        }catch(Standard_Failure &) {
+            return new App::DocumentObjectExecReturn("Failed to cut base feature");
+        }
+        boolOp = this->getSolid(boolOp);
+        if (boolOp.isNull())
+            return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+
+        boolOp = refineShapeIfActive(boolOp);
+        boolOp = getSolid(boolOp);
+        if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+        }
+        Shape.setValue(boolOp);
+        return App::DocumentObject::StdReturn;
+    }
+    catch (Standard_Failure& e) {
+
+        if (std::string(e.GetMessageString()) == "TopoDS::Face")
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Could not create face from sketch.\n"
+                                                                                    "Intersecting sketch entities in a sketch are not allowed."));
+        else
+            return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
+}
+
+#endif
 
 bool Groove::suggestReversed()
 {

@@ -36,10 +36,11 @@ import FreeCAD
 from FreeCAD import Console
 
 import Fem
+from builtins import open as pyopen
 
 
 # ********* generic FreeCAD import and export methods *********
-pyopen = open
+
 
 
 def open(
@@ -75,10 +76,8 @@ def export(
         return
 
     obj = objectslist[0]
-    if obj.isDerivedFrom("Fem::FemPostPipeline"):
-        Console.PrintError(
-            "Export of a VTK post object to vtk is not yet implemented!\n"
-        )
+    if obj.isDerivedFrom("Fem::FemPostObject"):
+        obj.writeVTK(filename)
         return
     elif obj.isDerivedFrom("Fem::FemMeshObject"):
         Console.PrintError(

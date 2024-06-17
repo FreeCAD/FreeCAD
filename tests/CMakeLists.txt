@@ -1,3 +1,15 @@
+if ( EXISTS "${CMAKE_SOURCE_DIR}/tests/lib/googletest" )
+    include_directories( ${CMAKE_SOURCE_DIR}/tests/lib/googletest/include/ )
+    include_directories( ${CMAKE_SOURCE_DIR}/tests/lib/googlemock/include/ )
+else()
+    find_package(GTest)
+    if( GTest_FOUND )
+        message( STATUS "Found Google Test: version ${GTest_VERSION}" )
+    else()
+        message( SEND_ERROR "The Google Test submodule is not available. Please run git submodule update --init" )
+    endif()
+endif()
+
 if(MSVC)
     add_compile_options(/wd4251)
 
@@ -28,8 +40,10 @@ if(MSVC)
     endif()
 endif()
 
+add_compile_options("-DFC_USE_TNP_FIX")
+
 if(WIN32)
-    add_definitions(-DCOIN_DLL)
+    add_definitions(-DCOIN_DLL -D_USE_MATH_DEFINES)
 endif(WIN32)
 
 if(NOT BUILD_DYNAMIC_LINK_PYTHON)
@@ -76,12 +90,29 @@ endfunction()
 
 set(TestExecutables
     Tests_run
-    Material_tests_run
-    Mesh_tests_run
-    Part_tests_run
-    Points_tests_run
-    Sketcher_tests_run
 )
+
+if(BUILD_ASSEMBLY)
+  list (APPEND TestExecutables Assembly_tests_run)
+endif(BUILD_ASSEMBLY)
+if(BUILD_MATERIAL)
+  list (APPEND TestExecutables Material_tests_run)
+endif(BUILD_MATERIAL)
+if(BUILD_MESH)
+  list (APPEND TestExecutables Mesh_tests_run)
+endif(BUILD_MESH)
+if(BUILD_PART)
+  list (APPEND TestExecutables Part_tests_run)
+endif(BUILD_PART)
+if(BUILD_PART_DESIGN)
+    list (APPEND TestExecutables PartDesign_tests_run)
+endif(BUILD_PART_DESIGN)
+if(BUILD_POINTS)
+  list (APPEND TestExecutables Points_tests_run)
+endif(BUILD_POINTS)
+if(BUILD_SKETCHER)
+  list (APPEND TestExecutables Sketcher_tests_run)
+endif(BUILD_SKETCHER)
 
 # -------------------------
 
@@ -89,7 +120,9 @@ foreach (exe ${TestExecutables})
     add_executable(${exe})
 endforeach()
 
-add_subdirectory(lib)
+if ( EXISTS "${CMAKE_SOURCE_DIR}/tests/lib/googletest" )
+    add_subdirectory(lib)
+endif()
 add_subdirectory(src)
 
 target_include_directories(Tests_run PUBLIC

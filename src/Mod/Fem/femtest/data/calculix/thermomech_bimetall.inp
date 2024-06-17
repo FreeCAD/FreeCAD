@@ -7040,6 +7040,9 @@ Evolumes
 1520,
 1521,
 
+** Physical constants for SI(mm) unit system with Kelvins
+*PHYSICAL CONSTANTS, ABSOLUTE ZERO=0, STEFAN BOLTZMANN=5.670374419e-11
+
 ***********************************************************
 ** Materials
 ** see information about units at file end
@@ -7081,7 +7084,7 @@ Nall,273.0
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
 *STEP, INC=2000
 *COUPLED TEMPERATURE-DISPLACEMENT, SOLVER=SPOOLES, STEADY STATE
-1.0,1.0
+1.0,1.0,1e-05,1.0
 
 ***********************************************************
 ** Fixed Constraints
@@ -7108,13 +7111,13 @@ ConstraintTemperatureNormal,11,11,273.0
 *NODE FILE
 U, NT
 *EL FILE
-S, E
+S, E, HFL
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
 *END STEP 
 

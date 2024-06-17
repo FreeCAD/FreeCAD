@@ -51,7 +51,7 @@ import DraftVecUtils
 
 from draftutils.translate import translate
 import draftutils.utils as utils
-from draftutils.messages import _msg
+from draftutils.messages import _err
 
 import draftguitools.gui_trackers as trackers
 
@@ -174,8 +174,7 @@ class DraftWireGuiTools(GuiTools):
 
     def delete_point(self, obj, node_idx):
         if len(obj.Points) <= 2:
-            _msg = translate("draft", "Active object must have more than two points/nodes")
-            App.Console.PrintWarning(_msg + "\n")
+            _err(translate("draft", "Active object must have more than two points/nodes"))
             return
 
         pts = obj.Points
@@ -837,8 +836,7 @@ class DraftBezCurveGuiTools(GuiTools):
 
     def delete_point(self, obj, node_idx):
         if len(obj.Points) <= 2:
-            _msg = translate("draft", "Active object must have more than two points/nodes")
-            App.Console.PrintWarning(_msg + "\n")
+            _err(translate("draft", "Active object must have more than two points/nodes"))
             return
 
         pts = obj.Points

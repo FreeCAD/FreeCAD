@@ -50,6 +50,8 @@ SET(Import_SRCS
     WriterIges.h
     WriterStep.cpp
     WriterStep.h
+    SketchExportHelper.cpp
+    SketchExportHelper.h
     dxf/ImpExpDxf.cpp
     dxf/ImpExpDxf.h
     dxf/dxf.cpp
@@ -85,6 +87,9 @@ generate_from_xml(StepShapePy)
 
 add_library(Import SHARED ${Import_SRCS})
 target_link_libraries(Import ${Import_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Import)
+endif()
 
 ADD_CUSTOM_TARGET(ImportPy ALL
     SOURCES ${SCL_Resources}

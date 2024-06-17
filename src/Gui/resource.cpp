@@ -124,5 +124,6 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new WidgetProducer<Gui::IntSpinBox>;
     new WidgetProducer<Gui::DoubleSpinBox>;
     new WidgetProducer<Gui::QuantitySpinBox>;
+    new WidgetProducer<Gui::ExpLineEdit>;
 }
 // clang-format on

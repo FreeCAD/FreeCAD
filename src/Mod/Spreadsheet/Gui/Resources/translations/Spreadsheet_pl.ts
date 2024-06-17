@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="962"/>
       <source>Create a new spreadsheet</source>
-      <translation>Utwórz nowy arkusz</translation>
+      <translation>Tworzy nowy arkusz.</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="528"/>
       <source>Bottom-align contents of selected cells</source>
-      <translation>Wyrównaj do dołu zawartość wybranych komórek</translation>
+      <translation>Wyrównuje do dołu zawartość wybranych komórek.</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="357"/>
       <source>Center-align contents of selected cells</source>
-      <translation>Wyśrodkuj zawartość wybranych komórek</translation>
+      <translation>Wyśrodkuje zawartość wybranych komórek.</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="300"/>
       <source>Left-align contents of selected cells</source>
-      <translation>Wyrównaj do lewej zawartość wybranych komórek</translation>
+      <translation>Wyrównuje do lewej zawartość wybranych komórek.</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="414"/>
       <source>Right-align contents of selected cells</source>
-      <translation>Wyrównaj do prawej zawartość wybranych komórek</translation>
+      <translation>Wyrównuje do prawej zawartość wybranych komórek.</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="471"/>
       <source>Top-align contents of selected cells</source>
-      <translation>Wyrównaj w górę zawartość wybranych komórek</translation>
+      <translation>Wyrównuje w górę zawartość wybranych komórek.</translation>
     </message>
   </context>
   <context>
@@ -142,7 +142,7 @@
     <message>
       <location filename="../../Command.cpp" line="237"/>
       <source>Export spreadsheet to CSV file</source>
-      <translation>Eksportuj arkusz do pliku CSV</translation>
+      <translation>Eksportuje arkusz do pliku CSV.</translation>
     </message>
   </context>
   <context>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../Command.cpp" line="184"/>
       <source>Import CSV file into spreadsheet</source>
-      <translation>Importuj zawartość pliku CSV do arkusza</translation>
+      <translation>Importuje zawartość pliku CSV do arkusza.</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Merge selected cells</source>
-      <translation>Scal wybrane komórki</translation>
+      <translation>Scala wybrane komórki.</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="891"/>
       <source>Set alias for selected cell</source>
-      <translation>Definiuj alias dla wybranej komórki</translation>
+      <translation>Definiuje alias dla wybranej komórki.</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="122"/>
       <source>Split previously merged cells</source>
-      <translation>Rozdziel uprzednio scalone komórki</translation>
+      <translation>Rozdziela uprzednio scalone komórki.</translation>
     </message>
   </context>
   <context>
@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="642"/>
       <source>Set text in selected cells bold</source>
-      <translation>Umieść tekst w zaznaczonych komórkach pogrubioną czcionką</translation>
+      <translation>Umieszcza tekst w zaznaczonych komórkach pogrubioną czcionką.</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../Command.cpp" line="725"/>
       <source>Set text in selected cells italic</source>
-      <translation>Umieść tekst w zaznaczonych komórkach pochyłą czcionką</translation>
+      <translation>Umieszcza tekst w zaznaczonych komórkach pochyłą czcionką.</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../Command.cpp" line="808"/>
       <source>Underline text in selected cells</source>
-      <translation>Podkreśl tekst w zaznaczonych komórkach</translation>
+      <translation>Podkreśla tekst w zaznaczonych komórkach.</translation>
     </message>
   </context>
   <context>
@@ -695,7 +695,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Eksportuj plik</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Pokaż arkusz</translation>
     </message>
@@ -739,7 +739,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Arkusz.mój_alias zamiast Arkusz.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Arkusz kalkulacyjny</translation>
     </message>
@@ -951,8 +951,18 @@ Domyślnie %V = %A
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>Znak separatora: </translation>
+      <source>Delimiter Character:</source>
+      <translation>Znak separatora:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation>Znak cudzysłowu:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation>Znak "Escape":</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -965,19 +975,9 @@ Domyślnie %V = %A
       <translation>tabulator</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>Znak cytatu: </translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Znak używany do określenia granic ciągów znaków, zazwyczaj jest to pojedynczy cudzysłów (') lub podwójny cudzysłów (&amp;quot;). Musi to być pojedynczy znak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Znak "Escape": </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -1180,7 +1180,7 @@ Domyślnie %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Nienazwany</translation>
     </message>

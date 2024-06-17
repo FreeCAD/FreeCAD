@@ -440,13 +440,13 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
 
 void OverlayTabWidget::refreshIcons()
 {
-    actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/overlay.svg"));
-    actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/mode.svg"));
-    actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/taskshow.svg"));
-    actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/editshow.svg"));
-    actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/edithide.svg"));
-    actTransparent.setIcon(BitmapFactory().pixmap("qss:overlay/transparent.svg"));
-    QPixmap pxAutoHide = BitmapFactory().pixmap("qss:overlay/autohide.svg");
+    actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/icons/overlay.svg"));
+    actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode.svg"));
+    actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow.svg"));
+    actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow.svg"));
+    actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide.svg"));
+    actTransparent.setIcon(BitmapFactory().pixmap("qss:overlay/icons/transparent.svg"));
+    QPixmap pxAutoHide = BitmapFactory().pixmap("qss:overlay/icons/autohide.svg");
     switch(dockArea) {
     case Qt::LeftDockWidgetArea:
         actAutoHide.setIcon(pxAutoHide);
@@ -638,7 +638,7 @@ void OverlayTabWidget::onRepaint()
 void OverlayTabWidget::scheduleRepaint()
 {
     if(!repainting
-            && isVisible() 
+            && isVisible()
             && _graphicsEffect)
     {
         repaintTimer.start(100);
@@ -1004,7 +1004,7 @@ bool OverlayTabWidget::checkAutoHide() const
     }
 
     if(autoMode == AutoMode::EditShow) {
-        return !Application::Instance->editDocument() 
+        return !Application::Instance->editDocument()
             && (!Control().taskPanel() || Control().taskPanel()->isEmpty(false));
     }
 
@@ -1294,6 +1294,7 @@ void OverlayTabWidget::setOverlayMode(bool enable)
     } else {
         option = enable?OverlayOption::Enable:OverlayOption::Disable;
     }
+    setProperty("transparent", option != OverlayOption::Disable);
 
     proxyWidget->setStyleSheet(stylesheet);
     this->setStyleSheet(stylesheet);
@@ -1424,17 +1425,17 @@ void OverlayTabWidget::setRect(QRect rect)
             startHide();
         else if (count() && OverlayParams::getDockOverlayHintTabBar()) {
             switch(dockArea) {
-            case Qt::LeftDockWidgetArea: 
-            case Qt::RightDockWidgetArea: 
+            case Qt::LeftDockWidgetArea:
+            case Qt::RightDockWidgetArea:
                 if (dockArea == Qt::LeftDockWidgetArea)
                     rect.setWidth(tabBar()->width());
                 else
                     rect.setLeft(rect.left() + rect.width() - tabBar()->width());
-                rect.setHeight(std::max(rect.height(), 
+                rect.setHeight(std::max(rect.height(),
                             tabBar()->y() + tabBar()->sizeHint().height() + 5));
                 break;
-            case Qt::BottomDockWidgetArea: 
-            case Qt::TopDockWidgetArea: 
+            case Qt::BottomDockWidgetArea:
+            case Qt::TopDockWidgetArea:
                 if (dockArea == Qt::TopDockWidgetArea)
                     rect.setHeight(tabBar()->height());
                 else
@@ -1631,7 +1632,7 @@ void OverlayTabWidget::setupLayout()
 void OverlayTabWidget::setCurrent(QDockWidget *widget)
 {
     int index = dockWidgetIndex(widget);
-    if(index >= 0) 
+    if(index >= 0)
         setCurrentIndex(index);
 }
 
@@ -1671,7 +1672,7 @@ void OverlayTabWidget::onCurrentChanged(int index)
 
     auto sizes = splitter->sizes();
     int i=0;
-    int size = splitter->orientation()==Qt::Vertical ? 
+    int size = splitter->orientation()==Qt::Vertical ?
                     height()-tabBar()->height() : width()-tabBar()->width();
     for(auto &s : sizes) {
         if(i++ == index)
@@ -1725,21 +1726,21 @@ QLayoutItem *OverlayTabWidget::prepareTitleWidget(QWidget *widget, const QList<Q
     QBoxLayout *layout = nullptr;
     auto tabWidget = qobject_cast<OverlayTabWidget*>(widget->parentWidget());
     if(!tabWidget) {
-        layout = new QBoxLayout(QBoxLayout::LeftToRight, widget); 
+        layout = new QBoxLayout(QBoxLayout::LeftToRight, widget);
     } else {
         switch(tabWidget->getDockArea()) {
             case Qt::LeftDockWidgetArea:
-                layout = new QBoxLayout(QBoxLayout::LeftToRight, widget); 
+                layout = new QBoxLayout(QBoxLayout::LeftToRight, widget);
                 break;
             case Qt::RightDockWidgetArea:
-                layout = new QBoxLayout(QBoxLayout::RightToLeft, widget); 
+                layout = new QBoxLayout(QBoxLayout::RightToLeft, widget);
                 break;
             case Qt::TopDockWidgetArea:
-                layout = new QBoxLayout(QBoxLayout::TopToBottom, widget); 
+                layout = new QBoxLayout(QBoxLayout::TopToBottom, widget);
                 vertical = true;
                 break;
             case Qt::BottomDockWidgetArea:
-                layout = new QBoxLayout(QBoxLayout::BottomToTop, widget); 
+                layout = new QBoxLayout(QBoxLayout::BottomToTop, widget);
                 vertical = true;
                 break;
             default:
@@ -1772,7 +1773,7 @@ QLayoutItem *OverlayTabWidget::prepareTitleWidget(QWidget *widget, const QList<Q
 // -----------------------------------------------------------
 
 OverlayTitleBar::OverlayTitleBar(QWidget * parent)
-    :QWidget(parent) 
+    :QWidget(parent)
 {
     setFocusPolicy(Qt::ClickFocus);
     setMouseTracking(true);
@@ -2102,7 +2103,7 @@ OverlaySplitterHandle::OverlaySplitterHandle(Qt::Orientation orientation, QSplit
 
 void OverlaySplitterHandle::refreshIcons()
 {
-    actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/float.svg"));
+    actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/icons/float.svg"));
 }
 
 void OverlaySplitterHandle::onTimer()
@@ -2137,7 +2138,7 @@ void OverlaySplitterHandle::leaveEvent(QEvent *ev)
 }
 
 QSize OverlaySplitterHandle::sizeHint() const
-{ 
+{
     QSize size = QSplitterHandle::sizeHint();
     int minSize = widgetMinSize(this,true);
     if (this->orientation() == Qt::Vertical)
@@ -2245,7 +2246,7 @@ void OverlaySplitterHandle::paintEvent(QPaintEvent *e)
         QSplitterHandle::paintEvent(e);
         return;
     }
-    
+
     QPainter painter(this);
     painter.fillRect(this->rect(), painter.background());
 
@@ -2359,7 +2360,7 @@ void OverlaySplitterHandle::mousePressEvent(QMouseEvent *me)
 
 void OverlaySplitterHandle::mouseReleaseEvent(QMouseEvent *me)
 {
-    if (OverlayTabWidget::_Dragging != this || me->button() != Qt::LeftButton) 
+    if (OverlayTabWidget::_Dragging != this || me->button() != Qt::LeftButton)
         return;
 
     if (dragging == 1) {
@@ -2503,7 +2504,7 @@ void OverlayGraphicsEffect::draw(QPainter* painter)
                 for(auto w=edit->parentWidget(); w; w=w->parentWidget()) {
                     if (w == widget) {
                         QRect r = edit->cursorRect();
-                        QRect rect(edit->viewport()->mapTo(widget, r.topLeft()), 
+                        QRect rect(edit->viewport()->mapTo(widget, r.topLeft()),
                                 edit->viewport()->mapTo(widget, r.bottomRight()));
                         // painter->fillRect(rect, edit->textColor());
                         // painter->fillRect(rect, edit->currentCharFormat().foreground());
@@ -2523,8 +2524,8 @@ QRectF OverlayGraphicsEffect::boundingRectFor(const QRectF& rect) const
 {
     if (!_enabled)
         return rect;
-    return rect.united(rect.adjusted(-_blurRadius - _size.width() + _offset.x(), 
-                                     -_blurRadius - _size.height()+ _offset.y(), 
+    return rect.united(rect.adjusted(-_blurRadius - _size.width() + _offset.x(),
+                                     -_blurRadius - _size.height()+ _offset.y(),
                                      _blurRadius + _size.width() + _offset.x(),
                                      _blurRadius + _size.height() + _offset.y()));
 }

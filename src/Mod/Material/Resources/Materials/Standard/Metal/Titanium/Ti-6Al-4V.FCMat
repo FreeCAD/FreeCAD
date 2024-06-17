@@ -20,7 +20,10 @@ Models:
     UltimateTensileStrength: "975.5 MPa"
     YieldStrength: "910 MPa"
     YoungsModulus: "114 GPa"
-    Hardness: "35 HRC"
+  Hardness:
+    UUID: '3d1a6141-d032-4d82-8bb5-a8f339fff8ad'
+    Hardness: "35"
+    HardnessUnits: "HRC"
   Thermal:
     UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
     SpecificHeat: "553.0 J/kg/K"

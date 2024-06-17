@@ -22,32 +22,32 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cstdlib>
 #include <QAction>
 #include <QMenu>
+#include <cstdlib>
 
 #include <Inventor/SbBox2s.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/VRMLnodes/SoVRMLGroup.h>
 #include <Inventor/actions/SoToVRML2Action.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
+#include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoPolygonOffset.h>
-#include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoTransform.h>
-#include <Inventor/VRMLnodes/SoVRMLGroup.h>
 #endif
 
 #include <QFuture>
@@ -224,8 +224,8 @@ QIcon ViewProviderExport::getIcon() const
 
 // ------------------------------------------------------
 
-App::PropertyFloatConstraint::Constraints ViewProviderMesh::floatRange = {1.0f, 64.0f, 1.0f};
-App::PropertyFloatConstraint::Constraints ViewProviderMesh::angleRange = {0.0f, 180.0f, 1.0f};
+App::PropertyFloatConstraint::Constraints ViewProviderMesh::floatRange = {1.0F, 64.0F, 1.0F};
+App::PropertyFloatConstraint::Constraints ViewProviderMesh::angleRange = {0.0F, 180.0F, 1.0F};
 App::PropertyIntegerConstraint::Constraints ViewProviderMesh::intPercent = {0, 100, 5};
 const char* ViewProviderMesh::LightingEnums[] = {"One side", "Two side", nullptr};
 
@@ -267,7 +267,7 @@ ViewProviderMesh::ViewProviderMesh()
     pcHighlight->addChild(pcShapeGroup);
 
     pOpenColor = new SoBaseColor();
-    setOpenEdgeColorFrom(ShapeColor.getValue());
+    setOpenEdgeColorFrom(ShapeAppearance.getDiffuseColor());
     pOpenColor->ref();
 
     pcLineStyle = new SoDrawStyle();
@@ -297,12 +297,12 @@ ViewProviderMesh::ViewProviderMesh()
         Gui::WindowParameter::getDefaultParameter()->GetGroup("Mod/Mesh");
 
     // Mesh color
-    App::Color color = ShapeColor.getValue();
+    App::Color color = ShapeAppearance.getDiffuseColor();
     unsigned long current = color.getPackedValue();
     unsigned long setting = hGrp->GetUnsigned("MeshColor", current);
     if (current != setting) {
         color.setPackedValue((uint32_t)setting);
-        ShapeColor.setValue(color);
+        ShapeAppearance.setDiffuseColor(color);
     }
     Transparency.setValue(hGrp->GetInt("MeshTransparency", 0));
 
@@ -353,11 +353,11 @@ ViewProviderMesh::~ViewProviderMesh()
 void ViewProviderMesh::onChanged(const App::Property* prop)
 {
     // we're going to change the number of colors to one
-    if (prop == &ShapeColor || prop == &ShapeMaterial) {
+    if (prop == &ShapeAppearance) {
         pcMatBinding->value = SoMaterialBinding::OVERALL;
     }
     if (prop == &LineTransparency) {
-        float trans = LineTransparency.getValue() / 100.0f;
+        float trans = LineTransparency.getValue() / 100.0F;
         pLineColor->transparency = trans;
     }
     else if (prop == &LineWidth) {
@@ -393,11 +393,8 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
     }
     else {
         // Set the inverse color for open edges
-        if (prop == &ShapeColor) {
-            setOpenEdgeColorFrom(ShapeColor.getValue());
-        }
-        else if (prop == &ShapeMaterial) {
-            setOpenEdgeColorFrom(ShapeMaterial.getValue().diffuseColor);
+        if (prop == &ShapeAppearance) {
+            setOpenEdgeColorFrom(ShapeAppearance.getDiffuseColor());
         }
     }
 
@@ -406,12 +403,12 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
 
 void ViewProviderMesh::setOpenEdgeColorFrom(const App::Color& c)
 {
-    float r = 1.0f - c.r;
-    r = r < 0.5f ? 0.0f : 1.0f;
-    float g = 1.0f - c.g;
-    g = g < 0.5f ? 0.0f : 1.0f;
-    float b = 1.0f - c.b;
-    b = b < 0.5f ? 0.0f : 1.0f;
+    float r = 1.0F - c.r;
+    r = r < 0.5F ? 0.0F : 1.0F;
+    float g = 1.0F - c.g;
+    g = g < 0.5F ? 0.0F : 1.0F;
+    float b = 1.0F - c.b;
+    b = b < 0.5F ? 0.0F : 1.0F;
     pOpenColor->rgb.setValue(r, g, b);
 }
 
@@ -478,8 +475,8 @@ void ViewProviderMesh::attach(App::DocumentObject* pcFeat)
     // appear on top of the faces
     SoPolygonOffset* offset = new SoPolygonOffset();
     offset->styles = SoPolygonOffset::FILLED;
-    offset->factor = 1.0f;
-    offset->units = 1.0f;
+    offset->factor = 1.0F;
+    offset->units = 1.0F;
 
     SoSeparator* pcWireSep = new SoSeparator();
     pcWireSep->addChild(pcLineStyle);
@@ -512,6 +509,14 @@ void ViewProviderMesh::updateData(const App::Property* prop)
     else if (prop->is<Mesh::PropertyMaterial>()) {
         Coloring.setStatus(App::Property::Hidden, false);
     }
+}
+
+void ViewProviderMesh::finishRestoring()
+{
+    if (Coloring.getValue()) {
+        Coloring.touch();
+    }
+    Gui::ViewProviderGeometryObject::finishRestoring();
 }
 
 QIcon ViewProviderMesh::getIcon() const
@@ -597,7 +602,7 @@ void ViewProviderMesh::tryColorPerVertexOrFace(bool on)
     }
     else {
         pcMatBinding->value = SoMaterialBinding::OVERALL;
-        const App::Color& c = ShapeColor.getValue();
+        const App::Color& c = ShapeAppearance.getDiffuseColor();
         pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
         pcShapeMaterial->transparency.setValue(Transparency.getValue() / 100.0f);
     }
@@ -1297,17 +1302,17 @@ void ViewProviderMesh::selectGLCallback(void* ud, SoEventCallback* n)
     pos.getValue(pX, pY);
     const SbVec2s& sz = view->getSoRenderManager()->getViewportRegion().getViewportSizePixels();
     float fRatio = view->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
-    if (fRatio > 1.0f) {
-        pX = (pX - 0.5f) / fRatio + 0.5f;
+    if (fRatio > 1.0F) {
+        pX = (pX - 0.5F) / fRatio + 0.5F;
         pos.setValue(pX, pY);
     }
-    else if (fRatio < 1.0f) {
-        pY = (pY - 0.5f) * fRatio + 0.5f;
+    else if (fRatio < 1.0F) {
+        pY = (pY - 0.5F) * fRatio + 0.5F;
         pos.setValue(pX, pY);
     }
 
-    short x1 = (short)(pX * sz[0] + 0.5f);
-    short y1 = (short)(pY * sz[1] + 0.5f);
+    short x1 = (short)(pX * sz[0] + 0.5F);
+    short y1 = (short)(pY * sz[1] + 0.5F);
     SbVec2s loc = ev->getPosition();
     short x2 = loc[0];
     short y2 = loc[1];
@@ -1436,7 +1441,10 @@ void ViewProviderMesh::boxZoom(const SbBox2s& box, const SbViewportRegion& vp, S
     }
 
     // Get the new center in normalized pixel coordinates
-    short xmin {}, xmax {}, ymin {}, ymax {};
+    short xmin {};
+    short xmax {};
+    short ymin {};
+    short ymax {};
     box.getBounds(xmin, ymin, xmax, ymax);
     const SbVec2f center((float)((xmin + xmax) / 2) / (float)std::max((int)(size[0] - 1), 1),
                          (float)(size[1] - (ymin + ymax) / 2)
@@ -1454,8 +1462,8 @@ void ViewProviderMesh::boxZoom(const SbBox2s& box, const SbViewportRegion& vp, S
         static_cast<SoOrthographicCamera*>(cam)->height = height;
     }
     else if (cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
-        float height = static_cast<SoPerspectiveCamera*>(cam)->heightAngle.getValue() / 2.0f;
-        height = 2.0f * atan(tan(height) * scale);
+        float height = static_cast<SoPerspectiveCamera*>(cam)->heightAngle.getValue() / 2.0F;
+        height = 2.0F * atan(tan(height) * scale);
         static_cast<SoPerspectiveCamera*>(cam)->heightAngle = height;
     }
 }
@@ -1544,7 +1552,7 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(const SbViewpor
     // Coin3d's off-screen renderer doesn't work out-of-the-box any more on most recent Linux
     // systems. So, use FreeCAD's offscreen renderer now.
     Gui::SoQtOffscreenRenderer renderer(vp);
-    renderer.setBackgroundColor(SbColor4f(0.0f, 0.0f, 0.0f));
+    renderer.setBackgroundColor(SbColor4f(0.0F, 0.0F, 0.0F));
 
     QImage img;
     renderer.render(root);
@@ -1984,7 +1992,7 @@ void ViewProviderMesh::fillHole(Mesh::FacetIndex uFacet)
 void ViewProviderMesh::setFacetTransparency(const std::vector<float>& facetTransparency)
 {
     if (pcShapeMaterial->diffuseColor.getNum() != int(facetTransparency.size())) {
-        App::Color c = ShapeColor.getValue();
+        App::Color c = ShapeAppearance.getDiffuseColor();
         pcShapeMaterial->diffuseColor.setNum(facetTransparency.size());
         SbColor* cols = pcShapeMaterial->diffuseColor.startEditing();
         for (std::size_t index = 0; index < facetTransparency.size(); ++index) {
@@ -2006,7 +2014,7 @@ void ViewProviderMesh::setFacetTransparency(const std::vector<float>& facetTrans
 void ViewProviderMesh::resetFacetTransparency()
 {
     pcMatBinding->value = SoMaterialBinding::OVERALL;
-    App::Color c = ShapeColor.getValue();
+    App::Color c = ShapeAppearance.getDiffuseColor();
     pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
     pcShapeMaterial->transparency.setValue(0);
 }
@@ -2091,7 +2099,7 @@ void ViewProviderMesh::selectFacet(Mesh::FacetIndex facet)
         highlightSelection();
     }
     else {
-        pcShapeMaterial->diffuseColor.set1Value(facet, 1.0f, 0.0f, 0.0f);
+        pcShapeMaterial->diffuseColor.set1Value(facet, 1.0F, 0.0F, 0.0F);
     }
 }
 
@@ -2112,7 +2120,7 @@ void ViewProviderMesh::deselectFacet(Mesh::FacetIndex facet)
             highlightSelection();
         }
         else {
-            App::Color c = ShapeColor.getValue();
+            App::Color c = ShapeAppearance.getDiffuseColor();
             pcShapeMaterial->diffuseColor.set1Value(facet, c.r, c.g, c.b);
         }
     }
@@ -2282,7 +2290,7 @@ void ViewProviderMesh::highlightSelection()
 
     // Colorize the selection
     pcMatBinding->value = SoMaterialBinding::PER_FACE;
-    App::Color c = ShapeColor.getValue();
+    App::Color c = ShapeAppearance.getDiffuseColor();
     int uCtFacets = (int)rMesh.countFacets();
     pcShapeMaterial->diffuseColor.setNum(uCtFacets);
 
@@ -2291,14 +2299,14 @@ void ViewProviderMesh::highlightSelection()
         cols[i].setValue(c.r, c.g, c.b);
     }
     for (Mesh::FacetIndex it : selection) {
-        cols[it].setValue(1.0f, 0.0f, 0.0f);
+        cols[it].setValue(1.0F, 0.0F, 0.0F);
     }
     pcShapeMaterial->diffuseColor.finishEditing();
 }
 
 void ViewProviderMesh::unhighlightSelection()
 {
-    App::Color c = ShapeColor.getValue();
+    App::Color c = ShapeAppearance.getDiffuseColor();
     pcMatBinding->value = SoMaterialBinding::OVERALL;
     pcShapeMaterial->diffuseColor.setNum(1);
     pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
@@ -2356,7 +2364,7 @@ void ViewProviderMesh::highlightSegments()
     std::vector<App::Color> colors;
     const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
     unsigned long numSegm = rMesh.countSegments();
-    colors.resize(numSegm, this->ShapeColor.getValue());
+    colors.resize(numSegm, this->ShapeAppearance.getDiffuseColor());
 
     for (unsigned long i = 0; i < numSegm; i++) {
         App::Color col;
@@ -2494,7 +2502,7 @@ void ViewProviderIndexedFaceSet::attach(App::DocumentObject* pcFeat)
     int size = hGrp->GetInt("RenderTriangleLimit", -1);
     if (size > 0) {
         static_cast<SoFCIndexedFaceSet*>(pcMeshFaces)->renderTriangleLimit =
-            (unsigned int)(pow(10.0f, size));
+            (unsigned int)(pow(10.0F, size));
     }
 }
 
@@ -2585,7 +2593,7 @@ void ViewProviderMeshObject::attach(App::DocumentObject* pcFeat)
         Gui::WindowParameter::getDefaultParameter()->GetGroup("Mod/Mesh");
     int size = hGrp->GetInt("RenderTriangleLimit", -1);
     if (size > 0) {
-        pcMeshShape->renderTriangleLimit = (unsigned int)(pow(10.0f, size));
+        pcMeshShape->renderTriangleLimit = (unsigned int)(pow(10.0F, size));
     }
 }
 

@@ -229,7 +229,6 @@ class Offset(gui_base_original.Modifier):
                     copymode = True
                 Gui.addModule("Draft")
                 if self.npts:
-                    # _msg("offset:npts= " + str(self.npts))
                     _cmd = 'Draft.offset'
                     _cmd += '('
                     _cmd += 'FreeCAD.ActiveDocument.'
@@ -265,6 +264,7 @@ class Offset(gui_base_original.Modifier):
 
     def finish(self, cont=False):
         """Finish the offset operation."""
+        self.end_callbacks(self.call)
         if self.running:
             if self.linetrack:
                 self.linetrack.finalize()

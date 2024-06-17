@@ -396,7 +396,7 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells:</source>
-      <translation type="unfinished">To cells:</translation>
+      <translation>Till celler:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
@@ -538,7 +538,7 @@ by that property.
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation type="unfinished">Property:</translation>
+      <translation>Egenskap:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
@@ -683,7 +683,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
+      <translation>CSV (*.csv *.CSV);;Alla (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -696,7 +696,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>Exportera fil</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Visa kalkylark</translation>
     </message>
@@ -740,7 +740,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.my_alias_name, istället för Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Kalkylark</translation>
     </message>
@@ -901,7 +901,7 @@ Do you want to continue?</translation>
       <location filename="../../DlgBindSheet.cpp" line="276"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>Fel:
 </translation>
     </message>
     <message>
@@ -952,8 +952,18 @@ Defaults to: %V = %A
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation type="unfinished">Delimiter Character: </translation>
+      <source>Delimiter Character:</source>
+      <translation type="unfinished">Delimiter Character:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation type="unfinished">Quote Character:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation type="unfinished">Escape Character:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -963,22 +973,12 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="132"/>
       <source>tab</source>
-      <translation type="unfinished">tab</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation type="unfinished">Quote Character: </translation>
+      <translation>flik</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation type="unfinished">Escape Character: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -1028,9 +1028,9 @@ Defaults to: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="142"/>
       <source>Remove row(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
+      <translation>
+        <numerusform>Ta bort rad</numerusform>
+        <numerusform>Ta bort rader</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1075,7 +1075,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="189"/>
       <location filename="../../SheetTableView.cpp" line="657"/>
       <source>Recompute</source>
-      <translation type="unfinished">Recompute</translation>
+      <translation>Beräkna om</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="193"/>
@@ -1165,7 +1165,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Namnlös</translation>
     </message>

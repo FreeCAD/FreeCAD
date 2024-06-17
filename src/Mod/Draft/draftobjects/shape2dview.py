@@ -195,6 +195,15 @@ class Shape2DView(DraftObject):
             objs = [o for o in objs if not(o.Name in obj.ExclusionNames)]
             return objs
 
+    def _get_shapes(self, shape, onlysolids=False):
+        if onlysolids:
+            return shape.Solids
+        if shape.isNull():
+            return []
+        if shape.ShapeType == "Compound":
+            return shape.SubShapes
+        return [shape.copy()]
+
     def execute(self, obj):
         if self.props_changed_placement_only(obj) \
                 or not getattr(obj, "AutoUpdate", True):
@@ -234,19 +243,13 @@ class Shape2DView(DraftObject):
                         shtypes = {}
                         for o in objs:
                             if utils.get_type(o) in ["Wall","Structure"]:
-                                if onlysolids:
-                                    shtypes.setdefault(o.Material.Name
-                                                      if (hasattr(o,"Material") and o.Material)
-                                                      else "None",[]).extend(o.Shape.Solids)
-                                else:
-                                    shtypes.setdefault(o.Material.Name
-                                                       if (hasattr(o,"Material") and o.Material)
-                                                       else "None",[]).extend(o.Shape.SubShapes)
-                            elif hasattr(o,'Shape'):
-                                if onlysolids:
-                                    shapes.extend(o.Shape.Solids)
-                                else:
-                                    shapes.extend(o.Shape.SubShapes)
+                                shtypes.setdefault(
+                                    o.Material.Name
+                                    if (hasattr(o,"Material") and o.Material) else "None",
+                                    []
+                                ).extend(self._get_shapes(o.Shape, onlysolids))
+                            elif hasattr(o, "Shape"):
+                                shapes.extend(self._get_shapes(o.Shape, onlysolids))
                         for k, v in shtypes.items():
                             v1 = v.pop()
                             if v:
@@ -267,11 +270,8 @@ class Shape2DView(DraftObject):
                                 shapes.extend(v1.SubShapes)
                     else:
                         for o in objs:
-                            if hasattr(o,'Shape'):
-                                if onlysolids:
-                                    shapes.extend(o.Shape.Solids)
-                                else:
-                                    shapes.extend(o.Shape.SubShapes)
+                            if hasattr(o, "Shape"):
+                                shapes.extend(self._get_shapes(o.Shape, onlysolids))
                     clip = False
                     if hasattr(obj.Base,"Clip"):
                         clip = obj.Base.Clip
@@ -299,15 +299,9 @@ class Shape2DView(DraftObject):
                                 #else:
                                 #    c = sh.copy()
                                 c = sh.cut(cutv)
-                                if onlysolids:
-                                    cuts.extend(c.Solids)
-                                else:
-                                    cuts.extend(c.SubShapes)
+                                cuts.extend(self._get_shapes(c, onlysolids))
                             else:
-                                if onlysolids:
-                                    cuts.extend(sh.Solids)
-                                else:
-                                    cuts.extend(sh.SubShapes)
+                                cuts.extend(self._get_shapes(sh, onlysolids))
                         comp = Part.makeCompound(cuts)
                         obj.Shape = self.getProjected(obj,comp,proj)
                     elif obj.ProjectionMode in ["Cutlines", "Cutfaces"]:
@@ -338,14 +332,14 @@ class Shape2DView(DraftObject):
                 shapes = []
                 objs = self.excludeNames(obj,groups.get_group_contents(obj.Base))
                 for o in objs:
-                    if hasattr(o,'Shape'):
-                        shapes.extend(o.Shape.SubShapes)
+                    if hasattr(o, "Shape"):
+                        shapes.extend(self._get_shapes(o.Shape))
                 if shapes:
                     import Part
                     comp = Part.makeCompound(shapes)
                     obj.Shape = self.getProjected(obj,comp,obj.Projection)
 
-            elif hasattr(obj.Base,'Shape'):
+            elif hasattr(obj.Base, "Shape"):
                 if not DraftVecUtils.isNull(obj.Projection):
                     if obj.ProjectionMode == "Solid":
                         obj.Shape = self.getProjected(obj,obj.Base.Shape,obj.Projection)

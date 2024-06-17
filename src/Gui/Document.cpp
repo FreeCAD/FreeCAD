@@ -1209,8 +1209,12 @@ bool Document::saveAs()
     getMainWindow()->showMessage(QObject::tr("Save document under new filename..."));
 
     QString exe = qApp->applicationName();
+    QString name = QString::fromUtf8(getDocument()->FileName.getValue());
+    if(name.isEmpty()){
+        name = QString::fromUtf8(getDocument()->Label.getValue());
+    }
     QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe),
-        QString::fromUtf8(getDocument()->FileName.getValue()),
+        name,
         QString::fromLatin1("%1 %2 (*.FCStd)").arg(exe, QObject::tr("Document")));
 
     if (!fn.isEmpty()) {
@@ -1419,6 +1423,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
         for (int i=0; i<Cnt; i++) {
             localreader->readElement("ViewProvider");
             std::string name = localreader->getAttribute("name");
+
             bool expanded = false;
             if (!hasExpansion && localreader->hasAttribute("expanded")) {
                 const char* attr = localreader->getAttribute("expanded");
@@ -1426,15 +1431,24 @@ void Document::RestoreDocFile(Base::Reader &reader)
                     expanded = true;
                 }
             }
-            ViewProvider* pObj = getViewProviderByName(name.c_str());
+
+            int treeRank = -1;
+            if (localreader->hasAttribute("treeRank")) {
+                treeRank = int(localreader->getAttributeAsInteger("treeRank"));
+            }
+
+            auto pObj = dynamic_cast<ViewProviderDocumentObject*>(getViewProviderByName(name.c_str()));
             // check if this feature has been registered
-            if (pObj){
+            if (pObj) {
                 pObj->Restore(*localreader);
             }
 
+            if (pObj && treeRank >= 0) {
+                pObj->setTreeRank(treeRank);
+            }
+
             if (pObj && expanded) {
-                auto vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
-                this->signalExpandObject(*vp, TreeItemMode::ExpandItem,0,0);
+                this->signalExpandObject(*pObj, TreeItemMode::ExpandItem, 0, 0);
             }
             localreader->readEndElement("ViewProvider");
         }
@@ -1536,8 +1550,6 @@ void Document::SaveDocFile (Base::Writer &writer) const
     if(!hasExpansion)
         writer.Stream() << ">" << std::endl;
 
-    std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it;
-
     // writing the view provider names itself
     writer.Stream() << writer.ind() << "<ViewProviderData Count=\""
                     << d->_ViewProviderMap.size() <<"\">" << std::endl;
@@ -1545,12 +1557,13 @@ void Document::SaveDocFile (Base::Writer &writer) const
     bool xml = writer.isForceXML();
     //writer.setForceXML(true);
     writer.incInd(); // indentation for 'ViewProvider name'
-    for(it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
-        const App::DocumentObject* doc = it->first;
-        ViewProvider* obj = it->second;
+    for(const auto& it : d->_ViewProviderMap) {
+        const App::DocumentObject* doc = it.first;
+        ViewProviderDocumentObject* obj = it.second;
         writer.Stream() << writer.ind() << "<ViewProvider name=\""
-                        << doc->getNameInDocument() << "\" "
-                        << "expanded=\"" << (doc->testStatus(App::Expand) ? 1:0) << "\"";
+                        << doc->getNameInDocument() << "\""
+                        << " expanded=\"" << (doc->testStatus(App::Expand) ? 1:0) << "\""
+                        << " treeRank=\"" << obj->getTreeRank() << "\"";
         if (obj->hasExtensions())
             writer.Stream() << " Extensions=\"True\"";
 
@@ -2517,4 +2530,33 @@ void Document::slotChangePropertyEditor(const App::Document &doc, const App::Pro
         setModified(true);
         getMainWindow()->setUserSchema(doc.UnitSystem.getValue());
     }
+}
+
+std::vector<App::DocumentObject*> Document::getTreeRootObjects() const
+{
+    std::vector<App::DocumentObject*> docObjects = d->_pcDocument->getObjects();
+    std::unordered_map<App::DocumentObject*, bool> rootMap;
+    for (auto it : docObjects) {
+        rootMap[it] = true;
+    }
+
+    for (auto obj : docObjects) {
+        ViewProvider* vp = Application::Instance->getViewProvider(obj);
+        if (!vp) {
+            continue;
+        }
+
+        std::vector<App::DocumentObject*> children = vp->claimChildren();
+        for (auto child : children) {
+            rootMap[child] = false;
+        }
+    }
+
+    std::vector<App::DocumentObject*> rootObjs;
+    for (const auto& it : rootMap) {
+        if (it.second) {
+            rootObjs.push_back(it.first);
+        }
+    }
+    return rootObjs;
 }

@@ -46,16 +46,16 @@ class PointArray(DraftLink):
     """The Draft Point Array object."""
 
     def __init__(self, obj):
-        super(PointArray, self).__init__(obj, "PointArray")
+        super().__init__(obj, "PointArray")
 
     def attach(self, obj):
         """Set up the properties when the object is attached."""
         self.set_properties(obj)
-        super(PointArray, self).attach(obj)
+        super().attach(obj)
 
     def linkSetup(self, obj):
         """Set up the object as a link object."""
-        super(PointArray, self).linkSetup(obj)
+        super().linkSetup(obj)
         obj.configLinkProperty(ElementCount='Count')
 
     def set_properties(self, obj):
@@ -77,6 +77,17 @@ class PointArray(DraftLink):
                             "Objects",
                             _tip)
             obj.PointObject = None
+
+        if "Fuse" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Specifies if the copies "
+                                     "should be fused together "
+                                     "if they touch each other (slower)")
+            obj.addProperty("App::PropertyBool",
+                            "Fuse",
+                            "Objects",
+                            _tip)
+            obj.Fuse = False
 
         if "Count" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Number of copies in the array.\nThis property is read-only, as the number depends on the points in 'Point Object'.")
@@ -120,40 +131,18 @@ class PointArray(DraftLink):
         return (not self.use_link)
 
     def onDocumentRestored(self, obj):
-        """Execute code when the document is restored.
-
-        Add properties that don't exist and migrate old properties.
-        """
-        # If the ExtraPlacement property has never been added before
-        # it will add it first, and set it to the base object's position
-        # in order to produce the same displacement as before.
-        # Then all the other properties will be processed.
-        properties = obj.PropertiesList
-
-        if "ExtraPlacement" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property", "Additional placement, shift and rotation, that will be applied to each copy")
-            obj.addProperty("App::PropertyPlacement",
-                            "ExtraPlacement",
-                            "Objects",
-                            _tip)
-            obj.ExtraPlacement.Base = obj.Base.Placement.Base
-            _wrn("v0.19, " + obj.Label + ", " + translate("draft","added property 'ExtraPlacement'"))
-
+        super().onDocumentRestored(obj)
+        # Fuse property was added in v1.0, obj should be OK if it is present:
+        if hasattr(obj, "Fuse"):
+            return
+        if not hasattr(obj, "ExtraPlacement"):
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "added 'ExtraPlacement' property"))
         self.set_properties(obj)
-        self.migrate_properties_0v19(obj)
-        super(PointArray, self).onDocumentRestored(obj)
-
-    def migrate_properties_0v19(self, obj):
-        """Migrate properties."""
-        # If the old name still exists, migrate it to the new
-        # name and delete the old property
-        properties = obj.PropertiesList
-
-        if "PointList" in properties:
+        if hasattr(obj, "PointList"):
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'PointList' property to 'PointObject'"))
             obj.PointObject = obj.PointList
             obj.removeProperty("PointList")
-            _info = "'PointList' property will be migrated to 'PointObject'"
-            _wrn("v0.19, " + obj.Label + ", " + translate("draft","added property 'ExtraPlacement'"))
+        _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
 
 
 def remove_equal_vecs (vec_list):

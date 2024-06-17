@@ -22,9 +22,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
 
 #include <QPainterPath>
+#include <QKeyEvent>
 #include <qmath.h>
 #endif// #ifndef _PreComp_
 
@@ -33,6 +33,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
+#include <Gui/Selection.h>
 #include <Mod/TechDraw/App/CenterLine.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/DrawComplexSection.h>
@@ -43,7 +44,9 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/DrawBrokenView.h>
 
+#include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "PreferencesGui.h"
 #include "QGICMark.h"
@@ -61,6 +64,7 @@
 #include "ViewProviderViewPart.h"
 #include "ZVALUE.h"
 #include "PathBuilder.h"
+#include "QGIBreakLine.h"
 
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -82,6 +86,7 @@ QGIViewPart::QGIViewPart()
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
+    setFlag(QGraphicsItem::ItemIsFocusable, true);
 
     showSection = false;
     m_pathBuilder = new PathBuilder(this);
@@ -105,6 +110,57 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
     }
     return QGIView::itemChange(change, value);
 }
+
+bool QGIViewPart::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
+{
+    // Base::Console().Message("QGIVP::sceneEventFilter - event: %d watchedtype: %d\n",
+    //                         event->type(), watched->type() - QGraphicsItem::UserType);
+    if (event->type() == QEvent::ShortcutOverride) {
+        // if we accept this event, we should get a regular keystroke event next
+        // which will be processed by QGVPage/QGVNavStyle keypress logic, but not forwarded to
+        // Std_Delete
+        QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent->key() == Qt::Key_Delete)  {
+            bool success = removeSelectedCosmetic();
+            if (success) {
+                updateView(true);
+                event->accept();
+                return true;
+            }
+        }
+    }
+
+    return QGraphicsItem::sceneEventFilter(watched, event);
+}
+
+//! called when a DEL shortcut event is received.  If a cosmetic edge or vertex is
+//! selected, remove it from the view.
+bool QGIViewPart::removeSelectedCosmetic() const
+{
+    // Base::Console().Message("QGIVP::removeSelectedCosmetic()\n");
+    auto dvp(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
+    if (!dvp) {
+        throw Base::RuntimeError("Graphic has no feature!");
+    }
+    char* defaultDocument{nullptr};
+    std::vector<Gui::SelectionObject> selectionAll = Gui::Selection().getSelectionEx(
+        defaultDocument, TechDraw::DrawViewPart::getClassTypeId(), Gui::ResolveMode::OldStyleElement);
+    if (selectionAll.empty()) {
+        return false;
+    }
+    std::vector<std::string> subElements = selectionAll.front().getSubNames();
+    if (subElements.empty()) {
+        return false;
+    }
+
+    dvp->deleteCosmeticElements(subElements);
+    dvp->refreshCEGeoms();
+    dvp->refreshCLGeoms();
+    dvp->refreshCVGeoms();
+
+    return true;
+}
+
 
 //obs?
 void QGIViewPart::tidy()
@@ -132,7 +188,7 @@ QPainterPath QGIViewPart::drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const
 
 void QGIViewPart::updateView(bool update)
 {
-    //    Base::Console().Message("QGIVP::updateView() - %s\n", getViewObject()->getNameInDocument());
+    // Base::Console().Message("QGIVP::updateView() - %s\n", getViewObject()->getNameInDocument());
     auto viewPart(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     if (!viewPart)
         return;
@@ -147,11 +203,25 @@ void QGIViewPart::updateView(bool update)
 
 void QGIViewPart::draw()
 {
+    auto viewPart(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
+    if (!viewPart) {
+        return;
+    }
+
+    auto doc = viewPart->getDocument();
+    if (!doc || doc->testStatus(App::Document::Status::Restoring)) {
+        // if the document is still restoring, we may not have all the information
+        // we need to draw the source objects, so we wait until restore is finished.
+        // Base::Console().Message("QGIVP::draw - document is restoring, do not draw\n");
+        return;
+    }
+
     if (!isVisible())
         return;
 
     drawViewPart();
     drawAllHighlights();
+    drawBreakLines();
     drawMatting();
     //this is old C/L
     drawCenterLines(true);//have to draw centerlines after border to get size correct.
@@ -246,7 +316,6 @@ void QGIViewPart::drawAllFaces(void)
             if (fHatch->isSvgHatch()) {
                 // svg tile hatch
                 newFace->setFillMode(QGIFace::SvgFill);
-                newFace->hideSvg(false);
             } else {
                 //bitmap hatch
                 newFace->setFillMode(QGIFace::BitmapFill);
@@ -291,6 +360,7 @@ void QGIViewPart::drawAllEdges()
         item = new QGIEdge(iEdge);
         addToGroup(item);      //item is created at scene(0, 0), not group(0, 0)
         item->setPath(drawPainterPath(*itGeom));
+        item->setSource((*itGeom)->source());
 
         item->setNormalColor(PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor()));
         if ((*itGeom)->getCosmetic()) {
@@ -312,27 +382,28 @@ void QGIViewPart::drawAllEdges()
             // geometry edge - apply format if applicable
             TechDraw::GeomFormat* gf = dvp->getGeomFormatBySelection(iEdge);
             if (gf) {
-                App::Color  color = Preferences::getAccessibleColor(gf->m_format.m_color);
+                App::Color  color = Preferences::getAccessibleColor(gf->m_format.getColor());
                 item->setNormalColor(color.asValue<QColor>());
                 int lineNumber = gf->m_format.getLineNumber();
-                int qtStyle = gf->m_format.m_style;
+                int qtStyle = gf->m_format.getStyle();
                 item->setLinePen(m_dashedLineGenerator->getBestPen(lineNumber, (Qt::PenStyle)qtStyle,
-                                                     gf->m_format.m_weight));
+                                                     gf->m_format.getWidth()));
                 // but we need to actually draw the lines in QGScene coords (0.1 mm).
-                item->setWidth(Rez::guiX(gf->m_format.m_weight));
-                showItem = gf->m_format.m_visible;
+                item->setWidth(Rez::guiX(gf->m_format.getWidth()));
+                showItem = gf->m_format.getVisible();
             } else {
-                // unformatted line, draw as continuous line
-                item->setLinePen(m_dashedLineGenerator->getLinePen(1, vp->LineWidth.getValue()));
-                item->setWidth(Rez::guiX(vp->LineWidth.getValue()));
+                if (!(*itGeom)->getHlrVisible()) {
+                    // hidden line without a format
+                    item->setLinePen(m_dashedLineGenerator->getLinePen(Preferences::HiddenLineStyle(),
+                                                                       vp->LineWidth.getValue()));
+                     item->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));   //thin
+                     item->setZValue(ZVALUE::HIDEDGE);
+                } else {
+                    // unformatted visible line, draw as continuous line
+                    item->setLinePen(m_dashedLineGenerator->getLinePen(1, vp->LineWidth.getValue()));
+                    item->setWidth(Rez::guiX(vp->LineWidth.getValue()));
+                }
             }
-        }
-
-        if (!(*itGeom)->getHlrVisible()) {
-            item->setLinePen(m_dashedLineGenerator->getLinePen(Preferences::HiddenLineStyle(),
-                                                               vp->LineWidth.getValue()));
-            item->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));   //thin
-            item->setZValue(ZVALUE::HIDEDGE);
         }
 
         if ((*itGeom)->getClassOfEdge()  == ecUVISO) {
@@ -474,13 +545,13 @@ bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)
     auto partFeat(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     TechDraw::CosmeticEdge* ce = partFeat ? partFeat->getCosmeticEdge(cTag) : nullptr;
     if (ce) {
-        App::Color color = Preferences::getAccessibleColor(ce->m_format.m_color);
+        App::Color color = Preferences::getAccessibleColor(ce->m_format.getColor());
         item->setNormalColor(color.asValue<QColor>());
         item->setLinePen(m_dashedLineGenerator->getBestPen(ce->m_format.getLineNumber(),
-                                                     (Qt::PenStyle)ce->m_format.m_style,
-                                                     ce->m_format.m_weight));
-        item->setWidth(Rez::guiX(ce->m_format.m_weight));
-        result = ce->m_format.m_visible;
+                                                     (Qt::PenStyle)ce->m_format.getStyle(),
+                                                     ce->m_format.getWidth()));
+        item->setWidth(Rez::guiX(ce->m_format.getWidth()));
+        result = ce->m_format.getVisible();
     }
     return result;
 }
@@ -493,13 +564,13 @@ bool QGIViewPart::formatGeomFromCenterLine(std::string cTag, QGIEdge* item)
     auto partFeat(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     TechDraw::CenterLine* cl = partFeat ? partFeat->getCenterLine(cTag) : nullptr;
     if (cl) {
-        App::Color color = Preferences::getAccessibleColor(cl->m_format.m_color);
+        App::Color color = Preferences::getAccessibleColor(cl->m_format.getColor());
         item->setNormalColor(color.asValue<QColor>());
         item->setLinePen(m_dashedLineGenerator->getBestPen(cl->m_format.getLineNumber(),
-                                                     (Qt::PenStyle)cl->m_format.m_style,
-                                                     cl->m_format.m_weight));
-        item->setWidth(Rez::guiX(cl->m_format.m_weight));
-        result = cl->m_format.m_visible;
+                                                     (Qt::PenStyle)cl->m_format.getStyle(),
+                                                     cl->m_format.getWidth()));
+        item->setWidth(Rez::guiX(cl->m_format.getWidth()));
+        result = cl->m_format.getVisible();
     }
     return result;
 }
@@ -606,8 +677,10 @@ void QGIViewPart::drawAllSectionLines()
         return;
 
     auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
-    if (!vp)
+    if (!vp) {
         return;
+    }
+
     if (vp->ShowSectionLine.getValue()) {
         auto refs = viewPart->getSectionRefs();
         for (auto& r : refs) {
@@ -623,6 +696,7 @@ void QGIViewPart::drawAllSectionLines()
 
 void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b)
 {
+//    Base::Console().Message("QGIVP::drawSectionLine()\n");
     TechDraw::DrawViewPart* viewPart = static_cast<TechDraw::DrawViewPart*>(getViewObject());
     if (!viewPart)
         return;
@@ -638,19 +712,23 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
     }
 
     if (b) {
-        QGISectionLine* sectionLine = new QGISectionLine();
-        addToGroup(sectionLine);
-        sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
-        sectionLine->setSectionStyle(vp->SectionLineStyle.getValue());
-        App::Color color = Preferences::getAccessibleColor(vp->SectionLineColor.getValue());
-        sectionLine->setSectionColor(color.asValue<QColor>());
-        sectionLine->setPathMode(false);
-
         //find the ends of the section line
         double scale = viewPart->getScale();
         std::pair<Base::Vector3d, Base::Vector3d> sLineEnds = viewSection->sectionLineEnds();
         Base::Vector3d l1 = Rez::guiX(sLineEnds.first) * scale;
         Base::Vector3d l2 = Rez::guiX(sLineEnds.second) * scale;
+        if (l1.IsEqual(l2, EWTOLERANCE) ) {
+            Base::Console().Message("QGIVP::drawSectionLine - line endpoints are equal. No section line created.\n");
+            return;
+        }
+
+        QGISectionLine* sectionLine = new QGISectionLine();
+        addToGroup(sectionLine);
+        sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
+        App::Color color = Preferences::getAccessibleColor(vp->SectionLineColor.getValue());
+        sectionLine->setSectionColor(color.asValue<QColor>());
+        sectionLine->setPathMode(false);
+
         //make the section line a little longer
         double fudge = 2.0 * Preferences::dimFontSizeMM();
         Base::Vector3d lineDir = l2 - l1;
@@ -680,11 +758,18 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
 
         //set the general parameters
         sectionLine->setPos(0.0, 0.0);
-        // sectionLines are typically ISO 8 (long dash, short dash) or ISO 4 (long dash, dot)
-        sectionLine->setLinePen(
-                m_dashedLineGenerator->getLinePen((size_t)vp->SectionLineStyle.getValue(),
-                                                    vp->HiddenWidth.getValue()));
-        sectionLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
+
+        if (vp->IncludeCutLine.getValue()) {
+            sectionLine->setShowLine(true);
+            // sectionLines are typically ISO 8 (long dash, short dash) or ISO 4 (long dash, dot)
+            sectionLine->setLinePen(
+                    m_dashedLineGenerator->getLinePen((size_t)vp->SectionLineStyle.getValue(),
+                                                        vp->HiddenWidth.getValue()));
+            sectionLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
+        } else {
+            sectionLine->setShowLine(false);
+        }
+
         double fontSize = Preferences::dimFontSizeMM();
         sectionLine->setFont(getFont(), fontSize);
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
@@ -696,6 +781,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
 void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection, bool b)
 {
     Q_UNUSED(b);
+
     TechDraw::DrawViewPart* viewPart = static_cast<TechDraw::DrawViewPart*>(getViewObject());
     if (!viewPart)
         return;
@@ -707,6 +793,15 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     }
 
     auto dcs = static_cast<DrawComplexSection*>(viewSection);
+    std::pair<Base::Vector3d, Base::Vector3d> ends = dcs->sectionLineEnds();
+    Base::Vector3d vStart = Rez::guiX(ends.first);//already scaled by dcs
+    Base::Vector3d vEnd = Rez::guiX(ends.second);
+    if (vStart.IsEqual(vEnd, EWTOLERANCE) ) {
+        Base::Console().Message("QGIVP::drawComplexSectionLine - line endpoints are equal. No section line created.\n");
+        return;
+    }
+
+
     BaseGeomPtrVector edges = dcs->makeSectionLineGeometry();
     QPainterPath wirePath;
     QPainterPath firstSeg = drawPainterPath(edges.front());
@@ -721,14 +816,10 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
         wirePath.connectPath(edgePath);
     }
 
-    std::pair<Base::Vector3d, Base::Vector3d> ends = dcs->sectionLineEnds();
-    Base::Vector3d vStart = Rez::guiX(ends.first);//already scaled by dcs
-    Base::Vector3d vEnd = Rez::guiX(ends.second);
 
     QGISectionLine* sectionLine = new QGISectionLine();
     addToGroup(sectionLine);
     sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
-    sectionLine->setSectionStyle(vp->SectionLineStyle.getValue());
     App::Color color = Preferences::getAccessibleColor(vp->SectionLineColor.getValue());
     sectionLine->setSectionColor(color.asValue<QColor>());
     sectionLine->setPathMode(true);
@@ -755,11 +846,18 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
 
     //set the general parameters
     sectionLine->setPos(0.0, 0.0);
-    // sectionLines are typically ISO 8 (long dash, short dash) or ISO 4 (long dash, dot)
-    sectionLine->setLinePen(
-                            m_dashedLineGenerator->getLinePen((size_t)vp->SectionLineStyle.getValue(),
-                                 vp->HiddenWidth.getValue()));
-    sectionLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
+
+    if (vp->IncludeCutLine.getValue()) {
+        sectionLine->setShowLine(true);
+        // sectionLines are typically ISO 8 (long dash, short dash) or ISO 4 (long dash, dot)
+        sectionLine->setLinePen(
+                m_dashedLineGenerator->getLinePen((size_t)vp->SectionLineStyle.getValue(),
+                                                    vp->HiddenWidth.getValue()));
+        sectionLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
+    } else {
+        sectionLine->setShowLine(false);
+    }
+
     double fontSize = Preferences::dimFontSizeMM();
     sectionLine->setFont(getFont(), fontSize);
     sectionLine->setZValue(ZVALUE::SECTIONLINE);
@@ -826,9 +924,6 @@ void QGIViewPart::drawCenterLines(bool b)
 
 void QGIViewPart::drawAllHighlights()
 {
-    if (!Preferences::showDetailHighlight()) {
-        return;
-    }
     // dvp and vp already validated
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
 
@@ -853,6 +948,11 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
     if (!vpDetail) {
         return;
     }
+
+    if (!viewDetail->ShowHighlight.getValue()) {
+        return;
+    }
+
     if (b) {
         double fontSize = Preferences::labelFontSizeMM();
         QGIHighlight* highlight = new QGIHighlight();
@@ -907,15 +1007,16 @@ void QGIViewPart::highlightMoved(QGIHighlight* highlight, QPointF newPos)
 
 void QGIViewPart::drawMatting()
 {
-    if (!Preferences::showDetailMatting()) {
-        return;
-    }
     auto viewPart(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     TechDraw::DrawViewDetail* dvd = nullptr;
     if (viewPart && viewPart->isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId())) {
         dvd = static_cast<TechDraw::DrawViewDetail*>(viewPart);
     }
     else {
+        return;
+    }
+
+    if (!dvd->ShowMatting.getValue()) {
         return;
     }
 
@@ -928,6 +1029,50 @@ void QGIViewPart::drawMatting()
     mat->draw();
     mat->show();
 }
+
+
+//! if this is a broken view, draw the break lines.
+void QGIViewPart::drawBreakLines()
+{
+    // Base::Console().Message("QGIVP::drawBreakLines()\n");
+
+    auto dbv = dynamic_cast<TechDraw::DrawBrokenView*>(getViewObject());
+    if (!dbv) {
+        return;
+    }
+
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    if (!vp) {
+        return;
+    }
+
+    auto breakType = vp->BreakLineType.getValue();
+    auto breaks = dbv->Breaks.getValues();
+    for (auto& breakObj : breaks) {
+        QGIBreakLine* breakLine = new QGIBreakLine();
+        addToGroup(breakLine);
+
+        Base::Vector3d direction = dbv->guiDirectionFromObj(*breakObj);
+        breakLine->setDirection(direction);
+        // the bounds describe two corners of the removed area in the view
+        std::pair<Base::Vector3d, Base::Vector3d> bounds = dbv->breakBoundsFromObj(*breakObj);
+        // the bounds are in 3d form, so we need to invert & rez them
+        Base::Vector3d topLeft     = Rez::guiX(DU::invertY(bounds.first));
+        Base::Vector3d bottomRight = Rez::guiX(DU::invertY(bounds.second));
+        breakLine->setBounds(topLeft, bottomRight);
+        breakLine->setPos(0.0, 0.0);
+        breakLine->setLinePen(
+            m_dashedLineGenerator->getLinePen(vp->BreakLineStyle.getValue(), vp->HiddenWidth.getValue()));
+        breakLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
+        breakLine->setBreakType(breakType);
+        breakLine->setZValue(ZVALUE::SECTIONLINE);
+        App::Color color = prefBreaklineColor();
+        breakLine->setBreakColor(color.asValue<QColor>());
+        breakLine->setRotation(-dbv->Rotation.getValue());
+        breakLine->draw();
+    }
+}
+
 
 void QGIViewPart::toggleCache(bool state)
 {
@@ -997,6 +1142,7 @@ QGIViewPart::faceIsGeomHatched(int i, std::vector<TechDraw::DrawGeomHatch*> geom
 }
 
 
+
 void QGIViewPart::dumpPath(const char* text, QPainterPath path)
 {
     QPainterPath::Element elem;
@@ -1038,8 +1184,6 @@ void QGIViewPart::paint(QPainter* painter, const QStyleOptionGraphicsItem* optio
     QGIView::paint(painter, &myOption, widget);
 }
 
-
-
 //QGIViewPart derived classes do not need a rotate view method as rotation is handled on App side.
 void QGIViewPart::rotateView() {}
 
@@ -1054,4 +1198,99 @@ bool QGIViewPart::prefPrintCenters()
 {
     bool printCenters = Preferences::getPreferenceGroup("Decorations")->GetBool("PrintCenterMarks", false);//true matches v0.18 behaviour
     return printCenters;
+}
+
+App::Color QGIViewPart::prefBreaklineColor()
+{
+    return  Preferences::getAccessibleColor(PreferencesGui::breaklineColor());
+}
+
+QGraphicsItem *QGIViewPart::getQGISubItemByName(const std::string &subName) const
+{
+    int scanType = 0;
+    try {
+        const std::string &subType = TechDraw::DrawUtil::getGeomTypeFromName(subName);
+        if (subType == "Vertex") {
+            scanType = QGIVertex::Type;
+        }
+        else if (subType == "Edge") {
+            scanType = QGIEdge::Type;
+        }
+        else if (subType == "Face") {
+            scanType = QGIFace::Type;
+        }
+    }
+    catch (Base::ValueError&) {
+        // No action
+    }
+    if (!scanType) {
+        return nullptr;
+    }
+
+    int scanIndex = -1;
+    try {
+        scanIndex = TechDraw::DrawUtil::getIndexFromName(subName);
+    }
+    catch (Base::ValueError&) {
+        // No action
+    }
+    if (scanIndex < 0) {
+        return nullptr;
+    }
+
+    for (auto child : childItems()) {
+        if (child->type() != scanType) {
+            continue;
+        }
+
+        int projIndex;
+        switch (scanType) {
+            case QGIVertex::Type:
+                projIndex = static_cast<QGIVertex *>(child)->getProjIndex();
+                break;
+            case QGIEdge::Type:
+                projIndex = static_cast<QGIEdge *>(child)->getProjIndex();
+                break;
+            case QGIFace::Type:
+                projIndex = static_cast<QGIFace *>(child)->getProjIndex();
+                break;
+            default:
+                projIndex = -1;
+                break;
+        }
+
+        if (projIndex == scanIndex) {
+            return child;
+        }
+    }
+
+    return nullptr;
+}
+
+bool QGIViewPart::getGroupSelection() {
+    return DrawGuiUtil::isSelectedInTree(this);
+}
+
+void QGIViewPart::setGroupSelection(bool isSelected) {
+    DrawGuiUtil::setSelectedTree(this, isSelected);
+}
+
+void QGIViewPart::setGroupSelection(bool isSelected, const std::vector<std::string> &subNames)
+{
+    if (subNames.empty()) {
+        setSelected(isSelected);
+        return;
+    }
+
+    for (const std::string &subName : subNames) {
+        if (subName.empty()) {
+            setSelected(isSelected);
+            continue;
+        }
+
+        QGraphicsItem *subItem = getQGISubItemByName(subName);
+        if (subItem) {
+            subItem->setSelected(isSelected);
+        }
+    }
 }

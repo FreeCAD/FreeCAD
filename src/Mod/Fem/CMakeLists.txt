@@ -221,6 +221,7 @@ SET(FemSolverCalculix_SRCS
     femsolver/calculix/__init__.py
     femsolver/calculix/solver.py
     femsolver/calculix/tasks.py
+    femsolver/calculix/write_constraint_bodyheatsource.py
     femsolver/calculix/write_constraint_centrif.py
     femsolver/calculix/write_constraint_contact.py
     femsolver/calculix/write_constraint_displacement.py
@@ -231,6 +232,8 @@ SET(FemSolverCalculix_SRCS
     femsolver/calculix/write_constraint_initialtemperature.py
     femsolver/calculix/write_constraint_planerotation.py
     femsolver/calculix/write_constraint_pressure.py
+    femsolver/calculix/write_constraint_rigidbody.py
+    femsolver/calculix/write_constraint_rigidbody_step.py
     femsolver/calculix/write_constraint_sectionprint.py
     femsolver/calculix/write_constraint_selfweight.py
     femsolver/calculix/write_constraint_temperature.py
@@ -321,7 +324,6 @@ SET(FemTestsApp_SRCS
     femtest/app/test_object.py
     femtest/app/test_open.py
     femtest/app/test_result.py
-    femtest/app/test_solver_calculix.py
     femtest/app/test_solver_elmer.py
     femtest/app/test_solver_mystran.py
     femtest/app/test_solver_z88.py
@@ -419,7 +421,6 @@ SET(FemTestsZ88Main_SRCS
 )
 
 SET(FemTestsZ88CcxcantiEleHex20_SRCS
-    femtest/data/z88/__init__.py
     femtest/data/z88/ccx_cantilever_ele_hexa20/51.txt
     femtest/data/z88/ccx_cantilever_ele_hexa20/z88.dyn
     femtest/data/z88/ccx_cantilever_ele_hexa20/z88elp.txt
@@ -432,7 +433,6 @@ SET(FemTestsZ88CcxcantiEleHex20_SRCS
 )
 
 SET(FemTestsZ88CcxcantiEleTria6_SRCS
-    femtest/data/z88/__init__.py
     femtest/data/z88/ccx_cantilever_ele_tria6/51.txt
     femtest/data/z88/ccx_cantilever_ele_tria6/z88.dyn
     femtest/data/z88/ccx_cantilever_ele_tria6/z88elp.txt
@@ -445,7 +445,6 @@ SET(FemTestsZ88CcxcantiEleTria6_SRCS
 )
 
 SET(FemTestsZ88Ccxcantifl_SRCS
-    femtest/data/z88/__init__.py
     femtest/data/z88/ccx_cantilever_faceload/51.txt
     femtest/data/z88/ccx_cantilever_faceload/z88.dyn
     femtest/data/z88/ccx_cantilever_faceload/z88elp.txt
@@ -458,7 +457,6 @@ SET(FemTestsZ88Ccxcantifl_SRCS
 )
 
 SET(FemTestsZ88Ccxcantinl_SRCS
-    femtest/data/z88/__init__.py
     femtest/data/z88/ccx_cantilever_nodeload/51.txt
     femtest/data/z88/ccx_cantilever_nodeload/z88.dyn
     femtest/data/z88/ccx_cantilever_nodeload/z88elp.txt

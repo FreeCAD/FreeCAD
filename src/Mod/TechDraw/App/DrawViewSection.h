@@ -104,7 +104,7 @@ public:
     App::PropertyBool TrimAfterCut;//new v021
     App::PropertyBool UsePreviousCut;   // new v022
 
-    App::PropertyFloat SectionLineStretch;  // new v022
+    App::PropertyFloatConstraint SectionLineStretch;  // new v022
 
 
     bool isReallyInBox(const Base::Vector3d v, const Base::BoundBox3d bb) const;
@@ -165,6 +165,7 @@ public:
     static const char* CutSurfaceEnums[];
 
     virtual std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds();
+    Base::Vector3d getSectionDirectionOnBaseView();
     virtual ChangePointVector getChangePointsFromSectionLine();
 
     bool showSectionEdges(void);
@@ -205,6 +206,9 @@ protected:
     bool m_waitingForCut;
     TopoDS_Shape m_cuttingTool;
     double m_shapeSize;
+
+    static App::PropertyFloatConstraint::Constraints stretchRange;
+
 };
 
 using DrawViewSectionPython = App::FeaturePythonT<DrawViewSection>;

@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <string>
-
+# include <QApplication>
 # include <QString>
 #endif
 
@@ -178,7 +178,7 @@ int Preferences::balloonShape()
 QString Preferences::defaultTemplate()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates/";
-    std::string defaultFileName = defaultDir + "A4_LandscapeTD.svg";
+    std::string defaultFileName = defaultDir + "Default_Template_A4_Landscape.svg";
     std::string prefFileName = getPreferenceGroup("Files")->GetASCII("TemplateFile", defaultFileName.c_str());
     if (prefFileName.empty()) {
         prefFileName = defaultFileName;
@@ -248,6 +248,24 @@ bool Preferences::showDetailMatting()
 bool Preferences::showDetailHighlight()
 {
     return getPreferenceGroup("General")->GetBool("ShowDetailHighlight", true);
+}
+
+//! returns the default or preferred directory to search for svg symbols
+QString Preferences::defaultSymbolDir()
+{
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates";
+    std::string prefSymbolDir = getPreferenceGroup("Files")->GetASCII("DirSymbol", defaultDir.c_str());
+    if (prefSymbolDir.empty()) {
+        prefSymbolDir = defaultDir;
+    }
+    QString symbolDir = QString::fromStdString(prefSymbolDir);
+    Base::FileInfo fi(prefSymbolDir);
+    if (!fi.isReadable()) {
+        Base::Console().Warning("Symbol Directory: %s is not readable\n",
+                                prefSymbolDir.c_str());
+        symbolDir = QString::fromStdString(defaultDir);
+    }
+    return symbolDir;
 }
 
 std::string Preferences::svgFile()
@@ -374,9 +392,9 @@ App::Color Preferences::lightenColor(App::Color orig)
     green += newm;
     blue += newm;
 
-    double redF = (float)red / 255.0;
-    double greenF = (float)green / 255.0;
-    double blueF = (float)blue / 255.0;
+    double redF = (double)red / 255.0;
+    double greenF = (double)green / 255.0;
+    double blueF = (double)blue / 255.0;
 
     return App::Color(redF, greenF, blueF, orig.a);
 }
@@ -402,7 +420,7 @@ bool Preferences::autoCorrectDimRefs()
 //! number of times to clean the output edges from HLR
 int Preferences::scrubCount()
 {
-    return getPreferenceGroup("General")->GetInt("ScrubCount", 0);
+    return getPreferenceGroup("General")->GetInt("ScrubCount", 1);
 }
 
 //! Returns the factor for the overlap of svg tiles when hatching faces
@@ -422,6 +440,18 @@ bool Preferences::SectionUsePreviousCut()
 //! an index into the list of available line standards/version found in LineGroupDirectory
 int Preferences::lineStandard()
 {
+    // there is a condition where the LineStandard parameter exists, but is -1 (the
+    // qt value for no current index in a combobox).  This is likely caused by an old
+    // development version writing an unvalidated value.  In this case, the
+    // existing but invalid value will be returned.  This is a temporary fix and
+    // can be removed for production.
+    // this message will appear many times if the parameter is invalid.
+    int parameterValue = getPreferenceGroup("Standards")->GetInt("LineStandard", 1);
+    if (parameterValue < 0) {
+        Base::Console().Warning(qPrintable(QApplication::translate(
+        "Preferences", "The LineStandard parameter is invalid. Using zero instead.", nullptr)));
+        return 0;
+    }
     return getPreferenceGroup("Standards")->GetInt("LineStandard", 1);
 }
 
@@ -470,6 +500,11 @@ int Preferences::HiddenLineStyle()
 {
     // default is line #2 dashed, which is index 1
     return getPreferenceGroup("Decorations")->GetInt("LineStyleHidden", 1) + 1;
+}
+
+int Preferences::BreakLineStyle()
+{
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleBreak", 0) + 1;
 }
 
 int Preferences::LineSpacingISO()
@@ -521,4 +556,36 @@ int Preferences::LineCapIndex()
 {
     return getPreferenceGroup("General")->GetInt("EdgeCapStyle", 0x20);
 }
+
+//! returns 0 (use ANSI style section cut line) or 1 (use ISO style section cut line)
+int Preferences::sectionLineConvention()
+{
+    return getPreferenceGroup("Standards")->GetInt("SectionLineStandard", 1);
+}
+
+//! true if a section line annotation should be drawn on the source view.  If false,
+//! no cut line, change marks, arrows or symbol will be drawn.
+bool Preferences::showSectionLine()
+{
+    return getPreferenceGroup("Decorations")->GetBool("ShowSectionLine", true);
+}
+
+//! true if the section cut line should be drawn on the source view. Some conventions do not draw the
+//! actual cut line, but only the change points, arrows and symbols.
+bool Preferences::includeCutLine()
+{
+    return getPreferenceGroup("Decorations")->GetBool("IncludeCutLine", true);
+}
+
+//! true if the GeometryMatcher should be used in correcting Dimension references
+bool Preferences::useExactMatchOnDims()
+{
+    return getPreferenceGroup("Dimensions")->GetBool("UseMatcher", true);
+}
+
+int Preferences::BreakType()
+{
+    return getPreferenceGroup("Decorations")->GetInt("BreakType", 2);
+}
+
 

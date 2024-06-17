@@ -5,13 +5,13 @@
     <name>UnitsApi</name>
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
-      <source>Standard (mm, kg, s, degree)</source>
-      <translation>Padrão (mm, kg, s, grau)</translation>
+      <source>Standard (mm, kg, s, °)</source>
+      <translation>Padrão (mm, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
-      <source>MKS (m, kg, s, degree)</source>
-      <translation>MKS (m/kg/s/graus)</translation>
+      <source>MKS (m, kg, s, °)</source>
+      <translation>MKS (m, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="73"/>
@@ -40,8 +40,8 @@
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>
-      <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation>Imperial para Eng Civil (ft, ft/seg)</translation>
+      <source>Imperial for Civil Eng (ft, ft/s)</source>
+      <translation>Imperial para Engenharia Civil (ft, ft/s)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="85"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="87"/>
       <source>Meter decimal (m, m², m³)</source>
-      <translation type="unfinished">Meter decimal (m, m², m³)</translation>
+      <translation>Metro decimal (m, m², m³)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="89"/>

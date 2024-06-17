@@ -174,12 +174,13 @@ class Dimension(gui_base_original.Creator):
 
     def finish(self, cont=False):
         """Terminate the operation."""
+        self.end_callbacks(self.call)
         self.cont = None
         self.dir = None
-        super().finish()
         if self.ui:
             self.dimtrack.finalize()
             self.arctrack.finalize()
+        super().finish()
 
     def angle_dimension_normal(self, edge1, edge2):
         rot = App.Rotation(DraftGeomUtils.vec(edge1),

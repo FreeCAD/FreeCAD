@@ -342,6 +342,7 @@ using PyMethodDef = struct PyMethodDef;
  */
 
 // NOLINTBEGIN(bugprone-reserved-identifier,bugprone-macro-parentheses,cppcoreguidelines-macro-usage)
+// clang-format off
 #define FC_LOGLEVEL_DEFAULT -1
 #define FC_LOGLEVEL_ERR 0
 #define FC_LOGLEVEL_WARN 1
@@ -371,7 +372,7 @@ using PyMethodDef = struct PyMethodDef;
     } while (0)
 
 #define _FC_PRINT(_instance, _l, _func, _msg)                                                      \
-    __FC_PRINT(_instance, _l, _func, "", _msg, __FILE__, __LINE__)
+    __FC_PRINT(_instance, _l, _func, std::string(), _msg, __FILE__, __LINE__)
 
 #define FC_MSG(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_MSG, Message, _msg)
 #define FC_WARN(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_WARN, DeveloperWarning, _msg)
@@ -380,15 +381,15 @@ using PyMethodDef = struct PyMethodDef;
 #define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_TRACE, Log, _msg)
 
 #define _FC_MSG(_file, _line, _msg)                                                                \
-    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_MSG, Message, "", _msg, _file, _line)
+    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_MSG, Message, std::string(), _msg, _file, _line)
 #define _FC_WARN(_file, _line, _msg)                                                               \
-    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_WARN, DeveloperWarning, "", _msg, _file, _line)
+    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_WARN, DeveloperWarning, std::string(), _msg, _file, _line)
 #define _FC_ERR(_file, _line, _msg)                                                                \
-    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_ERR, DeveloperError, "", _msg, _file, _line)
+    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_ERR, DeveloperError, std::string(), _msg, _file, _line)
 #define _FC_LOG(_file, _line, _msg)                                                                \
-    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_LOG, Log, "", _msg, _file, _line)
+    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_LOG, Log, std::string(), _msg, _file, _line)
 #define _FC_TRACE(_file, _line, _msg)                                                              \
-    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_TRACE, Log, "", _msg, _file, _line)
+    __FC_PRINT(FC_LOG_INSTANCE, FC_LOGLEVEL_TRACE, Log, std::string(), _msg, _file, _line)
 
 #define FC_XYZ(_pt) '(' << (_pt).X() << ", " << (_pt).Y() << ", " << (_pt).Z() << ')'
 #define FC_xy(_pt) '(' << (_pt).x << ", " << (_pt).y << ')'
@@ -480,6 +481,7 @@ using PyMethodDef = struct PyMethodDef;
     } while (0)
 
 #endif  // FC_LOG_NO_TIMING
+// clang-format on
 // NOLINTEND(bugprone-reserved-identifier,bugprone-macro-parentheses,cppcoreguidelines-macro-usage)
 
 // TODO: Get rid of this typedef
@@ -579,23 +581,19 @@ public:
      */
     bool isActive(Base::LogStyle category) const
     {
-        if (category == Base::LogStyle::Log) {
-            return bLog;
-        }
-        if (category == Base::LogStyle::Warning) {
-            return bWrn;
-        }
-        if (category == Base::LogStyle::Error) {
-            return bErr;
-        }
-        if (category == Base::LogStyle::Message) {
-            return bMsg;
-        }
-        if (category == Base::LogStyle::Critical) {
-            return bCritical;
-        }
-        if (category == Base::LogStyle::Notification) {
-            return bNotification;
+        switch (category) {
+            case Base::LogStyle::Log:
+                return bLog;
+            case Base::LogStyle::Warning:
+                return bWrn;
+            case Base::LogStyle::Error:
+                return bErr;
+            case Base::LogStyle::Message:
+                return bMsg;
+            case Base::LogStyle::Critical:
+                return bCritical;
+            case Base::LogStyle::Notification:
+                return bNotification;
         }
 
         return false;

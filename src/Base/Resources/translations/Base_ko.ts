@@ -5,13 +5,13 @@
     <name>UnitsApi</name>
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
-      <source>Standard (mm, kg, s, degree)</source>
-      <translation type="unfinished">Standard (mm, kg, s, degree)</translation>
+      <source>Standard (mm, kg, s, °)</source>
+      <translation>표준 단위계(mm, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
-      <source>MKS (m, kg, s, degree)</source>
-      <translation type="unfinished">MKS (m, kg, s, degree)</translation>
+      <source>MKS (m, kg, s, °)</source>
+      <translation>MKS 단위계 (m, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="73"/>
@@ -26,22 +26,22 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="77"/>
       <source>Building Euro (cm, m², m³)</source>
-      <translation type="unfinished">Building Euro (cm, m², m³)</translation>
+      <translation>유럽식 건축단위 (cm/m²/m³)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="79"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation type="unfinished">Building US (ft-in, sqft, cft)</translation>
+      <translation>미국식 건축단위 (ft-in/sqft/cft)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="81"/>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC(mm, mm/min)</translation>
+      <translation>미터법 소형 부품 및 CNC (mm, mm/min)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>
-      <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, ft/sec)</translation>
+      <source>Imperial for Civil Eng (ft, ft/s)</source>
+      <translation>영국식 토목단위 (ft, ft/sec)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="85"/>

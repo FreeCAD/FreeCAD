@@ -20,19 +20,13 @@ set(TechDrawLIBS
     PartDesign
 )
 
-if(FREECAD_QT_MAJOR_VERSION EQUAL 5)
-    include_directories(
-        ${QtXmlPatterns_INCLUDE_DIRS}
-    )
-endif()
-
 include_directories(
     ${QtConcurrent_INCLUDE_DIRS}
     ${QtCore_INCLUDE_DIR}
     ${QtGui_INCLUDE_DIR}
     ${QtWidgets_INCLUDE_DIRS}
 )
-set(QtXmlPatternsLib ${QtXmlPatterns_LIBRARIES})
+
 list(APPEND TechDrawLIBS
     ${QtConcurrent_LIBRARIES}
     ${QtCore_LIBRARIES}
@@ -68,6 +62,7 @@ generate_from_xml(DrawTilePy)
 generate_from_xml(DrawTileWeldPy)
 generate_from_xml(DrawWeldSymbolPy)
 generate_from_xml(CosmeticExtensionPy)
+generate_from_xml(DrawBrokenViewPy)
 
 SET(Draw_SRCS
     DrawPage.cpp
@@ -110,8 +105,8 @@ SET(Draw_SRCS
     DimensionReferences.h
     DimensionFormatter.cpp
     DimensionFormatter.h
-    GeometryMatcher.cpp
-    GeometryMatcher.h
+    DimensionAutoCorrect.cpp
+    DimensionAutoCorrect.h
     DrawViewBalloon.cpp
     DrawViewBalloon.h
     DrawViewSection.cpp
@@ -142,7 +137,9 @@ SET(Draw_SRCS
     DrawWeldSymbol.h
     FeatureProjection.cpp
     FeatureProjection.h
-    )
+    DrawBrokenView.cpp
+    DrawBrokenView.h
+)
 
 SET(TechDraw_SRCS
     AppTechDraw.cpp
@@ -167,6 +164,10 @@ SET(TechDraw_SRCS
     LineNameEnum.h
     ArrowPropEnum.cpp
     ArrowPropEnum.h
+    BalloonPropEnum.cpp
+    BalloonPropEnum.h
+    MattingPropEnum.cpp
+    MattingPropEnum.h
     Preferences.cpp
     Preferences.h
     TechDrawExport.cpp
@@ -177,6 +178,8 @@ SET(TechDraw_SRCS
     XMLQuery.h
     LineGenerator.cpp
     LineGenerator.h
+    LineFormat.cpp
+    LineFormat.h
 )
 
 SET(Geometry_SRCS
@@ -202,6 +205,8 @@ SET(Geometry_SRCS
     PropertyCosmeticVertexList.h
     CosmeticExtension.cpp
     CosmeticExtension.h
+    GeometryMatcher.cpp
+    GeometryMatcher.h
 )
 
 SET(Python_SRCS
@@ -257,7 +262,9 @@ SET(Python_SRCS
     DrawWeldSymbolPyImp.cpp
     CosmeticExtensionPy.xml
     CosmeticExtensionPyImp.cpp
-    )
+    DrawBrokenViewPy.xml
+    DrawBrokenViewPyImp.cpp
+)
 
 SOURCE_GROUP("Mod" FILES ${TechDraw_SRCS})
 SOURCE_GROUP("Features" FILES ${Draw_SRCS})
@@ -273,7 +280,10 @@ endif(FREECAD_USE_PCH)
 
 add_library(TechDraw SHARED ${TechDraw_SRCS} ${Draw_SRCS} ${TechDrawAlgos_SRCS}
                            ${Geometry_SRCS} ${Python_SRCS})
-target_link_libraries(TechDraw ${TechDrawLIBS};${QtXmlPatternsLib};${TechDraw})
+target_link_libraries(TechDraw ${TechDrawLIBS} ${TechDraw})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(TechDraw)
+endif()
 
 ADD_CUSTOM_COMMAND(TARGET TechDraw
                    POST_BUILD

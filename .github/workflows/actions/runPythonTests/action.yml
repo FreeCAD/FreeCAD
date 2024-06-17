@@ -45,6 +45,7 @@ runs:
       id: runTests
       shell: bash -l {0}
       run: |
+        set -o pipefail
         ${{ inputs.testCommand }} | sed -Ee "/[[:blank:]]*\([[:digit:]]{1,3} %\)[[:blank:]]*/d" | tee -a ${{ inputs.logFile }}
     - name: Write report
       shell: bash -l {0}

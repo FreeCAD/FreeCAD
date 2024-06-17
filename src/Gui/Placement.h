@@ -201,7 +201,6 @@ Q_SIGNALS:
 
 private:
     Placement* widget;
-    Gui::TaskView::TaskBox* taskbox;
 };
 
 } // namespace Dialog

@@ -58,6 +58,7 @@ public:
 
 protected:
     virtual BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&, const TopoDS_Shape&) const = 0;
+    virtual const char *opCode() const = 0;
 };
 
 }

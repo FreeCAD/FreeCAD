@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 
 // clang-format off
-#include "SpreadsheetView.h"
 #include "ViewProviderSpreadsheetPy.h"
 #include "ViewProviderSpreadsheetPy.cpp"
 // clang-format on
@@ -55,7 +54,6 @@ PyObject* ViewProviderSpreadsheetPy::getCustomAttributes(const char* /*attr*/) c
 {
     return nullptr;
 }
-
 
 int ViewProviderSpreadsheetPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {

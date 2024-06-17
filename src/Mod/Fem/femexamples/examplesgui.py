@@ -236,10 +236,10 @@ class FemExamples(QtGui.QWidget):
         # if done this way the Python commands are printed in Python console
         FreeCADGui.doCommand("from femexamples.manager import run_example")
         if solver is not None:
-            FreeCADGui.doCommand("run_example(\"{}\", solver=\"{}\")"
+            FreeCADGui.doCommand("run_example(\"{}\", solver=\"{}\", run_solver=True)"
                                  .format(str(example), str(solver)))
         else:
-            FreeCADGui.doCommand("run_example(\"{}\")".format(str(example)))
+            FreeCADGui.doCommand("run_example(\"{}\", run_solver=True)".format(str(example)))
         QtGui.QApplication.restoreOverrideCursor()
 
     def enable_buttons(self):

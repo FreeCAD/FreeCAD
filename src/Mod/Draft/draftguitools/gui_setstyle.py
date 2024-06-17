@@ -31,6 +31,7 @@
 import os
 from PySide import QtCore
 from PySide import QtGui
+from PySide import QtWidgets
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -82,18 +83,25 @@ class Draft_SetStyle_TaskPanel:
         self.form.annotButton.setIcon(QtGui.QIcon(":/icons/Draft_Text.svg"))
 
         self.form.ShapeColor.setProperty("color", self.getColor(params.get_param_view("DefaultShapeColor")))
+        self.form.AmbientColor.setProperty("color", self.getColor(params.get_param_view("DefaultAmbientColor")))
+        self.form.EmissiveColor.setProperty("color", self.getColor(params.get_param_view("DefaultEmissiveColor")))
+        self.form.SpecularColor.setProperty("color", self.getColor(params.get_param_view("DefaultSpecularColor")))
         self.form.Transparency.setValue(params.get_param_view("DefaultShapeTransparency"))
+        self.form.Shininess.setValue(params.get_param_view("DefaultShapeShininess"))
+
         self.form.LineColor.setProperty("color", self.getColor(params.get_param_view("DefaultShapeLineColor")))
         self.form.LineWidth.setValue(params.get_param_view("DefaultShapeLineWidth"))
         self.form.PointColor.setProperty("color", self.getColor(params.get_param_view("DefaultShapeVertexColor")))
         self.form.PointSize.setValue(params.get_param_view("DefaultShapePointSize"))
         self.form.DrawStyle.setCurrentIndex(params.get_param("DefaultDrawStyle"))
         self.form.DisplayMode.setCurrentIndex(params.get_param("DefaultDisplayMode"))
+
         self.form.TextColor.setProperty("color", self.getColor(params.get_param("DefaultTextColor")))
         self.form.TextFont.setCurrentFont(QtGui.QFont(params.get_param("textfont")))
         self.form.TextSize.setText(U.Quantity(params.get_param("textheight"), U.Length).UserString)
         self.form.LineSpacing.setValue(params.get_param("LineSpacing"))
         self.form.ScaleMultiplier.setValue(params.get_param("DefaultAnnoScaleMultiplier"))
+
         self.form.AnnoLineColor.setProperty("color", self.getColor(params.get_param("DefaultAnnoLineColor")))
         self.form.AnnoLineWidth.setValue(params.get_param("DefaultAnnoLineWidth"))
         self.form.ArrowStyle.setCurrentIndex(params.get_param("dimsymbol"))
@@ -132,33 +140,40 @@ class Draft_SetStyle_TaskPanel:
 
     def getValues(self):
 
-        preset = {}
-        preset["ShapeColor"] = utils.argb_to_rgba(self.form.ShapeColor.property("color").rgba())
-        preset["Transparency"] = self.form.Transparency.value()
-        preset["LineColor"] = utils.argb_to_rgba(self.form.LineColor.property("color").rgba())
-        preset["LineWidth"] = self.form.LineWidth.value()
-        preset["PointColor"] = utils.argb_to_rgba(self.form.PointColor.property("color").rgba())
-        preset["PointSize"] = self.form.PointSize.value()
-        preset["DrawStyle"] = self.form.DrawStyle.currentIndex()
-        preset["DisplayMode"] = self.form.DisplayMode.currentIndex()
-        preset["TextColor"] = utils.argb_to_rgba(self.form.TextColor.property("color").rgba())
-        preset["TextFont"] = self.form.TextFont.currentFont().family()
-        preset["TextSize"] = U.Quantity(self.form.TextSize.text()).Value
-        preset["LineSpacing"] = self.form.LineSpacing.value()
-        preset["ScaleMultiplier"] = self.form.ScaleMultiplier.value()
-        preset["AnnoLineColor"] = utils.argb_to_rgba(self.form.AnnoLineColor.property("color").rgba())
-        preset["AnnoLineWidth"] = self.form.AnnoLineWidth.value()
-        preset["ArrowStyle"] = self.form.ArrowStyle.currentIndex()
-        preset["ArrowSize"] = U.Quantity(self.form.ArrowSize.text()).Value
-        preset["ShowUnit"] = self.form.ShowUnit.isChecked()
-        preset["UnitOverride"] = self.form.UnitOverride.text()
-        preset["DimOvershoot"] = U.Quantity(self.form.DimOvershoot.text()).Value
-        preset["ExtLines"] = U.Quantity(self.form.ExtLines.text()).Value
-        preset["ExtOvershoot"] = U.Quantity(self.form.ExtOvershoot.text()).Value
-        preset["TextSpacing"] = U.Quantity(self.form.TextSpacing.text()).Value
-        return preset
+        return {
+            "ShapeColor":      utils.argb_to_rgba(self.form.ShapeColor.property("color").rgba()),
+            "AmbientColor":    utils.argb_to_rgba(self.form.AmbientColor.property("color").rgba()),
+            "EmissiveColor":   utils.argb_to_rgba(self.form.EmissiveColor.property("color").rgba()),
+            "SpecularColor":   utils.argb_to_rgba(self.form.SpecularColor.property("color").rgba()),
+            "Transparency":    self.form.Transparency.value(),
+            "Shininess":       self.form.Shininess.value(),
 
-    def setValues(self,preset):
+            "LineColor":       utils.argb_to_rgba(self.form.LineColor.property("color").rgba()),
+            "LineWidth":       self.form.LineWidth.value(),
+            "PointColor":      utils.argb_to_rgba(self.form.PointColor.property("color").rgba()),
+            "PointSize":       self.form.PointSize.value(),
+            "DrawStyle":       self.form.DrawStyle.currentIndex(),
+            "DisplayMode":     self.form.DisplayMode.currentIndex(),
+
+            "TextColor":       utils.argb_to_rgba(self.form.TextColor.property("color").rgba()),
+            "TextFont":        self.form.TextFont.currentFont().family(),
+            "TextSize":        U.Quantity(self.form.TextSize.text()).Value,
+            "LineSpacing":     self.form.LineSpacing.value(),
+            "ScaleMultiplier": self.form.ScaleMultiplier.value(),
+
+            "AnnoLineColor":   utils.argb_to_rgba(self.form.AnnoLineColor.property("color").rgba()),
+            "AnnoLineWidth":   self.form.AnnoLineWidth.value(),
+            "ArrowStyle":      self.form.ArrowStyle.currentIndex(),
+            "ArrowSize":       U.Quantity(self.form.ArrowSize.text()).Value,
+            "ShowUnit":        self.form.ShowUnit.isChecked(),
+            "UnitOverride":    self.form.UnitOverride.text(),
+            "DimOvershoot":    U.Quantity(self.form.DimOvershoot.text()).Value,
+            "ExtLines":        U.Quantity(self.form.ExtLines.text()).Value,
+            "ExtOvershoot":    U.Quantity(self.form.ExtOvershoot.text()).Value,
+            "TextSpacing":     U.Quantity(self.form.TextSpacing.text()).Value
+        }
+
+    def setValues(self, preset):
 
         # For compatibility with <= V0.21 some properties, if missing, reference others:
         #     'new' prop    -> old prop
@@ -167,29 +182,113 @@ class Draft_SetStyle_TaskPanel:
         #     PointSize     -> LineWidth
         #     AnnoLineColor -> LineColor
         #     AnnoLineWidth -> LineWidth
-        self.form.ShapeColor.setProperty("color", self.getColor(preset.get("ShapeColor", 3435973887)))
-        self.form.Transparency.setValue(preset.get("Transparency", 0))
-        self.form.LineColor.setProperty("color", self.getColor(preset.get("LineColor", 255)))
-        self.form.LineWidth.setValue(preset.get("LineWidth", 2))
-        self.form.PointColor.setProperty("color", self.getColor(preset.get("PointColor", preset.get("LineColor", 255))))
-        self.form.PointSize.setValue(preset.get("PointSize", preset.get("LineWidth", 2)))
-        self.form.DrawStyle.setCurrentIndex(preset.get("DrawStyle", 0))
-        self.form.DisplayMode.setCurrentIndex(preset.get("DisplayMode", 0))
-        self.form.TextColor.setProperty("color", self.getColor(preset.get("TextColor", 255)))
-        self.form.TextFont.setCurrentFont(QtGui.QFont(preset.get("TextFont", "Sans")))
-        self.form.TextSize.setText(U.Quantity(preset.get("TextSize", 3.5),U.Length).UserString)
-        self.form.LineSpacing.setValue(preset.get("LineSpacing", 1))
-        self.form.ScaleMultiplier.setValue(preset.get("ScaleMultiplier", 1))
-        self.form.AnnoLineColor.setProperty("color", self.getColor(preset.get("AnnoLineColor", preset.get("LineColor", 255))))
-        self.form.AnnoLineWidth.setValue(preset.get("AnnoLineWidth", preset.get("LineWidth", 2)))
-        self.form.ArrowStyle.setCurrentIndex(preset.get("ArrowStyle", 0))
-        self.form.ArrowSize.setText(U.Quantity(preset.get("ArrowSize", 1), U.Length).UserString)
-        self.form.ShowUnit.setChecked(preset.get("ShowUnit", True))
-        self.form.UnitOverride.setText(preset.get("UnitOverride", ""))
-        self.form.DimOvershoot.setText(U.Quantity(preset.get("DimOvershoot", 0), U.Length).UserString)
-        self.form.ExtLines.setText(U.Quantity(preset.get("ExtLines", -0.5), U.Length).UserString)
-        self.form.ExtOvershoot.setText(U.Quantity(preset.get("ExtOvershoot", 2), U.Length).UserString)
-        self.form.TextSpacing.setText(U.Quantity(preset.get("TextSpacing", 1), U.Length).UserString)
+
+        def getDefDraft(entry):
+            return params.get_param(entry, ret_default=True)
+
+        def getDefView(entry):
+            return params.get_param_view(entry, ret_default=True)
+
+        # ---------------------------------------------------------------------
+
+        self.form.ShapeColor.setProperty(
+            "color",
+            self.getColor(preset.get("ShapeColor", getDefView("DefaultShapeColor")))
+        )
+        self.form.AmbientColor.setProperty(
+            "color",
+            self.getColor(preset.get("AmbientColor", getDefView("DefaultAmbientColor")))
+        )
+        self.form.EmissiveColor.setProperty(
+            "color",
+            self.getColor(preset.get("EmissiveColor", getDefView("DefaultEmissiveColor")))
+        )
+        self.form.SpecularColor.setProperty(
+            "color",
+            self.getColor(preset.get("SpecularColor", getDefView("DefaultSpecularColor")))
+        )
+        self.form.Transparency.setValue(
+            preset.get("Transparency", getDefView("DefaultShapeTransparency"))
+        )
+        self.form.Shininess.setValue(
+            preset.get("Shininess", getDefView("DefaultShapeShininess"))
+        )
+
+        # ---------------------------------------------------------------------
+
+        self.form.LineColor.setProperty(
+            "color",
+            self.getColor(preset.get("LineColor", getDefView("DefaultShapeLineColor")))
+        )
+        self.form.LineWidth.setValue(
+            preset.get("LineWidth", getDefView("DefaultShapeLineWidth"))
+        )
+        self.form.PointColor.setProperty(
+            "color",
+            self.getColor(preset.get("PointColor", preset.get("LineColor", getDefView("DefaultShapeVertexColor"))))
+        )
+        self.form.PointSize.setValue(
+            preset.get("PointSize", preset.get("LineWidth", getDefView("DefaultShapePointSize")))
+        )
+        self.form.DrawStyle.setCurrentIndex(
+            preset.get("DrawStyle", getDefDraft("DefaultDrawStyle"))
+        )
+        self.form.DisplayMode.setCurrentIndex(
+            preset.get("DisplayMode", getDefDraft("DefaultDisplayMode"))
+        )
+
+        # ---------------------------------------------------------------------
+
+        self.form.TextColor.setProperty(
+            "color",
+            self.getColor(preset.get("TextColor", getDefDraft("DefaultTextColor")))
+        )
+        self.form.TextFont.setCurrentFont(
+            QtGui.QFont(preset.get("TextFont", getDefDraft("textfont")))
+        )
+        self.form.TextSize.setText(
+            U.Quantity(preset.get("TextSize", getDefDraft("textheight")),U.Length).UserString
+        )
+        self.form.LineSpacing.setValue(
+            preset.get("LineSpacing", getDefDraft("LineSpacing"))
+        )
+        self.form.ScaleMultiplier.setValue(
+            preset.get("ScaleMultiplier", getDefDraft("DefaultAnnoScaleMultiplier"))
+        )
+
+        # ---------------------------------------------------------------------
+
+        self.form.AnnoLineColor.setProperty(
+            "color",
+            self.getColor(preset.get("AnnoLineColor", preset.get("LineColor", getDefDraft("DefaultAnnoLineColor"))))
+        )
+        self.form.AnnoLineWidth.setValue(
+            preset.get("AnnoLineWidth", preset.get("LineWidth", getDefDraft("DefaultAnnoLineWidth")))
+        )
+        self.form.ArrowStyle.setCurrentIndex(
+            preset.get("ArrowStyle", getDefDraft("dimsymbol"))
+        )
+        self.form.ArrowSize.setText(
+            U.Quantity(preset.get("ArrowSize", getDefDraft("arrowsize")), U.Length).UserString
+        )
+        self.form.ShowUnit.setChecked(
+            preset.get("ShowUnit", getDefDraft("showUnit"))
+        )
+        self.form.UnitOverride.setText(
+            preset.get("UnitOverride", getDefDraft("overrideUnit"))
+        )
+        self.form.DimOvershoot.setText(
+            U.Quantity(preset.get("DimOvershoot", getDefDraft("dimovershoot")), U.Length).UserString
+        )
+        self.form.ExtLines.setText(
+            U.Quantity(preset.get("ExtLines", getDefDraft("extlines")), U.Length).UserString
+        )
+        self.form.ExtOvershoot.setText(
+            U.Quantity(preset.get("ExtOvershoot", getDefDraft("extovershoot")), U.Length).UserString
+        )
+        self.form.TextSpacing.setText(
+            U.Quantity(preset.get("TextSpacing", getDefDraft("dimspacing")), U.Length).UserString
+        )
 
     def reject(self):
 
@@ -198,18 +297,25 @@ class Draft_SetStyle_TaskPanel:
     def accept(self):
 
         params.set_param_view("DefaultShapeColor", utils.argb_to_rgba(self.form.ShapeColor.property("color").rgba()))
+        params.set_param_view("DefaultAmbientColor", utils.argb_to_rgba(self.form.AmbientColor.property("color").rgba()))
+        params.set_param_view("DefaultEmissiveColor", utils.argb_to_rgba(self.form.EmissiveColor.property("color").rgba()))
+        params.set_param_view("DefaultSpecularColor", utils.argb_to_rgba(self.form.SpecularColor.property("color").rgba()))
         params.set_param_view("DefaultShapeTransparency", self.form.Transparency.value())
+        params.set_param_view("DefaultShapeShininess", self.form.Shininess.value())
+
         params.set_param_view("DefaultShapeLineColor", utils.argb_to_rgba(self.form.LineColor.property("color").rgba()))
         params.set_param_view("DefaultShapeLineWidth", self.form.LineWidth.value())
         params.set_param_view("DefaultShapeVertexColor", utils.argb_to_rgba(self.form.PointColor.property("color").rgba()))
         params.set_param_view("DefaultShapePointSize", self.form.PointSize.value())
         params.set_param("DefaultDrawStyle", self.form.DrawStyle.currentIndex())
         params.set_param("DefaultDisplayMode", self.form.DisplayMode.currentIndex())
+
         params.set_param("DefaultTextColor", utils.argb_to_rgba(self.form.TextColor.property("color").rgba()))
         params.set_param("textfont", self.form.TextFont.currentFont().family())
         params.set_param("textheight", U.Quantity(self.form.TextSize.text()).Value)
         params.set_param("LineSpacing", self.form.LineSpacing.value())
         params.set_param("DefaultAnnoScaleMultiplier", self.form.ScaleMultiplier.value())
+
         params.set_param("DefaultAnnoLineColor", utils.argb_to_rgba(self.form.AnnoLineColor.property("color").rgba()))
         params.set_param("DefaultAnnoLineWidth", self.form.AnnoLineWidth.value())
         params.set_param("dimsymbol", self.form.ArrowStyle.currentIndex())
@@ -220,6 +326,7 @@ class Draft_SetStyle_TaskPanel:
         params.set_param("extlines", U.Quantity(self.form.ExtLines.text()).Value)
         params.set_param("extovershoot", U.Quantity(self.form.ExtOvershoot.text()).Value)
         params.set_param("dimspacing", U.Quantity(self.form.TextSpacing.text()).Value)
+
         self.reject()
 
     def onApplyStyle(self):
@@ -245,10 +352,15 @@ class Draft_SetStyle_TaskPanel:
 
         properties = vobj.PropertiesList
         if "FontName" not in properties:  # Shapes
-            if "ShapeColor" in properties:
-                vobj.ShapeColor = self.form.ShapeColor.property("color").getRgbF()[:3] # Remove Alpha (which is 1 instead of 0).
-            if "Transparency" in properties:
-                vobj.Transparency = self.form.Transparency.value()
+            if "ShapeAppearance" in properties:
+                material = App.Material()
+                material.DiffuseColor = self.form.ShapeColor.property("color").getRgbF()[:3]  # Remove Alpha (which is 1 instead of 0).
+                material.AmbientColor = self.form.AmbientColor.property("color").getRgbF()[:3]
+                material.EmissiveColor = self.form.EmissiveColor.property("color").getRgbF()[:3]
+                material.SpecularColor = self.form.SpecularColor.property("color").getRgbF()[:3]
+                material.Transparency = self.form.Transparency.value() / 100
+                material.Shininess = self.form.Shininess.value() / 100
+                vobj.ShapeAppearance = (material, )
             if "LineColor" in properties:
                 vobj.LineColor = self.form.LineColor.property("color").getRgbF()[:3]
             if "LineWidth" in properties:
@@ -305,7 +417,7 @@ class Draft_SetStyle_TaskPanel:
 
     def onSaveStyle(self):
 
-        reply = QtGui.QInputDialog.getText(None,
+        reply = QtWidgets.QInputDialog.getText(None,
                                            translate("Draft", "Save style"),
                                            translate("Draft", "Name of this new style:"))
         if reply[1]:
@@ -313,12 +425,12 @@ class Draft_SetStyle_TaskPanel:
             pdict = self.load()
             if pdict:
                 if name in pdict:
-                    reply = QtGui.QMessageBox.question(None,
+                    reply = QtWidgets.QMessageBox.question(None,
                                                        translate("Draft", "Warning"),
                                                        translate("Draft", "Name exists. Overwrite?"),
-                                                       QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
-                                                       QtGui.QMessageBox.No)
-                    if reply == QtGui.QMessageBox.No:
+                                                       QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                                       QtWidgets.QMessageBox.No)
+                    if reply == QtWidgets.QMessageBox.No:
                         return
             preset = self.getValues()
             pdict[name] = preset

@@ -201,10 +201,7 @@ void TaskOrientation::updateIcon()
 TaskOrientationDialog::TaskOrientationDialog(App::GeoFeature* obj)
 {
     widget = new TaskOrientation(obj);
-    Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget);
 }
 
 void TaskOrientationDialog::open()

@@ -15,11 +15,6 @@
       <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
       <UserDocu>Material property descriptions.</UserDocu>
     </Documentation>
-    <!-- <Methode Name="mirror">
-      <Documentation>
-        <UserDocu>Performs the symmetrical transformation of this geometric object</UserDocu>
-      </Documentation>
-    </Methode> -->
     <Attribute Name="Name" ReadOnly="true">
       <Documentation>
         <UserDocu>Property name.</UserDocu>

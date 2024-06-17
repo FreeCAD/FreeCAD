@@ -24,7 +24,9 @@
 #define GUI_DIALOG_DLGEXPRESSIONINPUT_H
 
 #include <QDialog>
+#include <QTreeWidget>
 #include <App/ObjectIdentifier.h>
+#include <Base/Type.h>
 #include <Base/Unit.h>
 #include <memory>
 
@@ -76,19 +78,35 @@ public:
     QPoint expressionPosition() const;
     void   setExpressionInputSize(int width, int height);
 
-    bool eventFilter(QObject *obj, QEvent *event) override;
-
 public Q_SLOTS:
     void show();
+    void accept() override;
 
 protected:
-    void showEvent(QShowEvent*) override;
     void mouseReleaseEvent(QMouseEvent*) override;
     void mousePressEvent(QMouseEvent*) override;
+
+private:
+    Base::Type getTypePath();
+    Base::Type determineTypeVarSet();
+    bool typeOkForVarSet();
+    void initializeVarSets();
+    void checkExpression(const QString& text);
+    void setupVarSets();
+    std::string getType();
+    void reportVarSetInfo(const char* message);
+    bool reportName(QTreeWidgetItem* item);
+    bool reportGroup(QString& nameGroup);
+    void updateVarSetInfo(bool checkExpr = true);
+    void acceptWithVarSet();
 
 private Q_SLOTS:
     void textChanged(const QString & text);
     void setDiscarded();
+    void onCheckVarSets(int state);
+    void onVarSetSelected(int);
+    void onTextChangedGroup(const QString&);
+    void namePropChanged(const QString&);
 
 private:
     ::Ui::DlgExpressionInput *ui;
@@ -99,6 +117,9 @@ private:
     NumberRange numberRange;
 
     int minimumWidth;
+
+    static bool varSetsVisible;
+    std::unique_ptr<QTreeWidget> treeWidget;
 };
 
 }

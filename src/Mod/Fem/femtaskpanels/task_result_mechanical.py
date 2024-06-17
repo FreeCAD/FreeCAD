@@ -265,7 +265,7 @@ class _TaskPanel:
         self.result_widget.sb_displacement_factor_max.setValue(100.)    # init non standard values
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def get_result_stats(self, type_name):
         return resulttools.get_stats(self.result_obj, type_name)

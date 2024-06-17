@@ -37,6 +37,7 @@
 # include <QLabel>
 # include <QMdiSubWindow>
 # include <QMenu>
+# include <QMenuBar>
 # include <QMessageBox>
 # include <QMimeData>
 # include <QPainter>
@@ -268,6 +269,7 @@ struct MainWindowP
 {
     DimensionWidget* sizeLabel;
     QLabel* actionLabel;
+    QLabel* rightSideLabel;
     QTimer* actionTimer;
     QTimer* statusTimer;
     QTimer* activityTimer;
@@ -444,6 +446,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     // labels and progressbar
     d->status = new StatusBarObserver();
     d->actionLabel = new QLabel(statusBar());
+    d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     // d->actionLabel->setMinimumWidth(120);
 
     d->sizeLabel = new DimensionWidget(statusBar());
@@ -452,6 +455,10 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
     statusBar()->addPermanentWidget(progressBar, 0);
     statusBar()->addPermanentWidget(d->sizeLabel, 0);
+
+    d->rightSideLabel = new QLabel(statusBar());
+    d->rightSideLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    statusBar()->addPermanentWidget(d->rightSideLabel);
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NotificationArea");
 
@@ -463,6 +470,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         notificationArea->setStyleSheet(QStringLiteral("text-align:left;"));
         statusBar()->addPermanentWidget(notificationArea);
     }
+
     // clears the action label
     d->actionTimer = new QTimer( this );
     d->actionTimer->setObjectName(QString::fromLatin1("actionTimer"));
@@ -591,9 +599,17 @@ bool MainWindow::setupTaskView()
 {
     // Task view
     if (d->hiddenDockWindows.find("Std_TaskView") == std::string::npos) {
+        // clang-format off
+        auto group = App::GetApplication().GetUserParameter()
+                      .GetGroup("BaseApp")
+                     ->GetGroup("Preferences")
+                     ->GetGroup("DockWindows")
+                     ->GetGroup("TaskView");
+        // clang-format on
         auto taskView = new Gui::TaskView::TaskView(this);
-        taskView->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tasks")));
+        bool restore = group->GetBool("RestoreWidth", taskView->shouldRestoreWidth());
+        taskView->setRestoreWidth(restore);
+        taskView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tasks")));
         taskView->setMinimumWidth(210);
 
         DockWindowManager* pDockMgr = DockWindowManager::instance();
@@ -789,7 +805,19 @@ bool MainWindow::updateDAGView(bool show)
 
 QMenu* MainWindow::createPopupMenu ()
 {
-    QMenu* menu = QMainWindow::createPopupMenu();
+    QMenu *menu = new QMenu(this);
+    populateDockWindowMenu(menu);
+    menu->addSeparator();
+    populateToolBarMenu(menu);
+    QMenu *undockMenu = new QMenu(menu);
+    ToolBarManager::getInstance()->populateUndockMenu(undockMenu);
+    if (undockMenu->actions().isEmpty()) {
+        delete undockMenu;
+    }
+    else {
+        menu->addMenu(undockMenu);
+    }
+    menu->addSeparator();
     Workbench* wb = WorkbenchManager::instance()->active();
     if (wb) {
         MenuItem item;
@@ -830,6 +858,7 @@ void MainWindow::closeActiveWindow ()
 int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckbox) {
     QMessageBox box(parent?parent:this);
     box.setIcon(QMessageBox::Question);
+    box.setWindowFlags(box.windowFlags() | Qt::WindowStaysOnTopHint);
     box.setWindowTitle(QObject::tr("Unsaved document"));
     if(docName)
         box.setText(QObject::tr("Do you want to save your changes to document '%1' before closing?")
@@ -988,32 +1017,16 @@ void MainWindow::whatsThis()
 void MainWindow::showDocumentation(const QString& help)
 {
     Base::PyGILStateLocker lock;
-    PyObject* module = PyImport_ImportModule("Help");
-    if (module) {
-        Py_DECREF(module);
-        Gui::Command::addModule(Gui::Command::Gui,"Help");
-        Gui::Command::doCommand(Gui::Command::Gui,"Help.show(\"%s\")", help.toStdString().c_str());
+    try {
+        PyObject* module = PyImport_ImportModule("Help");
+        if (module) {
+            Py_DECREF(module);
+            Gui::Command::addModule(Gui::Command::Gui,"Help");
+            Gui::Command::doCommand(Gui::Command::Gui,"Help.show(\"%s\")", help.toStdString().c_str());
+        }
     }
-    else {
-        PyErr_Clear();
-        QUrl url(help);
-        if (url.scheme().isEmpty()) {
-            QMessageBox msgBox(getMainWindow());
-            msgBox.setWindowTitle(tr("Help addon needed!"));
-            msgBox.setText(tr("The Help system of %1 is now handled by the \"Help\" addon. "
-               "It can easily be installed via the Addons Manager").arg(QString(qApp->applicationName())));
-            QAbstractButton* pButtonAddonMgr = msgBox.addButton(tr("Open Addon Manager"), QMessageBox::YesRole);
-            msgBox.addButton(QMessageBox::Ok);
-            msgBox.exec();
-            if (msgBox.clickedButton() == pButtonAddonMgr) {
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Addons");
-                hGrp->SetASCII("SelectedAddon", "Help");
-                Gui::Command::doCommand(Gui::Command::Gui,"Gui.runCommand('Std_AddonMgr',0)");
-            }
-        }
-        else {
-            QDesktopServices::openUrl(url);
-        }
+    catch (const Base::Exception& e) {
+        e.ReportException();
     }
 }
 
@@ -1268,7 +1281,7 @@ void MainWindow::removeWindow(Gui::MDIView* view, bool close)
 
 void MainWindow::tabChanged(MDIView* view)
 {
-    Q_UNUSED(view);
+    Q_UNUSED(view)
     updateActions();
 }
 
@@ -1304,11 +1317,15 @@ void MainWindow::setActiveWindow(MDIView* view)
     Application::Instance->viewActivated(view);
 }
 
-void MainWindow::onWindowActivated(QMdiSubWindow* w)
+void MainWindow::onWindowActivated(QMdiSubWindow* mdi)
 {
-    if (!w)
+    if (!mdi) {
+        setWindowTitle(QString());
+        setWindowModified(false);
         return;
-    auto view = dynamic_cast<MDIView*>(w->widget());
+    }
+
+    auto view = dynamic_cast<MDIView*>(mdi->widget());
 
     // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
     if (view)
@@ -1320,12 +1337,12 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
     if (saveWB) {
-        QString currWb = w->property("ownWB").toString();
+        QString currWb = mdi->property("ownWB").toString();
         if (! currWb.isEmpty()) {
             this->activateWorkbench(currWb);
         }
         else {
-            w->setProperty("ownWB", QString::fromStdString(WorkbenchManager::instance()->active()->name()));
+            mdi->setProperty("ownWB", QString::fromStdString(WorkbenchManager::instance()->active()->name()));
         }
     }
 
@@ -1401,26 +1418,41 @@ void MainWindow::onToolBarMenuAboutToShow()
 {
     auto menu = static_cast<QMenu*>(sender());
     menu->clear();
-    QList<QToolBar*> dock = this->findChildren<QToolBar*>();
-    for (const auto & it : dock) {
-        if (it->parentWidget() == this) {
-            QAction* action = it->toggleViewAction();
-            action->setToolTip(tr("Toggles this toolbar"));
-            action->setStatusTip(tr("Toggles this toolbar"));
-            action->setWhatsThis(tr("Toggles this toolbar"));
-            menu->addAction(action);
-        }
-    }
+    populateToolBarMenu(menu);
 
     menu->addSeparator();
 
     Application::Instance->commandManager().getCommandByName("Std_ToggleToolBarLock")->addTo(menu);
 }
 
+void MainWindow::populateToolBarMenu(QMenu *menu)
+{
+    QList<QToolBar*> toolbars = this->findChildren<QToolBar*>();
+    for (const auto & toolbar : toolbars) {
+        if (auto parent = toolbar->parentWidget()) {
+            if (parent == this
+                    || parent == statusBar()
+                    || parent->parentWidget() == statusBar()
+                    || parent->parentWidget() == menuBar()) {
+                QAction* action = toolbar->toggleViewAction();
+                action->setToolTip(tr("Toggles this toolbar"));
+                action->setStatusTip(tr("Toggles this toolbar"));
+                action->setWhatsThis(tr("Toggles this toolbar"));
+                menu->addAction(action);
+            }
+        }
+    }
+}
+
 void MainWindow::onDockWindowMenuAboutToShow()
 {
     auto menu = static_cast<QMenu*>(sender());
     menu->clear();
+    populateDockWindowMenu(menu);
+}
+
+void MainWindow::populateDockWindowMenu(QMenu *menu)
+{
     QList<QDockWidget*> dock = this->findChildren<QDockWidget*>();
     for (auto & it : dock) {
         QAction* action = it->toggleViewAction();
@@ -1664,7 +1696,15 @@ void MainWindow::_updateActions()
         d->activityTimer->stop();
         Application::Instance->commandManager().testActive();
     }
+
     d->actionUpdateDelay = 0;
+
+    if (auto view = activeWindow()) {
+        setWindowTitle(view->buildWindowTitle());
+        if (auto document = view->getGuiDocument()) {
+            setWindowModified(document->isModified());
+        }
+    }
 }
 
 void MainWindow::updateEditorActions()
@@ -2406,6 +2446,11 @@ void MainWindow::showMessage(const QString& message, int timeout) {
         d->actionTimer->stop();
 }
 
+void MainWindow::setRightSideMessage(const QString& message)
+{
+    d->rightSideLabel->setText(message.simplified());
+}
+
 void MainWindow::showStatus(int type, const QString& message)
 {
     if(QApplication::instance()->thread() != QThread::currentThread()) {
@@ -2509,97 +2554,134 @@ QMdiArea *MainWindow::getMdiArea() const
     return d->mdiArea;
 }
 
-// ----------------------------------------------------------
-
-StatusBarObserver::StatusBarObserver()
-  : WindowParameter("OutputWindow")
+void MainWindow::setWindowTitle(const QString& string)
 {
-    msg = QString::fromLatin1("#statusBar{color: #000000}"); // black
-    wrn = QString::fromLatin1("#statusBar{color: #ffaa00}"); // orange
-    err = QString::fromLatin1("#statusBar{color: #ff0000}"); // red
-    Base::Console().AttachObserver(this);
-    getWindowParameter()->Attach(this);
-    getWindowParameter()->NotifyAll();
-}
-
-StatusBarObserver::~StatusBarObserver()
-{
-    getWindowParameter()->Detach(this);
-    Base::Console().DetachObserver(this);
-}
-
-void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
-{
-    ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
-    auto format = QString::fromLatin1("#statusBar{color: %1}");
-    if (strcmp(sReason, "colorText") == 0) {
-        unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->msg = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
-    }
-    else if (strcmp(sReason, "colorWarning") == 0) {
-        unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->wrn = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
-    }
-    else if (strcmp(sReason, "colorError") == 0) {
-        unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->err = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
-    }
-    else if (strcmp(sReason, "colorCritical") == 0) {
-        unsigned long col = rclGrp.GetUnsigned( sReason );
-        this->critical = format.arg(QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name());
-    }
-}
-
-void StatusBarObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
-                                Base::IntendedRecipient recipient, Base::ContentType content)
-{
-    (void) notifiername;
-
-    // Do not log untranslated messages, or messages intended only to a developer to status bar
-    if( recipient == Base::IntendedRecipient::Developer ||
-        content == Base::ContentType::Untranslated ||
-        content == Base::ContentType::Untranslatable )
-        return;
-
-    int messageType = -1;
-    switch(level){
-        case Base::LogStyle::Warning:
-            messageType = MainWindow::Wrn;
-            break;
-        case Base::LogStyle::Message:
-            messageType = MainWindow::Msg;
-            break;
-        case Base::LogStyle::Error:
-            messageType = MainWindow::Err;
-            break;
-        case Base::LogStyle::Log:
-            messageType = MainWindow::Log;
-            break;
-        case Base::LogStyle::Critical:
-            messageType = MainWindow::Critical;
-            break;
-        default:
-            break;
+    QString title;
+    QString appname = QCoreApplication::applicationName();
+    if (appname.isEmpty()) {
+        appname = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
     }
 
-    // Send the event to the main window to allow thread-safety. Qt will delete it when done.
-    auto ev = new CustomMessageEvent(messageType, QString::fromUtf8(msg.c_str()));
-    QApplication::postEvent(getMainWindow(), ev);
+    // allow to disable version number
+    ParameterGrp::handle hGen = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/General");
+    bool showVersion = hGen->GetBool("ShowVersionInTitle", true);
+
+    if (showVersion) {
+        // set main window title with FreeCAD Version
+        auto config = App::Application::Config();
+        QString major = QString::fromUtf8(config["BuildVersionMajor"].c_str());
+        QString minor = QString::fromUtf8(config["BuildVersionMinor"].c_str());
+        QString point = QString::fromUtf8(config["BuildVersionPoint"].c_str());
+        QString suffix = QString::fromUtf8(config["BuildVersionSuffix"].c_str());
+        title = QString::fromUtf8("%1 %2.%3.%4%5").arg(appname, major, minor, point, suffix);
+    }
+    else {
+        title = appname;
+    }
+
+    if (!string.isEmpty()) {
+        title = QString::fromUtf8("[*] %1 - %2").arg(string, title);
+    }
+
+    QMainWindow::setWindowTitle(title);
 }
 
-// -------------------------------------------------------------
+    // ----------------------------------------------------------
 
-int ActionStyleEvent::EventType = -1;
+    StatusBarObserver::StatusBarObserver()
+        : WindowParameter("OutputWindow")
+    {
+        msg = QString::fromLatin1("#statusBar{color: #000000}");  // black
+        wrn = QString::fromLatin1("#statusBar{color: #ffaa00}");  // orange
+        err = QString::fromLatin1("#statusBar{color: #ff0000}");  // red
+        Base::Console().AttachObserver(this);
+        getWindowParameter()->Attach(this);
+        getWindowParameter()->NotifyAll();
+    }
 
-ActionStyleEvent::ActionStyleEvent(Style type)
-  : QEvent(QEvent::Type(EventType)), type(type)
-{
-}
+    StatusBarObserver::~StatusBarObserver()
+    {
+        getWindowParameter()->Detach(this);
+        Base::Console().DetachObserver(this);
+    }
 
-ActionStyleEvent::Style ActionStyleEvent::getType() const
-{
-    return type;
-}
+    void StatusBarObserver::OnChange(Base::Subject<const char*> & rCaller, const char* sReason)
+    {
+        ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
+        auto format = QString::fromLatin1("#statusBar{color: %1}");
+        if (strcmp(sReason, "colorText") == 0) {
+            unsigned long col = rclGrp.GetUnsigned(sReason);
+            this->msg = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+        }
+        else if (strcmp(sReason, "colorWarning") == 0) {
+            unsigned long col = rclGrp.GetUnsigned(sReason);
+            this->wrn = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+        }
+        else if (strcmp(sReason, "colorError") == 0) {
+            unsigned long col = rclGrp.GetUnsigned(sReason);
+            this->err = format.arg(App::Color::fromPackedRGB<QColor>(col).name());
+        }
+        else if (strcmp(sReason, "colorCritical") == 0) {
+            unsigned long col = rclGrp.GetUnsigned(sReason);
+            this->critical = format.arg(
+                QColor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff).name());
+        }
+    }
+
+    void StatusBarObserver::SendLog(const std::string& notifiername,
+                                    const std::string& msg,
+                                    Base::LogStyle level,
+                                    Base::IntendedRecipient recipient,
+                                    Base::ContentType content)
+    {
+        (void)notifiername;
+
+        // Do not log untranslated messages, or messages intended only to a developer to status bar
+        if (recipient == Base::IntendedRecipient::Developer
+            || content == Base::ContentType::Untranslated
+            || content == Base::ContentType::Untranslatable)
+            return;
+
+        int messageType = -1;
+        switch (level) {
+            case Base::LogStyle::Warning:
+                messageType = MainWindow::Wrn;
+                break;
+            case Base::LogStyle::Message:
+                messageType = MainWindow::Msg;
+                break;
+            case Base::LogStyle::Error:
+                messageType = MainWindow::Err;
+                break;
+            case Base::LogStyle::Log:
+                messageType = MainWindow::Log;
+                break;
+            case Base::LogStyle::Critical:
+                messageType = MainWindow::Critical;
+                break;
+            default:
+                break;
+        }
+
+        // Send the event to the main window to allow thread-safety. Qt will delete it when done.
+        auto ev = new CustomMessageEvent(messageType, QString::fromUtf8(msg.c_str()));
+        QApplication::postEvent(getMainWindow(), ev);
+    }
+
+    // -------------------------------------------------------------
+
+    int ActionStyleEvent::EventType = -1;
+
+    ActionStyleEvent::ActionStyleEvent(Style type)
+        : QEvent(QEvent::Type(EventType))
+        , type(type)
+    {}
+
+    ActionStyleEvent::Style ActionStyleEvent::getType() const
+    {
+        return type;
+    }
 
 
 #include "moc_MainWindow.cpp"

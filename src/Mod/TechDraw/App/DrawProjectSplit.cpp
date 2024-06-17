@@ -29,7 +29,6 @@
 #include <Bnd_Box.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
-#include <BOPAlgo_Builder.hxx>
 #include <BRepAlgoAPI_Common.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepBndLib.hxx>
@@ -45,6 +44,7 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 #endif
+#include <BOPAlgo_Builder.hxx>
 
 #include <Base/Console.h>
 #include <Base/Parameter.h>

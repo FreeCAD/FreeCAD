@@ -145,29 +145,6 @@ inline T fmod(T numerator, T denominator)
 
 // ----------------------------------------------------------------------------
 
-class BaseExport StopWatch
-{
-public:
-    StopWatch();
-    ~StopWatch();
-
-    void start();
-    int restart();
-    int elapsed();
-    std::string toString(int ms) const;
-
-    StopWatch(const StopWatch&) = delete;
-    StopWatch(StopWatch&&) = delete;
-    StopWatch& operator=(const StopWatch&) = delete;
-    StopWatch& operator=(StopWatch&&) = delete;
-
-private:
-    struct Private;
-    Private* d;
-};
-
-// ----------------------------------------------------------------------------
-
 // NOLINTBEGIN
 template<typename Flag = bool>
 struct FlagToggler
@@ -297,6 +274,7 @@ struct BaseExport Tools
     static std::string narrow(const std::wstring& str);
     static std::string escapedUnicodeFromUtf8(const char* s);
     static std::string escapedUnicodeToUtf8(const std::string& s);
+    static std::string escapeQuotesFromString(const std::string& s);
 
     static QString escapeEncodeString(const QString& s);
     static std::string escapeEncodeString(const std::string& s);
@@ -345,6 +323,8 @@ struct BaseExport Tools
      * @return
      */
     static std::string joinList(const std::vector<std::string>& vec, const std::string& sep = ", ");
+
+    static std::string currentDateTimeString();
 };
 
 

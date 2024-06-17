@@ -33,6 +33,11 @@
 
 #include "QGIView.h"
 
+class QColor;
+
+namespace App {
+class Color;
+}
 
 namespace TechDraw {
 class DrawViewPart;
@@ -63,6 +68,7 @@ public:
     void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
+    bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
 
 
     void toggleCache(bool state) override;
@@ -85,6 +91,7 @@ public:
     virtual void drawAllHighlights();
     virtual void drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b);
     virtual void drawMatting();
+    virtual void drawBreakLines();
     bool showSection;
 
     void draw() override;
@@ -109,6 +116,14 @@ public:
                                      double x, double y,
                                      double curx, double cury);
 
+    bool getGroupSelection() override;
+    void setGroupSelection(bool isSelected) override;
+    void setGroupSelection(bool isSelected, const std::vector<std::string> &subNames) override;
+
+    virtual QGraphicsItem *getQGISubItemByName(const std::string &subName) const;
+
+    virtual bool removeSelectedCosmetic() const;
+
 protected:
     QPainterPath drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const;
     void drawViewPart();
@@ -123,6 +138,7 @@ protected:
     void removeDecorations();
     bool prefFaceEdges();
     bool prefPrintCenters();
+    App::Color prefBreaklineColor();
 
     bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
     bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);

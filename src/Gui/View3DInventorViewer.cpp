@@ -92,7 +92,6 @@
 
 #include "View3DInventorViewer.h"
 #include "Application.h"
-#include "CornerCrossLetters.h"
 #include "Document.h"
 #include "GLPainter.h"
 #include "MainWindow.h"
@@ -228,7 +227,12 @@ public:
         else if (event->type() == QEvent::KeyPress) {
             auto ke = static_cast<QKeyEvent*>(event);  // NOLINT
             if (ke->matches(QKeySequence::SelectAll)) {
-                static_cast<View3DInventorViewer*>(obj)->selectAll();
+                auto* viewer3d = static_cast<View3DInventorViewer*>(obj);
+                auto* editingVP = viewer3d->getEditingViewProvider();
+                if(!editingVP || !editingVP->selectAll())
+                {
+                    viewer3d->selectAll();
+                }
                 return true;
             }
         }
@@ -1058,6 +1062,7 @@ void View3DInventorViewer::setEditingViewProvider(Gui::ViewProvider* vp, int Mod
 {
     this->editViewProvider = vp;
     this->editViewProvider->setEditViewer(this, ModNum);
+    this->navigation->findBoundingSphere();
     addEventCallback(SoEvent::getClassTypeId(), Gui::ViewProvider::eventCallback,this->editViewProvider);
 }
 
@@ -1086,6 +1091,12 @@ void View3DInventorViewer::resetEditingViewProvider()
 bool View3DInventorViewer::isEditingViewProvider() const
 {
     return this->editViewProvider != nullptr;
+}
+
+/// return currently editing view provider
+ViewProvider* View3DInventorViewer::getEditingViewProvider() const
+{
+    return this->editViewProvider;
 }
 
 /// display override mode
@@ -1963,6 +1974,8 @@ int View3DInventorViewer::getNumSamples()
         return 2;
     case View3DInventorViewer::MSAA4x:
         return 4;
+    case View3DInventorViewer::MSAA6x:
+        return 6;
     case View3DInventorViewer::MSAA8x:
         return 8;
     case View3DInventorViewer::Smoothing:
@@ -2271,7 +2284,6 @@ void View3DInventorViewer::renderFramebuffer()
     glEnd();
 
     printDimension();
-    navigation->redraw();
 
     for (auto it : this->graphicsItems) {
         it->paintGL();
@@ -2305,7 +2317,6 @@ void View3DInventorViewer::renderGLImage()
     glDrawPixels(glImage.width(), glImage.height(), GL_BGRA,GL_UNSIGNED_BYTE, glImage.bits());
 
     printDimension();
-    navigation->redraw();
 
     for (auto it : this->graphicsItems) {
         it->paintGL();
@@ -2403,7 +2414,6 @@ void View3DInventorViewer::renderScene()
     }
 
     printDimension();
-    navigation->redraw();
 
     for (auto it : this->graphicsItems) {
         it->paintGL();
@@ -2646,6 +2656,115 @@ SbVec2f View3DInventorViewer::getNormalizedPosition(const SbVec2s& pnt) const
     // NOLINTEND
 
     return {pX, pY};
+}
+
+SbVec3f View3DInventorViewer::getPointOnXYPlaneOfPlacement(const SbVec2s& pnt, Base::Placement& plc) const
+{
+    SbVec2f pnt2d = getNormalizedPosition(pnt);
+    SoCamera* pCam = this->getSoRenderManager()->getCamera();
+
+    if (!pCam) {
+        // return invalid point
+        return {};
+    }
+
+    SbViewVolume  vol = pCam->getViewVolume();
+    SbLine line;
+    vol.projectPointToLine(pnt2d, line);
+
+    // Calculate the plane using plc
+    Base::Rotation rot = plc.getRotation();
+    Base::Vector3d normalVector = rot.multVec(Base::Vector3d(0, 0, 1));
+    SbVec3f planeNormal(normalVector.x, normalVector.y, normalVector.z);
+
+    // Get the position and convert Base::Vector3d to SbVec3f
+    Base::Vector3d pos = plc.getPosition();
+    SbVec3f planePosition(pos.x, pos.y, pos.z);
+    SbPlane xyPlane(planeNormal, planePosition);
+
+    SbVec3f pt;
+    if (xyPlane.intersect(line, pt)) {
+        return pt; // Intersection point on the XY plane
+    }
+    else {
+        // No intersection found
+        return {};
+    }
+
+    return pt;
+}
+
+SbVec3f projectPointOntoPlane(const SbVec3f& point, const SbPlane& plane) {
+    SbVec3f planeNormal = plane.getNormal();
+    float d = plane.getDistanceFromOrigin();
+    float distance = planeNormal.dot(point) + d;
+    return point - planeNormal * distance;
+}
+
+// Project a line onto a plane
+SbLine projectLineOntoPlane(const SbVec3f& p1, const SbVec3f& p2, const SbPlane& plane) {
+    SbVec3f projectedPoint1 = projectPointOntoPlane(p1, plane);
+    SbVec3f projectedPoint2 = projectPointOntoPlane(p2, plane);
+    return SbLine(projectedPoint1, projectedPoint2);
+}
+
+SbVec3f intersection(const SbVec3f& p11, const SbVec3f& p12, const SbVec3f& p21, const SbVec3f& p22)
+{
+    SbVec3f da = p12 - p11;
+    SbVec3f db = p22 - p21;
+    SbVec3f dc = p21 - p11;
+
+    double s = (dc.cross(db)).dot(da.cross(db)) / da.cross(db).sqrLength();
+    return p11 + da * s;
+}
+
+SbVec3f View3DInventorViewer::getPointOnLine(const SbVec2s& pnt, const SbVec3f& axisCenter, const SbVec3f& axis) const
+{
+    SbVec2f pnt2d = getNormalizedPosition(pnt);
+    SoCamera* pCam = this->getSoRenderManager()->getCamera();
+
+    if (!pCam) {
+        // return invalid point
+        return {};
+    }
+
+    // First we get pnt projection on the focal plane
+    SbViewVolume  vol = pCam->getViewVolume();
+
+    float nearDist = pCam->nearDistance.getValue();
+    float farDist = pCam->farDistance.getValue();
+    float focalDist = pCam->focalDistance.getValue();
+
+    if (focalDist < nearDist || focalDist > farDist) {
+        focalDist = 0.5F * (nearDist + farDist);  // NOLINT
+    }
+
+    SbLine line;
+    SbVec3f pt, ptOnFocalPlaneAndOnLine, ptOnFocalPlane;
+    SbPlane focalPlane = vol.getPlane(focalDist);
+    vol.projectPointToLine(pnt2d, line);
+    focalPlane.intersect(line, ptOnFocalPlane);
+
+    // Check if line is orthogonal to the focal plane
+    SbVec3f focalPlaneNormal = focalPlane.getNormal();
+    float dotProduct = fabs(axis.dot(focalPlaneNormal));
+    if (dotProduct > (1.0 - 1e-6)) {
+        return ptOnFocalPlane;
+    }
+
+    SbLine projectedLine = projectLineOntoPlane(axisCenter, axisCenter + axis, focalPlane);
+    ptOnFocalPlaneAndOnLine = projectedLine.getClosestPoint(ptOnFocalPlane);
+
+    // now we need the intersection point between
+    // - the line passing by ptOnFocalPlaneAndOnLine normal to focalPlane
+    // - The line (axisCenter, axisCenter + axis)
+
+    // Line normal to focal plane through ptOnFocalPlaneAndOnLine
+    SbLine normalLine(ptOnFocalPlaneAndOnLine, ptOnFocalPlaneAndOnLine + focalPlaneNormal);
+    SbLine axisLine(axisCenter, axisCenter + axis);
+    pt = intersection(ptOnFocalPlaneAndOnLine, ptOnFocalPlaneAndOnLine + focalPlaneNormal, axisCenter, axisCenter + axis);
+
+    return pt;
 }
 
 SbVec3f View3DInventorViewer::getPointOnFocalPlane(const SbVec2s& pnt) const
@@ -3233,6 +3352,39 @@ void View3DInventorViewer::viewSelection()
     }
 }
 
+void View3DInventorViewer::alignToSelection()
+{
+    if (!getCamera()) {
+        return;
+    }
+
+    const auto selection = Selection().getSelection();
+
+    // Empty selection
+    if (selection.empty()) {
+        return;
+    }
+
+    // Too much selections
+    if (selection.size() > 1) {
+        return;
+    }
+
+    // Get the geo feature
+    App::GeoFeature* geoFeature = nullptr;
+    std::pair<std::string, std::string> elementName;
+    App::GeoFeature::resolveElement(selection[0].pObject, selection[0].SubName, elementName, false, App::GeoFeature::ElementNameType::Normal, nullptr, nullptr, &geoFeature);
+    if (!geoFeature) {
+        return;
+    }
+
+    Base::Vector3d direction;
+    if (geoFeature->getCameraAlignmentDirection(direction, selection[0].SubName)) {
+        const auto orientation = SbRotation(SbVec3f(0, 0, 1), Base::convertTo<SbVec3f>(direction));
+        setCameraOrientation(orientation);
+    }
+}
+
 /**
  * @brief Decide if it should be possible to start any animation
  *
@@ -3307,11 +3459,15 @@ void View3DInventorViewer::startAnimation(const SbRotation& orientation,
     if (duration < 0) {
         duration = App::GetApplication()
                        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-                       ->GetInt("AnimationDuration", 250);
+                       ->GetInt("AnimationDuration", 500);
     }
 
+    QEasingCurve::Type easingCurve = static_cast<QEasingCurve::Type>(App::GetApplication()
+                         .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                         ->GetInt("NavigationAnimationEasingCurve", QEasingCurve::Type::InOutCubic));
+
     auto animation = std::make_shared<FixedTimeAnimation>(
-        navigation, orientation, rotationCenter, translation, duration);
+        navigation, orientation, rotationCenter, translation, duration, easingCurve);
 
     navigation->startAnimating(animation, wait);
 }
@@ -3425,6 +3581,40 @@ void View3DInventorViewer::setViewing(bool enable)
 
     navigation->setViewingMode(enable ? NavigationStyle::IDLE : NavigationStyle::INTERACT);
     inherited::setViewing(enable);
+}
+
+unsigned char View3DInventorViewer::XPM_pixel_data[XPM_WIDTH * XPM_HEIGHT * XPM_BYTES_PER_PIXEL + 1] = {};
+unsigned char View3DInventorViewer::YPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1] = {};
+unsigned char View3DInventorViewer::ZPM_pixel_data[ZPM_WIDTH * ZPM_HEIGHT * ZPM_BYTES_PER_PIXEL + 1] = {};
+
+void View3DInventorViewer::setAxisLetterColor(const SbColor& color)
+{
+    unsigned packed = color.getPackedValue();
+
+    auto recolor =
+        [&](const unsigned char* mask,
+            unsigned char* data,
+            unsigned width,
+            unsigned height,
+            unsigned bitdepth) {
+            for (unsigned y = 0; y < height; y++) {
+                for (unsigned x = 0; x < width; x++) {
+                    unsigned offset = (y * width + x) * bitdepth;
+                    
+                    const unsigned char* src = &mask[offset];
+                    unsigned char* dst = &data[offset];
+
+                    dst[0] = (packed >> 24) & 0xFF;  // RR - from color
+                    dst[1] = (packed >> 16) & 0xFF;  // GG - from color
+                    dst[2] = (packed >> 8) & 0xFF;   // BB - from color
+                    dst[3] = src[3];                 // AA - from mask
+                }
+            }
+        };
+
+    recolor(XPM_PIXEL_MASK, XPM_pixel_data, XPM_WIDTH, XPM_HEIGHT, XPM_BYTES_PER_PIXEL);
+    recolor(YPM_PIXEL_MASK, YPM_pixel_data, YPM_WIDTH, YPM_HEIGHT, YPM_BYTES_PER_PIXEL);
+    recolor(ZPM_PIXEL_MASK, ZPM_pixel_data, ZPM_WIDTH, ZPM_HEIGHT, ZPM_BYTES_PER_PIXEL);
 }
 
 void View3DInventorViewer::drawAxisCross()
@@ -3584,11 +3774,11 @@ void View3DInventorViewer::drawAxisCross()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glPixelZoom((float)axiscrossSize / 30, (float)axiscrossSize / 30); // 30 = 3 (character pixmap ratio) * 10 (default axiscrossSize)
     glRasterPos2d(xpos[0], xpos[1]);
-    glDrawPixels(XPM_WIDTH, XPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, XPM_PIXEL_DATA);
+    glDrawPixels(XPM_WIDTH, XPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, XPM_pixel_data);
     glRasterPos2d(ypos[0], ypos[1]);
-    glDrawPixels(YPM_WIDTH, YPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, YPM_PIXEL_DATA);
+    glDrawPixels(YPM_WIDTH, YPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, YPM_pixel_data);
     glRasterPos2d(zpos[0], zpos[1]);
-    glDrawPixels(ZPM_WIDTH, ZPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, ZPM_PIXEL_DATA);
+    glDrawPixels(ZPM_WIDTH, ZPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, ZPM_pixel_data);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, unpack);
     glPopMatrix();
@@ -3942,4 +4132,4 @@ void View3DInventorViewer::dragLeaveEvent(QDragLeaveEvent* ev)
     inherited::dragLeaveEvent(ev);
 }
 
-#include "moc_View3DInventorViewer.cpp"
+#include "moc_View3DInventorViewer.cpp" // NOLINT

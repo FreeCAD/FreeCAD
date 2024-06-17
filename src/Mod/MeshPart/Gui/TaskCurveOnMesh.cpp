@@ -97,9 +97,7 @@ void CurveOnMeshWidget::reject()
 TaskCurveOnMesh::TaskCurveOnMesh(Gui::View3DInventor* view)
 {
     widget = new CurveOnMeshWidget(view);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget);
 }
 
 bool TaskCurveOnMesh::reject()

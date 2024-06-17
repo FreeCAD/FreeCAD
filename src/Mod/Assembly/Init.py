@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# /****************************************************************************
+# /**************************************************************************
 #                                                                           *
 #    Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
 #                                                                           *
@@ -19,7 +19,7 @@
 #    License along with FreeCAD. If not, see                                *
 #    <https://www.gnu.org/licenses/>.                                       *
 #                                                                           *
-# ***************************************************************************/
+# **************************************************************************/
 
 # Get the Parameter Group of this module
 ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Assembly")

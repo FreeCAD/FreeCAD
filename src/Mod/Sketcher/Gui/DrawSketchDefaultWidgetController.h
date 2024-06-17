@@ -28,6 +28,8 @@
 
 #include "DrawSketchController.h"
 
+#include "DrawSketchKeyboardManager.h"
+
 namespace SketcherGui
 {
 
@@ -89,7 +91,7 @@ public:
                                                 ConstructionMethodT>;
     //@}
 
-protected:
+private:
     int nParameter = WidgetParametersT::defaultMethodSize();
     int nCheckbox = WidgetCheckboxesT::defaultMethodSize();
     int nCombobox = WidgetComboboxesT::defaultMethodSize();
@@ -98,6 +100,7 @@ protected:
 
     using Connection = boost::signals2::connection;
 
+    Connection connectionParameterTabOrEnterPressed;
     Connection connectionParameterValueChanged;
     Connection connectionCheckboxCheckedChanged;
     Connection connectionComboboxSelectionChanged;
@@ -115,10 +118,17 @@ protected:
 public:
     explicit DrawSketchDefaultWidgetController(HandlerT* dshandler)
         : ControllerBase(dshandler)
+        , toolWidget(nullptr)
     {}
+
+    DrawSketchDefaultWidgetController(const DrawSketchDefaultWidgetController&) = delete;
+    DrawSketchDefaultWidgetController(DrawSketchDefaultWidgetController&&) = delete;
+    DrawSketchDefaultWidgetController& operator=(const DrawSketchDefaultWidgetController&) = delete;
+    DrawSketchDefaultWidgetController& operator=(DrawSketchDefaultWidgetController&&) = delete;
 
     ~DrawSketchDefaultWidgetController() override
     {
+        connectionParameterTabOrEnterPressed.disconnect();
         connectionParameterValueChanged.disconnect();
         connectionCheckboxCheckedChanged.disconnect();
         connectionComboboxSelectionChanged.disconnect();
@@ -137,7 +147,19 @@ public:
     {
         adaptDrawingToParameterChange(parameterindex, value);  // specialisation interface
 
+        // we block the auto passing of focus back to OVP that would occur in mouseMove
+        // triggered in finishControlsChanged
+        ControllerBase::focusAutoPassing = false;
+
         ControllerBase::finishControlsChanged();
+
+        ControllerBase::focusAutoPassing = true;
+    }
+
+    void parameterTabOrEnterPressed(int parameterindex)
+    {
+        Q_UNUSED(parameterindex);
+        passFocusToNextParameter();
     }
 
     /** boost slot triggering when a checkbox has changed in the widget
@@ -212,7 +234,7 @@ public:
         Q_UNUSED(onSketchPos)
     }
 
-    /** on first shortcut, it toggles the first checkbox if there is go. Must be specialised if
+    /** on first shortcut, it toggles the first checkbox if there is one. Must be specialised if
      * this is not intended */
     void firstKeyShortcut() override
     {
@@ -222,7 +244,7 @@ public:
         }
     }
 
-    /** on second shortcut, it toggles the second checkbox if there is go. Must be specialised if
+    /** on second shortcut, it toggles the second checkbox if there is one. Must be specialised if
      * this is not intended */
     void secondKeyShortcut() override
     {
@@ -230,6 +252,32 @@ public:
             auto secondchecked = toolWidget->getCheckboxChecked(WCheckbox::SecondBox);
             toolWidget->setCheckboxChecked(WCheckbox::SecondBox, !secondchecked);
         }
+    }
+
+    /** on third shortcut, it toggles the third checkbox if there is one. Must be specialised if
+     * this is not intended */
+    void thirdKeyShortcut() override
+    {
+        if (nCheckbox >= 3) {
+            auto thirdchecked = toolWidget->getCheckboxChecked(WCheckbox::ThirdBox);
+            toolWidget->setCheckboxChecked(WCheckbox::ThirdBox, !thirdchecked);
+        }
+    }
+
+    /** on fourth shortcut, it toggles the fourth checkbox if there is one. Must be specialised if
+     * this is not intended */
+    void fourthKeyShortcut() override
+    {
+        if (nCheckbox >= 4) {
+            auto fourthchecked = toolWidget->getCheckboxChecked(WCheckbox::FourthBox);
+            toolWidget->setCheckboxChecked(WCheckbox::FourthBox, !fourthchecked);
+        }
+    }
+
+    /** on tab, we cycle through OVP and widget parameters */
+    void tabShortcut() override
+    {
+        passFocusToNextParameter();
     }
 
     //@}
@@ -254,13 +302,69 @@ protected:
     /// Automatic default method update in combobox
     void doConstructionMethodChanged() override
     {}
+
+    /// here we can pass focus to either OVP or widget parameters.
+    void setFocusToParameter(unsigned int parameterindex)
+    {
+        // To be able to cycle through OVP and widget, we use a parameter index that goes from
+        // 0 to (onViewParameters.size() + nParameter)
+        if (!ControllerBase::setFocusToOnViewParameter(parameterindex)) {
+            parameterindex = parameterindex - ControllerBase::onViewParameters.size();
+
+            if (parameterindex < static_cast<unsigned int>(nParameter)) {
+                toolWidget->setParameterFocus(parameterindex);
+                ControllerBase::parameterWithFocus =
+                    ControllerBase::onViewParameters.size() + parameterindex;
+            }
+        }
+    }
+
+    /// Here we can pass focus to either OVP or widget parameters.
+    void passFocusToNextParameter()
+    {
+        unsigned int index = ControllerBase::parameterWithFocus + 1;
+
+        if (index >= ControllerBase::onViewParameters.size() + nParameter) {
+            index = 0;
+        }
+
+        auto trySetFocus = [this](unsigned int& idx) -> bool {
+            while (idx < ControllerBase::onViewParameters.size()) {
+                if (ControllerBase::isOnViewParameterOfCurrentMode(idx)
+                    && ControllerBase::isOnViewParameterVisible(idx)) {
+                    setFocusToParameter(idx);
+                    return true;
+                }
+                idx++;
+            }
+            if (idx < ControllerBase::onViewParameters.size() + nParameter) {
+                setFocusToParameter(idx);
+                return true;
+            }
+            return false;
+        };
+
+        if (!trySetFocus(index)) {
+            // We have not found a parameter in this mode after current.
+            // So we go back to start and retry.
+            index = 0;
+            trySetFocus(index);
+        }
+
+        // At that point if no onViewParameter is found, there is none.
+    }
     //@}
 
 private:
     /// Initialisation of the widget
     void initDefaultWidget(QWidget* widget)
     {
-        toolWidget = static_cast<SketcherToolDefaultWidget*>(widget);
+        toolWidget = static_cast<SketcherToolDefaultWidget*>(widget);  // NOLINT
+
+        connectionParameterTabOrEnterPressed = toolWidget->registerParameterTabOrEnterPressed(
+            std::bind(&DrawSketchDefaultWidgetController::parameterTabOrEnterPressed,
+                      this,
+                      sp::_1));
 
         connectionParameterValueChanged = toolWidget->registerParameterValueChanged(
             std::bind(&DrawSketchDefaultWidgetController::parameterValueChanged,
@@ -284,6 +388,8 @@ private:
     /// Resets the widget
     void resetDefaultWidget()
     {
+        boost::signals2::shared_connection_block parameter_focus_block(
+            connectionParameterTabOrEnterPressed);
         boost::signals2::shared_connection_block parameter_block(connectionParameterValueChanged);
         boost::signals2::shared_connection_block checkbox_block(connectionCheckboxCheckedChanged);
         boost::signals2::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
@@ -292,7 +398,7 @@ private:
         nCheckbox = WidgetCheckboxesT::size(handler->constructionMethod());
         nCombobox = WidgetComboboxesT::size(handler->constructionMethod());
 
-        toolWidget->initNParameters(nParameter);
+        toolWidget->initNParameters(nParameter, ControllerBase::getKeyManager());
         toolWidget->initNCheckboxes(nCheckbox);
         toolWidget->initNComboboxes(nCombobox);
 

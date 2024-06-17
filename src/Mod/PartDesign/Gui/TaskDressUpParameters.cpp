@@ -140,6 +140,39 @@ void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, 
 
 void TaskDressUpParameters::addAllEdges(QListWidget* widget)
 {
+#ifdef FC_USE_TNP_FIX
+    Q_UNUSED(widget)
+
+    if (!DressUpView) {
+        return;
+    }
+
+    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
+    App::DocumentObject* base = pcDressUp->Base.getValue();
+    if (!base) {
+        return;
+    }
+    int count = Part::Feature::getTopoShape(base).countSubShapes(TopAbs_EDGE);
+    auto subValues = pcDressUp->Base.getSubValues(false);
+    std::size_t len = subValues.size();
+    for (int i = 0; i < count; ++i) {
+        std::string name = "Edge" + std::to_string(i+1);
+        if (std::find(subValues.begin(), subValues.begin() + len, name)
+            == subValues.begin() + len) {
+            subValues.push_back(name);
+        }
+    }
+    if (subValues.size() == len) {
+        return;
+    }
+    try {
+        setupTransaction();
+        pcDressUp->Base.setValue(base, subValues);
+    }
+    catch (Base::Exception& e) {
+        e.ReportException();
+    }
+#else
     PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
 
     Gui::WaitCursor wait;
@@ -160,6 +193,7 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
     }
 
     updateFeature(pcDressUp, edgeNames);
+#endif
 }
 
 void TaskDressUpParameters::deleteRef(QListWidget* widget)

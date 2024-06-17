@@ -85,6 +85,13 @@ void ViewProviderFemHighlighter::highlightView(Gui::ViewProviderDocumentObject* 
     }
 }
 
+void ViewProviderFemHighlighter::removeView(Gui::ViewProviderDocumentObject* view)
+{
+    if (view) {
+        annotate->removeChild(view->getRoot());
+    }
+}
+
 // ----------------------------------------------------------------------------
 
 /* TRANSLATOR FemGui::ViewProviderFemAnalysis */
@@ -103,16 +110,16 @@ void ViewProviderFemAnalysis::attach(App::DocumentObject* obj)
 {
     Gui::ViewProviderDocumentObjectGroup::attach(obj);
     extension.attach(this);
-    // activate analysis if currently active workbench is FEM
-    auto* workbench = Gui::WorkbenchManager::instance()->active();
-    if (workbench->name() == "FemWorkbench") {
-        doubleClicked();
-    }
 }
 
 void ViewProviderFemAnalysis::highlightView(Gui::ViewProviderDocumentObject* view)
 {
     extension.highlightView(view);
+}
+
+void ViewProviderFemAnalysis::removeView(Gui::ViewProviderDocumentObject* view)
+{
+    extension.removeView(view);
 }
 
 bool ViewProviderFemAnalysis::doubleClicked()

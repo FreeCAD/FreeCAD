@@ -28,11 +28,14 @@
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Wire.hxx>
+#include <QCoreApplication>
 
 #include <memory>
 #include <Base/BaseClass.h>
 #include <Mod/Part/PartGlobal.h>
 
+#include <App/StringHasher.h>
+#include "TopoShape.h"
 
 namespace Part
 {
@@ -47,11 +50,17 @@ namespace Part
  */
 class PartExport FaceMaker: public BRepBuilderAPI_MakeShape, public Base::BaseClass
 {
+    Q_DECLARE_TR_FUNCTIONS(FaceMaker)
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    FaceMaker() = default;
-    ~FaceMaker() override = default;
+    FaceMaker() {}
+    ~FaceMaker() override {}
+
+    void addTopoShape(const TopoShape &s);
+    void useTopoCompound(const TopoShape &comp);
+    const TopoShape &getTopoShape() const;
+    const TopoShape &TopoFace() const;
 
     virtual void addWire(const TopoDS_Wire& w);
     /**
@@ -68,6 +77,8 @@ public:
      * @param comp
      */
     virtual void useCompound(const TopoDS_Compound &comp);
+
+    virtual void setPlane(const gp_Pln &) {}
 
     /**
      * @brief Face: returns the face (result). If result is not a single face,
@@ -90,11 +101,18 @@ public:
     static std::unique_ptr<FaceMaker> ConstructFromType(const char* className);
     static std::unique_ptr<FaceMaker> ConstructFromType(Base::Type type);
 
+    const char *MyOp = 0;
+    App::StringHasherRef MyHasher;
+
 protected:
-    std::vector<TopoDS_Shape> mySourceShapes; //wire or compound
+    std::vector<TopoShape> mySourceShapes; //wire or compound
     std::vector<TopoDS_Wire> myWires; //wires from mySourceShapes
+    std::vector<TopoShape> myTopoWires;
     std::vector<TopoDS_Compound> myCompounds; //compounds, for recursive processing
     std::vector<TopoDS_Shape> myShapesToReturn;
+    std::vector<TopoDS_Shape> myInputFaces;
+    TopoShape myTopoShape;
+    int minElementNames = 1;
 
     /**
      * @brief Build_Essence: build routine that can assume there is no nesting.
@@ -106,6 +124,7 @@ protected:
      * whole Build().
      */
     virtual void Build_Essence() = 0;
+    void postBuild();
 
     static void throwNotImplemented();
 };

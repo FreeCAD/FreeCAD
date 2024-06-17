@@ -72,7 +72,7 @@ jobs:
 
     steps:
       - name: Checking out source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
       - name: Install FreeCAD dependencies
@@ -133,14 +133,9 @@ jobs:
                             python3-pyside2.qtgui                       \
                             python3-pyside2.qtnetwork                   \
                             python3-pyside2.qtsvg                       \
-                            python3-pyside2.qtwebchannel                \
-                            python3-pyside2.qtwebengine                 \
-                            python3-pyside2.qtwebenginecore             \
-                            python3-pyside2.qtwebenginewidgets          \
                             python3-pyside2.qtwidgets                   \
                             qtbase5-dev                                 \
                             qttools5-dev                                \
-                            qtwebengine5-dev                            \
                             shiboken2                                   \
                             swig                                        \
                             xvfb
@@ -159,8 +154,9 @@ jobs:
         with:
           compiler: ${{ env.CXX }}
       - name: Restore Compiler Cache
-        uses: pat-s/always-upload-cache@v3
+        uses: actions/cache@v4
         with:
+          save-always: true
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
           restore-keys: |
@@ -239,7 +235,7 @@ jobs:
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
@@ -247,7 +243,7 @@ jobs:
             /var/crash/*FreeCAD*
       - name: Upload report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.reportfilename }}
           path: |

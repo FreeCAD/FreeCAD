@@ -194,6 +194,9 @@ public:
     bool IsNull() const;
     /// Get angle between both vectors. The returned value lies in the interval [0,pi].
     float_type GetAngle(const Vector3& rcVect) const;
+    /// Get oriented angle between both vectors using a normal. The returned value lies in the
+    /// interval [0,2*pi].
+    float_type GetAngleOriented(const Vector3& rcVect, const Vector3& norm) const;
     /** Transforms this point to the coordinate system defined by origin \a rclBase,
      * vector \a vector rclDirX and vector \a vector rclDirY.
      * \note \a rclDirX must be perpendicular to \a rclDirY, i.e. \a rclDirX * \a rclDirY = 0..
@@ -210,6 +213,12 @@ public:
      * equal.
      */
     bool IsEqual(const Vector3& rclPnt, float_type tol) const;
+    /// Returns true if two vectors are parallel within the tol
+    /// If one of the vectors is the null vector then false is returned.
+    bool IsParallel(const Vector3& rclDir, float_type tol) const;
+    /// Returns true if two vectors are normal within the tol
+    /// If one of the vectors is the null vector then false is returned.
+    bool IsNormal(const Vector3& rclDir, float_type tol) const;
     /// Projects this point onto the plane given by the base \a rclBase and the normal \a rclNorm.
     Vector3& ProjectToPlane(const Vector3& rclBase, const Vector3& rclNorm);
     /**

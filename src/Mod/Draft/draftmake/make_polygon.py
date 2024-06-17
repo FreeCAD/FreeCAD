@@ -74,7 +74,7 @@ def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, su
         obj.DrawMode = "inscribed"
     else:
         obj.DrawMode = "circumscribed"
-    obj.Support = support
+    obj.AttachmentSupport = support
     if placement: obj.Placement = placement
     if App.GuiUp:
         ViewProviderDraft(obj.ViewObject)

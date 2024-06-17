@@ -31,12 +31,13 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import os
-import FreeCAD
+import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
 import Draft_rc
 from draftguitools import gui_base
 from draftutils import params
+from draftutils import utils
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -59,25 +60,25 @@ class Layer(gui_base.GuiCommandSimplest):
     """GuiCommand to create a Layer object in the document."""
 
     def __init__(self):
-        super(Layer, self).__init__(name=translate("draft","Layer"))
+        super().__init__(name=translate("draft", "Layer"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {'Pixmap': 'Draft_Layer',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Layer", "Layer"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Layer", "Adds a layer to the document.\nObjects added to this layer can share the same visual properties such as line color, line width, and shape color.")}
+        return {"Pixmap": "Draft_Layer",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Layer", "Layer"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Layer", "Adds a layer to the document.\nObjects added to this layer can share the same visual properties.")}
 
     def Activated(self):
         """Execute when the command is called.
 
         It calls the `finish(False)` method of the active Draft command.
         """
-        super(Layer, self).Activated()
+        super().Activated()
 
         self.doc.openTransaction("Create Layer")
         Gui.addModule("Draft")
-        Gui.doCommand('_layer_ = Draft.make_layer()')
-        Gui.doCommand('FreeCAD.ActiveDocument.recompute()')
+        Gui.doCommand("_layer_ = Draft.make_layer(name=None, line_color=None, shape_color=None, line_width=None, draw_style=None, transparency=None)")
+        Gui.doCommand("FreeCAD.ActiveDocument.recompute()")
         self.doc.commitTransaction()
 
 
@@ -87,13 +88,17 @@ class LayerManager:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Draft_LayerManager',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_LayerManager", "Manage layers..."),
-                'ToolTip' : QT_TRANSLATE_NOOP("Draft_LayerManager", "Set/modify the different layers of this document")}
+        return {"Pixmap"  : "Draft_LayerManager",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_LayerManager", "Manage layers..."),
+                "ToolTip" : QT_TRANSLATE_NOOP("Draft_LayerManager", "Set/modify the different layers of this document")}
+
+    def IsActive(self):
+        """Return True when this command should be available."""
+        return bool(App.activeDocument())
 
     def Activated(self):
 
-        from PySide import QtCore, QtGui
+        from PySide import QtCore, QtGui, QtWidgets
 
         # store changes to be committed
         self.deleteList = []
@@ -137,7 +142,7 @@ class LayerManager:
         self.dialog.tree.setItemDelegate(Layers_Delegate())
         self.dialog.tree.setItemsExpandable(False)
         self.dialog.tree.setRootIsDecorated(False) # removes spacing in first column
-        self.dialog.tree.setSelectionMode(QtGui.QTreeView.ExtendedSelection) # allow to select many
+        self.dialog.tree.setSelectionMode(QtWidgets.QTreeView.ExtendedSelection) # allow to select many
 
         # fill the tree view
         self.update()
@@ -149,14 +154,15 @@ class LayerManager:
 
         "when OK button is pressed"
 
+        doc = App.ActiveDocument
         changed = False
 
         # delete layers
         for name in self.deleteList:
             if not changed:
-                FreeCAD.ActiveDocument.openTransaction("Layers change")
+                doc.openTransaction("Layers change")
                 changed = True
-            FreeCAD.ActiveDocument.removeObject(name)
+            doc.removeObject(name)
 
         # apply changes
         for row in range(self.model.rowCount()):
@@ -165,92 +171,94 @@ class LayerManager:
             name = self.model.item(row,1).toolTip()
             obj = None
             if name:
-                obj = FreeCAD.ActiveDocument.getObject(name)
+                obj = doc.getObject(name)
             if not obj:
                 if not changed:
-                    FreeCAD.ActiveDocument.openTransaction("Layers change")
+                    doc.openTransaction("Layers change")
                     changed = True
-                obj = Draft.make_layer()
+                obj = Draft.make_layer(name=None, line_color=None, shape_color=None,
+                                       line_width=None, draw_style=None, transparency=None)
+            vobj = obj.ViewObject
 
             # visibility
             checked = True if self.model.item(row,0).checkState() == QtCore.Qt.Checked else False
-            if checked != obj.ViewObject.Visibility:
+            if checked != vobj.Visibility:
                 if not changed:
-                    FreeCAD.ActiveDocument.openTransaction("Layers change")
+                    doc.openTransaction("Layers change")
                     changed = True
-                obj.ViewObject.Visibility = checked
+                vobj.Visibility = checked
 
             # label
             label = self.model.item(row,1).text()
             if label:
                 if obj.Label != label:
                     if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
+                        doc.openTransaction("Layers change")
                         changed = True
                     obj.Label = label
 
             # line width
             width = self.model.item(row,2).data(QtCore.Qt.DisplayRole)
             if width:
-                if obj.ViewObject.LineWidth != width:
+                if vobj.LineWidth != width:
                     if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
+                        doc.openTransaction("Layers change")
                         changed = True
-                    obj.ViewObject.LineWidth = width
+                    vobj.LineWidth = width
 
             # draw style
             style = self.model.item(row,3).text()
             if style:
-                if obj.ViewObject.DrawStyle != style:
+                if vobj.DrawStyle != style:
                     if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
+                        doc.openTransaction("Layers change")
                         changed = True
-                    obj.ViewObject.DrawStyle = style
+                    vobj.DrawStyle = style
 
             # line color
             color = self.model.item(row,4).data(QtCore.Qt.UserRole)
             if color:
-                if obj.ViewObject.LineColor[3:] != color:
+                if vobj.LineColor[:3] != color:
                     if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
+                        doc.openTransaction("Layers change")
                         changed = True
-                    obj.ViewObject.LineColor = color
+                    vobj.LineColor = color
 
             # shape color
             color = self.model.item(row,5).data(QtCore.Qt.UserRole)
             if color:
-                if obj.ViewObject.ShapeColor[3:] != color:
+                if vobj.ShapeColor[:3] != color:
                     if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
+                        doc.openTransaction("Layers change")
                         changed = True
-                    obj.ViewObject.ShapeColor = color
+                    vobj.ShapeColor = color
 
             # transparency
             transparency = self.model.item(row,6).data(QtCore.Qt.DisplayRole)
             if transparency:
-                if obj.ViewObject.Transparency != transparency:
+                if vobj.Transparency != transparency:
                     if not changed:
-                        FreeCAD.ActiveDocument.openTransaction("Layers change")
+                        doc.openTransaction("Layers change")
                         changed = True
-                    obj.ViewObject.Transparency = transparency
+                    vobj.Transparency = transparency
 
             # line print color
             color = self.model.item(row,7).data(QtCore.Qt.UserRole)
             if color:
-                if not "LinePrintColor" in obj.ViewObject.PropertiesList:
-                    if hasattr(obj.ViewObject.Proxy,"set_properties"):
-                        obj.ViewObject.Proxy.set_properties(obj.ViewObject)
-                if "LinePrintColor" in obj.ViewObject.PropertiesList:
-                    if obj.ViewObject.LinePrintColor[3:] != color:
+                if not "LinePrintColor" in vobj.PropertiesList:
+                    if hasattr(vobj.Proxy,"set_properties"):
+                        vobj.Proxy.set_properties(vobj)
+                if "LinePrintColor" in vobj.PropertiesList:
+                    if vobj.LinePrintColor[:3] != color:
                         if not changed:
-                            FreeCAD.ActiveDocument.openTransaction("Layers change")
+                            doc.openTransaction("Layers change")
                             changed = True
-                        obj.ViewObject.LinePrintColor = color
+                        vobj.LinePrintColor = color
 
         # recompute
         if changed:
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
+            doc.commitTransaction()
+            doc.recompute()
 
         # exit
         self.dialog.reject()
@@ -285,7 +293,7 @@ class LayerManager:
         self.dialog.tree.setColumnWidth(1,128) # name column
 
         # populate
-        objs = [obj for obj in FreeCAD.ActiveDocument.Objects if Draft.getType(obj) == "Layer"]
+        objs = [obj for obj in App.ActiveDocument.Objects if Draft.getType(obj) == "Layer"]
         objs.sort(key=lambda o:o.Label)
         for obj in objs:
             self.addItem(obj)
@@ -303,7 +311,7 @@ class LayerManager:
         nameItem = QtGui.QStandardItem(translate("Draft", "New Layer"))
         widthItem = QtGui.QStandardItem()
         widthItem.setData(params.get_param_view("DefaultShapeLineWidth"), QtCore.Qt.DisplayRole)
-        styleItem = QtGui.QStandardItem("Solid")
+        styleItem = QtGui.QStandardItem(utils.DRAW_STYLES[params.get_param("DefaultDrawStyle")])
         lineColorItem = QtGui.QStandardItem()
         lineColorItem.setData(
             utils.get_rgba_tuple(params.get_param_view("DefaultShapeLineColor"))[:3],
@@ -315,7 +323,10 @@ class LayerManager:
             QtCore.Qt.UserRole
         )
         transparencyItem = QtGui.QStandardItem()
-        transparencyItem.setData(0, QtCore.Qt.DisplayRole)
+        transparencyItem.setData(
+            params.get_param_view("DefaultShapeTransparency"),
+            QtCore.Qt.DisplayRole
+        )
         linePrintColorItem = QtGui.QStandardItem()
         linePrintColorItem.setData(
             utils.get_rgba_tuple(params.get_param("DefaultPrintColor"))[:3],
@@ -324,16 +335,17 @@ class LayerManager:
 
         # populate with object data
         if obj:
-            onItem.setCheckState(QtCore.Qt.Checked if obj.ViewObject.Visibility else QtCore.Qt.Unchecked)
+            vobj = obj.ViewObject
+            onItem.setCheckState(QtCore.Qt.Checked if vobj.Visibility else QtCore.Qt.Unchecked)
             nameItem.setText(obj.Label)
             nameItem.setToolTip(obj.Name)
-            widthItem.setData(obj.ViewObject.LineWidth,QtCore.Qt.DisplayRole)
-            styleItem.setText(obj.ViewObject.DrawStyle)
-            lineColorItem.setData(obj.ViewObject.LineColor[:3],QtCore.Qt.UserRole)
-            shapeColorItem.setData(obj.ViewObject.ShapeColor[:3],QtCore.Qt.UserRole)
-            transparencyItem.setData(obj.ViewObject.Transparency,QtCore.Qt.DisplayRole)
-            if hasattr(obj.ViewObject,"LinePrintColor"):
-                linePrintColorItem.setData(obj.ViewObject.LinePrintColor[:3],QtCore.Qt.UserRole)
+            widthItem.setData(vobj.LineWidth,QtCore.Qt.DisplayRole)
+            styleItem.setText(vobj.DrawStyle)
+            lineColorItem.setData(vobj.LineColor[:3],QtCore.Qt.UserRole)
+            shapeColorItem.setData(vobj.ShapeColor[:3],QtCore.Qt.UserRole)
+            transparencyItem.setData(vobj.Transparency,QtCore.Qt.DisplayRole)
+            if hasattr(vobj,"LinePrintColor"):
+                linePrintColorItem.setData(vobj.LinePrintColor[:3],QtCore.Qt.UserRole)
         lineColorItem.setIcon(getColorIcon(lineColorItem.data(QtCore.Qt.UserRole)))
         shapeColorItem.setIcon(getColorIcon(shapeColorItem.data(QtCore.Qt.UserRole)))
         linePrintColorItem.setIcon(getColorIcon(linePrintColorItem.data(QtCore.Qt.UserRole)))
@@ -374,7 +386,7 @@ class LayerManager:
 
         "toggle selected layers on/off"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         state = None
         for index in self.dialog.tree.selectedIndexes():
@@ -391,7 +403,7 @@ class LayerManager:
 
         "isolates the selected layers (turns all the others off"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtCore
 
         onrows = []
         for index in self.dialog.tree.selectedIndexes():
@@ -402,17 +414,17 @@ class LayerManager:
                 self.model.item(row,0).setCheckState(QtCore.Qt.Unchecked)
 
 
-if FreeCAD.GuiUp:
+if App.GuiUp:
 
-    from PySide import QtCore, QtGui
+    from PySide import QtCore, QtGui, QtWidgets
 
-    class Layers_Delegate(QtGui.QStyledItemDelegate):
+    class Layers_Delegate(QtWidgets.QStyledItemDelegate):
 
         "model delegate"
 
         def __init__(self, parent=None, *args):
 
-            QtGui.QStyledItemDelegate.__init__(self, parent, *args)
+            QtWidgets.QStyledItemDelegate.__init__(self, parent, *args)
             # setEditorData() is triggered several times.
             # But we want to show the color dialog only the first time
             self.first = True
@@ -420,26 +432,26 @@ if FreeCAD.GuiUp:
         def createEditor(self,parent,option,index):
 
             if index.column() == 0: # Layer on/off
-                editor = QtGui.QCheckBox(parent)
+                editor = QtWidgets.QCheckBox(parent)
             if index.column() == 1: # Layer name
-                editor = QtGui.QLineEdit(parent)
+                editor = QtWidgets.QLineEdit(parent)
             elif index.column() == 2: # Line width
-                editor = QtGui.QSpinBox(parent)
+                editor = QtWidgets.QSpinBox(parent)
                 editor.setMaximum(99)
             elif index.column() == 3: # Line style
-                editor = QtGui.QComboBox(parent)
-                editor.addItems(["Solid","Dashed","Dotted","Dashdot"])
+                editor = QtWidgets.QComboBox(parent)
+                editor.addItems(utils.DRAW_STYLES)
             elif index.column() == 4: # Line color
-                editor = QtGui.QLineEdit(parent)
+                editor = QtWidgets.QLineEdit(parent)
                 self.first = True
             elif index.column() == 5: # Shape color
-                editor = QtGui.QLineEdit(parent)
+                editor = QtWidgets.QLineEdit(parent)
                 self.first = True
             elif index.column() == 6: # Transparency
-                editor = QtGui.QSpinBox(parent)
+                editor = QtWidgets.QSpinBox(parent)
                 editor.setMaximum(100)
             elif index.column() == 7: # Line print color
-                editor = QtGui.QLineEdit(parent)
+                editor = QtWidgets.QLineEdit(parent)
                 self.first = True
             return editor
 
@@ -452,19 +464,19 @@ if FreeCAD.GuiUp:
             elif index.column() == 2: # Line width
                 editor.setValue(index.data())
             elif index.column() == 3: # Line style
-                editor.setCurrentIndex(["Solid","Dashed","Dotted","Dashdot"].index(index.data()))
+                editor.setCurrentIndex(utils.DRAW_STYLES.index(index.data()))
             elif index.column() == 4: # Line color
                 editor.setText(str(index.data(QtCore.Qt.UserRole)))
                 if self.first:
                     c = index.data(QtCore.Qt.UserRole)
-                    color = QtGui.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
+                    color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
                     editor.setText(str(color.getRgbF()))
                     self.first = False
             elif index.column() == 5: # Shape color
                 editor.setText(str(index.data(QtCore.Qt.UserRole)))
                 if self.first:
                     c = index.data(QtCore.Qt.UserRole)
-                    color = QtGui.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
+                    color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
                     editor.setText(str(color.getRgbF()))
                     self.first = False
             elif index.column() == 6: # Transparency
@@ -473,7 +485,7 @@ if FreeCAD.GuiUp:
                 editor.setText(str(index.data(QtCore.Qt.UserRole)))
                 if self.first:
                     c = index.data(QtCore.Qt.UserRole)
-                    color = QtGui.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
+                    color = QtWidgets.QColorDialog.getColor(QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255)))
                     editor.setText(str(color.getRgbF()))
                     self.first = False
 
@@ -486,7 +498,7 @@ if FreeCAD.GuiUp:
             elif index.column() == 2: # Line width
                 model.setData(index,editor.value())
             elif index.column() == 3: # Line style
-                model.setData(index,["Solid","Dashed","Dotted","Dashdot"][editor.currentIndex()])
+                model.setData(index,utils.DRAW_STYLES[editor.currentIndex()])
             elif index.column() == 4: # Line color
                 model.setData(index,eval(editor.text()),QtCore.Qt.UserRole)
                 model.itemFromIndex(index).setIcon(getColorIcon(eval(editor.text())))
@@ -498,8 +510,6 @@ if FreeCAD.GuiUp:
             elif index.column() == 7: # Line prin color
                 model.setData(index,eval(editor.text()),QtCore.Qt.UserRole)
                 model.itemFromIndex(index).setIcon(getColorIcon(eval(editor.text())))
-
-
 
 
 Gui.addCommand('Draft_Layer', Layer())

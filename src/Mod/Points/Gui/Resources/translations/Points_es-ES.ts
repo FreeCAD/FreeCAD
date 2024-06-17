@@ -11,13 +11,13 @@
     <message>
       <location filename="../../Command.cpp" line="207"/>
       <source>Convert to points...</source>
-      <translation>Convertir en puntos...</translation>
+      <translation>Convertir a puntos...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="208"/>
       <location filename="../../Command.cpp" line="210"/>
       <source>Convert to points</source>
-      <translation>Convertir en puntos</translation>
+      <translation>Convertir a puntos</translation>
     </message>
   </context>
   <context>
@@ -87,7 +87,7 @@
     <message>
       <location filename="../../Command.cpp" line="295"/>
       <source>Cut point cloud</source>
-      <translation>Cortar una nube de puntos</translation>
+      <translation>Cortar nube de puntos</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="296"/>
@@ -149,7 +149,7 @@
     <message>
       <location filename="../../Command.cpp" line="240"/>
       <source>Convert to points</source>
-      <translation>Convertir en puntos</translation>
+      <translation>Convertir a puntos</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="485"/>

@@ -69,13 +69,17 @@ class ShapeString(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(ShapeString, self).Activated(name="ShapeString")
+        super().Activated(name="ShapeString")
         if self.ui:
             self.ui.sourceCmd = self
             self.task = ShapeStringTaskPanelCmd(self)
             self.call = self.view.addEventCallback("SoEvent", self.task.action)
             _toolmsg(translate("draft", "Pick ShapeString location point"))
             todo.ToDo.delay(Gui.Control.showDialog, self.task)
+
+    def finish(self):
+        self.end_callbacks(self.call)
+        super().finish()
 
 
 Gui.addCommand('Draft_ShapeString', ShapeString())

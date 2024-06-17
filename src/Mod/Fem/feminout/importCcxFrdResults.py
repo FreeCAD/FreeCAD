@@ -35,10 +35,11 @@ import os
 
 import FreeCAD
 from FreeCAD import Console
+from builtins import open as pyopen
 
 
 # ********* generic FreeCAD import and export methods *********
-pyopen = open
+
 
 
 def open(filename):
@@ -88,6 +89,15 @@ def importFrd(
         Console.PrintLog(
             "Increments: " + str(number_of_increments) + "\n"
         )
+
+        def make_result_mesh(result_name):
+            res_obj = ObjectsFem.makeResultMechanical(doc, results_name)
+            # create result mesh
+            result_mesh_object = ObjectsFem.makeMeshResult(doc, results_name + "_Mesh")
+            result_mesh_object.FemMesh = mesh
+            res_obj.Mesh = result_mesh_object
+            return res_obj
+
         if len(m["Results"]) > 0:
             for result_set in m["Results"]:
                 if "number" in result_set:
@@ -118,11 +128,7 @@ def importFrd(
                         .format(result_name_prefix)
                     )
 
-                res_obj = ObjectsFem.makeResultMechanical(doc, results_name)
-                # create result mesh
-                result_mesh_object = ObjectsFem.makeMeshResult(doc, results_name + "_Mesh")
-                result_mesh_object.FemMesh = mesh
-                res_obj.Mesh = result_mesh_object
+                res_obj = make_result_mesh(results_name)
                 res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set)
                 if analysis:
                     # need to be here, becasause later on, the analysis objs are needed
@@ -213,12 +219,17 @@ def importFrd(
                     # restore pipeline visibility
                     pipeline_obj.ViewObject.Visibility = pipeline_visibility
 
+        elif result_analysis_type == "check":
+            results_name = "{}Check".format(result_name_prefix)
+            res_obj = make_result_mesh(results_name)
+            if analysis:
+                analysis.addObject(res_obj)
+
         else:
             error_message = (
                 "Nodes, but no results found in frd file. "
                 "It means there only is a mesh but no results in frd file. "
                 "Usually this happens for: \n"
-                "- analysis type 'NOANALYSIS'\n"
                 "- if CalculiX returned no results "
                 "(happens on nonpositive jacobian determinant in at least one element)\n"
                 "- just no frd results where requestet in input file "
@@ -300,6 +311,7 @@ def read_frd_result(
     mode_strain = {}
     mode_peeq = {}
     mode_temp = {}
+    mode_heatflux = {}
     mode_massflow = {}
     mode_networkpressure = {}
 
@@ -311,6 +323,7 @@ def read_frd_result(
     mode_strain_found = False
     mode_peeq_found = False
     mode_temp_found = False
+    mode_heatflux_found = False
     mode_massflow_found = False
     mode_networkpressure_found = False
     end_of_section_found = False
@@ -630,6 +643,19 @@ def read_frd_result(
             temperature = float(line[13:25])
             mode_temp[elem] = (temperature)
 
+        # Check if we found heat flux section
+        if line[5:9] == "FLUX":
+            mode_heatflux_found = True
+        if mode_heatflux_found and (line[1:3] == "-1"):
+            # we found a heat_flux line
+            elem = int(line[4:13])
+            mode_heatflux_x = float(line[13:25])
+            mode_heatflux_y = float(line[25:37])
+            mode_heatflux_z = float(line[37:49])
+            mode_heatflux[elem] = FreeCAD.Vector(mode_heatflux_x, mode_heatflux_y, mode_heatflux_z)
+
+
+
         # Check if we found a mass flow section
         if line[5:11] == "MAFLOW":
             mode_massflow_found = True
@@ -700,6 +726,12 @@ def read_frd_result(
                 mode_results["temp"] = mode_temp
                 mode_temp = {}
                 mode_temp_found = False
+                node_element_section = False
+
+            if mode_heatflux_found:
+                mode_results["heatflux"] = mode_heatflux
+                mode_heatflux = {}
+                mode_heatflux_found = False
                 node_element_section = False
 
             if mode_massflow_found:

@@ -798,7 +798,7 @@ Document::Document(const char* documentName)
 #ifdef FC_LOGUPDATECHAIN
     Console().Log("+App::Document: %p\n", this);
 #endif
-    std::string CreationDateString = Base::TimeInfo::currentDateTimeString();
+    std::string CreationDateString = Base::Tools::currentDateTimeString();
     std::string Author = App::GetApplication()
                              .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
                              ->GetASCII("prefAuthor", "");
@@ -1606,7 +1606,7 @@ bool Document::save ()
             TipName.setValue(Tip.getValue()->getNameInDocument());
         }
 
-        std::string LastModifiedDateString = Base::TimeInfo::currentDateTimeString();
+        std::string LastModifiedDateString = Base::Tools::currentDateTimeString();
         LastModifiedDate.setValue(LastModifiedDateString.c_str());
         // set author if needed
         bool saveAuthor = App::GetApplication().GetParameterGroupByPath
@@ -1799,7 +1799,7 @@ private:
                     if (useFCBakExtension) {
                         std::stringstream str;
                         Base::TimeInfo ti = fi.lastModified();
-                        time_t s =ti.getSeconds();
+                        time_t s = ti.getTime_t();
                         struct tm * timeinfo = localtime(& s);
                         char buffer[100];
 
@@ -4000,6 +4000,32 @@ std::vector<App::DocumentObject*> Document::getRootObjects() const
     for (auto objectIt : d->objectArray) {
         if (objectIt->getInList().empty())
             ret.push_back(objectIt);
+    }
+
+    return ret;
+}
+
+std::vector<App::DocumentObject*> Document::getRootObjectsIgnoreLinks() const
+{
+    std::vector<App::DocumentObject*> ret;
+
+    for (auto objectIt : d->objectArray) {
+        auto list = objectIt->getInList();
+        bool noParents = list.empty();
+
+        if (!noParents) {
+            // App::Document getRootObjects returns the root objects of the dependency graph.
+            // So if an object is referenced by a App::Link, it will not be returned by that function.
+            // So here, as we want the tree-root level objects,
+            // we check if all the parents are links. In which case its still a root object.
+            noParents = std::all_of(list.cbegin(), list.cend(), [](App::DocumentObject* obj) {
+                return obj->isDerivedFrom<App::Link>();
+            });
+        }
+
+        if (noParents) {
+            ret.push_back(objectIt);
+        }
     }
 
     return ret;

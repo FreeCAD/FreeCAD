@@ -21,10 +21,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QMenu>
 #include <QMessageBox>
 #endif
-
-#include <QMenu>
 
 #include <Gui/MainWindow.h>
 
@@ -71,6 +70,8 @@ ListEdit::ListEdit(const QString& propertyName,
     setupListView();
     setDelegates(ui->listView);
 
+    ui->buttonDeleteRow->setVisible(false);
+    // connect(ui->buttonDeleteRow, &QPushButton::clicked, this, &ListEdit::onDelete);
     connect(ui->standardButtons, &QDialogButtonBox::accepted, this, &ListEdit::accept);
     connect(ui->standardButtons, &QDialogButtonBox::rejected, this, &ListEdit::reject);
 
@@ -110,6 +111,7 @@ void ListEdit::onDataChanged(const QModelIndex& topLeft,
     Q_UNUSED(roles)
 
     _material->setEditStateAlter();
+    update();
 }
 
 bool ListEdit::newRow(const QModelIndex& index)
@@ -179,18 +181,9 @@ void ListEdit::reject()
 
 void ListEdit::onSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
-    Q_UNUSED(selected)
     Q_UNUSED(deselected)
 
-    // auto indexList = selected.indexes();
-    // if (indexList.size() > 0) {
-    //     auto index = indexList[0];
-    //     auto listModel = dynamic_cast<const ListModel*>(index.model());
-    //     if (listModel->newRow(index)) {
-    //         Base::Console().Log("*** New Row ***\n");
-    //         const_cast<ListModel*>(listModel)->insertRows(index.row(), 1);
-    //     }
-    // }
+    ui->buttonDeleteRow->setEnabled(!selected.isEmpty());
 }
 
 #include "moc_ListEdit.cpp"

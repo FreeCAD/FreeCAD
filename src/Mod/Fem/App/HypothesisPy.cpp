@@ -26,8 +26,9 @@
 // see: https://forum.freecad.org/viewtopic.php?p=633192#p633192
 #include "HypothesisPy.h"
 
-#ifndef _PreComp_
 #include <SMESH_Version.h>  // needed for SMESH_VERSION_MAJOR
+
+#ifndef _PreComp_
 #include <StdMeshers_Arithmetic1D.hxx>
 #include <StdMeshers_AutomaticLength.hxx>
 #include <StdMeshers_CompositeSegment_1D.hxx>
@@ -36,7 +37,9 @@
 #include <StdMeshers_LayerDistribution.hxx>
 #include <StdMeshers_LengthFromEdges.hxx>
 #include <StdMeshers_LocalLength.hxx>
+#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
 #include <StdMeshers_MEFISTO_2D.hxx>
+#endif
 #include <StdMeshers_MaxElementArea.hxx>
 #include <StdMeshers_MaxElementVolume.hxx>
 #include <StdMeshers_MaxLength.hxx>
@@ -60,9 +63,6 @@
 #include <StdMeshers_StartEndLength.hxx>
 #include <StdMeshers_UseExisting_1D2D.hxx>
 #include <sstream>
-#if SMESH_VERSION_MAJOR < 7
-#include <StdMeshers_TrianglePreference.hxx>
-#endif
 #endif
 
 #include <Base/Interpreter.h>
@@ -166,55 +166,6 @@ Py::Object SMESH_HypothesisPy<T>::getLibName(const Py::Tuple& args)
     return Py::String(hypothesis<SMESH_Hypothesis>()->GetLibName());
 }
 
-
-#if SMESH_VERSION_MAJOR < 7  // -----------------------------------------------
-template<class T>
-Py::Object SMESH_HypothesisPy<T>::setParameters(const Py::Tuple& args)
-{
-    std::string paramName = static_cast<std::string>(Py::String(args[0]));
-    hypothesis<SMESH_Hypothesis>()->SetParameters(paramName.c_str());
-    return Py::None();
-}
-
-template<class T>
-Py::Object SMESH_HypothesisPy<T>::getParameters(const Py::Tuple& args)
-{
-    if (!PyArg_ParseTuple(args.ptr(), "")) {
-        throw Py::Exception();
-    }
-    return Py::String(hypothesis<SMESH_Hypothesis>()->GetParameters());
-}
-
-template<class T>
-Py::Object SMESH_HypothesisPy<T>::setLastParameters(const Py::Tuple& args)
-{
-    if (!PyArg_ParseTuple(args.ptr(), "")) {
-        throw Py::Exception();
-    }
-    std::string paramName = static_cast<std::string>(Py::String(args[0]));
-    hypothesis<SMESH_Hypothesis>()->SetLastParameters(paramName.c_str());
-    return Py::None();
-}
-
-template<class T>
-Py::Object SMESH_HypothesisPy<T>::getLastParameters(const Py::Tuple& args)
-{
-    if (!PyArg_ParseTuple(args.ptr(), "")) {
-        throw Py::Exception();
-    }
-    return Py::String(hypothesis<SMESH_Hypothesis>()->GetLastParameters());
-}
-
-template<class T>
-Py::Object SMESH_HypothesisPy<T>::clearParameters(const Py::Tuple& args)
-{
-    if (!PyArg_ParseTuple(args.ptr(), "")) {
-        throw Py::Exception();
-    }
-    hypothesis<SMESH_Hypothesis>()->ClearParameters();
-    return Py::None();
-}
-#endif  // --------------------------------------------------------------------
 
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::setParametersByMesh(const Py::Tuple& args)
@@ -761,24 +712,6 @@ StdMeshers_Hexa_3DPy::StdMeshers_Hexa_3DPy(int hypId, int studyId, SMESH_Gen* ge
 
 StdMeshers_Hexa_3DPy::~StdMeshers_Hexa_3DPy() = default;
 
-// ---------------------------------------------------------------------------
-
-#if SMESH_VERSION_MAJOR < 7  // -----------------------------------------------
-void StdMeshers_TrianglePreferencePy::init_type(PyObject* module)
-{
-    behaviors().name("StdMeshers_TrianglePreference");
-    behaviors().doc("StdMeshers_TrianglePreference");
-    SMESH_HypothesisPyBase::init_type(module);
-}
-
-StdMeshers_TrianglePreferencePy::StdMeshers_TrianglePreferencePy(int hypId,
-                                                                 int studyId,
-                                                                 SMESH_Gen* gen)
-    : SMESH_HypothesisPyBase(new StdMeshers_TrianglePreference(hypId, studyId, gen))
-{}
-
-StdMeshers_TrianglePreferencePy::~StdMeshers_TrianglePreferencePy() = default;
-#endif  // --------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------
 
@@ -1161,7 +1094,7 @@ Py::Object StdMeshers_NumberOfLayersPy::getNumLayers(const Py::Tuple& args)
 }
 
 // ---------------------------------------------------------------------------
-
+#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
 void StdMeshers_MEFISTO_2DPy::init_type(PyObject* module)
 {
     behaviors().name("StdMeshers_MEFISTO_2D");
@@ -1178,8 +1111,8 @@ StdMeshers_MEFISTO_2DPy::StdMeshers_MEFISTO_2DPy(int hypId, int studyId, SMESH_G
     : SMESH_HypothesisPyBase(new StdMeshers_MEFISTO_2D(hypId, studyId, gen))
 {}
 #endif
-
 StdMeshers_MEFISTO_2DPy::~StdMeshers_MEFISTO_2DPy() = default;
+#endif
 
 // ---------------------------------------------------------------------------
 
@@ -1301,6 +1234,5 @@ Py::Object StdMeshers_LayerDistributionPy::getLayerDistribution(const Py::Tuple&
     if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
     }
-    // return hypothesis<StdMeshers_LayerDistribution>()->GetLayerDistribution();
     return Py::None();
 }

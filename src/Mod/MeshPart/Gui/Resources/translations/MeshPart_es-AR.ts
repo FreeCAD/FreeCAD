@@ -205,7 +205,7 @@ Este comando solo funciona con un objeto 'malla'.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
-      <translation>No fue elegido ningún punto</translation>
+      <translation>No se ha elegido ningún punto</translation>
     </message>
   </context>
   <context>
@@ -491,27 +491,27 @@ Un valor en el rango de 0.2-10.</translation>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="235"/>
-      <location filename="../../Tessellation.cpp" line="241"/>
+      <location filename="../../Tessellation.cpp" line="237"/>
+      <location filename="../../Tessellation.cpp" line="243"/>
       <source>No active document</source>
       <translation>Ningún documento activo</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="272"/>
+      <location filename="../../Tessellation.cpp" line="273"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Ha seleccionado un cuerpo sin punta.
 Puede establecer la punta del cuerpo o seleccionar una forma diferente, por favor.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="278"/>
+      <location filename="../../Tessellation.cpp" line="279"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Has seleccionado una forma sin caras.
 Selecciona una forma diferente, por favor.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="282"/>
+      <location filename="../../Tessellation.cpp" line="283"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Seleccione primero una forma para la malla.</translation>
     </message>
@@ -580,7 +580,7 @@ Selecciona una forma diferente, por favor.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>Desenvolver malla</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -593,7 +593,7 @@ Selecciona una forma diferente, por favor.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation type="unfinished">Unwrap face</translation>
+      <translation>Desenvolver cara</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

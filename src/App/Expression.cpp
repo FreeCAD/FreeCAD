@@ -1754,6 +1754,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case SINH:
     case SQRT:
     case STR:
+    case PARSEQUANT:
     case TAN:
     case TANH:
     case TRUNC:
@@ -2291,6 +2292,11 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
     }
     case STR:
         return Py::String(args[0]->getPyValue().as_string());
+    case PARSEQUANT: {
+        auto quantity_text = args[0]->getPyValue().as_string();
+        auto quantity_object =  Quantity::parse(QString::fromStdString(quantity_text));
+        return Py::asObject(new QuantityPy(new Quantity(quantity_object)));
+    }
     case TRANSLATIONM: {
         if (args.size() != 1)
             break; // Break and proceed to 3 size version.
@@ -2797,6 +2803,8 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "rotationz("; break;;
     case STR:
         ss << "str("; break;;
+    case PARSEQUANT:
+        ss << "parsequant("; break;;
     case TRANSLATIONM:
         ss << "translationm("; break;;
     case TUPLE:
@@ -3601,6 +3609,27 @@ int ExpressionParserlex();
 #include "lex.ExpressionParser.c"
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
+class StringBufferCleaner
+{
+public:
+    explicit StringBufferCleaner(YY_BUFFER_STATE buffer)
+        : my_string_buffer {buffer}
+    {}
+    ~StringBufferCleaner()
+    {
+        // free the scan buffer
+        yy_delete_buffer(my_string_buffer);
+    }
+
+    StringBufferCleaner(const StringBufferCleaner&) = delete;
+    StringBufferCleaner(StringBufferCleaner&&) = delete;
+    StringBufferCleaner& operator=(const StringBufferCleaner&) = delete;
+    StringBufferCleaner& operator=(StringBufferCleaner&&) = delete;
+
+private:
+    YY_BUFFER_STATE my_string_buffer;
+};
+
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #elif defined (__GNUC__)
@@ -3679,6 +3708,7 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["rotationy"] = FunctionExpression::ROTATIONY;
         registered_functions["rotationz"] = FunctionExpression::ROTATIONZ;
         registered_functions["str"] = FunctionExpression::STR;
+        registered_functions["parsequant"] = FunctionExpression::PARSEQUANT;
         registered_functions["translationm"] = FunctionExpression::TRANSLATIONM;
         registered_functions["tuple"] = FunctionExpression::TUPLE;
         registered_functions["vector"] = FunctionExpression::VECTOR;
@@ -3701,6 +3731,7 @@ static void initParser(const App::DocumentObject *owner)
 std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
 {
     ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str.c_str());
+    ExpressionParser::StringBufferCleaner cleaner(buf);
     std::vector<std::tuple<int, int, std::string> > result;
     int token;
 
@@ -3713,7 +3744,6 @@ std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
         // Ignore all exceptions
     }
 
-    ExpressionParser_delete_buffer(buf);
     return result;
 }
 
@@ -3736,14 +3766,12 @@ Expression * App::ExpressionParser::parse(const App::DocumentObject *owner, cons
 {
     // parse from buffer
     ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);
+    ExpressionParser::StringBufferCleaner cleaner(my_string_buffer);
 
     initParser(owner);
 
     // run the parser
     int result = ExpressionParser::ExpressionParser_yyparse ();
-
-    // free the scan buffer
-    ExpressionParser::ExpressionParser_delete_buffer (my_string_buffer);
 
     if (result != 0)
         throw ParserError("Failed to parse expression.");
@@ -3763,14 +3791,12 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
 {
     // parse from buffer
     ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);
+    ExpressionParser::StringBufferCleaner cleaner(my_string_buffer);
 
     initParser(owner);
 
     // run the parser
     int result = ExpressionParser::ExpressionParser_yyparse ();
-
-    // free the scan buffer
-    ExpressionParser::ExpressionParser_delete_buffer (my_string_buffer);
 
     if (result != 0)
         throw ParserError("Failed to parse expression.");
@@ -3814,9 +3840,9 @@ namespace {
 std::tuple<int, int> getTokenAndStatus(const std::string & str)
 {
     ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser::ExpressionParser_scan_string(str.c_str());
+    ExpressionParser::StringBufferCleaner cleaner(buf);
     int token = ExpressionParser::ExpressionParserlex();
     int status = ExpressionParser::ExpressionParserlex();
-    ExpressionParser::ExpressionParser_delete_buffer(buf);
 
     return std::make_tuple(token, status);
 }

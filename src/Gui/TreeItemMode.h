@@ -31,6 +31,7 @@ namespace Gui {
         Underlined,
         Italic,
         Overlined,
+        StrikeOut,
         Bold,
         Blue,
         LightBlue,

@@ -66,6 +66,7 @@ from FreeCAD import Console as FCC
 from Draft import LinearDimension
 from draftutils import params
 from draftutils import utils
+from builtins import open as pyopen
 
 gui = FreeCAD.GuiUp
 draftui = None
@@ -76,7 +77,7 @@ if gui:
     except (AttributeError, NameError):
         draftui = None
     from draftutils.translate import translate
-    from PySide import QtGui
+    from PySide import QtWidgets
 else:
     def translate(context, txt):
         return txt
@@ -84,11 +85,6 @@ else:
 dxfReader = None
 dxfColorMap = None
 dxfLibrary = None
-
-# Save the native open function to avoid collisions
-# with the function declared here
-if open.__module__ in ['__builtin__', 'io']:
-    pythonopen = open
 
 
 def errorDXFLib(gui):
@@ -127,7 +123,7 @@ def errorDXFLib(gui):
                     message = translate("Draft", """Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -> Addon Manager""")
-                    QtGui.QMessageBox.information(None, "", message)
+                    QtWidgets.QMessageBox.information(None, "", message)
                 else:
                     FCC.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
                     FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addon Manager\n")
@@ -144,13 +140,13 @@ Please either enable FreeCAD to download these libraries:
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.""")
-            reply = QtGui.QMessageBox.question(None, "", message,
-                                               QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
-                                               QtGui.QMessageBox.No)
-            if reply == QtGui.QMessageBox.Yes:
+            reply = QtWidgets.QMessageBox.question(None, "", message,
+                                               QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                               QtWidgets.QMessageBox.No)
+            if reply == QtWidgets.QMessageBox.Yes:
                 params.set_param("dxfAllowDownload", True)
                 errorDXFLib(gui)
-            if reply == QtGui.QMessageBox.No:
+            if reply == QtWidgets.QMessageBox.No:
                 pass
         else:
             FCC.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
@@ -198,7 +194,11 @@ def getDXFlibs():
         errorDXFLib(gui)
         try:
             import dxfColorMap, dxfLibrary, dxfReader
-        except ImportError:
+            import importlib
+            importlib.reload(dxfColorMap)
+            importlib.reload(dxfLibrary)
+            importlib.reload(dxfReader)
+        except Exception:
             dxfReader = None
             dxfLibrary = None
             FCC.PrintWarning("DXF libraries not available. Aborting.\n")
@@ -223,9 +223,9 @@ def deformat(text):
     # t = re.sub('{([^!}]([^}]|\n)*)}', '', text)
     # print("input text: ",text)
     t = text.strip("{}")
-    t = re.sub("\\\.*?;", "", t)
+    t = re.sub("\\\\.*?;", "", t)
     # replace UTF codes by utf chars
-    sts = re.split("\\\\(U\+....)", t)
+    sts = re.split("\\\\(U\\+....)", t)
     t = u"".join(sts)
     # replace degrees, diameters chars
     t = re.sub('%%d', u'°', t)
@@ -626,7 +626,10 @@ def getColor():
 def formatObject(obj, dxfobj=None):
     """Apply text and line color to an object from a DXF object.
 
-    This function only works when the graphical user interface is loaded
+    If `dxfUseDraftVisGroups` is `True` the function returns immediately.
+    The color of the object then depends on the Draft Layer the object is in.
+
+    Else this function only works if the graphical user interface is loaded
     as it needs access to the `ViewObject` attribute of the objects.
 
     If `dxfobj` and the global variable `dxfGetColors` exist
@@ -652,6 +655,9 @@ def formatObject(obj, dxfobj=None):
     -----
     Use local variables, not global variables.
     """
+    if dxfUseDraftVisGroups:
+        return
+
     if dxfGetColors and dxfobj and hasattr(dxfobj, "color_index"):
         if hasattr(obj.ViewObject, "TextColor"):
             if dxfobj.color_index == 256:
@@ -1408,7 +1414,7 @@ def drawSpline(spline, forceShape=False):
     -------
     Part::Part2DObject or Part::TopoShape ('Edge', 'Face')
         The returned object is normally a `Draft BezCurve`
-        created with `Draft.make_bezcurve(controlpoints, Degree=degree)`,
+        created with `Draft.make_bezcurve(controlpoints, degree=degree)`,
         if `forceShape` is `False` and there are no weights.
 
         Otherwise it tries to return a `Part.Shape` of type `'Wire'`,
@@ -1530,7 +1536,7 @@ def drawSpline(spline, forceShape=False):
             if not forceShape and weights is None:
                 points = controlpoints[:]
                 del points[degree+1::degree+1]
-                return Draft.make_bezcurve(points, Degree=degree)
+                return Draft.make_bezcurve(points, degree=degree)
             else:
                 poles = controlpoints[:]
                 edges = []
@@ -2208,7 +2214,8 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
     global resolvedScale
     resolvedScale = getScaleFromDXF(drawing.header) * dxfScaling
     global layers
-    layers = []
+    typ = "Layer" if dxfUseDraftVisGroups else "App::DocumentObjectGroup"
+    layers = [o for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == typ]
     global doc
     doc = document
     global blockshapes
@@ -2369,18 +2376,18 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
         if len(edges) > (100):
             FCC.PrintMessage(str(len(edges)) + " edges to join\n")
             if gui:
-                d = QtGui.QMessageBox()
+                d = QtWidgets.QMessageBox()
                 d.setText("Warning: High number of entities to join (>100)")
                 d.setInformativeText("This might take a long time "
                                      "or even freeze your computer. "
                                      "Are you sure? You can also disable "
                                      "the 'join geometry' setting in DXF "
                                      "import preferences")
-                d.setStandardButtons(QtGui.QMessageBox.Ok
-                                     | QtGui.QMessageBox.Cancel)
-                d.setDefaultButton(QtGui.QMessageBox.Cancel)
+                d.setStandardButtons(QtWidgets.QMessageBox.Ok
+                                     | QtWidgets.QMessageBox.Cancel)
+                d.setDefaultButton(QtWidgets.QMessageBox.Cancel)
                 res = d.exec_()
-                if res == QtGui.QMessageBox.Cancel:
+                if res == QtWidgets.QMessageBox.Cancel:
                     FCC.PrintMessage("Aborted\n")
                     return
         shapes = DraftGeomUtils.findWires(edges)
@@ -2838,11 +2845,7 @@ def insert(filename, docname):
     if dxfUseLegacyImporter:
         getDXFlibs()
         if dxfReader:
-            groupname = os.path.splitext(os.path.basename(filename))[0]
-            importgroup = doc.addObject("App::DocumentObjectGroup", groupname)
             processdxf(doc, filename)
-            for l in layers:
-                importgroup.addObject(l)
         else:
             errorDXFLib(gui)
     else:
@@ -3618,7 +3621,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
             # arch view: export it "as is"
             dxf = exportList[0].Proxy.getDXF()
             if dxf:
-                f = pythonopen(filename, "w")
+                f = pyopen(filename, "w")
                 f.write(dxf)
                 f.close()
 
@@ -3899,11 +3902,11 @@ def exportPage(page, filename):
         template = os.path.splitext(page.Template)[0] + ".dxf"
         views = page.Group
     if os.path.exists(template):
-        f = pythonopen(template, "U")
+        f = pyopen(template, "U")
         template = f.read()
         f.close()
         # find & replace editable texts
-        f = pythonopen(page.Template, "rb")
+        f = pyopen(page.Template, "rb")
         svgtemplate = f.read()
         f.close()
         editables = re.findall("freecad:editable=\"(.*?)\"", svgtemplate)
@@ -3925,7 +3928,7 @@ def exportPage(page, filename):
     blocks = ""
     entities = ""
     r12 = False
-    ver = re.findall("\$ACADVER\n.*?\n(.*?)\n", template)
+    ver = re.findall("\\$ACADVER\n.*?\n(.*?)\n", template)
     if ver:
         # at the moment this is not used.
         # TODO: if r12, do not print ellipses or splines
@@ -3943,7 +3946,7 @@ def exportPage(page, filename):
     c = dxfcounter()
     pat = re.compile("(_handle_)")
     template = pat.sub(c.incr, template)
-    f = pythonopen(filename, "w")
+    f = pyopen(filename, "w")
     f.write(template)
     f.close()
 

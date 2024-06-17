@@ -113,12 +113,6 @@ QPen LineGenerator::getLinePen(size_t lineNumber, double nominalLineWidth)
         proportionalAdjust = nominalLineWidth;
     }
 
-    // Note: if the cap style is Round or Square, the lengths of the lines, or
-    // dots/dashes within the line, will be wrong by 1 pen width.  To get the
-    // exact line lengths or dash pattern, you must use Flat caps.  Flat caps
-    // look terrible at the corners.
-    linePen.setCapStyle((Qt::PenCapStyle)Preferences::LineCapStyle());
-
     // valid line numbers are [1, number of line definitions]
     // line 1 is always (?) continuous
     // 0 substitutes for LineFormat::InvalidLine here
@@ -368,6 +362,17 @@ std::string  LineGenerator::getLineStandardsBody()
 {
     int activeStandard = Preferences::lineStandard();
     std::vector<std::string> choices = getAvailableLineStandards();
+    if (activeStandard < 0 ||
+        (size_t) activeStandard >= choices.size()) {
+        // there is a condition where the LineStandard parameter exists, but is -1 (the
+        // qt value for no current index in a combobox).  This is likely caused by an old
+        // development version writing an unvalidated value.  In this case, the existing but
+        // invalid value will be returned.  This is a temporary fix and can be removed for
+        // production.
+        // Preferences::lineStandard() will print a message about this every time it is called
+        // (lots of messages!).
+        activeStandard = 0;
+        }
     return getBodyFromString(choices.at(activeStandard));
 }
 

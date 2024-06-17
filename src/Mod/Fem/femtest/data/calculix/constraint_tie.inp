@@ -18591,6 +18591,9 @@ Evolumes
 9684,S1
 10647,S2
 
+** Physical constants for SI(mm) unit system with Kelvins
+*PHYSICAL CONSTANTS, ABSOLUTE ZERO=0, STEFAN BOLTZMANN=5.670374419e-11
+
 ***********************************************************
 ** Materials
 ** see information about units at file end
@@ -18608,11 +18611,11 @@ Evolumes
 ** Tie Constraints
 ** ConstraintTie
 *TIE, POSITION TOLERANCE=25, ADJUST=NO, NAME=TIEConstraintTie
-TIE_DEPConstraintTie,TIE_INDConstraintTie
+TIE_DEPConstraintTie, TIE_INDConstraintTie
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-*STEP
+*STEP, INC=2000
 *STATIC
 
 
@@ -18630,9 +18633,9 @@ ConstraintFixed,3
 *CLOAD
 ** ConstraintForce
 ** node loads on shape: BooleanFragments:Edge2
-2,2,1666.6666666666667
-8,2,1666.6666666666667
-385,2,6666.666666666667
+2,2,1666.666666667
+8,2,1666.666666667
+385,2,6666.666666667
 
 
 
@@ -18647,7 +18650,7 @@ S, E
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
 *END STEP 
 

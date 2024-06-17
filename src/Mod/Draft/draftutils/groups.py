@@ -38,7 +38,7 @@ import FreeCAD as App
 import draftutils.utils as utils
 
 from draftutils.translate import translate
-from draftutils.messages import _msg, _err
+from draftutils.messages import _err
 
 
 def is_group(obj):
@@ -128,8 +128,7 @@ def ungroup(obj):
 
     found, obj = utils.find_object(obj, doc=App.activeDocument())
     if not found:
-        _msg("obj: {}".format(obj_str))
-        _err(translate("draft", "Wrong input: object not in document."))
+        _err(translate("draft", "Wrong input: object {} not in document.").format(obj_str))
         return None
 
     doc = obj.Document

@@ -20,7 +20,7 @@
  *                                                                         *
  **************************************************************************/
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <Mod/Material/App/PreCompiled.h>
 #ifndef _PreComp_
@@ -49,17 +49,20 @@ protected:
     {
         // 2D Properties
         modelProp = Materials::ModelProperty(QString::fromStdString("Density"),  // Name
+                                             QString::fromStdString("D"),        // Header
                                              QString::fromStdString("2DArray"),  // Type
                                              QString::fromStdString(""),         // Units
                                              QString::fromStdString(""),         // URL
                                              QString::fromStdString("desc"));    // Description
         modelProp1 = Materials::ModelProperty(QString::fromStdString("Temperature"),
+                                              QString::fromStdString("T"),
                                               QString::fromStdString("Quantity"),
                                               QString::fromStdString("C"),
                                               QString::fromStdString(""),
                                               QString::fromStdString("desc1"));
         modelProp2 = Materials::ModelProperty(
             QString::fromStdString("Density"),
+            QString::fromStdString("D"),
             QString::fromStdString("Quantity"),
             QString::fromStdString("kg/m^3"),
             QString::fromStdString("https://en.wikipedia.org/wiki/Density"),
@@ -70,23 +73,27 @@ protected:
 
         // 3D properties
         model3DProp = Materials::ModelProperty(
-            QString::fromStdString("StressStrain"),  // Name
-            QString::fromStdString("3DArray"),       // Type
-            QString::fromStdString(""),              // Units
-            QString::fromStdString(""),              // URL
+            QString::fromStdString("StressStrain"),     // Name
+            QString::fromStdString("Stress / Strain"),  // Header
+            QString::fromStdString("3DArray"),          // Type
+            QString::fromStdString(""),                 // Units
+            QString::fromStdString(""),                 // URL
             QString::fromStdString("3 Dimensional array showing stress and strain as a function of "
                                    "temperature"));  // Description
         model3DProp1 = Materials::ModelProperty(QString::fromStdString("Temperature"),
+                                                QString::fromStdString("T"),
                                                 QString::fromStdString("Quantity"),
                                                 QString::fromStdString("C"),
                                                 QString::fromStdString(""),
                                                 QString::fromStdString("desc1"));
         model3DProp2 = Materials::ModelProperty(QString::fromStdString("Stress"),
+                                                QString::fromStdString("Stress"),
                                                 QString::fromStdString("Quantity"),
                                                 QString::fromStdString("MPa"),
                                                 QString::fromStdString(""),
                                                 QString::fromStdString("desc2"));
         model3DProp3 = Materials::ModelProperty(QString::fromStdString("Strain"),
+                                                QString::fromStdString("Strain"),
                                                 QString::fromStdString("Quantity"),
                                                 QString::fromStdString("MPa"),
                                                 QString::fromStdString(""),
@@ -123,8 +130,9 @@ TEST_F(TestMaterialProperties, TestEmpty)
 
 TEST_F(TestMaterialProperties, TestSingle)
 {
-    Materials::MaterialProperty prop(modelProp1);
+    Materials::MaterialProperty prop(modelProp1, QLatin1String("sampleUUID"));
     EXPECT_EQ(prop.getType(), Materials::MaterialValue::Quantity);
+    EXPECT_EQ(prop.getModelUUID(), QLatin1String("sampleUUID"));
     EXPECT_TRUE(prop.isNull());
     auto variant = prop.getValue();
     EXPECT_TRUE(variant.canConvert<Base::Quantity>());
@@ -138,6 +146,7 @@ TEST_F(TestMaterialProperties, TestSingle)
 void check2DArray(Materials::MaterialProperty& prop)
 {
     EXPECT_EQ(prop.getType(), Materials::MaterialValue::Array2D);
+    EXPECT_EQ(prop.getModelUUID(), QLatin1String("sampleUUID"));
     EXPECT_TRUE(prop.isNull());
     auto array = std::static_pointer_cast<Materials::Material2DArray>(prop.getMaterialValue());
     EXPECT_EQ(array->rows(), 0);
@@ -153,20 +162,20 @@ void check2DArray(Materials::MaterialProperty& prop)
 
 TEST_F(TestMaterialProperties, Test2DArray)
 {
-    Materials::MaterialProperty prop(modelProp);
+    Materials::MaterialProperty prop(modelProp, QLatin1String("sampleUUID"));
     check2DArray(prop);
 }
 
 TEST_F(TestMaterialProperties, Test2DArrayCopy)
 {
-    Materials::MaterialProperty propBase(modelProp);
+    Materials::MaterialProperty propBase(modelProp, QLatin1String("sampleUUID"));
     Materials::MaterialProperty prop(propBase);
     check2DArray(prop);
 }
 
 TEST_F(TestMaterialProperties, Test2DArrayAssignment)
 {
-    Materials::MaterialProperty propBase(modelProp);
+    Materials::MaterialProperty propBase(modelProp, QLatin1String("sampleUUID"));
     Materials::MaterialProperty prop;
 
     prop = propBase;
@@ -176,6 +185,7 @@ TEST_F(TestMaterialProperties, Test2DArrayAssignment)
 void check3DArray(Materials::MaterialProperty& prop)
 {
     EXPECT_EQ(prop.getType(), Materials::MaterialValue::Array3D);
+    EXPECT_EQ(prop.getModelUUID(), QLatin1String("sampleUUID"));
     EXPECT_TRUE(prop.isNull());
     auto array = std::static_pointer_cast<Materials::Material3DArray>(prop.getMaterialValue());
     EXPECT_EQ(array->depth(), 0);
@@ -191,20 +201,20 @@ void check3DArray(Materials::MaterialProperty& prop)
 
 TEST_F(TestMaterialProperties, Test3DArray)
 {
-    Materials::MaterialProperty prop(model3DProp);
+    Materials::MaterialProperty prop(model3DProp, QLatin1String("sampleUUID"));
     check3DArray(prop);
 }
 
 TEST_F(TestMaterialProperties, Test3DArrayCopy)
 {
-    Materials::MaterialProperty propBase(model3DProp);
+    Materials::MaterialProperty propBase(model3DProp, QLatin1String("sampleUUID"));
     Materials::MaterialProperty prop(propBase);
     check3DArray(prop);
 }
 
 TEST_F(TestMaterialProperties, Test3DArrayAssignment)
 {
-    Materials::MaterialProperty propBase(model3DProp);
+    Materials::MaterialProperty propBase(model3DProp, QLatin1String("sampleUUID"));
     Materials::MaterialProperty prop;
 
     prop = propBase;

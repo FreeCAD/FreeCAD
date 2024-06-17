@@ -343,9 +343,7 @@ void SegmentationManual::reject()
 TaskSegmentationManual::TaskSegmentationManual()
 {
     widget = new SegmentationManual();
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), false, nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(widget, false);
 }
 
 void TaskSegmentationManual::modifyStandardButtons(QDialogButtonBox* box)

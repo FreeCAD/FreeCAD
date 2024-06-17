@@ -36,7 +36,9 @@ import WorkingPlane
 
 from FreeCAD import Units
 from drafttaskpanels import task_selectplane
+from draftutils import gui_utils
 from draftutils import params
+from draftutils import utils
 from draftutils.messages import _msg
 from draftutils.todo import todo
 from draftutils.translate import translate
@@ -59,10 +61,7 @@ class Draft_SelectPlane:
 
     def IsActive(self):
         """Return True when this command should be available."""
-        if Gui.ActiveDocument:
-            return True
-        else:
-            return False
+        return bool(gui_utils.get_3d_view())
 
     def Activated(self):
         """Execute when the command is called."""
@@ -112,6 +111,10 @@ class Draft_SelectPlane:
         form.buttonPrevious.setIcon(QtGui.QIcon(":/icons/sel-back.svg"))
         form.buttonNext.setIcon(QtGui.QIcon(":/icons/sel-forward.svg"))
 
+        # Grid color
+        color = params.get_param("gridColor")
+        form.buttonColor.setProperty("color", QtGui.QColor(utils.rgba_to_argb(color)))
+
         # Connect slots
         form.buttonTop.clicked.connect(self.on_click_top)
         form.buttonFront.clicked.connect(self.on_click_front)
@@ -128,6 +131,7 @@ class Draft_SelectPlane:
         form.fieldGridMainLine.valueChanged.connect(self.on_set_main_line)
         form.fieldGridExtension.valueChanged.connect(self.on_set_extension)
         form.fieldSnapRadius.valueChanged.connect(self.on_set_snap_radius)
+        form.buttonColor.changed.connect(self.on_color_changed)
 
         # Enable/disable buttons.
         form.buttonPrevious.setEnabled(self.wp._has_previous())
@@ -276,6 +280,9 @@ class Draft_SelectPlane:
         if hasattr(Gui, "Snapper"):
             Gui.Snapper.showradius()
 
+    def on_color_changed(self):
+        color = utils.argb_to_rgba(self.taskd.form.buttonColor.property("color").rgba())
+        params.set_param("gridColor", color)
 
 Gui.addCommand('Draft_SelectPlane', Draft_SelectPlane())
 

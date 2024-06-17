@@ -4,63 +4,14 @@
    height="64px"
    id="svg2816"
    version="1.1"
-   sodipodi:docname="Sketcher_ToggleActiveConstraint.svg"
-   inkscape:version="1.1-beta1 (77e7b44db3, 2021-03-28)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <sodipodi:namedview
-     id="namedview89"
-     pagecolor="#505050"
-     bordercolor="#eeeeee"
-     borderopacity="1"
-     objecttolerance="10.0"
-     gridtolerance="10.0"
-     guidetolerance="10.0"
-     inkscape:pageshadow="0"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
-     showgrid="false"
-     inkscape:zoom="5.8828125"
-     inkscape:cx="29.662683"
-     inkscape:cy="-2.2948207"
-     inkscape:window-width="3686"
-     inkscape:window-height="1571"
-     inkscape:window-x="145"
-     inkscape:window-y="-9"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg2816" />
-  <title
-     id="title1152">Sketcher ToggleActiveConstraint</title>
   <defs
      id="defs2818">
-    <linearGradient
-       id="linearGradient1146">
-      <stop
-         style="stop-color:#204a87;stop-opacity:1"
-         offset="0"
-         id="stop1142" />
-      <stop
-         style="stop-color:#729fcf;stop-opacity:1"
-         offset="1"
-         id="stop1144" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient1130">
-      <stop
-         style="stop-color:#729fcf;stop-opacity:1"
-         offset="0"
-         id="stop1126" />
-      <stop
-         style="stop-color:#204a87;stop-opacity:1"
-         offset="1"
-         id="stop1128" />
-    </linearGradient>
     <linearGradient
        id="linearGradient3602">
       <stop
@@ -408,24 +359,6 @@
        y1="14.363636"
        x2="24.81818"
        y2="14.363636" />
-    <linearGradient
-       xlink:href="#linearGradient1130"
-       id="linearGradient1132"
-       x1="15"
-       y1="13"
-       x2="50"
-       y2="50"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(74.311949,8.2166048)" />
-    <linearGradient
-       xlink:href="#linearGradient1146"
-       id="linearGradient1150"
-       gradientUnits="userSpaceOnUse"
-       x1="50"
-       y1="50"
-       x2="15"
-       y2="13"
-       gradientTransform="translate(74.311949,8.2166048)" />
   </defs>
   <metadata
      id="metadata2821">
@@ -435,21 +368,19 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title>Sketcher ToggleActiveConstraint</dc:title>
         <dc:creator>
           <cc:Agent>
-            <dc:title>[openBrain]</dc:title>
+            <dc:title>[Abdullah Tahiri]</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:title>Sketcher_ToggleConstraint</dc:title>
-        <dc:date>2020-01-03</dc:date>
-        <dc:relation />
+        <dc:date>2015-05-26</dc:date>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier />
+        <dc:identifier>FreeCAD/src/Mod/Sketcher/Gui/Resources/icons/Sketcher_ToggleConstraint.svg</dc:identifier>
         <dc:rights>
           <cc:Agent>
             <dc:title>FreeCAD LGPL2+</dc:title>
@@ -458,34 +389,66 @@
         <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
         <dc:contributor>
           <cc:Agent>
-            <dc:title>[agryson] Alexander Gryson, bitacovir, vocx</dc:title>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
           </cc:Agent>
         </dc:contributor>
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     id="layer1-3"
-     transform="matrix(0,-0.67983925,0.67983925,0,19.462415,44.593065)">
-    <g
-       id="g3894-5"
-       transform="rotate(-45,34.506097,38.050253)">
-      <path
-         id="path3034-9"
-         d="M 17,27 V 19 L -4,32 17,45 v -8 h 40 v 8 L 78,32 57,19 v 8 z"
-         style="fill:#cc0000;stroke:#280000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
-      <path
-         id="path3034-3-6"
-         d="M 15,29 V 22.6 L -0.2,32 15,41.4 V 35 h 44 v 6.4 L 74.2,32 59,22.6 V 29 Z"
-         style="fill:none;stroke:#ef2929;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-  </g>
   <path
-     id="path3034-8-9"
-     d="M 40.047184,49.826696 34.858967,55.014913 56.908888,60.203129 51.720672,38.153208 46.532455,43.341425 20.591371,17.400342 25.779588,12.212125 3.7296669,7.0239081 8.9178836,29.073829 14.1061,23.885612 Z"
-     style="fill:#808080;stroke:#0b1521;stroke-width:1.834;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1" />
+     style="fill:none;stroke:#2e3436;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:8.71;stroke-opacity:1"
+     d="M 10,15 49,54"
+     id="path1" />
   <path
-     id="path3034-3-7-2"
-     d="M 42.641292,49.826696 38.490719,53.977269 54.444485,57.738727 50.683028,41.78496 46.532455,45.935533 17.997263,17.400342 22.147836,13.249768 6.1940698,9.488311 9.9555269,25.442077 14.1061,21.291504 Z"
-     style="fill:none;stroke:#bfbfbf;stroke-width:1.83431;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+     style="fill:none;stroke:#280000;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:8.71;stroke-opacity:1"
+     d="M 28.062681,10.017527 51.975733,33.930579"
+     id="path1-2" />
+  <path
+     style="fill:#babdb6;fill-opacity:1;stroke:#2e3436;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:3.45;stroke-opacity:1"
+     d="M 5.86255,19.594564 14.733308,10.787544 4.2499852,9.249986 5.8625514,19.594566"
+     id="path4" />
+  <path
+     style="fill:#cc0000;fill-opacity:1;stroke:#280000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:3.45;stroke-opacity:1"
+     d="M 26.36255,17.04941 35.233308,8.24239 24.749985,6.704832 26.362552,17.049412"
+     id="path4-5" />
+  <path
+     style="fill:#babdb6;fill-opacity:1;stroke:#2e3436;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:3.45;stroke-opacity:1"
+     d="m 52.63745,48.905436 -8.870758,8.80702 10.483323,1.537558 -1.612566,-10.34458"
+     id="path4-3" />
+  <path
+     style="fill:#babdb6;stroke:#babdb6;stroke-width:3;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:8.71;stroke-opacity:1"
+     d="M 10,15 50,55"
+     id="path1-6" />
+  <path
+     style="fill:none;fill-opacity:1;stroke:#d3d7cf;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:8.71;stroke-opacity:1"
+     d="M 11.196118,14.779366 49.285102,52.897069"
+     id="path3-30" />
+  <path
+     style="fill:none;fill-opacity:1;stroke:#d3d7cf;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:8.71;stroke-opacity:1"
+     d="m 51.7746,51.550429 0.964299,6.277998"
+     id="path3-3" />
+  <path
+     style="fill:#cc0000;fill-opacity:1;stroke:#280000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:3.45;stroke-opacity:1"
+     d="m 55.682604,28.905436 -8.870758,8.80702 10.483323,1.537558 -1.612566,-10.34458"
+     id="path4-3-3" />
+  <path
+     style="fill:none;fill-opacity:1;stroke:#d3d7cf;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:8.71;stroke-opacity:1"
+     d="M 12.065815,11.660156 5.7550734,10.725712"
+     id="path3-3-6" />
+  <path
+     style="fill:#3465a4;fill-opacity:1;stroke:#cc0000;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:8.71;stroke-opacity:1"
+     d="M 29.438081,11.455427 53.351133,35.368479"
+     id="path1-6-4" />
+  <path
+     style="fill:#cc0000;fill-opacity:1;stroke:#ef2929;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:8.71;stroke-opacity:1"
+     d="m 31.207924,11.818486 21.10182,21.125693"
+     id="path3-30-9" />
+  <path
+     style="fill:#cc0000;fill-opacity:1;stroke:#ef2929;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:8.71;stroke-opacity:1"
+     d="m 54.813317,31.524913 0.979884,6.223134"
+     id="path3-3-5" />
+  <path
+     style="fill:#cc0000;fill-opacity:1;stroke:#ef2929;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:8.71;stroke-opacity:1"
+     d="m 26.224092,8.1789383 6.332271,0.9542009"
+     id="path3-3-5-6" />
 </svg>

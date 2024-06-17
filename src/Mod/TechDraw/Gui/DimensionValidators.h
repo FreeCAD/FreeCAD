@@ -59,6 +59,8 @@ enum DimensionGeometryEnum {
         isAngle3Pt,
         isMultiEdge,
         isZLimited,
+        isHybrid,
+        isFace,
         isViewReference         //never needs to be specified in the acceptable list
     };
 
@@ -83,20 +85,25 @@ DimensionGeometryType getGeometryConfiguration3d(DrawViewPart* dvp,
 
 GeomCountMap loadRequiredCounts(StringVector& acceptableGeometry,
                                                std::vector<int>& minimumCouts);
-bool checkGeometryOccurences(StringVector subNames, GeomCountMap keyedMinimumCounts);
+bool checkGeometryOccurrences(StringVector subNames, GeomCountMap keyedMinimumCounts);
 
 DimensionGeometryType isValidVertexes(ReferenceVector refs);
 DimensionGeometryType isValidMultiEdge(ReferenceVector refs);
 DimensionGeometryType isValidSingleEdge(ReferenceEntry ref);
+DimensionGeometryType isValidSingleFace(ReferenceEntry ref);
 DimensionGeometryType isValidHybrid(ReferenceVector refs);
 
 DimensionGeometryType isValidVertexes3d(DrawViewPart* dvp, ReferenceVector refs);
 DimensionGeometryType isValidMultiEdge3d(DrawViewPart* dvp, ReferenceVector refs);
 DimensionGeometryType isValidSingleEdge3d(DrawViewPart* dvp, ReferenceEntry ref);
+DimensionGeometryType isValidSingleFace3d(DrawViewPart* dvp, ReferenceEntry ref);
 DimensionGeometryType isValidHybrid3d(DrawViewPart* dvp, ReferenceVector refs);
 
 long int mapGeometryTypeToDimType(long int dimType, DimensionGeometryType geometry2d,
                                                  DimensionGeometryType geometry3d);
+
+bool  refsMatchToken(const ReferenceVector& refs, const std::string& matchToken);
+
 }
 #endif //TECHDRAW_DIMENSIONVALIDATORS_H
 

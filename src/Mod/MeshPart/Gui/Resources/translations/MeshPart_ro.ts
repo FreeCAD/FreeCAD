@@ -6,12 +6,12 @@
     <message>
       <location filename="../../Command.cpp" line="280"/>
       <source>MeshPart</source>
-      <translation>Obiect rețea 3D</translation>
+      <translation>Obiect de plasa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="281"/>
       <source>Cross-sections...</source>
-      <translation>Sectiune transversala...</translation>
+      <translation>Secțiune transversala...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="282"/>
@@ -62,7 +62,7 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Plasă</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -80,7 +80,7 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Plasă</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -491,27 +491,27 @@ O valoare în intervalul 0.2-10.</translation>
       <translation>Zgură</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="235"/>
-      <location filename="../../Tessellation.cpp" line="241"/>
+      <location filename="../../Tessellation.cpp" line="237"/>
+      <location filename="../../Tessellation.cpp" line="243"/>
       <source>No active document</source>
       <translation>Nici un document activ</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="272"/>
+      <location filename="../../Tessellation.cpp" line="273"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Ai selectat un corp fără sfaturi.
 Te rog setează vârful corpului sau selectează o altă formă.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="278"/>
+      <location filename="../../Tessellation.cpp" line="279"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Ați selectat o formă fără fețe.
 Selectați o altă formă, vă rog.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="282"/>
+      <location filename="../../Tessellation.cpp" line="283"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Selectati mai intai o forma pentru crearea retelei.</translation>
     </message>
@@ -572,7 +572,7 @@ Selectați o altă formă, vă rog.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
-      <translation>Obiect rețea 3D</translation>
+      <translation>Obiect de plasa</translation>
     </message>
   </context>
   <context>
@@ -580,7 +580,7 @@ Selectați o altă formă, vă rog.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>Desfaceți plasă</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -593,7 +593,7 @@ Selectați o altă formă, vă rog.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation type="unfinished">Unwrap face</translation>
+      <translation>Desfaceți Fața</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

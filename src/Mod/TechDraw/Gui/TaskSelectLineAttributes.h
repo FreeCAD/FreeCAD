@@ -26,6 +26,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
+#include <Mod/TechDraw/App/Cosmetic.h>
 
 
 class dimAttributes {
@@ -69,31 +70,31 @@ class MDIViewPage;
 class ViewProviderViewPart;
 class Ui_TaskSelectLineAttributes;
 
-class lineAttributes {
-    int style;
-    int width;
-    int color;
+// class lineAttributes {
+//     int style;
+//     int width;
+//     int color;
 
-public:
+// public:
 
-    lineAttributes();
-    void setStyle(int);
-    int getStyle() const {return style;}
-    void setWidth(int);
-    int getWidth() const {return width;}
-    float getWidthValue();
-    void setColor(int);
-    int getColor() const {return color;}
-    App::Color getColorValue();
+//     lineAttributes();
+//     void setStyle(int);
+//     int getStyle() const {return style;}
+//     void setWidth(int);
+//     int getWidth() const {return width;}
+//     float getWidthValue();
+//     void setColor(int);
+//     int getColor() const {return color;}
+//     App::Color getColorValue();
 
-}; // class lineAttributes
+// }; // class lineAttributes
 
 class TaskSelectLineAttributes : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit TaskSelectLineAttributes(lineAttributes * ptActiveAttributes);
+    explicit TaskSelectLineAttributes();
     ~TaskSelectLineAttributes() override;
 
     virtual bool accept();
@@ -101,12 +102,11 @@ public:
     void updateTask();
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent *event) override;
 
     void setUiEdit();
 
 private:
-    lineAttributes* activeAttributes;
     std::unique_ptr<Ui_TaskSelectLineAttributes> ui;
 
     TechDraw::LineGenerator* m_lineGenerator;
@@ -117,7 +117,7 @@ class TaskDlgSelectLineAttributes : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    explicit TaskDlgSelectLineAttributes(lineAttributes * ptActiveAttributes);
+    explicit TaskDlgSelectLineAttributes();
     ~TaskDlgSelectLineAttributes() override;
 
 public:

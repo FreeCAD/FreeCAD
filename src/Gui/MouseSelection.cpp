@@ -67,10 +67,6 @@ void AbstractMouseSelection::releaseMouseModel(bool abort)
     }
 }
 
-void AbstractMouseSelection::redraw()
-{
-    // obsolete
-}
 
 int AbstractMouseSelection::handleEvent(const SoEvent* const ev, const SbViewportRegion& vp)
 {

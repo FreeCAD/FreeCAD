@@ -29,6 +29,7 @@
         <file>icons/FEM_ConstraintPlaneRotation.svg</file>
         <file>icons/FEM_ConstraintPressure.svg</file>
         <file>icons/FEM_ConstraintPulley.svg</file>
+        <file>icons/FEM_ConstraintRigidBody.svg</file>
         <file>icons/FEM_ConstraintSectionPrint.svg</file>
         <file>icons/FEM_ConstraintSelfWeight.svg</file>
         <file>icons/FEM_ConstraintSpring.svg</file>

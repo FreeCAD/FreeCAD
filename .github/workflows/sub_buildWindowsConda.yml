@@ -61,11 +61,13 @@ jobs:
 
     steps:
       - name: Checking out source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
       - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v2
+        env:
+          CONDA_VERBOSITY: 2
+        uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: .conda/freecad
           environment-file: conda/conda-env.yaml
@@ -73,9 +75,11 @@ jobs:
           channel-priority: true
           miniforge-version: latest
       - name: Install FreeCAD dependencies
+        env:
+          CONDA_VERBOSITY: 2
         run: |
           conda config --add envs_dirs $PWD/.conda
-          mamba-devenv -f conda/environment.devenv.yml
+          mamba-devenv --no-prune -f conda/environment.devenv.yml
       - name: Make needed directories, files and initializations
         id: Init
         run: |
@@ -85,8 +89,9 @@ jobs:
           mkdir ${{ env.reportdir }}
           echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
       - name: Restore compiler cache
-        uses: pat-s/always-upload-cache@v3
+        uses: actions/cache@v4
         with:
+          save-always: true
           path: ${{ env.CCACHE_DIR }}
           key: FC-Windows-Conda-${{ github.ref }}-${{ github.run_id }}
           restore-keys: |
@@ -121,7 +126,7 @@ jobs:
           . build\release\bin\FreeCADCmd -t 0 # 2>&1 | tee -filepath ${{ env.logdir }}/integrationTests.log
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |

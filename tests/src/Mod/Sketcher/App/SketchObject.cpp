@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <FCConfig.h>
 
@@ -252,4 +252,43 @@ TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionAppl
 
     // Assert
     EXPECT_EQ(std::string("32 °"), getObject()->getConstraintExpression(id));
+}
+
+TEST_F(SketchObjectTest, testGetElementName)
+{
+    // Arrange
+    Base::Vector3d p1(0.0, 0.0, 0.0), p2(1.0, 0.0, 0.0);
+    std::unique_ptr<Part::Geometry> geoline(new Part::GeomLineSegment());
+    static_cast<Part::GeomLineSegment*>(geoline.get())->setPoints(p1, p2);
+    getObject()->addGeometry(geoline.get());
+    getObject()->recomputeFeature();  // or ->execute()
+    // Act
+    // unless it's Export, we are really just testing the superclass App::GeoFeature::getElementName
+    // call.
+    auto forward_normal_name =
+        getObject()->getElementName("g39;SKT", App::GeoFeature::ElementNameType::Normal);
+    auto reverse_normal_name =
+        getObject()->getElementName("Vertex2", App::GeoFeature::ElementNameType::Normal);
+    auto reverse_export_name =
+        getObject()->getElementName("Vertex1", App::GeoFeature::ElementNameType::Export);
+    auto map = getObject()->Shape.getShape().getElementMap();
+    ASSERT_EQ(map.size(), 3);
+    EXPECT_STREQ(map[0].name.toString().c_str(), "g39;SKT");
+    EXPECT_EQ(map[0].index.toString(), "Edge1");
+    // Assert
+#ifndef FC_USE_TNP_FIX
+    EXPECT_STREQ(forward_normal_name.first.c_str(), "");
+    EXPECT_STREQ(forward_normal_name.second.c_str(), "g39;SKT");
+    EXPECT_STREQ(reverse_normal_name.first.c_str(), "");
+    EXPECT_STREQ(reverse_normal_name.second.c_str(), "Vertex2");
+    EXPECT_STREQ(reverse_export_name.first.c_str(), ";g39v1;SKT.Vertex1");
+    EXPECT_STREQ(reverse_export_name.second.c_str(), "Vertex1");
+#else
+    EXPECT_STREQ(forward_normal_name.first.c_str(), ";g39;SKT.Edge1");
+    EXPECT_STREQ(forward_normal_name.second.c_str(), "Edge1");
+    EXPECT_STREQ(reverse_normal_name.first.c_str(), ";g39v2;SKT.Vertex2");
+    EXPECT_STREQ(reverse_normal_name.second.c_str(), "Vertex2");
+    EXPECT_STREQ(reverse_export_name.first.c_str(), ";g39v1;SKT.Vertex1");
+    EXPECT_STREQ(reverse_export_name.second.c_str(), "Vertex1");
+#endif
 }

@@ -24,9 +24,13 @@
 
 #ifndef _PreComp_
 #include <vtkDataSet.h>
+#include <vtkXMLDataSetWriter.h>
 #endif
 
+#include <Base/Exception.h>
+
 #include "FemPostObject.h"
+#include "FemPostObjectPy.h"
 
 
 using namespace Fem;
@@ -55,4 +59,81 @@ vtkBoundingBox FemPostObject::getBoundingBox()
     // TODO: add calculation of multiblock and Multipiece datasets
 
     return box;
+}
+
+PyObject* FemPostObject::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FemPostObjectPy(this), true);
+    }
+
+    return Py::new_reference_to(PythonObject);
+}
+
+namespace
+{
+
+template<typename T>
+void femVTKWriter(const char* filename, const vtkSmartPointer<vtkDataObject>& dataObject)
+{
+    if (vtkDataSet::SafeDownCast(dataObject)->GetNumberOfPoints() <= 0) {
+        throw Base::ValueError("Empty data object");
+    }
+
+    vtkSmartPointer<T> writer = vtkSmartPointer<T>::New();
+    writer->SetFileName(filename);
+    writer->SetDataModeToBinary();
+    writer->SetInputDataObject(dataObject);
+    writer->Write();
+}
+
+std::string vtkWriterExtension(const vtkSmartPointer<vtkDataObject>& dataObject)
+{
+    std::string extension;
+    switch (dataObject->GetDataObjectType()) {
+        case VTK_POLY_DATA:
+            extension = "vtp";
+            break;
+        case VTK_STRUCTURED_GRID:
+            extension = "vts";
+            break;
+        case VTK_RECTILINEAR_GRID:
+            extension = "vtr";
+            break;
+        case VTK_UNSTRUCTURED_GRID:
+            extension = "vtu";
+            break;
+        case VTK_UNIFORM_GRID:
+            extension = "vti";
+            break;
+        default:
+            break;
+    }
+
+    return extension;
+}
+
+}  // namespace
+
+void FemPostObject::writeVTK(const char* filename) const
+{
+    const vtkSmartPointer<vtkDataObject>& data = Data.getValue();
+
+    // set appropriate filename extension
+    std::string name(filename);
+    std::string extension = vtkWriterExtension(data);
+    if (extension.empty()) {
+        throw Base::TypeError("Unsupported data type");
+    }
+
+    std::string::size_type pos = name.find_last_of('.');
+    if (pos != std::string::npos) {
+        name = name.substr(0, pos + 1).append(extension);
+    }
+    else {
+        name = name.append(".").append(extension);
+    }
+
+    femVTKWriter<vtkXMLDataSetWriter>(name.c_str(), data);
 }

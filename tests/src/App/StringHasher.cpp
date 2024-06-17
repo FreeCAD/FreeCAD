@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include "App/MappedName.h"
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <App/StringHasher.h>
 #include <App/StringHasherPy.h>
@@ -1006,6 +1006,7 @@ TEST_F(StringIDRefTest, toBytes)  // NOLINT
 
 TEST_F(StringIDRefTest, getPyObject)  // NOLINT
 {
+    Py_Initialize();
     // Arrange
     auto ref = App::StringIDRef(createStringID());
     auto empty = App::StringIDRef();

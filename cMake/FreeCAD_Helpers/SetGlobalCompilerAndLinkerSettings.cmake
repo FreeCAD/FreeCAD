@@ -21,6 +21,7 @@ macro(SetGlobalCompilerAndLinkerSettings)
 
     if(MSVC)
         # set default compiler settings
+        add_definitions(-D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR)
         set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zm150 /bigobj")
         set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG /Zm150 /bigobj")
         # set default libs
@@ -37,8 +38,8 @@ macro(SetGlobalCompilerAndLinkerSettings)
         if(FREECAD_RELEASE_SEH)
             # remove /EHsc or /EHs flags because they are incompatible with /EHa
             if (${CMAKE_BUILD_TYPE} MATCHES "Release")
-                string(REPLACE "/EHsc" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-                string(REPLACE "/EHs" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+                string(REPLACE "/EHsc" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+                string(REPLACE "/EHs" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
                 set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa")
             endif()
         endif(FREECAD_RELEASE_SEH)
@@ -90,4 +91,8 @@ macro(SetGlobalCompilerAndLinkerSettings)
             link_libraries(-lgdi32)
         endif()
     endif(MINGW)
+
+    # Enable the Topological Naming Problem mitigation code
+    add_compile_options(-DFC_USE_TNP_FIX)
+
 endmacro(SetGlobalCompilerAndLinkerSettings)

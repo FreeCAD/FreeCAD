@@ -120,7 +120,7 @@ std::string DrawUtil::getGeomTypeFromName(const std::string& geomName)
     std::stringstream ErrorMsg;
 
     if (boost::regex_search(begin, end, what, re, flags)) {
-        return what.str();//TODO: use std::stoi() in c++11
+        return what.str();
     } else {
         ErrorMsg << "In getGeomTypeFromName: malformed geometry name - " << geomName;
         throw Base::ValueError(ErrorMsg.str());
@@ -642,6 +642,7 @@ gp_Vec DrawUtil::closestBasis(gp_Vec inVec)
     return gp_Vec(togp_Dir(closestBasis(toVector3d(inVec))));
 }
 
+//! returns stdX, stdY or stdZ.
 Base::Vector3d DrawUtil::closestBasis(Base::Vector3d v)
 {
     Base::Vector3d result(0.0, -1, 0);
@@ -692,6 +693,63 @@ Base::Vector3d DrawUtil::closestBasis(Base::Vector3d v)
 
     if (angleZr == angleMin) {
         return Base::Vector3d(0.0, 0.0, 1.0);
+    }
+
+    //should not get to here
+    return Base::Vector3d(1.0, 0.0, 0.0);
+}
+
+//! returns +/- stdX, stdY or stdZ.
+Base::Vector3d DrawUtil::closestBasisOriented(Base::Vector3d v)
+{
+    Base::Vector3d result(0.0, -1, 0);
+    Base::Vector3d stdX(1.0, 0.0, 0.0);
+    Base::Vector3d stdY(0.0, 1.0, 0.0);
+    Base::Vector3d stdZ(0.0, 0.0, 1.0);
+    Base::Vector3d stdXr(-1.0, 0.0, 0.0);
+    Base::Vector3d stdYr(0.0, -1.0, 0.0);
+    Base::Vector3d stdZr(0.0, 0.0, -1.0);
+
+    //first check if already a basis
+    if (v.Dot(stdX) == 1.0 || v.Dot(stdY) == 1.0 || v.Dot(stdZ) == 1.0) {
+        return v;
+    }
+    if (v.Dot(stdX) == -1.0 || v.Dot(stdY) == -1.0 || v.Dot(stdZ) == -1.0) {
+        return v;
+    }
+
+    //not a basis. find smallest angle with a basis.
+    double angleX, angleY, angleZ, angleXr, angleYr, angleZr, angleMin;
+    angleX = stdX.GetAngle(v);
+    angleY = stdY.GetAngle(v);
+    angleZ = stdZ.GetAngle(v);
+    angleXr = stdXr.GetAngle(v);
+    angleYr = stdYr.GetAngle(v);
+    angleZr = stdZr.GetAngle(v);
+
+    angleMin = std::min({angleX, angleY, angleZ, angleXr, angleYr, angleZr});
+    if (angleX == angleMin) {
+        return Base::Vector3d(1.0, 0.0, 0.0);
+    }
+
+    if (angleY == angleMin) {
+        return Base::Vector3d(0.0, 1.0, 0.0);
+    }
+
+    if (angleZ == angleMin) {
+        return Base::Vector3d(0.0, 0.0, 1.0);
+    }
+
+    if (angleXr == angleMin) {
+        return Base::Vector3d(-1.0, 0.0, 0.0);
+    }
+
+    if (angleYr == angleMin) {
+        return Base::Vector3d(0.0, -1.0, 0.0);
+    }
+
+    if (angleZr == angleMin) {
+        return Base::Vector3d(0.0, 0.0, -1.0);
     }
 
     //should not get to here
@@ -760,6 +818,7 @@ Base::Vector3d DrawUtil::closestBasis(gp_Dir gDir, gp_Ax2 coordSys)
     return Base::Vector3d(xCS.X(), xCS.Y(), xCS.Z());
 }
 
+//! find the size of a shape measured in a given (cardinal) direction
 double DrawUtil::getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape)
 {
     Base::Vector3d stdX(1.0, 0.0, 0.0);
@@ -795,6 +854,40 @@ double DrawUtil::getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape)
     }
 
     return 0.0;
+}
+
+//! mask off one component of the input vector. input vector (a, b, c) with
+//! direction to mask (0, 1, 0) would return (a, 0.0, c).  The mask is a
+//! cardinal direction or the reverse of a cardinal direction.
+gp_Vec DrawUtil::maskDirection(gp_Vec inVec, gp_Dir directionToMask)
+{
+    if (fpCompare(std::fabs(directionToMask.Dot(gp::OX().Direction().XYZ())), 1.0, EWTOLERANCE)) {
+        return {0.0, inVec.Y(), inVec.Z()};
+    }
+
+    if (fpCompare(std::fabs(directionToMask.Dot(gp::OY().Direction().XYZ())), 1.0, EWTOLERANCE)) {
+            return {inVec.X(), 0.0, inVec.Z()};
+    }
+
+    if (fpCompare(std::fabs(directionToMask.Dot(gp::OZ().Direction().XYZ())), 1.0, EWTOLERANCE)) {
+            return {inVec.X(), inVec.Y(), 0.0};
+    }
+
+    Base::Console().Message("DU:maskDirection - directionToMask is not cardinal\n");
+    return {};
+}
+
+Base::Vector3d DrawUtil::maskDirection(Base::Vector3d inVec, Base::Vector3d directionToMask)
+{
+    return toVector3d(maskDirection(togp_Vec(inVec), togp_Vec(directionToMask)));
+}
+
+//! get the coordinate of inPoint for the cardinal unit direction.
+double DrawUtil::coordinateForDirection(Base::Vector3d inPoint,  Base::Vector3d cardinal)
+{
+    auto masked = maskDirection(inPoint, cardinal);
+    auto stripped = inPoint - masked;
+    return stripped.x + stripped.y + stripped.z;
 }
 
 //based on Function provided by Joe Dowsett, 2014
@@ -1312,6 +1405,80 @@ double DrawUtil::angleDifference(double fi1, double fi2, bool reflex)
     return fi1;
 }
 
+std::pair<int, int> DrawUtil::nearestFraction(double val, int maxDenom)
+{
+// Find rational approximation to given real number
+// David Eppstein / UC Irvine / 8 Aug 1993
+//
+// With corrections from Arno Formella, May 2008
+// and additional fiddles by WF 2017
+// usage: a.out r d
+//   r is real number to approx
+//   d is the maximum denominator allowed
+//
+// Based on the theory of continued fractions
+// if x = a1 + 1/(a2 + 1/(a3 + 1/(a4 + ...)))
+// then best approximation is found by truncating this series
+// (with some adjustments in the last term).
+//
+// Note the fraction can be recovered as the first column of the matrix
+//  ( a1 1 ) ( a2 1 ) ( a3 1 ) ...
+//  ( 1  0 ) ( 1  0 ) ( 1  0 )
+// Instead of keeping the sequence of continued fraction terms,
+// we just keep the last partial product of these matrices.
+    std::pair<int, int> result;
+    long m[2][2];
+    long maxden = maxDenom;
+    long ai;
+    double x = val;
+    double startx = x;
+
+    /* initialize matrix */
+    m[0][0] = m[1][1] = 1;
+    m[0][1] = m[1][0] = 0;
+
+    /* loop finding terms until denom gets too big */
+    while (m[1][0] *  ( ai = (long)x ) + m[1][1] <= maxden) {
+        long t;
+        t = m[0][0] * ai + m[0][1];
+        m[0][1] = m[0][0];
+        m[0][0] = t;
+        t = m[1][0] * ai + m[1][1];
+        m[1][1] = m[1][0];
+        m[1][0] = t;
+        if(x == (double) ai)
+            break;     // AF: division by zero
+        x = 1/(x - (double) ai);
+        if(x > (double) std::numeric_limits<int>::max())
+            break;     // AF: representation failure
+    }
+
+    /* now remaining x is between 0 and 1/ai */
+    /* approx as either 0 or 1/m where m is max that will fit in maxden */
+    /* first try zero */
+    double error1 = startx - ((double) m[0][0] / (double) m[1][0]);
+    int n1 = m[0][0];
+    int d1 = m[1][0];
+
+    /* now try other possibility */
+    ai = (maxden - m[1][1]) / m[1][0];
+    m[0][0] = m[0][0] * ai + m[0][1];
+    m[1][0] = m[1][0] * ai + m[1][1];
+    double error2 = startx - ((double) m[0][0] / (double) m[1][0]);
+    int n2 = m[0][0];
+    int d2 = m[1][0];
+
+    if (std::fabs(error1) <= std::fabs(error2)) {
+        result.first  = n1;
+        result.second = d1;
+    } else {
+        result.first  = n2;
+        result.second = d2;
+    }
+
+    return result;
+}
+
 // Interval marking functions
 // ==========================
 
@@ -1669,7 +1836,8 @@ std::string DrawUtil::translateArbitrary(std::string context, std::string baseNa
 bool DrawUtil::isCosmeticVertex(App::DocumentObject* owner, std::string element)
 {
     auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
-    auto vertex = ownerView->getVertex(element);
+    auto vertexIndex = DrawUtil::getIndexFromName(element);
+    auto vertex = ownerView->getProjVertexByIndex(vertexIndex);
     if (vertex) {
         return vertex->getCosmetic();
     }
@@ -1776,7 +1944,7 @@ void DrawUtil::dumpEdge(const char* label, int i, TopoDS_Edge e)
         vEnd.Z(),
         static_cast<int>(e.Orientation()));
     double edgeLength = GCPnts_AbscissaPoint::Length(adapt, Precision::Confusion());
-    Base::Console().Message(">>>>>>> length: %.3f  distance: %.3f ration: %.3f type: %d\n",
+    Base::Console().Message(">>>>>>> length: %.3f  distance: %.3f ratio: %.3f type: %d\n",
                             edgeLength,
                             vStart.Distance(vEnd),
                             edgeLength / vStart.Distance(vEnd),

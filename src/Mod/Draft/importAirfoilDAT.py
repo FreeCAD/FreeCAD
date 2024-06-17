@@ -45,6 +45,7 @@ import Draft
 import Part
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
+from builtins import open as pyopen
 
 
 if FreeCAD.GuiUp:
@@ -53,8 +54,7 @@ else:
     def translate(context, txt):
         return txt
 
-if open.__module__ in ['__builtin__', 'io']:
-    pythonopen = open
+
 
 useDraftWire = True
 
@@ -133,7 +133,7 @@ def process(filename):
     _regex = r'^\s*' + xval + r'\,?\s*' + yval + r'\s*$'
 
     regex = re.compile(_regex)
-    afile = pythonopen(filename, 'r')
+    afile = pyopen(filename, 'r')
     # read the airfoil name which is always at the first line
     airfoilname = afile.readline().strip()
 

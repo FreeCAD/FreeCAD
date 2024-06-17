@@ -18,7 +18,7 @@
     <Attribute Name="Value" ReadOnly="false">
         <Documentation>
             <UserDocu>
-                returns the value of the GeometryDoubleExtension.
+                Returns the value of the GeometryDoubleExtension.
             </UserDocu>
         </Documentation>
         <Parameter Name="Value" Type="Float"/>

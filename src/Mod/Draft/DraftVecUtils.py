@@ -95,8 +95,7 @@ def typecheck(args_and_types, name="?"):
     """
     for v, t in args_and_types:
         if not isinstance(v, t):
-            _msg = "typecheck[{0}]: {1} is not {2}".format(name, v, t)
-            messages._wrn(_msg)
+            messages._wrn("typecheck[{0}]: {1} is not {2}".format(name, v, t))
             raise TypeError("fcvec." + str(name))
 
 

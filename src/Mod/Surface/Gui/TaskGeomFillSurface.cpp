@@ -658,12 +658,7 @@ TaskGeomFillSurface::TaskGeomFillSurface(ViewProviderGeomFillSurface* vp,
 {
     widget = new GeomFillSurface(vp, obj);
     widget->setWindowTitle(QObject::tr("Surface"));
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Surface_BSplineSurface"),
-                                         widget->windowTitle(),
-                                         true,
-                                         nullptr);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    addTaskBox(Gui::BitmapFactory().pixmap("Surface_BSplineSurface"), widget);
 }
 
 void TaskGeomFillSurface::setEditedObject(Surface::GeomFillSurface* obj)

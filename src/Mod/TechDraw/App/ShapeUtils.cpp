@@ -63,9 +63,6 @@
 #include <gp_Vec.hxx>
 #endif// #ifndef _PreComp_
 
-#include <algorithm>
-#include <chrono>
-
 #include <Base/Console.h>
 
 #include "DrawUtil.h"
@@ -225,30 +222,6 @@ Base::Vector3d ShapeUtils::findCentroidVec(const TopoDS_Shape& shape, const gp_A
     return Base::Vector3d(p.X(), p.Y(), p.Z());
 }
 
-//! Returns the XY plane center of shape with respect to coordSys
-gp_Pnt ShapeUtils::findCentroidXY(const TopoDS_Shape& shape, const gp_Ax2& coordSys)
-{
-    //    Base::Console().Message("GO::findCentroid() - 2\n");
-
-    gp_Trsf tempTransform;
-    tempTransform.SetTransformation(coordSys);
-    BRepBuilderAPI_Transform builder(shape, tempTransform);
-
-    Bnd_Box tBounds;
-    tBounds.SetGap(0.0);
-    BRepBndLib::AddOptimal(builder.Shape(), tBounds, true, false);
-
-    Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
-    tBounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-
-    Standard_Real x = (xMin + xMax) / 2.0, y = (yMin + yMax) / 2.0, z = 0.0;
-
-    // Get "centroid" back into object space
-    tempTransform.Inverted().Transforms(x, y, z);
-
-    return gp_Pnt(x, y, z);
-}
-
 //!scales & mirrors a shape about a center
 TopoDS_Shape ShapeUtils::mirrorShapeVec(const TopoDS_Shape& input, const Base::Vector3d& inputCenter,
                                       double scale)
@@ -347,11 +320,46 @@ TopoDS_Shape ShapeUtils::moveShape(const TopoDS_Shape& input, const Base::Vector
     return transShape;
 }
 
-TopoDS_Shape ShapeUtils::centerShapeXY(const TopoDS_Shape& inShape, const gp_Ax2& coordSys)
+//mirror a shape thru XZ plane for Qt's inverted Y coordinate
+TopoDS_Shape ShapeUtils::invertGeometry(const TopoDS_Shape s)
 {
-    gp_Pnt inputCenter = findCentroidXY(inShape, coordSys);
-    Base::Vector3d centroid = DrawUtil::toVector3d(inputCenter);
-    return ShapeUtils::moveShape(inShape, centroid * -1.0);
+    if (s.IsNull()) {
+        return s;
+    }
+
+    gp_Trsf mirrorY;
+    gp_Pnt org(0.0, 0.0, 0.0);
+    gp_Dir Y(0.0, 1.0, 0.0);
+    gp_Ax2 mirrorPlane(org, Y);
+    mirrorY.SetMirror(mirrorPlane);
+    BRepBuilderAPI_Transform mkTrf(s, mirrorY, true);
+    return mkTrf.Shape();
+}
+
+//! transforms a shape defined in invertedY (Qt) coordinates into one defined by
+//! conventional coordinates
+TopoDS_Shape ShapeUtils::fromQt(const TopoDS_Shape& inShape)
+{
+    gp_Ax3  OXYZ;
+    gp_Ax3  Qt;
+    Qt.YReverse();
+    gp_Trsf xFromQt;
+    xFromQt.SetTransformation(Qt, OXYZ);
+    BRepBuilderAPI_Transform mkTrf(inShape, xFromQt);
+    return mkTrf.Shape();
+}
+
+//! transforms a shape defined in conventional coordinates coordinates into one defined by
+//! invertedY (Qt) coordinates
+TopoDS_Shape ShapeUtils::toQt(const TopoDS_Shape& inShape)
+{
+    gp_Ax3  OXYZ;
+    gp_Ax3  Qt;
+    Qt.YReverse();
+    gp_Trsf xFromQt;
+    xFromQt.SetTransformation(OXYZ, Qt);
+    BRepBuilderAPI_Transform mkTrf(inShape, xFromQt);
+    return mkTrf.Shape();
 }
 
 std::pair<Base::Vector3d, Base::Vector3d> ShapeUtils::getEdgeEnds(TopoDS_Edge edge)
@@ -374,5 +382,22 @@ bool  ShapeUtils::isShapeReallyNull(TopoDS_Shape shape)
 {
     // if the shape is null or it has no subshapes, then it is really null
     return shape.IsNull() || !TopoDS_Iterator(shape).More();
+}
+
+bool ShapeUtils::edgesAreParallel(TopoDS_Edge edge0, TopoDS_Edge edge1)
+{
+    std::pair<Base::Vector3d, Base::Vector3d> ends0 = getEdgeEnds(edge0);
+    Base::Vector3d vec0 = ends0.second - ends0.first;
+    vec0.Normalize();
+    std::pair<Base::Vector3d, Base::Vector3d> ends1 = getEdgeEnds(edge1);
+    Base::Vector3d vec1 = ends1.second - ends1.first;
+    vec1.Normalize();
+    double dot = fabs(vec0.Dot(vec1));
+    if (DU::fpCompare(dot, 1.0, EWTOLERANCE)) {
+        // parallel vectors
+        return true;
+    }
+    return false;
+
 }
 

@@ -41,6 +41,7 @@ import math
 import pivy.coin as coin
 import PySide.QtCore as QtCore
 import PySide.QtGui as QtGui
+import PySide.QtWidgets as QtWidgets
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -49,6 +50,7 @@ import Draft
 import DraftVecUtils
 import DraftGeomUtils
 from draftguitools import gui_trackers as trackers
+from draftutils import gui_utils
 from draftutils import params
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.messages import _wrn
@@ -1139,7 +1141,7 @@ class Snapper:
 
     def get_quarter_widget(self, mw):
         views = []
-        for w in mw.findChild(QtGui.QMdiArea).findChildren(QtGui.QWidget):
+        for w in mw.findChild(QtWidgets.QMdiArea).findChildren(QtWidgets.QWidget):
             if w.inherits("SIM::Coin3D::Quarter::QuarterWidget"):
                 views.append(w)
         return views
@@ -1217,24 +1219,27 @@ class Snapper:
             self.dim1.off()
         if self.dim2:
             self.dim2.off()
-        if self.grid:
-            if self.grid.show_always is False:
-                self.grid.off()
         if self.holdTracker:
             self.holdTracker.clear()
             self.holdTracker.off()
         self.unconstrain()
         self.radius = 0
         self.setCursor()
-        if params.get_param("SnapBarShowOnlyDuringCommands"):
-            toolbar = self.get_snap_toolbar()
-            if toolbar:
-                toolbar.hide()
         self.mask = None
         self.selectMode = False
         self.running = False
         self.holdPoints = []
         self.lastObj = []
+
+        if hasattr(App, "activeDraftCommand") and App.activeDraftCommand:
+            return
+        if self.grid:
+            if self.grid.show_always is False:
+                self.grid.off()
+        if params.get_param("SnapBarShowOnlyDuringCommands"):
+            toolbar = self.get_snap_toolbar()
+            if toolbar:
+                toolbar.hide()
 
 
     def setSelectMode(self, mode):
@@ -1383,6 +1388,9 @@ class Snapper:
             self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
         if self.callbackMove:
             self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
+        if self.callbackClick or self.callbackMove:
+            # Next line fixes https://github.com/FreeCAD/FreeCAD/issues/10469:
+            gui_utils.end_all_events()
         self.callbackClick = None
         self.callbackMove = None
 
@@ -1423,6 +1431,9 @@ class Snapper:
                 self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
             if self.callbackMove:
                 self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
+            if self.callbackClick or self.callbackMove:
+                # Next line fixes https://github.com/FreeCAD/FreeCAD/issues/10469:
+                gui_utils.end_all_events()
             self.callbackClick = None
             self.callbackMove = None
             Gui.Snapper.off()
@@ -1442,6 +1453,9 @@ class Snapper:
                 self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
             if self.callbackMove:
                 self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
+            if self.callbackClick or self.callbackMove:
+                # Next line fixes https://github.com/FreeCAD/FreeCAD/issues/10469:
+                gui_utils.end_all_events()
             self.callbackClick = None
             self.callbackMove = None
             Gui.Snapper.off()
@@ -1473,7 +1487,7 @@ class Snapper:
         """Get the snap toolbar."""
         if not (hasattr(self, "toolbar") and self.toolbar):
             mw = Gui.getMainWindow()
-            self.toolbar = mw.findChild(QtGui.QToolBar, "Draft snap")
+            self.toolbar = mw.findChild(QtWidgets.QToolBar, "Draft snap")
         if self.toolbar:
             return self.toolbar
 
@@ -1569,14 +1583,15 @@ class Snapper:
     def setGrid(self):
         """Set the grid, if visible."""
         self.setTrackers()
-        if self.grid.Visible:
-            self.grid.set()
 
 
     def setTrackers(self, update_grid=True):
         """Set the trackers."""
         v = Draft.get3DView()
-        if v and (v != self.activeview):
+        if v is None:
+            return
+
+        if v != self.activeview:
             if v in self.trackers[0]:
                 i = self.trackers[0].index(v)
                 self.grid = self.trackers[1][i]

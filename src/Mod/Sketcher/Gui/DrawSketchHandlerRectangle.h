@@ -535,6 +535,12 @@ private:
             if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
                 return QString::fromLatin1("Sketcher_Pointer_Create_Box_Center");
             }
+            else if (constructionMethod() == ConstructionMethod::ThreePoints) {
+                return QString::fromLatin1("Sketcher_Pointer_Create_Box_3Points");
+            }
+            else if (constructionMethod() == ConstructionMethod::CenterAnd3Points) {
+                return QString::fromLatin1("Sketcher_Pointer_Create_Box_3Points_Center");
+            }
             else {
                 return QString::fromLatin1("Sketcher_Pointer_Create_Box");
             }
@@ -1641,10 +1647,11 @@ template<>
 void DSHRectangleController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QStringLiteral("Corner, length & width"),
-                             QStringLiteral("Center, length & width"),
-                             QStringLiteral("3 corners"),
-                             QStringLiteral("Center and 2 corners")};
+        QStringList names = {
+            QApplication::translate("TaskSketcherTool_c1_rectangle", "Corner, width, height"),
+            QApplication::translate("TaskSketcherTool_c1_rectangle", "Center, width, height"),
+            QApplication::translate("TaskSketcherTool_c1_rectangle", "3 corners"),
+            QApplication::translate("TaskSketcherTool_c1_rectangle", "Center, 2 corners")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         toolWidget->setCheckboxLabel(
@@ -1661,9 +1668,8 @@ void DSHRectangleController::configureToolWidget()
             QApplication::translate("TaskSketcherTool_c2_rectangle", "Frame (J)"));
         toolWidget->setCheckboxToolTip(
             WCheckbox::SecondBox,
-            QApplication::translate(
-                "TaskSketcherTool_c2_rectangle",
-                "Create two rectangles, one in the other with a constant thickness."));
+            QApplication::translate("TaskSketcherTool_c2_rectangle",
+                                    "Create two rectangles with a constant offset."));
         syncCheckboxToHandler(WCheckbox::SecondBox, handler->makeFrame);
 
         if (isConstructionMode()) {
@@ -2166,53 +2172,62 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
                     onViewParameters[OnViewParameter::Sixth]->setPoints(start, end);
                 }
             }
-            else {
+            else if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
                 onViewParameters[OnViewParameter::Third]->setPoints(toVector3d(handler->corner4),
                                                                     toVector3d(handler->corner3));
 
-                bool threePoints = handler->constructionMethod() == ConstructionMethod::ThreePoints;
-                bool notReversed = threePoints && !handler->cornersReversed;
+                bool reversed = handler->cornersReversed;
 
                 if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fifth,
-                                            notReversed ? handler->width : handler->length);
+                                            reversed ? handler->length : handler->width);
                 }
 
                 Base::Vector3d start = toVector3d(handler->corner1);
-                onViewParameters[OnViewParameter::Fifth]->setLabelAutoDistanceReverse(!notReversed);
+                onViewParameters[OnViewParameter::Fifth]->setLabelAutoDistanceReverse(reversed);
                 onViewParameters[OnViewParameter::Fifth]->setPoints(
                     start,
-                    toVector3d(notReversed ? handler->corner4 : handler->corner2));
+                    toVector3d(reversed ? handler->corner2 : handler->corner4));
 
 
                 if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
-                    if (threePoints) {
-                        double val = Base::toDegrees(handler->angle123);
-                        setOnViewParameterValue(OnViewParameter::Sixth, val, Base::Unit::Angle);
-                    }
-                    else {
-                        double val = Base::toDegrees(handler->angle412);
-                        setOnViewParameterValue(OnViewParameter::Sixth, val, Base::Unit::Angle);
-                    }
+                    double val = Base::toDegrees(handler->angle123);
+                    setOnViewParameterValue(OnViewParameter::Sixth, val, Base::Unit::Angle);
                 }
 
-                if (threePoints) {
-                    onViewParameters[OnViewParameter::Sixth]->setPoints(
-                        toVector3d(notReversed ? handler->corner2 : handler->corner4),
-                        Base::Vector3d());
-                    double startAngle = notReversed ? (handler->corner3 - handler->corner2).Angle()
-                                                    : (handler->corner1 - handler->corner4).Angle();
-                    onViewParameters[OnViewParameter::Sixth]->setLabelStartAngle(startAngle);
-                    onViewParameters[OnViewParameter::Sixth]->setLabelRange(handler->angle123);
+                onViewParameters[OnViewParameter::Sixth]->setPoints(
+                    toVector3d(reversed ? handler->corner4 : handler->corner2),
+                    Base::Vector3d());
+                double startAngle = reversed ? (handler->corner1 - handler->corner4).Angle()
+                                             : (handler->corner3 - handler->corner2).Angle();
+                onViewParameters[OnViewParameter::Sixth]->setLabelStartAngle(startAngle);
+                onViewParameters[OnViewParameter::Sixth]->setLabelRange(handler->angle123);
+            }
+            else {
+                bool reversed = handler->cornersReversed;
+
+                if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
+                    setOnViewParameterValue(OnViewParameter::Fifth,
+                                            reversed ? handler->width : handler->length);
                 }
-                else {
-                    onViewParameters[OnViewParameter::Sixth]->setPoints(
-                        toVector3d(handler->corner1),
-                        Base::Vector3d());
-                    double startAngle = (handler->corner2 - handler->corner1).Angle();
-                    onViewParameters[OnViewParameter::Sixth]->setLabelStartAngle(startAngle);
-                    onViewParameters[OnViewParameter::Sixth]->setLabelRange(handler->angle412);
+
+                Base::Vector3d start = toVector3d(handler->corner1);
+                onViewParameters[OnViewParameter::Fifth]->setLabelAutoDistanceReverse(true);
+                onViewParameters[OnViewParameter::Fifth]->setPoints(
+                    start,
+                    toVector3d(reversed ? handler->corner4 : handler->corner2));
+
+
+                if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
+                    double val = Base::toDegrees(handler->angle412);
+                    setOnViewParameterValue(OnViewParameter::Sixth, val, Base::Unit::Angle);
                 }
+
+                onViewParameters[OnViewParameter::Sixth]->setPoints(toVector3d(handler->corner1),
+                                                                    Base::Vector3d());
+                double startAngle = (handler->corner2 - handler->corner1).Angle();
+                onViewParameters[OnViewParameter::Sixth]->setLabelStartAngle(startAngle);
+                onViewParameters[OnViewParameter::Sixth]->setLabelRange(handler->angle412);
             }
 
         } break;
@@ -2365,6 +2380,10 @@ void DSHRectangleController::addConstraints()
     App::DocumentObject* obj = handler->sketchgui->getObject();
 
     int firstCurve = handler->firstCurve;
+    bool reverse = handler->cornersReversed;
+    if (handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
+        reverse = !reverse;
+    }
 
     auto x0 = onViewParameters[OnViewParameter::First]->getValue();
     auto y0 = onViewParameters[OnViewParameter::Second]->getValue();
@@ -2380,12 +2399,19 @@ void DSHRectangleController::addConstraints()
     auto radiusSet = onViewParameters[OnViewParameter::Fifth]->isSet;
     auto thicknessSet = onViewParameters[OnViewParameter::Sixth]->isSet;
 
+    auto corner1x = onViewParameters[OnViewParameter::Third]->getValue();
+    auto corner1y = onViewParameters[OnViewParameter::Fourth]->getValue();
     auto angle = Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
     auto innerAngle = Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
 
+    auto corner1xSet = onViewParameters[OnViewParameter::Third]->isSet;
+    auto corner1ySet = onViewParameters[OnViewParameter::Fourth]->isSet;
     auto angleSet = onViewParameters[OnViewParameter::Fourth]->isSet;
     auto innerAngleSet = onViewParameters[OnViewParameter::Sixth]->isSet;
 
+    if (handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
+        lengthSet = false;
+    }
     if (handler->constructionMethod() == ConstructionMethod::ThreePoints
         || handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
         width = onViewParameters[OnViewParameter::Fifth]->getValue();
@@ -2425,7 +2451,7 @@ void DSHRectangleController::addConstraints()
     };
 
     auto constraintlength = [&]() {
-        int curveId = handler->cornersReversed ? firstCurve : firstCurve + 1;
+        int curveId = reverse ? firstCurve : firstCurve + 1;
 
         Gui::cmdAppObjectArgs(obj,
                               "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
@@ -2437,7 +2463,7 @@ void DSHRectangleController::addConstraints()
     };
 
     auto constraintwidth = [&]() {
-        int curveId = handler->cornersReversed ? firstCurve + 1 : firstCurve;
+        int curveId = reverse ? firstCurve + 1 : firstCurve;
 
         Gui::cmdAppObjectArgs(obj,
                               "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
@@ -2488,7 +2514,7 @@ void DSHRectangleController::addConstraints()
         }
 
         if (lengthSet) {
-            int curveId = handler->cornersReversed ? firstCurve : firstCurve + 1;
+            int curveId = reverse ? firstCurve : firstCurve + 1;
             auto startpointinfo = handler->getPointInfo(GeoElementId(curveId, PointPos::start));
             auto endpointinfo = handler->getPointInfo(GeoElementId(curveId + 2, PointPos::end));
 
@@ -2503,7 +2529,7 @@ void DSHRectangleController::addConstraints()
         }
 
         if (widthSet) {
-            int curveId = handler->cornersReversed ? firstCurve + 1 : firstCurve;
+            int curveId = reverse ? firstCurve + 1 : firstCurve;
             auto startpointinfo = handler->getPointInfo(GeoElementId(curveId, PointPos::start));
             auto endpointinfo = handler->getPointInfo(GeoElementId(curveId + 2, PointPos::end));
 
@@ -2519,9 +2545,7 @@ void DSHRectangleController::addConstraints()
     // NOTE: As of today, there are no autoconstraints on the radius or on the frame thickness,
     // therefore, they are necessarily constrainable were applicable.
 
-    if (handler->constructionMethod() == ConstructionMethod::ThreePoints
-        || handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
-
+    if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
         if (angleSet) {
             if (fabs(angle - M_PI) < Precision::Confusion()
                 || fabs(angle + M_PI) < Precision::Confusion()
@@ -2545,28 +2569,41 @@ void DSHRectangleController::addConstraints()
             }
         }
         if (innerAngleSet) {
-            if (fabs(innerAngle - M_PI / 2)
-                > Precision::Confusion()) {  // if 90? then perpendicular already created.
-                if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
-                    Gui::cmdAppObjectArgs(
-                        obj,
-                        "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
-                        firstCurve + 1,
-                        1,
-                        firstCurve,
-                        2,
-                        innerAngle);
-                }
-                else {
-                    Gui::cmdAppObjectArgs(
-                        obj,
-                        "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
-                        firstCurve,
-                        1,
-                        firstCurve + 3,
-                        2,
-                        innerAngle);
-                }
+            if (fabs(innerAngle - M_PI / 2) > Precision::Confusion()) {
+                // if 90? then perpendicular already created.
+                Gui::cmdAppObjectArgs(obj,
+                                      "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
+                                      firstCurve + 1,
+                                      1,
+                                      firstCurve,
+                                      2,
+                                      innerAngle);
+            }
+        }
+    }
+    else if (handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
+        if (corner1xSet) {
+            ConstraintToAttachment(GeoElementId(firstCurve, PointPos::start),
+                                   GeoElementId::VAxis,
+                                   corner1x,
+                                   obj);
+        }
+        if (corner1ySet) {
+            ConstraintToAttachment(GeoElementId(firstCurve, PointPos::start),
+                                   GeoElementId::HAxis,
+                                   corner1y,
+                                   obj);
+        }
+        if (innerAngleSet) {
+            if (fabs(innerAngle - M_PI / 2) > Precision::Confusion()) {
+                // if 90? then perpendicular already created.
+                Gui::cmdAppObjectArgs(obj,
+                                      "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
+                                      firstCurve,
+                                      1,
+                                      firstCurve + 3,
+                                      2,
+                                      innerAngle);
             }
         }
     }

@@ -51,32 +51,34 @@ def displayMessage(title,message):
     msgBox.exec_()
 
 
-def getSelView():
+def getSelView(nSel=0):
     '''
     view = getSelView()
+    nSel=0 ... number of selected view, 0 = first selected
     Return selected view, otherwise return False
     '''
     if not Gui.Selection.getSelection():
         displayMessage('TechDraw_Utils','No view selected')
     else:
-        view = Gui.Selection.getSelection()[0]
+        view = Gui.Selection.getSelection()[nSel]
         return view
 
-def getSelVertexes(nVertex=1):
+def getSelVertexes(nVertex=1, nSel=0):
     '''
     vertexes = getSelVertexes(nVertex)
-    nVertex ... min. number of selected vertexes
+    nVertex=1 ... min. number of selected vertexes
+    nSel=0 ... number of selected view, 0 = first selected
     Return a list of selected vertexes if at least nVertex vertexes are selected, otherwise return False
     '''
-    if getSelView():
-        view = getSelView()
+    if getSelView(nSel):
+        view = getSelView(nSel)
     else:
         return False
     if not Gui.Selection.getSelectionEx():
         displayMessage('TechDraw_Utils',
                         QT_TRANSLATE_NOOP('TechDraw_Utils','No vertex selected'))
         return False
-    objectList = Gui.Selection.getSelectionEx()[0].SubElementNames
+    objectList = Gui.Selection.getSelectionEx()[nSel].SubElementNames
 
     vertexes = []
     for objectString in objectList:
@@ -92,21 +94,22 @@ def getSelVertexes(nVertex=1):
     else:
         return vertexes
 
-def getSelEdges(nEdge=1):
+def getSelEdges(nEdge=1, nSel=0):
     '''
     edges = getSelEdges(nEdge)
-    nEdge ... min. number of selected edges
+    nEdge=1 ... min. number of selected edges
+    nSel=0 ... number of selected view, 0 = first selected
     Return a list of selected edges if at least nedge edges are selected, otherwise return False
     '''
-    if getSelView():
-        view = getSelView()
+    if getSelView(nSel):
+        view = getSelView(nSel)
     else:
         return False
     if not Gui.Selection.getSelectionEx():
         displayMessage('TechDraw_Utils',
                         QT_TRANSLATE_NOOP('TechDraw_Utils','No edge selected'))
         return False
-    objectList = Gui.Selection.getSelectionEx()[0].SubElementNames
+    objectList = Gui.Selection.getSelectionEx()[nSel].SubElementNames
 
     edges = []
     for objectString in objectList:
@@ -125,7 +128,7 @@ def getSelEdges(nEdge=1):
 def getCoordinateVectors(view):
     '''
     (px,py,pz) = getCoordinateVectors(view)
-    view ... selcted view
+    view ... selected view
     (px,py,pz) ... returned tuple of vectors (App.Vector)
     calculate projected vectors of x-, y- and z-axis
     '''

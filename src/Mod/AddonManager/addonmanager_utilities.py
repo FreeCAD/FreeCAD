@@ -36,10 +36,11 @@ from typing import Optional, Any
 from urllib.parse import urlparse
 
 try:
-    from PySide import QtCore, QtWidgets
+    from PySide import QtCore, QtGui, QtWidgets
 except ImportError:
     QtCore = None
     QtWidgets = None
+    QtGui = None
 
 import addonmanager_freecad_interface as fci
 
@@ -95,7 +96,7 @@ def symlink(source, link_name):
                 raise ctypes.WinError()
 
 
-def rmdir(path: os.PathLike) -> bool:
+def rmdir(path: str) -> bool:
     try:
         if os.path.islink(path):
             os.unlink(path)  # Remove symlink
@@ -163,6 +164,8 @@ def get_zip_url(repo):
         return f"{repo.url}/archive/{repo.branch}.zip"
     if parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
         return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
+    if parsed_url.netloc in ["codeberg.org"]:
+        return f"{repo.url}/archive/{repo.branch}.zip"
     fci.Console.PrintLog(
         "Debug: addonmanager_utilities.get_zip_url: Unknown git host fetching zip URL:"
         + parsed_url.netloc
@@ -181,6 +184,7 @@ def recognized_git_location(repo) -> bool:
         "gitlab.com",
         "framagit.org",
         "salsa.debian.org",
+        "codeberg.org",
     ]
 
 
@@ -192,6 +196,8 @@ def construct_git_url(repo, filename):
         return f"{repo.url}/raw/{repo.branch}/{filename}"
     if parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
         return f"{repo.url}/-/raw/{repo.branch}/{filename}"
+    if parsed_url.netloc in ["codeberg.org"]:
+        return f"{repo.url}/raw/branch/{repo.branch}/{filename}"
     fci.Console.PrintLog(
         "Debug: addonmanager_utilities.construct_git_url: Unknown git host:"
         + parsed_url.netloc
@@ -222,6 +228,8 @@ def get_desc_regex(repo):
         return r'<meta property="og:description" content="(.*?)"'
     if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
         return r'<meta.*?content="(.*?)".*?og:description.*?>'
+    if parsed_url.netloc in ["codeberg.org"]:
+        return r'<meta property="og:description" content="(.*?)"'
     fci.Console.PrintLog(
         "Debug: addonmanager_utilities.get_desc_regex: Unknown git host:",
         repo.url,
@@ -238,6 +246,8 @@ def get_readme_html_url(repo):
         return f"{repo.url}/blob/{repo.branch}/README.md"
     if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
         return f"{repo.url}/-/blob/{repo.branch}/README.md"
+    if parsed_url.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
+        return f"{repo.url}/raw/branch/{repo.branch}/README.md"
     fci.Console.PrintLog("Unrecognized git repo location '' -- guessing it is a GitLab instance...")
     return f"{repo.url}/-/blob/{repo.branch}/README.md"
 
@@ -245,7 +255,7 @@ def get_readme_html_url(repo):
 def is_darkmode() -> bool:
     """Heuristics to determine if we are in a darkmode stylesheet"""
     pl = fci.FreeCADGui.getMainWindow().palette()
-    return pl.color(pl.Background).lightness() < 128
+    return pl.color(QtGui.QPalette.Window).lightness() < 128
 
 
 def warning_color_string() -> str:
@@ -370,7 +380,7 @@ def blocking_get(url: str, method=None) -> bytes:
     p = b""
     if fci.FreeCADGui and method is None or method == "networkmanager":
         NetworkManager.InitializeNetworkManager()
-        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
+        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url, 10000)  # 10 second timeout
         if p:
             try:
                 p = p.data()

@@ -334,17 +334,17 @@
   <context>
     <name>CmdMeshMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="1689"/>
+      <location filename="../../Command.cpp" line="1692"/>
       <source>Mesh</source>
       <translation>Mreža</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1690"/>
+      <location filename="../../Command.cpp" line="1693"/>
       <source>Merge</source>
       <translation>Spoji</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1691"/>
+      <location filename="../../Command.cpp" line="1694"/>
       <source>Merges selected meshes into one</source>
       <translation>Spaja odabrane mreže u jednu</translation>
     </message>
@@ -485,17 +485,17 @@
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1784"/>
+      <location filename="../../Command.cpp" line="1787"/>
       <source>Mesh</source>
       <translation>Mreža</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1785"/>
+      <location filename="../../Command.cpp" line="1788"/>
       <source>Scale...</source>
       <translation>Skalirajte...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1786"/>
+      <location filename="../../Command.cpp" line="1789"/>
       <source>Scale selected meshes</source>
       <translation>Skaliranje odabranih mreža</translation>
     </message>
@@ -522,18 +522,18 @@
   <context>
     <name>CmdMeshSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="1617"/>
+      <location filename="../../Command.cpp" line="1620"/>
       <source>Mesh</source>
       <translation>Mreža</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1618"/>
+      <location filename="../../Command.cpp" line="1621"/>
       <source>Create mesh segments...</source>
       <translation>Kreiraj segmente mreže...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1619"/>
-      <location filename="../../Command.cpp" line="1621"/>
+      <location filename="../../Command.cpp" line="1622"/>
+      <location filename="../../Command.cpp" line="1624"/>
       <source>Create mesh segments</source>
       <translation>Kreiraj segmente mreže</translation>
     </message>
@@ -541,18 +541,18 @@
   <context>
     <name>CmdMeshSegmentationBestFit</name>
     <message>
-      <location filename="../../Command.cpp" line="1653"/>
+      <location filename="../../Command.cpp" line="1656"/>
       <source>Mesh</source>
       <translation>Mreža</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1654"/>
+      <location filename="../../Command.cpp" line="1657"/>
       <source>Create mesh segments from best-fit surfaces...</source>
       <translation>Stvaranje mreže segmenta od površina sa najboljim uklapanjem...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1655"/>
-      <location filename="../../Command.cpp" line="1657"/>
+      <location filename="../../Command.cpp" line="1658"/>
+      <location filename="../../Command.cpp" line="1660"/>
       <source>Create mesh segments from best-fit surfaces</source>
       <translation>Stvaranje mreže segmenta od površina sa najboljim uklapanjem</translation>
     </message>
@@ -579,17 +579,17 @@
   <context>
     <name>CmdMeshSplitComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1735"/>
+      <location filename="../../Command.cpp" line="1738"/>
       <source>Mesh</source>
       <translation>Mreža</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1736"/>
+      <location filename="../../Command.cpp" line="1739"/>
       <source>Split by components</source>
       <translation>Razdjeli po komponentama</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1737"/>
+      <location filename="../../Command.cpp" line="1740"/>
       <source>Split selected mesh into its components</source>
       <translation>Podijelite odabranu mrežu na njene komponente</translation>
     </message>
@@ -692,7 +692,7 @@
       <translation>Mreža zakrivljenosti tjemene točke</translation>
     </message>
     <message>
-      <location filename="../../DlgSmoothing.cpp" line="180"/>
+      <location filename="../../DlgSmoothing.cpp" line="175"/>
       <source>Mesh Smoothing</source>
       <translation>Zaglađivanje mreže</translation>
     </message>
@@ -712,67 +712,67 @@
       <translation>Ispuni rupe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1704"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Mesh merge</source>
       <translation>Spoji mreže</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1750"/>
+      <location filename="../../Command.cpp" line="1753"/>
       <source>Mesh split</source>
       <translation>Razdvoji mreže</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1813"/>
+      <location filename="../../Command.cpp" line="1816"/>
       <source>Mesh scale</source>
       <translation>Skaliranje mreže</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="160"/>
+      <location filename="../../DlgDecimating.cpp" line="156"/>
       <source>Mesh Decimating</source>
       <translation>Desetkuj mrežu</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="550"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="548"/>
       <source>Harmonize normals</source>
       <translation>Uskladi normale</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="661"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
       <source>Remove non-manifolds</source>
       <translation>Ukloni nemnogostruke</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="766"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="763"/>
       <source>Fix indices</source>
       <translation>Popravi indekse</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="836"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="832"/>
       <source>Remove degenerated faces</source>
       <translation>Uklonite nevaljana naličja</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="908"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="903"/>
       <source>Remove duplicated faces</source>
       <translation>Uklonite duplicirana naličja</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="978"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="972"/>
       <source>Remove duplicated points</source>
       <translation>Uklonite duplicirane točke</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1064"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1057"/>
       <source>Fix self-intersections</source>
       <translation>Popravi samo-sjecišta</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1143"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1135"/>
       <source>Remove folds</source>
       <translation>Ukloni nabore</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1187"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1179"/>
       <source>Repair mesh</source>
       <translation>Popravi mrežu</translation>
     </message>
@@ -782,34 +782,34 @@
       <translation>Obriši označeno</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="958"/>
-      <location filename="../../ViewProvider.cpp" line="1019"/>
+      <location filename="../../ViewProvider.cpp" line="963"/>
+      <location filename="../../ViewProvider.cpp" line="1024"/>
       <source>Cut</source>
       <translation>Isječak</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="968"/>
-      <location filename="../../ViewProvider.cpp" line="1089"/>
+      <location filename="../../ViewProvider.cpp" line="973"/>
+      <location filename="../../ViewProvider.cpp" line="1094"/>
       <source>Trim</source>
       <translation>Skrati</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1176"/>
+      <location filename="../../ViewProvider.cpp" line="1181"/>
       <source>Split</source>
       <translation>Razdjeli</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1249"/>
+      <location filename="../../ViewProvider.cpp" line="1254"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1848"/>
+      <location filename="../../ViewProvider.cpp" line="1856"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1977"/>
+      <location filename="../../ViewProvider.cpp" line="1985"/>
       <source>Fill hole</source>
       <translation>Ispuni rupu</translation>
     </message>
@@ -838,7 +838,7 @@
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
-      <location filename="../../DlgDecimating.cpp" line="102"/>
+      <location filename="../../DlgDecimating.cpp" line="101"/>
       <source>Absolute number</source>
       <translation>Apsolutni broj</translation>
     </message>
@@ -848,7 +848,7 @@
       <translation>Tolerancija</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="96"/>
+      <location filename="../../DlgDecimating.cpp" line="95"/>
       <source>Absolute number (Maximum: %1)</source>
       <translation>Apsolutni broj (Maksimalno: %1)</translation>
     </message>
@@ -986,11 +986,12 @@
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="253"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="421"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="420"/>
       <source>No selection</source>
       <translation>Nema odabira</translation>
     </message>
     <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="450"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="451"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="452"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="453"/>
@@ -1001,145 +1002,144 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="458"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="459"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="460"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="461"/>
       <source>No information</source>
       <translation>Nema informacija</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="558"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="556"/>
       <source>Orientation</source>
       <translation>Orijentacija</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="526"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="524"/>
       <source>No flipped normals</source>
       <translation>Nema zrcaljenih normala</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="532"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="530"/>
       <source>%1 flipped normals</source>
       <translation>%1 zrcaljenih normala</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="618"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="616"/>
       <source>No non-manifolds</source>
       <translation>Nema jednostrukih</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="626"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="624"/>
       <source>%1 non-manifolds</source>
       <translation>%1 jednostrukih</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="677"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="680"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="675"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="678"/>
       <source>Non-manifolds</source>
       <translation>Jednostruki</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="680"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="678"/>
       <source>Cannot remove non-manifolds</source>
       <translation>Ne mogu ukloniti jednostruke</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="721"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="718"/>
       <source>Invalid face indices</source>
       <translation>Nevaljani indeksi površina</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="728"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="725"/>
       <source>Invalid point indices</source>
       <translation>Nevažeća točka indeksa</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="735"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="732"/>
       <source>Multiple point indices</source>
       <translation>Višestruki indeksi točaka</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="742"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="739"/>
       <source>Invalid neighbour indices</source>
       <translation>Nevažeći susjedni indeksi</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="749"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="746"/>
       <source>No invalid indices</source>
       <translation>Nema nevažećih indeksa</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="774"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="771"/>
       <source>Indices</source>
       <translation>Indeksi</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="812"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="808"/>
       <source>No degenerations</source>
       <translation>Nema degeneracija</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="818"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="814"/>
       <source>%1 degenerated faces</source>
       <translation>%1 degeneriranih površina</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="845"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="841"/>
       <source>Degenerations</source>
       <translation>Degeneracije</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="883"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="878"/>
       <source>No duplicated faces</source>
       <translation>Nema dvostrukih površina</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="889"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="884"/>
       <source>%1 duplicated faces</source>
       <translation>%1 dvostrukih površina</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="917"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="912"/>
       <source>Duplicated faces</source>
       <translation>Dvostruke površine</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="954"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="948"/>
       <source>No duplicated points</source>
       <translation>Nema dvostrukih točaka</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="960"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="987"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="954"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="981"/>
       <source>Duplicated points</source>
       <translation>Dvostruki vrhovi</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1031"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1024"/>
       <source>No self-intersections</source>
       <translation>Nema prekalpanja</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1037"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1030"/>
       <source>Self-intersections</source>
       <translation>Preklapanja</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1108"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1100"/>
       <source>No folds on surface</source>
       <translation>Bez nabora na površini</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1124"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1116"/>
       <source>%1 folds on surface</source>
       <translation>%1 nabori na površini</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1152"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1144"/>
       <source>Folds</source>
       <translation>Sklapanje</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1286"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1289"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1278"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1281"/>
       <source>Mesh repair</source>
       <translation>Popravi mrežu</translation>
     </message>
@@ -1363,7 +1363,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="138"/>
       <source>Height:</source>
-      <translation>Duljina:</translation>
+      <translation>Visina:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="39"/>
@@ -1624,7 +1624,7 @@ vodi do uglađenijeg izgleda.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="766"/>
+      <location filename="../../MeshEditor.cpp" line="767"/>
       <source>Finish</source>
       <translation>Završiti</translation>
     </message>
@@ -1649,7 +1649,7 @@ vodi do uglađenijeg izgleda.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="192"/>
       <source>Region</source>
-      <translation>Regija</translation>
+      <translation>Područje</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="198"/>
@@ -1751,7 +1751,7 @@ vodi do uglađenijeg izgleda.
       <location filename="../../RemoveComponents.ui" line="32"/>
       <location filename="../../RemoveComponents.ui" line="118"/>
       <source>Region</source>
-      <translation>Regija</translation>
+      <translation>Područje</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="52"/>
@@ -1799,7 +1799,7 @@ vodi do uglađenijeg izgleda.
     <message>
       <location filename="../../RemoveComponents.ui" line="192"/>
       <source>Region options</source>
-      <translation>Opcije regija</translation>
+      <translation>Opcije Područja</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="198"/>
@@ -2001,13 +2001,13 @@ vodi do uglađenijeg izgleda.
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
       <location filename="../../RemoveComponents.cpp" line="208"/>
-      <location filename="../../RemoveComponents.cpp" line="255"/>
+      <location filename="../../RemoveComponents.cpp" line="253"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="209"/>
-      <location filename="../../RemoveComponents.cpp" line="256"/>
+      <location filename="../../RemoveComponents.cpp" line="254"/>
       <source>Invert</source>
       <translation>Invertiraj</translation>
     </message>
@@ -2040,13 +2040,13 @@ vodi do uglađenijeg izgleda.
       <translation>Info okvir Mreže</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="101"/>
+      <location filename="../../Workbench.cpp" line="88"/>
       <source>Mesh info</source>
       <translation>Informacije Mreže</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="123"/>
-      <location filename="../../Workbench.cpp" line="124"/>
+      <location filename="../../Workbench.cpp" line="121"/>
+      <location filename="../../Workbench.cpp" line="122"/>
       <source>X: %1	Y: %2	Z: %3</source>
       <translation>X: %1	Y: %2	Z: %3</translation>
     </message>
@@ -2091,7 +2091,7 @@ Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translati
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1336"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1328"/>
       <source>Evaluate &amp; Repair Mesh</source>
       <translation>Procijeni &amp; Popravi mrežu</translation>
     </message>
@@ -2099,12 +2099,12 @@ Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translati
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="161"/>
+      <location filename="../../AppMeshGui.cpp" line="157"/>
       <source>Display</source>
       <translation>Prikaz</translation>
     </message>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="163"/>
+      <location filename="../../AppMeshGui.cpp" line="159"/>
       <source>Import-Export</source>
       <translation>Uvoz / izvoz</translation>
     </message>
@@ -2272,12 +2272,12 @@ Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translati
       <translation>Ispunite rupe s maksimalnim brojem rubova:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1801"/>
+      <location filename="../../Command.cpp" line="1804"/>
       <source>Scaling</source>
       <translation>Skaliranje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1802"/>
+      <location filename="../../Command.cpp" line="1805"/>
       <source>Enter scaling factor:</source>
       <translation>Unesite faktor skaliranja:</translation>
     </message>
@@ -2287,48 +2287,48 @@ Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translati
       <translation>[Točke: %1, Rubovi: %2, Lica: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="804"/>
+      <location filename="../../ViewProvider.cpp" line="809"/>
       <source>Display components</source>
       <translation>Prikaz komponenti</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="812"/>
+      <location filename="../../ViewProvider.cpp" line="817"/>
       <source>Display segments</source>
       <translation>Prikaži segmente</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="820"/>
+      <location filename="../../ViewProvider.cpp" line="825"/>
       <source>Display colors</source>
       <translation>Boje prikaza</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1679"/>
+      <location filename="../../ViewProvider.cpp" line="1687"/>
       <location filename="../../ViewProviderCurvature.cpp" line="522"/>
       <source>Leave info mode</source>
       <translation>Zatvori info način rada</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1746"/>
+      <location filename="../../ViewProvider.cpp" line="1754"/>
       <source>Index: %1</source>
       <translation>Indeks: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1772"/>
+      <location filename="../../ViewProvider.cpp" line="1780"/>
       <source>Leave hole-filling mode</source>
       <translation>Zatvori način rada za popunjavanje otvora</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1822"/>
+      <location filename="../../ViewProvider.cpp" line="1830"/>
       <source>Leave removal mode</source>
       <translation>Zatvori način rada za uklanjanje</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1823"/>
+      <location filename="../../ViewProvider.cpp" line="1831"/>
       <source>Delete selected faces</source>
       <translation>Izbriši odabrane površine</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1824"/>
+      <location filename="../../ViewProvider.cpp" line="1832"/>
       <source>Clear selected faces</source>
       <translation>Izbriši odabrane površine</translation>
     </message>

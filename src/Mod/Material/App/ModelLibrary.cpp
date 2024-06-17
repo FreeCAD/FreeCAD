@@ -21,9 +21,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#endif
-
 #include <string>
+#endif
 
 #include <App/Application.h>
 
@@ -51,6 +50,10 @@ bool LibraryBase::operator==(const LibraryBase& library) const
 QString LibraryBase::getLocalPath(const QString& path) const
 {
     QString filePath = getDirectoryPath();
+    if (!(filePath.endsWith(QLatin1String("/")) || filePath.endsWith(QLatin1String("\\")))) {
+        filePath += QLatin1String("/");
+    }
+
     QString cleanPath = QDir::cleanPath(path);
     QString prefix = QString::fromStdString("/") + getName();
     if (cleanPath.startsWith(prefix)) {
@@ -100,7 +103,7 @@ QString LibraryBase::getRelativePath(const QString& path) const
     return filePath;
 }
 
-TYPESYSTEM_SOURCE(Materials::ModelLibrary, LibraryBase)
+TYPESYSTEM_SOURCE(Materials::ModelLibrary, Materials::LibraryBase)
 
 ModelLibrary::ModelLibrary(const QString& libraryName, const QString& dir, const QString& icon)
     : LibraryBase(libraryName, dir, icon)

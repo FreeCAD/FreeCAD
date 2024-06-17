@@ -62,7 +62,6 @@
 // OCC
 #include <BRepAdaptor_Surface.hxx>
 #include <Precision.hxx>
-#include <Standard_math.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 
@@ -116,6 +115,7 @@
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoCylinder.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoFont.h>
@@ -141,10 +141,13 @@
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoText3.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/nodes/SoTransparencyType.h>
+
 
 // Salomesh
 #include <SMDSAbs_ElementType.hxx>

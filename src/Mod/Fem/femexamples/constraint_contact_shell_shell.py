@@ -41,7 +41,7 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Tria3",
         "constraints": ["fixed", "force", "contact"],
-        "solvers": ["calculix", "ccxtools"],
+        "solvers": ["ccxtools"],
         "material": "solid",
         "equations": ["mechanical"]
     }
@@ -136,17 +136,15 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    if solvertype == "calculix":
-        solver_obj = ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-    elif solvertype == "ccxtools":
-        solver_obj = ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+    if solvertype == "ccxtools":
+        solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
         solver_obj.WorkingDir = u""
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
-    if solvertype == "calculix" or solvertype == "ccxtools":
+    if solvertype == "ccxtools":
         solver_obj.AnalysisType = "static"
         solver_obj.BeamShellResultOutput3D = True
         solver_obj.GeometricalNonlinearity = "linear"  # really?
@@ -193,9 +191,8 @@ def setup(doc=None, solvertype="ccxtools"):
         (lower_tube, "Face1"),
         (upper_tube, "Face1"),
     ]
-    con_contact.Friction = 0.0
-    # con_contact.Slope = "1000000.0 kg/(mm*s^2)"  # contact stiffness
-    con_contact.Slope = 1000000.0  # should be 1000000.0 kg/(mm*s^2)
+    con_contact.Friction = False
+    con_contact.Slope = "1000000.0 GPa/m"
     analysis.addObject(con_contact)
 
     # mesh

@@ -54,7 +54,7 @@ jobs:
         run: |
           mkdir -p ${{ env.artifactsDownloadDir }}
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: ${{ env.artifactsDownloadDir }}
       - name: Save input data to file
@@ -111,7 +111,7 @@ jobs:
           cat report.md >> $GITHUB_STEP_SUMMARY
       - name: Delete used artifacts
         continue-on-error: true
-        uses: geekyeggo/delete-artifact@v2
+        uses: geekyeggo/delete-artifact@v5
         with:
           name: |
             ${{ env.usedArtifacts }}

@@ -57,9 +57,6 @@
 #ifndef _MeshVS_EntityType_HeaderFile
 #include <MeshVS_EntityType.hxx>
 #endif
-#ifndef _Standard_Address_HeaderFile
-#include <Standard_Address.hxx>
-#endif
 #ifndef _TColStd_HArray1OfInteger_HeaderFile
 #include <TColStd_HArray1OfInteger.hxx>
 #endif

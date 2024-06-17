@@ -31,20 +31,7 @@ using namespace Fem;
 PROPERTY_SOURCE(Fem::ConstraintFixed, Fem::Constraint)
 
 ConstraintFixed::ConstraintFixed()
-{
-    ADD_PROPERTY_TYPE(Points,
-                      (Base::Vector3d()),
-                      "ConstraintFixed",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Points where symbols are drawn");
-    ADD_PROPERTY_TYPE(Normals,
-                      (Base::Vector3d()),
-                      "ConstraintFixed",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Normals where symbols are drawn");
-    Points.setValues(std::vector<Base::Vector3d>());
-    Normals.setValues(std::vector<Base::Vector3d>());
-}
+{}
 
 App::DocumentObjectExecReturn* ConstraintFixed::execute()
 {
@@ -53,19 +40,5 @@ App::DocumentObjectExecReturn* ConstraintFixed::execute()
 
 void ConstraintFixed::onChanged(const App::Property* prop)
 {
-    // Note: If we call this at the end, then the symbols are not oriented correctly initially
-    // because the NormalDirection has not been calculated yet
     Constraint::onChanged(prop);
-
-    if (prop == &References) {
-        std::vector<Base::Vector3d> points;
-        std::vector<Base::Vector3d> normals;
-        int scale = 1;  // OvG: Enforce use of scale
-        if (getPoints(points, normals, &scale)) {
-            Points.setValues(points);
-            Normals.setValues(normals);
-            Scale.setValue(scale);  // OvG: Scale
-            Points.touch();         // This triggers ViewProvider::updateData()
-        }
-    }
 }

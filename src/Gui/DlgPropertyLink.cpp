@@ -362,7 +362,7 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
     // For link list type property, try to auto filter type
     if(tryFilter && isLinkList) {
         Base::Type objType;
-        for(const auto& link : qAsConst(oldLinks)) {
+        for(const auto& link : std::as_const(oldLinks)) {
             auto obj = link.getSubObject();
             if(!obj)
                 continue;
@@ -525,7 +525,14 @@ void DlgPropertyLink::onItemSelectionChanged()
             auto vp = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
                     doc->getViewProvider(obj));
             if(vp) {
-                doc->setActiveView(vp, Gui::View3DInventor::getClassTypeId());
+                // If the view provider uses a special window for rendering, switch to it
+                MDIView *view = vp->getMDIView();
+                if (view) {
+                    doc->setActiveWindow(view);
+                }
+                else {
+                    doc->setActiveView(vp, Gui::View3DInventor::getClassTypeId());
+                }
             }
         }
     }
@@ -642,7 +649,7 @@ void DlgPropertyLink::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 
     auto item = findItem(selObj, msg.pSubName, &found);
-    if(!item || !found)
+    if(!item)
         return;
 
     if(!item->isSelected()) {

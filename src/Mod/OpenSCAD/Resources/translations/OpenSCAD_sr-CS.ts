@@ -36,7 +36,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation>Ako je ovo čekirano, objekti će prikazivati sebi podređene objekte u stablu dokumenta</translation>
+      <translation>Ako je ovo označeno, objekti će prikazivati sebi podređene objekte u stablu dokumenta</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation>Ako je čekirano, Multimatrix objekat će biti parametarski</translation>
+      <translation>Ako je označeno, Multimatrix objekat će biti parametarski</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="122"/>
@@ -294,14 +294,14 @@
       <translation>Greška: ili svi oblici moraju biti 2D, ili svi moraju biti 3D</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Unsupported Function</source>
       <translation type="unfinished">Unsupported Function</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Press OK</source>
       <translation>Pritisni U redu</translation>
     </message>

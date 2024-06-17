@@ -30,9 +30,8 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QVariant>
-#endif
-
 #include <limits>
+#endif
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -58,54 +57,54 @@ using namespace MatGui;
 ListDelegate::ListDelegate(Materials::MaterialValue::ValueType type,
                            const QString& units,
                            QObject* parent)
-    : BaseDelegate(type, units, parent)
+    : BaseDelegate(parent)
+    , _type(type)
+    , _units(units)
 {}
+
+QVariant ListDelegate::getValue(const QModelIndex& index) const
+{
+    auto model = index.model();
+    auto item = model->data(index);
+
+    return item;
+}
+
+void ListDelegate::setValue(QAbstractItemModel* model,
+                            const QModelIndex& index,
+                            const QVariant& value) const
+{
+    auto matModel = dynamic_cast<ListModel*>(model);
+    if (matModel) {
+        matModel->setData(index, value);
+
+        notifyChanged(model, index);
+    }
+}
+
+void ListDelegate::notifyChanged(const QAbstractItemModel* model, const QModelIndex& index) const
+{
+    Q_UNUSED(model)
+    Q_UNUSED(index)
+}
 
 void ListDelegate::paint(QPainter* painter,
                          const QStyleOptionViewItem& option,
                          const QModelIndex& index) const
 {
 
-    if (_type == Materials::MaterialValue::Quantity) {
+    auto type = getType(index);
+    if (type == Materials::MaterialValue::Quantity) {
         paintQuantity(painter, option, index);
         return;
     }
 
-    if (_type == Materials::MaterialValue::Image || _type == Materials::MaterialValue::ImageList) {
+    if (type == Materials::MaterialValue::Image || type == Materials::MaterialValue::ImageList) {
         paintImage(painter, option, index);
         return;
     }
 
     QStyledItemDelegate::paint(painter, option, index);
 }
-
-// bool ListDelegate::editorEvent(QEvent* event,
-//                                QAbstractItemModel* model,
-//                                const QStyleOptionViewItem& option,
-//                                const QModelIndex& index)
-// {
-//     if (event->type() == QEvent::MouseButtonDblClick) {
-//         auto treeModel = index.model();
-
-//         auto item = treeModel->data(index);
-
-//         int row = index.row();
-
-//         QString propertyName = group->child(row, 0)->text();
-//         QString propertyType = QString::fromStdString("String");
-//         if (group->child(row, 2)) {
-//             propertyType = group->child(row, 2)->text();
-//         }
-
-//         std::string type = propertyType.toStdString();
-//         if (_type == Materials::MaterialValue::Image || _type ==
-//         Materials::MaterialValue::ImageList) {
-//             showImageModal(propertyName, item);
-//             // Mark as handled
-//             return true;
-//         }
-//     }
-//     return QStyledItemDelegate::editorEvent(event, model, option, index);
-// }
 
 #include "moc_ListDelegate.cpp"

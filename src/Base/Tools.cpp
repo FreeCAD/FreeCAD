@@ -26,7 +26,7 @@
 #include <sstream>
 #include <locale>
 #include <iostream>
-#include <QElapsedTimer>
+#include <QDateTime>
 #endif
 
 #include "PyExport.h"
@@ -236,6 +236,26 @@ std::string Base::Tools::escapedUnicodeToUtf8(const std::string& s)
     return string;
 }
 
+std::string Base::Tools::escapeQuotesFromString(const std::string& s)
+{
+    std::string result;
+    size_t len = s.size();
+    for (size_t i = 0; i < len; ++i) {
+        switch (s.at(i)) {
+            case '\"':
+                result += "\\\"";
+                break;
+            case '\'':
+                result += "\\\'";
+                break;
+            default:
+                result += s.at(i);
+                break;
+        }
+    }
+    return result;
+}
+
 QString Base::Tools::escapeEncodeString(const QString& s)
 {
     QString result;
@@ -264,17 +284,19 @@ std::string Base::Tools::escapeEncodeString(const std::string& s)
     std::string result;
     size_t len = s.size();
     for (size_t i = 0; i < len; ++i) {
-        if (s.at(i) == '\\') {
-            result += "\\\\";
-        }
-        else if (s.at(i) == '\"') {
-            result += "\\\"";
-        }
-        else if (s.at(i) == '\'') {
-            result += "\\\'";
-        }
-        else {
-            result += s.at(i);
+        switch (s.at(i)) {
+            case '\\':
+                result += "\\\\";
+                break;
+            case '\"':
+                result += "\\\"";
+                break;
+            case '\'':
+                result += "\\\'";
+                break;
+            default:
+                result += s.at(i);
+                break;
         }
     }
     return result;
@@ -305,14 +327,16 @@ std::string Base::Tools::escapeEncodeFilename(const std::string& s)
     std::string result;
     size_t len = s.size();
     for (size_t i = 0; i < len; ++i) {
-        if (s.at(i) == '\"') {
-            result += "\\\"";
-        }
-        else if (s.at(i) == '\'') {
-            result += "\\\'";
-        }
-        else {
-            result += s.at(i);
+        switch (s.at(i)) {
+            case '\"':
+                result += "\\\"";
+                break;
+            case '\'':
+                result += "\\\'";
+                break;
+            default:
+                result += s.at(i);
+                break;
         }
     }
     return result;
@@ -341,61 +365,10 @@ std::string Base::Tools::joinList(const std::vector<std::string>& vec, const std
     return str.str();
 }
 
-// ----------------------------------------------------------------------------
-
-using namespace Base;
-
-struct StopWatch::Private
+std::string Base::Tools::currentDateTimeString()
 {
-    QElapsedTimer t;
-};
-
-StopWatch::StopWatch()
-    : d(new Private)
-{}
-
-StopWatch::~StopWatch()
-{
-    delete d;
-}
-
-void StopWatch::start()
-{
-    d->t.start();
-}
-
-int StopWatch::restart()
-{
-    return d->t.restart();
-}
-
-int StopWatch::elapsed()
-{
-    return d->t.elapsed();
-}
-
-std::string StopWatch::toString(int ms) const
-{
-    int total = ms;
-    int msec = total % 1000;
-    total = total / 1000;
-    int secs = total % 60;
-    total = total / 60;
-    int mins = total % 60;
-    int hour = total / 60;
-    std::stringstream str;
-    str << "Needed time: ";
-    if (hour > 0) {
-        str << hour << "h " << mins << "m " << secs << "s";
-    }
-    else if (mins > 0) {
-        str << mins << "m " << secs << "s";
-    }
-    else if (secs > 0) {
-        str << secs << "s";
-    }
-    else {
-        str << msec << "ms";
-    }
-    return str.str();
+    return QDateTime::currentDateTime()
+        .toTimeSpec(Qt::OffsetFromUTC)
+        .toString(Qt::ISODate)
+        .toStdString();
 }

@@ -124,7 +124,7 @@ class Rotate(gui_base_original.Modifier):
             ghost.off()
         self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
         # this is to make sure radius is what you see on screen
-        if self.center and DraftVecUtils.dist(self.point, self.center):
+        if self.center and self.point and DraftVecUtils.dist(self.point, self.center):
             viewdelta = DraftVecUtils.project(self.point.sub(self.center),
                                               self.wp.axis)
             if not DraftVecUtils.isNull(viewdelta):
@@ -136,32 +136,33 @@ class Rotate(gui_base_original.Modifier):
         if self.step == 0:
             pass
         elif self.step == 1:
-            currentrad = DraftVecUtils.dist(self.point, self.center)
-            if currentrad != 0:
-                angle = DraftVecUtils.angle(self.wp.u,
-                                            self.point.sub(self.center),
-                                            self.wp.axis)
-            else:
-                angle = 0
+            angle = 0
+            if self.point:
+                currentrad = DraftVecUtils.dist(self.point, self.center)
+                if currentrad != 0:
+                    angle = DraftVecUtils.angle(self.wp.u,
+                                                self.point.sub(self.center),
+                                                self.wp.axis)
             self.ui.setRadiusValue(math.degrees(angle), unit="Angle")
             self.firstangle = angle
             self.ui.radiusValue.setFocus()
             self.ui.radiusValue.selectAll()
         elif self.step == 2:
-            currentrad = DraftVecUtils.dist(self.point, self.center)
-            if currentrad != 0:
-                angle = DraftVecUtils.angle(self.wp.u,
-                                            self.point.sub(self.center),
-                                            self.wp.axis)
-            else:
-                angle = 0
+            angle = 0
+            if self.point:
+                currentrad = DraftVecUtils.dist(self.point, self.center)
+                if currentrad != 0:
+                    angle = DraftVecUtils.angle(self.wp.u,
+                                                self.point.sub(self.center),
+                                                self.wp.axis)
             if angle < self.firstangle:
                 sweep = (2 * math.pi - self.firstangle) + angle
             else:
                 sweep = angle - self.firstangle
             self.arctrack.setApertureAngle(sweep)
             for ghost in self.ghosts:
-                ghost.rotate(self.wp.axis, sweep)
+                if sweep:
+                    ghost.rotate(self.wp.axis, sweep)
                 ghost.on()
             self.ui.setRadiusValue(math.degrees(sweep), 'Angle')
             self.ui.radiusValue.setFocus()
@@ -262,15 +263,14 @@ class Rotate(gui_base_original.Modifier):
             Restart (continue) the command if `True`, or if `None` and
             `ui.continueMode` is `True`.
         """
+        self.end_callbacks(self.call)
         if self.arctrack:
             self.arctrack.finalize()
         for ghost in self.ghosts:
             ghost.finalize()
+        super().finish()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             todo.ToDo.delayAfter(self.Activated, [])
-        super().finish()
-        if self.doc:
-            self.doc.recompute()
 
     def rotate(self, is_copy=False):
         """Perform the rotation of the subelements or the entire object."""

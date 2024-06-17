@@ -341,6 +341,7 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
     showLicenseInformation();
     showLibraryInformation();
     showCollectionInformation();
+    showPrivacyPolicy();
     showOrHideImage(rect);
 }
 
@@ -767,6 +768,31 @@ void AboutDialog::showCollectionInformation()
     textField->setSource(path);
 }
 
+void AboutDialog::showPrivacyPolicy()
+{
+    auto policyFileURL = QLatin1String(":/doc/PRIVACY_POLICY");
+    QFile policyFile(policyFileURL);
+
+    if (!policyFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+    auto text = QString::fromUtf8(policyFile.readAll());
+    auto tabPrivacyPolicy = new QWidget();
+    tabPrivacyPolicy->setObjectName(QString::fromLatin1("tabPrivacyPolicy"));
+    ui->tabWidget->addTab(tabPrivacyPolicy, tr("Privacy Policy"));
+    auto hLayout = new QVBoxLayout(tabPrivacyPolicy);
+    auto textField = new QTextBrowser(tabPrivacyPolicy);
+    textField->setOpenExternalLinks(true);
+    hLayout->addWidget(textField);
+
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    // We can't actually render the markdown, so just display it as text
+    textField->setText(text);
+#else
+    textField->setMarkdown(text);
+#endif
+}
+
 void AboutDialog::linkActivated(const QUrl& link)
 {
     auto licenseView = new LicenseView();
@@ -808,7 +834,6 @@ void AboutDialog::copyToClipboard()
             deskInfo = QLatin1String(" (") + deskEnv + QLatin1String("/") + deskSess + QLatin1String(")");
     }
 
-    str << "```\n";
     str << "OS: " << prettyProductInfoWrapper() << deskInfo << '\n';
     str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit\n";
     str << "Version: " << major << "." << minor << "." << point << suffix << "." << build;
@@ -851,13 +876,13 @@ void AboutDialog::copyToClipboard()
         << '\n';
 #endif
     QLocale loc;
-    str << "Locale: " << loc.languageToString(loc.language()) << "/"
-        << loc.countryToString(loc.country())
+    str << "Locale: " << QLocale::languageToString(loc.language()) << "/"
+        << QLocale::countryToString(loc.country())
         << " (" << loc.name() << ")";
     if (loc != QLocale::system()) {
         loc = QLocale::system();
-        str << " [ OS: " << loc.languageToString(loc.language()) << "/"
-            << loc.countryToString(loc.country())
+        str << " [ OS: " << QLocale::languageToString(loc.language()) << "/"
+            << QLocale::countryToString(loc.country())
             << " (" << loc.name() << ") ]";
     }
     str << "\n";
@@ -884,12 +909,11 @@ void AboutDialog::copyToClipboard()
             auto disablingFile = mod.path() / "ADDON_DISABLED";
             if (fs::exists(disablingFile))
                 str << " (Disabled)";
-            
+
             str << "\n";
         }
     }
 
-    str << "```\n";
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);
 }

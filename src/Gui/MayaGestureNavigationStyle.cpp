@@ -280,13 +280,9 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         switch (event->getKey()) {
         case SoKeyboardEvent::H:
             processed = true;
-            if(!press){
-                SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
-                if(!ret){
-                    this->interactiveCountDec();
-                    Base::Console().Log(
-                        "No object under cursor! Can't set new center of rotation.\n");
-                }
+            if (!press) {
+                setupPanningPlane(viewer->getCamera());
+                lookAtPoint(event->getPosition());
             }
             break;
         default:
@@ -308,8 +304,40 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     //all mode-dependent stuff is within this switch.
     switch(curmode){
-    case NavigationStyle::IDLE:
     case NavigationStyle::SELECTION:
+        // Prevent interrupting rubber-band selection in sketcher
+        if (viewer->isEditing()) {
+            if (evIsButton) {
+                auto const event = (const SoMouseButtonEvent*)ev;
+                const SbBool press = event->getState() == SoButtonEvent::DOWN;
+                const int button = event->getButton();
+
+                if (!press && button == SoMouseButtonEvent::BUTTON1) {
+                    setViewingMode(NavigationStyle::IDLE);
+                    break;
+                }
+            }
+
+            if (this->button1down) {
+                break;
+            }
+        }
+        [[fallthrough]];
+    case NavigationStyle::IDLE:
+        // Prevent interrupting rubber-band selection in sketcher
+        if (viewer->isEditing()) {
+            if (evIsButton) {
+                auto const event = (const SoMouseButtonEvent*)ev;
+                const SbBool press = event->getState() == SoButtonEvent::DOWN;
+                const int button = event->getButton();
+
+                if (press && button == SoMouseButtonEvent::BUTTON1 && !this->altdown) {
+                    setViewingMode(NavigationStyle::SELECTION);
+                    break;
+                }
+            }
+        }
+        [[fallthrough]];
     case NavigationStyle::INTERACT: {
         //idle and interaction
 
@@ -365,7 +393,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                         //reset/start move detection machine
                         this->mousedownPos = pos;
                         this->mouseMoveThresholdBroken = false;
-                        pan(viewer->getSoRenderManager()->getCamera());//set up panningplane
+                        setupPanningPlane(viewer->getSoRenderManager()->getCamera());//set up panningplane
                         int &cnt = this->mousedownConsumedCount;
                         this->mousedownConsumedEvents[cnt] = *event;//hopefully, a shallow copy is enough. There are no pointers stored in events, apparently. Will lose a subclass, though.
                         cnt++;
@@ -399,12 +427,8 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     setViewingMode(NavigationStyle::PANNING);
                 } else if(press){
                     // if not PANNING then look at point
-                    SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
-                    if(!ret){
-                        this->interactiveCountDec();
-                        Base::Console().Log(
-                            "No object under cursor! Can't set new center of rotation.\n");
-                    }
+                    setupPanningPlane(viewer->getCamera());
+                    lookAtPoint(event->getPosition());
                 }
                 processed = true;
                 break;
@@ -424,7 +448,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
                     // start DRAGGING mode (orbit)
                     // if not pressing left mouse button then it assumes is right mouse button and starts ZOOMING mode
-                    setRotationCenter(getFocalPoint());
+                    saveCursorPosition(ev);
                     setViewingMode(this->button1down ? NavigationStyle::DRAGGING : NavigationStyle::ZOOMING);
                     processed = true;
                 } else {
@@ -448,12 +472,12 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
             if (gesture->state == SoGestureEvent::SbGSStart
                     || gesture->state == SoGestureEvent::SbGSUpdate) {//even if we didn't get a start, assume the first update is a start (sort-of fail-safe).
                 if (type.isDerivedFrom(SoGesturePanEvent::getClassTypeId())) {
-                    pan(viewer->getSoRenderManager()->getCamera());//set up panning plane
+                    setupPanningPlane(viewer->getSoRenderManager()->getCamera());//set up panning plane
                     setViewingMode(NavigationStyle::PANNING);
                     processed = true;
                 } else if (type.isDerivedFrom(SoGesturePinchEvent::getClassTypeId())) {
-                    pan(viewer->getSoRenderManager()->getCamera());//set up panning plane
-                    setRotationCenter(getFocalPoint());
+                    setupPanningPlane(viewer->getSoRenderManager()->getCamera());//set up panning plane
+                    saveCursorPosition(ev);
                     setViewingMode(NavigationStyle::DRAGGING);
                     processed = true;
                 } //all other gestures - ignore!
@@ -480,7 +504,12 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 case SoMouseButtonEvent::BUTTON3: // allows to release button3 into SELECTION mode
                     if(comboAfter & BUTTON1DOWN || comboAfter & BUTTON2DOWN) {
                         //don't leave navigation till all buttons have been released
-                        setRotationCenter(getFocalPoint());
+                        if (comboAfter & BUTTON1DOWN && comboAfter & BUTTON2DOWN) {
+                            setRotationCenter(getFocalPoint());
+                        }
+                        else {
+                            saveCursorPosition(ev);
+                        }
                         setViewingMode((comboAfter & BUTTON1DOWN) ? NavigationStyle::DRAGGING : NavigationStyle::PANNING);
                         processed = true;
                     } else { //all buttons are released

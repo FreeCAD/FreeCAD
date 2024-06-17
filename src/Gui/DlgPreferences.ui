@@ -2,17 +2,22 @@
 <ui version="4.0">
  <class>Gui::Dialog::DlgPreferences</class>
  <widget class="QDialog" name="Gui::Dialog::DlgPreferences">
+  <property name="styleSheet">
+    <string notr="true">#sidebar { background-color: rgba(0, 0, 0, 25); }
+      #groupsTreeView { background-color: transparent; }
+      #groupsTreeView::item { padding: 6px 8px; }</string>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
+    <width>900</width>
     <height>900</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1000</width>
+    <width>600</width>
     <height>500</height>
    </size>
   </property>
@@ -69,10 +74,6 @@
        <property name="autoFillBackground">
         <bool>false</bool>
        </property>
-       <property name="styleSheet">
-        <string notr="true">QFrame { background-color: rgba(0, 0, 0, 25); }
-QFrame::item { padding: 6px 8px };</string>
-       </property>
        <property name="frameShape">
         <enum>QFrame::NoFrame</enum>
        </property>
@@ -105,9 +106,6 @@ QFrame::item { padding: 6px 8px };</string>
           </property>
           <property name="autoFillBackground">
            <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color: transparent;</string>
           </property>
           <property name="frameShape">
            <enum>QFrame::NoFrame</enum>
@@ -226,7 +224,7 @@ QFrame::item { padding: 6px 8px };</string>
            <enum>QFrame::NoFrame</enum>
           </property>
           <property name="horizontalScrollBarPolicy">
-           <enum>Qt::ScrollBarAlwaysOff</enum>
+           <enum>Qt::ScrollBarAsNeeded</enum>
           </property>
           <property name="sizeAdjustPolicy">
            <enum>QAbstractScrollArea::AdjustIgnored</enum>
@@ -239,8 +237,8 @@ QFrame::item { padding: 6px 8px };</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>726</width>
-             <height>669</height>
+             <width>626</width>
+             <height>772</height>
             </rect>
            </property>
            <property name="sizePolicy">

@@ -682,7 +682,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
+      <translation>CSV (*.csv *.CSV);Всі (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -695,7 +695,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Експорт файлу</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Показати таблицю</translation>
     </message>
@@ -739,7 +739,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
@@ -924,12 +924,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
       <source>If checked, use the custom presentation to display cell string.</source>
-      <translation type="unfinished">If checked, use the custom presentation to display cell string.</translation>
+      <translation>Якщо позначено, використовувати індивідуальне представлення для показу вмісту клітинок.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="35"/>
       <source>Show alias in cell with format</source>
-      <translation type="unfinished">Show alias in cell with format</translation>
+      <translation>Показати псевдонім у комірці з форматуванням</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="64"/>
@@ -938,11 +938,11 @@ Defaults to: %V = %A
 
 %A - alias name
 %V - cell value</source>
-      <translation type="unfinished">The format of the custom cell string presentation.
-Defaults to: %V = %A
+      <translation>Формат комірки з індивідуальним представленням.
+За замовчуванням: %V = %A
 
-%A - alias name
-%V - cell value</translation>
+%A - псевдонім
+%V - значення комірки</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="84"/>
@@ -951,8 +951,18 @@ Defaults to: %V = %A
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>Символ розділювача: </translation>
+      <source>Delimiter Character:</source>
+      <translation type="unfinished">Delimiter Character:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation type="unfinished">Quote Character:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation type="unfinished">Escape Character:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -965,19 +975,9 @@ Defaults to: %V = %A
       <translation>табуляція</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>Символ лапок: </translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Символ, що використовується для розділення рядків, зазвичай це одинарні лапки (') або подвійні лапки (&amp;quot;). Має бути один символ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Символ "Escape": </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -1180,7 +1180,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Без назви</translation>
     </message>

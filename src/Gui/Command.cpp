@@ -785,7 +785,8 @@ void Command::_copyVisual(const char *file, int line, const App::DocumentObject 
     if(!from || !from->isAttachedToDocument() || !to || !to->isAttachedToDocument())
         return;
     static std::map<std::string,std::string> attrMap = {
-        {"ShapeColor","ShapeMaterial.DiffuseColor"},
+        // {"ShapeColor","ShapeMaterial.DiffuseColor"},
+        {"ShapeAppearance", "ShapeMaterial"},
         // {"LineColor","ShapeMaterial.DiffuseColor"},
         // {"PointColor","ShapeMaterial.DiffuseColor"},
         {"Transparency","Transparency"},
@@ -1026,6 +1027,16 @@ void GroupCommand::setExclusive(bool on)
     exclusive = on;
 }
 
+bool GroupCommand::doesRememberLast() const
+{
+    return rememberLast;
+}
+
+void GroupCommand::setRememberLast(bool on)
+{
+    rememberLast = on;
+}
+
 bool GroupCommand::hasDropDownMenu() const
 {
     return dropDownMenu;
@@ -1063,6 +1074,7 @@ Action * GroupCommand::createAction() {
     pcAction->setDropDownMenu(hasDropDownMenu());
     pcAction->setExclusive(isExclusive());
     pcAction->setCheckable(isCheckable());
+    pcAction->setRememberLast(doesRememberLast());
     pcAction->setWhatsThis(QString::fromLatin1(sWhatsThis));
 
     for(auto &v : cmds) {
@@ -1450,6 +1462,7 @@ bool PythonCommand::isCheckable() const
 
 bool PythonCommand::isChecked() const
 {
+    Base::PyGILStateLocker lock;
     PyObject* item = PyDict_GetItemString(_pcPyResourceDict,"Checkable");
     if (!item) {
         throw Base::ValueError("PythonCommand::isChecked(): Method GetResources() of the Python "

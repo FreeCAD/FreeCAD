@@ -102,6 +102,17 @@ void DlgSettingsMacroImp::loadSettings()
     ui->ShortcutCount->onRestore();
 }
 
+void DlgSettingsMacroImp::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hGrp;
+    hGrp = WindowParameter::getDefaultParameter()->GetGroup("RecentMacros");
+    //reset "ShortcutModifiers" parameter
+    hGrp->RemoveASCII("ShortcutModifiers");
+
+    //finally reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
+}
+
 /**
  * Sets the strings of the subwidgets using the current language.
  */

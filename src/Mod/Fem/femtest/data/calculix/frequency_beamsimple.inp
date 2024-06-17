@@ -17021,6 +17021,9 @@ Evolumes
 17,
 18,
 
+** Physical constants for SI(mm) unit system with Kelvins
+*PHYSICAL CONSTANTS, ABSOLUTE ZERO=0, STEFAN BOLTZMANN=5.670374419e-11
+
 ***********************************************************
 ** Materials
 ** see information about units at file end
@@ -17069,7 +17072,7 @@ RF
 *NODE PRINT, NSET=Fix_YZ, TOTALS=ONLY
 RF
 
-
+*OUTPUT, FREQUENCY=1
 ***********************************************************
 *END STEP 
 

@@ -681,7 +681,7 @@ schimba configurația proiectului. Proprietatea va fi creată dacă nu există.<
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
+      <translation>CSV (*.csv *.CSV);;Toate (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -694,7 +694,7 @@ schimba configurația proiectului. Proprietatea va fi creată dacă nu există.<
       <translation>Exportă fişier</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="113"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Arată foaie de calcul</translation>
     </message>
@@ -738,7 +738,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.my_alias_name în loc de Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Foaie de calcul</translation>
     </message>
@@ -899,7 +899,7 @@ Doriţi să continuaţi?</translation>
       <location filename="../../DlgBindSheet.cpp" line="276"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>Eroare:
 </translation>
     </message>
     <message>
@@ -950,8 +950,18 @@ Implicit la: %V = %A
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
-      <source>Delimiter Character: </source>
-      <translation>Caracterul Delimitator: </translation>
+      <source>Delimiter Character:</source>
+      <translation>Caracterul Delimitator:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Quote Character:</source>
+      <translation>Caracterul Ofertei:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="188"/>
+      <source>Escape Character:</source>
+      <translation>Caracterul de scăpare:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -964,19 +974,9 @@ Implicit la: %V = %A
       <translation>tab</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="156"/>
-      <source>Quote Character: </source>
-      <translation>Caracterul Ofertei: </translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Caracter folosit pentru delimitarea șirurilor, de obicei este o ofertă unică (') sau o ofertă dublă (&amp;quot;). Trebuie să fie un singur caracter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="188"/>
-      <source>Escape Character: </source>
-      <translation>Caracterul de scăpare: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
@@ -1011,10 +1011,10 @@ Implicit la: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="134"/>
       <source>Insert %n row(s) below</source>
-      <translation type="unfinished">
-        <numerusform>Introduceți rânduri mai jos</numerusform>
-        <numerusform>Introduceți i%n rânduri mai jos</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
+      <translation>
+        <numerusform>Introduceți %n rânduri mai sus</numerusform>
+        <numerusform>Introduceți %n rânduri mai jos</numerusform>
+        <numerusform>Introduceți %n rânduri(s) mai jos</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1029,46 +1029,46 @@ Implicit la: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="142"/>
       <source>Remove row(s)</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Eliminați rândul(s)</numerusform>
         <numerusform>Elimină rând(e)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Elimină rânduri(s)</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="155"/>
       <source>Insert %n column(s) left</source>
-      <translation type="unfinished">
-        <numerusform>Inserare coloană la stânga</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
+      <translation>
+        <numerusform>Inserare %n coloană(s) la stânga</numerusform>
+        <numerusform>Inserare%n coloană(s) la stânga</numerusform>
+        <numerusform>Inserare%n coloană(s) la stânga</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="160"/>
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
-        <numerusform>Inserare coloană la dreapta</numerusform>
-        <numerusform>Inserare coloană la dreapta</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+      <translation>
+        <numerusform>Inserare%n coloană(s) la dreapta</numerusform>
+        <numerusform>Inserare%n coloană(s) la dreapta</numerusform>
+        <numerusform>Inserare%n coloană(s) la stânga</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="169"/>
       <source>Insert %n non-contiguous columns</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+      <translation>
+        <numerusform>Inserați %n coloane necontigue</numerusform>
+        <numerusform>Inserați %n coloane necontigue</numerusform>
+        <numerusform>Inserați %n coloane necontigue</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="172"/>
       <source>Remove column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Elimină coloanele</numerusform>
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
+      <translation>
+        <numerusform>Elimină coloanele(s)</numerusform>
+        <numerusform>Elimină coloanele(s)</numerusform>
+        <numerusform>Elimină coloanele(s)</numerusform>
       </translation>
     </message>
     <message>
@@ -1171,7 +1171,7 @@ Implicit la: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Nedenumit</translation>
     </message>

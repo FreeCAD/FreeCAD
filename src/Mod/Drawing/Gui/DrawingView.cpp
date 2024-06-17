@@ -25,11 +25,11 @@
 #include <cmath>
 
 #include <QAction>
+#include <QActionGroup>
 #include <QApplication>
 #include <QContextMenuEvent>
 #include <QFileDialog>
 #include <QFileInfo>
-#include <QGLWidget>
 #include <QGraphicsRectItem>
 #include <QGraphicsSvgItem>
 #include <QGridLayout>
@@ -37,6 +37,8 @@
 #include <QListWidget>
 #include <QMenu>
 #include <QMessageBox>
+#include <QOpenGLWidget>
+#include <QPaintEngine>
 #include <QPaintEvent>
 #include <QPainter>
 #include <QPrintDialog>
@@ -139,7 +141,7 @@ void SvgView::setRenderer(RendererType type)
 
     if (m_renderer == OpenGL) {
 #ifndef QT_NO_OPENGL
-        setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
+        setViewport(new QOpenGLWidget);
 #endif
     }
     else {

@@ -5,12 +5,12 @@
     <name>UnitsApi</name>
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
-      <source>Standard (mm, kg, s, degree)</source>
-      <translation>Standardowy (mm, kg, s, °)</translation>
+      <source>Standard (mm, kg, s, °)</source>
+      <translation>Standardowe (mm, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
-      <source>MKS (m, kg, s, degree)</source>
+      <source>MKS (m, kg, s, °)</source>
       <translation>MKS (m, kg, s, °)</translation>
     </message>
     <message>
@@ -40,7 +40,7 @@
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>
-      <source>Imperial for Civil Eng (ft, ft/sec)</source>
+      <source>Imperial for Civil Eng (ft, ft/s)</source>
       <translation>Inżynieria lądowa brytyjski (ft, ft/s)</translation>
     </message>
     <message>

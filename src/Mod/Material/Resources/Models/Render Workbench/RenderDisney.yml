@@ -1,0 +1,179 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+AppearanceModel:
+  Name: "Render Disney"
+  UUID: 'f8723572-4470-4c39-a749-6d3b71358a5b'
+  URL: ''
+  Description: "Rendering Workbench Disney rendering model"
+  DOI: ""
+  Render.Disney.Anisotropic:
+    Type: 'Float'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.Anisotropic.Texture:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.BaseColor:
+    Type: 'Color'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.BaseColor.Texture:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.BaseColor.Object:
+    Type: 'Boolean'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.Bump:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.ClearCoat:
+    Type: 'Float'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.ClearCoat.Texture:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.ClearCoat.Object:
+    Type: 'Boolean'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.ClearCoatGloss:
+    Type: 'Float'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.ClearCoatGloss.Texture:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.ClearCoatGloss.Object:
+    Type: 'Boolean'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.Displacement:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.Metallic:
+    Type: 'Float'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.Metallic.Texture:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.Normal:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.Roughness:
+    Type: 'Float'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.Roughness.Texture:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.Sheen:
+    Type: 'Float'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.Sheen.Texture:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.SheenTint:
+    Type: 'Float'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.SheenTint.Texture:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.Specular:
+    Type: 'Float'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.Specular.Texture:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.Specular.Object:
+    Type: 'Boolean'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.SpecularTint:
+    Type: 'Float'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.SpecularTint.Texture:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.SpecularTint.Object:
+    Type: 'Boolean'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.Subsurface:
+    Type: 'Float'
+    Units: ''
+    URL: ''
+    Description: " "
+  Render.Disney.Subsurface.Texture:
+    Type: 'String'
+    Units: ''
+    URL: ''
+    Description: " "

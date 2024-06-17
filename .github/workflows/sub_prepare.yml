@@ -148,14 +148,14 @@ jobs:
           echo "" >> $GITHUB_OUTPUT
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
             ${{ env.logdir }}
       - name: Upload report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.reportfilename }}
           path: |

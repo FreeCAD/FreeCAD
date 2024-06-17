@@ -78,7 +78,11 @@ enum ConstraintType
     PointOnBSpline = 29,
     C2CDistance = 30,
     C2LDistance = 31,
-    P2CDistance = 32
+    P2CDistance = 32,
+    AngleViaPointAndParam = 33,
+    AngleViaPointAndTwoParams = 34,
+    AngleViaTwoPoints = 35,
+    ArcLength = 36,
 };
 
 enum InternalAlignmentType
@@ -1124,6 +1128,41 @@ public:
     double grad(double*) override;
 };
 
+class ConstraintAngleViaTwoPoints: public Constraint
+{
+private:
+    inline double* angle()
+    {
+        return pvec[0];
+    };
+    Curve* crv1;
+    Curve* crv2;
+    // These two pointers hold copies of the curves that were passed on
+    //  constraint creation. The curves must be deleted upon destruction of
+    //  the constraint. It is necessary to have copies, since messing with
+    //  original objects that were passed is a very bad idea (but messing is
+    //  necessary, because we need to support redirectParams()/revertParams
+    //  functions.
+    // The pointers in the curves need to be reconstructed if pvec was redirected
+    //  (test pvecChangedFlag variable before use!)
+    // poa=point of angle //needs to be reconstructed if pvec was redirected/reverted. The points
+    // are easily shallow-copied by C++, so no pointer type here and no delete is necessary. We use
+    // two points in this method as a workaround for B-splines (and friends). There, normals at
+    // general points are not implemented, just at their stored start/end points.
+    Point poa1;
+    Point poa2;
+    // writes pointers in pvec to the parameters of crv1, crv2 and poa
+    void ReconstructGeomPointers();
+
+public:
+    ConstraintAngleViaTwoPoints(Curve& acrv1, Curve& acrv2, Point p1, Point p2, double* angle);
+    ~ConstraintAngleViaTwoPoints() override;
+    ConstraintType getTypeId() override;
+    void rescale(double coef = 1.) override;
+    double error() override;
+    double grad(double*) override;
+};
+
 // snell's law angles constrainer. Point needs to lie on all three curves to be constraied.
 class ConstraintSnell: public Constraint
 {
@@ -1167,6 +1206,91 @@ public:
                     bool flipn1,
                     bool flipn2);
     ~ConstraintSnell() override;
+    ConstraintType getTypeId() override;
+    void rescale(double coef = 1.) override;
+    double error() override;
+    double grad(double*) override;
+};
+
+class ConstraintAngleViaPointAndParam: public Constraint
+{
+private:
+    inline double* angle()
+    {
+        return pvec[0];
+    };
+    inline double* cparam()
+    {
+        return pvec[3];
+    };
+    Curve* crv1;
+    Curve* crv2;
+    // These two pointers hold copies of the curves that were passed on
+    //  constraint creation. The curves must be deleted upon destruction of
+    //  the constraint. It is necessary to have copies, since messing with
+    //  original objects that were passed is a very bad idea (but messing is
+    //  necessary, because we need to support redirectParams()/revertParams
+    //  functions.
+    // The pointers in the curves need to be reconstructed if pvec was redirected
+    //  (test pvecChangedFlag variable before use!)
+    Point poa;  // poa=point of angle //needs to be reconstructed if pvec was redirected/reverted.
+                // The point is easily shallow-copied by C++, so no pointer type here and no delete
+                // is necessary.
+    void
+    ReconstructGeomPointers();  // writes pointers in pvec to the parameters of crv1, crv2 and poa
+public:
+    // We assume first curve needs param1
+    ConstraintAngleViaPointAndParam(Curve& acrv1,
+                                    Curve& acrv2,
+                                    Point p,
+                                    double* param1,
+                                    double* angle);
+    ~ConstraintAngleViaPointAndParam() override;
+    ConstraintType getTypeId() override;
+    void rescale(double coef = 1.) override;
+    double error() override;
+    double grad(double*) override;
+};
+
+// TODO: Do we need point here at all?
+class ConstraintAngleViaPointAndTwoParams: public Constraint
+{
+private:
+    inline double* angle()
+    {
+        return pvec[0];
+    };
+    inline double* cparam1()
+    {
+        return pvec[3];
+    };
+    inline double* cparam2()
+    {
+        return pvec[4];
+    };
+    Curve* crv1;
+    Curve* crv2;
+    // These two pointers hold copies of the curves that were passed on
+    //  constraint creation. The curves must be deleted upon destruction of
+    //  the constraint. It is necessary to have copies, since messing with
+    //  original objects that were passed is a very bad idea (but messing is
+    //  necessary, because we need to support redirectParams()/revertParams
+    //  functions.
+    // The pointers in the curves need to be reconstructed if pvec was redirected
+    //  (test pvecChangedFlag variable before use!)
+    Point poa;  // poa=point of angle //needs to be reconstructed if pvec was redirected/reverted.
+                // The point is easily shallow-copied by C++, so no pointer type here and no delete
+                // is necessary.
+    void
+    ReconstructGeomPointers();  // writes pointers in pvec to the parameters of crv1, crv2 and poa
+public:
+    ConstraintAngleViaPointAndTwoParams(Curve& acrv1,
+                                        Curve& acrv2,
+                                        Point p,
+                                        double* param1,
+                                        double* param2,
+                                        double* angle);
+    ~ConstraintAngleViaPointAndTwoParams() override;
     ConstraintType getTypeId() override;
     void rescale(double coef = 1.) override;
     double error() override;
@@ -1262,6 +1386,28 @@ public:
     double grad(double*) override;
 };
 
+// ArcLength
+class ConstraintArcLength: public Constraint
+{
+private:
+    Arc arc;
+    double* d;
+    inline double* distance()
+    {
+        return pvec[0];
+    }
+    void ReconstructGeomPointers();  // writes pointers in pvec to the parameters of a
+    void
+    errorgrad(double* err,
+              double* grad,
+              double* param);  // error and gradient combined. Values are returned through pointers.
+public:
+    ConstraintArcLength(Arc& a, double* d);
+    ConstraintType getTypeId() override;
+    void rescale(double coef = 1.) override;
+    double error() override;
+    double grad(double*) override;
+};
 
 }  // namespace GCS
 

@@ -755,12 +755,6 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                 break;
 
             case 3:  // cone
-                // the cone radii must not be equal
-                if (ui->coneRadius1->value().getValue() == ui->coneRadius2->value().getValue()) {
-                    QMessageBox::warning(Gui::getMainWindow(), tr("Cone radii are equal"),
-                        tr("The radii for cones must not be equal!"));
-                    return false;
-                }
                 cmd = QString::fromLatin1(
                     "%1.Radius1='%2'\n"
                     "%1.Radius2='%3'\n"

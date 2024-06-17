@@ -24,7 +24,6 @@
 #ifndef PARTGUI_ViewProviderPartReference_H
 #define PARTGUI_ViewProviderPartReference_H
 
-#include <Standard_math.hxx>
 #include <Standard_Boolean.hxx>
 #include <TopoDS_Shape.hxx>
 #include <Gui/ViewProviderGeometryObject.h>

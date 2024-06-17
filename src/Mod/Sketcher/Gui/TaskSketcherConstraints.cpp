@@ -262,12 +262,12 @@ public:
             static QIcon snell_driven(
                 Gui::BitmapFactory().iconFromTheme("Constraint_SnellsLaw_Driven"));
 
-            auto selicon = [](const Sketcher::Constraint* constr,
+            auto selicon = [this](const Sketcher::Constraint* constr,
                               const QIcon& normal,
                               const QIcon& driven) -> QIcon {
                 if (!constr->isActive) {
                     QIcon darkIcon;
-                    int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
+                    int w = listWidget()->style()->pixelMetric(QStyle::PM_ListViewIconSize);
                     darkIcon.addPixmap(normal.pixmap(w, w, QIcon::Disabled, QIcon::Off),
                                        QIcon::Normal,
                                        QIcon::Off);
@@ -466,7 +466,7 @@ protected:
         QStyleOptionViewItem options = option;
         initStyleOption(&options, index);
 
-        options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter);
+        options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter, option.widget);
 
         ConstraintItem* item = dynamic_cast<ConstraintItem*>(view->item(index.row()));
         if (!item || item->sketch->Constraints.getSize() <= item->ConstraintNbr)
@@ -813,7 +813,7 @@ FilterValueBitset ConstraintFilterList::getMultiFilter()
 // ----------------------------------------------------------------------------
 
 TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Constraints"), true, nullptr)
+    : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_CreateLineAngleLength"), tr("Constraints"), true, nullptr)
     , sketchView(sketchView)
     , inEditMode(false)
     , ui(new Ui_TaskSketcherConstraints)
@@ -833,7 +833,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
     QWidgetAction* action = new QWidgetAction(this);
     filterList = new ConstraintFilterList(this);
     action->setDefaultWidget(filterList);
-    qAsConst(ui->filterButton)->addAction(action);
+    std::as_const(ui->filterButton)->addAction(action);
 
     // Create local settings menu
     // FIXME there is probably a smarter way to handle this menu
@@ -862,7 +862,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
     }
     hGrp->Attach(this);
 
-    auto settingsBut = qAsConst(ui->settingsButton);
+    auto settingsBut = std::as_const(ui->settingsButton);
 
     settingsBut->addAction(action1);
     settingsBut->addAction(action2);
@@ -1040,8 +1040,8 @@ void TaskSketcherConstraints::onChangedSketchView(const Gui::ViewProvider& vp,
 {
     if (sketchView == &vp) {
         if (&sketchView->Autoconstraints == &prop) {
-            QSignalBlocker block(qAsConst(ui->settingsButton)->actions()[0]);
-            qAsConst(ui->settingsButton)
+            QSignalBlocker block(std::as_const(ui->settingsButton)->actions()[0]);
+            std::as_const(ui->settingsButton)
                 ->actions()[0]
                 ->setChecked(sketchView->Autoconstraints.getValue());
         }
@@ -1425,7 +1425,7 @@ void TaskSketcherConstraints::OnChange(Base::Subject<const char*>& rCaller, cons
     }
     if (actNum >= 0) {
         assert(actNum < static_cast<int>(ui->settingsButton->actions().size()));
-        qAsConst(ui->settingsButton)->actions()[actNum]->setChecked(hGrp->GetBool(rcReason, false));
+        std::as_const(ui->settingsButton)->actions()[actNum]->setChecked(hGrp->GetBool(rcReason, false));
     }
 }
 
@@ -1538,7 +1538,7 @@ void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter()
                 Gui::Command::abortCommand();
 
                 Gui::TranslatedUserError(
-                    sketch, tr("Error"), tr("Impossible to update visibility tracking: "));
+                    sketch, tr("Error"), tr("Impossible to update visibility tracking:") + QLatin1String(" "));
 
                 return false;
             }

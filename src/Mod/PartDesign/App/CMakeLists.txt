@@ -117,6 +117,8 @@ SET(Module_SRCS
     AppPartDesignPy.cpp
     PreCompiled.cpp
     PreCompiled.h
+    Measure.cpp
+    Measure.h
 )
 SOURCE_GROUP("Module" FILES ${Module_SRCS})
 
@@ -141,6 +143,9 @@ SET(PartDesign_SRCS
 
 add_library(PartDesign SHARED ${PartDesign_SRCS})
 target_link_libraries(PartDesign ${PartDesign_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(PartDesign)
+endif()
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)

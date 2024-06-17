@@ -125,6 +125,13 @@ const char* DrawViewSection::SectionDirEnums[] =
 
 const char* DrawViewSection::CutSurfaceEnums[] = {"Hide", "Color", "SvgHatch", "PatHatch", nullptr};
 
+constexpr double stretchMinimum{EWTOLERANCE};
+constexpr double stretchMaximum{std::numeric_limits<double>::max()};
+constexpr double stretchStep{0.1};
+
+App::PropertyFloatConstraint::Constraints DrawViewSection::stretchRange = {
+                            stretchMinimum, stretchMaximum, stretchStep};
+
 //===========================================================================
 // DrawViewSection
 //===========================================================================
@@ -230,6 +237,7 @@ DrawViewSection::DrawViewSection()
 
     ADD_PROPERTY_TYPE(SectionLineStretch, (1.0), agroup, App::Prop_None,
                       "Adjusts the length of the section line.  1.0 is normal length.  1.1 would be 10% longer, 0.9 would be 10% shorter.");
+    SectionLineStretch.setConstraints(&stretchRange);
 
     getParameters();
 
@@ -377,7 +385,7 @@ TopoDS_Shape DrawViewSection::getShapeForDetail() const
 
 App::DocumentObjectExecReturn* DrawViewSection::execute()
 {
-    //    Base::Console().Message("DVS::execute() - %s\n", getNameInDocument());
+    // Base::Console().Message("DVS::execute() - %s\n", Label.getValue());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -437,9 +445,7 @@ bool DrawViewSection::isBaseValid() const
 
 void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
 {
-    //    Base::Console().Message("DVS::sectionExec() - %s baseShape.IsNull:
-    //    %d\n",
-    //                            getNameInDocument(), baseShape.IsNull());
+    // Base::Console().Message("DVS::sectionExec() - %s baseShape.IsNull: %d\n", Label.getValue(), baseShape.IsNull());
 
     if (waitingForHlr() || waitingForCut()) {
         return;
@@ -478,9 +484,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
 
 void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
 {
-    //    Base::Console().Message("DVS::makeSectionCut() - %s - baseShape.IsNull:
-    //    %d\n",
-    //                            getNameInDocument(), baseShape.IsNull());
+    // Base::Console().Message("DVS::makeSectionCut() - %s - baseShape.IsNull:%d\n", Label.getValue(), baseShape.IsNull());
 
     showProgressMessage(getNameInDocument(), "is making section cut");
 
@@ -630,8 +634,7 @@ void DrawViewSection::onSectionCutFinished()
 // activities that depend on updated geometry object
 void DrawViewSection::postHlrTasks(void)
 {
-    //    Base::Console().Message("DVS::postHlrTasks() - %s\n",
-    //    getNameInDocument());
+    // Base::Console().Message("DVS::postHlrTasks() - %s\n", Label.getValue());
 
     DrawViewPart::postHlrTasks();
 
@@ -929,27 +932,29 @@ std::vector<TechDraw::FacePtr> DrawViewSection::makeTDSectionFaces(TopoDS_Compou
 std::pair<Base::Vector3d, Base::Vector3d> DrawViewSection::sectionLineEnds()
 {
     std::pair<Base::Vector3d, Base::Vector3d> result;
-    Base::Vector3d stdZ(0.0, 0.0, 1.0);
-    double baseRotation = getBaseDVP()->Rotation.getValue();// Qt degrees are clockwise
-    Base::Rotation rotator(stdZ, baseRotation * M_PI / 180.0);
-    Base::Rotation unrotator(stdZ, -baseRotation * M_PI / 180.0);
 
+    Base::Vector3d dir = getSectionDirectionOnBaseView();
+
+    Base::Vector3d sectionOrg = SectionOrigin.getValue() - getBaseDVP()->getOriginalCentroid();
+    sectionOrg = getBaseDVP()->projectPoint(sectionOrg);// convert to base view CS
+    double halfSize = (getBaseDVP()->getSizeAlongVector(dir) / 2.0) * SectionLineStretch.getValue();
+    result.first = sectionOrg + dir * halfSize;
+    result.second = sectionOrg - dir * halfSize;
+
+    return result;
+}
+
+// calculate the direction of the section in 2d on the base view.
+Base::Vector3d DrawViewSection::getSectionDirectionOnBaseView()
+{
     auto sNorm = SectionNormal.getValue();
     auto axis = getBaseDVP()->Direction.getValue();
-    Base::Vector3d stdOrg(0.0, 0.0, 0.0);
     Base::Vector3d sectionLineDir = -axis.Cross(sNorm);
     sectionLineDir.Normalize();
     sectionLineDir = getBaseDVP()->projectPoint(sectionLineDir);// convert to base view CS
     sectionLineDir.Normalize();
 
-    Base::Vector3d sectionOrg = SectionOrigin.getValue() - getBaseDVP()->getOriginalCentroid();
-    sectionOrg = getBaseDVP()->projectPoint(sectionOrg);// convert to base view
-                                                        // CS
-    double halfSize = (getBaseDVP()->getSizeAlongVector(sectionLineDir) / 2.0) * SectionLineStretch.getValue();
-    result.first = sectionOrg + sectionLineDir * halfSize;
-    result.second = sectionOrg - sectionLineDir * halfSize;
-
-    return result;
+    return sectionLineDir;
 }
 
 // find the points and directions to make the change point marks.
@@ -1164,8 +1169,10 @@ gp_Ax2 DrawViewSection::getProjectionCS(const Base::Vector3d pt) const
 
 std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 {
-    //    Base::Console().Message("DVS::getDrawableLines(%d) - lineSets: %d\n", i,
-    //    m_lineSets.size());
+    // Base::Console().Message("DVS::getDrawableLines(%d) - lineSets: %d\n", i, m_lineSets.size());
+    if (m_lineSets.empty()) {
+        makeLineSets();
+    }
     std::vector<LineSet> result;
     return DrawGeomHatch::getTrimmedLinesSection(this,
                                                  m_lineSets,
@@ -1228,7 +1235,7 @@ void DrawViewSection::setupObject()
 // create geometric hatch lines
 void DrawViewSection::makeLineSets(void)
 {
-    //    Base::Console().Message("DVS::makeLineSets()\n");
+    // Base::Console().Message("DVS::makeLineSets()\n");
     if (PatIncluded.isEmpty()) {
         return;
     }
@@ -1269,8 +1276,7 @@ void DrawViewSection::replaceSvgIncluded(std::string newSvgFile)
 
 void DrawViewSection::replacePatIncluded(std::string newPatFile)
 {
-    //    Base::Console().Message("DVS::replacePatIncluded(%s)\n",
-    //    newPatFile.c_str());
+    // Base::Console().Message("DVS::replacePatIncluded(%s)\n", newPatFile.c_str());
     if (newPatFile.empty()) {
         return;
     }

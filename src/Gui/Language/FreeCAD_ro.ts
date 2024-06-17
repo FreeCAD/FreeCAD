@@ -37,31 +37,31 @@
       <translation>Dimensiunea vizuală a formei</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="502"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="564"/>
       <source>&lt;empty&gt;</source>
       <translation>(gol)</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2244"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2506"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2414"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2683"/>
       <source>Angle</source>
       <translation>Unghi</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2248"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2510"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2418"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2687"/>
       <source>Axis</source>
       <translation>Axele</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2515"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2692"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Poziție</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2752"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2944"/>
       <source>Enum</source>
-      <translation type="unfinished">Enum</translation>
+      <translation>Enum</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyModel.cpp" line="250"/>
@@ -86,12 +86,12 @@
   <context>
     <name>CmdViewMeasureClearAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3398"/>
+      <location filename="../CommandView.cpp" line="3324"/>
       <source>Clear measurement</source>
       <translation>Suprimă măsurătoarea</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3399"/>
+      <location filename="../CommandView.cpp" line="3325"/>
       <source>Clear all visible measurements</source>
       <translation>Ştergeţi toate măsurătorile vizibile</translation>
     </message>
@@ -99,12 +99,12 @@
   <context>
     <name>CmdViewMeasureToggleAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3428"/>
+      <location filename="../CommandView.cpp" line="3354"/>
       <source>Toggle measurement</source>
       <translation>Activează/dezactivează măsurătoarea</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3429"/>
+      <location filename="../CommandView.cpp" line="3355"/>
       <source>Turn on or off the display of all measurements</source>
       <translation>Porniţi sau opriţi afişajul tuturor măsurătorilor</translation>
     </message>
@@ -117,42 +117,42 @@
       <translation>Editare</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="667"/>
+      <location filename="../Application.cpp" line="663"/>
       <source>Import</source>
       <translation>Import</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1330"/>
+      <location filename="../CommandDoc.cpp" line="1331"/>
       <source>Delete</source>
       <translation>Ştergeţi</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1885"/>
+      <location filename="../CommandDoc.cpp" line="1921"/>
       <source>Paste expressions</source>
       <translation>Lipește expresii</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="140"/>
+      <location filename="../CommandLink.cpp" line="142"/>
       <source>Make link group</source>
       <translation>Creează un grup cu legătură</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="241"/>
+      <location filename="../CommandLink.cpp" line="240"/>
       <source>Make link</source>
       <translation>Creează o legătură</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="294"/>
+      <location filename="../CommandLink.cpp" line="293"/>
       <source>Make sub-link</source>
       <translation>Creează o sub-legătură</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="582"/>
+      <location filename="../CommandLink.cpp" line="581"/>
       <source>Import links</source>
       <translation>Importă legături</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="623"/>
+      <location filename="../CommandLink.cpp" line="622"/>
       <source>Import all links</source>
       <translation>Importă toate legăturile</translation>
     </message>
@@ -167,19 +167,19 @@
       <translation>Inserează un document text</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="68"/>
+      <location filename="../CommandStructure.cpp" line="64"/>
       <source>Add a part</source>
       <translation>Adaugă o componentă</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="115"/>
+      <location filename="../CommandStructure.cpp" line="107"/>
       <source>Add a group</source>
       <translation>Adaugă un grup</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="970"/>
+      <location filename="../ManualAlignment.cpp" line="972"/>
       <source>Align</source>
-      <translation type="unfinished">Align</translation>
+      <translation>Aliniere</translation>
     </message>
     <message>
       <location filename="../Placement.cpp" line="239"/>
@@ -188,19 +188,19 @@
       <translation>Amplasare</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="101"/>
       <location filename="../TaskCSysDragger.cpp" line="75"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
+      <location filename="../Transform.cpp" line="101"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Transformare</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2572"/>
+      <location filename="../ViewProviderLink.cpp" line="2577"/>
       <source>Toggle array elements</source>
       <translation>Comutare elemente matrice</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2981"/>
+      <location filename="../ViewProviderLink.cpp" line="2986"/>
       <source>Link Transform</source>
       <translation>Transformarea legăturii</translation>
     </message>
@@ -210,17 +210,17 @@
       <translation>Măsoară distanţa</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="883"/>
+      <location filename="../CommandView.cpp" line="884"/>
       <source>Toggle visibility</source>
       <translation>Activează/dezactivează vizibilitate</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="917"/>
+      <location filename="../CommandView.cpp" line="918"/>
       <source>Toggle transparency</source>
-      <translation type="unfinished">Toggle transparency</translation>
+      <translation>Comută transparența</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1019"/>
+      <location filename="../CommandView.cpp" line="1031"/>
       <source>Toggle selectability</source>
       <translation>Activează/dezactivează selectabilitatea</translation>
     </message>
@@ -230,81 +230,91 @@
       <source>Edit image</source>
       <translation>Editare imagine</translation>
     </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="122"/>
+      <source>Set Random Color</source>
+      <translation>Setare culoare aleatorie</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="168"/>
+      <source>Toggle freeze</source>
+      <translation>Comutare înghețare</translation>
+    </message>
   </context>
   <context>
     <name>CommandGroup</name>
     <message>
-      <location filename="../Workbench.cpp" line="518"/>
+      <location filename="../Workbench.cpp" line="517"/>
       <source>File</source>
       <translation>Fişier</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="519"/>
+      <location filename="../Workbench.cpp" line="518"/>
       <source>Edit</source>
       <translation>Editare</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="520"/>
+      <location filename="../Workbench.cpp" line="519"/>
       <source>Help</source>
       <translation>Ajutor</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="521"/>
+      <location filename="../Workbench.cpp" line="520"/>
       <source>Link</source>
       <translation>Link</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="522"/>
+      <location filename="../Workbench.cpp" line="521"/>
       <source>Tools</source>
       <translation>Instrumente</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="523"/>
+      <location filename="../Workbench.cpp" line="522"/>
       <source>View</source>
       <translation>Vizualizare</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="524"/>
+      <location filename="../Workbench.cpp" line="523"/>
       <source>Window</source>
       <translation>Fereastră</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="525"/>
+      <location filename="../Workbench.cpp" line="524"/>
       <source>Standard</source>
       <translation>Standard</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="526"/>
+      <location filename="../Workbench.cpp" line="525"/>
       <source>Macros</source>
       <translation>Macro-uri</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="527"/>
+      <location filename="../Workbench.cpp" line="526"/>
       <source>Macro</source>
       <translation>Macrocomandă</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="528"/>
+      <location filename="../Workbench.cpp" line="527"/>
       <source>Structure</source>
       <translation>Structura</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="529"/>
+      <location filename="../Workbench.cpp" line="528"/>
       <source>Standard-Test</source>
       <translation>Test Standard</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="530"/>
+      <location filename="../Workbench.cpp" line="529"/>
       <source>Standard-View</source>
       <translation>Vedere standard</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="531"/>
+      <location filename="../Workbench.cpp" line="530"/>
       <source>TreeView</source>
       <translation>Vizualizare arborescentă</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="532"/>
+      <location filename="../Workbench.cpp" line="531"/>
       <source>Measure</source>
       <translation>Măsură</translation>
     </message>
@@ -377,7 +387,7 @@
     <message>
       <location filename="../DlgExpressionInput.ui" line="26"/>
       <source>Expression editor</source>
-      <translation type="unfinished">Expression editor</translation>
+      <translation>Editor de expresie</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="67"/>
@@ -416,42 +426,42 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="255"/>
+      <location filename="../Application.h" line="256"/>
       <source>Default</source>
       <translation>Implicit</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="256"/>
+      <location filename="../Application.h" line="257"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation>Obiectul va fi editat folosind modul definit intern pentru a fi cel mai potrivit pentru tipul obiectului</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="260"/>
+      <location filename="../Application.h" line="261"/>
       <source>Transform</source>
       <translation>Transformare</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="261"/>
+      <location filename="../Application.h" line="262"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation>Obiectul va avea posibilitatea de a plasa cu comanda Std TransformManip</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="265"/>
+      <location filename="../Application.h" line="266"/>
       <source>Cutting</source>
       <translation>Tăiere</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="266"/>
+      <location filename="../Application.h" line="267"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation>Acest mod de editare este implementat ca disponibil, dar în prezent nu pare să fie folosit de orice obiect</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="270"/>
+      <location filename="../Application.h" line="271"/>
       <source>Color</source>
       <translation>Culoare</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="271"/>
+      <location filename="../Application.h" line="272"/>
       <source>The object will have the color of its individual faces editable with the Part FaceColors command</source>
       <translation>Obiectul va avea culoarea fețelor sale individuale editabile cu comanda Part FaceColors</translation>
     </message>
@@ -461,12 +471,12 @@
     <message>
       <location filename="../QuantitySpinBox_p.h" line="53"/>
       <source>Enter an expression... (=)</source>
-      <translation type="unfinished">Enter an expression... (=)</translation>
+      <translation>Introduceți o expresie... (=)</translation>
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="54"/>
-      <source>Expression: </source>
-      <translation>Expresie: </translation>
+      <source>Expression:</source>
+      <translation>Expresie:</translation>
     </message>
   </context>
   <context>
@@ -518,12 +528,12 @@
   <context>
     <name>Gui::AlignmentView</name>
     <message>
-      <location filename="../ManualAlignment.cpp" line="409"/>
+      <location filename="../ManualAlignment.cpp" line="411"/>
       <source>Movable object</source>
       <translation>Obiect deplasabil</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="411"/>
+      <location filename="../ManualAlignment.cpp" line="413"/>
       <source>Fixed object</source>
       <translation>Obiect fixat</translation>
     </message>
@@ -554,7 +564,7 @@
   <context>
     <name>Gui::AutoSaver</name>
     <message>
-      <location filename="../AutoSaver.cpp" line="171"/>
+      <location filename="../AutoSaver.cpp" line="172"/>
       <source>Please wait until the AutoRecovery file has been saved...</source>
       <translation>Vă rugăm să aşteptaţi până când s-a salvat fișierul AutoRecovery...</translation>
     </message>
@@ -747,22 +757,22 @@ while doing a left or right click and move the mouse up or down</translation>
   <context>
     <name>Gui::Dialog::ApplicationCache</name>
     <message>
-      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="228"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="241"/>
       <source>Cache directory</source>
       <translation>Director cache</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="230"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="243"/>
       <source>The cache directory %1 exceeds the size of %2.</source>
       <translation>Directorul de cache %1 depăşeşte dimensiunea de %2.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="231"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="244"/>
       <source>Do you want to clear it now?</source>
       <translation>Doriți sa îl curățați acum?</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="232"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="245"/>
       <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
       <translation>Atenție: Asigurați-vă că aceasta este singura instanță %1 care rulează și că niciun document nu este deschis, deoarece vă puteți pierde datele!</translation>
     </message>
@@ -783,37 +793,37 @@ while doing a left or right click and move the mouse up or down</translation>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="284"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="325"/>
       <source>Camera settings</source>
       <translation>Setari camera</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="291"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="332"/>
       <source>Orientation</source>
       <translation>Orientarea</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="305"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="346"/>
       <source>Q0</source>
       <translation>Q0</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="315"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="356"/>
       <source>Q1</source>
       <translation>Q1</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="325"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="366"/>
       <source>Q2</source>
       <translation>Q2</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="335"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="376"/>
       <source>Q3</source>
       <translation>Q3</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="344"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="385"/>
       <source>Current view</source>
       <translation>Vedere curentă</translation>
     </message>
@@ -1268,17 +1278,17 @@ Cu toate acestea, proprietatea este încă utilizată într-un script cu numele 
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="137"/>
-      <source>Multi-key sequence delay: </source>
-      <translation>Întârziere secvență cu mai multe taste: </translation>
+      <source>Multi-key sequence delay:</source>
+      <translation>Târguri ale secvenței multicheie:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="156"/>
-      <source>Time in milliseconds to wait for the next key stroke of the current key sequence.
+      <source>Time in milliseconds to wait for the next keystroke of the current key sequence.
 For example, pressing 'F' twice in less than the time delay setting here will be
-be treated as shorctcut key sequence 'F, F'.</source>
-      <translation>Timp în milisecunde pentru a aștepta următorul strop de tastă al secvenței curente.
-De exemplu, apăsarea 'F' de două ori mai puțin decât setarea de întârziere a timpului aici va fi
-considerată ca fiind secvența tastei shorctcut 'F, F'.</translation>
+treated as shortcut key sequence 'F, F'.</source>
+      <translation>Timpul în milisecunde pentru a aștepta următoarea apăsare a secvenței de taste curente.
+De exemplu, apăsând 'F' de două ori mai puțin decât setarea de întârziere a timpului aici va fi
+tratat ca secvență de taste de comenzi rapide 'F, F'.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="186"/>
@@ -1595,191 +1605,8 @@ acelasi timp. Va fi declanșat cel cu cea mai mare prioritate.</translation>
   <context>
     <name>Gui::Dialog::DlgDisplayProperties</name>
     <message>
-      <location filename="../DlgDisplayProperties.ui" line="14"/>
-      <source>Display properties</source>
-      <translation>Afișare proprietăți</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayProperties.ui" line="20"/>
-      <source>Viewing mode</source>
-      <translation>Mod de vizualizare</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayProperties.ui" line="55"/>
-      <source>Document window:</source>
-      <translation>Fereastra documentului:</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayProperties.ui" line="87"/>
-      <source>Plot mode:</source>
-      <translation>Mod de tipărire:</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayProperties.ui" line="106"/>
-      <source>Material</source>
-      <translation>Materialul</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayProperties.ui" line="155"/>
-      <source>Color plot:</source>
-      <translation>Diagramă color:</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayProperties.ui" line="169"/>
-      <source>Shape color:</source>
-      <translation>Culoarea formei:</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayProperties.ui" line="183"/>
-      <source>Line color:</source>
-      <translation>Culoarea liniei:</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayProperties.ui" line="193"/>
-      <source>Point color:</source>
-      <translation>Culoarea liniei:</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayProperties.ui" line="208"/>
-      <source>Display</source>
-      <translation>Afișare</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayProperties.ui" line="246"/>
-      <source>Point size:</source>
-      <translation>Dimensiunea punctului:</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayProperties.ui" line="301"/>
-      <source>Line width:</source>
-      <translation>Lățimea liniei:</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayProperties.ui" line="339"/>
-      <source>Transparency:</source>
-      <translation>Transparenţă:</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayProperties.ui" line="391"/>
-      <source>Line transparency:</source>
-      <translation>Transparența liniei:</translation>
-    </message>
-    <message>
       <source/>
       <translation> </translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Dialog::DlgDisplayPropertiesImp</name>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="549"/>
-      <source>Default</source>
-      <translation>Implicit</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="550"/>
-      <source>Aluminium</source>
-      <translation>Aluminiu</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="551"/>
-      <source>Brass</source>
-      <translation>Alamă</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="552"/>
-      <source>Bronze</source>
-      <translation>Bronz</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="553"/>
-      <source>Copper</source>
-      <translation>Cupru</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="554"/>
-      <source>Chrome</source>
-      <translation>Crom</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="555"/>
-      <source>Emerald</source>
-      <translation>Smarald</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="556"/>
-      <source>Gold</source>
-      <translation>Aur</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="557"/>
-      <source>Jade</source>
-      <translation>Jad</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="558"/>
-      <source>Metalized</source>
-      <translation>Metalizat</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="559"/>
-      <source>Neon GNC</source>
-      <translation>Neon GNC</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="560"/>
-      <source>Neon PHC</source>
-      <translation>Neon PHC</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="561"/>
-      <source>Obsidian</source>
-      <translation>Obsidian</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="562"/>
-      <source>Pewter</source>
-      <translation>Cositor</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="563"/>
-      <source>Plaster</source>
-      <translation>Ipsos</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="564"/>
-      <source>Plastic</source>
-      <translation>Din material plastic</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="565"/>
-      <source>Ruby</source>
-      <translation>Rubin</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="566"/>
-      <source>Satin</source>
-      <translation>Satin/atlas/mătase</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="567"/>
-      <source>Shiny plastic</source>
-      <translation>Plastic lucios</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="568"/>
-      <source>Silver</source>
-      <translation>Argint</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="569"/>
-      <source>Steel</source>
-      <translation>Oţel</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="570"/>
-      <source>Stone</source>
-      <translation>Piatră</translation>
     </message>
   </context>
   <context>
@@ -1825,22 +1652,22 @@ acelasi timp. Va fi declanșat cel cu cea mai mare prioritate.</translation>
     <message>
       <location filename="../DlgMacroExecute.ui" line="85"/>
       <source>Find file:</source>
-      <translation type="unfinished">Find file:</translation>
+      <translation>Găsește fișierul:</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="92"/>
       <source>Case-insensitive search for filenames, regular expressions supported</source>
-      <translation type="unfinished">Case-insensitive search for filenames, regular expressions supported</translation>
+      <translation>Căutare insensibilă la casă, nume de fișiere, expresii regulate suportate</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="99"/>
       <source>Find in files:</source>
-      <translation type="unfinished">Find in files:</translation>
+      <translation>Găsiți în fișiere:</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="106"/>
       <source>Filter by case-insensitive file content, regular expressions supported</source>
-      <translation type="unfinished">Filter by case-insensitive file content, regular expressions supported</translation>
+      <translation>Filtrează după conținutul fișierelor insensibile la majuscule și expresii regulate acceptate</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="122"/>
@@ -2428,17 +2255,17 @@ Specify another directory, please.</source>
   <context>
     <name>Gui::Dialog::DlgPreferences</name>
     <message>
-      <location filename="../DlgPreferences.ui" line="14"/>
+      <location filename="../DlgPreferences.ui" line="25"/>
       <source>Preferences</source>
       <translation>Preferinţe</translation>
     </message>
     <message>
-      <location filename="../DlgPreferences.ui" line="152"/>
+      <location filename="../DlgPreferences.ui" line="156"/>
       <source>Reset</source>
       <translation>Reinițializare</translation>
     </message>
     <message>
-      <location filename="../DlgPreferences.ui" line="192"/>
+      <location filename="../DlgPreferences.ui" line="196"/>
       <source>Header</source>
       <translation>Antet</translation>
     </message>
@@ -2450,74 +2277,74 @@ Specify another directory, please.</source>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="439"/>
+      <location filename="../DlgPreferencesImp.cpp" line="540"/>
       <source>Reset page '%1'...</source>
-      <translation type="unfinished">Reset page '%1'...</translation>
+      <translation>Reset page '%1'...</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="442"/>
+      <location filename="../DlgPreferencesImp.cpp" line="543"/>
       <source>Resets the user settings for the page '%1'</source>
-      <translation type="unfinished">Resets the user settings for the page '%1'</translation>
+      <translation>Resetează setările utilizatorilor pentru pagina '%1'</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="445"/>
+      <location filename="../DlgPreferencesImp.cpp" line="546"/>
       <source>Reset group '%1'...</source>
-      <translation type="unfinished">Reset group '%1'...</translation>
+      <translation>Resetează grupul%1'...</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="448"/>
+      <location filename="../DlgPreferencesImp.cpp" line="549"/>
       <source>Resets the user settings for the group '%1'</source>
-      <translation type="unfinished">Resets the user settings for the group '%1'</translation>
+      <translation>Resetează setările de utilizator pentru grupul '%1'</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="451"/>
+      <location filename="../DlgPreferencesImp.cpp" line="552"/>
       <source>Reset all...</source>
-      <translation type="unfinished">Reset all...</translation>
+      <translation>Resetează tot...</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="454"/>
+      <location filename="../DlgPreferencesImp.cpp" line="555"/>
       <source>Resets the user settings entirely</source>
-      <translation type="unfinished">Resets the user settings entirely</translation>
+      <translation>Resetează complet setările utilizatorilor</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="469"/>
+      <location filename="../DlgPreferencesImp.cpp" line="571"/>
       <source>Clear user settings</source>
       <translation>Șterge setãrile utilizator</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="470"/>
+      <location filename="../DlgPreferencesImp.cpp" line="572"/>
       <source>Do you want to clear all your user settings?</source>
       <translation>Vrei să ştergi toate setările de utilizator?</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="471"/>
+      <location filename="../DlgPreferencesImp.cpp" line="573"/>
       <source>If you agree all your settings will be cleared.</source>
       <translation>Dacă sunteţi de acord vor fi eliminate toate setările.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="571"/>
+      <location filename="../DlgPreferencesImp.cpp" line="673"/>
       <source>Wrong parameter</source>
       <translation>Parametru greşit</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="614"/>
+      <location filename="../DlgPreferencesImp.cpp" line="716"/>
       <source>Restart required</source>
       <translation>Repornire necesară</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="615"/>
+      <location filename="../DlgPreferencesImp.cpp" line="717"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
+      <translation>Trebuie să reporniți FreeCAD pentru ca modificările să aibă efect.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="620"/>
+      <location filename="../DlgPreferencesImp.cpp" line="722"/>
       <source>Restart now</source>
-      <translation type="unfinished">Restart now</translation>
+      <translation>Repornește acum</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="621"/>
+      <location filename="../DlgPreferencesImp.cpp" line="723"/>
       <source>Restart later</source>
-      <translation type="unfinished">Restart later</translation>
+      <translation>Repornește mai târziu</translation>
     </message>
   </context>
   <context>
@@ -2525,7 +2352,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectInformation.ui" line="14"/>
       <source>Document information</source>
-      <translation type="unfinished">Document information</translation>
+      <translation>Informații document</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="26"/>
@@ -2554,46 +2381,56 @@ Specify another directory, please.</source>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="142"/>
+      <source>Unit System:</source>
+      <translation>Sistem unitar:</translation>
+    </message>
+    <message>
+      <location filename="../DlgProjectInformation.ui" line="152"/>
+      <source>Unit system for this file</source>
+      <translation>Sistem unitar pentru acest fișier</translation>
+    </message>
+    <message>
+      <location filename="../DlgProjectInformation.ui" line="159"/>
       <source>Created &amp;by:</source>
       <translation>Creat &amp;de:</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="165"/>
+      <location filename="../DlgProjectInformation.ui" line="182"/>
       <source>Creation &amp;date:</source>
       <translation>&amp;Data creeări:</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="191"/>
+      <location filename="../DlgProjectInformation.ui" line="208"/>
       <source>&amp;Last modified by:</source>
       <translation>U&amp;ltima modificare de către:</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="214"/>
+      <location filename="../DlgProjectInformation.ui" line="231"/>
       <source>Last &amp;modification date:</source>
       <translation>Data ultimei &amp;modificări:</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="240"/>
+      <location filename="../DlgProjectInformation.ui" line="257"/>
       <source>Com&amp;pany:</source>
       <translation>Com&amp;panie:</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="263"/>
+      <location filename="../DlgProjectInformation.ui" line="280"/>
       <source>License information:</source>
       <translation>Informație licență:</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="276"/>
+      <location filename="../DlgProjectInformation.ui" line="293"/>
       <source>License URL</source>
       <translation>URL licență</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="291"/>
+      <location filename="../DlgProjectInformation.ui" line="308"/>
       <source>Open in browser</source>
       <translation>Deschide în navigator</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="300"/>
+      <location filename="../DlgProjectInformation.ui" line="317"/>
       <source>&amp;Comment:</source>
       <translation>&amp;Comentariu:</translation>
     </message>
@@ -2607,12 +2444,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectUtility.ui" line="14"/>
       <source>Document utility</source>
-      <translation type="unfinished">Document utility</translation>
+      <translation>Utilitar document</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="22"/>
       <source>Extract document</source>
-      <translation type="unfinished">Extract document</translation>
+      <translation>Extrage documentul</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="28"/>
@@ -2634,12 +2471,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectUtility.ui" line="72"/>
       <source>Create document</source>
-      <translation type="unfinished">Create document</translation>
+      <translation>Creare document</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="137"/>
       <source>Load document file after creation</source>
-      <translation type="unfinished">Load document file after creation</translation>
+      <translation>Încărcare fișier document după creare</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="115"/>
@@ -2678,12 +2515,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="104"/>
       <source>Failed to extract document</source>
-      <translation type="unfinished">Failed to extract document</translation>
+      <translation>Extragerea documentului nu a reușit</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="121"/>
       <source>Failed to create document</source>
-      <translation type="unfinished">Failed to create document</translation>
+      <translation>Crearea documentului a eșuat</translation>
     </message>
   </context>
   <context>
@@ -2830,11 +2667,6 @@ colțul din dreapta jos în cadrul fișierelor deschise</translation>
       <translation>Arată sistemul de coordonate în colţ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
-      <source>Relative size :   </source>
-      <translation>Dimensiune relativă:   </translation>
-    </message>
-    <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="73"/>
       <source>Size of main coordinate system representation
 in the corner -- in % of height/width of viewport</source>
@@ -2842,36 +2674,36 @@ in the corner -- in % of height/width of viewport</source>
 în colţ -- în % înălţime/lăţime de vizualizare</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="101"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="128"/>
       <source>Axis cross will be shown by default at file
 opening or creation</source>
       <translation>Crucea axei va fi afișată implicit la
 deschiderea sau crearea fișierului</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="105"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="132"/>
       <source>Show axis cross by default</source>
       <translation>Afișare implicită a sistemului de axe</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="118"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="145"/>
       <source>Time needed for last operation and resulting frame rate
 will be shown at the lower left corner in opened files</source>
       <translation>Timpul necesar pentru ultima operațiune și rata de cadre rezultată
 vor fi afișate în colțul din stânga jos în fișierele deschise</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="122"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="149"/>
       <source>Show counter of frames per second</source>
       <translation>Arată contorul de cadre pe secundă</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="141"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="168"/>
       <source>Rendering</source>
       <translation>Randare</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="147"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="174"/>
       <source>This option is useful for troubleshooting graphics card and driver problems.
 
 Changing this option requires a restart of the application.</source>
@@ -2880,22 +2712,22 @@ Changing this option requires a restart of the application.</source>
 Modificarea acestei opțiuni necesită repornirea aplicației.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="152"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="179"/>
       <source>Use software OpenGL</source>
       <translation>Utilizaţi OpenGL software</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="177"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="204"/>
       <source>Use OpenGL VBO (Vertex Buffer Object)</source>
       <translation>Utilizaţi OpenGL VBO (Vertex Buffer Object)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="192"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="219"/>
       <source>Render cache</source>
       <translation>Cache-ul de randare</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="165"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="192"/>
       <source>If selected, Vertex Buffer Objects (VBO) will be used.
 A VBO is an OpenGL feature that provides methods for uploading
 vertex data (position, normal vector, color, etc.) to the graphics card.
@@ -2918,7 +2750,22 @@ probleme, de la anomalii grafice la erori de blocare a GPU-ului. A își aminti 
 raportați această setare ca fiind activată atunci când căutați asistență pe forumurile FreeCAD</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="205"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
+      <source>Relative size:</source>
+      <translation>Dimensiune relativă:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="99"/>
+      <source>Letter color:</source>
+      <translation>Culoarea literelor:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="106"/>
+      <source>Axis letter color</source>
+      <translation>Culoarea literei axei</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="232"/>
       <source>'Render Caching' is another way to say 'Rendering Acceleration'.
 There are 3 options available to achieve this:
 1) 'Auto' (default), let Coin3D decide where to cache.
@@ -2935,92 +2782,97 @@ doar cache-ul din nodul rădăcină al graficului de scenă. Aceasta oferă cea 
 dar un răspuns mai lent la orice schimbare de scenă.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="218"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="245"/>
       <source>Auto</source>
       <translation>Automat</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="223"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="250"/>
       <source>Distributed</source>
       <translation>Distribuit</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="228"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="255"/>
       <source>Centralized</source>
       <translation>Centralizat</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="236"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="263"/>
       <source>Anti-Aliasing</source>
       <translation>Anti-aliasing</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="249"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="276"/>
       <source>What kind of multisample anti-aliasing is used</source>
       <translation>Ce tip de antialiasing multisample se utilizează</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="259"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="128"/>
       <source>None</source>
       <translation>Niciunul</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="264"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="129"/>
       <source>Line Smoothing</source>
       <translation>Netezire linie</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="269"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="130"/>
       <source>MSAA 2x</source>
       <translation>MSAA 2x</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="274"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="131"/>
       <source>MSAA 4x</source>
       <translation>MSAA 4x</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="279"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
+      <source>MSAA 6x</source>
+      <translation>MSAA 6x</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="133"/>
       <source>MSAA 8x</source>
       <translation>MSAA 8x</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="290"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="292"/>
       <source>Transparent objects:</source>
       <translation>Obiecte transparente:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="303"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="305"/>
       <source>Render types of transparent objects</source>
       <translation>Redare tipuri de obiecte transparente</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="313"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="315"/>
       <source>One pass</source>
       <translation>O trecere</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="318"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="320"/>
       <source>Backface pass</source>
       <translation>Trecere pe verso</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="329"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="331"/>
       <source>Marker size:</source>
       <translation>Dimensiune marcator:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="342"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="344"/>
       <source>Size of vertices in the Sketcher, TechDraw and other workbenches</source>
-      <translation type="unfinished">Size of vertices in the Sketcher, TechDraw and other workbenches</translation>
+      <translation>Dimensiunea nodurilor în Sketcher, TechDraw şi alte ateliere</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="349"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="351"/>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Distanța dintre ochi pentru modurile stereo</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="362"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="364"/>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
@@ -3029,48 +2881,48 @@ Valoarea specificată este un factor care va fi multiplicat cu
 dimensiunea casetei de încadrare a obiectului 3D care este afișat în prezent.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="392"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="394"/>
       <source>Backlight is enabled with the defined color</source>
       <translation>Lumina de fundal este activată având culoarea definită</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="395"/>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="411"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="397"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="413"/>
       <source>Backlight color</source>
       <translation>Culoarea luminii de fundal</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="450"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="452"/>
       <source>Intensity</source>
       <translation>Intensitate</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="475"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="477"/>
       <source>Intensity of the backlight</source>
       <translation>Intensitatea luminii de fundal</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="511"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="513"/>
       <source>Camera type</source>
       <translation>Tipul camerei video</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="532"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="534"/>
       <source>Objects will appear in a perspective projection</source>
       <translation>Obiectele vor apărea într-o proiecție de perspectivă</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="535"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="537"/>
       <source>Perspective renderin&amp;g</source>
       <translation>Redar&amp;e din perspectivă</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="548"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="550"/>
       <source>Objects will be projected in orthographic projection</source>
       <translation>Obiectele vor fi proiectate în proiecții ortografice</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="551"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="553"/>
       <source>Or&amp;thographic rendering</source>
       <translation>Vedere or&amp;togonală</translation>
     </message>
@@ -3082,57 +2934,57 @@ dimensiunea casetei de încadrare a obiectului 3D care este afișat în prezent.
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="124"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="226"/>
       <source>5px</source>
       <translation>5px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="125"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="227"/>
       <source>7px</source>
       <translation>7px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="126"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="228"/>
       <source>9px</source>
       <translation>9px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="127"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="229"/>
       <source>11px</source>
       <translation>11px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="128"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="230"/>
       <source>13px</source>
       <translation>13px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="129"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="231"/>
       <source>15px</source>
       <translation>15px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="130"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="232"/>
       <source>20px</source>
-      <translation type="unfinished">20px</translation>
+      <translation>20px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="131"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="233"/>
       <source>25px</source>
-      <translation type="unfinished">25px</translation>
+      <translation>25px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="234"/>
       <source>30px</source>
-      <translation type="unfinished">30px</translation>
+      <translation>30px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="163"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="287"/>
       <source>Anti-aliasing</source>
       <translation>Anti-aliasing</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="164"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="288"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Deschide un vizualizator nou sau reporniţi %1 pentru a aplica modificările anti-aliasing.</translation>
     </message>
@@ -3151,51 +3003,56 @@ dimensiunea casetei de încadrare a obiectului 3D care este afișat în prezent.
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="28"/>
-      <source>Location:</source>
-      <translation>Locaţie:</translation>
+      <source>Location (read-only):</source>
+      <translation>Locație (numai în citire):</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="56"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="42"/>
+      <source>Browse cache directory</source>
+      <translation>Răsfoiţi directorul de cache</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="59"/>
       <source>Check periodically at program start:</source>
       <translation>Verifică periodic la pornirea programului:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="83"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="86"/>
       <source>Always</source>
       <translation>Întotdeauna</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="88"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="91"/>
       <source>Daily</source>
-      <translation type="unfinished">Daily</translation>
+      <translation>Zilnic</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="93"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="96"/>
       <source>Weekly</source>
-      <translation type="unfinished">Weekly</translation>
+      <translation>Săptămânal</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="98"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="101"/>
       <source>Monthly</source>
       <translation>Lunar</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="103"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="106"/>
       <source>Yearly</source>
       <translation>Anual</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="108"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="111"/>
       <source>Never</source>
-      <translation type="unfinished">Never</translation>
+      <translation>Niciodată</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="116"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="119"/>
       <source>Cache size limit:</source>
       <translation>Limita de dimensiune a cache:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="161"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="164"/>
       <source>Check now...</source>
       <translation>Verifică acum...</translation>
     </message>
@@ -3210,7 +3067,7 @@ dimensiunea casetei de încadrare a obiectului 3D care este afișat în prezent.
       <translation>Necunoscut</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="115"/>
+      <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="128"/>
       <source>Current cache size: %1</source>
       <translation>Dimensiunea actuală a memoriei cache: %1</translation>
     </message>
@@ -3626,67 +3483,67 @@ Puteți folosi și formatul: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Licența implicită pentru documentele noi</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="39"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="41"/>
       <source>All rights reserved</source>
       <translation>Toate drepturile rezervate</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="40"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="42"/>
       <source>Creative Commons Attribution</source>
       <translation>Atribuire Creative Commons</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="41"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="43"/>
       <source>Creative Commons Attribution-ShareAlike</source>
       <translation>Atribuire Creative Commons - Partajare în Condiții Identice</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="42"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="44"/>
       <source>Creative Commons Attribution-NoDerivatives</source>
       <translation>Atribuire Creative Commons - FărăDerivate</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="43"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="45"/>
       <source>Creative Commons Attribution-NonCommercial</source>
       <translation>Atribuire Creative Commons - Necomercial</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="44"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="46"/>
       <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
       <translation>Atribuire Creative Commons - Necomercial - Partajare în Condiții Identice</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="45"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="47"/>
       <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
       <translation>Atribuire Creative Commons - Necomercial - FărăDerivate</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="46"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="48"/>
       <source>Public Domain</source>
       <translation>Domeniul public</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="47"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="49"/>
       <source>FreeArt</source>
       <translation>FreeArt</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="48"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="50"/>
       <source>CERN Open Hardware Licence strongly-reciprocal</source>
       <translation>CERN Licență hardware deschisă extrem de reciprocă</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="49"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="51"/>
       <source>CERN Open Hardware Licence weakly-reciprocal</source>
       <translation>CERN Licență hardware deschisă extrem de reciprocă</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="50"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="52"/>
       <source>CERN Open Hardware Licence permissive</source>
       <translation>CERN Permisiune de licență Open Hardware</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformationImp.cpp" line="51"/>
+      <location filename="../DlgProjectInformationImp.cpp" line="53"/>
       <source>Other</source>
       <translation>Altceva</translation>
     </message>
@@ -4023,7 +3880,7 @@ Puteți folosi și formatul: John Doe &lt;john@doe.com&gt;</translation>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="14"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="331"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="369"/>
       <source>Navigation</source>
       <translation>Navigare</translation>
     </message>
@@ -4048,129 +3905,134 @@ Puteți folosi și formatul: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Colţ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="87"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="84"/>
       <source>Corner where navigation cube is shown</source>
       <translation>Colțul unde este afișat cubul de navigație</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="100"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="97"/>
       <source>Top left</source>
       <translation>Stânga sus</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="105"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="102"/>
       <source>Top right</source>
       <translation>Dreapta sus</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="110"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="107"/>
       <source>Bottom left</source>
       <translation>Stânga jos</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="115"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="112"/>
       <source>Bottom right</source>
       <translation>Dreapta jos</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="123"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="120"/>
       <source>Rotates to nearest possible state when clicking a cube face</source>
       <translation>Se rotește la cea mai apropiată stare posibilă când dați click pe o față de cub</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="126"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="123"/>
       <source>Rotate to nearest</source>
       <translation>Rotire la cel mai apropiat</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="142"/>
-      <source>Font name:</source>
-      <translation>Nume font:</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="149"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="146"/>
       <source>Font name of the navigation cube</source>
       <translation>Numele fontului cubului de navigare</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="162"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="159"/>
       <source>Default</source>
       <translation>Implicit</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="170"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="167"/>
       <source>Cube size</source>
       <translation>Dimensiune Cub</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="177"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="174"/>
       <source>Size of the navigation cube</source>
       <translation>Dimensiunea cubului de navigare</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="205"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="202"/>
+      <source>Opacity when inactive</source>
+      <translation>Opacitate când este inactivă</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="218"/>
+      <source>Opacity of the navigation cube when not focused</source>
+      <translation>Opacitatea cubului de navigație atunci când acesta nu este concentrat</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="243"/>
       <source>Color</source>
       <translation>Culoare</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="212"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="250"/>
       <source>Base color for all elements</source>
-      <translation type="unfinished">Base color for all elements</translation>
+      <translation>Culoare de bază pentru toate elementele</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="235"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="273"/>
       <source>Rotation center indicator</source>
-      <translation type="unfinished">Rotation center indicator</translation>
+      <translation>Indicatorul centrului de rotaţie</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="244"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="282"/>
       <source>Sphere size</source>
-      <translation type="unfinished">Sphere size</translation>
+      <translation>Dimensiune sferică</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="251"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="289"/>
       <source>Color and transparency</source>
-      <translation type="unfinished">Color and transparency</translation>
+      <translation>Culoare si transparenta</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="264"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="302"/>
       <source>The size of the rotation center indicator</source>
-      <translation type="unfinished">The size of the rotation center indicator</translation>
+      <translation>Dimensiunea indicatorului centrului de rotaţie</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="292"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="330"/>
       <source>The color of the rotation center indicator</source>
-      <translation type="unfinished">The color of the rotation center indicator</translation>
+      <translation>Culoarea indicatorului centrului de rotaţie</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="337"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="375"/>
       <source>3D Navigation</source>
       <translation>Navigare 3D</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="374"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="412"/>
       <source>List the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</source>
       <translation>Listează configurările butonului mouse-ului pentru fiecare setare de navigare aleasă.
 Selectează un set și apoi apasă butonul pentru a vedea configurația menționată.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="378"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="416"/>
       <source>Mouse...</source>
       <translation>Mouse...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="399"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="437"/>
       <source>Navigation settings set</source>
       <translation>Set de setări de navigație</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="409"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="447"/>
       <source>Orbit style</source>
       <translation>Stil de rotație</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="428"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="466"/>
       <source>Rotation orbit style.
 Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis (with constrained axes).
@@ -4181,127 +4043,141 @@ Turntable: partea va fi rotită în jurul axei z (cu axe constrânse).
 Gratuit de întoarcere: partea va fi rotită în jurul axei z.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="438"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="476"/>
       <source>Turntable</source>
       <translation>Placa turnantă</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="443"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="481"/>
       <source>Trackball</source>
       <translation>Trackball</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="448"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="486"/>
       <source>Free Turntable</source>
       <translation>Gratuit de Turntable</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="456"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="494"/>
       <source>Rotation mode</source>
       <translation>Modul de rotație</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="475"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="513"/>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
       <translation>Rotațiile în 3D vor utiliza poziția curentă a cursorului ca centru de rotație</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="482"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="520"/>
       <source>Window center</source>
       <translation>Centrul ferestrei</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="487"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="525"/>
       <source>Drag at cursor</source>
       <translation>Trageți la cursor</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="492"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="530"/>
       <source>Object center</source>
       <translation>Centrul obiectului</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="500"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="538"/>
       <source>Default camera orientation</source>
       <translation>Orientarea implicită a camerei</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="519"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="557"/>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Orientarea implicită a camerei la crearea unui nou document sau la selectarea vizualizării de bază</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="526"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="564"/>
       <source>Camera zoom</source>
       <translation>Zoom cameră</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="545"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="583"/>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
       <translation>Setează zoom-ul camerei pentru documentele noi.
 Valoarea este diametrul sferei pentru a o potrivi pe ecran.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="549"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="587"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="574"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="577"/>
-      <source>Enable navigation animations</source>
-      <translation type="unfinished">Enable navigation animations</translation>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="733"/>
+      <source>Animations</source>
+      <translation>Animații</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="593"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="799"/>
+      <source>Enable spinning animations that are used in some navigation styles after dragging</source>
+      <translation>Activează animațiile de rotire care sunt utilizate în unele stiluri de navigare după tragere</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="802"/>
+      <source>Enable spinning animations</source>
+      <translation>Activează animațiile de rotire</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="742"/>
       <source>Duration of navigation animations that have a fixed duration</source>
-      <translation type="unfinished">Duration of navigation animations that have a fixed duration</translation>
+      <translation>Durata animațiilor de navigare care au o durată fixă</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="596"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="745"/>
       <source>Animation duration</source>
-      <translation type="unfinished">Animation duration</translation>
+      <translation>Durata animației</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="614"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="761"/>
       <source>The duration of navigation animations in milliseconds</source>
-      <translation type="unfinished">The duration of navigation animations in milliseconds</translation>
+      <translation>Durata animațiilor de navigare în milisecunde</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="676"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="628"/>
       <source>Zoom step</source>
-      <translation type="unfinished">Zoom step</translation>
+      <translation>Pasul de mărire</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="657"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="139"/>
+      <source>Font name</source>
+      <translation>Nume font</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="609"/>
       <source>Zoom operations will be performed at position of mouse pointer</source>
       <translation>Operațiunile de zoom vor fi efectuate la poziția indicatorului mouse-ului</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="660"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="612"/>
       <source>Zoom at cursor</source>
       <translation>Mareste la pozitia cursorului</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="694"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="646"/>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation>Cât de mult va fi mărit.
 Pasul de mărire de '1' înseamnă un factor de 7,5 pentru fiecare pas de mărire.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="738"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="690"/>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Direcția operațiunilor de zoom va fi inversată</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="741"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="693"/>
       <source>Invert zoom</source>
       <translation>Inverseaza zoom-ul</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="757"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="709"/>
       <source>Prevents view tilting when pinch-zooming.
 Affects only gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
@@ -4310,57 +4186,57 @@ Afectează numai stilul de navigare prin gesturi.
 Înclinarea cu mouse-ul nu este dezactivată de această setare.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="762"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="714"/>
       <source>Disable touchscreen tilt gesture</source>
       <translation>Dezactivaţi inclinarea prin gest a ecranului tactil</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="161"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="169"/>
       <source>Isometric</source>
       <translation>Izometrică</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="162"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="170"/>
       <source>Dimetric</source>
       <translation>Dimetric</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="163"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="171"/>
       <source>Trimetric</source>
       <translation>Trimetric</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="164"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="172"/>
       <source>Top</source>
       <translation>Partea de sus</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="165"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="173"/>
       <source>Front</source>
       <translation>Din față</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="166"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="174"/>
       <source>Left</source>
       <translation>Stanga</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="167"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="175"/>
       <source>Right</source>
       <translation>Dreapta</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="168"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="176"/>
       <source>Rear</source>
       <translation>Din spate</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="169"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="177"/>
       <source>Bottom</source>
       <translation>Partea de jos</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="170"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="178"/>
       <source>Custom</source>
       <translation>Personalizat</translation>
     </message>
@@ -4375,7 +4251,7 @@ Afectează numai stilul de navigare prin gesturi.
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="20"/>
       <source>Console</source>
-      <translation type="unfinished">Console</translation>
+      <translation>Consolă</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="26"/>
@@ -4411,13 +4287,13 @@ spațiul orizontal disponibil în consola Python</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="84"/>
-      <source>Python profiler interval (milliseconds): </source>
-      <translation type="unfinished">Python profiler interval (milliseconds): </translation>
+      <source>Python profiler interval (milliseconds):</source>
+      <translation>Intervalul profilului Python (milisecunde):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
       <source>The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</source>
-      <translation type="unfinished">The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</translation>
+      <translation>Intervalul la care profilatorul rulează când codul Python rulează (pentru a păstra interfața interfeței). Setați la 0 pentru a dezactiva.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="116"/>
@@ -4427,12 +4303,12 @@ spațiul orizontal disponibil în consola Python</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="122"/>
       <source>Path to external Python executable (optional):</source>
-      <translation type="unfinished">Path to external Python executable (optional):</translation>
+      <translation>Calea către executabilul Python extern (opțional):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="141"/>
       <source>Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</translation>
+      <translation>Folosit pentru instalarea pachetelor cu pipși și depanare cu depanare. Autodetectat dacă este necesar și nu este specificat.</translation>
     </message>
   </context>
   <context>
@@ -4445,22 +4321,22 @@ spațiul orizontal disponibil în consola Python</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="41"/>
       <source>Enable preselection, highlighted with specified color</source>
-      <translation type="unfinished">Enable preselection, highlighted with specified color</translation>
+      <translation>Activează preselecția, evidențiată cu culoarea specificată</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="44"/>
       <source>Enable preselection</source>
-      <translation type="unfinished">Enable preselection</translation>
+      <translation>Activează preselecția</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="80"/>
       <source>Enable selection, highlighted with specified color</source>
-      <translation type="unfinished">Enable selection, highlighted with specified color</translation>
+      <translation>Activează selecția, evidențiată cu culoarea specificată</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="83"/>
       <source>Enable selection</source>
-      <translation type="unfinished">Enable selection</translation>
+      <translation>Activează selecția</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="121"/>
@@ -4561,27 +4437,27 @@ Valoare mai mare se ușurează să aleagă lucruri, dar poate face imposibilă s
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="412"/>
       <source>Color Bar</source>
-      <translation type="unfinished">Color Bar</translation>
+      <translation>Bară de culoare</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="459"/>
       <source>Label text color</source>
-      <translation type="unfinished">Label text color</translation>
+      <translation>Culoare text etichetă</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="475"/>
       <source>Color Bar (used in Mesh and FEM Wbs) Label text color</source>
-      <translation type="unfinished">Color Bar (used in Mesh and FEM Wbs) Label text color</translation>
+      <translation>Bară de culoare (utilizată în Mesh and FEM Wbs) Culoare text etichetă</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="495"/>
       <source>Label text size</source>
-      <translation type="unfinished">Label text size</translation>
+      <translation>Dimensiune text etichetă</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="502"/>
       <source>Color Bar (used in Mesh and FEM Wbs) Label Text Size</source>
-      <translation type="unfinished">Color Bar (used in Mesh and FEM Wbs) Label Text Size</translation>
+      <translation>Bară de culoare (utilizată în dimensiunea textului pe plasă și FEM Wbs)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="163"/>
@@ -4770,7 +4646,7 @@ Sistemul preferat este cel ales în preferințele generale.</translation>
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
-      <location filename="../Placement.cpp" line="987"/>
+      <location filename="../Placement.cpp" line="990"/>
       <source>Placement</source>
       <translation>Amplasare</translation>
     </message>
@@ -5614,14 +5490,6 @@ selectate inițial, înainte de a deschide acest dialog</translation>
     </message>
   </context>
   <context>
-    <name>Gui::DockWnd::PropertyDockView</name>
-    <message>
-      <location filename="../PropertyView.cpp" line="560"/>
-      <source>Property View</source>
-      <translation>Vizualizare proprietăţi</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
       <location filename="../ReportView.cpp" line="586"/>
@@ -5906,7 +5774,7 @@ Doriți să salvați modificările?</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="963"/>
+      <location filename="../ExpressionCompleter.cpp" line="965"/>
       <source>Exact match</source>
       <translation>Potrivire exactă</translation>
     </message>
@@ -5914,7 +5782,7 @@ Doriți să salvați modificările?</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1068"/>
+      <location filename="../ExpressionCompleter.cpp" line="1061"/>
       <source>Exact match</source>
       <translation>Potrivire exactă</translation>
     </message>
@@ -5991,22 +5859,22 @@ Doriți să salvați modificările?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <location filename="../GestureNavigationStyle.cpp" line="853"/>
+      <location filename="../GestureNavigationStyle.cpp" line="856"/>
       <source>Tap OR click left mouse button.</source>
       <translation>Atingeți sau apăsați butonul stâng al mausului.</translation>
     </message>
     <message>
-      <location filename="../GestureNavigationStyle.cpp" line="855"/>
+      <location filename="../GestureNavigationStyle.cpp" line="858"/>
       <source>Drag screen with two fingers OR press right mouse button.</source>
       <translation>Glisați ecranul folosind două degete SAU apăsați butonul din dreapta al mausului.</translation>
     </message>
     <message>
-      <location filename="../GestureNavigationStyle.cpp" line="857"/>
+      <location filename="../GestureNavigationStyle.cpp" line="860"/>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
       <translation>Glisați un singur deget pe ecran SAU apăsați butonul stâng al mouse-ului. În Sketcher și în alte moduri de editare, țineți și tasta Alt apăsată.</translation>
     </message>
     <message>
-      <location filename="../GestureNavigationStyle.cpp" line="859"/>
+      <location filename="../GestureNavigationStyle.cpp" line="862"/>
       <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
       <translation>Ciupiți (puneți două degete pe ecran și glisați-le divergent). Sau scroll cu rotița din mijloc de la mouse. Sau apăsați PgUp/PgDown pe tastatură.</translation>
     </message>
@@ -6080,15 +5948,15 @@ Doriți să salvați modificările?</translation>
       <translation>PDF format</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="448"/>
-      <location filename="../CommandDoc.cpp" line="617"/>
       <source>Graphviz format</source>
-      <translation type="unfinished">Graphviz format</translation>
+      <translation>Format Graphviz</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="619"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>Exportă graficul</translation>
     </message>
@@ -6224,7 +6092,7 @@ Doriți să salvați modificările?</translation>
     <message>
       <location filename="../InputVector.cpp" line="102"/>
       <source>Direction:</source>
-      <translation type="unfinished">Direction:</translation>
+      <translation>Direcție:</translation>
     </message>
   </context>
   <context>
@@ -6235,12 +6103,12 @@ Doriți să salvați modificările?</translation>
       <translation>Macro-uri</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1173"/>
+      <location filename="../Command.cpp" line="1185"/>
       <source>Macro file doesn't exist</source>
       <translation>Fișierul macro nu există</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1174"/>
+      <location filename="../Command.cpp" line="1186"/>
       <source>No such macro file: '%1'</source>
       <translation>Fișier macro inexistent: «%1 »</translation>
     </message>
@@ -6249,72 +6117,57 @@ Doriți să salvați modificările?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="169"/>
-      <location filename="../MainWindow.cpp" line="2323"/>
+      <location filename="../MainWindow.cpp" line="2383"/>
       <source>Dimension</source>
       <translation>Dimensiune</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="486"/>
+      <location filename="../MainWindow.cpp" line="518"/>
       <source>Ready</source>
       <translation>Gata</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="978"/>
-      <source>Help addon needed!</source>
-      <translation>Ajutor supliment necesar!</translation>
-    </message>
-    <message>
-      <location filename="../MainWindow.cpp" line="979"/>
-      <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
-      <translation>Sistemul de ajutor al %1 este acum gestionat de suplimentul "Ajutor". Acesta poate fi instalat cu uşurinţă prin Addons Manager</translation>
-    </message>
-    <message>
-      <location filename="../MainWindow.cpp" line="981"/>
-      <source>Open Addon Manager</source>
-      <translation>Deschide Addon Manager</translation>
-    </message>
-    <message>
-      <location filename="../MainWindow.cpp" line="1176"/>
+      <location filename="../MainWindow.cpp" line="1205"/>
       <source>Close All</source>
       <translation>Inchide toate</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1384"/>
-      <location filename="../MainWindow.cpp" line="1385"/>
-      <location filename="../MainWindow.cpp" line="1386"/>
+      <location filename="../MainWindow.cpp" line="1430"/>
+      <location filename="../MainWindow.cpp" line="1431"/>
+      <location filename="../MainWindow.cpp" line="1432"/>
       <source>Toggles this toolbar</source>
       <translation>Activează/dezactivează această bară de instrumente</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1399"/>
-      <location filename="../MainWindow.cpp" line="1400"/>
-      <location filename="../MainWindow.cpp" line="1401"/>
+      <location filename="../MainWindow.cpp" line="1451"/>
+      <location filename="../MainWindow.cpp" line="1452"/>
+      <location filename="../MainWindow.cpp" line="1453"/>
       <source>Toggles this dockable window</source>
       <translation>Activează/dezactivează această fereastră fixabilă</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1909"/>
+      <location filename="../MainWindow.cpp" line="1969"/>
       <source>WARNING: This is a development version.</source>
-      <translation type="unfinished">WARNING: This is a development version.</translation>
+      <translation>AVERTISMENT: Aceasta este o versiune de dezvoltare.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1910"/>
+      <location filename="../MainWindow.cpp" line="1970"/>
       <source>Please do not use it in a production environment.</source>
-      <translation type="unfinished">Please do not use it in a production environment.</translation>
+      <translation>Vă rugăm să nu o utilizaţi într-un mediu de producţie.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2114"/>
-      <location filename="../MainWindow.cpp" line="2206"/>
+      <location filename="../MainWindow.cpp" line="2174"/>
+      <location filename="../MainWindow.cpp" line="2266"/>
       <source>Unsaved document</source>
       <translation>Document nesalvat</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2115"/>
+      <location filename="../MainWindow.cpp" line="2175"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Obiectul exportat conține o legătură externă. Vă rugăm să salvați documentul cel puțin o dată înainte de al exporta.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2207"/>
+      <location filename="../MainWindow.cpp" line="2267"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Pentru face legăturile la obiecte externe, documentul trebuie salvat cel puțin o dată.
@@ -6324,63 +6177,63 @@ Doriți să salvați documentul acum?</translation>
   <context>
     <name>Gui::ManualAlignment</name>
     <message>
-      <location filename="../ManualAlignment.cpp" line="782"/>
-      <location filename="../ManualAlignment.cpp" line="942"/>
-      <location filename="../ManualAlignment.cpp" line="947"/>
-      <location filename="../ManualAlignment.cpp" line="952"/>
-      <location filename="../ManualAlignment.cpp" line="984"/>
+      <location filename="../ManualAlignment.cpp" line="784"/>
+      <location filename="../ManualAlignment.cpp" line="944"/>
+      <location filename="../ManualAlignment.cpp" line="949"/>
+      <location filename="../ManualAlignment.cpp" line="954"/>
+      <location filename="../ManualAlignment.cpp" line="986"/>
       <source>Manual alignment</source>
       <translation>Aliniere manuala</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="782"/>
+      <location filename="../ManualAlignment.cpp" line="784"/>
       <source>The alignment is already in progress.</source>
       <translation>Alinierea este deja in curs.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="795"/>
+      <location filename="../ManualAlignment.cpp" line="797"/>
       <source>Alignment[*]</source>
       <translation>Aliniere[*]</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="802"/>
+      <location filename="../ManualAlignment.cpp" line="804"/>
       <source>Please, select at least one point in the left and the right view</source>
       <translation>Selectati cel putin cate un punct in vizualizarea stanga si dreapta</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="803"/>
+      <location filename="../ManualAlignment.cpp" line="805"/>
       <source>Please, select at least %1 points in the left and the right view</source>
       <translation>Selectati cel putin %1 puncte in vizualizarea stanga si dreapta</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="858"/>
+      <location filename="../ManualAlignment.cpp" line="860"/>
       <source>Please pick points in the left and right view</source>
       <translation>Selectati puncte in vizualizarea stanga si dreapta</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="914"/>
+      <location filename="../ManualAlignment.cpp" line="916"/>
       <source>The alignment has finished</source>
       <translation>Alinierea s-a incheiat</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="932"/>
+      <location filename="../ManualAlignment.cpp" line="934"/>
       <source>The alignment has been canceled</source>
       <translation>Alinierea a fost anulata</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="943"/>
-      <location filename="../ManualAlignment.cpp" line="1005"/>
+      <location filename="../ManualAlignment.cpp" line="945"/>
+      <location filename="../ManualAlignment.cpp" line="1007"/>
       <source>Too few points picked in the left view. At least %1 points are needed.</source>
       <translation>Prea putine puncte selectate in vizualizarea din stanga. Cel putin %1 puncte sunt necesare.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="948"/>
-      <location filename="../ManualAlignment.cpp" line="1010"/>
+      <location filename="../ManualAlignment.cpp" line="950"/>
+      <location filename="../ManualAlignment.cpp" line="1012"/>
       <source>Too few points picked in the right view. At least %1 points are needed.</source>
       <translation>Prea putine puncte selectate in vizualizarea din dreapta. Cel putin %1 puncte sunt necesare.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="953"/>
+      <location filename="../ManualAlignment.cpp" line="955"/>
       <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
@@ -6389,59 +6242,59 @@ In stanga au fost alese %1 puncte,
 in dreapta au fost alese %2 puncte.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="964"/>
+      <location filename="../ManualAlignment.cpp" line="966"/>
       <source>Try to align group of views</source>
       <translation>Incearca sa aliniezi grupuri de vizualizari</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="985"/>
+      <location filename="../ManualAlignment.cpp" line="987"/>
       <source>The alignment failed.
 How do you want to proceed?</source>
       <translation>Alinierea a esuat.
 Cum doresti sa continuam?</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1015"/>
+      <location filename="../ManualAlignment.cpp" line="1017"/>
       <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
       <translation>Numar diferit de puncte in vizualizarea din stanga si dreapta. In stanga au fost alese %1 puncte, in dreapta au fost alese %2 puncte.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1120"/>
+      <location filename="../ManualAlignment.cpp" line="1122"/>
       <source>Point_%1</source>
       <translation>Punct_%1</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1222"/>
+      <location filename="../ManualAlignment.cpp" line="1224"/>
       <source>Point picked at (%1,%2,%3)</source>
       <translation>Punct ales (%1,%2,%3)</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1227"/>
+      <location filename="../ManualAlignment.cpp" line="1229"/>
       <source>No point was found on model</source>
       <translation>Pe model nu a fost găsit nici un punct</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1233"/>
+      <location filename="../ManualAlignment.cpp" line="1235"/>
       <source>No point was picked</source>
       <translation>Nu a fost ales nici un punct</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1247"/>
+      <location filename="../ManualAlignment.cpp" line="1249"/>
       <source>&amp;Align</source>
       <translation>Aliniere</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1248"/>
+      <location filename="../ManualAlignment.cpp" line="1250"/>
       <source>&amp;Remove last point</source>
       <translation>&amp;Elimină ultimul punct</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1250"/>
+      <location filename="../ManualAlignment.cpp" line="1252"/>
       <source>&amp;Cancel</source>
       <translation>&amp;Revocare</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1254"/>
+      <location filename="../ManualAlignment.cpp" line="1256"/>
       <source>&amp;Synchronize views</source>
       <translation>&amp;Sincronizează vizualizările</translation>
     </message>
@@ -6588,7 +6441,7 @@ Cum doresti sa continuam?</translation>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4258"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4577"/>
       <source>Change the linked object</source>
       <translation>Modificați obiectul atașat</translation>
     </message>
@@ -6596,12 +6449,12 @@ Cum doresti sa continuam?</translation>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4227"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4546"/>
       <source>Error</source>
       <translation>Eroare</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4227"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4546"/>
       <source>Object not found</source>
       <translation>Obiectul nu a fost găsit</translation>
     </message>
@@ -6609,48 +6462,48 @@ Cum doresti sa continuam?</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="302"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="314"/>
       <source>Edit</source>
       <translation>Editare</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="312"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="324"/>
       <source>property</source>
       <translation>proprietate</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="642"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="654"/>
       <source>Auto expand</source>
       <translation>Auto extindere</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="647"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="659"/>
       <source>Show all</source>
       <translation>Arată tot</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="681"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="693"/>
       <source>Expression...</source>
       <translation>Expresie...</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="687"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="699"/>
       <source>Add property</source>
       <translation>Adăugaţi o proprietate</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="693"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="804"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="705"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="816"/>
       <source>Rename property group</source>
       <translation>Redenumește grupul de proprietăți</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="710"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="722"/>
       <source>Remove property</source>
       <translation>Eliminați proprietatea</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="804"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="816"/>
       <source>Group name:</source>
       <translation>Nume grup:</translation>
     </message>
@@ -6671,14 +6524,14 @@ Cum doresti sa continuam?</translation>
   <context>
     <name>Gui::PropertyView</name>
     <message>
-      <location filename="../PropertyView.cpp" line="89"/>
-      <location filename="../PropertyView.cpp" line="548"/>
+      <location filename="../PropertyView.cpp" line="90"/>
+      <location filename="../PropertyView.cpp" line="550"/>
       <source>View</source>
       <translation>Vizualizare</translation>
     </message>
     <message>
-      <location filename="../PropertyView.cpp" line="94"/>
-      <location filename="../PropertyView.cpp" line="549"/>
+      <location filename="../PropertyView.cpp" line="96"/>
+      <location filename="../PropertyView.cpp" line="551"/>
       <source>Data</source>
       <translation>Date</translation>
     </message>
@@ -6817,17 +6670,17 @@ Doriți să ieşiți fără a salva datele dumneavoastră?</translation>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="859"/>
+      <location filename="../Action.cpp" line="868"/>
       <source>Open file %1</source>
       <translation>Deschide fişierul %1</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="903"/>
+      <location filename="../Action.cpp" line="912"/>
       <source>File not found</source>
       <translation>Fișier nu a fost găsit</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="903"/>
+      <location filename="../Action.cpp" line="912"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Fișierul '%1' nu poate fi deschis.</translation>
     </message>
@@ -6835,22 +6688,22 @@ Doriți să ieşiți fără a salva datele dumneavoastră?</translation>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1029"/>
+      <location filename="../Action.cpp" line="1038"/>
       <source>none</source>
       <translation>niciunul</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1044"/>
+      <location filename="../Action.cpp" line="1053"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>Rulează scurtătura macro %1 (Shift+click pentru editare) tastatură: %2</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1102"/>
+      <location filename="../Action.cpp" line="1111"/>
       <source>File not found</source>
       <translation>Fișier nu a fost găsit</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1102"/>
+      <location filename="../Action.cpp" line="1111"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Fișierul '%1' nu poate fi deschis.</translation>
     </message>
@@ -7106,7 +6959,7 @@ Doriţi să specificaţi un alt director?</translation>
   <context>
     <name>Gui::TaskView::TaskDialog</name>
     <message>
-      <location filename="../TaskView/TaskDialog.cpp" line="75"/>
+      <location filename="../TaskView/TaskDialog.cpp" line="91"/>
       <source>A dialog is already open in the task panel</source>
       <translation>O fereastră de dialog este deja deschisă în fereastra de sarcini</translation>
     </message>
@@ -7430,6 +7283,11 @@ Doriţi să specificaţi un alt director?</translation>
       <translation>Vietnameză</translation>
     </message>
     <message>
+      <location filename="Translator.cpp" line="179"/>
+      <source>Danish</source>
+      <translation>Daneză</translation>
+    </message>
+    <message>
       <location filename="Translator.cpp" line="152"/>
       <source>Georgian</source>
       <translation>Georgiană</translation>
@@ -7438,7 +7296,7 @@ Doriţi să specificaţi un alt director?</translation>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="3320"/>
+      <location filename="../Tree.cpp" line="3571"/>
       <source>Tree view</source>
       <translation>Vizualizare arborescentă</translation>
     </message>
@@ -7446,7 +7304,7 @@ Doriţi să specificaţi un alt director?</translation>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="3248"/>
+      <location filename="../Tree.cpp" line="3499"/>
       <source>Search</source>
       <translation>Caută</translation>
     </message>
@@ -7454,183 +7312,183 @@ Doriţi să specificaţi un alt director?</translation>
   <context>
     <name>Gui::TreeWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="560"/>
+      <location filename="../Tree.cpp" line="594"/>
       <source>Search...</source>
       <translation>Caută...</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="561"/>
+      <location filename="../Tree.cpp" line="595"/>
       <source>Search for objects</source>
       <translation>Caută obiecte</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="989"/>
+      <location filename="../Tree.cpp" line="1027"/>
       <source>Activate document</source>
       <translation>Activeaza documentul</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="996"/>
+      <location filename="../Tree.cpp" line="1034"/>
       <source>Activate document %1</source>
       <translation>Activeaza documentul %1</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1008"/>
+      <location filename="../Tree.cpp" line="1046"/>
       <source>Tree settings</source>
-      <translation type="unfinished">Tree settings</translation>
+      <translation>Setări copac</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1012"/>
+      <location filename="../Tree.cpp" line="1050"/>
       <source>Show description column</source>
-      <translation type="unfinished">Show description column</translation>
+      <translation>Arată coloana de descriere</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1013"/>
+      <location filename="../Tree.cpp" line="1051"/>
       <source>Show an extra tree view column for item description. The item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property.</source>
-      <translation type="unfinished">Show an extra tree view column for item description. The item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property.</translation>
+      <translation>Arată o coloană suplimentară de vizualizare arbore pentru descrierea elementului. Descrierea articolului poate fi setată prin apăsarea F2 (sau a butonului de editare al sistemului de operare) sau prin editarea proprietății 'label2'.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="1054"/>
+      <location filename="../Tree.cpp" line="1092"/>
       <source>Group</source>
       <translation>Grup</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2953"/>
+      <location filename="../Tree.cpp" line="3194"/>
       <source>Labels &amp; Attributes</source>
       <translation>Etichete &amp; Atribute</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2954"/>
+      <location filename="../Tree.cpp" line="3195"/>
       <source>Description</source>
       <translation>Descriere</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2956"/>
+      <location filename="../Tree.cpp" line="3197"/>
       <source>Show items hidden in tree view</source>
       <translation>Arată elementele ascunse în vizualizarea arborelui</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2957"/>
+      <location filename="../Tree.cpp" line="3198"/>
       <source>Show items that are marked as 'hidden' in the tree view</source>
       <translation>Arată elementele care sunt marcate ca 'ascunse' în vizualizarea arborelui</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2959"/>
+      <location filename="../Tree.cpp" line="3200"/>
       <source>Toggle visibility in tree view</source>
       <translation>Comută vizibilitatea în vizualizarea arborelui</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2960"/>
+      <location filename="../Tree.cpp" line="3201"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>Activează/dezactivează vizibilitatea elementelor selectate în vizualizarea arborelui</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2962"/>
+      <location filename="../Tree.cpp" line="3203"/>
       <source>Create group...</source>
       <translation>Creazã grup...</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2963"/>
+      <location filename="../Tree.cpp" line="3204"/>
       <source>Create a group</source>
       <translation>Creează un grup</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2965"/>
-      <location filename="../Tree.cpp" line="5096"/>
+      <location filename="../Tree.cpp" line="3206"/>
+      <location filename="../Tree.cpp" line="5454"/>
       <source>Rename</source>
       <translation>Redenumire</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2966"/>
+      <location filename="../Tree.cpp" line="3207"/>
       <source>Rename object</source>
       <translation>Redenumire obiect</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2968"/>
+      <location filename="../Tree.cpp" line="3209"/>
       <source>Finish editing</source>
       <translation>Termina editarea</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2969"/>
+      <location filename="../Tree.cpp" line="3210"/>
       <source>Finish editing object</source>
       <translation>Editarea obiectului incheiata</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2971"/>
+      <location filename="../Tree.cpp" line="3212"/>
       <source>Add dependent objects to selection</source>
       <translation>Adaugă obiectele dependente la selecție</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2972"/>
+      <location filename="../Tree.cpp" line="3213"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>Adauga toate obiectele dependente la selectie</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2974"/>
+      <location filename="../Tree.cpp" line="3215"/>
       <source>Close document</source>
       <translation>Închide documentul</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2975"/>
+      <location filename="../Tree.cpp" line="3216"/>
       <source>Close the document</source>
       <translation>Închide documentul</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2977"/>
+      <location filename="../Tree.cpp" line="3218"/>
       <source>Reload document</source>
       <translation>Reîncarcă documentul</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2978"/>
+      <location filename="../Tree.cpp" line="3219"/>
       <source>Reload a partially loaded document</source>
       <translation>Reîncarcă un document parțial încărcat</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2980"/>
+      <location filename="../Tree.cpp" line="3221"/>
       <source>Skip recomputes</source>
       <translation>Abandonați recalcularea</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2981"/>
+      <location filename="../Tree.cpp" line="3222"/>
       <source>Enable or disable recomputations of document</source>
       <translation>Autorizați sau interziceți recalculare documentului</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2983"/>
+      <location filename="../Tree.cpp" line="3224"/>
       <source>Allow partial recomputes</source>
       <translation>Permite recompilări parțiale</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2985"/>
+      <location filename="../Tree.cpp" line="3226"/>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>Activați sau dezactivați recalcularea editării obiectului atunci când este activat 'săriți peste recalculare'</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2987"/>
+      <location filename="../Tree.cpp" line="3228"/>
       <source>Mark to recompute</source>
       <translation>Marcare de recalculare</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2988"/>
+      <location filename="../Tree.cpp" line="3229"/>
       <source>Mark this object to be recomputed</source>
       <translation>Marcați acest obiect pentru a fi recalculate</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2991"/>
+      <location filename="../Tree.cpp" line="3232"/>
       <source>Recompute object</source>
       <translation>Recalculare obiect</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2992"/>
+      <location filename="../Tree.cpp" line="3233"/>
       <source>Recompute the selected object</source>
       <translation>Recalculează obiectul selectat</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5067"/>
+      <location filename="../Tree.cpp" line="5425"/>
       <source> (but must be executed)</source>
       <translation> (dar trebuie executat)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5069"/>
+      <location filename="../Tree.cpp" line="5427"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, nume intern : %2</translation>
     </message>
@@ -7651,22 +7509,22 @@ Doriţi să specificaţi un alt director?</translation>
   <context>
     <name>Gui::View3DInventor</name>
     <message>
-      <location filename="../View3DInventor.cpp" line="247"/>
+      <location filename="../View3DInventor.cpp" line="246"/>
       <source>Export PDF</source>
       <translation>Exportă PDF</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="248"/>
+      <location filename="../View3DInventor.cpp" line="247"/>
       <source>PDF file</source>
       <translation>Fişier PDF</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="280"/>
+      <location filename="../View3DInventor.cpp" line="279"/>
       <source>Opening file failed</source>
       <translation>Deschiderea fișierului a eșuat</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="281"/>
+      <location filename="../View3DInventor.cpp" line="280"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>Fișierul r '%1' nu acceptă scrierea.</translation>
     </message>
@@ -7674,7 +7532,8 @@ Doriţi să specificaţi un alt director?</translation>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="724"/>
+      <location filename="../Action.cpp" line="698"/>
+      <location filename="../Action.cpp" line="726"/>
       <source>Select the '%1' workbench</source>
       <translation>Selectaţi bancul de lucru '%1'</translation>
     </message>
@@ -7819,8 +7678,8 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="162"/>
-      <source>5 m </source>
-      <translation>5 m </translation>
+      <source>5 m</source>
+      <translation>5 m</translation>
     </message>
   </context>
   <context>
@@ -7841,54 +7700,49 @@ Doriţi să specificaţi un alt director?</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="650"/>
+      <location filename="../MainWindow.cpp" line="682"/>
       <source>Tree view</source>
       <translation>Vizualizare arborescentă</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="572"/>
+      <location filename="../MainWindow.cpp" line="604"/>
       <source>Tasks</source>
       <translation>Sarcini</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="676"/>
+      <location filename="../MainWindow.cpp" line="708"/>
       <source>Property view</source>
       <translation>Vizualizare proprietăţi</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="589"/>
+      <location filename="../MainWindow.cpp" line="621"/>
       <source>Selection view</source>
       <translation>Vizualizare selecție</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="704"/>
+      <location filename="../MainWindow.cpp" line="736"/>
       <source>Task List</source>
-      <translation type="unfinished">Task List</translation>
+      <translation>Listă sarcini</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="729"/>
+      <location filename="../MainWindow.cpp" line="761"/>
       <source>Model</source>
       <translation>Model</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="755"/>
+      <location filename="../MainWindow.cpp" line="787"/>
       <source>DAG View</source>
       <translation>Vizualizare DAG</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="607"/>
+      <location filename="../MainWindow.cpp" line="639"/>
       <source>Report view</source>
       <translation>Vezualizare raport</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="627"/>
+      <location filename="../MainWindow.cpp" line="659"/>
       <source>Python console</source>
       <translation>Consola Python</translation>
-    </message>
-    <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="52"/>
-      <source>Display properties</source>
-      <translation>Afișare proprietăți</translation>
     </message>
   </context>
   <context>
@@ -7923,50 +7777,50 @@ Doriţi să specificaţi un alt director?</translation>
       <location filename="../resource.cpp" line="87"/>
       <location filename="../resource.cpp" line="88"/>
       <source>Python</source>
-      <translation type="unfinished">Python</translation>
+      <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="632"/>
-      <location filename="../Application.cpp" line="726"/>
-      <location filename="../Application.cpp" line="799"/>
+      <location filename="../Application.cpp" line="628"/>
+      <location filename="../Application.cpp" line="722"/>
+      <location filename="../Application.cpp" line="795"/>
       <source>Unknown filetype</source>
       <translation>Tip de fișier necunoscut</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="633"/>
-      <location filename="../Application.cpp" line="727"/>
+      <location filename="../Application.cpp" line="629"/>
+      <location filename="../Application.cpp" line="723"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Imposibil de deschis fişierul în format necunoscut:%1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="792"/>
+      <location filename="../Application.cpp" line="788"/>
       <source>Export failed</source>
       <translation>Export eșuat</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="800"/>
+      <location filename="../Application.cpp" line="796"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>Nu se poate salva într-un format de fişier necunoscut:%1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1510"/>
+      <location filename="../Application.cpp" line="1509"/>
       <source>Workbench failure</source>
       <translation>Bancul de lucru a eşuat</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1511"/>
+      <location filename="../Application.cpp" line="1510"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2227"/>
+      <location filename="../StartupProcess.cpp" line="332"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</source>
-      <translation type="unfinished">This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</translation>
+      <translation>Acest sistem rulează OpenGL %1.%2. FreeCAD necesită OpenGL 2.0 sau mai mult. Vă rugăm să faceţi upgrade la driverul grafic şi/sau card după cum este necesar.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2236"/>
+      <location filename="../StartupProcess.cpp" line="341"/>
       <source>Invalid OpenGL Version</source>
-      <translation type="unfinished">Invalid OpenGL Version</translation>
+      <translation>Versiune OpenGL invalidă</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="488"/>
@@ -7974,102 +7828,102 @@ Doriţi să specificaţi un alt director?</translation>
       <translation>Excepţie</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="140"/>
+      <location filename="../CommandDoc.cpp" line="141"/>
       <source>Open document</source>
       <translation>Deschidere document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="164"/>
-      <location filename="../CommandDoc.cpp" line="169"/>
+      <location filename="../CommandDoc.cpp" line="165"/>
+      <location filename="../CommandDoc.cpp" line="170"/>
       <source>Error</source>
       <translation>Eroare</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="165"/>
+      <location filename="../CommandDoc.cpp" line="166"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Au existat erori în timpul încărcării fişierului. Unele date s-ar putea să fi fost modificate sau să se nu recupereze deloc. Uitați-vă în raportul vizualizării pentru mai multe informaţii specifice despre obiectele implicate.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="170"/>
+      <location filename="../CommandDoc.cpp" line="171"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Au existat erori grave în timpul încărcării fișierului. Unele date ar fi putut fi modificate sau nu au fost recuperate deloc. Salvarea proiectului va duce cel mai probabil la pierderea datelor.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="233"/>
+      <location filename="../CommandDoc.cpp" line="234"/>
       <source>Import file</source>
       <translation>Importă fişier</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="478"/>
+      <location filename="../CommandDoc.cpp" line="479"/>
       <source>Export file</source>
       <translation>Exportă fişier</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="899"/>
+      <location filename="../CommandDoc.cpp" line="900"/>
       <source>Printing...</source>
       <translation>Imprimare...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="960"/>
+      <location filename="../CommandDoc.cpp" line="961"/>
       <source>Exporting PDF...</source>
       <translation>Export PDF...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="809"/>
-      <location filename="../CommandDoc.cpp" line="1230"/>
+      <location filename="../CommandDoc.cpp" line="1231"/>
+      <location filename="../MainWindow.cpp" line="854"/>
       <source>Unsaved document</source>
       <translation>Document nesalvat</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1231"/>
+      <location filename="../CommandDoc.cpp" line="1232"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Obiectul exportat conține o legătură externă. Vă rugăm să salvați documentul cel puțin o dată înainte de al exporta.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1432"/>
-      <location filename="../CommandDoc.cpp" line="1436"/>
+      <location filename="../CommandDoc.cpp" line="1433"/>
+      <location filename="../CommandDoc.cpp" line="1437"/>
       <source>Delete failed</source>
       <translation>Ștergerea a eșuat</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1486"/>
+      <location filename="../CommandDoc.cpp" line="1487"/>
       <source>Dependency error</source>
       <translation>Eroare de dependență</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1771"/>
+      <location filename="../CommandDoc.cpp" line="1807"/>
       <source>Copy selected</source>
       <translation>Copiază selecția</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1772"/>
+      <location filename="../CommandDoc.cpp" line="1808"/>
       <source>Copy active document</source>
       <translation>Copiază documentul activ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1773"/>
+      <location filename="../CommandDoc.cpp" line="1809"/>
       <source>Copy all documents</source>
       <translation>Copiază toate documentele</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1774"/>
+      <location filename="../CommandDoc.cpp" line="1810"/>
       <source>Paste</source>
-      <translation type="unfinished">Paste</translation>
+      <translation>Lipește</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1879"/>
+      <location filename="../CommandDoc.cpp" line="1915"/>
       <source>Expression error</source>
       <translation>Eroare de expresie</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1880"/>
+      <location filename="../CommandDoc.cpp" line="1916"/>
       <source>Failed to parse some of the expressions.
 Please check the Report View for more details.</source>
       <translation>Eșec în analiza unora dintre expresii.
 Verificați fereastra Raport pentru mai multe detalii.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1904"/>
+      <location filename="../CommandDoc.cpp" line="1940"/>
       <source>Failed to paste expressions</source>
       <translation>Nu s-a reușit lipirea expresiilor</translation>
     </message>
@@ -8104,82 +7958,82 @@ Be aware the point where you click matters.</source>
 Retineti: locul unde faceti click conteaza.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="340"/>
-      <location filename="../CommandView.cpp" line="573"/>
+      <location filename="../CommandView.cpp" line="341"/>
+      <location filename="../CommandView.cpp" line="574"/>
       <source>Save views...</source>
       <translation>Salvare vederi...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="342"/>
-      <location filename="../CommandView.cpp" line="574"/>
+      <location filename="../CommandView.cpp" line="343"/>
+      <location filename="../CommandView.cpp" line="575"/>
       <source>Load views...</source>
       <translation>Încarcă vederi...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="345"/>
-      <location filename="../CommandView.cpp" line="575"/>
+      <location filename="../CommandView.cpp" line="346"/>
+      <location filename="../CommandView.cpp" line="576"/>
       <source>Freeze view</source>
       <translation>Îngheaţă vederi</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="348"/>
-      <location filename="../CommandView.cpp" line="576"/>
+      <location filename="../CommandView.cpp" line="349"/>
+      <location filename="../CommandView.cpp" line="577"/>
       <source>Clear views</source>
       <translation>Eliberează vederile</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="394"/>
-      <location filename="../CommandView.cpp" line="533"/>
-      <location filename="../CommandView.cpp" line="580"/>
+      <location filename="../CommandView.cpp" line="395"/>
+      <location filename="../CommandView.cpp" line="534"/>
+      <location filename="../CommandView.cpp" line="581"/>
       <source>Restore view &amp;%1</source>
       <translation>Restaurează vederile &amp;%1</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="423"/>
+      <location filename="../CommandView.cpp" line="424"/>
       <source>Save frozen views</source>
       <translation>Salvează vederile îngheţate</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="424"/>
-      <location filename="../CommandView.cpp" line="474"/>
+      <location filename="../CommandView.cpp" line="425"/>
+      <location filename="../CommandView.cpp" line="475"/>
       <source>Frozen views</source>
       <translation>Vedere înghețată</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="464"/>
-      <location filename="../CommandView.cpp" line="479"/>
+      <location filename="../CommandView.cpp" line="465"/>
+      <location filename="../CommandView.cpp" line="480"/>
       <source>Restore views</source>
       <translation>Restaurează vederile</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="465"/>
+      <location filename="../CommandView.cpp" line="466"/>
       <source>Importing the restored views would clear the already stored views.
 Do you want to continue?</source>
       <translation>Importul vederilor restaurate ar elimina vederile deja salvate.
 Doriţi să continuaţi?</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="473"/>
+      <location filename="../CommandView.cpp" line="474"/>
       <source>Restore frozen views</source>
       <translation>Restaurează vederile ănghețate</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="480"/>
+      <location filename="../CommandView.cpp" line="481"/>
       <source>Cannot open file '%1'.</source>
       <translation>Imposibil de deschis fișierul '%1'.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1940"/>
+      <location filename="../CommandView.cpp" line="1957"/>
       <source>files</source>
       <translation>fişiere</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1948"/>
+      <location filename="../CommandView.cpp" line="1965"/>
       <source>Save image</source>
       <translation>Salvează imaginea</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2099"/>
+      <location filename="../CommandView.cpp" line="2116"/>
       <source>Choose an image file to open</source>
       <translation>Alegeți un fișier imagine pentru deschidere</translation>
     </message>
@@ -8284,45 +8138,50 @@ Doriţi să continuaţi?</translation>
       <translation>Modificaţi valoarea</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="553"/>
-      <location filename="../NotificationArea.cpp" line="1022"/>
+      <location filename="../NotificationArea.cpp" line="431"/>
+      <source> (%1 times)</source>
+      <translation> (%1 ori)</translation>
+    </message>
+    <message>
+      <location filename="../NotificationArea.cpp" line="664"/>
+      <location filename="../NotificationArea.cpp" line="1146"/>
       <source>Type</source>
       <translation>Tip</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="553"/>
-      <location filename="../NotificationArea.cpp" line="1023"/>
+      <location filename="../NotificationArea.cpp" line="664"/>
+      <location filename="../NotificationArea.cpp" line="1146"/>
       <source>Notifier</source>
       <translation>Notificator</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="553"/>
-      <location filename="../NotificationArea.cpp" line="1024"/>
+      <location filename="../NotificationArea.cpp" line="664"/>
+      <location filename="../NotificationArea.cpp" line="1146"/>
       <source>Message</source>
       <translation>Mesaj</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="965"/>
-      <source>Notifier: </source>
-      <translation>Notificator: </translation>
+      <location filename="../NotificationArea.cpp" line="1087"/>
+      <source>Notifier:</source>
+      <translation>Notificator:</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="967"/>
+      <location filename="../NotificationArea.cpp" line="1089"/>
       <source>Do you want to skip confirmation of further critical message notifications while loading the file?</source>
       <translation>Doriți să omiteți confirmarea altor notificări pentru mesaje critice în timpul încărcării fișierului?</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="971"/>
+      <location filename="../NotificationArea.cpp" line="1093"/>
       <source>Critical Message</source>
       <translation>Mesaj critic</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="1037"/>
+      <location filename="../NotificationArea.cpp" line="1159"/>
       <source>Too many opened non-intrusive notifications. Notifications are being omitted!</source>
       <translation>Prea multe notificări neintruzive deschise. Notificările sunt omise!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1079"/>
+      <location filename="../Document.cpp" line="1052"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8331,44 +8190,44 @@ Doriţi să continuaţi?</translation>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1080"/>
+      <location filename="../Document.cpp" line="1053"/>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
+      <translation>Ești sigur că vrei să continui?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1099"/>
+      <location filename="../Document.cpp" line="1072"/>
       <source>Please check report view for more...</source>
       <translation>Vă rugăm să verificați vizualizarea raportului pentru mai multe...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1102"/>
+      <location filename="../Document.cpp" line="1075"/>
       <source>Physical path:</source>
       <translation>Calea fizică:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1104"/>
-      <location filename="../Document.cpp" line="1110"/>
+      <location filename="../Document.cpp" line="1077"/>
+      <location filename="../Document.cpp" line="1083"/>
       <source>Document:</source>
       <translation>Documentul:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1106"/>
-      <location filename="../Document.cpp" line="1112"/>
+      <location filename="../Document.cpp" line="1079"/>
+      <location filename="../Document.cpp" line="1085"/>
       <source>Path:</source>
       <translation>Cale:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1121"/>
+      <location filename="../Document.cpp" line="1094"/>
       <source>Identical physical path</source>
       <translation>Cale fizică identică</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1129"/>
+      <location filename="../Document.cpp" line="1102"/>
       <source>Could not save document</source>
       <translation>Documentul nu a putut fi salvat</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1130"/>
+      <location filename="../Document.cpp" line="1103"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8381,102 +8240,102 @@ Would you like to save the file with a different name?</source>
 Doriți să salvați fișierul cu alt nume?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1140"/>
-      <location filename="../Document.cpp" line="1272"/>
-      <location filename="../Document.cpp" line="1355"/>
+      <location filename="../Document.cpp" line="1113"/>
+      <location filename="../Document.cpp" line="1245"/>
+      <location filename="../Document.cpp" line="1328"/>
       <source>Saving aborted</source>
       <translation>Salvarea a fost anulată</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1187"/>
+      <location filename="../Document.cpp" line="1160"/>
       <source>Save dependent files</source>
       <translation>Salvează fișierele dependente</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1188"/>
+      <location filename="../Document.cpp" line="1161"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>Fișierul conține dependențe externe. Doriți să salvați și fișierele dependente?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1222"/>
-      <location filename="../Document.cpp" line="1266"/>
+      <location filename="../Document.cpp" line="1195"/>
+      <location filename="../Document.cpp" line="1239"/>
       <source>Saving document failed</source>
       <translation>Salvarea documentului a eșuat</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1236"/>
+      <location filename="../Document.cpp" line="1209"/>
       <source>Save document under new filename...</source>
       <translation>Salvaţi documentul sub un nume nou...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1239"/>
-      <location filename="../Document.cpp" line="1340"/>
+      <location filename="../Document.cpp" line="1212"/>
+      <location filename="../Document.cpp" line="1313"/>
       <source>Save %1 Document</source>
       <translation>Salvaţi documentul %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1241"/>
+      <location filename="../Document.cpp" line="1214"/>
       <source>Document</source>
       <translation>Documentul</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1285"/>
-      <location filename="../Document.cpp" line="1326"/>
+      <location filename="../Document.cpp" line="1258"/>
+      <location filename="../Document.cpp" line="1299"/>
       <source>Failed to save document</source>
       <translation>Salvarea documentului nu a reușit</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1286"/>
+      <location filename="../Document.cpp" line="1259"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>Documentele conţin dependenţe ciclice. Mai doriţi să le salvaţi?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1337"/>
+      <location filename="../Document.cpp" line="1310"/>
       <source>Save a copy of the document under new filename...</source>
       <translation>Salvați o copie a documentului sub un nou nume de fişier...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1342"/>
+      <location filename="../Document.cpp" line="1315"/>
       <source>%1 document (*.FCStd)</source>
       <translation>Documentul %1 (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2010"/>
+      <location filename="../Document.cpp" line="1976"/>
       <source>Document not closable</source>
       <translation>Documentul nu se poate închide</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2011"/>
+      <location filename="../Document.cpp" line="1977"/>
       <source>The document is not closable for the moment.</source>
       <translation>Documentul nu se poate închide momentan.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2048"/>
+      <location filename="../Document.cpp" line="2014"/>
       <source>Document not saved</source>
       <translation>Document nesalvat</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2049"/>
+      <location filename="../Document.cpp" line="2015"/>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
       <translation>Documentul%1 nu a putut fi salvat. Doriți să renunțați la închiderea acestuia?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2377"/>
+      <location filename="../Document.cpp" line="2343"/>
       <source>Undo</source>
-      <translation type="unfinished">Undo</translation>
+      <translation>Anulează</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2377"/>
+      <location filename="../Document.cpp" line="2343"/>
       <source>Redo</source>
-      <translation type="unfinished">Redo</translation>
+      <translation>Reface</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2379"/>
+      <location filename="../Document.cpp" line="2345"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>Există tranzacții grupate cu alte tranzacții anterioare în următoarele documente</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2382"/>
+      <location filename="../Document.cpp" line="2348"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8490,36 +8349,36 @@ Alege 'Abandonează' pentru a abandona</translation>
       <translation>Salvaţi macrocomanda</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="212"/>
-      <location filename="../MouseSelection.cpp" line="416"/>
+      <location filename="../MouseSelection.cpp" line="208"/>
+      <location filename="../MouseSelection.cpp" line="412"/>
       <source>Finish</source>
       <translation>Terminare</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="213"/>
-      <location filename="../MouseSelection.cpp" line="417"/>
+      <location filename="../MouseSelection.cpp" line="209"/>
+      <location filename="../MouseSelection.cpp" line="413"/>
       <source>Clear</source>
       <translation>Șterge</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="214"/>
-      <location filename="../MouseSelection.cpp" line="366"/>
-      <location filename="../MouseSelection.cpp" line="418"/>
+      <location filename="../MouseSelection.cpp" line="210"/>
+      <location filename="../MouseSelection.cpp" line="362"/>
+      <location filename="../MouseSelection.cpp" line="414"/>
       <source>Cancel</source>
       <translation>Renunţă</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="363"/>
+      <location filename="../MouseSelection.cpp" line="359"/>
       <source>Inner</source>
       <translation>Interior</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="364"/>
+      <location filename="../MouseSelection.cpp" line="360"/>
       <source>Outer</source>
       <translation>Exterior</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="365"/>
+      <location filename="../MouseSelection.cpp" line="361"/>
       <source>Split</source>
       <translation>Divizare</translation>
     </message>
@@ -8557,12 +8416,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Opţiuni...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2360"/>
+      <location filename="../View3DInventorViewer.cpp" line="2375"/>
       <source>Out of memory</source>
       <translation>Memorie insuficientă</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2361"/>
+      <location filename="../View3DInventorViewer.cpp" line="2376"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Insuficientă memorie disponibilă pentru a afişa datele.</translation>
     </message>
@@ -8578,53 +8437,48 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Imposibil de găsit fișierul %1 la %2 nici în %3</translation>
     </message>
     <message>
-      <location filename="../NavigationStyle.cpp" line="1627"/>
+      <location filename="../NavigationStyle.cpp" line="1702"/>
       <source>Navigation styles</source>
       <translation>Stiluri de navigare</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="410"/>
-      <source>Move annotation</source>
-      <translation>Muta adnotarea</translation>
-    </message>
-    <message>
       <location filename="../ViewProviderDragger.cpp" line="85"/>
-      <location filename="../ViewProviderLink.cpp" line="2596"/>
+      <location filename="../ViewProviderLink.cpp" line="2601"/>
       <source>Transform</source>
       <translation>Transformare</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskDialog.cpp" line="76"/>
+      <location filename="../TaskView/TaskDialog.cpp" line="92"/>
       <source>Do you want to close this dialog?</source>
       <translation>Doriţi să închideţi această fereastră de dialog?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="811"/>
+      <location filename="../MainWindow.cpp" line="856"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>Vreți să salvați modificările dvs înainte de a închide?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="814"/>
+      <location filename="../MainWindow.cpp" line="859"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>Doriți să salvați modificările documentului înainte de închidere?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="816"/>
+      <location filename="../MainWindow.cpp" line="861"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Dacă nu salvați, schimbările vor fi pierdute.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="821"/>
+      <location filename="../MainWindow.cpp" line="866"/>
       <source>Apply answer to all</source>
       <translation>Aplică răspunsul tuturor</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="911"/>
+      <location filename="../MainWindow.cpp" line="956"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 Document(e) nu au fost salvate</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="912"/>
+      <location filename="../MainWindow.cpp" line="957"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>Unele documente nu au putut fi salvate. Doriți să renunțați la închiderea documentelor?</translation>
     </message>
@@ -8644,12 +8498,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Origine</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="165"/>
+      <location filename="../ViewProviderGroupExtension.cpp" line="174"/>
       <source>Delete group content?</source>
       <translation>Ștergeți conținutul grupului?</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="166"/>
+      <location filename="../ViewProviderGroupExtension.cpp" line="175"/>
       <source>The %1 is not empty, delete its content as well?</source>
       <translation>%1 nu este vid, suprimați totuși conținutul ?</translation>
     </message>
@@ -8661,7 +8515,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
     <message>
       <location filename="../SoFCCSysDragger.cpp" line="614"/>
       <source>Translation XY:</source>
-      <translation type="unfinished">Translation XY:</translation>
+      <translation>Traducere XY:</translation>
     </message>
     <message>
       <location filename="../SoFCCSysDragger.cpp" line="941"/>
@@ -8669,65 +8523,60 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Rotaţie:</translation>
     </message>
     <message>
-      <location filename="../ViewProviderPart.cpp" line="72"/>
-      <source>Toggle active part</source>
-      <translation>Comută piesa activă</translation>
-    </message>
-    <message>
       <location filename="../ViewProviderTextDocument.cpp" line="76"/>
       <source>Edit text</source>
       <translation>Editare text</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="97"/>
-      <location filename="../CommandLink.cpp" line="114"/>
+      <location filename="../CommandLink.cpp" line="99"/>
+      <location filename="../CommandLink.cpp" line="116"/>
       <source>Simple group</source>
       <translation>Grup simplu</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="99"/>
-      <location filename="../CommandLink.cpp" line="115"/>
+      <location filename="../CommandLink.cpp" line="101"/>
+      <location filename="../CommandLink.cpp" line="117"/>
       <source>Group with links</source>
       <translation>Grup cu legături</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="101"/>
-      <location filename="../CommandLink.cpp" line="116"/>
+      <location filename="../CommandLink.cpp" line="103"/>
+      <location filename="../CommandLink.cpp" line="118"/>
       <source>Group with transform links</source>
       <translation>Grup cu legături de transformare</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="193"/>
+      <location filename="../CommandLink.cpp" line="195"/>
       <source>Create link group failed</source>
       <translation>Crearea grupului cu legături a eșuat</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="262"/>
+      <location filename="../CommandLink.cpp" line="261"/>
       <source>Create link failed</source>
       <translation>Crearea legăturii a eșuat</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="337"/>
+      <location filename="../CommandLink.cpp" line="336"/>
       <source>Failed to create relative link</source>
       <translation>Crearea legăturii relative a eșuat</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="465"/>
+      <location filename="../CommandLink.cpp" line="464"/>
       <source>Unlink failed</source>
       <translation>Ruperea legăturii a eșuat</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="465"/>
+      <location filename="../CommandLink.cpp" line="464"/>
       <source>Replace link failed</source>
       <translation>Înlocuirea legăturii a eșuat</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="595"/>
+      <location filename="../CommandLink.cpp" line="594"/>
       <source>Failed to import links</source>
       <translation>Importul legăturilor a eșuat</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="634"/>
+      <location filename="../CommandLink.cpp" line="633"/>
       <source>Failed to import all links</source>
       <translation>Importul tuturor legăturilor a eșuat</translation>
     </message>
@@ -8760,60 +8609,60 @@ liniuță jos și nu trebuie să înceapă cu o cifră.</translation>
       <translation>Nu am putut adăuga proprietatea la '%1': %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2240"/>
-      <location filename="../Tree.cpp" line="2436"/>
+      <location filename="../Tree.cpp" line="2217"/>
+      <location filename="../Tree.cpp" line="2574"/>
       <source>Drag &amp; drop failed</source>
       <translation>Drag &amp; drop eșuat</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2423"/>
+      <location filename="../ViewProviderLink.cpp" line="2428"/>
       <source>Setup configurable object</source>
       <translation>Setarea obiectului configurabil</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2424"/>
+      <location filename="../ViewProviderLink.cpp" line="2429"/>
       <source>Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
       <translation>Selectați ce obiect trebuie copiat sau exclus atunci când se schimbă configurarea. Toate obiectele externe legate sunt excluse în mod implicit.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2439"/>
+      <location filename="../ViewProviderLink.cpp" line="2444"/>
       <source>Please select which objects to copy when the configuration is changed</source>
       <translation>Vă rugăm să selectați ce obiecte să copiați atunci când configurația este schimbată</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2441"/>
+      <location filename="../ViewProviderLink.cpp" line="2446"/>
       <source>Apply to all</source>
       <translation>Aplică tuturor</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2442"/>
+      <location filename="../ViewProviderLink.cpp" line="2447"/>
       <source>Apply the setting to all links. Or, uncheck this
 option to apply only to this link.</source>
       <translation>Aplică setarea la toate link-urile. Sau, debifează această opțiune
 pentru a se aplica numai la acest link.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2487"/>
+      <location filename="../ViewProviderLink.cpp" line="2492"/>
       <source>Copy on change</source>
       <translation>Copiază la schimbare</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2488"/>
+      <location filename="../ViewProviderLink.cpp" line="2493"/>
       <source>Enable</source>
       <translation>Activeaza</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2489"/>
+      <location filename="../ViewProviderLink.cpp" line="2494"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
       <translation>Activează copierea automată a obiectului legat atunci când configurația sa este schimbată</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2502"/>
+      <location filename="../ViewProviderLink.cpp" line="2507"/>
       <source>Tracking</source>
       <translation>Urmărire</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2503"/>
+      <location filename="../ViewProviderLink.cpp" line="2508"/>
       <source>Copy the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
@@ -8822,17 +8671,17 @@ De asemenea, refaceți automat copia în cazul în care obiectul original legat 
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2522"/>
+      <location filename="../ViewProviderLink.cpp" line="2527"/>
       <source>Disable copy on change</source>
       <translation>Dezactivează copierea la schimbare</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2537"/>
+      <location filename="../ViewProviderLink.cpp" line="2542"/>
       <source>Refresh configurable object</source>
       <translation>Reîmprospătează obiectul configurabil</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2538"/>
+      <location filename="../ViewProviderLink.cpp" line="2543"/>
       <source>Synchronize the original configurable source object by
 creating a new deep copy. Note that any changes made to
 the current copy will be lost.
@@ -8843,23 +8692,23 @@ copia curentă va fi pierdută.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2570"/>
+      <location filename="../ViewProviderLink.cpp" line="2575"/>
       <source>Toggle array elements</source>
       <translation>Comutare elemente matrice</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2579"/>
+      <location filename="../ViewProviderLink.cpp" line="2584"/>
       <source>Change whether show each link array element as individual objects</source>
       <translation>Modifică dacă afișează fiecare element de array al legăturii ca obiecte individuale</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2597"/>
+      <location filename="../ViewProviderLink.cpp" line="2602"/>
       <source>Transform at the origin of the placement</source>
       <translation>Transformare la originea plasamentului</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2607"/>
-      <location filename="../ViewProviderLink.cpp" line="2613"/>
+      <location filename="../ViewProviderLink.cpp" line="2612"/>
+      <location filename="../ViewProviderLink.cpp" line="2618"/>
       <source>Override colors...</source>
       <translation>Suprascrie culorile...</translation>
     </message>
@@ -8884,31 +8733,31 @@ copia curentă va fi pierdută.
       <translation>Legenda culorii</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1035"/>
+      <location filename="../OverlayManager.cpp" line="1047"/>
       <source>Toggle overlay</source>
-      <translation type="unfinished">Toggle overlay</translation>
+      <translation>Comută suprapunerea</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2180"/>
-      <location filename="../OverlayManager.cpp" line="1036"/>
+      <location filename="../OverlayManager.cpp" line="1048"/>
+      <location filename="../OverlayWidgets.cpp" line="2181"/>
       <source>Toggle floating window</source>
-      <translation type="unfinished">Toggle floating window</translation>
+      <translation>Comutare fereastră plutitoare</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1037"/>
+      <location filename="../OverlayManager.cpp" line="1049"/>
       <source>Close dock window</source>
-      <translation type="unfinished">Close dock window</translation>
+      <translation>Închide fereastra de andocare</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="117"/>
       <location filename="../OverlayWidgets.cpp" line="147"/>
       <source>Press ESC to hide hint</source>
-      <translation type="unfinished">Press ESC to hide hint</translation>
+      <translation>Apăsați ESC pentru a ascunde indiciul</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="530"/>
       <source>UI</source>
-      <translation type="unfinished">UI</translation>
+      <translation>UI</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="531"/>
@@ -8918,182 +8767,209 @@ copia curentă va fi pierdută.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="533"/>
       <source>Item background color</source>
-      <translation type="unfinished">Item background color</translation>
+      <translation>Culoare fundal articol</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="536"/>
       <source>Item background padding</source>
-      <translation type="unfinished">Item background padding</translation>
+      <translation>Element de umplutură de fundal
+
+</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="539"/>
       <source>Resizable columns</source>
-      <translation type="unfinished">Resizable columns</translation>
+      <translation>Coloane redimensionările
+
+</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="541"/>
-      <source>Show item checkbox</source>
-      <translation type="unfinished">Show item checkbox</translation>
+      <source>Show visibility icon</source>
+      <translation>Arată pictograma de vizibilitate</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="543"/>
       <source>Hide extra column</source>
-      <translation type="unfinished">Hide extra column</translation>
+      <translation>Ascundeți coloana suplimentară
+
+</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="545"/>
       <source>Hide scroll bar</source>
-      <translation type="unfinished">Hide scroll bar</translation>
+      <translation>Ascunde bara de derulare</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="547"/>
       <source>Hide header</source>
-      <translation type="unfinished">Hide header</translation>
+      <translation>Ascunde antet</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="549"/>
       <source>IconSize</source>
-      <translation type="unfinished">IconSize</translation>
+      <translation>Dimensiunea pictogramei
+
+</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="552"/>
       <source>FontSize</source>
-      <translation type="unfinished">FontSize</translation>
+      <translation>Mărimea fontului
+
+</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="555"/>
       <source>ItemSpacing</source>
-      <translation type="unfinished">ItemSpacing</translation>
+      <translation>Spațierea articolelor
+
+</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="557"/>
       <source>Overlay</source>
-      <translation type="unfinished">Overlay</translation>
+      <translation>Suprapunere</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="559"/>
       <source>Hide tab bar</source>
-      <translation type="unfinished">Hide tab bar</translation>
+      <translation>Ascunde bara de file</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="561"/>
       <source>Hide property view scroll bar</source>
-      <translation type="unfinished">Hide property view scroll bar</translation>
+      <translation>Ascundeți bara de derulare a proprietății</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="563"/>
       <source>Auto hide in non 3D view</source>
-      <translation type="unfinished">Auto hide in non 3D view</translation>
+      <translation>Ascunde automat în vizualizarea non-3D</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="565"/>
       <source>Auto mouse pass through</source>
-      <translation type="unfinished">Auto mouse pass through</translation>
+      <translation>Mouse-ul trece automat prin</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="567"/>
       <source>Auto mouse wheel pass through</source>
-      <translation type="unfinished">Auto mouse wheel pass through</translation>
+      <translation>Auto rotița mouse-ului trece prin</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="569"/>
       <source>Delay mouse wheel pass through (ms)</source>
-      <translation type="unfinished">Delay mouse wheel pass through (ms)</translation>
+      <translation>Întârzierea trecerii roții mouse-ului (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="572"/>
       <source>Alpha test radius</source>
-      <translation type="unfinished">Alpha test radius</translation>
+      <translation>Raza de testare alfa</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="575"/>
       <source>Check Navigation Cube</source>
-      <translation type="unfinished">Check Navigation Cube</translation>
+      <translation>Verifică navigarea cub</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="577"/>
       <source>Hint trigger size</source>
-      <translation type="unfinished">Hint trigger size</translation>
+      <translation>Dimensiune declanșator indiciu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="580"/>
       <source>Hint width</source>
-      <translation type="unfinished">Hint width</translation>
+      <translation>Lățimea indicii</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="583"/>
       <source>Left panel hint offset</source>
-      <translation type="unfinished">Left panel hint offset</translation>
+      <translation>Decalaj indiciu panou stânga</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="586"/>
       <source>Left panel hint length</source>
-      <translation type="unfinished">Left panel hint length</translation>
+      <translation>Lungime indiciu panou stânga</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="589"/>
       <source>Right panel hint offset</source>
-      <translation type="unfinished">Right panel hint offset</translation>
+      <translation>Decalaj indiciu panou dreapta</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="592"/>
       <source>Right panel hint length</source>
-      <translation type="unfinished">Right panel hint length</translation>
+      <translation>Lungime indiciu panou dreapta</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="595"/>
       <source>Top panel hint offset</source>
-      <translation type="unfinished">Top panel hint offset</translation>
+      <translation>Decalaj sugestie panou superior</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="598"/>
       <source>Top panel hint length</source>
-      <translation type="unfinished">Top panel hint length</translation>
+      <translation>Lungimea indiciului panoului superior</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="601"/>
       <source>Bottom panel hint offset</source>
-      <translation type="unfinished">Bottom panel hint offset</translation>
+      <translation>Decalaj indiciu panou de jos</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="604"/>
       <source>Bottom panel hint length</source>
-      <translation type="unfinished">Bottom panel hint length</translation>
+      <translation>Lungime indiciu panou de jos</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="607"/>
       <source>Hint show tab bar</source>
-      <translation type="unfinished">Hint show tab bar</translation>
+      <translation>Bară afișare file</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="609"/>
       <source>Hint delay (ms)</source>
-      <translation type="unfinished">Hint delay (ms)</translation>
+      <translation>Întârziere sugestie (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="612"/>
       <source>Splitter auto hide delay (ms)</source>
-      <translation type="unfinished">Splitter auto hide delay (ms)</translation>
+      <translation>Întârziere ascundere automată (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="615"/>
       <source>Activate on hover</source>
-      <translation type="unfinished">Activate on hover</translation>
+      <translation>Activare la plutire</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="617"/>
       <source>Layout delay (ms)</source>
-      <translation type="unfinished">Layout delay (ms)</translation>
+      <translation>Întârziere aspect (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="620"/>
       <source>Animation duration (ms)</source>
-      <translation type="unfinished">Animation duration (ms)</translation>
+      <translation>Durata animației (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="623"/>
       <source>Animation curve type</source>
-      <translation type="unfinished">Animation curve type</translation>
+      <translation>Tipul curbei animației</translation>
+    </message>
+    <message>
+      <location filename="../ViewProviderPart.cpp" line="73"/>
+      <source>Active object</source>
+      <translation>Obiect activ</translation>
+    </message>
+    <message>
+      <location filename="../ViewProviderSuppressibleExtension.cpp" line="95"/>
+      <source>Suppressed</source>
+      <translation>Suprimat</translation>
+    </message>
+    <message>
+      <location filename="../ToolBarManager.cpp" line="951"/>
+      <source>Undock from toolbar area</source>
+      <translation type="unfinished">Undock from toolbar area</translation>
     </message>
   </context>
   <context>
@@ -9112,9 +8988,9 @@ copia curentă va fi pierdută.
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3052"/>
-      <location filename="../CommandView.cpp" line="3053"/>
-      <location filename="../CommandView.cpp" line="3055"/>
+      <location filename="../CommandView.cpp" line="2976"/>
+      <location filename="../CommandView.cpp" line="2977"/>
+      <location filename="../CommandView.cpp" line="2979"/>
       <source>Box element selection</source>
       <translation>Selectare element căsuță</translation>
     </message>
@@ -9122,13 +8998,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2790"/>
+      <location filename="../CommandView.cpp" line="2751"/>
       <source>Box selection</source>
       <translation>Selectare cu dreptunghi</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2791"/>
-      <location filename="../CommandView.cpp" line="2793"/>
+      <location filename="../CommandView.cpp" line="2752"/>
+      <location filename="../CommandView.cpp" line="2754"/>
       <source>Activate the box selection tool</source>
       <translation>Activează unealta de selecție a casetei</translation>
     </message>
@@ -9164,13 +9040,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdActivateNextWindow</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="171"/>
+      <location filename="../CommandWindow.cpp" line="172"/>
       <source>Ne&amp;xt</source>
       <translation>&amp;Următor</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="172"/>
-      <location filename="../CommandWindow.cpp" line="174"/>
+      <location filename="../CommandWindow.cpp" line="173"/>
+      <location filename="../CommandWindow.cpp" line="175"/>
       <source>Activate next window</source>
       <translation>Activaţi fereastra următoare</translation>
     </message>
@@ -9178,13 +9054,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdActivatePrevWindow</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="200"/>
+      <location filename="../CommandWindow.cpp" line="201"/>
       <source>Pre&amp;vious</source>
       <translation>&amp;Anterior</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="201"/>
-      <location filename="../CommandWindow.cpp" line="203"/>
+      <location filename="../CommandWindow.cpp" line="202"/>
+      <location filename="../CommandWindow.cpp" line="204"/>
       <source>Activate previous window</source>
       <translation>Activaţi fereastra anterioară</translation>
     </message>
@@ -9192,13 +9068,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdAlignment</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1617"/>
+      <location filename="../CommandDoc.cpp" line="1618"/>
       <source>Alignment...</source>
       <translation>Aliniament...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1618"/>
       <location filename="../CommandDoc.cpp" line="1619"/>
+      <location filename="../CommandDoc.cpp" line="1620"/>
       <source>Align the selected objects</source>
       <translation>Aliniati obiectele selectate</translation>
     </message>
@@ -9206,13 +9082,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <location filename="../CommandView.cpp" line="2202"/>
+      <location filename="../CommandView.cpp" line="2219"/>
       <source>Toggle axis cross</source>
       <translation>Activează /dezactivează sistemul cartezian</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2203"/>
-      <location filename="../CommandView.cpp" line="2204"/>
+      <location filename="../CommandView.cpp" line="2220"/>
+      <location filename="../CommandView.cpp" line="2221"/>
       <source>Turns on or off the axis cross at the origin</source>
       <translation>Se roteşte sau se opreşte axa încrucişată la origine</translation>
     </message>
@@ -9220,13 +9096,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdCascadeWindows</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="83"/>
+      <location filename="../CommandWindow.cpp" line="84"/>
       <source>&amp;Cascade</source>
       <translation>&amp;Cascadă</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="84"/>
-      <location filename="../CommandWindow.cpp" line="86"/>
+      <location filename="../CommandWindow.cpp" line="85"/>
+      <location filename="../CommandWindow.cpp" line="87"/>
       <source>Tile pragmatic</source>
       <translation>Organizare pragmatică</translation>
     </message>
@@ -9234,13 +9110,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdCloseActiveWindow</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="111"/>
+      <location filename="../CommandWindow.cpp" line="112"/>
       <source>Cl&amp;ose</source>
       <translation>În&amp;chide</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="112"/>
-      <location filename="../CommandWindow.cpp" line="114"/>
+      <location filename="../CommandWindow.cpp" line="113"/>
+      <location filename="../CommandWindow.cpp" line="115"/>
       <source>Close active window</source>
       <translation>Închidere fereastră activă</translation>
     </message>
@@ -9248,13 +9124,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdCloseAllWindows</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="143"/>
+      <location filename="../CommandWindow.cpp" line="144"/>
       <source>Close Al&amp;l</source>
       <translation>Închidere Al&amp;l</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="144"/>
-      <location filename="../CommandWindow.cpp" line="146"/>
+      <location filename="../CommandWindow.cpp" line="145"/>
+      <location filename="../CommandWindow.cpp" line="147"/>
       <source>Close all windows</source>
       <translation>Închideţi toate ferestrele</translation>
     </message>
@@ -9276,13 +9152,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1121"/>
+      <location filename="../CommandDoc.cpp" line="1122"/>
       <source>C&amp;opy</source>
       <translation>C&amp;opiază</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1122"/>
-      <location filename="../CommandDoc.cpp" line="1124"/>
+      <location filename="../CommandDoc.cpp" line="1123"/>
+      <location filename="../CommandDoc.cpp" line="1125"/>
       <source>Copy operation</source>
       <translation>Operația de copiere</translation>
     </message>
@@ -9290,13 +9166,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdCut</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1093"/>
+      <location filename="../CommandDoc.cpp" line="1094"/>
       <source>&amp;Cut</source>
       <translation>&amp;Taiere</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1094"/>
-      <location filename="../CommandDoc.cpp" line="1096"/>
+      <location filename="../CommandDoc.cpp" line="1095"/>
+      <location filename="../CommandDoc.cpp" line="1097"/>
       <source>Cut out</source>
       <translation>Decupare</translation>
     </message>
@@ -9304,13 +9180,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdDelete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1315"/>
+      <location filename="../CommandDoc.cpp" line="1316"/>
       <source>&amp;Delete</source>
       <translation>Ş&amp;tergeţi</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1316"/>
-      <location filename="../CommandDoc.cpp" line="1318"/>
+      <location filename="../CommandDoc.cpp" line="1317"/>
+      <location filename="../CommandDoc.cpp" line="1319"/>
       <source>Deletes the selected objects</source>
       <translation>Ştergeţi obiectele selectate</translation>
     </message>
@@ -9318,13 +9194,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <location filename="../CommandView.cpp" line="3370"/>
+      <location filename="../CommandView.cpp" line="3296"/>
       <source>View turntable...</source>
       <translation>Vedere rotită...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3371"/>
-      <location filename="../CommandView.cpp" line="3373"/>
+      <location filename="../CommandView.cpp" line="3297"/>
+      <location filename="../CommandView.cpp" line="3299"/>
       <source>View turntable</source>
       <translation>Vedere rotită</translation>
     </message>
@@ -9332,13 +9208,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="573"/>
+      <location filename="../CommandDoc.cpp" line="574"/>
       <source>Dependency graph...</source>
       <translation>Graficul de dependenta...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="574"/>
       <location filename="../CommandDoc.cpp" line="575"/>
+      <location filename="../CommandDoc.cpp" line="576"/>
       <source>Show the dependency graph of the objects in the active document</source>
       <translation>Arata graficul de dependenta pentru obiecte din documentul activ</translation>
     </message>
@@ -9440,13 +9316,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdDockViewMenu</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="280"/>
+      <location filename="../CommandWindow.cpp" line="281"/>
       <source>Panels</source>
       <translation>Panouri</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="281"/>
-      <location filename="../CommandWindow.cpp" line="283"/>
+      <location filename="../CommandWindow.cpp" line="282"/>
+      <location filename="../CommandWindow.cpp" line="284"/>
       <source>List of available dock panels</source>
       <translation>Lista panourilor disponibile</translation>
     </message>
@@ -9454,13 +9330,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="650"/>
+      <location filename="../CommandView.cpp" line="651"/>
       <source>Draw style</source>
       <translation>Stil de desenare</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="651"/>
       <location filename="../CommandView.cpp" line="652"/>
+      <location filename="../CommandView.cpp" line="653"/>
       <source>Change the draw style of the objects</source>
       <translation>Schimbă stilul de desenare al obiectelor</translation>
     </message>
@@ -9468,13 +9344,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1196"/>
+      <location filename="../CommandDoc.cpp" line="1197"/>
       <source>Duplicate selection</source>
       <translation>Cloneaza selectia</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1197"/>
-      <location filename="../CommandDoc.cpp" line="1199"/>
+      <location filename="../CommandDoc.cpp" line="1198"/>
+      <location filename="../CommandDoc.cpp" line="1200"/>
       <source>Put duplicates of the selected objects to the active document</source>
       <translation>Cloneaza obiectele selectate in documentul curent</translation>
     </message>
@@ -9482,17 +9358,17 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdEdit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1687"/>
+      <location filename="../CommandDoc.cpp" line="1688"/>
       <source>Toggle &amp;Edit mode</source>
       <translation>Activează/dezactivează modul de &amp;editare</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1688"/>
+      <location filename="../CommandDoc.cpp" line="1689"/>
       <source>Toggles the selected object's edit mode</source>
       <translation>Activează/dezactivează modul de editare pentru obiectul selectat</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1690"/>
+      <location filename="../CommandDoc.cpp" line="1691"/>
       <source>Activates or Deactivates the selected object's edit mode</source>
       <translation>Activează sau Dezactivează modul Editare al obiectelor selectate</translation>
     </message>
@@ -9500,23 +9376,23 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdExport</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="273"/>
+      <location filename="../CommandDoc.cpp" line="274"/>
       <source>&amp;Export...</source>
       <translation>&amp;Export...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="274"/>
-      <location filename="../CommandDoc.cpp" line="276"/>
+      <location filename="../CommandDoc.cpp" line="275"/>
+      <location filename="../CommandDoc.cpp" line="277"/>
       <source>Export an object in the active document</source>
       <translation>Exportați un obiect din documentul activ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="414"/>
+      <location filename="../CommandDoc.cpp" line="415"/>
       <source>No selection</source>
       <translation>Nici o selecţie</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="415"/>
+      <location filename="../CommandDoc.cpp" line="416"/>
       <source>Select the objects to export before choosing Export.</source>
       <translation>Selectați obiectele de exportat înainte de a alege Export.</translation>
     </message>
@@ -9524,13 +9400,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1727"/>
+      <location filename="../CommandDoc.cpp" line="1763"/>
       <source>Expression actions</source>
       <translation>Acțiunile expresiei</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1728"/>
-      <location filename="../CommandDoc.cpp" line="1730"/>
+      <location filename="../CommandDoc.cpp" line="1764"/>
+      <location filename="../CommandDoc.cpp" line="1766"/>
       <source>Actions that apply to expressions</source>
       <translation>Acțiuni care se aplică expresiilor</translation>
     </message>
@@ -9538,13 +9414,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdFeatRecompute</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="55"/>
+      <location filename="../CommandFeat.cpp" line="56"/>
       <source>&amp;Recompute</source>
       <translation>&amp;Recalculare</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="56"/>
-      <location filename="../CommandFeat.cpp" line="58"/>
+      <location filename="../CommandFeat.cpp" line="57"/>
+      <location filename="../CommandFeat.cpp" line="59"/>
       <source>Recompute feature or document</source>
       <translation>Recalculare caracteristică sau document</translation>
     </message>
@@ -9647,13 +9523,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
-      <location filename="../CommandView.cpp" line="325"/>
+      <location filename="../CommandView.cpp" line="326"/>
       <source>Freeze display</source>
       <translation>Îngheaţă ecranul</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="326"/>
-      <location filename="../CommandView.cpp" line="328"/>
+      <location filename="../CommandView.cpp" line="327"/>
+      <location filename="../CommandView.cpp" line="329"/>
       <source>Freezes the current view position</source>
       <translation>Îngheaţă poziţia curentă a vederii</translation>
     </message>
@@ -9661,26 +9537,26 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdGroup</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="98"/>
+      <location filename="../CommandStructure.cpp" line="94"/>
       <source>Create group</source>
       <translation>Creați grupul</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="100"/>
+      <location filename="../CommandStructure.cpp" line="95"/>
       <source>A Group is a general purpose container to group objects in the Tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
-      <translation type="unfinished">A Group is a general purpose container to group objects in the Tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</translation>
+      <translation>Un grup este un container de scop general pentru a grupa obiecte în vizualizarea arborelor, indiferent de tipul lor de date. Este un folder simplu pentru a organiza obiectele într-un model.</translation>
     </message>
   </context>
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1225"/>
+      <location filename="../CommandView.cpp" line="1237"/>
       <source>Hide all objects</source>
       <translation>Ascunde toate obiectele</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1226"/>
-      <location filename="../CommandView.cpp" line="1227"/>
+      <location filename="../CommandView.cpp" line="1238"/>
+      <location filename="../CommandView.cpp" line="1239"/>
       <source>Hide all objects in the document</source>
       <translation>Ascunde toate obiectele din document</translation>
     </message>
@@ -9688,13 +9564,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdHideSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1077"/>
+      <location filename="../CommandView.cpp" line="1089"/>
       <source>Hide selection</source>
       <translation>Ascunde selecţia</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1078"/>
-      <location filename="../CommandView.cpp" line="1079"/>
+      <location filename="../CommandView.cpp" line="1090"/>
+      <location filename="../CommandView.cpp" line="1091"/>
       <source>Hide all selected objects</source>
       <translation>Ascunde toate obiectele selectate</translation>
     </message>
@@ -9702,23 +9578,23 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdImport</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="187"/>
+      <location filename="../CommandDoc.cpp" line="188"/>
       <source>&amp;Import...</source>
       <translation>&amp;Import...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="188"/>
-      <location filename="../CommandDoc.cpp" line="190"/>
+      <location filename="../CommandDoc.cpp" line="189"/>
+      <location filename="../CommandDoc.cpp" line="191"/>
       <source>Import a file in the active document</source>
       <translation>Importă un fişier în documentul activ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="201"/>
+      <location filename="../CommandDoc.cpp" line="202"/>
       <source>Supported formats</source>
       <translation>Formate acceptate</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="202"/>
+      <location filename="../CommandDoc.cpp" line="203"/>
       <source>All files (*.*)</source>
       <translation>Toate fişierele (*.*)</translation>
     </message>
@@ -9726,13 +9602,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="879"/>
+      <location filename="../CommandLink.cpp" line="878"/>
       <source>Link actions</source>
       <translation>Legați acțiunile</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="880"/>
-      <location filename="../CommandLink.cpp" line="882"/>
+      <location filename="../CommandLink.cpp" line="879"/>
+      <location filename="../CommandLink.cpp" line="881"/>
       <source>Actions that apply to link objects</source>
       <translation>Acțiuni care se aplică obiectelor de legătură</translation>
     </message>
@@ -9740,12 +9616,12 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdLinkImport</name>
     <message>
-      <location filename="../CommandLink.cpp" line="545"/>
+      <location filename="../CommandLink.cpp" line="544"/>
       <source>Import links</source>
       <translation>Importă legături</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="546"/>
+      <location filename="../CommandLink.cpp" line="545"/>
       <source>Import selected external link(s)</source>
       <translation>Importă legăturile externe selectate</translation>
     </message>
@@ -9753,12 +9629,12 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-      <location filename="../CommandLink.cpp" line="609"/>
+      <location filename="../CommandLink.cpp" line="608"/>
       <source>Import all links</source>
       <translation>Importă toate legăturile</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="610"/>
+      <location filename="../CommandLink.cpp" line="609"/>
       <source>Import all links of the active document</source>
       <translation>Importă toate Legăturile documentului activ</translation>
     </message>
@@ -9766,25 +9642,25 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdLinkMake</name>
     <message>
-      <location filename="../CommandLink.cpp" line="208"/>
+      <location filename="../CommandLink.cpp" line="210"/>
       <source>Make link</source>
       <translation>Creează o legătură</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="210"/>
-      <source>A Link is an object that references or links to another object in the same document, or in another document.Unlike Clones, Links reference the original Shape directly,  making them more memory efficient which helps with the creation of complex assemblies.</source>
-      <translation type="unfinished">A Link is an object that references or links to another object in the same document, or in another document.Unlike Clones, Links reference the original Shape directly,  making them more memory efficient which helps with the creation of complex assemblies.</translation>
+      <location filename="../CommandLink.cpp" line="211"/>
+      <source>A Link is an object that references or links to another object in the same document, or in another document. Unlike Clones, Links reference the original Shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
+      <translation>Un link este un obiect care face referiri sau se leagă la un alt obiect în același document sau în alt document. Spre deosebire de Clones, Legăturile fac referire directă la forma originală, făcându-le mai eficiente din punct de vedere al memoriei, ceea ce ajută la crearea ansamblurilor complexe.</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkMakeGroup</name>
     <message>
-      <location filename="../CommandLink.cpp" line="77"/>
+      <location filename="../CommandLink.cpp" line="79"/>
       <source>Make link group</source>
       <translation>Creează un grup cu legătură</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="78"/>
+      <location filename="../CommandLink.cpp" line="80"/>
       <source>Create a group of links</source>
       <translation>Creează un grup de legături</translation>
     </message>
@@ -9792,12 +9668,12 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdLinkMakeRelative</name>
     <message>
-      <location filename="../CommandLink.cpp" line="276"/>
+      <location filename="../CommandLink.cpp" line="275"/>
       <source>Make sub-link</source>
       <translation>Creează o sub-legătură</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="277"/>
+      <location filename="../CommandLink.cpp" line="276"/>
       <source>Create a sub-object or sub-element link</source>
       <translation>Creaţi un sub-obiect sau un sub-element legătură</translation>
     </message>
@@ -9805,12 +9681,12 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdLinkReplace</name>
     <message>
-      <location filename="../CommandLink.cpp" line="497"/>
+      <location filename="../CommandLink.cpp" line="496"/>
       <source>Replace with link</source>
       <translation>Înlocuiește cu o legătură</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="498"/>
+      <location filename="../CommandLink.cpp" line="497"/>
       <source>Replace the selected object(s) with link</source>
       <translation>Înlocuiți obiectul(ele) selectat(e) cu o legătură</translation>
     </message>
@@ -9818,13 +9694,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdLinkSelectActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="853"/>
+      <location filename="../CommandLink.cpp" line="852"/>
       <source>Link navigation</source>
       <translation>Navigare la legătură</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="854"/>
-      <location filename="../CommandLink.cpp" line="856"/>
+      <location filename="../CommandLink.cpp" line="853"/>
+      <location filename="../CommandLink.cpp" line="855"/>
       <source>Link navigation actions</source>
       <translation>Acțiuni de navigare la legătură</translation>
     </message>
@@ -9832,12 +9708,12 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <location filename="../CommandLink.cpp" line="813"/>
+      <location filename="../CommandLink.cpp" line="812"/>
       <source>Select all links</source>
       <translation>Selectează toate legăturile</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="814"/>
+      <location filename="../CommandLink.cpp" line="813"/>
       <source>Select all links to the current selected object</source>
       <translation>Selectați toate legăturile către obiectul curent selectat</translation>
     </message>
@@ -9845,12 +9721,12 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdLinkSelectLinked</name>
     <message>
-      <location filename="../CommandLink.cpp" line="650"/>
+      <location filename="../CommandLink.cpp" line="649"/>
       <source>Go to linked object</source>
       <translation>Mergi la obiectul legat</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="651"/>
+      <location filename="../CommandLink.cpp" line="650"/>
       <source>Select the linked object and switch to its owner document</source>
       <translation>Selectați obiectul legat și comutați la documentul proprietar</translation>
     </message>
@@ -9858,12 +9734,12 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <location filename="../CommandLink.cpp" line="778"/>
+      <location filename="../CommandLink.cpp" line="777"/>
       <source>Go to the deepest linked object</source>
       <translation>Mergi la cel mai profund obiect legat</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="779"/>
+      <location filename="../CommandLink.cpp" line="778"/>
       <source>Select the deepest linked object and switch to its owner document</source>
       <translation>Selectați cel mai profund obiect legat și comutați la documentul proprietar</translation>
     </message>
@@ -9871,12 +9747,12 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdLinkUnlink</name>
     <message>
-      <location filename="../CommandLink.cpp" line="521"/>
+      <location filename="../CommandLink.cpp" line="520"/>
       <source>Unlink</source>
       <translation>Anularea legăturii</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="522"/>
+      <location filename="../CommandLink.cpp" line="521"/>
       <source>Strip on level of link</source>
       <translation>Bandă la nivelul link-ului</translation>
     </message>
@@ -9954,13 +9830,13 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdMeasureDistance</name>
     <message>
-      <location filename="../CommandView.cpp" line="3219"/>
+      <location filename="../CommandView.cpp" line="3147"/>
       <source>Measure distance</source>
       <translation>Măsoară distanţa</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3220"/>
-      <location filename="../CommandView.cpp" line="3222"/>
+      <location filename="../CommandView.cpp" line="3148"/>
+      <location filename="../CommandView.cpp" line="3150"/>
       <source>Activate the distance measurement tool</source>
       <translation>Activați unealta de măsurare a distanței</translation>
     </message>
@@ -9982,45 +9858,45 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdMergeProjects</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="520"/>
-      <source>Merge document...</source>
-      <translation type="unfinished">Merge document...</translation>
-    </message>
-    <message>
       <location filename="../CommandDoc.cpp" line="521"/>
-      <location filename="../CommandDoc.cpp" line="523"/>
-      <location filename="../CommandDoc.cpp" line="533"/>
-      <location filename="../CommandDoc.cpp" line="542"/>
-      <source>Merge document</source>
-      <translation type="unfinished">Merge document</translation>
+      <source>Merge document...</source>
+      <translation>Îmbinare document...</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="522"/>
+      <location filename="../CommandDoc.cpp" line="524"/>
       <location filename="../CommandDoc.cpp" line="534"/>
+      <location filename="../CommandDoc.cpp" line="543"/>
+      <source>Merge document</source>
+      <translation>Îmbinare document</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="535"/>
       <source>%1 document (*.FCStd)</source>
       <translation>Documentul %1 (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="543"/>
+      <location filename="../CommandDoc.cpp" line="544"/>
       <source>Cannot merge document with itself.</source>
-      <translation type="unfinished">Cannot merge document with itself.</translation>
+      <translation>Nu se poate fuziona documentul cu el însuși.</translation>
     </message>
   </context>
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="646"/>
+      <location filename="../CommandDoc.cpp" line="647"/>
       <source>&amp;New</source>
       <translation>&amp;Nou</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="647"/>
-      <location filename="../CommandDoc.cpp" line="649"/>
+      <location filename="../CommandDoc.cpp" line="648"/>
+      <location filename="../CommandDoc.cpp" line="650"/>
       <source>Create a new empty document</source>
       <translation>Creaţi un nou document gol</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2311"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
+      <location filename="../MainWindow.cpp" line="2371"/>
       <source>Unnamed</source>
       <translation>Nedenumit</translation>
     </message>
@@ -10056,33 +9932,33 @@ copia curentă va fi pierdută.
   <context>
     <name>StdCmdOpen</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="86"/>
+      <location filename="../CommandDoc.cpp" line="87"/>
       <source>&amp;Open...</source>
       <translation>&amp;Deschideţi...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="87"/>
-      <location filename="../CommandDoc.cpp" line="89"/>
+      <location filename="../CommandDoc.cpp" line="88"/>
+      <location filename="../CommandDoc.cpp" line="90"/>
       <source>Open a document or import files</source>
       <translation>Deschideţi un document sau importaţi fişiere</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="101"/>
+      <location filename="../CommandDoc.cpp" line="102"/>
       <source>Supported formats</source>
       <translation>Formate acceptate</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="102"/>
+      <location filename="../CommandDoc.cpp" line="103"/>
       <source>All files (*.*)</source>
       <translation>Toate fişierele (*.*)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="148"/>
+      <location filename="../CommandDoc.cpp" line="149"/>
       <source>Cannot open file</source>
       <translation>Nu se poate deschide fișierul</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="149"/>
+      <location filename="../CommandDoc.cpp" line="150"/>
       <source>Loading the file %1 is not supported</source>
       <translation>Încărcarea fişierelor %1 nu este suportată</translation>
     </message>
@@ -10095,23 +9971,21 @@ copia curentă va fi pierdută.
       <translation>Creaţi o piesă /Part</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="53"/>
-      <source>A Part is is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view.
-It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
-      <translation type="unfinished">A Part is is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view.
-It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</translation>
+      <location filename="../CommandStructure.cpp" line="52"/>
+      <source>A Part is a general purpose container to keep together a group of objects so that they act as a unit in the 3D view. It is meant to arrange objects that have a Part TopoShape, like Part Primitives, PartDesign Bodies, and other Parts.</source>
+      <translation>O parte este un container de uz general pentru a păstra un grup de obiecte astfel încât acestea să acționeze ca o unitate în vizualizarea 3D. Este menit să aranjeze obiecte care au o parte TopoShape, ca partea Primitives, Bodies PartDesign și alte părți.</translation>
     </message>
   </context>
   <context>
     <name>StdCmdPaste</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1156"/>
+      <location filename="../CommandDoc.cpp" line="1157"/>
       <source>&amp;Paste</source>
       <translation>&amp;Lipire</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1157"/>
-      <location filename="../CommandDoc.cpp" line="1159"/>
+      <location filename="../CommandDoc.cpp" line="1158"/>
+      <location filename="../CommandDoc.cpp" line="1160"/>
       <source>Paste operation</source>
       <translation>Operația de lipire</translation>
     </message>
@@ -10119,13 +9993,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1538"/>
+      <location filename="../CommandDoc.cpp" line="1539"/>
       <source>Placement...</source>
       <translation>Amplasare...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1539"/>
       <location filename="../CommandDoc.cpp" line="1540"/>
+      <location filename="../CommandDoc.cpp" line="1541"/>
       <source>Place the selected objects</source>
       <translation>Poziționați obiectele selectate</translation>
     </message>
@@ -10133,13 +10007,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdPrint</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="886"/>
+      <location filename="../CommandDoc.cpp" line="887"/>
       <source>&amp;Print...</source>
       <translation>Im&amp;primare...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="887"/>
-      <location filename="../CommandDoc.cpp" line="889"/>
+      <location filename="../CommandDoc.cpp" line="888"/>
+      <location filename="../CommandDoc.cpp" line="890"/>
       <source>Print the document</source>
       <translation>Imprimaţi documentul</translation>
     </message>
@@ -10147,13 +10021,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="948"/>
+      <location filename="../CommandDoc.cpp" line="949"/>
       <source>&amp;Export PDF...</source>
       <translation>&amp;Exportaţi PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="949"/>
-      <location filename="../CommandDoc.cpp" line="951"/>
+      <location filename="../CommandDoc.cpp" line="950"/>
+      <location filename="../CommandDoc.cpp" line="952"/>
       <source>Export the document as PDF</source>
       <translation>Exportaţi documentul ca PDF</translation>
     </message>
@@ -10161,17 +10035,17 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdPrintPreview</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="918"/>
+      <location filename="../CommandDoc.cpp" line="919"/>
       <source>&amp;Print preview...</source>
       <translation>Examinare înaintea im&amp;primarii...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="919"/>
+      <location filename="../CommandDoc.cpp" line="920"/>
       <source>Print the document</source>
       <translation>Imprimaţi documentul</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="921"/>
+      <location filename="../CommandDoc.cpp" line="922"/>
       <source>Print preview</source>
       <translation>Examinare înaintea imprimarii</translation>
     </message>
@@ -10193,13 +10067,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdQuit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="980"/>
+      <location filename="../CommandDoc.cpp" line="981"/>
       <source>E&amp;xit</source>
       <translation>&amp;Ieşire</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="981"/>
-      <location filename="../CommandDoc.cpp" line="983"/>
+      <location filename="../CommandDoc.cpp" line="982"/>
+      <location filename="../CommandDoc.cpp" line="984"/>
       <source>Quits the application</source>
       <translation>Închide aplicaţia</translation>
     </message>
@@ -10207,13 +10081,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdRandomColor</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="78"/>
+      <location filename="../CommandFeat.cpp" line="79"/>
       <source>Random color</source>
       <translation>Culoare aleatorie</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="79"/>
-      <location filename="../CommandFeat.cpp" line="81"/>
+      <location filename="../CommandFeat.cpp" line="80"/>
+      <location filename="../CommandFeat.cpp" line="82"/>
       <source>Set each selected object to a randomly-selected color</source>
       <translation>Setează fiecare obiect selectat la o culoare selectată aleatoriu</translation>
     </message>
@@ -10223,7 +10097,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     <message>
       <location filename="../CommandStd.cpp" line="137"/>
       <source>Open Recent</source>
-      <translation type="unfinished">Open Recent</translation>
+      <translation>Deschide Recente</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="138"/>
@@ -10249,13 +10123,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdRedo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1050"/>
+      <location filename="../CommandDoc.cpp" line="1051"/>
       <source>&amp;Redo</source>
       <translation>&amp;Refacere</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1051"/>
-      <location filename="../CommandDoc.cpp" line="1053"/>
+      <location filename="../CommandDoc.cpp" line="1052"/>
+      <location filename="../CommandDoc.cpp" line="1054"/>
       <source>Redoes a previously undone action</source>
       <translation>Reface o acţiune anulată anterior</translation>
     </message>
@@ -10263,13 +10137,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1458"/>
+      <location filename="../CommandDoc.cpp" line="1459"/>
       <source>&amp;Refresh</source>
       <translation>&amp;Reîmprospătare</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1459"/>
-      <location filename="../CommandDoc.cpp" line="1461"/>
+      <location filename="../CommandDoc.cpp" line="1460"/>
+      <location filename="../CommandDoc.cpp" line="1462"/>
       <source>Recomputes the current active document</source>
       <translation>Recalculează documentul activ</translation>
     </message>
@@ -10291,13 +10165,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdRevert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="789"/>
+      <location filename="../CommandDoc.cpp" line="790"/>
       <source>Revert</source>
       <translation>Revenire/restabilire</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="790"/>
-      <location filename="../CommandDoc.cpp" line="792"/>
+      <location filename="../CommandDoc.cpp" line="791"/>
+      <location filename="../CommandDoc.cpp" line="793"/>
       <source>Reverts to the saved version of this file</source>
       <translation>Revine la versiunea salvat acest fişier</translation>
     </message>
@@ -10305,13 +10179,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdSave</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="676"/>
+      <location filename="../CommandDoc.cpp" line="677"/>
       <source>&amp;Save</source>
       <translation>&amp;Salvaţi</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="677"/>
-      <location filename="../CommandDoc.cpp" line="679"/>
+      <location filename="../CommandDoc.cpp" line="678"/>
+      <location filename="../CommandDoc.cpp" line="680"/>
       <source>Save the active document</source>
       <translation>Salvaţi documentul activ</translation>
     </message>
@@ -10319,13 +10193,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdSaveAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="761"/>
+      <location filename="../CommandDoc.cpp" line="762"/>
       <source>Save All</source>
       <translation>Salvează tot</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="762"/>
-      <location filename="../CommandDoc.cpp" line="764"/>
+      <location filename="../CommandDoc.cpp" line="763"/>
+      <location filename="../CommandDoc.cpp" line="765"/>
       <source>Save all opened document</source>
       <translation>Salvează toate documentele deschise</translation>
     </message>
@@ -10333,13 +10207,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdSaveAs</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="705"/>
+      <location filename="../CommandDoc.cpp" line="706"/>
       <source>Save &amp;As...</source>
       <translation>S&amp;alvaţi ca...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="706"/>
-      <location filename="../CommandDoc.cpp" line="708"/>
+      <location filename="../CommandDoc.cpp" line="707"/>
+      <location filename="../CommandDoc.cpp" line="709"/>
       <source>Save the active document under a new file name</source>
       <translation>Salvare documentul activ sub un nou nume de fişier</translation>
     </message>
@@ -10347,13 +10221,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdSaveCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="734"/>
+      <location filename="../CommandDoc.cpp" line="735"/>
       <source>Save a &amp;Copy...</source>
       <translation>Salvaţi o &amp; copie...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="735"/>
-      <location filename="../CommandDoc.cpp" line="737"/>
+      <location filename="../CommandDoc.cpp" line="736"/>
+      <location filename="../CommandDoc.cpp" line="738"/>
       <source>Save a copy of the active document under a new file name</source>
       <translation>Salvați o copie a documentului activ sub un nou nume de fişier</translation>
     </message>
@@ -10361,13 +10235,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <location filename="../CommandView.cpp" line="3310"/>
+      <location filename="../CommandView.cpp" line="3236"/>
       <source>Scene inspector...</source>
       <translation>Inspectorul de scena...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3311"/>
-      <location filename="../CommandView.cpp" line="3313"/>
+      <location filename="../CommandView.cpp" line="3237"/>
+      <location filename="../CommandView.cpp" line="3239"/>
       <source>Scene inspector</source>
       <translation>Inspectorul de scena</translation>
     </message>
@@ -10375,13 +10249,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <location filename="../CommandView.cpp" line="3783"/>
+      <location filename="../CommandView.cpp" line="3709"/>
       <source>&amp;Bounding box</source>
       <translation>&amp;Casetă de încadrare</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3784"/>
-      <location filename="../CommandView.cpp" line="3786"/>
+      <location filename="../CommandView.cpp" line="3710"/>
+      <location filename="../CommandView.cpp" line="3712"/>
       <source>Show selection bounding box</source>
       <translation>Arată caseta de încadrare a selecției</translation>
     </message>
@@ -10389,13 +10263,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdSelectAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1284"/>
+      <location filename="../CommandDoc.cpp" line="1285"/>
       <source>Select &amp;All</source>
       <translation>Select&amp;aţi tot</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1285"/>
-      <location filename="../CommandDoc.cpp" line="1287"/>
+      <location filename="../CommandDoc.cpp" line="1286"/>
+      <location filename="../CommandDoc.cpp" line="1288"/>
       <source>Select all</source>
       <translation>Selectează tot</translation>
     </message>
@@ -10403,13 +10277,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdSelectVisibleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1105"/>
+      <location filename="../CommandView.cpp" line="1117"/>
       <source>Select visible objects</source>
       <translation>Selectaţi obiectele vizibile</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1106"/>
-      <location filename="../CommandView.cpp" line="1107"/>
+      <location filename="../CommandView.cpp" line="1118"/>
+      <location filename="../CommandView.cpp" line="1119"/>
       <source>Select visible objects in the active document</source>
       <translation>Selectaţi obiectele vizibile în documentul activ</translation>
     </message>
@@ -10417,41 +10291,27 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="130"/>
+      <location filename="../CommandFeat.cpp" line="205"/>
       <source>&amp;Send to Python Console</source>
       <translation>&amp;Trimite la Consola Python</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="131"/>
-      <location filename="../CommandFeat.cpp" line="133"/>
+      <location filename="../CommandFeat.cpp" line="206"/>
+      <location filename="../CommandFeat.cpp" line="208"/>
       <source>Sends the selected object to the Python console</source>
       <translation>Trimite obiectul selectat la consola Python</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdSetAppearance</name>
-    <message>
-      <location filename="../CommandView.cpp" line="1262"/>
-      <source>Appearance...</source>
-      <translation>Aspect...</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="1263"/>
-      <location filename="../CommandView.cpp" line="1265"/>
-      <source>Sets the display properties of the selected object</source>
-      <translation>Defineşte proprietăţile de afişare a obiectului selectat</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1188"/>
+      <location filename="../CommandView.cpp" line="1200"/>
       <source>Show all objects</source>
       <translation>Arată toate obiectele</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1189"/>
-      <location filename="../CommandView.cpp" line="1190"/>
+      <location filename="../CommandView.cpp" line="1201"/>
+      <location filename="../CommandView.cpp" line="1202"/>
       <source>Show all objects in the document</source>
       <translation>Arată toate obiectele din document</translation>
     </message>
@@ -10459,13 +10319,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdShowSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1049"/>
+      <location filename="../CommandView.cpp" line="1061"/>
       <source>Show selection</source>
       <translation>Arăta de selecţia</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1050"/>
-      <location filename="../CommandView.cpp" line="1051"/>
+      <location filename="../CommandView.cpp" line="1062"/>
+      <location filename="../CommandView.cpp" line="1063"/>
       <source>Show all selected objects</source>
       <translation>Arată toate obiectele selectate</translation>
     </message>
@@ -10473,13 +10333,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdStatusBar</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="371"/>
+      <location filename="../CommandWindow.cpp" line="412"/>
       <source>Status bar</source>
       <translation>Bara de stare</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="372"/>
-      <location filename="../CommandWindow.cpp" line="374"/>
+      <location filename="../CommandWindow.cpp" line="413"/>
+      <location filename="../CommandWindow.cpp" line="415"/>
       <source>Toggles the status bar</source>
       <translation>Activează/dezactivează bara de stare</translation>
     </message>
@@ -10501,13 +10361,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <location filename="../CommandView.cpp" line="3343"/>
+      <location filename="../CommandView.cpp" line="3269"/>
       <source>Texture mapping...</source>
       <translation>Aplicare textura...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3344"/>
-      <location filename="../CommandView.cpp" line="3346"/>
+      <location filename="../CommandView.cpp" line="3270"/>
+      <location filename="../CommandView.cpp" line="3272"/>
       <source>Texture mapping</source>
       <translation>Aplicare textura</translation>
     </message>
@@ -10515,13 +10375,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdTileWindows</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="55"/>
+      <location filename="../CommandWindow.cpp" line="56"/>
       <source>&amp;Tile</source>
       <translation>&amp;Mozaic</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="56"/>
-      <location filename="../CommandWindow.cpp" line="58"/>
+      <location filename="../CommandWindow.cpp" line="57"/>
+      <location filename="../CommandWindow.cpp" line="59"/>
       <source>Tile the windows</source>
       <translation>Aranjeaza ferestrele intr-un mod regulat</translation>
     </message>
@@ -10543,13 +10403,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
-      <location filename="../CommandView.cpp" line="597"/>
+      <location filename="../CommandView.cpp" line="598"/>
       <source>Clipping plane</source>
       <translation>Plan de secțiune</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="598"/>
-      <location filename="../CommandView.cpp" line="600"/>
+      <location filename="../CommandView.cpp" line="599"/>
+      <location filename="../CommandView.cpp" line="601"/>
       <source>Toggles clipping plane for active view</source>
       <translation>Activează/dezactivează planul de secțiune pentru vederea activă</translation>
     </message>
@@ -10557,13 +10417,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-      <location filename="../CommandView.cpp" line="2153"/>
+      <location filename="../CommandView.cpp" line="2170"/>
       <source>Toggle navigation/Edit mode</source>
       <translation>Activează/dezactivează mod de navigare/editare</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2154"/>
-      <location filename="../CommandView.cpp" line="2155"/>
+      <location filename="../CommandView.cpp" line="2171"/>
+      <location filename="../CommandView.cpp" line="2172"/>
       <source>Toggle between navigation and edit mode</source>
       <translation>Activează/dezactivează între modul de editare şi modul de navigare</translation>
     </message>
@@ -10571,13 +10431,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdToggleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1147"/>
+      <location filename="../CommandView.cpp" line="1159"/>
       <source>Toggle all objects</source>
       <translation>Activează/dezactivează toate obiectele</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1148"/>
-      <location filename="../CommandView.cpp" line="1149"/>
+      <location filename="../CommandView.cpp" line="1160"/>
+      <location filename="../CommandView.cpp" line="1161"/>
       <source>Toggles visibility of all objects in the active document</source>
       <translation>Activează/dezactivează vizibilitatea tuturor obiectelor din documentul activ</translation>
     </message>
@@ -10585,13 +10445,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <location filename="../CommandView.cpp" line="997"/>
+      <location filename="../CommandView.cpp" line="1009"/>
       <source>Toggle selectability</source>
       <translation>Activează/dezactivează selectabilitatea</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="998"/>
-      <location filename="../CommandView.cpp" line="999"/>
+      <location filename="../CommandView.cpp" line="1010"/>
+      <location filename="../CommandView.cpp" line="1011"/>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
       <translation>Activează/dezactivează abilitatea obiectelor de a fi selectate in 3D</translation>
     </message>
@@ -10599,13 +10459,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdToggleVisibility</name>
     <message>
-      <location filename="../CommandView.cpp" line="870"/>
+      <location filename="../CommandView.cpp" line="871"/>
       <source>Toggle visibility</source>
       <translation>Activează/dezactivează vizibilitate</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="871"/>
       <location filename="../CommandView.cpp" line="872"/>
+      <location filename="../CommandView.cpp" line="873"/>
       <source>Toggles visibility</source>
       <translation>Activează/dezactivează vizibilitatea</translation>
     </message>
@@ -10613,13 +10473,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdToolBarMenu</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="316"/>
+      <location filename="../CommandWindow.cpp" line="317"/>
       <source>Tool&amp;bars</source>
       <translation>&amp;Bare de instrumente</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="317"/>
-      <location filename="../CommandWindow.cpp" line="319"/>
+      <location filename="../CommandWindow.cpp" line="318"/>
+      <location filename="../CommandWindow.cpp" line="320"/>
       <source>Toggles this window</source>
       <translation>Activează/dezactivează această fereastră</translation>
     </message>
@@ -10627,13 +10487,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdTransform</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1512"/>
+      <location filename="../CommandDoc.cpp" line="1513"/>
       <source>Transform...</source>
       <translation>Transformare...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1513"/>
       <location filename="../CommandDoc.cpp" line="1514"/>
+      <location filename="../CommandDoc.cpp" line="1515"/>
       <source>Transform the geometry of selected objects</source>
       <translation>Transforma geometria obiectelor selectate</translation>
     </message>
@@ -10641,13 +10501,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1583"/>
+      <location filename="../CommandDoc.cpp" line="1584"/>
       <source>Transform</source>
       <translation>Transformare</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1584"/>
       <location filename="../CommandDoc.cpp" line="1585"/>
+      <location filename="../CommandDoc.cpp" line="1586"/>
       <source>Transform the selected object in the 3d view</source>
       <translation>Transforma obiectul selectat în vizualizarea 3D</translation>
     </message>
@@ -10655,13 +10515,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdTreeCollapse</name>
     <message>
-      <location filename="../CommandView.cpp" line="3118"/>
+      <location filename="../CommandView.cpp" line="3046"/>
       <source>Collapse selected item</source>
       <translation>Restrânge elementul selectat</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3119"/>
-      <location filename="../CommandView.cpp" line="3121"/>
+      <location filename="../CommandView.cpp" line="3047"/>
+      <location filename="../CommandView.cpp" line="3049"/>
       <source>Collapse currently selected tree items</source>
       <translation>Restrânge elementele selectate ale arborelui</translation>
     </message>
@@ -10669,13 +10529,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <location filename="../CommandView.cpp" line="3143"/>
+      <location filename="../CommandView.cpp" line="3071"/>
       <source>Expand selected item</source>
       <translation>Extinde elementul selectat</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3144"/>
-      <location filename="../CommandView.cpp" line="3146"/>
+      <location filename="../CommandView.cpp" line="3072"/>
+      <location filename="../CommandView.cpp" line="3074"/>
       <source>Expand currently selected tree items</source>
       <translation>Extinde elementele selectate ale arborelui</translation>
     </message>
@@ -10683,13 +10543,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
     <message>
-      <location filename="../CommandView.cpp" line="3168"/>
+      <location filename="../CommandView.cpp" line="3096"/>
       <source>Select all instances</source>
       <translation>Selectează toate instanțele</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3169"/>
-      <location filename="../CommandView.cpp" line="3171"/>
+      <location filename="../CommandView.cpp" line="3097"/>
+      <location filename="../CommandView.cpp" line="3099"/>
       <source>Select all instances of the current selected object</source>
       <translation>Selectați toate instanțele obiectului selectat</translation>
     </message>
@@ -10697,13 +10557,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <location filename="../CommandView.cpp" line="3741"/>
+      <location filename="../CommandView.cpp" line="3667"/>
       <source>TreeView actions</source>
       <translation>Actiuni ale vizualizării arbore</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3742"/>
-      <location filename="../CommandView.cpp" line="3744"/>
+      <location filename="../CommandView.cpp" line="3668"/>
+      <location filename="../CommandView.cpp" line="3670"/>
       <source>TreeView behavior options and actions</source>
       <translation>Opțiuni de comportament TreeView și acțiuni</translation>
     </message>
@@ -10711,13 +10571,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdUndo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1006"/>
+      <location filename="../CommandDoc.cpp" line="1007"/>
       <source>&amp;Undo</source>
       <translation>&amp;Anulare</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1007"/>
-      <location filename="../CommandDoc.cpp" line="1009"/>
+      <location filename="../CommandDoc.cpp" line="1008"/>
+      <location filename="../CommandDoc.cpp" line="1010"/>
       <source>Undo exactly one action</source>
       <translation>Anuleaza o actiune</translation>
     </message>
@@ -10753,13 +10613,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdUserInterface</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="258"/>
+      <location filename="../CommandWindow.cpp" line="259"/>
       <source>Dock views</source>
       <translation>Andocare vizualizari</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="259"/>
-      <location filename="../CommandWindow.cpp" line="261"/>
+      <location filename="../CommandWindow.cpp" line="260"/>
+      <location filename="../CommandWindow.cpp" line="262"/>
       <source>Dock all top-level views</source>
       <translation>Andocarea tuturor vizualizarilor</translation>
     </message>
@@ -10767,13 +10627,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="1320"/>
+      <location filename="../CommandView.cpp" line="1302"/>
       <source>Bottom</source>
       <translation>Partea de jos</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1321"/>
-      <location filename="../CommandView.cpp" line="1323"/>
+      <location filename="../CommandView.cpp" line="1303"/>
+      <location filename="../CommandView.cpp" line="1305"/>
       <source>Set to bottom view</source>
       <translation>Vedere de dedesubt</translation>
     </message>
@@ -10781,13 +10641,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewCreate</name>
     <message>
-      <location filename="../CommandView.cpp" line="2124"/>
+      <location filename="../CommandView.cpp" line="2141"/>
       <source>Create new view</source>
       <translation>Creaza vizualizare noua</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2125"/>
-      <location filename="../CommandView.cpp" line="2127"/>
+      <location filename="../CommandView.cpp" line="2142"/>
+      <location filename="../CommandView.cpp" line="2144"/>
       <source>Creates a new view window for the active document</source>
       <translation>Creează o nouă fereastră de vizualizare pentru documentul activ</translation>
     </message>
@@ -10795,13 +10655,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewDimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1489"/>
+      <location filename="../CommandView.cpp" line="1471"/>
       <source>Dimetric</source>
       <translation>Dimetric</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1490"/>
-      <location filename="../CommandView.cpp" line="1492"/>
+      <location filename="../CommandView.cpp" line="1472"/>
+      <location filename="../CommandView.cpp" line="1474"/>
       <source>Set to dimetric view</source>
       <translation>Setează vizualizarea dimetrică</translation>
     </message>
@@ -10809,13 +10669,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewExample1</name>
     <message>
-      <location filename="../CommandView.cpp" line="2248"/>
+      <location filename="../CommandView.cpp" line="2265"/>
       <source>Inventor example #1</source>
       <translation>Inventor - Exemplu #1</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2249"/>
-      <location filename="../CommandView.cpp" line="2251"/>
+      <location filename="../CommandView.cpp" line="2266"/>
+      <location filename="../CommandView.cpp" line="2268"/>
       <source>Shows a 3D texture with manipulator</source>
       <translation>Prezinta o textura 3D cu manipulator</translation>
     </message>
@@ -10823,13 +10683,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewExample2</name>
     <message>
-      <location filename="../CommandView.cpp" line="2276"/>
+      <location filename="../CommandView.cpp" line="2293"/>
       <source>Inventor example #2</source>
       <translation>Inventor - Exemplu #2</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2277"/>
-      <location filename="../CommandView.cpp" line="2279"/>
+      <location filename="../CommandView.cpp" line="2294"/>
+      <location filename="../CommandView.cpp" line="2296"/>
       <source>Shows spheres and drag-lights</source>
       <translation>Prezinta sfere si lumini mobile</translation>
     </message>
@@ -10837,13 +10697,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewExample3</name>
     <message>
-      <location filename="../CommandView.cpp" line="2304"/>
+      <location filename="../CommandView.cpp" line="2321"/>
       <source>Inventor example #3</source>
       <translation>Inventor - Exemplu #3</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2305"/>
-      <location filename="../CommandView.cpp" line="2307"/>
+      <location filename="../CommandView.cpp" line="2322"/>
+      <location filename="../CommandView.cpp" line="2324"/>
       <source>Shows a animated texture</source>
       <translation>Prezinta o textura animata</translation>
     </message>
@@ -10851,13 +10711,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="1585"/>
+      <location filename="../CommandView.cpp" line="1567"/>
       <source>Fit all</source>
       <translation>Incadreaza toate</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1586"/>
-      <location filename="../CommandView.cpp" line="1588"/>
+      <location filename="../CommandView.cpp" line="1568"/>
+      <location filename="../CommandView.cpp" line="1570"/>
       <source>Fits the whole content on the screen</source>
       <translation>Incadreaza intreg continutul in ecran</translation>
     </message>
@@ -10865,13 +10725,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1616"/>
+      <location filename="../CommandView.cpp" line="1598"/>
       <source>Fit selection</source>
       <translation>Incadreaza selectia</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1617"/>
-      <location filename="../CommandView.cpp" line="1619"/>
+      <location filename="../CommandView.cpp" line="1599"/>
+      <location filename="../CommandView.cpp" line="1601"/>
       <source>Fits the selected content on the screen</source>
       <translation>Incadreaza continutul selectat in ecran</translation>
     </message>
@@ -10879,13 +10739,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewFront</name>
     <message>
-      <location filename="../CommandView.cpp" line="1344"/>
+      <location filename="../CommandView.cpp" line="1326"/>
       <source>Front</source>
       <translation>Din față</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1345"/>
-      <location filename="../CommandView.cpp" line="1347"/>
+      <location filename="../CommandView.cpp" line="1327"/>
+      <location filename="../CommandView.cpp" line="1329"/>
       <source>Set to front view</source>
       <translation>Seteaza vederea din fata</translation>
     </message>
@@ -10893,13 +10753,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewHome</name>
     <message>
-      <location filename="../CommandView.cpp" line="1292"/>
+      <location filename="../CommandView.cpp" line="1274"/>
       <source>Home</source>
       <translation>Acasă</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1293"/>
-      <location filename="../CommandView.cpp" line="1295"/>
+      <location filename="../CommandView.cpp" line="1275"/>
+      <location filename="../CommandView.cpp" line="1277"/>
       <source>Set to default home view</source>
       <translation>Setează la vizualizarea implicită a domiciliului</translation>
     </message>
@@ -10907,13 +10767,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewIsometric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1465"/>
+      <location filename="../CommandView.cpp" line="1447"/>
       <source>Isometric</source>
       <translation>Izometrică</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1466"/>
-      <location filename="../CommandView.cpp" line="1468"/>
+      <location filename="../CommandView.cpp" line="1448"/>
+      <location filename="../CommandView.cpp" line="1450"/>
       <source>Set to isometric view</source>
       <translation>Setează vizualizarea izometrică</translation>
     </message>
@@ -10921,13 +10781,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-      <location filename="../CommandView.cpp" line="2475"/>
+      <location filename="../CommandView.cpp" line="2492"/>
       <source>Issue camera position</source>
       <translation>Seteaza pozitia camerei</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2476"/>
-      <location filename="../CommandView.cpp" line="2478"/>
+      <location filename="../CommandView.cpp" line="2493"/>
+      <location filename="../CommandView.cpp" line="2495"/>
       <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
       <translation>Seteaza pozitia camerei la consola si pentru macronstructiune, pentru a putea fi usor reamintita</translation>
     </message>
@@ -10935,13 +10795,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
-      <location filename="../CommandView.cpp" line="2446"/>
+      <location filename="../CommandView.cpp" line="2463"/>
       <source>Stereo Interleaved Columns</source>
       <translation>Coloane stereo intercalate</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2447"/>
-      <location filename="../CommandView.cpp" line="2449"/>
+      <location filename="../CommandView.cpp" line="2464"/>
+      <location filename="../CommandView.cpp" line="2466"/>
       <source>Switch stereo viewing to Interleaved Columns</source>
       <translation>Schimba vizualizarea stereo in coloane intercalate</translation>
     </message>
@@ -10949,13 +10809,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
-      <location filename="../CommandView.cpp" line="2418"/>
+      <location filename="../CommandView.cpp" line="2435"/>
       <source>Stereo Interleaved Rows</source>
       <translation>Randuri stereo intercalate</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2419"/>
-      <location filename="../CommandView.cpp" line="2421"/>
+      <location filename="../CommandView.cpp" line="2436"/>
+      <location filename="../CommandView.cpp" line="2438"/>
       <source>Switch stereo viewing to Interleaved Rows</source>
       <translation>Schimba vizualizarea stereo in randuri intercalate</translation>
     </message>
@@ -10963,13 +10823,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
-      <location filename="../CommandView.cpp" line="2333"/>
+      <location filename="../CommandView.cpp" line="2350"/>
       <source>Stereo Off</source>
       <translation>Inchide stereo</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2334"/>
-      <location filename="../CommandView.cpp" line="2336"/>
+      <location filename="../CommandView.cpp" line="2351"/>
+      <location filename="../CommandView.cpp" line="2353"/>
       <source>Switch stereo viewing off</source>
       <translation>Opreste vizualizarea stereo</translation>
     </message>
@@ -10977,13 +10837,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
-      <location filename="../CommandView.cpp" line="2390"/>
+      <location filename="../CommandView.cpp" line="2407"/>
       <source>Stereo quad buffer</source>
       <translation>Stereo quad buffer</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2391"/>
-      <location filename="../CommandView.cpp" line="2393"/>
+      <location filename="../CommandView.cpp" line="2408"/>
+      <location filename="../CommandView.cpp" line="2410"/>
       <source>Switch stereo viewing to quad buffer</source>
       <translation>Schimba vizualizarea stereo in quad buffer</translation>
     </message>
@@ -10991,13 +10851,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="2362"/>
+      <location filename="../CommandView.cpp" line="2379"/>
       <source>Stereo red/cyan</source>
       <translation>Stereo rosu/verde</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2363"/>
-      <location filename="../CommandView.cpp" line="2365"/>
+      <location filename="../CommandView.cpp" line="2380"/>
+      <location filename="../CommandView.cpp" line="2382"/>
       <source>Switch stereo viewing to red/cyan</source>
       <translation>Schimba vizualizarea stereo in rosu/verde</translation>
     </message>
@@ -11005,13 +10865,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1368"/>
+      <location filename="../CommandView.cpp" line="1350"/>
       <source>Left</source>
       <translation>Stanga</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1369"/>
-      <location filename="../CommandView.cpp" line="1371"/>
+      <location filename="../CommandView.cpp" line="1351"/>
+      <location filename="../CommandView.cpp" line="1353"/>
       <source>Set to left view</source>
       <translation>Afișează vederea din stanga</translation>
     </message>
@@ -11019,13 +10879,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewRear</name>
     <message>
-      <location filename="../CommandView.cpp" line="1392"/>
+      <location filename="../CommandView.cpp" line="1374"/>
       <source>Rear</source>
       <translation>Din spate</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1393"/>
-      <location filename="../CommandView.cpp" line="1395"/>
+      <location filename="../CommandView.cpp" line="1375"/>
+      <location filename="../CommandView.cpp" line="1377"/>
       <source>Set to rear view</source>
       <translation>Seteaza vederea din spate</translation>
     </message>
@@ -11033,13 +10893,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewRestoreCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="270"/>
+      <location filename="../CommandView.cpp" line="271"/>
       <source>Restore saved camera</source>
       <translation>Restaurează camera salvată</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="271"/>
       <location filename="../CommandView.cpp" line="272"/>
+      <location filename="../CommandView.cpp" line="273"/>
       <source>Restore saved camera settings</source>
       <translation>Restaurează setările de cameră salvate</translation>
     </message>
@@ -11047,13 +10907,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1416"/>
+      <location filename="../CommandView.cpp" line="1398"/>
       <source>Right</source>
       <translation>Dreapta</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1417"/>
-      <location filename="../CommandView.cpp" line="1419"/>
+      <location filename="../CommandView.cpp" line="1399"/>
+      <location filename="../CommandView.cpp" line="1401"/>
       <source>Set to right view</source>
       <translation>Seteaza vederea din dreapta</translation>
     </message>
@@ -11061,13 +10921,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1535"/>
+      <location filename="../CommandView.cpp" line="1517"/>
       <source>Rotate Left</source>
       <translation>Rotire la stanga</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1536"/>
-      <location filename="../CommandView.cpp" line="1538"/>
+      <location filename="../CommandView.cpp" line="1518"/>
+      <location filename="../CommandView.cpp" line="1520"/>
       <source>Rotate the view by 90° counter-clockwise</source>
       <translation>Rotește vizualizarea cu 90° în sens antiorar</translation>
     </message>
@@ -11075,13 +10935,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewRotateRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1560"/>
+      <location filename="../CommandView.cpp" line="1542"/>
       <source>Rotate Right</source>
       <translation>Rotire la dreapta</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1561"/>
-      <location filename="../CommandView.cpp" line="1563"/>
+      <location filename="../CommandView.cpp" line="1543"/>
+      <location filename="../CommandView.cpp" line="1545"/>
       <source>Rotate the view by 90° clockwise</source>
       <translation>Rotește vizualizarea cu 90° în sens orar</translation>
     </message>
@@ -11089,13 +10949,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewSaveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="244"/>
+      <location filename="../CommandView.cpp" line="245"/>
       <source>Save current camera</source>
       <translation>Salvează camera curentă</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="245"/>
       <location filename="../CommandView.cpp" line="246"/>
+      <location filename="../CommandView.cpp" line="247"/>
       <source>Save current camera settings</source>
       <translation>Salvează setările curente ale camerei</translation>
     </message>
@@ -11103,13 +10963,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="1440"/>
+      <location filename="../CommandView.cpp" line="1422"/>
       <source>Top</source>
       <translation>Partea de sus</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1441"/>
-      <location filename="../CommandView.cpp" line="1443"/>
+      <location filename="../CommandView.cpp" line="1423"/>
+      <location filename="../CommandView.cpp" line="1425"/>
       <source>Set to top view</source>
       <translation>Seteaza vederea de sus</translation>
     </message>
@@ -11117,13 +10977,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewTrimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1512"/>
+      <location filename="../CommandView.cpp" line="1494"/>
       <source>Trimetric</source>
       <translation>Trimetric</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1513"/>
-      <location filename="../CommandView.cpp" line="1515"/>
+      <location filename="../CommandView.cpp" line="1495"/>
+      <location filename="../CommandView.cpp" line="1497"/>
       <source>Set to trimetric view</source>
       <translation>Setează vizualizarea trimetrică</translation>
     </message>
@@ -11131,13 +10991,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdViewVR</name>
     <message>
-      <location filename="../CommandView.cpp" line="1878"/>
+      <location filename="../CommandView.cpp" line="1895"/>
       <source>FreeCAD-VR</source>
       <translation>FreeCAD-VR</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1879"/>
-      <location filename="../CommandView.cpp" line="1881"/>
+      <location filename="../CommandView.cpp" line="1896"/>
+      <location filename="../CommandView.cpp" line="1898"/>
       <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
       <translation>Extinde fereastra 3D FreeCAD un Oculus Rift</translation>
     </message>
@@ -11159,13 +11019,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdWindows</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="234"/>
+      <location filename="../CommandWindow.cpp" line="235"/>
       <source>&amp;Windows...</source>
       <translation>Ferestre...</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="235"/>
-      <location filename="../CommandWindow.cpp" line="237"/>
+      <location filename="../CommandWindow.cpp" line="236"/>
+      <location filename="../CommandWindow.cpp" line="238"/>
       <source>Windows list</source>
       <translation>Lista ferestrelor</translation>
     </message>
@@ -11173,13 +11033,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdCmdWindowsMenu</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="417"/>
+      <location filename="../CommandWindow.cpp" line="458"/>
       <source>Activate window</source>
       <translation>Activează fereastra</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="418"/>
-      <location filename="../CommandWindow.cpp" line="420"/>
+      <location filename="../CommandWindow.cpp" line="459"/>
+      <location filename="../CommandWindow.cpp" line="461"/>
       <source>Activates this window</source>
       <translation>Activeaza aceasta fereastra</translation>
     </message>
@@ -11201,13 +11061,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1703"/>
+      <location filename="../CommandView.cpp" line="1720"/>
       <source>Fullscreen</source>
       <translation>Ecran complet</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1704"/>
-      <location filename="../CommandView.cpp" line="1706"/>
+      <location filename="../CommandView.cpp" line="1721"/>
+      <location filename="../CommandView.cpp" line="1723"/>
       <source>Display the main window in fullscreen mode</source>
       <translation>Afişează fereastra principală în modul fullscreen</translation>
     </message>
@@ -11215,13 +11075,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdOrthographicCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="134"/>
+      <location filename="../CommandView.cpp" line="135"/>
       <source>Orthographic view</source>
       <translation>Vedere ortogonală</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="135"/>
-      <location filename="../CommandView.cpp" line="137"/>
+      <location filename="../CommandView.cpp" line="136"/>
+      <location filename="../CommandView.cpp" line="138"/>
       <source>Switches to orthographic view mode</source>
       <translation>Comuta in modul vizualizare ortogonală</translation>
     </message>
@@ -11229,13 +11089,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdPerspectiveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="184"/>
+      <location filename="../CommandView.cpp" line="185"/>
       <source>Perspective view</source>
       <translation>Perspectiva</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="185"/>
-      <location filename="../CommandView.cpp" line="187"/>
+      <location filename="../CommandView.cpp" line="186"/>
+      <location filename="../CommandView.cpp" line="188"/>
       <source>Switches to perspective view mode</source>
       <translation>Comuta in modul vizualizare perspectiva</translation>
     </message>
@@ -11243,13 +11103,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdRecallWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4130"/>
+      <location filename="../CommandView.cpp" line="4056"/>
       <source>Recall working view</source>
       <translation>Recuperare vizualizare lucru</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4131"/>
-      <location filename="../CommandView.cpp" line="4132"/>
+      <location filename="../CommandView.cpp" line="4057"/>
+      <location filename="../CommandView.cpp" line="4058"/>
       <source>Recall previously stored temporary working view</source>
       <translation>Rechemați modul de lucru temporar stocat anterior</translation>
     </message>
@@ -11257,13 +11117,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdStoreWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4100"/>
+      <location filename="../CommandView.cpp" line="4026"/>
       <source>Store working view</source>
       <translation>Vedere de lucru magazin</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4101"/>
-      <location filename="../CommandView.cpp" line="4102"/>
+      <location filename="../CommandView.cpp" line="4027"/>
+      <location filename="../CommandView.cpp" line="4028"/>
       <source>Store a document-specific temporary working view</source>
       <translation>Salvați un modul de lucru temporar specific documentului</translation>
     </message>
@@ -11271,13 +11131,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdTreeCollapseDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3579"/>
+      <location filename="../CommandView.cpp" line="3505"/>
       <source>Collapse/Expand</source>
       <translation>Restrânge/Extinde</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3580"/>
-      <location filename="../CommandView.cpp" line="3582"/>
+      <location filename="../CommandView.cpp" line="3506"/>
+      <location filename="../CommandView.cpp" line="3508"/>
       <source>Expand active document and collapse all others</source>
       <translation>Extinde documentul activ și restrângele pe toate celelalte</translation>
     </message>
@@ -11285,12 +11145,12 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdTreeDrag</name>
     <message>
-      <location filename="../CommandView.cpp" line="3708"/>
+      <location filename="../CommandView.cpp" line="3634"/>
       <source>Initiate dragging</source>
       <translation>Inițiază glisare</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3709"/>
+      <location filename="../CommandView.cpp" line="3635"/>
       <source>Initiate dragging of current selected tree items</source>
       <translation>Inițiază glisarea elementelor curent selectate din vederea arborescentă</translation>
     </message>
@@ -11298,13 +11158,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3562"/>
+      <location filename="../CommandView.cpp" line="3488"/>
       <source>Multi document</source>
       <translation>Document multiplu</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3563"/>
-      <location filename="../CommandView.cpp" line="3565"/>
+      <location filename="../CommandView.cpp" line="3489"/>
+      <location filename="../CommandView.cpp" line="3491"/>
       <source>Display all documents in the tree view</source>
       <translation>Afişează toate documentele în vizualizarea arborescentă</translation>
     </message>
@@ -11312,12 +11172,12 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdTreePreSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3672"/>
+      <location filename="../CommandView.cpp" line="3598"/>
       <source>Pre-selection</source>
       <translation>Preselecție</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3673"/>
+      <location filename="../CommandView.cpp" line="3599"/>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
       <translation>Preselectează obiectul în vizualizarea 3D când mouse-ul este deasupra elementului în vizualizarea arborescentă</translation>
     </message>
@@ -11325,12 +11185,12 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3690"/>
+      <location filename="../CommandView.cpp" line="3616"/>
       <source>Record selection</source>
       <translation>Înregistrare selecție</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3691"/>
+      <location filename="../CommandView.cpp" line="3617"/>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
       <translation>Înregistrați selecția în vizualizarea arborelui pentru a merge înapoi/înainte folosind butonul de navigare</translation>
     </message>
@@ -11338,13 +11198,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdTreeSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3093"/>
+      <location filename="../CommandView.cpp" line="3021"/>
       <source>Go to selection</source>
       <translation>Du-te la selecție</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3094"/>
-      <location filename="../CommandView.cpp" line="3096"/>
+      <location filename="../CommandView.cpp" line="3022"/>
+      <location filename="../CommandView.cpp" line="3024"/>
       <source>Scroll to first selected item</source>
       <translation>Mergi la primul obiect selectat</translation>
     </message>
@@ -11352,13 +11212,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3545"/>
+      <location filename="../CommandView.cpp" line="3471"/>
       <source>Single document</source>
       <translation>Document unic</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3546"/>
-      <location filename="../CommandView.cpp" line="3548"/>
+      <location filename="../CommandView.cpp" line="3472"/>
+      <location filename="../CommandView.cpp" line="3474"/>
       <source>Only display the active document in the tree view</source>
       <translation>Afișează doar documentul activ în vizualizarea arborescentă</translation>
     </message>
@@ -11366,12 +11226,12 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
-      <location filename="../CommandView.cpp" line="3654"/>
+      <location filename="../CommandView.cpp" line="3580"/>
       <source>Sync placement</source>
       <translation>Plasare sincronizare</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3655"/>
+      <location filename="../CommandView.cpp" line="3581"/>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
       <translation>Reglaţi automat plasarea pe tragere şi plasare obiecte între sistemele de coordonate</translation>
     </message>
@@ -11379,12 +11239,12 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3636"/>
+      <location filename="../CommandView.cpp" line="3562"/>
       <source>Sync selection</source>
       <translation>Sincronizează selecția</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3637"/>
+      <location filename="../CommandView.cpp" line="3563"/>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
       <translation>Extinde automat vederea arborescentă atunci când obiectul corespunzător este selectat în vizualizarea 3D</translation>
     </message>
@@ -11392,12 +11252,12 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdTreeSyncView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3618"/>
+      <location filename="../CommandView.cpp" line="3544"/>
       <source>Sync view</source>
       <translation>Sincronizarea vizualizării</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3619"/>
+      <location filename="../CommandView.cpp" line="3545"/>
       <source>Auto switch to the 3D view containing the selected item</source>
       <translation>Comutare automată la vizualizarea 3D care conține elementul selectat</translation>
     </message>
@@ -11405,13 +11265,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <location filename="../CommandView.cpp" line="2720"/>
+      <location filename="../CommandView.cpp" line="2717"/>
       <source>Box zoom</source>
       <translation>Marire cu dreptunghi</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2721"/>
-      <location filename="../CommandView.cpp" line="2723"/>
+      <location filename="../CommandView.cpp" line="2718"/>
+      <location filename="../CommandView.cpp" line="2720"/>
       <source>Activate the box zoom tool</source>
       <translation>Activează unealta de mărire a cutiei</translation>
     </message>
@@ -11419,13 +11279,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdViewDock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1645"/>
+      <location filename="../CommandView.cpp" line="1662"/>
       <source>Docked</source>
       <translation>Andocat</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1646"/>
-      <location filename="../CommandView.cpp" line="1648"/>
+      <location filename="../CommandView.cpp" line="1663"/>
+      <location filename="../CommandView.cpp" line="1665"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
       <translation>Afiseaza vizualizarea activa in ecran complet, in mod detasat sau andocat</translation>
     </message>
@@ -11433,13 +11293,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1765"/>
+      <location filename="../CommandView.cpp" line="1782"/>
       <source>Document window</source>
       <translation>Fereastra doumentului</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1766"/>
-      <location filename="../CommandView.cpp" line="1768"/>
+      <location filename="../CommandView.cpp" line="1783"/>
+      <location filename="../CommandView.cpp" line="1785"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
       <translation>Afiseaza vizualizarea activa in ecran complet, in mod detasat sau andocat</translation>
     </message>
@@ -11447,13 +11307,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdViewFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1735"/>
+      <location filename="../CommandView.cpp" line="1752"/>
       <source>Fullscreen</source>
       <translation>Ecran complet</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1736"/>
-      <location filename="../CommandView.cpp" line="1738"/>
+      <location filename="../CommandView.cpp" line="1753"/>
+      <location filename="../CommandView.cpp" line="1755"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
       <translation>Afiseaza vizualizarea activa in ecran complet, in mod detasat sau andocat</translation>
     </message>
@@ -11461,13 +11321,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdViewScreenShot</name>
     <message>
-      <location filename="../CommandView.cpp" line="1907"/>
+      <location filename="../CommandView.cpp" line="1924"/>
       <source>Save image...</source>
       <translation>Salvare imagine...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1908"/>
-      <location filename="../CommandView.cpp" line="1910"/>
+      <location filename="../CommandView.cpp" line="1925"/>
+      <location filename="../CommandView.cpp" line="1927"/>
       <source>Creates a screenshot of the active view</source>
       <translation>Creaza o imagine din vizualizarea activa</translation>
     </message>
@@ -11475,13 +11335,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdViewUndock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1674"/>
+      <location filename="../CommandView.cpp" line="1691"/>
       <source>Undocked</source>
       <translation>Neandocat</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1675"/>
-      <location filename="../CommandView.cpp" line="1677"/>
+      <location filename="../CommandView.cpp" line="1692"/>
+      <location filename="../CommandView.cpp" line="1694"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
       <translation>Afiseaza vizualizarea activa in ecran complet, in mod detasat sau andocat</translation>
     </message>
@@ -11489,13 +11349,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <location filename="../CommandView.cpp" line="2525"/>
+      <location filename="../CommandView.cpp" line="2542"/>
       <source>Zoom In</source>
       <translation>Marire</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2526"/>
-      <location filename="../CommandView.cpp" line="2528"/>
+      <location filename="../CommandView.cpp" line="2543"/>
+      <location filename="../CommandView.cpp" line="2545"/>
       <source>Increase the zoom factor by a fixed amount</source>
       <translation>Crește factorul de zoom cu o sumă fixă</translation>
     </message>
@@ -11503,13 +11363,13 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>StdViewZoomOut</name>
     <message>
-      <location filename="../CommandView.cpp" line="2554"/>
+      <location filename="../CommandView.cpp" line="2571"/>
       <source>Zoom Out</source>
       <translation>Micsorare</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2555"/>
-      <location filename="../CommandView.cpp" line="2557"/>
+      <location filename="../CommandView.cpp" line="2572"/>
+      <location filename="../CommandView.cpp" line="2574"/>
       <source>Decrease the zoom factor by a fixed amount</source>
       <translation>Scade factorul zoom cu o valoare fixă</translation>
     </message>
@@ -11517,7 +11377,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1388"/>
+      <location filename="../CommandDoc.cpp" line="1389"/>
       <source>The following referencing objects might break.
 
 Are you sure you want to continue?
@@ -11528,7 +11388,7 @@ Sunteți sigur că doriți să continuați?
 </translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1397"/>
+      <location filename="../CommandDoc.cpp" line="1398"/>
       <source>Object dependencies</source>
       <translation>Dependențe obiect</translation>
     </message>
@@ -11536,7 +11396,7 @@ Sunteți sigur că doriți să continuați?
   <context>
     <name>Std_DependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="586"/>
+      <location filename="../CommandDoc.cpp" line="587"/>
       <source>Dependency graph</source>
       <translation>Graficul de dependenta</translation>
     </message>
@@ -11544,72 +11404,72 @@ Sunteți sigur că doriți să continuați?
   <context>
     <name>Std_DrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="729"/>
+      <location filename="../CommandView.cpp" line="730"/>
       <source>As is</source>
       <translation>Asa cum este</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="731"/>
+      <location filename="../CommandView.cpp" line="732"/>
       <source>Normal mode</source>
       <translation>Modul normal</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="734"/>
+      <location filename="../CommandView.cpp" line="735"/>
       <source>Points</source>
       <translation>Puncte</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="736"/>
+      <location filename="../CommandView.cpp" line="737"/>
       <source>Points mode</source>
       <translation>Mod puncte</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="739"/>
+      <location filename="../CommandView.cpp" line="740"/>
       <source>Wireframe</source>
       <translation>Wireframe</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="741"/>
+      <location filename="../CommandView.cpp" line="742"/>
       <source>Wireframe mode</source>
       <translation>Modul wireframe</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="744"/>
+      <location filename="../CommandView.cpp" line="745"/>
       <source>Hidden line</source>
       <translation>Linie ascunsă</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="746"/>
+      <location filename="../CommandView.cpp" line="747"/>
       <source>Hidden line mode</source>
       <translation>Modul linie ascunsă</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="749"/>
+      <location filename="../CommandView.cpp" line="750"/>
       <source>No shading</source>
       <translation>Nici o umbrire</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="751"/>
+      <location filename="../CommandView.cpp" line="752"/>
       <source>No shading mode</source>
       <translation>Nu în modul de umbrire</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="754"/>
+      <location filename="../CommandView.cpp" line="755"/>
       <source>Shaded</source>
       <translation>Umbrit</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="756"/>
+      <location filename="../CommandView.cpp" line="757"/>
       <source>Shaded mode</source>
       <translation>Mod umbrit</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="759"/>
+      <location filename="../CommandView.cpp" line="760"/>
       <source>Flat lines</source>
       <translation>Linii plane</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="761"/>
+      <location filename="../CommandView.cpp" line="762"/>
       <source>Flat lines mode</source>
       <translation>Mod linii plane</translation>
     </message>
@@ -11617,12 +11477,12 @@ Sunteți sigur că doriți să continuați?
   <context>
     <name>Std_DuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1248"/>
+      <location filename="../CommandDoc.cpp" line="1249"/>
       <source>Object dependencies</source>
       <translation>Dependențe obiect</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1249"/>
+      <location filename="../CommandDoc.cpp" line="1250"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Pentru face legăturile la obiecte externe, documentul trebuie salvat cel puțin o dată.
@@ -11632,7 +11492,7 @@ Doriți să salvați documentul acum?</translation>
   <context>
     <name>Std_Group</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="119"/>
+      <location filename="../CommandStructure.cpp" line="111"/>
       <source>Group</source>
       <translation>Grup</translation>
     </message>
@@ -11640,7 +11500,7 @@ Doriți să salvați documentul acum?</translation>
   <context>
     <name>Std_Refresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1487"/>
+      <location filename="../CommandDoc.cpp" line="1488"/>
       <source>The document contains dependency cycles.
 Please check the Report View for more details.
 
@@ -11654,17 +11514,17 @@ Doriți în continuare să continuați?</translation>
   <context>
     <name>Std_Revert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="802"/>
+      <location filename="../CommandDoc.cpp" line="803"/>
       <source>Revert document</source>
       <translation>Recuperează versiunea documentului</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="803"/>
+      <location filename="../CommandDoc.cpp" line="804"/>
       <source>This will discard all the changes since last file save.</source>
       <translation>Această operațiune distruge toate modificările de la ultima salvare.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="804"/>
+      <location filename="../CommandDoc.cpp" line="805"/>
       <source>Do you want to continue?</source>
       <translation>Doriţi să continuaţi?</translation>
     </message>
@@ -11672,72 +11532,82 @@ Doriți în continuare să continuați?</translation>
   <context>
     <name>TreeParams</name>
     <message>
-      <location filename="../TreeParams.cpp" line="1138"/>
+      <location filename="../TreeParams.cpp" line="1150"/>
       <source>Tree view item background. Only effective in overlay.</source>
       <translation>Fundalul elementului de vizualizare copac este eficient doar în suprapunere.</translation>
     </message>
     <message>
-      <location filename="../TreeParams.cpp" line="1166"/>
+      <location filename="../TreeParams.cpp" line="1178"/>
       <source>Tree view item background padding.</source>
       <translation>Asocierea elementului de fundal pentru vizualizarea arborelor.</translation>
     </message>
     <message>
-      <location filename="../TreeParams.cpp" line="1194"/>
+      <location filename="../TreeParams.cpp" line="1206"/>
       <source>Hide extra tree view column for item description.</source>
       <translation>Ascunde coloana extra de vizualizare arbore pentru descrierea elementului.</translation>
     </message>
     <message>
-      <location filename="../TreeParams.cpp" line="1222"/>
+      <location filename="../TreeParams.cpp" line="1234"/>
       <source>Hide tree view scroll bar in dock overlay.</source>
       <translation>Ascunde bara de derulare a arborelui în suprapunere cu doc.</translation>
     </message>
     <message>
-      <location filename="../TreeParams.cpp" line="1250"/>
+      <location filename="../TreeParams.cpp" line="1262"/>
       <source>Hide tree view header view in dock overlay.</source>
       <translation>Ascunde vizualizarea arborelui de antet în suprapunere cu dock.</translation>
     </message>
     <message>
-      <location filename="../TreeParams.cpp" line="1278"/>
+      <location filename="../TreeParams.cpp" line="1290"/>
       <source>Allow tree view columns to be manually resized.</source>
       <translation>Permite redimensionarea manuală a coloanelor de vizualizare a arborelor.</translation>
+    </message>
+    <message>
+      <location filename="../TreeParams.cpp" line="1399"/>
+      <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled</source>
+      <translation>Dacă este activată, arată o pictogramă pentru ochi înaintea afișării arborelor, afișând starea vizibilității produselor. Când apăsați vizibilitatea este togled</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../Workbench.cpp" line="534"/>
+      <location filename="../Workbench.cpp" line="533"/>
       <source>&amp;File</source>
       <translation>&amp;Fişier</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="535"/>
+      <location filename="../Workbench.cpp" line="534"/>
       <source>&amp;Edit</source>
       <translation>&amp;Editare</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="536"/>
+      <location filename="../Workbench.cpp" line="535"/>
       <source>Edit</source>
       <translation>Editare</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="537"/>
+      <location filename="../Workbench.cpp" line="536"/>
       <source>Clipboard</source>
       <translation>Clipboard</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="538"/>
+      <location filename="../Workbench.cpp" line="537"/>
       <source>Workbench</source>
       <translation>Banc de lucru</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="539"/>
+      <location filename="../Workbench.cpp" line="538"/>
       <source>Structure</source>
       <translation>Structura</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="540"/>
+      <location filename="../Workbench.cpp" line="539"/>
       <source>Standard views</source>
       <translation>Vederi standard</translation>
+    </message>
+    <message>
+      <location filename="../Workbench.cpp" line="540"/>
+      <source>Individual views</source>
+      <translation>Vizualizări individuale</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="541"/>
@@ -11823,12 +11693,12 @@ Doriți în continuare să continuați?</translation>
   <context>
     <name>Gui::MDIView</name>
     <message>
-      <location filename="../MDIView.cpp" line="255"/>
+      <location filename="../MDIView.cpp" line="257"/>
       <source>Export PDF</source>
       <translation>Exportă PDF</translation>
     </message>
     <message>
-      <location filename="../MDIView.cpp" line="256"/>
+      <location filename="../MDIView.cpp" line="258"/>
       <source>PDF file</source>
       <translation>Fişier PDF</translation>
     </message>
@@ -11995,49 +11865,51 @@ Doriți în continuare să continuați?</translation>
       <translation>Bancuri de lucru disponibile</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="32"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
 Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Puteți reordona atelierele prin tragere și scădere. Atelierele suplimentare pot fi instalate prin intermediul managerului de suplimente.&lt;/p&gt;&lt;p&gt;
 În prezent, sistemul dvs. are următoarele ateliere:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="63"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="148"/>
       <source>Start up workbench:</source>
       <translation>Start workbench-ul de lucru:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="70"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="155"/>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
       <translation>Alegeți ce banc de lucru va fi activat și afișat
 după lansarea FreeCAD</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="97"/>
-      <source>Workbench selector position:</source>
-      <translation type="unfinished">Workbench selector position:</translation>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="73"/>
+      <source>Workbench selector type:</source>
+      <translation>Tip selector banc de lucru:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="104"/>
-      <source>Customize where the workbench selector appears (restart required).
-
-'Toolbar': In the toolbars, as a movable toolbar.
-'Left Corner': In the menu bar, on the left corner.
-'Right Corner': In the menu bar, on the right corner.</source>
-      <translation>Personalizează unde apare selectorul bancului de lucru (e nevoie de repornire).
-
-'Bara de instrumente': În bara de unelte, ca bară de instrumente mobilă.
-'Colț Stânga': În bara de meniu, în colțul stânga.
-'Colț Dreapt': în bara de meniu, în colțul din dreapta.</translation>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="80"/>
+      <source>Choose the workbench selector widget type (restart required).</source>
+      <translation>Alegeți tipul de widget pentru butonul de lucru (necesită repornire).</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="117"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="37"/>
+      <source>Workbench selector items style:</source>
+      <translation>Stilul elementelor selectorului bancherului:</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="44"/>
+      <source>Customize how the items are displayed.</source>
+      <translation>Personalizați modul în care sunt afișate piesele.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="112"/>
       <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
       <translation>Dacă bifaţi, aplicaţia va reţine care banc de lucru este activ pentru fiecare filă din vizualizare</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="120"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="115"/>
       <source>Remember active workbench by tab</source>
       <translation>Memorează bancul de lucru activ în fiecare filă</translation>
     </message>
@@ -12047,7 +11919,7 @@ după lansarea FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="14"/>
       <source>Choose orientation</source>
-      <translation type="unfinished">Choose orientation</translation>
+      <translation>Alege orientarea</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="20"/>
@@ -12057,17 +11929,17 @@ după lansarea FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="26"/>
       <source>XY-Plane</source>
-      <translation type="unfinished">XY-Plane</translation>
+      <translation>Planul XY</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="36"/>
       <source>XZ-Plane</source>
-      <translation type="unfinished">XZ-Plane</translation>
+      <translation>Planul XZ</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="43"/>
       <source>YZ-Plane</source>
-      <translation type="unfinished">YZ-Plane</translation>
+      <translation>YZ-Plane</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="53"/>
@@ -12077,7 +11949,7 @@ după lansarea FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="81"/>
       <source>Offset:</source>
-      <translation type="unfinished">Offset:</translation>
+      <translation>Compensare:</translation>
     </message>
   </context>
   <context>
@@ -12095,17 +11967,17 @@ după lansarea FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
       <source>XY-Plane</source>
-      <translation type="unfinished">XY-Plane</translation>
+      <translation>Planul XY</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="38"/>
       <source>XZ-Plane</source>
-      <translation type="unfinished">XZ-Plane</translation>
+      <translation>Planul XZ</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="45"/>
       <source>YZ-Plane</source>
-      <translation type="unfinished">YZ-Plane</translation>
+      <translation>YZ-Plane</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="76"/>
@@ -12115,7 +11987,7 @@ după lansarea FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="83"/>
       <source>Offset:</source>
-      <translation type="unfinished">Offset:</translation>
+      <translation>Compensare:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="103"/>
@@ -12186,47 +12058,47 @@ după lansarea FreeCAD</translation>
   <context>
     <name>Gui::Dialog::wbListItem</name>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="88"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="87"/>
       <source>If unchecked, %1 will not appear in the available workbenches.</source>
       <translation>Dacă nu este bifat, %1 nu va apărea în bancurile de lucru disponibile.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="93"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="92"/>
       <source>This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</source>
       <translation>Acesta este modulul curent de pornire, și trebuie să fie activat. Vezi Preferințe/Generale/Autoîncărcate pentru modificare.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="116"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="115"/>
       <source>Shortcut to activate this workbench.</source>
       <translation>Scurtătură pentru a activa acest atelier.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="131"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="130"/>
       <source>Auto-load</source>
       <translation>Autoîncărcare</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="132"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="131"/>
       <source>If checked, %1 will be loaded automatically when FreeCAD starts up</source>
       <translation>Daca este bifat, %1 va fi incarcat automat cand FreeCAD incepe</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="138"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="137"/>
       <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
       <translation>Acesta este modulul curent de pornire și trebuie să fie încărcat automat. Vezi Preferințe/Generale/Autoîncărcate pentru modificare.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="145"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="144"/>
       <source>Loaded</source>
       <translation>Încărcat</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="148"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="147"/>
       <source>Load</source>
       <translation>Incarcă</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="149"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="148"/>
       <source>To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.</source>
       <translation>Pentru a păstra resursele, FreeCAD nu încarcă atelierele de lucru până nu sunt utilizate. Încărcarea acestora poate oferi acces la preferințe suplimentare legate de funcționalitatea lor.</translation>
     </message>
@@ -12234,40 +12106,50 @@ după lansarea FreeCAD</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsWorkbenchesImp</name>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="240"/>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="239"/>
       <source>Sort alphabetically</source>
-      <translation type="unfinished">Sort alphabetically</translation>
+      <translation>Sortează alfabetic</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="486"/>
-      <source>Toolbar</source>
-      <translation>Bară de instrumente</translation>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="524"/>
+      <source>ComboBox</source>
+      <translation>ComboBox</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="487"/>
-      <source>Left corner</source>
-      <translation>Colț stânga</translation>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="525"/>
+      <source>TabBar</source>
+      <translation>TabBar</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="488"/>
-      <source>Right corner</source>
-      <translation>Colţul din dreapta</translation>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="531"/>
+      <source>Icon &amp; Text</source>
+      <translation>Iconiță &amp; Text</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="532"/>
+      <source>Icon</source>
+      <translation>Iconiță</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="533"/>
+      <source>Text</source>
+      <translation>Text</translation>
     </message>
   </context>
   <context>
     <name>NotificationsAction</name>
     <message>
-      <location filename="../NotificationArea.cpp" line="574"/>
+      <location filename="../NotificationArea.cpp" line="685"/>
       <source>Delete</source>
       <translation>Ştergeţi</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="585"/>
+      <location filename="../NotificationArea.cpp" line="696"/>
       <source>Delete user notifications</source>
       <translation>Ştergeţi notificările utilizatorului</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="592"/>
+      <location filename="../NotificationArea.cpp" line="703"/>
       <source>Delete All</source>
       <translation>Şterge tot</translation>
     </message>
@@ -12275,12 +12157,12 @@ după lansarea FreeCAD</translation>
   <context>
     <name>Gui::NotificationArea</name>
     <message>
-      <location filename="../NotificationArea.cpp" line="863"/>
+      <location filename="../NotificationArea.cpp" line="978"/>
       <source>Delete user notifications</source>
       <translation>Ştergeţi notificările utilizatorului</translation>
     </message>
     <message>
-      <location filename="../NotificationArea.cpp" line="873"/>
+      <location filename="../NotificationArea.cpp" line="987"/>
       <source>Delete All</source>
       <translation>Şterge tot</translation>
     </message>
@@ -12316,13 +12198,13 @@ după lansarea FreeCAD</translation>
   <context>
     <name>StdViewLoadImage</name>
     <message>
-      <location filename="../CommandView.cpp" line="2078"/>
+      <location filename="../CommandView.cpp" line="2095"/>
       <source>Load image...</source>
       <translation>Încărcare imagini</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2079"/>
-      <location filename="../CommandView.cpp" line="2081"/>
+      <location filename="../CommandView.cpp" line="2096"/>
+      <location filename="../CommandView.cpp" line="2098"/>
       <source>Loads an image</source>
       <translation>Încarcă o imagine</translation>
     </message>
@@ -12330,12 +12212,12 @@ după lansarea FreeCAD</translation>
   <context>
     <name>NaviCubeDraggableCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1164"/>
+      <location filename="../NaviCube.cpp" line="1179"/>
       <source>Movable navigation cube</source>
       <translation>Cub de navigare mobil</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1165"/>
+      <location filename="../NaviCube.cpp" line="1180"/>
       <source>Drag and place NaviCube</source>
       <translation>Trage și plasează NaviCube</translation>
     </message>
@@ -12343,32 +12225,32 @@ după lansarea FreeCAD</translation>
   <context>
     <name>NaviCubeSettings</name>
     <message>
-      <location filename="../View3DSettings.cpp" line="540"/>
+      <location filename="../View3DSettings.cpp" line="561"/>
       <source>FRONT</source>
       <translation>FRONTUL</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="542"/>
+      <location filename="../View3DSettings.cpp" line="563"/>
       <source>TOP</source>
       <translation>DE SUS</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="544"/>
+      <location filename="../View3DSettings.cpp" line="565"/>
       <source>RIGHT</source>
       <translation>DREPTUL</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="546"/>
+      <location filename="../View3DSettings.cpp" line="567"/>
       <source>REAR</source>
       <translation>SPATE</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="548"/>
+      <location filename="../View3DSettings.cpp" line="569"/>
       <source>BOTTOM</source>
       <translation>DE JOS</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="550"/>
+      <location filename="../View3DSettings.cpp" line="571"/>
       <source>LEFT</source>
       <translation>STANGA</translation>
     </message>
@@ -12609,8 +12491,8 @@ după lansarea FreeCAD</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="55"/>
-      <source>Unit system:</source>
-      <translation>Sistem de unitate:</translation>
+      <source>Default unit system:</source>
+      <translation>Sistem unitar implicit:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="71"/>
@@ -12625,60 +12507,50 @@ după lansarea FreeCAD</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
       <source>Unit system for all parts of the application. Can be overridden by specifying a document unit system.</source>
-      <translation type="unfinished">Unit system for all parts of the application. Can be overridden by specifying a document unit system.</translation>
+      <translation>Sistem de unitate pentru toate părțile aplicației. Poate fi înlocuit prin specificarea unui sistem de unități de document.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
-      <source>Document unit system:</source>
-      <translation type="unfinished">Document unit system:</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="100"/>
-      <source>Unit system stored in the current document</source>
-      <translation type="unfinished">Unit system stored in the current document</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="107"/>
       <source>If enabled, document unit systems are ignored</source>
-      <translation type="unfinished">If enabled, document unit systems are ignored</translation>
+      <translation>Dacă este activat, sistemele de documente unitare sunt ignorate</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="110"/>
-      <source>Ignore</source>
-      <translation>Ignoră</translation>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="96"/>
+      <source>Ignore project unit system and use default</source>
+      <translation>Ignoră sistemul de unități proiect și folosește implicit</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="117"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="103"/>
       <source>Minimum fractional inch:</source>
       <translation>Fracțiunea minimă în Inch:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="124"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="110"/>
       <source>Minimum fractional inch to be displayed</source>
       <translation>Fracțiunea minimă de inch care va fi afișată</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="166"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="152"/>
       <source>Number format:</source>
       <translation>Format număr:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="180"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="166"/>
       <source>Operating system</source>
       <translation>Sistem de operare</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="185"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="171"/>
       <source>Selected language</source>
       <translation>Limba selectată</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="190"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="176"/>
       <source>C/POSIX</source>
       <translation>C/POSIX</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="198"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="184"/>
       <source>If enabled, numerical keypad decimal separator
 will be substituted with locale separator, except
 in Python Console and Macro Editor where a
@@ -12689,44 +12561,44 @@ va fi înlocuit cu separator local, exceptând
 punct/period va fi întotdeauna imprimat.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="204"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="190"/>
       <source>Substitute decimal separator</source>
       <translation>Separator zecimal înlocuitor</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="220"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="206"/>
       <source>Application</source>
       <translation>Aplicație</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="241"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="227"/>
       <source>Theme:</source>
-      <translation type="unfinished">Theme:</translation>
+      <translation>Temă:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="248"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="234"/>
       <source>Customize how user interface will look like</source>
-      <translation type="unfinished">Customize how user interface will look like</translation>
+      <translation>Personalizați modul în care interfața utilizatorului va arăta</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="255"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="241"/>
       <source>Size of toolbar icons:</source>
       <translation>Dimensiunea iconițelor in toolbar:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="262"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="248"/>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
       <translation>Alegeți preferința dumneavoastră pentru dimensiunea pictogramelor din bara de instrumente. Puteți ajusta
 acest lucru în funcție de dimensiunea ecranului sau de gustul personal</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="270"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="256"/>
       <source>Tree view mode:</source>
       <translation>Vizualizare tip arbore:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="277"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="263"/>
       <source>Customize how tree view is shown in the panel (restart required).
 
 'ComboView': combine tree view and property view into one panel.
@@ -12739,39 +12611,39 @@ acest lucru în funcție de dimensiunea ecranului sau de gustul personal</transl
 'Ambele': păstrați toate cele trei panouri și puteți avea două seturi de vizualizare a arborelui și a proprietății.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="288"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="274"/>
       <source>Size of recent file list:</source>
       <translation>Dimensiunea listei de fişiere recente:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="295"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="281"/>
       <source>How many files should be listed in recent files list</source>
       <translation>Câte fişiere trebuie afișate în lista de fişiere recente</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="311"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="297"/>
       <source>Background of the main window (when no document is opened) will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
       <translation>Fundalul ferestrei principale (atunci când nu este deschis niciun document) va fi format din plăci ale unei imagini speciale.
 Consultați Wiki FreeCAD pentru detalii despre imagine.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="315"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="301"/>
       <source>Enable tiled background</source>
       <translation>Activează fundalul în mozaic</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="322"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="308"/>
       <source>The text cursor will be blinking</source>
       <translation>Cursorul de text va clipi</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="325"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="311"/>
       <source>Enable cursor blinking</source>
       <translation>Activează clipirea cursorului</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="341"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="327"/>
       <source>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
@@ -12780,132 +12652,132 @@ atunci când FreeCAD este lansat. În cazul în care această opțiune este bifa
 ecranul de pornire</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="346"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="332"/>
       <source>Enable splash screen at start up</source>
       <translation>Activează ecranul inițial de bun sosit la pornire</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="362"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="348"/>
       <source>Activate overlay handling of dock windows</source>
-      <translation type="unfinished">Activate overlay handling of dock windows</translation>
+      <translation>Activează manipularea overlay-ului pentru ferestrele de andocare</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="365"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="351"/>
       <source>Activate overlay handling</source>
-      <translation type="unfinished">Activate overlay handling</translation>
+      <translation>Activate overlay handling</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="384"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="370"/>
       <source>Preference packs</source>
       <translation>Pachete de preferințe</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="450"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="436"/>
       <source>Name</source>
       <translation>Nume</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="461"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="447"/>
       <source>Type</source>
       <translation>Tip</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="472"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="458"/>
       <source>Load</source>
       <translation>Incarcă</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="495"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="481"/>
       <source>Import config...</source>
       <translation>Importă configurația...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="502"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="488"/>
       <source>Save new...</source>
       <translation>Salvează nou...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="515"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="501"/>
       <source>Manage...</source>
       <translation>Gestionează...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="522"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="508"/>
       <source>Revert...</source>
       <translation>Revenire/restabilire...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="86"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="87"/>
       <source>Manage preference packs</source>
       <translation>Gestionează pachetele de preferințe</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="349"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="331"/>
       <source>Small (%1px)</source>
       <translation>Mic (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="350"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="332"/>
       <source>Medium (%1px)</source>
       <translation>Mediu (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="351"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="333"/>
       <source>Large (%1px)</source>
       <translation>Mare (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="352"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="334"/>
       <source>Extra large (%1px)</source>
       <translation>Foarte mare (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="355"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="337"/>
       <source>Custom (%1px)</source>
       <translation>Personalizat (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="472"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="503"/>
       <source>Combo View</source>
       <translation>Vizualizare combo</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="473"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="504"/>
       <source>TreeView and PropertyView</source>
       <translation>VedereArbore și VedereProprietăți</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="500"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="531"/>
       <source>Preference Pack Name</source>
       <translation>Numele pachetului de preferințe</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="501"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="532"/>
       <source>Tags</source>
       <translation>Etichete</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="538"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="569"/>
       <source>Apply</source>
       <translation>Aplică</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="539"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="570"/>
       <source>Apply the %1 preference pack</source>
       <translation>Aplică pachetul de preferințe %1</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="600"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="631"/>
       <source>Choose a FreeCAD config file to import</source>
       <translation>Alegeți un fișier de configurare FreeCAD pentru import</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="611"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="642"/>
       <source>File exists</source>
       <translation>Fișier existent</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="612"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="643"/>
       <source>A preference pack with that name already exists. Overwrite?</source>
       <translation>Un pachet de preferințe cu același nume există deja. Doriți sa îl suprascrieți?</translation>
     </message>
@@ -13100,89 +12972,89 @@ din consola Python către panoul de vizualizare Rapoarte</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="14"/>
       <source>Theme</source>
-      <translation type="unfinished">Theme</translation>
+      <translation>Tema</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="20"/>
       <source>This page let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
-      <translation type="unfinished">This page let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</translation>
+      <translation>Această pagină vă permite să personalizaţi tema curentă. Setările oferite sunt opţionale pentru dezvoltatorii temei, astfel încât acestea pot avea sau nu un efect în tema curentă.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="34"/>
       <source>Accent color 1</source>
-      <translation type="unfinished">Accent color 1</translation>
+      <translation>Accent culoare 1</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="67"/>
       <source>Accent color 2</source>
-      <translation type="unfinished">Accent color 2</translation>
+      <translation>Accent culoare 2</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="100"/>
       <source>Accent color 3</source>
-      <translation type="unfinished">Accent color 3</translation>
+      <translation>Accent culoare 3</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="133"/>
       <source>Style sheet (advanced):</source>
-      <translation type="unfinished">Style sheet (advanced):</translation>
+      <translation>Foaie de stil (avansată):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="140"/>
       <source>Style sheet how user interface will look like</source>
-      <translation type="unfinished">Style sheet how user interface will look like</translation>
+      <translation>Foaie de stil cum va arăta interfața utilizatorului</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="156"/>
       <source>Overlay style sheet:</source>
-      <translation type="unfinished">Overlay style sheet:</translation>
+      <translation>Stilul suprapunerii foii</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="47"/>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="80"/>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="113"/>
       <source>This color might be used by your theme to let you customize it.</source>
-      <translation type="unfinished">This color might be used by your theme to let you customize it.</translation>
+      <translation>Această culoare poate fi folosită de tema dvs. pentru a vă permite să o personalizați.</translation>
     </message>
   </context>
   <context>
     <name>StdCmdExportDependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="605"/>
+      <location filename="../CommandDoc.cpp" line="606"/>
       <source>Export dependency graph...</source>
-      <translation type="unfinished">Export dependency graph...</translation>
+      <translation>Exportă graficul de dependență...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="606"/>
       <location filename="../CommandDoc.cpp" line="607"/>
+      <location filename="../CommandDoc.cpp" line="608"/>
       <source>Export the dependency graph to a file</source>
-      <translation type="unfinished">Export the dependency graph to a file</translation>
+      <translation>Exportă graficul de dependență într-un fișier</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSelBack</name>
     <message>
-      <location filename="../CommandView.cpp" line="3457"/>
+      <location filename="../CommandView.cpp" line="3383"/>
       <source>Selection back</source>
-      <translation type="unfinished">Selection back</translation>
+      <translation>Selecție înapoi</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3459"/>
+      <location filename="../CommandView.cpp" line="3385"/>
       <source>Restore the previous Tree view selection. Only works if Tree RecordSelection mode is switched on.</source>
-      <translation type="unfinished">Restore the previous Tree view selection. Only works if Tree RecordSelection mode is switched on.</translation>
+      <translation>Restabiliți selecția anterioară de vizualizare a arborelor. Funcționează numai dacă modul de înregistrare a copacului este pornit.</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSelForward</name>
     <message>
-      <location filename="../CommandView.cpp" line="3491"/>
+      <location filename="../CommandView.cpp" line="3417"/>
       <source>Selection forward</source>
-      <translation type="unfinished">Selection forward</translation>
+      <translation>Selecție înainte</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3493"/>
+      <location filename="../CommandView.cpp" line="3419"/>
       <source>Restore the next Tree view selection. Only works if Tree RecordSelection mode is switched on.</source>
-      <translation type="unfinished">Restore the next Tree view selection. Only works if Tree RecordSelection mode is switched on.</translation>
+      <translation>Restabiliți următoarea selecție de vizualizare a arborelui. Funcționează numai dacă modul de înregistrare a arborelor este pornit.</translation>
     </message>
   </context>
   <context>
@@ -13190,17 +13062,17 @@ din consola Python către panoul de vizualizare Rapoarte</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="14"/>
       <source>Light Sources</source>
-      <translation type="unfinished">Light Sources</translation>
+      <translation>Surse de lumină</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="20"/>
       <source>Light sources</source>
-      <translation type="unfinished">Light sources</translation>
+      <translation>Surse de lumină</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="26"/>
       <source>Light source</source>
-      <translation type="unfinished">Light source</translation>
+      <translation>Sursă de lumină</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="72"/>
@@ -13210,154 +13082,154 @@ din consola Python către panoul de vizualizare Rapoarte</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="107"/>
       <source>Lights</source>
-      <translation type="unfinished">Lights</translation>
+      <translation>Lumini</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleTransparency</name>
     <message>
-      <location filename="../CommandView.cpp" line="901"/>
+      <location filename="../CommandView.cpp" line="902"/>
       <source>Toggle transparency</source>
-      <translation type="unfinished">Toggle transparency</translation>
+      <translation>Comută transparența</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="903"/>
+      <location filename="../CommandView.cpp" line="904"/>
       <source>Toggles transparency of the selected objects. You can also fine tune transparency value in the Appearance taskbox (right click an object in the tree, Appearance).</source>
-      <translation type="unfinished">Toggles transparency of the selected objects. You can also fine tune transparency value in the Appearance taskbox (right click an object in the tree, Appearance).</translation>
+      <translation>Activează/dezactivează transparența obiectelor selectate. De asemenea, puteți ajusta transparența valorii în caseta Appearance (click dreapta pe un obiect din copac, Appearance).</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDockOverlayAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3828"/>
+      <location filename="../CommandView.cpp" line="3754"/>
       <source>Toggle overlay for all</source>
-      <translation type="unfinished">Toggle overlay for all</translation>
+      <translation>Comută suprapunerea pentru toți</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3829"/>
+      <location filename="../CommandView.cpp" line="3755"/>
       <source>Toggle overlay mode for all docked windows</source>
-      <translation type="unfinished">Toggle overlay mode for all docked windows</translation>
+      <translation>Comută modul overlay pentru toate ferestrele andocate</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDockOverlayTransparentAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3852"/>
+      <location filename="../CommandView.cpp" line="3778"/>
       <source>Toggle transparent for all</source>
-      <translation type="unfinished">Toggle transparent for all</translation>
+      <translation>Comută transparent pentru toți</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3853"/>
+      <location filename="../CommandView.cpp" line="3779"/>
       <source>Toggle transparent mode for all docked overlay windows.
 This makes the docked windows stay transparent at all times.</source>
-      <translation type="unfinished">Toggle transparent mode for all docked overlay windows.
-This makes the docked windows stay transparent at all times.</translation>
+      <translation>Comută modul transparent pentru toate ferestrele andocate.
+Acest lucru face ca ferestrele andocate să rămână transparente în orice moment.</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDockOverlayToggle</name>
     <message>
-      <location filename="../CommandView.cpp" line="3877"/>
+      <location filename="../CommandView.cpp" line="3803"/>
       <source>Toggle overlay</source>
-      <translation type="unfinished">Toggle overlay</translation>
+      <translation>Comută suprapunerea</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3878"/>
+      <location filename="../CommandView.cpp" line="3804"/>
       <source>Toggle overlay mode for the docked window under the cursor</source>
-      <translation type="unfinished">Toggle overlay mode for the docked window under the cursor</translation>
+      <translation>Comută modul overlay pentru fereastra atașată sub cursor</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3901"/>
+      <location filename="../CommandView.cpp" line="3827"/>
       <source>Toggle transparent</source>
-      <translation type="unfinished">Toggle transparent</translation>
+      <translation>Comută transparent</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3902"/>
+      <location filename="../CommandView.cpp" line="3828"/>
       <source>Toggle transparent mode for the docked window under cursor.
 This makes the docked window stay transparent at all times.</source>
-      <translation type="unfinished">Toggle transparent mode for the docked window under cursor.
-This makes the docked window stay transparent at all times.</translation>
+      <translation>Comută modul transparent pentru fereastra atașată sub cursor.
+Acest lucru face ca fereastra andocată să rămână transparentă tot timpul.</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDockOverlayToggleLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="3926"/>
+      <location filename="../CommandView.cpp" line="3852"/>
       <source>Toggle left</source>
-      <translation type="unfinished">Toggle left</translation>
+      <translation>Comutare la stânga</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3927"/>
+      <location filename="../CommandView.cpp" line="3853"/>
       <source>Show/hide left overlay panel</source>
-      <translation type="unfinished">Show/hide left overlay panel</translation>
+      <translation>Arată/ascunde panoul stânga suprapus</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDockOverlayToggleRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="3951"/>
+      <location filename="../CommandView.cpp" line="3877"/>
       <source>Toggle right</source>
-      <translation type="unfinished">Toggle right</translation>
+      <translation>Comutare la dreapta</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3952"/>
+      <location filename="../CommandView.cpp" line="3878"/>
       <source>Show/hide right overlay panel</source>
-      <translation type="unfinished">Show/hide right overlay panel</translation>
+      <translation>Arată/ascunde panoul suprapus dreapta</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDockOverlayToggleTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="3976"/>
+      <location filename="../CommandView.cpp" line="3902"/>
       <source>Toggle top</source>
-      <translation type="unfinished">Toggle top</translation>
+      <translation>Comutare sus</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3977"/>
+      <location filename="../CommandView.cpp" line="3903"/>
       <source>Show/hide top overlay panel</source>
-      <translation type="unfinished">Show/hide top overlay panel</translation>
+      <translation>Arată/ascunde panoul de deasupra</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDockOverlayToggleBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="4001"/>
+      <location filename="../CommandView.cpp" line="3927"/>
       <source>Toggle bottom</source>
-      <translation type="unfinished">Toggle bottom</translation>
+      <translation>Comutare jos</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4002"/>
+      <location filename="../CommandView.cpp" line="3928"/>
       <source>Show/hide bottom overlay panel</source>
-      <translation type="unfinished">Show/hide bottom overlay panel</translation>
+      <translation>Arată/ascunde panoul de jos</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDockOverlayMouseTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="4026"/>
+      <location filename="../CommandView.cpp" line="3952"/>
       <source>Bypass mouse events in docked overlay windows</source>
-      <translation type="unfinished">Bypass mouse events in docked overlay windows</translation>
+      <translation>Ignoră evenimentele mouse-ului în ferestrele andocate suprapuse</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4027"/>
+      <location filename="../CommandView.cpp" line="3953"/>
       <source>Bypass all mouse events in docked overlay windows</source>
-      <translation type="unfinished">Bypass all mouse events in docked overlay windows</translation>
+      <translation>Ignoră toate evenimentele mouse-ului în ferestrele andocate suprapuse</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDockOverlay</name>
     <message>
-      <location filename="../CommandView.cpp" line="4068"/>
+      <location filename="../CommandView.cpp" line="3994"/>
       <source>Dock window overlay</source>
-      <translation type="unfinished">Dock window overlay</translation>
+      <translation>Suprapunere fereastră de andocare</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4069"/>
+      <location filename="../CommandView.cpp" line="3995"/>
       <source>Setting docked window overlay mode</source>
-      <translation type="unfinished">Setting docked window overlay mode</translation>
+      <translation>Setarea modului de suprapunere a ferestrei andocate</translation>
     </message>
   </context>
   <context>
@@ -13365,36 +13237,36 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="317"/>
       <source>Overlay dock (re),layout delay.</source>
-      <translation type="unfinished">Overlay dock (re),layout delay.</translation>
+      <translation>Suprapunere de andocare (re), întârziere aspect</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="372"/>
       <source>Overlay splitter handle auto hide delay. Set zero to disable auto hiding.</source>
-      <translation type="unfinished">Overlay splitter handle auto hide delay. Set zero to disable auto hiding.</translation>
+      <translation>Întârziere ascundere automată suprapunere. Setează zero pentru a dezactiva ascunderea automată.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="400"/>
       <source>Show auto hidden dock overlay on mouse over.
 If disabled, then show on mouse click.</source>
-      <translation type="unfinished">Show auto hidden dock overlay on mouse over.
-If disabled, then show on mouse click.</translation>
+      <translation>Arată overlay-ul automat ascuns de andocare peste mouse-ul.
+Dacă este dezactivat, apoi arată pe click-ul mouse-ului.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="429"/>
       <source>Auto mouse click through transparent part of dock overlay.</source>
-      <translation type="unfinished">Auto mouse click through transparent part of dock overlay.</translation>
+      <translation>Auto mouse click printr-o parte transparentă a suprapunerii cu andocarea.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="457"/>
       <source>Auto pass through mouse wheel event on transparent dock overlay.</source>
-      <translation type="unfinished">Auto pass through mouse wheel event on transparent dock overlay.</translation>
+      <translation>Auto traversarea evenimentului pe rotița mouse-ului pe suprapunere transparentă a dock-ului.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="485"/>
       <source>Delay capturing mouse wheel event for passing through if it is
 previously handled by other widget.</source>
-      <translation type="unfinished">Delay capturing mouse wheel event for passing through if it is
-previously handled by other widget.</translation>
+      <translation>Întârziere capturarea evenimentului pe rotița mouse-ului pentru trecerea prin
+este manevrată anterior de un alt widget.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="514"/>
@@ -13402,100 +13274,100 @@ previously handled by other widget.</translation>
 defines a region of alpha test under the mouse cursor.
 Auto click through is only activated if all pixels within
 the region are non-opaque.</source>
-      <translation type="unfinished">If auto mouse click through is enabled, then this radius
-defines a region of alpha test under the mouse cursor.
-Auto click through is only activated if all pixels within
-the region are non-opaque.</translation>
+      <translation>Dacă automat mouse-ul dă click pe este activat, atunci această rază
+definește o regiune a testului alpha sub cursorul mouse-ului.
+Auto click este activat doar dacă toți pixelii din
+regiunea nu este opacă.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="545"/>
       <source>Leave space for Navigation Cube in dock overlay</source>
-      <translation type="unfinished">Leave space for Navigation Cube in dock overlay</translation>
+      <translation>Lăsaţi spaţiul pentru navigare Cube în dock overlay</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="573"/>
       <source>Auto hide hint visual display triggering width</source>
-      <translation type="unfinished">Auto hide hint visual display triggering width</translation>
+      <translation>Ascunde automat afişarea vizuală a indiciului care declanşează lăţimea</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="601"/>
       <source>Auto hide hint visual display width</source>
-      <translation type="unfinished">Auto hide hint visual display width</translation>
+      <translation>Ascunde automat lățimea vizuală a indicelui</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="629"/>
       <source>Auto hide hint visual display length for left panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for left panel. Set to zero to fill the space.</translation>
+      <translation>Ascunde automat lungimea vizuală a indicelui pentru panoul stâng. Setat la zero pentru a umple spațiul.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="657"/>
       <source>Auto hide hint visual display length for right panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for right panel. Set to zero to fill the space.</translation>
+      <translation>Ascunde automat lungimea vizuală a indicelui pentru panoul din dreapta. Setează la zero pentru a umple spațiul.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="685"/>
       <source>Auto hide hint visual display length for top panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for top panel. Set to zero to fill the space.</translation>
+      <translation>Ascunde automat lungimea vizuală a indicelui pentru panoul de sus. Setează la zero pentru a umple spațiul.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="713"/>
       <source>Auto hide hint visual display length for bottom panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for bottom panel. Set to zero to fill the space.</translation>
+      <translation>Ascunde automat lungimea vizuală a indicelui pentru panoul de jos. Setează la zero pentru a umple spațiul.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="741"/>
       <source>Auto hide hint visual display offset for left panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for left panel</translation>
+      <translation>Ascundere automată a afișajului vizual indiciu pentru panoul din stânga</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="769"/>
       <source>Auto hide hint visual display offset for right panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for right panel</translation>
+      <translation>Ascunde automat afișajul vizual pentru panoul din dreapta</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="797"/>
       <source>Auto hide hint visual display offset for top panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for top panel</translation>
+      <translation>Ascunde automat optiunea vizuală a indicelui pentru panoul de sus</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="825"/>
       <source>Auto hide hint visual display offset for bottom panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for bottom panel</translation>
+      <translation>Ascunde automat ofsetul vizual de afișare indiciu pentru panoul de jos</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="853"/>
       <source>Show tab bar on mouse over when auto hide</source>
-      <translation type="unfinished">Show tab bar on mouse over when auto hide</translation>
+      <translation>Arată bara filelor pe mouse când se ascunde automat</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="881"/>
       <source>Hide tab bar in dock overlay</source>
-      <translation type="unfinished">Hide tab bar in dock overlay</translation>
+      <translation>Ascunde bara filelor în suprapunerea de andocare</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="909"/>
       <source>Delay before show hint visual</source>
-      <translation type="unfinished">Delay before show hint visual</translation>
+      <translation>Întârziere înainte de afișare imagine indiciu</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="937"/>
       <source>Auto hide animation duration, 0 to disable</source>
-      <translation type="unfinished">Auto hide animation duration, 0 to disable</translation>
+      <translation>Auto ascunde durata animaţiei, 0 pentru dezactivare</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="965"/>
       <source>Auto hide animation curve type</source>
-      <translation type="unfinished">Auto hide animation curve type</translation>
+      <translation>Ascunde automat tipul curbei de animație</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="993"/>
       <source>Hide property view scroll bar in dock overlay</source>
-      <translation type="unfinished">Hide property view scroll bar in dock overlay</translation>
+      <translation>Ascunde bara de derulare a proprietății în suprapunere de andocare</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="1021"/>
       <source>Minimum overlay dock widget width/height</source>
-      <translation type="unfinished">Minimum overlay dock widget width/height</translation>
+      <translation>Lățime/înălțime minimă suprapunere pentru widget</translation>
     </message>
   </context>
   <context>
@@ -13503,7 +13375,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="856"/>
       <source>Toggle transparent mode</source>
-      <translation type="unfinished">Toggle transparent mode</translation>
+      <translation>Comută modul transparent</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="857"/>
@@ -13513,93 +13385,223 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="858"/>
       <source>Turn off auto hide/show</source>
-      <translation type="unfinished">Turn off auto hide/show</translation>
+      <translation>Opriți ascunderea automată/afișarea</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="859"/>
       <source>Auto hide</source>
-      <translation type="unfinished">Auto hide</translation>
+      <translation>Auto ascundere</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="860"/>
       <source>Auto hide docked widgets on leave</source>
-      <translation type="unfinished">Auto hide docked widgets on leave</translation>
+      <translation>Ascunde automat widget-urile andocate la stânga</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="861"/>
       <source>Hide on edit</source>
-      <translation type="unfinished">Hide on edit</translation>
+      <translation>Ascunde la editare</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="862"/>
       <source>Auto hide docked widgets on editing</source>
-      <translation type="unfinished">Auto hide docked widgets on editing</translation>
+      <translation>Ascunde automat widget-urile andocate la editare</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="863"/>
       <source>Show on edit</source>
-      <translation type="unfinished">Show on edit</translation>
+      <translation>Arată la editare</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="864"/>
       <source>Auto show docked widgets on editing</source>
-      <translation type="unfinished">Auto show docked widgets on editing</translation>
+      <translation>Afișare automată widget-uri andocate în timpul editării</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="865"/>
       <source>Auto task</source>
-      <translation type="unfinished">Auto task</translation>
+      <translation>Activare automată</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="866"/>
       <source>Auto show task view for any current task, and hide the view when there is no task.</source>
-      <translation type="unfinished">Auto show task view for any current task, and hide the view when there is no task.</translation>
+      <translation>Arată automat vizualizarea sarcinilor pentru orice sarcină curentă și ascunde vizualizarea atunci când nu există nicio sarcină.</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="867"/>
       <source>Toggle overlay</source>
-      <translation type="unfinished">Toggle overlay</translation>
+      <translation>Comută suprapunerea</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="893"/>
       <source>Select auto show/hide mode</source>
-      <translation type="unfinished">Select auto show/hide mode</translation>
+      <translation>Selectaţi modul de afişare/ascundere automată</translation>
     </message>
   </context>
   <context>
     <name>Gui::OverlayTitleBar</name>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1836"/>
+      <location filename="../OverlayWidgets.cpp" line="1837"/>
       <source>Mouse pass through, ESC to stop</source>
-      <translation type="unfinished">Mouse pass through, ESC to stop</translation>
+      <translation>Mouse-ul trece prin ESC pentru a opri</translation>
     </message>
   </context>
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="828"/>
+      <location filename="../CommandDoc.cpp" line="829"/>
       <source>Document i&amp;nformation...</source>
-      <translation type="unfinished">Document i&amp;nformation...</translation>
+      <translation>Informație documentechar@@0</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="829"/>
-      <location filename="../CommandDoc.cpp" line="831"/>
+      <location filename="../CommandDoc.cpp" line="830"/>
+      <location filename="../CommandDoc.cpp" line="832"/>
       <source>Show details of the currently active document</source>
-      <translation type="unfinished">Show details of the currently active document</translation>
+      <translation>Arată detaliile documentului activ în prezent</translation>
     </message>
   </context>
   <context>
     <name>StdCmdProjectUtil</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="859"/>
+      <location filename="../CommandDoc.cpp" line="860"/>
       <source>Document utility...</source>
-      <translation type="unfinished">Document utility...</translation>
+      <translation>Utilitar document...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="860"/>
       <location filename="../CommandDoc.cpp" line="861"/>
+      <location filename="../CommandDoc.cpp" line="862"/>
       <source>Utility to extract or create document files</source>
-      <translation type="unfinished">Utility to extract or create document files</translation>
+      <translation>Utilitar pentru a extrage sau a crea fişiere document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleToolBarLock</name>
+    <message>
+      <location filename="../CommandWindow.cpp" line="352"/>
+      <source>Lock toolbars</source>
+      <translation>Blocare bare de instrumente</translation>
+    </message>
+    <message>
+      <location filename="../CommandWindow.cpp" line="353"/>
+      <location filename="../CommandWindow.cpp" line="355"/>
+      <source>Locks toolbar so they are no longer moveable</source>
+      <translation>Blochează bara de instrumente astfel încât acestea să nu mai fie mobile</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdProperties</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="1728"/>
+      <source>Properties</source>
+      <translation>Proprietăți</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="1729"/>
+      <source>Show the property view, which displays the properties of the selected object.</source>
+      <translation>Arată vizualizarea proprietății, care afișează proprietățile obiectului selectat.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleFreeze</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="153"/>
+      <source>Toggle freeze</source>
+      <translation>Comutare înghețare</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="155"/>
+      <source>Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</source>
+      <translation>Comută înghețarea obiectelor selectate. Un obiect înghețat nu este recalculat atunci când părinții săi se schimbă.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewGroup</name>
+    <message>
+      <location filename="../CommandView.cpp" line="1628"/>
+      <source>Standard views</source>
+      <translation>Vederi standard</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="1629"/>
+      <location filename="../CommandView.cpp" line="1630"/>
+      <source>Change to a standard view</source>
+      <translation>Schimbă la o vizualizare standard</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::WorkbenchTabWidget</name>
+    <message>
+      <location filename="../WorkbenchSelector.cpp" line="411"/>
+      <source>Preferences</source>
+      <translation>Preferinţe</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdMeasure</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3205"/>
+      <source>&amp;Measure</source>
+      <translation>&amp;Măsură</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3206"/>
+      <location filename="../CommandView.cpp" line="3208"/>
+      <source>Measure a feature</source>
+      <translation>Măsurați o caracteristică</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TaskMeasure</name>
+    <message>
+      <location filename="../TaskMeasure.cpp" line="51"/>
+      <source>Measurement</source>
+      <translation>Măsurare</translation>
+    </message>
+    <message>
+      <location filename="../TaskMeasure.cpp" line="77"/>
+      <source>Mode:</source>
+      <translation>Mod:</translation>
+    </message>
+    <message>
+      <location filename="../TaskMeasure.cpp" line="78"/>
+      <source>Result:</source>
+      <translation>Rezultat:</translation>
+    </message>
+    <message>
+      <location filename="../TaskMeasure.cpp" line="107"/>
+      <source>Save</source>
+      <translation>Salvare</translation>
+    </message>
+    <message>
+      <location filename="../TaskMeasure.cpp" line="108"/>
+      <source>Save the measurement in the active document.</source>
+      <translation type="unfinished">Save the measurement in the active document.</translation>
+    </message>
+    <message>
+      <location filename="../TaskMeasure.cpp" line="114"/>
+      <source>Close</source>
+      <translation>Închide</translation>
+    </message>
+    <message>
+      <location filename="../TaskMeasure.cpp" line="115"/>
+      <source>Close the measurement task.</source>
+      <translation type="unfinished">Close the measurement task.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::DockWnd::PropertyDockView</name>
+    <message>
+      <location filename="../PropertyView.cpp" line="562"/>
+      <source>Property view</source>
+      <translation>Vizualizare proprietăţi</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ToolBarManager</name>
+    <message>
+      <location filename="../ToolBarManager.cpp" line="950"/>
+      <source>Undock toolbars</source>
+      <translation type="unfinished">Undock toolbars</translation>
     </message>
   </context>
 </TS>

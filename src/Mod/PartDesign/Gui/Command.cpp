@@ -129,12 +129,12 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
             //test if current selection fits a mode.
             if (support.getSize() > 0) {
                 Part::AttachExtension* pcDatum = Feat->getExtensionByType<Part::AttachExtension>();
-                pcDatum->attacher().references.Paste(support);
+                pcDatum->attacher().setReferences(support);
                 SuggestResult sugr;
                 pcDatum->attacher().suggestMapModes(sugr);
                 if (sugr.message == Attacher::SuggestResult::srOK) {
-                    //fits some mode. Populate support property.
-                    FCMD_OBJ_CMD(Feat,"Support = " << support.getPyReprString());
+                    //fits some mode. Populate AttachmentSupport property.
+                    FCMD_OBJ_CMD(Feat,"AttachmentSupport = " << support.getPyReprString());
                     FCMD_OBJ_CMD(Feat,"MapMode = '" << AttachEngine::getModeName(sugr.bestFitMode) << "'");
                 } else {
                     QMessageBox::information(Gui::getMainWindow(),QObject::tr("Invalid selection"), QObject::tr("There are no attachment modes that fit selected objects. Select something else."));
@@ -475,7 +475,7 @@ void CmdPartDesignClone::activated(int iMsg)
                           << "setEditorMode('Placement', 0)");
 
         updateActive();
-        copyVisual(cloneObj, "ShapeColor", obj);
+        copyVisual(cloneObj, "ShapeAppearance", obj);
         copyVisual(cloneObj, "LineColor", obj);
         copyVisual(cloneObj, "PointColor", obj);
         copyVisual(cloneObj, "Transparency", obj);
@@ -556,7 +556,7 @@ void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
 
     // Do this before calling setEdit to avoid to override the 'Shape preview' mode (#0003621)
     if (obj) {
-        cmd->copyVisual(Feat, "ShapeColor", obj);
+        cmd->copyVisual(Feat, "ShapeAppearance", obj);
         cmd->copyVisual(Feat, "LineColor", obj);
         cmd->copyVisual(Feat, "PointColor", obj);
         cmd->copyVisual(Feat, "Transparency", obj);
@@ -664,6 +664,103 @@ unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
     return freeSketches;
 }
 
+/**
+ *  Partially pulled from Linkstage3 importExternalObjects for toponaming element map
+ *  compatibility with sketches that contain point objects.  By adding an empty
+ *  subobject when appropriate, we allow those sketches to be used as profiles without error.
+ *
+ * @param prop  The property ( generally a Profile link )
+ * @param _sobjs    Subobjects to use
+ * @param report    True if we should raise a dialog, otherwise raise and exception
+ * @return  True if elements were found
+ */
+bool importExternalElements(App::PropertyLinkSub& prop, std::vector<App::SubObjectT> _sobjs)
+{
+    if (!prop.getName() || !prop.getName()[0]) {
+        FC_THROWM(Base::RuntimeError, "Invalid property");
+    }
+    auto editObj = Base::freecad_dynamic_cast<App::DocumentObject>(prop.getContainer());
+    if (!editObj) {
+        FC_THROWM(Base::RuntimeError, "Editing object not found");
+    }
+    auto body = PartDesign::Body::findBodyOf(editObj);
+    if (!body) {
+        FC_THROWM(Base::RuntimeError,
+                  "No body for editing object: " << editObj->getNameInDocument());
+    }
+    std::map<App::DocumentObject*, std::vector<std::string>> links;
+    std::vector<App::SubObjectT> sobjs;
+    auto docName = editObj->getDocument()->getName();
+    auto inList = editObj->getInListEx(true);
+    for (auto sobjT : _sobjs) {
+        auto sobj = sobjT.getSubObject();
+        if (sobj == editObj) {
+            continue;
+        }
+        if (!sobj) {
+            FC_THROWM(Base::RuntimeError,
+                      "Object not found: " << sobjT.getSubObjectFullName(docName));
+        }
+        if (inList.count(sobj)) {
+            FC_THROWM(Base::RuntimeError,
+                      "Cyclic dependency on object " << sobjT.getSubObjectFullName(docName));
+        }
+        sobjT.normalized();
+        // Make sure that if a subelement is chosen for some object,
+        // we exclude whole object reference for that object.
+        auto& subs = links[sobj];
+        std::string element = sobjT.getOldElementName();
+        if (element.size()) {
+            if (subs.size() == 1 && subs.front().empty()) {
+                for (auto it = sobjs.begin(); it != sobjs.end();) {
+                    if (it->getSubObject() == sobj) {
+                        sobjs.erase(it);
+                        break;
+                    }
+                }
+            }
+        }
+        else if (subs.size() > 0) {
+            continue;
+        }
+        subs.push_back(std::move(element));
+        sobjs.push_back(sobjT);
+    }
+
+    int import = 0;
+    App::DocumentObject* obj = nullptr;
+    std::vector<std::string> subs;
+    for (const auto& sobjT : sobjs) {
+        auto sobj = sobjT.getSubObject();
+        if (PartDesign::Body::findBodyOf(sobj) != body) {
+            import = 1;
+            break;
+        }
+        if (!obj) {
+            obj = sobj;
+        }
+        else if (obj != sobj) {
+            if (!import) {
+                import = -1;
+            }
+            break;
+        }
+        subs.push_back(sobjT.getOldElementName());
+    }
+    if (!import) {
+        if (subs.empty()) {
+            subs.emplace_back();
+        }
+        if (obj == prop.getValue() && prop.getSubValues() == subs) {
+            return false;
+        }
+        prop.setValue(obj, std::move(subs));
+        return true;
+    }
+    return false;
+}
+
+
 void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const std::string& which,
                          std::function<void (Part::Feature*, App::DocumentObject*)> func)
 {
@@ -687,6 +784,15 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
         auto objCmd = Gui::Command::getObjectCmd(feature);
 
+        // Populate the subs parameter by checking for external elements before
+        // we construct our command.
+        auto ProfileFeature = Base::freecad_dynamic_cast<PartDesign::ProfileBased>(Feat);
+
+        std::vector<std::string>& cmdSubs = const_cast<vector<std::string>&>(subs);
+        if (subs.size() == 0) {
+            importExternalElements(ProfileFeature->Profile, {feature});
+            cmdSubs = ProfileFeature->Profile.getSubValues();
+        }
         // run the command in console to set the profile (without selected subelements)
         auto runProfileCmd =
             [=]() {
@@ -698,7 +804,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         auto runProfileCmdWithSubs =
             [=]() {
                 std::ostringstream ss;
-                for (auto &s : subs)
+                for (auto &s : cmdSubs)
                     ss << "'" << s << "',";
                 FCMD_OBJ_CMD(Feat,"Profile = (" << objCmd << ", [" << ss.str() << "])");
             };
@@ -772,10 +878,8 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             }
         }
         else {
-            if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) || subs.empty())
-                runProfileCmd();
-            else
-                runProfileCmdWithSubs();
+            // Always use the subs
+            runProfileCmdWithSubs();
         }
 
         func(static_cast<Part::Feature*>(feature), Feat);
@@ -1877,22 +1981,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
 {
     std::string FeatName = cmd->getUniqueObjectName(which.c_str(), pcActiveBody);
 
-    auto accepter = [=](std::vector<App::DocumentObject*> features) -> bool {
-
-        if (features.empty())
-            return false;
-
-        return true;
-    };
-
     auto worker = [=](std::vector<App::DocumentObject*> features) {
-        std::stringstream str;
-        str << cmd->getObjectCmd(FeatName.c_str(), pcActiveBody->getDocument()) << ".Originals = [";
-        for (auto feature : features) {
-            str << cmd->getObjectCmd(feature) << ",";
-        }
-        str << "]";
-
         std::string msg("Make ");
         msg += which;
         Gui::Command::openCommand(msg.c_str());
@@ -1900,9 +1989,20 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
         // FIXME: There seems to be kind of a race condition here, leading to sporadic errors like
         // Exception (Thu Sep  6 11:52:01 2012): 'App.Document' object has no attribute 'Mirrored'
         Gui::Command::updateActive(); // Helps to ensure that the object already exists when the next command comes up
-        Gui::Command::doCommand(Gui::Command::Doc, str.str().c_str());
 
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
+
+        if (features.empty()) {
+            FCMD_OBJ_CMD(Feat, "TransformMode = \"Transform body\"");
+        } else {
+            std::stringstream str;
+            str << "Originals = [";
+            for (auto feature : features) {
+                str << cmd->getObjectCmd(feature) << ",";
+            }
+            str << "]";
+            FCMD_OBJ_CMD(Feat, str.str().c_str());
+        }
 
         // TODO What is this function supposed to do? (2015-08-05, Fat-Zer)
         func(Feat, features);
@@ -1913,44 +2013,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
     };
 
     // Get a valid original from the user
-    // First check selections
     std::vector<App::DocumentObject*> features = cmd->getSelection().getObjectsOfType(PartDesign::Feature::getClassTypeId());
-    // Next create a list of all eligible objects
-    if (features.empty()) {
-        features = cmd->getDocument()->getObjectsOfType(PartDesign::Feature::getClassTypeId());
-        // If there is more than one selected or eligible object, show dialog and let user pick one
-        if (features.size() > 1) {
-            std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
-            for (unsigned i = 0; i < features.size(); i++)
-                status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
-
-            Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-            PartDesignGui::TaskDlgFeaturePick* pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick*>(dlg);
-            if (dlg && !pickDlg) {
-                QMessageBox msgBox;
-                msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-                msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-                msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-                msgBox.setDefaultButton(QMessageBox::Yes);
-                int ret = msgBox.exec();
-                if (ret == QMessageBox::Yes)
-                    Gui::Control().closeDialog();
-                else
-                    return;
-            }
-
-            if (dlg)
-                Gui::Control().closeDialog();
-
-            Gui::Selection().clearSelection();
-            Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(features, status, accepter, worker, false));
-            return;
-        } else if (features.empty()) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
-                QObject::tr("Please create a feature first."));
-            return;
-        }
-    }
 
     PartDesign::Body* activeBody = PartDesignGui::getBody(true);
     for (auto feature : features) {
@@ -1999,24 +2062,17 @@ void CmdPartDesignMirrored::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
-
-        if (features.empty())
-            return;
-
+    auto worker = [cmd, pcActiveBody](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
         bool direction = false;
-        if (features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
-            Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
+        if (!features.empty() && features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+            Part::Part2DObject* sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch) {
                 FCMD_OBJ_CMD(Feat,"MirrorPlane = ("<<getObjectCmd(sketch)<<", ['V_Axis'])");
                 direction = true;
             }
         }
         if (!direction) {
-            auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
-            if (body) {
-                FCMD_OBJ_CMD(Feat,"MirrorPlane = ("<<getObjectCmd(body->getOrigin()->getXY())<<", [''])");
-            }
+            FCMD_OBJ_CMD(Feat,"MirrorPlane = ("<<getObjectCmd(pcActiveBody->getOrigin()->getXY())<<", [''])");
         }
 
         finishTransformed(cmd, Feat);
@@ -2061,13 +2117,9 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
-
-        if (!Feat || features.empty())
-            return;
-
+    auto worker = [cmd, pcActiveBody](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
         bool direction = false;
-        if (features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+        if (!features.empty() && features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch) {
                 FCMD_OBJ_CMD(Feat,"Direction = ("<<Gui::Command::getObjectCmd(sketch)<<", ['H_Axis'])");
@@ -2075,10 +2127,7 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
             }
         }
         if (!direction) {
-            auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
-            if (body) {
-                FCMD_OBJ_CMD(Feat,"Direction = ("<<Gui::Command::getObjectCmd(body->getOrigin()->getX())<<",[''])");
-            }
+            FCMD_OBJ_CMD(Feat,"Direction = ("<<Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getX())<<",[''])");
         }
         FCMD_OBJ_CMD(Feat,"Length = 100");
         FCMD_OBJ_CMD(Feat,"Occurrences = 2");
@@ -2125,13 +2174,10 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
-
-        if (!Feat || features.empty())
-            return;
+    auto worker = [cmd, pcActiveBody](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
 
         bool direction = false;
-        if (features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+        if (!features.empty() && features.front()->isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch) {
                 FCMD_OBJ_CMD(Feat,"Axis = ("<<Gui::Command::getObjectCmd(sketch)<<",['N_Axis'])");
@@ -2139,10 +2185,7 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
             }
         }
         if (!direction) {
-            auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
-            if (body) {
-                FCMD_OBJ_CMD(Feat,"Axis = ("<<Gui::Command::getObjectCmd(body->getOrigin()->getZ())<<",[''])");
-            }
+            FCMD_OBJ_CMD(Feat,"Axis = ("<<Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getZ())<<",[''])");
         }
 
         FCMD_OBJ_CMD(Feat,"Angle = 360");
@@ -2189,11 +2232,7 @@ void CmdPartDesignScaled::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
-
-        if (!Feat || features.empty())
-            return;
-
+    auto worker = [cmd](App::DocumentObject *Feat, std::vector<App::DocumentObject*> /*features*/) {
         FCMD_OBJ_CMD(Feat,"Factor = 2");
         FCMD_OBJ_CMD(Feat,"Occurrences = 2");
 
@@ -2307,11 +2346,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
     } else {
 
         Gui::Command* cmd = this;
-        auto worker = [cmd, pcActiveBody](App::DocumentObject *Feat, std::vector<App::DocumentObject*> features) {
-
-            if (!Feat || features.empty())
-                return;
-
+        auto worker = [cmd, pcActiveBody](App::DocumentObject *Feat, std::vector<App::DocumentObject*> /*features*/) {
             // Make sure the user isn't presented with an empty screen because no transformations are defined yet...
             App::DocumentObject* prevSolid = pcActiveBody->Tip.getValue();
             if (prevSolid) {
@@ -2394,6 +2429,75 @@ bool CmdPartDesignBoolean::isActive()
         return false;
 }
 
+// Command group for datums =============================================
+
+class CmdPartDesignCompDatums: public Gui::GroupCommand
+{
+public:
+    CmdPartDesignCompDatums()
+        : GroupCommand("PartDesign_CompDatums")
+    {
+        sAppModule = "PartDesign";
+        sGroup = "PartDesign";
+        sMenuText = QT_TR_NOOP("Create datum");
+        sToolTipText = QT_TR_NOOP("Create a datum object or local coordinate system");
+        sWhatsThis = "PartDesign_CompDatums";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+
+        addCommand("PartDesign_Plane");
+        addCommand("PartDesign_Line");
+        addCommand("PartDesign_Point");
+        addCommand("PartDesign_CoordinateSystem");
+    }
+
+    const char* className() const override
+    {
+        return "CmdPartDesignCompDatums";
+    }
+
+    bool isActive() override
+    {
+        return hasActiveDocument();
+    }
+};
+
+// Command group for datums =============================================
+
+class CmdPartDesignCompSketches: public Gui::GroupCommand
+{
+public:
+    CmdPartDesignCompSketches()
+        : GroupCommand("PartDesign_CompSketches")
+    {
+        sAppModule = "PartDesign";
+        sGroup = "PartDesign";
+        sMenuText = QT_TR_NOOP("Create datum");
+        sToolTipText = QT_TR_NOOP("Create a datum object or local coordinate system");
+        sWhatsThis = "PartDesign_CompDatums";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("PartDesign_NewSketch");
+        addCommand("Sketcher_MapSketch");
+        addCommand("Sketcher_EditSketch");
+    }
+
+    const char* className() const override
+    {
+        return "CmdPartDesignCompSketches";
+    }
+
+    bool isActive() override
+    {
+        return hasActiveDocument();
+    }
+};
 
 //===========================================================================
 // Initialization
@@ -2437,4 +2541,6 @@ void CreatePartDesignCommands()
     rcCmdMgr.addCommand(new CmdPartDesignMultiTransform());
 
     rcCmdMgr.addCommand(new CmdPartDesignBoolean());
+    rcCmdMgr.addCommand(new CmdPartDesignCompDatums());
+    rcCmdMgr.addCommand(new CmdPartDesignCompSketches());
 }

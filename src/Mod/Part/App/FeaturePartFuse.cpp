@@ -31,11 +31,15 @@
 #endif
 
 #include <App/Application.h>
+#include <Base/Console.h>
 #include <Base/Parameter.h>
 
 #include "FeaturePartFuse.h"
+#include "TopoShape.h"
 #include "modelRefine.h"
+#include "TopoShapeOpCode.h"
 
+FC_LOG_LEVEL_INIT("Part",true,true);
 
 using namespace Part;
 
@@ -48,6 +52,11 @@ BRepAlgoAPI_BooleanOperation* Fuse::makeOperation(const TopoDS_Shape& base, cons
 {
     // Let's call algorithm computing a fuse operation:
     return new BRepAlgoAPI_Fuse(base, tool);
+}
+
+const char *Fuse::opCode() const
+{
+    return Part::OpCodes::Fuse;
 }
 
 // ----------------------------------------------------
@@ -81,56 +90,58 @@ short MultiFuse::mustExecute() const
 
 App::DocumentObjectExecReturn *MultiFuse::execute()
 {
-    std::vector<TopoDS_Shape> s;
+#ifndef FC_USE_TNP_FIX
+    std::vector<TopoDS_Shape> shapes;
     std::vector<App::DocumentObject*> obj = Shapes.getValues();
 
     std::vector<App::DocumentObject*>::iterator it;
     for (it = obj.begin(); it != obj.end(); ++it) {
-        s.push_back(Feature::getShape(*it));
+        shapes.push_back(Feature::getShape(*it));
     }
 
     bool argumentsAreInCompound = false;
     TopoDS_Shape compoundOfArguments;
 
     //if only one source shape, and it is a compound - fuse children of the compound
-    if (s.size() == 1){
-        compoundOfArguments = s[0];
+    if (shapes.size() == 1){
+        compoundOfArguments = shapes[0];
         if (compoundOfArguments.ShapeType() == TopAbs_COMPOUND){
-            s.clear();
-            TopoDS_Iterator it(compoundOfArguments);
-            for (; it.More(); it.Next()) {
-                const TopoDS_Shape& aChild = it.Value();
-                s.push_back(aChild);
+            shapes.clear();
+            TopoDS_Iterator it2(compoundOfArguments);
+            for (; it2.More(); it2.Next()) {
+                const TopoDS_Shape& aChild = it2.Value();
+                shapes.push_back(aChild);
             }
             argumentsAreInCompound = true;
         }
     }
 
-    if (s.size() >= 2) {
+    if (shapes.size() >= 2) {
         try {
             std::vector<ShapeHistory> history;
             BRepAlgoAPI_Fuse mkFuse;
             TopTools_ListOfShape shapeArguments,shapeTools;
-            const TopoDS_Shape& shape = s.front();
+            const TopoDS_Shape& shape = shapes.front();
             if (shape.IsNull())
                 throw Base::RuntimeError("Input shape is null");
             shapeArguments.Append(shape);
 
-            for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
-                if (it->IsNull())
+            for (auto it2 = shapes.begin()+1; it2 != shapes.end(); ++it2) {
+                if (it2->IsNull())
                     throw Base::RuntimeError("Input shape is null");
-                shapeTools.Append(*it);
+                shapeTools.Append(*it2);
             }
 
             mkFuse.SetArguments(shapeArguments);
             mkFuse.SetTools(shapeTools);
+            mkFuse.SetRunParallel(true);
             mkFuse.Build();
             if (!mkFuse.IsDone())
                 throw Base::RuntimeError("MultiFusion failed");
 
             TopoDS_Shape resShape = mkFuse.Shape();
-            for (const auto & it : s) {
-                history.push_back(buildHistory(mkFuse, TopAbs_FACE, resShape, it));
+            for (const auto & it2 : shapes) {
+                history.push_back(buildHistory(mkFuse, TopAbs_FACE, resShape, it2));
             }
             if (resShape.IsNull())
                 throw Base::RuntimeError("Resulting shape is null");
@@ -169,11 +180,11 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
                 for (std::size_t iChild = 0; iChild < history.size(); iChild++){ //loop over children of source compound
                     //for each face of a child, find the inex of the face in compound, and assign the corresponding right-hand-size of the history
                     TopTools_IndexedMapOfShape facesOfChild;
-                    TopExp::MapShapes(s[iChild], type, facesOfChild);
+                    TopExp::MapShapes(shapes[iChild], type, facesOfChild);
                     for(std::pair<const int,ShapeHistory::List> &histitem: history[iChild].shapeMap){ //loop over elements of history - that is - over faces of the child of source compound
                         int iFaceInChild = histitem.first;
                         ShapeHistory::List &iFacesInResult = histitem.second;
-                        TopoDS_Shape srcFace = facesOfChild(iFaceInChild + 1); //+1 to convert our 0-based to OCC 1-bsed conventions
+                        const TopoDS_Shape& srcFace = facesOfChild(iFaceInChild + 1); //+1 to convert our 0-based to OCC 1-bsed conventions
                         int iFaceInCompound = facesOfCompound.FindIndex(srcFace)-1;
                         overallHist.shapeMap[iFaceInCompound] = iFacesInResult; //this may overwrite existing info if the same face is used in several children of compound. This shouldn't be a problem, because the histories should match anyway...
                     }
@@ -192,4 +203,134 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
     }
 
     return App::DocumentObject::StdReturn;
+#else
+    std::vector<TopoShape> shapes;
+    std::vector<App::DocumentObject*> obj = Shapes.getValues();
+
+    std::vector<App::DocumentObject*>::iterator it;
+    for (it = obj.begin(); it != obj.end(); ++it) {
+        shapes.push_back(Feature::getTopoShape(*it));
+    }
+
+    bool argumentsAreInCompound = false;
+    TopoShape compoundOfArguments;
+
+    // if only one source shape, and it is a compound - fuse children of the compound
+    if (shapes.size() == 1) {
+        compoundOfArguments = shapes[0];
+        if (compoundOfArguments.getShape().ShapeType() == TopAbs_COMPOUND) {
+            shapes.clear();
+            shapes = compoundOfArguments.getSubTopoShapes();
+            argumentsAreInCompound = true;
+        }
+    }
+
+    if (shapes.size() >= 2) {
+        try {
+            std::vector<ShapeHistory> history;
+            BRepAlgoAPI_Fuse mkFuse;
+            TopTools_ListOfShape shapeArguments, shapeTools;
+            const TopoShape& shape = shapes.front();
+            if (shape.isNull()) {
+                throw Base::RuntimeError("Input shape is null");
+            }
+            shapeArguments.Append(shape.getShape());
+
+            for (auto it2 = shapes.begin() + 1; it2 != shapes.end(); ++it2) {
+                if (it2->isNull()) {
+                    throw Base::RuntimeError("Input shape is null");
+                }
+                shapeTools.Append(it2->getShape());
+            }
+
+            mkFuse.SetArguments(shapeArguments);
+            mkFuse.SetTools(shapeTools);
+            mkFuse.Build();
+
+            if (!mkFuse.IsDone()) {
+                throw Base::RuntimeError("MultiFusion failed");
+            }
+
+            //        TopoDS_Shape resShape = mkFuse.Shape();
+            TopoShape res(0);
+            res.makeShapeWithElementMap(mkFuse.Shape(), MapperMaker(mkFuse), shapes, OpCodes::Fuse);
+
+            for (const auto& it2 : shapes) {
+                history.push_back(
+                    buildHistory(mkFuse, TopAbs_FACE, res.getShape(), it2.getShape()));
+            }
+            if (res.isNull()) {
+                throw Base::RuntimeError("Resulting shape is null");
+            }
+
+            Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                                     .GetUserParameter()
+                                                     .GetGroup("BaseApp")
+                                                     ->GetGroup("Preferences")
+                                                     ->GetGroup("Mod/Part/Boolean");
+            if (hGrp->GetBool("CheckModel", false)) {
+                BRepCheck_Analyzer aChecker(res.getShape());
+                if (!aChecker.IsValid()) {
+                    return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+                }
+            }
+            if (this->Refine.getValue()) {
+                try {
+                    TopoDS_Shape oldShape = res.getShape();
+                    BRepBuilderAPI_RefineModel mkRefine(oldShape);
+                    res.setShape(mkRefine.Shape());
+                    ShapeHistory hist =
+                        buildHistory(mkRefine, TopAbs_FACE, res.getShape(), oldShape);
+                    for (auto& jt : history) {
+                        jt = joinHistory(jt, hist);
+                    }
+                }
+                catch (Standard_Failure&) {
+                    // do nothing
+                }
+            }
+
+            if (argumentsAreInCompound) {
+                // combine histories of every child of source compound into one
+                ShapeHistory overallHist;
+                TopTools_IndexedMapOfShape facesOfCompound;
+                TopAbs_ShapeEnum type = TopAbs_FACE;
+                TopExp::MapShapes(compoundOfArguments.getShape(), type, facesOfCompound);
+                for (std::size_t iChild = 0; iChild < history.size();
+                     iChild++) {  // loop over children of source compound
+                    // for each face of a child, find the inex of the face in compound, and assign
+                    // the corresponding right-hand-size of the history
+                    TopTools_IndexedMapOfShape facesOfChild;
+                    TopExp::MapShapes(shapes[iChild].getShape(), type, facesOfChild);
+                    for (std::pair<const int, ShapeHistory::List>& histitem :
+                         history[iChild].shapeMap) {  // loop over elements of history - that is -
+                                                      // over faces of the child of source compound
+                        int iFaceInChild = histitem.first;
+                        ShapeHistory::List& iFacesInResult = histitem.second;
+                        const TopoDS_Shape& srcFace = facesOfChild(
+                            iFaceInChild
+                            + 1);  //+1 to convert our 0-based to OCC 1-bsed conventions
+                        int iFaceInCompound = facesOfCompound.FindIndex(srcFace) - 1;
+                        overallHist.shapeMap[iFaceInCompound] =
+                            iFacesInResult;  // this may overwrite existing info if the same face is
+                                             // used in several children of compound. This shouldn't
+                                             // be a problem, because the histories should match
+                                             // anyway...
+                    }
+                }
+                history.clear();
+                history.push_back(overallHist);
+            }
+            this->Shape.setValue(res);
+            this->History.setValues(history);
+            return Part::Feature::execute();
+        }
+        catch (Standard_Failure& e) {
+            return new App::DocumentObjectExecReturn(e.GetMessageString());
+        }
+    }
+    else {
+        throw Base::CADKernelError("Not enough shape objects linked");
+    }
+#endif
 }

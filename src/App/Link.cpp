@@ -237,9 +237,13 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
             propEnum->setEnums(enums);
         break;
     }
-    case PropLinkCopyOnChangeTouched:
     case PropLinkCopyOnChangeSource:
     case PropLinkCopyOnChangeGroup:
+        if (auto linkProp = Base::freecad_dynamic_cast<PropertyLinkBase>(prop)) {
+            linkProp->setScope(LinkScope::Global);
+        }
+        // fall through
+    case PropLinkCopyOnChangeTouched:
         prop->setStatus(Property::Hidden, true);
         break;
     case PropLinkTransform:
@@ -261,9 +265,13 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
     case PropLinkedObject:
         // Make ElementList as read-only if we are not a group (i.e. having
         // LinkedObject property), because it is for holding array elements.
-        if(getElementListProperty())
+        if(getElementListProperty()) {
             getElementListProperty()->setStatus(
                 Property::Immutable, getLinkedObjectProperty() != nullptr);
+        }
+        if (auto linkProp = getLinkedObjectProperty()) {
+            linkProp->setScope(LinkScope::Global);
+        }
         break;
     case PropVisibilityList:
         getVisibilityListProperty()->setStatus(Property::Immutable, true);
@@ -317,6 +325,12 @@ App::DocumentObjectExecReturn *LinkBaseExtension::extensionExecute() {
                    && getLinkCopyOnChangeTouchedValue())
         {
             syncCopyOnChange();
+        }
+
+        // the previous linked object could be deleted by syncCopyOnChange - #12281
+        linked = getTrueLinkedObject(true);
+        if(!linked) {
+            return new App::DocumentObjectExecReturn("Error in processing variable link");
         }
 
         PropertyPythonObject *proxy = nullptr;
@@ -468,7 +482,7 @@ void LinkBaseExtension::setOnChangeCopyObject(
         }
     }
 
-    const char *key = flags.testFlag(OnChangeCopyOptions::ApplyAll) ? "*" : parent->getNameInDocument();
+    const char *key = flags.testFlag(OnChangeCopyOptions::ApplyAll) ? "*" : parent->getDagKey();
     if (external)
         prop->setValue(key, exclude ? "" : "+");
     else
@@ -1406,8 +1420,22 @@ void LinkBaseExtension::checkGeoElementMap(const App::DocumentObject *obj,
        !PyObject_TypeCheck(*pyObj, &Data::ComplexGeoDataPy::Type))
         return;
 
-    // auto geoData = static_cast<Data::ComplexGeoDataPy*>(*pyObj)->getComplexGeoDataPtr();
-    // geoData->reTagElementMap(obj->getID(),obj->getDocument()->Hasher,postfix);
+//     auto geoData = static_cast<Data::ComplexGeoDataPy*>(*pyObj)->getComplexGeoDataPtr();
+//     geoData->reTagElementMap(obj->getID(),obj->getDocument()->Hasher,postfix);
+
+    auto geoData = static_cast<Data::ComplexGeoDataPy*>(*pyObj)->getComplexGeoDataPtr();
+    std::string _postfix;
+    if (linked && obj && linked->getDocument() != obj->getDocument()) {
+        _postfix = Data::POSTFIX_EXTERNAL_TAG;
+        if (postfix) {
+            if (!boost::starts_with(postfix, Data::ComplexGeoData::elementMapPrefix()))
+                _postfix += Data::ComplexGeoData::elementMapPrefix();
+            _postfix += postfix;
+        }
+        postfix = _postfix.c_str();
+    }
+    geoData->reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher(),postfix);
+
 }
 
 void LinkBaseExtension::onExtendedUnsetupObject() {

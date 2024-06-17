@@ -586,6 +586,7 @@ def _create_objects(doc=None,
                              line_color=(0.33, 0.0, 0.49),
                              shape_color=(0.56, 0.89, 0.56),
                              line_width=4,
+                             draw_style="Solid",
                              transparency=50)
     box = doc.addObject("Part::Box", "Box")
     box.Length = 200

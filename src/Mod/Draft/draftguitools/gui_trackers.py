@@ -147,11 +147,11 @@ class Tracker:
             self.color.rgb = color
         elif hasattr(FreeCAD, "activeDraftCommand") \
                 and FreeCAD.activeDraftCommand is not None \
+                and hasattr(FreeCAD.activeDraftCommand, "featureName") \
                 and FreeCAD.activeDraftCommand.featureName in ("Dimension", "Label", "Text"):
-            color = utils.get_rgba_tuple(params.get_param("DefaultAnnoLineColor"))[:3]
-            self.color.rgb = color
+            self.color.rgb = utils.get_rgba_tuple(params.get_param("DefaultAnnoLineColor"))[:3]
         else:
-            self.color.rgb = FreeCADGui.draftToolBar.getDefaultColor("line")
+            self.color.rgb = utils.get_rgba_tuple(params.get_param_view("DefaultShapeLineColor"))[:3]
 
     def _get_wp(self):
         return FreeCAD.DraftWorkingPlane
@@ -178,7 +178,7 @@ class snapTracker(Tracker):
     def setColor(self, color=None):
         """Set the color."""
         if color is None:
-            self.color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
+            self.color.rgb = utils.get_rgba_tuple(params.get_param("snapcolor"))[:3]
         else:
             self.color.rgb = color
 
@@ -445,7 +445,7 @@ class bsplineTracker(Tracker):
             except Exception:
                 # workaround for pivy SoInput.setBuffer() bug
                 buf = buf.replace("\n", "")
-                pts = re.findall("point \[(.*?)\]", buf)[0]
+                pts = re.findall("point \\[(.*?)\\]", buf)[0]
                 pts = pts.split(",")
                 pc = []
                 for p in pts:
@@ -523,7 +523,7 @@ class bezcurveTracker(Tracker):
                 except Exception:
                     # workaround for pivy SoInput.setBuffer() bug
                     buf = buf.replace("\n","")
-                    pts = re.findall("point \[(.*?)\]", buf)[0]
+                    pts = re.findall("point \\[(.*?)\\]", buf)[0]
                     pts = pts.split(",")
                     pc = []
                     for p in pts:
@@ -652,7 +652,7 @@ class arcTracker(Tracker):
         except Exception:
             # workaround for pivy SoInput.setBuffer() bug
             buf = buf.replace("\n", "")
-            pts = re.findall("point \[(.*?)\]", buf)[0]
+            pts = re.findall("point \\[(.*?)\\]", buf)[0]
             pts = pts.split(",")
             pc = []
             for p in pts:
@@ -714,7 +714,7 @@ class ghostTracker(Tracker):
     def setColor(self, color=None):
         """Set the color."""
         if color is None:
-            self.color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
+            self.color.rgb = utils.get_rgba_tuple(params.get_param("snapcolor"))[:3]
         else:
             self.color.rgb = color
 
@@ -898,7 +898,7 @@ class editTracker(Tracker):
     def setColor(self, color=None):
         """Set the color."""
         if color is None:
-            self.color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
+            self.color.rgb = utils.get_rgba_tuple(params.get_param("snapcolor"))[:3]
         else:
             self.color.rgb = color
 
@@ -1001,25 +1001,16 @@ class gridTracker(Tracker):
 
     def __init__(self):
 
-        gtrans = params.get_param("gridTransparency")
-        col = utils.get_rgba_tuple(params.get_param("gridColor"))[:3]
-        if params.get_param("coloredGridAxes"):
-            red = ((1.0+col[0])/2,0.0,0.0)
-            green = (0.0,(1.0+col[1])/2,0.0)
-            blue = (0.0,0.0,(1.0+col[2])/2)
-        else:
-            red = col
-            green = col
-            blue = col
+        col, red, green, blue, gtrans = self.getGridColors()
         pick = coin.SoPickStyle()
         pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0, 0, 0])
 
         # small squares
-        mat1 = coin.SoMaterial()
-        mat1.transparency.setValue(0.7*(1-gtrans))
-        mat1.diffuseColor.setValue(col)
+        self.mat1 = coin.SoMaterial()
+        self.mat1.transparency.setValue(0.8*(1-gtrans))
+        self.mat1.diffuseColor.setValue(col)
         self.font = coin.SoFont()
         self.coords1 = coin.SoCoordinate3()
         self.lines1 = coin.SoLineSet() # small squares
@@ -1044,9 +1035,9 @@ class gridTracker(Tracker):
         texts.addChild(t2)
 
         # big squares
-        mat2 = coin.SoMaterial()
-        mat2.transparency.setValue(0.3*(1-gtrans))
-        mat2.diffuseColor.setValue(col)
+        self.mat2 = coin.SoMaterial()
+        self.mat2.transparency.setValue(0.2*(1-gtrans))
+        self.mat2.diffuseColor.setValue(col)
         self.coords2 = coin.SoCoordinate3()
         self.lines2 = coin.SoLineSet() # big squares
 
@@ -1058,9 +1049,9 @@ class gridTracker(Tracker):
         self.human = coin.SoLineSet()
 
         # axes
-        mat3 = coin.SoMaterial()
-        mat3.transparency.setValue(gtrans)
-        mat3.diffuseColor.setValues([col,red,green,blue])
+        self.mat3 = coin.SoMaterial()
+        self.mat3.transparency.setValue(gtrans)
+        self.mat3.diffuseColor.setValues([col,red,green,blue])
         self.coords3 = coin.SoCoordinate3()
         self.lines3 = coin.SoIndexedLineSet() # axes
         self.lines3.coordIndex.setValues(0,5,[0,1,-1,2,3])
@@ -1072,17 +1063,17 @@ class gridTracker(Tracker):
         s = coin.SoType.fromName("SoSkipBoundingGroup").createInstance()
         s.addChild(pick)
         s.addChild(self.trans)
-        s.addChild(mat1)
+        s.addChild(self.mat1)
         s.addChild(self.coords1)
         s.addChild(self.lines1)
-        s.addChild(mat2)
+        s.addChild(self.mat2)
         s.addChild(self.coords2)
         s.addChild(self.lines2)
         s.addChild(mat_human)
         s.addChild(self.coords_human)
         s.addChild(self.human)
         s.addChild(mbind3)
-        s.addChild(mat3)
+        s.addChild(self.mat3)
         s.addChild(self.coords3)
         s.addChild(self.lines3)
         s.addChild(texts)
@@ -1181,6 +1172,30 @@ class gridTracker(Tracker):
             self.coords3.point.setValues(apts)
             #self.lines3.numVertices.setValues(aidx)
             self.pts = pts
+
+        # update the grid colors
+        col, red, green, blue, gtrans = self.getGridColors()
+        self.mat1.diffuseColor.setValue(col)
+        self.mat2.diffuseColor.setValue(col)
+        self.mat3.diffuseColor.setValues([col,red,green,blue])
+
+    def getGridColors(self):
+        """Returns grid colors stored in the preferences"""
+        gtrans = params.get_param("gridTransparency")/100.0
+        col = utils.get_rgba_tuple(params.get_param("gridColor"))[:3]
+        if params.get_param("coloredGridAxes"):
+            vp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+            red = vp.GetUnsigned("AxisXColor",0xCC333300)
+            green =  vp.GetUnsigned("AxisYColor",0x33CC3300)
+            blue = vp.GetUnsigned("AxisZColor",0x3333CC00)
+            red = utils.get_rgba_tuple(red)[:3]
+            green = utils.get_rgba_tuple(green)[:3]
+            blue = utils.get_rgba_tuple(blue)[:3]
+        else:
+            red = col
+            green = col
+            blue = col
+        return col, red, green, blue, gtrans
 
     def displayHumanFigure(self, wp):
         """ Display the human figure at the grid corner.
@@ -1399,7 +1414,7 @@ class archDimTracker(Tracker):
         p2node = coin.SbVec3f([p2.x, p2.y, p2.z])
         self.dimnode.pnts.setValues([p1node, p2node])
         self.dimnode.lineWidth = 1
-        color = FreeCADGui.draftToolBar.getDefaultColor("snap")
+        color = utils.get_rgba_tuple(params.get_param("snapcolor"))[:3]
         self.dimnode.textColor.setValue(coin.SbVec3f(color))
         self.dimnode.size = 11
         self.size_pixel = self.dimnode.size.getValue()*96/72

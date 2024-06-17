@@ -342,8 +342,7 @@ These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
       <translation>Segmenti mreže će se grupirati prema boji lica objekta.
 Ove će se skupine izvoziti za podršku izlaznih formata mreža
-ove značajke (npr. format OBJ).
-</translation>
+ove funkcije (npr. format OBJ).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
@@ -494,27 +493,27 @@ Vrijednost u rasponu 0.2-10.</translation>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="235"/>
-      <location filename="../../Tessellation.cpp" line="241"/>
+      <location filename="../../Tessellation.cpp" line="237"/>
+      <location filename="../../Tessellation.cpp" line="243"/>
       <source>No active document</source>
       <translation>Nema aktivnog dokumenta</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="272"/>
+      <location filename="../../Tessellation.cpp" line="273"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>Odabrali ste tijelo bez vrha.
 Postavite vrh tijela ili odaberite drugi oblik, molim.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="278"/>
+      <location filename="../../Tessellation.cpp" line="279"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>Odabrali ste oblik bez naličja.
 Odaberite drugačiji oblik, molim.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="282"/>
+      <location filename="../../Tessellation.cpp" line="283"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Prvo daberite oblik za umrežavanje.</translation>
     </message>
@@ -583,7 +582,7 @@ Odaberite drugačiji oblik, molim.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>Razmotaj mrežu</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -596,7 +595,7 @@ Odaberite drugačiji oblik, molim.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation type="unfinished">Unwrap face</translation>
+      <translation>Razmotaj lice</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

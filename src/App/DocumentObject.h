@@ -67,6 +67,7 @@ enum ObjectStatus {
     PendingTransactionUpdate = 18, // mark that the object expects a call to onUndoRedoFinished() after transaction is finished.
     RecomputeExtension = 19, // mark the object to recompute its extensions
     TouchOnColorChange = 20, // inform view provider touch object on color change
+    Freeze = 21, // do not recompute ever
 };
 
 /** Return object for feature execution
@@ -110,6 +111,8 @@ public:
     boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalBeforeChange;
     /// signal on changed  property of this object
     boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalChanged;
+    /// signal on changed property of this object before document scoped signalChangedObject
+    boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalEarlyChanged;
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName() const {
@@ -132,6 +135,8 @@ public:
     DocumentObject();
     ~DocumentObject() override;
 
+    /// returns a value that uniquely identifies this DocumentObject.
+    const char* getDagKey() const;
     /// returns the name which is set in the document for this object (not the name property!)
     const char *getNameInDocument() const;
     /// Return the object ID that is unique within its owner document
@@ -175,6 +180,12 @@ public:
     bool isRestoring() const {return StatusBits.test(ObjectStatus::Restore);}
     /// returns true if this objects is currently removed from the document
     bool isRemoving() const {return StatusBits.test(ObjectStatus::Remove);}
+    /// set this document object freezed (prevent recomputation)
+    void freeze();
+    /// set this document object unfreezed (and touch it)
+    void unfreeze(bool noRecompute=false);
+    /// returns true if this objects is currently freezed
+    bool isFreezed() const {return StatusBits.test(ObjectStatus::Freeze);}
     /// return the status bits
     unsigned long getStatus() const {return StatusBits.to_ulong();}
     bool testStatus(ObjectStatus pos) const {return StatusBits.test(size_t(pos));}
@@ -289,6 +300,20 @@ public:
     bool testIfLinkDAGCompatible(App::PropertyLinkSubList &linksTo) const;
     bool testIfLinkDAGCompatible(App::PropertyLinkSub &linkTo) const;
 
+    /** Return the element map version of the geometry data stored in the given property
+     *
+     * @param prop: the geometry property to query for element map version
+     * @param restored: whether to query for the restored element map version.
+     *                  In case of version upgrade, the restored version may
+     *                  be different from the current version.
+     *
+     * @return Return the element map version string.
+     */
+    virtual std::string getElementMapVersion(const App::Property *prop, bool restored=false) const;
+
+    /// Return true to signal re-generation of geometry element names
+    virtual bool checkElementMapVersion(const App::Property *prop, const char *ver) const;
+
 public:
     /** mustExecute
      *  We call this method to check if the object was modified to
@@ -352,8 +377,18 @@ public:
     virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=nullptr,
             Base::Matrix4D *mat=nullptr, bool transform=true, int depth=0) const;
 
-    /// Return a list of objects referenced by a given subname including this object
-    std::vector<DocumentObject*> getSubObjectList(const char *subname) const;
+    /** Return a list of objects referenced by a given subname including this object
+     * @param subname: the sub name path
+     * @param subsizes: optional sub name sizes for each returned object, that is,
+     *                  ret[i] = getSubObject(std::string(subname, subsizes[i]).c_str());
+     * @param flatten: whether to flatten the object hierarchies that belong to
+     *                 the same geo feature group, e.g. (Part.Fusion.Box -> Part.Box)
+     *
+     * @return Return a list of objects along the path.
+     */
+    std::vector<DocumentObject*> getSubObjectList(const char* subname,
+                                                  std::vector<int>* subsizes = nullptr,
+                                                  bool flatten = false) const;
 
     /// reason of calling getSubObjects()
     enum GSReason {
@@ -605,6 +640,8 @@ protected:
     void onBeforeChange(const Property* prop) override;
     /// get called by the container when a property was changed
     void onChanged(const Property* prop) override;
+    /// get called by the container when a property was changed
+    void onEarlyChange(const Property* prop) override;
     /// get called after a document has been fully restored
     virtual void onDocumentRestored();
     /// get called after an undo/redo transaction is finished

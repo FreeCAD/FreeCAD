@@ -3,64 +3,85 @@
 # - any: ['src/**/*', '!src/docs/*']
 
 Core:
-- 'src/App/**/*'
-- 'src/Base/**/*'
-- 'src/Gui/**/*'
+- changed-files:
+  - any-glob-to-any-file: ['src/App/**/*', 'src/Base/**/*', 'src/Gui/**/*']
 
 :octocat::
-- '.github/**/*'
+- changed-files:
+  - any-glob-to-any-file:  ['.github/**/*']
 
 Addon Manager:
-- 'src/Mod/AddonManager/**/*'
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/AddonManager/**/*']
 
-WB Arch:
-- 'src/Mod/Arch/**/*'
+Materials:
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Material/**/*']
+
+WB BIM:
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/BIM/**/*']
 
 WB Assembly:
-- 'src/Mod/Assembly/**/*'
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Assembly/**/*']
 
 WB Draft:
-- 'src/Mod/Draft/**/*'
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Draft/**/*']
 
 WB FEM:
-- 'src/Mod/Fem/**/*'
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Fem/**/*']
 
 WB Mesh:
-- 'src/Mod/Mesh/**/*'
+- changed-files:
+  - any-glob-to-any-file: ['src/Mod/Mesh/**/*']
 
 WB MeshPart:
-- 'src/Mod/MeshPart/**/*'
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/MeshPart/**/*']
 
 WB OpenSCAD:
-- 'src/Mod/OpenSCAD/**/*'
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/OpenSCAD/**/*']
 
 WB Part:
-- 'src/Mod/Part/**/*'
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Part/**/*']
 
-WB PartDesign:
-- 'src/Mod/PartDesign/**/*'
+WB Part Design:
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/PartDesign/**/*']
 
-WB Path:
-- 'src/Mod/Path/**/*'
+WB CAM:
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/CAM/**/*']
 
 WB Points:
-- 'src/Mod/Points/**/*'
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Points/**/*']
 
 WB ReverseEngineering:
-- 'src/Mod/ReverseEngineering/**/*'
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/ReverseEngineering/**/*']
 
 WB Sketcher:
-- 'src/Mod/Sketcher/**/*'
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Sketcher/**/*']
 
 WB Spreadsheet:
-- 'src/Mod/Spreadsheet/**/*'
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Spreadsheet/**/*']
 
 WB Surface:
-- 'src/Mod/Surface/**/*/'
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Surface/**/*/']
 
 WB TechDraw:
-- 'src/Mod/TechDraw/**/*'
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/TechDraw/**/*']
 
 WB Test:
-- 'src/Mod/Test/**/*'
-
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Test/**/*']

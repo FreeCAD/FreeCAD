@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="14"/>
       <source>General settings</source>
-      <translation>Glavne postavke</translation>
+      <translation>Opće postavke</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="35"/>
@@ -294,14 +294,14 @@
       <translation>Pogreška: ili svi oblici moraju biti 2D ili svi oblici moraju biti 3D</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Unsupported Function</source>
       <translation>Nepodržana funkcija</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="550"/>
-      <location filename="../../importCSG.py" line="1432"/>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1434"/>
       <source>Press OK</source>
       <translation>Pritisnite OK</translation>
     </message>

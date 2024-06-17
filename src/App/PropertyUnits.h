@@ -540,6 +540,19 @@ public:
     ~PropertyMass() override = default;
 };
 
+/** Moment property
+ * This is a property for representing moment. It is basically a float
+ * property. On the Gui it has a quantity like N*m.
+ */
+class AppExport PropertyMoment: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyMoment();
+    ~PropertyMoment() override = default;
+};
+
 /** Pressure property
  * This is a property for representing pressure. It basically a float
  * property. On the Gui it has a quantity like Pa.
@@ -620,7 +633,7 @@ public:
 
 /** Stiffness property
  * This is a property for representing stiffness. It is basically a float
- * property. On the Gui it has a quantity like m/s^2.
+ * property. On the Gui it has a quantity like N/m.
  */
 class AppExport PropertyStiffness: public PropertyQuantity
 {
@@ -631,8 +644,21 @@ public:
     ~PropertyStiffness() override = default;
 };
 
+/** StiffnessDensity property
+ * This is a property for representing stiffness per area unit. It is basically a float
+ * property. On the Gui it has a quantity like Pa/m.
+ */
+class AppExport PropertyStiffnessDensity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyStiffnessDensity();
+    ~PropertyStiffnessDensity() override = default;
+};
+
 /** Stress property
- * This is a property for representing . It is basically a float
+ * This is a property for representing stress. It is basically a float
  * property. On the Gui it has a quantity like Pa.
  */
 class AppExport PropertyStress: public PropertyQuantity

@@ -5,18 +5,18 @@
     <name>UnitsApi</name>
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
-      <source>Standard (mm, kg, s, degree)</source>
-      <translation>Standard (mm, kg, s, degré)</translation>
+      <source>Standard (mm, kg, s, °)</source>
+      <translation>Standard (mm, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
-      <source>MKS (m, kg, s, degree)</source>
-      <translation>MKS (m, kg, s, degré)</translation>
+      <source>MKS (m, kg, s, °)</source>
+      <translation>MKS (m, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="73"/>
       <source>US customary (in, lb)</source>
-      <translation>Système US (in, lb)</translation>
+      <translation>Unités de mesure américaines (in, lb)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="75"/>
@@ -40,8 +40,8 @@
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>
-      <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation>Impérial pour le génie civil (ft, ft/sec)</translation>
+      <source>Imperial for Civil Eng (ft, ft/s)</source>
+      <translation>Impérial pour le génie civil (ft, ft/s)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="85"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="87"/>
       <source>Meter decimal (m, m², m³)</source>
-      <translation>Système métrique (m, m², m³)</translation>
+      <translation>Mètre décimal (m, m², m³)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="89"/>

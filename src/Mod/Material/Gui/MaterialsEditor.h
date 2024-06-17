@@ -36,6 +36,7 @@
 #include <Base/Handle.h>
 #include <Base/Parameter.h>
 
+#include <Mod/Material/App/MaterialFilter.h>
 #include <Mod/Material/App/MaterialManager.h>
 #include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/ModelManager.h>
@@ -52,6 +53,8 @@ class MaterialsEditor: public QDialog
     Q_OBJECT
 
 public:
+    explicit MaterialsEditor(std::shared_ptr<Materials::MaterialFilter> filter,
+                             QWidget* parent = nullptr);
     explicit MaterialsEditor(QWidget* parent = nullptr);
     ~MaterialsEditor() override = default;
 
@@ -62,7 +65,7 @@ public:
     void onSourceReference(const QString& text);
     void onDescription();
 
-    void propertyChange(const QString& property, const QString value);
+    void propertyChange(const QString& property, const QVariant& value);
     void onInheritNewMaterial(bool checked);
     void onNewMaterial(bool checked);
     void onFavourite(bool checked);
@@ -96,6 +99,15 @@ public:
     void onDoubleClick(const QModelIndex& index);
     void onContextMenu(const QPoint& pos);
 
+    bool isMaterialSelected() const
+    {
+        return _materialSelected;
+    }
+    std::shared_ptr<Materials::Material> getMaterial()
+    {
+        return _material;
+    }
+
 protected:
     int confirmSave(QWidget* parent);
     void saveMaterial();
@@ -106,11 +118,15 @@ private:
     Materials::ModelManager _modelManager;
     std::shared_ptr<Materials::Material> _material;
     AppearancePreview* _rendered;
-    bool _edited;
+    bool _materialSelected;
     std::list<QString> _favorites;
     std::list<QString> _recents;
     int _recentMax;
     QIcon _warningIcon;
+    std::shared_ptr<Materials::MaterialFilter> _filter;
+    Materials::MaterialFilterOptions _filterOptions;
+
+    void setup();
 
     void saveWindow();
     void saveMaterialTreeChildren(const Base::Reference<ParameterGrp>& param,
@@ -136,6 +152,8 @@ private:
     void onInheritNew(bool checked);
 
     void setMaterialDefaults();
+    bool updateTexturePreview() const;
+    bool updateMaterialPreview() const;
     void updatePreview() const;
     static QString getColorHash(const QString& colorString, int colorRange = 255);
 
@@ -164,6 +182,62 @@ private:
         const QIcon& folderIcon,
         const QIcon& icon,
         const Base::Reference<ParameterGrp>& param);
+
+    /* Indicates if we should show favourite materials
+     */
+    bool includeFavorites() const
+    {
+        return _filterOptions.includeFavorites();
+    }
+    void setIncludeFavorites(bool value)
+    {
+        _filterOptions.setIncludeFavorites(value);
+    }
+
+    /* Indicates if we should show recent materials
+     */
+    bool includeRecent() const
+    {
+        return _filterOptions.includeRecent();
+    }
+    void setIncludeRecent(bool value)
+    {
+        _filterOptions.setIncludeRecent(value);
+    }
+
+    /* Indicates if we should include empty folders
+     */
+    bool includeEmptyFolders() const
+    {
+        return _filterOptions.includeEmptyFolders();
+    }
+    void setIncludeEmptyFolders(bool value)
+    {
+        _filterOptions.setIncludeEmptyFolders(value);
+    }
+
+    /* Indicates if we should include empty libraries
+     */
+    bool includeEmptyLibraries() const
+    {
+        return _filterOptions.includeEmptyLibraries();
+    }
+    void setIncludeEmptyLibraries(bool value)
+    {
+        Base::Console().Log("setIncludeEmptyLibraries(%s)\n", (value ? "true" : "false"));
+        _filterOptions.setIncludeEmptyLibraries(value);
+    }
+
+    /* Indicates if we should include materials in the older format
+     */
+    bool includeLegacy() const
+    {
+        return _filterOptions.includeLegacy();
+    }
+    void setIncludeLegacy(bool legacy)
+    {
+        _filterOptions.setIncludeLegacy(legacy);
+    }
 };
 
 }  // namespace MatGui

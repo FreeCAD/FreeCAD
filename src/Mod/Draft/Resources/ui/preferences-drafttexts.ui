@@ -67,12 +67,12 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
          <string>The default height for texts, dimension texts and label texts</string>
         </property>
         <property name="singleStep">
-         <double>0.05</double>
+         <double>0.1</double>
         </property>
         <property name="unit" stdset="0">
          <string>mm</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.0</double>
         </property>
         <property name="rawValue" stdset="0">
@@ -106,7 +106,7 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
          <string>The default line spacing for multi-line texts and labels (relative to the font size)</string>
         </property>
         <property name="singleStep">
-         <double>0.05</double>
+         <double>0.1</double>
         </property>
         <property name="value">
          <double>1.0</double>
@@ -134,6 +134,9 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
         </property>
         <property name="minimum">
          <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
         </property>
         <property name="value">
          <double>1.0</double>
@@ -301,12 +304,12 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
          <string>The default arrow size</string>
         </property>
         <property name="singleStep">
-         <double>0.05</double>
+         <double>0.1</double>
         </property>
         <property name="unit" stdset="0">
          <string>mm</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.0</double>
         </property>
         <property name="rawValue" stdset="0">
@@ -492,7 +495,7 @@ or cm, leave blank to use the current unit defined in FreeCAD.</string>
          <string>The default distance the dimension line is extended past the extension lines</string>
         </property>
         <property name="singleStep">
-         <double>0.05</double>
+         <double>0.1</double>
         </property>
         <property name="unit" stdset="0">
          <string>mm</string>
@@ -531,7 +534,7 @@ points. A positive value defines the maximum length of the extension lines. Only
 used for linear dimensions.</string>
         </property>
         <property name="singleStep">
-         <double>0.05</double>
+         <double>0.1</double>
         </property>
         <property name="unit" stdset="0">
          <string>mm</string>
@@ -560,7 +563,7 @@ used for linear dimensions.</string>
          <string>The default length of extension lines above the dimension line</string>
         </property>
         <property name="singleStep">
-         <double>0.05</double>
+         <double>0.1</double>
         </property>
         <property name="unit" stdset="0">
          <string>mm</string>
@@ -589,12 +592,12 @@ used for linear dimensions.</string>
          <string>The default space between the dimension line and the dimension text</string>
         </property>
         <property name="singleStep">
-         <double>0.05</double>
+         <double>0.1</double>
         </property>
         <property name="unit" stdset="0">
          <string>mm</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>0.0</double>
         </property>
         <property name="rawValue" stdset="0">

@@ -51,6 +51,8 @@
 #include <Base/Quantity.h>
 
 #include "SoFCCSysDragger.h"
+#include "So3DAnnotation.h"
+
 #include "MainWindow.h"
 #include "SoFCDB.h"
 
@@ -201,7 +203,7 @@ SoGroup* TDragger::buildGeometry()
     coneSeparator->addChild(coneLightModel);
 
     auto pickStyle = new SoPickStyle();
-    pickStyle->style.setValue(SoPickStyle::SHAPE);
+    pickStyle->style.setValue(SoPickStyle::SHAPE_ON_TOP);
     pickStyle->setOverride(TRUE);
     coneSeparator->addChild(pickStyle);
 
@@ -487,7 +489,7 @@ SoGroup* TPlanarDragger::buildGeometry()
     root->addChild(translation);
 
     auto pickStyle = new SoPickStyle();
-    pickStyle->style.setValue(SoPickStyle::SHAPE);
+    pickStyle->style.setValue(SoPickStyle::SHAPE_ON_TOP);
     pickStyle->setOverride(TRUE);
     root->addChild(pickStyle);
 
@@ -798,7 +800,7 @@ SoGroup* RDragger::buildGeometry()
     root->addChild(lineSet);
 
     auto pickStyle = new SoPickStyle();
-    pickStyle->style.setValue(SoPickStyle::SHAPE);
+    pickStyle->style.setValue(SoPickStyle::SHAPE_ON_TOP);
     pickStyle->setOverride(TRUE);
     root->addChild(pickStyle);
 
@@ -1006,7 +1008,7 @@ SoFCCSysDragger::SoFCCSysDragger()
 {
     SO_KIT_CONSTRUCTOR(SoFCCSysDragger);
 
-    SO_KIT_ADD_CATALOG_ENTRY(annotation, SoAnnotation, TRUE, geomSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(annotation, So3DAnnotation, TRUE, geomSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(scaleNode, SoScale, TRUE, annotation, "", TRUE);
 
     // Translator

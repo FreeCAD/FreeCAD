@@ -32,7 +32,8 @@
 # include <TopoDS.hxx>
 #endif
 
-#include "App/DocumentObject.h"
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/ElementNamingUtils.h>
 #include "App/OriginFeature.h"
@@ -58,6 +59,28 @@ Feature::Feature()
                 App::Prop_ReadOnly|App::Prop_Hidden|App::Prop_Output|App::Prop_Transient),0);
     Placement.setStatus(App::Property::Hidden, true);
     BaseFeature.setStatus(App::Property::Hidden, true);
+
+    App::SuppressibleExtension::initExtension(this);
+#ifndef FC_USE_TNP_FIX
+    Suppressed.setStatus(App::Property::Status::Hidden, true);
+#endif
+}
+
+App::DocumentObjectExecReturn* Feature::recompute()
+{
+    try {
+        auto baseShape = getBaseTopoShape();
+        if (Suppressed.getValue()) {
+            this->Shape.setValue(baseShape.getShape());
+            return StdReturn;
+        }
+    }
+    catch (Base::Exception&) {
+        //invalid BaseShape
+        Suppressed.setValue(false);
+    }
+
+    return DocumentObject::recompute();
 }
 
 short Feature::mustExecute() const
@@ -67,17 +90,68 @@ short Feature::mustExecute() const
     return Part::Feature::mustExecute();
 }
 
+// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
 {
-    if (shape.IsNull())
+    if (shape.IsNull()) {
         Standard_Failure::Raise("Shape is null");
+    }
+
+    // If single solid rule is not enforced  we simply return the shape as is
+    if (singleSolidRuleMode() != Feature::SingleSolidRuleMode::Enforced) {
+        return shape;
+    }
+
     TopExp_Explorer xp;
-    xp.Init(shape,TopAbs_SOLID);
+    xp.Init(shape, TopAbs_SOLID);
     if (xp.More()) {
         return xp.Current();
     }
 
     return {};
+}
+
+TopoShape Feature::getSolid(const TopoShape& shape)
+{
+    if (shape.isNull()) {
+        throw Part::NullShapeException("Null shape");
+    }
+
+    // If single solid rule is not enforced  we simply return the shape as is
+    if (singleSolidRuleMode() != Feature::SingleSolidRuleMode::Enforced) {
+        return shape;
+    }
+
+    int count = shape.countSubShapes(TopAbs_SOLID);
+    if (count) {
+        auto res = shape.getSubTopoShape(TopAbs_SOLID, 1);
+        res.fixSolidOrientation();
+        return res;
+    }
+
+    return shape;
+}
+
+void Feature::onChanged(const App::Property *prop)
+{
+    if (!this->isRestoring()
+        && this->getDocument()
+        && !this->getDocument()->isPerformingTransaction()) {
+        if (prop == &Visibility || prop == &BaseFeature) {
+            auto body = Body::findBodyOf(this);
+            if (body) {
+                if (prop == &BaseFeature && BaseFeature.getValue()) {
+                    int idx = -1;
+                    body->Group.find(this->getNameInDocument(), &idx);
+                    int baseidx = -1;
+                    body->Group.find(BaseFeature.getValue()->getNameInDocument(), &idx);
+                    if (idx >= 0 && baseidx >= 0 && baseidx+1 != idx)
+                        body->insertObject(BaseFeature.getValue(), this);
+                }
+            }
+        }
+    }
+    Part::Feature::onChanged(prop);
 }
 
 int Feature::countSolids(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)
@@ -93,7 +167,31 @@ int Feature::countSolids(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)
     return result;
 }
 
+bool Feature::isSingleSolidRuleSatisfied(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)
+{
+    if (singleSolidRuleMode() == Feature::SingleSolidRuleMode::Disabled) {
+        return true;
+    }
 
+    int solidCount = countSolids(shape, type);
+
+    return solidCount <= 1;
+}
+
+
+Feature::SingleSolidRuleMode Feature::singleSolidRuleMode()
+{
+    auto body = getFeatureBody();
+
+    // When the feature is not part of an body (which should not happen) let's stay with the default
+    if (!body) {
+        return SingleSolidRuleMode::Enforced;
+    }
+
+    auto areCompoundSolidsAllowed = body->AllowCompound.getValue();
+
+    return areCompoundSolidsAllowed ? SingleSolidRuleMode::Disabled : SingleSolidRuleMode::Enforced;
+}
 
 const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
 {
@@ -137,6 +235,9 @@ Part::Feature* Feature::getBaseObject(bool silent) const {
 const TopoDS_Shape& Feature::getBaseShape() const {
     const Part::Feature* BaseObject = getBaseObject();
 
+    if (!BaseObject)
+        throw Base::ValueError("Base feature's shape is not defined");
+
     if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())||
         BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
     {
@@ -153,29 +254,40 @@ const TopoDS_Shape& Feature::getBaseShape() const {
     return result;
 }
 
-Part::TopoShape Feature::getBaseTopoShape(bool silent) const {
+Part::TopoShape Feature::getBaseTopoShape(bool silent) const
+{
     Part::TopoShape result;
 
     const Part::Feature* BaseObject = getBaseObject(silent);
-    if (!BaseObject)
+    if (!BaseObject) {
         return result;
+    }
 
-    if(BaseObject != BaseFeature.getValue()) {
-        if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
-            BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
-        {
-            if(silent)
+    if (BaseObject != BaseFeature.getValue()) {
+        auto body = getFeatureBody();
+        if (!body) {
+            if (silent) {
                 return result;
+            }
+            throw Base::RuntimeError("Missing container body");
+        }
+        if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())
+            || BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())) {
+            if (silent) {
+                return result;
+            }
             throw Base::ValueError("Base shape of shape binder cannot be used");
         }
     }
 
     result = BaseObject->Shape.getShape();
-    if(!silent) {
-        if (result.isNull())
+    if (!silent) {
+        if (result.isNull()) {
             throw Base::ValueError("Base feature's TopoShape is invalid");
-        if (!result.hasSubShape(TopAbs_SOLID))
+        }
+        if (!result.hasSubShape(TopAbs_SOLID)) {
             throw Base::ValueError("Base feature's shape is not a solid");
+        }
     }
     return result;
 }
@@ -208,6 +320,7 @@ gp_Pln Feature::makePlnFromPlane(const App::DocumentObject* obj)
     return gp_Pln(gp_Pnt(pos.x,pos.y,pos.z), gp_Dir(normal.x,normal.y,normal.z));
 }
 
+// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
 {
     BRepBuilderAPI_MakeFace builder(makePlnFromPlane(obj));
@@ -215,6 +328,16 @@ TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
         throw Base::CADKernelError("Feature: Could not create shape from base plane");
 
     return builder.Shape();
+}
+
+TopoShape Feature::makeTopoShapeFromPlane(const App::DocumentObject* obj)
+{
+    BRepBuilderAPI_MakeFace builder(makePlnFromPlane(obj));
+    if (!builder.IsDone()) {
+        throw Base::CADKernelError("Feature: Could not create shape from base plane");
+    }
+
+    return TopoShape(obj->getID(), nullptr, builder.Shape());
 }
 
 Body* Feature::getFeatureBody() const {

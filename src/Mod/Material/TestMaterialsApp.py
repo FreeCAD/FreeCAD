@@ -24,7 +24,9 @@
 from os import walk
 import unittest
 import FreeCAD
-import Material
+import Materials
 
 from materialtests.TestModels import ModelTestCases
 from materialtests.TestMaterials import MaterialTestCases
+from materialtests.TestMaterialCreation import MaterialCreationTestCases
+from materialtests.TestMaterialFilter import MaterialFilterTestCases

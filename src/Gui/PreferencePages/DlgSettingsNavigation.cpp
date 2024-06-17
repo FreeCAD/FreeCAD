@@ -96,6 +96,7 @@ void DlgSettingsNavigation::saveSettings()
     ui->naviCubeToNearest->onSave();
     ui->prefCubeSize->onSave();
     ui->naviCubeBaseColor->onSave();
+    ui->naviCubeInactiveOpacity->onSave();
 
     bool showNaviCube = ui->groupBoxNaviCube->isChecked();
     hGrp->SetBool("ShowNaviCube", showNaviCube);
@@ -141,6 +142,7 @@ void DlgSettingsNavigation::loadSettings()
     ui->naviCubeToNearest->onRestore();
     ui->prefCubeSize->onRestore();
     ui->naviCubeBaseColor->onRestore();
+    ui->naviCubeInactiveOpacity->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
@@ -164,29 +166,8 @@ void DlgSettingsNavigation::loadSettings()
     bool useNavigationAnimations = hGrp->GetBool("UseNavigationAnimations", true);
     ui->groupBoxAnimations->setChecked(useNavigationAnimations);
 
-    ui->comboNewDocView->addItem(tr("Isometric"), QByteArray("Isometric"));
-    ui->comboNewDocView->addItem(tr("Dimetric"), QByteArray("Dimetric"));
-    ui->comboNewDocView->addItem(tr("Trimetric"), QByteArray("Trimetric"));
-    ui->comboNewDocView->addItem(tr("Top"), QByteArray("Top"));
-    ui->comboNewDocView->addItem(tr("Front"), QByteArray("Front"));
-    ui->comboNewDocView->addItem(tr("Left"), QByteArray("Left"));
-    ui->comboNewDocView->addItem(tr("Right"), QByteArray("Right"));
-    ui->comboNewDocView->addItem(tr("Rear"), QByteArray("Rear"));
-    ui->comboNewDocView->addItem(tr("Bottom"), QByteArray("Bottom"));
-    ui->comboNewDocView->addItem(tr("Custom"), QByteArray("Custom"));
-    std::string camera = hGrp->GetASCII("NewDocumentCameraOrientation", "Trimetric");
-    index = ui->comboNewDocView->findData(QByteArray(camera.c_str()));
-    if (index > -1) ui->comboNewDocView->setCurrentIndex(index);
-    if (camera == "Custom") {
-        ParameterGrp::handle hCustom = hGrp->GetGroup("Custom");
-        q0 = hCustom->GetFloat("Q0", q0);
-        q1 = hCustom->GetFloat("Q1", q1);
-        q2 = hCustom->GetFloat("Q2", q2);
-        q3 = hCustom->GetFloat("Q3", q3);
-    }
+    addOrientations();
 
-    connect(ui->comboNewDocView, qOverload<int>(&QComboBox::currentIndexChanged),
-        this, &DlgSettingsNavigation::onNewDocViewChanged);
     connect(ui->mouseButton, &QPushButton::clicked,
         this, &DlgSettingsNavigation::onMouseButtonClicked);
 
@@ -206,6 +187,83 @@ void DlgSettingsNavigation::loadSettings()
         QString::fromStdString(hGrp->GetASCII("FontString")));
     ui->naviCubeFontName->setCurrentIndex(indexFamilyNames + 1);
 
+}
+
+void DlgSettingsNavigation::addOrientations()
+{
+    ui->comboNewDocView->addItem(tr("Isometric"), QByteArray("Isometric"));
+    ui->comboNewDocView->addItem(tr("Dimetric"), QByteArray("Dimetric"));
+    ui->comboNewDocView->addItem(tr("Trimetric"), QByteArray("Trimetric"));
+    ui->comboNewDocView->addItem(tr("Top"), QByteArray("Top"));
+    ui->comboNewDocView->addItem(tr("Front"), QByteArray("Front"));
+    ui->comboNewDocView->addItem(tr("Left"), QByteArray("Left"));
+    ui->comboNewDocView->addItem(tr("Right"), QByteArray("Right"));
+    ui->comboNewDocView->addItem(tr("Rear"), QByteArray("Rear"));
+    ui->comboNewDocView->addItem(tr("Bottom"), QByteArray("Bottom"));
+    ui->comboNewDocView->addItem(tr("Custom"), QByteArray("Custom"));
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+    std::string camera = hGrp->GetASCII("NewDocumentCameraOrientation", "Trimetric");
+    int index = ui->comboNewDocView->findData(QByteArray(camera.c_str()));
+    if (index > -1) ui->comboNewDocView->setCurrentIndex(index);
+    if (camera == "Custom") {
+        ParameterGrp::handle hCustom = hGrp->GetGroup("Custom");
+        q0 = hCustom->GetFloat("Q0", q0);
+        q1 = hCustom->GetFloat("Q1", q1);
+        q2 = hCustom->GetFloat("Q2", q2);
+        q3 = hCustom->GetFloat("Q3", q3);
+    }
+
+    connect(ui->comboNewDocView, qOverload<int>(&QComboBox::currentIndexChanged),
+        this, &DlgSettingsNavigation::onNewDocViewChanged);
+}
+
+void DlgSettingsNavigation::translateOrientations()
+{
+    ui->comboNewDocView->setItemText(0, tr("Isometric"));
+    ui->comboNewDocView->setItemText(1, tr("Dimetric"));
+    ui->comboNewDocView->setItemText(2, tr("Trimetric"));
+    ui->comboNewDocView->setItemText(3, tr("Top"));
+    ui->comboNewDocView->setItemText(4, tr("Front"));
+    ui->comboNewDocView->setItemText(5, tr("Left"));
+    ui->comboNewDocView->setItemText(6, tr("Right"));
+    ui->comboNewDocView->setItemText(7, tr("Rear"));
+    ui->comboNewDocView->setItemText(8, tr("Bottom"));
+    ui->comboNewDocView->setItemText(9, tr("Custom"));
+}
+
+void DlgSettingsNavigation::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hGrp;
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    //reset "NavigationStyle" parameter
+    hGrp->RemoveASCII("NavigationStyle");
+    //reset "OrbitStyle" parameter
+    hGrp->RemoveInt("OrbitStyle");
+    //reset "RotationMode" parameter
+    hGrp->RemoveInt("RotationMode");
+    //reset "ShowNaviCube" parameter
+    hGrp->RemoveBool("ShowNaviCube");
+    //reset "ShowRotationCenter" parameter
+    hGrp->RemoveBool("ShowRotationCenter");
+    //reset "UseNavigationAnimations" parameter
+    hGrp->RemoveBool("UseNavigationAnimations");
+    //reset "NewDocumentCameraOrientation" parameter
+    hGrp->RemoveASCII("NewDocumentCameraOrientation");
+
+    hGrp = hGrp->GetGroup("Custom");
+    //reset "Q0" parameter
+    hGrp->RemoveFloat("Q0");
+    //reset "Q1" parameter
+    hGrp->RemoveFloat("Q1");
+    //reset "Q2" parameter
+    hGrp->RemoveFloat("Q2");
+    //reset "Q3" parameter
+    hGrp->RemoveFloat("Q3");
+
+    //finally reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
 }
 
 void DlgSettingsNavigation::onMouseButtonClicked()
@@ -247,6 +305,7 @@ void DlgSettingsNavigation::changeEvent(QEvent *e)
         int corner = ui->naviCubeCorner->currentIndex();
         ui->retranslateUi(this);
         retranslate();
+        translateOrientations();
         ui->comboNavigationStyle->setCurrentIndex(navigation);
         ui->comboOrbitStyle->setCurrentIndex(orbit);
         ui->naviCubeCorner->setCurrentIndex(corner);

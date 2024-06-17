@@ -64,11 +64,14 @@ set(CompoundTools_Scripts
 
 set(Part_tests
     parttests/__init__.py
+    parttests/BRep_tests.py
     parttests/Geom2d_tests.py
     parttests/part_test_objects.py
     parttests/regression_tests.py
     parttests/TopoShapeListTest.py
     parttests/ColorPerFaceTest.py
+    parttests/ColorTransparencyTest.py
+    parttests/TopoShapeTest.py
 )
 
 add_custom_target(PartScripts ALL SOURCES

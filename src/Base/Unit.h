@@ -150,10 +150,12 @@ public:
     static const Unit YoungsModulus;
 
     static const Unit Stiffness;
+    static const Unit StiffnessDensity;
 
     static const Unit Force;
     static const Unit Work;
     static const Unit Power;
+    static const Unit Moment;
 
     static const Unit SpecificEnergy;
     static const Unit ThermalConductivity;

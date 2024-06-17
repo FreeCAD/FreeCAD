@@ -54,17 +54,25 @@ ViewProviderProjGroupItem::~ViewProviderProjGroupItem()
 void ViewProviderProjGroupItem::updateData(const App::Property* prop)
 {
     Gui::ViewProviderDocumentObject::updateData(prop);
+
+    //TODO: Once we know that ProjType is valid, sPixMap = "Proj" + projType
+
+    updateIcon();
+ }
+
+void ViewProviderProjGroupItem::updateIcon()
+{
     TechDraw::DrawProjGroupItem* proj = getObject();
-    if(!proj) {
+    if (!proj) {
         return;
     }
 
     // Set the icon pixmap depending on the orientation
     std::string projType = proj->Type.getValueAsString();
 
-    //TODO: Once we know that ProjType is valid, sPixMap = "Proj" + projType
-
-    if(strcmp(projType.c_str(), "Front") == 0) {
+    if (!getObject()->getPGroup()) {
+        sPixmap = "TechDraw_TreeView";
+    } else  if(strcmp(projType.c_str(), "Front") == 0) {
         sPixmap = "TechDraw_ProjFront";
     } else if(strcmp(projType.c_str(), "Rear") == 0) {
         sPixmap = "TechDraw_ProjRear";
@@ -99,8 +107,9 @@ void ViewProviderProjGroupItem::setupContextMenu(QMenu* menu, QObject* receiver,
 
 bool ViewProviderProjGroupItem::setEdit(int ModNum)
 {
-    Q_UNUSED(ModNum);
-    doubleClicked();
+    if (!getObject()->getPGroup()) {
+        return ViewProviderViewPart::setEdit(ModNum);
+    }
     return true;
 }
 
@@ -112,6 +121,7 @@ void ViewProviderProjGroupItem::unsetEdit(int ModNum)
 
 bool ViewProviderProjGroupItem::doubleClicked()
 {
+    setEdit(ViewProvider::Default);
     return true;
 }
 
@@ -125,19 +135,16 @@ bool ViewProviderProjGroupItem::onDelete(const std::vector<std::string> &)
     bool isAnchor = false;
 
     // get the item and group
-    TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(getViewObject());
+    TechDraw::DrawProjGroupItem* dpgi = getObject();
     TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
-    // get the projection
-    TechDraw::DrawProjGroupItem* proj = getObject();
     // check if it is the anchor projection
-    if (dpg && (dpg->hasProjection(proj->Type.getValueAsString()))
-        && (dpg->getAnchor() == dpgi))
+    if (dpg && (dpg->getAnchor() == dpgi))
         isAnchor = true;
 
     // get child views
-    auto viewSection = getObject()->getSectionRefs();
-    auto viewDetail = getObject()->getDetailRefs();
-    auto viewLeader = getObject()->getLeaders();
+    auto viewSection = dpgi->getSectionRefs();
+    auto viewDetail = dpgi->getDetailRefs();
+    auto viewLeader = dpgi->getLeaders();
 
    if (isAnchor)
    {

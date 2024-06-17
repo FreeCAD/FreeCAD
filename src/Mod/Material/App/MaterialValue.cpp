@@ -21,10 +21,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QMetaType>
 #include <QRegularExpression>
 #endif
-
-#include <QMetaType>
 
 #include <App/Application.h>
 #include <Base/QtTools.h>
@@ -40,6 +39,25 @@ using namespace Materials;
 /* TRANSLATOR Material::MaterialValue */
 
 TYPESYSTEM_SOURCE(Materials::MaterialValue, Base::BaseClass)
+
+QMap<QString, MaterialValue::ValueType> MaterialValue::_typeMap {
+    {QString::fromStdString("String"), String},
+    {QString::fromStdString("Boolean"), Boolean},
+    {QString::fromStdString("Integer"), Integer},
+    {QString::fromStdString("Float"), Float},
+    {QString::fromStdString("Quantity"), Quantity},
+    {QString::fromStdString("Distribution"), Distribution},
+    {QString::fromStdString("List"), List},
+    {QString::fromStdString("2DArray"), Array2D},
+    {QString::fromStdString("3DArray"), Array3D},
+    {QString::fromStdString("Color"), Color},
+    {QString::fromStdString("Image"), Image},
+    {QString::fromStdString("File"), File},
+    {QString::fromStdString("URL"), URL},
+    {QString::fromStdString("MultiLineString"), MultiLineString},
+    {QString::fromStdString("FileList"), FileList},
+    {QString::fromStdString("ImageList"), ImageList},
+    {QString::fromStdString("SVG"), SVG}};
 
 MaterialValue::MaterialValue()
     : _valueType(None)
@@ -93,10 +111,16 @@ QString MaterialValue::escapeString(const QString& source)
     return res;
 }
 
+MaterialValue::ValueType MaterialValue::mapType(const QString& stringType)
+{
+    // If not found, return None
+    return _typeMap.value(stringType, None);
+}
+
 void MaterialValue::setInitialValue(ValueType inherited)
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    if (_valueType == String || _valueType == MultiLineString) {
+    if (_valueType == String || _valueType == MultiLineString || _valueType == SVG) {
         _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
     }
     else if (_valueType == Boolean) {
@@ -121,7 +145,7 @@ void MaterialValue::setInitialValue(ValueType inherited)
         _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
     }
 #else
-    if (_valueType == String || _valueType == MultiLineString) {
+    if (_valueType == String || _valueType == MultiLineString || _valueType == SVG) {
         _value = QVariant(QMetaType(QMetaType::QString));
     }
     else if (_valueType == Boolean) {
@@ -237,9 +261,9 @@ QString MaterialValue::getYAMLStringImageList() const
 QString MaterialValue::getYAMLStringMultiLine() const
 {
     QString yaml;
-    yaml = QString::fromStdString(" >2");
+    yaml = QString::fromStdString(" |2");
     auto list =
-        getValue().toString().split(QRegExp(QString::fromStdString("[\r\n]")), Qt::SkipEmptyParts);
+        getValue().toString().split(QRegularExpression(QString::fromStdString("[\r\n]")), Qt::SkipEmptyParts);
     for (auto& it : list) {
         yaml += QString::fromStdString("\n      ") + it;
     }
@@ -259,7 +283,7 @@ QString MaterialValue::getYAMLString() const
         if (getType() == MaterialValue::ImageList) {
             return getYAMLStringImageList();
         }
-        if (getType() == MaterialValue::MultiLineString) {
+        if (getType() == MaterialValue::MultiLineString || getType() == MaterialValue::SVG) {
             return getYAMLStringMultiLine();
         }
         if (getType() == MaterialValue::Quantity) {
@@ -272,16 +296,6 @@ QString MaterialValue::getYAMLString() const
                 yaml += QString::fromLatin1("%1").arg(value.toFloat(), 0, 'g', 6);
             }
         }
-        else if (getType() == MaterialValue::MultiLineString) {
-            yaml = QString::fromLatin1(">2");
-            auto list =
-                getValue().toString().split(QRegularExpression(QString::fromLatin1("[\r\n]")),
-                                            Qt::SkipEmptyParts);
-            for (auto& it : list) {
-                yaml += QString::fromLatin1("\n      ") + it;
-            }
-            return yaml;
-        }
         else if (getType() == MaterialValue::List) {
             for (auto& it : getList()) {
                 yaml += QString::fromLatin1("\n      - \"") + escapeString(it.toString())
@@ -293,7 +307,7 @@ QString MaterialValue::getYAMLString() const
             yaml += getValue().toString();
         }
     }
-    yaml = QString::fromLatin1("\"") + escapeString(yaml) + QString::fromLatin1("\"");
+    yaml = QString::fromLatin1(" \"") + escapeString(yaml) + QString::fromLatin1("\"");
     return yaml;
 }
 

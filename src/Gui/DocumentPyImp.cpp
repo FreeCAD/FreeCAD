@@ -504,6 +504,25 @@ Py::Boolean DocumentPy::getModified() const
     return {getDocumentPtr()->isModified()};
 }
 
+void DocumentPy::setModified(Py::Boolean arg)
+{
+    getDocumentPtr()->setModified(arg);
+}
+
+Py::List DocumentPy::getTreeRootObjects() const
+{
+    std::vector<App::DocumentObject*> objs = getDocumentPtr()->getTreeRootObjects();
+    Py::List res;
+
+    for (auto obj : objs) {
+        //Note: Here we must force the Py::Object to own this Python object as getPyObject() increments the counter
+        res.append(Py::Object(obj->getPyObject(), true));
+    }
+
+    return res;
+}
+
+
 PyObject *DocumentPy::getCustomAttributes(const char* attr) const
 {
     // Note: Here we want to return only a document object if its

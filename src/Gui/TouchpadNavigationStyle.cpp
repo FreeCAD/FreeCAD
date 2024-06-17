@@ -138,16 +138,17 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
             // If we are in edit mode then simply ignore the RMB events
             // to pass the event to the base class.
             this->lockrecenter = true;
-            if (!viewer->isEditing()) {
-                // If we are in zoom or pan mode ignore RMB events otherwise
-                // the canvas doesn't get any release events
+
+            // Don't show the context menu after dragging, panning or zooming
+            if (!press && (hasDragged || hasPanned || hasZoomed)) {
+                processed = true;
+            }
+            else if (!press && !viewer->isEditing()) {
                 if (this->currentmode != NavigationStyle::ZOOMING &&
                     this->currentmode != NavigationStyle::PANNING &&
                     this->currentmode != NavigationStyle::DRAGGING) {
                     if (this->isPopupMenuEnabled()) {
-                        if (!press) { // release right mouse button
-                            this->openPopupMenu(event->getPosition());
-                        }
+                        this->openPopupMenu(event->getPosition());
                     }
                 }
             }
@@ -251,6 +252,17 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
         break;
     default:
         break;
+    }
+
+    // Process when selection button is pressed together with other buttons that could trigger different actions.
+    if (this->button1down && (this->button2down || this->button3down || this->altdown)) {
+        processed = true;
+    }
+
+    // Prevent interrupting rubber-band selection in sketcher
+    if (viewer->isEditing() && curmode == NavigationStyle::SELECTION && newmode != NavigationStyle::IDLE) {
+        newmode = NavigationStyle::SELECTION;
+        processed = false;
     }
 
     if (newmode != curmode) {

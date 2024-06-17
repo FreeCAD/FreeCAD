@@ -1585,7 +1585,10 @@ void CmdMeshFillInteractiveHole::activated(int)
     if (view) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
         viewer->setEditing(true);
-        viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmap("mesh_fillhole"), 5, 5));
+        viewer->setEditingCursor(
+            QCursor(Gui::BitmapFactory().pixmapFromSvg("Mesh_CursorFillInteractive", QSize(32, 32)),
+                    6,
+                    6));
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
                                  MeshGui::ViewProviderMeshFaceSet::fillHoleCallback);
         viewer->setSelectionEnabled(false);

@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 
+// clang-format off
 namespace App
 {
 
@@ -84,6 +85,9 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     nullptr                                           /*tp_finalize */
 #if PY_VERSION_HEX >= 0x03080000
     ,0                                                /*tp_vectorcall */
+#if PY_VERSION_HEX >= 0x030c0000
+    ,0                                                /*tp_watched */
+#endif
 #endif
 };
 
@@ -197,3 +201,4 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(const char *attr)
 }
 
 } //namespace App
+// clang-format on

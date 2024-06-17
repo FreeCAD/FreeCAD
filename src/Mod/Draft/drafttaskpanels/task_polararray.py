@@ -281,10 +281,6 @@ class TaskPanelPolarArray:
         self.form.input_c_z.setProperty('rawValue', 0)
 
         self.center = self.get_center()
-        _msg(translate("draft","Center reset:")
-             + " ({0}, {1}, {2})".format(self.center.x,
-                                         self.center.y,
-                                         self.center.z))
 
     def print_fuse_state(self, fuse):
         """Print the fuse state translated."""
@@ -297,7 +293,6 @@ class TaskPanelPolarArray:
     def set_fuse(self):
         """Execute as a callback when the fuse checkbox changes."""
         self.fuse = self.form.checkbox_fuse.isChecked()
-        self.print_fuse_state(self.fuse)
         params.set_param("Draft_array_fuse", self.fuse)
 
     def print_link_state(self, use_link):
@@ -311,7 +306,6 @@ class TaskPanelPolarArray:
     def set_link(self):
         """Execute as a callback when the link checkbox changes."""
         self.use_link = self.form.checkbox_link.isChecked()
-        self.print_link_state(self.use_link)
         params.set_param("Draft_array_Link", self.use_link)
 
     def print_messages(self):
@@ -428,7 +422,6 @@ class TaskPanelPolarArray:
 
     def reject(self):
         """Execute when clicking the Cancel button or pressing Escape."""
-        _msg(translate("draft","Aborted:") + " {}".format(translate("draft","Polar array")))
         self.finish()
 
     def finish(self):
