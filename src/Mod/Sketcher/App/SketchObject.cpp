@@ -11260,41 +11260,40 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce, bool
                 // no tangency lockdown is implemented for simple tangency. Do nothing.
                 return false;
             }
-            else {
-                Base::Vector3d p = getPoint(geoIdPt, posPt);
 
-                // this piece of code is also present in Sketch.cpp, correct for offset
-                // and to do the autodecision for old sketches.
-                // the difference between the datum value and the actual angle to apply.
-                // (datum=angle+offset)
-                double angleOffset = 0.0;
-                // the desired angle value (and we are to decide if 180* should be added to it)
-                double angleDesire = 0.0;
-                if (cstr->Type == Tangent) {
-                    angleOffset = -M_PI / 2;
-                    angleDesire = 0.0;
-                }
-                if (cstr->Type == Perpendicular) {
-                    angleOffset = 0;
-                    angleDesire = M_PI / 2;
-                }
+            Base::Vector3d p = getPoint(geoIdPt, posPt);
 
-                double angleErr = calculateAngleViaPoint(geoId1, geoId2, p.x, p.y) - angleDesire;
-
-                // bring angleErr to -pi..pi
-                if (angleErr > M_PI)
-                    angleErr -= M_PI * 2;
-                if (angleErr < -M_PI)
-                    angleErr += M_PI * 2;
-
-                // the autodetector
-                if (fabs(angleErr) > M_PI / 2)
-                    angleDesire += M_PI;
-
-                // external tangency. The angle stored is offset by Pi/2 so that a value of 0.0 is
-                // invalid and treated as "undecided".
-                cstr->setValue(angleDesire + angleOffset);
+            // this piece of code is also present in Sketch.cpp, correct for offset
+            // and to do the autodecision for old sketches.
+            // the difference between the datum value and the actual angle to apply.
+            // (datum=angle+offset)
+            double angleOffset = 0.0;
+            // the desired angle value (and we are to decide if 180* should be added to it)
+            double angleDesire = 0.0;
+            if (cstr->Type == Tangent) {
+                angleOffset = -M_PI / 2;
+                angleDesire = 0.0;
             }
+            if (cstr->Type == Perpendicular) {
+                angleOffset = 0;
+                angleDesire = M_PI / 2;
+            }
+
+            double angleErr = calculateAngleViaPoint(geoId1, geoId2, p.x, p.y) - angleDesire;
+
+            // bring angleErr to -pi..pi
+            if (angleErr > M_PI)
+                angleErr -= M_PI * 2;
+            if (angleErr < -M_PI)
+                angleErr += M_PI * 2;
+
+            // the autodetector
+            if (fabs(angleErr) > M_PI / 2)
+                angleDesire += M_PI;
+
+            // external tangency. The angle stored is offset by Pi/2 so that a value of 0.0 is
+            // invalid and treated as "undecided".
+            cstr->setValue(angleDesire + angleOffset);
         }
     }
     catch (Base::Exception& e) {
