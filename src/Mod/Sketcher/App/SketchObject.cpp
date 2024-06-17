@@ -7403,6 +7403,11 @@ void SketchObject::validateExternalLinks()
             Base::Console().Warning(
                 this->getFullLabel(), (indexError.getMessage() + "\n").c_str());
         }
+        catch ( Base::ValueError& valueError ) {
+            removeBadLink = true;
+            Base::Console().Warning(
+                this->getFullLabel(), (valueError.getMessage() + "\n").c_str());
+        }
         catch (Standard_Failure&) {
             removeBadLink = true;
         }
