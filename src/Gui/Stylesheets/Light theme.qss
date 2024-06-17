@@ -2316,7 +2316,7 @@ QTreeView::item:selected:active,
 QListView::item:selected:active,
 QTableView::item:selected:active,
 QColumnView::item:selected:active {
-  background-color: #f0f0f0;
+  background-color: @ThemeAccentColor2;
 }
 
 QTreeView::item:selected:!active,
@@ -2324,7 +2324,8 @@ QListView::item:selected:!active,
 QTableView::item:selected:!active,
 QColumnView::item:selected:!active {
   /* color: black; */
-  background-color: #f0f0f0;
+
+  background-color: @ThemeAccentColor1;
 }
 
 QTreeView::item:!selected:hover,

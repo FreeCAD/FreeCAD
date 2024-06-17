@@ -2221,18 +2221,15 @@ QTreeView::branch  {
 }
 
 QTreeView::branch:has-siblings:!adjoins-item  {
-  /* border-image: url(qss:images_classic/branch_vline_white.png) 0; */
-  /* border-image: url(qss:images_classic/Arrow-right-white.png) 0; */
+
 }
 
 QTreeView::branch:has-siblings:adjoins-item  {
-  /* border-image: url(qss:images_classic/Arrow-right-blue.png) 0; */
-  /* border-image: url(qss:images_classic/branch_more_white.png) 0; */
+
 }
 
 QTreeView::branch:!has-children:!has-siblings:adjoins-item  {
-  /* border-image: url(qss:images_classic/Arrow-right-lightgray.png) 0; */
-  /* border-image: url(qss:images_classic/branch_end_white.png) 0; */
+
 }
 
 QTreeView::branch:closed:has-children:has-siblings  {
@@ -2240,7 +2237,6 @@ QTreeView::branch:closed:has-children:has-siblings  {
   margin-bottom: 5px;
   border-image: none;
   image: url(qss:images_classic/Arrow-right-white.png) 0;
-  /* border-image: url(qss:images_classic/branch_more_closed_white.png) 0; */
 }
 
 QTreeView::branch:has-children:!has-siblings:closed  {
@@ -2248,8 +2244,6 @@ QTreeView::branch:has-children:!has-siblings:closed  {
   margin-bottom: 5px;
   border-image: none;
   image: url(qss:images_classic/Arrow-right-white.png) 0;
-  /* border-image: url(qss:images_classic/Arrow-right-whitey.png) 0; */
-  /* border-image: url(qss:images_classic/branch_end_closed_white.png) 0; */
 }
 
 QTreeView::branch:open:has-children:has-siblings  {
@@ -2257,7 +2251,6 @@ QTreeView::branch:open:has-children:has-siblings  {
   margin-right: 6px;
   border-image: none;
   image: url(qss:images_classic/Arrow-down-white.png) 0;
-  /* border-image: url(qss:images_classic/branch_more_open_white.png) 0; */
 }
 
 QTreeView::branch:open:has-children:!has-siblings  {
@@ -2265,7 +2258,6 @@ QTreeView::branch:open:has-children:!has-siblings  {
   margin-right: 6px;
   border-image: none;
   image: url(qss:images_classic/Arrow-down-white.png) 0;
-  /* border-image: url(qss:images_classic/branch_end_open_white.png) 0; */
 }
 
 QTreeView::indicator:checked,
@@ -2333,7 +2325,7 @@ QListView,
 QTableView,
 QColumnView {
   background-color: #252525;  /* background of a lot of stuff including spreadsheets.*/
-  /* border: 1px solid #ef0000; */
+
   color: White;
   gridline-color: #020202;
   border-radius: 0px;
@@ -2379,7 +2371,7 @@ QTreeView::item:selected:active,
 QListView::item:selected:active,
 QTableView::item:selected:active,
 QColumnView::item:selected:active {
-  background-color: #333333;
+  background-color: @ThemeAccentColor2;
 }
 
 QTreeView::item:selected:!active,
@@ -2387,7 +2379,7 @@ QListView::item:selected:!active,
 QTableView::item:selected:!active,
 QColumnView::item:selected:!active {
   /* color: White; */
-  background-color: #333333;
+  background-color: @ThemeAccentColor1;
 }
 
 QTreeView::item:!selected:hover,

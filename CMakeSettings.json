@@ -1,0 +1,22 @@
+﻿{
+  "configurations": [
+    {
+      "name": "x64-release",
+      "generator": "Ninja",
+      "configurationType": "Release",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "C:\\github repros\\out\\freecadbuild\\${name}",
+      "installRoot": "C:\\github repros\\out\\freecadinstall\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "variables": [
+        {
+          "name": "FREECAD_LIBPACK_DIR",
+          "value": "C:/freecad_libs/LibPack",
+          "type": "PATH"
+        }
+      ]
+    }
+  ]
+}
