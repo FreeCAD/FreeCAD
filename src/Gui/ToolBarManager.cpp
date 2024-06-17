@@ -164,165 +164,111 @@ QList<ToolBarItem*> ToolBarItem::getItems() const
 }
 
 // -----------------------------------------------------------
-
-namespace Gui {
-
-class ToolBarAreaWidget : public QWidget
+ToolBarAreaWidget::ToolBarAreaWidget(QWidget* parent,
+                                          ToolBarArea area,
+                                          const ParameterGrp::handle& hParam,
+                                          boost::signals2::scoped_connection& conn,
+                                          QTimer* timer)
+    : QWidget(parent)
+    , _sizingTimer(timer)
+    , _hParam(hParam)
+    , _conn(conn)
+    , _area(area)
 {
-    using inherited = QWidget;
+    _layout = new QHBoxLayout(this);
+    _layout->setContentsMargins(QMargins());
+}
 
-public:
-    ToolBarAreaWidget(QWidget *parent,
-                ToolBarArea area,
-                const ParameterGrp::handle& hParam,
-                boost::signals2::scoped_connection &conn,
-                QTimer *timer = nullptr)
-        : QWidget(parent)
-        , _sizingTimer(timer)
-        , _hParam(hParam)
-        , _conn(conn)
-        , _area(area)
-    {
-        _layout = new QHBoxLayout(this);
-        _layout->setContentsMargins(QMargins());
+void ToolBarAreaWidget::addWidget(QWidget* widget)
+{
+    // if widget already exist don't do anything
+    if (_layout->indexOf(widget) >= 0) {
+        return;
     }
 
-    void addWidget(QWidget *widget)
-    {
-        // if widget already exist don't do anything
-        if (_layout->indexOf(widget) >= 0) {
-            return;
-        }
+    _layout->addWidget(widget);
+    adjustParent();
 
-        _layout->addWidget(widget);
-        adjustParent();
+    QString name = widget->objectName();
 
-        QString name = widget->objectName();
-
-        if (!name.isEmpty()) {
-            Base::ConnectionBlocker block(_conn);
-            _hParam->SetInt(widget->objectName().toUtf8().constData(), _layout->count() - 1);
-        }
-    }
-
-    void insertWidget(int index, QWidget *widget)
-    {
-        int currentIndex = _layout->indexOf(widget);
-
-        // we are inserting widget at the same place, this is no-op
-        if (currentIndex == index) {
-            return;
-        }
-
-        // widget already exists in the area, we need to first remove it and then recreate
-        if (currentIndex > 0) {
-            _layout->removeWidget(widget);
-        }
-
-        _layout->insertWidget(index, widget);
-
-        adjustParent();
-        saveState();
-    }
-
-    void adjustParent()
-    {
-        if (_sizingTimer) {
-            _sizingTimer->start(10);
-        }
-    }
-
-    void removeWidget(QWidget *widget)
-    {
-        _layout->removeWidget(widget);
-
-        QString name = widget->objectName();
-        if (!name.isEmpty()) {
-            Base::ConnectionBlocker block(_conn);
-            _hParam->RemoveInt(name.toUtf8().constData());
-        }
-
-        adjustParent();
-    }
-
-    QWidget *widgetAt(int index) const
-    {
-        auto item = _layout->itemAt(index);
-
-        return item ? item->widget() : nullptr;
-    }
-
-    int count() const
-    {
-        return _layout->count();
-    }
-
-    int indexOf(QWidget *widget) const
-    {
-        return _layout->indexOf(widget);
-    }
-
-    ToolBarArea area() const
-    {
-        return _area;
-    }
-
-    template<class FuncT>
-    void foreachToolBar(FuncT &&func)
-    {
-        for (int i = 0, c = _layout->count(); i < c; ++i) {
-            auto toolbar = qobject_cast<QToolBar*>(widgetAt(i));
-
-            if (!toolbar || toolbar->objectName().isEmpty()
-                         || toolbar->objectName().startsWith(QStringLiteral("*"))) {
-                continue;
-            }
-
-            func(toolbar, i, this);
-        }
-    }
-
-    void saveState()
-    {
+    if (!name.isEmpty()) {
         Base::ConnectionBlocker block(_conn);
+        _hParam->SetInt(widget->objectName().toUtf8().constData(), _layout->count() - 1);
+    }
+}
 
-        for (auto &v : _hParam->GetIntMap()) {
-            _hParam->RemoveInt(v.first.c_str());
-        }
+void ToolBarAreaWidget::insertWidget(int index, QWidget* widget)
+{
+    int currentIndex = _layout->indexOf(widget);
 
-        foreachToolBar([this](QToolBar *toolbar, int idx, ToolBarAreaWidget*) {
-            _hParam->SetInt(toolbar->objectName().toUtf8().constData(), idx);
-        });
+    // we are inserting widget at the same place, this is no-op
+    if (currentIndex == index) {
+        return;
     }
 
-    void restoreState(const std::map<int, QToolBar*> &toolbars)
-    {
-        for (const auto &[index, toolbar] : toolbars) {
-            bool visible = toolbar->isVisible();
-            getMainWindow()->removeToolBar(toolbar);
-            toolbar->setOrientation(Qt::Horizontal);
-            insertWidget(index, toolbar);
-            toolbar->setVisible(visible);
-        }
-
-        for (const auto &[name, visible] : _hParam->GetBoolMap()) {
-            auto widget = findChild<QWidget*>(QString::fromUtf8(name.c_str()));
-
-            if (widget) {
-                widget->setVisible(visible);
-            }
-        }
+    // widget already exists in the area, we need to first remove it and then recreate
+    if (currentIndex > 0) {
+        _layout->removeWidget(widget);
     }
 
-private:
-    QHBoxLayout *_layout;
-    QPointer<QTimer> _sizingTimer;
-    ParameterGrp::handle _hParam;
-    boost::signals2::scoped_connection &_conn;
-    ToolBarArea _area;
-};
+    _layout->insertWidget(index, widget);
 
-} // namespace Gui
+    adjustParent();
+    saveState();
+}
+
+void ToolBarAreaWidget::removeWidget(QWidget* widget)
+{
+    _layout->removeWidget(widget);
+
+    QString name = widget->objectName();
+    if (!name.isEmpty()) {
+        Base::ConnectionBlocker block(_conn);
+        _hParam->RemoveInt(name.toUtf8().constData());
+    }
+
+    adjustParent();
+}
+
+void ToolBarAreaWidget::adjustParent()
+{
+    if (_sizingTimer) {
+        _sizingTimer->start(10);
+    }
+}
+
+void ToolBarAreaWidget::saveState()
+{
+    Base::ConnectionBlocker block(_conn);
+
+    for (auto &v : _hParam->GetIntMap()) {
+        _hParam->RemoveInt(v.first.c_str());
+    }
+
+    foreachToolBar([this](QToolBar *toolbar, int idx, ToolBarAreaWidget*) {
+        _hParam->SetInt(toolbar->objectName().toUtf8().constData(), idx);
+    });
+}
+
+void ToolBarAreaWidget::restoreState(const std::map<int, QToolBar*>& toolbars)
+{
+    for (const auto &[index, toolbar] : toolbars) {
+        bool visible = toolbar->isVisible();
+        getMainWindow()->removeToolBar(toolbar);
+        toolbar->setOrientation(Qt::Horizontal);
+        insertWidget(index, toolbar);
+        toolbar->setVisible(visible);
+    }
+
+    for (const auto &[name, visible] : _hParam->GetBoolMap()) {
+        auto widget = findChild<QWidget*>(QString::fromUtf8(name.c_str()));
+
+        if (widget) {
+            widget->setVisible(visible);
+        }
+    }
+}
+
 
 // -----------------------------------------------------------
 

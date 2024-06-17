@@ -27,7 +27,7 @@
 
 #include "DlgImportStep.h"
 #include "ui_DlgImportStep.h"
-
+#include <Standard_Version.hxx>
 
 using namespace PartGui;
 
@@ -36,7 +36,6 @@ DlgImportStep::DlgImportStep(QWidget* parent)
   , ui(new Ui_DlgImportStep)
 {
     ui->setupUi(this);
-
     Part::OCAF::ImportExportSettings settings;
     ui->checkBoxMergeCompound->setChecked(settings.getReadShapeCompoundMode());
     ui->checkBoxImportHiddenObj->setChecked(settings.getImportHiddenObject());
@@ -45,6 +44,20 @@ DlgImportStep::DlgImportStep(QWidget* parent)
     ui->checkBoxReduceObjects->setChecked(settings.getReduceObjects());
     ui->checkBoxExpandCompound->setChecked(settings.getExpandCompound());
     ui->checkBoxShowProgress->setChecked(settings.getShowProgress());
+#if OCC_VERSION_HEX >= 0x070800
+    ui->checkBoxShowOnImport->setChecked(settings.getReadShowDialogImport());
+    std::list<Part::OCAF::ImportExportSettings::CodePage> codepagelist;
+    codepagelist = settings.getCodePageList();
+    for (const auto& codePage : codepagelist) {
+        ui->comboBoxImportCodePage->addItem(QString::fromStdString(codePage.codePageName));
+    }
+#else
+    // hide options that not supported in this OCCT version (7.8.0)
+    ui->label_6->hide();
+    ui->checkBoxShowOnImport->hide();
+    ui->comboBoxImportCodePage->hide();
+#endif
+
 }
 
 /**
@@ -55,6 +68,10 @@ DlgImportStep::~DlgImportStep() = default;
 void DlgImportStep::saveSettings()
 {
     // (h)STEP of Import module
+#if OCC_VERSION_HEX >= 0x070800
+    ui->checkBoxShowOnImport->onSave();
+    ui->comboBoxImportCodePage->onSave();
+#endif
     ui->checkBoxMergeCompound->onSave();
     ui->checkBoxImportHiddenObj->onSave();
     ui->checkBoxUseLinkGroup->onSave();
@@ -68,6 +85,10 @@ void DlgImportStep::saveSettings()
 void DlgImportStep::loadSettings()
 {
     // (h)STEP of Import module
+#if OCC_VERSION_HEX >= 0x070800
+    ui->checkBoxShowOnImport->onRestore();
+    ui->comboBoxImportCodePage->onRestore();
+#endif
     ui->checkBoxMergeCompound->onRestore();
     ui->checkBoxImportHiddenObj->onRestore();
     ui->checkBoxUseLinkGroup->onRestore();

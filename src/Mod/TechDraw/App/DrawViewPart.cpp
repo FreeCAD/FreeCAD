@@ -387,7 +387,12 @@ void DrawViewPart::onHlrFinished()
         m_tempGeometryObject = nullptr;       //superfluous?
     }
     if (!geometryObject) {
-        throw Base::RuntimeError("DrawViewPart has lost its geometry");
+        throw Base::RuntimeError("DrawViewPart has lost its geometry object");
+    }
+
+    if (!hasGeometry()) {
+        Base::Console().Error("TechDraw did not retrieve any geometry for %s/%s\n",
+                              getNameInDocument(), Label.getValue());
     }
 
     //the last hlr related task is to make a bbox of the results

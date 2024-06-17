@@ -2651,6 +2651,18 @@ PropertyMaterialList::~PropertyMaterialList() = default;
 //**************************************************************************
 // Base class implementer
 
+void PropertyMaterialList::setValues(const std::vector<App::Material>& newValues)
+{
+    if (!newValues.empty()) {
+        PropertyListsT<Material>::setValues(newValues);
+    }
+    else {
+        aboutToSetValue();
+        setSize(1);
+        hasSetValue();
+    }
+}
+
 PyObject* PropertyMaterialList::getPyObject()
 {
     Py::Tuple tuple(getSize());
@@ -3233,7 +3245,6 @@ void PropertyMaterialList::readString(Base::InputStream& str, std::string& value
     str >> uCt;
 
     std::vector<char> temp(uCt);
-
     str.read(temp.data(), uCt);
     value.assign(temp.data(), temp.size());
 }

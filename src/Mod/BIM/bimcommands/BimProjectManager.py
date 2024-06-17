@@ -35,7 +35,7 @@ translate = FreeCAD.Qt.translate
 class BIM_ProjectManager:
     def GetResources(self):
         return {
-            "Pixmap": "BIM_Project",
+            "Pixmap": "BIM_ProjectManager",
             "MenuText": QT_TRANSLATE_NOOP("BIM_ProjectManager", "Manage project..."),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_ProjectManager", "Setup your BIM project"
@@ -62,7 +62,7 @@ class BIM_ProjectManager:
         import ArchBuildingPart
 
         self.form.buildingUse.addItems(ArchBuildingPart.BuildingTypes)
-        self.form.setWindowIcon(QtGui.QIcon(":/icons/BIM_Project.svg"))
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/BIM_ProjectManager.svg"))
         QtCore.QObject.connect(
             self.form.buttonAdd, QtCore.SIGNAL("clicked()"), self.addGroup
         )

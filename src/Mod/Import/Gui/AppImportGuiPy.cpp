@@ -164,6 +164,16 @@ private:
                 if (mode < 0) {
                     mode = ocaf.getMode();
                 }
+#if OCC_VERSION_HEX >= 0x070800
+                auto handle = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
+                if (handle->GetBool("ReadShowDialogImport", false)) {
+                    Gui::Command::doCommand(Gui::Command::Gui,
+                                            "Gui.showPreferences('Import-Export', 8)");
+                }
+                Part::OCAF::ImportExportSettings settings;
+                Resource_FormatType cp = settings.getImportCodePage();
+#endif
                 if (mode && !pcDoc->isSaved()) {
                     auto gdoc = Gui::Application::Instance->getDocument(pcDoc);
                     if (!gdoc->save()) {
@@ -173,7 +183,11 @@ private:
 
                 try {
                     Import::ReaderStep reader(file);
+#if OCC_VERSION_HEX < 0x070800
                     reader.read(hDoc);
+#else
+                    reader.read(hDoc, cp);
+#endif
                 }
                 catch (OSD_Exception& e) {
                     Base::Console().Error("%s\n", e.GetMessageString());
@@ -483,7 +497,11 @@ private:
 
             if (file.hasExtension({"stp", "step"})) {
                 Import::ReaderStep reader(file);
+#if OCC_VERSION_HEX < 0x070800
                 reader.read(hDoc);
+#else
+                reader.read(hDoc, Resource_FormatType_UTF8);
+#endif
             }
             else if (file.hasExtension({"igs", "iges"})) {
                 Import::ReaderIges reader(file);

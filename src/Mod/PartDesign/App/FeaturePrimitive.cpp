@@ -126,7 +126,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         try {
             boolOp.makeElementBoolean(maker, {base, primitiveShape});
         }
-        catch (Standard_Failure& e) {
+        catch (Standard_Failure&) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Failed to perform boolean operation"));
         }

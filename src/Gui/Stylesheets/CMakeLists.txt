@@ -1,66 +1,45 @@
 
 SET(Stylesheets_Files
     "Behave-dark.qss"
-    "Dark.qss"
-    "Darker.qss"
-    "Light.qss"
-    "Dark-contrast.qss"
-    "ProDark.qss"
-    "Dark-modern.qss"
-    "Light-modern.qss"
+    "Dark theme.qss"
+	"Light theme.qss"
 )
 
 SET(Overlay_Stylesheets_Files
-    "overlay/Dark.qss"
-    "overlay/Default_Dark-theme_dark-background.qss"
-    "overlay/Default_Dark-theme_Light-background.qss"
-    "overlay/Default_Light-theme_dark-background.qss"
-    "overlay/Default_Light-theme_light-background.qss"
-    "overlay/Light.qss"
-    "overlay/Dark-Outline.qss"
-    "overlay/Light-Outline.qss"
-    "overlay/Darker_overlay.qss"
-    "overlay/Dark_overlay.qss"
-    "overlay/Dark-Modern_overlay.qss"
-    "overlay/Light-Modern_overlay.qss"
-    "overlay/Light_overlay.qss"
-    "overlay/close.svg"
-    "overlay/overlay.svg"
-    "overlay/float.svg"
-    "overlay/autohide.svg"
-    "overlay/editshow.svg"
-    "overlay/taskshow.svg"
-    "overlay/edithide.svg"
-    "overlay/mode.svg"
-    "overlay/transparent.svg"
-    "overlay/taskshow_light.svg"
-    "overlay/mode_lighter.svg"
-    "overlay/overlay_lighter.svg"
-    "overlay/close_lighter.svg"
-    "overlay/close_light.svg"
-    "overlay/float_lighter.svg"
-    "overlay/overlay_light.svg"
-    "overlay/mode_light.svg"
-    "overlay/transparent_light.svg"
-    "overlay/float_light.svg"
-    "overlay/transparent_lighter.svg"
-    "overlay/close_red.svg"
+    "overlay/Dark Theme + Dark Background.qss"
+    "overlay/Dark Theme + Light Background.qss"
+    "overlay/Light Theme + Dark Background.qss"
+    "overlay/Light Theme + Light Background.qss"
+    "overlay/DarkBehave_overlay.qss"
 )
 
 # Find all the image files
 FILE(GLOB Images_Files RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
     "${CMAKE_CURRENT_SOURCE_DIR}/images_dark-light/*.svg")
 
-SOURCE_GROUP("images_dark-light" FILES ${Images_Files})
+SOURCE_GROUP("Images_dark-light" FILES ${Images_Files})
+
+FILE(GLOB Images_Files2 RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/images_classic/*.png")
+
+SOURCE_GROUP("images_classic" FILES ${Images_Files2})
+
+FILE(GLOB Overlay_icons RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/overlay/icons/*.svg")
+
+SOURCE_GROUP("overlay_icons" FILES ${Overlay_icons})
+
 
 ADD_CUSTOM_TARGET(Stylesheets_data ALL
-    SOURCES ${Stylesheets_Files} ${Images_Files} ${Overlay_Stylesheets_Files}
+    SOURCES ${Stylesheets_Files} ${Images_Files} ${Images_Files2} ${Overlay_Stylesheets_Files} ${Overlay_icons}
 )
 
 fc_copy_sources(Stylesheets_data "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Gui/Stylesheets"
                                   ${Stylesheets_Files}
                                   ${Images_Files}
-                                  ${Overlay_Stylesheets_Files})
+                                  ${Images_Files2}
+                                  ${Overlay_Stylesheets_Files}
+                                  ${Overlay_icons})
 
 INSTALL(
     FILES
@@ -76,7 +55,19 @@ INSTALL(
 )
 INSTALL(
     FILES
+        ${Overlay_icons}
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Gui/Stylesheets/overlay/icons
+)
+INSTALL(
+    FILES
          ${Images_Files}
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/Gui/Stylesheets/images_dark-light
+)
+INSTALL(
+    FILES
+         ${Images_Files2}
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Gui/Stylesheets/images_classic
 )

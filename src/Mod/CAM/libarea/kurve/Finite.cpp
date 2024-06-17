@@ -132,27 +132,10 @@ namespace geoff_geometry {
 			FAILURE(L"OnSpan - properties no set, incorrect calling code");
 		}
 #endif
-#if 0
-		if(NullSpan) {
-			*t = 0.0;
-			return (p == p0);
-		}
 
-		if(p == p0) {
-			*t = 0.0;
-			return true;
-		}
-
-		if(p == p1) {
-			*t = 1.0;
-			return true;
-		}
-#endif
 		bool ret;
-//		if(p == this->p0 || p == this->p1) return true;
 
 		if(dir == LINEAR) {
-#if 1
 #if _DEBUG
 			// check p is on line
 			CLine cl(*this);
@@ -161,18 +144,14 @@ namespace geoff_geometry {
 				FAILURE(L"OnSpan - point not on linear span, incorrect calling code");
 			}
 #endif
-#endif
 			Vector2d v0(p0, p);
 			*t = vs * v0;
-//			ret = (*t > - geoff_geometry::TOLERANCE && *t < length + geoff_geometry::TOLERANCE);
-
 			*t = *t / length;
 			ret = (*t >= 0 && *t <= 1.0 );
 
 		}
 		else {
 			// true if p lies on arc span sp (p must be on circle of span)
-#if 1
 #if _DEBUG
 			// check that p lies on the arc
 			double d = p.Dist(pc);
@@ -180,7 +159,6 @@ namespace geoff_geometry {
 				FAILURE(L"OnSpan - point not on circular span, incorrect calling code");
 			}
 
-#endif
 #endif
 #if 0	// alt method (faster, but doesn't provide t)
 			Vector2d v0(p0, p);
@@ -390,14 +368,6 @@ namespace geoff_geometry {
 		Vector3d vcp = *vl ^ v;
 		double d = vcp.magnitude(); // l * sina
 		return d;
-#if 0
-		// slower method requires 2 sqrts
-		Vector3d v(*p, *pf);
-		double magv = v.normalise();
-		Vector3d cp = *vl ^ v;
-		double d = magv * cp.magnitude();
-		return d;  // l * sina
-#endif
 	}
 
 	double Dist(const Span& sp, const Point& p , Point& pnear ) {
@@ -431,12 +401,7 @@ namespace geoff_geometry {
 				// check if projected point is on the arc
 				if(sp.OnSpan(pnear))
 				    return fabs(radiusp - sp.radius);
-				// double      h1 = pnear.x - sp.p0.x ;
-				// double      v1 = pnear.y - sp.p0.y ;
-				// double      h2 = sp.p1.x - pnear.x ;
-				// double      v2 = sp.p1.y - pnear.y ;
-				//       if ( sp.dir * ( h1 * v2 - h2 * v1 ) >= 0 )return fabs(radiusp - sp.radius);
-
+				
 				// point not on arc so calc nearest end-point
 				double ndist = p.Dist(sp.p0);
 				double dist = p.Dist(sp.p1);
@@ -609,55 +574,6 @@ namespace geoff_geometry {
 		    return true;
 		return false;
 	}
-#if 0
-	Span3d IsPtsSpan3d(const double* a, int n, double tolerance, double* deviation) {
-		// returns a span3d if all points are within tolerance
-		int np = n / 3;					// number of points
-		if(np < 2)		// Invalid span3d
-		    return Span3d();
-		Point3d sp = Point3d(&a[0]);
-		Point3d ep = Point3d(&a[n-3]);
-		Line line = IsPtsLine(a, n, tolerance, deviation);
-		if(line.ok)	// it's a line
-		    return Span3d(sp, ep);
-
-		*deviation = 0;					// cumulative deviation
-		Point3d mp = Point3d(&a[np / 2 * 3]);	// mid point
-		Plane plane(sp, mp, ep);
-		if(plane.ok) {
-			// plane of the arc is ok
-			// calculate centre point
-			Vector3d vs(mp, sp);
-			vs.normalise();
-			Vector3d ve(mp, ep);
-			ve.normalise();
-			Vector3d rs = vs ^ plane.normal;
-			Vector3d re = ve ^ plane.normal;
-
-			Line rsl(sp.Mid(mp), rs, false);
-			Line rel(ep.Mid(mp), re, false);
-
-			Point3d pc;
-			Intof(rsl, rel, pc);
-			double radius = pc.Dist(sp);
-
-			// check other points on circle
-			for(int i = 2; i < np - 1; i++) {
-				Point3d p(&a[i*3]);
-				double dp = fabs(plane.Dist(p));
-				double dr = fabs(p.Dist(pc) - radius);
-double tolerance = 10.0 * 1.0e-6;
-				if(dp > tolerance || dr > tolerance) {
-					return Span3d();
-				}
-
-			}
-			return Span3d(CW, plane.normal, sp, ep, pc);
-
-		}
-		return Span3d();
-	}
-#endif
 
 	Line IsPtsLine(const double* a, int n, double tolerance, double* deviation) {
 		// returns a Line if all points are within tolerance

@@ -29,7 +29,19 @@ import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
-PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
+
+
+#           Description                 l    w    t
+
+Presets = [None,
+           ["Plywood 12mm, 1220 x 2440",1220,2440,12],
+           ["Plywood 15mm, 1220 x 2440",1220,2440,15],
+           ["Plywood 18mm, 1220 x 2440",1220,2440,18],
+           ["Plywood 25mm, 1220 x 2440",1220,2440,25],
+           ["MDF 3mm, 900 x 600",       900, 600, 3],
+           ["MDF 6mm, 900 x 600",       900, 600, 6],
+           ["OSB 18mm, 1220 x 2440",    1220,2440,18],
+           ]
 
 
 class Arch_Panel:
@@ -52,6 +64,7 @@ class Arch_Panel:
 
         import WorkingPlane
         import Draft
+        import draftguitools.gui_trackers as DraftTrackers
         from draftutils import params
         self.Length = params.get_param_arch("PanelLength")
         self.Width = params.get_param_arch("PanelWidth")
@@ -89,6 +102,7 @@ class Arch_Panel:
 
         "this function is called by the snapper when it has a 3D point"
 
+        import DraftVecUtils
         self.tracker.finalize()
         if point is None:
             return
@@ -113,6 +127,7 @@ class Arch_Panel:
 
         "sets up a taskbox widget"
 
+        from draftutils import params
         from PySide import QtCore, QtGui
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
@@ -191,19 +206,19 @@ class Arch_Panel:
     def setWidth(self,d):
 
         from draftutils import params
-        self.Width = d
+        self.Width = d.Value
         params.set_param_arch("PanelWidth",d)
 
     def setThickness(self,d):
 
         from draftutils import params
-        self.Thickness = d
+        self.Thickness = d.Value
         params.set_param_arch("PanelThickness",d)
 
     def setLength(self,d):
 
         from draftutils import params
-        self.Length = d
+        self.Length = d.Value
         params.set_param_arch("PanelLength",d)
 
     def setContinue(self,i):
@@ -415,7 +430,7 @@ class NestTaskPanel:
         self.form.progressBar.setValue(value)
 
     def start(self):
-        
+
         from PySide import QtGui
         import ArchNesting
         self.clearTemps()
@@ -465,12 +480,12 @@ class Arch_PanelGroup:
 
     def GetCommands(self):
         return tuple(['Arch_Panel','Arch_Panel_Cut','Arch_Panel_Sheet','Arch_Nest'])
-        
+
     def GetResources(self):
         return { 'MenuText': QT_TRANSLATE_NOOP("Arch_PanelTools",'Panel tools'),
                  'ToolTip': QT_TRANSLATE_NOOP("Arch_PanelTools",'Panel tools')
                }
-               
+
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
         return v
