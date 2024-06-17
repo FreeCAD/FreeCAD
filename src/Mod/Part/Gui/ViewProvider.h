@@ -58,7 +58,7 @@ protected:
                     const std::vector<App::Color>& colBase,
                     std::vector<App::Color>& colBool);
     void applyMaterial(const Part::ShapeHistory& hist,
-                       const App::PropertyMaterialList& colBase,
+                       const std::vector<App::Material>& colBase,
                        std::vector<App::Material>& colBool);
     void applyTransparency(float transparency, std::vector<App::Color>& colors);
     void applyTransparency(float transparency, std::vector<App::Material>& colors);

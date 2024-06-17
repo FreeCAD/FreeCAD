@@ -71,7 +71,7 @@ void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
 }
 
 void ViewProviderPart::applyMaterial(const Part::ShapeHistory& hist,
-                                     const App::PropertyMaterialList& colBase,
+                                     const std::vector<App::Material>& colBase,
                                      std::vector<App::Material>& colBool)
 {
     std::map<int, std::vector<int>>::const_iterator jt;
