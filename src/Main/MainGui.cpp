@@ -48,7 +48,6 @@
 #include <QApplication>
 #include <QLocale>
 #include <QMessageBox>
-#include <QtQuick/QQuickWindow>
 
 // FreeCAD header
 #include <App/Application.h>
