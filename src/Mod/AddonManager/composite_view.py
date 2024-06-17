@@ -84,6 +84,7 @@ class CompositeView(QtWidgets.QWidget):
         self._setup_ui()
         self._setup_connections()
         self._restore_splitter_state()
+        self.scroll_position = 0
 
     def _save_splitter_state(self):
         """Write the splitter state into an Addon manager preference, CompositeSplitterState"""
@@ -147,14 +148,26 @@ class CompositeView(QtWidgets.QWidget):
     def addon_selected(self, addon):
         self.package_details_controller.show_repo(addon)
         if self.display_style != AddonManagerDisplayStyle.COMPOSITE:
+            self.scroll_position = (
+                self.package_list.ui.listPackages.verticalScrollBar().sliderPosition()
+            )
+            print(f"Saved slider position at {self.scroll_position}")
             self.package_list.hide()
             self.package_details.show()
             self.package_details.button_bar.set_show_back_button(True)
 
     def _back_button_clicked(self):
         if self.display_style != AddonManagerDisplayStyle.COMPOSITE:
+            print(f"Set slider position to {self.scroll_position}")
             self.package_list.show()
             self.package_details.hide()
+            # The following must be done *after* a cycle through the event loop
+            QtCore.QTimer.singleShot(
+                0,
+                lambda: self.package_list.ui.listPackages.verticalScrollBar().setSliderPosition(
+                    self.scroll_position
+                ),
+            )
 
     def _splitter_moved(self, position: int, index: int) -> None:
         self._save_splitter_state()
