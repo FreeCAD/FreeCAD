@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Jose Luis Cercos-Pita                              *
+ *   Copyright (c) 2024 Boyer Pierre-Louis <development@ondsel>            *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,60 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
+
 #include "PreCompiled.h"
 
-// clang-format off
-#include "ViewProviderSpreadsheetPy.h"
-#include "ViewProviderSpreadsheetPy.cpp"
-// clang-format on
+// inclusion of the generated files (generated out of BomObject.xml)
+#include "BomObjectPy.h"
+#include "BomObjectPy.cpp"
 
-
-using namespace SpreadsheetGui;
+using namespace Assembly;
 
 // returns a string which represents the object e.g. when printed in python
-std::string ViewProviderSpreadsheetPy::representation() const
+std::string BomObjectPy::representation() const
 {
-    return {"<ViewProviderSpreadsheet object>"};
+    return {"<Bill of Materials object>"};
 }
 
-PyObject* ViewProviderSpreadsheetPy::getView(PyObject* args)
-{
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
-    }
-
-    ViewProviderSheet* vp = this->getViewProviderSheetPtr();
-    SheetView* sheetView = vp->getView();
-    if (sheetView) {
-        return sheetView->getPyObject();
-    }
-    Py_RETURN_NONE;
-}
-
-PyObject* ViewProviderSpreadsheetPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* BomObjectPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
 
-int ViewProviderSpreadsheetPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+int BomObjectPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
-}
-
-PyObject* ViewProviderSpreadsheetPy::showSheetMdi(PyObject* args)
-{
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
-    }
-    this->getViewProviderSheetPtr()->showSheetMdi();
-    Py_Return;
-}
-
-PyObject* ViewProviderSpreadsheetPy::exportAsFile(PyObject* args)
-{
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
-    }
-    this->getViewProviderSheetPtr()->exportAsFile();
-    Py_Return;
 }

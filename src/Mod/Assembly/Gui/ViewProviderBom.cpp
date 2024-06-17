@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
+﻿// SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
@@ -23,47 +23,63 @@
 
 #include "PreCompiled.h"
 
-#include <Base/Console.h>
+#ifndef _PreComp_
+#include <vector>
+#endif
+
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+
 #include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
 
-#include "ViewProviderAssembly.h"
 #include "ViewProviderBom.h"
-#include "ViewProviderBomGroup.h"
-#include "ViewProviderJointGroup.h"
-#include "ViewProviderViewGroup.h"
 
+using namespace AssemblyGui;
 
-namespace AssemblyGui
+PROPERTY_SOURCE(AssemblyGui::ViewProviderBom, SpreadsheetGui::ViewProviderSheet)
+
+ViewProviderBom::ViewProviderBom()
+{}
+
+ViewProviderBom::~ViewProviderBom() = default;
+
+QIcon ViewProviderBom::getIcon() const
 {
-extern PyObject* initModule();
+    return Gui::BitmapFactory().pixmap("Assembly_BillOfMaterials.svg");
 }
 
-/* Python entry */
-PyMOD_INIT_FUNC(AssemblyGui)
+bool ViewProviderBom::doubleClicked()
 {
-    // load dependent module
     try {
-        Base::Interpreter().runString("import SpreadsheetGui");
+        // Ensure the Python interpreter is initialized
+        if (!Py_IsInitialized()) {
+            Py_Initialize();
+        }
+
+        // Acquire the GIL (Global Interpreter Lock)
+        PyGILState_STATE gstate;
+        gstate = PyGILState_Ensure();
+        std::string obj_name = getObject()->getNameInDocument();
+        std::string doc_name = getObject()->getDocument()->getName();
+
+        // Call the Python function
+        std::string pythonCommand = "import CommandCreateBom\n"
+                                    "obj = App.getDocument('"
+            + doc_name + "').getObject('" + obj_name
+            + "')\n"
+              "Gui.Control.showDialog(CommandCreateBom.TaskAssemblyCreateBom(obj))";
+
+        PyRun_SimpleString(pythonCommand.c_str());
+
+        // Release the GIL
+        PyGILState_Release(gstate);
     }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
+    catch (...) {
+        PyErr_Print();
     }
 
-    PyObject* mod = AssemblyGui::initModule();
-    Base::Console().Log("Loading AssemblyGui module... done\n");
-
-
-    // NOTE: To finish the initialization of our own type objects we must
-    // call PyType_Ready, otherwise we run into a segmentation fault, later on.
-    // This function is responsible for adding inherited slots from a type's base class.
-
-    AssemblyGui::ViewProviderAssembly::init();
-    AssemblyGui::ViewProviderBom::init();
-    AssemblyGui::ViewProviderBomGroup::init();
-    AssemblyGui::ViewProviderJointGroup::init();
-    AssemblyGui::ViewProviderViewGroup::init();
-
-    PyMOD_Return(mod);
+    return true;
 }

@@ -21,49 +21,47 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#ifndef ASSEMBLYGUI_VIEWPROVIDER_ViewProviderBomGroup_H
+#define ASSEMBLYGUI_VIEWPROVIDER_ViewProviderBomGroup_H
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
+#include <Mod/Assembly/AssemblyGlobal.h>
 
-#include "ViewProviderAssembly.h"
-#include "ViewProviderBom.h"
-#include "ViewProviderBomGroup.h"
-#include "ViewProviderJointGroup.h"
-#include "ViewProviderViewGroup.h"
+#include <Gui/ViewProviderDocumentObjectGroup.h>
 
 
 namespace AssemblyGui
 {
-extern PyObject* initModule();
-}
 
-/* Python entry */
-PyMOD_INIT_FUNC(AssemblyGui)
+class AssemblyGuiExport ViewProviderBomGroup: public Gui::ViewProviderDocumentObjectGroup
 {
-    // load dependent module
-    try {
-        Base::Interpreter().runString("import SpreadsheetGui");
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
+    PROPERTY_HEADER_WITH_OVERRIDE(AssemblyGui::ViewProviderBomGroup);
 
-    PyObject* mod = AssemblyGui::initModule();
-    Base::Console().Log("Loading AssemblyGui module... done\n");
+public:
+    ViewProviderBomGroup();
+    ~ViewProviderBomGroup() override;
 
+    /// deliver the icon shown in the tree view. Override from ViewProvider.h
+    QIcon getIcon() const override;
 
-    // NOTE: To finish the initialization of our own type objects we must
-    // call PyType_Ready, otherwise we run into a segmentation fault, later on.
-    // This function is responsible for adding inherited slots from a type's base class.
+    // Prevent dragging of the joints and dropping things inside the joint group.
+    bool canDragObjects() const override
+    {
+        return false;
+    };
+    bool canDropObjects() const override
+    {
+        return false;
+    };
+    bool canDragAndDropObject(App::DocumentObject*) const override
+    {
+        return false;
+    };
 
-    AssemblyGui::ViewProviderAssembly::init();
-    AssemblyGui::ViewProviderBom::init();
-    AssemblyGui::ViewProviderBomGroup::init();
-    AssemblyGui::ViewProviderJointGroup::init();
-    AssemblyGui::ViewProviderViewGroup::init();
+    // protected:
+    /// get called by the container whenever a property has been changed
+    // void onChanged(const App::Property* prop) override;
+};
 
-    PyMOD_Return(mod);
-}
+}  // namespace AssemblyGui
+
+#endif  // ASSEMBLYGUI_VIEWPROVIDER_ViewProviderBomGroup_H

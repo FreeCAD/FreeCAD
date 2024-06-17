@@ -21,49 +21,82 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
+#ifndef ASSEMBLY_BomObject_H
+#define ASSEMBLY_BomObject_H
 
-#include "ViewProviderAssembly.h"
-#include "ViewProviderBom.h"
-#include "ViewProviderBomGroup.h"
-#include "ViewProviderJointGroup.h"
-#include "ViewProviderViewGroup.h"
+#include <App/PropertyFile.h>
 
+#include <Mod/Assembly/AssemblyGlobal.h>
 
-namespace AssemblyGui
+#include <Mod/Spreadsheet/App/Sheet.h>
+#include <App/PropertyLinks.h>
+
+namespace App
 {
-extern PyObject* initModule();
+class DocumentObject;
 }
 
-/* Python entry */
-PyMOD_INIT_FUNC(AssemblyGui)
+namespace Assembly
 {
-    // load dependent module
-    try {
-        Base::Interpreter().runString("import SpreadsheetGui");
+
+class AssemblyObject;
+
+class BomDataElement
+{
+public:
+    BomDataElement(std::string objName, std::string columnName, std::string value)
+        : objName(objName)
+        , columnName(columnName)
+        , value(value)
+    {}
+    ~BomDataElement()
+    {}
+
+    std::string objName;
+    std::string columnName;
+    std::string value;
+};
+
+class AssemblyExport BomObject: public Spreadsheet::Sheet
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(Assembly::BomObject);
+
+public:
+    BomObject();
+    ~BomObject() override;
+
+    PyObject* getPyObject() override;
+
+    const char* getViewProviderName() const override
+    {
+        return "AssemblyGui::ViewProviderBom";
     }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
 
-    PyObject* mod = AssemblyGui::initModule();
-    Base::Console().Log("Loading AssemblyGui module... done\n");
+    App::DocumentObjectExecReturn* execute() override;
+
+    void generateBOM();
+    void addObjectToBom(App::DocumentObject* obj, size_t row, std::string index);
+    void
+    addObjectChildrenToBom(std::vector<App::DocumentObject*> objs, size_t& row, std::string index);
+    void saveCustomColumnData();
+
+    AssemblyObject* getAssembly();
+
+    bool hasQuantityColumn();
+    int getColumnIndex(std::string name);
+    std::string getText(size_t row, size_t col);
+
+    App::PropertyStringList columnsNames;
+    App::PropertyBool detailSubAssemblies;
+    App::PropertyBool detailParts;
+    App::PropertyBool onlyParts;
+
+    std::vector<BomDataElement> dataElements;
+};
 
 
-    // NOTE: To finish the initialization of our own type objects we must
-    // call PyType_Ready, otherwise we run into a segmentation fault, later on.
-    // This function is responsible for adding inherited slots from a type's base class.
+}  // namespace Assembly
 
-    AssemblyGui::ViewProviderAssembly::init();
-    AssemblyGui::ViewProviderBom::init();
-    AssemblyGui::ViewProviderBomGroup::init();
-    AssemblyGui::ViewProviderJointGroup::init();
-    AssemblyGui::ViewProviderViewGroup::init();
 
-    PyMOD_Return(mod);
-}
+#endif  // ASSEMBLY_BomObject_H

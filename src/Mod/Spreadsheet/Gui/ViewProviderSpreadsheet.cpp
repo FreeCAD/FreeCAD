@@ -33,6 +33,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
+#include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
@@ -102,11 +103,7 @@ QIcon ViewProviderSheet::getIcon() const
 bool ViewProviderSheet::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        if (!this->view) {
-            showSpreadsheetView();
-            view->viewAll();
-        }
-        Gui::getMainWindow()->setActiveWindow(this->view);
+        showSheetMdi();
     }
     return false;
 }
@@ -123,12 +120,44 @@ bool ViewProviderSheet::doubleClicked()
         Gui::Command::assureWorkbench("SpreadsheetWorkbench");
     }
 
+    showSheetMdi();
+    return true;
+}
+
+void ViewProviderSheet::showSheetMdi()
+{
     if (!this->view) {
         showSpreadsheetView();
         view->viewAll();
     }
     Gui::getMainWindow()->setActiveWindow(this->view);
-    return true;
+}
+
+void ViewProviderSheet::exportAsFile()
+{
+    auto* sheet = static_cast<Spreadsheet::Sheet*>(getObject());
+    QString selectedFilter;
+    QString formatList = QObject::tr("CSV (*.csv *.CSV);;All (*)");
+    QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
+                                                        QObject::tr("Export file"),
+                                                        QString(),
+                                                        formatList,
+                                                        &selectedFilter);
+    if (!fileName.isEmpty()) {
+        if (sheet) {
+            char delim, quote, escape;
+            std::string errMsg = "Export";
+            bool isValid = sheet->getCharsFromPrefs(delim, quote, escape, errMsg);
+
+            if (isValid) {
+                sheet->exportToFile(fileName.toStdString(), delim, quote, escape);
+            }
+            else {
+                Base::Console().Error(errMsg.c_str());
+                return;
+            }
+        }
+    }
 }
 
 void ViewProviderSheet::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
