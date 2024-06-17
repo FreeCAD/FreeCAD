@@ -1679,6 +1679,15 @@ int SketchObject::addGeometry(std::unique_ptr<Part::Geometry> newgeo, bool const
     return Geometry.getSize() - 1;
 }
 
+bool SketchObject::hasInternalGeometry(const Part::Geometry* geo)
+{
+    return (geo->is<Part::GeomEllipse>()
+            || geo->is<Part::GeomArcOfEllipse>()
+            || geo->is<Part::GeomArcOfHyperbola>()
+            || geo->is<Part::GeomArcOfParabola>()
+            || geo->is<Part::GeomBSplineCurve>());
+}
+
 int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
 {
     if (GeoId < 0) {
@@ -1694,19 +1703,10 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
     if (GeoId < 0 || GeoId >= int(vals.size()))
         return -1;
 
-    if (deleteinternalgeo) {
-        const Part::Geometry* geo = getGeometry(GeoId);
+    if (deleteinternalgeo && hasInternalGeometry(getGeometry(GeoId))) {
         // Only for supported types
-        if ((geo->is<Part::GeomEllipse>()
-             || geo->is<Part::GeomArcOfEllipse>()
-             || geo->is<Part::GeomArcOfHyperbola>()
-             || geo->is<Part::GeomArcOfParabola>()
-             || geo->is<Part::GeomBSplineCurve>())) {
-
-            this->deleteUnusedInternalGeometry(GeoId, true);
-
-            return 0;
-        }
+        this->deleteUnusedInternalGeometry(GeoId, true);
+        return 0;
     }
 
     std::vector<Part::Geometry*> newVals(vals);
@@ -1715,14 +1715,12 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
     // Find coincident points to replace the points of the deleted geometry
     std::vector<int> GeoIdList;
     std::vector<PointPos> PosIdList;
-    for (PointPos PosId = PointPos::start; PosId != PointPos::mid;) {
+    for (PointPos PosId: {PointPos::start, PointPos::end, PointPos::mid}) {
         getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
         if (GeoIdList.size() > 1) {
             delConstraintOnPoint(GeoId, PosId, true /* only coincidence */);
             transferConstraints(GeoIdList[0], PosIdList[0], GeoIdList[1], PosIdList[1]);
         }
-        // loop through [start, end, mid]
-        PosId = (PosId == PointPos::start) ? PointPos::end : PointPos::mid;
     }
 
     const std::vector<Constraint*>& constraints = this->Constraints.getValues();
@@ -1760,7 +1758,6 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
 
     return 0;
 }
-
 
 int SketchObject::delGeometries(const std::vector<int>& GeoIds)
 {
