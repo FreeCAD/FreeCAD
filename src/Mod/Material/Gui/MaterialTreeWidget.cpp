@@ -59,6 +59,7 @@ MaterialTreeWidget::MaterialTreeWidget(const std::shared_ptr<Materials::Material
                                        QWidget* parent)
     : QWidget(parent)
     , m_expanded(false)
+    , m_treeSizeHint(250, 500)
     , _filter(filter)
 {
     setup();
@@ -69,6 +70,7 @@ MaterialTreeWidget::MaterialTreeWidget(
     QWidget* parent)
     : QWidget(parent)
     , m_expanded(false)
+    , m_treeSizeHint(250, 500)
     , _filter(std::make_shared<Materials::MaterialFilter>())
     , _filterList(filterList)
 {
@@ -78,6 +80,7 @@ MaterialTreeWidget::MaterialTreeWidget(
 MaterialTreeWidget::MaterialTreeWidget(QWidget* parent)
     : QWidget(parent)
     , m_expanded(false)
+    , m_treeSizeHint(250, 500)
     , _filter(std::make_shared<Materials::MaterialFilter>())
 {
     setup();
@@ -102,6 +105,30 @@ MaterialTreeWidget::~MaterialTreeWidget()
     saveMaterialTree();
 }
 
+QSize MaterialTreeWidget::sizeHint() const
+{
+    if (!m_expanded) {
+        // When not expanded, the size height is the same as m_material
+        QSize size = m_material->sizeHint();
+        size.setWidth(250);
+        return size;
+    }
+    return QWidget::sizeHint();
+}
+
+QSize MaterialTreeWidget::treeSizeHint() const
+{
+    return m_treeSizeHint;
+}
+
+void MaterialTreeWidget::setTreeSizeHint(const QSize& hint)
+{
+    m_treeSizeHint = hint;
+    m_materialTree->setMinimumSize(m_treeSizeHint);
+    m_materialTree->adjustSize();
+    adjustSize();
+}
+
 void MaterialTreeWidget::createLayout()
 {
     m_material = new QLineEdit(this);
@@ -111,12 +138,15 @@ void MaterialTreeWidget::createLayout()
     m_filterCombo = new QComboBox(this);
     m_editor = new QPushButton(tr("Launch editor"), this);
 
+    m_materialTree->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    m_materialTree->setMinimumSize(m_treeSizeHint);
     m_materialTree->setSelectionMode(QAbstractItemView::SingleSelection);
     m_materialTree->setSelectionBehavior(QAbstractItemView::SelectItems);
 
     auto materialLayout = new QHBoxLayout();
     materialLayout->addWidget(m_material);
     materialLayout->addWidget(m_expand);
+    // materialLayout->setSizeConstraint(QLayout::SetMinimumSize);
 
     auto treeLayout = new QHBoxLayout();
     treeLayout->addWidget(m_materialTree);
@@ -132,6 +162,8 @@ void MaterialTreeWidget::createLayout()
     layout->addItem(treeLayout);
     layout->addItem(buttonLayout);
     setLayout(layout);
+
+    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
 
     // Set the filter if using a filter list
     if (hasMultipleFilters()) {
@@ -169,6 +201,10 @@ void MaterialTreeWidget::setExpanded(bool open)
     else {
         m_expand->setIcon(style()->standardIcon(QStyle::SP_TitleBarUnshadeButton));
     }
+
+    // m_materialTree->adjustSize();
+    adjustSize();
+    Q_EMIT onExpanded(m_expanded);
 }
 
 void MaterialTreeWidget::setFilterVisible(bool open)
