@@ -50,6 +50,7 @@
 #include <vector>
 
 // boost
+#include <boost/algorithm/string.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/lexical_cast.hpp>
 

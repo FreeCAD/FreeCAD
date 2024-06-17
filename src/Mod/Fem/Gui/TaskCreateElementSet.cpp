@@ -26,10 +26,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <boost/algorithm/string.hpp>
+
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoEventCallback.h>
-
 
 #include <QAction>
 #include <QApplication>
@@ -68,14 +69,16 @@ using namespace Gui;
 using namespace FemGui;
 using namespace std;
 
+std::string TaskCreateElementSet::currentProject = "";
+
+namespace
+{
 std::string inp_file = "abaqusOutputFileEraseElements.inp";
 
 std::string createdMesh = "cDUMMY";
 std::string startResultMesh = "StartResultMesh";  // StartResultMesh";
 std::string newResultMesh = "NewResultMesh";
 std::string newFemMesh = "NewFemMesh";
-
-std::string TaskCreateElementSet::currentProject = "";
 
 std::string uniqueMesh = "";
 std::string newProject = "";
@@ -86,18 +89,8 @@ std::string highLightMesh;  //  name of highlighted mesh
 std::string meshType;       // type of - either 'result' or 'femmesh'
 int passResult = 0;
 int passFemMesh = 0;
-int maxProject = 10;
 double** nodeCoords;  // these are node coords
 int* nodeNumbers;     // these are node numbers - probably not required[100];
-
-
-string myToUpper(std::string str)
-{
-    for (int i = 0; i < str.length(); i++) {
-        str[i] = toupper(str[i]);
-    }
-    return str;
-}
 
 void addFaceToMesh(const std::vector<const SMDS_MeshNode*> nodes, SMESHDS_Mesh* MeshDS, int EID)
 {
@@ -446,6 +439,7 @@ void writeToFile(std::string fileName,
     fclose(fptr);
     return;
 }
+}  // namespace
 
 TaskCreateElementSet::TaskCreateElementSet(Fem::FemSetElementNodesObject* pcObject, QWidget* parent)
     : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateElementsSet"),
@@ -626,7 +620,7 @@ void TaskCreateElementSet::DefineNodes(const Base::Polygon2d& polygon,
     highLightMesh = selection[0].FeatName;
 
     meshType = "NULL";
-    std::size_t found = myToUpper(highLightMesh).find(myToUpper(resultMesh));
+    std::size_t found = boost::to_upper_copy(highLightMesh).find(boost::to_upper_copy(resultMesh));
     actualResultMesh = highLightMesh;
     // highLightMesh.find(myToUpper(resultMesh));
 
