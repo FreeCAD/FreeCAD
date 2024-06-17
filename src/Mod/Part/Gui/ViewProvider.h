@@ -60,10 +60,8 @@ protected:
     void applyMaterial(const Part::ShapeHistory& hist,
                        const App::PropertyMaterialList& colBase,
                        std::vector<App::Material>& colBool);
-    void applyTransparency(const float& transparency,
-                    std::vector<App::Color>& colors);
-    void applyTransparency(const float& transparency,
-                    std::vector<App::Material>& colors);
+    void applyTransparency(float transparency, std::vector<App::Color>& colors);
+    void applyTransparency(float transparency, std::vector<App::Material>& colors);
 };
 
 } // namespace PartGui
