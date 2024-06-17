@@ -210,18 +210,18 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters()
             double eps1 =
                 ::atof(hGrp->GetASCII("LM_eps1", QString::number(LM_EPS1).toUtf8()).c_str());
             double tau = ::atof(hGrp->GetASCII("LM_tau", QString::number(LM_TAU).toUtf8()).c_str());
-            ui->lineEditSolverParam1->setText(QString::number(eps).remove(
-                QString::fromLatin1("+")
-                    .replace(QLatin1String("e0"), QLatin1String("E"))
-                    .toUpper()));
-            ui->lineEditSolverParam2->setText(QString::number(eps1).remove(
-                QString::fromLatin1("+")
-                    .replace(QLatin1String("e0"), QLatin1String("E"))
-                    .toUpper()));
-            ui->lineEditSolverParam3->setText(QString::number(tau).remove(
-                QString::fromLatin1("+")
-                    .replace(QLatin1String("e0"), QLatin1String("E"))
-                    .toUpper()));
+            ui->lineEditSolverParam1->setText(
+                QString::number(eps).remove(QString::fromLatin1("+")
+                                                .replace(QLatin1String("e0"), QLatin1String("E"))
+                                                .toUpper()));
+            ui->lineEditSolverParam2->setText(
+                QString::number(eps1).remove(QString::fromLatin1("+")
+                                                 .replace(QLatin1String("e0"), QLatin1String("E"))
+                                                 .toUpper()));
+            ui->lineEditSolverParam3->setText(
+                QString::number(tau).remove(QString::fromLatin1("+")
+                                                .replace(QLatin1String("e0"), QLatin1String("E"))
+                                                .toUpper()));
             // SketchObject has encapsulated write-access. The current use of const_cast just for
             // configuration is deemed acceptable. Eventually this dialog should be rewritten to
             // include only useful information and the configuration centralised in an individual
@@ -249,18 +249,18 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters()
                 ::atof(hGrp->GetASCII("DL_tolx", QString::number(DL_TOLX).toUtf8()).c_str());
             double tolf =
                 ::atof(hGrp->GetASCII("DL_tolf", QString::number(DL_TOLF).toUtf8()).c_str());
-            ui->lineEditSolverParam1->setText(QString::number(tolg).remove(
-                QString::fromLatin1("+")
-                    .replace(QLatin1String("e0"), QLatin1String("E"))
-                    .toUpper()));
-            ui->lineEditSolverParam2->setText(QString::number(tolx).remove(
-                QString::fromLatin1("+")
-                    .replace(QLatin1String("e0"), QLatin1String("E"))
-                    .toUpper()));
-            ui->lineEditSolverParam3->setText(QString::number(tolf).remove(
-                QString::fromLatin1("+")
-                    .replace(QLatin1String("e0"), QLatin1String("E"))
-                    .toUpper()));
+            ui->lineEditSolverParam1->setText(
+                QString::number(tolg).remove(QString::fromLatin1("+")
+                                                 .replace(QLatin1String("e0"), QLatin1String("E"))
+                                                 .toUpper()));
+            ui->lineEditSolverParam2->setText(
+                QString::number(tolx).remove(QString::fromLatin1("+")
+                                                 .replace(QLatin1String("e0"), QLatin1String("E"))
+                                                 .toUpper()));
+            ui->lineEditSolverParam3->setText(
+                QString::number(tolf).remove(QString::fromLatin1("+")
+                                                 .replace(QLatin1String("e0"), QLatin1String("E"))
+                                                 .toUpper()));
             const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
                 .setDL_tolg(tolg);
             const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
@@ -313,18 +313,18 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters()
                 hGrp->GetASCII("Redundant_LM_eps1", QString::number(LM_EPS1).toUtf8()).c_str());
             double tau = ::atof(
                 hGrp->GetASCII("Redundant_LM_tau", QString::number(LM_TAU).toUtf8()).c_str());
-            ui->lineEditRedundantSolverParam1->setText(QString::number(eps).remove(
-                QString::fromLatin1("+")
-                    .replace(QLatin1String("e0"), QLatin1String("E"))
-                    .toUpper()));
-            ui->lineEditRedundantSolverParam2->setText(QString::number(eps1).remove(
-                QString::fromLatin1("+")
-                    .replace(QLatin1String("e0"), QLatin1String("E"))
-                    .toUpper()));
-            ui->lineEditRedundantSolverParam3->setText(QString::number(tau).remove(
-                QString::fromLatin1("+")
-                    .replace(QLatin1String("e0"), QLatin1String("E"))
-                    .toUpper()));
+            ui->lineEditRedundantSolverParam1->setText(
+                QString::number(eps).remove(QString::fromLatin1("+")
+                                                .replace(QLatin1String("e0"), QLatin1String("E"))
+                                                .toUpper()));
+            ui->lineEditRedundantSolverParam2->setText(
+                QString::number(eps1).remove(QString::fromLatin1("+")
+                                                 .replace(QLatin1String("e0"), QLatin1String("E"))
+                                                 .toUpper()));
+            ui->lineEditRedundantSolverParam3->setText(
+                QString::number(tau).remove(QString::fromLatin1("+")
+                                                .replace(QLatin1String("e0"), QLatin1String("E"))
+                                                .toUpper()));
             const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
                 .setLM_epsRedundant(eps);
             const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
@@ -347,18 +347,18 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters()
                 hGrp->GetASCII("Redundant_DL_tolx", QString::number(DL_TOLX).toUtf8()).c_str());
             double tolf = ::atof(
                 hGrp->GetASCII("Redundant_DL_tolf", QString::number(DL_TOLF).toUtf8()).c_str());
-            ui->lineEditRedundantSolverParam1->setText(QString::number(tolg).remove(
-                QString::fromLatin1("+")
-                    .replace(QLatin1String("e0"), QLatin1String("E"))
-                    .toUpper()));
-            ui->lineEditRedundantSolverParam2->setText(QString::number(tolx).remove(
-                QString::fromLatin1("+")
-                    .replace(QLatin1String("e0"), QLatin1String("E"))
-                    .toUpper()));
-            ui->lineEditRedundantSolverParam3->setText(QString::number(tolf).remove(
-                QString::fromLatin1("+")
-                    .replace(QLatin1String("e0"), QLatin1String("E"))
-                    .toUpper()));
+            ui->lineEditRedundantSolverParam1->setText(
+                QString::number(tolg).remove(QString::fromLatin1("+")
+                                                 .replace(QLatin1String("e0"), QLatin1String("E"))
+                                                 .toUpper()));
+            ui->lineEditRedundantSolverParam2->setText(
+                QString::number(tolx).remove(QString::fromLatin1("+")
+                                                 .replace(QLatin1String("e0"), QLatin1String("E"))
+                                                 .toUpper()));
+            ui->lineEditRedundantSolverParam3->setText(
+                QString::number(tolf).remove(QString::fromLatin1("+")
+                                                 .replace(QLatin1String("e0"), QLatin1String("E"))
+                                                 .toUpper()));
             const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
                 .setDL_tolgRedundant(tolg);
             const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())

@@ -22,9 +22,8 @@ TEST(BaseQuantity, TestParse)
     Base::Quantity q1 = Base::Quantity::parse(QLatin1String("1,234 kg"));
 
     EXPECT_EQ(q1, Base::Quantity(1.2340, Base::Unit::Mass));
-    EXPECT_THROW(
-        boost::ignore_unused(Base::Quantity::parse(QLatin1String("1,234,500.12 kg"))),
-        Base::ParserError);
+    EXPECT_THROW(boost::ignore_unused(Base::Quantity::parse(QLatin1String("1,234,500.12 kg"))),
+                 Base::ParserError);
 }
 
 TEST(BaseQuantity, TestDim)

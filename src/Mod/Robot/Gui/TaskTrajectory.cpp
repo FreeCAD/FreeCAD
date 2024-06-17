@@ -65,29 +65,19 @@ TaskTrajectory::TaskTrajectory(Robot::RobotObject* pcRobotObject,
         Robot::Waypoint pt = trac.getWaypoint(i);
         switch (pt.Type) {
             case Robot::Waypoint::UNDEF:
-                ui->trajectoryTable->setItem(i,
-                                             0,
-                                             new QTableWidgetItem(QLatin1String("UNDEF")));
+                ui->trajectoryTable->setItem(i, 0, new QTableWidgetItem(QLatin1String("UNDEF")));
                 break;
             case Robot::Waypoint::CIRC:
-                ui->trajectoryTable->setItem(i,
-                                             0,
-                                             new QTableWidgetItem(QLatin1String("CIRC")));
+                ui->trajectoryTable->setItem(i, 0, new QTableWidgetItem(QLatin1String("CIRC")));
                 break;
             case Robot::Waypoint::PTP:
-                ui->trajectoryTable->setItem(i,
-                                             0,
-                                             new QTableWidgetItem(QLatin1String("PTP")));
+                ui->trajectoryTable->setItem(i, 0, new QTableWidgetItem(QLatin1String("PTP")));
                 break;
             case Robot::Waypoint::LINE:
-                ui->trajectoryTable->setItem(i,
-                                             0,
-                                             new QTableWidgetItem(QLatin1String("LIN")));
+                ui->trajectoryTable->setItem(i, 0, new QTableWidgetItem(QLatin1String("LIN")));
                 break;
             default:
-                ui->trajectoryTable->setItem(i,
-                                             0,
-                                             new QTableWidgetItem(QLatin1String("UNDEF")));
+                ui->trajectoryTable->setItem(i, 0, new QTableWidgetItem(QLatin1String("UNDEF")));
                 break;
         }
         ui->trajectoryTable->setItem(i,

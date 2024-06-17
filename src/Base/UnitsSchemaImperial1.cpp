@@ -329,9 +329,9 @@ QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant,
     // mm/kg/s. And all combined units have to be calculated from there!
 
     // now do special treatment on all cases seems necessary:
-    if (unit == Unit::Length) {                  // Length handling ============================
+    if (unit == Unit::Length) {            // Length handling ============================
         unitString = QLatin1String("ft");  // always ft
-        factor = 304.8;                          // 12 * 25.4
+        factor = 304.8;                    // 12 * 25.4
     }
     else if (unit == Unit::Area) {
         unitString = QLatin1String("ft^2");  // always sq.ft

@@ -605,12 +605,9 @@ void FillingPanel::onListBoundaryItemDoubleClicked(QListWidgetItem* item)
                     // fill up the combo boxes
                     modifyBoundary(true);
                     ui->comboBoxFaces->addItem(tr("None"), QByteArray(""));
-                    ui->comboBoxCont->addItem(QLatin1String("C0"),
-                                              static_cast<int>(GeomAbs_C0));
-                    ui->comboBoxCont->addItem(QLatin1String("G1"),
-                                              static_cast<int>(GeomAbs_G1));
-                    ui->comboBoxCont->addItem(QLatin1String("G2"),
-                                              static_cast<int>(GeomAbs_G2));
+                    ui->comboBoxCont->addItem(QLatin1String("C0"), static_cast<int>(GeomAbs_C0));
+                    ui->comboBoxCont->addItem(QLatin1String("G1"), static_cast<int>(GeomAbs_G1));
+                    ui->comboBoxCont->addItem(QLatin1String("G2"), static_cast<int>(GeomAbs_G2));
                     TopTools_ListIteratorOfListOfShape it(adj_faces);
                     for (; it.More(); it.Next()) {
                         const TopoDS_Shape& F = it.Value();
