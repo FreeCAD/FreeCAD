@@ -2006,7 +2006,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
         try {
             if (da != Qt::LinkAction && !vp->canDropObjects()) {
                 if (!(event->possibleActions() & Qt::LinkAction) || items.size() != 1) {
-                    TREE_TRACE("cannot drop");
+                    TREE_TRACE("Cannot drop here");
                     event->ignore();
                     return;
                 }
@@ -2021,17 +2021,14 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
 
                 auto obj = item->object()->getObject();
 
-                if (da == Qt::MoveAction && !vp->canDragAndDropObject(obj)) {
-                    // Check if item can be dragged
+                if (da == Qt::MoveAction) {
+                    // Check if item can be dragged from his parent
                     auto parentItem = item->getParentItem();
                     if (parentItem && !(parentItem->object()->canDragObjects() && parentItem->object()->canDragObject(item->object()->getObject())))
                     {
-                        if (!(event->possibleActions() & Qt::CopyAction)) {
-                            TREE_TRACE("Cannot drag object");
-                            event->ignore();
-                            return;
-                        }
-                        event->setDropAction(Qt::CopyAction);
+                        TREE_TRACE("Cannot drag object");
+                        event->ignore();
+                        return;
                     }
                 }
 
