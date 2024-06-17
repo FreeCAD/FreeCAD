@@ -76,6 +76,7 @@ public:
     void setPosFromCenter(const double &xCenter, const double &yCenter);
     double X() const { return posX; }
     double Y() const { return posY; }              //minus posY?
+    Base::Vector2d getPosToCenterVec();
 
     void setFont(QFont font);
     QFont getFont() const { return m_dimText->font(); }
@@ -120,6 +121,8 @@ protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
 
     int getPrecision();
+
+    void snapPosition(QPointF& position);
 
     bool getVerticalSep() const { return verticalSep; }
     void setVerticalSep(bool sep) { verticalSep = sep; }

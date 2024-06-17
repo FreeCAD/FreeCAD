@@ -268,7 +268,7 @@ const std::vector<std::string>& GeoFeature::searchElementCache(const std::string
     return none;
 }
 
-const std::vector<const char*>& GeoFeature::getElementTypes(bool /*all*/) const
+std::vector<const char*> GeoFeature::getElementTypes(bool /*all*/) const
 {
     static std::vector<const char*> nil;
     auto prop = getPropertyOfGeometry();
@@ -278,12 +278,4 @@ const std::vector<const char*>& GeoFeature::getElementTypes(bool /*all*/) const
     return prop->getComplexData()->getElementTypes();
 }
 
-std::vector<Data::IndexedName> GeoFeature::getHigherElements(const char* element, bool silent) const
-{
-    auto prop = getPropertyOfGeometry();
-    if (!prop) {
-        return {};
-    }
-    return prop->getComplexData()->getHigherElements(element, silent);
-}
 #endif

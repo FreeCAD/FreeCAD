@@ -238,6 +238,86 @@ class CommandCreateJointDistance:
         activateJoint(5)
 
 
+class CommandCreateJointParallel:
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+
+        return {
+            "Pixmap": "Assembly_CreateJointParallel",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointParallel", "Create Parallel Joint"),
+            "Accel": "N",
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointParallel",
+                "Create an Parallel Joint: Make the Z axis of selected coordinate systems parallel.",
+            )
+            + "</p>",
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return isCreateJointActive()
+
+    def Activated(self):
+        activateJoint(6)
+
+
+class CommandCreateJointPerpendicular:
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+
+        return {
+            "Pixmap": "Assembly_CreateJointPerpendicular",
+            "MenuText": QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointPerpendicular", "Create Perpendicular Joint"
+            ),
+            "Accel": "M",
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointPerpendicular",
+                "Create an Perpendicular Joint: Make the Z axis of selected coordinate systems perpendicular.",
+            )
+            + "</p>",
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return isCreateJointActive()
+
+    def Activated(self):
+        activateJoint(7)
+
+
+class CommandCreateJointAngle:
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+
+        return {
+            "Pixmap": "Assembly_CreateJointAngle",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointAngle", "Create Angle Joint"),
+            "Accel": "X",
+            "ToolTip": "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointAngle",
+                "Create an Angle Joint: Fix the angle between the Z axis of selected coordinate systems.",
+            )
+            + "</p>",
+            "CmdType": "ForEdit",
+        }
+
+    def IsActive(self):
+        return isCreateJointActive()
+
+    def Activated(self):
+        activateJoint(8)
+
+
 class CommandCreateJointRackPinion:
     def __init__(self):
         pass
@@ -268,7 +348,7 @@ class CommandCreateJointRackPinion:
         return isCreateJointActive()
 
     def Activated(self):
-        activateJoint(6)
+        activateJoint(9)
 
 
 class CommandCreateJointScrew:
@@ -299,7 +379,7 @@ class CommandCreateJointScrew:
         return isCreateJointActive()
 
     def Activated(self):
-        activateJoint(7)
+        activateJoint(10)
 
 
 class CommandCreateJointGears:
@@ -330,7 +410,7 @@ class CommandCreateJointGears:
         return isCreateJointActive()
 
     def Activated(self):
-        activateJoint(8)
+        activateJoint(11)
 
 
 class CommandCreateJointBelt:
@@ -361,7 +441,7 @@ class CommandCreateJointBelt:
         return isCreateJointActive()
 
     def Activated(self):
-        activateJoint(9)
+        activateJoint(12)
 
 
 class CommandGroupGearBelt:
@@ -483,6 +563,9 @@ if App.GuiUp:
     Gui.addCommand("Assembly_CreateJointSlider", CommandCreateJointSlider())
     Gui.addCommand("Assembly_CreateJointBall", CommandCreateJointBall())
     Gui.addCommand("Assembly_CreateJointDistance", CommandCreateJointDistance())
+    Gui.addCommand("Assembly_CreateJointParallel", CommandCreateJointParallel())
+    Gui.addCommand("Assembly_CreateJointPerpendicular", CommandCreateJointPerpendicular())
+    Gui.addCommand("Assembly_CreateJointAngle", CommandCreateJointAngle())
     Gui.addCommand("Assembly_CreateJointRackPinion", CommandCreateJointRackPinion())
     Gui.addCommand("Assembly_CreateJointScrew", CommandCreateJointScrew())
     Gui.addCommand("Assembly_CreateJointGears", CommandCreateJointGears())

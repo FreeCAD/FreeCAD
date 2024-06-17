@@ -58,6 +58,10 @@ class BIM_Layers:
             ),
         }
 
+    def IsActive(self):
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
+
     def Activated(self):
 
         from PySide import QtCore, QtGui

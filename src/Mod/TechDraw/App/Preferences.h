@@ -119,6 +119,7 @@ public:
     static int CenterLineStyle();
     static int HighlightLineStyle();
     static int HiddenLineStyle();
+    static int BreakLineStyle();
     static int LineCapStyle();
     static int LineCapIndex();
 
@@ -130,6 +131,8 @@ public:
     static int sectionLineConvention();
     static bool showSectionLine();
     static bool includeCutLine();
+
+    static int BreakType();
 
     static bool useExactMatchOnDims();
 };

@@ -930,8 +930,18 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
  * \param curpos  current normalized position or mouse pointer
  * \param prevpos  previous normalized position of mouse pointer
  */
-void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f prevpos){
+void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f prevpos)
+{
     assert(this->spinprojector);
+
+    if (this->rotationCenterMode && this->rotationCenterFound) {
+        SbVec3f hitpoint = this->rotationCenter;
+
+        // set to the given position
+        SbVec3f direction;
+        viewer->getSoRenderManager()->getCamera()->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+        viewer->getSoRenderManager()->getCamera()->position = hitpoint - viewer->getSoRenderManager()->getCamera()->focalDistance.getValue() * direction;
+    }
 
     // 0000333: Turntable camera rotation
     SbMatrix mat;
@@ -951,6 +961,19 @@ void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f pre
     }
     r.invert();
     this->reorientCamera(cam, r);
+
+    if (this->rotationCenterMode && this->rotationCenterFound) {
+        const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
+        SbVec2s glsize(vp.getViewportSizePixels());
+
+        float ratio = vp.getViewportAspectRatio();
+        SbViewVolume vv = viewer->getSoRenderManager()->getCamera()->getViewVolume(vp.getViewportAspectRatio());
+        SbPlane panplane = vv.getPlane(viewer->getSoRenderManager()->getCamera()->focalDistance.getValue());
+        SbVec2f posn;
+        posn[0] = float(this->localPos[0]) / float(std::max((int)(glsize[0]-1), 1));
+        posn[1] = float(this->localPos[1]) / float(std::max((int)(glsize[1]-1), 1));
+        panCamera(viewer->getSoRenderManager()->getCamera(), ratio, panplane, posn, SbVec2f(0.5,0.5));
+    }
 
     hasDragged = true;
 }
@@ -1361,6 +1384,12 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
 {
     const ViewerMode oldmode = this->currentmode;
     if (newmode == oldmode) {
+
+        // The rotation center could have been changed even if the mode has not changed
+        if (newmode == NavigationStyle::DRAGGING && rotationCenterFound) {
+            viewer->changeRotationCenterPosition(rotationCenter);
+        }
+
         return;
     }
 

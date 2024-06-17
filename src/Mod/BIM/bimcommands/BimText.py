@@ -42,6 +42,10 @@ class BIM_Text:
             "Accel": "T, E",
         }
 
+    def IsActive(self):
+        act_win = FreeCADGui.getMainWindow().getActiveWindow()
+        return hasattr(act_win, "getSceneGraph") or hasattr(act_win, "getPage")
+
     def Activated(self):
         import draftutils.utils as utils
 

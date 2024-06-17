@@ -435,7 +435,7 @@
       <location filename="../../AttacherTexts.cpp" line="247"/>
       <source>Intersection</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Schnitt</translation>
+      <translation>Schnittstelle</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="248"/>
@@ -3131,7 +3131,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kantenelemente.</translation>
   <context>
     <name>PartGui::DlgImportExportStep</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.cpp" line="171"/>
+      <location filename="../../DlgSettingsGeneral.cpp" line="173"/>
       <source>STEP</source>
       <translation>STEP</translation>
     </message>
@@ -4055,14 +4055,29 @@ during file reading (slower but higher details).</source>
       <translation>Modell nach skizzenbasierter Operation automatisch aufbereiten</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="68"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="74"/>
       <source>Object naming</source>
       <translation>Objektbenennung</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="77"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
       <source>Add name of base object</source>
       <translation>Name des Basisobjekts hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="99"/>
+      <source>Experimental</source>
+      <translation>Experimentell</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</source>
+      <translation type="unfinished">These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="118"/>
+      <source>Allow multiple solids in Part Design Body by default (experimental)</source>
+      <translation type="unfinished">Allow multiple solids in Part Design Body by default (experimental)</translation>
     </message>
   </context>
   <context>
@@ -4227,7 +4242,7 @@ oder Schwarz verwendet werden.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
       <source>Two-side rendering</source>
-      <translation>Zwei-seitige Darstellung</translation>
+      <translation>Beidseitiges Rendern</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="505"/>
@@ -4817,7 +4832,7 @@ nur die beschnittenen Objeke sichtbar</translation>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <location filename="../../TaskAttacher.cpp" line="337"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Versatz der Befestigung (in lokalen Koordinaten):</translation>
+      <translation>Befestigungsversatz (in lokalen Koordinaten):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -5344,7 +5359,7 @@ indem Sie ein Auswahlrechteck in der 3D-Ansicht aufziehen</translation>
       <location filename="../../TaskOffset.ui" line="78"/>
       <location filename="../../TaskOffset.ui" line="86"/>
       <source>Intersection</source>
-      <translation>Schnittstelle</translation>
+      <translation>Schnitt</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="93"/>
@@ -6324,7 +6339,7 @@ Es wird ein 'Compound-Filter'-Objekt für jede Form erzeugt.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Befestigungsversatz (in lokalen Koordinaten):</translation>
+      <translation>Versatz der Befestigung (in lokalen Koordinaten):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="605"/>

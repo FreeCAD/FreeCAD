@@ -901,19 +901,21 @@ private:
         pcDoc->recompute();
         return Py::asObject(pcFeature->getPyObject());
 #else
-        App::Document *pcSrcDoc = nullptr;
         TopoShape shape;
-        if (PyObject_TypeCheck(pcObj, &TopoShapePy::Type))
+        if (PyObject_TypeCheck(pcObj, &TopoShapePy::Type)) {
             shape = *static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
-        else if (PyObject_TypeCheck(pcObj, &GeometryPy::Type))
+        }
+        else if (PyObject_TypeCheck(pcObj, &GeometryPy::Type)) {
             shape = static_cast<GeometryPy*>(pcObj)->getGeometryPtr()->toShape();
+        }
         else if (PyObject_TypeCheck(pcObj, &App::DocumentObjectPy::Type)) {
             auto obj = static_cast<App::DocumentObjectPy*>(pcObj)->getDocumentObjectPtr();
-            pcSrcDoc = obj->getDocument();
             shape = Feature::getTopoShape(obj);
         }
-        else
+        else {
             throw Py::TypeError("Expects argument of type DocumentObject, Shape, or Geometry");
+        }
+
         Part::Feature *pcFeature = static_cast<Part::Feature*>(pcDoc->addObject("Part::Feature", name));
         // copy the data
         pcFeature->Shape.setValue(shape);

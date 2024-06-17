@@ -110,6 +110,9 @@ set(SpreadsheetGui_UIC_SRCS
 
 add_library(SpreadsheetGui SHARED ${SpreadsheetGui_SRCS} ${SpreadsheetGuiIcon_SVG})
 target_link_libraries(SpreadsheetGui ${SpreadsheetGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(SpreadsheetGui)
+endif()
 
 SET_BIN_DIR(SpreadsheetGui SpreadsheetGui /Mod/Spreadsheet)
 SET_PYTHON_PREFIX_SUFFIX(SpreadsheetGui)

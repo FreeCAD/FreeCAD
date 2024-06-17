@@ -1,6 +1,5 @@
 <RCC>
     <qresource>
-        <file>icons/ArchWorkbench.svg</file>
         <file>icons/Arch_3Views.svg</file>
         <file>icons/Arch_Add.svg</file>
         <file>icons/Arch_Axis.svg</file>
@@ -40,7 +39,6 @@
         <file>icons/Arch_MeshToShape.svg</file>
         <file>icons/Arch_MultipleStructures.svg</file>
         <file>icons/Arch_Nest.svg</file>
-        <file>icons/Arch_Opening_Experimental.svg</file>
         <file>icons/Arch_Panel.svg</file>
         <file>icons/Arch_Panel_Clone.svg</file>
         <file>icons/Arch_Panel_Cut.svg</file>
@@ -52,7 +50,6 @@
         <file>icons/Arch_Pipe_Tree.svg</file>
         <file>icons/Arch_Profile.svg</file>
         <file>icons/Arch_Project.svg</file>
-        <file>icons/Arch_Project_IFC.svg</file>
         <file>icons/Arch_Project_Tree.svg</file>
         <file>icons/Arch_Rebar.svg</file>
         <file>icons/Arch_Rebar_Tree.svg</file>
@@ -86,12 +83,10 @@
         <file>icons/Arch_Truss_Tree.svg</file>
         <file>icons/Arch_Wall.svg</file>
         <file>icons/Arch_Wall_Clone.svg</file>
-        <file>icons/Arch_Wall_Experimental.svg</file>
         <file>icons/Arch_Wall_Tree.svg</file>
         <file>icons/Arch_Wall_Tree_Assembly.svg</file>
         <file>icons/Arch_Window.svg</file>
         <file>icons/Arch_Window_Clone.svg</file>
-        <file>icons/Arch_Window_Experimental.svg</file>
         <file>icons/Arch_Window_Tree.svg</file>
         <file>icons/BIMWorkbench.svg</file>
         <file>icons/BIM_Background.svg</file>
@@ -106,13 +101,13 @@
         <file>icons/BIM_DimensionHorizontal.svg</file>
         <file>icons/BIM_DimensionVertical.svg</file>
         <file>icons/BIM_Door.svg</file>
-        <file>icons/BIM_Door_Experimental.svg</file>
         <file>icons/BIM_Glue.svg</file>
         <file>icons/BIM_Hatch.svg</file>
         <file>icons/BIM_Help.svg</file>
         <file>icons/BIM_IfcElements.svg</file>
         <file>icons/BIM_IfcProperties.svg</file>
         <file>icons/BIM_IfcQuantities.svg</file>
+        <file>icons/BIM_ImagePlane.svg</file>
         <file>icons/BIM_Layers.svg</file>
         <file>icons/BIM_Leader.svg</file>
         <file>icons/BIM_Levels.svg</file>
@@ -123,6 +118,7 @@
         <file>icons/BIM_Phases.svg</file>
         <file>icons/BIM_Preflight.svg</file>
         <file>icons/BIM_Project.svg</file>
+        <file>icons/BIM_ProjectManager.svg</file>
         <file>icons/BIM_Reextrude.svg</file>
         <file>icons/BIM_Reorder.svg</file>
         <file>icons/BIM_ResetCloneColors.svg</file>
@@ -141,19 +137,10 @@
         <file>icons/IFC_document.svg</file>
         <file>icons/IFC_mesh.svg</file>
         <file>icons/IFC_object.svg</file>
-        <file>icons/Image_CreateImagePlane.svg</file>
-        <file>icons/Part_Common.svg</file>
-        <file>icons/Part_Compound.svg</file>
-        <file>icons/Part_Cut.svg</file>
-        <file>icons/Part_Extrude.svg</file>
-        <file>icons/Part_Fuse.svg</file>
-        <file>icons/Part_Offset2D.svg</file>
-        <file>icons/Part_Shapebuilder.svg</file>
         <file>icons/Part_document.svg</file>
         <file>icons/Sketch.svg</file>
         <file>icons/Tree_Part.svg</file>
         <file>icons/banner.png</file>
-        <file>icons/preferences-arch.svg</file>
         <file>icons/preferences-bim.svg</file>
         <file>icons/techdraw-ArchView.svg</file>
         <file>icons/techdraw-PageDefault.svg</file>

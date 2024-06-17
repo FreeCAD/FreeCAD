@@ -69,6 +69,14 @@ int View3DSettings::stopAnimatingIfDeactivated() const
 
 void View3DSettings::applySettings()
 {
+    // Check if Sketcher Edit Mode exited cleanly
+    const int overMaxHeadlightIntensity = 101;
+    int sketcherEditLastExit = hGrp->GetInt("HeadlightIntensityExisting", overMaxHeadlightIntensity);
+    if (sketcherEditLastExit != overMaxHeadlightIntensity) {
+        // must mean a seg fault or abnormal exit last time
+        hGrp->SetInt("HeadlightIntensity", sketcherEditLastExit);
+        hGrp->RemoveInt("HeadlightIntensityExisting");
+    }
     // apply the user settings
     OnChange(*hGrp,"EyeDistance");
     OnChange(*hGrp,"CornerCoordSystem");

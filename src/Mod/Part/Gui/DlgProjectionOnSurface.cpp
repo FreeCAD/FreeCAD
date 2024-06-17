@@ -723,8 +723,8 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
         std::vector<App::Color> colors;
         App::Color defaultColor;
         if (currentShapeType == TopAbs_FACE) {
-            colors = vp->DiffuseColor.getValues();
-            defaultColor = vp->ShapeAppearance.getDiffuseColor();
+            colors = vp->ShapeAppearance.getDiffuseColors();
+            defaultColor = colors.front();
         }
         else if (currentShapeType == TopAbs_EDGE) {
             colors = vp->LineColorArray.getValues();
@@ -744,7 +744,7 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
             colors.at(index - 1) = defaultColor;
         }
         if (currentShapeType == TopAbs_FACE) {
-            vp->DiffuseColor.setValues(colors);
+            vp->ShapeAppearance.setDiffuseColors(colors);
         }
         else if (currentShapeType == TopAbs_EDGE) {
             vp->LineColorArray.setValues(colors);

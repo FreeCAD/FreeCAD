@@ -193,10 +193,10 @@ void GeneralSettingsWidget::onNavigationStyleChanged(int index)
     if (index < 0) {
         return;  // happens when clearing the combo box in retranslateUi()
     }
-    auto navStyleName = _navigationStyleComboBox->itemData(index).toByteArray().data();
+    auto navStyleName = _navigationStyleComboBox->itemData(index).toByteArray();
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    hGrp->SetASCII("NavigationStyle", navStyleName);
+    hGrp->SetASCII("NavigationStyle", navStyleName.constData());
 }
 
 bool GeneralSettingsWidget::eventFilter(QObject* object, QEvent* event)

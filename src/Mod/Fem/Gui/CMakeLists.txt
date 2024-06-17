@@ -305,6 +305,8 @@ SET(FemGui_SRCS_Module
     ActiveAnalysisObserver.cpp
     ActiveAnalysisObserver.h
     Command.cpp
+    FemGuiTools.cpp
+    FemGuiTools.h
     FemSettings.cpp
     FemSettings.h
     Resources/Fem.qrc
@@ -364,11 +366,15 @@ SET(FemGuiSymbol_IV
     Resources/symbols/ConstraintSectionPrint.iv
     Resources/symbols/ConstraintSpring.iv
     Resources/symbols/ConstraintTemperature.iv
+    Resources/symbols/ConstraintTransform.iv
     Resources/symbols/ConstraintTie.iv
 )
 
 add_library(FemGui SHARED ${FemGui_SRCS} ${FemGuiIcon_SVG} ${FemGuiSymbol_IV})
 target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(FemGui)
+endif()
 
 fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiIcon_SVG})
 fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiSymbol_IV})

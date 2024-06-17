@@ -24,6 +24,7 @@
 
 
 import os
+
 import FreeCAD
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
@@ -38,7 +39,7 @@ def add_observer():
 
 def remove_observer():
     """Removes this observer if present"""
-    
+
     if hasattr(FreeCAD, "BIMobserver"):
         FreeCAD.removeDocumentObserver(FreeCAD.BIMobserver)
         del FreeCAD.BIMobserver
@@ -56,7 +57,7 @@ class ifc_observer:
     def slotStartSaveDocument(self, doc, value):
         """Save all IFC documents in this doc"""
 
-        from PySide2 import QtCore  # lazy loading
+        from PySide import QtCore  # lazy loading
 
         self.docname = doc.Name
         # delay execution to not get caught under the wait sursor
@@ -108,7 +109,7 @@ class ifc_observer:
         doc = getattr(obj, "Document", None)
         if doc:
             if hasattr(doc, "IfcFilePath"):
-                from PySide2 import QtCore  # lazy loading
+                from PySide import QtCore  # lazy loading
 
                 self.objname = obj.Name
                 self.docname = obj.Document.Name
@@ -119,8 +120,8 @@ class ifc_observer:
         """Check if we need to lock"""
 
         from nativeifc import ifc_status
-        ifc_status.on_activate()
 
+        ifc_status.on_activate()
 
     # implementation methods
 
@@ -156,8 +157,8 @@ class ifc_observer:
 
             ask = params.GetBool("AskBeforeSaving", True)
             if ask and FreeCAD.GuiUp:
-                import FreeCADGui
                 import Arch_rc
+                import FreeCADGui
 
                 dlg = FreeCADGui.PySideUic.loadUi(":/ui/dialogExport.ui")
                 result = dlg.exec_()
@@ -193,8 +194,8 @@ class ifc_observer:
         del self.objname
         if obj.isDerivedFrom("Part::Feature") or "IfcType" in obj.PropertiesList:
             FreeCAD.Console.PrintLog("Converting" + obj.Label + "to IFC\n")
-            from nativeifc import ifc_tools  # lazy loading
             from nativeifc import ifc_geometry  # lazy loading
+            from nativeifc import ifc_tools  # lazy loading
 
             newobj = ifc_tools.aggregate(obj, doc)
             ifc_geometry.add_geom_properties(newobj)

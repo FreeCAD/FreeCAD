@@ -1159,7 +1159,7 @@ void ElementFilterList::languageChange()
 /* TRANSLATOR SketcherGui::TaskSketcherElements */
 
 TaskSketcherElements::TaskSketcherElements(ViewProviderSketch* sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Elements"), true, nullptr)
+    : TaskBox(Gui::BitmapFactory().pixmap("Sketcher_CreateLine"), tr("Elements"), true, nullptr)
     , sketchView(sketchView)
     , ui(new Ui_TaskSketcherElements())
     , focusItemIndex(-1)
@@ -1387,6 +1387,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) == 0
             && strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) == 0) {
             if (msg.pSubName) {
+                ElementItem* modified_item = NULL;
                 QString expr = QString::fromLatin1(msg.pSubName);
                 std::string shapetype(msg.pSubName);
                 // if-else edge vertex
@@ -1399,11 +1400,15 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                         int ElementId = match.captured(1).toInt(&ok) - 1;
                         if (ok) {
                             int countItems = ui->listWidgetElements->count();
+                            // TODO: This and the loop below get slow when we have a lot of items.
+                            // Perhaps we should also maintain a map so that we can look up items
+                            // by element number.
                             for (int i = 0; i < countItems; i++) {
                                 ElementItem* item =
                                     static_cast<ElementItem*>(ui->listWidgetElements->item(i));
                                 if (item->ElementNbr == ElementId) {
                                     item->isLineSelected = select;
+                                    modified_item = item;
                                     break;
                                 }
                             }
@@ -1429,6 +1434,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                                 ElementItem* item =
                                     static_cast<ElementItem*>(ui->listWidgetElements->item(i));
                                 if (item->ElementNbr == GeoId) {
+                                    modified_item = item;
                                     switch (PosId) {
                                         case Sketcher::PointPos::start:
                                             item->isStartingPointSelected = select;
@@ -1451,15 +1457,24 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                 // update the listwidget
                 {
                     QSignalBlocker sigblk(ui->listWidgetElements);
-                    for (int i = 0; i < ui->listWidgetElements->count(); i++) {
-                        ElementItem* item =
-                            static_cast<ElementItem*>(ui->listWidgetElements->item(i));
-                        if (item->isSelected())
-                            item->setSelected(
-                                false);// if already selected, we need to reset setSelected or it
-                                       // won't draw subelements correctly if selecting several.
-                        item->setSelected(item->isLineSelected || item->isStartingPointSelected
-                                          || item->isEndPointSelected || item->isMidPointSelected);
+                    if (modified_item != NULL) {
+                        bool is_selected = modified_item->isSelected();
+                        const bool should_be_selected = modified_item->isLineSelected
+                            || modified_item->isStartingPointSelected || modified_item->isEndPointSelected
+                            || modified_item->isMidPointSelected;
+
+                        // If an element is already selected and a new subelement gets selected
+                        // (eg., if you select the arc of a circle then select the center as well),
+                        // the new subelement won't get highlighted in the list until you mouseover
+                        // the list.  To avoid this, we deselect first to trigger a redraw.
+                        if (should_be_selected && is_selected) {
+                            modified_item->setSelected(false);
+                            is_selected = false;
+                        }
+
+                        if (should_be_selected != is_selected) {
+                          modified_item->setSelected(should_be_selected);
+                        }
                     }
                 }
             }

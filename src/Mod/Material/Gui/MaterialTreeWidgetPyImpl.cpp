@@ -169,15 +169,12 @@ PyObject* MaterialTreeWidgetPy::setFilter(PyObject* args)
     }
     if (PyObject_TypeCheck(obj, &(Materials::MaterialFilterPy::Type))) {
         auto filter = static_cast<Materials::MaterialFilterPy*>(obj)->getMaterialFilterPtr();
-        Base::Console().Log("Filter '%s'\n", filter->name().toStdString().c_str());
         auto filterPtr = std::make_shared<Materials::MaterialFilter>(*filter);
         getMaterialTreeWidgetPtr()->setFilter(filterPtr);
     }
     else if (PyList_Check(obj)) {
         // The argument is a list of filters
-        Base::Console().Log("Filter List\n");
         Py_ssize_t n = PyList_Size(obj);
-        Base::Console().Log("n = %d\n", n);
         if (n < 0) {
             Py_Return;
         }
@@ -188,13 +185,8 @@ PyObject* MaterialTreeWidgetPy::setFilter(PyObject* args)
             if (PyObject_TypeCheck(item, &(Materials::MaterialFilterPy::Type))) {
                 auto filter =
                     static_cast<Materials::MaterialFilterPy*>(item)->getMaterialFilterPtr();
-                Base::Console().Log("\tFilter '%s'\n",
-                filter->name().toStdString().c_str()); auto filterPtr =
-                std::make_shared<Materials::MaterialFilter>(*filter);
+                auto filterPtr = std::make_shared<Materials::MaterialFilter>(*filter);
                 filterList->push_back(filterPtr);
-                // getMaterialTreeWidgetPtr()->setFilter(
-                //
-                // *static_cast<Materials::MaterialFilterPy*>(obj)->getMaterialFilterPtr());
             }
             else {
                 PyErr_Format(PyExc_TypeError,
@@ -221,8 +213,6 @@ PyObject* MaterialTreeWidgetPy::selectFilter(PyObject* args)
     if (!PyArg_ParseTuple(args, "s", &name)) {
         return nullptr;
     }
-
-    Base::Console().Log("selectFilter(%s)\n", name);
 
     Py_Return;
 }

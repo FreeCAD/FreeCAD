@@ -35,14 +35,15 @@ class BIM_Project:
 
     def GetResources(self):
         return {
-            "Pixmap": "Arch_Project_IFC",
+            "Pixmap": "BIM_Project",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Project", "Project"),
             "ToolTip": QT_TRANSLATE_NOOP("BIM_Project", 
                                          "Create an empty NativeIFC project"),
         }
 
     def IsActive(self):
-        return not hasattr(FreeCAD.ActiveDocument, "IfcFilePath")
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v and not hasattr(FreeCAD.ActiveDocument, "IfcFilePath")
 
     def Activated(self):
         from nativeifc import ifc_tools

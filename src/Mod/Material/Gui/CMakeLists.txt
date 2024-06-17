@@ -48,6 +48,8 @@ set(MatGui_UIC_SRCS
     Array2D.ui
     Array3D.ui
     DlgDisplayProperties.ui
+    DlgInspectAppearance.ui
+    DlgInspectMaterial.ui
     DlgMaterial.ui
     DlgSettingsDefaultMaterial.ui
     DlgSettingsMaterial.ui
@@ -82,9 +84,12 @@ SET(MatGui_SRCS
     DlgDisplayPropertiesImp.cpp
     DlgDisplayPropertiesImp.h
     DlgDisplayProperties.ui
-    DlgMaterialImp.cpp
-    DlgMaterialImp.h
-    DlgDisplayProperties.ui
+    DlgInspectAppearance.cpp
+    DlgInspectAppearance.h
+    DlgInspectAppearance.ui
+    DlgInspectMaterial.cpp
+    DlgInspectMaterial.h
+    DlgInspectMaterial.ui
     DlgMaterialImp.cpp
     DlgMaterialImp.h
     DlgMaterial.ui
@@ -151,6 +156,9 @@ SET(MatGuiImages
 
 add_library(MatGui SHARED ${MatGui_SRCS} ${MatGuiIcon_SVG} ${MatGuiImages})
 target_link_libraries(MatGui ${MatGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(MatGui)
+endif()
 
 SET_BIN_DIR(MatGui MatGui /Mod/Material)
 SET_PYTHON_PREFIX_SUFFIX(MatGui)

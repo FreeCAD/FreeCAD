@@ -226,7 +226,7 @@
       <location filename="../../AttacherTexts.cpp" line="295"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Oglišče</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="296"/>
@@ -2860,7 +2860,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="20"/>
       <source>Shape</source>
-      <translation>Oblika</translation>
+      <translation>Oblika(e)</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="32"/>
@@ -3131,7 +3131,7 @@ Najprej označite eno ali več robnih enot.</translation>
   <context>
     <name>PartGui::DlgImportExportStep</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.cpp" line="171"/>
+      <location filename="../../DlgSettingsGeneral.cpp" line="173"/>
       <source>STEP</source>
       <translation>STEP</translation>
     </message>
@@ -4059,14 +4059,29 @@ združevalo v sestave (počasneje vendar z več podrobnostmi).</translation>
       <translation>Samodejno izpopolni oblikovanec po operacijah na podlagi očrtov</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="68"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="74"/>
       <source>Object naming</source>
       <translation>Poimenovanje predmeta</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="77"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
       <source>Add name of base object</source>
       <translation>Dodaj ime izhodiščnega predmeta</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="99"/>
+      <source>Experimental</source>
+      <translation type="unfinished">Experimental</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</source>
+      <translation type="unfinished">These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="118"/>
+      <source>Allow multiple solids in Part Design Body by default (experimental)</source>
+      <translation type="unfinished">Allow multiple solids in Part Design Body by default (experimental)</translation>
     </message>
   </context>
   <context>
@@ -4628,7 +4643,7 @@ bodo prikazane le prerezne ploskve</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="423"/>
       <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Wrong selection</source>
-      <translation>Napačen izbor</translation>
+      <translation>Napačna izbira</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="231"/>
@@ -4741,7 +4756,7 @@ bodo prikazane le prerezne ploskve</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="339"/>
       <source>Wrong selection</source>
-      <translation>Napačna izbira</translation>
+      <translation>Napačen izbor</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="339"/>
@@ -4822,7 +4837,7 @@ bodo prikazane le prerezne ploskve</translation>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <location filename="../../TaskAttacher.cpp" line="337"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Odmik pripetka (v krajevnih sorednicah):</translation>
+      <translation>Odmik pripetka (v lokalnih koordinatah):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -5638,7 +5653,7 @@ Ali želite nadaljevati?</translation>
       <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
-      <translation>Oglišče</translation>
+      <translation type="unfinished">Vertex</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
@@ -5668,7 +5683,7 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="85"/>
       <source>Shape</source>
-      <translation>Oblika(e)</translation>
+      <translation>Oblika</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="100"/>
@@ -6337,7 +6352,7 @@ Za vsako obliko bo ustvarjeno "Sito sestava".</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Odmik pripetka (v lokalnih koordinatah):</translation>
+      <translation>Odmik pripetka (v krajevnih sorednicah):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="605"/>

@@ -194,7 +194,6 @@ App::DocumentObjectExecReturn* Revolution::execute()
             if (!Ex.More()) {
                 supportface = TopoDS_Face();
             }
-            RevolMode mode = RevolMode::None;
 #ifdef FC_USE_TNP_FIX
             // revolve the face to a solid
             //            TopoShape result(0);
@@ -205,6 +204,7 @@ App::DocumentObjectExecReturn* Revolution::execute()
                 return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
             }
 #else
+            RevolMode mode = RevolMode::None;
             generateRevolution(result,
                                base.getShape(),
                                sketchshape.getShape(),

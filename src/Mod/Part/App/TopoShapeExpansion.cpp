@@ -689,6 +689,7 @@ void TopoShape::copyElementMap(const TopoShape& topoShape, const char* op)
     setMappedChildElements(children);
 }
 
+#ifndef FC_USE_TNP_FIX
 namespace
 {
 void warnIfLogging()
@@ -722,7 +723,7 @@ void checkAndMatchHasher(TopoShape& topoShape1, const TopoShape& topoShape2)
     }
 }
 }  // namespace
-
+#endif
 
 // TODO: Refactor mapSubElementTypeForShape to reduce complexity
 void TopoShape::mapSubElementTypeForShape(const TopoShape& other,
@@ -4278,7 +4279,7 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
 
     // Check whether the face has limits or not. Unlimited faces have no wire
     // Note: Datum planes are always unlimited
-    if (checkLimits && uptoface.hasSubShape(TopAbs_WIRE)) {
+    if (checkLimits && _uptoface.shapeType(true) == TopAbs_FACE && uptoface.hasSubShape(TopAbs_WIRE)) {
         TopoDS_Face face = TopoDS::Face(uptoface.getShape());
         bool remove_limits = false;
         // Remove the limits of the upToFace so that the extrusion works even if profile is larger

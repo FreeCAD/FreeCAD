@@ -186,10 +186,9 @@ class BIM_Setup:
         FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
         ).SetString(
-            "GridSize", str(grid)
+            "GridSize", grid
         )  # Also set sketcher grid
-        grid = FreeCAD.Units.Quantity(grid).Value
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetFloat(
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetString(
             "gridSpacing", grid
         )
         squares = self.form.settingSquares.value()
@@ -483,14 +482,14 @@ class BIM_Setup:
             ).GetInt("Decimals", 2)
             grid = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Mod/Draft"
-            ).GetFloat("gridSpacing", 10)
-            grid = FreeCAD.Units.Quantity(grid, FreeCAD.Units.Length).UserString
+            ).GetString("gridSpacing", "1 cm")
+            grid = FreeCAD.Units.Quantity(grid).UserString
             squares = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Mod/Draft"
             ).GetInt("gridEvery", 10)
             wp = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Mod/Draft"
-            ).GetInt("defaultWP", 0)
+            ).GetInt("defaultWP", 1)
             tsize = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Mod/Draft"
             ).GetFloat("textheight", 10)
@@ -688,7 +687,7 @@ class BIM_Setup:
                     elif sys.platform.startswith("darwin"):
                         plat = "macos"
                     else:
-                        print("Error - unknown platform")
+                        FreeCAD.Console.PrintError("Error - unknown platform")
                         return
                     if sys.maxsize > 2**32:
                         plat += "64"
@@ -722,7 +721,19 @@ class BIM_Setup:
                                 print("Successfully installed IfcOpenShell to", fp)
                                 break
                     else:
-                        print("Unable to find a build for your version")
-    
+                        FreeCAD.Console.PrintWarning(
+                            "Unable to find a build for your version therefore falling back to a pip install"
+                        )
+                        try:
+                            import pip
+                        except ModuleNotFoundError:
+                            FreeCAD.Console.PrintError(
+                                "Please install pip on your system, restart FreeCAD,"
+                                " change to BIM Wb and use Utils menu > ifcOpenShell update"
+                            )
+                            return
+                        from nativeifc import ifc_openshell
+
+                        FreeCADGui.runCommand('IFC_UpdateIOS',1)
 
 FreeCADGui.addCommand("BIM_Setup", BIM_Setup())

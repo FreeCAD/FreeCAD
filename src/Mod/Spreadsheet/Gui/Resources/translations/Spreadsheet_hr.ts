@@ -698,7 +698,7 @@ promijeniti konfiguraciju dizajna. Objekt će se stvoriti ako ne postoji.</trans
       <translation>Izvoz datoteke</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="124"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Pokaži Proračunsku Tablicu</translation>
     </message>
@@ -746,7 +746,7 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
 </translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Proračunska tablica</translation>
     </message>
@@ -1180,7 +1180,7 @@ Zadano: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Neimenovano</translation>
     </message>

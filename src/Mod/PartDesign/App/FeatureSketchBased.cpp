@@ -75,6 +75,7 @@ ProfileBased::ProfileBased()
     ADD_PROPERTY_TYPE(Midplane, (0), "SketchBased", App::Prop_None, "Extrude symmetric to sketch face");
     ADD_PROPERTY_TYPE(Reversed, (0), "SketchBased", App::Prop_None, "Reverse extrusion direction");
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "SketchBased", (App::PropertyType)(App::Prop_None), "Face where feature will end");
+    ADD_PROPERTY_TYPE(UpToShape, (nullptr), "SketchBased", (App::PropertyType)(App::Prop_None), "Shape where feature will end");
     ADD_PROPERTY_TYPE(AllowMultiFace, (false), "SketchBased", App::Prop_None, "Allow multiple faces in profile");
 }
 
@@ -102,11 +103,7 @@ void ProfileBased::positionByPrevious()
     else {
         //no base. Use either Sketch support's placement, or sketch's placement itself.
         Part::Part2DObject* sketch = getVerifiedSketch();
-#ifdef FC_USE_TNP_FIX
-        App::DocumentObject* support = sketch->Support.getValue();
-#else
         App::DocumentObject* support = sketch->AttachmentSupport.getValue();
-#endif
         if (support && support->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
             this->Placement.setValue(static_cast<App::GeoFeature*>(support)->Placement.getValue());
         }
@@ -580,13 +577,8 @@ TopoShape ProfileBased::getTopoShapeSupportFace() const
         shape = getTopoShapeVerifiedFace();
     }
     else if (sketch->MapMode.getValue() == Attacher::mmFlatFace
-#ifdef FC_USE_TNP_FIX
-             && sketch->Support.getValue()) {
-        const auto& Support = sketch->Support;
-#else
              && sketch->AttachmentSupport.getValue()) {
         const auto& Support = sketch->AttachmentSupport;
-#endif
         App::DocumentObject* ref = Support.getValue();
         shape = Part::Feature::getTopoShape(
             ref,
@@ -641,11 +633,7 @@ Part::Feature* ProfileBased::getBaseObject(bool silent) const
     //due to former test we know we have a 2d object
     Part::Part2DObject* sketch = getVerifiedSketch(silent);
     const char* err = nullptr;
-#ifdef FC_USE_TNP_FIX
-    App::DocumentObject* spt = sketch->Support.getValue();
-#else
     App::DocumentObject* spt = sketch->AttachmentSupport.getValue();
-#endif
     if (spt) {
         if (spt->isDerivedFrom(Part::Feature::getClassTypeId())) {
             rv = static_cast<Part::Feature*>(spt);
@@ -695,6 +683,58 @@ void ProfileBased::getUpToFaceFromLinkSub(TopoShape& upToFace, const App::Proper
     }
 }
 
+int ProfileBased::getUpToShapeFromLinkSubList(TopoShape& upToShape, const App::PropertyLinkSubList& refShape)
+{
+    int ret = 0;
+
+    auto subSets = refShape.getSubListValues();
+
+    std::vector<TopoShape> faceList;
+    for (auto &subSet : subSets){
+        auto ref = subSet.first;
+        if (ref->isDerivedFrom<App::Plane>()) {
+            faceList.push_back(makeTopoShapeFromPlane(ref));
+            ret ++;
+        } else {
+            if (!ref->isDerivedFrom<Part::Feature>())
+                throw Base::TypeError("SketchBased: Must be face of a feature");
+
+            auto subStrings = subSet.second;
+            if (subStrings.empty() || subStrings[0].empty()) {
+                TopoShape baseShape = Part::Feature::getTopoShape(ref, nullptr, true);
+                for (auto face : baseShape.getSubTopoShapes(TopAbs_FACE)){
+                    faceList.push_back(face);
+                    ret ++;
+                }
+            }
+            else {
+                for (auto &subString : subStrings){
+                    auto shape = Part::Feature::getTopoShape(ref, subString.c_str(), true);
+                    TopoShape face = shape;
+                    face = face.makeElementFace();
+                    if (face.isNull()) {
+                        throw Base::ValueError("SketchBased: Failed to extract face");
+                    }
+                    faceList.push_back(face);
+                    ret ++;
+                }
+            }
+        }
+    }
+    if (ret == 0){
+        throw Base::ValueError("SketchBased: No face selected");
+    }
+
+    upToShape = faceList[0];
+
+    if (ret == 1){
+        return 1;
+    }
+
+    // create a unique shell with all selected faces
+    upToShape = upToShape.makeElementCompound(faceList);
+    return ret;
+}
 
 void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::PropertyLinkSub& refFace)
 {

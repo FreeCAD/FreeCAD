@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="1490"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1491"/>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../Command.cpp" line="960"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="961"/>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="1334"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1335"/>
@@ -102,7 +102,7 @@
     <message>
       <location filename="../../Command.cpp" line="165"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="166"/>
@@ -115,7 +115,7 @@
     <message>
       <location filename="../../Command.cpp" line="1089"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1090"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../Command.cpp" line="1264"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1265"/>
@@ -153,7 +153,7 @@
     <message>
       <location filename="../../Command.cpp" line="1044"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1046"/>
@@ -172,7 +172,7 @@
     <message>
       <location filename="../../Command.cpp" line="376"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="377"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../Command.cpp" line="1573"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1574"/>
@@ -210,7 +210,7 @@
     <message>
       <location filename="../../Command.cpp" line="1522"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1523"/>
@@ -229,7 +229,7 @@
     <message>
       <location filename="../../Command.cpp" line="1402"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1403"/>
@@ -248,7 +248,7 @@
     <message>
       <location filename="../../Command.cpp" line="459"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="460"/>
@@ -267,7 +267,7 @@
     <message>
       <location filename="../../Command.cpp" line="531"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="532"/>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../Command.cpp" line="1366"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1367"/>
@@ -304,7 +304,7 @@
     <message>
       <location filename="../../Command.cpp" line="323"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="324"/>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="245"/>
@@ -336,7 +336,7 @@
     <message>
       <location filename="../../Command.cpp" line="1692"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1693"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../Command.cpp" line="768"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="769"/>
@@ -373,7 +373,7 @@
     <message>
       <location filename="../../Command.cpp" line="660"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="661"/>
@@ -392,7 +392,7 @@
     <message>
       <location filename="../../Command.cpp" line="987"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="988"/>
@@ -411,7 +411,7 @@
     <message>
       <location filename="../../Command.cpp" line="833"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="834"/>
@@ -430,7 +430,7 @@
     <message>
       <location filename="../../Command.cpp" line="1183"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1184"/>
@@ -449,7 +449,7 @@
     <message>
       <location filename="../../Command.cpp" line="1217"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1218"/>
@@ -468,7 +468,7 @@
     <message>
       <location filename="../../Command.cpp" line="1135"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1136"/>
@@ -487,7 +487,7 @@
     <message>
       <location filename="../../Command.cpp" line="1787"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1788"/>
@@ -505,7 +505,7 @@
     <message>
       <location filename="../../Command.cpp" line="929"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="930"/>
@@ -524,7 +524,7 @@
     <message>
       <location filename="../../Command.cpp" line="1620"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1621"/>
@@ -543,7 +543,7 @@
     <message>
       <location filename="../../Command.cpp" line="1656"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1657"/>
@@ -562,7 +562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1306"/>
@@ -581,7 +581,7 @@
     <message>
       <location filename="../../Command.cpp" line="1738"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1739"/>
@@ -599,7 +599,7 @@
     <message>
       <location filename="../../Command.cpp" line="898"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="899"/>
@@ -618,7 +618,7 @@
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="87"/>
@@ -631,7 +631,7 @@
     <message>
       <location filename="../../Command.cpp" line="557"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="558"/>
@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="612"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>メッシュ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="613"/>
@@ -782,34 +782,34 @@
       <translation>選択範囲を削除</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="955"/>
-      <location filename="../../ViewProvider.cpp" line="1016"/>
+      <location filename="../../ViewProvider.cpp" line="963"/>
+      <location filename="../../ViewProvider.cpp" line="1024"/>
       <source>Cut</source>
       <translation>切り取り</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="965"/>
-      <location filename="../../ViewProvider.cpp" line="1086"/>
+      <location filename="../../ViewProvider.cpp" line="973"/>
+      <location filename="../../ViewProvider.cpp" line="1094"/>
       <source>Trim</source>
       <translation>トリム</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1173"/>
+      <location filename="../../ViewProvider.cpp" line="1181"/>
       <source>Split</source>
       <translation>スプリット</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1246"/>
+      <location filename="../../ViewProvider.cpp" line="1254"/>
       <source>Segment</source>
       <translation>セグメント</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1848"/>
+      <location filename="../../ViewProvider.cpp" line="1856"/>
       <source>Delete</source>
       <translation>削除</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1977"/>
+      <location filename="../../ViewProvider.cpp" line="1985"/>
       <source>Fill hole</source>
       <translation>穴埋め</translation>
     </message>
@@ -1348,12 +1348,12 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="82"/>
       <source>Always export mesh as model type in 3MF format even if not a solid</source>
-      <translation type="unfinished">Always export mesh as model type in 3MF format even if not a solid</translation>
+      <translation>ソリッドでない場合でも常にモデルタイプとして3MF形式でメッシュをエクスポート</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="85"/>
       <source>Export 3MF files as model type</source>
-      <translation type="unfinished">Export 3MF files as model type</translation>
+      <translation>モデルタイプとして3MFファイルをエクスポート</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="114"/>
@@ -1862,7 +1862,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
       <source>Sphere</source>
-      <translation>球</translation>
+      <translation>球体</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
@@ -2280,48 +2280,48 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>[点: %1, 線: %2 面: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="801"/>
+      <location filename="../../ViewProvider.cpp" line="809"/>
       <source>Display components</source>
       <translation>表示コンポーネント</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="809"/>
+      <location filename="../../ViewProvider.cpp" line="817"/>
       <source>Display segments</source>
       <translation>セグメントを表示</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="817"/>
+      <location filename="../../ViewProvider.cpp" line="825"/>
       <source>Display colors</source>
       <translation>表示色</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1679"/>
+      <location filename="../../ViewProvider.cpp" line="1687"/>
       <location filename="../../ViewProviderCurvature.cpp" line="522"/>
       <source>Leave info mode</source>
       <translation>情報モードを解除</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1746"/>
+      <location filename="../../ViewProvider.cpp" line="1754"/>
       <source>Index: %1</source>
       <translation>インデックス: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1772"/>
+      <location filename="../../ViewProvider.cpp" line="1780"/>
       <source>Leave hole-filling mode</source>
       <translation>穴埋めモードを解除</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1822"/>
+      <location filename="../../ViewProvider.cpp" line="1830"/>
       <source>Leave removal mode</source>
       <translation>削除モードを解除</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1823"/>
+      <location filename="../../ViewProvider.cpp" line="1831"/>
       <source>Delete selected faces</source>
       <translation>選択した面を削除</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1824"/>
+      <location filename="../../ViewProvider.cpp" line="1832"/>
       <source>Clear selected faces</source>
       <translation>面の選択を全て解除</translation>
     </message>

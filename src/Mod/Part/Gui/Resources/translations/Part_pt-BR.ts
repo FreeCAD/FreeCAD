@@ -3124,7 +3124,7 @@ Selecione uma ou mais arestas primeiro.</translation>
   <context>
     <name>PartGui::DlgImportExportStep</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.cpp" line="171"/>
+      <location filename="../../DlgSettingsGeneral.cpp" line="173"/>
       <source>STEP</source>
       <translation>STEP</translation>
     </message>
@@ -4048,14 +4048,29 @@ durante a leitura de arquivos. A importação levará mais tempo e mais detalhes
       <translation>Refinar modelos automaticamente após operações no esboço</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="68"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="74"/>
       <source>Object naming</source>
       <translation>Nomeação de objetos</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="77"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
       <source>Add name of base object</source>
       <translation>Adicionar o nome do objeto base</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="99"/>
+      <source>Experimental</source>
+      <translation type="unfinished">Experimental</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</source>
+      <translation type="unfinished">These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="118"/>
+      <source>Allow multiple solids in Part Design Body by default (experimental)</source>
+      <translation type="unfinished">Allow multiple solids in Part Design Body by default (experimental)</translation>
     </message>
   </context>
   <context>

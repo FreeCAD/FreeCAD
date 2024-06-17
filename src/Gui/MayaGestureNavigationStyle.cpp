@@ -448,7 +448,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
                     // start DRAGGING mode (orbit)
                     // if not pressing left mouse button then it assumes is right mouse button and starts ZOOMING mode
-                    setRotationCenter(getFocalPoint());
+                    saveCursorPosition(ev);
                     setViewingMode(this->button1down ? NavigationStyle::DRAGGING : NavigationStyle::ZOOMING);
                     processed = true;
                 } else {
@@ -477,7 +477,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     processed = true;
                 } else if (type.isDerivedFrom(SoGesturePinchEvent::getClassTypeId())) {
                     setupPanningPlane(viewer->getSoRenderManager()->getCamera());//set up panning plane
-                    setRotationCenter(getFocalPoint());
+                    saveCursorPosition(ev);
                     setViewingMode(NavigationStyle::DRAGGING);
                     processed = true;
                 } //all other gestures - ignore!
@@ -504,7 +504,12 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 case SoMouseButtonEvent::BUTTON3: // allows to release button3 into SELECTION mode
                     if(comboAfter & BUTTON1DOWN || comboAfter & BUTTON2DOWN) {
                         //don't leave navigation till all buttons have been released
-                        setRotationCenter(getFocalPoint());
+                        if (comboAfter & BUTTON1DOWN && comboAfter & BUTTON2DOWN) {
+                            setRotationCenter(getFocalPoint());
+                        }
+                        else {
+                            saveCursorPosition(ev);
+                        }
                         setViewingMode((comboAfter & BUTTON1DOWN) ? NavigationStyle::DRAGGING : NavigationStyle::PANNING);
                         processed = true;
                     } else { //all buttons are released

@@ -843,28 +843,74 @@ pritisneš jedno od dugmadi iznad</translation>
       <translation type="unfinished">Or select a single vertex to move the current working plane without changing its orientation. Then press the button below.</translation>
     </message>
     <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="145"/>
+      <source>Moves the working plane without changing its
+orientation. If no point is selected, the plane
+will be moved to the center of the view.</source>
+      <translation type="unfinished">Moves the working plane without changing its
+orientation. If no point is selected, the plane
+will be moved to the center of the view.</translation>
+    </message>
+    <message>
       <location filename="../ui/TaskSelectPlane.ui" line="159"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="169"/>
+      <source>The color of the grid</source>
+      <translation>Boja koordinatne mreže</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="162"/>
       <source>Grid color</source>
       <translation>Boja koordinatne mreže</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="274"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="176"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="186"/>
+      <source>The distance between grid lines</source>
+      <translation>Razmak između linija koordinatne mreže</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="196"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="206"/>
+      <source>The number of squares between major grid lines</source>
+      <translation type="unfinished">The number of squares between major grid lines</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="199"/>
+      <source>Major lines every</source>
+      <translation>Glavne linije na svakih</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="209"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="229"/>
+      <source> squares</source>
+      <translation type="unfinished"> squares</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="216"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="226"/>
+      <source>The number of squares in the X and Y direction of the grid</source>
+      <translation type="unfinished">The number of squares in the X and Y direction of the grid</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="219"/>
+      <source>Grid size</source>
+      <translation>Veličina koordinatne mreže</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="242"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="252"/>
+      <source>The distance at which a point can be snapped to</source>
+      <translation type="unfinished">The distance at which a point can be snapped to</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="289"/>
       <source>Resets the working plane to its next position</source>
       <translation>Vraća radnu ravan na njen prethodni položaj</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="277"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="292"/>
       <source>Next</source>
       <translation>Sledeće</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="145"/>
-      <source>Moves the working plane without changing its
-orientation. If no point is selected, the plane
-will be moved to the center of the view</source>
-      <translation>Pomera radnu ravan bez promene njene
-orijentacije. Ako nijedna tačka nije izabrana, ravan
-će biti pomerena u centar pogleda</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="150"/>
@@ -872,69 +918,32 @@ orijentacije. Ako nijedna tačka nije izabrana, ravan
       <translation>Pomeri radnu ravan</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="169"/>
       <location filename="../ui/TaskSelectPlane.ui" line="179"/>
-      <source>The spacing between the smaller grid lines</source>
-      <translation>Razmak između linija koordinatne mreže</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="172"/>
       <source>Grid spacing</source>
       <translation>Razmak linija koordinatne mreže</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="189"/>
-      <location filename="../ui/TaskSelectPlane.ui" line="199"/>
-      <source>The number of squares between each main line of the grid</source>
-      <translation>Broj kvadrata između glavnih linija koordinatne mreže</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="192"/>
-      <source>Main line every</source>
-      <translation>Glavne linije na svakih</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="206"/>
-      <source>Grid extension</source>
-      <translation>Broj linija</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="213"/>
-      <source> lines</source>
-      <translation> linija</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="226"/>
-      <location filename="../ui/TaskSelectPlane.ui" line="238"/>
-      <source>The distance at which a point can be snapped to
-when approaching the mouse. You can also change this
-value by using the [ and ] keys while drawing</source>
-      <translation>Udaljenost pri kojoj se tačka uhvati prilikom 
-približavanja miša. Ovu vrednost možeš 
-promeniti korišćenjem tipki [ i ] tokom crtanja</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="231"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="245"/>
       <source>Snapping radius</source>
       <translation>Poluprečnik hvatanja</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="249"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="264"/>
       <source>Centers the view on the current working plane</source>
       <translation>Centrira pogled na trenutnu radnu ravan</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="252"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="267"/>
       <source>Center view</source>
       <translation>Centriraj pogled</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="261"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="276"/>
       <source>Resets the working plane to its previous position</source>
       <translation>Vraća radnu ravan na njen prethodni položaj</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="264"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="279"/>
       <source>Previous</source>
       <translation>Prethodni</translation>
     </message>
@@ -949,65 +958,106 @@ promeniti korišćenjem tipki [ i ] tokom crtanja</translation>
       <translation>Učitaj unapred zadat</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="93"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="57"/>
+      <source>Shape</source>
+      <translation>Oblik</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="63"/>
+      <source>Shape appearance</source>
+      <translation>Izgled oblika</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="80"/>
+      <source>Ambient shape color</source>
+      <translation>Boja okoline</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="91"/>
+      <source>Emissive shape color</source>
+      <translation>Emitujuća boja</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="102"/>
+      <source>Specular shape color</source>
+      <translation>Boja odsjaja</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="113"/>
+      <source>Shape transparency</source>
+      <translation>Providnost oblika</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="130"/>
+      <source>Shape shininess</source>
+      <translation>Blistavost oblika</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="150"/>
+      <source>Other</source>
+      <translation>Drugo</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="156"/>
       <source>Line color</source>
       <translation>Boja linije</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="104"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="314"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="167"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="380"/>
       <source>Line width</source>
       <translation>Širina linije</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="111"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="136"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="321"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="387"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="255"/>
       <source> px</source>
       <translation> PX</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="143"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="206"/>
       <source>Draw style</source>
       <translation>Stilovi prikaza</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="151"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="214"/>
       <source>Solid</source>
       <translation>Čvrst</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="156"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="219"/>
       <source>Dashed</source>
       <translation>Isprekidana linija</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="161"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="224"/>
       <source>Dotted</source>
       <translation>Tačkasto</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="166"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="229"/>
       <source>DashDot</source>
       <translation>Crta tačka</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="237"/>
       <source>Display mode</source>
       <translation>Režim prikaza</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="182"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="245"/>
       <source>Flat Lines</source>
       <translation>Vidljive ivice sa senčenjem</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="255"/>
       <source>Wireframe</source>
       <translation>Žičani okvir</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="187"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="250"/>
       <source>Shaded</source>
       <translation>Osenčeno</translation>
     </message>
@@ -1022,165 +1072,174 @@ promeniti korišćenjem tipki [ i ] tokom crtanja</translation>
       <translation>Sačuvaj trenutni stil kao unapred zadat...</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="56"/>
-      <source>Shapes</source>
-      <translation>Oblici</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="118"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="181"/>
       <source>Point color</source>
       <translation>Boja tačke</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="129"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
       <source>Point size</source>
       <translation>Veličina tačke</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="197"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="260"/>
       <source>Points</source>
       <translation>Poeni</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="65"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="69"/>
       <source>Shape color</source>
       <translation>Boja oblika</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="76"/>
-      <source>Transparency</source>
-      <translation>Providnost</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="208"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="502"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="592"/>
       <source>Annotations</source>
       <translation>Pribeleška</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="463"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="549"/>
       <source>Text spacing</source>
       <translation>Razmak u tekstu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="214"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="357"/>
       <source>Text color</source>
       <translation>Boja teksta</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="265"/>
-      <source>Line spacing</source>
-      <translation>Prored</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="297"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="458"/>
       <source>Dimensions</source>
       <translation>Dimenzije</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="336"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
       <source>Dot</source>
       <translation>Tačka</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="341"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="279"/>
+      <source>Annotation</source>
+      <translation>Napomena</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
+      <source>Texts</source>
+      <translation>Tekstovi</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="328"/>
+      <source>Line spacing factor</source>
+      <translation type="unfinished">Line spacing factor</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="349"/>
+      <source>The annotation scale multiplier is the inverse of the scale set in the
+Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
+      <translation type="unfinished">The annotation scale multiplier is the inverse of the scale set in the
+Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
+      <source>Lines and arrows</source>
+      <translation>Linije i strelice</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="407"/>
       <source>Circle</source>
       <translation>Krug</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="346"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="412"/>
       <source>Arrow</source>
       <translation>Strelica</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="351"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="417"/>
       <source>Tick</source>
       <translation>Kosa crta</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="356"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
       <source>Tick-2</source>
       <translation>Kosa crta 2</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="385"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="471"/>
       <source>If checked, a unit symbol is added to dimension texts</source>
       <translation>Ako je označeno, oznaka mernih jedinica se dodaje uz kotni broj</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="488"/>
       <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
       <translation>Jedinica mere koja će se koristi za kote. Ostavi prazno da bi koristio trenutnu FreeCAD jedinicu mere.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="426"/>
-      <source>Ext lines</source>
-      <translation>Pomoćne kotne linije</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="416"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="502"/>
       <source>The distance the dimension line is extended past the extension lines</source>
       <translation>Produžetak kotne linije iza pomoćne kotne linije</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="221"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
       <source>The color for texts, dimension texts and label texts</source>
       <translation>Boja teksta, kotnog broja i teksta oznake</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="228"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
       <source>Font name</source>
       <translation>Naziv fonta</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="241"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="304"/>
       <source>The font for texts, dimensions and labels</source>
       <translation>Font teksta, kotnog broja i teksta oznake</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="248"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="311"/>
       <source>Font size</source>
       <translation>Veličina fonta</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="255"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="318"/>
       <source>The height for texts, dimension texts and label texts</source>
       <translation>Visina teksta, kotnog broja i teksta oznake</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="272"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="335"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
       <translation>Razmak između redova teksta (relativno u odnosu na veličinu fonta)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="279"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="342"/>
       <source>Scale multiplier</source>
       <translation>Množilac razmere</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="286"/>
-      <source>The annotation scale multiplier is the inverse of the scale set in the 
-Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
-      <translation>Množilac razmere napomene je inverzan zadatoj razmeri 
-napomene. Ako je razmera 1:100, množilac je 100.</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="303"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="444"/>
       <source>Line and arrow color</source>
       <translation>Boja linije i strelice</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="328"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="394"/>
       <source>Arrow type</source>
       <translation>Vrsta strelice</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="430"/>
       <source>Arrow size</source>
       <translation>Veličina strelice</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="433"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="495"/>
+      <source>Dim line overshoot</source>
+      <translation>Produžetak kotne linije</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="512"/>
+      <source>Ext line length</source>
+      <translation>Dužina pomoćne kotne linije</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
       <source>The length of extension lines. Use 0 for full extension lines. A negative value
 defines the gap between the ends of the extension lines and the measured points.
 A positive value defines the maximum length of the extension lines. Only used
@@ -1190,47 +1249,42 @@ definiše procep između krajeva pomoćnih kotnih linija i merenih tačaka.
 Pozitivna vrednost definiše produžetak pomoćnih kotnih linija. Koristite samo za linearne kote.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="453"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="532"/>
+      <source>Ext line overshoot</source>
+      <translation>Produžetak pomoćne kotne linije</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
       <source>The length of extension lines above the dimension line</source>
       <translation>Dužina pomoćne kotne linije iznad kotne linije</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="470"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="556"/>
       <source>The space between the dimension line and the dimension text</source>
       <translation>Razmak između kotne linije i kotnog broja</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="485"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="575"/>
       <source>Apply the above style to selected object(s)</source>
       <translation>Primeni gornji stil na izabrane objekte</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="499"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="589"/>
       <source>Apply the above style to all annotations (texts, dimensions and labels)</source>
       <translation>Primeni gornji stil na sve napomene (tekst, dimenzije i oznake)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="378"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
       <source>Show unit</source>
       <translation>Prikaži merne jedinice</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="409"/>
-      <source>Dim overshoot</source>
-      <translation>Produžetak kotne linije</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="446"/>
-      <source>Ext overshoot</source>
-      <translation>Produžetak pomoćne kotne linije</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="395"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="481"/>
       <source>Unit override</source>
       <translation>Jedinice za zamenu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="488"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="578"/>
       <source>Selected</source>
       <translation>Označeno</translation>
     </message>
@@ -1340,7 +1394,7 @@ Objekti se u tom slučaju mogu automatski dodavati i grupama.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="155"/>
       <source>If checked, instructions are displayed in the Report view when using Draft commands</source>
-      <translation>Ako je označeno, prilikom upotrebe komandi Draft radnog okruženja u Pregledaču objava će se prikazivati instrukcije</translation>
+      <translation>Ako je označeno, prilikom upotrebe komandi okruženja Crtanje u Pregledaču objava će se prikazivati instrukcije</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="158"/>
@@ -1476,12 +1530,12 @@ accidentally and modifying the entered value.</translation>
       <translation>Boja pomoćne geometrije</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="316"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="319"/>
       <source>Draft classic style</source>
-      <translation>Draft klasični stil</translation>
+      <translation>Crtanje klasični stil</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="321"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="324"/>
       <source>Bitsnpieces style</source>
       <translation>Stil delića</translation>
     </message>
@@ -1565,7 +1619,7 @@ pattern definitions to be added to the standard patterns</source>
       <location filename="../ui/preferences-drafttexts.ui" line="540"/>
       <location filename="../ui/preferences-drafttexts.ui" line="569"/>
       <location filename="../ui/preferences-drafttexts.ui" line="598"/>
-      <location filename="../ui/preferences-dxf.ui" line="544"/>
+      <location filename="../ui/preferences-dxf.ui" line="588"/>
       <location filename="../ui/preferences-svg.ui" line="209"/>
       <source>mm</source>
       <translation>milimetar</translation>
@@ -1948,36 +2002,31 @@ This value is the maximum segment length.</translation>
       <translation>Prikaži ova podešavanja prilikom uvoza i izvoza</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="51"/>
+      <location filename="../ui/preferences-dxf.ui" line="54"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>Koristi se Pithon importer, u suprotnom slučaju se koristi noviji C++.
 Napomena: C++ importer je brži, ali još nije toliko funkcionalan</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="55"/>
+      <location filename="../ui/preferences-dxf.ui" line="58"/>
       <source>Use legacy python importer</source>
       <translation>Koristi zastareli Python importer</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="71"/>
+      <location filename="../ui/preferences-dxf.ui" line="74"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>Koristi se Python exporter, u suprotnom slučaju se koristi noviji C++.
 Napomena: C++ importer je brži, ali još nije toliko funkcionalan</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="75"/>
+      <location filename="../ui/preferences-dxf.ui" line="78"/>
       <source>Use legacy python exporter</source>
       <translation>Koristi zastareli Python exporter</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="88"/>
-      <source>Automatic update (legacy importer only)</source>
-      <translation>Automatsko ažuriranje (samo zastareli uvoznik)</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="96"/>
+      <location filename="../ui/preferences-dxf.ui" line="99"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -1986,109 +2035,104 @@ Ovo možeš uraditi i ručno instaliranjem radnog okruženja „dxf_library“
 iz Menadžera dodataka.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="101"/>
+      <location filename="../ui/preferences-dxf.ui" line="104"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation>Dozvoli FreeCAD-u da automatski preuzima i ažurira DXF biblioteke</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="119"/>
+      <location filename="../ui/preferences-dxf.ui" line="122"/>
       <location filename="../ui/preferences-oca.ui" line="26"/>
       <location filename="../ui/preferences-svg.ui" line="26"/>
       <source>Import options</source>
       <translation>Podešavanja uvoza</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="140"/>
-      <source>Note: Not all the options below are used by the new importer yet</source>
-      <translation>Napomena: Prilikom uvoza, još uvek se ne koriste sve opcije ispod</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="149"/>
+      <location filename="../ui/preferences-dxf.ui" line="157"/>
       <source>Import</source>
       <translation>Uvezi</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="156"/>
+      <location filename="../ui/preferences-dxf.ui" line="164"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>Ako nije označeno, tekst i mtekst neće biti uvezeni</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="159"/>
+      <location filename="../ui/preferences-dxf.ui" line="167"/>
       <source>texts and dimensions</source>
       <translation>tekst i kote</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="172"/>
+      <location filename="../ui/preferences-dxf.ui" line="180"/>
       <source>If unchecked, points won't be imported</source>
       <translation>Ako nije označeno, tačke se neće uvoziti</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="175"/>
+      <location filename="../ui/preferences-dxf.ui" line="183"/>
       <source>points</source>
       <translation>tačke</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="188"/>
+      <location filename="../ui/preferences-dxf.ui" line="196"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>Ako je označeno, biće uvezeni i prazni listovi crteža</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="191"/>
+      <location filename="../ui/preferences-dxf.ui" line="199"/>
       <source>layouts</source>
       <translation>slojevi</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="204"/>
+      <location filename="../ui/preferences-dxf.ui" line="212"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation>Ako želi[ da se uvezu i neimenovani blokovi (koji počinju sa *)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="207"/>
+      <location filename="../ui/preferences-dxf.ui" line="215"/>
       <source>*blocks</source>
       <translation>*blokovi</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="224"/>
+      <location filename="../ui/preferences-dxf.ui" line="235"/>
       <source>Create</source>
       <translation>Kreiraj</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="231"/>
+      <location filename="../ui/preferences-dxf.ui" line="245"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>Samo standardni Part oblici će biti stvoreni (najbrže)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="234"/>
+      <location filename="../ui/preferences-dxf.ui" line="248"/>
       <source>simple Part shapes</source>
       <translation>jednostavni Part oblici</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="250"/>
+      <location filename="../ui/preferences-dxf.ui" line="267"/>
       <source>Parametric Draft objects will be created whenever possible</source>
-      <translation>Parametarski Draft objekti će bići stvoreni kad god je to moguće</translation>
+      <translation>Parametarski objekti okruženja Crtanje će bići stvoreni kad god je to moguće</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="253"/>
+      <location filename="../ui/preferences-dxf.ui" line="270"/>
       <source>Draft objects</source>
-      <translation>Draft objekti</translation>
+      <translation>Objekti okruženja Crtanje</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="266"/>
+      <location filename="../ui/preferences-dxf.ui" line="286"/>
       <source>Sketches will be created whenever possible</source>
       <translation>Biće napravljene skice kad god je to moguće</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="269"/>
+      <location filename="../ui/preferences-dxf.ui" line="289"/>
       <source>Sketches</source>
       <translation>Skice</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="289"/>
+      <location filename="../ui/preferences-dxf.ui" line="309"/>
       <source>Scale factor to apply to imported files</source>
       <translation>Koeficijent skaliranja koji će se primeniti na uvezene datoteke</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="309"/>
+      <location filename="../ui/preferences-dxf.ui" line="329"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -2099,142 +2143,157 @@ Primer: za datoteke u milimetrima: 1, u centimetrima: 10,
                               u metrima: 1000, u inčima: 25,4, u stopama: 304,8</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="380"/>
+      <location filename="../ui/preferences-dxf.ui" line="403"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</source>
       <translation type="unfinished">Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="448"/>
-      <source>Import hatch boundaries as wires (legacy importer only)</source>
-      <translation>Uvezi granice šrafure kao žice (samo zastareli uvoznik)</translation>
+      <location filename="../ui/preferences-dxf.ui" line="664"/>
+      <source>Project exported objects along current view direction</source>
+      <translation type="unfinished">Project exported objects along current view direction</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="469"/>
-      <source>Render polylines with width (legacy importer only)</source>
-      <translation>Prikaži izlomljene linije sa debljinom (samo zastareli uvoznik)</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="570"/>
-      <source>Export 3D objects as polyface meshes (legacy exporter only)</source>
-      <translation>Izvezi 3D objekte kao poligonalne mreže stranica (samo zastareli uvoznik)</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="614"/>
-      <source>Project exported objects along current view direction (legacy exporter only)</source>
-      <translation>Projiciraj izvezene objekte duž trenutnog pravca prikaza (samo zastareli uvoznik)</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="359"/>
+      <location filename="../ui/preferences-dxf.ui" line="382"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation>FreeCAD će pokušati da spoji objekte čiji se krajevi podudaraju u žice.
 Imaj na umu da ovo može potrajati!</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="338"/>
+      <location filename="../ui/preferences-dxf.ui" line="358"/>
       <source>Colors will set as specified in the DXF file whenever possible.
 Otherwise default colors will be applied.</source>
       <translation>Boje će biti preuzete iz DXF objekata kad god je to moguće.
 U suprotnom će se primeniti predefinisane boje.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="342"/>
+      <location filename="../ui/preferences-dxf.ui" line="91"/>
+      <source>Automatic update (legacy importer/exporter only)</source>
+      <translation type="unfinished">Automatic update (legacy importer/exporter only)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="148"/>
+      <source>Some options are not yet available for the new importer</source>
+      <translation type="unfinished">Some options are not yet available for the new importer</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="362"/>
       <source>Use colors from the DXF file</source>
       <translation>Preuzmi originalne boje iz DXF datoteke</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="363"/>
+      <location filename="../ui/preferences-dxf.ui" line="386"/>
       <source>Join geometry</source>
       <translation>Spoji geometriju</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="384"/>
+      <location filename="../ui/preferences-dxf.ui" line="407"/>
       <source>Group layers into blocks</source>
       <translation>Grupiraj slojeve u blokove</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="401"/>
+      <location filename="../ui/preferences-dxf.ui" line="427"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
-      <translation>Uvezeni tekstovi će dobiti predefinisanu Draft veličinu teksta,
+      <translation>Uvezeni tekstovi će dobiti predefinisanu veličinu teksta okruženja Crtanje,
 umesto veličine koju imaju u DXF dokumentu</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="405"/>
+      <location filename="../ui/preferences-dxf.ui" line="431"/>
       <source>Use standard font size for texts</source>
       <translation>Koristi standardnu veličinu fonta za tekst</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="422"/>
+      <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation>Ako je ovo označeno, DXF slojevi će biti importovani kao Draft slojevi</translation>
+      <translation>Ako je ovo označeno, DXF slojevi će biti importovani kao slojevi okruženja Crtanje</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="425"/>
-      <source>Use Layers</source>
-      <translation>Koristi slojeve</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="445"/>
+      <location filename="../ui/preferences-dxf.ui" line="474"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>Šrafure će biti konvertovane u jednostavne žice</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="465"/>
+      <location filename="../ui/preferences-dxf.ui" line="477"/>
+      <source>Import hatch boundaries as wires</source>
+      <translation type="unfinished">Import hatch boundaries as wires</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="497"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>Ako izlomljene linije imaju definisanu debljinu, biće prikazane
 kao zatvorene žice sa pravilnom širinom</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="495"/>
+      <location filename="../ui/preferences-dxf.ui" line="501"/>
+      <source>Render polylines with width</source>
+      <translation type="unfinished">Render polylines with width</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="530"/>
+      <source>Some options are not yet available for the new exporter</source>
+      <translation type="unfinished">Some options are not yet available for the new exporter</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="539"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation>Izvoz elipse je nekvalitetan. Čekiraj ovu opciju da bi ih izvezao kao izlomljene linije.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="498"/>
+      <location filename="../ui/preferences-dxf.ui" line="542"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>Tretiraj elipse i krive kao izlomljene linije</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="527"/>
+      <location filename="../ui/preferences-dxf.ui" line="571"/>
       <source>Max Spline Segment:</source>
       <translation>Maksimalni segment splajn krive:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="537"/>
+      <location filename="../ui/preferences-dxf.ui" line="581"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>Maksimalna dužina svakog od segmenata povezane linije.
 Ako je zadato na '0', ceo splajn se tretira kao ravni segment.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="487"/>
+      <location filename="../ui/preferences-dxf.ui" line="519"/>
       <location filename="../ui/preferences-svg.ui" line="107"/>
       <source>Export options</source>
       <translation>Podešavanja izvoza</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="567"/>
+      <location filename="../ui/preferences-dxf.ui" line="451"/>
+      <source>Use layers</source>
+      <translation type="unfinished">Use layers</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="614"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>Svi objekti koji sadrže stranice biće izvezeni kao 3D mreža povezanih stranica</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="587"/>
+      <location filename="../ui/preferences-dxf.ui" line="617"/>
+      <source>Export 3D objects as polyface meshes</source>
+      <translation type="unfinished">Export 3D objects as polyface meshes</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="634"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>Pogledi crteža će biti izvezeni kao blokovi.
 Ovo možda neće uspeti za novije šablone od DXF R12.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="591"/>
+      <location filename="../ui/preferences-dxf.ui" line="638"/>
       <source>Export TechDraw Views as blocks</source>
       <translation>Izvezi TechDraw poglede kao blokove</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="611"/>
+      <location filename="../ui/preferences-dxf.ui" line="661"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>Izvezeni objekti će biti projicirani tako da odražavaju trenutni pravac pogleda</translation>
     </message>
@@ -2244,58 +2303,81 @@ Ovo možda neće uspeti za novije šablone od DXF R12.</translation>
       <translation>Koordinatna mreža i hvatanje</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="420"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="455"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="493"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="423"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="458"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="496"/>
       <source>Shift</source>
       <translation>Shift</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="372"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="375"/>
       <source>Always snap</source>
       <translation type="unfinished">Always snap</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="391"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="133"/>
+      <source>Major lines every</source>
+      <translation>Glavne linije na svakih</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="146"/>
+      <source>The number of squares between major grid lines.
+Major grid lines are thicker than minor grid lines.</source>
+      <translation type="unfinished">The number of squares between major grid lines.
+Major grid lines are thicker than minor grid lines.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="150"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="221"/>
+      <source> squares</source>
+      <translation type="unfinished"> squares</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="218"/>
+      <source>The number of squares in the X and Y direction of the grid</source>
+      <translation type="unfinished">The number of squares in the X and Y direction of the grid</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="394"/>
       <source>Snap modifier</source>
       <translation>Taster za režim hvatanja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="407"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="410"/>
       <source>The Snap modifier key</source>
       <translation type="unfinished">The Snap modifier key</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="425"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="460"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="498"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="428"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="463"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="501"/>
       <source>Ctrl</source>
       <translation>Ctrl</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="430"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="465"/>
-      <location filename="../ui/preferences-draftsnap.ui" line="503"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="433"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="468"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="506"/>
       <source>Alt</source>
       <translation>Alt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="438"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="441"/>
       <source>Constrain modifier</source>
       <translation>Taster za režim ograničenja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="445"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="448"/>
       <source>The Constrain modifier key</source>
       <translation>Taster za režim ograničenja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="473"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="476"/>
       <source>Alt modifier</source>
       <translation>Alt modifikatorski taster</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="480"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="483"/>
       <source>The Alt modifier key. The function of this key depends on the command.</source>
       <translation type="unfinished">The Alt modifier key. The function of this key depends on the command.</translation>
     </message>
@@ -2307,9 +2389,9 @@ Use Draft ToggleGrid to change this for the active view.</source>
 Use Draft ToggleGrid to change this for the active view.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="183"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="186"/>
       <source>The distance between grid lines</source>
-      <translation type="unfinished">The distance between grid lines</translation>
+      <translation>Razmak između linija koordinatne mreže</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="303"/>
@@ -2382,59 +2464,37 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
       <translation>Koristi obojene koordinatne ose</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="133"/>
-      <source>Main lines every</source>
-      <translation>Glavne linije na svakih</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="146"/>
-      <source>The number of squares between main grid lines.
-These lines are thicker than normal grid lines.</source>
-      <translation type="unfinished">The number of squares between main grid lines.
-These lines are thicker than normal grid lines.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="176"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="179"/>
       <source>Grid spacing</source>
       <translation>Razmak linija koordinatne mreže</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="208"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="211"/>
       <source>Grid size</source>
       <translation>Veličina koordinatne mreže</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="215"/>
-      <source>The number of horizontal and vertical lines in the grid</source>
-      <translation type="unfinished">The number of horizontal and vertical lines in the grid</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="218"/>
-      <source> lines</source>
-      <translation> linija</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="237"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="240"/>
       <source>Grid transparency</source>
       <translation>Providnost koordinatne mreže</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="247"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="250"/>
       <source> %</source>
       <translation> %</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="263"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="266"/>
       <source>Grid color</source>
       <translation>Boja koordinatne mreže</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="293"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="296"/>
       <source>Snapping and modifier keys</source>
       <translation type="unfinished">Snapping and modifier keys</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="299"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="302"/>
       <source>Snap symbol style</source>
       <translation>Stil simbola hvatanja</translation>
     </message>
@@ -2449,32 +2509,32 @@ These lines are thicker than normal grid lines.</translation>
       <translation> sekunde</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="306"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="309"/>
       <source>The style for snap symbols</source>
       <translation>Stil simbola hvatanja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="342"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="345"/>
       <source>Snap symbol color</source>
       <translation>Boja simbola hvatanja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="349"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="352"/>
       <source>The color for snap symbols</source>
       <translation>Boja kojom će biti obojen simbol hvatanja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="369"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="372"/>
       <source>If checked, snapping is activated without the need to press the Snap modifier key</source>
       <translation>Ako je ovo označeno, aktivira se hvatanje bez potrebe da se pritisne taster za režim hvatanja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="270"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="273"/>
       <source>The color of the grid</source>
       <translation>Boja koordinatne mreže</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="244"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="247"/>
       <source>The overall transparency of the grid</source>
       <translation>Providnost koordinatne mreže</translation>
     </message>
@@ -2964,7 +3024,7 @@ These lines are thicker than normal grid lines.</translation>
     <message>
       <location filename="../../DraftGui.py" line="520"/>
       <source>Active Draft command</source>
-      <translation>Aktivna Draft komanda</translation>
+      <translation>Aktivna komanda okruženja Crtanje</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="521"/>
@@ -3067,7 +3127,7 @@ Opozovi izbor da bi koristio koordinatni sistem radne ravni</translation>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
       <translation>Čekiraj ako objekat treba da bude popunjen, inače će se pojaviti kao žičani.
-Nije dostupno ako je omogućena Draft opcija podešavanja 'Koristi Part primitive'</translation>
+Nije dostupno ako je omogućena opcija podešavanja 'Koristi Part primitive'</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="556"/>
@@ -3303,7 +3363,7 @@ Nije dostupno ako je omogućena Draft opcija podešavanja 'Koristi Part primitiv
     <message>
       <location filename="../../InitGui.py" line="46"/>
       <source>Draft</source>
-      <translation>Draft</translation>
+      <translation>Crtanje</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="288"/>
@@ -3384,7 +3444,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Biblioteke DXF uvoza/izvoza koje su potrebne FreeCAD-u za rukovanje
 DXF format-om nisu pronađene na ovom sistemu.
 Ili omogući FreeCAD-u da sam preuzima ove biblioteke:
- 1 - Pokreni Draft radno okruženje
+ 1 - Pokreni okruženja Crtanje
  2 – Meni Uredi/Podešavanja/Uvoz-Izvoz/DXF/ Dozvoli FreeCAD-u sa automatski...
 Ili preuzmi ove biblioteke ručno, kao što je objašnjeno na strani
 https://github.com/yorikvanhavre/Draft-dxf-importer
@@ -3420,7 +3480,7 @@ Da bi omogućio FreeCAD-u da preuzme ove biblioteke, odgovori sa Da.</translatio
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="209"/>
       <source>Set the scale used by draft annotation tools</source>
-      <translation>Podesi razmeru koju koriste alati za Draft napomenu</translation>
+      <translation>Podesi razmeru koju koriste alati za napomenu</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/cut.py" line="57"/>
@@ -3438,125 +3498,125 @@ Da bi omogućio FreeCAD-u da preuzme ove biblioteke, odgovori sa Da.</translatio
       <location filename="../../draftmake/make_text.py" line="92"/>
       <location filename="../../draftmake/make_text.py" line="178"/>
       <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="827"/>
-      <location filename="../../draftutils/utils.py" line="1071"/>
+      <location filename="../../draftutils/gui_utils.py" line="831"/>
+      <location filename="../../draftutils/utils.py" line="1082"/>
       <source>No active document. Aborting.</source>
       <translation>Nema aktivnog dokumenta. Obustavljanje.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="131"/>
-      <location filename="../../draftutils/gui_utils.py" line="835"/>
+      <location filename="../../draftutils/gui_utils.py" line="839"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>Pogrešan unos: objekat {} nije u dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="160"/>
+      <location filename="../../draftutils/gui_utils.py" line="164"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Nije moguće umetnuti novi objekat u skalirani deo</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="266"/>
+      <location filename="../../draftutils/gui_utils.py" line="270"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>Simbol nije primenjen. Koristi se unapred zadati simbol.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="711"/>
+      <location filename="../../draftutils/gui_utils.py" line="715"/>
       <source>image is Null</source>
       <translation>slika je prazna</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="717"/>
+      <location filename="../../draftutils/gui_utils.py" line="721"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>naziv datoteke ne postoji na sistemu ili u resursnoj datoteci</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="776"/>
+      <location filename="../../draftutils/gui_utils.py" line="780"/>
       <source>unable to load texture</source>
       <translation>nije moguće učitati teksturu</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="841"/>
+      <location filename="../../draftutils/gui_utils.py" line="845"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation type="unfinished">Does not have 'ViewObject.RootNode'.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="652"/>
+      <location filename="../../draftutils/utils.py" line="663"/>
       <source>Solids:</source>
       <translation>Puna tela:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="653"/>
+      <location filename="../../draftutils/utils.py" line="664"/>
       <source>Faces:</source>
       <translation>Stranice:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="654"/>
+      <location filename="../../draftutils/utils.py" line="665"/>
       <source>Wires:</source>
       <translation>Žica:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="655"/>
+      <location filename="../../draftutils/utils.py" line="666"/>
       <source>Edges:</source>
       <translation>Ivice:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="656"/>
+      <location filename="../../draftutils/utils.py" line="667"/>
       <source>Vertices:</source>
       <translation>Temena:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="660"/>
+      <location filename="../../draftutils/utils.py" line="671"/>
       <source>Face</source>
       <translation>Stranica</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="665"/>
+      <location filename="../../draftutils/utils.py" line="676"/>
       <source>Wire</source>
       <translation>Žica</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="697"/>
-      <location filename="../../draftutils/utils.py" line="701"/>
+      <location filename="../../draftutils/utils.py" line="708"/>
+      <location filename="../../draftutils/utils.py" line="712"/>
       <source>different types</source>
       <translation>različite vrste</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="711"/>
+      <location filename="../../draftutils/utils.py" line="722"/>
       <source>Objects have different placements. Distance between the two base points:</source>
       <translation type="unfinished">Objects have different placements. Distance between the two base points:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1111"/>
+      <location filename="../../draftutils/utils.py" line="1122"/>
       <source>This function will be deprecated in {}. Please use '{}'.</source>
       <translation type="unfinished">This function will be deprecated in {}. Please use '{}'.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1113"/>
+      <location filename="../../draftutils/utils.py" line="1124"/>
       <source>This function will be deprecated. Please use '{}'.</source>
       <translation type="unfinished">This function will be deprecated. Please use '{}'.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="714"/>
+      <location filename="../../draftutils/utils.py" line="725"/>
       <source>has a different value</source>
       <translation>ima drugačiju vrednost</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="717"/>
+      <location filename="../../draftutils/utils.py" line="728"/>
       <source>doesn't exist in one of the objects</source>
       <translation>ne postoji u jednom od objekata</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="885"/>
+      <location filename="../../draftutils/utils.py" line="896"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
       <translation>%s deli bazu sa %d drugim objektima. Razmisli da li želiš da izmeniš ovo.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="891"/>
+      <location filename="../../draftutils/utils.py" line="902"/>
       <source>%s cannot be modified because its placement is readonly.</source>
       <translation>%s se ne može izmeniti jer je njegov položaj samo za čitanje.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1034"/>
+      <location filename="../../draftutils/utils.py" line="1045"/>
       <source>Wrong input: unknown document {}</source>
       <translation>Pogrešan unos: nepoznat dokument {}</translation>
     </message>
@@ -3602,40 +3662,40 @@ Da bi omogućio FreeCAD-u da preuzme ove biblioteke, odgovori sa Da.</translatio
       <translation>Izaberi prvu tačku</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="163"/>
+      <location filename="../../draftguitools/gui_lines.py" line="170"/>
       <source>Create Line</source>
       <translation>Napravi duž</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="185"/>
+      <location filename="../../draftguitools/gui_lines.py" line="192"/>
       <source>Create Wire</source>
       <translation>Napravi Žicu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="356"/>
+      <location filename="../../draftguitools/gui_lines.py" line="363"/>
       <source>Polyline</source>
       <translation>Izlomljena linija</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="151"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="154"/>
-      <location filename="../../draftguitools/gui_lines.py" line="218"/>
-      <location filename="../../draftguitools/gui_lines.py" line="226"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="152"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="155"/>
+      <location filename="../../draftguitools/gui_lines.py" line="225"/>
       <location filename="../../draftguitools/gui_lines.py" line="233"/>
-      <location filename="../../draftguitools/gui_lines.py" line="241"/>
-      <location filename="../../draftguitools/gui_lines.py" line="251"/>
-      <location filename="../../draftguitools/gui_splines.py" line="140"/>
-      <location filename="../../draftguitools/gui_splines.py" line="145"/>
+      <location filename="../../draftguitools/gui_lines.py" line="240"/>
+      <location filename="../../draftguitools/gui_lines.py" line="248"/>
+      <location filename="../../draftguitools/gui_lines.py" line="258"/>
+      <location filename="../../draftguitools/gui_splines.py" line="142"/>
+      <location filename="../../draftguitools/gui_splines.py" line="147"/>
       <source>Pick next point</source>
       <translation>Izaberi sledeću tačku</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="323"/>
+      <location filename="../../draftguitools/gui_lines.py" line="330"/>
       <source>Unable to create a Wire from selected objects</source>
       <translation>Nije moguće napraviti žicu od izabranih objekata</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="348"/>
+      <location filename="../../draftguitools/gui_lines.py" line="355"/>
       <source>Convert to Wire</source>
       <translation>Pretvori u Žicu</translation>
     </message>
@@ -3677,12 +3737,12 @@ Da bi omogućio FreeCAD-u da preuzme ove biblioteke, odgovori sa Da.</translatio
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="115"/>
       <source>Convert to Draft</source>
-      <translation>Pretvori u Draft</translation>
+      <translation>Pretvori u Crtež</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="144"/>
       <source>Convert Draft/Sketch</source>
-      <translation>Pretvori Draft/Skica</translation>
+      <translation>Pretvori Crtež/Skica</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="78"/>
@@ -3712,15 +3772,15 @@ Da bi omogućio FreeCAD-u da preuzme ove biblioteke, odgovori sa Da.</translatio
       <translation>Neki podelementi nisu mogli da se premeste.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="88"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="85"/>
       <location filename="../../draftguitools/gui_polygons.py" line="78"/>
       <source>Pick center point</source>
       <translation>Izaberi centralnu tačku</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="254"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="270"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="409"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="251"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="267"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="406"/>
       <location filename="../../draftguitools/gui_polygons.py" line="196"/>
       <location filename="../../draftguitools/gui_polygons.py" line="207"/>
       <location filename="../../draftguitools/gui_polygons.py" line="268"/>
@@ -3728,70 +3788,70 @@ Da bi omogućio FreeCAD-u da preuzme ove biblioteke, odgovori sa Da.</translatio
       <translation>Izaberi poluprečnik</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="277"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="278"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="444"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="445"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="274"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="275"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="441"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="442"/>
       <source>Start angle</source>
       <translation>Početni ugao</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="283"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="450"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="280"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="447"/>
       <source>Pick start angle</source>
       <translation>Izaberi početni ugao</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="285"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="286"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="452"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="453"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="282"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="283"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="449"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="450"/>
       <source>Aperture angle</source>
       <translation>Krajnji ugao</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="292"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="289"/>
       <source>Pick aperture</source>
       <translation>Izaberi krajnji ugao</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="319"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="316"/>
       <source>Create Circle (Part)</source>
       <translation>Napravi kružnicu (Deo)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="337"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="334"/>
       <source>Create Circle</source>
       <translation>Napravi kružnicu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="368"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="365"/>
       <source>Create Arc (Part)</source>
       <translation>Napravi kružni luk (Deo)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="388"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="385"/>
       <source>Create Arc</source>
       <translation>Napravi kružni luk</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="462"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="459"/>
       <source>Pick aperture angle</source>
       <translation>Izaberi krajnji ugao</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="505"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="547"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="502"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="544"/>
       <source>Arc by 3 points</source>
       <translation>Kružni luk pomoću 3 tačke</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="566"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="563"/>
       <source>Create Arc by 3 points</source>
       <translation>Napravi kružni luk pomoću 3 tačke</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_grid.py" line="53"/>
+      <location filename="../../draftguitools/gui_grid.py" line="54"/>
       <source>Toggle grid</source>
       <translation>Sakrij/Prikaži koordinatnu mrežu</translation>
     </message>
@@ -3803,7 +3863,7 @@ Da bi omogućio FreeCAD-u da preuzme ove biblioteke, odgovori sa Da.</translatio
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="290"/>
       <source>Select a Draft object to edit</source>
-      <translation>Izaberi Draft objekat koji želiš da urediš</translation>
+      <translation>Izaberi objekat okruženja Crtanje koji želiš da urediš</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="476"/>
@@ -4029,7 +4089,7 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
       <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation>Skica je previše složena za uređivanje: predlaže se korišćenje podrazumevanog Sketcher uređivača skica</translation>
+      <translation>Skica je previše složena za uređivanje: predlaže se korišćenje podrazumevanog uređivača skica</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="77"/>
@@ -4072,12 +4132,12 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
       <translation>Napravi mnogougao</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_split.py" line="64"/>
+      <location filename="../../draftguitools/gui_split.py" line="59"/>
       <source>Click anywhere on a line to split it.</source>
       <translation>Klikni bilo gde na liniji da bi je podelio.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_split.py" line="107"/>
+      <location filename="../../draftguitools/gui_split.py" line="102"/>
       <source>Split line</source>
       <translation>Podeli liniju</translation>
     </message>
@@ -4100,7 +4160,7 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="479"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
-      <translation>Nije moguće opseći ove objekte, podržane su samo Draft žice i kružni lukovi.</translation>
+      <translation>Nije moguće opseći ove objekte, podržane su samo žice i kružni lukovi.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="484"/>
@@ -4123,19 +4183,19 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
       <translation>B-Splajn kriva</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_splines.py" line="120"/>
+      <location filename="../../draftguitools/gui_splines.py" line="122"/>
       <source>Spline has been closed</source>
       <translation>B-Splajn je zatvoren</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="143"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="382"/>
-      <location filename="../../draftguitools/gui_splines.py" line="131"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="144"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="377"/>
+      <location filename="../../draftguitools/gui_splines.py" line="133"/>
       <source>Last point has been removed</source>
       <translation>Poslednja tačka je uklonjena</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_splines.py" line="183"/>
+      <location filename="../../draftguitools/gui_splines.py" line="185"/>
       <source>Create B-spline</source>
       <translation>Napravi B-splajn krivu</translation>
     </message>
@@ -4264,30 +4324,30 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
       <translation>Krajnja tačka Bezjeove krive se ne može uglačati</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="75"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="76"/>
       <source>Bézier curve</source>
       <translation>Bezjeova kriva</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="135"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="346"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="136"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="342"/>
       <source>Bézier curve has been closed</source>
       <translation>Bezijeova kriva je zatvorena</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="213"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="466"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="214"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="461"/>
       <source>Create BezCurve</source>
       <translation>Napravi Bezjeovu krivu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="265"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="266"/>
       <source>Cubic Bézier curve</source>
       <translation>Kubna Bezjeova kriva</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="390"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="394"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="385"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="389"/>
       <source>Click and drag to define next knot</source>
       <translation>Klikni i prevuci da bi definisao sledeći čvor</translation>
     </message>
@@ -4379,7 +4439,7 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="73"/>
       <source>No active Draft Toolbar.</source>
-      <translation>Nema aktivne Draft trake sa alatkama.</translation>
+      <translation>Nema aktivne trake sa alatkama okruženja Crtanje.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="93"/>
@@ -4511,7 +4571,7 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
       <translation>Nije moguće klonirati objekte koji nemaju oblik, preskače se</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lineslope.py" line="64"/>
+      <location filename="../../draftguitools/gui_lineslope.py" line="60"/>
       <source>Change slope</source>
       <translation>Promeni nagib</translation>
     </message>
@@ -5193,24 +5253,24 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
       <translation>Pogrešan unos: mora biti broj između 0 i 100.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="453"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="495"/>
       <source>Activate this layer</source>
       <translation>Aktiviraj ovaj sloj</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="459"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="501"/>
       <source>Select layer contents</source>
       <translation>Izaberi sadržaj sloja</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="497"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="511"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="539"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="553"/>
       <source>Merge layer duplicates</source>
       <translation>Objedini duplikate sloja</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="503"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="556"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="545"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="598"/>
       <source>Add new layer</source>
       <translation>Dodaj novi sloj</translation>
     </message>
@@ -5452,11 +5512,6 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
       <translation type="unfinished">Volume not available for (sub)object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="81"/>
-      <source>added missing view properties</source>
-      <translation>dodate osobine prikaza koje nedostaju</translation>
-    </message>
-    <message>
       <location filename="../../draftobjects/array.py" line="76"/>
       <source>added property 'Count'</source>
       <translation type="unfinished">added property 'Count'</translation>
@@ -5487,7 +5542,7 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
       <translation>Otvara se hiperveza</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="154"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="152"/>
       <source>Select 3 vertices, one or more shapes or an object to define a working plane</source>
       <translation type="unfinished">Select 3 vertices, one or more shapes or an object to define a working plane</translation>
     </message>
@@ -5508,38 +5563,43 @@ of existing objects in all opened documents?</translation>
       <source>migrated 'PointList' property to 'PointObject'</source>
       <translation type="unfinished">migrated 'PointList' property to 'PointObject'</translation>
     </message>
+    <message>
+      <location filename="../../draftobjects/layer.py" line="93"/>
+      <source>updated view properties</source>
+      <translation type="unfinished">updated view properties</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <location filename="../../InitGui.py" line="103"/>
       <source>Draft creation tools</source>
-      <translation>Draft alatke za pravljenje</translation>
+      <translation>Аlatke za pravljenje</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="106"/>
       <source>Draft annotation tools</source>
-      <translation>Draft alatke za napomene</translation>
+      <translation>Аlatke za napomene</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="109"/>
       <source>Draft modification tools</source>
-      <translation>Draft alatke za izmene</translation>
+      <translation>Alatke za izmene</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="112"/>
       <source>Draft utility tools</source>
-      <translation>Draft pomoćne alatke</translation>
+      <translation>Korisne alatke</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="115"/>
       <source>Draft snap</source>
-      <translation>Draft hvatanje</translation>
+      <translation>Hvatanje</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="120"/>
       <source>&amp;Drafting</source>
-      <translation>&amp;Drafting</translation>
+      <translation>&amp;Crtanje</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="123"/>
@@ -5549,12 +5609,12 @@ of existing objects in all opened documents?</translation>
     <message>
       <location filename="../../InitGui.py" line="126"/>
       <source>&amp;Modification</source>
-      <translation>&amp;Modification</translation>
+      <translation>&amp;Izmene</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="129"/>
       <source>&amp;Utilities</source>
-      <translation>&amp;Modification</translation>
+      <translation>&amp;Korisni alati</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="50"/>
@@ -5604,32 +5664,32 @@ iz menija Alati/Menadžer dodataka</translation>
       <translation>Napravi obaranje ivica</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="310"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="421"/>
       <source>Save style</source>
       <translation>Sačuvaj Stil</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="311"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="422"/>
       <source>Name of this new style:</source>
       <translation>Naziv ovog novog stila:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="318"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="429"/>
       <source>Warning</source>
       <translation>Upozorenje</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="319"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="430"/>
       <source>Name exists. Overwrite?</source>
       <translation>Ime postoji. Da zamenim?</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="339"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="450"/>
       <source>Error: json module not found. Unable to load style</source>
       <translation>Greška: json modul nije pronađen. Nije moguće učitati stil</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="358"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="469"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>Greška: json modul nije pronađen. Nije moguće sačuvati stil</translation>
     </message>
@@ -5639,8 +5699,8 @@ iz menija Alati/Menadžer dodataka</translation>
       <translation>Klon</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lineslope.py" line="88"/>
-      <location filename="../../draftguitools/gui_lineslope.py" line="91"/>
+      <location filename="../../draftguitools/gui_lineslope.py" line="84"/>
+      <location filename="../../draftguitools/gui_lineslope.py" line="87"/>
       <source>Slope</source>
       <translation>Nagib</translation>
     </message>
@@ -5734,48 +5794,48 @@ iz menija Alati/Menadžer dodataka</translation>
       <translation type="unfinished">Writing objects shown/hidden state</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="277"/>
+      <location filename="../../draftguitools/gui_layers.py" line="283"/>
       <source>On</source>
       <translation>Uključeno</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="278"/>
+      <location filename="../../draftguitools/gui_layers.py" line="284"/>
       <location filename="../../draftobjects/label.py" line="326"/>
       <source>Name</source>
       <translation>Ime</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="279"/>
+      <location filename="../../draftguitools/gui_layers.py" line="285"/>
       <source>Line width</source>
       <translation>Širina linije</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="280"/>
+      <location filename="../../draftguitools/gui_layers.py" line="286"/>
       <source>Draw style</source>
       <translation>Stilovi prikaza</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="281"/>
+      <location filename="../../draftguitools/gui_layers.py" line="287"/>
       <source>Line color</source>
       <translation>Boja linije</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="282"/>
+      <location filename="../../draftguitools/gui_layers.py" line="288"/>
       <source>Face color</source>
       <translation>Boja stranice</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="283"/>
+      <location filename="../../draftguitools/gui_layers.py" line="289"/>
       <source>Transparency</source>
       <translation>Providnost</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="284"/>
+      <location filename="../../draftguitools/gui_layers.py" line="290"/>
       <source>Line print color</source>
       <translation>Boja štampane linije</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="305"/>
+      <location filename="../../draftguitools/gui_layers.py" line="311"/>
       <source>New Layer</source>
       <translation>Novi sloj</translation>
     </message>
@@ -5882,12 +5942,12 @@ iz menija Alati/Menadžer dodataka</translation>
   <context>
     <name>Draft_SelectPlane</name>
     <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="58"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="59"/>
       <source>Select plane</source>
       <translation>Izaberi ravan</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="61"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="62"/>
       <source>Select 3 vertices, one or more shapes or an object to define a working plane.</source>
       <translation type="unfinished">Select 3 vertices, one or more shapes or an object to define a working plane.</translation>
     </message>
@@ -5969,12 +6029,12 @@ obezbeđivati informacija oznaci.</translation>
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="299"/>
+      <location filename="../../draftguitools/gui_lines.py" line="306"/>
       <source>Polyline</source>
       <translation>Izlomljena linija</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="302"/>
+      <location filename="../../draftguitools/gui_lines.py" line="309"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
       <translation>Pravi liniju sa više tačaka (izlomljenu liniju). CTRL za hvatanje, SHIFT za ograničavanje.</translation>
     </message>
@@ -6025,16 +6085,16 @@ Linije moraju deliti zajedničku tačku na početku ili na kraju da bi operacija
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="57"/>
       <source>Draft to sketch</source>
-      <translation type="unfinished">Draft to sketch</translation>
+      <translation>Crtež u skicu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="60"/>
       <source>Convert bidirectionally between Draft objects and Sketches.
 Many Draft objects will be converted into a single non-constrained Sketch.
 However, a single sketch with disconnected traces will be converted into several individual Draft objects.</source>
-      <translation>Konvertuj dvosmerno između Draft objekata i skica.
-Mnogi Draft objekti će biti konvertovani u skicu na kojoj nema ograničenja.
-Međutim, jedna skica sa nespojenim elementima biće konvertovana u nekoliko pojedinačnih Draft objekata.</translation>
+      <translation>Pretvori objekte okruženja Crtanje u objekte okruženja Skice i obratno.
+Mnogi objekti okruženja Crtanje će biti konvertovani u skicu na kojoj nema ograničenja.
+Međutim, jedna skica sa nespojenim elementima biće konvertovana u nekoliko pojedinačnih objekata okruženja Crtanje.</translation>
     </message>
   </context>
   <context>
@@ -6265,12 +6325,12 @@ CTRL za hvatanje, SHIFT za ograničavanje.</translation>
   <context>
     <name>Draft_Arc</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="66"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="63"/>
       <source>Arc</source>
       <translation>Kružni luk</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="69"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="66"/>
       <source>Creates a circular arc by a center point and a radius.
 CTRL to snap, SHIFT to constrain.</source>
       <translation>Pravi kružni luk pomoću tačke centra i poluprečnika.
@@ -6280,12 +6340,12 @@ CTRL za hvatanje, SHIFT za ograničavanje.</translation>
   <context>
     <name>Draft_Arc_3Points</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="480"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="477"/>
       <source>Arc by 3 points</source>
       <translation>Kružni luk pomoću 3 tačke</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="483"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="480"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
       <translation>Pravi kružni luk pomoću 3 tačke.
@@ -6295,12 +6355,12 @@ CTRL za hvatanje, SHIFT za ograničavanje.</translation>
   <context>
     <name>Draft_ArcTools</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="614"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="611"/>
       <source>Arc tools</source>
       <translation>Alatke za kružna lukove</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="617"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="614"/>
       <source>Create various types of circular arcs.</source>
       <translation>Napravi različite vrste kružnih lukova.</translation>
     </message>
@@ -6315,7 +6375,7 @@ CTRL za hvatanje, SHIFT za ograničavanje.</translation>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="62"/>
       <source>Toggles the Draft grid on and off.</source>
-      <translation>Uključuje/Isključuje Draft koordinatnu mrežu.</translation>
+      <translation>Uključuje/Isključuje koordinatnu mrežu.</translation>
     </message>
   </context>
   <context>
@@ -6448,7 +6508,7 @@ Prvo napravi grupu da bi koristio ovaj alat.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="212"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
-      <translation>Izaberi grupu u koju ćeš dodati sve Draft i Arch objekte.</translation>
+      <translation>Izaberi grupu u koju ćeš dodati sve objekte okruženja Crtanje i Arhitektura.</translation>
     </message>
   </context>
   <context>
@@ -6484,12 +6544,12 @@ Napravi grupu pomoćne geometrije ako ne postoji.</translation>
   <context>
     <name>Draft_WorkingPlaneProxy</name>
     <message>
-      <location filename="../../draftguitools/gui_planeproxy.py" line="50"/>
+      <location filename="../../draftguitools/gui_planeproxy.py" line="46"/>
       <source>Create working plane proxy</source>
       <translation>Napravi zamensku radnu ravan</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_planeproxy.py" line="52"/>
+      <location filename="../../draftguitools/gui_planeproxy.py" line="49"/>
       <source>Creates a proxy object from the current working plane.
 Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
 Then you can use it to save a different camera position and objects' states any time you need.</source>
@@ -6570,12 +6630,12 @@ CTRL za hvatanje, SHIFT za ograničavanje</translation>
   <context>
     <name>Draft_Split</name>
     <message>
-      <location filename="../../draftguitools/gui_split.py" line="56"/>
+      <location filename="../../draftguitools/gui_split.py" line="51"/>
       <source>Split</source>
       <translation>Podeli</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_split.py" line="59"/>
+      <location filename="../../draftguitools/gui_split.py" line="54"/>
       <source>Splits the selected line or polyline into two independent lines
 or polylines by clicking anywhere along the original object.
 It works best when choosing a point on a straight segment and not a corner vertex.</source>
@@ -6628,12 +6688,12 @@ CTRL hvatanje, SHIFT ograničava na trenutni segment ili na normalu, ALT invertu
   <context>
     <name>Draft_BezCurve</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="65"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="66"/>
       <source>Bézier curve</source>
       <translation>Bezjeova kriva</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="68"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="69"/>
       <source>Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
       <translation>Pravi Bezjeovu krivu N-tog stepena. Što više tačaka odabereš, to je veći stepen.
@@ -6643,12 +6703,12 @@ CTRL za hvatanje, SHIFT za ograničavanje.</translation>
   <context>
     <name>Draft_CubicBezCurve</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="252"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="253"/>
       <source>Cubic Bézier curve</source>
       <translation>Kubna Bezjeova kriva</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="255"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="256"/>
       <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
@@ -6660,12 +6720,12 @@ CTRL za hvatanje, SHIFT za ograničavanje.</translation>
   <context>
     <name>Draft_BezierTools</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="490"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="485"/>
       <source>Bézier tools</source>
       <translation>Alatke za Bezjeove krive</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="493"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="488"/>
       <source>Create various types of Bézier curves.</source>
       <translation>Napravi različite vrste Bezjeovih krivih.</translation>
     </message>
@@ -6755,9 +6815,9 @@ CTRL za hvatanje, SHIFT za ograničavanje, ALT kopiranje.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="71"/>
       <source>Adds a layer to the document.
-Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</source>
-      <translation>Dodaje sloj u dokument.
-Objekti dodati ovom sloju mogu da dele iste vizuelne osobine kao što su boja linije, širina linije i boja oblika.</translation>
+Objects added to this layer can share the same visual properties.</source>
+      <translation type="unfinished">Adds a layer to the document.
+Objects added to this layer can share the same visual properties.</translation>
     </message>
   </context>
   <context>
@@ -6793,12 +6853,12 @@ A 'Point link array' is more efficient when handling many copies.</source>
   <context>
     <name>Draft_ArrayTools</name>
     <message>
-      <location filename="../../draftguitools/gui_arrays.py" line="65"/>
+      <location filename="../../draftguitools/gui_arrays.py" line="66"/>
       <source>Array tools</source>
       <translation>Alatke za umnožavanje</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arrays.py" line="68"/>
+      <location filename="../../draftguitools/gui_arrays.py" line="69"/>
       <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
       <translation>Napravi različite vrste umnožavanja, pravougaone, polarne, kružne, po putanji i umnožavanje tačaka</translation>
     </message>
@@ -6867,7 +6927,7 @@ CTRL za hvatanje, SHIFT za ograničavanje, ALT za odabir ivice ili luka.
 Možeš da izabereš jednu liniju ili jedan kružni luk pre pokretanja ove komande
 da bi napravio odgovarajuću povezanu kotu.
 Takođe, možeš da izabereš objekat nastao alatkom 'Izmeri rastojanje' pre pokretanja ove komande
-da bi ga pretvorio u Draft objekat 'Kota'.</translation>
+da bi ga pretvorio u objekat 'Kota' okruženja Crtanje.</translation>
     </message>
   </context>
   <context>
@@ -6982,12 +7042,12 @@ Umnožavanje se može pretvoriti u ortogonalno ili kružno promenom vrste u Ured
   <context>
     <name>Draft_Slope</name>
     <message>
-      <location filename="../../draftguitools/gui_lineslope.py" line="70"/>
+      <location filename="../../draftguitools/gui_lineslope.py" line="66"/>
       <source>Set slope</source>
       <translation>Podesi nagib</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lineslope.py" line="73"/>
+      <location filename="../../draftguitools/gui_lineslope.py" line="69"/>
       <source>Sets the slope of the selected line by changing the value of the Z value of one of its points.
 If a polyline is selected, it will apply the slope transformation to each of its segments.
 
@@ -6997,7 +7057,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
 Ako je izabrana izlomljena linija, komanda će primeniti transformaciju nagiba na svaki od njenih segmenata.
 
 Nagib će uvek promeniti vrednost Z, tako da ova komanda dobro funkcioniše samo za
-prave Draft linije koje su nacrtane u ravni XY. Izabrani objekti koji nisu linije biće zanemareni.</translation>
+prave linije koje su nacrtane u ravni XY. Izabrani objekti koji nisu linije biće zanemareni.</translation>
     </message>
   </context>
   <context>
@@ -7082,7 +7142,7 @@ Zatvoreni oblici se mogu koristiti za izvlačenje i logičke operacije.</transla
       <source>Heal faulty Draft objects saved with an earlier version of the program.
 If an object is selected it will try to heal that object in particular,
 otherwise it will try to heal all objects in the active document.</source>
-      <translation>Izleči neispravne Draft objekte sačuvane u ranijoj verziji programa.
+      <translation>Izleči neispravn objekte okruženja Crtanje sačuvane u ranijoj verziji programa.
 Ako je objekat izabran, pokušaće da izleči taj objekat posebno,
 u suprotnom će pokušati da izleči sve objekte u aktivnom dokumentu.</translation>
     </message>
@@ -7256,7 +7316,7 @@ podesi Tačno za uniju ili Netačno za sastavljeni objekat</translation>
       <translation>Površina ovog objekta</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="55"/>
+      <location filename="../../draftobjects/layer.py" line="56"/>
       <source>The objects that are part of this layer</source>
       <translation>Objekti koji su deo ovog sloja</translation>
     </message>
@@ -8154,8 +8214,8 @@ svojstva 'Početni ugao' i 'Krajnji ugao'.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="78"/>
-      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
-      <translation>Ako je to tačno, objekti koji se nalaze u ovom sloju će prihvatiti boju geometrijskih objekata ovog sloja</translation>
+      <source>If it is true, the objects contained within this layer will adopt the shape appearance of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape appearance of the layer</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="89"/>
@@ -8173,22 +8233,27 @@ svojstva 'Početni ugao' i 'Krajnji ugao'.</translation>
       <translation>Boja geometrijskih objekata koji se nalaze u ovom sloju</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="120"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="121"/>
+      <source>The shape appearance of the objects contained within this layer</source>
+      <translation type="unfinished">The shape appearance of the objects contained within this layer</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="133"/>
       <source>The line width of the objects contained within this layer</source>
       <translation>Širina linija objekata koji se nalaze u ovom sloju</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="130"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="143"/>
       <source>The draw style of the objects contained within this layer</source>
       <translation>Stil prikaza objekata koji se nalaze u ovom sloju</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="141"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="154"/>
       <source>The transparency of the objects contained within this layer</source>
       <translation>Providnost objekata koji se nalaze u ovom sloju</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="152"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="165"/>
       <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
       <translation>Boja linija objekata koji se nalaze u ovom sloju, kada se koristi na TechDraw crtežu</translation>
     </message>
@@ -8317,7 +8382,7 @@ iznad kotne linije</translation>
       <location filename="../../InitGui.py" line="140"/>
       <location filename="../../InitGui.py" line="141"/>
       <source>Draft</source>
-      <translation>Draft</translation>
+      <translation>Crtanje</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="201"/>

@@ -217,6 +217,7 @@ public:
     bool itemHidden;
     std::string label;
     std::string label2;
+    std::string internalName;
 
     using Connection = boost::signals2::scoped_connection;
 
@@ -245,6 +246,7 @@ public:
         itemHidden = !viewObject->showInTree();
         label = viewObject->getObject()->Label.getValue();
         label2 = viewObject->getObject()->Label2.getValue();
+        internalName = viewObject->getObject()->getNameInDocument();
     }
 
     void insertItem(DocumentObjectItem* item)
@@ -398,6 +400,21 @@ namespace Gui {
  */
 class TreeWidgetItemDelegate: public QStyledItemDelegate {
     typedef QStyledItemDelegate inherited;
+
+    // Beware, big scary hack incoming!
+    //
+    // This is artificial QTreeWidget that is not rendered and its sole goal is to be the source
+    // of style information that can be manipulated using QSS. From Qt6.5 tree branches also 
+    // have rendered background using ::item sub-control. Whole row also gets background from 
+    // the same sub-control. Only way to prevent this is to disable background of ::item,
+    // this however limits our ability to style tree items. As solution we create this widget
+    // that will be for painter to read information and draw proper backgrounds only when asked.
+    //
+    // More information: https://github.com/FreeCAD/FreeCAD/pull/13807
+    QTreeView *artificial;
+
+    QRect calculateItemRect(const QStyleOptionViewItem &option) const;
+
 public:
     explicit TreeWidgetItemDelegate(QObject* parent=nullptr);
 
@@ -416,6 +433,40 @@ public:
 TreeWidgetItemDelegate::TreeWidgetItemDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
 {
+    artificial = new QTreeView(qobject_cast<QWidget*>(parent));
+    artificial->setObjectName(QString::fromLatin1("DocumentTreeItems"));
+    artificial->setFixedSize(0, 0); // ensure that it does not render
+}
+
+
+QRect TreeWidgetItemDelegate::calculateItemRect(const QStyleOptionViewItem &option) const
+{
+    auto tree = static_cast<TreeWidget*>(parent());
+    auto style = tree->style();
+
+    QRect rect = option.rect;
+
+    const int margin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, &option, artificial) + 1;
+    
+    // 2 margin for text, 2 margin for decoration (icon) = 4 times margin
+    int width = 4 * margin 
+        + option.fontMetrics.boundingRect(option.text).width()
+        + option.decorationSize.width()
+        + TreeParams::getItemBackgroundPadding()
+    ;
+
+    if (TreeParams::getCheckBoxesSelection()) {
+        // another 2 margin for checkbox
+        width += 2 * margin 
+            + style->pixelMetric(QStyle::PM_IndicatorWidth)
+            + style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
+    }
+
+    if (width < rect.width()) {
+        rect.setWidth(width);
+    }
+
+    return rect;
 }
 
 void TreeWidgetItemDelegate::paint(QPainter *painter,
@@ -424,42 +475,29 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
     QStyleOptionViewItem opt = option;
     initStyleOption(&opt, index);
 
-    TreeWidget * tree = static_cast<TreeWidget*>(parent());
+    auto tree = static_cast<TreeWidget*>(parent());
     auto style = tree->style();
 
     // If the second column is not shown, we'll trim the color background when
     // rendering as transparent overlay.
-    bool trimBG = TreeParams::getHideColumn();
-    QRect rect = opt.rect;
 
+    bool trimBG = TreeParams::getHideColumn() || TreeParams::getHideInternalNames();
+    
     if (index.column() == 0) {
         if (tree->testAttribute(Qt::WA_NoSystemBackground)
                 && (trimBG || (opt.backgroundBrush.style() == Qt::NoBrush
                                 && _TreeItemBackground.style() != Qt::NoBrush)))
         {
-            const int margin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, &option, tree) + 1;
-            // 2 margin for text, 2 margin for decoration (icon)
-            int width = 4*margin + opt.fontMetrics.boundingRect(opt.text).width()
-                + opt.decorationSize.width() + TreeParams::getItemBackgroundPadding();
-            if (TreeParams::getCheckBoxesSelection()) {
-                // another 2 margin for checkbox
-                width += 2*margin + style->pixelMetric(QStyle::PM_IndicatorWidth)
-                    + style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
-            }
-            if (width < rect.width())
-                rect.setWidth(width);
-            if (trimBG) {
-                rect.setWidth(rect.width() + 5);
-                opt.rect = rect;
-                if (opt.backgroundBrush.style() == Qt::NoBrush)
-                    painter->fillRect(rect, _TreeItemBackground);
-            } else if (!opt.state.testFlag(QStyle::State_Selected))
+            QRect rect = calculateItemRect(option);
+
+            if (trimBG && opt.backgroundBrush.style() == Qt::NoBrush) {
                 painter->fillRect(rect, _TreeItemBackground);
+            } else if (!opt.state.testFlag(QStyle::State_Selected)) {
+                painter->fillRect(rect, _TreeItemBackground);
+            }
         }
-
     }
-
-    style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, tree);
+    style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, artificial);
 }
 
 void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
@@ -467,16 +505,35 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
 {
     inherited::initStyleOption(option, index);
 
-    TreeWidget * tree = static_cast<TreeWidget*>(parent());
-    QTreeWidgetItem * item = tree->itemFromIndex(index);
-    if (!item || item->type() != TreeWidget::ObjectType)
-        return;
+    auto tree = static_cast<TreeWidget*>(parent());
+    auto item = tree->itemFromIndex(index);
 
-    QSize size;
-    size = option->icon.actualSize(QSize(0xffff, 0xffff));
-    if (size.height())
-        option->decorationSize = QSize(size.width()*TreeWidget::iconSize()/size.height(),
-                                       TreeWidget::iconSize());
+    if (!item) {
+        return;
+    }
+
+    auto mousePos = option->widget->mapFromGlobal(QCursor::pos());
+    auto isHovered = option->rect.contains(mousePos);
+    if (!isHovered) {
+        option->state &= ~QStyle::State_MouseOver;
+    }
+
+    QSize size = option->icon.actualSize(QSize(0xffff, 0xffff));
+
+    if (size.height() > 0) {
+        option->decorationSize = QSize(
+            size.width() * TreeWidget::iconSize() / size.height(),
+            TreeWidget::iconSize()
+        );
+    }
+
+    if (TreeParams::getHideColumn()) {
+        option->rect = calculateItemRect(*option);
+
+        // we need to extend this shape a bit, 3px on each side
+        // this value was obtained experimentally
+        option->rect.setWidth(option->rect.width() + 3 * 2);
+    }
 }
 
 QWidget* TreeWidgetItemDelegate::createEditor(
@@ -534,8 +591,9 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
     this->setDragDropMode(QTreeWidget::InternalMove);
-    this->setColumnCount(2);
+    this->setColumnCount(3);
     this->setItemDelegate(new TreeWidgetItemDelegate(this));
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     this->showHiddenAction = new QAction(this);
     this->showHiddenAction->setCheckable(true);
@@ -613,12 +671,14 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     //NOLINTEND
 
     setupResizableColumn(this);
-    this->header()->setStretchLastSection(false);
+    this->header()->setStretchLastSection(true);
     QObject::connect(this->header(), &QHeaderView::sectionResized, [](int idx, int, int newSize) {
-        if (idx)
+        if (idx == 1)
             TreeParams::setColumnSize2(newSize);
-        else
-            TreeParams::setColumnSize1(newSize);
+        else if (idx == 2)
+                TreeParams::setColumnSize3(newSize);
+            else
+                TreeParams::setColumnSize1(newSize);
     });
 
     // Add the first main label
@@ -656,7 +716,8 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
         documentPartialPixmap = std::make_unique<QPixmap>(icon.pixmap(documentPixmap->size(), QIcon::Disabled));
     }
     setColumnHidden(1, TreeParams::getHideColumn());
-    header()->setVisible(!TreeParams::getHideColumn());
+    setColumnHidden(2, TreeParams::getHideInternalNames());
+    header()->setVisible(!TreeParams::getHideColumn() || !TreeParams::getHideInternalNames());
 }
 
 TreeWidget::~TreeWidget()
@@ -1048,6 +1109,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     contextMenu.addMenu(&settingsMenu);
 
     QAction* action = new QAction(tr("Show description column"), this);
+    QAction* internalNameAction = new QAction(tr("Show internal name"), this);
     action->setStatusTip(tr("Show an extra tree view column for item description. The item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property."));
     action->setCheckable(true);
 
@@ -1055,11 +1117,26 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     action->setChecked(!hGrp->GetBool("HideColumn", true));
 
     settingsMenu.addAction(action);
-    QObject::connect(action, &QAction::triggered, this, [this, action, hGrp]() {
+    QObject::connect(action, &QAction::triggered, this, [this, action, internalNameAction, hGrp]() {
         bool show = action->isChecked();
         hGrp->SetBool("HideColumn", !show);
         setColumnHidden(1, !show);
-        header()->setVisible(show);
+        header()->setVisible(action->isChecked()||internalNameAction->isChecked());
+    });
+
+
+    internalNameAction->setStatusTip(tr("Show an internal name column for items."));
+    internalNameAction->setCheckable(true);
+
+    internalNameAction->setChecked(!hGrp->GetBool("HideInternalNames", true));
+
+    settingsMenu.addAction(internalNameAction);
+
+    QObject::connect(internalNameAction, &QAction::triggered, this, [this, action, internalNameAction, hGrp]() {
+        bool show = internalNameAction->isChecked();
+        hGrp->SetBool("HideInternalNames", !show);
+        setColumnHidden(2, !show);
+        header()->setVisible(action->isChecked()||internalNameAction->isChecked());
     });
 
     if (contextMenu.actions().count() > 0) {
@@ -1373,12 +1450,15 @@ void TreeWidget::setupResizableColumn(TreeWidget *tree) {
         if(!tree || tree==inst) {
             inst->header()->setSectionResizeMode(0, mode);
             inst->header()->setSectionResizeMode(1, mode);
+            inst->header()->setSectionResizeMode(2, mode);
             if (TreeParams::getResizableColumn()) {
                 QSignalBlocker blocker(inst);
                 if (TreeParams::getColumnSize1() > 0)
                     inst->header()->resizeSection(0, TreeParams::getColumnSize1());
                 if (TreeParams::getColumnSize2() > 0)
                     inst->header()->resizeSection(1, TreeParams::getColumnSize2());
+               if (TreeParams::getColumnSize3() > 0)
+                    inst->header()->resizeSection(2, TreeParams::getColumnSize3());
             }
         }
     }
@@ -1608,26 +1688,43 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
             // Rect occupied by the item relative to viewport
             auto iconRect = visualItemRect(objitem);
 
+            auto style = this->style();
+
             // If the checkboxes are visible, these are displayed before the icon
             // and we have to compensate for its width.
             if (isSelectionCheckBoxesEnabled()) {
-                auto style = this->style();
                 int checkboxWidth = style->pixelMetric(QStyle::PM_IndicatorWidth)
                                     + style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
                 iconRect.adjust(checkboxWidth, 0, 0, 0);
             }
+
+            int const margin = style->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1;
+            iconRect.adjust(margin, 0, 0, 0);
 
             // We are interested in the first icon (visibility icon)
             iconRect.setWidth(iconSize());
 
             // If the visibility icon was clicked, toggle the DocumentObject visibility
             if (iconRect.contains(mousePos)) {
-                auto vp = objitem->object();
-                if (vp->isShow()) {
-                    vp->hide();
-                } else {
-                    vp->show();
+                auto obj = objitem->object()->getObject();
+                char const* objname = obj->getNameInDocument();
+
+                App::DocumentObject* parent = nullptr;
+                std::ostringstream subName;
+                objitem->getSubName(subName, parent);
+
+                // Try the ElementVisible API, if that is not supported toggle the Visibility property
+                int visible = -1;
+                if (parent) {
+                    visible = parent->isElementVisible(objname);
                 }
+                if (parent && visible >= 0) {
+                    parent->setElementVisible(objname, !visible);
+                } else {
+                    visible = obj->Visibility.getValue();
+                    obj->Visibility.setValue(!visible);
+                }
+
                 event->setAccepted(true);
                 return;
             }
@@ -3168,6 +3265,7 @@ void TreeWidget::setupText()
 {
     this->headerItem()->setText(0, tr("Labels & Attributes"));
     this->headerItem()->setText(1, tr("Description"));
+    this->headerItem()->setText(2, tr("Internal name"));
 
     this->showHiddenAction->setText(tr("Show items hidden in tree view"));
     this->showHiddenAction->setStatusTip(tr("Show items that are marked as 'hidden' in the tree view"));
@@ -3763,6 +3861,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
     item->setText(0, QString::fromUtf8(data->label.c_str()));
     if (!data->label2.empty())
         item->setText(1, QString::fromUtf8(data->label2.c_str()));
+    item->setText(2, QString::fromUtf8(data->internalName.c_str()));
     if (!obj.showInTree() && !showHidden())
         item->setHidden(true);
     item->testStatus(true);
@@ -5213,7 +5312,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     previousStatus = currentStatus;
 
     QIcon::Mode mode = QIcon::Normal;
-    if (isVisibilityIconEnabled() || (currentStatus & Status::Visible)) {
+    if (currentStatus & Status::Visible) {
         // Note: By default the foreground, i.e. text color is invalid
         // to make use of the default color of the tree widget's palette.
         // If we temporarily set this color to dark and reset to an invalid
@@ -5331,17 +5430,19 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
 
             // Prepend the visibility pixmap to the final icon pixmaps and use these as the icon.
             QIcon new_icon;
+            auto style = this->getTree()->style();
+            int const spacing = style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
             for (auto state: {QIcon::On, QIcon::Off}) {
                 QPixmap px_org = icon.pixmap(0xFFFF, 0xFFFF, QIcon::Normal, state);
 
-                QPixmap px(2*px_org.width(), px_org.height());
+                QPixmap px(2*px_org.width() + spacing, px_org.height());
                 px.fill(Qt::transparent);
 
                 QPainter pt;
                 pt.begin(&px);
                 pt.setPen(Qt::NoPen);
                 pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & Status::Visible) ? pxVisible : pxInvisible);
-                pt.drawPixmap(px_org.width(), 0, px_org.width(), px_org.height(), px_org);
+                pt.drawPixmap(px_org.width() + spacing, 0, px_org.width(), px_org.height(), px_org);
                 pt.end();
 
                 new_icon.addPixmap(px, QIcon::Normal, state);

@@ -3635,10 +3635,10 @@ Evolumes
 ** Transform Constraints
 ** FemConstraintTransform1
 *TRANSFORM, NSET=CylinFemConstraintTransform1, TYPE=C
-10,27,10,10,7,10
+10,5,10,10,6,10
 ** FemConstraintTransform2
 *TRANSFORM, NSET=CylinFemConstraintTransform2, TYPE=C
-190,27,10,190,7,10
+190,5,10,190,6,10
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD

@@ -27,17 +27,17 @@
   <context>
     <name>StartGui::GeneralSettingsWidget</name>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="209"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
       <source>Language</source>
       <translation>Jezik</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="210"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
       <source>Unit System</source>
       <translation>Sistem mernih jedinica</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="223"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="226"/>
       <source>Navigation Style</source>
       <translation>Navigacioni stil</translation>
     </message>
@@ -48,7 +48,7 @@
       <location filename="../../Manipulator.cpp" line="47"/>
       <location filename="../../Manipulator.cpp" line="48"/>
       <source>Start</source>
-      <translation>Početak</translation>
+      <translation>Početna</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../StartView.cpp" line="191"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation>Napravi 2D crtež u Draft radnom okruženju</translation>
+      <translation>Napravi 2D crtež u okruženju Crtanje</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="193"/>
@@ -144,7 +144,7 @@
     <message>
       <location filename="../../StartView.cpp" line="428"/>
       <source>Start</source>
-      <translation>Početak</translation>
+      <translation>Početna</translation>
     </message>
   </context>
   <context>

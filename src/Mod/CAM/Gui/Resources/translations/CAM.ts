@@ -2085,22 +2085,52 @@ Default: 3 mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpVcarveEdit.ui" line="66"/>
+        <location filename="../panels/PageOpVcarveEdit.ui" line="65"/>
         <source>Discretization Deflection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpVcarveEdit.ui" line="73"/>
+        <location filename="../panels/PageOpVcarveEdit.ui" line="72"/>
         <source>This value is used in discretizing arcs into segments. Smaller values will result in larger gcode. Larger values may cause unwanted segments in the medial line path.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpVcarveEdit.ui" line="105"/>
+        <location filename="../panels/PageOpVcarveEdit.ui" line="104"/>
         <source>Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/PageOpVcarveEdit.ui" line="98"/>
+        <location filename="../panels/PageOpVcarveEdit.ui" line="117"/>
+        <source>Finishing pass Z offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../panels/PageOpVcarveEdit.ui" line="124"/>
+        <source>Endmill offset for the finishing pass run. Use small value like -0.2 mm to help clean "fuzzy skin" or other artefacts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../panels/PageOpVcarveEdit.ui" line="140"/>
+        <source>After carving travel again the path to remove artifacts and imperfections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../panels/PageOpVcarveEdit.ui" line="146"/>
+        <source>Finishing pass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../panels/PageOpVcarveEdit.ui" line="153"/>
+        <source>Optimize path to avoid raising endmill when moving to adjacent edges. May result in sub-millimeter inaccuracies. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../panels/PageOpVcarveEdit.ui" line="156"/>
+        <source>Optimize movements</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../panels/PageOpVcarveEdit.ui" line="97"/>
         <source>Filter Colinear lines</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2561,127 +2591,127 @@ Should multiple tools or tool shapes with the same name exist in different direc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="23"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="36"/>
         <source>Default Path colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="57"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="70"/>
         <source>Path highlight color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="70"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="83"/>
         <source>Default normal path color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="103"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="116"/>
         <source>Bounding box normal color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="110"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="123"/>
         <source>The default color for new shapes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="156"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="169"/>
         <source>Probe path color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="202"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="215"/>
         <source>Bounding box selection color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="248"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="261"/>
         <source>Default pathline width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="29"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="42"/>
         <source>The default line thickness for new shapes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="32"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="45"/>
         <source>px</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="215"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="228"/>
         <source>Default path marker color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="77"/>
-        <location filename="../../DlgSettingsPathColor.ui" line="130"/>
-        <location filename="../../DlgSettingsPathColor.ui" line="176"/>
-        <location filename="../../DlgSettingsPathColor.ui" line="222"/>
-        <location filename="../../DlgSettingsPathColor.ui" line="255"/>
-        <location filename="../../DlgSettingsPathColor.ui" line="275"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="90"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="143"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="189"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="235"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="268"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="288"/>
         <source>The default line color for new shapes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="169"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="182"/>
         <source>Rapid path color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="304"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="317"/>
         <source>UI Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="313"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="326"/>
         <source>Path Selection Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="326"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="339"/>
         <source>Default path shape selection behavior in 3D viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="336"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="349"/>
         <source>Shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="341"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="354"/>
         <source>Bounding Box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="346"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="359"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="354"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="367"/>
         <source>Task Panel Layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="368"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="381"/>
         <source>Classic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="373"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="386"/>
         <source>Classic - reversed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="378"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="391"/>
         <source>Multi Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsPathColor.ui" line="383"/>
+        <location filename="../../DlgSettingsPathColor.ui" line="396"/>
         <source>Multi Panel - reversed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3202,6 +3232,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
 <context>
     <name>TaskPathSimulator</name>
     <message>
+        <location filename="../panels/TaskCAMSimulator.ui" line="14"/>
         <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
         <location filename="../panels/TaskPathSimulator.ui" line="14"/>
         <source>Path Simulator</source>
@@ -3218,11 +3249,13 @@ Should multiple tools or tool shapes with the same name exist in different direc
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../panels/TaskCAMSimulator.ui" line="115"/>
         <location filename="../panels/TaskPathSimulator.ui" line="55"/>
         <source>Activate / resume simulation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../panels/TaskCAMSimulator.ui" line="118"/>
         <location filename="../panels/TaskPathSimulator.ui" line="58"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
@@ -3268,11 +3301,13 @@ Should multiple tools or tool shapes with the same name exist in different direc
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../panels/TaskCAMSimulator.ui" line="50"/>
         <location filename="../panels/TaskPathSimulator.ui" line="229"/>
         <source>Accuracy:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../panels/TaskCAMSimulator.ui" line="105"/>
         <location filename="../panels/TaskPathSimulator.ui" line="278"/>
         <source>Job:</source>
         <translation type="unfinished"></translation>
@@ -3394,22 +3429,22 @@ Should multiple tools or tool shapes with the same name exist in different direc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/ToolBitSelector.ui" line="30"/>
-        <source>TextLabel</source>
+        <location filename="../panels/ToolBitSelector.ui" line="51"/>
+        <source>Library editor...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/ToolBitSelector.ui" line="78"/>
+        <location filename="../panels/ToolBitSelector.ui" line="75"/>
         <source>Available Tool Bits to choose from.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/ToolBitSelector.ui" line="101"/>
+        <location filename="../panels/ToolBitSelector.ui" line="98"/>
         <source>Create ToolControllers for the selected toolbits and add them to the Job</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/ToolBitSelector.ui" line="104"/>
+        <location filename="../panels/ToolBitSelector.ui" line="101"/>
         <source>Add To Job</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3927,60 +3962,60 @@ Default: 3 mm</source>
 <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../../InitGui.py" line="186"/>
+        <location filename="../../../InitGui.py" line="187"/>
         <source>Project Setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="187"/>
+        <location filename="../../../InitGui.py" line="188"/>
         <source>Tool Commands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="189"/>
+        <location filename="../../../InitGui.py" line="190"/>
         <source>New Operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="193"/>
-        <location filename="../../../InitGui.py" line="230"/>
+        <location filename="../../../InitGui.py" line="194"/>
+        <location filename="../../../InitGui.py" line="231"/>
         <source>Path Modification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="197"/>
+        <location filename="../../../InitGui.py" line="198"/>
         <source>Helpful Tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="201"/>
-        <location filename="../../../InitGui.py" line="215"/>
-        <location filename="../../../InitGui.py" line="222"/>
-        <location filename="../../../InitGui.py" line="229"/>
-        <location filename="../../../InitGui.py" line="237"/>
-        <location filename="../../../InitGui.py" line="243"/>
-        <location filename="../../../InitGui.py" line="245"/>
-        <location filename="../../../InitGui.py" line="248"/>
+        <location filename="../../../InitGui.py" line="202"/>
+        <location filename="../../../InitGui.py" line="216"/>
+        <location filename="../../../InitGui.py" line="223"/>
+        <location filename="../../../InitGui.py" line="230"/>
+        <location filename="../../../InitGui.py" line="238"/>
+        <location filename="../../../InitGui.py" line="244"/>
+        <location filename="../../../InitGui.py" line="246"/>
+        <location filename="../../../InitGui.py" line="249"/>
         <source>&amp;CAM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="216"/>
+        <location filename="../../../InitGui.py" line="217"/>
         <source>Path Dressup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="223"/>
+        <location filename="../../../InitGui.py" line="224"/>
         <source>Supplemental Commands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="238"/>
+        <location filename="../../../InitGui.py" line="239"/>
         <source>Specialty Operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InitGui.py" line="249"/>
+        <location filename="../../../InitGui.py" line="250"/>
         <source>Utils</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4008,34 +4043,34 @@ Default: 3 mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="689"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="688"/>
         <source>H</source>
         <comment>H is horizontal feed rate. Must be as short as possible</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="694"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="693"/>
         <source>V</source>
         <comment>V is vertical feed rate. Must be as short as possible</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="699"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="698"/>
         <source>Tool number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="702"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="701"/>
         <source>Horizontal feedrate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="705"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="704"/>
         <source>Vertical feedrate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="708"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="707"/>
         <source>Spindle RPM</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4738,6 +4773,7 @@ Default: 3 mm</source>
     </message>
     <message>
         <location filename="../../../Path/Op/Base.py" line="269"/>
+        <location filename="../../../Path/Op/Base.py" line="471"/>
         <source>Incremental Step Down of Tool</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4887,7 +4923,7 @@ Default: 3 mm</source>
     <message>
         <location filename="../../../Path/Op/Engrave.py" line="71"/>
         <location filename="../../../Path/Op/Engrave.py" line="81"/>
-        <location filename="../../../Path/Op/Vcarve.py" line="214"/>
+        <location filename="../../../Path/Op/Vcarve.py" line="285"/>
         <source>Additional base objects to be engraved</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5387,18 +5423,33 @@ Default: 3 mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Vcarve.py" line="226"/>
+        <location filename="../../../Path/Op/Vcarve.py" line="293"/>
+        <source>Optimize movements</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Path/Op/Vcarve.py" line="300"/>
+        <source>Add finishing pass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Path/Op/Vcarve.py" line="307"/>
+        <source>Finishing pass Z offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Path/Op/Vcarve.py" line="321"/>
         <source>The deflection value for discretizing arcs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Vcarve.py" line="236"/>
+        <location filename="../../../Path/Op/Vcarve.py" line="331"/>
         <source>Cutoff for removing colinear segments (degrees). 
                         default=10.0.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Vcarve.py" line="242"/>
+        <location filename="../../../Path/Op/Vcarve.py" line="337"/>
         <source>Vcarve Tolerance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5846,7 +5897,7 @@ Default: 3 mm</source>
 <context>
     <name>PathVcarve</name>
     <message>
-        <location filename="../../../Path/Op/Vcarve.py" line="396"/>
+        <location filename="../../../Path/Op/Vcarve.py" line="583"/>
         <source>The Job Base Object has no engraveable element. Engraving operation will produce no output.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6185,7 +6236,7 @@ Aborting op creation</source>
     <message>
         <location filename="../../../InitGui.py" line="88"/>
         <location filename="../../../InitGui.py" line="91"/>
-        <location filename="../../../InitGui.py" line="266"/>
+        <location filename="../../../InitGui.py" line="267"/>
         <location filename="../../AppPathGui.cpp" line="90"/>
         <source>CAM</source>
         <translation type="unfinished"></translation>
@@ -6194,7 +6245,7 @@ Aborting op creation</source>
 <context>
     <name>CAM_EngraveTools</name>
     <message>
-        <location filename="../../../InitGui.py" line="142"/>
+        <location filename="../../../InitGui.py" line="143"/>
         <source>Engraving Operations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6202,7 +6253,7 @@ Aborting op creation</source>
 <context>
     <name>CAM_3dTools</name>
     <message>
-        <location filename="../../../InitGui.py" line="179"/>
+        <location filename="../../../InitGui.py" line="180"/>
         <source>3D Operations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6707,69 +6758,69 @@ Aborting op creation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="345"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="344"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="588"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="587"/>
         <source>Stock not a cylinder!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1005"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1004"/>
         <source>Select Output File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1007"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1006"/>
         <source>All Files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1388"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1387"/>
         <source>Unsupported stock object %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1404"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1403"/>
         <source>Unsupported stock type %s (%d)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1495"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1494"/>
         <source>Model Selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1683"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1682"/>
         <location filename="../../../Path/Main/Gui/JobDlg.py" line="71"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1684"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1683"/>
         <source>Please add one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1685"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1684"/>
         <location filename="../../../Path/Main/Gui/JobDlg.py" line="76"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1687"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1686"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1698"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1697"/>
         <source>This job has no base model.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/Job.py" line="1705"/>
+        <location filename="../../../Path/Main/Gui/Job.py" line="1704"/>
         <source>This job has no tool.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7230,7 +7281,28 @@ For example:
     </message>
     <message>
         <location filename="../../../Path/Main/Gui/Simulator.py" line="635"/>
+        <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="291"/>
         <source>Simulate G-code on stock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="260"/>
+        <source>High</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="262"/>
+        <source>Low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="264"/>
+        <source>Medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="287"/>
+        <source>New CAM Simulator</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7288,62 +7360,62 @@ For example:
 <context>
     <name>CAM</name>
     <message>
-        <location filename="../../../Path/Op/Base.py" line="635"/>
+        <location filename="../../../Path/Op/Base.py" line="644"/>
         <source>No parent job found for operation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Base.py" line="641"/>
+        <location filename="../../../Path/Op/Base.py" line="650"/>
         <source>Parent job %s doesn't have a base object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Base.py" line="787"/>
+        <location filename="../../../Path/Op/Base.py" line="796"/>
         <source>No Tool Controller is selected. We need a tool to build a Path.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Base.py" line="801"/>
+        <location filename="../../../Path/Op/Base.py" line="810"/>
         <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Base.py" line="836"/>
+        <location filename="../../../Path/Op/Base.py" line="845"/>
         <source>No Tool Controller selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Base.py" line="839"/>
+        <location filename="../../../Path/Op/Base.py" line="848"/>
         <source>Tool Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Base.py" line="852"/>
+        <location filename="../../../Path/Op/Base.py" line="861"/>
         <source>Tool Controller feedrates required to calculate the cycle time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Base.py" line="855"/>
+        <location filename="../../../Path/Op/Base.py" line="864"/>
         <source>Feedrate Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Base.py" line="863"/>
+        <location filename="../../../Path/Op/Base.py" line="872"/>
         <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Base.py" line="872"/>
+        <location filename="../../../Path/Op/Base.py" line="881"/>
         <source>Cycletime Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Base.py" line="895"/>
+        <location filename="../../../Path/Op/Base.py" line="904"/>
         <source>Base object %s.%s already in the list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Base.py" line="908"/>
+        <location filename="../../../Path/Op/Base.py" line="917"/>
         <source>Base object %s.%s rejected by operation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7375,7 +7447,7 @@ For example:
     </message>
     <message>
         <location filename="../../../Path/Op/Gui/Engrave.py" line="76"/>
-        <location filename="../../../Path/Op/Gui/Vcarve.py" line="65"/>
+        <location filename="../../../Path/Op/Gui/Vcarve.py" line="68"/>
         <source>%s is not a Base Model object of the job %s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7971,22 +8043,22 @@ For example:
 <context>
     <name>CAM_Vcarve</name>
     <message>
-        <location filename="../../../Path/Op/Vcarve.py" line="359"/>
+        <location filename="../../../Path/Op/Vcarve.py" line="546"/>
         <source>VCarve requires an engraving cutter with a cutting edge angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Vcarve.py" line="366"/>
+        <location filename="../../../Path/Op/Vcarve.py" line="553"/>
         <source>Engraver cutting edge angle must be &lt; 180 degrees.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Gui/Vcarve.py" line="166"/>
+        <location filename="../../../Path/Op/Gui/Vcarve.py" line="219"/>
         <source>Vcarve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Op/Gui/Vcarve.py" line="167"/>
+        <location filename="../../../Path/Op/Gui/Vcarve.py" line="220"/>
         <source>Creates a medial line engraving toolpath</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8262,56 +8334,56 @@ For example:
 <context>
     <name>CAM_ToolBit</name>
     <message>
-        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="77"/>
+        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="80"/>
         <source>Toolbit working directory not set up. Do that now?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="85"/>
+        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="88"/>
         <source>Choose a writable location for your toolbits</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="125"/>
+        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="128"/>
         <source>Toolbit Working directory {} needs these sudirectories:
  {} 
  Create them?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="144"/>
+        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="147"/>
         <source>Copy example files to new {} directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="668"/>
-        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="799"/>
+        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="746"/>
+        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="877"/>
         <source>Tooltable JSON (*.fctl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="670"/>
-        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="804"/>
+        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="748"/>
+        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="882"/>
         <source>Save toolbit library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="731"/>
+        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="809"/>
         <source>Tool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="732"/>
+        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="810"/>
         <source>Shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="800"/>
+        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="878"/>
         <source>LinuxCNC tooltable (*.tbl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="802"/>
+        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="880"/>
         <source>Camotics tooltable (*.json)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8375,6 +8447,16 @@ For example:
     <message>
         <location filename="../../../Path/Tool/Gui/Bit.py" line="242"/>
         <source>Select Tool Shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="475"/>
+        <source>Select a library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="479"/>
+        <source>No library selected</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -695,7 +695,7 @@ créée si elle n'existe pas.</translation>
       <translation>Exporter le fichier</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="124"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Montrer la feuille de calcul</translation>
     </message>
@@ -739,7 +739,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.my_alias_name au lieu de Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Feuille de calcul</translation>
     </message>
@@ -1163,7 +1163,7 @@ Par défaut : %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Sans nom</translation>
     </message>

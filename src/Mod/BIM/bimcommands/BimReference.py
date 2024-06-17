@@ -45,7 +45,8 @@ class Arch_Reference:
 
     def IsActive(self):
 
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
 

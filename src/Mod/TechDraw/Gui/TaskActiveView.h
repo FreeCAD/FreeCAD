@@ -70,6 +70,10 @@ protected:
     void setUiPrimary(void);
 
     TechDraw::DrawViewImage* createActiveView();
+    void enableCrop(bool state);
+
+private Q_SLOTS:
+    void onCropChanged();
 
 private:
     std::unique_ptr<Ui_TaskActiveView> ui;
@@ -79,6 +83,7 @@ private:
 
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
+
 
 };
 

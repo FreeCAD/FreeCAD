@@ -34,6 +34,7 @@
 #include <QPixmap>
 #endif//#ifndef _PreComp_
 
+#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -70,7 +71,6 @@
 #include "TaskSelectLineAttributes.h"
 #include "TechDrawHandler.h"
 #include "ViewProviderDimension.h"
-#include "ViewProviderDrawingView.h"
 #include "ViewProviderDrawingView.h"
 
 
@@ -968,12 +968,10 @@ protected:
     void makeCts_1Circle(bool& selAllowed)
     {
         if (availableDimension == AvailableDimension::FIRST) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius dimension"));
             createRadiusDiameterDimension(selCircleArc[0], true);
             selAllowed = true;
         }
         if (availableDimension == AvailableDimension::SECOND) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius dimension"));
             createRadiusDiameterDimension(selCircleArc[0], false);
             if (selCircleArc[0].geomEdgeType() != TechDraw::ARCOFCIRCLE) {
                 availableDimension = AvailableDimension::RESET;
@@ -1004,12 +1002,10 @@ protected:
     void makeCts_1Ellipse(bool& selAllowed)
     {
         if (availableDimension == AvailableDimension::FIRST) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius dimension"));
             createRadiusDiameterDimension(selEllipseArc[0], true);
             selAllowed = true;
         }
         if (availableDimension == AvailableDimension::SECOND) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius dimension"));
             createRadiusDiameterDimension(selEllipseArc[0], false);
             if (selEllipseArc[0].geomEdgeType() != TechDraw::ARCOFELLIPSE) {
                 availableDimension = AvailableDimension::RESET;
@@ -1068,11 +1064,9 @@ protected:
     }
 
     void createRadiusDiameterDimension(ReferenceEntry ref, bool firstCstr) {
-        bool isCircleGeom = true;
-
         int GeoId(TechDraw::DrawUtil::getIndexFromName(ref.getSubName()));
         TechDraw::BaseGeomPtr geom = partFeat->getGeomByIndex(GeoId);
-        isCircleGeom = (geom->getGeomType() == TechDraw::CIRCLE) || (geom->getGeomType() == TechDraw::ELLIPSE);
+        bool isCircleGeom = (geom->getGeomType() == TechDraw::CIRCLE) || (geom->getGeomType() == TechDraw::ELLIPSE);
 
         // Use same preference as in sketcher?
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/TechDraw/dimensioning");
@@ -1084,9 +1078,11 @@ protected:
             (!firstCstr && !dimensioningRadius && dimensioningDiameter) ||
             (firstCstr && dimensioningRadius && dimensioningDiameter && !isCircleGeom) ||
             (!firstCstr && dimensioningRadius && dimensioningDiameter && isCircleGeom)) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius dimension"));
             dim = dimMaker(partFeat, "Radius", { ref }, {});
         }
         else {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Diameter dimension"));
             dim = dimMaker(partFeat, "Diameter", { ref }, {});
         }
 
@@ -1409,11 +1405,14 @@ CmdTechDrawDimension::CmdTechDrawDimension()
     sWhatsThis = "TechDraw_Dimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_Dimension";
+    sAccel = "D";
+    eType = ForEdit;
 }
 
 void CmdTechDrawDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    App::AutoTransaction::setEnable(false);
 
     ReferenceVector references2d;
     ReferenceVector references3d;
@@ -1496,8 +1495,6 @@ CmdTechDrawRadiusDimension::CmdTechDrawRadiusDimension()
     sWhatsThis = "TechDraw_RadiusDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_RadiusDimension";
-    sAccel = "D";
-    eType = ForEdit;
 }
 
 void CmdTechDrawRadiusDimension::activated(int iMsg)
@@ -2516,6 +2513,19 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     TechDraw::DrawViewPart* partFeat =
         TechDraw::getReferencesFromSelection(references2d, references3d);
 
+    // if sticky selection is in use we may get confusing selections that appear to
+    // include both 2d and 3d geometry for the extent dim.
+    if (!references3d.empty())  {
+        for (auto& ref : references2d) {
+            if (!ref.getSubName().empty()) {
+                QMessageBox::warning(Gui::getMainWindow(),
+                    QObject::tr("Incorrect selection"),
+                    QObject::tr("Selection contains both 2d and 3d geometry"));
+                return;
+            }
+        }
+    }
+
     //Define the geometric configuration required for a extent dimension
     StringVector acceptableGeometry({"Edge"});
     std::vector<int> minimumCounts({1});
@@ -2636,12 +2646,6 @@ void CmdTechDrawDimensionRepair::activated(int iMsg)
         dim = static_cast<TechDraw::DrawViewDimension*>(dimObjs.at(0));
     }
 
-    //    ReferenceVector references2d;
-    //    ReferenceVector references3d;
-    //    //TechDraw::DrawViewPart* partFeat =
-    //    TechDraw::getReferencesFromSelection(references2d, references3d);
-
-    //    Gui::Control().showDialog(new TaskDlgDimReference(dim, references2d, references3d));
     Gui::Control().showDialog(new TaskDlgDimReference(dim));
 }
 

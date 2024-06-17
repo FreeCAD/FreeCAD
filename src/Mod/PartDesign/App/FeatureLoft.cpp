@@ -523,7 +523,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         try {
             boolOp.makeElementBoolean(maker, {base,result});
         }
-        catch(Standard_Failure &e) {
+        catch(Standard_Failure&) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Failed to perform boolean operation"));
         }
         boolOp = this->getSolid(boolOp);
@@ -532,7 +532,11 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
 
         boolOp = refineShapeIfActive(boolOp);
-        Shape.setValue(getSolid(boolOp));
+        boolOp = getSolid(boolOp);
+        if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+        }
+        Shape.setValue(boolOp);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {

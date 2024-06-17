@@ -694,7 +694,7 @@ nastavitve oblikovanja. Če še ne obstaja, bo lastnost ustvarjena.</translation
       <translation>Izvozi datoteko</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="124"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
       <source>Show spreadsheet</source>
       <translation>Prikaži preglednico</translation>
     </message>
@@ -738,7 +738,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
@@ -1179,7 +1179,7 @@ Privzeto: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
       <translation>Neimenovan</translation>
     </message>

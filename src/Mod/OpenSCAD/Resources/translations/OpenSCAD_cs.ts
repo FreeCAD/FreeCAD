@@ -97,7 +97,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="243"/>
       <source>The path to the directory for transferring files to and from OpenSCAD</source>
-      <translation>Cesta k adresáři pro přenos souborů do az OpenSCAD</translation>
+      <translation>Cesta k adresáři pro přenos souborů do a z OpenSCADu</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="261"/>

@@ -35,7 +35,7 @@ translate = FreeCAD.Qt.translate
 class BIM_ProjectManager:
     def GetResources(self):
         return {
-            "Pixmap": "BIM_Project",
+            "Pixmap": "BIM_ProjectManager",
             "MenuText": QT_TRANSLATE_NOOP("BIM_ProjectManager", "Manage project..."),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_ProjectManager", "Setup your BIM project"
@@ -62,7 +62,7 @@ class BIM_ProjectManager:
         import ArchBuildingPart
 
         self.form.buildingUse.addItems(ArchBuildingPart.BuildingTypes)
-        self.form.setWindowIcon(QtGui.QIcon(":/icons/BIM_Project.svg"))
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/BIM_ProjectManager.svg"))
         QtCore.QObject.connect(
             self.form.buttonAdd, QtCore.SIGNAL("clicked()"), self.addGroup
         )
@@ -130,14 +130,16 @@ class BIM_ProjectManager:
             ).Value
         human = None
         if self.form.addHumanFigure.isChecked():
-            humanshape = Part.Shape()
+            # TODO ; fix loading of human shape
             humanpath = os.path.join(
                 os.path.dirname(__file__), "geometry", "human figure.brep"
             )
-            humanshape.importBrep(humanpath)
-            human = FreeCAD.ActiveDocument.addObject("Part::Feature", "Human")
-            human.Shape = humanshape
-            human.Placement.move(FreeCAD.Vector(500, 500, 0))
+            if os.path.exists(humanpath):
+                humanshape = Part.Shape()
+                humanshape.importBrep(humanpath)
+                human = FreeCAD.ActiveDocument.addObject("Part::Feature", "Human")
+                human.Shape = humanshape
+                human.Placement.move(FreeCAD.Vector(500, 500, 0))
         if self.form.groupBuilding.isChecked():
             building = Arch.makeBuilding()
             if site:

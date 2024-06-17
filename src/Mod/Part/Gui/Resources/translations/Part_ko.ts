@@ -1305,7 +1305,7 @@
     <message>
       <location filename="../../Command.cpp" line="1444"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>선택된 모서리에 챔퍼</translation>
+      <translation>도형의 선택 된 모서리를 모따기</translation>
     </message>
   </context>
   <context>
@@ -2709,7 +2709,7 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="179"/>
       <source>Length</source>
-      <translation>거리</translation>
+      <translation>길이:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="185"/>
@@ -2951,12 +2951,12 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="272"/>
       <source>Equal distance</source>
-      <translation type="unfinished">Equal distance</translation>
+      <translation>같은 거리</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="273"/>
       <source>Two distances</source>
-      <translation type="unfinished">Two distances</translation>
+      <translation>양쪽 거리</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="276"/>
@@ -2998,7 +2998,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="904"/>
       <source>Length</source>
-      <translation>거리</translation>
+      <translation>길이:</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="906"/>
@@ -3130,7 +3130,7 @@ Please check one or more edge entities first.</source>
   <context>
     <name>PartGui::DlgImportExportStep</name>
     <message>
-      <location filename="../../DlgSettingsGeneral.cpp" line="171"/>
+      <location filename="../../DlgSettingsGeneral.cpp" line="173"/>
       <source>STEP</source>
       <translation>STEP</translation>
     </message>
@@ -4058,14 +4058,29 @@ during file reading (slower but higher details).</translation>
       <translation>스케치 기반 작업 후 자동으로 모델을 수정</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="68"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="74"/>
       <source>Object naming</source>
       <translation>개체 이름 지정</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="77"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
       <source>Add name of base object</source>
       <translation>기본 개체의 이름을 추가합니다</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="99"/>
+      <source>Experimental</source>
+      <translation type="unfinished">Experimental</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</source>
+      <translation type="unfinished">These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="118"/>
+      <source>Allow multiple solids in Part Design Body by default (experimental)</source>
+      <translation type="unfinished">Allow multiple solids in Part Design Body by default (experimental)</translation>
     </message>
   </context>
   <context>
@@ -4300,7 +4315,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="125"/>
       <source>x-component of direction vector</source>
-      <translation type="unfinished">x-component of direction vector</translation>
+      <translation>방향벡터의 x성분</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="147"/>
@@ -4310,7 +4325,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="154"/>
       <source>y-component of direction vector</source>
-      <translation type="unfinished">y-component of direction vector</translation>
+      <translation>방향벡터의 y성분</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="176"/>
@@ -4320,7 +4335,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="183"/>
       <source>z-component of direction vector</source>
-      <translation type="unfinished">z-component of direction vector</translation>
+      <translation>방향벡터의 z성분</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="208"/>
@@ -5530,7 +5545,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../ViewProvider.cpp" line="49"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>수정</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="231"/>
@@ -6423,7 +6438,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="135"/>
       <source>Length</source>
-      <translation>거리</translation>
+      <translation>길이:</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="142"/>

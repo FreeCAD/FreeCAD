@@ -68,8 +68,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
             "Direction": [
-                (translate("CAM_Helix", "CW"), "CW"),
-                (translate("CAM_Helix", "CCW"), "CCW"),
+                (translate("CAM_Helix", "Climb"), "Climb"),
+                (translate("CAM_Helix", "Conventional"), "Conventional"),
             ],  # this is the direction that the profile runs
             "StartSide": [
                 (translate("PathProfile", "Outside"), "Outside"),
@@ -105,7 +105,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "Helix Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)",
+                "The direction of the circular cuts, ClockWise (Climb), or CounterClockWise (Conventional)",
             ),
         )
 

@@ -58,11 +58,6 @@ public:
 
 protected:
     bool setEdit(int ModNum) override;
-
-private:
-    std::vector<App::Color> originalFaceColors;
-    std::vector<App::Color> originalLineColors;
-
 };
 
 
