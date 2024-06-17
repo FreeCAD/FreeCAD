@@ -122,6 +122,7 @@
 #include "ViewProviderPart.h"
 #include "ViewProviderPythonFeature.h"
 #include "ViewProviderTextDocument.h"
+#include "ViewProviderTextureExtension.h"
 #include "ViewProviderVRMLObject.h"
 #include "ViewProviderVarSet.h"
 #include "WaitCursor.h"
@@ -1926,6 +1927,8 @@ void Application::initTypes()
     Gui::ViewProviderMaterialObject             ::init();
     Gui::ViewProviderMaterialObjectPython       ::init();
     Gui::ViewProviderTextDocument               ::init();
+    Gui::ViewProviderTextureExtension           ::init();
+    Gui::ViewProviderFaceTexture                ::init();
     Gui::ViewProviderLinkObserver               ::init();
     Gui::LinkView                               ::init();
     Gui::ViewProviderLink                       ::init();

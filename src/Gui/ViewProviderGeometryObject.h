@@ -30,7 +30,6 @@
 class SoPickedPointList;
 class SoSwitch;
 class SoSensor;
-class SoTexture2;
 class SbVec2s;
 class SoBaseColor;
 
@@ -109,28 +108,11 @@ protected:
                                    const char* PropName) override;
     void setCoinAppearance(const App::Material& source);
 
-    /**
-     * Select which appearance type is active
-     * 
-     */
-    /** Material only */
-    void activateMaterial();
-    /** 2D Texture */
-    void activateTexture2D();
-    /** 3D texture only */
-    void activateTexture3D();
-    /** Mix of material and 3D textures */
-    void activateMixed3D();
-
 private:
     bool isSelectionEnabled() const;
 
 protected:
-    SoSwitch* pcSwitchAppearance {nullptr};
-    SoSwitch* pcSwitchTexture {nullptr};
     SoMaterial* pcShapeMaterial {nullptr};
-    SoTexture2* pcShapeTexture2D {nullptr};
-    SoGroup* pcTextureGroup3D {nullptr};
     SoFCBoundingBox* pcBoundingBox {nullptr};
     SoSwitch* pcBoundSwitch {nullptr};
     SoBaseColor* pcBoundColor {nullptr};
