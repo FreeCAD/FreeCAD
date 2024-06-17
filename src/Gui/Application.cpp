@@ -1875,6 +1875,7 @@ void Application::initApplication()
 
 void Application::initTypes()
 {
+    // clang-format off
     // views
     Gui::BaseView                               ::init();
     Gui::MDIView                                ::init();
@@ -1945,6 +1946,7 @@ void Application::initTypes()
     // register transaction type
     new App::TransactionProducer<TransactionViewProvider>
             (ViewProviderDocumentObject::getClassTypeId());
+    // clang-format on
 }
 
 void Application::initOpenInventor()

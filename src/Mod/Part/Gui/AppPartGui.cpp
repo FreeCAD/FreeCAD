@@ -109,7 +109,6 @@ private:
 PyObject* initModule()
 {
     return Base::Interpreter().addModule(new Module);
-    ;
 }
 
 }  // namespace PartGui
@@ -140,15 +139,17 @@ PyMOD_INIT_FUNC(PartGui)
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/parametric"));
     Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/tools"));
 
-    static struct PyModuleDef pAttachEngineTextsModuleDef = {PyModuleDef_HEAD_INIT,
-                                                             "AttachEngineResources",
-                                                             "AttachEngineResources",
-                                                             -1,
-                                                             AttacherGui::AttacherGuiPy::Methods,
-                                                             nullptr,
-                                                             nullptr,
-                                                             nullptr,
-                                                             nullptr};
+    // clang-format off
+    static struct PyModuleDef pAttachEngineTextsModuleDef = {
+        PyModuleDef_HEAD_INIT,
+        "AttachEngineResources",
+        "AttachEngineResources",
+        -1,
+        AttacherGui::AttacherGuiPy::Methods,
+        nullptr, nullptr, nullptr, nullptr
+    };
+    // clang-format on
+
     PyObject* pAttachEngineTextsModule = PyModule_Create(&pAttachEngineTextsModuleDef);
 
     Py_INCREF(pAttachEngineTextsModule);
@@ -218,7 +219,6 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::Workbench                              ::init();
     auto manip = std::make_shared<PartGui::WorkbenchManipulator>();
     Gui::WorkbenchManipulator::installManipulator(manip);
-    // clang-format on
 
     // instantiating the commands
     CreatePartCommands();
@@ -226,8 +226,8 @@ PyMOD_INIT_FUNC(PartGui)
     CreateParamPartCommands();
     CreatePartSelectCommands();
     try {
-        Py::Object ae =
-            Base::Interpreter().runStringObject("__import__('AttachmentEditor.Commands').Commands");
+        const char* cmd = "__import__('AttachmentEditor.Commands').Commands";
+        Py::Object ae = Base::Interpreter().runStringObject(cmd);
         Py::Module(partGuiModule).setAttr(std::string("AttachmentEditor"), ae);
     }
     catch (Base::PyException& err) {
@@ -235,29 +235,18 @@ PyMOD_INIT_FUNC(PartGui)
     }
 
     // register preferences pages
-    Gui::Dialog::DlgPreferencesImp::setGroupData("Part/Part Design",
-                                                 "Part design",
-                                                 QObject::tr("Part and Part Design workbench"));
-    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsGeneral>(
-        QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
-    (void)new Gui::PrefPageProducer<PartGui::DlgSettings3DViewPart>(
-        QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
-    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsObjectColor>(
-        QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
-    (void)new Gui::PrefPageProducer<PartGui::DlgImportExportIges>(
-        QT_TRANSLATE_NOOP("QObject", "Import-Export"));
-    (void)new Gui::PrefPageProducer<PartGui::DlgImportExportStep>(
-        QT_TRANSLATE_NOOP("QObject", "Import-Export"));
+    Gui::Dialog::DlgPreferencesImp::setGroupData("Part/Part Design", "Part design", QObject::tr("Part and Part Design workbench"));
+    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsGeneral>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
+    (void)new Gui::PrefPageProducer<PartGui::DlgSettings3DViewPart>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
+    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsObjectColor>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
+    (void)new Gui::PrefPageProducer<PartGui::DlgImportExportIges>(QT_TRANSLATE_NOOP("QObject", "Import-Export"));
+    (void)new Gui::PrefPageProducer<PartGui::DlgImportExportStep>(QT_TRANSLATE_NOOP("QObject", "Import-Export"));
     Gui::ViewProviderBuilder::add(Part::PropertyPartShape::getClassTypeId(),
                                   PartGui::ViewProviderPart::getClassTypeId());
+    // clang-format on
 
     // add resources and reloads the translators
     loadPartResource();
-
-    // register bitmaps
-    // Gui::BitmapFactoryInst& rclBmpFactory = Gui::BitmapFactory();
-    // rclBmpFactory.addXPM("Part_Feature",(const char**) PartFeature_xpm);
-    // rclBmpFactory.addXPM("Part_FeatureImport",(const char**) PartFeatureImport_xpm);
 
     PyMOD_Return(partGuiModule);
 }
