@@ -1,0 +1,13 @@
+; Stainless(303)
+; (c) 2022 Daniel Wood (CC-BY 3.0)
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+
+[FCMat]
+Name = Stainless (303)
+Description = Path Material Stainless(303)
+Father = Metal
+SurfaceSpeed_HSS = 25
+SurfaceSpeed_Carbide = 85
+Kp = 2.07
+Kd = 200000

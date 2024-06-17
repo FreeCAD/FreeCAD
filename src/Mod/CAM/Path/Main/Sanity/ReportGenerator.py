@@ -85,6 +85,8 @@ class ReportGenerator:
             "speedLabel": translate("CAM_Sanity", "Spindle Speed"),
             "squawksLabel": translate("CAM_Sanity", "Squawks"),
             "stopsLabel": translate("CAM_Sanity", "Stops"),
+            "sSpeedCarbideLabel": translate("CAM_Sanity", "Surface Speed Carbide"),
+            "sSpeedHSSLabel": translate("CAM_Sanity", "Surace Speed HSS"),
             "tableOfContentsLabel": translate("CAM_Sanity", "Table of Contents"),
             "tcLabel": translate("CAM_Sanity", "Tool Controller"),
             "toolDataLabel": translate("CAM_Sanity", "Tool Data"),
@@ -143,10 +145,12 @@ class ReportGenerator:
 
             else:
                 toolNumber = key
-                toolAttributes = val 
+                toolAttributes = val
                 if "imagepath" in toolAttributes and toolAttributes["imagepath"] != "":
                     if self.embed_images:
-                        encoded_image, tag = self.file_to_base64_with_tag(toolAttributes["imagepath"])
+                        encoded_image, tag = self.file_to_base64_with_tag(
+                            toolAttributes["imagepath"]
+                        )
                     else:
                         tag = f"<img src={toolAttributes['imagepath']} name='Image' alt={key} />"
                     toolAttributes["imagepath"] = tag
@@ -159,6 +163,7 @@ class ReportGenerator:
         self.formatted_data["tool_list"] = self._format_tool_list(data["toolData"])
 
         # Path.Log.debug(self.formatted_data)
+
     def _format_tool_list(self, tool_data):
 
         tool_list = ""
@@ -216,9 +221,8 @@ class ReportGenerator:
 
     def encode_gcode_to_base64(filepath):
         with open(filepath, "rb") as file:
-            encoded_string = base64.b64encode(file.read()).decode('utf-8')
+            encoded_string = base64.b64encode(file.read()).decode("utf-8")
         return encoded_string
-
 
     def file_to_base64_with_tag(self, file_path):
         # Determine MIME type based on the file extension
@@ -230,7 +234,9 @@ class ReportGenerator:
             ".gcode": "application/octet-stream",  # MIME type for G-code files
         }
         extension = os.path.splitext(file_path)[1]
-        mime_type = mime_types.get(extension, "application/octet-stream")  # Default to binary data type if unknown
+        mime_type = mime_types.get(
+            extension, "application/octet-stream"
+        )  # Default to binary data type if unknown
 
         if not os.path.exists(file_path):
             Path.Log.error(f"File not found: {file_path}")
@@ -244,7 +250,7 @@ class ReportGenerator:
             # Generate HTML tag based on file type
             if extension in [".jpg", ".jpeg", ".png", ".svg"]:
                 html_tag = f'<img src="data:{mime_type};base64,{encoded_string}">'
-            elif extension in [".gcode", ".nc", ".tap", ".cnc" ]:
+            elif extension in [".gcode", ".nc", ".tap", ".cnc"]:
                 html_tag = f'<a href="data:{mime_type};base64,{encoded_string}" download="{os.path.basename(file_path)}">Download G-code File</a>'
             else:
                 html_tag = f'<a href="data:{mime_type};base64,{encoded_string}" download="{os.path.basename(file_path)}">Download File</a>'

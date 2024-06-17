@@ -34,6 +34,9 @@ const QString ModelUUIDs::ModelUUID_Legacy_Father =
 const QString ModelUUIDs::ModelUUID_Legacy_MaterialStandard =
     QString::fromStdString("1e2c0088-904a-4537-925f-64064c07d700");
 
+const QString ModelUUIDs::ModelUUID_Machining_Machinability =
+    QString::fromStdString("9d81fcb2-bf81-48e3-bb57-d45ecf380096");
+
 const QString ModelUUIDs::ModelUUID_Mechanical_ArrudaBoyce =
     QString::fromStdString("e10d00de-c7de-4e59-bcdd-058c2ea19ec6");
 const QString ModelUUIDs::ModelUUID_Mechanical_Density =
