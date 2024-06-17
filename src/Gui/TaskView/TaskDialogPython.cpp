@@ -641,8 +641,9 @@ void TaskDialogPython::clicked(int i)
     try {
         if (dlg.hasAttr(std::string("clicked"))) {
             Py::Callable method(dlg.getAttr(std::string("clicked")));
+            PythonWrapper wrap;
             Py::Tuple args(1);
-            args.setItem(0, Py::Int(i));
+            args.setItem(0, wrap.toStandardButton(i));
             method.apply(args);
         }
     }

@@ -158,11 +158,12 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
     }
     else if (prop == &Transparency) {
         long value = toPercent(ShapeAppearance.getTransparency());
+        float trans = fromPercent(Transparency.getValue());
         if (value != Transparency.getValue()) {
-            float trans = fromPercent(Transparency.getValue());
-            pcShapeMaterial->transparency = trans;
             ShapeAppearance.setTransparency(trans);
         }
+
+        pcShapeMaterial->transparency = trans;
     }
     else if (prop == &ShapeAppearance) {
         if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange)) {

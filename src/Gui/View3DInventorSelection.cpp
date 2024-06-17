@@ -34,6 +34,7 @@
 #include "View3DInventorSelection.h"
 #include "ViewProviderDocumentObject.h"
 #include <App/Document.h>
+#include <App/GeoFeature.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <Base/Console.h>
 
@@ -113,6 +114,11 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges &Reason)
     std::string key(obj->getNameInDocument());
     key += '.';
     auto subname = Reason.pSubName;
+#ifdef FC_USE_TNP_FIX
+    std::pair<std::string, std::string> element;
+    App::GeoFeature::resolveElement(obj,Reason.pSubName,element);
+    subname = element.second.c_str();
+#endif
     if(subname)
         key += subname;
     if(Reason.Type == SelectionChanges::RmvSelection) {

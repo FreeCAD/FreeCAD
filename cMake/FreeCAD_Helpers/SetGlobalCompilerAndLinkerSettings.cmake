@@ -21,6 +21,7 @@ macro(SetGlobalCompilerAndLinkerSettings)
 
     if(MSVC)
         # set default compiler settings
+        add_definitions(-D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR)
         set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zm150 /bigobj")
         set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG /Zm150 /bigobj")
         # set default libs

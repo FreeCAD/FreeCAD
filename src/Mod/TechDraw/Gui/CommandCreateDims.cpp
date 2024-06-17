@@ -2513,6 +2513,19 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     TechDraw::DrawViewPart* partFeat =
         TechDraw::getReferencesFromSelection(references2d, references3d);
 
+    // if sticky selection is in use we may get confusing selections that appear to
+    // include both 2d and 3d geometry for the extent dim.
+    if (!references3d.empty())  {
+        for (auto& ref : references2d) {
+            if (!ref.getSubName().empty()) {
+                QMessageBox::warning(Gui::getMainWindow(),
+                    QObject::tr("Incorrect selection"),
+                    QObject::tr("Selection contains both 2d and 3d geometry"));
+                return;
+            }
+        }
+    }
+
     //Define the geometric configuration required for a extent dimension
     StringVector acceptableGeometry({"Edge"});
     std::vector<int> minimumCounts({1});
