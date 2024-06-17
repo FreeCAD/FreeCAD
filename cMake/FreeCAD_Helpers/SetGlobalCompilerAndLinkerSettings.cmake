@@ -21,11 +21,8 @@ macro(SetGlobalCompilerAndLinkerSettings)
 
     if(MSVC)
         # set default compiler settings
-        add_definitions(-D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR -DNOMINMAX )
-         # Qt6 requires (and sets) the /permissive- option, disabling the default "permissive"
-        # behavior of MSVC. We are explicitly including that flag here so that even if you are
-        # compiling with Qt5, you don't accidentally write code that won't compile with that flag.
-        add_compile_options(/Zm150 /bigobj /permissive-)
+        add_definitions(-D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR -DNOMINMAX)
+        add_compile_options(/Zm150 /bigobj)
         set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG")
         # set default libs
         set (CMAKE_C_STANDARD_LIBRARIES "kernel32.lib user32.lib gdi32.lib winspool.lib SHFolder.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib winmm.lib comsupp.lib Ws2_32.lib dbghelp.lib ")

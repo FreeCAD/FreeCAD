@@ -1812,11 +1812,17 @@ void MainWindow::loadWindowSettings()
     max ? showMaximized() : show();
 
     // make menus and tooltips usable in fullscreen under Windows, see issue #7563
-#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    using namespace QNativeInterface::Private;
-    if (auto *windowsWindow = dynamic_cast<QWindowsWindow*>(this->windowHandle())) {
-        windowsWindow->setHasBorderInFullScreen(true);
-    }
+#if defined(Q_OS_WIN)
+    #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+        if (QWindow* win = this->windowHandle()) {
+            QWindowsWindowFunctions::setHasBorderInFullScreen(win, true);
+        }
+    #else
+        using namespace QNativeInterface::Private;
+        if (auto *windowsWindow = dynamic_cast<QWindowsWindow*>(this->windowHandle())) {
+            windowsWindow->setHasBorderInFullScreen(true);
+        }
+    #endif
 #endif
 
     statusBar()->setVisible(showStatusBar);
