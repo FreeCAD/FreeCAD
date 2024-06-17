@@ -161,6 +161,298 @@ TEST_F(SketchObjectTest, testGeoIdFromShapeTypeRootPoint)
     EXPECT_EQ(posId, Sketcher::PointPos::start);
 }
 
+TEST_F(SketchObjectTest, testGetPointFromGeomPoint)
+{
+    // Arrange
+    Base::Vector3d coords(1.0, 2.0, 0.0);
+    Part::GeomPoint point(coords);
+
+    // Act
+    auto ptStart = Sketcher::SketchObject::getPoint(&point, Sketcher::PointPos::start);
+    auto ptMid = Sketcher::SketchObject::getPoint(&point, Sketcher::PointPos::mid);
+    auto ptEnd = Sketcher::SketchObject::getPoint(&point, Sketcher::PointPos::end);
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptNone = Sketcher::SketchObject::getPoint(&point, Sketcher::PointPos::none);
+
+    // Assert
+    EXPECT_DOUBLE_EQ(ptStart[0], 1.0);
+    EXPECT_DOUBLE_EQ(ptStart[1], 2.0);
+    EXPECT_DOUBLE_EQ(ptMid[0], 1.0);
+    EXPECT_DOUBLE_EQ(ptMid[1], 2.0);
+    EXPECT_DOUBLE_EQ(ptEnd[0], 1.0);
+    EXPECT_DOUBLE_EQ(ptEnd[1], 2.0);
+}
+
+TEST_F(SketchObjectTest, testGetPointFromGeomLineSegment)
+{
+    // Arrange
+    Base::Vector3d coords1(1.0, 2.0, 0.0);
+    Base::Vector3d coords2(3.0, 4.0, 0.0);
+    Part::GeomLineSegment lineSeg;
+    lineSeg.setPoints(coords1, coords2);
+
+    // Act
+    auto ptStart = Sketcher::SketchObject::getPoint(&lineSeg, Sketcher::PointPos::start);
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptMid = Sketcher::SketchObject::getPoint(&lineSeg, Sketcher::PointPos::mid);
+    auto ptEnd = Sketcher::SketchObject::getPoint(&lineSeg, Sketcher::PointPos::end);
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptNone = Sketcher::SketchObject::getPoint(&lineSeg, Sketcher::PointPos::none);
+
+    // Assert
+    EXPECT_DOUBLE_EQ(ptStart[0], 1.0);
+    EXPECT_DOUBLE_EQ(ptStart[1], 2.0);
+    EXPECT_DOUBLE_EQ(ptEnd[0], 3.0);
+    EXPECT_DOUBLE_EQ(ptEnd[1], 4.0);
+}
+
+TEST_F(SketchObjectTest, testGetPointFromGeomCircle)
+{
+    // Arrange
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    double radius = 3.0;
+    Part::GeomCircle circle;
+    circle.setCenter(coordsCenter);
+    circle.setRadius(radius);
+
+    // Act
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptStart = Sketcher::SketchObject::getPoint(&circle, Sketcher::PointPos::start);
+    auto ptMid = Sketcher::SketchObject::getPoint(&circle, Sketcher::PointPos::mid);
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptEnd = Sketcher::SketchObject::getPoint(&circle, Sketcher::PointPos::end);
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptNone = Sketcher::SketchObject::getPoint(&circle, Sketcher::PointPos::none);
+
+    // Assert
+    // NOTE: Presently, start/end points of a circle are defined as the point on circle right of the
+    // the center
+    EXPECT_DOUBLE_EQ(ptStart[0], 1.0 + radius);
+    EXPECT_DOUBLE_EQ(ptStart[1], 2.0);
+    EXPECT_DOUBLE_EQ(ptEnd[0], 1.0 + radius);
+    EXPECT_DOUBLE_EQ(ptEnd[1], 2.0);
+    EXPECT_DOUBLE_EQ(ptMid[0], 1.0);
+    EXPECT_DOUBLE_EQ(ptMid[1], 2.0);
+}
+
+TEST_F(SketchObjectTest, testGetPointFromGeomEllipse)
+{
+    // Arrange
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    double majorRadius = 4.0;
+    double minorRadius = 3.0;
+    Part::GeomEllipse ellipse;
+    ellipse.setCenter(coordsCenter);
+    ellipse.setMajorRadius(majorRadius);
+    ellipse.setMinorRadius(minorRadius);
+
+    // Act
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptStart = Sketcher::SketchObject::getPoint(&ellipse, Sketcher::PointPos::start);
+    auto ptMid = Sketcher::SketchObject::getPoint(&ellipse, Sketcher::PointPos::mid);
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptEnd = Sketcher::SketchObject::getPoint(&ellipse, Sketcher::PointPos::end);
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptNone = Sketcher::SketchObject::getPoint(&ellipse, Sketcher::PointPos::none);
+
+    // Assert
+    // NOTE: Presently, start/end points of an ellipse are defined as the point on the major axis in
+    // it's "positive" direction
+    EXPECT_DOUBLE_EQ(ptStart[0], 1.0 + majorRadius);
+    EXPECT_DOUBLE_EQ(ptStart[1], 2.0);
+    EXPECT_DOUBLE_EQ(ptEnd[0], 1.0 + majorRadius);
+    EXPECT_DOUBLE_EQ(ptEnd[1], 2.0);
+    EXPECT_DOUBLE_EQ(ptMid[0], 1.0);
+    EXPECT_DOUBLE_EQ(ptMid[1], 2.0);
+}
+
+TEST_F(SketchObjectTest, testGetPointFromGeomArcOfCircle)
+{
+    // Arrange
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    double radius = 3.0, startParam = M_PI / 3, endParam = M_PI * 1.5;
+    Part::GeomArcOfCircle arcOfCircle;
+    arcOfCircle.setCenter(coordsCenter);
+    arcOfCircle.setRadius(radius);
+    arcOfCircle.setRange(startParam, endParam, true);
+
+    // Act
+    auto ptStart = Sketcher::SketchObject::getPoint(&arcOfCircle, Sketcher::PointPos::start);
+    auto ptMid = Sketcher::SketchObject::getPoint(&arcOfCircle, Sketcher::PointPos::mid);
+    auto ptEnd = Sketcher::SketchObject::getPoint(&arcOfCircle, Sketcher::PointPos::end);
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptNone = Sketcher::SketchObject::getPoint(&arcOfCircle, Sketcher::PointPos::none);
+
+    // Assert
+    // NOTE: parameters for arc of circle are CCW angles from positive x-axis
+    EXPECT_DOUBLE_EQ(ptStart[0], 1.0 + cos(startParam) * radius);
+    EXPECT_DOUBLE_EQ(ptStart[1], 2.0 + sin(startParam) * radius);
+    EXPECT_DOUBLE_EQ(ptEnd[0], 1.0 + cos(endParam) * radius);
+    EXPECT_DOUBLE_EQ(ptEnd[1], 2.0 + sin(endParam) * radius);
+    EXPECT_DOUBLE_EQ(ptMid[0], 1.0);
+    EXPECT_DOUBLE_EQ(ptMid[1], 2.0);
+}
+
+TEST_F(SketchObjectTest, testGetPointFromGeomArcOfEllipse)
+{
+    // Arrange
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    double majorRadius = 4.0;
+    double minorRadius = 3.0;
+    double startParam = M_PI / 3, endParam = M_PI * 1.5;
+    Part::GeomArcOfEllipse arcOfEllipse;
+    arcOfEllipse.setCenter(coordsCenter);
+    arcOfEllipse.setMajorRadius(majorRadius);
+    arcOfEllipse.setMinorRadius(minorRadius);
+    arcOfEllipse.setRange(startParam, endParam, true);
+
+    // Act
+    auto ptStart = Sketcher::SketchObject::getPoint(&arcOfEllipse, Sketcher::PointPos::start);
+    auto ptMid = Sketcher::SketchObject::getPoint(&arcOfEllipse, Sketcher::PointPos::mid);
+    auto ptEnd = Sketcher::SketchObject::getPoint(&arcOfEllipse, Sketcher::PointPos::end);
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptNone = Sketcher::SketchObject::getPoint(&arcOfEllipse, Sketcher::PointPos::none);
+
+    // Assert
+    // NOTE: parameters for arc of ellipse are CCW angles from positive x-axis
+    EXPECT_DOUBLE_EQ(ptStart[0], 1.0 + cos(startParam) * majorRadius);
+    EXPECT_DOUBLE_EQ(ptStart[1], 2.0 + sin(startParam) * minorRadius);
+    EXPECT_DOUBLE_EQ(ptEnd[0], 1.0 + cos(endParam) * majorRadius);
+    EXPECT_DOUBLE_EQ(ptEnd[1], 2.0 + sin(endParam) * minorRadius);
+    EXPECT_DOUBLE_EQ(ptMid[0], 1.0);
+    EXPECT_DOUBLE_EQ(ptMid[1], 2.0);
+}
+
+TEST_F(SketchObjectTest, testGetPointFromGeomArcOfHyperbola)
+{
+    // Arrange
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    double majorRadius = 4.0;
+    double minorRadius = 3.0;
+    double startParam = M_PI / 3, endParam = M_PI * 1.5;
+    Part::GeomArcOfHyperbola arcOfHyperbola;
+    arcOfHyperbola.setCenter(coordsCenter);
+    arcOfHyperbola.setMajorRadius(majorRadius);
+    arcOfHyperbola.setMinorRadius(minorRadius);
+    arcOfHyperbola.setRange(startParam, endParam, true);
+
+    // Act
+    auto ptStart = Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::start);
+    auto ptMid = Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::mid);
+    auto ptEnd = Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::end);
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptNone = Sketcher::SketchObject::getPoint(&arcOfHyperbola, Sketcher::PointPos::none);
+
+    // Assert
+    // FIXME: Figure out how this is defined
+    // EXPECT_DOUBLE_EQ(ptStart[0], 1.0);
+    // EXPECT_DOUBLE_EQ(ptStart[1], 2.0);
+    // EXPECT_DOUBLE_EQ(ptEnd[0], 1.0);
+    // EXPECT_DOUBLE_EQ(ptEnd[1], 2.0);
+    EXPECT_DOUBLE_EQ(ptMid[0], 1.0);
+    EXPECT_DOUBLE_EQ(ptMid[1], 2.0);
+}
+
+TEST_F(SketchObjectTest, testGetPointFromGeomArcOfParabola)
+{
+    // Arrange
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    double focal = 3.0;
+    double startParam = M_PI / 3, endParam = M_PI * 1.5;
+    Part::GeomArcOfParabola arcOfParabola;
+    arcOfParabola.setCenter(coordsCenter);
+    arcOfParabola.setFocal(focal);
+    arcOfParabola.setRange(startParam, endParam, true);
+
+    // Act
+    auto ptStart = Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::start);
+    auto ptMid = Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::mid);
+    auto ptEnd = Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::end);
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptNone = Sketcher::SketchObject::getPoint(&arcOfParabola, Sketcher::PointPos::none);
+
+    // Assert
+    // FIXME: Figure out how this is defined
+    // EXPECT_DOUBLE_EQ(ptStart[0], 1.0);
+    // EXPECT_DOUBLE_EQ(ptStart[1], 2.0);
+    // EXPECT_DOUBLE_EQ(ptEnd[0], 1.0);
+    // EXPECT_DOUBLE_EQ(ptEnd[1], 2.0);
+    EXPECT_DOUBLE_EQ(ptMid[0], 1.0);
+    EXPECT_DOUBLE_EQ(ptMid[1], 2.0);
+}
+
+TEST_F(SketchObjectTest, testGetPointFromGeomBSplineCurveNonPeriodic)
+{
+    // Arrange
+    int degree = 3;
+    std::vector<Base::Vector3d> poles;
+    poles.emplace_back(1, 0, 0);
+    poles.emplace_back(1, 1, 0);
+    poles.emplace_back(1, 0.5, 0);
+    poles.emplace_back(0, 1, 0);
+    poles.emplace_back(0, 0, 0);
+    std::vector<double> weights(5, 1.0);
+    std::vector<double> knotsNonPeriodic = {0.0, 1.0, 2.0};
+    std::vector<int> multiplicitiesNonPeriodic = {degree + 1, 1, degree + 1};
+    Part::GeomBSplineCurve nonPeriodicBSpline(poles,
+                                              weights,
+                                              knotsNonPeriodic,
+                                              multiplicitiesNonPeriodic,
+                                              degree,
+                                              false);
+
+    // Act
+    auto ptStart = Sketcher::SketchObject::getPoint(&nonPeriodicBSpline, Sketcher::PointPos::start);
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptMid = Sketcher::SketchObject::getPoint(&nonPeriodicBSpline, Sketcher::PointPos::mid);
+    auto ptEnd = Sketcher::SketchObject::getPoint(&nonPeriodicBSpline, Sketcher::PointPos::end);
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptNone = Sketcher::SketchObject::getPoint(&nonPeriodicBSpline, Sketcher::PointPos::none);
+
+    // Assert
+    EXPECT_DOUBLE_EQ(ptStart[0], poles.front()[0]);
+    EXPECT_DOUBLE_EQ(ptStart[1], poles.front()[1]);
+    EXPECT_DOUBLE_EQ(ptEnd[0], poles.back()[0]);
+    EXPECT_DOUBLE_EQ(ptEnd[1], poles.back()[1]);
+}
+
+TEST_F(SketchObjectTest, testGetPointFromGeomBSplineCurvePeriodic)
+{
+    // Arrange
+    int degree = 3;
+    std::vector<Base::Vector3d> poles;
+    poles.emplace_back(1, 0, 0);
+    poles.emplace_back(1, 1, 0);
+    poles.emplace_back(1, 0.5, 0);
+    poles.emplace_back(0, 1, 0);
+    poles.emplace_back(0, 0, 0);
+    std::vector<double> weights(5, 1.0);
+    std::vector<double> knotsPeriodic = {0.0, 0.3, 1.0, 1.5, 1.8, 2.0};
+    std::vector<int> multiplicitiesPeriodic(6, 1);
+    Part::GeomBSplineCurve periodicBSpline(poles,
+                                           weights,
+                                           knotsPeriodic,
+                                           multiplicitiesPeriodic,
+                                           degree,
+                                           true);
+
+    // Act
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptStart = Sketcher::SketchObject::getPoint(&periodicBSpline, Sketcher::PointPos::start);
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptMid = Sketcher::SketchObject::getPoint(&periodicBSpline, Sketcher::PointPos::mid);
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptEnd = Sketcher::SketchObject::getPoint(&periodicBSpline, Sketcher::PointPos::end);
+    // TODO: Maybe we want this to give an error instead of some default value
+    auto ptNone = Sketcher::SketchObject::getPoint(&periodicBSpline, Sketcher::PointPos::none);
+
+    // Assert
+    // With non-trivial values for weights, knots, mults, etc, getting the coordinates is
+    // non-trivial as well. This is the best we can do.
+    EXPECT_DOUBLE_EQ(ptStart[0], ptEnd[0]);
+    EXPECT_DOUBLE_EQ(ptStart[1], ptEnd[1]);
+}
+
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionNoUnits1)
 {
     std::string expr = Sketcher::SketchObject::reverseAngleConstraintExpression("180 - 60");
