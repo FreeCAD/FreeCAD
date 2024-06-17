@@ -68,8 +68,8 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
         # OPENGL_gl_LIBRARY empty that results into linker errors
         SetupOpenGL()
     endif(BUILD_GUI)
-    SetupSalomeSMESH()
     SetupBoost()
+    SetupSalomeSMESH()
     if (BUILD_FEM_NETGEN)
         find_package(NETGEN)
     endif(BUILD_FEM_NETGEN)
