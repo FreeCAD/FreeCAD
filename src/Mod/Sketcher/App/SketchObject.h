@@ -447,6 +447,7 @@ public:
                 double perpscale = 1.0);
 
     int removeAxesAlignment(const std::vector<int>& geoIdList);
+    static bool hasInternalGeometry(const Part::Geometry* geo);
     /// Exposes all internal geometry of an object supporting internal geometry
     /*!
      * \return -1 on error
