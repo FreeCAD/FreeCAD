@@ -151,7 +151,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         for doc in docList:
             # Create a new tree item for the document
             docItem = QtGui.QTreeWidgetItem()
-            docItem.setText(0, doc.Name + ".FCStd")
+            docItem.setText(0, doc.Label + ".FCStd")
             docItem.setIcon(0, QIcon.fromTheme("add", QIcon(":/icons/Document.svg")))
 
             if not any(
