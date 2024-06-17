@@ -137,96 +137,107 @@
     </widget>
    </item>
    <item row="7" column="0">
-    <widget class="QCheckBox" name="LimitCheckbox">
-     <property name="text">
+    <widget class="QGroupBox" name="groupBox_limits">
+     <property name="title">
       <string>Limits</string>
      </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
+     <layout class="QGridLayout" name="gridLayout_limits">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="limitCheckbox1">
+        <property name="text">
+         <string>Min length</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="limitLenMinSpinbox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="limitCheckbox2">
+        <property name="text">
+         <string>Max length</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="limitLenMaxSpinbox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="limitCheckbox3">
+        <property name="text">
+         <string>Min angle</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::QuantitySpinBox" name="limitRotMinSpinbox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">deg</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="limitCheckbox4">
+        <property name="text">
+         <string>Max angle</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::QuantitySpinBox" name="limitRotMaxSpinbox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">deg</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item row="8" column="0">
-    <widget class="QLabel" name="limitLenMinSpinboxLabel">
-     <property name="text">
-      <string>Length min</string>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="1">
-    <widget class="Gui::QuantitySpinBox" name="limitLenMinSpinbox">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="unit" stdset="0">
-      <string notr="true">mm</string>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="0">
-    <widget class="QLabel" name="limitLenMaxSpinboxLabel">
-     <property name="text">
-      <string>Length max</string>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="1">
-    <widget class="Gui::QuantitySpinBox" name="limitLenMaxSpinbox">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="unit" stdset="0">
-      <string notr="true">mm</string>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="0">
-    <widget class="QLabel" name="limitRotMinSpinboxLabel">
-     <property name="text">
-      <string>Angle min</string>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="1">
-    <widget class="Gui::QuantitySpinBox" name="limitRotMinSpinbox">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="unit" stdset="0">
-      <string notr="true">deg</string>
-     </property>
-    </widget>
-   </item>
-   <item row="11" column="0">
-    <widget class="QLabel" name="limitRotMaxSpinboxLabel">
-     <property name="text">
-      <string>Angle max</string>
-     </property>
-    </widget>
-   </item>
-   <item row="11" column="1">
-    <widget class="Gui::QuantitySpinBox" name="limitRotMaxSpinbox">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="unit" stdset="0">
-      <string notr="true">deg</string>
-     </property>
-    </widget>
-   </item>
-   <item row="12" column="0">
     <widget class="QCheckBox" name="reverseRotCheckbox">
      <property name="text">
       <string>Reverse rotation</string>

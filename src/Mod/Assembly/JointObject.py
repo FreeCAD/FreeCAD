@@ -370,17 +370,53 @@ class Joint:
             )
             joint.Activated = True
 
-        if not hasattr(joint, "EnableLimits"):
+        if not hasattr(joint, "EnableLengthMin"):
             joint.addProperty(
                 "App::PropertyBool",
-                "EnableLimits",
+                "EnableLengthMin",
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Is this joint using limits.",
+                    "Enable the minimum length limit of the joint.",
                 ),
             )
-            joint.EnableLimits = False
+            joint.EnableLengthMin = False
+
+        if not hasattr(joint, "EnableLengthMax"):
+            joint.addProperty(
+                "App::PropertyBool",
+                "EnableLengthMax",
+                "Limits",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Enable the maximum length limit of the joint.",
+                ),
+            )
+            joint.EnableLengthMax = False
+
+        if not hasattr(joint, "EnableAngleMin"):
+            joint.addProperty(
+                "App::PropertyBool",
+                "EnableAngleMin",
+                "Limits",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Enable the minimum angle limit of the joint.",
+                ),
+            )
+            joint.EnableAngleMin = False
+
+        if not hasattr(joint, "EnableAngleMax"):
+            joint.addProperty(
+                "App::PropertyBool",
+                "EnableAngleMax",
+                "Limits",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Enable the minimum length of the joint.",
+                ),
+            )
+            joint.EnableAngleMax = False
 
         if not hasattr(joint, "LengthMin"):
             joint.addProperty(
@@ -1268,7 +1304,11 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
         self.form.rotationSpinbox.valueChanged.connect(self.onRotationChanged)
         self.form.PushButtonReverse.clicked.connect(self.onReverseClicked)
-        self.form.LimitCheckbox.stateChanged.connect(self.adaptUi)
+
+        self.form.limitCheckbox1.stateChanged.connect(self.adaptUi)
+        self.form.limitCheckbox2.stateChanged.connect(self.adaptUi)
+        self.form.limitCheckbox3.stateChanged.connect(self.adaptUi)
+        self.form.limitCheckbox4.stateChanged.connect(self.adaptUi)
         self.form.limitLenMinSpinbox.valueChanged.connect(self.onLimitLenMinChanged)
         self.form.limitLenMaxSpinbox.valueChanged.connect(self.onLimitLenMaxChanged)
         self.form.limitRotMinSpinbox.valueChanged.connect(self.onLimitRotMinChanged)
@@ -1545,37 +1585,42 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         needLengthLimits = jType in JointUsingLimitLength
         needAngleLimits = jType in JointUsingLimitAngle
 
-        showLimits = False
         if needLengthLimits or needAngleLimits:
-            self.form.LimitCheckbox.show()
-            showLimits = True
-        else:
-            self.form.LimitCheckbox.hide()
+            self.form.groupBox_limits.show()
 
-        showLimits = showLimits and self.form.LimitCheckbox.isChecked()
-        self.joint.EnableLimits = showLimits
+            self.joint.EnableLengthMin = self.form.limitCheckbox1.isChecked()
+            self.joint.EnableLengthMax = self.form.limitCheckbox2.isChecked()
+            self.joint.EnableAngleMin = self.form.limitCheckbox3.isChecked()
+            self.joint.EnableAngleMax = self.form.limitCheckbox4.isChecked()
 
-        if needLengthLimits and showLimits:
-            self.form.limitLenMinSpinboxLabel.show()
-            self.form.limitLenMaxSpinboxLabel.show()
-            self.form.limitLenMinSpinbox.show()
-            self.form.limitLenMaxSpinbox.show()
-        else:
-            self.form.limitLenMinSpinboxLabel.hide()
-            self.form.limitLenMaxSpinboxLabel.hide()
-            self.form.limitLenMinSpinbox.hide()
-            self.form.limitLenMaxSpinbox.hide()
+            if needLengthLimits:
+                self.form.limitCheckbox1.show()
+                self.form.limitCheckbox2.show()
+                self.form.limitLenMinSpinbox.show()
+                self.form.limitLenMaxSpinbox.show()
+                self.form.limitLenMinSpinbox.setEnabled(self.joint.EnableLengthMin)
+                self.form.limitLenMaxSpinbox.setEnabled(self.joint.EnableLengthMax)
+            else:
+                self.form.limitCheckbox1.hide()
+                self.form.limitCheckbox2.hide()
+                self.form.limitLenMinSpinbox.hide()
+                self.form.limitLenMaxSpinbox.hide()
 
-        if needAngleLimits and showLimits:
-            self.form.limitRotMinSpinboxLabel.show()
-            self.form.limitRotMaxSpinboxLabel.show()
-            self.form.limitRotMinSpinbox.show()
-            self.form.limitRotMaxSpinbox.show()
+            if needAngleLimits:
+                self.form.limitCheckbox3.show()
+                self.form.limitCheckbox4.show()
+                self.form.limitRotMinSpinbox.show()
+                self.form.limitRotMaxSpinbox.show()
+                self.form.limitRotMinSpinbox.setEnabled(self.joint.EnableAngleMin)
+                self.form.limitRotMaxSpinbox.setEnabled(self.joint.EnableAngleMax)
+            else:
+                self.form.limitCheckbox3.hide()
+                self.form.limitCheckbox4.hide()
+                self.form.limitRotMinSpinbox.hide()
+                self.form.limitRotMaxSpinbox.hide()
+
         else:
-            self.form.limitRotMinSpinboxLabel.hide()
-            self.form.limitRotMaxSpinboxLabel.hide()
-            self.form.limitRotMinSpinbox.hide()
-            self.form.limitRotMaxSpinbox.hide()
+            self.form.groupBox_limits.hide()
 
     def updateTaskboxFromJoint(self):
         self.current_selection = []
@@ -1617,7 +1662,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.offsetSpinbox.setProperty("rawValue", self.joint.Offset.z)
         self.form.rotationSpinbox.setProperty("rawValue", self.joint.Rotation)
 
-        self.form.LimitCheckbox.setChecked(self.joint.EnableLimits)
+        self.form.limitCheckbox1.setChecked(self.joint.EnableLengthMin)
+        self.form.limitCheckbox2.setChecked(self.joint.EnableLengthMax)
+        self.form.limitCheckbox3.setChecked(self.joint.EnableAngleMin)
+        self.form.limitCheckbox4.setChecked(self.joint.EnableAngleMax)
         self.form.limitLenMinSpinbox.setProperty("rawValue", self.joint.LengthMin)
         self.form.limitLenMaxSpinbox.setProperty("rawValue", self.joint.LengthMax)
         self.form.limitRotMinSpinbox.setProperty("rawValue", self.joint.AngleMin)

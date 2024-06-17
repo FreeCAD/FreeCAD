@@ -1142,25 +1142,34 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
     mbdJoint->setMarkerJ(fullMarkerNameJ);
 
     // Add limits if needed.
-    auto* prop = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("EnableLimits"));
-    if (prop && prop->getValue()) {
-        if (jointType == JointType::Slider || jointType == JointType::Cylindrical) {
-            auto* propLenMin =
-                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("LengthMin"));
-            auto* propLenMax =
-                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("LengthMax"));
+    if (jointType == JointType::Slider || jointType == JointType::Cylindrical) {
+        auto* pLenMin = dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("LengthMin"));
+        auto* pLenMax = dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("LengthMax"));
+        auto* pMinEnabled =
+            dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("EnableLengthMin"));
+        auto* pMaxEnabled =
+            dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("EnableLengthMax"));
 
-            if (propLenMin && propLenMax) {
-                // Swap the values if necessary.
-                double minLength = propLenMin->getValue();
-                double maxLength = propLenMax->getValue();
-                if (minLength > maxLength) {
-                    propLenMin->setValue(maxLength);
-                    propLenMax->setValue(minLength);
-                    minLength = maxLength;
-                    maxLength = propLenMax->getValue();
-                }
+        if (pLenMin && pLenMax && pMinEnabled && pMaxEnabled) {  // Make sure properties do exist
+            // Swap the values if necessary.
+            bool minEnabled = pMinEnabled->getValue();
+            bool maxEnabled = pMaxEnabled->getValue();
+            double minLength = pLenMin->getValue();
+            double maxLength = pLenMax->getValue();
 
+            if ((minLength > maxLength) && minEnabled && maxEnabled) {
+                pLenMin->setValue(maxLength);
+                pLenMax->setValue(minLength);
+                minLength = maxLength;
+                maxLength = pLenMax->getValue();
+
+                pMinEnabled->setValue(maxEnabled);
+                pMaxEnabled->setValue(minEnabled);
+                minEnabled = maxEnabled;
+                maxEnabled = pMaxEnabled->getValue();
+            }
+
+            if (minEnabled) {
                 auto limit = ASMTTranslationLimit::With();
                 limit->setName(joint->getFullName() + "-LimitLenMin");
                 limit->setMarkerI(fullMarkerNameI);
@@ -1169,7 +1178,9 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
                 limit->setlimit(std::to_string(minLength));
                 limit->settol("1.0e-9");
                 mbdAssembly->addLimit(limit);
+            }
 
+            if (maxEnabled) {
                 auto limit2 = ASMTTranslationLimit::With();
                 limit2->setName(joint->getFullName() + "-LimitLenMax");
                 limit2->setMarkerI(fullMarkerNameI);
@@ -1180,23 +1191,34 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
                 mbdAssembly->addLimit(limit2);
             }
         }
-        if (jointType == JointType::Revolute || jointType == JointType::Cylindrical) {
-            auto* propRotMin =
-                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("AngleMin"));
-            auto* propRotMax =
-                dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("AngleMax"));
+    }
+    if (jointType == JointType::Revolute || jointType == JointType::Cylindrical) {
+        auto* pRotMin = dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("AngleMin"));
+        auto* pRotMax = dynamic_cast<App::PropertyFloat*>(joint->getPropertyByName("AngleMax"));
+        auto* pMinEnabled =
+            dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("EnableAngleMin"));
+        auto* pMaxEnabled =
+            dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("EnableAngleMax"));
 
-            if (propRotMin && propRotMax) {
-                // Swap the values if necessary.
-                double minAngle = propRotMin->getValue();
-                double maxAngle = propRotMax->getValue();
-                if (minAngle > maxAngle) {
-                    propRotMin->setValue(maxAngle);
-                    propRotMax->setValue(minAngle);
-                    minAngle = maxAngle;
-                    maxAngle = propRotMax->getValue();
-                }
+        if (pRotMin && pRotMax && pMinEnabled && pMaxEnabled) {  // Make sure properties do exist
+            // Swap the values if necessary.
+            bool minEnabled = pMinEnabled->getValue();
+            bool maxEnabled = pMaxEnabled->getValue();
+            double minAngle = pRotMin->getValue();
+            double maxAngle = pRotMax->getValue();
+            if ((minAngle > maxAngle) && minEnabled && maxEnabled) {
+                pRotMin->setValue(maxAngle);
+                pRotMax->setValue(minAngle);
+                minAngle = maxAngle;
+                maxAngle = pRotMax->getValue();
 
+                pMinEnabled->setValue(maxEnabled);
+                pMaxEnabled->setValue(minEnabled);
+                minEnabled = maxEnabled;
+                maxEnabled = pMaxEnabled->getValue();
+            }
+
+            if (minEnabled) {
                 auto limit = ASMTRotationLimit::With();
                 limit->setName(joint->getFullName() + "-LimitRotMin");
                 limit->setMarkerI(fullMarkerNameI);
@@ -1205,7 +1227,9 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
                 limit->setlimit(std::to_string(minAngle) + "*pi/180.0");
                 limit->settol("1.0e-9");
                 mbdAssembly->addLimit(limit);
+            }
 
+            if (maxEnabled) {
                 auto limit2 = ASMTRotationLimit::With();
                 limit2->setName(joint->getFullName() + "-LimiRotMax");
                 limit2->setMarkerI(fullMarkerNameI);
