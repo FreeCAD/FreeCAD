@@ -104,48 +104,6 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <text
-     style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10px;line-height:125%;font-family:Sans;-inkscape-font-specification:Sans;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:none;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.282;marker:none;enable-background:accumulate"
-     xml:space="preserve"
-     id="text3130"
-     y="46.145554"
-     x="13.788582"><tspan
-       id="tspan3132"
-       y="46.145554"
-       x="13.788582" /></text>
-  <path
-     id="path3063"
-     d="M 11.709108,52.290892 52.290892,11.709108"
-     style="display:none;fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-  <g
-     id="g1457"
-     style="display:none">
-    <circle
-       r="29.014698"
-       style="display:inline;fill:#729fcf;fill-opacity:1;stroke:#0b1521;stroke-width:1.9706;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path46"
-       cx="32"
-       cy="32" />
-    <circle
-       r="24"
-       cy="32"
-       cx="32"
-       id="path1438"
-       style="display:inline;fill:#d3d7cf;fill-opacity:1;stroke:none;stroke-width:3;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <g
-       id="g901"
-       transform="translate(-2.169491,1.966101)"
-       style="display:inline">
-      <path
-         id="path895"
-         d="m 34.169491,39.593221 c 0,-19.118644 0,-19.118644 0,-19.118644"
-         style="fill:none;stroke:#0b1521;stroke-width:2.65518;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <path
-         style="fill:none;stroke:#0b1521;stroke-width:2.65518;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="m 24.610169,30.033899 c 19.118644,0 19.118644,0 19.118644,0"
-         id="path897" />
-    </g>
-  </g>
   <circle
      style="display:inline;fill:none;stroke:#0b1521;stroke-width:6;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;paint-order:fill markers stroke"
      id="path1"
@@ -160,15 +118,15 @@
      r="27" />
   <g
      id="g6"
-     transform="matrix(4.1242319,0,0,4.0963322,-2.9294932,-1149.9561)"
-     style="display:inline">
+     transform="matrix(4.1066544,0,0,4.1147175,-2.7538425,-1155.2331)"
+     style="display:inline;stroke-width:0.999898">
     <path
        d="m 6.7657672,288.54354 a 1.7008928,1.7008928 0 0 1 1.6031927,-1.70836 1.7008928,1.7008928 0 0 1 1.7884921,1.51328 1.7008928,1.7008928 0 0 1 -1.419363,1.86389 1.7008928,1.7008928 0 0 1 -1.9343809,-1.32169"
        id="path1738-3-8"
-       style="display:inline;opacity:1;fill:#729fcf;fill-opacity:1;fill-rule:nonzero;stroke:#0b1521;stroke-width:0.486587;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+       style="display:inline;opacity:1;fill:#d3d7cf;fill-opacity:1;fill-rule:nonzero;stroke:#555753;stroke-width:0.486537;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
        d="m 7.2523458,288.5406 c -0.00389,-0.64333 0.5022742,-1.1827 1.144555,-1.21964 0.6422809,-0.0369 1.2069428,0.44083 1.2768445,1.08037 0.069902,0.63953 -0.378219,1.228 -1.0133149,1.33067 -0.635096,0.10268 -1.2458179,-0.3146 -1.3809978,-0.94358"
        id="path2"
-       style="display:inline;opacity:1;fill:#0b1521;fill-opacity:1;fill-rule:nonzero;stroke:#729fcf;stroke-width:0.486587;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+       style="display:inline;opacity:1;fill:#555753;fill-opacity:1;fill-rule:nonzero;stroke:#d3d7cf;stroke-width:0.486537;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
   </g>
 </svg>
