@@ -42,7 +42,7 @@
 #include "DlgPreferencesImp.h"
 #include "MainWindow.h"
 #include "WorkbenchSelector.h"
-#include "ToolBarManager.h"
+#include "ToolBarAreaWidget.h"
 
 
 using namespace Gui;
