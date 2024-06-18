@@ -609,6 +609,7 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/__init__.py
     femviewprovider/view_base_femconstraint.py
     femviewprovider/view_base_femelement.py
+    femviewprovider/view_base_femmaterial.py
     femviewprovider/view_base_femmeshelement.py
     femviewprovider/view_base_femobject.py
     femviewprovider/view_constant_vacuumpermittivity.py
