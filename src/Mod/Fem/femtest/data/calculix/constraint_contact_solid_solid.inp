@@ -5576,14 +5576,14 @@ Evolumes
 ** Contact Constraints
 ** ConstraintContact
 *CONTACT PAIR, INTERACTION=INTConstraintContact, TYPE=SURFACE TO SURFACE
-DEPConstraintContact,INDConstraintContact
+DEPConstraintContact, INDConstraintContact
 *SURFACE INTERACTION, NAME=INTConstraintContact
 *SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=LINEAR
 1000000
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-*STEP
+*STEP, INC=2000
 *STATIC
 
 
@@ -5622,6 +5622,7 @@ S, E
 *NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
 RF
 
+*OUTPUT, FREQUENCY=1
 
 ***********************************************************
 *END STEP
