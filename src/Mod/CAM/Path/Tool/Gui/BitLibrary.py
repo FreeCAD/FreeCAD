@@ -440,6 +440,7 @@ class ToolBitSelector(object):
         self.loadData()  # Load the initial data for the tool model
 
         self.form.tools.setModel(self.toolModel)
+        self.form.tools.selectionModel().selectionChanged.connect(self.enableButtons)
         self.form.tools.doubleClicked.connect(
             partial(self.selectedOrAllToolControllers)
         )
