@@ -453,6 +453,162 @@ TEST_F(SketchObjectTest, testGetPointFromGeomBSplineCurvePeriodic)
     EXPECT_DOUBLE_EQ(ptStart[1], ptEnd[1]);
 }
 
+TEST_F(SketchObjectTest, testSplitLineSegment)
+{
+    // Arrange
+    Base::Vector3d coords1(1.0, 2.0, 0.0);
+    Base::Vector3d coords2(3.0, 4.0, 0.0);
+    Base::Vector3d splitPoint(2.0, 3.1, 0.0);
+    Part::GeomLineSegment lineSeg;
+    lineSeg.setPoints(coords1, coords2);
+    int geoId = getObject()->addGeometry(&lineSeg);
+
+    // Act
+    int result = getObject()->split(geoId, splitPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // One additional curve should be added
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
+    // TODO: Expect the resultant curves are line segments and shape is conserved
+}
+
+TEST_F(SketchObjectTest, testSplitCircle)
+{
+    // Arrange
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    Base::Vector3d splitPoint(2.0, 3.1, 0.0);
+    double radius = 3.0;
+    Part::GeomCircle circle;
+    circle.setCenter(coordsCenter);
+    circle.setRadius(radius);
+    int geoId = getObject()->addGeometry(&circle);
+
+    // Act
+    int result = getObject()->split(geoId, splitPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // The circle should be split into an arc now
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
+    // TODO: Expect the end points of the resultant curve are coincident.
+}
+
+TEST_F(SketchObjectTest, testSplitEllipse)
+{
+    // Arrange
+    Base::Vector3d splitPoint(2.0, 3.1, 0.0);
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    double majorRadius = 4.0;
+    double minorRadius = 3.0;
+    Part::GeomEllipse ellipse;
+    ellipse.setCenter(coordsCenter);
+    ellipse.setMajorRadius(majorRadius);
+    ellipse.setMinorRadius(minorRadius);
+    int geoId = getObject()->addGeometry(&ellipse);
+
+    // Act
+    int result = getObject()->split(geoId, splitPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // TODO: The ellipse should be split into an arc of ellipse now
+    // FIXME: Internal geometries may be added or removed which may cause some issues
+    // EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
+    // TODO: Expect the end points of the resultant curve are coincident.
+}
+
+TEST_F(SketchObjectTest, testSplitArcOfCircle)
+{
+    // Arrange
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    Base::Vector3d splitPoint(-2.0, 3.1, 0.0);
+    double radius = 3.0;
+    double startParam = M_PI / 3, endParam = M_PI * 1.5;
+    Part::GeomArcOfCircle arcOfCircle;
+    arcOfCircle.setCenter(coordsCenter);
+    arcOfCircle.setRadius(radius);
+    arcOfCircle.setRange(startParam, endParam, true);
+    int geoId = getObject()->addGeometry(&arcOfCircle);
+
+    // Act
+    int result = getObject()->split(geoId, splitPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // The arcOfCircle should be split into an arc now
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
+    // TODO: Expect the end points of the resultant curve are coincident.
+}
+
+TEST_F(SketchObjectTest, testSplitArcOfConic)
+{
+    // Arrange
+    // TODO: Define a parabola/hyperbola as reference
+    Base::Vector3d splitPoint(1.0, -1.1, 0.0);
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    double focal = 3.0;
+    double startParam = -M_PI * 1.5, endParam = M_PI * 1.5;
+    Part::GeomArcOfParabola arcOfConic;
+    arcOfConic.setCenter(coordsCenter);
+    arcOfConic.setFocal(focal);
+    arcOfConic.setRange(startParam, endParam, true);
+    int geoId = getObject()->addGeometry(&arcOfConic);
+
+    // Act
+    // TODO: Sample random points from both sides of the split
+    int result = getObject()->split(geoId, splitPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // The arcOfConic should be split into two arcs of the same conic now
+    // EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
+    // TODO: Expect the end points of the resultant curve are coincident.
+}
+
+TEST_F(SketchObjectTest, testSplitNonPeriodicBSpline)
+{
+    // Arrange
+    int degree = 3;
+    std::vector<Base::Vector3d> poles;
+    poles.emplace_back(1, 0, 0);
+    poles.emplace_back(1, 1, 0);
+    poles.emplace_back(1, 0.5, 0);
+    poles.emplace_back(0, 1, 0);
+    poles.emplace_back(0, 0, 0);
+    std::vector<double> weights(5, 1.0);
+    std::vector<double> knotsNonPeriodic = {0.0, 1.0, 2.0};
+    std::vector<int> multiplicitiesNonPeriodic = {degree + 1, 1, degree + 1};
+    Part::GeomBSplineCurve nonPeriodicBSpline(poles,
+                                              weights,
+                                              knotsNonPeriodic,
+                                              multiplicitiesNonPeriodic,
+                                              degree,
+                                              false);
+    Base::Vector3d splitPoint(-0.5, 1.1, 0.0);
+    int geoId = getObject()->addGeometry(&nonPeriodicBSpline);
+    // TODO: Put a point on this
+
+    // Act
+    // TODO: sample before point(s) at a random parameter
+    int result = getObject()->split(geoId, splitPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // TODO: confirm sampled point(s) is/are at the same place
+}
+
+TEST_F(SketchObjectTest, testSplitPeriodicBSpline)
+{
+    // Arrange
+
+    // Act
+    // TODO: sample before point(s) at a random parameter
+
+    // Assert
+    // TODO: confirm sampled point(s) is/are at the same place
+}
+
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionNoUnits1)
 {
     std::string expr = Sketcher::SketchObject::reverseAngleConstraintExpression("180 - 60");
