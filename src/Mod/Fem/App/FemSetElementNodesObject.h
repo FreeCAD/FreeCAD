@@ -56,8 +56,6 @@ public:
     }
     short mustExecute() const override;
     PyObject* getPyObject() override;
-    static std::string elementsName;        //  = "ElementsSet";
-    static std::string uniqueElementsName;  // "ElementsSet" latest name
 };
 
 }  // namespace Fem

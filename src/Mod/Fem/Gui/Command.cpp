@@ -1251,9 +1251,6 @@ bool CmdFemCreateNodesSet::isActive()
 //===========================================================================
 // start of Erase Elements code
 //===========================================================================
-std::string Fem::FemSetElementNodesObject::elementsName;
-std::string Fem::FemSetElementNodesObject::uniqueElementsName;
-
 
 DEF_STD_CMD_A(CmdFemDefineElementsSet);
 
@@ -1423,22 +1420,19 @@ void CmdFemCreateElementsSet::activated(int)
         Fem::FemMeshObject* MeshObj =
             static_cast<Fem::FemMeshObject*>(FemMeshFilter.Result[0][0].getObject());
 
-        Fem::FemSetElementNodesObject::elementsName = "ElementsSet";
-        Fem::FemSetElementNodesObject::uniqueElementsName =
-            Command::getUniqueObjectName(Fem::FemSetElementNodesObject::elementsName.c_str());
+        const auto elementsName = "ElementsSet";
+        const auto uniqueElementsName = Command::getUniqueObjectName(elementsName).c_str();
 
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Elements set"));
         doCommand(Doc,
                   "App.activeDocument().addObject('Fem::FemSetElementNodesObject','%s')",
-                  Fem::FemSetElementNodesObject::uniqueElementsName.c_str());
+                  uniqueElementsName);
         doCommand(Gui,
                   "App.activeDocument().%s.FemMesh = App.activeDocument().%s",
-                  Fem::FemSetElementNodesObject::uniqueElementsName.c_str(),
+                  uniqueElementsName,
                   MeshObj->getNameInDocument());
-        doCommand(Gui,
-                  "Gui.activeDocument().setEdit('%s')",
-                  Fem::FemSetElementNodesObject::uniqueElementsName.c_str());
+        doCommand(Gui, "Gui.activeDocument().setEdit('%s')", uniqueElementsName);
     }
     else {
         QMessageBox::warning(
