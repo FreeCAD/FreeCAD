@@ -1,30 +1,27 @@
 /***************************************************************************
  *   Copyright (c) 2023 Peter McB                                          *
- *                                                                         *
- *   based on: TaskCreateNodeSet.h                                         *
  *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
+ *   This file is part of FreeCAD.                                         *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
  *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskCreateElementSet_H
-#define GUI_TASKVIEW_TaskCreateElementSet_H
+#ifndef FemGui_TaskCreateElementSet_H
+#define FemGui_TaskCreateElementSet_H
 
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Fem/App/FemSetElementNodesObject.h>
@@ -93,4 +90,4 @@ private:
 
 }  // namespace FemGui
 
-#endif  // GUI_TASKVIEW_TaskCreateElementSet_H
+#endif  // FemGui_TaskCreateElementSet_H
