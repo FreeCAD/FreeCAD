@@ -1,9 +1,5 @@
 /***************************************************************************
  *   Copyright (c) 2022 Peter McB                                          *
- *   added erase elements function                                         *
- *                                                                         *
- *   added to: Command.cpp                                                 *
- *                                                                         *
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -1254,7 +1250,6 @@ bool CmdFemCreateNodesSet::isActive()
 std::string Fem::FemSetElementNodesObject::elementsName;
 std::string Fem::FemSetElementNodesObject::uniqueElementsName;
 
-
 DEF_STD_CMD_A(CmdFemDefineElementsSet);
 
 void DefineElementsCallback(void* ud, SoEventCallback* n)
@@ -1426,7 +1421,6 @@ void CmdFemCreateElementsSet::activated(int)
         Fem::FemSetElementNodesObject::elementsName = "ElementsSet";
         Fem::FemSetElementNodesObject::uniqueElementsName =
             Command::getUniqueObjectName(Fem::FemSetElementNodesObject::elementsName.c_str());
-
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Elements set"));
         doCommand(Doc,
