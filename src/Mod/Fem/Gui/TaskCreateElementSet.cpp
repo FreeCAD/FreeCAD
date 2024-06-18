@@ -541,7 +541,8 @@ void TaskCreateElementSet::Restore(void)
                                     objectN.c_str());
             Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         }
-        else if (objectN.find(Fem::FemSetElementNodesObject::elementsName) != std::string::npos) {
+        else if (objectN.find(Fem::FemSetElementNodesObject::getElementName())
+                 != std::string::npos) {
             if (elList > 0) {
                 Gui::Command::doCommand(Gui::Command::Doc,
                                         "App.ActiveDocument.removeObject(\'%s\')",
