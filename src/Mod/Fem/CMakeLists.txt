@@ -335,6 +335,10 @@ SET(FemTestsFiles_SRCS
     femtest/data/__init__.py
 )
 
+SET(FemTestsFunctionTests_SRCS
+    femtest/function_tests/test_support_utils.py
+)
+
 SET(FemTestsCcx_SRCS
     femtest/data/calculix/__init__.py
     femtest/data/calculix/box_frequency.inp
@@ -502,6 +506,7 @@ SET(FemAllScripts
     ${FemTests_SRCS}
     ${FemTestsApp_SRCS}
     ${FemTestsFiles_SRCS}
+    ${FemTestsFunctionTests_SRCS}
     ${FemTestsCcx_SRCS}
     ${FemTestsElmer_SRCS}
     ${FemTestsMesh_SRCS}
@@ -541,6 +546,7 @@ INSTALL(FILES ${FemSolverZ88_SRCS} DESTINATION Mod/Fem/femsolver/z88)
 INSTALL(FILES ${FemTests_SRCS} DESTINATION Mod/Fem/femtest)
 INSTALL(FILES ${FemTestsApp_SRCS} DESTINATION Mod/Fem/femtest/app)
 INSTALL(FILES ${FemTestsFiles_SRCS} DESTINATION Mod/Fem/femtest/data)
+INSTALL(FILES ${FemTestsFunctionTests_SRCS} DESTINATION Mod/Fem/femtest/function_tests)
 INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/data/calculix)
 INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/data/elmer)
 INSTALL(FILES ${FemTestsMesh_SRCS} DESTINATION Mod/Fem/femtest/data/mesh)
