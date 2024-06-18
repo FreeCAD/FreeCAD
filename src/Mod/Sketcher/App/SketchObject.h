@@ -461,6 +461,14 @@ public:
      */
     int deleteUnusedInternalGeometry(int GeoId, bool delgeoid = false);
     /*!
+     \brief Same as `deleteUnusedInternalGeometry`, but changes `GeoId` to the new Id of the
+     geometry, or to `GeoEnum::GeoUndef` if the geometry is deleted as well. \param GeoId - the
+     geometry having the internal geometry to delete \param delgeoid - if true in addition to the
+     unused internal geometry also deletes the GeoId geometry \retval int - returns -1 on error,
+     otherwise the number of deleted elements
+     */
+    int deleteUnusedInternalGeometryAndUpdateGeoId(int& GeoId, bool delgeoid = false);
+    /*!
      \brief Approximates the given geometry with a B-spline
      \param GeoId - the geometry to approximate
      \param delgeoid - if true in addition to the unused internal geometry also deletes the GeoId

@@ -6967,6 +6967,39 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
     }
 }
 
+int SketchObject::deleteUnusedInternalGeometryAndUpdateGeoId(int& GeoId, bool delgeoid)
+{
+    const Part::Geometry* geo = getGeometry(GeoId);
+
+    if (!hasInternalGeometry(geo)) {
+        return -1;
+    }
+    // We need to remove the internal geometry of the BSpline, as BSplines change in number
+    // of poles and knots We save the tags of the relevant geometry to retrieve the new
+    // GeoIds later on.
+    boost::uuids::uuid GeoIdTag;
+
+    GeoIdTag = geo->getTag();
+
+    int returnValue = deleteUnusedInternalGeometry(GeoId, delgeoid);
+
+    if (delgeoid) {
+        GeoId = GeoEnum::GeoUndef;
+        return returnValue;
+    }
+
+    auto vals = getCompleteGeometry();
+
+    for (size_t i = 0; i < vals.size(); i++) {
+        if (vals[i]->getTag() == GeoIdTag) {
+            GeoId = getGeoIdFromCompleteGeometryIndex(i);
+            break;
+        }
+    }
+
+    return returnValue;
+}
+
 bool SketchObject::convertToNURBS(int GeoId)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
