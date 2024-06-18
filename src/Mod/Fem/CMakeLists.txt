@@ -170,6 +170,7 @@ SET(FemMesh_SRCS
 SET(FemObjects_SRCS
     femobjects/__init__.py
     femobjects/base_femelement.py
+    femobjects/base_femmeshelement.py
     femobjects/base_fempythonobject.py
     femobjects/constant_vacuumpermittivity.py
     femobjects/constraint_bodyheatsource.py
@@ -608,6 +609,7 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/__init__.py
     femviewprovider/view_base_femconstraint.py
     femviewprovider/view_base_femelement.py
+    femviewprovider/view_base_femmeshelement.py
     femviewprovider/view_base_femobject.py
     femviewprovider/view_constant_vacuumpermittivity.py
     femviewprovider/view_constraint_bodyheatsource.py
