@@ -9478,6 +9478,7 @@ std::pair<std::string,std::string> SketchObject::getElementName(
     index.appendToStringBuffer(ret.second);
     if (auto realName = convertInternalName(ret.second.c_str())) {
         Data::MappedElement mappedElement;
+        (void)realName;
 // Todo: Do we need to add the InternalShape?
 //        if (mapped)
 //            mappedElement = InternalShape.getShape().getElementName(name);

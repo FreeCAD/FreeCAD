@@ -4727,11 +4727,12 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
     const char* docname = obj->getDocument()->getName();
     const auto& subname = str.str();
 
+#ifdef FC_DEBUG
     if (!subname.empty()) {
         auto parentItem = item->getParentItem();
         assert(parentItem);
     }
-
+#endif
 
     if (!selected) {
         Gui::Selection().rmvSelection(docname, objname, subname.c_str());
