@@ -32,7 +32,7 @@ import math
 import os
 
 from FreeCAD import Vector, Base
-from PySide2.QtWidgets import QDialogButtonBox
+from PySide.QtGui import QDialogButtonBox
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
