@@ -1,6 +1,6 @@
 import unittest
 
-from ..app import support_utils
+from femtest.app import support_utils
 
 
 class TestParseDiff(unittest.TestCase):
