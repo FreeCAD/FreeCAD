@@ -14,6 +14,17 @@
   <defs
      id="defs2">
     <linearGradient
+       id="linearGradient5">
+      <stop
+         style="stop-color:#888a85;stop-opacity:1"
+         offset="0"
+         id="stop5" />
+      <stop
+         style="stop-color:#babdb6;stop-opacity:1"
+         offset="1"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
        id="linearGradient3">
       <stop
          style="stop-color:#204a87;stop-opacity:1;"
@@ -38,6 +49,14 @@
        y1="3.7324219"
        x2="16.1168"
        y2="3.7324219"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       xlink:href="#linearGradient5"
+       id="linearGradient6"
+       x1="0.54982098"
+       y1="13.293045"
+       x2="6.8715268"
+       y2="13.293045"
        gradientUnits="userSpaceOnUse" />
   </defs>
   <metadata
@@ -70,10 +89,17 @@
          id="ellipse3"
          d="m 12.947266,0.86132813 c 1.569419,0 2.851562,1.28608627 2.851562,2.87109377 0,1.5850075 -1.282143,2.8710937 -2.851562,2.8710937 -1.56942,0 -2.84961,-1.2856455 -2.84961,-2.8710937 0,-1.5854482 1.28019,-2.87109377 2.84961,-2.87109377 z" />
     </g>
-    <path
-       d="M 1.1083613,11.053813 A 3.449625,3.4249059 89.999874 1 1 6.3110984,15.541467 3.449625,3.4249059 89.999874 1 1 1.1083613,11.053813 Z"
-       id="path4250-71-6"
-       style="fill:#d3d7cf;fill-opacity:1;stroke:#555753;stroke-width:0.635945;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <g
+       id="g1">
+      <path
+         d="M 1.1083613,11.053813 A 3.449625,3.4249059 89.999874 1 1 6.3110984,15.541467 3.449625,3.4249059 89.999874 1 1 1.1083613,11.053813 Z"
+         id="path4250-71-6"
+         style="fill:#d3d7cf;fill-opacity:1;stroke:#555753;stroke-width:0.635945;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         d="m 3.6035156,10.425781 c 1.9973758,-0.03714 4.1128576,2.479984 2.2226563,4.703125 -2.4238824,2.850825 -6.65825744,-0.811284 -4.234375,-3.662109 0.6270226,-0.737466 1.3523696,-1.028756 2.0117187,-1.041016 z"
+         id="path4"
+         style="fill:url(#linearGradient6);fill-opacity:1;stroke:#d3d7cf;stroke-width:0.635945;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
     <g
        id="g830"
        style="display:inline;stroke-width:1.20179">
