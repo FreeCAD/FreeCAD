@@ -69,7 +69,7 @@ using namespace std;
 //================================================================================================
 //================================================================================================
 // helpers
-bool getConstraintPrerequisits(Fem::FemAnalysis** Analysis)
+static bool getConstraintPrerequisits(Fem::FemAnalysis** Analysis)
 {
     if (!FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -85,7 +85,7 @@ bool getConstraintPrerequisits(Fem::FemAnalysis** Analysis)
 }
 
 // OvG: Visibility automation show parts and hide meshes on activation of a constraint
-std::string gethideMeshShowPartStr(std::string showConstr = "")
+static std::string gethideMeshShowPartStr(std::string showConstr = "")
 {
     return "for amesh in App.activeDocument().Objects:\n\
     if \""
@@ -97,6 +97,63 @@ std::string gethideMeshShowPartStr(std::string showConstr = "")
             if aparttoshow == apart.Name:\n\
                 apart.ViewObject.Visibility = True\n\
         amesh.ViewObject.Visibility = False\n";
+}
+
+static std::string getSelectedNodes(Gui::View3DInventorViewer* view)
+{
+    Gui::SelectionRole role;
+    std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
+    if (clPoly.size() < 3) {
+        return {};
+    }
+    if (clPoly.front() != clPoly.back()) {
+        clPoly.push_back(clPoly.front());
+    }
+
+    SoCamera* cam = view->getSoRenderManager()->getCamera();
+    SbViewVolume vv = cam->getViewVolume();
+    Gui::ViewVolumeProjection proj(vv);
+    Base::Polygon2d polygon;
+    for (auto it : clPoly) {
+        polygon.Add(Base::Vector2d(it[0], it[1]));
+    }
+
+    std::vector<App::DocumentObject*> docObj =
+        Gui::Selection().getObjectsOfType(Fem::FemMeshObject::getClassTypeId());
+    if (docObj.size() != 1) {
+        return {};
+    }
+
+    const SMESHDS_Mesh* data =
+        static_cast<Fem::FemMeshObject*>(docObj[0])->FemMesh.getValue().getSMesh()->GetMeshDS();
+
+    SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
+    Base::Vector3f pt2d;
+    std::set<int> IntSet;
+
+    while (aNodeIter->more()) {
+        const SMDS_MeshNode* aNode = aNodeIter->next();
+        Base::Vector3f vec(aNode->X(), aNode->Y(), aNode->Z());
+        pt2d = proj(vec);
+        if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
+            IntSet.insert(aNode->GetID());
+        }
+    }
+
+    std::stringstream set;
+
+    set << "[";
+    for (auto it = IntSet.cbegin(); it != IntSet.cend(); ++it) {
+        if (it == IntSet.begin()) {
+            set << *it;
+        }
+        else {
+            set << "," << *it;
+        }
+    }
+    set << "]";
+
+    return set.str();
 }
 
 
@@ -1031,7 +1088,7 @@ bool CmdFemConstraintTransform::isActive()
 //================================================================================================
 DEF_STD_CMD_A(CmdFemDefineNodesSet)
 
-void DefineNodesCallback(void* ud, SoEventCallback* n)
+static void DefineNodesCallback(void* ud, SoEventCallback* n)
 {
     Fem::FemAnalysis* Analysis;
 
@@ -1048,88 +1105,20 @@ void DefineNodesCallback(void* ud, SoEventCallback* n)
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), DefineNodesCallback, ud);
     n->setHandled();
 
-    Gui::SelectionRole role;
-    std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
-    if (clPoly.size() < 3) {
-        return;
+    std::string str = getSelectedNodes(view);
+    if (!str.empty()) {
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.addObject('Fem::FemSetNodesObject','NodeSet')");
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.ActiveObject.Nodes = %s",
+                                str.c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.activeDocument().%s.addObject(App.activeDocument().NodeSet)",
+                                Analysis->getNameInDocument());
+
+        Gui::Command::commitCommand();
     }
-    if (clPoly.front() != clPoly.back()) {
-        clPoly.push_back(clPoly.front());
-    }
-
-    SoCamera* cam = view->getSoRenderManager()->getCamera();
-    SbViewVolume vv = cam->getViewVolume();
-    Gui::ViewVolumeProjection proj(vv);
-    Base::Polygon2d polygon;
-    for (auto it : clPoly) {
-        polygon.Add(Base::Vector2d(it[0], it[1]));
-    }
-
-
-    std::vector<App::DocumentObject*> docObj =
-        Gui::Selection().getObjectsOfType(Fem::FemMeshObject::getClassTypeId());
-    if (docObj.size() != 1) {
-        return;
-    }
-
-    const SMESHDS_Mesh* data =
-        static_cast<Fem::FemMeshObject*>(docObj[0])->FemMesh.getValue().getSMesh()->GetMeshDS();
-
-    SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
-    Base::Vector3f pt2d;
-    std::set<int> IntSet;
-
-    while (aNodeIter->more()) {
-        const SMDS_MeshNode* aNode = aNodeIter->next();
-        Base::Vector3f vec(aNode->X(), aNode->Y(), aNode->Z());
-        pt2d = proj(vec);
-        if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
-            IntSet.insert(aNode->GetID());
-        }
-    }
-
-    std::stringstream set;
-
-    set << "[";
-    for (std::set<int>::const_iterator it = IntSet.begin(); it != IntSet.end(); ++it) {
-        if (it == IntSet.begin()) {
-            set << *it;
-        }
-        else {
-            set << "," << *it;
-        }
-    }
-    set << "]";
-
-
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.addObject('Fem::FemSetNodesObject','NodeSet')");
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.ActiveObject.Nodes = %s",
-                            set.str().c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.activeDocument().%s.addObject(App.activeDocument().NodeSet)",
-                            Analysis->getNameInDocument());
-    // Gui::Command::updateActive();
-    Gui::Command::commitCommand();
-
-    // std::vector<Gui::ViewProvider*> views =
-    // view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId()); if (!views.empty()) {
-    //     Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command",
-    //     "Cut")); for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it !=
-    //     views.end(); ++it) {
-    //         ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
-    //         if (that->getEditingMode() > -1) {
-    //             that->finishEditing();
-    //             that->cutMesh(clPoly, *view, clip_inner);
-    //         }
-    //     }
-
-    //    Gui::Application::Instance->activeDocument()->commitCommand();
-
-    //    view->render();
-    //}
 }
 
 
@@ -1250,7 +1239,7 @@ bool CmdFemCreateNodesSet::isActive()
 
 DEF_STD_CMD_A(CmdFemDefineElementsSet);
 
-void DefineElementsCallback(void* ud, SoEventCallback* n)
+static void DefineElementsCallback(void* ud, SoEventCallback* n)
 {
     Fem::FemAnalysis* Analysis;
 
@@ -1267,70 +1256,22 @@ void DefineElementsCallback(void* ud, SoEventCallback* n)
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), DefineElementsCallback, ud);
     n->setHandled();
 
-    Gui::SelectionRole role;
-    std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
-    if (clPoly.size() < 3) {
-        return;
+    std::string str = getSelectedNodes(view);
+    if (!str.empty()) {
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.addObject('Fem::FemSetElementNodesObject','ElementSet')");
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.ActiveObject.Nodes = %s",
+                                str.c_str());
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.activeDocument().%s.addObject(App.activeDocument().ElementSet)",
+            Analysis->getNameInDocument());
+
+        Gui::Command::commitCommand();
     }
-    if (clPoly.front() != clPoly.back()) {
-        clPoly.push_back(clPoly.front());
-    }
-
-    SoCamera* cam = view->getSoRenderManager()->getCamera();
-    SbViewVolume vv = cam->getViewVolume();
-    Gui::ViewVolumeProjection proj(vv);
-    Base::Polygon2d polygon;
-    for (std::vector<SbVec2f>::const_iterator it = clPoly.begin(); it != clPoly.end(); ++it) {
-        polygon.Add(Base::Vector2d((*it)[0], (*it)[1]));
-    }
-
-    std::vector<App::DocumentObject*> docObj =
-        Gui::Selection().getObjectsOfType(Fem::FemMeshObject::getClassTypeId());
-    if (docObj.size() != 1) {
-        return;
-    }
-
-    const SMESHDS_Mesh* data =
-        static_cast<Fem::FemMeshObject*>(docObj[0])->FemMesh.getValue().getSMesh()->GetMeshDS();
-
-    SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
-    Base::Vector3f pt2d;
-    std::set<int> IntSet;
-
-    while (aNodeIter->more()) {
-        const SMDS_MeshNode* aNode = aNodeIter->next();
-        Base::Vector3f vec(aNode->X(), aNode->Y(), aNode->Z());
-        pt2d = proj(vec);
-        if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
-            IntSet.insert(aNode->GetID());
-        }
-    }
-
-    std::stringstream set;
-
-    set << "[";
-    for (std::set<int>::const_iterator it = IntSet.begin(); it != IntSet.end(); ++it) {
-        if (it == IntSet.begin()) {
-            set << *it;
-        }
-        else {
-            set << "," << *it;
-        }
-    }
-    set << "]";
-
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
-    Gui::Command::doCommand(
-        Gui::Command::Doc,
-        "App.ActiveDocument.addObject('Fem::FemSetElementNodesObject','ElementSet')");
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.ActiveObject.Nodes = %s",
-                            set.str().c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.activeDocument().%s.addObject(App.activeDocument().ElementSet)",
-                            Analysis->getNameInDocument());
-
-    Gui::Command::commitCommand();
 }
 
 CmdFemDefineElementsSet::CmdFemDefineElementsSet()
