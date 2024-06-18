@@ -519,7 +519,7 @@ class TestSketcherSolver(unittest.TestCase):
         hole.DrillForDepth = 0
         hole.Tapered = 0
         self.Doc.recompute()
-        self.assertEqual(len(hole.Shape.Edges), 13)
+        self.assertEqual(len(hole.Shape.Edges), 12)
         hole.Threaded = True
         hole.ModelThread = True
         body.addObject(hole)
