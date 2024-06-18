@@ -30,6 +30,7 @@ import os
 import sys
 import tempfile
 import unittest
+from itertools import starmap
 from typing import Union, List, Iterator
 
 import FreeCAD
@@ -176,27 +177,30 @@ def get_fem_test_defs():
     print(f"The file was saved in:{file_path}")
 
 
-def try_converting_to_float(line: str) -> Union[None, List[float]]:
+def _try_converting_to_float(line: str) -> Union[None, List[float]]:
     """Does its best to split a line and convert its elements to float
 
     Has 3 strategies of splitting:
         * by comma - mainly in CalculiX .inp files
         * by space - other solvers
         * by space and ignoring the 1st word - other solvers
-            If there was only 1 word, the line will fail, no compromises
+            If there is only 1 word, the line will fail, no compromises
 
-    Single characters always pass
+    Single characters always fail
 
     :param line: line to split and convert to floats
     :return: None if conversion failed, else list of floats
     """
-    strategies = [
+    strategies = (
         lambda _line: _line[1:].split(","),
         lambda _line: _line[1:].split(),
         lambda _line: (lambda split_line: len(split_line) > 1 and split_line or "fail")(
             _line[1:].split()[1:]
         ),
-    ]
+    )
+    if len(line) <= 1:
+        return None
+
     for strategy in strategies:
         try:
             return list(map(float, strategy(line)))
@@ -205,7 +209,7 @@ def try_converting_to_float(line: str) -> Union[None, List[float]]:
     return None
 
 
-def are_floats_equal(
+def _are_floats_equal(
     orig_floats: Union[None, List[float]], floats_to_compare: Union[None, List[float]]
 ) -> bool:
     """Check if floats in lists are equal with some tolerance
@@ -216,10 +220,74 @@ def are_floats_equal(
     """
     if any(floats is None for floats in (orig_floats, floats_to_compare)):
         return False
-    for orig_float, float_to_compare in zip(orig_floats, floats_to_compare):
-        if not math.isclose(orig_float, float_to_compare, abs_tol=1e-10):
-            return False
+    return all(
+        math.isclose(orig_float, float_to_compare, abs_tol=1e-10)
+        for orig_float, float_to_compare in zip(orig_floats, floats_to_compare)
+    )
+
+
+def _needs_further_action(hunk_line: str) -> bool:
+    """Parses the hunk line to determine, whether the further investigation of the block is needed
+
+    The hunk line has 4 formats:
+        when the hunk consists of only one line:
+            @@ -line_number +line_number @@
+        and when there are multiple lines in the hunk:
+            @@ -line_number,count +line_number,count @@
+
+        these are also possible:
+            @@ -line_number +line_number,count @@
+        and:
+            @@ -line_number,count +line_number @@
+
+    If there are multiple lines, the line counts should be equal.
+    If they are not equal, no need for further hunk inspection on whether
+    some of the lines differ in floats
+
+    :param hunk_line: str, line with 'diff' info about the block
+    :return: bool, True if the block needs further investigation, False otherwise
+    """
+    line = hunk_line[4:~2]
+    if line.find(",") != -1:
+        table = str.maketrans(dict(zip("+-,", "   ")))
+        line = line.translate(table)
+        return not (len(line) == 4 and line[2] == line[4])
     return True
+
+
+def _add_bad_block(
+    diff_block: List[str], should_parse_further: bool, bad_lines: List[str]
+) -> None:
+    """Adds a `diff_block` to `bad_lines` if the `diff_block` is considered bad
+
+    `diff_block` is considered bad if it either has unequal number of 'minus' and 'plus' lines, or
+    not all the lines' floats are equal
+
+    :param diff_block: the block of differences
+    :param should_parse_further: whether the block's lines should be further compared
+        on the lines' floats equality
+    :param bad_lines: storage for bad lines
+    :return: None
+    """
+    # if `diff_block` is empty, empty list will be added to `bad_lines`,
+    # but adding empty list doesn't change `bad_lines`
+    _diff_block = list(map(_try_converting_to_float, diff_block[1:]))
+    # if there are multiple lines in the diff_block
+    # all the 'minus' lines will be first, then the 'plus' ones
+    # hence the zip is needed
+    #
+    # -first_line
+    # -second_line
+    # +first_line
+    # +second_line
+    #
+    # islice(...) -> ("+f", "+s")
+    # zip(...) -> zip( ("-f", "-s", "+f", "+s"), ("+f", "+s") ) -> (("-f", "+f"), ("-s", "+s"))
+    are_equal = starmap(
+        _are_floats_equal, zip(_diff_block, _diff_block[len(_diff_block) // 2 :])
+    )
+    if not (should_parse_further and all(are_equal)):
+        bad_lines.extend(diff_block)
 
 
 def parse_diff(diff_lines: Iterator[str]) -> List[str]:
@@ -235,25 +303,24 @@ def parse_diff(diff_lines: Iterator[str]) -> List[str]:
     :return: list of bad lines with respect to their block of change
     """
     bad_lines = []
-    changes_block = []
+    diff_block = []
+    should_parse_further = None
     while True:
         try:
-            first = next(diff_lines)
-            if first.startswith("@@"):
-                if len(changes_block) > 1:
-                    bad_lines.extend(changes_block)
-                changes_block = [first]
+            line = next(diff_lines)
+            # skip the diff header
+            if line.startswith("---"):
+                next(diff_lines)
                 continue
-            second = next(diff_lines)
+            if line.startswith("@@"):
+                _add_bad_block(diff_block, should_parse_further, bad_lines)
+                should_parse_further = _needs_further_action(line)
+                diff_block = []
+            diff_block.append(line)
         except StopIteration:
             break
-        if first.startswith("---"):
-            continue
-        if not are_floats_equal(*map(try_converting_to_float, (first, second))):
-            changes_block.extend((first, second))
-    # check if we have any remaining block
-    if len(changes_block) > 1:
-        bad_lines.extend(changes_block)
+    # do not forget to check the last diff_block
+    _add_bad_block(diff_block, should_parse_further, bad_lines)
     return bad_lines
 
 
