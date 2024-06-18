@@ -144,6 +144,8 @@ macro(InitializeFreeCADBuildOptions)
     if(MSVC)
         set(FREECAD_3DCONNEXION_SUPPORT "NavLib" CACHE STRING "Select version of the 3Dconnexion device integration")
         set_property(CACHE FREECAD_3DCONNEXION_SUPPORT PROPERTY STRINGS "NavLib" "Raw input")
+    else(MSVC)
+        set(FREECAD_3DCONNEXION_SUPPORT "Raw input")
     endif(MSVC)
 
     if(MSVC)
