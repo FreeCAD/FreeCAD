@@ -12,6 +12,108 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <src/App/InitApplication.h>
 
+void setupLineSegment(Part::GeomLineSegment& lineSeg)
+{
+    Base::Vector3d coords1(1.0, 2.0, 0.0);
+    Base::Vector3d coords2(3.0, 4.0, 0.0);
+    lineSeg.setPoints(coords1, coords2);
+}
+
+void setupCircle(Part::GeomCircle& circle)
+{
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    Base::Vector3d splitPoint(2.0, 3.1, 0.0);
+    double radius = 3.0;
+    circle.setCenter(coordsCenter);
+    circle.setRadius(radius);
+}
+
+void setupArcOfCircle(Part::GeomArcOfCircle& arcOfCircle)
+{
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    double radius = 3.0;
+    double startParam = M_PI / 3, endParam = M_PI * 1.5;
+    arcOfCircle.setCenter(coordsCenter);
+    arcOfCircle.setRadius(radius);
+    arcOfCircle.setRange(startParam, endParam, true);
+}
+
+void setupEllipse(Part::GeomEllipse& ellipse)
+{
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    double majorRadius = 4.0;
+    double minorRadius = 3.0;
+    ellipse.setCenter(coordsCenter);
+    ellipse.setMajorRadius(majorRadius);
+    ellipse.setMinorRadius(minorRadius);
+}
+
+void setupArcOfParabola(Part::GeomArcOfParabola& aop)
+{
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    double focal = 3.0;
+    double startParam = -M_PI * 1.5, endParam = M_PI * 1.5;
+    aop.setCenter(coordsCenter);
+    aop.setFocal(focal);
+    aop.setRange(startParam, endParam, true);
+}
+
+std::unique_ptr<Part::GeomBSplineCurve> createTypicalNonPeriodicBSpline()
+{
+    int degree = 3;
+    std::vector<Base::Vector3d> poles;
+    poles.emplace_back(1, 0, 0);
+    poles.emplace_back(1, 1, 0);
+    poles.emplace_back(1, 0.5, 0);
+    poles.emplace_back(0, 1, 0);
+    poles.emplace_back(0, 0, 0);
+    std::vector<double> weights(5, 1.0);
+    std::vector<double> knotsNonPeriodic = {0.0, 1.0, 2.0};
+    std::vector<int> multiplicitiesNonPeriodic = {degree + 1, 1, degree + 1};
+    return std::make_unique<Part::GeomBSplineCurve>(poles,
+                                                    weights,
+                                                    knotsNonPeriodic,
+                                                    multiplicitiesNonPeriodic,
+                                                    degree,
+                                                    false);
+}
+
+std::unique_ptr<Part::GeomBSplineCurve> createTypicalPeriodicBSpline()
+{
+    int degree = 3;
+    std::vector<Base::Vector3d> poles;
+    poles.emplace_back(1, 0, 0);
+    poles.emplace_back(1, 1, 0);
+    poles.emplace_back(1, 0.5, 0);
+    poles.emplace_back(0, 1, 0);
+    poles.emplace_back(0, 0, 0);
+    std::vector<double> weights(5, 1.0);
+    std::vector<double> knotsPeriodic = {0.0, 0.3, 1.0, 1.5, 1.8, 2.0};
+    std::vector<int> multiplicitiesPeriodic(6, 1);
+    return std::make_unique<Part::GeomBSplineCurve>(poles,
+                                                    weights,
+                                                    knotsPeriodic,
+                                                    multiplicitiesPeriodic,
+                                                    degree,
+                                                    true);
+}
+
+int countConstraintsOfType(const Sketcher::SketchObject* obj, const Sketcher::ConstraintType cType)
+{
+    const std::vector<Sketcher::Constraint*>& constraints = obj->Constraints.getValues();
+
+    int result = std::count_if(constraints.begin(),
+                               constraints.end(),
+                               [&cType](const Sketcher::Constraint* constr) {
+                                   return constr->Type == cType;
+                               });
+
+    return result;
+}
+
+// TODO: How to set up B-splines here?
+// It's not straightforward to change everything from a "default" one.
+
 class SketchObjectTest: public ::testing::Test
 {
 protected:
@@ -451,6 +553,635 @@ TEST_F(SketchObjectTest, testGetPointFromGeomBSplineCurvePeriodic)
     // non-trivial as well. This is the best we can do.
     EXPECT_DOUBLE_EQ(ptStart[0], ptEnd[0]);
     EXPECT_DOUBLE_EQ(ptStart[1], ptEnd[1]);
+}
+
+TEST_F(SketchObjectTest, testSplitLineSegment)
+{
+    // Arrange
+    Base::Vector3d splitPoint(2.0, 3.1, 0.0);
+    Part::GeomLineSegment lineSeg;
+    setupLineSegment(lineSeg);
+    int geoId = getObject()->addGeometry(&lineSeg);
+
+    // Act
+    int result = getObject()->split(geoId, splitPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // One additional curve should be added
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
+    // TODO: Expect the resultant curves are line segments and shape is conserved
+    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
+    EXPECT_EQ(numberOfCoincidentConstraints, 1);
+}
+
+TEST_F(SketchObjectTest, testSplitCircle)
+{
+    // Arrange
+    Base::Vector3d splitPoint(2.0, 3.1, 0.0);
+    Part::GeomCircle circle;
+    setupCircle(circle);
+    int geoId = getObject()->addGeometry(&circle);
+
+    // Act
+    int result = getObject()->split(geoId, splitPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // The circle should be split into an arc now
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
+}
+
+TEST_F(SketchObjectTest, testSplitEllipse)
+{
+    // Arrange
+    Base::Vector3d splitPoint(2.0, 3.1, 0.0);
+    Part::GeomEllipse ellipse;
+    setupEllipse(ellipse);
+    int geoId = getObject()->addGeometry(&ellipse);
+
+    // Act
+    int result = getObject()->split(geoId, splitPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // TODO: The ellipse should be split into an arc of ellipse now
+    // FIXME: Internal geometries may be added or removed which may cause some issues
+    // EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
+}
+
+TEST_F(SketchObjectTest, testSplitArcOfCircle)
+{
+    // Arrange
+    Base::Vector3d splitPoint(-2.0, 3.1, 0.0);
+    Part::GeomArcOfCircle arcOfCircle;
+    setupArcOfCircle(arcOfCircle);
+    int geoId = getObject()->addGeometry(&arcOfCircle);
+
+    // Act
+    int result = getObject()->split(geoId, splitPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // The arcOfCircle should be split into an arc now
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
+    // Expect the end points and centers of the resultant curve are coincident.
+    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
+    EXPECT_EQ(numberOfCoincidentConstraints, 2);
+}
+
+TEST_F(SketchObjectTest, testSplitArcOfConic)
+{
+    // Arrange
+    // TODO: Define a parabola/hyperbola as reference
+    Base::Vector3d splitPoint(1.0, -1.1, 0.0);
+    Part::GeomArcOfParabola arcOfConic;
+    setupArcOfParabola(arcOfConic);
+    int geoId = getObject()->addGeometry(&arcOfConic);
+
+    // Act
+    // TODO: Sample random points from both sides of the split
+    int result = getObject()->split(geoId, splitPoint);
+    for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
+        getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
+    }
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // The arcOfConic should be split into two arcs of the same conic now
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 1);
+    // TODO: Expect the end points of the resultant curve are coincident.
+    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
+    EXPECT_EQ(numberOfCoincidentConstraints, 1);
+}
+
+TEST_F(SketchObjectTest, testSplitNonPeriodicBSpline)
+{
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    Base::Vector3d splitPoint(-0.5, 1.1, 0.0);
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+    // TODO: Put a point on this
+
+    // Act
+    // TODO: sample before point(s) at a random parameter
+    int result = getObject()->split(geoId, splitPoint);
+    for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
+        getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
+    }
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 1);
+    // TODO: confirm sampled point(s) is/are at the same place
+    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
+    EXPECT_EQ(numberOfCoincidentConstraints, 1);
+}
+
+TEST_F(SketchObjectTest, testSplitPeriodicBSpline)
+{
+    // Arrange
+    auto PeriodicBSpline = createTypicalPeriodicBSpline();
+    Base::Vector3d splitPoint(-0.5, 1.1, 0.0);
+    int geoId = getObject()->addGeometry(PeriodicBSpline.get());
+    // TODO: Put a point on this
+
+    // Act
+    // TODO: sample before point(s) at a random parameter
+    int result = getObject()->split(geoId, splitPoint);
+    for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
+        getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
+    }
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+    // TODO: confirm sampled point(s) is/are at the same place
+}
+
+TEST_F(SketchObjectTest, testTrimWithoutIntersection)
+{
+    // Arrange
+    Part::GeomLineSegment lineSeg;
+    setupLineSegment(lineSeg);
+    int geoId = getObject()->addGeometry(&lineSeg);
+    Base::Vector3d trimPoint(2.0, 3.1, 0.0);
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // Once this line segment is trimmed, nothing should remain
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId - 1);
+}
+
+TEST_F(SketchObjectTest, testTrimLineSegmentEnd)
+{
+    // Arrange
+    Part::GeomLineSegment lineSeg;
+    setupLineSegment(lineSeg);
+    // TODO: create curves intersecting at the right spots
+    Base::Vector3d trimPoint(lineSeg.pointAtParameter(
+        lineSeg.getFirstParameter()
+        + (lineSeg.getLastParameter() - lineSeg.getFirstParameter()) * 0.2));
+    Base::Vector3d p1(lineSeg.pointAtParameter(
+        lineSeg.getFirstParameter()
+        + (lineSeg.getLastParameter() - lineSeg.getFirstParameter()) * 0.5));
+    Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
+    Part::GeomLineSegment lineSegCut1;
+    lineSegCut1.setPoints(p1, p2);
+    getObject()->addGeometry(&lineSegCut1);
+    int geoId = getObject()->addGeometry(&lineSeg);
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // TODO: Once this line segment is trimmed, the curve should be "smaller"
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
+    // TODO: There should be a "point-on-object" constraint on the intersecting curves
+    int numberOfPointOnObjectConstraints =
+        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
+}
+
+TEST_F(SketchObjectTest, testTrimLineSegmentMid)
+{
+    // Arrange
+    Part::GeomLineSegment lineSeg;
+    setupLineSegment(lineSeg);
+    // TODO: create curves intersecting at the right spots
+    Base::Vector3d trimPoint(lineSeg.pointAtParameter(
+        lineSeg.getFirstParameter()
+        + (lineSeg.getLastParameter() - lineSeg.getFirstParameter()) * 0.5));
+    Base::Vector3d p1(lineSeg.pointAtParameter(
+        lineSeg.getFirstParameter()
+        + (lineSeg.getLastParameter() - lineSeg.getFirstParameter()) * 0.3));
+    Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
+    Part::GeomLineSegment lineSegCut1;
+    lineSegCut1.setPoints(p1, p2);
+    getObject()->addGeometry(&lineSegCut1);
+    Base::Vector3d p3(lineSeg.pointAtParameter(
+        lineSeg.getFirstParameter()
+        + (lineSeg.getLastParameter() - lineSeg.getFirstParameter()) * 0.7));
+    Base::Vector3d p4(p3.x + 0.1, p3.y + 0.1, p3.z);
+    Part::GeomLineSegment lineSegCut2;
+    lineSegCut2.setPoints(p3, p4);
+    getObject()->addGeometry(&lineSegCut2);
+    int geoId = getObject()->addGeometry(&lineSeg);
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // TODO: Once this line segment is trimmed, there should be two "smaller" curves in its place
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
+    // TODO: There should be a "point-on-object" constraint on the intersecting curves
+    int numberOfPointOnObjectConstraints =
+        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    EXPECT_EQ(numberOfPointOnObjectConstraints, 2);
+    // TODO: Ensure shape is preserved
+}
+
+TEST_F(SketchObjectTest, testTrimCircleEnd)
+{
+    // Arrange
+    Part::GeomCircle circle;
+    setupCircle(circle);
+    // TODO: create curves intersecting at the right spots
+    Base::Vector3d trimPoint(
+        circle.pointAtParameter(circle.getFirstParameter()
+                                + (circle.getLastParameter() - circle.getFirstParameter()) * 0.2));
+    Base::Vector3d p1(
+        circle.pointAtParameter(circle.getFirstParameter()
+                                + (circle.getLastParameter() - circle.getFirstParameter()) * 0.5));
+    Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
+    Part::GeomLineSegment lineSegCut1;
+    lineSegCut1.setPoints(p1, p2);
+    getObject()->addGeometry(&lineSegCut1);
+    int geoId = getObject()->addGeometry(&circle);
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // TODO: Once this circle is trimmed, the circle should be deleted.
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId - 1);
+}
+
+TEST_F(SketchObjectTest, testTrimCircleMid)
+{
+    // Arrange
+    Part::GeomCircle circle;
+    setupCircle(circle);
+    // TODO: create curves intersecting at the right spots
+    Base::Vector3d trimPoint(
+        circle.pointAtParameter(circle.getFirstParameter()
+                                + (circle.getLastParameter() - circle.getFirstParameter()) * 0.5));
+    Base::Vector3d p1(
+        circle.pointAtParameter(circle.getFirstParameter()
+                                + (circle.getLastParameter() - circle.getFirstParameter()) * 0.3));
+    Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
+    Part::GeomLineSegment lineSegCut1;
+    lineSegCut1.setPoints(p1, p2);
+    getObject()->addGeometry(&lineSegCut1);
+    Base::Vector3d p3(
+        circle.pointAtParameter(circle.getFirstParameter()
+                                + (circle.getLastParameter() - circle.getFirstParameter()) * 0.7));
+    Base::Vector3d p4(p3.x + 0.1, p3.y + 0.1, p3.z);
+    // to ensure that this line clearly intersects the curve, not just have a point on object
+    // without explicit constraint
+    p3.x -= 0.1;
+    p3.y -= 0.1;
+    Part::GeomLineSegment lineSegCut2;
+    lineSegCut2.setPoints(p3, p4);
+    getObject()->addGeometry(&lineSegCut2);
+    int geoId = getObject()->addGeometry(&circle);
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // TODO: Once this circle is trimmed, there should be one arc.
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
+    // There should be one "coincident" and one "point-on-object" constraint on the intersecting
+    // curves
+    // FIXME: For closed curves, lineSegCut1 creates a coincident constraint but only a
+    // point-on-object for non-closed curves. Is that by design?
+    int numberOfPointOnObjectConstraints =
+        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
+    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
+    EXPECT_EQ(numberOfCoincidentConstraints, 1);
+    // TODO: Ensure shape is preserved
+}
+
+TEST_F(SketchObjectTest, testTrimArcOfCircleEnd)
+{
+    // This should also cover as a representative of arc of conic
+
+    // Arrange
+    Part::GeomArcOfCircle arcOfCircle;
+    setupArcOfCircle(arcOfCircle);
+    // TODO: create curves intersecting at the right spots
+    Base::Vector3d trimPoint(arcOfCircle.pointAtParameter(
+        arcOfCircle.getFirstParameter()
+        + (arcOfCircle.getLastParameter() - arcOfCircle.getFirstParameter()) * 0.2));
+    Base::Vector3d p1(arcOfCircle.pointAtParameter(
+        arcOfCircle.getFirstParameter()
+        + (arcOfCircle.getLastParameter() - arcOfCircle.getFirstParameter()) * 0.5));
+    Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
+    Part::GeomLineSegment lineSegCut1;
+    lineSegCut1.setPoints(p1, p2);
+    getObject()->addGeometry(&lineSegCut1);
+    int geoId = getObject()->addGeometry(&arcOfCircle);
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
+    // There should be a "point-on-object" constraint on the intersecting curves
+    int numberOfPointOnObjectConstraints =
+        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
+}
+
+TEST_F(SketchObjectTest, testTrimArcOfCircleMid)
+{
+    // Arrange
+    Part::GeomArcOfCircle arcOfCircle;
+    setupArcOfCircle(arcOfCircle);
+    // TODO: create curves intersecting at the right spots
+    Base::Vector3d trimPoint(arcOfCircle.pointAtParameter(
+        arcOfCircle.getFirstParameter()
+        + (arcOfCircle.getLastParameter() - arcOfCircle.getFirstParameter()) * 0.5));
+    Base::Vector3d p1(arcOfCircle.pointAtParameter(
+        arcOfCircle.getFirstParameter()
+        + (arcOfCircle.getLastParameter() - arcOfCircle.getFirstParameter()) * 0.3));
+    Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
+    Part::GeomLineSegment lineSegCut1;
+    lineSegCut1.setPoints(p1, p2);
+    getObject()->addGeometry(&lineSegCut1);
+    Base::Vector3d p3(arcOfCircle.pointAtParameter(
+        arcOfCircle.getFirstParameter()
+        + (arcOfCircle.getLastParameter() - arcOfCircle.getFirstParameter()) * 0.7));
+    Base::Vector3d p4(p3.x + 0.1, p3.y + 0.1, p3.z);
+    Part::GeomLineSegment lineSegCut2;
+    lineSegCut2.setPoints(p3, p4);
+    getObject()->addGeometry(&lineSegCut2);
+    int geoId = getObject()->addGeometry(&arcOfCircle);
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
+    // There should be a "point-on-object" constraint on the intersecting curves
+    int numberOfPointOnObjectConstraints =
+        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    EXPECT_EQ(numberOfPointOnObjectConstraints, 2);
+    // TODO: Ensure shape is preserved
+}
+
+TEST_F(SketchObjectTest, testTrimEllipseEnd)
+{
+    // Arrange
+    Part::GeomEllipse ellipse;
+    setupEllipse(ellipse);
+    // TODO: create curves intersecting at the right spots
+    Base::Vector3d trimPoint(ellipse.pointAtParameter(
+        ellipse.getFirstParameter()
+        + (ellipse.getLastParameter() - ellipse.getFirstParameter()) * 0.2));
+    Base::Vector3d p1(ellipse.pointAtParameter(
+        ellipse.getFirstParameter()
+        + (ellipse.getLastParameter() - ellipse.getFirstParameter()) * 0.5));
+    Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
+    Part::GeomLineSegment lineSegCut1;
+    lineSegCut1.setPoints(p1, p2);
+    getObject()->addGeometry(&lineSegCut1);
+    int geoId = getObject()->addGeometry(&ellipse);
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+    // remove all internal geometry
+    for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
+        getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
+    }
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // Once this ellipse is trimmed, the ellipse should be deleted.
+    // Only remaining: line segment
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+}
+
+TEST_F(SketchObjectTest, testTrimEllipseMid)
+{
+    // Arrange
+    Part::GeomEllipse ellipse;
+    setupEllipse(ellipse);
+    // TODO: create curves intersecting at the right spots
+    Base::Vector3d trimPoint(ellipse.pointAtParameter(
+        ellipse.getFirstParameter()
+        + (ellipse.getLastParameter() - ellipse.getFirstParameter()) * 0.5));
+    Base::Vector3d p1(ellipse.pointAtParameter(
+        ellipse.getFirstParameter()
+        + (ellipse.getLastParameter() - ellipse.getFirstParameter()) * 0.3));
+    Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
+    Part::GeomLineSegment lineSegCut1;
+    lineSegCut1.setPoints(p1, p2);
+    getObject()->addGeometry(&lineSegCut1);
+    Base::Vector3d p3(ellipse.pointAtParameter(
+        ellipse.getFirstParameter()
+        + (ellipse.getLastParameter() - ellipse.getFirstParameter()) * 0.7));
+    Base::Vector3d p4(p3.x + 0.1, p3.y + 0.1, p3.z);
+    // to ensure that this line clearly intersects the curve, not just have a point on object
+    // without explicit constraint
+    p3.x -= 0.1;
+    p3.y -= 0.1;
+    Part::GeomLineSegment lineSegCut2;
+    lineSegCut2.setPoints(p3, p4);
+    getObject()->addGeometry(&lineSegCut2);
+    int geoId = getObject()->addGeometry(&ellipse);
+    // FIXME: Doing this to avoid trimming only until minor/major axes. Should not be needed.
+    getObject()->deleteUnusedInternalGeometry(geoId);
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+    // remove all internal geometry
+    for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
+        getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
+    }
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // Once this ellipse is trimmed, there should be one arc and line segments.
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 2);
+    // There should be one "coincident" and one "point-on-object" constraint on the intersecting
+    // curves
+    int numberOfPointOnObjectConstraints =
+        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
+    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
+    EXPECT_EQ(numberOfCoincidentConstraints, 1);
+    // TODO: Ensure shape is preserved
+}
+
+// TODO: Tests for other arcs of conics?
+
+TEST_F(SketchObjectTest, testTrimPeriodicBSplineEnd)
+{
+    // Arrange
+    auto periodicBSpline = createTypicalPeriodicBSpline();
+    assert(periodicBSpline);
+    // TODO: create curves intersecting at the right spots
+    Base::Vector3d trimPoint(periodicBSpline->pointAtParameter(
+        periodicBSpline->getFirstParameter()
+        + (periodicBSpline->getLastParameter() - periodicBSpline->getFirstParameter()) * 0.2));
+    Base::Vector3d p1(periodicBSpline->pointAtParameter(
+        periodicBSpline->getFirstParameter()
+        + (periodicBSpline->getLastParameter() - periodicBSpline->getFirstParameter()) * 0.5));
+    Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
+    Part::GeomLineSegment lineSegCut1;
+    lineSegCut1.setPoints(p1, p2);
+    getObject()->addGeometry(&lineSegCut1);
+    int geoId = getObject()->addGeometry(periodicBSpline.get());
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // FIXME: This will fail because of deleted internal geometry
+    // Once this periodicBSpline is trimmed, the periodicBSpline should be deleted, leaving only the
+    // line segment.
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+    // TODO: There should be a "point-on-object" constraint on the intersecting curves
+}
+
+TEST_F(SketchObjectTest, testTrimPeriodicBSplineMid)
+{
+    // Arrange
+    auto periodicBSpline = createTypicalPeriodicBSpline();
+    assert(periodicBSpline);
+    // TODO: create curves intersecting at the right spots
+    Base::Vector3d trimPoint(periodicBSpline->pointAtParameter(
+        periodicBSpline->getFirstParameter()
+        + (periodicBSpline->getLastParameter() - periodicBSpline->getFirstParameter()) * 0.5));
+    Base::Vector3d p1(periodicBSpline->pointAtParameter(
+        periodicBSpline->getFirstParameter()
+        + (periodicBSpline->getLastParameter() - periodicBSpline->getFirstParameter()) * 0.3));
+    Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
+    Part::GeomLineSegment lineSegCut1;
+    lineSegCut1.setPoints(p1, p2);
+    getObject()->addGeometry(&lineSegCut1);
+    Base::Vector3d p3(periodicBSpline->pointAtParameter(
+        periodicBSpline->getFirstParameter()
+        + (periodicBSpline->getLastParameter() - periodicBSpline->getFirstParameter()) * 0.7));
+    Base::Vector3d p4(p3.x + 0.1, p3.y + 0.1, p3.z);
+    // to ensure that this line clearly intersects the curve, not just have a point on object
+    // without explicit constraint
+    p3.x -= 0.1;
+    p3.y -= 0.1;
+    Part::GeomLineSegment lineSegCut2;
+    lineSegCut2.setPoints(p3, p4);
+    getObject()->addGeometry(&lineSegCut2);
+    int geoId = getObject()->addGeometry(periodicBSpline.get());
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+    // remove all internal geometry
+    for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
+        getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
+    }
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // Only remaining: Two line segments and the B-spline
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 2);
+    // There should be one "coincident" and one "point-on-object" constraint on the intersecting
+    // curves
+    int numberOfPointOnObjectConstraints =
+        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
+    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
+    EXPECT_EQ(numberOfCoincidentConstraints, 1);
+    // TODO: Ensure shape is preserved
+}
+
+TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineEnd)
+{
+    // This should also cover as a representative of arc of conic
+
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    assert(nonPeriodicBSpline);
+    // create curves intersecting at the right spots
+    Base::Vector3d trimPoint(nonPeriodicBSpline->pointAtParameter(
+        nonPeriodicBSpline->getFirstParameter()
+        + (nonPeriodicBSpline->getLastParameter() - nonPeriodicBSpline->getFirstParameter())
+            * 0.2));
+    Base::Vector3d p1(nonPeriodicBSpline->pointAtParameter(
+        nonPeriodicBSpline->getFirstParameter()
+        + (nonPeriodicBSpline->getLastParameter() - nonPeriodicBSpline->getFirstParameter())
+            * 0.5));
+    Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
+    Part::GeomLineSegment lineSegCut1;
+    lineSegCut1.setPoints(p1, p2);
+    getObject()->addGeometry(&lineSegCut1);
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+    // remove all internal geometry
+    for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
+        getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
+    }
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // Only remaining: one line segment and the trimmed B-spline
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 1);
+    // FIXME: There should be a "point-on-object" constraint on the intersecting curves
+    int numberOfPointOnObjectConstraints =
+        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
+}
+
+TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
+{
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    assert(nonPeriodicBSpline);
+    // TODO: create curves intersecting at the right spots
+    Base::Vector3d trimPoint(nonPeriodicBSpline->pointAtParameter(
+        nonPeriodicBSpline->getFirstParameter()
+        + (nonPeriodicBSpline->getLastParameter() - nonPeriodicBSpline->getFirstParameter())
+            * 0.5));
+    Base::Vector3d p1(nonPeriodicBSpline->pointAtParameter(
+        nonPeriodicBSpline->getFirstParameter()
+        + (nonPeriodicBSpline->getLastParameter() - nonPeriodicBSpline->getFirstParameter())
+            * 0.3));
+    Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
+    Part::GeomLineSegment lineSegCut1;
+    lineSegCut1.setPoints(p1, p2);
+    getObject()->addGeometry(&lineSegCut1);
+    Base::Vector3d p3(nonPeriodicBSpline->pointAtParameter(
+        nonPeriodicBSpline->getFirstParameter()
+        + (nonPeriodicBSpline->getLastParameter() - nonPeriodicBSpline->getFirstParameter())
+            * 0.7));
+    Base::Vector3d p4(p3.x + 0.1, p3.y + 0.1, p3.z);
+    Part::GeomLineSegment lineSegCut2;
+    lineSegCut2.setPoints(p3, p4);
+    getObject()->addGeometry(&lineSegCut2);
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+    // remove all internal geometry
+    for (int i = 0; i < getObject()->getHighestCurveIndex(); ++i) {
+        if (getObject()->getGeometry(i)->is<Part::GeomBSplineCurve>()) {
+            getObject()->deleteUnusedInternalGeometry(i);
+        }
+    }
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    // Only remaining: one line segment and the trimmed B-spline
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 3);
+    // There should be a "point-on-object" constraint on the intersecting curves
+    int numberOfPointOnObjectConstraints =
+        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    EXPECT_EQ(numberOfPointOnObjectConstraints, 2);
+    // TODO: Ensure shape is preserved
 }
 
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionNoUnits1)
