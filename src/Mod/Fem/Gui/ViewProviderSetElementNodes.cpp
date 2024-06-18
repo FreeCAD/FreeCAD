@@ -45,9 +45,7 @@ bool ViewProviderSetElementNodes::doubleClicked()
 
 bool ViewProviderSetElementNodes::setEdit(int)
 {
-    Gui::TaskView::TaskDialog* dlg =
-        new TaskDlgCreateElementSet(static_cast<Fem::FemSetElementNodesObject*>(getObject()));
-    Gui::Control().showDialog(dlg);
+    doubleClicked();
     return true;
 }
 

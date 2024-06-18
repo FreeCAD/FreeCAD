@@ -69,9 +69,6 @@ bool TaskDlgCreateElementSet::accept()
     try {
         FemSetElementNodesObject->Elements.setValues(param->elementTempSet);
         FemSetElementNodesObject->recomputeFeature();
-        // Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        // if(doc)
-        //     doc->resetEdit();
         param->MeshViewProvider->resetHighlightNodes();
         FemSetElementNodesObject->Label.setValue(name->name);
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
