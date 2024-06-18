@@ -127,18 +127,6 @@ std::list<ImportExportSettings::CodePage> ImportExportSettings::getCodePageList(
     return codePageList;
 }
 
-void ImportExportSettings::setReadShowDialogImport(bool on)
-{
-    auto grp = pGroup->GetGroup("hSTEP");
-    grp->SetBool("ReadShowDialogImport", on);
-}
-
-bool ImportExportSettings::getReadShowDialogImport() const
-{
-    auto grp = pGroup->GetGroup("hSTEP");
-    return grp->GetBool("ReadShowDialogImport", false);
-}
-
 #endif
 
 void ImportExportSettings::initSTEP(Base::Reference<ParameterGrp> hGrp)

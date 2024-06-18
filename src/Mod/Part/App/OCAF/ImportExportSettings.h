@@ -103,9 +103,6 @@ public:
     ImportMode getImportMode() const;
 
 #if OCC_VERSION_HEX >= 0x070800
-    void setReadShowDialogImport(bool);
-    bool getReadShowDialogImport() const;
-
     void setImportCodePage(int);
     Resource_FormatType getImportCodePage() const;
     std::list<ImportExportSettings::CodePage> getCodePageList() const;
