@@ -99,8 +99,6 @@ void ImportExportSettings::initIGES(Base::Reference<ParameterGrp> hGrp)
     }
 }
 
-#if OCC_VERSION_HEX >= 0x070800
-
 void ImportExportSettings::setImportCodePage(int cpIndex)
 {
     pGroup->SetInt("ImportCodePage", cpIndex);
@@ -108,12 +106,11 @@ void ImportExportSettings::setImportCodePage(int cpIndex)
 
 Resource_FormatType ImportExportSettings::getImportCodePage() const
 {
-    Resource_FormatType result;
-    int codePageIndex = pGroup->GetInt("ImportCodePage", 0);
-    int i=0;
+    Resource_FormatType result {};
+    long codePageIndex = pGroup->GetInt("ImportCodePage", 0L);
+    long i = 0L;
     for (const auto& codePageIt : codePageList) {
-        if (i == codePageIndex)
-        {
+        if (i == codePageIndex) {
             result = codePageIt.codePage;
             break;
         }
@@ -126,8 +123,6 @@ std::list<ImportExportSettings::CodePage> ImportExportSettings::getCodePageList(
 {
     return codePageList;
 }
-
-#endif
 
 void ImportExportSettings::initSTEP(Base::Reference<ParameterGrp> hGrp)
 {
