@@ -1,40 +1,28 @@
-from ..app import support_utils
 import unittest
 
+from ..app import support_utils
 
-class TestParse_Diff(unittest.TestCase):
-    def test_ignore_triple_minuses(self) -> None:
-        diff_lines = """---
----
----""".splitlines()
-        bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertFalse(bad_lines, f"Triple minuses should be ignored {bad_lines = }")
 
-    def test_ignore_single_character(self) -> None:
-        diff_lines = """@
-@
-?
-*""".splitlines()
-        bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertFalse(bad_lines, f"Single characters are not ignored {bad_lines = }")
-
-    def test_not_ignore_single_word(self) -> None:
+class TestParseDiff(unittest.TestCase):
+    def test_good_rounding_one_block(self):
         diff_lines = """---
 +++
-@@ @@
--12,
-+11""".splitlines()
+@@ -11717 +11717 @@
+-2505,2,-9.5670268990152E-01
++2505,2,-9.5670268990153E-01""".splitlines()
         bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertTrue(bad_lines, f"Single words are ignored {bad_lines = }")
+        assert not bad_lines
 
-    def test_ignore_double_at_sign(self) -> None:
-        diff_lines = """@@
-@@
-@@""".splitlines()
+    def test_bad_rounding_one_block(self):
+        diff_lines = """---
++++
+@@ -11717 +11717 @@
+-2505,2,-9.5670268990152E-01
++2505,2,-9.5680268990152E-01""".splitlines()
         bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertFalse(bad_lines, f"Double '@' signs are not ignored {bad_lines = }")
+        assert len(bad_lines) == 3
 
-    def test_good_float_rounding(self) -> None:
+    def test_good_rounding_two_blocks(self):
         diff_lines = """---
 +++
 @@ -11717 +11717 @@
@@ -44,105 +32,108 @@ class TestParse_Diff(unittest.TestCase):
 -3327,2,-2.2462134450621E+00
 +3327,2,-2.2462134450620E+00""".splitlines()
         bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertFalse(bad_lines, f"Good rounding failed {bad_lines = }")
+        assert not bad_lines
+
+    def test_bad_and_good_rounding_two_blocks(self):
+        diff_lines = """---
++++
+@@ -11717 +11717 @@
+-2505,2,-9.5680268990152E-01
++2505,2,-9.5670268990152E-01
+@@ -12539 +12539 @@
+-3327,2,-2.2462134450621E+00
++3327,2,-2.2462134450620E+00""".splitlines()
+        bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
+        assert len(bad_lines) == 3
+        assert bad_lines == diff_lines[2:5]
+
+    def test_good_rounding_big_block(self):
+        diff_lines = """---
++++
+@@ -11717,2 +11717,2 @@
+-2505,2,-9.5670268990152E-01
+-3327,2,-2.2462134450621E+00
++2505,2,-9.5670268990153E-01
++3327,2,-2.2462134450620E+00""".splitlines()
+        bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
+        assert not bad_lines
+
+    def test_bad_and_good_rounding_big_block(self):
+        diff_lines = """---
++++
+@@ -11717,2 +11717,2 @@
+-2505,2,-9.5680268990153E-01
+-3327,2,-2.2462134450621E+00
++2505,2,-9.5670268990153E-01
++3327,2,-2.2462134450620E+00""".splitlines()
+        bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
+        assert len(bad_lines) == 5
+
+    def test_fail_single_characters(self):
+        diff_lines = """---
++++
+s
+i
+n""".splitlines()
+        bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
+        assert len(bad_lines) == 3
+
+    def test_not_ignored_added_newlines(self):
+        diff_lines = """---
++++
+@@ -1 +1,3 @@
+-ccc
++
++
++cccd
+""".splitlines()
+        bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
+        assert len(bad_lines) == 5
+
+    def test_not_ignored_removed_newlines(self):
+        diff_lines = """---
++++
+@@ -1,3 +1 @@
+-
+-
+-cccd
++ccc
+""".splitlines()
+        bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
+        assert len(bad_lines) == 5
+
+    def test_not_ignored_single_word(self):
+        diff_lines = """---
++++
+@@ -1 +1 @@
+-11
++12""".splitlines()
+        bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
+        assert len(bad_lines) == 3
 
     def test_ignore_bad_formatting(self) -> None:
         diff_lines = """---
 +++
-@@ @@
+@@ -1 +1 @@
 -2, 3, 4, 5, 6
 +2,3,4,5,6""".splitlines()
         bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertFalse(bad_lines, f"Formatting is not checked {bad_lines = }")
-
-    def test_good_rounding_consecutive_changes(self) -> None:
-        diff_lines = """---
-+++
-@@ @@
--2505,2,-9.5670268990152E-01
-+2505,2,-9.5670268990153E-01
--3327,2,-2.2462134450621E+00
-+3327,2,-2.2462134450620E+00""".splitlines()
-        bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertFalse(bad_lines, f"Good consecutive rounding changes failed {bad_lines = }")
+        assert not bad_lines
 
     def test_good_rounding_space_split(self) -> None:
         diff_lines = """---
 +++
-@@ @@
+@@ -1 +1 @@
 -2505 2 -9.5670268990152E-01
 +2505 2 -9.5670268990153E-01""".splitlines()
         bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertFalse(
-            bad_lines,
-            f"Good consecutive rounding changes split by space failed {bad_lines = }",
-        )
-
-    def test_bad_rounding_space_split(self) -> None:
-        diff_lines = """---
-+++
-@@ @@
--2505 2 -9.5670268990152E-01
-+2505 2 -9.5680268990153E-01""".splitlines()
-        bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertTrue(bad_lines, f"Bad rounding split by space shouldn't pass {bad_lines = }")
+        assert not bad_lines
 
     def test_good_rounding_space_with_extra_word(self) -> None:
         diff_lines = """---
 +++
-@@ @@
+@@ -1 +1 @@
 -EXTRA 2505 2 -9.5670268990152E-01
 +EXTRA 2505 2 -9.5670268990153E-01""".splitlines()
         bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertFalse(bad_lines, f"Good rounding with extra word failed {bad_lines = }")
-
-    def test_good_and_bad_rounding(self) -> None:
-        diff_lines = """---
-+++
-@@ @@
--2505, 2, -9.5670268990152E-01
-+2505, 2, -9.5670268990153E-01
-@@ @@
--2505, 2, -9.5670268990152E-01
-+2505, 2, -9.5680268990153E-01""".splitlines()
-        bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertTrue(bad_lines, f"Bad rounding split by space shouldn't pass {bad_lines = }")
-        self.assertTrue(
-            sum(line.startswith("@@") for line in bad_lines) == 1,
-            f"Exactly one double '@' lines should be present {bad_lines = }",
-        )
-
-    def test_good_and_bad_rounding_consecutive(self) -> None:
-        diff_lines = """---
-+++
-@@ @@
--2505, 2, -9.5670268990152E-01
-+2505, 2, -9.5670268990153E-01
--2505, 2, -9.5670268990152E-01
-+2505, 2, -9.5680268990153E-01""".splitlines()
-        bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertTrue(bad_lines, f"Bad rounding shouldn't pass {bad_lines = }")
-        self.assertTrue(
-            len(bad_lines) == 3,
-            f"Number of bad_lines should be exactly three {bad_lines = }",
-        )
-        self.assertTrue(
-            sum(line.startswith("@@") for line in bad_lines) == 1,
-            f"Exactly one double '@' lines should be present {bad_lines = }",
-        )
-
-    def test_bad_and_bad_rounding(self) -> None:
-        diff_lines = """---
-+++
-@@ @@
--2505, 2, -9.5670268990152E-01
-+2505, 2. -9.5671268990153E-01
-@@ @@
--2505, 2, -9.5670268990152E-01
-+2505, 2, -9.5680268990153E-01""".splitlines()
-        bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertTrue(bad_lines, f"Bad rounding split by space shouldn't pass {bad_lines = }")
-        self.assertTrue(
-            sum(line.startswith("@@") for line in bad_lines) == 2,
-            f"Exactly two double '@' lines should be present {bad_lines = }",
-        )
+        assert not bad_lines
