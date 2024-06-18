@@ -29,8 +29,8 @@ from addonmanager_freecad_interface import Preferences
 
 from Addon import Addon
 from Widgets.addonmanager_widget_package_details_view import PackageDetailsView
-from addonmanager_package_details_controller import PackageDetailsController
 from Widgets.addonmanager_widget_view_selector import AddonManagerDisplayStyle
+from addonmanager_package_details_controller import PackageDetailsController
 from package_list import PackageList
 
 # Get whatever version of PySide we can
@@ -38,13 +38,10 @@ try:
     import PySide  # Use the FreeCAD wrapper
 except ImportError:
     try:
-        import PySide6  # Outside FreeCAD, try Qt6 first
-
-        PySide = PySide6
+        import PySide6 as PySide  # Outside FreeCAD, try Qt6 first
     except ImportError:
-        import PySide2  # Fall back to Qt5 (if this fails, Python will kill this module's import)
-
-        PySide = PySide2
+        # Fall back to Qt5 (if this fails, Python will kill this module's import)
+        import PySide2 as PySide
 
 from PySide import QtCore, QtWidgets
 
@@ -146,6 +143,8 @@ class CompositeView(QtWidgets.QWidget):
         self.splitter.splitterMoved.connect(self._splitter_moved)
 
     def addon_selected(self, addon):
+        """Depending on the display_style, show addon details (possibly hiding the package_list
+        widget in the process."""
         self.package_details_controller.show_repo(addon)
         if self.display_style != AddonManagerDisplayStyle.COMPOSITE:
             self.scroll_position = (
@@ -169,5 +168,5 @@ class CompositeView(QtWidgets.QWidget):
                 ),
             )
 
-    def _splitter_moved(self, position: int, index: int) -> None:
+    def _splitter_moved(self, _1: int, _2: int) -> None:
         self._save_splitter_state()
