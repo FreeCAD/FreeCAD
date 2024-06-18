@@ -291,15 +291,16 @@ def _add_bad_block(
 
 
 def parse_diff(diff_lines: Iterator[str]) -> List[str]:
-    """Parses lines from `united_diff`
+    """Parses lines from `unified_diff`
 
     Tries to split a line and convert its contents to float, to
     compare float numbers with some tolerance
 
     Recognizes blocks of changes, that start with `@@` and end either at EOF or
-    at the beginning of another block. Only bad lines are added to block.
+    at the beginning of another block. If at least one line in the block is bad,
+    the block is considered bad and all its lines are added as bad lines.
     All lines, which didn't pass the element-wise check, are bad lines.
-    :param diff_lines: lines produced by `united_diff`
+    :param diff_lines: lines produced by `unified_diff`
     :return: list of bad lines with respect to their block of change
     """
     bad_lines = []
