@@ -168,7 +168,7 @@ private:
                 "User parameter:BaseApp/Preferences/View");
 
             dimConstrColor = SbColor(1.0f, 0.149f, 0.0f);           // NOLINT
-            dimConstrDeactivatedColor = SbColor(0.8f, 0.8f, 0.8f);  // NOLINT
+            dimConstrDeactivatedColor = SbColor(0.5f, 0.5f, 0.5f);  // NOLINT
 
             float transparency = 0.f;
             unsigned long color = (unsigned long)(dimConstrColor.getPackedValue());
