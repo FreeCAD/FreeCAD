@@ -503,7 +503,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 50)
 
-    def testPartDesignElementMapSketch(self):
+    def testPartDesignElementPadSketch(self):
         # Arrange
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
