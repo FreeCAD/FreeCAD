@@ -163,4 +163,4 @@ def write_step_equation(f, ccxwriter):
 
 def write_step_end(f, ccxwriter):
     f.write("\n{}\n".format(59 * "*"))
-    f.write("*END STEP \n")
+    f.write("*END STEP\n")

@@ -282,10 +282,13 @@ class _Writer:
         self._stream = stream
 
     def write(self):
-        sortedSections = sorted(self._sections, key=lambda s: s.priority, reverse=True)
+        firstSection, *sortedSections = sorted(
+            self._sections, key=lambda s: s.priority, reverse=True
+        )
+        self._writeSection(firstSection)
         for s in sortedSections:
-            self._writeSection(s)
             self._stream.write(_NEWLINE)
+            self._writeSection(s)
 
     def _writeSection(self, s):
         self._writeSectionHeader(s)
@@ -295,8 +298,8 @@ class _Writer:
 
     def _writeSectionHeader(self, s):
         self._stream.write(s.name)
-        self._stream.write(_WHITESPACE)
         if isNumbered(s):
+            self._stream.write(_WHITESPACE)
             self._stream.write(str(self._idMgr.getId(s)))
 
     def _writeSectionFooter(self, s):

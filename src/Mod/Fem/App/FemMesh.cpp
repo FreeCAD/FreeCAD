@@ -2360,10 +2360,12 @@ void FemMesh::writeABAQUS(const std::string& Filename,
                     }
                     else {
                         if (first_line) {
-                            anABAQUS_Output << "," << std::endl;
+                            anABAQUS_Output << "," << std::endl << *kt;
                             first_line = false;
                         }
-                        anABAQUS_Output << *kt << ", ";
+                        else {
+                            anABAQUS_Output << ", " << *kt;
+                        }
                     }
                 }
                 anABAQUS_Output << std::endl;

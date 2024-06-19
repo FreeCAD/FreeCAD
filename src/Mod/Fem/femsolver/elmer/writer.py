@@ -255,7 +255,7 @@ class Writer:
     def _writeStartinfo(self):
         path = os.path.join(self.directory, _STARTINFO_NAME)
         with open(path, "w") as f:
-            f.write(_SIF_NAME)
+            f.write(f"{_SIF_NAME}\n")
 
     def _exportToUnv(self, groups, mesh, meshPath):
         unvGmshFd, unvGmshPath = tempfile.mkstemp(suffix=".unv")
