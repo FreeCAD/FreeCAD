@@ -130,7 +130,7 @@ void DrawSVGTemplate::slotDeletedObject(const App::DocumentObject& obj)
 //While parsing, note the Orientation, Width and Height values in the Svg code.
 QString DrawSVGTemplate::processTemplate()
 {
-    // Base::Console().Message("DSVGT::processTemplate() - isRestoring: %d\n", isRestoring());
+    Base::Console().Message("DSVGT::processTemplate() - isRestoring: %d\n", isRestoring());
     if (isRestoring()) {
         //until everything is fully restored, the embedded file is not available, so we
         //can't do anything
@@ -257,7 +257,7 @@ void DrawSVGTemplate::replaceFileIncluded(std::string newTemplateFileName)
 
 std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate()
 {
-    // Base::Console().Message("DSVGT::getEditableTextsFromTemplate()\n");
+    Base::Console().Message("DSVGT::getEditableTextsFromTemplate()\n");
     std::map<std::string, std::string> editables;
 
 // if we pass the filename we can reuse getTemplateDocument here
