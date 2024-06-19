@@ -120,12 +120,6 @@
             <dc:title>FreeCAD LGPL2+</dc:title>
           </cc:Agent>
         </dc:rights>
-        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
-        <dc:contributor>
-          <cc:Agent>
-            <dc:title>[agryson] Alexander Gryson</dc:title>
-          </cc:Agent>
-        </dc:contributor>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>double arrow</rdf:li>
@@ -134,6 +128,11 @@
           </rdf:Bag>
         </dc:subject>
         <dc:description>Vertical double arrow between two bars</dc:description>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -154,7 +153,7 @@
     </g>
     <path
        style="fill:#fce94f;stroke:#302b00;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;paint-order:fill markers stroke"
-       d="m 22.15456,43 9.845439,10 9.845437,-10 H 36 V 21 h 5.845436 L 31.999999,11 22.15456,21 H 28 v 22 z"
+       d="M 22,43.000002 31.999999,53 42,43.000002 36,43 V 21 l 6,1e-6 L 31.999999,11 22,21.000001 28,21 v 22 z"
        id="path1"
        transform="matrix(0.7500003,0,0,1.0000012,7.9999974,-2.4800031e-6)" />
     <g

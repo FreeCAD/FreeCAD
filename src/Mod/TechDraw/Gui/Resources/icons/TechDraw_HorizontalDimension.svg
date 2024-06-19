@@ -88,7 +88,6 @@
             <dc:title>[WandererFan]</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:title>TechDraw_Dimension_Horizontal</dc:title>
         <dc:date>2016-04-27</dc:date>
         <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -104,12 +103,6 @@
         </dc:rights>
         <cc:license
            rdf:resource="https://www.gnu.org/licenses/lgpl-3.0.en.html">https://www.gnu.org/copyleft/lesser.html</cc:license>
-        <dc:contributor>
-          <cc:Agent>
-            <dc:title>[agryson] Alexander Gryson</dc:title>
-          </cc:Agent>
-        </dc:contributor>
-        <dc:description>Double arrow between two bars</dc:description>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>double arrow</rdf:li>
@@ -117,41 +110,46 @@
             <rdf:li>horizontal</rdf:li>
           </rdf:Bag>
         </dc:subject>
+        <dc:description>Double arrow between two bars</dc:description>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1-1"
-     transform="matrix(0,-1.3333328,0.99999876,0,8.6609455e-5,74.666685)"
-     style="stroke-width:0.860658">
+     id="layer1"
+     transform="matrix(0,1.3333328,-0.99999876,0,64.000026,-10.666745)">
     <g
-       id="g3"
+       id="g3-4"
        transform="matrix(0.7500003,0,0,1.0000012,7.9999974,-2.4800031e-6)">
       <path
          style="fill:#888a85;stroke:#302b00;stroke-width:7.99989;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;paint-order:fill markers stroke"
          d="M 11.999945,58 H 52.000169"
-         id="path2-7" />
+         id="path2" />
       <path
          style="fill:#888a85;stroke:#fce94f;stroke-width:4;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;paint-order:fill markers stroke"
          d="M 11.999945,58 H 52.000169"
-         id="path3-1" />
+         id="path3" />
     </g>
     <path
        style="fill:#fce94f;stroke:#302b00;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;paint-order:fill markers stroke"
-       d="m 22.15456,43 9.845439,10 9.845437,-10 H 36 V 21 h 5.845436 L 31.999999,11 22.15456,21 H 28 v 22 z"
-       id="path1-9"
+       d="M 22,43.000002 31.999999,53 42,43.000002 36,43 V 21 l 6,1e-6 L 31.999999,11 22,21.000001 28,21 v 22 z"
+       id="path1"
        transform="matrix(0.7500003,0,0,1.0000012,7.9999974,-2.4800031e-6)" />
     <g
-       id="g5"
+       id="g5-1"
        transform="matrix(0.7500003,0,0,1.0000012,7.9999974,-52.00012)">
       <path
          style="fill:#888a85;stroke:#302b00;stroke-width:7.99989;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;paint-order:fill markers stroke"
          d="M 11.999945,58 H 52.000169"
-         id="path4-3" />
+         id="path4" />
       <path
          style="fill:#888a85;stroke:#fce94f;stroke-width:4;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;paint-order:fill markers stroke"
          d="M 11.999945,58 H 52.000169"
-         id="path5" />
+         id="path5-0" />
     </g>
   </g>
 </svg>
