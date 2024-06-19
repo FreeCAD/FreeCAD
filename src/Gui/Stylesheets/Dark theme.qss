@@ -284,7 +284,6 @@ QCheckBox::indicator:unchecked:disabled {
 
 QCheckBox::indicator:checked {
   background-color: #252525;
-  /*border: 1px solid #020202; /* QRadioButton has the same color */
   image:url(qss:images_classic/checkbox-checked-white.png);
 }
 
@@ -382,7 +381,7 @@ QRadioButton {
 }
 
 QRadioButton:focus {
-  border: 0.5px solid @ThemeAccentColor2;
+  border: 1px solid @ThemeAccentColor2;
 }
 
 QRadioButton:disabled {
@@ -400,42 +399,41 @@ QRadioButton QWidget {
 }
 
 QRadioButton::indicator {
-  height: 13px;
-  width: 13px;
-  border-image:url(qss:images_classic/Radio-unchecked-white.png);
+  border-image: none;
+  width: 14px;
+  height: 14px;
+  image:url(qss:images_classic/Radio-unchecked-white.png);
 }
 
 QRadioButton::indicator:unchecked {
-  /*image:url(qss:images_classic/Radio-checked-white.png);*/
 }
 
 QRadioButton::indicator:unchecked:hover, QRadioButton::indicator:unchecked:pressed {
-  /* background-color: @ThemeAccentColor1;
-  border: 1px solid @ThemeAccentColor1;
-  border-radius: 6px; */
+
 }
 
 QRadioButton::indicator:unchecked:disabled {
-  /*image:url(qss:images_classic/Radio-checked-lightgray.png);*/
-  border: 1px solid #444444;
+  border-image: none;
+  width: 14px;
+  height: 14px;
+  image:url(qss:images_classic/Radio-unchecked-lightgray.png);
 }
 
 QRadioButton::indicator:checked {
-  height: 13px;
-  width: 13px;
-  border-image:url(qss:images_classic/Radio-checked-white.png);
+  border-image: none;
+  width: 14px;
+  height: 14px;
+  image:url(qss:images_classic/Radio-checked-white.png);
 }
 
 QRadioButton::indicator:checked:hover, QRadioButton::indicator:checked:pressed {
-  /* background-color: @ThemeAccentColor1;
-  border: 1px solid @ThemeAccentColor1;
-  border-radius: 6px;
-  image:url(qss:images_classic/Radio-checked-white.png); */
+
 }
 
 QRadioButton::indicator:checked:disabled {
-  outline: none;
-  background-color: #444444;
+  border-image: none;
+  width: 14px;
+  height: 14px;
   image:url(qss:images_classic/Radio-checked-lightgray.png);
 }
 
