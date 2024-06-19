@@ -969,7 +969,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(self.Body.Shape.BoundBox.XMax,31.37)
         self.assertAlmostEqual(self.Body.Shape.BoundBox.YMax,25.2)
         self.assertEqual(self.Body.Shape.BoundBox.ZMax,20)
-        self.assertNotEquals(area1, area2)
+        self.assertNotEqual(area1, area2)
 
     def testShapeBinder(self):
         doc = self.Doc
