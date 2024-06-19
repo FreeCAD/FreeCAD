@@ -54,24 +54,18 @@ class _TaskPanel:
         QtCore.QObject.connect(
             self.parameterWidget.if_rotation_frequency,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.rotation_frequency_changed
+            self.rotation_frequency_changed,
         )
         self.init_parameter_widget()
 
         # axis of rotation selection widget
         self.AxisSelectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.RotationAxis,
-            ["Edge"],
-            False,
-            False
+            obj.RotationAxis, ["Edge"], False, False
         )
 
         # loaded body selection widget
         self.BodySelectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Solid"],
-            False,
-            False
+            obj.References, ["Solid"], False, False
         )
 
         # form made from param and selection widget
@@ -81,16 +75,16 @@ class _TaskPanel:
         # check values RotationAxis
         items = len(self.AxisSelectionWidget.references)
         FreeCAD.Console.PrintMessage(
-            "Task panel: found axis references: {}\n{}\n"
-            .format(items, self.AxisSelectionWidget.references)
+            "Task panel: found axis references: {}\n{}\n".format(
+                items, self.AxisSelectionWidget.references
+            )
         )
 
         if items != 1:
             msgBox = QtGui.QMessageBox()
             msgBox.setIcon(QtGui.QMessageBox.Question)
             msgBox.setText(
-                "Constraint Centrif requires exactly one line\n\nfound references: {}"
-                .format(items)
+                f"Constraint Centrif requires exactly one line\n\nfound references: {items}"
             )
             msgBox.setWindowTitle("FreeCAD FEM Constraint Centrif - Axis selection")
             retryButton = msgBox.addButton(QtGui.QMessageBox.Retry)
@@ -105,8 +99,9 @@ class _TaskPanel:
         # check values BodyReference
         items = len(self.BodySelectionWidget.references)
         FreeCAD.Console.PrintMessage(
-            "Task panel: found body references: {}\n{}\n"
-            .format(items, self.BodySelectionWidget.references)
+            "Task panel: found body references: {}\n{}\n".format(
+                items, self.BodySelectionWidget.references
+            )
         )
 
         # if no solid is added as reference all volume elements are used

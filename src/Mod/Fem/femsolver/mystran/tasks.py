@@ -37,6 +37,7 @@ import FreeCAD
 
 try:
     import hfcMystranNeuIn
+
     result_reading = True
 except Exception:
     FreeCAD.Console.PrintWarning("Module to read results not found.\n")
@@ -120,7 +121,7 @@ class Solve(run.Solve):
             args=[binary, infile],  # pass empty param fails! [binary, "", infile]
             cwd=self.directory,
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
+            stderr=subprocess.PIPE,
         )
         self.signalAbort.add(self._process.terminate)
         self._process.communicate()
@@ -132,8 +133,7 @@ class Solve(run.Solve):
 class Results(run.Results):
 
     def run(self):
-        prefs = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Fem/General")
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         if not prefs.GetBool("KeepResultsOnReRun", False):
             self.purge_results()
         if result_reading is True:
@@ -160,10 +160,8 @@ class Results(run.Results):
                     break
         else:
             # TODO: use solver framework status message system
-            FreeCAD.Console.PrintError(
-                "FEM: No results found at {}!\n"
-                .format(neu_result_file)
-            )
+            FreeCAD.Console.PrintError(f"FEM: No results found at {neu_result_file}!\n")
             self.fail()
+
 
 ##  @}

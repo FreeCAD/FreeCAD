@@ -53,8 +53,7 @@ def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
 
     ccxwriter.FluidInletoutlet_ele = []
     ccxwriter.fluid_inout_nodes_file = join(
-        ccxwriter.dir_name,
-        "{}_inout_nodes.txt".format(ccxwriter.mesh_name)
+        ccxwriter.dir_name, f"{ccxwriter.mesh_name}_inout_nodes.txt"
     )
 
     def get_fluidsection_inoutlet_obj_if_setdata(matgeoset):
@@ -64,29 +63,20 @@ def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
             and "fluidsection_obj" in matgeoset  # fluid mesh
         ):
             fluidsec_obj = matgeoset["fluidsection_obj"]
-            if (
-                fluidsec_obj.SectionType == "Liquid"
-                and (
-                    fluidsec_obj.LiquidSectionType == "PIPE INLET"
-                    or fluidsec_obj.LiquidSectionType == "PIPE OUTLET"
-                )
+            if fluidsec_obj.SectionType == "Liquid" and (
+                fluidsec_obj.LiquidSectionType == "PIPE INLET"
+                or fluidsec_obj.LiquidSectionType == "PIPE OUTLET"
             ):
                 return fluidsec_obj
         return None
 
     def is_fluidsection_inoutlet_setnames_possible(mat_geo_sets):
         for matgeoset in mat_geo_sets:
-            if (
-                matgeoset["ccx_elset"]
-                and "fluidsection_obj" in matgeoset  # fluid mesh
-            ):
+            if matgeoset["ccx_elset"] and "fluidsection_obj" in matgeoset:  # fluid mesh
                 fluidsec_obj = matgeoset["fluidsection_obj"]
-                if (
-                    fluidsec_obj.SectionType == "Liquid"
-                    and (
-                        fluidsec_obj.LiquidSectionType == "PIPE INLET"
-                        or fluidsec_obj.LiquidSectionType == "PIPE OUTLET"
-                    )
+                if fluidsec_obj.SectionType == "Liquid" and (
+                    fluidsec_obj.LiquidSectionType == "PIPE INLET"
+                    or fluidsec_obj.LiquidSectionType == "PIPE OUTLET"
                 ):
                     return True
         return False
@@ -101,15 +91,15 @@ def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
         counter = 0
         for elid in matgeoset["ccx_elset"]:
             counter = counter + 1
-            if (elsetchanged is False) \
-                    and (fluidsec_obj.LiquidSectionType == "PIPE INLET"):
+            if (elsetchanged is False) and (fluidsec_obj.LiquidSectionType == "PIPE INLET"):
                 # 3rd index is to track which line nr the element is defined
                 ccxwriter.FluidInletoutlet_ele.append(
                     [str(elid), fluidsec_obj.LiquidSectionType, 0]
                 )
                 elsetchanged = True
-            elif (fluidsec_obj.LiquidSectionType == "PIPE OUTLET") \
-                    and (counter == len(matgeoset["ccx_elset"])):
+            elif (fluidsec_obj.LiquidSectionType == "PIPE OUTLET") and (
+                counter == len(matgeoset["ccx_elset"])
+            ):
                 # 3rd index is to track which line nr the element is defined
                 ccxwriter.FluidInletoutlet_ele.append(
                     [str(elid), fluidsec_obj.LiquidSectionType, 0]
@@ -123,9 +113,7 @@ def handle_fluidsection_liquid_inlet_outlet(inpfile, ccxwriter):
         # for split input file the main file is just closed and reopend even if not needed
         inpfile.close()
         meshtools.use_correct_fluidinout_ele_def(
-            ccxwriter.FluidInletoutlet_ele,
-            ccxwriter.femmesh_file,
-            ccxwriter.fluid_inout_nodes_file
+            ccxwriter.FluidInletoutlet_ele, ccxwriter.femmesh_file, ccxwriter.fluid_inout_nodes_file
         )
         inpfile = codecs.open(ccxwriter.file_name, "a", encoding="utf-8")
 
@@ -146,13 +134,12 @@ def write_constraints_fluidsection(f, ccxwriter):
     f.write("\n***********************************************************\n")
     f.write("** FluidSection constraints\n")
     if os.path.exists(ccxwriter.fluid_inout_nodes_file):
-        inout_nodes_file = open(ccxwriter.fluid_inout_nodes_file, "r")
+        inout_nodes_file = open(ccxwriter.fluid_inout_nodes_file)
         lines = inout_nodes_file.readlines()
         inout_nodes_file.close()
     else:
         FreeCAD.Console.PrintError(
-            "1DFlow inout nodes file not found: {}\n"
-            .format(ccxwriter.fluid_inout_nodes_file)
+            f"1DFlow inout nodes file not found: {ccxwriter.fluid_inout_nodes_file}\n"
         )
     # get nodes
     ccxwriter.get_constraints_fluidsection_nodes()
@@ -170,12 +157,11 @@ def write_constraints_fluidsection(f, ccxwriter):
                             b = line.split(",")
                             if int(b[0]) == n and b[3] == "PIPE INLET\n":
                                 # degree of freedom 2 is for defining pressure
-                                f.write("{},{},{},{}\n".format(
-                                    b[0],
-                                    "2",
-                                    "2",
-                                    fluidsection_obj.InletPressure
-                                ))
+                                f.write(
+                                    "{},{},{},{}\n".format(
+                                        b[0], "2", "2", fluidsection_obj.InletPressure
+                                    )
+                                )
                 if fluidsection_obj.InletFlowRateActive is True:
                     f.write("*BOUNDARY,MASS FLOW \n")
                     for n in femobj["Nodes"]:
@@ -184,12 +170,11 @@ def write_constraints_fluidsection(f, ccxwriter):
                             if int(b[0]) == n and b[3] == "PIPE INLET\n":
                                 # degree of freedom 1 is for defining flow rate
                                 # factor applied to convert unit from kg/s to t/s
-                                f.write("{},{},{},{}\n".format(
-                                    b[1],
-                                    "1",
-                                    "1",
-                                    fluidsection_obj.InletFlowRate * 0.001
-                                ))
+                                f.write(
+                                    "{},{},{},{}\n".format(
+                                        b[1], "1", "1", fluidsection_obj.InletFlowRate * 0.001
+                                    )
+                                )
             elif fluidsection_obj.LiquidSectionType == "PIPE OUTLET":
                 f.write("**Fluid Section Outlet \n")
                 if fluidsection_obj.OutletPressureActive is True:
@@ -199,12 +184,11 @@ def write_constraints_fluidsection(f, ccxwriter):
                             b = line.split(",")
                             if int(b[0]) == n and b[3] == "PIPE OUTLET\n":
                                 # degree of freedom 2 is for defining pressure
-                                f.write("{},{},{},{}\n".format(
-                                    b[0],
-                                    "2",
-                                    "2",
-                                    fluidsection_obj.OutletPressure
-                                ))
+                                f.write(
+                                    "{},{},{},{}\n".format(
+                                        b[0], "2", "2", fluidsection_obj.OutletPressure
+                                    )
+                                )
                 if fluidsection_obj.OutletFlowRateActive is True:
                     f.write("*BOUNDARY,MASS FLOW \n")
                     for n in femobj["Nodes"]:
@@ -213,9 +197,8 @@ def write_constraints_fluidsection(f, ccxwriter):
                             if int(b[0]) == n and b[3] == "PIPE OUTLET\n":
                                 # degree of freedom 1 is for defining flow rate
                                 # factor applied to convert unit from kg/s to t/s
-                                f.write("{},{},{},{}\n".format(
-                                    b[1],
-                                    "1",
-                                    "1",
-                                    fluidsection_obj.OutletFlowRate * 0.001
-                                ))
+                                f.write(
+                                    "{},{},{},{}\n".format(
+                                        b[1], "1", "1", fluidsection_obj.OutletFlowRate * 0.001
+                                    )
+                                )

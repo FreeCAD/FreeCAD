@@ -39,75 +39,32 @@ from . import equation
 
 LINEAR_SOLVER = ["Direct", "Iterative"]
 LINEAR_DIRECT = ["Banded", "MUMPS", "Umfpack"]
-LINEAR_ITERATIVE = [
-    "BiCGStab",
-    "BiCGStabl",
-    "CG",
-    "GCR",
-    "CGS",
-    "GMRES",
-    "Idrs",
-    "TFQMR"
-]
-LINEAR_PRECONDITIONING = [
-    "None",
-    "Diagonal",
-    "ILU0",
-    "ILU1",
-    "ILU2",
-    "ILU3",
-    "ILU4",
-    "ILUT"
-]
+LINEAR_ITERATIVE = ["BiCGStab", "BiCGStabl", "CG", "GCR", "CGS", "GMRES", "Idrs", "TFQMR"]
+LINEAR_PRECONDITIONING = ["None", "Diagonal", "ILU0", "ILU1", "ILU2", "ILU3", "ILU4", "ILUT"]
 
 
 class Proxy(equation.Proxy):
 
     def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
+        super().__init__(obj)
 
         obj.addProperty(
             "App::PropertyIntegerConstraint",
             "BiCGstablDegree",
             "Linear System",
-            "Polynom degree for iterative method 'BiCGstabl'"
+            "Polynom degree for iterative method 'BiCGstabl'",
         )
         obj.addProperty(
             "App::PropertyIntegerConstraint",
             "IdrsParameter",
             "Linear System",
-            "Parameter for iterative method 'Idrs'"
+            "Parameter for iterative method 'Idrs'",
         )
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "LinearDirectMethod",
-            "Linear System",
-            ""
-        )
-        obj.addProperty(
-            "App::PropertyIntegerConstraint",
-            "LinearIterations",
-            "Linear System",
-            ""
-        )
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "LinearIterativeMethod",
-            "Linear System",
-            ""
-        )
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "LinearPreconditioning",
-            "Linear System",
-            ""
-        )
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "LinearSolverType",
-            "Linear System",
-            ""
-        )
+        obj.addProperty("App::PropertyEnumeration", "LinearDirectMethod", "Linear System", "")
+        obj.addProperty("App::PropertyIntegerConstraint", "LinearIterations", "Linear System", "")
+        obj.addProperty("App::PropertyEnumeration", "LinearIterativeMethod", "Linear System", "")
+        obj.addProperty("App::PropertyEnumeration", "LinearPreconditioning", "Linear System", "")
+        obj.addProperty("App::PropertyEnumeration", "LinearSolverType", "Linear System", "")
         obj.addProperty(
             "App::PropertyBool",
             "LinearSystemSolverDisabled",
@@ -116,26 +73,16 @@ class Proxy(equation.Proxy):
                 "Disable the linear system.\n"
                 "Only use for special cases\n"
                 "and consult the Elmer docs."
-            )
+            ),
         )
         obj.addProperty(
             "App::PropertyFloat",
             "LinearTolerance",
             "Linear System",
-            "Linear preconditioning method"
+            "Linear preconditioning method",
         )
-        obj.addProperty(
-            "App::PropertyBool",
-            "Stabilize",
-            "Base",
-            ""
-        )
-        obj.addProperty(
-            "App::PropertyFloat",
-            "SteadyStateTolerance",
-            "Steady State",
-            ""
-        )
+        obj.addProperty("App::PropertyBool", "Stabilize", "Base", "")
+        obj.addProperty("App::PropertyFloat", "SteadyStateTolerance", "Steady State", "")
 
         obj.BiCGstablDegree = (2, 2, 10, 1)
         obj.IdrsParameter = (2, 1, 10, 1)
@@ -159,5 +106,6 @@ class Proxy(equation.Proxy):
 
 class ViewProxy(equation.ViewProxy):
     pass
+
 
 ##  @}

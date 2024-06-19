@@ -175,9 +175,7 @@ def show_color_by_scalar_with_cutoff(resultobj, values, limit=None):
     if FreeCAD.GuiUp:
         if resultobj.Mesh.ViewObject.Visibility is False:
             resultobj.Mesh.ViewObject.Visibility = True
-        resultobj.Mesh.ViewObject.setNodeColorByScalars(
-            resultobj.NodeNumbers, filtered_values
-        )
+        resultobj.Mesh.ViewObject.setNodeColorByScalars(resultobj.NodeNumbers, filtered_values)
 
 
 def get_stats(res_obj, result_type):
@@ -255,7 +253,7 @@ def get_all_stats(res_obj):
         "Peeq": (m[18], m[19]),
         "Temp": (m[20], m[21]),
         "MFlow": (m[22], m[23]),
-        "NPress": (m[24], m[25])
+        "NPress": (m[24], m[25]),
     }
     return stats_dict
 
@@ -269,9 +267,7 @@ def fill_femresult_stats(res_obj):
         FreeCAD FEM mechanical result object
     """
 
-    FreeCAD.Console.PrintLog(
-        "Calculate stats list for result obj: " + res_obj.Name + "\n"
-    )
+    FreeCAD.Console.PrintLog("Calculate stats list for result obj: " + res_obj.Name + "\n")
     # set stats values to 0, they may not exist in res_obj
     x_min = y_min = z_min = x_max = y_max = z_max = 0
     a_max = a_min = s_max = s_min = 0
@@ -315,19 +311,34 @@ def fill_femresult_stats(res_obj):
         npress_min = min(res_obj.NetworkPressure)
         npress_max = max(res_obj.NetworkPressure)
 
-    res_obj.Stats = [x_min, x_max,
-                     y_min, y_max,
-                     z_min, z_max,
-                     a_min, a_max,
-                     s_min, s_max,
-                     p1_min, p1_max,
-                     p2_min, p2_max,
-                     p3_min, p3_max,
-                     ms_min, ms_max,
-                     peeq_min, peeq_max,
-                     temp_min, temp_max,
-                     mflow_min, mflow_max,
-                     npress_min, npress_max]
+    res_obj.Stats = [
+        x_min,
+        x_max,
+        y_min,
+        y_max,
+        z_min,
+        z_max,
+        a_min,
+        a_max,
+        s_min,
+        s_max,
+        p1_min,
+        p1_max,
+        p2_min,
+        p2_max,
+        p3_min,
+        p3_max,
+        ms_min,
+        ms_max,
+        peeq_min,
+        peeq_max,
+        temp_min,
+        temp_max,
+        mflow_min,
+        mflow_max,
+        npress_min,
+        npress_max,
+    ]
     """
     stat_types = [
         "U1",
@@ -372,7 +383,7 @@ def add_von_mises(res_obj):
         res_obj.NodeStressZZ,
         res_obj.NodeStressXY,
         res_obj.NodeStressXZ,
-        res_obj.NodeStressYZ
+        res_obj.NodeStressYZ,
     )
     for Sxx, Syy, Szz, Sxy, Sxz, Syz in iterator:
         mstress.append(calculate_von_mises((Sxx, Syy, Szz, Sxy, Sxz, Syz)))
@@ -396,12 +407,10 @@ def add_principal_stress_std(res_obj):
         res_obj.NodeStressZZ,
         res_obj.NodeStressXY,
         res_obj.NodeStressXZ,
-        res_obj.NodeStressYZ
+        res_obj.NodeStressYZ,
     )
     for Sxx, Syy, Szz, Sxy, Sxz, Syz in iterator:
-        prin1, prin2, prin3, shear = calculate_principal_stress_std(
-            (Sxx, Syy, Szz, Sxy, Sxz, Syz)
-        )
+        prin1, prin2, prin3, shear = calculate_principal_stress_std((Sxx, Syy, Szz, Sxy, Sxz, Syz))
         prinstress1.append(prin1)
         prinstress2.append(prin2)
         prinstress3.append(prin3)
@@ -427,7 +436,7 @@ def add_principal_stress_std(res_obj):
     #           T = pressure / von Mises stress (stress triaxiality)
     #
 
-    MatMechNon = FreeCAD.ActiveDocument.getObject('MaterialMechanicalNonlinear')
+    MatMechNon = FreeCAD.ActiveDocument.getObject("MaterialMechanicalNonlinear")
     if MatMechNon:
         stress_strain = MatMechNon.YieldPoints
         if stress_strain:
@@ -440,12 +449,7 @@ def add_principal_stress_std(res_obj):
             beta = 1.5
             if res_obj.Peeq:
                 res_obj.CriticalStrainRatio = calculate_csr(
-                    prinstress1,
-                    prinstress2,
-                    prinstress3,
-                    alpha,
-                    beta,
-                    res_obj
+                    prinstress1, prinstress2, prinstress3, alpha, beta, res_obj
                 )
 
     return res_obj
@@ -473,10 +477,10 @@ def calculate_csr(ps1, ps2, ps3, alpha, beta, res_obj):
         svm = np.sqrt(
             1.5 * (ps1[i] - p) ** 2 + 1.5 * (ps2[i] - p) ** 2 + 1.5 * (ps3[i] - p) ** 2
         )  # von Mises stress: https://en.wikipedia.org/wiki/Von_Mises_yield_criterion
-        if svm != 0.:
+        if svm != 0.0:
             T = p / svm  # stress triaxiality
         else:
-            T = 0.
+            T = 0.0
         critical_strain = alpha * np.exp(-beta * T)  # critical strain
         csr.append(abs(res_obj.Peeq[i]) / critical_strain)  # critical strain ratio
     return csr
@@ -485,6 +489,7 @@ def calculate_csr(ps1, ps2, ps3, alpha, beta, res_obj):
 def get_concrete_nodes(res_obj):
     """Determine concrete / non-concrete nodes."""
     from femmesh.meshtools import get_femnodes_by_refshape
+
     femmesh = res_obj.Mesh.FemMesh
     nsr = femmesh.NodeCount  # nsr number of stress results
 
@@ -496,8 +501,9 @@ def get_concrete_nodes(res_obj):
     ic = np.zeros(nsr)
 
     for obj in res_obj.getParentGroup().Group:
-        if obj.isDerivedFrom("App::MaterialObjectPython") \
-                and is_of_type(obj, "Fem::MaterialReinforced"):
+        if obj.isDerivedFrom("App::MaterialObjectPython") and is_of_type(
+            obj, "Fem::MaterialReinforced"
+        ):
             FreeCAD.Console.PrintMessage("ReinforcedMaterial\n")
             if obj.References == []:
                 for iic in range(nsr):
@@ -508,8 +514,9 @@ def get_concrete_nodes(res_obj):
                     concrete_nodes = get_femnodes_by_refshape(femmesh, ref)
                     for cn in concrete_nodes:
                         ic[cn - 1] = 1
-        elif obj.isDerivedFrom("App::MaterialObjectPython") \
-                and is_of_type(obj, "Fem::MaterialCommon"):
+        elif obj.isDerivedFrom("App::MaterialObjectPython") and is_of_type(
+            obj, "Fem::MaterialCommon"
+        ):
             FreeCAD.Console.PrintMessage("No ReinforcedMaterial\n")
             if obj.References == []:
                 for iic in range(nsr):
@@ -574,14 +581,14 @@ def add_principal_stress_reinforced(res_obj):
         res_obj.NodeStressZZ,
         res_obj.NodeStressXY,
         res_obj.NodeStressXZ,
-        res_obj.NodeStressYZ
+        res_obj.NodeStressYZ,
     )
     for isv, stress_tensor in enumerate(iterator):
 
-        rhox = 0.
-        rhoy = 0.
-        rhoz = 0.
-        mc = 0.
+        rhox = 0.0
+        rhoy = 0.0
+        rhoz = 0.0
+        mc = 0.0
 
         if ic[isv] == 1:
             #
@@ -589,14 +596,9 @@ def add_principal_stress_reinforced(res_obj):
             # reinforcement (see calculate_rho(stress_tensor)). for all other
             # materials scxx etc. are the original stresses
             #
-            rhox, rhoy, rhoz = calculate_rho(
-                stress_tensor,
-                reinforce_yield
-            )
+            rhox, rhoy, rhoz = calculate_rho(stress_tensor, reinforce_yield)
 
-        prin1, prin2, prin3, shear, psv = calculate_principal_stress_reinforced(
-            stress_tensor
-        )
+        prin1, prin2, prin3, shear, psv = calculate_principal_stress_reinforced(stress_tensor)
 
         prinstress1.append(prin1)
         prinstress2.append(prin2)
@@ -648,6 +650,7 @@ def compact_result(res_obj):
 
     # get compact mesh data
     from femmesh.meshtools import compact_mesh
+
     compact_femmesh_data = compact_mesh(res_obj.Mesh.FemMesh)
     compact_femmesh = compact_femmesh_data[0]
     node_map = compact_femmesh_data[1]
@@ -682,9 +685,7 @@ def calculate_von_mises(stress_tensor):
     return von_mises
 
 
-def calculate_principal_stress_std(
-    stress_tensor
-):
+def calculate_principal_stress_std(stress_tensor):
     # if NaN is inside the array, which can happen on Calculix frd result files return NaN
     # https://forum.freecad.org/viewtopic.php?f=22&t=33911&start=10#p284229
     # https://forum.freecad.org/viewtopic.php?f=18&t=32649#p274291
@@ -698,11 +699,9 @@ def calculate_principal_stress_std(
     s12 = stress_tensor[3]  # Sxy
     s31 = stress_tensor[4]  # Sxz
     s23 = stress_tensor[5]  # Syz
-    sigma = np.array([
-        [s11, s12, s31],
-        [s12, s22, s23],
-        [s31, s23, s33]
-    ])  # https://forum.freecad.org/viewtopic.php?f=18&t=24637&start=10#p240408
+    sigma = np.array(
+        [[s11, s12, s31], [s12, s22, s23], [s31, s23, s33]]
+    )  # https://forum.freecad.org/viewtopic.php?f=18&t=24637&start=10#p240408
 
     eigvals = list(np.linalg.eigvalsh(sigma))
     eigvals.sort()
@@ -728,11 +727,9 @@ def calculate_principal_stress_reinforced(stress_tensor):
     s12 = stress_tensor[3]  # Sxy
     s31 = stress_tensor[4]  # Sxz
     s23 = stress_tensor[5]  # Syz
-    sigma = np.array([
-        [s11, s12, s31],
-        [s12, s22, s23],
-        [s31, s23, s33]
-    ])  # https://forum.freecad.org/viewtopic.php?f=18&t=24637&start=10#p240408
+    sigma = np.array(
+        [[s11, s12, s31], [s12, s22, s23], [s31, s23, s33]]
+    )  # https://forum.freecad.org/viewtopic.php?f=18&t=24637&start=10#p240408
 
     eigenvalues, eigenvectors = np.linalg.eig(sigma)
 
@@ -754,8 +751,13 @@ def calculate_principal_stress_reinforced(stress_tensor):
 
     maxshear = (eigenvalues[0] - eigenvalues[2]) / 2.0
 
-    return (eigenvalues[0], eigenvalues[1], eigenvalues[2], maxshear,
-            tuple([tuple(row) for row in eigenvectors.T]))
+    return (
+        eigenvalues[0],
+        eigenvalues[1],
+        eigenvalues[2],
+        maxshear,
+        tuple([tuple(row) for row in eigenvectors.T]),
+    )
 
 
 def calculate_rho(stress_tensor, fy):
@@ -787,29 +789,28 @@ def calculate_rho(stress_tensor, fy):
 
     # i1=sxx+syy+szz NOT USED
     # i2=sxx*syy+syy*szz+szz*sxx-sxy**2-sxz**2-syz**2 NOT USED
-    i3 = (sxx * syy * szz + 2 * sxy * sxz * syz - sxx * syz ** 2
-          - syy * sxz ** 2 - szz * sxy ** 2)
+    i3 = sxx * syy * szz + 2 * sxy * sxz * syz - sxx * syz**2 - syy * sxz**2 - szz * sxy**2
 
     # Solution (5)
-    d = (sxx * syy - sxy ** 2)
-    if d != 0.:
+    d = sxx * syy - sxy**2
+    if d != 0.0:
         rhoz[0] = i3 / d / fy
 
     # Solution (6)
-    d = (sxx * szz - sxz ** 2)
-    if d != 0.:
+    d = sxx * szz - sxz**2
+    if d != 0.0:
         rhoy[1] = i3 / d / fy
 
     # Solution (7)
-    d = (syy * szz - syz ** 2)
-    if d != 0.:
+    d = syy * szz - syz**2
+    if d != 0.0:
         rhox[2] = i3 / d / fy
 
     # Solution (9)
-    if sxx != 0.:
+    if sxx != 0.0:
         fc = sxz * sxy / sxx - syz
-        fxy = sxy ** 2 / sxx
-        fxz = sxz ** 2 / sxx
+        fxy = sxy**2 / sxx
+        fxz = sxz**2 / sxx
 
         # Solution (9+)
         rhoy[3] = syy - fxy + fc
@@ -824,10 +825,10 @@ def calculate_rho(stress_tensor, fy):
         rhoz[4] /= fy
 
     # Solution (10)
-    if syy != 0.:
+    if syy != 0.0:
         fc = syz * sxy / syy - sxz
-        fxy = sxy ** 2 / syy
-        fyz = syz ** 2 / syy
+        fxy = sxy**2 / syy
+        fyz = syz**2 / syy
 
         # Solution (10+)
         rhox[5] = sxx - fxy + fc
@@ -843,10 +844,10 @@ def calculate_rho(stress_tensor, fy):
         rhoz[6] /= fy
 
     # Solution (11)
-    if szz != 0.:
+    if szz != 0.0:
         fc = sxz * syz / szz - sxy
-        fxz = sxz ** 2 / szz
-        fyz = syz ** 2 / szz
+        fxz = sxz**2 / szz
+        fyz = syz**2 / szz
 
         # Solution (11+)
         rhox[7] = sxx - fxz + fc
@@ -881,32 +882,36 @@ def calculate_rho(stress_tensor, fy):
     rhoz[12] = (szz + sxz - syz) / fy
 
     # Solution (17)
-    if syz != 0.:
+    if syz != 0.0:
         rhox[13] = (sxx - sxy * sxz / syz) / fy
-    if sxz != 0.:
+    if sxz != 0.0:
         rhoy[13] = (syy - sxy * syz / sxz) / fy
-    if sxy != 0.:
+    if sxy != 0.0:
         rhoz[13] = (szz - sxz * syz / sxy) / fy
 
     for ir in range(0, rhox.size):
 
-        if rhox[ir] >= -1.e-10 and rhoy[ir] >= -1.e-10 and rhoz[ir] > -1.e-10:
+        if rhox[ir] >= -1.0e-10 and rhoy[ir] >= -1.0e-10 and rhoz[ir] > -1.0e-10:
 
             # Concrete Stresses
             scxx = sxx - rhox[ir] * fy
             scyy = syy - rhoy[ir] * fy
             sczz = szz - rhoz[ir] * fy
-            ic1 = (scxx + scyy + sczz)
-            ic2 = (scxx * scyy + scyy * sczz + sczz * scxx - sxy ** 2
-                   - sxz ** 2 - syz ** 2)
-            ic3 = (scxx * scyy * sczz + 2 * sxy * sxz * syz - scxx * syz ** 2
-                   - scyy * sxz ** 2 - sczz * sxy ** 2)
+            ic1 = scxx + scyy + sczz
+            ic2 = scxx * scyy + scyy * sczz + sczz * scxx - sxy**2 - sxz**2 - syz**2
+            ic3 = (
+                scxx * scyy * sczz
+                + 2 * sxy * sxz * syz
+                - scxx * syz**2
+                - scyy * sxz**2
+                - sczz * sxy**2
+            )
 
-            if ic1 <= 1.e-6 and ic2 >= -1.e-6 and ic3 <= 1.0e-6:
+            if ic1 <= 1.0e-6 and ic2 >= -1.0e-6 and ic3 <= 1.0e-6:
 
                 rsum = rhox[ir] + rhoy[ir] + rhoz[ir]
 
-                if rsum < rmin and rsum > 0.:
+                if rsum < rmin and rsum > 0.0:
                     rmin = rsum
                     eqmin = ir
 
@@ -925,11 +930,10 @@ def calculate_mohr_coulomb(prin1, prin3, phi, fck):
 
     coh = fck * (1 - np.sin(phi)) / 2 / np.cos(phi)
 
-    mc_stress = ((prin1 - prin3) + (prin1 + prin3) * np.sin(phi)
-                 - 2. * coh * np.cos(phi))
+    mc_stress = (prin1 - prin3) + (prin1 + prin3) * np.sin(phi) - 2.0 * coh * np.cos(phi)
 
-    if mc_stress < 0.:
-        mc_stress = 0.
+    if mc_stress < 0.0:
+        mc_stress = 0.0
 
     return mc_stress
 
@@ -937,5 +941,6 @@ def calculate_mohr_coulomb(prin1, prin3, phi, fck):
 def calculate_disp_abs(displacements):
     # see https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=100#p296657
     return [np.linalg.norm(nd) for nd in displacements]
+
 
 ##  @}

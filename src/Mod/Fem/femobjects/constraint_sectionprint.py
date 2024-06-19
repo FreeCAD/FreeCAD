@@ -33,6 +33,7 @@ from . import base_fempythonobject
 
 _PropHelper = base_fempythonobject._PropHelper
 
+
 class ConstraintSectionPrint(base_fempythonobject.BaseFemPythonObject):
     """
     The FemConstraintSectionPrint object
@@ -41,26 +42,25 @@ class ConstraintSectionPrint(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::ConstraintSectionPrint"
 
     def __init__(self, obj):
-        super(ConstraintSectionPrint, self).__init__(obj)
+        super().__init__(obj)
 
         for prop in self._get_properties():
             prop.add_to_object(obj)
 
-
     def _get_properties(self):
         prop = []
 
-        prop.append(_PropHelper(
-            type  = "App::PropertyEnumeration",
-            name  = "Variable",
-            group = "Constraint Section Print",
-            doc   = "Set facial variable",
-            value = ["Section Force", "Heat Flux", "Drag Stress"]
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="Variable",
+                group="Constraint Section Print",
+                doc="Set facial variable",
+                value=["Section Force", "Heat Flux", "Drag Stress"],
             )
         )
 
         return prop
-
 
     def onDocumentRestored(self, obj):
         # update old project with new properties

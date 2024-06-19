@@ -20,7 +20,7 @@ class TestParse_Diff(unittest.TestCase):
 
     def test_not_ignore_single_word(self) -> None:
         diff_lines = """---
-+++ 
++++
 @@ @@
 -12,
 +11""".splitlines()
@@ -35,8 +35,8 @@ class TestParse_Diff(unittest.TestCase):
         self.assertFalse(bad_lines, f"Double '@' signs are not ignored {bad_lines = }")
 
     def test_good_float_rounding(self) -> None:
-        diff_lines = """--- 
-+++ 
+        diff_lines = """---
++++
 @@ -11717 +11717 @@
 -2505,2,-9.5670268990152E-01
 +2505,2,-9.5670268990153E-01
@@ -64,9 +64,7 @@ class TestParse_Diff(unittest.TestCase):
 -3327,2,-2.2462134450621E+00
 +3327,2,-2.2462134450620E+00""".splitlines()
         bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertFalse(
-            bad_lines, f"Good consecutive rounding changes failed {bad_lines = }"
-        )
+        self.assertFalse(bad_lines, f"Good consecutive rounding changes failed {bad_lines = }")
 
     def test_good_rounding_space_split(self) -> None:
         diff_lines = """---
@@ -87,9 +85,7 @@ class TestParse_Diff(unittest.TestCase):
 -2505 2 -9.5670268990152E-01
 +2505 2 -9.5680268990153E-01""".splitlines()
         bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertTrue(
-            bad_lines, f"Bad rounding split by space shouldn't pass {bad_lines = }"
-        )
+        self.assertTrue(bad_lines, f"Bad rounding split by space shouldn't pass {bad_lines = }")
 
     def test_good_rounding_space_with_extra_word(self) -> None:
         diff_lines = """---
@@ -98,9 +94,7 @@ class TestParse_Diff(unittest.TestCase):
 -EXTRA 2505 2 -9.5670268990152E-01
 +EXTRA 2505 2 -9.5670268990153E-01""".splitlines()
         bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertFalse(
-            bad_lines, f"Good rounding with extra word failed {bad_lines = }"
-        )
+        self.assertFalse(bad_lines, f"Good rounding with extra word failed {bad_lines = }")
 
     def test_good_and_bad_rounding(self) -> None:
         diff_lines = """---
@@ -112,9 +106,7 @@ class TestParse_Diff(unittest.TestCase):
 -2505, 2, -9.5670268990152E-01
 +2505, 2, -9.5680268990153E-01""".splitlines()
         bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertTrue(
-            bad_lines, f"Bad rounding split by space shouldn't pass {bad_lines = }"
-        )
+        self.assertTrue(bad_lines, f"Bad rounding split by space shouldn't pass {bad_lines = }")
         self.assertTrue(
             sum(line.startswith("@@") for line in bad_lines) == 1,
             f"Exactly one double '@' lines should be present {bad_lines = }",
@@ -149,9 +141,7 @@ class TestParse_Diff(unittest.TestCase):
 -2505, 2, -9.5670268990152E-01
 +2505, 2, -9.5680268990153E-01""".splitlines()
         bad_lines = support_utils.parse_diff(diff_lines=iter(diff_lines))
-        self.assertTrue(
-            bad_lines, f"Bad rounding split by space shouldn't pass {bad_lines = }"
-        )
+        self.assertTrue(bad_lines, f"Bad rounding split by space shouldn't pass {bad_lines = }")
         self.assertTrue(
             sum(line.startswith("@@") for line in bad_lines) == 2,
             f"Exactly two double '@' lines should be present {bad_lines = }",

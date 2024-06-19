@@ -40,21 +40,19 @@ from femtools import femutils
 from femtools import membertools
 
 
-class _TaskPanel(object):
+class _TaskPanel:
 
     def __init__(self, obj):
         self._obj = obj
 
         self._paramWidget = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/InitialFlowVelocity.ui")
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/InitialFlowVelocity.ui"
+        )
 
         # geometry selection widget
         # start with Solid in list!
         self._selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Solid", "Face"],
-            True,
-            False
+            obj.References, ["Solid", "Face"], True, False
         )
 
         # form made from param and selection widget
@@ -72,36 +70,24 @@ class _TaskPanel(object):
 
         # connect unspecified option
         QtCore.QObject.connect(
-            self._paramWidget.velocityXBox,
-            QtCore.SIGNAL("toggled(bool)"),
-            self._velocityXEnable
+            self._paramWidget.velocityXBox, QtCore.SIGNAL("toggled(bool)"), self._velocityXEnable
         )
         QtCore.QObject.connect(
-            self._paramWidget.velocityYBox,
-            QtCore.SIGNAL("toggled(bool)"),
-            self._velocityYEnable
+            self._paramWidget.velocityYBox, QtCore.SIGNAL("toggled(bool)"), self._velocityYEnable
         )
         QtCore.QObject.connect(
-            self._paramWidget.velocityZBox,
-            QtCore.SIGNAL("toggled(bool)"),
-            self._velocityZEnable
+            self._paramWidget.velocityZBox, QtCore.SIGNAL("toggled(bool)"), self._velocityZEnable
         )
 
         # connect formula option
         QtCore.QObject.connect(
-            self._paramWidget.formulaXCB,
-            QtCore.SIGNAL("toggled(bool)"),
-            self._formulaXEnable
+            self._paramWidget.formulaXCB, QtCore.SIGNAL("toggled(bool)"), self._formulaXEnable
         )
         QtCore.QObject.connect(
-            self._paramWidget.formulaYCB,
-            QtCore.SIGNAL("toggled(bool)"),
-            self._formulaYEnable
+            self._paramWidget.formulaYCB, QtCore.SIGNAL("toggled(bool)"), self._formulaYEnable
         )
         QtCore.QObject.connect(
-            self._paramWidget.formulaZCB,
-            QtCore.SIGNAL("toggled(bool)"),
-            self._formulaZEnable
+            self._paramWidget.formulaZCB, QtCore.SIGNAL("toggled(bool)"), self._formulaZEnable
         )
 
         self._initParamWidget()
@@ -196,75 +182,57 @@ class _TaskPanel(object):
 
     def _initParamWidget(self):
         unit = "m/s"
-        self._paramWidget.velocityX.setProperty('unit', unit)
-        self._paramWidget.velocityY.setProperty('unit', unit)
-        self._paramWidget.velocityZ.setProperty('unit', unit)
+        self._paramWidget.velocityX.setProperty("unit", unit)
+        self._paramWidget.velocityY.setProperty("unit", unit)
+        self._paramWidget.velocityZ.setProperty("unit", unit)
 
-        self._paramWidget.velocityX.setProperty(
-            'value', self._obj.VelocityX)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.velocityX).bind(self._obj, "VelocityX")
-        self._paramWidget.velocityXBox.setChecked(
-            self._obj.VelocityXUnspecified)
+        self._paramWidget.velocityX.setProperty("value", self._obj.VelocityX)
+        FreeCADGui.ExpressionBinding(self._paramWidget.velocityX).bind(self._obj, "VelocityX")
+        self._paramWidget.velocityXBox.setChecked(self._obj.VelocityXUnspecified)
         self._paramWidget.formulaX.setText(self._obj.VelocityXFormula)
-        self._paramWidget.formulaXCB.setChecked(
-            self._obj.VelocityXHasFormula)
+        self._paramWidget.formulaXCB.setChecked(self._obj.VelocityXHasFormula)
 
-        self._paramWidget.velocityY.setProperty(
-            'value', self._obj.VelocityY)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.velocityY).bind(self._obj, "VelocityY")
-        self._paramWidget.velocityYBox.setChecked(
-            self._obj.VelocityYUnspecified)
+        self._paramWidget.velocityY.setProperty("value", self._obj.VelocityY)
+        FreeCADGui.ExpressionBinding(self._paramWidget.velocityY).bind(self._obj, "VelocityY")
+        self._paramWidget.velocityYBox.setChecked(self._obj.VelocityYUnspecified)
         self._paramWidget.formulaY.setText(self._obj.VelocityYFormula)
-        self._paramWidget.formulaYCB.setChecked(
-            self._obj.VelocityYHasFormula)
+        self._paramWidget.formulaYCB.setChecked(self._obj.VelocityYHasFormula)
 
-        self._paramWidget.velocityZ.setProperty(
-            'value', self._obj.VelocityZ)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.velocityZ).bind(self._obj, "VelocityZ")
-        self._paramWidget.velocityZBox.setChecked(
-            self._obj.VelocityZUnspecified)
+        self._paramWidget.velocityZ.setProperty("value", self._obj.VelocityZ)
+        FreeCADGui.ExpressionBinding(self._paramWidget.velocityZ).bind(self._obj, "VelocityZ")
+        self._paramWidget.velocityZBox.setChecked(self._obj.VelocityZUnspecified)
         self._paramWidget.formulaZ.setText(self._obj.VelocityZFormula)
-        self._paramWidget.formulaZCB.setChecked(
-            self._obj.VelocityZHasFormula)
+        self._paramWidget.formulaZCB.setChecked(self._obj.VelocityZHasFormula)
 
     def _applyVelocityChanges(self, enabledBox, velocityQSB):
         enabled = enabledBox.isChecked()
         velocity = None
         try:
-            velocity = velocityQSB.property('value')
+            velocity = velocityQSB.property("value")
         except ValueError:
             FreeCAD.Console.PrintMessage(
                 "Wrong input. Not recognised input: '{}' "
                 "Velocity has not been set.\n".format(velocityQSB.text())
             )
-            velocity = '0.0 m/s'
+            velocity = "0.0 m/s"
         return enabled, velocity
 
     def _applyWidgetChanges(self):
         # apply the velocities and their enabled state
-        self._obj.VelocityXUnspecified, self._obj.VelocityX = \
-            self._applyVelocityChanges(
-                self._paramWidget.velocityXBox,
-                self._paramWidget.velocityX
-            )
+        self._obj.VelocityXUnspecified, self._obj.VelocityX = self._applyVelocityChanges(
+            self._paramWidget.velocityXBox, self._paramWidget.velocityX
+        )
         self._obj.VelocityXHasFormula = self._paramWidget.formulaXCB.isChecked()
         self._obj.VelocityXFormula = self._paramWidget.formulaX.text()
 
-        self._obj.VelocityYUnspecified, self._obj.VelocityY = \
-            self._applyVelocityChanges(
-                self._paramWidget.velocityYBox,
-                self._paramWidget.velocityY
-            )
+        self._obj.VelocityYUnspecified, self._obj.VelocityY = self._applyVelocityChanges(
+            self._paramWidget.velocityYBox, self._paramWidget.velocityY
+        )
         self._obj.VelocityYHasFormula = self._paramWidget.formulaYCB.isChecked()
         self._obj.VelocityYFormula = self._paramWidget.formulaY.text()
 
-        self._obj.VelocityZUnspecified, self._obj.VelocityZ = \
-            self._applyVelocityChanges(
-                self._paramWidget.velocityZBox,
-                self._paramWidget.velocityZ
-            )
+        self._obj.VelocityZUnspecified, self._obj.VelocityZ = self._applyVelocityChanges(
+            self._paramWidget.velocityZBox, self._paramWidget.velocityZ
+        )
         self._obj.VelocityZHasFormula = self._paramWidget.formulaZCB.isChecked()
         self._obj.VelocityZFormula = self._paramWidget.formulaZ.text()

@@ -44,12 +44,14 @@ def get_information():
         "constraints": ["pressure", "displacement", "transform"],
         "solvers": ["ccxtools"],
         "material": "solid",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.constraint_transform_beam_hinged import setup
@@ -62,6 +64,7 @@ https://forum.freecad.org/viewtopic.php?f=18&t=20238#p157643
 Constraint transform on a beam
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -83,7 +86,9 @@ def setup(doc=None, solvertype="ccxtools"):
     cylinder.Height = "20 mm"
     cylinder.Radius = "6 mm"
     cylinder.Placement = FreeCAD.Placement(
-        Vector(10, 12, 10), Rotation(0, 0, 90), Vector(0, 0, 0),
+        Vector(10, 12, 10),
+        Rotation(0, 0, 90),
+        Vector(0, 0, 0),
     )
     cut = doc.addObject("Part::Cut", "Cut")
     cut.Base = cube
@@ -102,9 +107,9 @@ def setup(doc=None, solvertype="ccxtools"):
     fusion.Refine = True
 
     # compound filter
-    geom_obj = CompoundFilter.makeCompoundFilter(name='CompoundFilter')
+    geom_obj = CompoundFilter.makeCompoundFilter(name="CompoundFilter")
     geom_obj.Base = fusion
-    geom_obj.FilterType = 'window-volume'
+    geom_obj.FilterType = "window-volume"
     doc.recompute()
 
     if FreeCAD.GuiUp:
@@ -118,7 +123,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # solver
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
-        solver_obj.WorkingDir = u""
+        solver_obj.WorkingDir = ""
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
@@ -169,6 +174,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # mesh
     from .meshes.mesh_transform_beam_hinged_tetra10 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -180,7 +186,7 @@ def setup(doc=None, solvertype="ccxtools"):
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False
-    femmesh_obj.CharacteristicLengthMax = '7 mm'
+    femmesh_obj.CharacteristicLengthMax = "7 mm"
 
     doc.recompute()
     return doc

@@ -30,17 +30,15 @@ __url__ = "https://www.freecad.org"
 #  \brief view provider for mesh group object
 
 from femtaskpanels import task_mesh_group
-from . import view_base_femmeshelement
+from . import view_base_femconstraint
 
 
-class VPMeshGroup(view_base_femmeshelement.VPBaseFemMeshElement):
+class VPMeshGroup(view_base_femconstraint.VPBaseFemConstraint):
     """
     A View Provider for the MeshGroup object
     """
 
     def setEdit(self, vobj, mode=0):
-        super().setEdit(
-            vobj,
-            mode,
-            task_mesh_group._TaskPanel
+        view_base_femconstraint.VPBaseFemConstraint.setEdit(
+            self, vobj, mode, task_mesh_group._TaskPanel
         )

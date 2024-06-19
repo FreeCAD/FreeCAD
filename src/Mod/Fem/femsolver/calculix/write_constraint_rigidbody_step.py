@@ -30,7 +30,7 @@ import FreeCAD
 
 
 def get_analysis_types():
-    return "all"    # write for all analysis types
+    return "all"  # write for all analysis types
 
 
 def get_sets_name():
@@ -62,16 +62,16 @@ def write_constraint(f, femobj, rb_obj, ccxwriter):
     rb_obj_idx = ccxwriter.analysis.Group.index(rb_obj)
     node_count = ccxwriter.mesh_object.FemMesh.NodeCount
     # factor 2 is to prevent conflict with other rigid body constraint
-    ref_node_idx = node_count + 2*rb_obj_idx + 1
-    rot_node_idx = node_count + 2*rb_obj_idx + 2
+    ref_node_idx = node_count + 2 * rb_obj_idx + 1
+    rot_node_idx = node_count + 2 * rb_obj_idx + 2
 
     def write_mode(mode, node, dof, constraint, load):
         if mode == "Constraint":
             f.write("*BOUNDARY\n")
-            f.write("{},{},{},{:.13G}\n".format(node, dof, dof, constraint))
+            f.write(f"{node},{dof},{dof},{constraint:.13G}\n")
         elif mode == "Load":
             f.write("*CLOAD\n")
-            f.write("{},{},{:.13G}\n".format(node, dof, load))
+            f.write(f"{node},{dof},{load:.13G}\n")
 
     mode = [rb_obj.TranslationalModeX, rb_obj.TranslationalModeY, rb_obj.TranslationalModeZ]
     constraint = rb_obj.Displacement
@@ -80,9 +80,8 @@ def write_constraint(f, femobj, rb_obj, ccxwriter):
     for i in range(3):
         write_mode(mode[i], ref_node_idx, i + 1, constraint[i], load[i].getValueAs("N").Value)
 
-
     mode = [rb_obj.RotationalModeX, rb_obj.RotationalModeY, rb_obj.RotationalModeZ]
-    load = [rb_obj.MomentX,rb_obj.MomentY, rb_obj.MomentZ]
+    load = [rb_obj.MomentX, rb_obj.MomentY, rb_obj.MomentZ]
 
     # write rotation components according to rotational mode
     rot = rb_obj.Rotation
@@ -95,6 +94,5 @@ def write_constraint(f, femobj, rb_obj, ccxwriter):
 
     for i in range(3):
         write_mode(mode[i], rot_node_idx, i + 1, constraint[i], load[i].getValueAs("N*mm").Value)
-
 
     f.write("\n")
