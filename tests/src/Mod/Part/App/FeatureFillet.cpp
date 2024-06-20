@@ -76,7 +76,7 @@ TEST_F(FeatureFilletTest, testOtherEdges)
     _fillet->execute();
     filletVolume = PartTestHelpers::getVolume(_fillet->Shape.getValue());
     // Assert
-    EXPECT_FLOAT_EQ(filletVolume, 125.57079);
+    EXPECT_NEAR(filletVolume, 125.57079, 1e-5);
 }
 
 TEST_F(FeatureFilletTest, testMostEdges)
@@ -93,7 +93,7 @@ TEST_F(FeatureFilletTest, testMostEdges)
     _fillet->execute();
     double filletVolume = PartTestHelpers::getVolume(_fillet->Shape.getValue());
     // Assert
-    EXPECT_FLOAT_EQ(filletVolume, 118.38763);
+    EXPECT_NEAR(filletVolume, 118.38763, 1e-5);
 }
 
 // Worth noting that FeaturePartCommon with insufficient parameters says MustExecute false,

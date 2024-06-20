@@ -72,6 +72,11 @@ SET(AssemblyGuiIcon_SVG
 )
 
 add_library(AssemblyGui SHARED ${AssemblyGui_SRCS} ${AssemblyGuiIcon_SVG})
+
+if(WIN32)
+    target_compile_definitions(AssemblyGui PRIVATE _USE_MATH_DEFINES)
+endif(WIN32)
+
 target_link_libraries(AssemblyGui ${AssemblyGui_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(AssemblyGui)
