@@ -588,13 +588,15 @@ class Joint:
         assembly = self.getAssembly(joint)
         isAssembly = assembly.Type == "Assembly"
         if isAssembly:
-            part1ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part1")
-            part2ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part2")
+            joint.Activated = False
+            part1Connected = assembly.isPartConnected(joint.Part1)
+            part2Connected = assembly.isPartConnected(joint.Part2)
+            joint.Activated = True
         else:
-            part1ConnectedByJoint = False
-            part2ConnectedByJoint = True
+            part1Connected = False
+            part2Connected = True
 
-        if part2ConnectedByJoint:
+        if not part2Connected:
             if savePlc:
                 self.partMovedByPresolved = joint.Part2
                 self.presolveBackupPlc = joint.Part2.Placement
@@ -610,7 +612,7 @@ class Joint:
             joint.Part2.Placement = globalJcsPlc1 * jcsPlc2.inverse()
             return True
 
-        elif part1ConnectedByJoint:
+        elif not part1Connected:
             if savePlc:
                 self.partMovedByPresolved = joint.Part1
                 self.presolveBackupPlc = joint.Part1.Placement
