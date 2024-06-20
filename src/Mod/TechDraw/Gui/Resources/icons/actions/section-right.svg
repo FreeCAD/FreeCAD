@@ -195,7 +195,6 @@
             <dc:title>[WandererFan]</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:title>section-right</dc:title>
         <dc:date>2016-10-06</dc:date>
         <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -219,56 +218,25 @@
     </rdf:RDF>
   </metadata>
   <g
-     transform="rotate(-90,-462.18109,525.98114)"
-     id="layer1-7">
-    <g
-       transform="rotate(180,32.000001,1020.3622)"
-       id="g7108-0">
-      <g
-         id="g536">
-        <rect
-           style="color:#000000;display:none;overflow:visible;visibility:visible;fill:url(#linearGradient3837-6-8);fill-opacity:1;fill-rule:nonzero;stroke:#302b00;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-           id="rect7087-7-4"
-           y="991.36218"
-           x="3.0000019"
-           height="58.000042"
-           width="58" />
-        <rect
-           style="color:#000000;display:none;overflow:visible;visibility:visible;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#34e0e2;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-           id="rect7087-3-5-3"
-           y="993.36218"
-           x="5.0000019"
-           height="54.000065"
-           width="54" />
-        <rect
-           style="color:#000000;display:none;overflow:visible;visibility:visible;fill:url(#linearGradient10861-3-6);fill-opacity:1;fill-rule:nonzero;stroke:#06989a;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-           id="rect2985-3-6"
-           y="1003.3622"
-           x="15.000004"
-           height="34.000038"
-           width="34" />
-        <g
-           transform="rotate(90,32.000018,1020.3622)"
-           id="g169">
-          <path
-             d="m 21.000038,1043.3622 30.999999,10e-5 v 0 -46.00008 l -31.999999,-10e-6"
-             id="path1"
-             style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#042a2a;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:8, 16;stroke-dashoffset:21.92;stroke-opacity:1;marker:none;enable-background:accumulate" />
-          <path
-             d="m 21.000038,1043.3622 30.999999,10e-5 v 0 -46.00008 l -31.999999,-10e-6"
-             id="path2"
-             style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#34e0e2;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:8, 16;stroke-dashoffset:21.92;stroke-opacity:1;marker:none;enable-background:accumulate"
-             transform="translate(-2.0000001e-6)" />
-          <path
-             style="fill:#34e0e2;stroke:#042a2a;stroke-width:2;stroke-dasharray:none"
-             d="m 20.000038,992.06172 v 10.60098 l -9.540962,-5.30044 z"
-             id="path3018-6-5" />
-          <path
-             style="fill:#34e0e2;stroke:#042a2a;stroke-width:2;stroke-dasharray:none"
-             d="m 21.000038,1038.0617 v 10.601 l -9.540849,-5.3005 z"
-             id="path3018-1-2-4" />
-        </g>
-      </g>
-    </g>
+     transform="rotate(180,32.000021,526.18111)"
+     id="g169-9">
+    <path
+       d="m 19.00004,1043.3622 3.3,0 m 9.899999,0 6.599999,10e-5 m 9.899999,0 3.3,0 h 0 m 0,0 v 0 m 0,0 v 0 l 0,-4.6 m 0,-13.8 v -9.2 m 0,-13.8001 v -4.59998 l -3.3,0 m -9.899999,0 -6.599999,10e-6 m -9.899999,0 -3.3,0"
+       id="path3"
+       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#042a2a;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:21.92;stroke-opacity:1;marker:none;enable-background:accumulate"
+       transform="translate(-2.0000001e-6)" />
+    <path
+       style="fill:#34e0e2;stroke:#042a2a;stroke-width:2;stroke-linejoin:round;stroke-dasharray:none"
+       d="m 19.822038,991.36215 v 12.00015 L 8.9999318,997.36228 Z"
+       id="path3018-6" />
+    <path
+       style="fill:#34e0e2;stroke:#042a2a;stroke-width:2;stroke-linejoin:round;stroke-dasharray:none"
+       d="m 21.000038,1037.3621 v 12.0002 l -10.822278,-6.0001 z"
+       id="path3018-1-2" />
+    <path
+       d="m 19.00004,1043.3622 3.3,0 m 9.899999,0 6.599999,10e-5 m 9.899999,0 3.3,0 h 0 m 0,0 v 0 m 0,0 v 0 l 0,-4.6 m 0,-13.8 v -9.2 m 0,-13.8001 v -4.59998 l -3.3,0 m -9.899999,0 -6.599999,10e-6 m -9.899999,0 -3.3,0"
+       id="path4"
+       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#34e0e2;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:21.92;stroke-opacity:1;marker:none;enable-background:accumulate"
+       transform="translate(-2.0000001e-6)" />
   </g>
 </svg>
