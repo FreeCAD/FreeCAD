@@ -406,6 +406,14 @@ public:
     int trim(int geoId, const Base::Vector3d& point);
     /// extend a curve
     int extend(int geoId, double increment, PointPos endPoint);
+    /// Once smaller pieces have been created from a larger curve (by split or trim, say), derive
+    /// the constraint that will replace the given one (which is to be deleted). NOTE: Currently
+    /// assuming all constraints on the end points of the old curve have been transferred or
+    /// destroyed
+    void deriveConstraintsForPieces(const int oldId,
+                                    const std::vector<int> newIds,
+                                    const Constraint* con,
+                                    std::vector<Constraint*>& newConstraints);
     /// split a curve
     int split(int geoId, const Base::Vector3d& point);
     /*!
