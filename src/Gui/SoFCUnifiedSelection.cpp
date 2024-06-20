@@ -400,8 +400,10 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 auto subName = selaction->SelChange.pSubName;
 #ifdef FC_USE_TNP_FIX
                 std::pair<std::string, std::string> elementName;
-                App::GeoFeature::resolveElement(obj,subName,elementName);
-                subName = elementName.second.c_str();  // Use the shortened element name not the full one.
+                App::GeoFeature::resolveElement(obj, subName, elementName);
+                if (!elementName.second.empty()) {         // If we have a shortened element name
+                    subName = elementName.second.c_str();  // use it.
+                }
 #endif
                 if(!selaction->SelChange.pSubName || !selaction->SelChange.pSubName[0] ||
                     vp->getDetailPath(subName,detailPath,true,detail))
