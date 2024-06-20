@@ -508,7 +508,6 @@
         <dc:source>http://agryson.net</dc:source>
         <cc:license
            rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
-        <dc:title>TechDraw_View</dc:title>
         <dc:date>2016-01-14</dc:date>
         <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -546,58 +545,58 @@
     </rdf:RDF>
   </metadata>
   <g
-     id="g5167"
-     style="display:inline"
-     transform="translate(-9,8.9999803)">
-    <g
-       transform="translate(9.25,-1.3749871)"
-       id="g1689">
-      <path
-         style="opacity:1;fill:#d3d7cf;fill-opacity:1;stroke:#555753;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
-         d="M 14.75,45.144231 V 24.221153 l 18.307692,5.230771 V 50.375 Z"
-         id="path3185" />
-      <path
-         style="opacity:1;fill:#d3d7cf;fill-opacity:1;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
-         d="M 14.75,24.221153 30.442308,16.375 48.750001,21.605769 33.057692,29.451924 Z"
-         id="path3973" />
-      <path
-         style="opacity:1;fill:#d3d7cf;fill-opacity:1;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
-         d="M 33.057692,29.451924 V 50.375 L 48.750001,42.528847 V 21.605769 Z"
-         id="path3975" />
-    </g>
-  </g>
-  <g
-     id="layer1"
+     id="layer1-8"
      transform="matrix(1.3333328,0,0,0.99999876,-10.666659,2.48e-6)">
     <g
-       id="g3"
-       transform="matrix(0,1.1499854,-0.86248833,0,64.774305,-4.799845)"
+       id="g5167-7"
+       style="display:inline"
+       transform="matrix(0.7500003,0,0,1.0000012,7.9999974,-2.4800031e-6)">
+      <g
+         transform="translate(9.25,-1.3749871)"
+         id="g1689-8">
+        <path
+           style="opacity:1;fill:#d3d7cf;fill-opacity:1;stroke:#555753;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+           d="M 14.75,45.144231 V 24.221153 l 18.307692,5.230771 V 50.375 Z"
+           id="path3185-1" />
+        <path
+           style="opacity:1;fill:#d3d7cf;fill-opacity:1;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+           d="M 14.75,24.221153 30.442308,16.375 48.750001,21.605769 33.057692,29.451924 Z"
+           id="path3973-0" />
+        <path
+           style="opacity:1;fill:#d3d7cf;fill-opacity:1;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+           d="M 33.057692,29.451924 V 50.375 L 48.750001,42.528847 V 21.605769 Z"
+           id="path3975-5" />
+      </g>
+    </g>
+    <g
+       id="g3-5"
+       transform="matrix(0.86248836,0,0,1.1499854,4.4001449,-11.699142)"
        style="stroke-width:0.869577">
       <path
          style="fill:#888a85;stroke:#302b00;stroke-width:6.95652;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;paint-order:fill markers stroke"
          d="M 11.999945,58 H 52.000169"
-         id="path2" />
+         id="path2-8" />
       <path
          style="fill:#888a85;stroke:#fce94f;stroke-width:3.47831;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;paint-order:fill markers stroke"
          d="M 11.999945,58 H 52.000169"
-         id="path3" />
+         id="path3-6" />
     </g>
     <path
        style="fill:#fce94f;stroke:#302b00;stroke-width:1.73206;stroke-linecap:square;stroke-linejoin:round;paint-order:fill markers stroke"
-       d="m 24.875859,6.1545564 -6.476445,8.4036806 6.476445,8.40368 v -4.989435 h 14.248177 v 4.989435 l 6.476445,-8.40368 -6.476445,-8.4036806 V 11.143995 H 24.875859 Z"
-       id="path1" />
+       d="m 12.615939,41.498831 6.302755,8.635268 6.302755,-8.635268 H 21.479376 V 22.501246 h 3.742073 l -6.302755,-8.635267 -6.302755,8.635267 h 3.742076 v 18.997585 z"
+       id="path1-2" />
     <g
-       id="g5"
-       transform="matrix(0,1.149996,-0.8624962,0,99.274778,-4.7999348)"
+       id="g5-4"
+       transform="matrix(0.86249626,0,0,1.1499959,4.4000775,-57.69981)"
        style="stroke-width:0.869569">
       <path
          style="fill:#888a85;stroke:#302b00;stroke-width:6.95646;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;paint-order:fill markers stroke"
          d="M 11.999945,58 H 52.000169"
-         id="path4" />
+         id="path4-7" />
       <path
          style="fill:#888a85;stroke:#fce94f;stroke-width:3.47828;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;paint-order:fill markers stroke"
          d="M 11.999945,58 H 52.000169"
-         id="path5" />
+         id="path5-5" />
     </g>
   </g>
 </svg>

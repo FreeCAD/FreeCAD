@@ -16,6 +16,17 @@
   <defs
      id="defs1754">
     <linearGradient
+       id="linearGradient3">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop1" />
+      <stop
+         style="stop-color:#cc0000;stop-opacity:1"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
        xlink:href="#linearGradient6"
        id="linearGradient2"
        x1="4.4678578"
@@ -34,6 +45,35 @@
          offset="1"
          id="stop7" />
     </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3"
+       id="linearGradient17"
+       x1="1.186595"
+       y1="8.4667969"
+       x2="6.2283826"
+       y2="8.4667969"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-1,0,0,1,8.7312566,0)" />
+    <linearGradient
+       id="linearGradient16">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop16" />
+      <stop
+         style="stop-color:#cc0000;stop-opacity:1"
+         offset="1"
+         id="stop17" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient16"
+       id="linearGradient22"
+       gradientUnits="userSpaceOnUse"
+       x1="16.13957"
+       y1="8.4666672"
+       x2="10.667397"
+       y2="8.5589933"
+       gradientTransform="translate(-8.2020694)" />
   </defs>
   <metadata
      id="metadata1757">
@@ -48,7 +88,7 @@
   </metadata>
   <g
      id="layer5"
-     style="display:inline">
+     style="display:none">
     <path
        style="display:inline;fill:none;stroke:#555753;stroke-width:1.5875;stroke-linecap:round;stroke-dasharray:none"
        d="m 1.8520833,8.4666677 h 0.066146 m 2.5135417,-2e-7 h 0.1322917 m 2.5135416,-2e-7 H 7.209896 m 2.5135417,-2e-7 h 0.1322917 m 2.5135416,-2e-7 h 0.132291 m 2.513542,-2e-7 h 0.06615"
@@ -89,5 +129,32 @@
        style="fill:none;stroke:#729fcf;stroke-width:0.529167;stroke-linecap:round;stroke-dasharray:none"
        d="m 6.6145821,8.466669 3.7041699,-3.6e-6"
        id="path49" />
+  </g>
+  <g
+     id="g22">
+    <g
+       id="g17"
+       transform="matrix(-1,0,0,1,8.7312566,0)">
+      <path
+         style="fill:#ef2929;stroke:#280000;stroke-width:0.529167;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:4.65667;paint-order:normal"
+         d="M 0.79375001,8.4666669 5.2916667,2.38125 V 6.6145834 H 7.9375001 V 10.31875 H 5.2916667 v 4.233333 z"
+         id="path12" />
+      <path
+         style="fill:url(#linearGradient17);stroke:#ef2929;stroke-width:0.529167;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:4.65667;paint-order:normal"
+         d="M 4.7617187,3.9882813 V 7.1445312 H 7.4082031 V 9.7890625 H 4.7617187 V 12.945313 L 1.4511719,8.4667969 Z"
+         id="path14" />
+    </g>
+    <g
+       id="g21"
+       transform="translate(8.2020756)">
+      <path
+         style="fill:#ef2929;stroke:#280000;stroke-width:0.529167;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:4.65667;paint-order:normal"
+         d="M 0.79375001,8.4666669 5.2916667,2.38125 V 6.6145834 H 7.9375001 V 10.31875 H 5.2916667 v 4.233333 z"
+         id="path20" />
+      <path
+         style="fill:url(#linearGradient22);stroke:#ef2929;stroke-width:0.529167;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:4.65667;paint-order:normal"
+         d="M 4.7617187,3.9882813 V 7.1445312 H 7.4082031 V 9.7890625 H 4.7617187 V 12.945313 L 1.4511719,8.4667969 Z"
+         id="path21" />
+    </g>
   </g>
 </svg>
