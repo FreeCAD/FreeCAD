@@ -619,12 +619,6 @@ bool TaskDlgFemConstraintTransform::accept()
                                 "App.ActiveDocument.%s.TransformType = %s",
                                 name.c_str(),
                                 parameters->get_transform_type().c_str());
-
-        std::string scale = parameters->getScale();
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));

@@ -340,11 +340,6 @@ bool TaskDlgFemConstraintSpring::accept()
                                 "App.ActiveDocument.%s.ElmerStiffness = '%s'",
                                 name.c_str(),
                                 parameterStiffness->getElmerStiffness().c_str());
-        std::string scale = parameterStiffness->getScale();  // OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());  // OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));

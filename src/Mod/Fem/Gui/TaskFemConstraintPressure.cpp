@@ -326,11 +326,6 @@ bool TaskDlgFemConstraintPressure::accept()
                                 "App.ActiveDocument.%s.Reversed = %s",
                                 name.c_str(),
                                 parameterPressure->getReverse() ? "True" : "False");
-        std::string scale = parameterPressure->getScale();  // OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());  // OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));

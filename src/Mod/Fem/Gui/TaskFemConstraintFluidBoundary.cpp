@@ -1048,12 +1048,6 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
         // Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %s",
         // name.c_str(), boundary->getReverse() ? "True" : "False");
 
-        std::string scale = boundary->getScale();  // OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());  // OvG: implement modified scale
-
         // solver specific setting, physical model selection
         const Fem::FemSolverObject* pcSolver = boundary->getFemSolver();
 

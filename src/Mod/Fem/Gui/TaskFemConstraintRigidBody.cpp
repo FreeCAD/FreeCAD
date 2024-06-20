@@ -757,11 +757,6 @@ bool TaskDlgFemConstraintRigidBody::accept()
                                 "App.ActiveDocument.%s.RotationalModeZ = \"%s\"",
                                 name.c_str(),
                                 rotModes[2].c_str());
-
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                parameters->getScale().c_str());
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));

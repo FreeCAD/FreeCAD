@@ -322,14 +322,6 @@ void TaskDlgFemConstraintPlaneRotation::open()
 
 bool TaskDlgFemConstraintPlaneRotation::accept()
 {
-    std::string name = ConstraintView->getObject()->getNameInDocument();
-    const TaskFemConstraintPlaneRotation* parameters =
-        static_cast<const TaskFemConstraintPlaneRotation*>(parameter);
-    std::string scale = parameters->getScale();  // OvG: determine modified scale
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.%s.Scale = %s",
-                            name.c_str(),
-                            scale.c_str());  // OvG: implement modified scale
     return TaskDlgFemConstraint::accept();
 }
 
