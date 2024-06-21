@@ -2698,11 +2698,6 @@ Gui--OverlayToolButton[objectName="OBTN Float"]:hover {
   image: url(qss:images_classic/float-black.png);
 }
 
-Gui--OverlayToolButton[objectName="OBTN Float"]:checked,
-Gui--OverlayToolButton[objectName="OBTN Float"]:active
- {
-  image: url(qss:images_classic/float-blue.png);
-}
 Gui--OverlayToolButton[objectName="OBTN Overlay"]:!hover {
   image: url(qss:images_classic/overlay-lightgray.png);
 }
@@ -2711,11 +2706,6 @@ Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
   image: url(qss:images_classic/overlay-black.png);
 }
 
-Gui--OverlayToolButton[objectName="OBTN Overlay"]:checked,
-Gui--OverlayToolButton[objectName="OBTN Overlay"]:active
-{
-  image: url(qss:images_classic/overlay-blue.png);
-}
 /*==================================================================================================
 Forming windows below are the border settings. See also https://forum.freecad.org/viewtopic.php?p=439797#p439797
 ==================================================================================================*/
