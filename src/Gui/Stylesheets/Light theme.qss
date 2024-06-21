@@ -1549,20 +1549,28 @@ margin: 0px;
 padding: 0px;
 }
 
-QSint--ActionGroup QFrame[class="header"] QLabel[fold="false"] {
-  background-image: url(qss:images_classic/Qsint_header_Unfold_Blue-light.png);
+QSint--ActionGroup QFrame[class="header"] QLabel{
+  width: 30px;
+  height: 30px;
+  image: url(qss:images_classic/Qsint_header_Unfold_Blue-light.png);
 }
 
-QSint--ActionGroup QFrame[class="header"] QLabel:hover[fold="false"] {
-  background-image: url(qss:images_classic/Qsint_header_UnfoldOver_Blue-light.png);
+QSint--ActionGroup QFrame[class="header"] QLabel:hover {
+  width: 30px;
+  height: 30px;
+  image: url(qss:images_classic/Qsint_header_UnfoldOver_Blue_light.png);
 }
 
 QSint--ActionGroup QFrame[class="header"] QLabel[fold="true"] {
-  background-image: url(qss:images_classic/Qsint_header_Fold_Blue-light.png);
+  width: 30px;
+  height: 30px;
+  image: url(qss:images_classic/Qsint_header_Fold_Blue-light.png);
 }
 
 QSint--ActionGroup QFrame[class="header"] QLabel[fold="true"]:hover {
-  background-image: url(qss:images_classic/Qsint_header_FoldOver_Blue-light.png) ;
+  width: 30px;
+  height: 30px;
+  image: url(qss:images_classic/Qsint_header_FoldOver_Blue-light.png) ;
 }
 
 QSint--ActionGroup QFrame[class="content"] {
@@ -2675,64 +2683,39 @@ Gui--NotificationLabel {
   border-radius: 2px;
 }
 
-
 Gui--OverlayToolButton:!hover{
-  background-color: transparent;
-  image: url(qss:overlay/close_lightgray.svg);
+  image: url(qss:images_classic/close-lightgray.png);
 }
 
 Gui--OverlayToolButton:hover {
-  image: url(qss:overlay/close_red.svg);
+  image: url(qss:images_classic/close-red.png);
 }
-
-Gui--OverlayToolButton[objectName="OBTN Transparent"]:!checked  {
-  image: url(qss:overlay/transparent_light.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN Transparent"]:hover {
-  image: url(qss:overlay/transparent_lighter.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN Transparent"]:checked {
-  image: url(qss:overlay/transparent_lighter.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN Overlay"]:!checked{
-  image: url(qss:overlay/overlay_light.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
-  image: url(qss:overlay/overlay_lighter.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN Overlay"]:checked {
-  image: url(qss:overlay/overlay_lighter.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN AutoMode"]:!checked {
-  image: url(qss:overlay/mode_light.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
-  image: url(qss:overlay/mode_lighter.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN AutoMode"]:checked {
-  image: url(qss:overlay/mode_lighter.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN Float"]:!checked {
-  image: url(qss:overlay/float_light.svg);
+Gui--OverlayToolButton[objectName="OBTN Float"]:!hover {
+  image: url(qss:images_classic/float-lightgray.png);
 }
 
 Gui--OverlayToolButton[objectName="OBTN Float"]:hover {
-  image: url(qss:overlay/float_lighter.svg);
+  image: url(qss:images_classic/float-black.png);
 }
 
-Gui--OverlayToolButton[objectName="OBTN Float"]:checked {
-  image: url(qss:overlay/float_lighter.svg);
+Gui--OverlayToolButton[objectName="OBTN Float"]:checked,
+Gui--OverlayToolButton[objectName="OBTN Float"]:active
+ {
+  image: url(qss:images_classic/float-blue.png);
+}
+Gui--OverlayToolButton[objectName="OBTN Overlay"]:!hover {
+  image: url(qss:images_classic/overlay-lightgray.png);
 }
 
+Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
+  image: url(qss:images_classic/overlay-black.png);
+}
+
+Gui--OverlayToolButton[objectName="OBTN Overlay"]:checked,
+Gui--OverlayToolButton[objectName="OBTN Overlay"]:active
+{
+  image: url(qss:images_classic/overlay-blue.png);
+}
 /*==================================================================================================
 Forming windows below are the border settings. See also https://forum.freecad.org/viewtopic.php?p=439797#p439797
 ==================================================================================================*/
