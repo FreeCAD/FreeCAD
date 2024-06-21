@@ -4694,7 +4694,7 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
     // the selection observers can trigger a recreation of all DocumentObjectItem so that the
     // passed 'item' can become a dangling pointer.
     // Thus,'item' mustn't be accessed any more after altering the selection.
-    // For further details see the bug analsysis of #13107
+    // For further details see the bug analysis of #13107
     bool selected = item->isSelected();
     bool checked = item->checkState(0) == Qt::Checked;
 
@@ -4729,8 +4729,7 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
 
 #ifdef FC_DEBUG
     if (!subname.empty()) {
-        auto parentItem = item->getParentItem();
-        assert(parentItem);
+        assert(item->getParentItem());
     }
 #endif
 
