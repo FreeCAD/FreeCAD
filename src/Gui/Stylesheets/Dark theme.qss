@@ -989,11 +989,8 @@ QAbstractSpinBox:up-button {
   subcontrol-position: top right;
   border-top: 1px solid transparent;
   border-right: 1px solid transparent;
+  border-bottom: 0px solid transparent;
   border-top-right-radius: 2px;
-  border-bottom-left-radius: 2px;
-  margin-top: 1px;
-  margin-right: 1px;
-
 }
 
 QAbstractSpinBox::up-arrow, QAbstractSpinBox::up-arrow:disabled, QAbstractSpinBox::up-arrow:off {
@@ -1014,13 +1011,8 @@ QAbstractSpinBox:down-button {
   subcontrol-position: bottom right;
   border-bottom: 1px solid transparent;
   border-right: 1px solid transparent;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  margin-bottom: 1px;
-  margin-right: 1px;
-  /* margin: 1px; */
-  /*width: 12px;
-  /*margin-top: -1px;*/
+  border-top: 0px solid transparent;
+  border-bottom-right-radius: 2px;
 }
 
 QAbstractSpinBox::down-arrow, QAbstractSpinBox::down-arrow:disabled, QAbstractSpinBox::down-arrow:off {
@@ -1938,58 +1930,7 @@ QTabBar::tab, QDockWidget QTabBar::tab {
   /* selected ------------------------------------------------------- */
   padding: 4px;
   background-color: #333333;
-
 }
-/*
-QTabBar::tab:top:selected:disabled, QDockWidget QTabBar::tab:top:selected:disabled {
-  color: #adadad;
-}
-
-QTabBar::tab:bottom:selected:disabled, QDockWidget QTabBar::tab:bottom:selected:disabled {
-  color: #adadad;
-}
-
-QTabBar::tab:left:selected:disabled, QDockWidget QTabBar::tab:left:selected:disabled {
-  color: #adadad;
-}
-
-QTabBar::tab:right:selected:disabled, QDockWidget QTabBar::tab:right:selected:disabled {
-  color: #adadad;
-}
-
-QTabBar::tab:top:!selected:disabled, QDockWidget QTabBar::tab:top:!selected:disabled {
-  color: #adadad;
-}
-
-QTabBar::tab:bottom:!selected:disabled, QDockWidget QTabBar::tab:bottom:!selected:disabled {
-  color: #adadad;
-
-}
-
-QTabBar::tab:left:!selected:disabled, QDockWidget QTabBar::tab:left:!selected:disabled {
-  color: #adadad;
-
-}
-
-QTabBar::tab:right:!selected:disabled, QDockWidget QTabBar::tab:right:!selected:disabled {
-  color: #adadad;
-}
-
-QTabBar::tab:top:!selected, QDockWidget QTabBar::tab:top:!selected {
-  color: #adadad;
-}
-
-QTabBar::tab:bottom:!selected, QDockWidget QTabBar::tab:bottom:!selected {
-  color: #adadad;
-}
-
-QTabBar::tab:left:!selected, QDockWidget QTabBar::tab:left:!selected {
-  color: #adadad;
-}
-
-QTabBar::tab:right:!selected, QDockWidget QTabBar::tab:right:!selected {
-  color: #adadad;
-} */
 
 QTabBar::tab:top, QDockWidget QTabBar::tab:top {
   color: white;
