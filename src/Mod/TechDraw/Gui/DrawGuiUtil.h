@@ -91,6 +91,8 @@ class TechDrawGuiExport DrawGuiUtil {
 
     static bool findObjectInSelection(const std::vector<Gui::SelectionObject>& selection,
                                       const App::DocumentObject& targetObject);
+    static std::vector<std::string>  getSubsForSelectedObject(const std::vector<Gui::SelectionObject>& selection,
+                                                                App::DocumentObject* selectedObj);
 };
 
 } //end namespace TechDrawGui

@@ -1,8 +1,5 @@
 /***************************************************************************
  *   Copyright (c) 2023 Peter McB                                          *
- *   additional statement(s) for element sets                              *
- *                                                                         *
- *   added to: AppFemGui.cpp                                               *
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
