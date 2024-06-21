@@ -91,10 +91,10 @@ void EndMill::GenerateDisplayLists(float quality)
     }
 
     // full tool
-    toolShape.RotateProfile(profilePoints, nPoints, 0,  nslices, false);
+    toolShape.RotateProfile(profilePoints, nPoints, 0, nslices, false);
 
     // half tool
-    halfToolShape.RotateProfile(profilePoints, nPoints, 0,  nslices / 2, true);
+    halfToolShape.RotateProfile(profilePoints, nPoints, 0, nslices / 2, true);
 
     // unit path
     int nFullPoints = PROFILE_BUFFER_POINTS(nPoints);
@@ -105,13 +105,8 @@ unsigned int
 EndMill::GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape* retShape)
 {
     int nFullPoints = PROFILE_BUFFER_POINTS(nPoints);
-    retShape->ExtrudeProfileRadial(profilePoints,
-                                   nFullPoints,
-                                   radius,
-                                   angleRad,
-                                   zShift,
-                                   true,
-                                   true);
+    retShape
+        ->ExtrudeProfileRadial(profilePoints, nFullPoints, radius, angleRad, zShift, true, true);
     return 0;
 }
 

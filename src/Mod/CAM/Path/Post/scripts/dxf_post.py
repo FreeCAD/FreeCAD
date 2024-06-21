@@ -59,9 +59,6 @@ else:
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-
-
-
 def processArguments(argstring):
     pass
     # global OUTPUT_HEADER

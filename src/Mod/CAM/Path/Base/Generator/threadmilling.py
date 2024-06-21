@@ -140,9 +140,7 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, st
             path.append(Path.Command("G0", {"Z": thread.zStart}))
         else:
             path.append(
-                Path.Command(
-                    "G0", {"X": center.x, "Y": center.y + elevator, "Z": thread.zStart}
-                )
+                Path.Command("G0", {"X": center.x, "Y": center.y + elevator, "Z": thread.zStart})
             )
         path.append(Path.Command("G1", {"Y": yMax}))
 
@@ -172,9 +170,7 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, st
         y = thread.adjustY(center.y, r * dy)
         x = thread.adjustX(center.x, r * dx)
         _comment(path, "finish-thread")
-        path.append(
-            Path.Command(thread.cmd, {"X": x, "Y": y, "Z": thread.zFinal, "J": r})
-        )
+        path.append(Path.Command(thread.cmd, {"X": x, "Y": y, "Z": thread.zFinal, "J": r}))
         _comment(path, "finish-thread")
 
     a = math.atan2(y - center.y, x - center.x)
@@ -185,9 +181,7 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, st
 
     elevatorX = x - dx
     elevatorY = y - dy
-    Path.Log.debug(
-        "({:.2f}, {:.2f}) -> ({:.2f}, {:.2f})".format(x, y, elevatorX, elevatorY)
-    )
+    Path.Log.debug("({:.2f}, {:.2f}) -> ({:.2f}, {:.2f})".format(x, y, elevatorX, elevatorY))
 
     if leadInOut:
         _comment(path, "lead-out")

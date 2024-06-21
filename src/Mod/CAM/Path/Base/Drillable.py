@@ -19,14 +19,11 @@ def checkForBlindHole(baseshape, selectedFace):
     circularFaces = [
         f
         for f in baseshape.Faces
-        if len(f.OuterWire.Edges) == 1
-        and type(f.OuterWire.Edges[0].Curve) == Part.Circle
+        if len(f.OuterWire.Edges) == 1 and type(f.OuterWire.Edges[0].Curve) == Part.Circle
     ]
 
     circularFaceEdges = [f.OuterWire.Edges[0] for f in circularFaces]
-    commonedges = [
-        i for i in selectedFace.Edges for x in circularFaceEdges if i.isSame(x)
-    ]
+    commonedges = [i for i in selectedFace.Edges for x in circularFaceEdges if i.isSame(x)]
 
     bottomface = None
     for f in circularFaces:
@@ -48,9 +45,7 @@ def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 
     matchVector = vector is not None
 
     Path.Log.debug(
-        "\n match tool diameter {} \n match vector {}".format(
-            matchToolDiameter, matchVector
-        )
+        "\n match tool diameter {} \n match vector {}".format(matchToolDiameter, matchVector)
     )
 
     def raisedFeature(obj, candidate):
@@ -70,9 +65,7 @@ def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 
             candidate.BoundBox.ZMin,
         )
 
-        return obj.isInside(startLidCenter, 1e-6, False) or obj.isInside(
-            endLidCenter, 1e-6, False
-        )
+        return obj.isInside(startLidCenter, 1e-6, False) or obj.isInside(endLidCenter, 1e-6, False)
 
     def getSeam(candidate):
         # Finds the vertical seam edge in a cylinder
@@ -104,9 +97,7 @@ def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 
     bottomface = checkForBlindHole(obj, candidate)
     Path.Log.track("candidate is a blind hole")
 
-    if (
-        bottomface is not None and matchVector
-    ):  # blind holes only drillable at exact vector
+    if bottomface is not None and matchVector:  # blind holes only drillable at exact vector
         result = compareVecs(bottomface.normalAt(0, 0), vector, exact=True)
         Path.Log.track(result)
         return result
@@ -125,9 +116,7 @@ def isDrillableFace(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1
     matchToolDiameter = tooldiameter is not None
     matchVector = vector is not None
     Path.Log.debug(
-        "\n match tool diameter {} \n match vector {}".format(
-            matchToolDiameter, matchVector
-        )
+        "\n match tool diameter {} \n match vector {}".format(matchToolDiameter, matchVector)
     )
 
     if not type(candidate.Surface) == Part.Plane:
@@ -177,9 +166,7 @@ def isDrillableEdge(
     matchToolDiameter = tooldiameter is not None
     matchVector = vector is not None
     Path.Log.debug(
-        "\n match tool diameter {} \n match vector {}".format(
-            matchToolDiameter, matchVector
-        )
+        "\n match tool diameter {} \n match vector {}".format(matchToolDiameter, matchVector)
     )
 
     edge = candidate
@@ -210,9 +197,7 @@ def isDrillableEdge(
         return True
 
 
-def isDrillable(
-    obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1), allowPartial=False
-):
+def isDrillable(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1), allowPartial=False):
     """
     Checks candidates to see if they can be drilled at the given vector.
     Candidates can be either faces - circular or cylindrical or circular edges.
@@ -295,7 +280,7 @@ def getDrillableTargets(obj, ToolDiameter=None, vector=App.Vector(0, 0, 1)):
     shp = obj.Shape
 
     results = []
-    for i in range(1, len(shp.Faces)+1):
+    for i in range(1, len(shp.Faces) + 1):
         fname = "Face{}".format(i)
         Path.Log.debug(fname)
         candidate = obj.getSubObject(fname)
@@ -304,9 +289,7 @@ def getDrillableTargets(obj, ToolDiameter=None, vector=App.Vector(0, 0, 1)):
             continue
 
         try:
-            drillable = isDrillable(
-                shp, candidate, tooldiameter=ToolDiameter, vector=vector
-            )
+            drillable = isDrillable(shp, candidate, tooldiameter=ToolDiameter, vector=vector)
             Path.Log.debug("fname: {} : drillable {}".format(fname, drillable))
         except Exception as e:
             Path.Log.debug(e)

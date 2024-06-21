@@ -133,15 +133,11 @@ class TestPathOpDeburr(PathTestUtils.PathTestBase):
         self.assertRoughly(0.1, depth)
         self.assertRoughly(4, offset)
         self.assertTrue(info)
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(
-            1, 0.1, tool, not info
-        )
+        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.1, tool, not info)
         self.assertRoughly(0.1, depth)
         self.assertRoughly(4, offset)
         self.assertTrue(info)
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(
-            1, 0.1, tool, not info
-        )
+        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.1, tool, not info)
         self.assertRoughly(0.1, depth)
         self.assertRoughly(4, offset)
         self.assertTrue(info)
@@ -159,15 +155,11 @@ class TestPathOpDeburr(PathTestUtils.PathTestBase):
         self.assertRoughly(1.1, depth)
         self.assertRoughly(0.1, offset)
         self.assertTrue(info)
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(
-            1, 0.1, tool, not info
-        )
+        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.1, tool, not info)
         self.assertRoughly(1.1, depth)
         self.assertRoughly(0.1, offset)
         self.assertTrue(info)
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(
-            1, 0.1, tool, not info
-        )
+        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.1, tool, not info)
         self.assertRoughly(1.1, depth)
         self.assertRoughly(0.1, offset)
         self.assertTrue(info)

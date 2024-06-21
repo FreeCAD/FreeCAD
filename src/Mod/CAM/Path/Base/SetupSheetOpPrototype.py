@@ -130,9 +130,7 @@ class PropertyFloat(Property):
         try:
             return float(string)
         except ValueError:
-            Path.Log.error(
-                f"{self.category}.{self.name} [{self.propType}] : '{string}'"
-            )
+            Path.Log.error(f"{self.category}.{self.name} [{self.propType}] : '{string}'")
             raise
 
 
@@ -144,9 +142,7 @@ class PropertyInteger(Property):
         try:
             return int(string)
         except ValueError:
-            Path.Log.error(
-                f"{self.category}.{self.name} [{self.propType}] : '{string}'"
-            )
+            Path.Log.error(f"{self.category}.{self.name} [{self.propType}] : '{string}'")
             raise
 
 
@@ -163,9 +159,7 @@ class PropertyBool(Property):
         try:
             return bool(string)
         except ValueError:
-            Path.Log.error(
-                f"{self.category}.{self.name} [{self.propType}] : '{string}'"
-            )
+            Path.Log.error(f"{self.category}.{self.name} [{self.propType}] : '{string}'")
             raise
 
 

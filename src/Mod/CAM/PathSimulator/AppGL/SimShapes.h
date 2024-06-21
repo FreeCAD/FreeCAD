@@ -72,11 +72,8 @@ public:
     void Render();
     void Render(mat4x4 modelMat, mat4x4 normallMat);
     void FreeResources();
-    void RotateProfile(float* profPoints,
-                       int nPoints,
-                       float distance,
-                       int nSlices,
-                       bool isHalfTurn);
+    void
+    RotateProfile(float* profPoints, int nPoints, float distance, int nSlices, bool isHalfTurn);
     void ExtrudeProfileRadial(float* profPoints,
                               int nPoints,
                               float radius,

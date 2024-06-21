@@ -35,31 +35,38 @@ PROPERTY_SOURCE(Path::FeatureCompound, Path::Feature)
 
 FeatureCompound::FeatureCompound()
 {
-    ADD_PROPERTY_TYPE( Group,         (nullptr),   "Base",Prop_None,"Ordered list of paths to combine");
-    ADD_PROPERTY_TYPE( UsePlacements, (false), "Base",Prop_None,"Specifies if the placements of children must be computed");
+    ADD_PROPERTY_TYPE(Group, (nullptr), "Base", Prop_None, "Ordered list of paths to combine");
+    ADD_PROPERTY_TYPE(UsePlacements,
+                      (false),
+                      "Base",
+                      Prop_None,
+                      "Specifies if the placements of children must be computed");
 }
 
 FeatureCompound::~FeatureCompound()
-{
-}
+{}
 
-App::DocumentObjectExecReturn *FeatureCompound::execute()
+App::DocumentObjectExecReturn* FeatureCompound::execute()
 {
-    const std::vector<DocumentObject*> &Paths = Group.getValues();
+    const std::vector<DocumentObject*>& Paths = Group.getValues();
     Path::Toolpath result;
 
-    for (std::vector<DocumentObject*>::const_iterator it= Paths.begin();it!=Paths.end();++it) {
-        if ((*it)->isDerivedFrom<Path::Feature>()){
-            const std::vector<Command*> &cmds = static_cast<Path::Feature*>(*it)->Path.getValue().getCommands();
+    for (std::vector<DocumentObject*>::const_iterator it = Paths.begin(); it != Paths.end(); ++it) {
+        if ((*it)->isDerivedFrom<Path::Feature>()) {
+            const std::vector<Command*>& cmds =
+                static_cast<Path::Feature*>(*it)->Path.getValue().getCommands();
             const Base::Placement pl = static_cast<Path::Feature*>(*it)->Placement.getValue();
-            for (std::vector<Command*>::const_iterator it2= cmds.begin();it2!=cmds.end();++it2) {
+            for (std::vector<Command*>::const_iterator it2 = cmds.begin(); it2 != cmds.end();
+                 ++it2) {
                 if (UsePlacements.getValue()) {
                     result.addCommand((*it2)->transform(pl));
-                } else {
+                }
+                else {
                     result.addCommand(**it2);
                 }
             }
-        } else {
+        }
+        else {
             return new App::DocumentObjectExecReturn("Not all objects in group are paths!");
         }
     }
@@ -74,8 +81,9 @@ bool FeatureCompound::hasObject(const DocumentObject* obj) const
 {
     const std::vector<DocumentObject*>& grp = Group.getValues();
     for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if (*it == obj)
+        if (*it == obj) {
             return true;
+        }
     }
 
     return false;
@@ -102,25 +110,28 @@ void FeatureCompound::removeObject(DocumentObject* obj)
     }
 }
 
-PyObject *FeatureCompound::getPyObject()
+PyObject* FeatureCompound::getPyObject()
 {
-    if (PythonObject.is(Py::_None())){
+    if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new FeaturePathCompoundPy(this),true);
+        PythonObject = Py::Object(new FeaturePathCompoundPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
 
 // Python Path Compound feature ---------------------------------------------------------
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Path::FeatureCompoundPython, Path::FeatureCompound)
-template<> const char* Path::FeatureCompoundPython::getViewProviderName() const {
+template<>
+const char* Path::FeatureCompoundPython::getViewProviderName() const
+{
     return "PathGui::ViewProviderPathCompoundPython";
 }
 /// @endcond
 
 // explicit template instantiation
 template class PathExport FeaturePythonT<Path::FeatureCompound>;
-}
+}  // namespace App

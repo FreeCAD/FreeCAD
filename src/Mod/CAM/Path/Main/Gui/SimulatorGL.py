@@ -46,8 +46,10 @@ if FreeCAD.GuiUp:
 
 _filePath = os.path.dirname(os.path.abspath(__file__))
 
+
 def IsSame(x, y):
     return abs(x - y) < 0.0001
+
 
 def RadiusAt(edge, p):
     x = edge.valueAt(p).x
@@ -130,7 +132,7 @@ class CAMSimulation:
                 maxz = z
         return topedge, top_p1, top_p2
 
-    #the algo is based on locating the side edge that OCC creates on any revolved object 
+    # the algo is based on locating the side edge that OCC creates on any revolved object
     def GetToolProfile(self, tool, resolution):
         shape = tool.Shape
         sideEdgeList = []
@@ -156,7 +158,7 @@ class CAMSimulation:
                 nsegments = int(edge.Length / resolution) + 1
                 step = (p2 - p1) / nsegments
                 location = p1 + step
-                print (edge.Length, nsegments, step)
+                print(edge.Length, nsegments, step)
                 while nsegments > 0:
                     endrad = RadiusAt(edge, location)
                     endz = edge.valueAt(location).z
@@ -169,7 +171,7 @@ class CAMSimulation:
                 endz = edge.valueAt(p2).z
                 profile.append(endrad)
                 profile.append(endz)
-            edge, p1, p2 =  self.FindClosestEdge(sideEdgeList, endrad, endz)
+            edge, p1, p2 = self.FindClosestEdge(sideEdgeList, endrad, endz)
             if edge is None:
                 break
             startrad = RadiusAt(edge, p1)
@@ -212,9 +214,7 @@ class CAMSimulation:
         guiSelection = FreeCADGui.Selection.getSelectionEx()
         if guiSelection:  #  Identify job selected by user
             sel = guiSelection[0]
-            if hasattr(sel.Object, "Proxy") and isinstance(
-                sel.Object.Proxy, PathJob.ObjectJob
-            ):
+            if hasattr(sel.Object, "Proxy") and isinstance(sel.Object.Proxy, PathJob.ObjectJob):
                 jobName = sel.Object.Name
                 FreeCADGui.Selection.clearSelection()
 
@@ -267,9 +267,9 @@ class CAMSimulation:
         form = self.taskForm.form
         self.quality = form.sliderAccuracy.value()
         qualText = QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "High")
-        if (self.quality < 4):
+        if self.quality < 4:
             qualText = QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Low")
-        elif (self.quality < 9):
+        elif self.quality < 9:
             qualText = QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Medium")
         form.labelAccuracy.setText(qualText)
 
@@ -296,7 +296,7 @@ class CAMSimulation:
         self.millSim.BeginSimulation(self.stock, self.quality)
 
     def cancel(self):
-        #self.EndSimulation()
+        # self.EndSimulation()
         pass
 
 
@@ -306,9 +306,7 @@ class CommandCAMSimulate:
             "Pixmap": "CAM_SimulatorGL",
             "MenuText": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "New CAM Simulator"),
             "Accel": "P, N",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "CAM_Simulator", "Simulate G-code on stock"
-            ),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Simulate G-code on stock"),
         }
 
     def IsActive(self):

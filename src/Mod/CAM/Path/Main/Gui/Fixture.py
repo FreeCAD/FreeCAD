@@ -151,9 +151,7 @@ class CommandPathFixture:
         return {
             "Pixmap": "CAM_Datums",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Fixture", "Fixture"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_Fixture", "Creates a Fixture Offset"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Fixture", "Creates a Fixture Offset"),
         }
 
     def IsActive(self):

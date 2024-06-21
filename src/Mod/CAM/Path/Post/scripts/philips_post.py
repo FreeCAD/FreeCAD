@@ -128,9 +128,7 @@ SWAP_G2_G3 = True  # some machines have the sign of the X-axis swapped, so they 
 # this might be special with some maho machines or even with mine and
 # might be changed in the machine constants as well
 
-SWAP_Y_Z = (
-    True  # machines with an angle milling head do not switch axes, so we do it here
-)
+SWAP_Y_Z = True  # machines with an angle milling head do not switch axes, so we do it here
 # possible values:
 #                  True      if Y and Z values have to be swapped
 #                  False     do not swap
@@ -213,16 +211,10 @@ parser.add_argument("--header", action="store_true", help="create header output"
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
 
 parser.add_argument("--comments", action="store_true", help="create comment output")
-parser.add_argument(
-    "--no-comments", action="store_true", help="suppress comment output"
-)
+parser.add_argument("--no-comments", action="store_true", help="suppress comment output")
 
-parser.add_argument(
-    "--line-numbers", action="store_true", help="prefix with line numbers"
-)
-parser.add_argument(
-    "--no-line-numbers", action="store_true", help="omit line number prefixes"
-)
+parser.add_argument("--line-numbers", action="store_true", help="prefix with line numbers")
+parser.add_argument("--no-line-numbers", action="store_true", help="omit line number prefixes")
 
 parser.add_argument(
     "--show-editor", action="store_true", help="pop up editor before writing output"
@@ -296,8 +288,6 @@ GCODE_FOOTER = "M30"
 # ***************************************************************************
 
 linenr = 0  # variable has to be global because it is used by linenumberify and export
-
-
 
 
 def angleUnder180(command, lastX, lastY, x, y, i, j):
@@ -391,9 +381,7 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             print(
-                "the object "
-                + obj.Name
-                + " is not a path. Please select only path and Compounds."
+                "the object " + obj.Name + " is not a path. Please select only path and Compounds."
             )
             return
     myMachine = None
@@ -451,8 +439,7 @@ def export(objectslist, filename, argstring):
                                     pass
                                 else:
                                     outstring.append(
-                                        param
-                                        + PostUtils.fmt(feed, FEED_DECIMALS, UNITS)
+                                        param + PostUtils.fmt(feed, FEED_DECIMALS, UNITS)
                                     )
                             elif param == "H":
                                 outstring.append(param + str(int(c.Parameters["H"])))
@@ -462,9 +449,7 @@ def export(objectslist, filename, argstring):
                                 # converted from entered value
                                 outstring.append(
                                     param
-                                    + PostUtils.fmt(
-                                        c.Parameters["S"], SPINDLE_DECIMALS, "G21"
-                                    )
+                                    + PostUtils.fmt(c.Parameters["S"], SPINDLE_DECIMALS, "G21")
                                 )
                             elif param == "T":
                                 outstring.append(param + str(int(c.Parameters["T"])))
@@ -486,21 +471,15 @@ def export(objectslist, filename, argstring):
                                     i,
                                     j,
                                 ):
-                                    outstring.append(
-                                        "R" + PostUtils.fmt(r, AXIS_DECIMALS, UNITS)
-                                    )
+                                    outstring.append("R" + PostUtils.fmt(r, AXIS_DECIMALS, UNITS))
                                 else:
                                     if RADIUS_COMMENT:
                                         outstring.append(
-                                            "(R"
-                                            + PostUtils.fmt(r, AXIS_DECIMALS, UNITS)
-                                            + ")"
+                                            "(R" + PostUtils.fmt(r, AXIS_DECIMALS, UNITS) + ")"
                                         )
                                     if ABSOLUTE_CIRCLE_CENTER:
                                         i += lastX
-                                    outstring.append(
-                                        param + PostUtils.fmt(i, AXIS_DECIMALS, UNITS)
-                                    )
+                                    outstring.append(param + PostUtils.fmt(i, AXIS_DECIMALS, UNITS))
                             elif param == "J" and (command == "G2" or command == "G3"):
                                 # this is the special case for circular paths,
                                 # where incremental center has to be changed to
@@ -530,8 +509,7 @@ def export(objectslist, filename, argstring):
                                         )
                                     else:
                                         outstring.append(
-                                            param
-                                            + PostUtils.fmt(j, AXIS_DECIMALS, UNITS)
+                                            param + PostUtils.fmt(j, AXIS_DECIMALS, UNITS)
                                         )
                             elif param == "K" and (command == "G2" or command == "G3"):
                                 # this is the special case for circular paths,
@@ -540,9 +518,7 @@ def export(objectslist, filename, argstring):
                                 outstring.append(
                                     "("
                                     + param
-                                    + PostUtils.fmt(
-                                        c.Parameters[param], AXIS_DECIMALS, UNITS
-                                    )
+                                    + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS)
                                     + ")"
                                 )
                                 z = c.Parameters["Z"]
@@ -565,36 +541,23 @@ def export(objectslist, filename, argstring):
                                         k += lastZ
                                 if SWAP_Y_Z:
                                     # we have to swap j and k as well
-                                    outstring.append(
-                                        "J" + PostUtils.fmt(j, AXIS_DECIMALS, UNITS)
-                                    )
+                                    outstring.append("J" + PostUtils.fmt(j, AXIS_DECIMALS, UNITS))
                                 else:
-                                    outstring.append(
-                                        param + PostUtils.fmt(j, AXIS_DECIMALS, UNITS)
-                                    )
+                                    outstring.append(param + PostUtils.fmt(j, AXIS_DECIMALS, UNITS))
                             elif param == "Y" and SWAP_Y_Z:
                                 outstring.append(
-                                    "Z"
-                                    + PostUtils.fmt(
-                                        c.Parameters[param], AXIS_DECIMALS, UNITS
-                                    )
+                                    "Z" + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS)
                                 )
                             elif param == "Z" and SWAP_Y_Z:
                                 outstring.append(
-                                    "Y"
-                                    + PostUtils.fmt(
-                                        c.Parameters[param], AXIS_DECIMALS, UNITS
-                                    )
+                                    "Y" + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS)
                                 )
                             else:
                                 # To Do: suppress unknown commands, if this is done here, all X parameters are suppressed
                                 # this is an unknown command, don't create GCode for it
                                 #                                print("parameter " + param + " for command " + command + " ignored")
                                 outstring.append(
-                                    param
-                                    + PostUtils.fmt(
-                                        c.Parameters[param], AXIS_DECIMALS, UNITS
-                                    )
+                                    param + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS)
                                 )
 
                             if param in MODALPARAMS:

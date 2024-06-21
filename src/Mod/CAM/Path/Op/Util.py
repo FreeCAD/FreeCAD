@@ -93,10 +93,7 @@ def debugWire(label, w):
     if not PrintWireDebug:
         return
     print("#%s wire >>>>>>>>>>>>>>>>>>>>>>>>" % label)
-    print(
-        "grp = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup', '%s')"
-        % label
-    )
+    print("grp = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup', '%s')" % label)
     for i, e in enumerate(w.Edges):
         edge = "%s_e%d" % (label, i)
         debugEdge("%s = " % edge, e)
@@ -136,7 +133,8 @@ def _orientEdges(inEdges):
 
 def _isWireClockwise(w):
     """_isWireClockwise(w) ... return True if wire is oriented clockwise.
-    Assumes the edges of w are already properly oriented - for generic access use isWireClockwise(w)."""
+    Assumes the edges of w are already properly oriented - for generic access use isWireClockwise(w).
+    """
     # handle wires consisting of a single circle or 2 edges where one is an arc.
     # in both cases, because the edges are expected to be oriented correctly, the orientation can be
     # determined by looking at (one of) the circle curves.
@@ -165,7 +163,8 @@ def orientWire(w, forward=True):
     """orientWire(w, forward=True) ... orients given wire in a specific direction.
     If forward = True (the default) the wire is oriented clockwise, looking down the negative Z axis.
     If forward = False the wire is oriented counter clockwise.
-    If forward = None the orientation is determined by the order in which the edges appear in the wire."""
+    If forward = None the orientation is determined by the order in which the edges appear in the wire.
+    """
     Path.Log.debug("orienting forward: {}: {} edges".format(forward, len(w.Edges)))
     wire = Part.Wire(_orientEdges(w.Edges))
     if forward is not None:
@@ -191,9 +190,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
             # https://www.freecad.org/wiki/Part%20Offset2D
             # it's easy to construct them manually though
             z = -1 if forward else 1
-            new_edge = Part.makeCircle(
-                curve.Radius + offset, curve.Center, FreeCAD.Vector(0, 0, z)
-            )
+            new_edge = Part.makeCircle(curve.Radius + offset, curve.Center, FreeCAD.Vector(0, 0, z))
             if base.isInside(new_edge.Vertexes[0].Point, offset / 2, True):
                 if offset > curve.Radius or Path.Geom.isRoughly(offset, curve.Radius):
                     # offsetting a hole by its own radius (or more) makes the hole vanish
@@ -246,17 +243,13 @@ def offsetWire(wire, base, offset, forward, Side=None):
             # Create new arc
             if curve.AngleXU > 0:
                 edge = Part.ArcOfCircle(
-                    Part.Circle(
-                        curve.Center, FreeCAD.Vector(0, 0, 1), curve.Radius + offset
-                    ),
+                    Part.Circle(curve.Center, FreeCAD.Vector(0, 0, 1), curve.Radius + offset),
                     start_angle,
                     end_angle,
                 ).toShape()
             else:
                 edge = Part.ArcOfCircle(
-                    Part.Circle(
-                        curve.Center, FreeCAD.Vector(0, 0, 1), curve.Radius - offset
-                    ),
+                    Part.Circle(curve.Center, FreeCAD.Vector(0, 0, 1), curve.Radius - offset),
                     start_angle,
                     end_angle,
                 ).toShape()
@@ -341,9 +334,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
         p0 = edge.firstVertex().Point
         p1 = edge.lastVertex().Point
         for p in insideEndpoints:
-            if Path.Geom.pointsCoincide(p, p0, 0.01) or Path.Geom.pointsCoincide(
-                p, p1, 0.01
-            ):
+            if Path.Geom.pointsCoincide(p, p0, 0.01) or Path.Geom.pointsCoincide(p, p1, 0.01):
                 return True
         return False
 

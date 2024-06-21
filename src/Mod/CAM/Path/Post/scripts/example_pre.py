@@ -45,9 +45,6 @@ if LEVEL == Path.Log.Level.DEBUG:
     Path.Log.trackModule(Path.Log.thisModule())
 
 
-
-
-
 def open(filename):
     "called when freecad opens a file."
     Path.Log.track(filename)

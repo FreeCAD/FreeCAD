@@ -98,9 +98,7 @@ class ObjectOp(PathOp.ObjectOp):
                 edges = edges[start_idx:] + edges[:start_idx]
                 for edge in edges:
                     Path.Log.debug(
-                        "points: {} -> {}".format(
-                            edge.Vertexes[0].Point, edge.Vertexes[-1].Point
-                        )
+                        "points: {} -> {}".format(edge.Vertexes[0].Point, edge.Vertexes[-1].Point)
                     )
                     Path.Log.debug(
                         "valueat {} -> {}".format(
@@ -120,14 +118,10 @@ class ObjectOp(PathOp.ObjectOp):
                             )
                         )
                         self.commandlist.append(
-                            Path.Command(
-                                "G0", {"X": last.x, "Y": last.y, "F": self.horizRapid}
-                            )
+                            Path.Command("G0", {"X": last.x, "Y": last.y, "F": self.horizRapid})
                         )
                         self.commandlist.append(
-                            Path.Command(
-                                "G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}
-                            )
+                            Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
                         )
                         self.appendCommand(
                             Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
@@ -137,9 +131,7 @@ class ObjectOp(PathOp.ObjectOp):
                         )
                     first = False
 
-                    if Path.Geom.pointsCoincide(
-                        last, edge.valueAt(edge.FirstParameter)
-                    ):
+                    if Path.Geom.pointsCoincide(last, edge.valueAt(edge.FirstParameter)):
                         # if Path.Geom.pointsCoincide(last, edge.Vertexes[0].Point):
                         for cmd in Path.Geom.cmdsForEdge(edge):
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
@@ -149,9 +141,7 @@ class ObjectOp(PathOp.ObjectOp):
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[0].Point
             self.commandlist.append(
-                Path.Command(
-                    "G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}
-                )
+                Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
             )
 
     def appendCommand(self, cmd, z, relZ, feed):

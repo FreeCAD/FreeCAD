@@ -32,8 +32,9 @@ mat4x4 identityMat = {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
 
 void GLClearError()
 {
-    while (glGetError() != GL_NO_ERROR)
+    while (glGetError() != GL_NO_ERROR) {
         ;
+    }
 }
 
 bool GLLogError()

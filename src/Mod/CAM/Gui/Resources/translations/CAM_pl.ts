@@ -117,7 +117,7 @@
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
       <source>Select a template to be used for the job. In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.</source>
       <translation>Wybierz szablon, który będzie używany dla zadania. W przypadku braku szablonów
-można je utworzyć za pomocą menu podręcznego istniejącego zadania. 
+można je utworzyć za pomocą menu podręcznego istniejącego zadania.
 Nazwij plik job_*.json i umieść go w katalogu "makro" lub "path" (patrz preferencje),
 aby można go było wybrać z tej listy.</translation>
     </message>
@@ -264,7 +264,7 @@ Note that this option is disabled if a stock object from an existing solid is us
       <source>Enable all operations for which the configuration values should be exported.
 
 Note that only operations which currently have configuration values set are listed.</source>
-      <translation>Włącz wszystkie operacje, dla których wartości konfiguracyjne powinny być wyeksportowane. 
+      <translation>Włącz wszystkie operacje, dla których wartości konfiguracyjne powinny być wyeksportowane.
 
 Należy pamiętać, że na liście znajdują się tylko operacje, dla których aktualnie ustawiono wartości konfiguracyjne.</translation>
     </message>
@@ -1817,7 +1817,7 @@ Ta druga opcja może być użyta do planowania całego obszaru półfabrykatu, a
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="84"/>
       <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
-      <translation>Planarny: Skanowanie płaskie, powierzchniowe 3D. 
+      <translation>Planarny: Skanowanie płaskie, powierzchniowe 3D.
 Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
     </message>
     <message>
@@ -2531,8 +2531,8 @@ Jeśli opcja ta nie jest zaznaczona, żaden szablon nie zostanie wstępnie wybra
       <location filename="../preferences/PathJob.ui" line="247"/>
       <source>Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.</source>
       <translation>Wybierz sposób postępowania z potencjalnymi konfliktami nazw plików:
-- zawsze otwieraj okno dialogowe, 
-- otwieraj okno dialogowe tylko wtedy, gdy plik wyjściowy już istnieje, 
+- zawsze otwieraj okno dialogowe,
+- otwieraj okno dialogowe tylko wtedy, gdy plik wyjściowy już istnieje,
 - nadpisz istniejący plik lub dodaj unikalny (3 cyfry) identyfikator sekwencyjny do nazwy pliku.</translation>
     </message>
     <message>
@@ -5367,7 +5367,7 @@ Domyślnie: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="203"/>
       <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
-      <translation>Planarny: Skanowanie płaskie, powierzchniowe 3D. 
+      <translation>Planarny: Skanowanie płaskie, powierzchniowe 3D.
 Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
     </message>
     <message>
@@ -5577,9 +5577,9 @@ Climb (zgodnie z ruchem wskazówek zegara) lub Conventional (odwrotnie do ruchu 
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="331"/>
-      <source>Cutoff for removing colinear segments (degrees). 
+      <source>Cutoff for removing colinear segments (degrees).
                         default=10.0.</source>
-      <translation>Wartość graniczna dla usuwania odcinków współliniowych (w stopniach). 
+      <translation>Wartość graniczna dla usuwania odcinków współliniowych (w stopniach).
                         domyślnie = 10,0.</translation>
     </message>
     <message>
@@ -6976,23 +6976,23 @@ Przerwanie procesu tworzenia</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
-      <source>The currently selected unit schema: 
+      <source>The currently selected unit schema:
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values. 
- 
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct G-code: 
+ Does not use &apos;minutes&apos; for velocity values.
+
+CNC machines require feed rate to be expressed in
+unit/minute. To ensure correct G-code:
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
     &apos;US Customary&apos;
     &apos;Imperial Decimal&apos;</source>
-      <translation type="unfinished">The currently selected unit schema: 
+      <translation type="unfinished">The currently selected unit schema:
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values. 
- 
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct G-code: 
+ Does not use &apos;minutes&apos; for velocity values.
+
+CNC machines require feed rate to be expressed in
+unit/minute. To ensure correct G-code:
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
@@ -7075,9 +7075,9 @@ For example:
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="145"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</source>
-      <translation>&lt;b&gt;Uwaga&lt;/b&gt;: To okno pokazuje polecenia środowiska CAM w podstawowych jednostkach dla FreeCAD (mm/s). 
+      <translation>&lt;b&gt;Uwaga&lt;/b&gt;: To okno pokazuje polecenia środowiska CAM w podstawowych jednostkach dla FreeCAD (mm/s).
  Wartości zostaną przekonwertowane na żądaną jednostkę podczas przetwarzania końcowego.</translation>
     </message>
     <message>
@@ -7383,7 +7383,7 @@ For example:
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="363"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not 
+      <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
       <translation>Narzędzie numer {} jest narzędziem starszego typu.
 Starsze narzędzia nie są obsługiwane przez funkcję Bezpieczeństwo CAM</translation>
@@ -8499,10 +8499,10 @@ Starsze narzędzia nie są obsługiwane przez funkcję Bezpieczeństwo CAM</tran
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="128"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {} 
+ {}
  Create them?</source>
       <translation>Katalog roboczy narzędzia {} potrzebuje tych katalogów:
- {} 
+ {}
  Utwórz je?</translation>
     </message>
     <message>

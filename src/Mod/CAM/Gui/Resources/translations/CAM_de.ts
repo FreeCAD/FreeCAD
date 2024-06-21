@@ -5564,7 +5564,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="331"/>
-      <source>Cutoff for removing colinear segments (degrees). 
+      <source>Cutoff for removing colinear segments (degrees).
                         default=10.0.</source>
       <translation>Obergrenze zum Entfernen von kolinearen Segmenten (Grad). Standard = 10.0.</translation>
     </message>
@@ -6961,23 +6961,23 @@ Abbruch der OP-Erstellung</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
-      <source>The currently selected unit schema: 
+      <source>The currently selected unit schema:
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values. 
- 
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct G-code: 
+ Does not use &apos;minutes&apos; for velocity values.
+
+CNC machines require feed rate to be expressed in
+unit/minute. To ensure correct G-code:
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
     &apos;US Customary&apos;
     &apos;Imperial Decimal&apos;</source>
-      <translation type="unfinished">The currently selected unit schema: 
+      <translation type="unfinished">The currently selected unit schema:
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values. 
- 
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct G-code: 
+ Does not use &apos;minutes&apos; for velocity values.
+
+CNC machines require feed rate to be expressed in
+unit/minute. To ensure correct G-code:
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
@@ -7060,9 +7060,9 @@ For example:
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="145"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</source>
-      <translation>&lt;b&gt;Hinweis&lt;/b&gt;: Dieser Dialog zeigt Werkzeugweg-Befehle in FreeCAD-Basiseinheiten (mm/s) an. 
+      <translation>&lt;b&gt;Hinweis&lt;/b&gt;: Dieser Dialog zeigt Werkzeugweg-Befehle in FreeCAD-Basiseinheiten (mm/s) an.
  Werte werden erst im Postprozessor in die gewünschte Einheit konvertiert.</translation>
     </message>
     <message>
@@ -7368,9 +7368,9 @@ For example:
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="363"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not 
+      <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
-      <translation>Werkzeugnummer {} ist ein veraltetes Werkzeug. Veraltete Werkzeuge werden nicht durch 
+      <translation>Werkzeugnummer {} ist ein veraltetes Werkzeug. Veraltete Werkzeuge werden nicht durch
                         Path-Sanity unterstützt</translation>
     </message>
     <message>
@@ -8483,10 +8483,10 @@ For example:
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="128"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {} 
+ {}
  Create them?</source>
       <translation>Das Werkzeugspitzen Arbeitsverzeichnis {} benötigt diese Unterverzeichnisse:
- {} 
+ {}
  Sollen diese erstellt werden?</translation>
     </message>
     <message>
