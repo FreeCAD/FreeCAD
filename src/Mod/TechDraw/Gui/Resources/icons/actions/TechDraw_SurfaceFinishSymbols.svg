@@ -206,14 +206,7 @@
 
 
 
-<rect
-   style="display:none;opacity:1;vector-effect:none;fill:url(#linearGradient1036);fill-opacity:1;stroke:#000000;stroke-width:79.0793;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-   id="rect201"
-   width="1614.254"
-   height="1635.2638"
-   x="49.915806"
-   y="18.529852"
-   ry="191.65402" /><g
+<g
    id="g909"
    transform="matrix(0.99999501,0,0,1.0000092,0.74496471,36.043489)"
    style="stroke-width:28.222"><g
@@ -267,17 +260,12 @@
    id="path1931" /><path
    style="display:inline;fill:none;fill-rule:evenodd;stroke:#729fcf;stroke-width:53.4373;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
    d="M 200.44206,715.68399 423.63611,1222.9432 1103.3634,218.56998 h 412.4713"
-   id="path7" /><text
-   xml:space="preserve"
-   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:609.334px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#729fcf;fill-opacity:1;stroke:#0b1521;stroke-width:106.875;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke markers fill"
-   x="856.71631"
-   y="1189.5275"
+   id="path7" /><path
+   d="m 1003.6943,947.63854 h 29.7527 q 43.7363,0 64.5632,-14.5788 20.8268,-14.57879 20.8268,-45.81906 0,-30.94274 -21.4219,-44.0339 -21.1243,-13.09116 -65.7533,-13.09116 h -27.9675 z m 0,74.97666 v 166.9123 H 911.46116 V 754.54393 h 126.74624 q 88.6628,0 131.2091,32.43037 42.5463,32.13285 42.5463,97.88617 0,38.3809 -21.1244,68.43107 -21.1244,29.75263 -59.8028,46.71166 l 127.9363,189.5243 h -102.349 l -103.8367,-166.9123 z m 514.1256,166.9123 -17.5541,-45.224 h -2.3802 q -22.9095,28.86 -47.3067,40.166 -24.0996,11.0085 -63.0756,11.0085 -47.9017,0 -75.5717,-27.3724 -27.3724,-27.3725 -27.3724,-77.9519 0,-52.9597 36.8933,-77.9519 37.1908,-25.28979 111.8699,-27.96752 l 57.7201,-1.78516 v -14.57879 q 0,-50.57948 -51.7696,-50.57948 -39.8685,0 -93.7208,24.09963 l -30.0501,-61.29043 q 57.4226,-30.05016 127.3412,-30.05016 66.9435,0 102.6466,29.15758 35.7032,29.15759 35.7032,88.66286 v 221.65717 z m -26.7774,-154.1187 -35.1081,1.1901 q -39.571,1.1901 -58.9102,14.2813 -19.3392,13.0911 -19.3392,39.8685 0,38.3809 44.0339,38.3809 31.5378,0 50.2819,-18.1491 19.0417,-18.1491 19.0417,-48.1993 z"
    id="text1935"
-   transform="scale(0.92392307,1.0823412)"><tspan
-     id="tspan1933"
-     x="856.71631"
-     y="1189.5275"
-     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:609.334px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#729fcf;stroke:#0b1521;stroke-width:106.875;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke markers fill">Ra</tspan></text>
+   style="font-weight:bold;font-size:609.334px;line-height:1.25;-inkscape-font-specification:'sans-serif, Bold';letter-spacing:0px;word-spacing:0px;fill:#729fcf;stroke:#0b1521;stroke-width:106.87452314;stroke-linecap:round;paint-order:stroke fill markers;stroke-dasharray:none;stroke-linejoin:round"
+   transform="scale(0.92392307,1.0823412)"
+   aria-label="Ra" />
 
 
 <path

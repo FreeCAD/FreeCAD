@@ -109,15 +109,15 @@
   </metadata>
   <g
      id="g963"
-     transform="matrix(3.113416,0,0,3.1133588,-85.692009,-128.89229)"
-     style="stroke-width:0.642388">
+     transform="matrix(1.4462441,0,0,1.4462167,-22.670314,-42.737674)"
+     style="stroke-width:1.38291">
     <path
-       d="M 30.970374,45.82823 A 8.993818,8.9934077 0.02042283 1 1 44.632785,57.527845 8.993818,8.9934077 0.02042283 1 1 30.970374,45.82823 Z"
+       d="M 30.44895,45.381796 A 9.6804379,9.6799972 0.0204645 1 1 45.154397,57.974602 9.6804379,9.6799972 0.0204645 1 1 30.44895,45.381796 Z"
        id="path4250-71-6"
-       style="fill:#729fcf;stroke:#0b1521;stroke-width:1.28478;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+       style="fill:#729fcf;stroke:#0b1521;stroke-width:1.3829;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <path
-       d="m 37.947266,43.966797 c 1.72471,0.03099 3.454108,0.6401 4.871093,1.853515 3.23036,2.766274 3.606933,7.641501 0.837891,10.871094 -2.764442,3.231631 -7.643073,3.611646 -10.873047,0.845703 -3.229987,-2.765954 -3.605004,-7.643424 -0.835937,-10.873047 1.559179,-1.822679 3.782121,-2.737124 6,-2.697265 z"
-       id="path1"
-       style="fill:url(#linearGradient5064);stroke:#729fcf;stroke-width:1.28478;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;font-variation-settings:normal;opacity:1;vector-effect:none;fill-opacity:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-dashoffset:0;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+       d="m 37.958984,43.376953 c 1.856876,0.03332 3.717077,0.688133 5.242188,1.994141 3.476918,2.977411 3.883116,8.229 0.902344,11.705078 -2.975449,3.47876 -8.224125,3.885724 -11.701172,0.908203 -3.476918,-2.977411 -3.883117,-8.229 -0.902344,-11.705078 1.677997,-1.961838 4.071547,-2.94518 6.458984,-2.902344 z"
+       id="path2"
+       style="fill:url(#linearGradient5064);stroke:#729fcf;stroke-width:1.38290552;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;font-variation-settings:normal;opacity:1;fill-opacity:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-dashoffset:0;stop-color:#000000;stop-opacity:1" />
   </g>
 </svg>

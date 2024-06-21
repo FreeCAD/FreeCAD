@@ -58,7 +58,7 @@
          id="path1" />
       <path
          style="fill:none;stroke:#302b00;stroke-width:1.5875;stroke-linecap:round;stroke-dasharray:none;paint-order:fill markers stroke;enable-background:new"
-         d="M 9.7897136,10.315926 V 1.320093"
+         d="M 10.451042,10.315926 V 1.320093"
          id="path2" />
       <path
          style="fill:none;stroke:#302b00;stroke-width:1.5875;stroke-linecap:round;stroke-dasharray:none;paint-order:fill markers stroke;enable-background:new"
@@ -86,7 +86,7 @@
          id="path22" />
       <path
          style="fill:none;stroke:#fce94f;stroke-width:0.529167;stroke-linecap:round;stroke-dasharray:none;paint-order:fill markers stroke;enable-background:new"
-         d="M 9.7897136,10.315926 V 0.79092635"
+         d="M 10.451042,10.315926 V 0.79092635"
          id="path23" />
       <path
          style="fill:none;stroke:#fce94f;stroke-width:0.529167;stroke-linecap:round;stroke-dasharray:none;paint-order:fill markers stroke;enable-background:new"
@@ -122,7 +122,7 @@
     </g>
     <g
        id="g6"
-       transform="translate(-4.4563763,-4.7901948)"
+       transform="translate(-3.7949179,-4.7901948)"
        style="enable-background:new">
       <circle
          style="fill:#fce94f;stroke:#302b00;stroke-width:0.529167;stroke-dasharray:none"
@@ -204,7 +204,11 @@
          transform="translate(0.07725068,0.164946)">
         <path
            style="fill:none;stroke:#cc0000;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none"
-           d="m 6.4920032,11.740092 h 1.0583331 m -1.0583331,1 h 1.0583331"
+           d="M 6.4920032,12.798425 H 7.5503363"
+           id="path18" />
+        <path
+           style="fill:none;stroke:#cc0000;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none"
+           d="M 6.4920032,11.740092 H 7.5503363"
            id="path7" />
       </g>
       <g
@@ -212,7 +216,11 @@
          transform="translate(-0.55774933,0.164946)">
         <path
            style="fill:none;stroke:#cc0000;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none"
-           d="m 10.83117,11.740092 h 1.058333 m -1.058333,1 h 1.058333"
+           d="m 10.83117,12.798425 h 1.058333"
+           id="path16" />
+        <path
+           style="fill:none;stroke:#cc0000;stroke-width:0.529167;stroke-linecap:square;stroke-dasharray:none"
+           d="m 10.83117,11.740092 h 1.058333"
            id="path8" />
       </g>
     </g>
@@ -261,7 +269,7 @@
     </g>
     <g
        id="g24"
-       transform="translate(-4.4563763,-11.669362)"
+       transform="translate(-3.7949179,-11.669362)"
        style="enable-background:new">
       <circle
          style="fill:#d3d7cf;stroke:#555753;stroke-width:0.529167;stroke-dasharray:none"

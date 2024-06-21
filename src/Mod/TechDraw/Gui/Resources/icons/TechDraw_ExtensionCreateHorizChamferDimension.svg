@@ -43,16 +43,19 @@
      id="layer1"
      style="enable-background:new"
      transform="matrix(0,1,1,0,1.0917794e-5,-1.09e-5)">
-    <path
-       style="display:inline;fill:none;stroke:#302b00;stroke-width:1.5875;stroke-linecap:round;stroke-dasharray:none;paint-order:fill markers stroke;enable-background:new"
-       d="M 14.116977,4.1022798 H 8.2961434"
-       id="path12"
-       transform="matrix(0,0.99999999,0.99999999,0,-0.662763,-4.85656)" />
-    <path
-       style="display:inline;fill:none;stroke:#fce94f;stroke-width:0.529167;stroke-linecap:round;stroke-dasharray:none;paint-order:fill markers stroke;enable-background:new"
-       d="M 14.116977,4.1022798 H 8.2961434"
-       id="path13"
-       transform="matrix(0,0.99999999,0.99999999,0,-0.662763,-4.85656)" />
+    <g
+       id="g1">
+      <path
+         style="display:inline;fill:none;stroke:#302b00;stroke-width:1.5875;stroke-linecap:round;stroke-dasharray:none;paint-order:fill markers stroke;enable-background:new"
+         d="M 14.116977,4.1022798 H 8.2961434"
+         id="path12"
+         transform="matrix(0,0.99999999,0.99999999,0,-0.662763,-4.85656)" />
+      <path
+         style="display:inline;fill:none;stroke:#fce94f;stroke-width:0.529167;stroke-linecap:round;stroke-dasharray:none;paint-order:fill markers stroke;enable-background:new"
+         d="M 14.116977,4.1022798 H 8.2961434"
+         id="path13"
+         transform="matrix(0,0.99999999,0.99999999,0,-0.662763,-4.85656)" />
+    </g>
     <g
        id="g5-5"
        transform="matrix(0,0.99999999,0.99999999,0,-0.662763,-4.85656)"
