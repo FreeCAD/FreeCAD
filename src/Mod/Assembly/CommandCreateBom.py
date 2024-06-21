@@ -29,7 +29,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if App.GuiUp:
     import FreeCADGui as Gui
-    from PySide import QtCore, QtGui, QtWidgets, QtUiTools
+    from PySide import QtCore, QtGui, QtWidgets
     from PySide.QtWidgets import QPushButton, QMenu
 
 import UtilsAssembly
