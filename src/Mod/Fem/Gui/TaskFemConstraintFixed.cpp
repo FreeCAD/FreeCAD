@@ -33,6 +33,7 @@
 #include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintFixed.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "TaskFemConstraintFixed.h"
 #include "ui_TaskFemConstraintFixed.h"
@@ -279,33 +280,9 @@ TaskDlgFemConstraintFixed::TaskDlgFemConstraintFixed(ViewProviderFemConstraintFi
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintFixed::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Fixed boundary condition");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());  // OvG: Hide meshes and show parts
-    }
-}
-
 bool TaskDlgFemConstraintFixed::accept()
 {
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintFixed::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintFixed.cpp"

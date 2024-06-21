@@ -579,21 +579,6 @@ TaskDlgFemConstraintTransform::TaskDlgFemConstraintTransform(
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintTransform::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Local coordinate system");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());  // OvG: Hide meshes and show parts
-    }
-}
-
 bool TaskDlgFemConstraintTransform::accept()
 {
     /* Note: */
@@ -626,15 +611,6 @@ bool TaskDlgFemConstraintTransform::accept()
     }
     /* */
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintTransform::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintTransform.cpp"

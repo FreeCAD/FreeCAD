@@ -195,12 +195,11 @@ bool TaskFemConstraint::KeyEvent(QEvent* e)
 
 void TaskDlgFemConstraint::open()
 {
-    ConstraintView->setVisible(true);
-    Gui::Command::runCommand(
-        Gui::Command::Doc,
-        ViewProviderFemConstraint::gethideMeshShowPartStr(
-            (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-            .c_str());  // OvG: Hide meshes and show parts
+    if (!Gui::Command::hasPendingCommand()) {
+        const char* typeName = ConstraintView->getObject()->getTypeId().getName();
+        Gui::Command::openCommand(typeName);
+        ConstraintView->setVisible(true);
+    }
 }
 
 bool TaskDlgFemConstraint::accept()
@@ -248,9 +247,9 @@ bool TaskDlgFemConstraint::reject()
     // roll back the changes
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+    Gui::Command::updateActive();
 
     return true;
 }
-
 
 #include "moc_TaskFemConstraint.cpp"

@@ -68,9 +68,7 @@ class TaskDlgFemConstraintPlaneRotation: public TaskDlgFemConstraint
 public:
     explicit TaskDlgFemConstraintPlaneRotation(
         ViewProviderFemConstraintPlaneRotation* ConstraintView);
-    void open() override;
     bool accept() override;
-    bool reject() override;
 };
 
 }  // namespace FemGui

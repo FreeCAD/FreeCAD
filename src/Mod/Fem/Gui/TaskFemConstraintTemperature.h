@@ -77,9 +77,7 @@ class TaskDlgFemConstraintTemperature: public TaskDlgFemConstraint
 
 public:
     explicit TaskDlgFemConstraintTemperature(ViewProviderFemConstraintTemperature* ConstraintView);
-    void open() override;
     bool accept() override;
-    bool reject() override;
 };
 
 }  // namespace FemGui

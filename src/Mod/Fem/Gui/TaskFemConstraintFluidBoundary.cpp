@@ -44,6 +44,7 @@
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemSolverObject.h>
 #include <Mod/Fem/App/FemTools.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "ActiveAnalysisObserver.h"
 #include "TaskFemConstraintFluidBoundary.h"
@@ -994,15 +995,6 @@ TaskDlgFemConstraintFluidBoundary::TaskDlgFemConstraintFluidBoundary(
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintFluidBoundary::open()
-{
-    // a transaction is already open when creating this panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Fluid boundary condition");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-    }
-}
-
 bool TaskDlgFemConstraintFluidBoundary::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
@@ -1107,15 +1099,6 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
     }
 
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintFluidBoundary::reject()
-{
-    Gui::Command::abortCommand();  // recover properties content
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintFluidBoundary.cpp"
