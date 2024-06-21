@@ -453,8 +453,9 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
 
         //copy over the properties data
         if (Gui::ViewProvider* vp = gdoc->getViewProvider(feature)) {
-            auto fprop = vp->getPropertyByName(prop->getName());
-            fprop->Paste(*prop);
+            if (auto fprop = vp->getPropertyByName(prop->getName())) {
+                fprop->Paste(*prop);
+            }
         }
     }
 }

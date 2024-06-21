@@ -118,7 +118,7 @@ def fillet(lEdges, r, chamfer=False):
         dirVect.scale(dToTangent, dToTangent, dToTangent)
         arcPt3 = lVertexes[1].Point.add(dirVect)
 
-        if (dToTangent > lEdges[0].Length) or (dToTangent > lEdges[1].Length):
+        if (dToTangent > rndEdges[0].Length) or (dToTangent > rndEdges[1].Length):
             print("DraftGeomUtils.fillet: Error: radius value ", r,
                   " is too high")
             return rndEdges
@@ -144,7 +144,7 @@ def fillet(lEdges, r, chamfer=False):
 
     elif len(curveType['Arc']) == 1:
         # Deals with lists containing an arc and a line
-        if lEdges[0] in curveType['Arc']:
+        if rndEdges[0] in curveType['Arc']:
             lineEnd = lVertexes[2]
             arcEnd = lVertexes[0]
             arcFirst = True

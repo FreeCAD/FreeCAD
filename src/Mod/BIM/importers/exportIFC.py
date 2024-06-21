@@ -1987,6 +1987,12 @@ def getRepresentation(
     tostore = False
     subplacement = None
 
+    # enable forcebrep for non-solids
+    if hasattr(obj,"Shape"):
+        if obj.Shape:
+            if not obj.Shape.Solids:
+                forcebrep = True
+
     # check for clones
 
     if ((not subtraction) and (not forcebrep)) or forceclone:

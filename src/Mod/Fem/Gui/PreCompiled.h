@@ -154,6 +154,7 @@
 #include <SMDSAbs_ElementType.hxx>
 #include <SMESHDS_Mesh.hxx>
 #include <SMESH_Mesh.hxx>
+#include <SMESH_MeshEditor.hxx>
 
 // VTK
 #include <vtkCellArray.h>

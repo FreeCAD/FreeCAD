@@ -2214,11 +2214,11 @@ protected:
                 GeoId1, static_cast<int>(PosId1), GeoId2, ActDist);
         }
         // Circle/arc - line, circle/arc - circle/arc cases
-        else if (PosId1 == Sketcher::PointPos::none
-                 && PosId2 == Sketcher::PointPos::none) {
+        else if (PosId1 == Sketcher::PointPos::none && PosId2 == Sketcher::PointPos::none) {
             const Part::Geometry* geo1 = Obj->getGeometry(GeoId1);
             const Part::Geometry* geo2 = Obj->getGeometry(GeoId2);
-            double radius1, radius2;
+            double radius1 {};
+            double radius2 {};
             Base::Vector3d center1, center2;
             if (isCircle(*geo1)) {
                 auto conic = static_cast<const Part::GeomCircle*>(geo1);

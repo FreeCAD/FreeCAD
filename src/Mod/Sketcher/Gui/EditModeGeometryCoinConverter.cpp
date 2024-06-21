@@ -315,7 +315,7 @@ template<typename GeoType,
          EditModeGeometryCoinConverter::AnalyseMode analysemode>
 void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade* geometryfacade,
                                             [[maybe_unused]] int geoid,
-                                            int subLayer)
+                                            [[maybe_unused]] int subLayer)
 {
     auto geo = static_cast<const GeoType*>(geometryfacade->getGeometry());
     auto layerId = getSafeGeomLayerId(geometryfacade);

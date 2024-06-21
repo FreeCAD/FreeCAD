@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #include <QDomDocument>
 #include <QFile>
+#include <QGraphicsSceneEvent>
 #include <QPainter>
 #include <QSvgGenerator>
 #include <QTemporaryFile>
@@ -81,6 +82,7 @@
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderPage.h"
 #include "ZVALUE.h"
+#include "PreferencesGui.h"
 
 
 // used SVG namespaces
@@ -103,6 +105,53 @@ QGSPage::QGSPage(ViewProviderPage* vpPage, QWidget* parent)
     setItemIndexMethod(QGraphicsScene::BspTreeIndex);//the default
     //    setItemIndexMethod(QGraphicsScene::NoIndex);    //sometimes faster
 }
+
+
+void QGSPage::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+    constexpr int QGITemplateType{QGraphicsItem::UserType + 150};
+    constexpr int QGIDrawingTemplateType{QGraphicsItem::UserType + 151};
+    constexpr int QGISVGTemplateType{QGraphicsItem::UserType + 153};
+    // type 13 is the itemUnderMouse on a page outside of any views. It is not
+    // the template or background or foreground.  QGraphicsItem type = 13 is not
+    // documented and not found in QGraphicsItem.h.
+    constexpr int MysteryType{13};
+
+    Qt::KeyboardModifiers originalModifiers = event->modifiers();
+    auto itemUnderMouse = itemAt(event->scenePos().x(), event->scenePos().y(), QTransform());
+
+    if (!itemUnderMouse ||
+        itemUnderMouse->type() == QGITemplateType ||
+        itemUnderMouse->type() == QGIDrawingTemplateType ||
+        itemUnderMouse->type() == QGISVGTemplateType ||
+        itemUnderMouse->type() == MysteryType) {
+        // click without item clears selection
+        for (auto& item : selectedItems()) {
+            item->setSelected(false);
+        }
+        QGraphicsScene::mousePressEvent(event);
+        return;
+    }
+
+    if (event->button() == Qt::LeftButton && PreferencesGui::multiSelection()) {
+        event->setModifiers(originalModifiers | Qt::ControlModifier);
+    }
+
+    QGraphicsScene::mousePressEvent(event);
+}
+
+void QGSPage::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+{
+    Qt::KeyboardModifiers originalModifiers = event->modifiers();
+    if ((event->button() == Qt::LeftButton) && PreferencesGui::multiSelection()) {
+        event->setModifiers(originalModifiers | Qt::ControlModifier);
+    }
+
+    QGraphicsScene::mouseReleaseEvent(event);
+
+    event->setModifiers(originalModifiers);
+}
+
 
 void QGSPage::addChildrenToPage()
 {

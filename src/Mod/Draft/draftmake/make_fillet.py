@@ -48,20 +48,12 @@ DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 # @{
 
 def _extract_edge(obj):
-    """Extract the edge from an object, Draft line or Part.Edge."""
-    edge = None
-    if hasattr(obj, "PropertiesList"):
-        if "Proxy" in obj.PropertiesList:
-            if hasattr(obj.Proxy, "Type"):
-                if obj.Proxy.Type in ("Wire", "Fillet"):
-                    edge = obj.Shape.Edges[0]
-        elif "Shape" in obj.PropertiesList:
-            if obj.Shape.ShapeType in ("Wire", "Edge"):
-                edge = obj.Shape
-    elif hasattr(obj, "ShapeType"):
-        if obj.ShapeType in "Edge":
-            edge = obj
-    return edge
+    """Extract the 1st edge from an object or shape."""
+    if hasattr(obj, "Shape"):
+        obj = obj.Shape
+    if hasattr(obj, "ShapeType") and obj.ShapeType in ("Wire", "Edge"):
+        return obj.Edges[0]
+    return None
 
 
 def _preprocess(objs, radius, chamfer):
@@ -79,7 +71,7 @@ def _preprocess(objs, radius, chamfer):
 
     edges = DraftGeomUtils.fillet([edge1, edge2], radius, chamfer)
     if len(edges) < 3:
-        _err(translate("draft", "Radius is too large") + ", r={}".format(radius))
+        _err(translate("draft", "Edges are not connected or radius is too large."))
         return None
 
     return edges
