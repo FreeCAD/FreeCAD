@@ -118,6 +118,7 @@ void execInsertPrefixChar(Gui::Command* cmd, std::string prefixFormat, const QAc
 
         if (action) {
             if (action->objectName() == QString::fromUtf8("TechDraw_ExtensionInsertRepetition")) {
+                ui.setWindowTitle(QApplication::translate("TechDraw_ExtensionDims", "Enter Text Value"));
                 ui.setFieldName(QT_TR_NOOP("Repeat Count"));
             }
         }

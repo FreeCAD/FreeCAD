@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+  #include <QApplication>
   #include <QGraphicsSceneMouseEvent>
   #include <QInputDialog>
   #include <QLineEdit>
@@ -39,10 +40,12 @@ using namespace TechDrawGui;
 
 TemplateTextField::TemplateTextField(QGraphicsItem *parent,
                                      TechDraw::DrawTemplate *myTmplte,
-                                     const std::string &myFieldName)
+                                     const std::string &myFieldName,
+                                     bool isAutofilled)
     : QGraphicsItemGroup(parent),
       tmplte(myTmplte),
-      fieldNameStr(myFieldName)
+      fieldNameStr(myFieldName),
+      autofilled(isAutofilled)
 {
     setToolTip(QObject::tr("Click to update text"));
     m_rect = new QGraphicsRectItem();
@@ -74,6 +77,11 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
         ui.setFieldName(fieldNameStr);
         ui.setFieldContent(tmplte->EditableTexts[fieldNameStr]);
+
+        if (autofilled) {
+            ui.setWindowTitle(QApplication::translate("TechDraw_Template", "Inspect Autofilled Field"));
+            ui.setFieldReadOnly(true);
+        }
 
         if (ui.exec() == QDialog::Accepted) {
         //WF: why is this escaped?

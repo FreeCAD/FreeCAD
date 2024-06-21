@@ -215,7 +215,8 @@ void QGISVGTemplate::createClickHandles()
         }
         double textLength = itemText.length() * charWidth;
         textLength = std::max(charWidth, textLength);
-        auto item(new TemplateTextField(this, svgTemplate, name.toStdString()));
+        auto item(new TemplateTextField(this, svgTemplate, name.toStdString(),
+                                        textElement.hasAttribute(QString::fromUtf8(FREECAD_ATTR_AUTOFILL))));
 
         double pad = 1.0;
         double top = Rez::guiX(-svgTemplate->getHeight()) + y - textHeight - pad;

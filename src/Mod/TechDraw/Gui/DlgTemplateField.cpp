@@ -67,6 +67,11 @@ QString DlgTemplateField::getFieldContent()
     return ui->leInput->text();
 }
 
+void DlgTemplateField::setFieldReadOnly(bool readOnly)
+{
+    ui->leInput->setReadOnly(readOnly);
+}
+
 void DlgTemplateField::accept()
 {
     QDialog::accept();

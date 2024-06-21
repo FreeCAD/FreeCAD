@@ -45,7 +45,8 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsItemGroup
     public:
         TemplateTextField(QGraphicsItem *parent,
                           TechDraw::DrawTemplate *myTmplte,
-                          const std::string &myFieldName);
+                          const std::string &myFieldName,
+                          bool isAutofilled = false);
 
         ~TemplateTextField() override = default;
 
@@ -62,6 +63,7 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsItemGroup
     protected:
         TechDraw::DrawTemplate *tmplte;
         std::string fieldNameStr;
+        bool autofilled;
 
         /// Need this to properly handle mouse release
         void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

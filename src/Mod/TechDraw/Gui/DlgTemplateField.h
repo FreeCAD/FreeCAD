@@ -45,6 +45,7 @@ public:
     void setFieldLength(int length);
     void setFieldContent(std::string content);
     QString getFieldContent();
+    void setFieldReadOnly(bool readOnly);
 
 public Q_SLOTS:
     void accept() override;
