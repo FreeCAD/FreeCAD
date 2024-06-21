@@ -942,7 +942,6 @@ QToolBar::handle:vertical:hover {
   image: url(qss:images_classic/Vmovetoolbar-white.png);
 }
 
-
 QToolBar::separator:horizontal {
   width: 2px;
   image: url(qss:images_classic/Hsepartoolbar-Darkgray.png);
@@ -2662,64 +2661,31 @@ Gui--NotificationLabel {
   border: 1px solid #020202;
   border-radius: 2px;
 }
-
-
+/* overlay */
 Gui--OverlayToolButton:!hover{
-  background-color: transparent;
-  image: url(qss:overlay/close_light.svg);
+  image: url(qss:images_classic/close-lightgray.png);
 }
 
 Gui--OverlayToolButton:hover {
-  image: url(qss:overlay/close_red.svg);
+  image: url(qss:images_classic/close-red.png);
 }
 
-Gui--OverlayToolButton[objectName="OBTN Transparent"]:!checked  {
-  image: url(qss:overlay/transparent_light.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN Transparent"]:hover {
-  image: url(qss:overlay/transparent_lighter.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN Transparent"]:checked {
-  image: url(qss:overlay/transparent_lighter.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN Overlay"]:!checked{
-  image: url(qss:overlay/overlay_light.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
-  image: url(qss:overlay/overlay_lighter.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN Overlay"]:checked {
-  image: url(qss:overlay/overlay_lighter.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN AutoMode"]:!checked {
-  image: url(qss:overlay/mode_light.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
-  image: url(qss:overlay/mode_lighter.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN AutoMode"]:checked {
-  image: url(qss:overlay/mode_lighter.svg);
-}
-
-Gui--OverlayToolButton[objectName="OBTN Float"]:!checked {
-  image: url(qss:overlay/float_light.svg);
+Gui--OverlayToolButton[objectName="OBTN Float"]:!hover {
+  image: url(qss:images_classic/float-lightgray.png);
 }
 
 Gui--OverlayToolButton[objectName="OBTN Float"]:hover {
-  image: url(qss:overlay/float_lighter.svg);
+  image: url(qss:images_classic/float-white.png);
 }
 
-Gui--OverlayToolButton[objectName="OBTN Float"]:checked {
-  image: url(qss:overlay/float_lighter.svg);
+Gui--OverlayToolButton[objectName="OBTN Overlay"]:!hover {
+  image: url(qss:images_classic/overlay-lightgray.png);
 }
+
+Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
+  image: url(qss:images_classic/overlay-white.png);
+}
+
 
 /*==================================================================================================
 Forming windows below are the border settings. See also https://forum.freecad.org/viewtopic.php?p=439797#p439797
