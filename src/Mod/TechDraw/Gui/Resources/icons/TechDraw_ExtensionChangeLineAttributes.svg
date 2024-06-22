@@ -111,12 +111,32 @@
      id="layer1"
      transform="matrix(1.7387757,0,0,1.8591449,1.0585346,-535.71858)">
     <g
+       id="g12"
+       transform="matrix(0.5751173,0,0,0.53788169,-0.60878157,288.15321)">
+      <path
+         style="fill:#edd400;stroke:#0b1521;stroke-width:1.5875;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0.793748"
+         d="M 0.52916665,14.287501 H 4.4979167"
+         id="path1" />
+      <path
+         style="fill:#edd400;stroke:#729fcf;stroke-width:0.52916667;stroke-linejoin:round;stroke-dasharray:0.5291667,0.5291667;stroke-dashoffset:0"
+         d="M 0.52916665,14.287501 H 4.4979167"
+         id="path10" />
+      <path
+         style="fill:#edd400;stroke:#0b1521;stroke-width:1.58750002;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0"
+         d="M 4.4979165,14.287501 H 16.404167"
+         id="path12" />
+      <path
+         style="fill:#edd400;stroke:#729fcf;stroke-width:0.529167;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0"
+         d="M 4.4979165,14.287501 H 16.404167"
+         id="path11" />
+    </g>
+    <g
        id="g822"
        transform="matrix(0.50861764,0,0,0.50861764,-0.12919201,145.82055)">
       <g
          transform="translate(-0.7137649,1.3638318)"
          id="g4939"
-         style="display:inline">
+         style="display:none">
         <g
            id="g7"
            transform="matrix(1.130769,0,0,1.0575581,-0.40848135,285.78381)"

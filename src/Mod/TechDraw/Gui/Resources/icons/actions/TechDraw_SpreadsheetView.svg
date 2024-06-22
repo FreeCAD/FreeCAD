@@ -6,34 +6,12 @@
    width="64"
    height="64"
    id="svg4024"
-   sodipodi:docname="square - Kopya.svg"
-   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <sodipodi:namedview
-     id="namedview1"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="8.609375"
-     inkscape:cx="32"
-     inkscape:cy="32"
-     inkscape:window-width="1600"
-     inkscape:window-height="837"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg4024" />
   <defs
      id="defs4026">
     <linearGradient
@@ -66,7 +44,6 @@
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(0,-0.99852609,-0.91482141,0,965.44923,123.8644)" />
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3866"
        id="linearGradient2"
        gradientUnits="userSpaceOnUse"
@@ -92,7 +69,7 @@
     <g
        id="layer3"
        style="display:inline;stroke-width:0.955758"
-       transform="matrix(0,-1.0931095,-1.0014761,0,64.047233,66.979554)">
+       transform="matrix(0,1.0931095,-1.0014761,0,64.047233,-2.979454)">
       <g
          id="layer3-3"
          style="display:inline;stroke-width:0.955758">

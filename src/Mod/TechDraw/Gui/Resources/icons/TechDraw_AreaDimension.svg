@@ -76,7 +76,7 @@
        transform="matrix(0.99999469,0,0,1,64.530402,0)"
        style="stroke-width:11.3909"><g
          id="g5-6"
-         transform="matrix(0.40629898,0,0,0.40095916,847.96747,47.962712)"
+         transform="matrix(0.40629898,0,0,0.40095916,847.96747,37.349813)"
          style="stroke-width:11.3909"><path
            style="fill:none;stroke:#302b00;stroke-width:158.812;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
            id="rect3-4"
@@ -84,14 +84,14 @@
            height="502.90677"
            x="291.15601"
            y="820.53101"
-           d="m 291.15601,820.53163 v -6.2e-4 h 6.2e-4 m 251.45187,0 h 0.001 m 251.45187,0 h 6.3e-4 v 6.2e-4 m 0,251.45217 v 0 m 0,251.4521 v 7e-4 h -6.3e-4 m -251.45187,0 h -0.001 m -251.45187,0 h -6.2e-4 v -7e-4 m 0,-251.4521 v -0 m 0,-251.45217 v -6.2e-4" /><path
+           d="m 291.15601,820.53163 v -6.2e-4 h 6.2e-4 m 251.45187,0 h 10e-4 m 251.45187,0 h 6.3e-4 v 6.2e-4 m 0,251.45217 v 0 m 0,251.4521 v 7e-4 h -6.3e-4 m -251.45187,0 h -10e-4 m -251.45187,0 h -6.2e-4 v -7e-4 m 0,-251.4521 v 0 m 0,-251.45217 v -6.2e-4" /><path
            style="fill:none;stroke:#fce94f;stroke-width:52.9376;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
            id="path3"
            width="502.90625"
            height="502.90677"
            x="291.15601"
            y="820.53101"
-           d="m 291.15601,820.53163 v -6.2e-4 h 6.2e-4 m 251.45187,0 h 0.001 m 251.45187,0 h 6.3e-4 v 6.2e-4 m 0,251.45217 v 0 m 0,251.4521 v 7e-4 h -6.3e-4 m -251.45187,0 h -0.001 m -251.45187,0 h -6.2e-4 v -7e-4 m 0,-251.4521 v -0 m 0,-251.45217 v -6.2e-4" /></g><g
+           d="m 291.15601,820.53163 v -6.2e-4 h 6.2e-4 m 251.45187,0 h 10e-4 m 251.45187,0 h 6.3e-4 v 6.2e-4 m 0,251.45217 v 0 m 0,251.4521 v 7e-4 h -6.3e-4 m -251.45187,0 h -10e-4 m -251.45187,0 h -6.2e-4 v -7e-4 m 0,-251.4521 v 0 m 0,-251.45217 v -6.2e-4" /></g><g
          id="g8-3"
          transform="translate(-5.6570404,-36.405345)"
          style="stroke-width:11.3909"><path

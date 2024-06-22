@@ -96,13 +96,22 @@
      transform="matrix(0.88888889,0,0,0.88888889,3.5555556,32)"
      id="layer1"
      style="stroke-width:1.125">
-    <rect
+    <path
        y="-27"
        x="5"
        height="54"
        width="54"
        id="rect4138-1"
-       style="fill:none;stroke:#2e3436;stroke-width:6.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:6.75, 13.5;stroke-dashoffset:8.775;stroke-opacity:1" />
+       style="display:inline;fill:none;stroke:#2e3436;stroke-width:6.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:8.775;stroke-opacity:1"
+       d="M 5,-22.5 V -27 h 4.5 m 9,0 h 9 m 9,0 h 9 m 9,0 H 59 l 0,4.5 m 0,9 v 9 m 0,9 v 9 m 0,9 V 27 h -4.5 m -9,0 h -9 m -9,0 h -9 m -9,0 H 5 v -4.5 m 0,-9 v -9 m 0,-9 v -9 m 0,-9 V -27" />
+    <path
+       y="-27"
+       x="5"
+       height="54"
+       width="54"
+       id="path1"
+       style="display:inline;fill:none;stroke:#eeeeec;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:8.775;stroke-opacity:1"
+       d="M 5,-22.5 V -27 h 4.5 m 9,0 h 9 m 9,0 h 9 m 9,0 H 59 l 0,4.5 m 0,9 v 9 m 0,9 v 9 m 0,9 V 27 h -4.5 m -9,0 h -9 m -9,0 h -9 m -9,0 H 5 v -4.5 m 0,-9 v -9 m 0,-9 v -9 m 0,-9 V -27" />
     <path
        id="path7047-7"
        d="M 13,17 V -17 H 51 V 8.000001 H 27 C 27,8.000001 27,17 19,17 c -4,0 -6,0 -6,0 z"
@@ -119,13 +128,6 @@
        transform="matrix(2.8336091,0,0,2.8149673,-27.039729,-53.131581)"
        id="path7049-4"
        style="fill:url(#linearGradient3841);fill-opacity:1;stroke:#2e3436;stroke-width:0.796665;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <rect
-       y="-27"
-       x="5"
-       height="54"
-       width="54"
-       id="rect4138-7"
-       style="fill:none;stroke:#babdb6;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:6.75, 13.5;stroke-dashoffset:8.775;stroke-opacity:1" />
     <ellipse
        ry="2.4867074"
        rx="2.4703476"

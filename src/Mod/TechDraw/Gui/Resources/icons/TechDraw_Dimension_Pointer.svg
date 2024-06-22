@@ -109,10 +109,10 @@
     <path
        d="m 16,3 v 9 m 0,8 v 9 M 3,16 h 9 m 8,0 h 9"
        id="path9"
-       style="stroke:#555753;stroke-width:4;stroke-dasharray:none" />
+       style="stroke:#2e3436;stroke-width:4;stroke-dasharray:none" />
     <path
        d="m 16,3 v 9 m 0,8 v 9 M 3,16 h 9 m 8,0 h 9"
        id="path7"
-       style="stroke:#d3d7cf;stroke-width:2;stroke-dasharray:none" />
+       style="stroke:#eeeeec;stroke-width:2;stroke-dasharray:none" />
   </g>
 </svg>

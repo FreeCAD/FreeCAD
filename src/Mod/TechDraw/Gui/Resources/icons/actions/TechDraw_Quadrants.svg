@@ -64,11 +64,11 @@
     <linearGradient
        id="linearGradient34">
       <stop
-         style="stop-color:#888a85;stop-opacity:1"
+         style="stop-color:#204a87;stop-opacity:1"
          offset="0"
          id="stop33" />
       <stop
-         style="stop-color:#babdb6;stop-opacity:1"
+         style="stop-color:#3465a4;stop-opacity:1"
          offset="1"
          id="stop34" />
     </linearGradient>
@@ -145,11 +145,11 @@
        id="g29"
        style="display:inline;stroke-width:0.99903">
       <path
-         style="display:inline;fill:#d3d7cf;stroke:#555753;stroke-width:2.49757;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style="display:inline;fill:#729fcf;stroke:#0b1521;stroke-width:2.49757;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="path28"
          d="M 31.158914,45.98978 A 8.7456633,8.7455192 0.0559596 1 1 44.444356,57.366914 8.7456633,8.7455192 0.0559596 1 1 31.158914,45.98978 Z" />
       <path
-         style="display:inline;fill:url(#linearGradient29);stroke:#d3d7cf;stroke-width:2.49757;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style="display:inline;fill:url(#linearGradient29);stroke:#729fcf;stroke-width:2.49757;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="path29"
          d="m 37.921875,45.427734 c 1.394858,0.02506 2.797605,0.515476 3.947266,1.5 2.612388,2.237148 2.918204,6.203295 0.677734,8.816407 -2.235407,2.61334 -6.200041,2.920801 -8.8125,0.683593 -2.612789,-2.23749 -2.918498,-6.200998 -0.677734,-8.814453 1.265419,-1.47936 3.072632,-2.217752 4.865234,-2.185547 z" />
     </g>

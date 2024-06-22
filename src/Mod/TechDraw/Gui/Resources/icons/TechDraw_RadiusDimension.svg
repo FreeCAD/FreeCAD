@@ -133,7 +133,6 @@
             <dc:title>[WandererFan]</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:title>TechDraw_Dimension_Radius</dc:title>
         <dc:date>2016-04-27</dc:date>
         <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -177,7 +176,7 @@
     <g
        id="g3874"
        transform="matrix(1,0,0,1.000007,-1.010205,1.9030232)"
-       style="stroke-width:0.890771">
+       style="display:inline;stroke-width:0.890771">
       <ellipse
          id="path3037"
          style="display:inline;fill:#fce94f;fill-opacity:1;stroke:#302b00;stroke-width:1.78153;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
@@ -188,7 +187,7 @@
       <path
          id="path3770-9"
          d="m 27.867349,24.535147 2.857144,2.857144 -15.714289,15.714287 4.285716,4.285713 15.714286,-15.714286 2.857144,2.857144 2.142856,-12.142858 z"
-         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#fce94f;stroke:#302b00;stroke-width:1.78155;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;enable-background:accumulate" />
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#fce94f;stroke:#302b00;stroke-width:1.78155;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;enable-background:accumulate" />
       <path
          id="ellipse1"
          style="display:inline;fill:#c4a000;fill-opacity:1;stroke:#fce94f;stroke-width:1.78153;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"

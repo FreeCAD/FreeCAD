@@ -7,6 +7,7 @@
    viewBox="0 0 16.933333 16.933334"
    version="1.1"
    id="svg8"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -14,6 +15,17 @@
    xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs2">
+    <linearGradient
+       id="linearGradient1">
+      <stop
+         style="stop-color:#888a85;stop-opacity:1;"
+         offset="0"
+         id="stop1" />
+      <stop
+         style="stop-color:#babdb6;stop-opacity:1;"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
     <linearGradient
        id="linearGradient5969">
       <stop
@@ -28,6 +40,14 @@
        width="6"
        patternUnits="userSpaceOnUse"
        id="EMFhbasepattern" />
+    <linearGradient
+       xlink:href="#linearGradient1"
+       id="linearGradient2"
+       x1="7.0339123"
+       y1="288.49248"
+       x2="9.8303113"
+       y2="288.49248"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <metadata
      id="metadata5">
@@ -65,7 +85,7 @@
         <path
            d="m 7.3393164,288.49925 c -0.00354,-0.58808 0.4591028,-1.08133 1.0430258,-1.11499 0.5839243,-0.0337 1.0996635,0.40295 1.1634205,0.98753 0.063755,0.58459 -0.3461075,1.1231 -0.9235402,1.21666 -0.5774322,0.0935 -1.134884,-0.28753 -1.2581727,-0.86241"
            id="path5"
-           style="display:inline;opacity:1;fill:#555753;fill-opacity:1;fill-rule:nonzero;stroke:#d3d7cf;stroke-width:0.55604;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+           style="display:inline;opacity:1;fill:url(#linearGradient2);fill-opacity:1;fill-rule:nonzero;stroke:#d3d7cf;stroke-width:0.55604;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
       </g>
       <g
          id="g1">
