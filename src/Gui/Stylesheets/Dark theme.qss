@@ -980,6 +980,8 @@ QSpinBox {
   color: White;
   border-radius: 2px;
   min-height: 1.7em;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 QAbstractSpinBox:up-button {
@@ -1356,7 +1358,7 @@ QToolButton::menu-button:checked:hover {
 
 QToolButton::menu-indicator {
   /* Exclude a shift for better image */
-  subcontrol-position: center center;
+  subcontrol-position: right center;
   /* Shift it a bit */
 }
 
@@ -1364,11 +1366,11 @@ QToolButton::menu-arrow {
   image: url(qss:images_classic/Arrow-down-lightgray.png);
   width: 1.3ex;
   height: 1.3ex;
-  subcontrol-position: center center;
+  subcontrol-position: right center;
   background: transparent;
 }
 QToolButton::menu-arrow:open {
-  subcontrol-position: center center;
+  subcontrol-position: right center;
   image: url(qss:images_classic/Arrow-Down-white.png);
   width: 1.3ex;
   height: 1.3ex;
@@ -1598,19 +1600,27 @@ padding: 0px;
 }
 
 QSint--ActionGroup QFrame[class="header"] QLabel[fold="false"] {
-  background-image: url(qss:images_classic/Qsint_header_Unfold_Blue-dark.png);
+  width: 30px;
+  height: 30px;
+  image: url(qss:images_classic/Qsint_header_Unfold_Blue-dark.png);
 }
 
 QSint--ActionGroup QFrame[class="header"] QLabel:hover[fold="false"] {
-  background-image: url(qss:images_classic/Qsint_header_UnfoldOver_Blue-dark.png);
+  width: 30px;
+  height: 30px;
+  image: url(qss:images_classic/Qsint_header_UnfoldOver_Blue-dark.png);
 }
 
 QSint--ActionGroup QFrame[class="header"] QLabel[fold="true"] {
-  background-image: url(qss:images_classic/Qsint_header_Fold_Blue-dark.png);
+  width: 30px;
+  height: 30px;
+  image: url(qss:images_classic/Qsint_header_Fold_Blue-dark.png);
 }
 
 QSint--ActionGroup QFrame[class="header"] QLabel[fold="true"]:hover {
-  background-image: url(qss:images_classic/Qsint_header_FoldOver_Blue-dark.png) ;
+  width: 30px;
+  height: 30px;
+  image: url(qss:images_classic/Qsint_header_FoldOver_Blue-dark.png) ;
 }
 
 QSint--ActionGroup QFrame[class="content"] {
@@ -2760,3 +2770,10 @@ QWidget#thumbnailWidget[state="hovered"] {
 QWidget#thumbnailWidget[state="pressed"] {
   border: 1px solid @ThemeAccentColor1;
 }
+
+/**
+ * Special handling for WB Tab Bar
+ */
+ #WbTabBar #WbTabBarMore {
+  padding-right: 12px;
+ }

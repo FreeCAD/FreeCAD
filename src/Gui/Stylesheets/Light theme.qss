@@ -916,6 +916,8 @@ QSpinBox {
   color: black;
   border-radius: 2px;
   min-height: 1.7em;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 QAbstractSpinBox:up-button {
@@ -1297,7 +1299,7 @@ QToolButton::menu-button:checked:hover {
 
 QToolButton::menu-indicator {
   /* Exclude a shift for better image */
-  subcontrol-position: center center;
+  subcontrol-position: right center;
   /* Shift it a bit */
 }
 
@@ -1305,11 +1307,11 @@ QToolButton::menu-arrow {
   image: url(qss:images_classic/Arrow-down-lightgray.png);
   width: 1.3ex;
   height: 1.3ex;
-  subcontrol-position: center center;
+  subcontrol-position: right center;
   background: transparent;
 }
 QToolButton::menu-arrow:open {
-  subcontrol-position: center center;
+  subcontrol-position: right center;
   image: url(qss:images_classic/Arrow-Down-black.png);
   width: 1.3ex;
   height: 1.3ex;
@@ -2772,3 +2774,10 @@ QWidget#thumbnailWidget[state="hovered"] {
 QWidget#thumbnailWidget[state="pressed"] {
   border: 1px solid @ThemeAccentColor1;
 }
+
+/**
+ * Special handling for WB Tab Bar
+ */
+ #WbTabBar #WbTabBarMore {
+  padding-right: 12px;
+ }
