@@ -642,35 +642,46 @@ View3DInventorViewer::~View3DInventorViewer()
     delete glAction;
 }
 
-void View3DInventorViewer::createStandardCursors(double dpr)
+// QTBUG-95434
+#if defined(Q_OS_LINUX) && QT_VERSION < QT_VERSION_CHECK(6,6,0) && QT_VERSION >= QT_VERSION_CHECK(5,13,0)
+# include <QGuiApplication>
+# define CursorPixmap(bitmap) \
+    QPixmap pixmap;                                            \
+    if (qGuiApp->platformName() == QLatin1String("wayland")) { \
+        QImage img = bitmap.toImage();                         \
+        img.convertTo(QImage::Format_ARGB32);                  \
+        pixmap = QPixmap::fromImage(img);                      \
+    } else {                                                   \
+        pixmap = bitmap;                                       \
+    }
+#else
+# define CursorPixmap(bitmap) QPixmap pixmap(bitmap)
+#endif
+QPixmap View3DInventorViewer::fixupCursor(const QBitmap &bitmap, const QBitmap &mask, double dpr) const
 {
-    // NOLINTBEGIN
-    QBitmap cursor = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_bitmap);
-    QBitmap mask = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_mask_bitmap);
+    CursorPixmap(bitmap);
+    pixmap.setMask(mask);
 #if defined(Q_OS_WIN32)
-    cursor.setDevicePixelRatio(dpr);
-    mask.setDevicePixelRatio(dpr);
+    pixmap.setDevicePixelRatio(dpr);
 #else
     Q_UNUSED(dpr)
 #endif
-    spinCursor = QCursor(cursor, mask, ROTATE_HOT_X, ROTATE_HOT_Y);
+    return pixmap;
+}
+
+void View3DInventorViewer::createStandardCursors(double dpr)
+{
+    QBitmap cursor = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_bitmap);
+    QBitmap mask = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_mask_bitmap);
+    spinCursor = QCursor(fixupCursor(cursor, mask, dpr), ROTATE_HOT_X, ROTATE_HOT_Y);
 
     cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
     mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
-#if defined(Q_OS_WIN32)
-    cursor.setDevicePixelRatio(dpr);
-    mask.setDevicePixelRatio(dpr);
-#endif
-    zoomCursor = QCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y);
+    zoomCursor = QCursor(fixupCursor(cursor, mask, dpr), ZOOM_HOT_X, ZOOM_HOT_Y);
 
     cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
     mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
-#if defined(Q_OS_WIN32)
-    cursor.setDevicePixelRatio(dpr);
-    mask.setDevicePixelRatio(dpr);
-#endif
-    panCursor = QCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y);
-    // NOLINTEND
+    panCursor = QCursor(fixupCursor(cursor, mask, dpr), PAN_HOT_X, PAN_HOT_Y);
 }
 
 void View3DInventorViewer::aboutToDestroyGLContext()

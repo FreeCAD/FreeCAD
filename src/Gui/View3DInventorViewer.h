@@ -491,6 +491,7 @@ private:
     static void drawSingleBackground(const QColor&);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext() override;
+    QPixmap fixupCursor(const QBitmap &bitmap, const QBitmap &mask, double dpr) const;
     void createStandardCursors(double);
 
 private:
