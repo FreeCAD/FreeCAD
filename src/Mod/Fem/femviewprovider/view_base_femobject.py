@@ -73,7 +73,7 @@ class VPBaseFemObject(object):
 
     def attach(self, vobj):
         self.Object = vobj.Object  # used on various places, claim childreens, get icon, etc.
-        # self.ViewObject = vobj  # not used ATM
+        self.ViewObject = vobj
 
     def setEdit(self, vobj, mode=0, TaskPanel=None, hide_mesh=True):
         if TaskPanel is None:

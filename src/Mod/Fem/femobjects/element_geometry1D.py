@@ -29,10 +29,10 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief element geometry 1D object
 
-from . import base_fempythonobject
+from . import base_femelement
 
 
-class ElementGeometry1D(base_fempythonobject.BaseFemPythonObject):
+class ElementGeometry1D(base_femelement.BaseFemElement):
     """
     The ElementGeometry1D object
     """
@@ -91,12 +91,5 @@ class ElementGeometry1D(base_fempythonobject.BaseFemPythonObject):
         )
         obj.setPropertyStatus("SectionType", "LockDynamic")
 
-        obj.addProperty(
-            "App::PropertyLinkSubList",
-            "References",
-            "BeamSection",
-            "List of beam section shapes"
-        )
-        obj.setPropertyStatus("References", "LockDynamic")
         obj.SectionType = ElementGeometry1D.known_beam_types
         obj.SectionType = "Rectangular"
