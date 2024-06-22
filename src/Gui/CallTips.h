@@ -75,6 +75,7 @@ private:
     void extractTipsFromObject(Py::Object&, Py::List&, QMap<QString, CallTip>&) const;
     void extractTipsFromProperties(Py::Object&, QMap<QString, CallTip>&) const;
     QString stripWhiteSpace(const QString&) const;
+    CallTip getTipByAttr(Py::Object&, const QString&) const;
 
 private:
     QPlainTextEdit* textEdit;

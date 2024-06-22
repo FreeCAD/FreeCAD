@@ -346,6 +346,7 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
         try {
             Py::String attrname(*it);
             std::string name = attrname.as_string();
+            QString str = QString::fromLatin1(name.c_str());
 
             // If 'name' is an invalid attribute then PyCXX raises an exception
             // for Py2 but silently accepts it for Py3.
@@ -362,54 +363,7 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
                 Base::Console().Log("Python attribute '%s' returns null!\n", name.c_str());
                 continue;
             }
-
-            CallTip tip;
-            QString str = QString::fromLatin1(name.c_str());
-            tip.name = str;
-
-            if (attr.isCallable()) {
-                PyObject* basetype = Base::getTypeAsObject(&PyBaseObject_Type);
-                if (PyObject_IsSubclass(attr.ptr(), basetype) == 1) {
-                    tip.type = CallTip::Class;
-                }
-                else {
-                    PyErr_Clear(); // PyObject_IsSubclass might set an exception
-                    tip.type = CallTip::Method;
-                }
-            }
-            else if (PyModule_Check(attr.ptr())) {
-                tip.type = CallTip::Module;
-            }
-            else {
-                tip.type = CallTip::Member;
-            }
-
-            if (str == QLatin1String("__doc__") && attr.isString()) {
-                Py::Object help = attr;
-                if (help.isString()) {
-                    Py::String doc(help);
-                    QString longdoc = QString::fromUtf8(doc.as_string().c_str());
-                    int pos = longdoc.indexOf(QLatin1Char('\n'));
-                    pos = qMin(pos, 70);
-                    if (pos < 0)
-                        pos = qMin(longdoc.length(), 70);
-                    tip.description = stripWhiteSpace(longdoc);
-                    tip.parameter = longdoc.left(pos);
-                }
-            }
-            else if (attr.hasAttr("__doc__")) {
-                Py::Object help = attr.getAttr("__doc__");
-                if (help.isString()) {
-                    Py::String doc(help);
-                    QString longdoc = QString::fromUtf8(doc.as_string().c_str());
-                    int pos = longdoc.indexOf(QLatin1Char('\n'));
-                    pos = qMin(pos, 70);
-                    if (pos < 0)
-                        pos = qMin(longdoc.length(), 70);
-                    tip.description = stripWhiteSpace(longdoc);
-                    tip.parameter = longdoc.left(pos);
-                }
-            }
+            CallTip tip = getTipByAttr(attr, str);
 
             // Do not override existing items
             QMap<QString, CallTip>::iterator pos = tips.find(str);
@@ -750,6 +704,58 @@ QString CallTipsList::stripWhiteSpace(const QString& str) const
     }
 
     return stripped;
+}
+
+CallTip CallTipsList::getTipByAttr(Py::Object& attr, const QString& name) const
+{
+    CallTip tip;
+    tip.name = name;
+
+    if (attr.isCallable()) {
+        PyObject* basetype = Base::getTypeAsObject(&PyBaseObject_Type);
+        if (PyObject_IsSubclass(attr.ptr(), basetype) == 1) {
+            tip.type = CallTip::Class;
+        }
+        else {
+            PyErr_Clear(); // PyObject_IsSubclass might set an exception
+            tip.type = CallTip::Method;
+        }
+    }
+    else if (PyModule_Check(attr.ptr())) {
+        tip.type = CallTip::Module;
+    }
+    else {
+        tip.type = CallTip::Member;
+    }
+
+    if (name == QLatin1String("__doc__") && attr.isString()) {
+        Py::Object help = attr;
+        if (help.isString()) {
+            Py::String doc(help);
+            QString longdoc = QString::fromUtf8(doc.as_string().c_str());
+            int pos = longdoc.indexOf(QLatin1Char('\n'));
+            pos = qMin(pos, 70);
+            if (pos < 0)
+                pos = qMin(longdoc.length(), 70);
+            tip.description = stripWhiteSpace(longdoc);
+            tip.parameter = longdoc.left(pos);
+        }
+    }
+    else if (attr.hasAttr("__doc__")) {
+        Py::Object help = attr.getAttr("__doc__");
+        if (help.isString()) {
+            Py::String doc(help);
+            QString longdoc = QString::fromUtf8(doc.as_string().c_str());
+            int pos = longdoc.indexOf(QLatin1Char('\n'));
+            pos = qMin(pos, 70);
+            if (pos < 0)
+                pos = qMin(longdoc.length(), 70);
+            tip.description = stripWhiteSpace(longdoc);
+            tip.parameter = longdoc.left(pos);
+        }
+    }
+    
+    return tip;
 }
 
 #include "moc_CallTips.cpp"
