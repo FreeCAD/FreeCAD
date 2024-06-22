@@ -1307,11 +1307,9 @@ QToolButton::menu-arrow {
   image: url(qss:images_classic/Arrow-down-lightgray.png);
   width: 1.3ex;
   height: 1.3ex;
-  subcontrol-position: right center;
   background: transparent;
 }
 QToolButton::menu-arrow:open {
-  subcontrol-position: right center;
   image: url(qss:images_classic/Arrow-Down-black.png);
   width: 1.3ex;
   height: 1.3ex;
