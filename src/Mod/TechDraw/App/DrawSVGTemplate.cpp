@@ -288,6 +288,41 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
     return editables;
 }
 
+QString  DrawSVGTemplate::getAutofillByEditableName(QString nameToMatch)
+{
+    QString result;
+    QString nameCapture{nameToMatch};
+
+    QDomDocument templateDocument;
+    if (!getTemplateDocument(Template.getValue(), templateDocument)) {
+        return {};
+    }
+
+    XMLQuery query(templateDocument);
+
+    // XPath query to select all <tspan> nodes whose <text> parent
+    // has "freecad:editable" attribute
+    query.processItems(QString::fromUtf8(
+        "declare default element namespace \"" SVG_NS_URI "\"; "
+        "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
+        "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
+        [this, &nameCapture, &result](QDomElement& tspan) -> bool {
+            QDomElement parent = tspan.parentNode().toElement();
+            QString editableName = parent.attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
+            if (editableName == nameCapture  &&
+                parent.hasAttribute(QString::fromUtf8(FREECAD_ATTR_AUTOFILL))) {
+                QString autofillName = parent.attribute(QString::fromUtf8(FREECAD_ATTR_AUTOFILL));
+                QString autofillValue = getAutofillValue(autofillName);
+                if (!autofillValue.isEmpty()) {
+                    result = autofillValue;
+                }
+            }
+            return true;
+        });
+    return result;
+}
+
+
 //! get a translated label string from the context (ex TaskActiveView), the base name (ex ActiveView) and
 //! the unique name within the document (ex ActiveView001), and use it to update the Label property.
 void DrawSVGTemplate::translateLabel(std::string context, std::string baseName, std::string uniqueName)
