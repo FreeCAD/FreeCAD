@@ -48,6 +48,23 @@
 
 #include "CallTips.h"
 
+bool shibokenMayCrash(void)
+{
+    // Shiboken 6.4.0 and newer crash if we try to read their object
+    // atttributes without a current stack frame.
+    // FreeCAD issue: https://github.com/FreeCAD/FreeCAD/issues/14101
+    // Qt issue: https://bugreports.qt.io/browse/PYSIDE-2796
+
+    try {
+        Py::Module shiboken("shiboken6");
+        Py::Tuple version(shiboken.getAttr("__version_info__"));
+        Py::Long minor(version.getItem(1));
+        return (minor >= 4);
+    } catch (Py::Exception& e) {
+        e.clear();
+        return false;
+    }
+}
 
 Q_DECLARE_METATYPE( Gui::CallTip ) //< allows use of QVariant
 
@@ -243,6 +260,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         PyObject* typeobj = Base::getTypeAsObject(&Base::PyObjectBase::Type);
         PyObject* typedoc = Base::getTypeAsObject(&App::DocumentObjectPy::Type);
         PyObject* basetype = Base::getTypeAsObject(&PyBaseObject_Type);
+        QString typestr(QLatin1String(Py_TYPE(obj.ptr())->tp_name));
 
         if (PyObject_IsSubclass(type.ptr(), typedoc) == 1) {
             // From the template Python object we don't query its type object because there we keep
@@ -264,8 +282,6 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
             if (PyObject_IsInstance(obj.ptr(), typetype) != 1) {
                 // For wrapped objects with PySide2 use the object, not its type
                 // as otherwise attributes added at runtime won't be listed (e.g. MainWindowPy)
-                QString typestr(QLatin1String(Py_TYPE(obj.ptr())->tp_name));
-
                 // this should be now a user-defined Python class
                 // http://stackoverflow.com/questions/12233103/in-python-at-runtime-determine-if-an-object-is-a-class-old-and-new-type-instan
                 if (!typestr.startsWith(QLatin1String("PySide")) && Py_TYPE(obj.ptr())->tp_flags & Py_TPFLAGS_HEAPTYPE) {
@@ -342,28 +358,38 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 
 void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<QString, CallTip>& tips) const
 {
+    QString typestr(QLatin1String(Py_TYPE(obj.ptr())->tp_name));
+    bool hasGetAttr = !(typestr == QLatin1String("Shiboken.ObjectType") && shibokenMayCrash());
+
     for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
         try {
             Py::String attrname(*it);
             std::string name = attrname.as_string();
             QString str = QString::fromLatin1(name.c_str());
+            CallTip tip;
 
-            // If 'name' is an invalid attribute then PyCXX raises an exception
-            // for Py2 but silently accepts it for Py3.
-            //
-            // FIXME: Add methods of extension to the current instance and not its type object
-            // https://forum.freecad.org/viewtopic.php?f=22&t=18105
-            // https://forum.freecad.org/viewtopic.php?f=3&t=20009&p=154447#p154447
-            // https://forum.freecad.org/viewtopic.php?f=10&t=12534&p=155290#p155290
-            //
-            // https://forum.freecad.org/viewtopic.php?f=39&t=33874&p=286759#p286759
-            // https://forum.freecad.org/viewtopic.php?f=39&t=33874&start=30#p286772
-            Py::Object attr = obj.getAttr(name);
-            if (!attr.ptr()) {
-                Base::Console().Log("Python attribute '%s' returns null!\n", name.c_str());
-                continue;
+            if (hasGetAttr) {
+                // If 'name' is an invalid attribute then PyCXX raises an exception
+                // for Py2 but silently accepts it for Py3.
+                //
+                // FIXME: Add methods of extension to the current instance and not its type object
+                // https://forum.freecad.org/viewtopic.php?f=22&t=18105
+                // https://forum.freecad.org/viewtopic.php?f=3&t=20009&p=154447#p154447
+                // https://forum.freecad.org/viewtopic.php?f=10&t=12534&p=155290#p155290
+                //
+                // https://forum.freecad.org/viewtopic.php?f=39&t=33874&p=286759#p286759
+                // https://forum.freecad.org/viewtopic.php?f=39&t=33874&start=30#p286772
+                Py::Object attr = obj.getAttr(name);
+                if (!attr.ptr()) {
+                    Base::Console().Log("Python attribute '%s' returns null!\n", name.c_str());
+                    continue;
+                }
+
+                tip = getTipByAttr(attr, str);
+            } else {
+                tip.name = str;
+                tip.type = CallTip::Unknown;
             }
-            CallTip tip = getTipByAttr(attr, str);
 
             // Do not override existing items
             QMap<QString, CallTip>::iterator pos = tips.find(str);
