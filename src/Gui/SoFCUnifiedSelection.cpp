@@ -401,7 +401,8 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
 #ifdef FC_USE_TNP_FIX
                 std::pair<std::string, std::string> elementName;
                 App::GeoFeature::resolveElement(obj, subName, elementName);
-                if (!elementName.second.empty()) {         // If we have a shortened element name
+                if (Data::isMappedElement(subName)
+                    && !elementName.second.empty()) {      // If we have a shortened element name
                     subName = elementName.second.c_str();  // use it.
                 }
 #endif
