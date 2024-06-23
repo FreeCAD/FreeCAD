@@ -32,6 +32,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/Link.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -156,8 +157,14 @@ void TaskMeasure::update() {
     for(auto sel : Gui::Selection().getSelection()) {
         App::DocumentObject* ob = sel.pObject;
         App::DocumentObject* sub = ob->getSubObject(sel.SubName);
-        std::string mod = Base::Type::getModuleName(sub->getTypeId().getName());
 
+        // Resolve App::Link
+        if (sub->isDerivedFrom<App::Link>()) {
+            auto link = static_cast<App::Link*>(sub);
+            sub = link->getLinkedObject(true);
+        }
+
+        std::string mod = Base::Type::getModuleName(sub->getTypeId().getName());
         if (!App::MeasureManager::hasMeasureHandler(mod.c_str())) {
             Base::Console().Message("No measure handler available for geometry of module: %s\n", mod);
             clearSelection();

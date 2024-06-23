@@ -34,6 +34,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
+#include <App/Link.h>
 #include <Base/Quantity.h>
 #include <Base/Placement.h>
 #include <Base/Interpreter.h>
@@ -108,7 +109,12 @@ public:
 
     static Part::MeasureInfoPtr getMeasureInfo(App::SubObjectT& subObjT) {
 
+        // Resolve App::Link
         App::DocumentObject* sub = subObjT.getSubObject();
+        if (sub->isDerivedFrom<App::Link>()) {
+            auto link = static_cast<App::Link*>(sub);
+            sub = link->getLinkedObject(true);
+        }
 
         // Get the Geometry handler based on the module
         const char* className = sub->getTypeId().getName();
