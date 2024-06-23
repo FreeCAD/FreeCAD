@@ -219,9 +219,9 @@ void SketcherSettings::loadSettings()
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
     ui->ovpVisibility->clear();
-    ui->ovpVisibility->addItem(tr("Disabled"));
-    ui->ovpVisibility->addItem(tr("Only dimensional"));
-    ui->ovpVisibility->addItem(tr("All"));
+    ui->ovpVisibility->addItem(tr("None"));
+    ui->ovpVisibility->addItem(tr("Dimensions only"));
+    ui->ovpVisibility->addItem(tr("Position and dimensions"));
 
     index = hGrp->GetInt("OnViewParameterVisibility", 1);
     ui->ovpVisibility->setCurrentIndex(index);
