@@ -5,37 +5,15 @@
    height="297mm"
    version="1.1"
    viewBox="0 0 420 297"
-   sodipodi:docname="A3_Landscape_TD.svg"
-   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:freecad="http://freecadweb.org/wiki/index.php?title=Svg_Namespace"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:index="https://www.freecad.org/wiki/index.php?title=Svg_Namespace">
+   xmlns:freecad="https://www.freecad.org/wiki/index.php?title=Svg_Namespace">
   <defs
      id="defs1" />
-  <sodipodi:namedview
-     id="namedview1"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="mm"
-     inkscape:zoom="0.91092262"
-     inkscape:cx="848.59019"
-     inkscape:cy="632.87483"
-     inkscape:window-width="2560"
-     inkscape:window-height="1369"
-     inkscape:window-x="2728"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg2" />
   <!-- Working space 10 10 410 287 -->
   <!-- Title block 220 227 410 287 -->
   <metadata
@@ -46,7 +24,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -864,11 +841,11 @@
        fill-rule="evenodd"
        stroke="none" />
   </g>
-  <!-- DrawingContent -->
   <path
      id="path10-4"
      style="fill:#212529;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.700001;stroke-linecap:square"
-     d="m 376.00004,258.50003 -1.66666,1.66665 V 268.5 h 3.35448 c 0.1263,0 0.23845,-0.0817 0.27749,-0.20183 l 0.30112,-0.92772 c 0.0288,-0.0888 0.0984,-0.15833 0.18717,-0.18717 l 0.23193,-0.0757 c 0.0888,-0.0288 0.18651,-0.0126 0.26205,0.0415 l 0.78938,0.57373 c 0.10221,0.0744 0.2412,0.0744 0.34344,0 l 0.70717,-0.51432 c 0.10221,-0.0744 0.14488,-0.20615 0.10583,-0.32634 l -0.3011,-0.92855 c -0.0288,-0.0888 -0.0126,-0.18568 0.0415,-0.26123 l 0.14314,-0.19693 c 0.0548,-0.0756 0.14268,-0.12047 0.236,-0.12047 h 0.97575 c 0.1263,2e-5 0.23846,-0.0816 0.2775,-0.20181 l 0.27018,-0.83171 c 0.0391,-0.12016 -0.003,-0.25206 -0.10582,-0.32633 l -0.78938,-0.57373 c -0.0756,-0.0548 -0.12047,-0.14268 -0.12047,-0.236 v -0.24415 c 0,-0.0934 0.0448,-0.18113 0.12047,-0.236 l 0.90494,-0.65755 c 0.0756,-0.0548 0.12047,-0.14268 0.12047,-0.236 V 258.5 Z m 0,1.66665 h 4.99998 v 1.66668 h -3.33333 v 1.25 h 1.66668 v 1.66665 h -1.66668 v 2.08333 h -1.66665 z" />
+     d="m 375.82505,258.50003 -1.66666,1.66665 V 268.5 h 3.35448 c 0.1263,0 0.23845,-0.0817 0.27749,-0.20183 l 0.30112,-0.92772 c 0.0288,-0.0888 0.0984,-0.15833 0.18717,-0.18717 l 0.23193,-0.0757 c 0.0888,-0.0288 0.18651,-0.0126 0.26205,0.0415 l 0.78938,0.57373 c 0.10221,0.0744 0.2412,0.0744 0.34344,0 l 0.70717,-0.51432 c 0.10221,-0.0744 0.14488,-0.20615 0.10583,-0.32634 l -0.3011,-0.92855 c -0.0288,-0.0888 -0.0126,-0.18568 0.0415,-0.26123 l 0.14314,-0.19693 c 0.0548,-0.0756 0.14268,-0.12047 0.236,-0.12047 h 0.97575 c 0.1263,2e-5 0.23846,-0.0816 0.2775,-0.20181 l 0.27018,-0.83171 c 0.0391,-0.12016 -0.003,-0.25206 -0.10582,-0.32633 l -0.78938,-0.57373 c -0.0756,-0.0548 -0.12047,-0.14268 -0.12047,-0.236 v -0.24415 c 0,-0.0934 0.0448,-0.18113 0.12047,-0.236 l 0.90494,-0.65755 c 0.0756,-0.0548 0.12047,-0.14268 0.12047,-0.236 V 258.5 Z m 0,1.66665 h 4.99998 v 1.66668 h -3.33333 v 1.25 h 1.66668 v 1.66665 h -1.66668 v 2.08333 h -1.66665 z" />
+  <!-- DrawingContent -->
   <g
      id="titleblock-text-editable"
      font-family="osifont"
@@ -879,56 +856,60 @@
        x="220.9935"
        y="232.95425"
        style="line-height:0%"
-       index:editable="AuthorName"><tspan
+       freecad:editable="http://freecadweb.org/wiki/index.php?title=Svg_Namespace"
+       freecad:autofill="author"><tspan
          id="tspan181">AUTHOR NAME</tspan></text>
     <text
        id="text187"
        x="220.78677"
        y="240.50475"
        style="line-height:0%"
-       index:editable="CreationDate"><tspan
+       freecad:editable="CreationDate"
+       freecad:autofill="date"><tspan
          id="tspan185">CREATION DATE</tspan></text>
     <text
        id="text191"
        x="220.74191"
        y="247.9375"
        style="line-height:0%"
-       index:editable="SupervisorName"><tspan
+       freecad:editable="SupervisorName"><tspan
          id="tspan189">SUPERVISOR NAME</tspan></text>
     <text
        id="text195"
        x="220.69022"
        y="255.35406"
        style="line-height:0%"
-       index:editable="CheckDate"><tspan
+       freecad:editable="CheckDate"><tspan
          id="tspan193">CHECK DATE</tspan></text>
     <text
        id="text199"
        x="220.65581"
        y="278.57715"
        style="line-height:0%"
-       index:editable="FC-Scale"><tspan
+       freecad:editable="FC-Scale"
+       freecad:autofill="scale"><tspan
          id="tspan197">SCALE</tspan></text>
     <text
        id="text203"
        x="240.50963"
        y="278.57715"
        style="line-height:0%"
-       index:editable="Weight"><tspan
+       freecad:editable="Weight"><tspan
          id="tspan201">WEIGHT</tspan></text>
     <text
        id="text207"
        x="266.50964"
        y="278.57715"
        style="line-height:0%"
-       index:editable="DrawingNumber"><tspan
+       freecad:editable="DrawingNumber"><tspan
          id="tspan205">NUMBER</tspan></text>
     <text
        id="tspan3333-6-6-3-8-7"
        x="366.50964"
        y="278.57715"
        style="line-height:0%"
-       index:editable="SheetNumber"><tspan
+       freecad:editable="SheetNumber"
+       freecad:autofill="sheet"><tspan
          id="tspan209">SHEET</tspan></text>
     <text
        id="text214"
@@ -936,14 +917,15 @@
        y="241.26292"
        font-size="8px"
        style="line-height:0%"
-       index:editable="FC-Title"><tspan
+       freecad:editable="FC-Title"
+       freecad:autofill="title"><tspan
          id="tspan212">TITLE</tspan></text>
     <text
        id="tspan3333-5-6"
        x="270.19635"
        y="247.26292"
        style="line-height:0%"
-       index:editable="Subtitle"><tspan
+       freecad:editable="Subtitle"><tspan
          id="tspan216">SUBTITLE</tspan></text>
   </g>
 </svg>

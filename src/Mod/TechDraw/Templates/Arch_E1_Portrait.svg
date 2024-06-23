@@ -5,37 +5,15 @@
    height="42in"
    version="1.1"
    viewBox="0 0 762 1066.8"
-   sodipodi:docname="Arch_E1_Portrait.svg"
-   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:freecad="http://freecadweb.org/wiki/index.php?title=Svg_Namespace"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:index="https://www.freecad.org/wiki/index.php?title=Svg_Namespace">
+   xmlns:freecad="https://www.freecad.org/wiki/index.php?title=Svg_Namespace">
   <defs
      id="defs1" />
-  <sodipodi:namedview
-     id="namedview1"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="in"
-     inkscape:zoom="13.165655"
-     inkscape:cx="2691.0929"
-     inkscape:cy="3890.4635"
-     inkscape:window-width="2560"
-     inkscape:window-height="1369"
-     inkscape:window-x="2728"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg20210" />
   <metadata
      id="metadata20215">
     <rdf:RDF>
@@ -44,7 +22,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -451,7 +428,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="A__"><tspan
+     freecad:editable="A__"><tspan
        id="tspan308-4"
        x="728.88446"
        y="1002.3718"
@@ -1148,7 +1125,8 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="AuthorName"><tspan
+     freecad:editable="AuthorName"
+     freecad:autofill="author"><tspan
        id="tspan3333-7"
        x="590.17676"
        y="1003.5776"
@@ -1164,7 +1142,8 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="CreationDate"><tspan
+     freecad:editable="CreationDate"
+     freecad:autofill="date"><tspan
        id="tspan3333-6-95"
        x="590.0177"
        y="1009.4957"
@@ -1180,7 +1159,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="SupervisorName"><tspan
+     freecad:editable="SupervisorName"><tspan
        id="tspan3333-6-9-4"
        x="589.9856"
        y="1016.0477"
@@ -1196,7 +1175,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="CheckDate"><tspan
+     freecad:editable="CheckDate"><tspan
        id="tspan3333-6-1-6"
        x="590.0177"
        y="1022.1479"
@@ -1212,7 +1191,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="Size"><tspan
+     freecad:editable="Arch E1"><tspan
        id="tspan3316-5"
        x="590.04712"
        y="1031.0629"
@@ -1228,7 +1207,8 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="Scale"><tspan
+     freecad:editable="Scale"
+     freecad:autofill="scale"><tspan
        id="tspan3333-6-6-5"
        x="590.19928"
        y="1041.2491"
@@ -1244,7 +1224,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="Weight"><tspan
+     freecad:editable="Weight"><tspan
        id="tspan3333-6-6-3-5"
        x="606.22852"
        y="1041.2491"
@@ -1260,7 +1240,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="DrawingNumber"><tspan
+     freecad:editable="DrawingNumber"><tspan
        id="tspan3333-6-6-3-8-8"
        x="626.37482"
        y="1041.2275"
@@ -1276,7 +1256,8 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="SheetNumber"><tspan
+     freecad:editable="SheetNumber"
+     freecad:autofill="sheet"><tspan
        id="tspan3333-6-6-3-8-7-1"
        x="707.65497"
        y="1041.2491"
@@ -1295,7 +1276,8 @@
      text-anchor="middle"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="Title"><tspan
+     freecad:editable="Title"
+     freecad:autofill="title"><tspan
        id="tspan3333-5-0"
        x="674.52466"
        y="1008.9196"
@@ -1319,7 +1301,7 @@
      text-anchor="middle"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="Subtitle"><tspan
+     freecad:editable="Subtitle"><tspan
        id="tspan3333-5-6-2"
        x="674.44647"
        y="1017.2295"
@@ -1337,7 +1319,8 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="Company_name"><tspan
+     freecad:editable="Company_name"
+     freecad:autofill="organization"><tspan
        id="tspan243-2"
        x="626.513"
        y="1029.8773"
@@ -1353,7 +1336,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="COPYRIGHT"><tspan
+     freecad:editable="COPYRIGHT"><tspan
        id="tspan289-5"
        x="589.8587"
        y="1047.5016"
@@ -1369,7 +1352,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="I__"><tspan
+     freecad:editable="I__"><tspan
        id="tspan3245-0-3"
        x="728.74274"
        y="1046.7527"
@@ -1385,7 +1368,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="H__"><tspan
+     freecad:editable="H__"><tspan
        id="tspan280-5"
        x="728.74274"
        y="1041.2948"
@@ -1401,7 +1384,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="G__"><tspan
+     freecad:editable="G__"><tspan
        id="tspan284-1"
        x="728.74274"
        y="1035.7822"
@@ -1417,7 +1400,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="F__"><tspan
+     freecad:editable="F__"><tspan
        id="tspan288-6"
        x="728.68414"
        y="1030.3131"
@@ -1433,7 +1416,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="E__"><tspan
+     freecad:editable="E__"><tspan
        id="tspan292-2"
        x="728.62555"
        y="1024.3405"
@@ -1449,7 +1432,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="D__"><tspan
+     freecad:editable="D__"><tspan
        id="tspan296-3"
        x="728.68414"
        y="1018.8279"
@@ -1465,7 +1448,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="C__"><tspan
+     freecad:editable="C__"><tspan
        id="tspan300-1"
        x="728.74274"
        y="1013.3415"
@@ -1481,7 +1464,7 @@
      stroke-width=".054953"
      word-spacing="0px"
      style="line-height:125%"
-     index:editable="B__"><tspan
+     freecad:editable="B__"><tspan
        id="tspan304-6"
        x="728.62555"
        y="1007.8832"
