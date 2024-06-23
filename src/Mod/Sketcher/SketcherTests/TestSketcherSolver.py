@@ -528,8 +528,8 @@ class TestSketcherSolver(unittest.TestCase):
         CreateRectangleSketch(sketch2, (0, 0), (3, 3))
         body.addObject(sketch2)
         self.Doc.recompute()
-        sketch2.addExternal("Hole", "Edge35")  # Edge35 will disappear when we stop modeling threads
-        self.assertEqual(len(hole.Shape.Edges), 38)
+        sketch2.addExternal("Hole", "Edge29")  # Edge29 will disappear when we stop modeling threads
+        self.assertEqual(len(hole.Shape.Edges), 32)
         hole.ModelThread = False
         hole.Refine = True
         self.Doc.recompute()
