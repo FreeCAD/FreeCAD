@@ -95,7 +95,7 @@ bool Reader3MF::LoadModel(std::istream& str)
 
         Base::StdInputSource inputSource(str, "3dmodel.model");
         parser->parse(inputSource);
-        std::unique_ptr<DOMDocument> xmlDocument(parser->adoptDocument());
+        std::unique_ptr<XERCES_CPP_NAMESPACE::DOMDocument> xmlDocument(parser->adoptDocument());
         return LoadModel(*xmlDocument);
     }
     catch (const XMLException&) {
@@ -106,7 +106,7 @@ bool Reader3MF::LoadModel(std::istream& str)
     }
 }
 
-bool Reader3MF::LoadModel(DOMDocument& xmlDocument)
+bool Reader3MF::LoadModel(XERCES_CPP_NAMESPACE::DOMDocument& xmlDocument)
 {
     DOMNodeList* nodes = xmlDocument.getElementsByTagName(XStr("model").unicodeForm());
     for (XMLSize_t i = 0; i < nodes->getLength(); i++) {

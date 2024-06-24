@@ -113,7 +113,7 @@ if (BUILD_FLAT_MESH)
         SET_BIN_DIR(flatmesh flatmesh /Mod/MeshPart)
         install(TARGETS flatmesh DESTINATION ${CMAKE_INSTALL_LIBDIR})
     else()
-        if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
+        if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIBPACK_CHECKFILE_VERSION)
             # boost-python >= 1.67 on some platforms has suffix
             if (FORCE_BOOST_PY_SUFFIX)
                 set(BOOST_PY_SUFFIX ${FORCE_BOOST_PY_SUFFIX})

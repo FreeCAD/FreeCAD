@@ -233,11 +233,14 @@ void testFindSubShapesForSourceWithTypeAndIndex(const std::string& shapeTypeStr,
     MappedName mappedName {elementStdMap[indexedName]};
     const char shapeTypePrefix {indexedName.toString()[0]};
 
+#pragma warning(push)
+#pragma warning(disable : 4834)  // Discarding a [[nodiscard]], which we are about to do...
     EXPECT_NO_THROW(elementStdMap.at(indexedName));  // We check that the IndexedName
                                                      // is one of the keys...
     EXPECT_NE(mappedName.find(shapeName.c_str()),
               -1);  // ... that the element name is in the MappedName...
     EXPECT_EQ(mappedName.toString().back(), shapeTypePrefix);
+#pragma warning(pop)
 }
 
 void testFindSubShapesForSourceWithType(const TopoShape& source,

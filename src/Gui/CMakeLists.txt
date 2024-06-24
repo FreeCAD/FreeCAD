@@ -70,6 +70,13 @@ if(MSVC)
          ${OPENGL_gl_LIBRARY}
     )
 
+    if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
+        list(APPEND FreeCADGui_LIBS
+            Qt6::GuiPrivate
+        )
+    endif()
+
+
     if(FREECAD_USE_3DCONNEXION)
         list(APPEND FreeCADGui_LIBS
             hid
