@@ -78,6 +78,10 @@ public:
 
     PyObject* getPyObject() override;
 
+    void showSheetMdi();
+
+    void exportAsFile();
+
 protected:
     SheetView* showSpreadsheetView();
     void updateData(const App::Property* prop) override;

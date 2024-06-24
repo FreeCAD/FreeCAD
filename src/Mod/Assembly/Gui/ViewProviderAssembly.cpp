@@ -55,6 +55,7 @@
 #include <Mod/Assembly/App/AssemblyObject.h>
 #include <Mod/Assembly/App/AssemblyUtils.h>
 #include <Mod/Assembly/App/JointGroup.h>
+#include <Mod/Assembly/App/ViewGroup.h>
 #include <Mod/PartDesign/App/Body.h>
 
 #include "ViewProviderAssembly.h"
@@ -887,14 +888,50 @@ void ViewProviderAssembly::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 bool ViewProviderAssembly::onDelete(const std::vector<std::string>& subNames)
 {
-    // Delete the joingroup when assembly is deleted
+    // Delete the assembly goups when assembly is deleted
     for (auto obj : getObject()->getOutList()) {
-        if (obj->getTypeId() == Assembly::JointGroup::getClassTypeId()) {
-            obj->getDocument()->removeObject(obj->getNameInDocument());
+        if (obj->getTypeId() == Assembly::JointGroup::getClassTypeId()
+            || obj->getTypeId() == Assembly::ViewGroup::getClassTypeId()
+            /* || obj->getTypeId() == Assembly::BomGroup::getClassTypeId()*/) {
+
+            // Delete the group content first.
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "doc = App.getDocument(\"%s\")\n"
+                                    "objName = \"%s\"\n"
+                                    "doc.getObject(objName).removeObjectsFromDocument()\n"
+                                    "doc.removeObject(objName)\n",
+                                    obj->getDocument()->getName(),
+                                    obj->getNameInDocument());
         }
     }
 
     return ViewProviderPart::onDelete(subNames);
+}
+
+bool ViewProviderAssembly::canDelete(App::DocumentObject* obj) const
+{
+    bool res = ViewProviderPart::canDelete(obj);
+    if (res) {
+        // If a component is deleted, then we delete the joints as well.
+        for (auto parent : obj->getInList()) {
+            if (!parent) {
+                continue;
+            }
+
+            auto* prop =
+                dynamic_cast<App::PropertyBool*>(parent->getPropertyByName("EnableLimits"));
+            auto* prop2 =
+                dynamic_cast<App::PropertyLink*>(parent->getPropertyByName("ObjectToGround"));
+            if (prop || prop2) {
+                Gui::Command::doCommand(Gui::Command::Doc,
+                                        "App.getDocument(\"%s\").removeObject(\"%s\")",
+                                        parent->getDocument()->getName(),
+                                        parent->getNameInDocument());
+            }
+        }
+    }
+
+    return res;
 }
 
 void ViewProviderAssembly::setDraggerVisibility(bool val)

@@ -32,7 +32,7 @@ import math
 import os
 
 from FreeCAD import Vector, Base
-from PySide2.QtWidgets import QDialogButtonBox
+from PySide.QtGui import QDialogButtonBox
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -92,18 +92,24 @@ class CAMSimulation:
         for edge in edges:
             p1 = edge.FirstParameter
             p2 = edge.LastParameter
-            rad = RadiusAt(edge, p1)
-            z = edge.valueAt(p1).z
-            if IsSame(px, rad) and IsSame(pz, z):
+            rad1 = RadiusAt(edge, p1)
+            z1 = edge.valueAt(p1).z
+            if IsSame(px, rad1) and IsSame(pz, z1):
                 return edge, p1, p2
-            rad = RadiusAt(edge, p2)
-            z = edge.valueAt(p2).z
-            if IsSame(px, rad) and IsSame(pz, z):
+            rad2 = RadiusAt(edge, p2)
+            z2 = edge.valueAt(p2).z
+            if IsSame(px, rad2) and IsSame(pz, z2):
                 return edge, p2, p1
+            # sometimes a flat circle is without edge, so return edge with 
+            # same height and later a connecting edge will be interpolated
+            if IsSame(pz, z1):
+                return edge, p1, p2
+            if IsSame(pz, z2):
+                return edge, p2, p1           
         return None, 0.0, 0.0
 
     def FindTopMostEdge(self, edges):
-        maxz = 0.0
+        maxz = -99999999.0
         topedge = None
         top_p1 = 0.0
         top_p2 = 0.0
@@ -137,7 +143,6 @@ class CAMSimulation:
                 sideEdgeList.append(edge)
 
         # sort edges as a single 3d line on the x-z plane
-        profile = [0.0, 0.0]
 
         # first find the topmost edge
         edge, p1, p2 = self.FindTopMostEdge(sideEdgeList)
@@ -167,6 +172,12 @@ class CAMSimulation:
             edge, p1, p2 =  self.FindClosestEdge(sideEdgeList, endrad, endz)
             if edge is None:
                 break
+            startrad = RadiusAt(edge, p1)
+            if not IsSame(startrad, endrad):
+                profile.append(startrad)
+                startz = edge.valueAt(p1).z
+                profile.append(startz)
+                        
         return profile
 
     def Activate(self):
@@ -179,13 +190,14 @@ class CAMSimulation:
         self._populateJobSelection(form)
         form.comboJobs.currentIndexChanged.connect(self.onJobChange)
         self.onJobChange()
+        form.listOperations.itemChanged.connect(self.onOperationItemChange)
         FreeCADGui.Control.showDialog(self.taskForm)
         self.disableAnim = False
         self.firstDrill = True
         self.millSim = CAMSimulator.PathSim()
         self.initdone = True
         self.job = self.jobs[self.taskForm.form.comboJobs.currentIndex()]
-        self.SetupSimulation()
+        # self.SetupSimulation()
 
     def _populateJobSelection(self, form):
         # Make Job selection combobox
@@ -250,8 +262,6 @@ class CAMSimulation:
                 listItem.setCheckState(QtCore.Qt.CheckState.Checked)
                 self.operations.append(op)
                 form.listOperations.addItem(listItem)
-        if self.initdone:
-            self.SetupSimulation()
 
     def onAccuracyBarChange(self):
         form = self.taskForm.form
@@ -263,7 +273,17 @@ class CAMSimulation:
             qualText = QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Medium")
         form.labelAccuracy.setText(qualText)
 
+    def onOperationItemChange(self, _item):
+        playvalid = False
+        form = self.taskForm.form
+        for i in range(form.listOperations.count()):
+            if form.listOperations.item(i).checkState() == QtCore.Qt.CheckState.Checked:
+                playvalid = True
+                break
+        form.toolButtonPlay.setEnabled(playvalid)
+
     def SimPlay(self):
+        self.SetupSimulation()
         self.millSim.ResetSimulation()
         for op in self.activeOps:
             tool = PathDressup.toolController(op).Tool

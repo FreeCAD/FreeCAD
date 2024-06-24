@@ -298,6 +298,9 @@ public:
     const char *getCameraSettings() const;
     bool saveCameraSettings(const char *) const;
 
+    /// get all tree root objects (objects that are at the root of the object tree)
+    std::vector<App::DocumentObject*> getTreeRootObjects() const;
+
 protected:
     // pointer to the python class
     Gui::DocumentPy *_pcDocPy;

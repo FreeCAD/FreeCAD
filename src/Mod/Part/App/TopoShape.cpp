@@ -4198,7 +4198,8 @@ bool TopoShape::_makeTransform(const TopoShape &shape,
     if(checkScale) {
         try {
             auto type = rclTrf.hasScale();
-            if (type != Base::ScaleType::Uniform && type != Base::ScaleType::NoScaling) {
+            if ((type != Base::ScaleType::Uniform && type != Base::ScaleType::NoScaling)
+                || (type == Base::ScaleType::Uniform && rclTrf.determinant3() == 0.0)) {
                 makeGTransform(shape,rclTrf,op,copy);
                 return true;
             }

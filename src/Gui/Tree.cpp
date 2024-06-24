@@ -404,8 +404,8 @@ class TreeWidgetItemDelegate: public QStyledItemDelegate {
     // Beware, big scary hack incoming!
     //
     // This is artificial QTreeWidget that is not rendered and its sole goal is to be the source
-    // of style information that can be manipulated using QSS. From Qt6.5 tree branches also 
-    // have rendered background using ::item sub-control. Whole row also gets background from 
+    // of style information that can be manipulated using QSS. From Qt6.5 tree branches also
+    // have rendered background using ::item sub-control. Whole row also gets background from
     // the same sub-control. Only way to prevent this is to disable background of ::item,
     // this however limits our ability to style tree items. As solution we create this widget
     // that will be for painter to read information and draw proper backgrounds only when asked.
@@ -447,9 +447,9 @@ QRect TreeWidgetItemDelegate::calculateItemRect(const QStyleOptionViewItem &opti
     QRect rect = option.rect;
 
     const int margin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, &option, artificial) + 1;
-    
+
     // 2 margin for text, 2 margin for decoration (icon) = 4 times margin
-    int width = 4 * margin 
+    int width = 4 * margin
         + option.fontMetrics.boundingRect(option.text).width()
         + option.decorationSize.width()
         + TreeParams::getItemBackgroundPadding()
@@ -457,7 +457,7 @@ QRect TreeWidgetItemDelegate::calculateItemRect(const QStyleOptionViewItem &opti
 
     if (TreeParams::getCheckBoxesSelection()) {
         // another 2 margin for checkbox
-        width += 2 * margin 
+        width += 2 * margin
             + style->pixelMetric(QStyle::PM_IndicatorWidth)
             + style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
     }
@@ -482,7 +482,7 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
     // rendering as transparent overlay.
 
     bool trimBG = TreeParams::getHideColumn() || TreeParams::getHideInternalNames();
-    
+
     if (index.column() == 0) {
         if (tree->testAttribute(Qt::WA_NoSystemBackground)
                 && (trimBG || (opt.backgroundBrush.style() == Qt::NoBrush
@@ -995,11 +995,11 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     if (this->contextItem && this->contextItem->type() == DocumentType) {
         auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
-        
+
         // It's better to let user decide whether and how to activate
         // the current document, such as by double-clicking.
         // App::GetApplication().setActiveDocument(doc);
-        
+
         showHiddenAction->setChecked(docitem->showHidden());
         contextMenu.addAction(this->showHiddenAction);
         contextMenu.addAction(this->searchObjectsAction);
@@ -1108,9 +1108,9 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     contextMenu.addSeparator();
     contextMenu.addMenu(&settingsMenu);
 
-    QAction* action = new QAction(tr("Show description column"), this);
+    QAction* action = new QAction(tr("Show description"), this);
     QAction* internalNameAction = new QAction(tr("Show internal name"), this);
-    action->setStatusTip(tr("Show an extra tree view column for item description. The item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property."));
+    action->setStatusTip(tr("Show a description column for items. An item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property."));
     action->setCheckable(true);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
@@ -1688,14 +1688,18 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
             // Rect occupied by the item relative to viewport
             auto iconRect = visualItemRect(objitem);
 
+            auto style = this->style();
+
             // If the checkboxes are visible, these are displayed before the icon
             // and we have to compensate for its width.
             if (isSelectionCheckBoxesEnabled()) {
-                auto style = this->style();
                 int checkboxWidth = style->pixelMetric(QStyle::PM_IndicatorWidth)
                                     + style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
                 iconRect.adjust(checkboxWidth, 0, 0, 0);
             }
+
+            int const margin = style->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1;
+            iconRect.adjust(margin, 0, 0, 0);
 
             // We are interested in the first icon (visibility icon)
             iconRect.setWidth(iconSize());
@@ -2006,7 +2010,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
         try {
             if (da != Qt::LinkAction && !vp->canDropObjects()) {
                 if (!(event->possibleActions() & Qt::LinkAction) || items.size() != 1) {
-                    TREE_TRACE("cannot drop");
+                    TREE_TRACE("Cannot drop here");
                     event->ignore();
                     return;
                 }
@@ -2021,17 +2025,14 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
 
                 auto obj = item->object()->getObject();
 
-                if (da == Qt::MoveAction && !vp->canDragAndDropObject(obj)) {
-                    // Check if item can be dragged
+                if (da == Qt::MoveAction) {
+                    // Check if item can be dragged from his parent
                     auto parentItem = item->getParentItem();
                     if (parentItem && !(parentItem->object()->canDragObjects() && parentItem->object()->canDragObject(item->object()->getObject())))
                     {
-                        if (!(event->possibleActions() & Qt::CopyAction)) {
-                            TREE_TRACE("Cannot drag object");
-                            event->ignore();
-                            return;
-                        }
-                        event->setDropAction(Qt::CopyAction);
+                        TREE_TRACE("Cannot drag object");
+                        event->ignore();
+                        return;
                     }
                 }
 
@@ -2754,7 +2755,8 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
         propGroup->setValue(sortedObjList);
     }
     else if (targetInfo.targetItem->type() == TreeWidget::DocumentType) {
-        objList = targetInfo.targetDoc->getRootObjectsIgnoreLinks();
+        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(targetInfo.targetDoc->getName());
+        objList = guiDoc->getTreeRootObjects();
         // First we need to sort objList by treeRank.
         std::sort(objList.begin(), objList.end(),
             [](App::DocumentObject* a, App::DocumentObject* b) {
@@ -2911,11 +2913,11 @@ struct UpdateDisabler {
         focus = widget.hasFocus();
         visible = widget.isVisible();
         if (visible) {
-            // setUpdatesEnabled(false) does not seem to speed up anything. 
-            // setVisible(false) on the other hand makes QTreeWidget::setData 
-            // (i.e. any change to QTreeWidgetItem) faster by 10+ times. 
-            // 
-            // widget.setUpdatesEnabled(false); 
+            // setUpdatesEnabled(false) does not seem to speed up anything.
+            // setVisible(false) on the other hand makes QTreeWidget::setData
+            // (i.e. any change to QTreeWidgetItem) faster by 10+ times.
+            //
+            // widget.setUpdatesEnabled(false);
 
             widget.setVisible(false);
         }
@@ -4689,7 +4691,7 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
     // the selection observers can trigger a recreation of all DocumentObjectItem so that the
     // passed 'item' can become a dangling pointer.
     // Thus,'item' mustn't be accessed any more after altering the selection.
-    // For further details see the bug analsysis of #13107
+    // For further details see the bug analysis of #13107
     bool selected = item->isSelected();
     bool checked = item->checkState(0) == Qt::Checked;
 
@@ -4722,11 +4724,11 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
     const char* docname = obj->getDocument()->getName();
     const auto& subname = str.str();
 
+#ifdef FC_DEBUG
     if (!subname.empty()) {
-        auto parentItem = item->getParentItem();
-        assert(parentItem);
+        assert(item->getParentItem());
     }
-
+#endif
 
     if (!selected) {
         Gui::Selection().rmvSelection(docname, objname, subname.c_str());
@@ -5308,7 +5310,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     previousStatus = currentStatus;
 
     QIcon::Mode mode = QIcon::Normal;
-    if (isVisibilityIconEnabled() || (currentStatus & Status::Visible)) {
+    if (currentStatus & Status::Visible) {
         // Note: By default the foreground, i.e. text color is invalid
         // to make use of the default color of the tree widget's palette.
         // If we temporarily set this color to dark and reset to an invalid
@@ -5426,17 +5428,19 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
 
             // Prepend the visibility pixmap to the final icon pixmaps and use these as the icon.
             QIcon new_icon;
+            auto style = this->getTree()->style();
+            int const spacing = style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
             for (auto state: {QIcon::On, QIcon::Off}) {
                 QPixmap px_org = icon.pixmap(0xFFFF, 0xFFFF, QIcon::Normal, state);
 
-                QPixmap px(2*px_org.width(), px_org.height());
+                QPixmap px(2*px_org.width() + spacing, px_org.height());
                 px.fill(Qt::transparent);
 
                 QPainter pt;
                 pt.begin(&px);
                 pt.setPen(Qt::NoPen);
                 pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & Status::Visible) ? pxVisible : pxInvisible);
-                pt.drawPixmap(px_org.width(), 0, px_org.width(), px_org.height(), px_org);
+                pt.drawPixmap(px_org.width() + spacing, 0, px_org.width(), px_org.height(), px_org);
                 pt.end();
 
                 new_icon.addPixmap(px, QIcon::Normal, state);

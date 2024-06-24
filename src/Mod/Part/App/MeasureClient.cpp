@@ -268,17 +268,7 @@ MeasureLengthInfoPtr MeasureLengthHandler(const App::SubObjectT& subject)
     BRepGProp::LinearProperties(shape, gprops);
     auto origin = gprops.CentreOfMass();
 
-    // Get rotation of line
-    auto edge = TopoDS::Edge(shape);
-    ShapeAnalysis_Edge edgeAnalyzer;
-    gp_Pnt firstPoint = BRep_Tool::Pnt(edgeAnalyzer.FirstVertex(edge));
-    gp_Pnt lastPoint = BRep_Tool::Pnt(edgeAnalyzer.LastVertex(edge));
-    auto dir = (lastPoint.XYZ() - firstPoint.XYZ()).Normalized();
-    Base::Vector3d elementDirection(dir.X(), dir.Y(), dir.Z());
-    Base::Vector3d axisUp(0.0, 0.0, 1.0);
-    Base::Rotation rot(axisUp, elementDirection);
-
-    Base::Placement placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), rot);
+    Base::Placement placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), Base::Rotation());
     return std::make_shared<MeasureLengthInfo>(true, getLength(shape), placement);
 }
 

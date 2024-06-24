@@ -67,6 +67,11 @@ QString DlgTemplateField::getFieldContent()
     return ui->leInput->text();
 }
 
+bool DlgTemplateField::getAutofillState()
+{
+    return ui->cbAutofill->isChecked();
+}
+
 void DlgTemplateField::accept()
 {
     QDialog::accept();

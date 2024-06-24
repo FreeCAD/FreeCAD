@@ -72,6 +72,7 @@ public:
 
     bool doubleClicked() override;
     bool onDelete(const std::vector<std::string>& subNames) override;
+    bool canDelete(App::DocumentObject* obj) const override;
 
     /** @name enter/exit edit mode */
     //@{

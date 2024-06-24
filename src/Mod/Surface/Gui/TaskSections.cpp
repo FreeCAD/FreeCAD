@@ -172,8 +172,8 @@ void ViewProviderSections::highlightReferences(ShapeType type, const References&
                                 // check again that the index is in range because it's possible that
                                 // the sub-names are invalid
                                 if (idx < materials.size()) {
-                                    materials[idx].diffuseColor =
-                                        App::Color(1.0, 0.0, 1.0);  // magenta
+                                    // magenta
+                                    materials[idx].diffuseColor = App::Color(1.0, 0.0, 1.0);
                                 }
                             }
 

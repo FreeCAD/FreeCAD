@@ -65,45 +65,10 @@ TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint* ConstraintView,
     , cancelButton(nullptr)
 {
     selectionMode = selref;
-
-    // Setup the dialog inside the Shaft Wizard dialog
-    if ((ConstraintView->wizardWidget) && (ConstraintView->wizardSubLayout)) {
-        // Hide the shaft wizard table widget to make more space
-        ConstraintView->wizardSubLayout->itemAt(0)->widget()->hide();
-        QGridLayout* buttons = ConstraintView->wizardSubLayout->findChild<QGridLayout*>();
-        for (int b = 0; b < buttons->count(); b++) {
-            buttons->itemAt(b)->widget()->hide();
-        }
-
-        // Show this dialog for the FEM constraint
-        ConstraintView->wizardWidget->addWidget(this);
-
-        // Add buttons to finish editing the constraint without closing the shaft wizard dialog
-        okButton = new QPushButton(QObject::tr("Ok"));
-        cancelButton = new QPushButton(QObject::tr("Cancel"));
-        buttonBox = new QDialogButtonBox();
-        buttonBox->addButton(okButton, QDialogButtonBox::AcceptRole);
-        buttonBox->addButton(cancelButton, QDialogButtonBox::RejectRole);
-        QObject::connect(okButton, &QPushButton::clicked, this, &TaskFemConstraint::onButtonWizOk);
-        QObject::connect(cancelButton,
-                         &QPushButton::clicked,
-                         this,
-                         &TaskFemConstraint::onButtonWizCancel);
-        ConstraintView->wizardWidget->addWidget(buttonBox);
-    }
 }
 
 void TaskFemConstraint::keyPressEvent(QKeyEvent* ke)
 {
-    if ((ConstraintView->wizardWidget) && (ConstraintView->wizardSubLayout)) {
-        // Prevent <Enter> from closing this dialog AND the shaft wizard dialog
-        // TODO: This should trigger an update in the shaft wizard but its difficult to access a
-        // python dialog from here...
-        if (ke->key() == Qt::Key_Return) {
-            return;
-        }
-    }
-
     TaskBox::keyPressEvent(ke);
 }
 
@@ -170,37 +135,6 @@ void TaskFemConstraint::onButtonReference(const bool pressed)
         selectionMode = selnone;
     }
     Gui::Selection().clearSelection();
-}
-
-void TaskFemConstraint::onButtonWizOk()
-{
-    // Remove dialog elements
-    buttonBox->removeButton(okButton);
-    delete okButton;
-    buttonBox->removeButton(cancelButton);
-    delete cancelButton;
-    ConstraintView->wizardWidget->removeWidget(buttonBox);
-    delete buttonBox;
-    ConstraintView->wizardWidget->removeWidget(this);
-
-    // Show the wizard shaft dialog again
-    ConstraintView->wizardSubLayout->itemAt(0)->widget()->show();
-    QGridLayout* buttons = ConstraintView->wizardSubLayout->findChild<QGridLayout*>();
-    for (int b = 0; b < buttons->count(); b++) {
-        buttons->itemAt(b)->widget()->show();
-    }
-
-    Gui::Application::Instance->activeDocument()
-        ->resetEdit();  // Reaches ViewProviderFemConstraint::unsetEdit() eventually
-}
-
-void TaskFemConstraint::onButtonWizCancel()
-{
-    Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(ConstraintView->getObject());
-    if (pcConstraint) {
-        pcConstraint->getDocument()->removeObject(pcConstraint->getNameInDocument());
-    }
-    onButtonWizOk();
 }
 
 const QString TaskFemConstraint::makeRefText(const std::string& objName,

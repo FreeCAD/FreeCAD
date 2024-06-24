@@ -53,7 +53,8 @@ run_codesign "${CONTAINING_FOLDER}/FreeCAD.app"
 # Create a disk image from the folder
 DMG_NAME="FreeCAD-${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}-mac-${ARCH}.dmg"
 echo "Creating disk image ${DMG_NAME}"
-hdiutil create -srcfolder "${CONTAINING_FOLDER}" "${DMG_NAME}"
+pip3 install "dmgbuild[badge_icons]>=1.6.0,<1.7.0"
+dmgbuild -s dmg_settings.py -Dcontaining_folder="${CONTAINING_FOLDER}" "FreeCAD" "${DMG_NAME}.dmg"
 
 # Submit it for notarization (requires that an App Store API Key has been set up in the notarytool)
 xcrun notarytool submit --wait --keychain-profile "FreeCAD" ${DMG_NAME}

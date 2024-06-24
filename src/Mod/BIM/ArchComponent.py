@@ -1015,7 +1015,9 @@ class Component(ArchIFC.IfcProduct):
                 obj.PerimeterLength = 0
                 return
             else:
-                if (ang > 1.57) and (ang < 1.571):
+                if  ((ang > 1.57) and
+                    (ang < 1.571) and
+                    f.Surface.isPlanar()):
                     a += f.Area
                 else:
                     fset.append(f)

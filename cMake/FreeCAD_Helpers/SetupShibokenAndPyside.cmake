@@ -170,43 +170,6 @@ macro(SetupShibokenAndPyside)
 
 endmacro(SetupShibokenAndPyside)
 
-# Locate the include directory for a pip-installed package -- uses pip show to find the base pip
-# install directory, and then appends the package name and  "/include" to the end
-macro(find_pip_package PACKAGE)
-    execute_process(
-        COMMAND ${PYTHON_EXECUTABLE} -m pip show ${PACKAGE}
-        RESULT_VARIABLE FAILURE
-        OUTPUT_VARIABLE PRINT_OUTPUT
-    )
-    if(NOT FAILURE)
-        # Extract Name: and Location: lines and use them to construct the include directory
-        string(REPLACE "\n" ";" PIP_OUTPUT_LINES ${PRINT_OUTPUT})
-        foreach(LINE IN LISTS PIP_OUTPUT_LINES)
-            STRING(FIND "${LINE}" "Name: " NAME_STRING_LOCATION)
-            STRING(FIND "${LINE}" "Location: " LOCATION_STRING_LOCATION)
-            if(${NAME_STRING_LOCATION} EQUAL 0)
-                STRING(SUBSTRING "${LINE}" 6 -1 PIP_PACKAGE_NAME)
-            elseif(${LOCATION_STRING_LOCATION} EQUAL 0)
-                STRING(SUBSTRING "${LINE}" 10 -1 PIP_PACKAGE_LOCATION)
-            endif()
-        endforeach()
-        message(STATUS "Found pip-installed ${PACKAGE} in ${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}")
-        file(TO_NATIVE_PATH "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/include" INCLUDE_DIR)
-        file(TO_NATIVE_PATH "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/lib" LIBRARY)
-        if(EXISTS ${INCLUDE_DIR})
-            set(${PACKAGE}_INCLUDE_DIR ${INCLUDE_DIR})
-        else()
-            message(STATUS "${PACKAGE} include directory '${INCLUDE_DIR}' does not exist")
-        endif()
-        if(EXISTS ${LIBRARY})
-            set(${PACKAGE}_LIBRARY ${LIBRARY})
-        else()
-            message(STATUS "${PACKAGE} library directory '${LIBRARY}' does not exist")
-        endif()
-        set(${PACKAGE}_FOUND TRUE)
-    endif()
-endmacro()
-
 
 # Macros similar to FindQt4.cmake's WRAP_UI and WRAP_RC, for the automatic generation of Python
 # code from Qt4's user interface ('.ui') and resource ('.qrc') files. These macros are called:

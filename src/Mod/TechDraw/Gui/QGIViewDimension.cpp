@@ -2550,7 +2550,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
 
     double endAngle = (endPoint - angleVertex).Angle();
     double startAngle = (startPoint - angleVertex).Angle();
-    double arcRadius;
+    double arcRadius {};
 
     int standardStyle = viewProvider->StandardAndStyle.getValue();
     int renderExtent = viewProvider->RenderingExtent.getValue();

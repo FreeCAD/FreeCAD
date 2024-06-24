@@ -107,6 +107,7 @@ void SketcherSettings::saveSettings()
     ui->checkBoxAdvancedSolverTaskBox->onSave();
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
     ui->checkBoxEnableEscape->onSave();
+    ui->checkBoxDisableShading->onSave();
     ui->checkBoxNotifyConstraintSubstitutions->onSave();
     ui->checkBoxAutoRemoveRedundants->onSave();
     ui->checkBoxUnifiedCoincident->onSave();
@@ -178,6 +179,7 @@ void SketcherSettings::loadSettings()
     ui->checkBoxAdvancedSolverTaskBox->onRestore();
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
     ui->checkBoxEnableEscape->onRestore();
+    ui->checkBoxDisableShading->onRestore();
     ui->checkBoxNotifyConstraintSubstitutions->onRestore();
     ui->checkBoxAutoRemoveRedundants->onRestore();
     ui->checkBoxUnifiedCoincident->onRestore();
@@ -219,9 +221,9 @@ void SketcherSettings::loadSettings()
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
     ui->ovpVisibility->clear();
-    ui->ovpVisibility->addItem(tr("Disabled"));
-    ui->ovpVisibility->addItem(tr("Only dimensional"));
-    ui->ovpVisibility->addItem(tr("All"));
+    ui->ovpVisibility->addItem(tr("None"));
+    ui->ovpVisibility->addItem(tr("Dimensions only"));
+    ui->ovpVisibility->addItem(tr("Position and dimensions"));
 
     index = hGrp->GetInt("OnViewParameterVisibility", 1);
     ui->ovpVisibility->setCurrentIndex(index);

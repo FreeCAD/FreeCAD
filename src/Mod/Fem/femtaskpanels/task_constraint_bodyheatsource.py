@@ -100,6 +100,7 @@ class _TaskPanel(object):
 
     def reject(self):
         self.restore_visibility()
+        self.selection_widget.finish_selection()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
@@ -110,6 +111,7 @@ class _TaskPanel(object):
         self.obj.Mode = self.mode
 
         self.obj.Document.recompute()
+        self.selection_widget.finish_selection()
         FreeCADGui.ActiveDocument.resetEdit()
         self.restore_visibility()
         return True

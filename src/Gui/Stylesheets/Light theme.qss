@@ -1543,36 +1543,20 @@ margin: 0px;
 padding: 0px;
 }
 
-QSint--ActionGroup QFrame[class="header"] QLabel {
-  image: url(qss:images_classic/Unfold_Blue2.png) ;
-/* background-color: transparent;
-background-image: url(qss:images_classic/Arrow-down-lightgray.png);
-background-repeat: none;
-background-position: center center;
-padding: 2px;
-margin: 4px; */
+QSint--ActionGroup QFrame[class="header"] QLabel[fold="false"] {
+  background-image: url(qss:images_classic/Qsint_header_Unfold_Blue-light.png);
 }
 
-QSint--ActionGroup QFrame[class="header"] QLabel:hover {
-/* background-color: transparent;
-background-image: url(qss:images_classic/Arrow-down-black.png); */
-image: url(qss:images_classic/UnfoldOver_Blue2.png) ;
+QSint--ActionGroup QFrame[class="header"] QLabel:hover[fold="false"] {
+  background-image: url(qss:images_classic/Qsint_header_UnfoldOver_Blue-light.png);
 }
 
 QSint--ActionGroup QFrame[class="header"] QLabel[fold="true"] {
-image: url(qss:images_classic/Fold_Blue2.png) ;
-/* background-color: transparent;
-background-image: url(qss:images_classic/Arrow-up-lightgray.png);
-background-repeat: none;
-background-position: center center;
-padding: 2px;
-margin: 0px; */
+  background-image: url(qss:images_classic/Qsint_header_Fold_Blue-light.png);
 }
 
 QSint--ActionGroup QFrame[class="header"] QLabel[fold="true"]:hover {
-image: url(qss:images_classic/FoldOver_Blue1.png) ;
-/* background-color: transparent; */
-/* background-image: url(qss:images_classic/Arrow-up-black.png); */
+  background-image: url(qss:images_classic/Qsint_header_FoldOver_Blue-light.png) ;
 }
 
 QSint--ActionGroup QFrame[class="content"] {

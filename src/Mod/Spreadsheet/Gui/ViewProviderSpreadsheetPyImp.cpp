@@ -59,3 +59,21 @@ int ViewProviderSpreadsheetPy::setCustomAttributes(const char* /*attr*/, PyObjec
 {
     return 0;
 }
+
+PyObject* ViewProviderSpreadsheetPy::showSheetMdi(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    this->getViewProviderSheetPtr()->showSheetMdi();
+    Py_Return;
+}
+
+PyObject* ViewProviderSpreadsheetPy::exportAsFile(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    this->getViewProviderSheetPtr()->exportAsFile();
+    Py_Return;
+}

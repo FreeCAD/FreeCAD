@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskAssemblyCreateView</class>
+ <widget class="QWidget" name="TaskAssemblyCreateBom">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>376</width>
+    <height>387</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Create Bill Of Materials</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="Gui::PrefCheckBox" name="CheckBox_detailSubAssemblies">
+     <property name="toolTip">
+      <string>If checked, Sub assemblies sub-components will be added to the bill of materials.</string>
+     </property>
+     <property name="text">
+      <string>Detail sub-assemblies</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>BOMDetailSubAssemblies</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Assembly</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="Gui::PrefCheckBox" name="CheckBox_detailParts">
+     <property name="toolTip">
+      <string>If checked, Parts sub-components will be added to the bill of materials.</string>
+     </property>
+     <property name="text">
+      <string>Detail parts</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>BOMDetailParts</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Assembly</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="Gui::PrefCheckBox" name="CheckBox_onlyParts">
+     <property name="toolTip">
+      <string>If checked, only Part containers will be added to the bill of materials. Solids like PartDesign Bodies will be ignored.</string>
+     </property>
+     <property name="text">
+      <string>Only parts</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>BOMOnlyParts</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Assembly</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="groupBox_1">
+     <property name="toolTip">
+      <string>Columns of the bill of materials</string>
+     </property>
+     <property name="title">
+      <string>Columns</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout2">
+      <item row="0" column="0">
+       <widget class="QListWidget" name="columnList"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="btnAddColumn">
+        <property name="text">
+         <string>Add column</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QPushButton" name="btnExport">
+     <property name="text">
+      <string>Export</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

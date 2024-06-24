@@ -527,7 +527,8 @@ private:
 
         vCCO = generatevCC(listOfOffsetGeoIds);
 
-        int geoIdCandidate1, geoIdCandidate2;
+        int geoIdCandidate1 {};
+        int geoIdCandidate2 {};
 
         int newCurveCounter = 0;
         int prevCurveCounter = 0;

@@ -38,7 +38,7 @@ EndMill::EndMill(const std::vector<float>& toolProfile, int toolid, float diamet
     profilePoints = nullptr;
     mHandleAllocation = false;
 
-    int srcBuffSize = toolProfile.size();
+    int srcBuffSize = static_cast<int>(toolProfile.size());
     nPoints = srcBuffSize / 2;
     if (nPoints < 2) {
         return;
@@ -62,7 +62,8 @@ EndMill::EndMill(const std::vector<float>& toolProfile, int toolid, float diamet
         profilePoints[i] = toolProfile[i] + 0.01F;  // add some width to reduce simulation artifacts
     }
     if (missingCenterPoint) {
-        profilePoints[srcBuffSize] = profilePoints[srcBuffSize + 1] = 0.0F;
+        profilePoints[srcBuffSize] = 0.0F;
+        profilePoints[srcBuffSize + 1] = profilePoints[srcBuffSize - 1];
     }
 
     MirrorPointBuffer();

@@ -308,7 +308,7 @@ def getGlobalPlacement(targetObj, container=None):
 
 
 def isThereOneRootAssembly():
-    for part in App.activeDocument().RootObjectsIgnoreLinks:
+    for part in Gui.activeDocument().TreeRootObjects:
         if part.TypeId == "Assembly::AssemblyObject":
             return True
     return False
@@ -605,6 +605,20 @@ def color_from_unsigned(c):
         float(int((c >> 16) & 0xFF) / 255),
         float(int((c >> 8) & 0xFF) / 255),
     ]
+
+
+def getBomGroup(assembly):
+    bom_group = None
+
+    for obj in assembly.OutList:
+        if obj.TypeId == "Assembly::BomGroup":
+            bom_group = obj
+            break
+
+    if not bom_group:
+        bom_group = assembly.newObject("Assembly::BomGroup", "Bills of Materials")
+
+    return bom_group
 
 
 def getJointGroup(assembly):

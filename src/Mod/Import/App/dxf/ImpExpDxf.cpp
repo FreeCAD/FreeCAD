@@ -1073,12 +1073,11 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
             s = c.Value(f);
             ePt = c.Value(l);
             Base::Console().Message(
-                "DxfWrite::exportBSpline - no result- from:(%.3f,%.3f) to:(%.3f,%.3f) poles: %d\n",
+                "DxfWrite::exportBSpline - no result- from:(%.3f,%.3f) to:(%.3f,%.3f)\n",
                 s.X(),
                 s.Y(),
                 ePt.X(),
-                ePt.Y(),
-                spline->NbPoles());
+                ePt.Y());
             TColgp_Array1OfPnt controlPoints(0, 1);
             controlPoints.SetValue(0, s);
             controlPoints.SetValue(1, ePt);

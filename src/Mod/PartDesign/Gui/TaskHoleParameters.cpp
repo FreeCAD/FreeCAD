@@ -269,6 +269,9 @@ void TaskHoleParameters::threadedChanged()
 
     ui->ModelThread->setEnabled(isChecked);
     ui->ThreadDepthType->setEnabled(isChecked);
+    ui->ThreadDepth->setEnabled(
+        ui->Threaded->isChecked() && ui->ModelThread->isChecked() &&
+        std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension");
 
     // conditional enabling of thread modeling options
     ui->UseCustomThreadClearance->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked());

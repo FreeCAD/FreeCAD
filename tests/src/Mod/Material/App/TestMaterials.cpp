@@ -327,18 +327,18 @@ TEST_F(TestMaterial, TestCalculiXSteel)
 
     // These are the preferred method of access
     //
-    EXPECT_FLOAT_EQ(steel->getPhysicalQuantity(QString::fromStdString("Density")).getValue(), 7.9e-06);
-    EXPECT_FLOAT_EQ(steel->getPhysicalValue(QString::fromStdString("PoissonRatio")).toDouble(), 0.3);
-    EXPECT_FLOAT_EQ(steel->getPhysicalQuantity(QString::fromStdString("YoungsModulus")).getValue(), 210000000.0);
-    EXPECT_FLOAT_EQ(steel->getPhysicalQuantity(QString::fromStdString("SpecificHeat")).getValue(), 590000000.0);
-    EXPECT_FLOAT_EQ(steel->getPhysicalQuantity(QString::fromStdString("ThermalConductivity")).getValue(), 43000.0);
-    EXPECT_FLOAT_EQ(steel->getPhysicalQuantity(QString::fromStdString("ThermalExpansionCoefficient")).getValue(), 1.2e-05);
+    EXPECT_DOUBLE_EQ(steel->getPhysicalQuantity(QString::fromStdString("Density")).getValue(), 7.9e-06);
+    EXPECT_NEAR(steel->getPhysicalValue(QString::fromStdString("PoissonRatio")).toDouble(), 0.3, 1e-6);
+    EXPECT_DOUBLE_EQ(steel->getPhysicalQuantity(QString::fromStdString("YoungsModulus")).getValue(), 210000000.0);
+    EXPECT_DOUBLE_EQ(steel->getPhysicalQuantity(QString::fromStdString("SpecificHeat")).getValue(), 590000000.0);
+    EXPECT_DOUBLE_EQ(steel->getPhysicalQuantity(QString::fromStdString("ThermalConductivity")).getValue(), 43000.0);
+    EXPECT_DOUBLE_EQ(steel->getPhysicalQuantity(QString::fromStdString("ThermalExpansionCoefficient")).getValue(), 1.2e-05);
     EXPECT_EQ(steel->getAppearanceValue(QString::fromStdString("AmbientColor")), QString::fromStdString("(0.0020, 0.0020, 0.0020, 1.0)"));
     EXPECT_EQ(steel->getAppearanceValue(QString::fromStdString("DiffuseColor")), QString::fromStdString("(0.0000, 0.0000, 0.0000, 1.0)"));
     EXPECT_EQ(steel->getAppearanceValue(QString::fromStdString("EmissiveColor")), QString::fromStdString("(0.0000, 0.0000, 0.0000, 1.0)"));
-    EXPECT_FLOAT_EQ(steel->getAppearanceValue(QString::fromStdString("Shininess")).toDouble(), 0.06);
+    EXPECT_NEAR(steel->getAppearanceValue(QString::fromStdString("Shininess")).toDouble(), 0.06, 1e-6);
     EXPECT_EQ(steel->getAppearanceValue(QString::fromStdString("SpecularColor")), QString::fromStdString("(0.9800, 0.9800, 0.9800, 1.0)"));
-    EXPECT_FLOAT_EQ(steel->getAppearanceValue(QString::fromStdString("Transparency")).toDouble(), 0.0);
+    EXPECT_DOUBLE_EQ(steel->getAppearanceValue(QString::fromStdString("Transparency")).toDouble(), 0.0);
 
     EXPECT_EQ(steel->getPhysicalQuantity(QString::fromStdString("Density")).getUserString(), parseQuantity("7900.00 kg/m^3"));
     EXPECT_EQ(steel->getPhysicalQuantity(QString::fromStdString("YoungsModulus")).getUserString(), parseQuantity("210.00 GPa"));

@@ -247,8 +247,6 @@ void TaskExtrudeParameters::connectSlots()
         this, &TaskExtrudeParameters::onUpdateView);
     connect(ui->buttonShapeFace, &QToolButton::toggled,
         this, &TaskExtrudeParameters::onSelectShapeFacesToggle);
-    connect(ui->listWidgetReferences, &QListWidget::item,
-        this, &TaskExtrudeParameters::onSelectShapeFacesToggle);
     connect(unselectShapeFaceAction, &QAction::triggered,
         this, &TaskExtrudeParameters::onUnselectShapeFacesTrigger);
 }
