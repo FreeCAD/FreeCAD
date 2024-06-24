@@ -60,9 +60,6 @@ TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint* ConstraintView,
     , proxy(nullptr)
     , deleteAction(nullptr)
     , ConstraintView(ConstraintView)
-    , buttonBox(nullptr)
-    , okButton(nullptr)
-    , cancelButton(nullptr)
 {
     selectionMode = selref;
 }
