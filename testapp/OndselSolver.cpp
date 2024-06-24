@@ -25,6 +25,14 @@ void sharedptrTest();
 
 int main()
 {
+	//ASMTAssembly::runFile("C:/Users/askoh/OneDrive/askoh/visualstudio/Ondsel/OndselFreeCAD/build/src/Main/runDragStep.asmt");
+	//return 0;
+	//auto assembly = ASMTAssembly::assemblyFromFile("C:/Users/askoh/OneDrive/askoh/visualstudio/Ondsel/OndselFreeCAD/build/src/Main/runPreDrag.asmt");
+	//assembly->runDraggingLog("C:/Users/askoh/OneDrive/askoh/visualstudio/Ondsel/OndselFreeCAD/build/src/Main/dragging.log");
+	//return 0;
+	auto assembly = ASMTAssembly::assemblyFromFile("../testapp/runPreDragBackhoe3.asmt");
+	assembly->runDraggingLog("../testapp/draggingBackhoe3.log");
+	return 0;
 	ASMTAssembly::runDraggingLogTest3();
 	ASMTAssembly::runDraggingLogTest2();
 	ASMTAssembly::runDraggingLogTest();

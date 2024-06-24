@@ -1335,6 +1335,7 @@ void MbD::ASMTAssembly::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<
 		//Do not use 
 		//runPreDrag();
 		//Assembly breaks up too easily because of redundant constraint removal.
+		noop();
 	}
 }
 
