@@ -29,6 +29,8 @@
 #include <QMenu>
 #include <QToolButton>
 #include <QLayout>
+#include <QWheelEvent>
+
 #include <FCGlobal.h>
 #include <Gui/ToolBarManager.h>
 #include <map>
@@ -64,17 +66,81 @@ class GuiExport WorkbenchTabWidget : public QWidget
     Q_OBJECT
     Q_PROPERTY(Qt::LayoutDirection direction READ direction WRITE setDirection NOTIFY directionChanged)
 
-    int addWorkbenchTab(QAction* workbenchActivateAction, int index = -1);
+    class WbTabBar : public QTabBar {
+    public:
+        explicit WbTabBar(QWidget* parent) : QTabBar(parent) {}
 
-    void setTemporaryWorkbenchTab(QAction* workbenchActivateAction);
-    int temporaryWorkbenchTabIndex() const;
+        QSize tabSizeHint(int index) const override {
+            auto sizeFromParent = QTabBar::tabSizeHint(index);
 
-    QAction* workbenchActivateActionByTabIndex(int tabIndex) const;
-    int tabIndexForWorkbenchActivateAction(QAction* workbenchActivateAction) const;
+            if (itemStyle() != IconOnly) {
+                return sizeFromParent;
+            }
+
+            QStyleOptionTab opt;
+
+            initStyleOption(&opt, index);
+
+            int padding = style()->pixelMetric(QStyle::PM_TabBarTabHSpace, &opt, this);
+
+            auto csz = iconSize();
+            auto isHorizontal = opt.shape == RoundedNorth || opt.shape == RoundedSouth;
+
+            if (isHorizontal) {
+                csz.setWidth(csz.width() + padding);
+            } else {
+                csz.setHeight(csz.height() + padding);
+            }
+
+            auto size = style()->sizeFromContents(QStyle::CT_TabBarTab, &opt, csz, this);
+
+            if (isHorizontal) {
+                size.setHeight(sizeFromParent.height());
+            } else {
+                size.setWidth(sizeFromParent.width());
+            }
+
+            return size;
+        }
+
+        void wheelEvent(QWheelEvent* wheelEvent) override
+        {
+            // Qt does not expose any way to programmatically control scroll of QTabBar hence
+            // we need to use a bit hacky solution of simulating clicks on the scroll buttons
+
+            auto left = findChild<QAbstractButton*>(QString::fromUtf8("ScrollLeftButton"));
+            auto right = findChild<QAbstractButton*>(QString::fromUtf8("ScrollRightButton"));
+
+            if (wheelEvent->angleDelta().y() > 0) {
+                right->click();
+            } else {
+                left->click();
+            }
+        }
+
+        WorkbenchItemStyle itemStyle() const { return _itemStyle; }
+
+        void setItemStyle(WorkbenchItemStyle itemStyle) {
+            _itemStyle = itemStyle;
+            setProperty("style", QString::fromUtf8(workbenchItemStyleToString(itemStyle)));
+        }
+
+    private:
+        WorkbenchItemStyle _itemStyle;
+
+        static const char* workbenchItemStyleToString(WorkbenchItemStyle style)
+        {
+            switch (style) {
+                case IconAndText: return "icon-and-text";
+                case IconOnly: return "icon-only";
+                case TextOnly: return "text-only";
+            }
+        }
+    };
 
 public:
     explicit WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent = nullptr);
-    
+
     void setToolBarArea(Gui::ToolBarArea area);
     void buildPrefMenu();
 
@@ -93,12 +159,23 @@ public Q_SLOTS:
 Q_SIGNALS:
     void directionChanged(const Qt::LayoutDirection&);
 
+protected:
+    int addWorkbenchTab(QAction* workbenchActivateAction, int index = -1);
+
+    void setTemporaryWorkbenchTab(QAction* workbenchActivateAction);
+    int temporaryWorkbenchTabIndex() const;
+
+    QAction* workbenchActivateActionByTabIndex(int tabIndex) const;
+    int tabIndexForWorkbenchActivateAction(QAction* workbenchActivateAction) const;
+
+    WorkbenchItemStyle itemStyle() const;
+
 private:
     bool isInitializing = false;
 
     WorkbenchGroup* wbActionGroup;
     QToolButton* moreButton;
-    QTabBar* tabBar;
+    WbTabBar* tabBar;
     QBoxLayout* layout;
 
     Qt::LayoutDirection _direction = Qt::LeftToRight;
