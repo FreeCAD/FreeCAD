@@ -264,8 +264,8 @@ bool Base::XMLReader::isEndOfDocument() const
 void Base::XMLReader::readEndElement(const char* ElementName, int level)
 {
     // if we are already at the end of the current element
-    if ( (ReadType == EndElement || ReadType == StartEndElement) && ElementName && LocalName == ElementName
-        && (level < 0 || level == Level)) {
+    if ((ReadType == EndElement || ReadType == StartEndElement) && ElementName
+        && LocalName == ElementName && (level < 0 || level == Level)) {
         return;
     }
     if (ReadType == EndDocument) {

@@ -69,7 +69,7 @@ public:
     int getFileVersion() const;
 
     /// put the next entry with a give name
-    virtual void putNextEntry(const char *filename, const char *objName=nullptr);
+    virtual void putNextEntry(const char* filename, const char* objName = nullptr);
 
     /// insert a file as CDATA section in the XML file
     void insertAsciiFile(const char* FileName);
@@ -209,7 +209,7 @@ public:
     {
         ZipStream.setLevel(level);
     }
-    void putNextEntry(const char *filename, const char *objName=nullptr) override;
+    void putNextEntry(const char* filename, const char* objName = nullptr) override;
 
     ZipWriter(const ZipWriter&) = delete;
     ZipWriter(ZipWriter&&) = delete;
@@ -256,7 +256,7 @@ public:
     explicit FileWriter(const char* DirName);
     ~FileWriter() override;
 
-    void putNextEntry(const char *filename, const char *objName=nullptr) override;
+    void putNextEntry(const char* filename, const char* objName = nullptr) override;
     void writeFiles() override;
 
     std::ostream& Stream() override

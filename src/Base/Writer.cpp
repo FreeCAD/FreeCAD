@@ -320,8 +320,9 @@ void Writer::decInd()
     indBuf[indent] = '\0';
 }
 
-void Writer::putNextEntry(const char *file, const char *obj) {
-    ObjectName = obj?obj:file;
+void Writer::putNextEntry(const char* file, const char* obj)
+{
+    ObjectName = obj ? obj : file;
 }
 
 // ----------------------------------------------------------------------------
@@ -350,8 +351,9 @@ ZipWriter::ZipWriter(std::ostream& os)
     ZipStream.setf(ios::fixed, ios::floatfield);
 }
 
-void ZipWriter::putNextEntry(const char *file, const char *obj) {
-    Writer::putNextEntry(file,obj);
+void ZipWriter::putNextEntry(const char* file, const char* obj)
+{
+    Writer::putNextEntry(file, obj);
 
     ZipStream.putNextEntry(file);
 }
@@ -384,9 +386,9 @@ FileWriter::FileWriter(const char* DirName)
 
 FileWriter::~FileWriter() = default;
 
-void FileWriter::putNextEntry(const char* file, const char *obj)
+void FileWriter::putNextEntry(const char* file, const char* obj)
 {
-    Writer::putNextEntry(file,obj);
+    Writer::putNextEntry(file, obj);
 
     std::string fileName = DirName + "/" + file;
     this->FileStream.open(fileName.c_str(), std::ios::out | std::ios::binary);
