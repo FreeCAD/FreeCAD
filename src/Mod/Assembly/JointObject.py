@@ -146,7 +146,11 @@ def solveIfAllowed(assembly, storePrev=False):
 
 
 def get_camera_height(gui_doc):
-    camera = gui_doc.ActiveView.getCameraNode()
+    activeView = get_active_view(gui_doc)
+    if activeView is None:
+        return 200
+
+    camera = activeView.getCameraNode()
 
     # Check if the camera is a perspective camera
     if isinstance(camera, coin.SoPerspectiveCamera):
@@ -156,6 +160,14 @@ def get_camera_height(gui_doc):
     else:
         # Default value if camera type is unknown
         return 200
+
+
+def get_active_view(gui_doc):
+    activeView = gui_doc.ActiveView
+    if activeView is None:
+        # Fall back on current active document.
+        activeView = Gui.ActiveDocument.ActiveView
+    return activeView
 
 
 # The joint object consists of 2 JCS (joint coordinate systems) and a Joint Type.
@@ -703,12 +715,14 @@ class ViewProviderJoint:
         self.app_obj = vobj.Object
         app_doc = self.app_obj.Document
         self.gui_doc = Gui.getDocument(app_doc)
-        camera = self.gui_doc.ActiveView.getCameraNode()
-        self.cameraSensor = coin.SoFieldSensor(self.camera_callback, camera)
-        if isinstance(camera, coin.SoPerspectiveCamera):
-            self.cameraSensor.attach(camera.focalDistance)
-        elif isinstance(camera, coin.SoOrthographicCamera):
-            self.cameraSensor.attach(camera.height)
+        activeView = get_active_view(self.gui_doc)
+        if activeView is not None:
+            camera = activeView.getCameraNode()
+            self.cameraSensor = coin.SoFieldSensor(self.camera_callback, camera)
+            if isinstance(camera, coin.SoPerspectiveCamera):
+                self.cameraSensor.attach(camera.focalDistance)
+            elif isinstance(camera, coin.SoOrthographicCamera):
+                self.cameraSensor.attach(camera.height)
 
         self.transform1 = coin.SoTransform()
         self.transform2 = coin.SoTransform()
@@ -1012,15 +1026,19 @@ class ViewProviderGroundedJoint:
         self.app_obj = vobj.Object
         app_doc = self.app_obj.Document
         self.gui_doc = Gui.getDocument(app_doc)
-        camera = self.gui_doc.ActiveView.getCameraNode()
-        self.cameraSensor = coin.SoFieldSensor(self.camera_callback, camera)
-        if isinstance(camera, coin.SoPerspectiveCamera):
-            self.cameraSensor.attach(camera.focalDistance)
-        elif isinstance(camera, coin.SoOrthographicCamera):
-            self.cameraSensor.attach(camera.height)
 
-        self.cameraSensorRot = coin.SoFieldSensor(self.camera_callback_rotation, camera)
-        self.cameraSensorRot.attach(camera.orientation)
+        activeView = get_active_view(self.gui_doc)
+        if activeView is not None:
+            camera = activeView.getCameraNode()
+
+            self.cameraSensor = coin.SoFieldSensor(self.camera_callback, camera)
+            if isinstance(camera, coin.SoPerspectiveCamera):
+                self.cameraSensor.attach(camera.focalDistance)
+            elif isinstance(camera, coin.SoOrthographicCamera):
+                self.cameraSensor.attach(camera.height)
+
+            self.cameraSensorRot = coin.SoFieldSensor(self.camera_callback_rotation, camera)
+            self.cameraSensorRot.attach(camera.orientation)
 
         factor = self.get_lock_factor()
         self.scale = coin.SoScale()
@@ -1093,11 +1111,13 @@ class ViewProviderGroundedJoint:
         self.set_lock_rotation()
 
     def set_lock_rotation(self):
-        camera = self.gui_doc.ActiveView.getCameraNode()
-        rotation = camera.orientation.getValue()
+        activeView = get_active_view(self.gui_doc)
+        if activeView is not None:
+            camera = activeView.getCameraNode()
+            rotation = camera.orientation.getValue()
 
-        q = rotation.getValue()
-        self.transform.rotation.setValue(q[0], q[1], q[2], q[3])
+            q = rotation.getValue()
+            self.transform.rotation.setValue(q[0], q[1], q[2], q[3])
 
     def get_lock_factor(self):
         return get_camera_height(self.gui_doc) / 300
