@@ -33,7 +33,6 @@
 #include <QMessageBox>
 #include <SMESH_Mesh.hxx>
 #include <SMESHDS_Mesh.hxx>
-#include <Standard_math.hxx>
 #include <SMESH_MeshEditor.hxx>
 #endif
 

@@ -21,22 +21,6 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="Gui::PrefCheckBox" name="checkBoxShowOnImport">
-        <property name="toolTip">
-         <string>If checked, this Dialog will be shown during Import</string>
-        </property>
-        <property name="text">
-         <string>Show this Dialog when importing</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ReadShowDialogImport</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Import/hSTEP</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxMergeCompound">
         <property name="toolTip">
          <string>If checked, no Compound merge will be done
