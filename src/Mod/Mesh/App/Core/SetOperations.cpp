@@ -281,13 +281,13 @@ void SetOperations::Cut(std::set<FacetIndex>& facetsCuttingEdge0,
                                     }
 
                                 }  // if (f1.IntersectWithFacet(f2, p0, p1))
-                            }      // for (it2 = vecFacets2.begin(); it2 != vecFacets2.end(); ++it2)
-                        }          // for (it1 = vecFacets1.begin(); it1 != vecFacets1.end(); ++it1)
-                    }              // if (vecFacets2.size() > 0)
-                }                  // if (grid1.GetCtElements(gx1, gy1, gz1) > 0)
-            }                      // for (gz1 = 0; gz1 < ctGz1; gz1++)
-        }                          // for (gy1 = 0; gy1 < ctGy1; gy1++)
-    }                              // for (gx1 = 0; gx1 < ctGx1; gx1++)
+                            }  // for (it2 = vecFacets2.begin(); it2 != vecFacets2.end(); ++it2)
+                        }  // for (it1 = vecFacets1.begin(); it1 != vecFacets1.end(); ++it1)
+                    }  // if (vecFacets2.size() > 0)
+                }  // if (grid1.GetCtElements(gx1, gy1, gz1) > 0)
+            }  // for (gz1 = 0; gz1 < ctGz1; gz1++)
+        }  // for (gy1 = 0; gy1 < ctGy1; gy1++)
+    }  // for (gx1 = 0; gx1 < ctGx1; gx1++)
 }
 
 void SetOperations::TriangulateMesh(const MeshKernel& cutMesh, int side)
@@ -416,7 +416,7 @@ void SetOperations::TriangulateMesh(const MeshKernel& cutMesh, int side)
             _newMeshFacets[side].push_back(facet);
 
         }  // for (i = 0; i < (out->numberoftriangles * 3); i += 3)
-    }      // for (it1 = _facet2points[side].begin(); it1 != _facet2points[side].end(); ++it1)
+    }  // for (it1 = _facet2points[side].begin(); it1 != _facet2points[side].end(); ++it1)
 }
 
 void SetOperations::CollectFacets(int side, float mult)
