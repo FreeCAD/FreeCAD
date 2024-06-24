@@ -168,8 +168,8 @@ public:
 
     void initializeGL() override
     {
-        QOpenGLContext *context = QOpenGLContext::currentContext();
 #if defined (_DEBUG) && 0
+        QOpenGLContext *context = QOpenGLContext::currentContext();
         if (context && context->hasExtension(QByteArrayLiteral("GL_KHR_debug"))) {
             QOpenGLDebugLogger *logger = new QOpenGLDebugLogger(this);
             connect(logger, &QOpenGLDebugLogger::messageLogged, this, &CustomGLWidget::handleLoggedMessage);
