@@ -86,13 +86,6 @@ protected:
         selloc,
         selnone
     } selectionMode;
-
-private:
-    // This seems to be the only way to access the widgets again in order to remove them from the
-    // dialog
-    QDialogButtonBox* buttonBox;
-    QPushButton* okButton;
-    QPushButton* cancelButton;
 };
 
 /// simulation dialog for the TaskView
