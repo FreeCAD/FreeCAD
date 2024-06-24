@@ -21,7 +21,11 @@ link_directories(${OCC_LIBRARY_DIR})
 if(NOT FREECAD_USE_PYBIND11)
     if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
         # boost-python >= 1.67 on some platforms has suffix
-        set(BOOST_PY_SUFFIX ${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+        if (FORCE_BOOST_PY_SUFFIX)
+            set(BOOST_PY_SUFFIX ${FORCE_BOOST_PY_SUFFIX})
+        else ()
+            set(BOOST_PY_SUFFIX ${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+        endif ()
 
         find_package( Boost COMPONENTS python${BOOST_PY_SUFFIX} )
         if (NOT Boost_PYTHON${BOOST_PY_SUFFIX}_FOUND)

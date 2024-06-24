@@ -213,6 +213,14 @@ class TaskPanelPage(object):
         if self._installTCUpdate():
             PathJob.Notification.updateTC.connect(self.resetToolController)
 
+    def show_error_message(self, title, message):
+        msg_box = QtGui.QMessageBox()
+        msg_box.setIcon(QtGui.QMessageBox.Critical)
+        msg_box.setWindowTitle(title)
+        msg_box.setText(message)
+        msg_box.setStandardButtons(QtGui.QMessageBox.Ok)
+        msg_box.exec_()
+
     def _installTCUpdate(self):
         return hasattr(self.form, "toolController")
 
@@ -545,7 +553,6 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
                     "PathOp",
                     "Please select %s from a single solid" % self.featureName(),
                 )
-                FreeCAD.Console.PrintError(msg + "\n")
                 Path.Log.debug(msg)
             return False
         sel = selection[0]
@@ -554,32 +561,19 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
                 not self.supportsVertexes()
                 and selection[0].SubObjects[0].ShapeType == "Vertex"
             ):
-                if not ignoreErrors:
-                    Path.Log.error(translate("PathOp", "Vertexes are not supported"))
                 return False
             if (
                 not self.supportsEdges()
                 and selection[0].SubObjects[0].ShapeType == "Edge"
             ):
-                if not ignoreErrors:
-                    Path.Log.error(translate("PathOp", "Edges are not supported"))
                 return False
             if (
                 not self.supportsFaces()
                 and selection[0].SubObjects[0].ShapeType == "Face"
             ):
-                if not ignoreErrors:
-                    Path.Log.error(translate("PathOp", "Faces are not supported"))
                 return False
         else:
             if not self.supportsPanels() or "Panel" not in sel.Object.Name:
-                if not ignoreErrors:
-                    Path.Log.error(
-                        translate(
-                            "PathOp",
-                            "Please select %s of a solid" % self.featureName(),
-                        )
-                    )
                 return False
         return True
 
@@ -621,9 +615,6 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
                 newlist.append(base)
         Path.Log.debug("Setting new base: %s -> %s" % (self.obj.Base, newlist))
         self.obj.Base = newlist
-
-        # self.obj.Proxy.execute(self.obj)
-        # FreeCAD.ActiveDocument.recompute()
 
     def clearBase(self):
         self.obj.Base = []
@@ -1274,7 +1265,11 @@ class TaskPanel(object):
 
     def getStandardButtons(self):
         """getStandardButtons() ... returns the Buttons for the task panel."""
-        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel
+        return (
+            QtGui.QDialogButtonBox.Ok
+            | QtGui.QDialogButtonBox.Apply
+            | QtGui.QDialogButtonBox.Cancel
+        )
 
     def setupUi(self):
         """setupUi() ... internal function to initialise all pages."""

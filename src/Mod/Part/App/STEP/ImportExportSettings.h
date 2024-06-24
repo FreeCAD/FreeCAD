@@ -40,6 +40,9 @@ public:
     void setVisibleExportDialog(bool);
     bool isVisibleExportDialog() const;
 
+    void setVisibleImportDialog(bool);
+    bool isVisibleImportDialog() const;
+
     void setWriteSurfaceCurveMode(bool);
     bool getWriteSurfaceCurveMode() const;
 

@@ -601,7 +601,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
         if not hasattr(obj, "Base"):
             msg = translate("CAM_Slot", "No Base Geometry object in the operation.")
-            FreeCAD.Console.PrintError(msg + "\n")
+            FreeCAD.Console.PrintUserWarning(msg + "\n")
             return False
 
         if not obj.Base:
@@ -609,15 +609,15 @@ class ObjectSlot(PathOp.ObjectOp):
             p1 = obj.CustomPoint1
             p2 = obj.CustomPoint2
             if p1 == p2:
-                msg = translate("CAM_Slot", "Custom points are identical.")
-                FreeCAD.Console.PrintError(msg + "\n")
+                msg = translate("CAM_Slot", "Custom points are identical. No slot path will be generated")
+                FreeCAD.Console.PrintUserWarning(msg + "\n")
                 return False
             elif p1.z == p2.z:
                 pnts = (p1, p2)
                 featureCount = 2
             else:
-                msg = translate("CAM_Slot", "Custom points not at same Z height.")
-                FreeCAD.Console.PrintError(msg + "\n")
+                msg = translate("CAM_Slot", "Custom points not at same Z height. No slot path will be generated")
+                FreeCAD.Console.PrintUserWarning(msg + "\n")
                 return False
         else:
             baseGeom = obj.Base[0]

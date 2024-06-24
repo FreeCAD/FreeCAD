@@ -317,7 +317,6 @@ SET(Gui_UIC_SRCS
     DlgAuthorization.ui
     DlgChooseIcon.ui
     DlgCreateNewPreferencePack.ui
-    DlgCustomizeSpNavSettings.ui
     DlgInputDialog.ui
     DlgKeyboard.ui
     DlgMacroExecute.ui
@@ -374,6 +373,10 @@ SET(Gui_UIC_SRCS
     DlgAddPropertyVarSet.ui
     VectorListEditor.ui
 )
+
+if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+	list(APPEND Gui_UIC_SRCS DlgCustomizeSpNavSettings.ui)
+endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
 
 set (FreeCAD_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Language/FreeCAD_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Language/FreeCAD_*.ts"
@@ -550,8 +553,6 @@ SOURCE_GROUP("Dialog" FILES ${Dialog_SRCS})
 SET(Dialog_Customize_CPP_SRCS
     DlgActionsImp.cpp
     DlgCustomizeImp.cpp
-    DlgCustomizeSpaceball.cpp
-    DlgCustomizeSpNavSettings.cpp
     DlgKeyboardImp.cpp
     DlgToolbarsImp.cpp
     ListWidgetDragBugFix.cpp
@@ -559,21 +560,29 @@ SET(Dialog_Customize_CPP_SRCS
 SET(Dialog_Customize_HPP_SRCS
     DlgActionsImp.h
     DlgCustomizeImp.h
-    DlgCustomizeSpaceball.h
-    DlgCustomizeSpNavSettings.h
     DlgKeyboardImp.h
     DlgToolbarsImp.h
     ListWidgetDragBugFix.h
 )
+
+if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+	list(APPEND Dialog_Customize_CPP_SRCS DlgCustomizeSpaceball.cpp DlgCustomizeSpNavSettings.cpp)
+	list(APPEND Dialog_Customize_HPP_SRCS DlgCustomizeSpaceball.h DlgCustomizeSpNavSettings.h)
+endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+
 SET(Dialog_Customize_SRCS
     ${Dialog_Customize_CPP_SRCS}
     ${Dialog_Customize_HPP_SRCS}
     DlgActions.ui
     DlgChooseIcon.ui
-    DlgCustomizeSpNavSettings.ui
     DlgKeyboard.ui
     DlgToolbars.ui
 )
+
+if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+	list(APPEND Dialog_Customize_SRCS  DlgCustomizeSpNavSettings.ui)
+endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+
 SOURCE_GROUP("Dialog\\Customize" FILES ${Dialog_Customize_SRCS})
 
 # The settings dialog sources

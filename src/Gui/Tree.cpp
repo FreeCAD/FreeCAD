@@ -2010,7 +2010,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
         try {
             if (da != Qt::LinkAction && !vp->canDropObjects()) {
                 if (!(event->possibleActions() & Qt::LinkAction) || items.size() != 1) {
-                    TREE_TRACE("cannot drop");
+                    TREE_TRACE("Cannot drop here");
                     event->ignore();
                     return;
                 }
@@ -2025,17 +2025,14 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
 
                 auto obj = item->object()->getObject();
 
-                if (da == Qt::MoveAction && !vp->canDragAndDropObject(obj)) {
-                    // Check if item can be dragged
+                if (da == Qt::MoveAction) {
+                    // Check if item can be dragged from his parent
                     auto parentItem = item->getParentItem();
                     if (parentItem && !(parentItem->object()->canDragObjects() && parentItem->object()->canDragObject(item->object()->getObject())))
                     {
-                        if (!(event->possibleActions() & Qt::CopyAction)) {
-                            TREE_TRACE("Cannot drag object");
-                            event->ignore();
-                            return;
-                        }
-                        event->setDropAction(Qt::CopyAction);
+                        TREE_TRACE("Cannot drag object");
+                        event->ignore();
+                        return;
                     }
                 }
 
@@ -4694,7 +4691,7 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
     // the selection observers can trigger a recreation of all DocumentObjectItem so that the
     // passed 'item' can become a dangling pointer.
     // Thus,'item' mustn't be accessed any more after altering the selection.
-    // For further details see the bug analsysis of #13107
+    // For further details see the bug analysis of #13107
     bool selected = item->isSelected();
     bool checked = item->checkState(0) == Qt::Checked;
 
@@ -4729,8 +4726,7 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
 
 #ifdef FC_DEBUG
     if (!subname.empty()) {
-        auto parentItem = item->getParentItem();
-        assert(parentItem);
+        assert(item->getParentItem());
     }
 #endif
 
