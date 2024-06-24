@@ -31,6 +31,7 @@ void MbD::PosICDragLimitNewtonRaphson::initializeGlobally()
 
 void MbD::PosICDragLimitNewtonRaphson::setdragParts(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts)
 {
+    (void) dragParts;
 	assert(false);
 }
 

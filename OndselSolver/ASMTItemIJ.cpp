@@ -161,6 +161,8 @@ void MbD::ASMTItemIJ::parseASMT(std::vector<std::string>& lines)
 
 void MbD::ASMTItemIJ::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
 {
+    (void) mbdSys;
+    (void) mbdUnits;
 	//self dataSeries : OrderedCollection new.
 	//self discontinuities : OrderedCollection new.
 	auto mbdJt = this->mbdClassNew();

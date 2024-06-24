@@ -57,6 +57,7 @@ std::shared_ptr<ItemIJ> MbD::ASMTAllowRotation::mbdClassNew()
 
 void MbD::ASMTAllowRotation::setMotionJoint(std::string motionJoint)
 {
+    (void) motionJoint;
 }
 
 void MbD::ASMTAllowRotation::storeOnLevel(std::ofstream& os, size_t level)
