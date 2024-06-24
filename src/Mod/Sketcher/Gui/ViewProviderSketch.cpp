@@ -3312,18 +3312,31 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         if (sketchHandler)
             deactivateHandler();
 
+        // Resets the override draw style mode when leaving the sketch edit mode.
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+        auto disableShadedView = hGrp->GetBool("DisableShadedView", true);
+        if (disableShadedView) {
+            Gui::Document* doc = Gui::Application::Instance->activeDocument();
+            Gui::MDIView* mdi = doc->getActiveView();
+            Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
+
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+            auto OverrideMode = hGrp->GetASCII("OverrideMode", "As Is");
+
+            if (viewer)
+            {
+                viewer->updateOverrideMode(OverrideMode);
+                viewer->setOverrideMode(OverrideMode);
+            }
+        }
+
         editCoinManager = nullptr;
         snapManager = nullptr;
         preselection.reset();
         selection.reset();
         this->detachSelection();
-
-        ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/View");
-
-        auto headlightIntensityExisting = hGrpView->GetInt("HeadlightIntensityExisting", 100);
-        hGrpView->SetInt("HeadlightIntensity", headlightIntensityExisting);
-        hGrpView->RemoveInt("HeadlightIntensityExisting");
 
         App::AutoTransaction trans("Sketch recompute");
         try {
@@ -3395,13 +3408,23 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
         }
     }
 
-    ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View");
+    // Sets the view mode to no shading to prevent visibility issues against parallel surfaces with shininess when entering the sketch mode.
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    auto disableShadedView = hGrp->GetBool("DisableShadedView", true);
 
-    auto headlightIntensityExisting = hGrpView->GetInt("HeadlightIntensity", 100);
-    auto headlightIntensityTemp = 50;
-    hGrpView->SetInt("HeadlightIntensity", headlightIntensityTemp);
-    hGrpView->SetInt("HeadlightIntensityExisting", headlightIntensityExisting);
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    hGrp->SetASCII("OverrideMode", viewer->getOverrideMode());
+
+    if (disableShadedView) {
+
+
+            viewer->updateOverrideMode("No Shading");
+            viewer->setOverrideMode("No Shading");
+
+    }
+
 
     auto editDoc = Gui::Application::Instance->editDocument();
     editDocName.clear();
