@@ -182,9 +182,9 @@
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="140"/>
-      <source>Light</source>
+      <source>Freecad Light</source>
       <comment>Visual theme name</comment>
-      <translation>Clair</translation>
+      <translation>Freecad Clair</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="141"/>
