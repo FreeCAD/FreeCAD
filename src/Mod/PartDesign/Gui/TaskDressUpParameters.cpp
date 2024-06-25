@@ -257,6 +257,11 @@ void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
     // executed when the user selected an item in the list (but double-clicked it)
     // highlights the currently selected item
 
+    if (current == nullptr){
+        setSelectionMode(none);
+        return;
+    }
+
     if (!wasDoubleClicked) {
         // we treat it as single-click event once the QApplication double-click time is passed
         QTimer::singleShot(QApplication::doubleClickInterval(), this, &TaskDressUpParameters::itemClickedTimeout);

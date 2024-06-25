@@ -21,6 +21,7 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
+#include <boost/core/ignore_unused.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
 #include <boost/graph/graph_concepts.hpp>
 
@@ -1730,6 +1731,7 @@ public:
         }
         for (auto &info : edges) {
             if (auto wire = info.wireInfo.get()) {
+                boost::ignore_unused(wire);
 
                 // Originally here there was a call to the precompiler macro assertCheck(), which
                 // has been replaced with the precompiler macro assert()

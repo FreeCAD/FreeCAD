@@ -299,23 +299,6 @@ class BIMWorkbench(Workbench):
                 RebarTools.updateLocale()
             #self.rebar = RebarTools.RebarCommands + ["Arch_Rebar"]
 
-        # try to load bimbots
-
-        try:
-            import bimbots
-        except ImportError:
-            pass
-        else:
-            class BIMBots:
-                def GetResources(self):
-                    return bimbots.get_plugin_info()
-
-                def Activated(self):
-                    bimbots.launch_ui()
-
-            FreeCADGui.addCommand("BIMBots", BIMBots())
-            self.utils.append("BIMBots")
-
         # load Reporting
 
         try:

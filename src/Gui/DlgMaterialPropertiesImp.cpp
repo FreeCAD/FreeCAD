@@ -22,10 +22,8 @@
 
 #include "PreCompiled.h"
 
-#include <App/Color.h>
 #include <App/PropertyStandard.h>
 
-#include "Application.h"
 #include "DlgMaterialPropertiesImp.h"
 #include "ui_DlgMaterialProperties.h"
 #include "ViewProvider.h"

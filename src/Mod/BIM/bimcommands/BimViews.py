@@ -477,15 +477,13 @@ def getTreeViewItem(obj):
     """
     from PySide import QtCore, QtGui
 
-    z = FreeCAD.Units.Quantity(obj.Placement.Base.z, FreeCAD.Units.Length)
-    lvHStr = z.UserString
-    if z.Value == 0:
+    z = obj.Placement.Base.z
+    lvHStr = FreeCAD.Units.Quantity(z, FreeCAD.Units.Length).UserString
+    if z == 0:
         # override with Elevation property if available
         if hasattr(obj, "Elevation"):
-            lvHStr = FreeCAD.Units.Quantity(
-                obj.Elevation, FreeCAD.Units.Length
-            ).UserString
-    lvH = round(float(lvHStr.replace(",", ".").split(" ")[0]), 2)
+            z = obj.Elevation.Value
+            lvHStr = obj.Elevation.UserString
     it = QtGui.QTreeWidgetItem([obj.Label, lvHStr])
     it.setFlags(it.flags() | QtCore.Qt.ItemIsEditable)
     it.setToolTip(0, obj.Name)
@@ -494,7 +492,7 @@ def getTreeViewItem(obj):
             obj.ViewObject.Proxy, "getIcon"
         ):
             it.setIcon(0, QtGui.QIcon(obj.ViewObject.Proxy.getIcon()))
-    return (it, lvH)
+    return (it, z)
 
 
 def getAllItemsInTree(tree_widget):

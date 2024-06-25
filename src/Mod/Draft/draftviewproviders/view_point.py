@@ -37,14 +37,16 @@ class ViewProviderPoint(ViewProviderDraft):
 
     def onChanged(self, vobj, prop):
         mode = 2
-        vobj.setEditorMode('LineColor', mode)
-        vobj.setEditorMode('LineWidth', mode)
+        vobj.setEditorMode('AngularDeflection', mode)
         vobj.setEditorMode('BoundingBox', mode)
         vobj.setEditorMode('Deviation', mode)
-        vobj.setEditorMode('DiffuseColor', mode)
         vobj.setEditorMode('DisplayMode', mode)
+        vobj.setEditorMode('DrawStyle', mode)
         vobj.setEditorMode('Lighting', mode)
-        vobj.setEditorMode('LineMaterial', mode)
+        vobj.setEditorMode('LineColor', mode)
+        vobj.setEditorMode('LineWidth', mode)
+        vobj.setEditorMode('Pattern', mode)
+        vobj.setEditorMode('PatternSize', mode)
         vobj.setEditorMode('ShapeAppearance', mode)
         vobj.setEditorMode('Transparency', mode)
 

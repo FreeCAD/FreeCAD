@@ -1,4 +1,5 @@
 /***************************************************************************
+ *   Copyright (c) 2023 Peter McB                                          *
  *   Copyright (c) 2008 Werner Mayer <werner.wm.mayer@gmx.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -319,7 +320,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "FEM_MeshRegion"
           << "FEM_MeshGroup"
           << "Separator"
-          //          << "FEM_CreateNodesSet"
+          // << "FEM_CreateNodesSet"
+          << "FEM_CreateElementsSet"
           << "FEM_FEMMesh2Mesh";
 
     Gui::MenuItem* solve = new Gui::MenuItem;

@@ -71,6 +71,7 @@
 #endif
 
 #include <App/Document.h>
+#include <App/GeoFeature.h>
 #include <App/ElementNamingUtils.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
@@ -396,8 +397,17 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
             if (vp && (useNewSelection.getValue()||vp->useNewSelectionModel()) && vp->isSelectable()) {
                 SoDetail *detail = nullptr;
                 detailPath->truncate(0);
+                auto subName = selaction->SelChange.pSubName;
+#ifdef FC_USE_TNP_FIX
+                std::pair<std::string, std::string> elementName;
+                App::GeoFeature::resolveElement(obj, subName, elementName);
+                if (Data::isMappedElement(subName)
+                    && !elementName.second.empty()) {      // If we have a shortened element name
+                    subName = elementName.second.c_str();  // use it.
+                }
+#endif
                 if(!selaction->SelChange.pSubName || !selaction->SelChange.pSubName[0] ||
-                    vp->getDetailPath(selaction->SelChange.pSubName,detailPath,true,detail))
+                    vp->getDetailPath(subName,detailPath,true,detail))
                 {
                     SoSelectionElementAction::Type type = SoSelectionElementAction::None;
                     if (selaction->SelChange.Type == SelectionChanges::AddSelection) {

@@ -120,13 +120,13 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         reverseMap = sketch.Shape.ElementReverseMap
-        faces = [name for name in reverseMap.keys() if name.startswith("Face")]
+        reverseFaces = [name for name in reverseMap.keys() if name.startswith("Face")]
         edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
         vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
         # Assert
-        self.assertEqual(sketch.Shape.ElementMapSize,9)
-        self.assertEqual(len(reverseMap),9)
-        self.assertEqual(len(faces),1)
+        self.assertEqual(sketch.Shape.ElementMapSize,12)
+        self.assertEqual(len(reverseMap),8)
+        self.assertEqual(len(reverseFaces),0)
         self.assertEqual(len(edges),4)
         self.assertEqual(len(vertexes),4)
 
@@ -969,7 +969,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(self.Body.Shape.BoundBox.XMax,31.37)
         self.assertAlmostEqual(self.Body.Shape.BoundBox.YMax,25.2)
         self.assertEqual(self.Body.Shape.BoundBox.ZMax,20)
-        self.assertNotEquals(area1, area2)
+        self.assertNotEqual(area1, area2)
 
     def testShapeBinder(self):
         doc = self.Doc
@@ -1442,6 +1442,38 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertAlmostEqual(volume3, boxVolume - 3 * filletVolume - cutVolume, 4)
         self.assertAlmostEqual(volume4, boxVolume - 2 * filletVolume - cutVolume, 4)
 
+    def testSubelementNames(self):
+        # Arrange
+        doc = App.ActiveDocument
+        plane = doc.addObject("Part::Plane", "Plane")
+        plane.Length = 10
+        plane.Width = 10
+        extrude = doc.addObject("Part::Extrusion", "Extrude")
+        extrude.Base = plane
+        extrude.LengthFwd = 10
+        doc.recompute()
+        if not App.GuiUp:
+            return
+        # Act
+        App.Gui.Selection.addSelection("", extrude.Name, "Face2")
+        # Assert
+        self.assertEqual(len(App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames),1)
+        if extrude.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+            self.assertEqual(App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames[0],"Face2")
+        else:
+            self.assertEqual(App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames[0][-8:],",F.Face2")
+
+    def testFileSaveRestore(self):
+        self.Body = self.Doc.addObject('PartDesign::Body', 'Body')
+        self.create_t_sketch()
+        self.assertEqual(self.Doc.Sketch.Shape.ElementMapSize, 18)
+        filename = self.Doc.Name
+        self.Doc.saveAs(filename)
+        App.closeDocument(filename)
+        self.Doc = App.openDocument(filename+".FCStd")
+        self.Doc.recompute()
+        self.assertEqual(self.Doc.Sketch.Shape.ElementMapSize, 18)
+
     def create_t_sketch(self):
         self.Doc.getObject('Body').newObject('Sketcher::SketchObject', 'Sketch')
         geo_list = [
@@ -1471,4 +1503,4 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
     def tearDown(self):
         """ Close our test document """
-        App.closeDocument("PartDesignTestTNP")
+        App.closeDocument(self.Doc.Name)

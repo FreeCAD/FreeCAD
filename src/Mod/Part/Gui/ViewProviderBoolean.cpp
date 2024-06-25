@@ -100,27 +100,27 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
             auto vpTool = dynamic_cast<PartGui::ViewProviderPart*>(
                     Gui::Application::Instance->getViewProvider(objTool));
             if (vpBase && vpTool) {
+                std::vector<App::Material> colBase = vpBase->ShapeAppearance.getValues();
+                std::vector<App::Material> colTool = vpTool->ShapeAppearance.getValues();
                 std::vector<App::Material> colBool;
                 colBool.resize(boolMap.Extent(), this->ShapeAppearance[0]);
-                vpBase->ShapeAppearance.setTransparency(vpBase->Transparency.getValue());
-                vpTool->ShapeAppearance.setTransparency(vpTool->Transparency.getValue());
+                applyTransparency(vpBase->Transparency.getValue(),colBase);
+                applyTransparency(vpTool->Transparency.getValue(),colTool);
 
-                if (static_cast<int>(vpBase->ShapeAppearance.getSize()) == baseMap.Extent()) {
-                    applyMaterial(hist[0], vpBase->ShapeAppearance, colBool);
+                if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
+                    applyMaterial(hist[0], colBase, colBool);
                 }
-                else if (vpBase->ShapeAppearance.getSize() > 0
-                         && vpBase->ShapeAppearance[0] != this->ShapeAppearance[0]) {
-                    vpBase->ShapeAppearance.setSize(baseMap.Extent(), vpBase->ShapeAppearance[0]);
-                    applyMaterial(hist[0], vpBase->ShapeAppearance, colBool);
+                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance[0]) {
+                    colBase.resize(baseMap.Extent(), colBase[0]);
+                    applyMaterial(hist[0], colBase, colBool);
                 }
 
-                if (static_cast<int>(vpTool->ShapeAppearance.getSize()) == toolMap.Extent()) {
-                    applyMaterial(hist[1], vpTool->ShapeAppearance, colBool);
+                if (static_cast<int>(colTool.size()) == toolMap.Extent()) {
+                    applyMaterial(hist[1], colTool, colBool);
                 }
-                else if (vpTool->ShapeAppearance.getSize() > 0
-                         && vpTool->ShapeAppearance[0] != this->ShapeAppearance[0]) {
-                    vpTool->ShapeAppearance.setSize(toolMap.Extent(), vpTool->ShapeAppearance[0]);
-                    applyMaterial(hist[1], vpTool->ShapeAppearance, colBool);
+                else if (!colTool.empty() && colTool[0] != this->ShapeAppearance[0]) {
+                    colTool.resize(toolMap.Extent(), colTool[0]);
+                    applyMaterial(hist[1], colTool, colBool);
                 }
 
                 // If the view provider has set a transparency then override the values
@@ -201,14 +201,14 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
 
             auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
             if (vpBase) {
-                vpBase->ShapeAppearance.setTransparency(vpBase->Transparency.getValue());
-                if (static_cast<int>(vpBase->ShapeAppearance.getSize()) == baseMap.Extent()) {
-                    applyMaterial(hist[index], vpBase->ShapeAppearance, colBool);
+                std::vector<App::Material> colBase = vpBase->ShapeAppearance.getValues();
+                applyTransparency(vpBase->Transparency.getValue(),colBase);
+                if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
+                    applyMaterial(hist[index], colBase, colBool);
                 }
-                else if (vpBase->ShapeAppearance.getSize() > 0
-                         && vpBase->ShapeAppearance[0] != this->ShapeAppearance[0]) {
-                    vpBase->ShapeAppearance.setSize(baseMap.Extent(), vpBase->ShapeAppearance[0]);
-                    applyMaterial(hist[index], vpBase->ShapeAppearance, colBool);
+                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance[0]) {
+                    colBase.resize(baseMap.Extent(), colBase[0]);
+                    applyMaterial(hist[index], colBase, colBool);
                 }
             }
         }
@@ -336,14 +336,14 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
 
             auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
             if (vpBase) {
-                vpBase->ShapeAppearance.setTransparency(vpBase->Transparency.getValue());
-                if (static_cast<int>(vpBase->ShapeAppearance.getSize()) == baseMap.Extent()) {
-                    applyMaterial(hist[index], vpBase->ShapeAppearance, colBool);
+                std::vector<App::Material> colBase = vpBase->ShapeAppearance.getValues();
+                applyTransparency(vpBase->Transparency.getValue(),colBase);
+                if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
+                    applyMaterial(hist[index], colBase, colBool);
                 }
-                else if (vpBase->ShapeAppearance.getSize() > 0
-                         && vpBase->ShapeAppearance[0] != this->ShapeAppearance[0]) {
-                    vpBase->ShapeAppearance.setSize(baseMap.Extent(), vpBase->ShapeAppearance[0]);
-                    applyMaterial(hist[index], vpBase->ShapeAppearance, colBool);
+                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance[0]) {
+                    colBase.resize(baseMap.Extent(), colBase[0]);
+                    applyMaterial(hist[index], colBase, colBool);
                 }
             }
         }

@@ -260,7 +260,7 @@ void PropertyPartShape::beforeSave() const
         _Shape.beforeSave();
     }
 }
-
+#ifndef FC_USE_TNP_FIX
 void PropertyPartShape::Save (Base::Writer &writer) const
 {
     if(!writer.isForceXML()) {
@@ -278,7 +278,7 @@ void PropertyPartShape::Save (Base::Writer &writer) const
     }
 }
 
-#ifdef NOT_YET_AND_MAYBE_NEVER
+#else
 void PropertyPartShape::Save (Base::Writer &writer) const
 {
     //See SaveDocFile(), RestoreDocFile()
@@ -304,17 +304,17 @@ void PropertyPartShape::Save (Base::Writer &writer) const
     bool toXML = writer.getFileVersion()>1 && writer.isForceXML()>=(binary?3:2);
     if(!toXML) {
         writer.Stream() << " file=\""
-                        << writer.addFile(getFileName(binary?".bin":".brp"), this)
+                        << writer.addFile(getFileName(binary?".bin":".brp").c_str(), this)
                         << "\"/>\n";
     } else if(binary) {
         writer.Stream() << " binary=\"1\">\n";
         TopoShape shape;
         shape.setShape(_Shape.getShape());
-        shape.exportBinary(writer.beginCharStream(true));
+        shape.exportBinary(writer.beginCharStream());
         writer.endCharStream() <<  writer.ind() << "</Part>\n";
     } else {
         writer.Stream() << " brep=\"1\">\n";
-        _Shape.exportBrep(writer.beginCharStream(false)<<'\n');
+        _Shape.exportBrep(writer.beginCharStream()<<'\n');
         writer.endCharStream() << '\n' << writer.ind() << "</Part>\n";
     }
 
@@ -341,6 +341,7 @@ std::string PropertyPartShape::getElementMapVersion(bool restored) const {
     return PropertyComplexGeoData::getElementMapVersion(false);
 }
 
+#ifndef FC_USE_TNP_FIX
 void PropertyPartShape::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Part");
@@ -352,7 +353,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     }
 }
 
-#ifdef NOT_YET_AND_MAYBE_NEVER
+#else
 void PropertyPartShape::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Part");
@@ -363,9 +364,14 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     if(has_ver)
         _Ver = reader.getAttribute("ElementMap");
 
-    int hasher_idx = reader.getAttributeAsInteger("HasherIndex","-1");
-    int save_hasher = reader.getAttributeAsInteger("SaveHasher","");
-
+    int hasher_idx = -1;
+    int save_hasher = 0;
+    if ( reader.hasAttribute("HasherIndex") ) {
+        reader.getAttributeAsInteger("HasherIndex");
+    }
+    if ( reader.hasAttribute("SaveHasher") ) {
+        save_hasher = reader.getAttributeAsInteger("SaveHasher");
+    }
     TopoDS_Shape sh;
 
     if(reader.hasAttribute("file")) {
@@ -374,13 +380,13 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             // initiate a file read
             reader.addFile(file.c_str(),this);
         }
-    } else if(reader.getAttributeAsInteger("binary","")) {
+    } else if( reader.hasAttribute(("binary")) && reader.getAttributeAsInteger("binary")) {
         TopoShape shape;
-        shape.importBinary(reader.beginCharStream(true));
+        shape.importBinary(reader.beginCharStream());
         sh = shape.getShape();
-    } else if(reader.getAttributeAsInteger("brep","")) {
+    } else if( reader.hasAttribute("brep") && reader.getAttributeAsInteger("brep")) {
         BRep_Builder builder;
-        BRepTools::Read(sh, reader.beginCharStream(false), builder);
+        BRepTools::Read(sh, reader.beginCharStream(), builder);
     }
 
     reader.readEndElement("Part");
@@ -425,7 +431,8 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             }
         }
     } else if(owner && !owner->getDocument()->testStatus(App::Document::PartialDoc)) {
-        if(App::DocumentParams::getWarnRecomputeOnRestore()) {
+        // if(App::DocumentParams::getWarnRecomputeOnRestore()) {
+        if( true ) {
             FC_WARN("Pending recompute for generating element map: " << owner->getFullName());
             owner->getDocument()->addRecomputeObject(owner);
         }
@@ -438,18 +445,18 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     }
 }
 
-void PropertyPartShape::afterRestore()
-{
-    if (_Shape.isRestoreFailed()) {
-        // this cause GeoFeature::updateElementReference() to call
-        // PropertyLinkBase::updateElementReferences() with reverse = true, in
-        // order to try to regenerate the element map
-        _Ver = "?";
-    }
-    else if (_Shape.getElementMapSize() == 0)
-        _Shape.Hasher->clear(); //reset();
-    PropertyComplexGeoData::afterRestore();
-}
+// void PropertyPartShape::afterRestore()
+// {
+//     if (_Shape.isRestoreFailed()) {
+//         // this cause GeoFeature::updateElementReference() to call
+//         // PropertyLinkBase::updateElementReferences() with reverse = true, in
+//         // order to try to regenerate the element map
+//         _Ver = "?";
+//     }
+//     else if (_Shape.getElementMapSize() == 0)
+//         _Shape.Hasher->clear(); //reset();
+//     PropertyComplexGeoData::afterRestore();
+// }
 #endif
 
 // The following function is copied from OCCT BRepTools.cxx and modified

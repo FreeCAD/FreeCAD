@@ -102,7 +102,6 @@
 #include "LinkBaseExtensionPy.h"
 #include "VarSet.h"
 #include "MaterialObject.h"
-#include "MeasureDistance.h"
 #include "MeasureManagerPy.h"
 #include "Origin.h"
 #include "OriginFeature.h"
@@ -2114,7 +2113,6 @@ void Application::initTypes()
     App::VRMLObject                ::init();
     App::Annotation                ::init();
     App::AnnotationLabel           ::init();
-    App::MeasureDistance           ::init();
     App::MaterialObject            ::init();
     App::MaterialObjectPython      ::init();
     App::TextDocument              ::init();

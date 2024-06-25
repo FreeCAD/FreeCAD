@@ -431,20 +431,18 @@ public:
             this->iterateToNextConstructionMethod();
         }
         else if (key == SoKeyboardEvent::ESCAPE && pressed) {
-
-            if (this->isFirstState()) {
-                quit();
-            }
-            else {
-                handleContinuousMode();
-            }
+            rightButtonOrEsc();
         }
     }
 
     void pressRightButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
+        rightButtonOrEsc();
+    }
 
+    virtual void rightButtonOrEsc()
+    {
         if (this->isFirstState()) {
             quit();
         }
@@ -502,8 +500,7 @@ protected:
                     createAutoConstraints();
                 }
 
-                tryAutoRecomputeIfNotSolve(
-                    static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+                tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
             }
             catch (const Base::RuntimeError& e) {
                 // RuntimeError exceptions inside of the block above must provide a translatable

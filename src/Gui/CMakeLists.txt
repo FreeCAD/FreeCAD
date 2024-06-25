@@ -70,6 +70,13 @@ if(MSVC)
          ${OPENGL_gl_LIBRARY}
     )
 
+    if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
+        list(APPEND FreeCADGui_LIBS
+            Qt6::GuiPrivate
+        )
+    endif()
+
+
     if(FREECAD_USE_3DCONNEXION)
         list(APPEND FreeCADGui_LIBS
             hid
@@ -317,7 +324,6 @@ SET(Gui_UIC_SRCS
     DlgAuthorization.ui
     DlgChooseIcon.ui
     DlgCreateNewPreferencePack.ui
-    DlgCustomizeSpNavSettings.ui
     DlgInputDialog.ui
     DlgKeyboard.ui
     DlgMacroExecute.ui
@@ -374,6 +380,10 @@ SET(Gui_UIC_SRCS
     DlgAddPropertyVarSet.ui
     VectorListEditor.ui
 )
+
+if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+	list(APPEND Gui_UIC_SRCS DlgCustomizeSpNavSettings.ui)
+endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
 
 set (FreeCAD_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Language/FreeCAD_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Language/FreeCAD_*.ts"
@@ -550,8 +560,6 @@ SOURCE_GROUP("Dialog" FILES ${Dialog_SRCS})
 SET(Dialog_Customize_CPP_SRCS
     DlgActionsImp.cpp
     DlgCustomizeImp.cpp
-    DlgCustomizeSpaceball.cpp
-    DlgCustomizeSpNavSettings.cpp
     DlgKeyboardImp.cpp
     DlgToolbarsImp.cpp
     ListWidgetDragBugFix.cpp
@@ -559,21 +567,29 @@ SET(Dialog_Customize_CPP_SRCS
 SET(Dialog_Customize_HPP_SRCS
     DlgActionsImp.h
     DlgCustomizeImp.h
-    DlgCustomizeSpaceball.h
-    DlgCustomizeSpNavSettings.h
     DlgKeyboardImp.h
     DlgToolbarsImp.h
     ListWidgetDragBugFix.h
 )
+
+if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+	list(APPEND Dialog_Customize_CPP_SRCS DlgCustomizeSpaceball.cpp DlgCustomizeSpNavSettings.cpp)
+	list(APPEND Dialog_Customize_HPP_SRCS DlgCustomizeSpaceball.h DlgCustomizeSpNavSettings.h)
+endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+
 SET(Dialog_Customize_SRCS
     ${Dialog_Customize_CPP_SRCS}
     ${Dialog_Customize_HPP_SRCS}
     DlgActions.ui
     DlgChooseIcon.ui
-    DlgCustomizeSpNavSettings.ui
     DlgKeyboard.ui
     DlgToolbars.ui
 )
+
+if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+	list(APPEND Dialog_Customize_SRCS  DlgCustomizeSpNavSettings.ui)
+endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+
 SOURCE_GROUP("Dialog\\Customize" FILES ${Dialog_Customize_SRCS})
 
 # The settings dialog sources
@@ -929,7 +945,6 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderGeometryObject.cpp
     ViewProviderImagePlane.cpp
     ViewProviderInventorObject.cpp
-    ViewProviderMeasureDistance.cpp
     ViewProviderPyImp.cpp
     ViewProviderPythonFeature.cpp
     ViewProviderVRMLObject.cpp
@@ -944,6 +959,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderOrigin.cpp
     ViewProviderMaterialObject.cpp
     ViewProviderTextDocument.cpp
+    ViewProviderTextureExtension.cpp
     ViewProviderLink.cpp
     LinkViewPyImp.cpp
     ViewProviderLinkPyImp.cpp
@@ -967,7 +983,6 @@ SET(Viewprovider_SRCS
     ViewProviderGeometryObject.h
     ViewProviderImagePlane.h
     ViewProviderInventorObject.h
-    ViewProviderMeasureDistance.h
     ViewProviderPythonFeature.h
     ViewProviderVRMLObject.h
     ViewProviderBuilder.h
@@ -981,6 +996,7 @@ SET(Viewprovider_SRCS
     ViewProviderOrigin.h
     ViewProviderMaterialObject.h
     ViewProviderTextDocument.h
+    ViewProviderTextureExtension.h
     ViewProviderLink.h
     ViewProviderVarSet.h
     AxisOrigin.h
@@ -1145,6 +1161,7 @@ SET(Workbench_CPP_SRCS
     OverlayWidgets.cpp
     MenuManager.cpp
     PythonWorkbenchPyImp.cpp
+    ToolBarAreaWidget.cpp
     ToolBarManager.cpp
     ToolBoxManager.cpp
     Workbench.cpp
@@ -1160,6 +1177,7 @@ SET(Workbench_SRCS
     OverlayManager.h
     OverlayWidgets.h
     MenuManager.h
+    ToolBarAreaWidget.h
     ToolBarManager.h
     ToolBoxManager.h
     Workbench.h

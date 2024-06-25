@@ -104,6 +104,11 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         Can safely be overwritten by subclass."""
         pass
 
+    def opExecute(self, obj):
+        if len(obj.Base) == 0:
+            return
+        super().opExecute(obj)
+
     def areaOpSetDefaultValues(self, obj, job):
         obj.PocketLastStepOver = 0
 

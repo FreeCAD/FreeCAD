@@ -156,20 +156,24 @@ PyObject *TopoShapePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // 
 int TopoShapePy::PyInit(PyObject* args, PyObject* keywds)
 {
 #ifdef FC_USE_TNP_FIX
-    static char* kwlist[] = {"shape", "op", "tag", "hasher", nullptr};
+    static const std::array<const char*, 5> kwlist{ "shape",
+                                                    "op",
+                                                    "tag",
+                                                    "hasher",
+                                                    nullptr };
     long tag = 0;
     PyObject* pyHasher = nullptr;
     const char* op = nullptr;
     PyObject* pcObj = nullptr;
-    if (!PyArg_ParseTupleAndKeywords(args,
-                                     keywds,
-                                     "|OsiO!",
-                                     kwlist,
-                                     &pcObj,
-                                     &op,
-                                     &tag,
-                                     &App::StringHasherPy::Type,
-                                     &pyHasher)) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             keywds,
+                                             "|OsiO!",
+                                             kwlist,
+                                             &pcObj,
+                                             &op,
+                                             &tag,
+                                             &App::StringHasherPy::Type,
+                                             &pyHasher)) {
         return -1;
     }
     auto& self = *getTopoShapePtr();
@@ -2476,14 +2480,14 @@ PyObject* TopoShapePy::makeEvolved(PyObject *args, PyObject *kwds)
     PyObject* ProfOnSpine = Py_False;
     auto JoinType = JoinType::arc;
     double Tolerance = 0.0000001;
-
-    static char* kwds_evolve[] = {"Profile", "Join", "AxeProf", "Solid", "ProfOnSpine", "Tolerance", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|iO!O!O!d", kwds_evolve,
-                                     &TopoShapePy::Type, &Profile, &JoinType,
-                                     &PyBool_Type, &AxeProf, &PyBool_Type, &Solid,
-                                     &PyBool_Type, &ProfOnSpine, &Tolerance))
+    
+    static const std::array<const char*, 7> kwds_evolve{"Profile", "Join", "AxeProf", "Solid", "ProfOnSpine", "Tolerance", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|iO!O!O!d", kwds_evolve,
+        &TopoShapePy::Type, &Profile, &JoinType,
+        &PyBool_Type, &AxeProf, &PyBool_Type, &Solid,
+        &PyBool_Type, &ProfOnSpine, &Tolerance)) {
         return nullptr;
-
+    }
     try {
         return Py::new_reference_to(shape2pyshape(getTopoShapePtr()->makeElementEvolve(
             *static_cast<TopoShapePy*>(Profile)->getTopoShapePtr(), JoinType,
@@ -3125,22 +3129,22 @@ PyObject* TopoShapePy::findSubShape(PyObject* args)
 
 PyObject* TopoShapePy::findSubShapesWithSharedVertex(PyObject* args, PyObject* keywds)
 {
-    static char* kwlist[] = {"shape", "needName", "checkGeometry", "tol", "atol", nullptr};
+    static const std::array<const char*, 6> kwlist {"shape", "needName", "checkGeometry", "tol", "atol", nullptr};
     PyObject* pyobj;
     PyObject* needName = Py_False;
     PyObject* checkGeometry = Py_True;
     double tol = 1e-7;
     double atol = 1e-12;
-    if (!PyArg_ParseTupleAndKeywords(args,
-                                     keywds,
-                                     "O!|OOdd",
-                                     kwlist,
-                                     &Type,
-                                     &pyobj,
-                                     &needName,
-                                     &checkGeometry,
-                                     &tol,
-                                     &atol)) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             keywds,
+                                             "O!|OOdd",
+                                             kwlist,
+                                             &Type,
+                                             &pyobj,
+                                             &needName,
+                                             &checkGeometry,
+                                             &tol,
+                                             &atol)) {
         return nullptr;
     }
 

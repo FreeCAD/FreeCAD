@@ -23,13 +23,11 @@
 #ifndef MEASUREGUI_VIEWPROVIDERMEASUREDISTANCE_H
 #define MEASUREGUI_VIEWPROVIDERMEASUREDISTANCE_H
 
-#include <Mod/Measure/MeasureGlobal.h>
-
 #include <QObject>
 
-#include <Mod/Measure/App/MeasureDistance.h>
-
+#include <Mod/Measure/MeasureGlobal.h>
 #include "ViewProviderMeasureBase.h"
+
 
 class SoCoordinate3;
 class SoIndexedLineSet;
@@ -47,7 +45,6 @@ public:
     ViewProviderMeasureDistance();
     ~ViewProviderMeasureDistance() override;
 
-    Measure::MeasureDistance* getMeasureDistance();
     void redrawAnnotation() override;
     void positionAnno(const Measure::MeasureBase* measureObject) override;
 

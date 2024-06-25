@@ -1199,7 +1199,29 @@ bool TopoShape::getCenterOfGravity(Base::Vector3d& center) const
 
     return false;
 }
+#ifdef FC_USE_TNP_FIX
+void TopoShape::Save (Base::Writer &writer ) const
+{
+    Data::ComplexGeoData::Save(writer);
+}
 
+void TopoShape::Restore(Base::XMLReader &reader)
+{
+    Data::ComplexGeoData::Restore(reader);
+}
+
+void TopoShape::SaveDocFile (Base::Writer &writer) const
+{
+    Data::ComplexGeoData::SaveDocFile(writer);
+}
+
+void TopoShape::RestoreDocFile(Base::Reader &reader)
+{
+    Data::ComplexGeoData::RestoreDocFile(reader);
+}
+
+
+#else
 void TopoShape::Save (Base::Writer& writer) const
 {
     if(!writer.isForceXML()) {
@@ -1252,7 +1274,7 @@ void TopoShape::RestoreDocFile(Base::Reader& reader)
         importBrep(reader);
     }
 }
-
+#endif
 unsigned int TopoShape_RefCountShapes(const TopoDS_Shape& aShape)
 {
     unsigned int size = 1; // this shape
@@ -4198,7 +4220,8 @@ bool TopoShape::_makeTransform(const TopoShape &shape,
     if(checkScale) {
         try {
             auto type = rclTrf.hasScale();
-            if (type != Base::ScaleType::Uniform && type != Base::ScaleType::NoScaling) {
+            if ((type != Base::ScaleType::Uniform && type != Base::ScaleType::NoScaling)
+                || (type == Base::ScaleType::Uniform && rclTrf.determinant3() == 0.0)) {
                 makeGTransform(shape,rclTrf,op,copy);
                 return true;
             }

@@ -57,6 +57,7 @@
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
 #include <GC_MakeCircle.hxx>
+#include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
 #include <GeomConvert_BSplineCurveKnotSplitting.hxx>
 #include <Geom_BSplineCurve.hxx>

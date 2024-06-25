@@ -154,6 +154,104 @@ void PropertyTopoShapeList::setPyObject(PyObject *value)
     }
 }
 
+#ifdef FC_USE_TNP_FIX
+
+void PropertyTopoShapeList::Save(Writer& writer) const
+{
+    writer.Stream() << writer.ind() << "<ShapeList count=\"" << getSize() << "\">" << endl;
+    writer.incInd();
+    for (int i = 0; i < getSize(); i++) {
+        bool binary = writer.getMode("BinaryBrep");
+        writer.Stream() << writer.ind() << "<TopoShape";
+        if (!writer.isForceXML()) {
+            // See SaveDocFile(), RestoreDocFile()
+            //  add a filename to the writer's list.  Each file on the list is eventually
+            //  processed by SaveDocFile().
+            std::string ext(".");
+            ext += std::to_string(i);
+            if (binary) {
+                ext += ".bin";
+            }
+            else {
+                ext += ".brp";
+            }
+            writer.Stream() << writer.ind() << " file=\""
+                            << writer.addFile(getFileName(ext.c_str()).c_str(), this) << "\"/>\n";
+        }
+        else if (binary) {
+            writer.Stream() << " binary=\"1\">\n";
+            _lValueList[i].exportBinary(writer.beginCharStream());
+            writer.endCharStream() << writer.ind() << "</TopoShape>\n";
+        }
+        else {
+            writer.Stream() << " brep=\"1\">\n";
+            _lValueList[i].exportBrep(writer.beginCharStream() << '\n');
+            writer.endCharStream() << '\n' << writer.ind() << "</TopoShape>\n";
+        }
+    }
+    writer.decInd();
+    writer.Stream() << writer.ind() << "</ShapeList>" << endl;
+}
+
+void PropertyTopoShapeList::SaveDocFile(Base::Writer& writer) const
+{
+    Base::FileInfo finfo(writer.ObjectName);
+    bool binary = finfo.hasExtension("bin");
+    int index = atoi(Base::FileInfo(finfo.fileNamePure()).extension().c_str());
+    if (index < 0 || index >= static_cast<int>(_lValueList.size())) {
+        return;
+    }
+
+    const TopoShape& shape = _lValueList[index];
+    if (binary) {
+        shape.exportBinary(writer.Stream());
+    }
+    else {
+        shape.exportBrep(writer.Stream());
+    }
+}
+
+void PropertyTopoShapeList::Restore(Base::XMLReader& reader)
+{
+    reader.readElement("ShapeList");
+    int count = reader.getAttributeAsInteger("count");
+    m_restorePointers.clear();  // just in case
+    m_restorePointers.reserve(count);
+    for (int i = 0; i < count; i++) {
+        auto newShape = std::make_shared<TopoShape>();
+        reader.readElement("TopoShape");
+        std::string file(reader.getAttribute("file"));
+        if (!file.empty()) {
+            reader.addFile(file.c_str(), this);
+        }
+        else if (reader.hasAttribute("binary") && reader.getAttributeAsInteger("binary")) {
+            newShape->importBinary(reader.beginCharStream());
+        }
+        else if (reader.hasAttribute("brep") && reader.getAttributeAsInteger("brep")) {
+            newShape->importBrep(reader.beginCharStream());
+        }
+        m_restorePointers.push_back(newShape);
+    }
+    reader.readEndElement("ShapeList");
+}
+
+void PropertyTopoShapeList::RestoreDocFile(Base::Reader& reader)
+{
+    Base::FileInfo finfo(reader.getFileName());
+    bool binary = finfo.hasExtension("bin");
+    int index = atoi(Base::FileInfo(finfo.fileNamePure()).extension().c_str());
+    if (index < 0 || index >= static_cast<int>(m_restorePointers.size())) {
+        return;
+    }
+    if (binary) {
+        m_restorePointers[index]->importBinary(reader);
+    }
+    else {
+        m_restorePointers[index]->importBrep(reader);
+    }
+}
+
+#else
 void PropertyTopoShapeList::Save(Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<ShapeList count=\"" << getSize() <<"\">" << endl;
@@ -178,7 +276,7 @@ void PropertyTopoShapeList::Restore(Base::XMLReader &reader)
     }
     reader.readEndElement("ShapeList");
 }
-
+#endif
 App::Property *PropertyTopoShapeList::Copy() const
 {
     PropertyTopoShapeList *p = new PropertyTopoShapeList();

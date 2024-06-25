@@ -1,0 +1,13 @@
+; Stainless(316)
+; (c) 2022 Daniel Wood (CC-BY 3.0)
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+
+[FCMat]
+Name = Stainless-316
+Description = Path Material Stainless(316)
+Father = Metal
+SurfaceSpeed_HSS = 7.5
+SurfaceSpeed_Carbide = 25
+Kp = 2.07
+Kd = 24000

@@ -577,7 +577,7 @@ TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesWires)
     auto elements = elementMap((topoShape));
     Base::BoundBox3d bb = topoShape.getBoundBox();
     // Assert shape is correct
-    EXPECT_FLOAT_EQ(getLength(topoShape.getShape()), 4.4142137);
+    EXPECT_NEAR(getLength(topoShape.getShape()), 4.4142137, 1e-6);
     EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0, 0, 0, 3, 2, 0)));
     // Assert map is correct
     EXPECT_TRUE(allElementsMatch(topoShape,
@@ -610,10 +610,10 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceNull)
     double area3 = getArea(topoShape.getShape());
     // Assert
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area1, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area2, Len * Wid - M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area3, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area1, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area2, Len * Wid - M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area3, Len * Wid + M_PI * Rad * Rad);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
 }
 
@@ -634,10 +634,10 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceSimple)
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area1, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area2, Len * Wid);
-    EXPECT_FLOAT_EQ(area3, Len * Wid);
+    EXPECT_DOUBLE_EQ(area, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area1, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area2, Len * Wid);
+    EXPECT_DOUBLE_EQ(area3, Len * Wid);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
 }
 
@@ -658,10 +658,10 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceParams)
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area1, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area2, Len * Wid);
-    EXPECT_FLOAT_EQ(area3, Len * Wid);
+    EXPECT_DOUBLE_EQ(area, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area1, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area2, Len * Wid);
+    EXPECT_DOUBLE_EQ(area3, Len * Wid);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
 }
 
@@ -682,10 +682,10 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceFromFace)
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area1, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area2, Len * Wid - M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area3, Len * Wid - M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area1, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area2, Len * Wid - M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area3, Len * Wid - M_PI * Rad * Rad);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
 }
 
@@ -707,10 +707,10 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceOpenWire)
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area1, 0);  // Len * Wid - M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area2, Len * Wid);
-    EXPECT_FLOAT_EQ(area3, Len * Wid);
+    EXPECT_DOUBLE_EQ(area, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area1, 0);  // Len * Wid - M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area2, Len * Wid);
+    EXPECT_DOUBLE_EQ(area3, Len * Wid);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
 }
 
@@ -732,10 +732,10 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceClosedWire)
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area1, 0);  // Len * Wid - M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area2, M_PI * Rad * Rad);
-    EXPECT_FLOAT_EQ(area3, M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area1, 0);  // Len * Wid - M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area2, M_PI * Rad * Rad);
+    EXPECT_DOUBLE_EQ(area3, M_PI * Rad * Rad);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
 }
 
@@ -785,7 +785,7 @@ TEST_F(TopoShapeExpansionTest, setElementComboName)
         topoShape.getMappedName(Data::IndexedName::fromConst("Face", 7), true);
     Data::MappedName faceName2 =
         topoShape.getMappedName(Data::IndexedName::fromConst("Face", 8), true);
-    char* op = "Copy";
+    const char* op = "Copy";
     // Act
     Data::MappedName result = topoShape.setElementComboName(Data::IndexedName::fromConst("Edge", 1),
                                                             {edgeName, faceName, faceName2},
@@ -810,7 +810,7 @@ TEST_F(TopoShapeExpansionTest, setElementComboNameCompound)
         topoShape.getMappedName(Data::IndexedName::fromConst("Face", 7), true);
     Data::MappedName faceName2 =
         topoShape.getMappedName(Data::IndexedName::fromConst("Face", 8), true);
-    char* op = "Copy";
+    const char* op = "Copy";
     // Act
     Data::MappedName result = topoShape.setElementComboName(Data::IndexedName::fromConst("Edge", 1),
                                                             {edgeName, faceName, faceName2},
@@ -838,8 +838,8 @@ TEST_F(TopoShapeExpansionTest, splitWires)
     TopoShape wire = topoShape.splitWires(&inner, TopoShape::SplitWireReorient::ReorientReversed);
     // Assert
     EXPECT_EQ(inner.size(), 1);
-    EXPECT_FLOAT_EQ(getLength(wire.getShape()), 2 + 2 + 3 + 3);
-    EXPECT_FLOAT_EQ(getLength(inner.front().getShape()), M_PI * Rad * 2);
+    EXPECT_DOUBLE_EQ(getLength(wire.getShape()), 2 + 2 + 3 + 3);
+    EXPECT_DOUBLE_EQ(getLength(inner.front().getShape()), M_PI * Rad * 2);
     EXPECT_EQ(wire.getShape().Orientation(), TopAbs_REVERSED);
     for (TopoShape& shape : inner) {
         EXPECT_EQ(shape.getShape().Orientation(), TopAbs_FORWARD);
@@ -1703,7 +1703,7 @@ TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceWires)
     auto elements = elementMap(cube1TS);
     // Assert
     EXPECT_EQ(cube1TS.countSubElements("Wire"), 4);
-    EXPECT_FLOAT_EQ(getArea(cube1TS.getShape()), 2.023056);
+    EXPECT_NEAR(getArea(cube1TS.getShape()), 2.023056, 1e-6);
     // Assert that we're creating a correct element map
     EXPECT_TRUE(cube1TS.getMappedChildElements().empty());
     // TODO: Revisit these when resetElementMap() is fully worked through.  Suspect that last loop
@@ -1745,11 +1745,11 @@ TEST_F(TopoShapeExpansionTest, makeElementLoft)
     auto elements = elementMap((topoShape));
     // Assert that we haven't broken the basic Loft functionality
     EXPECT_EQ(topoShape.countSubElements("Wire"), 4);
-    EXPECT_FLOAT_EQ(getArea(topoShape.getShape()), 200);
-    EXPECT_FLOAT_EQ(getVolume(topoShape.getShape()), 166.66667);
-    EXPECT_FLOAT_EQ(getVolume(topoShape2.getShape()), 250);
-    EXPECT_FLOAT_EQ(getVolume(topoShape3.getShape()), 166.66667);
-    EXPECT_FLOAT_EQ(getVolume(topoShape4.getShape()), 250);
+    EXPECT_DOUBLE_EQ(getArea(topoShape.getShape()), 200);
+    EXPECT_NEAR(getVolume(topoShape.getShape()), 166.66667, 1e-5);
+    EXPECT_DOUBLE_EQ(getVolume(topoShape2.getShape()), 250);
+    EXPECT_NEAR(getVolume(topoShape3.getShape()), 166.66667, 1e-5);
+    EXPECT_DOUBLE_EQ(getVolume(topoShape4.getShape()), 250);
     EXPECT_NEAR(getVolume(topoShape5.getShape()), 0, 1e-07);
     // Assert that we're creating a correct element map
     EXPECT_TRUE(topoShape.getMappedChildElements().empty());
@@ -1784,8 +1784,8 @@ TEST_F(TopoShapeExpansionTest, makeElementPipeShell)
     auto elements = elementMap((topoShape));
     // Assert that we haven't broken the basic Loft functionality
     EXPECT_EQ(topoShape.countSubElements("Wire"), 4);
-    EXPECT_FLOAT_EQ(getArea(topoShape.getShape()), 160);
-    EXPECT_FLOAT_EQ(getVolume(topoShape.getShape()), 133.33334);
+    EXPECT_DOUBLE_EQ(getArea(topoShape.getShape()), 160);
+    EXPECT_NEAR(getVolume(topoShape.getShape()), 133.33334, 1e-5);
     // Assert that we're creating a correct element map
     EXPECT_TRUE(topoShape.getMappedChildElements().empty());
     EXPECT_EQ(elements.size(), 24);
@@ -1808,7 +1808,7 @@ TEST_F(TopoShapeExpansionTest, makeElementThickSolid)
     auto elements = elementMap(cube1TS);
     // Assert
     EXPECT_EQ(cube1TS.countSubElements("Wire"), 16);
-    EXPECT_FLOAT_EQ(getArea(cube1TS.getShape()), 9.4911509);
+    EXPECT_NEAR(getArea(cube1TS.getShape()), 9.4911509, 1e-6);
     // Assert that we're creating a correct element map
     EXPECT_TRUE(cube1TS.getMappedChildElements().empty());
     EXPECT_EQ(elements.size(), 74);
@@ -2108,7 +2108,7 @@ TEST_F(TopoShapeExpansionTest, makeElementChamfer)
     auto elements = elementMap(cube1TS);
     // Assert shape is correct
     EXPECT_EQ(cube1TS.countSubElements("Wire"), 26);
-    EXPECT_FLOAT_EQ(getArea(cube1TS.getShape()), 5.640996);
+    EXPECT_NEAR(getArea(cube1TS.getShape()), 5.640996, 1e-6);
     // Assert that we're creating a correct element map
     EXPECT_TRUE(cube1TS.getMappedChildElements().empty());
     EXPECT_TRUE(allElementsMatch(cube1TS,
@@ -2225,7 +2225,7 @@ TEST_F(TopoShapeExpansionTest, makeElementFillet)
     auto elements = elementMap(cube1TS);
     // Assert shape is correct
     EXPECT_EQ(cube1TS.countSubElements("Wire"), 26);
-    EXPECT_FLOAT_EQ(getArea(cube1TS.getShape()), 5.739646);
+    EXPECT_NEAR(getArea(cube1TS.getShape()), 5.739646, 1e-6);
     // Assert that we're creating a correct element map
     EXPECT_TRUE(cube1TS.getMappedChildElements().empty());
     EXPECT_TRUE(elementsMatch(cube1TS,
@@ -2751,7 +2751,7 @@ TEST_F(TopoShapeExpansionTest, makeElementRevolve)
     EXPECT_TRUE(PartTestHelpers::boxesMatch(
         bb,
         Base::BoundBox3d(0.0, 0.0, 0.0, 0.85090352453411933, 1.0, 1.0)));
-    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0.50885141);
+    EXPECT_NEAR(getVolume(result.getShape()), 0.50885141, 1e-6);
     // Assert elementMap is correct
     EXPECT_TRUE(
         elementsMatch(result,
@@ -2912,7 +2912,7 @@ TEST_F(TopoShapeExpansionTest, makeElementBSplineFace)
     EXPECT_TRUE(PartTestHelpers::boxesMatch(
         bb,
         Base::BoundBox3d(-10, -2.0597998470594132, 2, -4, 2.1254369627132599, 2)));
-    EXPECT_FLOAT_EQ(getArea(result.getShape()), 14.677052);
+    EXPECT_NEAR(getArea(result.getShape()), 14.677052, 1e-6);
     // Assert elementMap is correct
     EXPECT_TRUE(elementsMatch(result,
                               {
@@ -3171,7 +3171,7 @@ TEST_F(TopoShapeExpansionTest, makeElementOffset)
     // Assert shape is correct
     EXPECT_TRUE(
         PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(-0.25, -0.25, -0.25, 1.25, 1.25, 1.25)));
-    EXPECT_FLOAT_EQ(getVolume(result.getShape()), 3.1544986);
+    EXPECT_NEAR(getVolume(result.getShape()), 3.1544986, 1e-6);
     // Assert elementMap is correct
     //    EXPECT_EQ(elements.size(), 98);
     //    EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);

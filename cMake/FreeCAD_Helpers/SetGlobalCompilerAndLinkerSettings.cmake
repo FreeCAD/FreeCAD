@@ -21,8 +21,9 @@ macro(SetGlobalCompilerAndLinkerSettings)
 
     if(MSVC)
         # set default compiler settings
-        set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zm150 /bigobj")
-        set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG /Zm150 /bigobj")
+        add_definitions(-D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR -DNOMINMAX)
+        add_compile_options(/Zm150 /bigobj)
+        set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG")
         # set default libs
         set (CMAKE_C_STANDARD_LIBRARIES "kernel32.lib user32.lib gdi32.lib winspool.lib SHFolder.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib winmm.lib comsupp.lib Ws2_32.lib dbghelp.lib ")
         set (CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES}")
@@ -49,8 +50,7 @@ macro(SetGlobalCompilerAndLinkerSettings)
             string(REGEX REPLACE "/Z[iI]" "/Z7" CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
             string(REGEX REPLACE "/Z[iI]" "/Z7" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
         endif(CCACHE_PROGRAM)
-
-	option(FREECAD_USE_MP_COMPILE_FLAG "Add /MP flag to the compiler definitions. Speeds up the compile on multi processor machines" ON)
+        option(FREECAD_USE_MP_COMPILE_FLAG "Add /MP flag to the compiler definitions. Speeds up the compile on multi processor machines" ON)
         if(FREECAD_USE_MP_COMPILE_FLAG)
             # set "Build with Multiple Processes"
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")

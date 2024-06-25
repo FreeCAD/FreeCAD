@@ -1415,6 +1415,26 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                         }
                     }
                 }
+                else if (shapetype.size() > 12 && shapetype.substr(0, 12) == "ExternalEdge") {
+                    QRegularExpression rx(QString::fromLatin1("^ExternalEdge(\\d+)$"));
+                    QRegularExpressionMatch match;
+                    boost::ignore_unused(expr.indexOf(rx, 0, &match));
+                    if (match.hasMatch()) {
+                        bool ok;
+                        int ElementId = -match.captured(1).toInt(&ok) - 2;
+                        if (ok) {
+                            int countItems = ui->listWidgetElements->count();
+                            for (int i = 0; i < countItems; i++) {
+                                ElementItem* item =
+                                    static_cast<ElementItem*>(ui->listWidgetElements->item(i));
+                                if (item->ElementNbr == ElementId) {
+                                    item->isLineSelected = select;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
                 else if (shapetype.size() > 6 && shapetype.substr(0, 6) == "Vertex") {
                     QRegularExpression rx(QString::fromLatin1("^Vertex(\\d+)$"));
                     QRegularExpressionMatch match;
@@ -1607,7 +1627,12 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
 
 
             if (item->isLineSelected) {
-                ss << "Edge" << item->ElementNbr + 1;
+                if (item->ElementNbr >= 0) {
+                    ss << "Edge" << item->ElementNbr + 1;
+                }
+                else {
+                    ss << "ExternalEdge" << -item->ElementNbr - 2;
+                }
                 elementSubNames.push_back(ss.str());
             }
 
@@ -1708,7 +1733,12 @@ void TaskSketcherElements::onListWidgetElementsMouseMoveOnItem(QListWidgetItem* 
         else if (item->hovered == SubElementType::mid)
             preselectvertex(item->ElementNbr, Sketcher::PointPos::mid);
         else if (item->hovered == SubElementType::edge) {
-            ss << "Edge" << item->ElementNbr + 1;
+            if (item->ElementNbr >= 0) {
+                ss << "Edge" << item->ElementNbr + 1;
+            }
+            else {
+                ss << "ExternalEdge" << -item->ElementNbr - 2;
+            }
             Gui::Selection().setPreselect(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
         }
     }

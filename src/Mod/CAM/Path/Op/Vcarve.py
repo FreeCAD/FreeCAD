@@ -451,7 +451,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
             if not currentPosition:
                 return False
-            
+
             # get vertex position on X/Y plane only
             v0 = FreeCAD.Base.Vector(currentPosition.x, currentPosition.y)
             v1 = FreeCAD.Base.Vector(newPosition.x, newPosition.y)
@@ -537,16 +537,20 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         self.voronoiDebugCache = None
 
+        if obj.ToolController is None:
+            return
+
         if not hasattr(obj.ToolController.Tool, "CuttingEdgeAngle"):
-            Path.Log.error(
+            Path.Log.info(
                 translate(
                     "CAM_Vcarve",
                     "VCarve requires an engraving cutter with a cutting edge angle",
                 )
             )
+            return
 
         if obj.ToolController.Tool.CuttingEdgeAngle >= 180.0:
-            Path.Log.error(
+            Path.Log.info(
                 translate(
                     "CAM_Vcarve", "Engraver cutting edge angle must be < 180 degrees."
                 )
@@ -583,7 +587,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 )
 
         except Exception as e:
-            Path.Log.error(
+            Path.Log.warning(
                 "Error processing Base object. Engraving operation will produce no output."
             )
             import traceback
