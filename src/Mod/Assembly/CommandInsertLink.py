@@ -165,7 +165,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             def process_objects(objs, item):
                 onlyParts = self.form.CheckBox_ShowOnlyParts.isChecked()
                 for obj in objs:
-                    if obj.Name == self.assembly.Name:
+                    if obj == self.assembly:
                         continue  # Skip current assembly
 
                     if (
@@ -180,7 +180,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                                     (not onlyParts and child.isDerivedFrom("Part::Feature"))
                                     or child.isDerivedFrom("App::Part")
                                 )
-                                for child in obj.OutListRecursive
+                                for child in obj.ViewObject.claimChildrenRecursive()
                             ):
                                 continue  # Skip this object if no relevant children
 
@@ -201,7 +201,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                         if obj.isDerivedFrom("App::Part") or obj.isDerivedFrom(
                             "App::DocumentObjectGroup"
                         ):
-                            process_objects(obj.OutList, objItem)
+                            process_objects(obj.ViewObject.claimChildren(), objItem)
 
             guiDoc = Gui.getDocument(doc.Name)
             process_objects(guiDoc.TreeRootObjects, docItem)
