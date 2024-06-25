@@ -3079,7 +3079,7 @@ TopoShape& TopoShape::makeElementWires(const std::vector<TopoShape>& shapes,
         std::vector<TopoShape> wires;
         for (int i = 1; i <= hWires->Length(); i++) {
             auto wire = hWires->Value(i);
-            wires.push_back(TopoShape(Tag,Hasher,wire));
+            wires.emplace_back(Tag,Hasher,wire);
             wires.back().mapSubElement(shapes, op);
         }
         return makeElementCompound(wires, "", SingleShapeCompoundCreationPolicy::returnShape);
