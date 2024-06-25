@@ -1463,6 +1463,17 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         else:
             self.assertEqual(App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames[0][-8:],",F.Face2")
 
+    def testFileSaveRestore(self):
+        self.Body = self.Doc.addObject('PartDesign::Body', 'Body')
+        self.create_t_sketch()
+        self.assertEqual(self.Doc.Sketch.Shape.ElementMapSize, 18)
+        filename = self.Doc.Name
+        self.Doc.saveAs(filename)
+        App.closeDocument(filename)
+        self.Doc = App.openDocument(filename+".FCStd")
+        self.Doc.recompute()
+        self.assertEqual(self.Doc.Sketch.Shape.ElementMapSize, 18)
+
     def create_t_sketch(self):
         self.Doc.getObject('Body').newObject('Sketcher::SketchObject', 'Sketch')
         geo_list = [
@@ -1492,4 +1503,4 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
     def tearDown(self):
         """ Close our test document """
-        App.closeDocument("PartDesignTestTNP")
+        App.closeDocument(self.Doc.Name)

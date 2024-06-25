@@ -288,6 +288,9 @@ protected:
     /// Verify a path for the current property
     virtual void verifyPath(const App::ObjectIdentifier & p) const;
 
+    /// Return a file name suitable for saving this property
+    std::string getFileName(const char *postfix=0, const char *prefix=0) const;
+
 public:
     // forbidden
     Property(const Property&) = delete;
