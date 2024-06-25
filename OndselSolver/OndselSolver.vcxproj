@@ -778,27 +778,59 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\testapp\00backhoe.asmt" />
+    <None Include="..\testapp\00camrocker.asmt" />
     <None Include="..\testapp\anglejoint.asmt" />
+    <None Include="..\testapp\camfollower.asmt" />
     <None Include="..\testapp\circular.asmt" />
+    <None Include="..\testapp\circularPendulum.asmt" />
     <None Include="..\testapp\cirpendu.asmt" />
     <None Include="..\testapp\cirpendu2.asmt" />
+    <None Include="..\testapp\coastharbor2.asmt" />
     <None Include="..\testapp\constvel.asmt" />
     <None Include="..\testapp\CrankSlider2.mbd" />
+    <None Include="..\testapp\crank_slider.asmt" />
     <None Include="..\testapp\crank_slider.mbd" />
     <None Include="..\testapp\crank_sliderX.mbd" />
+    <None Include="..\testapp\CylSphJt.asmt" />
+    <None Include="..\testapp\dragCrankSlider.asmt" />
+    <None Include="..\testapp\dragCrankSlider.asmt.bak" />
+    <None Include="..\testapp\dxfmotion.asmt" />
+    <None Include="..\testapp\dxftree.asmt" />
     <None Include="..\testapp\engine1.asmt" />
+    <None Include="..\testapp\fixplnplnpln.asmt" />
+    <None Include="..\testapp\fixplnplnplnNoOffset.asmt" />
     <None Include="..\testapp\fourbar.asmt" />
     <None Include="..\testapp\fourbot.asmt" />
     <None Include="..\testapp\Gears.asmt" />
     <None Include="..\testapp\gyro.asmt" />
     <None Include="..\testapp\InitialConditions.mbd" />
+    <None Include="..\testapp\JB_2bars.asmt" />
+    <None Include="..\testapp\limits.asmt" />
+    <None Include="..\testapp\mateproblembobcat.asmt" />
+    <None Include="..\testapp\parm.asmt" />
+    <None Include="..\testapp\part32.asmt" />
     <None Include="..\testapp\piston.asmt" />
+    <None Include="..\testapp\pistonAllowZRotation.asmt" />
+    <None Include="..\testapp\pistonWithLimits.asmt" />
     <None Include="..\testapp\planarbug.asmt" />
     <None Include="..\testapp\quasikine.asmt" />
+    <None Include="..\testapp\rackPinion.asmt" />
+    <None Include="..\testapp\rackPinion3.asmt" />
     <None Include="..\testapp\rackscrew.asmt" />
+    <None Include="..\testapp\RevCylJt.asmt" />
+    <None Include="..\testapp\RevRevJt.asmt" />
     <None Include="..\testapp\robot.asmt" />
+    <None Include="..\testapp\runPreDrag.asmt" />
+    <None Include="..\testapp\runPreDragBackhoe.asmt" />
+    <None Include="..\testapp\runPreDragBackhoe2.asmt" />
+    <None Include="..\testapp\runPreDragBackhoe3.asmt" />
+    <None Include="..\testapp\Schmidt_Coupling_Ass_1-1.asmt" />
+    <None Include="..\testapp\Schmidt_Coupling_Ass_1-2.asmt" />
+    <None Include="..\testapp\Schmidt_Coupling_Ass_1a.asmt" />
     <None Include="..\testapp\SphericalHinge.mbd" />
+    <None Include="..\testapp\SphSphJt.asmt" />
     <None Include="..\testapp\wobpump.asmt" />
+    <None Include="..\testapp\__cubes.asmt" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="..\testapp\CrankSlider2.mov" />
@@ -808,6 +840,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\CMakeLists.txt" />
+    <Text Include="..\testapp\dragging.log" />
+    <Text Include="..\testapp\draggingBackhoe.log" />
+    <Text Include="..\testapp\draggingBackhoe2.log" />
+    <Text Include="..\testapp\draggingBackhoe3.log" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

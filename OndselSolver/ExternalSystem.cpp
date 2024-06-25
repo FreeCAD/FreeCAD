@@ -26,6 +26,11 @@ void MbD::ExternalSystem::preMbDrun(std::shared_ptr<System> mbdSys)
 	}
 }
 
+void MbD::ExternalSystem::preMbDrunDragStep(std::shared_ptr<System> mbdSys, std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts)
+{
+	asmtAssembly->preMbDrunDragStep(mbdSys, dragParts);
+}
+
 void MbD::ExternalSystem::updateFromMbD()
 {
 	if (cadSystem) {

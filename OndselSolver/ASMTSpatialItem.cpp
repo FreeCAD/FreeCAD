@@ -169,3 +169,9 @@ FMatDsptr MbD::ASMTSpatialItem::getRotationMatrix(size_t i)
 	bryantAngles->calc();
 	return bryantAngles->aA;
 }
+
+void MbD::ASMTSpatialItem::restorePosRot()
+{
+	position3D = oldPos3D;
+	rotationMatrix = oldRotMat;
+}

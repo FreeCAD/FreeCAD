@@ -376,9 +376,11 @@ void MbD::ASMTSpatialContainer::updateFromMbD()
 	auto& aAPp = principalMassMarker->rotationMatrix;
 	auto aAOP = aAOp->timesTransposeFullMatrix(aAPp);
 	rotationMatrix = aAOP;
+	oldRotMat = rotationMatrix;
 	auto rPcmO = aAOP->timesFullColumn(rPcmP);
 	auto rOPO = rOcmO->minusFullColumn(rPcmO);
 	position3D = rOPO;
+	oldPos3D = position3D;
 	auto vOPO = vOcmO->minusFullColumn(omeOPO->cross(rPcmO));
 	velocity3D = vOPO;
 	auto aOPO = aOcmO->minusFullColumn(alpOPO->cross(rPcmO))->minusFullColumn(omeOPO->cross(omeOPO->cross(rPcmO)));

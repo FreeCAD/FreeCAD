@@ -79,6 +79,7 @@ namespace MbD {
 
 		void outputFor(AnalysisType type);
 		void preMbDrun(std::shared_ptr<System> mbdSys);
+		void preMbDrunDragStep(std::shared_ptr<System> mbdSys, std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts);
 		void postMbDrun();
 		void calcCharacteristicDimensions();
 		double calcCharacteristicTime() const;
@@ -97,6 +98,7 @@ namespace MbD {
 		void runPreDrag();
 		void runDragStep(std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> dragParts);
 		void runPostDrag();
+		void restorePosRot();
 		void runKINEMATIC();
 		void initprincipalMassMarker();
 		std::shared_ptr<ASMTSpatialContainer> spatialContainerAt(std::shared_ptr<ASMTAssembly> self, std::string& longname) const;

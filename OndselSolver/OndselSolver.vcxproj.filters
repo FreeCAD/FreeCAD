@@ -1954,6 +1954,38 @@
     <None Include="..\testapp\constvel.asmt" />
     <None Include="..\testapp\anglejoint.asmt" />
     <None Include="..\testapp\Gears.asmt" />
+    <None Include="..\testapp\runPreDragBackhoe.asmt" />
+    <None Include="..\testapp\runPreDragBackhoe2.asmt" />
+    <None Include="..\testapp\runPreDragBackhoe3.asmt" />
+    <None Include="..\testapp\__cubes.asmt" />
+    <None Include="..\testapp\runPreDrag.asmt" />
+    <None Include="..\testapp\limits.asmt" />
+    <None Include="..\testapp\rackPinion.asmt" />
+    <None Include="..\testapp\rackPinion3.asmt" />
+    <None Include="..\testapp\dragCrankSlider.asmt" />
+    <None Include="..\testapp\pistonAllowZRotation.asmt" />
+    <None Include="..\testapp\pistonWithLimits.asmt" />
+    <None Include="..\testapp\dragCrankSlider.asmt.bak" />
+    <None Include="..\testapp\Schmidt_Coupling_Ass_1-1.asmt" />
+    <None Include="..\testapp\Schmidt_Coupling_Ass_1-2.asmt" />
+    <None Include="..\testapp\Schmidt_Coupling_Ass_1a.asmt" />
+    <None Include="..\testapp\CylSphJt.asmt" />
+    <None Include="..\testapp\part32.asmt" />
+    <None Include="..\testapp\RevCylJt.asmt" />
+    <None Include="..\testapp\RevRevJt.asmt" />
+    <None Include="..\testapp\SphSphJt.asmt" />
+    <None Include="..\testapp\00camrocker.asmt" />
+    <None Include="..\testapp\camfollower.asmt" />
+    <None Include="..\testapp\circularPendulum.asmt" />
+    <None Include="..\testapp\coastharbor2.asmt" />
+    <None Include="..\testapp\crank_slider.asmt" />
+    <None Include="..\testapp\dxfmotion.asmt" />
+    <None Include="..\testapp\dxftree.asmt" />
+    <None Include="..\testapp\fixplnplnpln.asmt" />
+    <None Include="..\testapp\fixplnplnplnNoOffset.asmt" />
+    <None Include="..\testapp\JB_2bars.asmt" />
+    <None Include="..\testapp\mateproblembobcat.asmt" />
+    <None Include="..\testapp\parm.asmt" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="..\testapp\CrankSlider2.mov" />
@@ -1963,5 +1995,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\CMakeLists.txt" />
+    <Text Include="..\testapp\draggingBackhoe.log" />
+    <Text Include="..\testapp\draggingBackhoe2.log" />
+    <Text Include="..\testapp\draggingBackhoe3.log" />
+    <Text Include="..\testapp\dragging.log" />
   </ItemGroup>
 </Project>

@@ -125,8 +125,9 @@ void MbD::System::runPreDrag(std::shared_ptr<System> self)
 	externalSystem->updateFromMbD();
 }
 
-void MbD::System::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts)
+void MbD::System::runDragStep(std::shared_ptr<System> self, std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts)
 {
+	externalSystem->preMbDrunDragStep(self, dragParts);
 	partsJointsMotionsLimitsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postInput(); });
 	systemSolver->runDragStep(dragParts);
 	externalSystem->updateFromMbD();

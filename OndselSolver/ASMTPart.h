@@ -26,6 +26,7 @@ namespace MbD {
         FColDsptr omeOpO() override;
         ASMTPart* part() override;
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+        void preMbDrunDragStep(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits);
         void storeOnLevel(std::ofstream& os, size_t level) override;
         void storeOnLevelMassMarker(std::ofstream& os, size_t level);
         void storeOnTimeSeries(std::ofstream& os) override;

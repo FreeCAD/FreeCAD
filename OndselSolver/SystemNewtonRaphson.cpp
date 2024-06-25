@@ -76,7 +76,7 @@ void SystemNewtonRaphson::handleSingularMatrix()
 		if (str.find("GESpMatParPvPrecise") != std::string::npos) {
 			str = "MbD: Singular Matrix Error. ";
 			system->logString(str);
-			matrixSolver = this->matrixSolverClassNew();
+            matrixSolver->throwSingularMatrixError("SystemNewtonRaphson");
 		}
 		else {
 			assert(false);

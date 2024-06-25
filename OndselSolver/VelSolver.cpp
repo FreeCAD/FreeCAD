@@ -34,8 +34,8 @@ void VelSolver::handleSingularMatrix()
 		str = typeid(r).name();
 		if (str.find("GESpMatParPvPrecise") != std::string::npos) {
 			this->logSingularMatrixMessage();
-			matrixSolver = this->matrixSolverClassNew();
-		}
+            matrixSolver->throwSingularMatrixError("VelSolver");
+        }
 		else {
 			assert(false);
 		}

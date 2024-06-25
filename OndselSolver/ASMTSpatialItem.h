@@ -36,6 +36,7 @@ namespace MbD {
 		void storeOnLevelRotationMatrixRaw(std::ofstream& os, size_t level);
 		FColDsptr getPosition3D(size_t i);
 		FMatDsptr getRotationMatrix(size_t i);
+		void restorePosRot();
 
 		FColDsptr position3D = std::make_shared<FullColumn<double>>(3);
 		FMatDsptr rotationMatrix = std::make_shared<FullMatrix<double>>(ListListD{
@@ -43,7 +44,9 @@ namespace MbD {
 				{ 0, 1, 0 },
 				{ 0, 0, 1 }
 			});
-		FRowDsptr xs, ys, zs, bryxs, bryys, bryzs;
+        FColDsptr oldPos3D = position3D;
+        FMatDsptr oldRotMat = rotationMatrix;
+        FRowDsptr xs, ys, zs, bryxs, bryys, bryzs;
 		FRowDsptr inxs, inys, inzs, inbryxs, inbryys, inbryzs;
 
 	};

@@ -14,6 +14,7 @@
 
 //#include "CADSystem.h"
 //#include "ASMTAssembly.h"
+#include "Part.h"
 
 namespace MbD {
 	class CADSystem;
@@ -25,6 +26,7 @@ namespace MbD {
 		//
 	public:
 		void preMbDrun(std::shared_ptr<System> mbdSys);
+		void preMbDrunDragStep(std::shared_ptr<System> mbdSys, std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts);
 		void updateFromMbD();
 		void outputFor(AnalysisType type);
 		void logString(std::string& str);
