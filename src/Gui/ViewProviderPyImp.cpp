@@ -393,7 +393,7 @@ PyObject* ViewProviderPy::claimChildren(PyObject* args)
 
     std::vector<App::DocumentObject*> children = this->getViewProviderPtr()->claimChildren();
     Py::List ret;
-    for(auto* child: children){
+    for(auto* child : children){
         if (child)
             ret.append(Py::asObject(child->getPyObject()));
         else
@@ -409,7 +409,7 @@ PyObject* ViewProviderPy::claimChildrenRecursive(PyObject* args)
 
     std::vector<App::DocumentObject*> children = this->getViewProviderPtr()->claimChildrenRecursive();
     Py::List ret;
-    for(auto* child: children){
+    for(auto* child : children){
         if (child)
             ret.append(Py::asObject(child->getPyObject()));
         else
