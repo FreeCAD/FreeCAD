@@ -149,6 +149,9 @@ public:
 
 
 protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+
     QColor getBackgroundColor();
     bool orphanExists(const char* viewName, const std::vector<App::DocumentObject*>& list);
 

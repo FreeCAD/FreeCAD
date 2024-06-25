@@ -55,6 +55,7 @@
 #include <Mod/Assembly/App/AssemblyObject.h>
 #include <Mod/Assembly/App/AssemblyUtils.h>
 #include <Mod/Assembly/App/JointGroup.h>
+#include <Mod/Assembly/App/ViewGroup.h>
 #include <Mod/PartDesign/App/Body.h>
 
 #include "ViewProviderAssembly.h"
@@ -457,6 +458,38 @@ bool ViewProviderAssembly::mouseButtonPressed(int Button,
     return false;
 }
 
+bool ViewProviderAssembly::canDragObjectIn3d(App::DocumentObject* obj) const
+{
+    if (!obj) {
+        return false;
+    }
+
+    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+
+    // Check if the selected object is a child of the assembly
+    if (!assemblyPart->hasObject(obj, true)) {
+        return false;
+    }
+
+    auto* propPlacement =
+        dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+    if (!propPlacement) {
+        return false;
+    }
+
+    // We have to exclude Grounded joints as they happen to have a Placement prop
+    auto* propLink = dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("ObjectToGround"));
+    if (propLink) {
+        return false;
+    }
+
+    // We have to exclude grounded objects as they should not move.
+    if (assemblyPart->isPartGrounded(obj)) {
+        return false;
+    }
+    return true;
+}
+
 bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection, bool onlySolids)
 {
     // check the current selection, and check if any of the selected objects are within this
@@ -466,7 +499,7 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
     docsToMove.clear();
 
     // Get the assembly object for this ViewProvider
-    AssemblyObject* assemblyPart = static_cast<AssemblyObject*>(getObject());
+    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
 
     if (!assemblyPart) {
         return false;
@@ -489,26 +522,13 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
             }
 
             App::DocumentObject* obj = getObjectFromSubNames(subNames);
-            if (!obj) {
+
+            if (!canDragObjectIn3d(obj)) {
                 continue;
             }
 
-            // Check if the selected object is a child of the assembly
-            if (assemblyPart->hasObject(obj, true)) {
-                auto* propPlacement =
-                    dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
-                if (!propPlacement) {
-                    continue;
-                }
-                // We have to exclude Grounded joints as they happen to have a Placement prop
-                auto* propLink =
-                    dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("ObjectToGround"));
-                if (propLink) {
-                    continue;
-                }
-
-                docsToMove.emplace_back(obj, propPlacement->getValue());
-            }
+            auto* pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+            docsToMove.emplace_back(obj, pPlc->getValue());
         }
     }
 
@@ -522,32 +542,26 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
         std::string subNamesStr = Gui::Selection().getPreselection().pSubName;
         std::vector<std::string> subNames = parseSubNames(subNamesStr);
 
-        App::DocumentObject* preselectedObj = getObjectFromSubNames(subNames);
-        if (preselectedObj && assemblyPart->hasObject(preselectedObj, true)) {
+        App::DocumentObject* obj = getObjectFromSubNames(subNames);
+        if (canDragObjectIn3d(obj)) {
+
             bool alreadyIn = false;
             for (auto& pair : docsToMove) {
-                App::DocumentObject* obj = pair.first;
-                if (obj == preselectedObj) {
+                App::DocumentObject* obji = pair.first;
+                if (obji == obj) {
                     alreadyIn = true;
                     break;
                 }
             }
 
             if (!alreadyIn) {
-                auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
-                    preselectedObj->getPropertyByName("Placement"));
-                if (propPlacement) {
-                    // We have to exclude Grounded joints as they happen to have a Placement prop
-                    auto* propLink = dynamic_cast<App::PropertyLink*>(
-                        preselectedObj->getPropertyByName("ObjectToGround"));
-                    if (!propLink) {
-                        if (!ctrlPressed) {
-                            Gui::Selection().clearSelection();
-                            docsToMove.clear();
-                        }
-                        docsToMove.emplace_back(preselectedObj, propPlacement->getValue());
-                    }
+                auto* pPlc =
+                    dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+                if (!ctrlPressed) {
+                    Gui::Selection().clearSelection();
+                    docsToMove.clear();
                 }
+                docsToMove.emplace_back(obj, pPlc->getValue());
             }
         }
     }
@@ -887,14 +901,50 @@ void ViewProviderAssembly::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 bool ViewProviderAssembly::onDelete(const std::vector<std::string>& subNames)
 {
-    // Delete the joingroup when assembly is deleted
+    // Delete the assembly goups when assembly is deleted
     for (auto obj : getObject()->getOutList()) {
-        if (obj->getTypeId() == Assembly::JointGroup::getClassTypeId()) {
-            obj->getDocument()->removeObject(obj->getNameInDocument());
+        if (obj->getTypeId() == Assembly::JointGroup::getClassTypeId()
+            || obj->getTypeId() == Assembly::ViewGroup::getClassTypeId()
+            /* || obj->getTypeId() == Assembly::BomGroup::getClassTypeId()*/) {
+
+            // Delete the group content first.
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "doc = App.getDocument(\"%s\")\n"
+                                    "objName = \"%s\"\n"
+                                    "doc.getObject(objName).removeObjectsFromDocument()\n"
+                                    "doc.removeObject(objName)\n",
+                                    obj->getDocument()->getName(),
+                                    obj->getNameInDocument());
         }
     }
 
     return ViewProviderPart::onDelete(subNames);
+}
+
+bool ViewProviderAssembly::canDelete(App::DocumentObject* obj) const
+{
+    bool res = ViewProviderPart::canDelete(obj);
+    if (res) {
+        // If a component is deleted, then we delete the joints as well.
+        for (auto parent : obj->getInList()) {
+            if (!parent) {
+                continue;
+            }
+
+            auto* prop =
+                dynamic_cast<App::PropertyBool*>(parent->getPropertyByName("EnableLimits"));
+            auto* prop2 =
+                dynamic_cast<App::PropertyLink*>(parent->getPropertyByName("ObjectToGround"));
+            if (prop || prop2) {
+                Gui::Command::doCommand(Gui::Command::Doc,
+                                        "App.getDocument(\"%s\").removeObject(\"%s\")",
+                                        parent->getDocument()->getName(),
+                                        parent->getNameInDocument());
+            }
+        }
+    }
+
+    return res;
 }
 
 void ViewProviderAssembly::setDraggerVisibility(bool val)

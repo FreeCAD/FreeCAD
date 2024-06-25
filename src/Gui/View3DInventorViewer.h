@@ -490,7 +490,7 @@ private:
     static void drawArrow();
     static void drawSingleBackground(const QColor&);
     void setCursorRepresentation(int mode);
-    void aboutToDestroyGLContext() override;
+    void aboutToDestroyGLContext();
     void createStandardCursors(double);
 
 private:

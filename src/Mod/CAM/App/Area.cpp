@@ -1639,7 +1639,9 @@ std::vector<shared_ptr<Area> > Area::makeSections(
                 if (hitMin) continue;
                 hitMin = true;
                 double zNew = zMin + myParams.SectionTolerance;
-                AREA_WARN("hit bottom " << z << ',' << zMin << ',' << zNew);
+                //Silence the warning if _heights is not empty
+                if (_heights.empty() && FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                    AREA_WARN("hit bottom " << z << ',' << zMin << ',' << zNew);
                 z = zNew;
             }
             else if (zMax - z < myParams.SectionTolerance) {

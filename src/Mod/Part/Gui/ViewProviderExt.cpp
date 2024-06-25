@@ -66,7 +66,6 @@
 # include <Inventor/nodes/SoPolygonOffset.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoTexture3.h>
 
 # include <boost/algorithm/string/predicate.hpp>
 #endif
@@ -125,6 +124,8 @@ const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","D
 
 ViewProviderPartExt::ViewProviderPartExt()
 {
+    texture.initExtension(this);
+
     VisualTouched = true;
     forceUpdateCount = 0;
     NormalsFromUV = true;
@@ -197,16 +198,6 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY_TYPE(DrawStyle,((long int)0), osgroup, App::Prop_None, "Defines the style of the edges in the 3D view.");
     DrawStyle.setEnums(DrawStyleEnums);
 
-    // This is needed to restore old DiffuseColor values since the restore
-    // function is asynchronous
-    App::PropertyColor noColor;
-    ADD_PROPERTY_TYPE(_diffuseColor,
-                      (noColor.getValue()),
-                      osgroup,
-                      App::Prop_NoPersist,
-                      "Object diffuse color.");
-    _diffuseColor.setStatus(App::Property::PropHidden, true);
-
     coords = new SoCoordinate3();
     coords->ref();
     faceset = new SoBrepFaceSet();
@@ -220,14 +211,6 @@ ViewProviderPartExt::ViewProviderPartExt()
     lineset->ref();
     nodeset = new SoBrepPointSet();
     nodeset->ref();
-
-    // Support for textured faces
-    pcShapeTexture3D = new SoTexture3;
-    pcShapeTexture3D->ref();
-    pcShapeCoordinates = new SoCoordinate3;
-    pcShapeCoordinates->ref();
-    pcShapeFaceset = new SoIndexedFaceSet;
-    pcShapeFaceset->ref();
 
     pcFaceBind = new SoMaterialBinding();
     pcFaceBind->ref();
@@ -280,10 +263,6 @@ ViewProviderPartExt::~ViewProviderPartExt()
     normb->unref();
     lineset->unref();
     nodeset->unref();
-
-    pcShapeTexture3D->unref();
-    pcShapeCoordinates->unref();
-    pcShapeFaceset->unref();
 }
 
 PyObject* ViewProviderPartExt::getPyObject()
@@ -363,7 +342,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     else if (prop == &_diffuseColor) {
         // Used to load the old DiffuseColor values asynchronously
         ShapeAppearance.setDiffuseColors(_diffuseColor.getValues());
-        ShapeAppearance.setTransparency(Transparency.getValue() / 100.0f);
+        ShapeAppearance.setTransparency(Transparency.getValue() / 100.0F);
     }
     else if (prop == &ShapeAppearance) {
         setHighlightedFaces(ShapeAppearance);
@@ -374,11 +353,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         long value = toPercent(Mat.transparency);
         if (value != Transparency.getValue()) {
             float trans = fromPercent(Transparency.getValue());
-
-            App::PropertyContainer* parent = ShapeAppearance.getContainer();
-            ShapeAppearance.setContainer(nullptr);
             ShapeAppearance.setTransparency(trans);
-            ShapeAppearance.setContainer(parent);
         }
     }
     else if (prop == &Lighting) {
@@ -467,10 +442,8 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     // just faces with no edges or points
     pcFlatRoot->addChild(pShapeHints);
     pcFlatRoot->addChild(pcFaceBind);
-    pcFlatRoot->addChild(pcSwitchAppearance);
-    pcTextureGroup3D->addChild(pcShapeTexture3D);
-    pcTextureGroup3D->addChild(pcShapeCoordinates);
-    pcTextureGroup3D->addChild(pcShapeFaceset);
+    pcFlatRoot->addChild(texture.getAppearance());
+    texture.setup(pcShapeMaterial);
     SoDrawStyle* pcFaceStyle = new SoDrawStyle();
     pcFaceStyle->style = SoDrawStyle::FILLED;
     pcFlatRoot->addChild(pcFaceStyle);
@@ -627,10 +600,16 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getSelectionShape(const char* /
 
 void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& materials)
 {
+    if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange))
+        getObject()->touch(true);
+
+    Gui::SoUpdateVBOAction action;
+    action.apply(this->faceset);
+
     int size = static_cast<int>(materials.size());
     if (size > 1 && size == this->faceset->partIndex.getNum()) {
         pcFaceBind->value = SoMaterialBinding::PER_PART;
-        activateMaterial();
+        texture.activateMaterial();
 
         pcShapeMaterial->diffuseColor.setNum(size);
         pcShapeMaterial->ambientColor.setNum(size);
@@ -666,49 +645,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
 
 void ViewProviderPartExt::setHighlightedFaces(const App::PropertyMaterialList& appearance)
 {
-    int size = static_cast<int>(appearance.getSize());
-    if (size > 1 && size == this->faceset->partIndex.getNum()) {
-        pcFaceBind->value = SoMaterialBinding::PER_PART;
-        activateMaterial();
-
-        pcShapeMaterial->diffuseColor.setNum(size);
-        pcShapeMaterial->ambientColor.setNum(size);
-        pcShapeMaterial->specularColor.setNum(size);
-        pcShapeMaterial->emissiveColor.setNum(size);
-        pcShapeMaterial->shininess.setNum(size);
-
-        SbColor* dc = pcShapeMaterial->diffuseColor.startEditing();
-        SbColor* ac = pcShapeMaterial->ambientColor.startEditing();
-        SbColor* sc = pcShapeMaterial->specularColor.startEditing();
-        SbColor* ec = pcShapeMaterial->emissiveColor.startEditing();
-        float* sh = pcShapeMaterial->shininess.startEditing();
-
-        for (int i = 0; i < size; i++) {
-            dc[i].setValue(appearance.getDiffuseColor(i).r,
-                        appearance.getDiffuseColor(i).g,
-                        appearance.getDiffuseColor(i).b);
-            ac[i].setValue(appearance.getAmbientColor(i).r,
-                        appearance.getAmbientColor(i).g,
-                        appearance.getAmbientColor(i).b);
-            sc[i].setValue(appearance.getSpecularColor(i).r,
-                        appearance.getSpecularColor(i).g,
-                        appearance.getSpecularColor(i).b);
-            ec[i].setValue(appearance.getEmissiveColor(i).r,
-                        appearance.getEmissiveColor(i).g,
-                        appearance.getEmissiveColor(i).b);
-            sh[i] = appearance.getShininess(i);
-        }
-
-        pcShapeMaterial->diffuseColor.finishEditing();
-        pcShapeMaterial->ambientColor.finishEditing();
-        pcShapeMaterial->specularColor.finishEditing();
-        pcShapeMaterial->emissiveColor.finishEditing();
-        pcShapeMaterial->shininess.finishEditing();
-    }
-    else if (size == 1) {
-        pcFaceBind->value = SoMaterialBinding::OVERALL;
-        setCoinAppearance(appearance[0]);
-    }
+    setHighlightedFaces(appearance.getValues());
 }
 
 std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const char *element) const {
@@ -802,7 +739,6 @@ std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const cha
 
 void ViewProviderPartExt::unsetHighlightedFaces()
 {
-    // DiffuseColor.touch();
     ShapeAppearance.touch();
     Transparency.touch();
 }
@@ -925,7 +861,9 @@ void ViewProviderPartExt::finishRestoring()
     // and currently sets a single color.
     // In case DiffuseColor has defined multiple colors they will
     // be passed to the scene graph now.
-    ShapeAppearance.touch();
+    if (_diffuseColor.getSize() > 1) {
+        onChanged(&_diffuseColor);
+    }
     Gui::ViewProviderGeometryObject::finishRestoring();
 }
 
@@ -1371,8 +1309,7 @@ void ViewProviderPartExt::updateVisual()
     VisualTouched = false;
 
     // The material has to be checked again
-    // setHighlightedFaces(DiffuseColor.getValues());
-    setHighlightedFaces(ShapeAppearance);
+    setHighlightedFaces(ShapeAppearance.getValues());
     setHighlightedEdges(LineColorArray.getValues());
     setHighlightedPoints(PointColorArray.getValue());
 }

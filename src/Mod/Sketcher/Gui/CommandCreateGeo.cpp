@@ -57,7 +57,6 @@
 #include "DrawSketchHandlerArcOfParabola.h"
 #include "DrawSketchHandlerArcSlot.h"
 #include "DrawSketchHandlerBSpline.h"
-#include "DrawSketchHandlerBSplineByInterpolation.h"
 #include "DrawSketchHandlerCarbonCopy.h"
 #include "DrawSketchHandlerCircle.h"
 #include "DrawSketchHandlerEllipse.h"
@@ -860,7 +859,9 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateBSpline, "Sketcher_CreateBSpline")
 void CmdSketcherCreateBSpline::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSpline(0));
+    ActivateHandler(getActiveGuiDocument(),
+                    new DrawSketchHandlerBSpline(
+                        ConstructionMethods::BSplineConstructionMethod::ControlPoints));
 }
 
 bool CmdSketcherCreateBSpline::isActive()
@@ -893,7 +894,10 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePeriodicBSpline, "Sketcher_Create_Pe
 void CmdSketcherCreatePeriodicBSpline::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSpline(1));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        new DrawSketchHandlerBSpline(ConstructionMethods::BSplineConstructionMethod::ControlPoints,
+                                     true));
 }
 
 bool CmdSketcherCreatePeriodicBSpline::isActive()
@@ -925,7 +929,9 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateBSplineByInterpolation,
 void CmdSketcherCreateBSplineByInterpolation::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineByInterpolation(0));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        new DrawSketchHandlerBSpline(ConstructionMethods::BSplineConstructionMethod::Knots));
 }
 
 bool CmdSketcherCreateBSplineByInterpolation::isActive()
@@ -958,7 +964,9 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePeriodicBSplineByInterpolation,
 void CmdSketcherCreatePeriodicBSplineByInterpolation::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineByInterpolation(1));
+    ActivateHandler(
+        getActiveGuiDocument(),
+        new DrawSketchHandlerBSpline(ConstructionMethods::BSplineConstructionMethod::Knots, true));
 }
 
 bool CmdSketcherCreatePeriodicBSplineByInterpolation::isActive()
@@ -992,16 +1000,26 @@ CmdSketcherCompCreateBSpline::CmdSketcherCompCreateBSpline()
 void CmdSketcherCompCreateBSpline::activated(int iMsg)
 {
     if (iMsg == 0) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSpline(iMsg));
+        ActivateHandler(getActiveGuiDocument(),
+                        new DrawSketchHandlerBSpline(
+                            ConstructionMethods::BSplineConstructionMethod::ControlPoints));
     }
     else if (iMsg == 1) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSpline(iMsg));
+        ActivateHandler(getActiveGuiDocument(),
+                        new DrawSketchHandlerBSpline(
+                            ConstructionMethods::BSplineConstructionMethod::ControlPoints,
+                            true));
     }
     else if (iMsg == 2) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineByInterpolation(0));
+        ActivateHandler(
+            getActiveGuiDocument(),
+            new DrawSketchHandlerBSpline(ConstructionMethods::BSplineConstructionMethod::Knots));
     }
     else if (iMsg == 3) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineByInterpolation(1));
+        ActivateHandler(
+            getActiveGuiDocument(),
+            new DrawSketchHandlerBSpline(ConstructionMethods::BSplineConstructionMethod::Knots,
+                                         true));
     }
     else {
         return;

@@ -111,14 +111,14 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 
             auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
             if (vpBase) {
-                vpBase->ShapeAppearance.setTransparency(vpBase->Transparency.getValue());
-                if (static_cast<int>(vpBase->ShapeAppearance.getSize()) == baseMap.Extent()) {
-                    applyMaterial(hist[index], vpBase->ShapeAppearance, compCol);
+                std::vector<App::Material> baseCol = vpBase->ShapeAppearance.getValues();
+                applyTransparency(vpBase->Transparency.getValue(), baseCol);
+                if (static_cast<int>(baseCol.size()) == baseMap.Extent()) {
+                    applyMaterial(hist[index], baseCol, compCol);
                 }
-                else if (vpBase->ShapeAppearance.getSize() > 0
-                         && vpBase->ShapeAppearance[0] != this->ShapeAppearance[0]) {
-                    vpBase->ShapeAppearance.setSize(baseMap.Extent(), vpBase->ShapeAppearance[0]);
-                    applyMaterial(hist[index], vpBase->ShapeAppearance, compCol);
+                else if (!baseCol.empty() && baseCol[0] != this->ShapeAppearance[0]) {
+                    baseCol.resize(baseMap.Extent(), baseCol[0]);
+                    applyMaterial(hist[index], baseCol, compCol);
                 }
             }
         }

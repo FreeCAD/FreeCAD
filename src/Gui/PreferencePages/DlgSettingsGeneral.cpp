@@ -251,16 +251,17 @@ void DlgSettingsGeneral::saveSettings()
     int blinkTime{hGrp->GetBool("EnableCursorBlinking", true) ? -1 : 0};
     qApp->setCursorFlashTime(blinkTime);
 
-    std::string qtStyle = hGrp->GetASCII("QtStyle");
-    qApp->setStyle(QString::fromStdString(qtStyle));
-
     saveDockWindowVisibility();
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     hGrp->SetBool("TiledBackground", ui->tiledBackground->isChecked());
 
-    if (themeChanged)
+    if (themeChanged) {
+        auto qtStyle = QString::fromStdString(hGrp->GetASCII("QtStyle"));
+
         saveThemes();
+        qApp->setStyle(qtStyle);
+    }
 }
 
 void DlgSettingsGeneral::loadSettings()

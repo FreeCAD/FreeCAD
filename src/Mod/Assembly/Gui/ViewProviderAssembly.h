@@ -72,6 +72,7 @@ public:
 
     bool doubleClicked() override;
     bool onDelete(const std::vector<std::string>& subNames) override;
+    bool canDelete(App::DocumentObject* obj) const override;
 
     /** @name enter/exit edit mode */
     //@{
@@ -115,6 +116,7 @@ public:
     }
 
 
+    bool canDragObjectIn3d(App::DocumentObject* obj) const;
     bool getSelectedObjectsWithinAssembly(bool addPreselection = true, bool onlySolids = false);
     App::DocumentObject* getObjectFromSubNames(std::vector<std::string>& subNames);
     std::vector<std::string> parseSubNames(std::string& subNamesStr);

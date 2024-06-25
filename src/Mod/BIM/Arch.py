@@ -442,6 +442,8 @@ def makePipe(baseobj=None,diameter=0,length=0,placement=None,name=None):
         obj.Diameter = diameter
     else:
         obj.Diameter = params.get_param_arch("PipeDiameter")
+    obj.Width = obj.Diameter
+    obj.Height = obj.Diameter
     if placement:
         obj.Placement = placement
     return obj

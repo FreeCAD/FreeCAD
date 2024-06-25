@@ -1987,6 +1987,12 @@ def getRepresentation(
     tostore = False
     subplacement = None
 
+    # enable forcebrep for non-solids
+    if hasattr(obj,"Shape"):
+        if obj.Shape:
+            if not obj.Shape.Solids:
+                forcebrep = True
+
     # check for clones
 
     if ((not subtraction) and (not forcebrep)) or forceclone:
@@ -2103,12 +2109,12 @@ def getRepresentation(
             profile = getProfile(ifcfile,profile)
             if profile:
                 profiledefs[pstr] = profile
-            ev = obj.Dir
+            ev = FreeCAD.Vector(obj.Dir)
             l = obj.LengthFwd.Value
             if l:
-                ev = FreeCAD.Vector(ev).normalize() # new since 0.20 - obj.Dir length is ignored
+                ev = ev.normalize() # new since 0.20 - obj.Dir length is ignored
                 ev.multiply(l)
-                ev.multiply(preferences['SCALE_FACTOR'])
+            ev.multiply(preferences['SCALE_FACTOR'])
             ev = pl.Rotation.inverted().multVec(ev)
             xvc =       ifcbin.createIfcDirection(tuple(pl.Rotation.multVec(FreeCAD.Vector(1,0,0))))
             zvc =       ifcbin.createIfcDirection(tuple(pl.Rotation.multVec(FreeCAD.Vector(0,0,1))))

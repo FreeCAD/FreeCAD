@@ -34,14 +34,12 @@
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoTexture2.h>
 #endif
 
 #include <Inventor/nodes/SoResetTransform.h>
 
 #include <App/GeoFeature.h>
 #include <App/PropertyGeo.h>
-#include <Gui/BitmapFactory.h>
 
 #include "Application.h"
 #include "Document.h"
@@ -96,28 +94,9 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
 
     Selectable.setValue(isSelectionEnabled());
 
-    pcSwitchAppearance = new SoSwitch;
-    pcSwitchAppearance->ref();
-    pcSwitchTexture = new SoSwitch;
-    pcSwitchTexture->ref();
-
     pcShapeMaterial = new SoMaterial;
     setCoinAppearance(mat);
     pcShapeMaterial->ref();
-
-    pcShapeTexture2D = new SoTexture2;
-    pcShapeTexture2D->ref();
-
-    pcTextureGroup3D = new SoGroup;
-    pcTextureGroup3D->ref();
-
-    // Materials go first, with textured faces drawing over them
-    pcSwitchAppearance->addChild(pcShapeMaterial);
-    pcSwitchAppearance->addChild(pcSwitchTexture);
-    pcSwitchTexture->addChild(pcShapeTexture2D);
-    pcSwitchTexture->addChild(pcTextureGroup3D);
-    pcSwitchAppearance->whichChild.setValue(0);
-    pcSwitchTexture->whichChild.setValue(SO_SWITCH_NONE);
 
     pcBoundingBox = new Gui::SoFCBoundingBox;
     pcBoundingBox->ref();
@@ -130,11 +109,7 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
 
 ViewProviderGeometryObject::~ViewProviderGeometryObject()
 {
-    pcSwitchAppearance->unref();
-    pcSwitchTexture->unref();
     pcShapeMaterial->unref();
-    pcShapeTexture2D->unref();
-    pcTextureGroup3D->unref();
     pcBoundingBox->unref();
     pcBoundColor->unref();
 }
@@ -158,11 +133,12 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
     }
     else if (prop == &Transparency) {
         long value = toPercent(ShapeAppearance.getTransparency());
+        float trans = fromPercent(Transparency.getValue());
         if (value != Transparency.getValue()) {
-            float trans = fromPercent(Transparency.getValue());
-            pcShapeMaterial->transparency = trans;
             ShapeAppearance.setTransparency(trans);
         }
+
+        pcShapeMaterial->transparency = trans;
     }
     else if (prop == &ShapeAppearance) {
         if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange)) {
@@ -273,31 +249,12 @@ unsigned long ViewProviderGeometryObject::getBoundColor() const
 
 void ViewProviderGeometryObject::setCoinAppearance(const App::Material& source)
 {
-#if 0
-    if (!source.image.empty()) {
-        Base::Console().Log("setCoinAppearance(Texture)\n");
-        activateTexture2D();
-
-        QByteArray by = QByteArray::fromBase64(QString::fromStdString(source.image).toUtf8());
-        auto image = QImage::fromData(by, "PNG");  //.scaled(64, 64, Qt::KeepAspectRatio);
-
-        SoSFImage texture;
-        Gui::BitmapFactory().convert(image, texture);
-        pcShapeTexture2D->image = texture;
-    } else {
-        Base::Console().Log("setCoinAppearance(Material)\n");
-        activateMaterial();
-    }
-#endif
-    activateMaterial();
-
-    // Always set the material for items such as lines that don't support textures
     pcShapeMaterial->ambientColor.setValue(source.ambientColor.r,
-                                        source.ambientColor.g,
-                                        source.ambientColor.b);
+                                           source.ambientColor.g,
+                                           source.ambientColor.b);
     pcShapeMaterial->diffuseColor.setValue(source.diffuseColor.r,
-                                        source.diffuseColor.g,
-                                        source.diffuseColor.b);
+                                           source.diffuseColor.g,
+                                           source.diffuseColor.b);
     pcShapeMaterial->specularColor.setValue(source.specularColor.r,
                                             source.specularColor.g,
                                             source.specularColor.b);
@@ -307,31 +264,6 @@ void ViewProviderGeometryObject::setCoinAppearance(const App::Material& source)
     pcShapeMaterial->shininess.setValue(source.shininess);
     pcShapeMaterial->transparency.setValue(source.transparency);
 }
-
-void ViewProviderGeometryObject::activateMaterial()
-{
-    pcSwitchAppearance->whichChild.setValue(0);
-    pcSwitchTexture->whichChild.setValue(SO_SWITCH_NONE);
-}
-
-void ViewProviderGeometryObject::activateTexture2D()
-{
-    pcSwitchAppearance->whichChild.setValue(1);
-    pcSwitchTexture->whichChild.setValue(0);
-}
-
-void ViewProviderGeometryObject::activateTexture3D()
-{
-    pcSwitchAppearance->whichChild.setValue(1);
-    pcSwitchTexture->whichChild.setValue(1);
-}
-
-void ViewProviderGeometryObject::activateMixed3D()
-{
-    pcSwitchAppearance->whichChild.setValue(SO_SWITCH_ALL);
-    pcSwitchTexture->whichChild.setValue(1);
-}
-
 
 namespace
 {

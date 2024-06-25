@@ -2387,7 +2387,7 @@ CmdSketcherRotate::CmdSketcherRotate()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Polar transform");
+    sMenuText = QT_TR_NOOP("Rotate / Polar transform");
     sToolTipText = QT_TR_NOOP("Rotate selected geometries, making n copies, enable creation of circular patterns.");
     sWhatsThis = "Sketcher_Rotate";
     sStatusTip = sToolTipText;
@@ -2455,7 +2455,7 @@ CmdSketcherTranslate::CmdSketcherTranslate()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Array transform");
+    sMenuText = QT_TR_NOOP("Move / Array transform");
     sToolTipText = QT_TR_NOOP("Translate selected geometries. Enable creation of i * j copies.");
     sWhatsThis = "Sketcher_Translate";
     sStatusTip = sToolTipText;

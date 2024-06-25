@@ -13,17 +13,24 @@ link_directories(${OCC_LIBRARY_DIR})
 set(Assembly_LIBS
     Part
     PartDesign
+	Spreadsheet
     FreeCADApp
 	OndselSolver
 )
 
 generate_from_xml(AssemblyObjectPy)
+generate_from_xml(BomObjectPy)
+generate_from_xml(BomGroupPy)
 generate_from_xml(JointGroupPy)
 generate_from_xml(ViewGroupPy)
 
 SET(Python_SRCS
     AssemblyObjectPy.xml
     AssemblyObjectPyImp.cpp
+    BomObjectPy.xml
+    BomObjectPyImp.cpp
+    BomGroupPy.xml
+    BomGroupPyImp.cpp
     JointGroupPy.xml
     JointGroupPyImp.cpp
     ViewGroupPy.xml
@@ -42,6 +49,10 @@ SOURCE_GROUP("Module" FILES ${Module_SRCS})
 SET(Assembly_SRCS
     AssemblyObject.cpp
     AssemblyObject.h
+    BomObject.cpp
+    BomObject.h
+    BomGroup.cpp
+    BomGroup.h
     JointGroup.cpp
     JointGroup.h
     ViewGroup.cpp

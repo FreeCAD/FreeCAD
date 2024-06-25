@@ -119,12 +119,16 @@ void SelectionView::leaveEvent(QEvent *)
 }
 
 /// @cond DOXERR
-void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
+void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-        ->GetGroup("Preferences")->GetGroup("Selection");
+    ParameterGrp::handle hGrp = App::GetApplication()
+                                    .GetUserParameter()
+                                    .GetGroup("BaseApp")
+                                    ->GetGroup("Preferences")
+                                    ->GetGroup("Selection");
     bool autoShow = hGrp->GetBool("AutoShowSelectionView", false);
-    hGrp->SetBool("AutoShowSelectionView", autoShow); // Remove this line once the preferences window item is implemented
+    hGrp->SetBool("AutoShowSelectionView",
+                  autoShow);  // Remove this line once the preferences window item is implemented
 
     if (autoShow) {
         if (!parentWidget()->isVisible() && Selection().hasSelection()) {
@@ -139,90 +143,93 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
 
     QString selObject;
     QTextStream str(&selObject);
+
+    auto getSelectionName = [](QTextStream& str,
+                               const char* docName,
+                               const char* objName,
+                               const char* subName,
+                               App::DocumentObject* obj) {
+        str << docName;
+        str << "#";
+        str << objName;
+        if (subName != 0 && subName[0] != 0) {
+            str << ".";
+            /* Original code doesn't take account of histories in subelement names and displays
+             * them inadvertently.  Let's not do that.
+            str << subName;
+            */
+            /* Remove the history from the displayed subelement name */
+            std::pair<std::string, std::string> elementName;
+            App::GeoFeature::resolveElement(obj, subName, elementName);
+            str << elementName.second.c_str();  // Use the shortened element name not the full one.
+            /* Mark it visually if there was a history as a "tell" for if a given selection has TNP
+             * fixes in it. */
+            if (elementName.first.size() > 0) {
+                str << " []";
+            }
+            auto subObj = obj->getSubObject(subName);
+            if (subObj) {
+                obj = subObj;
+            }
+        }
+        str << " (";
+        str << QString::fromUtf8(obj->Label.getValue());
+        str << ")";
+    };
+
     if (Reason.Type == SelectionChanges::AddSelection) {
         // save as user data
         QStringList list;
         list << QString::fromLatin1(Reason.pDocName);
         list << QString::fromLatin1(Reason.pObjectName);
-
-        // insert the selection as item
-        str << Reason.pDocName;
-        str << "#";
-        str << Reason.pObjectName;
         App::Document* doc = App::GetApplication().getDocument(Reason.pDocName);
         App::DocumentObject* obj = doc->getObject(Reason.pObjectName);
-        if (Reason.pSubName[0] != 0 ) {
-            str << ".";
-            str << Reason.pSubName;
-            auto subObj = obj->getSubObject(Reason.pSubName);
-            if(subObj)
-                obj = subObj;
-        }
-        str << " (";
-        str << QString::fromUtf8(obj->Label.getValue());
-        str << ")";
+        getSelectionName(str, Reason.pDocName, Reason.pObjectName, Reason.pSubName, obj);
 
+        // insert the selection as item
         QListWidgetItem* item = new QListWidgetItem(selObject, selectionView);
         item->setData(Qt::UserRole, list);
     }
     else if (Reason.Type == SelectionChanges::ClrSelection) {
-        if(!Reason.pDocName[0]) {
+        if (!Reason.pDocName[0]) {
             // remove all items
             selectionView->clear();
-        }else{
+        }
+        else {
             // build name
             str << Reason.pDocName;
             str << "#";
             // remove all items
-            const auto items = selectionView->findItems(selObject,Qt::MatchStartsWith);
-            for(auto item : items)
+            const auto items = selectionView->findItems(selObject, Qt::MatchStartsWith);
+            for (auto item : items) {
                 delete item;
+            }
         }
     }
     else if (Reason.Type == SelectionChanges::RmvSelection) {
-        // build name
-        str << Reason.pDocName;
-        str << "#";
-        str << Reason.pObjectName;
-        if (Reason.pSubName[0] != 0) {
-            str << ".";
-            str << Reason.pSubName;
-        }
-        str << " (";
-
+        App::Document* doc = App::GetApplication().getDocument(Reason.pDocName);
+        App::DocumentObject* obj = doc->getObject(Reason.pObjectName);
+        getSelectionName(str, Reason.pDocName, Reason.pObjectName, Reason.pSubName, obj);
         // remove all items
-        QList<QListWidgetItem *> l = selectionView->findItems(selObject,Qt::MatchStartsWith);
-        if (l.size() == 1)
+        QList<QListWidgetItem*> l = selectionView->findItems(selObject, Qt::MatchStartsWith);
+        if (l.size() == 1) {
             delete l[0];
-
+        }
     }
     else if (Reason.Type == SelectionChanges::SetSelection) {
         // remove all items
         selectionView->clear();
-        std::vector<SelectionSingleton::SelObj> objs = Gui::Selection().getSelection(Reason.pDocName, ResolveMode::NoResolve);
-        for (const auto & it : objs) {
+        std::vector<SelectionSingleton::SelObj> objs =
+            Gui::Selection().getSelection(Reason.pDocName, ResolveMode::NoResolve);
+        for (const auto& it : objs) {
             // save as user data
             QStringList list;
             list << QString::fromLatin1(it.DocName);
             list << QString::fromLatin1(it.FeatName);
 
-            // build name
-            str << it.DocName;
-            str << "#";
-            str << it.FeatName;
             App::Document* doc = App::GetApplication().getDocument(it.DocName);
             App::DocumentObject* obj = doc->getObject(it.FeatName);
-            if (it.SubName && it.SubName[0] != '\0') {
-                str << ".";
-                str << it.SubName;
-                auto subObj = obj->getSubObject(Reason.pSubName);
-                if(subObj)
-                    obj = subObj;
-            }
-            str << " (";
-            str << QString::fromUtf8(obj->Label.getValue());
-            str << ")";
-
+            getSelectionName(str, it.DocName, it.FeatName, it.SubName, obj);
             QListWidgetItem* item = new QListWidgetItem(selObject, selectionView);
             item->setData(Qt::UserRole, list);
             selObject.clear();
@@ -233,29 +240,21 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
         enablePickList->setChecked(picking);
         pickList->setVisible(picking);
         pickList->clear();
-        if(picking) {
-            const auto &sels = Selection().getPickedList(Reason.pDocName);
-            for(const auto &sel : sels) {
+        if (picking) {
+            const auto& sels = Selection().getPickedList(Reason.pDocName);
+            for (const auto& sel : sels) {
                 App::Document* doc = App::GetApplication().getDocument(sel.DocName);
-                if(!doc) continue;
+                if (!doc) {
+                    continue;
+                }
                 App::DocumentObject* obj = doc->getObject(sel.FeatName);
-                if(!obj) continue;
+                if (!obj) {
+                    continue;
+                }
 
                 QString selObject;
                 QTextStream str(&selObject);
-                str << sel.DocName;
-                str << "#";
-                str << sel.FeatName;
-                if (sel.SubName[0] != 0 ) {
-                    str << ".";
-                    str << sel.SubName;
-                    auto subObj = obj->getSubObject(sel.SubName);
-                    if(subObj)
-                        obj = subObj;
-                }
-                str << " (";
-                str << QString::fromUtf8(obj->Label.getValue());
-                str << ")";
+                getSelectionName(str, sel.DocName, sel.FeatName, sel.SubName, obj);
 
                 this->x = sel.x;
                 this->y = sel.y;

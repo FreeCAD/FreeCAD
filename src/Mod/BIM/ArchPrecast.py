@@ -777,14 +777,14 @@ class _PrecastTaskPanel:
     def __init__(self):
 
         import FreeCADGui
-        from PySide import QtCore,QtGui,QtSvg
+        from PySide import QtCore, QtGui, QtSvgWidgets
         self.form = QtGui.QWidget()
         self.grid = QtGui.QGridLayout(self.form)
         self.PrecastTypes = ["Beam","I-Beam","Pillar","Panel","Slab","Stairs"]
         self.SlabTypes = ["Champagne","Hat"]
 
         # image display
-        self.preview = QtSvg.QSvgWidget(":/ui/ParametersBeam.svg")
+        self.preview = QtSvgWidgets.QSvgWidget(":/ui/ParametersBeam.svg")
         self.preview.setMaximumWidth(200)
         self.preview.setMinimumHeight(120)
         self.grid.addWidget(self.preview,0,0,1,2)
@@ -1263,7 +1263,7 @@ class _DentsTaskPanel:
     def __init__(self):
 
         import FreeCADGui
-        from PySide import QtCore,QtGui,QtSvg
+        from PySide import QtCore, QtGui, QtSvgWidgets
         self.form = QtGui.QWidget()
         self.grid = QtGui.QGridLayout(self.form)
         self.Rotations = ["N","S","E","O"]
@@ -1282,7 +1282,7 @@ class _DentsTaskPanel:
         self.grid.addWidget(self.buttonRemove,2,1,1,1)
 
         # image display
-        self.preview = QtSvg.QSvgWidget(":/ui/ParametersDent.svg")
+        self.preview = QtSvgWidgets.QSvgWidget(":/ui/ParametersDent.svg")
         self.preview.setMaximumWidth(200)
         self.preview.setMinimumHeight(120)
         self.grid.addWidget(self.preview,3,0,1,2)

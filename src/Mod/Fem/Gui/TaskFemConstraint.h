@@ -61,9 +61,6 @@ protected Q_SLOTS:
     void onReferenceDeleted(const int row);
     void onButtonReference(const bool pressed = true);
     void setSelection(QListWidgetItem* item);
-    // Shaft Wizard integration
-    void onButtonWizOk();
-    void onButtonWizCancel();
 
 protected:
     void changeEvent(QEvent* e) override
@@ -89,13 +86,6 @@ protected:
         selloc,
         selnone
     } selectionMode;
-
-private:
-    // This seems to be the only way to access the widgets again in order to remove them from the
-    // dialog
-    QDialogButtonBox* buttonBox;
-    QPushButton* okButton;
-    QPushButton* cancelButton;
 };
 
 /// simulation dialog for the TaskView

@@ -230,9 +230,7 @@ class _TaskPanel:
     def recompute_and_set_back_all(self):
         doc = FreeCADGui.getDocument(self.obj.Document)
         doc.Document.recompute()
-        self.selectionWidget.setback_listobj_visibility()
-        if self.selectionWidget.sel_server:
-            FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
+        self.selectionWidget.finish_selection()
         doc.resetEdit()
 
     def do_not_set_thermal_zeros(self):

@@ -42,10 +42,9 @@
 #include <Gui/Inventor/MarkerBitmaps.h>
 
 #include <App/Document.h>
-#include <App/MeasureDistance.h>
+#include <Base/BaseClass.h>
 #include <Base/Console.h>
 #include <Base/Quantity.h>
-#include "Mod/Measure/App/MeasureDistance.h"
 #include <Mod/Measure/App/Preferences.h>
 
 #include "ViewProviderMeasureDistance.h"
@@ -63,9 +62,19 @@ PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureDistance, MeasureGui::ViewProvide
 
 
 SbMatrix ViewProviderMeasureDistance::getMatrix() {
-    auto object = dynamic_cast<Measure::MeasureDistance*>(getObject());
-    auto vec1 = object->Position1.getValue();
-    auto vec2 = object->Position2.getValue();
+    if (!pcObject) {
+        return {};
+    }
+    
+    auto prop1 = Base::freecad_dynamic_cast<App::PropertyVector>(pcObject->getPropertyByName("Position1"));
+    auto prop2 = Base::freecad_dynamic_cast<App::PropertyVector>(pcObject->getPropertyByName("Position2"));
+
+    if (!prop1 || !prop2) {
+        return {};
+    }
+
+    auto vec1 = prop1->getValue();
+    auto vec2 = prop2->getValue();
 
     const double tolerance(10.0e-6);
     SbVec3f origin = toSbVec3f((vec2 + vec1) / 2);
@@ -186,26 +195,28 @@ ViewProviderMeasureDistance::~ViewProviderMeasureDistance()
 }
 
 
-Measure::MeasureDistance* ViewProviderMeasureDistance::getMeasureDistance()
-{
-    Measure::MeasureDistance* feature = dynamic_cast<Measure::MeasureDistance*>(pcObject);
-    if (!feature) {
-        throw Base::RuntimeError("Feature not found for ViewProviderMeasureDistance");
-    }
-    return feature;
-}
-
 //! repaint the annotation
 void ViewProviderMeasureDistance::redrawAnnotation()
 {
-    auto object = dynamic_cast<Measure::MeasureDistance*>(getObject());
-    auto vec1 = object->Position1.getValue();
-    auto vec2 = object->Position2.getValue();
+    if (!pcObject) {
+        return;
+    }
+    
+    auto prop1 = Base::freecad_dynamic_cast<App::PropertyVector>(pcObject->getPropertyByName("Position1"));
+    auto prop2 = Base::freecad_dynamic_cast<App::PropertyVector>(pcObject->getPropertyByName("Position2"));
+
+    if (!prop1 || !prop2) {
+        return;
+    }
+
+    auto vec1 = prop1->getValue();
+    auto vec2 = prop2->getValue();
 
     // Set the distance
     fieldDistance = (vec2 - vec1).Length();
 
-    setLabelValue(object->Distance.getQuantityValue().getUserString());
+    auto propDistance = dynamic_cast<App::PropertyDistance*>(pcObject->getPropertyByName("Distance"));
+    setLabelValue(propDistance->getQuantityValue().getUserString());
 
     // Set matrix
     SbMatrix matrix = getMatrix();

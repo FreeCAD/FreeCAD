@@ -113,7 +113,6 @@
 #include "ViewProviderLink.h"
 #include "ViewProviderLinkPy.h"
 #include "ViewProviderMaterialObject.h"
-#include "ViewProviderMeasureDistance.h"
 #include "ViewProviderOrigin.h"
 #include "ViewProviderOriginFeature.h"
 #include "ViewProviderOriginGroup.h"
@@ -122,6 +121,7 @@
 #include "ViewProviderPart.h"
 #include "ViewProviderPythonFeature.h"
 #include "ViewProviderTextDocument.h"
+#include "ViewProviderTextureExtension.h"
 #include "ViewProviderVRMLObject.h"
 #include "ViewProviderVarSet.h"
 #include "WaitCursor.h"
@@ -601,8 +601,16 @@ void Application::open(const char* FileName, const char* Module)
                 // issue module loading
                 Command::doCommand(Command::App, "import %s", Module);
 
-                // load the file with the module
-                Command::doCommand(Command::App, "%s.open(u\"%s\")", Module, unicodepath.c_str());
+                // check for additional import options
+                std::stringstream str;
+                str << "if hasattr(" << Module << ", \"importOptions\"):\n"
+                    << "    options = " << Module << ".importOptions(u\"" << unicodepath << "\")\n"
+                    << "    " << Module << ".open(u\"" << unicodepath << "\", options = options)\n"
+                    << "else:\n"
+                    << "    " << Module << ".open(u\"" << unicodepath << "\")\n";
+
+                std::string code = str.str();
+                Gui::Command::runCommand(Gui::Command::App, code.c_str());
 
                 // ViewFit
                 if (sendHasMsgToActiveView("ViewFit")) {
@@ -663,14 +671,25 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Import"));
                 }
 
+                // check for additional import options
+                std::stringstream str;
                 if (DocName) {
-                    Command::doCommand(Command::App, "%s.insert(u\"%s\",\"%s\")"
-                                                   , Module, unicodepath.c_str(), DocName);
+                    str << "if hasattr(" << Module << ", \"importOptions\"):\n"
+                        << "    options = " << Module << ".importOptions(u\"" << unicodepath << "\")\n"
+                        << "    " << Module << ".insert(u\"" << unicodepath << "\", \"" << DocName << "\", options = options)\n"
+                        << "else:\n"
+                        << "    " << Module << ".insert(u\"" << unicodepath << "\", \"" << DocName << "\")\n";
                 }
                 else {
-                    Command::doCommand(Command::App, "%s.insert(u\"%s\")"
-                                                   , Module, unicodepath.c_str());
+                    str << "if hasattr(" << Module << ", \"importOptions\"):\n"
+                        << "    options = " << Module << ".importOptions(u\"" << unicodepath << "\")\n"
+                        << "    " << Module << ".insert(u\"" << unicodepath << "\", options = options)\n"
+                        << "else:\n"
+                        << "    " << Module << ".insert(u\"" << unicodepath << "\")\n";
                 }
+
+                std::string code = str.str();
+                Gui::Command::runCommand(Gui::Command::App, code.c_str());
 
                 // Commit the transaction
                 if (doc && !pendingCommand) {
@@ -1875,6 +1894,7 @@ void Application::initApplication()
 
 void Application::initTypes()
 {
+    // clang-format off
     // views
     Gui::BaseView                               ::init();
     Gui::MDIView                                ::init();
@@ -1908,8 +1928,6 @@ void Application::initTypes()
     Gui::ViewProviderVRMLObject                 ::init();
     Gui::ViewProviderAnnotation                 ::init();
     Gui::ViewProviderAnnotationLabel            ::init();
-    Gui::ViewProviderPointMarker                ::init();
-    Gui::ViewProviderMeasureDistance            ::init();
     Gui::ViewProviderPythonFeature              ::init();
     Gui::ViewProviderPythonGeometry             ::init();
     Gui::ViewProviderPlacement                  ::init();
@@ -1925,6 +1943,8 @@ void Application::initTypes()
     Gui::ViewProviderMaterialObject             ::init();
     Gui::ViewProviderMaterialObjectPython       ::init();
     Gui::ViewProviderTextDocument               ::init();
+    Gui::ViewProviderTextureExtension           ::init();
+    Gui::ViewProviderFaceTexture                ::init();
     Gui::ViewProviderLinkObserver               ::init();
     Gui::LinkView                               ::init();
     Gui::ViewProviderLink                       ::init();
@@ -1945,6 +1965,7 @@ void Application::initTypes()
     // register transaction type
     new App::TransactionProducer<TransactionViewProvider>
             (ViewProviderDocumentObject::getClassTypeId());
+    // clang-format on
 }
 
 void Application::initOpenInventor()

@@ -800,7 +800,7 @@ AssemblyObject::getConnectedParts(App::DocumentObject* part,
 
 bool AssemblyObject::isPartGrounded(App::DocumentObject* obj)
 {
-    std::vector<App::DocumentObject*> groundedObjs = fixGroundedParts();
+    std::vector<App::DocumentObject*> groundedObjs = getGroundedParts();
 
     for (auto* groundedObj : groundedObjs) {
         if (groundedObj->getFullName() == obj->getFullName()) {
@@ -1675,14 +1675,14 @@ void AssemblyObject::swapJCS(App::DocumentObject* joint)
 }
 
 bool AssemblyObject::isEdgeType(App::DocumentObject* obj,
-                                const char* elName,
+                                std::string& elName,
                                 GeomAbs_CurveType type)
 {
     PartApp::Feature* base = static_cast<PartApp::Feature*>(obj);
     const PartApp::TopoShape& TopShape = base->Shape.getShape();
 
     // Check for valid face types
-    TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(elName));
+    TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(elName.c_str()));
     BRepAdaptor_Curve sf(edge);
 
     if (sf.GetType() == type) {
@@ -1693,16 +1693,16 @@ bool AssemblyObject::isEdgeType(App::DocumentObject* obj,
 }
 
 bool AssemblyObject::isFaceType(App::DocumentObject* obj,
-                                const char* elName,
+                                std::string& elName,
                                 GeomAbs_SurfaceType type)
 {
     auto base = static_cast<PartApp::Feature*>(obj);
     PartApp::TopoShape TopShape = base->Shape.getShape();
 
     // Check for valid face types
-    TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(elName));
+    TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(elName.c_str()));
     BRepAdaptor_Surface sf(face);
-    // GeomAbs_Plane GeomAbs_Cylinder GeomAbs_Cone GeomAbs_Sphere GeomAbs_Thorus
+
     if (sf.GetType() == type) {
         return true;
     }
@@ -1749,8 +1749,8 @@ DistanceType AssemblyObject::getDistanceType(App::DocumentObject* joint)
 {
     std::string type1 = getElementTypeFromProp(joint, "Element1");
     std::string type2 = getElementTypeFromProp(joint, "Element2");
-    const char* elt1 = getElementFromProp(joint, "Element1");
-    const char* elt2 = getElementFromProp(joint, "Element2");
+    std::string elt1 = getElementFromProp(joint, "Element1");
+    std::string elt2 = getElementFromProp(joint, "Element2");
     auto* obj1 = getLinkedObjFromNameProp(joint, "Object1", "Part1");
     auto* obj2 = getLinkedObjFromNameProp(joint, "Object2", "Part2");
 

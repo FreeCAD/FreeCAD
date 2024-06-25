@@ -27,6 +27,7 @@
 
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderGeometryObject.h>
+#include <Gui/ViewProviderTextureExtension.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/PartGlobal.h>
@@ -52,7 +53,6 @@ class SoNormal;
 class SoNormalBinding;
 class SoMaterialBinding;
 class SoIndexedLineSet;
-class SoTexture3;
 
 namespace PartGui {
 
@@ -86,8 +86,6 @@ public:
     App::PropertyColor LineColor;
     App::PropertyMaterial LineMaterial;
     App::PropertyColorList LineColorArray;
-    // Faces (Gui::ViewProviderGeometryObject::ShapeAppearance and Gui::ViewProviderGeometryObject::ShapeMaterial apply)
-    // App::PropertyColorList DiffuseColor;
 
     void attach(App::DocumentObject *) override;
     void setDisplayMode(const char* ModeName) override;
@@ -186,15 +184,11 @@ protected:
     SoBrepEdgeSet     * lineset;
     SoBrepPointSet    * nodeset;
 
-    // Used to support per face textures
-    SoTexture3        * pcShapeTexture3D;
-    SoCoordinate3     * pcShapeCoordinates;
-    SoIndexedFaceSet  * pcShapeFaceset;
-
     bool VisualTouched;
     bool NormalsFromUV;
 
 private:
+    Gui::ViewProviderFaceTexture texture;
     // settings stuff
     int forceUpdateCount;
     static App::PropertyFloatConstraint::Constraints sizeRange;
