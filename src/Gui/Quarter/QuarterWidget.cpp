@@ -164,9 +164,8 @@ public:
 #endif
         setFormat(surfaceFormat);
     }
-    ~CustomGLWidget() override
-    {
-    }
+    ~CustomGLWidget() override = default;
+
     void initializeGL() override
     {
         QOpenGLContext *context = QOpenGLContext::currentContext();
@@ -179,10 +178,7 @@ public:
                 logger->startLogging(QOpenGLDebugLogger::SynchronousLogging);
         }
 #endif
-        if (context) {
-            connect(context, &QOpenGLContext::aboutToBeDestroyed,
-                this, &CustomGLWidget::aboutToDestroyGLContext, Qt::DirectConnection);
-        }
+
         connect(this, &CustomGLWidget::resized, this, &CustomGLWidget::slotResized);
     }
     // paintGL() is invoked when e.g. using the method grabFramebuffer of this class
@@ -200,17 +196,7 @@ public:
             qw->redraw();
         }
     }
-    void aboutToDestroyGLContext()
-    {
-        // With Qt 5.9 a signal is emitted while the QuarterWidget is being destroyed.
-        // At this state its type is a QWidget, not a QuarterWidget any more.
-        QuarterWidget* qw = qobject_cast<QuarterWidget*>(parent());
-        if (!qw)
-            return;
-        QMetaObject::invokeMethod(parent(), "aboutToDestroyGLContext",
-            Qt::DirectConnection,
-            QGenericReturnArgument());
-    }
+
     bool event(QEvent *e) override
     {
         // If a debug logger is activated then Qt's default implementation
@@ -332,11 +318,6 @@ QuarterWidget::replaceViewport()
 
   setAutoFillBackground(false);
   viewport()->setAutoFillBackground(false);
-}
-
-void
-QuarterWidget::aboutToDestroyGLContext()
-{
 }
 
 /*! destructor */

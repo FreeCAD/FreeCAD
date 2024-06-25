@@ -440,6 +440,7 @@ class ToolBitSelector(object):
         self.loadData()  # Load the initial data for the tool model
 
         self.form.tools.setModel(self.toolModel)
+        self.form.tools.selectionModel().selectionChanged.connect(self.enableButtons)
         self.form.tools.doubleClicked.connect(
             partial(self.selectedOrAllToolControllers)
         )
@@ -611,7 +612,7 @@ class ToolBitLibrary(object):
         self.temptool = None
 
         # add it to the model
-        self.factory.newTool(self.toolModel, fullpath)
+        self.factory.new_tool(self.toolModel, fullpath)
 
     def toolBitExisting(self):
 
@@ -626,7 +627,7 @@ class ToolBitLibrary(object):
             fname = os.path.splitext(fil)[0]
             fullpath = "{}{}{}.fctb".format(loc, os.path.sep, fname)
 
-            self.factory.newTool(self.toolModel, fullpath)
+            self.factory.new_tool(self.toolModel, fullpath)
 
     def toolDelete(self):
         Path.Log.track()

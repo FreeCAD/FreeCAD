@@ -678,7 +678,11 @@ def Execute(op, obj):
         # Get list of working edges for adaptive algorithm
         pathArray = op.pathArray
         if not pathArray:
-            Path.Log.error("No wire data returned.")
+            msg = translate(
+                "CAM",
+                "Adaptive operation couldn't determine the boundary wire. Did you select base geometry?",
+            )
+            FreeCAD.Console.PrintUserWarning(msg)
             return
 
         path2d = convertTo2d(pathArray)

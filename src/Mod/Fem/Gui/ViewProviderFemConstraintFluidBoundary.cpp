@@ -29,7 +29,6 @@
 #include <Inventor/nodes/SoMultipleCopy.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Precision.hxx>
-#include <QMessageBox>
 #endif
 
 #include "Gui/Control.h"
@@ -56,58 +55,15 @@ ViewProviderFemConstraintFluidBoundary::~ViewProviderFemConstraintFluidBoundary(
 bool ViewProviderFemConstraintFluidBoundary::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        // When double-clicking on the item for this constraint,
-        // object unsets and sets its edit mode without closing the task panel
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintFluidBoundary* constrDlg =
-            qobject_cast<TaskDlgFemConstraintFluidBoundary*>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this) {
-            constrDlg = nullptr;  // another constraint left open its task panel
-        }
-        if (dlg && !constrDlg) {
-            // This case will occur in the ShaftWizard application
-            checkForWizard();
-            if (!wizardWidget || !wizardSubLayout) {
-                // No shaft wizard is running
-                QMessageBox msgBox;
-                msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-                msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-                msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-                msgBox.setDefaultButton(QMessageBox::Yes);
-                int ret = msgBox.exec();
-                if (ret == QMessageBox::Yes) {
-                    Gui::Control().reject();
-                }
-                else {
-                    return false;
-                }
-            }
-            else if (constraintDialog) {
-                // Another FemConstraint* dialog is already open inside the Shaft Wizard
-                // Ignore the request to open another dialog
-                return false;
-            }
-            else {
-                constraintDialog = new TaskFemConstraintFluidBoundary(this);
-                return true;
-            }
-        }
-
+        Gui::Control().closeDialog();
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
-
-        // start the edit dialog
-        if (constrDlg) {
-            Gui::Control().showDialog(constrDlg);
-        }
-        else {
-            Gui::Control().showDialog(new TaskDlgFemConstraintFluidBoundary(this));
-        }
+        Gui::Control().showDialog(new TaskDlgFemConstraintFluidBoundary(this));
 
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum);  // clazy:exclude=skipped-base-method
+        return ViewProviderFemConstraintOnBoundary::setEdit(ModNum);
     }
 }
 

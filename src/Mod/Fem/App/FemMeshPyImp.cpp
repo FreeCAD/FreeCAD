@@ -1526,7 +1526,7 @@ Py::Dict FemMeshPy::getNodes() const
     Base::Matrix4D Mtrx = getFemMeshPtr()->getTransform();
 
     SMDS_NodeIteratorPtr aNodeIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->nodesIterator();
-    for (int i = 0; aNodeIter->more(); i++) {
+    while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
         Base::Vector3d vec(aNode->X(), aNode->Y(), aNode->Z());
         // Apply the matrix to hold the BoundBox in absolute space.

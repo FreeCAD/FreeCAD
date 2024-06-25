@@ -37,6 +37,7 @@ import Path.Main.Sanity.ImageBuilder as ImageBuilder
 import Path.Main.Sanity.ReportGenerator as ReportGenerator
 import os
 import tempfile
+import Path.Dressup.Utils as PathDressup
 
 translate = FreeCAD.Qt.translate
 
@@ -454,11 +455,12 @@ class CAMSanity:
 
             used = False
             for op in obj.Operations.Group:
-                if hasattr(op, "ToolController") and op.ToolController is TC:
+                base_op = PathDressup.baseOp(op)
+                if hasattr(base_op, "ToolController") and base_op.ToolController is TC:
                     used = True
                     tooldata.setdefault("ops", []).append(
                         {
-                            "Operation": op.Label,
+                            "Operation": base_op.Label,
                             "ToolController": TC.Label,
                             "Feed": str(TC.HorizFeed),
                             "Speed": str(TC.SpindleSpeed),

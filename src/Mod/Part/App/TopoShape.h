@@ -1108,7 +1108,6 @@ public:
      *
      * @param base: the basis shape
      * @param axis: the revolving axis
-     * @param d: rotation angle in degree
      * @param face_maker: optional type name of the the maker used to make a
      *                    face from basis shape
      * @param supportface:  the bottom face for the revolution, or null
@@ -1122,7 +1121,6 @@ public:
      */
     TopoShape& makeElementRevolution(const TopoShape& _base,
                                      const gp_Ax1& axis,
-                                     double d,
                                      const TopoDS_Face& supportface,
                                      const TopoDS_Face& uptoface,
                                      const char* face_maker = nullptr,
@@ -1133,7 +1131,6 @@ public:
     /** Make revolved shell around a basis shape
      *
      * @param axis: the revolving axis
-     * @param d: rotation angle in degree
      * @param face_maker: optional type name of the the maker used to make a
      *                    face from basis shape
      * @param supportface:  the bottom face for the revolution, or null
@@ -1146,7 +1143,6 @@ public:
      * @return Return the generated new shape. The TopoShape itself is not modified.
      */
     TopoShape& makeElementRevolution(const gp_Ax1& axis,
-                                     double d,
                                      const TopoDS_Face& supportface,
                                      const TopoDS_Face& uptoface,
                                      const char* face_maker = nullptr,
@@ -1156,7 +1152,6 @@ public:
     {
         return TopoShape(0, Hasher).makeElementRevolution(*this,
                                                           axis,
-                                                          d,
                                                           supportface,
                                                           uptoface,
                                                           face_maker,
