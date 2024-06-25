@@ -165,7 +165,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             def process_objects(objs, item):
                 onlyParts = self.form.CheckBox_ShowOnlyParts.isChecked()
                 for obj in objs:
-                    if obj.Name == self.assembly.Name:
+                    if obj == self.assembly:
                         continue  # Skip current assembly
 
                     if (
