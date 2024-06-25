@@ -168,7 +168,7 @@ class BIMWorkbench(Workbench):
         self.modify_3d = [
             "Draft_OrthoArray",
             "Draft_PathArray",
-            "Draft_CircularArray",
+            "Draft_PolarArray",
             "Draft_PointArray",
             "Arch_CutPlane",
             "Draft_Mirror",
@@ -217,6 +217,7 @@ class BIMWorkbench(Workbench):
             "Arch_Survey",
             "BIM_Diff",
             "BIM_IfcExplorer",
+            "Arch_IfcSpreadsheet",
             "BIM_ImagePlane",
             "BIM_Unclone",
             "BIM_Rewire",
