@@ -5,7 +5,7 @@ SET(Examples_Files
     EngineBlock.FCStd
     PartDesignExample.FCStd
     RobotExample.FCStd
-    ArchDetail.FCStd
+    BIMExample.FCStd
     FemCalculixCantilever1D.FCStd
     FemCalculixCantilever2D.FCStd
     FemCalculixCantilever3D.FCStd
