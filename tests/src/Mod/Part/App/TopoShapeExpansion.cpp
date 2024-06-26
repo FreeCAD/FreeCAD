@@ -582,16 +582,16 @@ TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesWires)
     // Assert map is correct
     EXPECT_TRUE(allElementsMatch(topoShape,
                                  {
-                                     "Edge1;:C1;:H4:4,E;WIR;:H4:4,E;WIR;:H4:4,E",
-                                     "Edge1;:H1,E;WIR;:H1:4,E;WIR;:H1:4,E",
-                                     "Edge1;:H2,E;WIR;:H2:4,E;WIR;:H2:4,E",
-                                     "Edge1;:H4,E;WIR;:H4:4,E;WIR;:H4:4,E",
-                                     "Vertex1;:H1,V;WIR;:H1:4,V;WIR;:H1:4,V",
-                                     "Vertex1;:H4,V;WIR;:H4:4,V;WIR;:H4:4,V",
-                                     "Vertex2;:C1;:H4:4,V;WIR;:H4:4,V;WIR;:H4:4,V",
-                                     "Vertex2;:H1,V;WIR;:H1:4,V;WIR;:H1:4,V",
-                                     "Vertex2;:H2,V;WIR;:H2:4,V;WIR;:H2:4,V",
-                                     "Vertex2;:H4,V;WIR;:H4:4,V;WIR;:H4:4,V",
+                                     "Edge1;WIR;:H1:4,E;WIR;:H1:4,E",
+                                     "Edge1;WIR;:H2:4,E;WIR;:H2:4,E",
+                                     "Edge1;WIR;:H4:4,E;D1;:H4:3,E;WIR;:H4:4,E",
+                                     "Edge1;WIR;:H4:4,E;WIR;:H4:4,E",
+                                     "Vertex1;WIR;:H1:4,V;WIR;:H1:4,V",
+                                     "Vertex1;WIR;:H4:4,V;WIR;:H4:4,V",
+                                     "Vertex2;WIR;:H1:4,V;WIR;:H1:4,V",
+                                     "Vertex2;WIR;:H2:4,V;WIR;:H2:4,V",
+                                     "Vertex2;WIR;:H4:4,V;D1;:H4:3,V;WIR;:H4:4,V",
+                                     "Vertex2;WIR;:H4:4,V;WIR;:H4:4,V",
                                  }));  // Changed with PR#12471. Probably will change again after
                                        // importing other TopoNaming logics
 }
@@ -2358,12 +2358,12 @@ TEST_F(TopoShapeExpansionTest, makeElementSlice)
                               {
                                   "Face1;:G2;SLC;:H1:8,V;SLC;:H1:4,V",
                                   "Face1;:G3;SLC;:H1:8,V;SLC;:H1:4,V",
-                                  "Face1;:G4;SLC;:H1:8,V;D1;:H1:3,V;SLC;:H1:4,V",
                                   "Face1;:G4;SLC;:H1:8,V;SLC;:H1:4,V",
                                   "Face1;:G5;SLC;:H1:8,E;SLC;:H1:4,E",
                                   "Face1;:G6;SLC;:H1:8,E;SLC;:H1:4,E",
                                   "Face1;:G7;SLC;:H1:8,E;SLC;:H1:4,E",
                                   "Face1;:G8;SLC;:H1:8,E;SLC;:H1:4,E",
+                                  "Face1;:G;SLC;:H1:7,V;SLC;:H1:4,V",
                               }));
 }
 
@@ -2388,34 +2388,33 @@ TEST_F(TopoShapeExpansionTest, makeElementSlices)
     EXPECT_EQ(TopAbs_ShapeEnum::TopAbs_WIRE, subTopoShapes[2].getShape().ShapeType());
     // Assert that we're creating a correct element map
     EXPECT_TRUE(result.getMappedChildElements().empty());
-    EXPECT_TRUE(
-        elementsMatch(result,
-                      {
-                          "Edge10;:G(Face1;K-2;:H1:4,F);SLC;:H1:1a,V;SLC;:H1:4,V",
-                          "Edge10;:G(Face1;K-2;:H2:4,F);SLC_2;:H1:1c,V;SLC_2;:H1:6,V",
-                          "Edge10;:G(Face1;K-2;:H3:4,F);SLC_3;:H1:1c,V;SLC_3;:H1:6,V",
-                          "Edge11;:G(Face1;K-3;:H1:4,F);SLC;:H1:1a,V;SLC;:H1:4,V",
-                          "Edge11;:G(Face1;K-3;:H2:4,F);SLC_2;:H1:1c,V;SLC_2;:H1:6,V",
-                          "Edge11;:G(Face1;K-3;:H3:4,F);SLC_3;:H1:1c,V;SLC_3;:H1:6,V",
-                          "Edge12;:G(Face1;K-4;:H1:4,F);SLC;:H1:1a,V;D1;:H1:3,V;SLC;:H1:4,V",
-                          "Edge12;:G(Face1;K-4;:H1:4,F);SLC;:H1:1a,V;SLC;:H1:4,V",
-                          "Edge12;:G(Face1;K-4;:H2:4,F);SLC_2;:H1:1c,V;D1;:H1:3,V;SLC_2;:H1:6,V",
-                          "Edge12;:G(Face1;K-4;:H2:4,F);SLC_2;:H1:1c,V;SLC_2;:H1:6,V",
-                          "Edge12;:G(Face1;K-4;:H3:4,F);SLC_3;:H1:1c,V;D1;:H1:3,V;SLC_3;:H1:6,V",
-                          "Edge12;:G(Face1;K-4;:H3:4,F);SLC_3;:H1:1c,V;SLC_3;:H1:6,V",
-                          "Face1;:G5(Face3;K-1;:H1:4,F);SLC;:H1:1b,E;SLC;:H1:4,E",
-                          "Face1;:G6(Face4;K-1;:H1:4,F);SLC;:H1:1b,E;SLC;:H1:4,E",
-                          "Face1;:G7(Face5;K-1;:H1:4,F);SLC;:H1:1b,E;SLC;:H1:4,E",
-                          "Face1;:G8(Face6;K-1;:H1:4,F);SLC;:H1:1b,E;SLC;:H1:4,E",
-                          "Face3;:G(Face1;K-5;:H2:4,F);SLC_2;:H1:1c,E;SLC_2;:H1:6,E",
-                          "Face3;:G(Face1;K-5;:H3:4,F);SLC_3;:H1:1c,E;SLC_3;:H1:6,E",
-                          "Face4;:G(Face1;K-6;:H2:4,F);SLC_2;:H1:1c,E;SLC_2;:H1:6,E",
-                          "Face4;:G(Face1;K-6;:H3:4,F);SLC_3;:H1:1c,E;SLC_3;:H1:6,E",
-                          "Face5;:G(Face1;K-7;:H2:4,F);SLC_2;:H1:1c,E;SLC_2;:H1:6,E",
-                          "Face5;:G(Face1;K-7;:H3:4,F);SLC_3;:H1:1c,E;SLC_3;:H1:6,E",
-                          "Face6;:G(Face1;K-8;:H2:4,F);SLC_2;:H1:1c,E;SLC_2;:H1:6,E",
-                          "Face6;:G(Face1;K-8;:H3:4,F);SLC_3;:H1:1c,E;SLC_3;:H1:6,E",
-                      }));
+    EXPECT_TRUE(elementsMatch(result,
+                              {
+                                  "Edge10;:G(Face1;K-2;:H1:4,F);SLC;:H1:1a,V;SLC;:H1:4,V",
+                                  "Edge10;:G(Face1;K-2;:H2:4,F);SLC_2;:H1:1c,V;SLC_2;:H1:6,V",
+                                  "Edge10;:G(Face1;K-2;:H3:4,F);SLC_3;:H1:1c,V;SLC_3;:H1:6,V",
+                                  "Edge11;:G(Face1;K-3;:H1:4,F);SLC;:H1:1a,V;SLC;:H1:4,V",
+                                  "Edge11;:G(Face1;K-3;:H2:4,F);SLC_2;:H1:1c,V;SLC_2;:H1:6,V",
+                                  "Edge11;:G(Face1;K-3;:H3:4,F);SLC_3;:H1:1c,V;SLC_3;:H1:6,V",
+                                  "Edge12;:G(Face1;K-4;:H1:4,F);SLC;:H1:1a,V;SLC;:H1:4,V",
+                                  "Edge12;:G(Face1;K-4;:H2:4,F);SLC_2;:H1:1c,V;SLC_2;:H1:6,V",
+                                  "Edge12;:G(Face1;K-4;:H3:4,F);SLC_3;:H1:1c,V;SLC_3;:H1:6,V",
+                                  "Edge9;:G(Face1;K-1;:H1:4,F);SLC;:H1:1a,V;SLC;:H1:4,V",
+                                  "Edge9;:G(Face1;K-1;:H2:4,F);SLC_2;:H1:1c,V;SLC_2;:H1:6,V",
+                                  "Edge9;:G(Face1;K-1;:H3:4,F);SLC_3;:H1:1c,V;SLC_3;:H1:6,V",
+                                  "Face1;:G5(Face3;K-1;:H1:4,F);SLC;:H1:1b,E;SLC;:H1:4,E",
+                                  "Face1;:G6(Face4;K-1;:H1:4,F);SLC;:H1:1b,E;SLC;:H1:4,E",
+                                  "Face1;:G7(Face5;K-1;:H1:4,F);SLC;:H1:1b,E;SLC;:H1:4,E",
+                                  "Face1;:G8(Face6;K-1;:H1:4,F);SLC;:H1:1b,E;SLC;:H1:4,E",
+                                  "Face3;:G(Face1;K-5;:H2:4,F);SLC_2;:H1:1c,E;SLC_2;:H1:6,E",
+                                  "Face3;:G(Face1;K-5;:H3:4,F);SLC_3;:H1:1c,E;SLC_3;:H1:6,E",
+                                  "Face4;:G(Face1;K-6;:H2:4,F);SLC_2;:H1:1c,E;SLC_2;:H1:6,E",
+                                  "Face4;:G(Face1;K-6;:H3:4,F);SLC_3;:H1:1c,E;SLC_3;:H1:6,E",
+                                  "Face5;:G(Face1;K-7;:H2:4,F);SLC_2;:H1:1c,E;SLC_2;:H1:6,E",
+                                  "Face5;:G(Face1;K-7;:H3:4,F);SLC_3;:H1:1c,E;SLC_3;:H1:6,E",
+                                  "Face6;:G(Face1;K-8;:H2:4,F);SLC_2;:H1:1c,E;SLC_2;:H1:6,E",
+                                  "Face6;:G(Face1;K-8;:H3:4,F);SLC_3;:H1:1c,E;SLC_3;:H1:6,E",
+                              }));
     EXPECT_FALSE(
         subTopoShapes[0].getElementMap().empty());  // Changed with PR#12471. Probably will change
                                                     // again after importing other TopoNaming logics
