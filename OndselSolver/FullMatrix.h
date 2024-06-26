@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "corecrt_math_defines.h"
+#include <cmath>
 #include <memory>
 
 #include "RowTypeMatrix.h"
@@ -641,12 +641,12 @@ namespace MbD {
 		if (std::abs(sthe1y) > 0.9999) {
 			if (sthe1y > 0.0) {
 				the0x = std::atan2(this->at(1)->at(0), this->at(1)->at(1));
-				the1y = OS_M_PI / 2.0;
+				the1y = M_PI / 2.0;
 				the2z = 0.0;
 			}
 			else {
 				the0x = std::atan2(this->at(2)->at(1), this->at(2)->at(0));
-				the1y = OS_M_PI / -2.0;
+				the1y = M_PI / -2.0;
 				the2z = 0.0;
 			}
 		}
@@ -682,7 +682,7 @@ namespace MbD {
 				the2z = 0.0;
 			}
 			else {
-				the1x = OS_M_PI;
+				the1x = M_PI;
 				the2z = 0.0;
 			}
 		}

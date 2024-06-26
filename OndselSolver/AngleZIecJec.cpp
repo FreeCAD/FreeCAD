@@ -6,7 +6,7 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
 
-#include "corecrt_math_defines.h"
+#include <cmath>
 
 #include "AngleZIecJec.h"
 #include "Numeric.h"
@@ -30,7 +30,7 @@ void MbD::AngleZIecJec::calcPostDynCorrectorIteration()
 	auto diffOfSquares = sthez * sthez - (cthez * cthez);
 	auto sumOfSquaresSquared = sumOfSquares * sumOfSquares;
 	auto thez0to2pi = Numeric::arcTan0to2piYoverX(sthez, cthez);
-	thez = std::round((thez - thez0to2pi) / (2.0 * OS_M_PI)) * (2.0 * OS_M_PI) + thez0to2pi;
+	thez = std::round((thez - thez0to2pi) / (2.0 * M_PI)) * (2.0 * M_PI) + thez0to2pi;
 	//std::cout << "AngleZIecJec thez = " << thez << std::endl;
 
 	cosOverSSq = cthez / sumOfSquares;

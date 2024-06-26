@@ -6,7 +6,7 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-#include "corecrt_math_defines.h"
+#include <cmath>
 
 #include "ScrewConstraintIJ.h"
 #include "ScrewConstraintIqcJqc.h"
@@ -32,7 +32,7 @@ void MbD::ScrewConstraintIJ::calcPostDynCorrectorIteration()
 {
 	auto z = zIeJeIe->value();
 	auto thez = thezIeJe->thez;
-	aG = (2.0 * OS_M_PI * z) - (pitch * thez) - aConstant;
+	aG = (2.0 * M_PI * z) - (pitch * thez) - aConstant;
 }
 
 void MbD::ScrewConstraintIJ::init_zthez()
@@ -73,7 +73,7 @@ void MbD::ScrewConstraintIJ::postInput()
 	zIeJeIe->postInput();
 	thezIeJe->postInput();
 	if (aConstant == std::numeric_limits<double>::min()) {
-		aConstant = (2.0 * OS_M_PI * zIeJeIe->value()) - (thezIeJe->value() * pitch);
+		aConstant = (2.0 * M_PI * zIeJeIe->value()) - (thezIeJe->value() * pitch);
 	}
 	ConstraintIJ::postInput();
 }

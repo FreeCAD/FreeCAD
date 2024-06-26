@@ -6,7 +6,7 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
 
-#include "corecrt_math_defines.h"
+#include <cmath>
 
 #include "ScrewConstraintIqcJqc.h"
 #include "EndFrameqc.h"
@@ -37,28 +37,28 @@ void MbD::ScrewConstraintIqcJqc::initthezIeJe()
 
 void MbD::ScrewConstraintIqcJqc::calc_pGpEJ()
 {
-	pGpEJ = zIeJeIe->pvaluepEJ()->times(2.0 * OS_M_PI)->minusFullRow(thezIeJe->pvaluepEJ()->times(pitch));
+	pGpEJ = zIeJeIe->pvaluepEJ()->times(2.0 * M_PI)->minusFullRow(thezIeJe->pvaluepEJ()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJqc::calc_pGpXJ()
 {
-	pGpXJ = zIeJeIe->pvaluepXJ()->times(2.0 * OS_M_PI);
+	pGpXJ = zIeJeIe->pvaluepXJ()->times(2.0 * M_PI);
 }
 
 void MbD::ScrewConstraintIqcJqc::calc_ppGpEIpEJ()
 {
-	ppGpEIpEJ = zIeJeIe->ppvaluepEIpEJ()->times(2.0 * OS_M_PI)
+	ppGpEIpEJ = zIeJeIe->ppvaluepEIpEJ()->times(2.0 * M_PI)
 		->minusFullMatrix(thezIeJe->ppvaluepEIpEJ()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJqc::calc_ppGpEIpXJ()
 {
-	ppGpEIpXJ = zIeJeIe->ppvaluepEIpXJ()->times(2.0 * OS_M_PI);
+	ppGpEIpXJ = zIeJeIe->ppvaluepEIpXJ()->times(2.0 * M_PI);
 }
 
 void MbD::ScrewConstraintIqcJqc::calc_ppGpEJpEJ()
 {
-	ppGpEJpEJ = zIeJeIe->ppvaluepEJpEJ()->times(2.0 * OS_M_PI)
+	ppGpEJpEJ = zIeJeIe->ppvaluepEJpEJ()->times(2.0 * M_PI)
             ->minusFullMatrix(thezIeJe->ppvaluepEJpEJ()->times(pitch));
 }
 

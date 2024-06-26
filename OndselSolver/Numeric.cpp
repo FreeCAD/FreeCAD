@@ -7,7 +7,6 @@
  ***************************************************************************/
 
 #include <cmath>
-#include "corecrt_math_defines.h"
 #include <stdexcept>
 
 #include "Numeric.h"
@@ -25,7 +24,7 @@ double MbD::Numeric::arcTan0to2piYoverX(double y, double x)
 	}
 	else {
 		//"Third and forth quadrants."
-		return 2.0 * OS_M_PI + std::atan2(y, x);
+		return 2.0 * M_PI + std::atan2(y, x);
 	}
 }
 

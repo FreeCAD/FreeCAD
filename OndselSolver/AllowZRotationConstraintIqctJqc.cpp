@@ -37,11 +37,11 @@ void MbD::AllowZRotationConstraintIqctJqc::postInput()
 	auto aEulerAngleszxz = aAImJe->eulerAngleszxz();
 	auto the1z = aEulerAngleszxz->at(1);
 	auto the2x = aEulerAngleszxz->at(2);
-	if (std::abs(the2x) < (OS_M_PI / 2.0)) {
+	if (std::abs(the2x) < (M_PI / 2.0)) {
 		eqctI->phiThePsiBlks->at(1) = std::make_shared<Constant>(the1z);
 	}
 	else {
-		eqctI->phiThePsiBlks->at(1) = std::make_shared<Constant>(OS_M_PI + the1z);
+		eqctI->phiThePsiBlks->at(1) = std::make_shared<Constant>(M_PI + the1z);
 	}
 	eqctI->postInput();
 	DirectionCosineConstraintIqctJqc::postInput();

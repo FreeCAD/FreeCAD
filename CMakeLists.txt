@@ -438,7 +438,6 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/ConstVelConstraintIJ.h
         OndselSolver/ConstVelConstraintIqcJc.h
         OndselSolver/ConstVelConstraintIqcJqc.h
-        OndselSolver/corecrt_math_defines.h
         OndselSolver/Cosine.h
         OndselSolver/CREATE.h
         OndselSolver/CylindricalJoint.h
@@ -661,6 +660,10 @@ set_target_properties(OndselSolver
         SOVERSION 1
         PUBLIC_HEADER "${ONDSELSOLVER_HEADERS}"
 )
+
+if(MSVC)
+    target_compile_definitions(OndselSolver PRIVATE _USE_MATH_DEFINES)
+endif(MSVC)
 
 configure_file(OndselSolver.pc.in ${CMAKE_BINARY_DIR}/OndselSolver.pc @ONLY)
 install(TARGETS OndselSolver
