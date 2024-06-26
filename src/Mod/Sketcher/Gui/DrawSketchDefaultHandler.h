@@ -859,11 +859,29 @@ protected:
      * all the constraints stored in the AutoConstraints vector. */
     void createGeneratedAutoConstraints(bool owncommand)
     {
-        // add auto-constraints
-        if (owncommand) {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add auto constraints"));
-        }
+        try {
+            // add auto-constraints
+            if (owncommand) {
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add auto constraints"));
+            }
 
+            tryAddAutoConstraints();
+
+            if (owncommand) {
+                Gui::Command::commitCommand();
+            }
+        }
+        catch (const Base::PyException&) {
+            if (owncommand) {
+                Gui::Command::abortCommand();
+            }
+        }
+    }
+
+    /** @brief Convenience function to automatically add to the SketchObjects
+     * all the constraints stored in the AutoConstraints vector. */
+    void tryAddAutoConstraints()
+    {
         auto autoConstraints = toPointerVector(AutoConstraints);
 
         Gui::Command::doCommand(
@@ -871,10 +889,6 @@ protected:
             Sketcher::PythonConverter::convert(Gui::Command::getObjectCmd(sketchgui->getObject()),
                                                autoConstraints)
                 .c_str());
-
-        if (owncommand) {
-            Gui::Command::commitCommand();
-        }
     }
 
     /** @brief Convenience function to remove redundant autoconstraints from the AutoConstraints
