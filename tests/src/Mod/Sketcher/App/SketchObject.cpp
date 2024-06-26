@@ -716,6 +716,8 @@ TEST_F(SketchObjectTest, testTrimWithoutIntersection)
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId - 1);
 }
 
+// TODO: There are other combinations of constraints we may want to test with trim.
+
 TEST_F(SketchObjectTest, testTrimLineSegmentEnd)
 {
     // Arrange
@@ -742,9 +744,8 @@ TEST_F(SketchObjectTest, testTrimLineSegmentEnd)
     // TODO: Once this line segment is trimmed, the curve should be "smaller"
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
     // TODO: There should be a "point-on-object" constraint on the intersecting curves
-    int numberOfPointOnObjectConstraints =
-        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
-    EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
+    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
+    EXPECT_EQ(numberOfCoincidentConstraints, 1);
 }
 
 TEST_F(SketchObjectTest, testTrimLineSegmentMid)
@@ -766,7 +767,11 @@ TEST_F(SketchObjectTest, testTrimLineSegmentMid)
     Base::Vector3d p3(lineSeg.pointAtParameter(
         lineSeg.getFirstParameter()
         + (lineSeg.getLastParameter() - lineSeg.getFirstParameter()) * 0.7));
-    Base::Vector3d p4(p3.x + 0.1, p3.y + 0.1, p3.z);
+    Base::Vector3d p4(p3.x + 0.1, p3.y - 0.1, p3.z);
+    // to ensure that this line clearly intersects the curve, not just have a point on object
+    // without explicit constraint
+    p3.x -= 0.1;
+    p3.y += 0.1;
     Part::GeomLineSegment lineSegCut2;
     lineSegCut2.setPoints(p3, p4);
     getObject()->addGeometry(&lineSegCut2);
@@ -782,7 +787,9 @@ TEST_F(SketchObjectTest, testTrimLineSegmentMid)
     // TODO: There should be a "point-on-object" constraint on the intersecting curves
     int numberOfPointOnObjectConstraints =
         countConstraintsOfType(getObject(), Sketcher::PointOnObject);
-    EXPECT_EQ(numberOfPointOnObjectConstraints, 2);
+    EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
+    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
+    EXPECT_EQ(numberOfCoincidentConstraints, 1);
     // TODO: Ensure shape is preserved
 }
 
@@ -851,8 +858,6 @@ TEST_F(SketchObjectTest, testTrimCircleMid)
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
     // There should be one "coincident" and one "point-on-object" constraint on the intersecting
     // curves
-    // FIXME: For closed curves, lineSegCut1 creates a coincident constraint but only a
-    // point-on-object for non-closed curves. Is that by design?
     int numberOfPointOnObjectConstraints =
         countConstraintsOfType(getObject(), Sketcher::PointOnObject);
     EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
@@ -888,9 +893,8 @@ TEST_F(SketchObjectTest, testTrimArcOfCircleEnd)
     EXPECT_EQ(result, 0);
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
     // There should be a "point-on-object" constraint on the intersecting curves
-    int numberOfPointOnObjectConstraints =
-        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
-    EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
+    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
+    EXPECT_EQ(numberOfCoincidentConstraints, 1);
 }
 
 TEST_F(SketchObjectTest, testTrimArcOfCircleMid)
@@ -913,6 +917,10 @@ TEST_F(SketchObjectTest, testTrimArcOfCircleMid)
         arcOfCircle.getFirstParameter()
         + (arcOfCircle.getLastParameter() - arcOfCircle.getFirstParameter()) * 0.7));
     Base::Vector3d p4(p3.x + 0.1, p3.y + 0.1, p3.z);
+    // to ensure that this line clearly intersects the curve, not just have a point on object
+    // without explicit constraint
+    p3.x -= 0.1;
+    p3.y -= 0.1;
     Part::GeomLineSegment lineSegCut2;
     lineSegCut2.setPoints(p3, p4);
     getObject()->addGeometry(&lineSegCut2);
@@ -927,7 +935,11 @@ TEST_F(SketchObjectTest, testTrimArcOfCircleMid)
     // There should be a "point-on-object" constraint on the intersecting curves
     int numberOfPointOnObjectConstraints =
         countConstraintsOfType(getObject(), Sketcher::PointOnObject);
-    EXPECT_EQ(numberOfPointOnObjectConstraints, 2);
+    EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
+    // There should be 2 coincident constraints: one with lineSegCut1 and one between centers of the
+    // new arcs
+    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
+    EXPECT_EQ(numberOfCoincidentConstraints, 2);
     // TODO: Ensure shape is preserved
 }
 
@@ -1131,9 +1143,8 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineEnd)
     // Only remaining: one line segment and the trimmed B-spline
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 1);
     // FIXME: There should be a "point-on-object" constraint on the intersecting curves
-    int numberOfPointOnObjectConstraints =
-        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
-    EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
+    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
+    EXPECT_EQ(numberOfCoincidentConstraints, 1);
 }
 
 TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
@@ -1159,6 +1170,10 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
         + (nonPeriodicBSpline->getLastParameter() - nonPeriodicBSpline->getFirstParameter())
             * 0.7));
     Base::Vector3d p4(p3.x + 0.1, p3.y + 0.1, p3.z);
+    // to ensure that this line clearly intersects the curve, not just have a point on object
+    // without explicit constraint
+    p3.x -= 0.1;
+    p3.y -= 0.1;
     Part::GeomLineSegment lineSegCut2;
     lineSegCut2.setPoints(p3, p4);
     getObject()->addGeometry(&lineSegCut2);
@@ -1180,7 +1195,9 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
     // There should be a "point-on-object" constraint on the intersecting curves
     int numberOfPointOnObjectConstraints =
         countConstraintsOfType(getObject(), Sketcher::PointOnObject);
-    EXPECT_EQ(numberOfPointOnObjectConstraints, 2);
+    EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
+    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
+    EXPECT_EQ(numberOfCoincidentConstraints, 1);
     // TODO: Ensure shape is preserved
 }
 
