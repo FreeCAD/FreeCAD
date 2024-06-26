@@ -1925,7 +1925,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
          PartDesignTestTNP1#Sketch002.AttachmentSupport missing element
          reference PartDesignTestTNP1#Pad001 ;g815v1;SKT;:H976,V;:L#2;PSM;
         :H976:9,E;:L#8;PSM;:H976:9,F;:H-977,F.Face11 is only temporary and can be ignored."""
-        self.assertTrue(self.Sketch002.Support[0][1][0] == "Face11")
+        self.assertTrue(self.Sketch002.AttachmentSupport[0][1][0] == "Face11")
         self.assertGreaterEqual(self.Body.Shape.Volume, 20126)
 
     def tearDown(self):
