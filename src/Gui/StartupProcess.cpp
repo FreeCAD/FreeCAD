@@ -165,21 +165,17 @@ void StartupProcess::setThemePaths()
 {
     ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Bitmaps/Theme");
-#if !defined(Q_OS_LINUX)
-    QIcon::setThemeSearchPaths(QIcon::themeSearchPaths()
-                            << QString::fromLatin1(":/icons/FreeCAD-default"));
-    QIcon::setThemeName(QLatin1String("FreeCAD-default"));
-#else
-    // Option to opt-out from using a Linux desktop icon theme.
-    // https://forum.freecad.org/viewtopic.php?f=4&t=35624
-    bool themePaths = hTheme->GetBool("ThemeSearchPaths",true);
+
+    // Option to opt-in to use a system icon theme.
+    bool themePaths = hTheme->GetBool("ThemeSearchPaths", false);
+
     if (!themePaths) {
         QStringList searchPaths;
-        searchPaths.prepend(QString::fromUtf8(":/icons"));
+        searchPaths.prepend(QString::fromUtf8(":/icons/FreeCAD-default"));
+
         QIcon::setThemeSearchPaths(searchPaths);
         QIcon::setThemeName(QLatin1String("FreeCAD-default"));
     }
-#endif
 
     std::string searchpath = hTheme->GetASCII("SearchPath");
     if (!searchpath.empty()) {
