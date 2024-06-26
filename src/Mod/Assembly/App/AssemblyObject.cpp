@@ -528,7 +528,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS, bool
 
     // add sub assemblies joints.
     for (auto& assembly : getSubAssemblies()) {
-        auto subJoints = assembly->getJoints(updateJCS);
+        auto subJoints = assembly->getJoints(updateJCS, delBadJoints);
         joints.insert(joints.end(), subJoints.begin(), subJoints.end());
     }
 

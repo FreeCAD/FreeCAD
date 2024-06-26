@@ -1223,14 +1223,6 @@ class MakeJointSelGate:
             # Only objects within the assembly.
             return False
 
-        if Gui.Selection.isSelected(obj, sub, Gui.Selection.ResolveMode.NoResolve):
-            # If it's to deselect then it's ok
-            return True
-
-        if len(self.taskbox.current_selection) >= 2:
-            # No more than 2 elements can be selected for basic joints.
-            return False
-
         full_obj_name = ".".join(objs_names)
         full_element_name = full_obj_name + "." + element_name
         selected_object = UtilsAssembly.getObject(full_element_name)
@@ -1245,15 +1237,6 @@ class MakeJointSelGate:
                 if not (linked.isDerivedFrom("Part::Feature") or linked.isDerivedFrom("App::Part")):
                     return False
             else:
-                return False
-
-        part_containing_selected_object = UtilsAssembly.getContainingPart(
-            full_element_name, selected_object, self.assembly
-        )
-
-        for selection_dict in self.taskbox.current_selection:
-            if selection_dict["part"] == part_containing_selected_object:
-                # Can't join a solid to itself. So the user need to select 2 different parts.
                 return False
 
         return True
@@ -1285,7 +1268,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             return
 
         if self.activeType == "Assembly":
-            self.assembly.ViewObject.EnableMovement = False
+            self.assembly.ViewObject.MoveOnlyPreselected = True
+            self.assembly.ViewObject.MoveInCommand = False
 
         self.form = Gui.PySideUic.loadUi(":/panels/TaskAssemblyCreateJoint.ui")
 
@@ -1358,6 +1342,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         self.form.featureList.installEventFilter(self)
 
+        self.addition_rejected = False
+
     def accept(self):
         if len(self.current_selection) != 2:
             App.Console.PrintWarning(
@@ -1389,7 +1375,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         if self.activeType == "Assembly":
             self.assembly.clearUndo()
-            self.assembly.ViewObject.EnableMovement = True
+            self.assembly.ViewObject.MoveOnlyPreselected = False
+            self.assembly.ViewObject.MoveInCommand = True
 
         Gui.Selection.removeSelectionGate()
         Gui.Selection.removeObserver(self)
@@ -1831,6 +1818,23 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         element_name = UtilsAssembly.getElementName(full_element_name)
         part_containing_selected_object = self.getContainingPart(full_element_name, selected_object)
 
+        # Check if the addition is acceptable (we are not doing this in selection gate to let user move objects)
+        acceptable = True
+        if len(self.current_selection) >= 2:
+            # No more than 2 elements can be selected for basic joints.
+            acceptable = False
+
+        for selection_dict in self.current_selection:
+            if selection_dict["part"] == part_containing_selected_object:
+                # Can't join a solid to itself. So the user need to select 2 different parts.
+                acceptable = False
+
+        if not acceptable:
+            self.addition_rejected = True
+            Gui.Selection.removeSelection(doc_name, obj_name, sub_name)
+            return
+
+        # Selection is acceptable so add it
         selection_dict = {
             "object": selected_object,
             "part": part_containing_selected_object,
@@ -1851,6 +1855,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.joint.ViewObject.Proxy.showPreviewJCS(False)
 
     def removeSelection(self, doc_name, obj_name, sub_name, mousePos=None):
+        if self.addition_rejected:
+            self.addition_rejected = False
+            return
+
         full_element_name = UtilsAssembly.getFullElementName(obj_name, sub_name)
         selected_object = UtilsAssembly.getObject(full_element_name)
         element_name = UtilsAssembly.getElementName(full_element_name)
