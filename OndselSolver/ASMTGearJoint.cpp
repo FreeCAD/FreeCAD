@@ -9,6 +9,7 @@
 
 #include "ASMTGearJoint.h"
 #include "GearJoint.h"
+#include "SimulationStoppingError.h"
 
 using namespace MbD;
 
@@ -57,6 +58,7 @@ void MbD::ASMTGearJoint::readRadiusJ(std::vector<std::string>& lines)
 
 void MbD::ASMTGearJoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
 {
+	if (radiusI == 0.0 || radiusJ == 0.0) throw SimulationStoppingError("Gear radius is zero.");
 	ASMTJoint::createMbD(mbdSys, mbdUnits);
 	auto gearJoint = std::static_pointer_cast<GearJoint>(mbdObject);
 	gearJoint->radiusI = radiusI;

@@ -50,7 +50,7 @@ void QuasiIntegrator::run()
 				ss << "MbD: Check to see if a curve-curve is about to have multiple contact points." << std::endl;
 				auto str = ss.str();
 				this->logString(str);
-				throw SimulationStoppingError("");
+				throw SimulationStoppingError("singular matrix");
 			}
 		}
 		catch (TooSmallStepSizeError ex) {
@@ -61,7 +61,7 @@ void QuasiIntegrator::run()
 			ss << "MbD: If they are not, lower the permitted minimum step size." << std::endl;
 			auto str = ss.str();
 			this->logString(str);
-			throw SimulationStoppingError("");
+			throw SimulationStoppingError("stepSize < stepSizeMin");
 		}
 	}
 	catch (TooManyTriesError ex) {
@@ -69,7 +69,7 @@ void QuasiIntegrator::run()
 		ss << "MbD: Check to see if the error tolerance is too demanding." << std::endl;
 		auto str = ss.str();
 		this->logString(str);
-		throw SimulationStoppingError("");
+		throw SimulationStoppingError("iTry > iTryMax");
 	}
 
 }

@@ -38,7 +38,7 @@ void PosNewtonRaphson::incrementIterNo()
 		str = ss.str();
 		system->logString(str);
 
-		throw SimulationStoppingError("");
+		throw SimulationStoppingError("iterNo > iterMax");
 	}	
 }
 

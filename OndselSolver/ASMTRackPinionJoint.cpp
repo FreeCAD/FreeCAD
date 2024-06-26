@@ -9,6 +9,7 @@
 
 #include "ASMTRackPinionJoint.h"
 #include "RackPinJoint.h"
+#include "SimulationStoppingError.h"
 
 using namespace MbD;
 
@@ -44,6 +45,7 @@ void MbD::ASMTRackPinionJoint::readPitchRadius(std::vector<std::string>& lines)
 
 void MbD::ASMTRackPinionJoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
 {
+	if (pitchRadius == 0.0) throw SimulationStoppingError("Rack pinion radius is zero.");
 	ASMTJoint::createMbD(mbdSys, mbdUnits);
 	auto rackPinJoint = std::static_pointer_cast<RackPinJoint>(mbdObject);
 	rackPinJoint->pitchRadius = pitchRadius;
