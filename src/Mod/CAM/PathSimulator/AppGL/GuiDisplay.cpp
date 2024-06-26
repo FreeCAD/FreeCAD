@@ -30,17 +30,19 @@
 using namespace MillSim;
 
 GuiItem guiItems[] = {
-    {0, 0, 360, 554, 0},
-    {0, 0, 448, 540, 1},
-    {0, 0, 170, 540, 'P', true},
-    {0, 0, 170, 540, 'S', false},
-    {0, 0, 210, 540, 'T'},
-    {0, 0, 250, 540, 'F'},
-    {0, 0, 290, 540, ' '},
-    {0, 0, 620, 540, 0, false, 0},
-    {0, 0, 660, 540, 0, false, 0},
-    {0, 0, 645, 540, 0, false, 0},
-    {0, 0, 640, 540, 0, true, 0},
+    {eGuiItemSlider,          0, 0, 270, 564, 0},
+    {eGuiItemThumb,           0, 0, 358, 550, 1},
+    {eGuiItemPause,           0, 0, 70, 550, 'P', true},
+    {eGuiItemPlay,            0, 0, 70, 550, 'S', false},
+    {eGuiItemSingleStep,      0, 0, 110, 550, 'T'},
+    {eGuiItemFaster,          0, 0, 150, 550, 'F'},
+    {eGuiItemRotate,          0, 0, 630, 550, ' ', false, GUIITEM_CHECKABLE},
+    {eGuiItemCharXImg,        0, 0, 190, 550, 0, false, 0},  // 620
+    {eGuiItemChar0Img,        0, 0, 230, 550, 0, false, 0},
+    {eGuiItemChar1Img,        0, 0, 215, 550, 0, false, 0},
+    {eGuiItemChar4Img,        0, 0, 210, 550, 0, true, 0},
+    {eGuiItemPath,            0, 0, 670, 550, 'L', false, GUIITEM_CHECKABLE},
+    {eGuiItemAmbientOclusion, 0, 0, 710, 550, 'A', false, GUIITEM_CHECKABLE},
 };
 
 #define NUM_GUI_ITEMS (sizeof(guiItems) / sizeof(GuiItem))
@@ -56,7 +58,9 @@ std::vector<std::string> guiFileNames = {"Slider.png",
                                          "X.png",
                                          "0.png",
                                          "1.png",
-                                         "4.png"};
+                                         "4.png",
+                                         "Path.png",
+                                         "AmbientOclusion.png"};
 
 bool GuiDisplay::GenerateGlItem(GuiItem* guiItem)
 {
@@ -158,7 +162,7 @@ void GuiDisplay::RenderItem(int itemId)
     mat4x4 model;
     mat4x4_translate(model, (float)item->sx, (float)item->sy, 0);
     mShader.UpdateModelMat(model, nullptr);
-    if (itemId == mPressedItem) {
+    if (item == mPressedItem) {
         mShader.UpdateObjColor(mPressedColor);
     }
     else if (item->mouseOver) {
@@ -166,6 +170,9 @@ void GuiDisplay::RenderItem(int itemId)
     }
     else if (itemId > 1 && item->actionKey == 0) {
         mShader.UpdateObjColor(mTextColor);
+    }
+    else if (item->flags & GUIITEM_CHECKED) {
+        mShader.UpdateObjColor(mToggleColor);
     }
     else {
         mShader.UpdateObjColor(mStdColor);
@@ -178,13 +185,28 @@ void GuiDisplay::RenderItem(int itemId)
 
 void GuiDisplay::MouseCursorPos(int x, int y)
 {
+    mMouseOverItem = nullptr;
     for (int i = 0; i < NUM_GUI_ITEMS; i++) {
         GuiItem* g = &(guiItems[i]);
         if (g->actionKey == 0) {
             continue;
         }
-        g->mouseOver =
+        g->mouseOver = !g->hidden &&
             (x > g->sx && y > g->sy && x < (g->sx + g->texItem.w) && y < (g->sy + g->texItem.h));
+        if (g->mouseOver) {
+            mMouseOverItem = g;
+        }
+    }
+}
+
+void MillSim::GuiDisplay::HandleActionItem(GuiItem* guiItem)
+{
+    if (guiItem->actionKey >= 32) {
+        if (guiItem->flags & GUIITEM_CHECKABLE) {
+            guiItem->flags ^= GUIITEM_CHECKED;
+        }
+        bool isChecked = (guiItem->flags & GUIITEM_CHECKED) != 0;
+        mMillSim->HandleGuiAction(guiItem->name, isChecked);
     }
 }
 
@@ -192,43 +214,39 @@ void GuiDisplay::MousePressed(int button, bool isPressed, bool isSimRunning)
 {
     if (button == MS_MOUSE_LEFT) {
         if (isPressed) {
-            mPressedItem = eGuiItemMax;
-            for (int i = 1; i < NUM_GUI_ITEMS; i++) {
-                GuiItem* g = &(guiItems[i]);
-                if (g->mouseOver && !g->hidden) {
-                    mPressedItem = (eGuiItems)i;
-                    break;
-                }
-            }
-            if (mPressedItem != eGuiItemMax) {
-                GuiItem* g = &(guiItems[mPressedItem]);
-                if (g->actionKey >= 32) {
-                    mMillSim->HandleKeyPress(g->actionKey);
-                }
+            //mPressedItem = nullptr;
+            if (mMouseOverItem != nullptr) {
+                mPressedItem = mMouseOverItem;
+                HandleActionItem(mPressedItem);
             }
         }
         else  // button released
         {
             UpdatePlayState(isSimRunning);
-            mPressedItem = eGuiItemMax;
+            if (mPressedItem != nullptr) {
+                MouseCursorPos(mPressedItem->sx + 1, mPressedItem->sy + 1);
+                mPressedItem = nullptr;
+            }
         }
     }
 }
 
 void GuiDisplay::MouseDrag(int buttons, int dx, int dy)
 {
-    if (mPressedItem == eGuiItemThumb) {
-        GuiItem* g = &(guiItems[eGuiItemThumb]);
-        int newx = g->sx + dx;
+    if (mPressedItem == nullptr) {
+        return;
+    }
+    if (mPressedItem->name == eGuiItemThumb) {
+        int newx = mPressedItem->sx + dx;
         if (newx < mThumbStartX) {
             newx = mThumbStartX;
         }
         if (newx > ((int)mThumbMaxMotion + mThumbStartX)) {
             newx = (int)mThumbMaxMotion + mThumbStartX;
         }
-        if (newx != g->sx) {
+        if (newx != mPressedItem->sx) {
             mMillSim->SetSimulationStage((float)(newx - mThumbStartX) / mThumbMaxMotion);
-            g->sx = newx;
+            mPressedItem->sx = newx;
         }
     }
 }
@@ -246,9 +264,24 @@ void MillSim::GuiDisplay::UpdateSimSpeed(int speed)
     guiItems[eGuiItemChar4Img].hidden = speed != 40;
 }
 
+void MillSim::GuiDisplay::HandleKeyPress(int key)
+{
+    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
+        GuiItem* g = &(guiItems[i]);
+        if (g->actionKey == key) {
+            HandleActionItem(g);
+        }
+    }
+}
+
+bool MillSim::GuiDisplay::IsChecked(eGuiItems item)
+{
+    return (guiItems[item].flags & GUIITEM_CHECKED) != 0;
+}
+
 void GuiDisplay::Render(float progress)
 {
-    if (mPressedItem != eGuiItemThumb) {
+    if (mPressedItem == nullptr || mPressedItem->name != eGuiItemThumb) {
         guiItems[eGuiItemThumb].sx = (int)(mThumbMaxMotion * progress) + mThumbStartX;
     }
     glDisable(GL_CULL_FACE);

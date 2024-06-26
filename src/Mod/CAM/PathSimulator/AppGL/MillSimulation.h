@@ -32,6 +32,7 @@
 #include "MillPathSegment.h"
 #include "SimDisplay.h"
 #include "GuiDisplay.h"
+#include "MillPathLine.h"
 #include <sstream>
 #include <vector>
 
@@ -57,6 +58,7 @@ public:
     void Render();
     void ProcessSim(unsigned int time_ms);
     void HandleKeyPress(int key);
+    void HandleGuiAction(eGuiItems actionItem, bool checked);
     bool LoadGCodeFile(const char* fileName);
     bool AddGcodeLine(const char* line);
     void SetSimulationStage(float stage);
@@ -89,6 +91,7 @@ protected:
     GCodeParser mCodeParser;
     GuiDisplay guiDisplay;
     SimDisplay simDisplay;
+    MillPathLine millPathLine;
     std::vector<MillPathSegment*> MillPathSegments;
     std::ostringstream mFpsStream;
 
@@ -117,7 +120,6 @@ protected:
     int mMouseButtonState = 0;
 
     bool mIsInStock = false;
-    bool mIsRotate = false;
     bool mSimPlaying = false;
     bool mSingleStep = false;
 

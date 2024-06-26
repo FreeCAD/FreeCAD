@@ -26,6 +26,7 @@
 #include "GlUtils.h"
 #include "Shader.h"
 #include "StockObject.h"
+#include "MillPathLine.h"
 #include <vector>
 
 
@@ -51,6 +52,7 @@ public:
     void RenderResult();
     void RenderResultStandard();
     void RenderResultSSAO();
+    void SetupLinePathPass(int curSegment, bool isHidden);
     void TiltEye(float tiltStep);
     void RotateEye(float rotStep);
     void MoveEye(float x, float z);
@@ -82,9 +84,12 @@ protected:
     // shaders
     Shader shader3D, shaderInv3D, shaderFlat, shaderSimFbo;
     Shader shaderGeom, shaderSSAO, shaderLighting, shaderSSAOLighting, shaderSSAOBlur;
+    Shader shaderLinePath;
     vec3 lightColor = {0.8f, 0.9f, 1.0f};
     vec3 lightPos = {20.0f, 20.0f, 10.0f};
     vec3 ambientCol = {0.6f, 0.6f, 0.7f};
+    vec4 pathLineColor = {0.0f, 0.9f, 0.0f, 1.0};
+    vec3 pathLineColorPassed = {0.9f, 0.9f, 0.3f};
 
     vec3 eye = {0, 100, 40};
     vec3 target = {0, 0, -10};
@@ -115,7 +120,7 @@ protected:
     unsigned int mFboQuadVAO, mFboQuadVBO;
 
     // ssao frame buffers
-    bool mSsaoValid = true;
+    bool mSsaoValid = false;
     std::vector<Point3D> mSsaoKernel;
     unsigned int mSsaoFbo;
     unsigned int mSsaoBlurFbo;

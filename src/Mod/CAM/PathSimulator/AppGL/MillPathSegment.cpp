@@ -56,24 +56,8 @@ float MillPathSegment::mResolution = 1;
 float MillPathSegment::mSmallRadStep = (PI / 8);
 
 MillPathSegment::MillPathSegment(EndMill* _endmill, MillMotion* from, MillMotion* to)
-    : mShearMat {1.0f,
-                 0.0f,
-                 0.0f,
-                 0.0f,
-                 0.0f,
-                 1.0f,
-                 0.0f,
-                 0.0f,
-                 0.0f,
-                 0.0f,
-                 1.0f,
-                 0.0f,
-                 0.0f,
-                 0.0f,
-                 0.0f,
-                 1.0f}
 {
-
+    mat4x4_identity(mShearMat);
     MotionPosToVec(mStartPos, from);
     MotionPosToVec(mDiff, to);
     vec3_sub(mDiff, mDiff, mStartPos);
@@ -154,6 +138,35 @@ MillPathSegment::~MillPathSegment()
     mShape.FreeResources();
 }
 
+
+void MillPathSegment::AppendPathPoints(std::vector<MillPathPosition>& pointsBuffer)
+{
+    MillPathPosition mpPos;
+    // float angRad = mStartAngRad - mStepNumber * mStepAngRad;
+    // vec3_set(mHeadPos, -mRadius * sinf(angRad), mRadius * cosf(angRad), 0);
+    // vec3_add(mHeadPos, mHeadPos, mCenter);
+    if (mMotionType == MTCurved) {
+        float ang = mStartAngRad;
+        float z = mStartPos[PZ];
+        float zStep = mDiff[PZ] / numSimSteps;
+        for (int i = 1; i < numSimSteps; i++) {
+            ang -= mStepAngRad;
+            z += zStep;
+            mpPos.X = mCenter[PX] - sinf(ang) * mRadius;
+            mpPos.Y = mCenter[PY] + cosf(ang) * mRadius;
+            mpPos.Z = z;
+            mpPos.SegmentId = segmentIndex;
+            pointsBuffer.push_back(mpPos);
+        }
+    }
+    else {
+        mpPos.X = mStartPos[PX] + mDiff[PX];
+        mpPos.Y = mStartPos[PY] + mDiff[PY];
+        mpPos.Z = mStartPos[PZ] + mDiff[PZ];
+        mpPos.SegmentId = segmentIndex;
+        pointsBuffer.push_back(mpPos);
+    }
+}
 
 void MillPathSegment::render(int step)
 {

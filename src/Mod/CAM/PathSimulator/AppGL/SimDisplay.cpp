@@ -76,6 +76,10 @@ void SimDisplay::InitShaders()
     shaderSSAOLighting.UpdateNormalTexSlot(2);
     shaderSSAOLighting.UpdateSsaoTexSlot(3);
     shaderSSAOLighting.UpdateEnvColor(lightPos, lightColor, ambientCol, 0.01f);
+
+    // Mill Path Line Shader
+    shaderLinePath.CompileShader(VertShader3DLine, FragShader3DLine);
+
 }
 
 void SimDisplay::CreateFboQuad()
@@ -301,6 +305,9 @@ void SimDisplay::PrepareDisplay(vec3 objCenter)
 
 void SimDisplay::StartDepthPass()
 {
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glDepthMask(GL_TRUE);
     glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
     shaderFlat.Activate();
     shaderFlat.UpdateViewMat(mMatLookAt);
@@ -335,7 +342,7 @@ void SimDisplay::ScaleViewToStock(StockObject* obj)
 
 void SimDisplay::RenderResult()
 {
-    if (mSsaoValid) {
+    if (mSsaoValid && applySSAO) {
         RenderResultSSAO();
     }
     else {
@@ -417,6 +424,22 @@ void SimDisplay::RenderResultSSAO()
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+void SimDisplay::SetupLinePathPass(int curSegment, bool isHidden)
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_FALSE);
+    glDepthFunc(isHidden ? GL_GREATER : GL_LESS);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glLineWidth(2);
+    shaderLinePath.Activate();
+    pathLineColor[3] = isHidden ? 0.1f : 1.0f;
+    shaderLinePath.UpdateObjColorAlpha(pathLineColor);
+    shaderLinePath.UpdateCurSegment(curSegment);
+    shaderLinePath.UpdateViewMat(mMatLookAt);
+}
+
 void SimDisplay::TiltEye(float tiltStep)
 {
     mEyeInclination += tiltStep;
@@ -486,6 +509,9 @@ void SimDisplay::UpdateProjection()
     shaderGeom.UpdateProjectionMat(projmat);
     shaderSSAO.Activate();
     shaderSSAO.UpdateProjectionMat(projmat);
+    shaderLinePath.Activate();
+    shaderLinePath.UpdateProjectionMat(projmat);
+    shaderLinePath.UpdateObjColor(pathLineColorPassed);
 }
 
 

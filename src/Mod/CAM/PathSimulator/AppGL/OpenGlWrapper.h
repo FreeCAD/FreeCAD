@@ -82,5 +82,7 @@ extern QOpenGLContext* gOpenGlContext;
 #define glCheckFramebufferStatus gSimWindow->glCheckFramebufferStatus
 #define glDeleteFramebuffers gSimWindow->glDeleteFramebuffers
 #define glDeleteRenderbuffers gSimWindow->glDeleteRenderbuffers
-
+#define glVertexAttribIPointer gSimWindow->glVertexAttribIPointer
+#define glUniform4fv gSimWindow->glUniform4fv
+#define glLineWidth gSimWindow->glLineWidth
 #endif  // !__openglwrapper_h__

@@ -38,7 +38,7 @@ EndMill::EndMill(const std::vector<float>& toolProfile, int toolid, float diamet
     profilePoints = nullptr;
     mHandleAllocation = false;
 
-    int srcBuffSize = static_cast<int>(toolProfile.size());
+    int srcBuffSize = toolProfile.size();
     nPoints = srcBuffSize / 2;
     if (nPoints < 2) {
         return;

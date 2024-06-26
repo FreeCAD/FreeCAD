@@ -42,6 +42,7 @@ public:
     void UpdateViewMat(mat4x4 mat);
     void UpdateEnvColor(vec3 lightPos, vec3 lightColor, vec3 ambient, float linearity);
     void UpdateObjColor(vec3 objColor);
+    void UpdateObjColorAlpha(vec4 objColor);
     void UpdateNormalState(bool isInverted);
     void UpdateTextureSlot(int slot);
     void UpdateAlbedoTexSlot(int albedoSlot);
@@ -50,6 +51,7 @@ public:
     void UpdateNoiseTexSlot(int noiseSlot);
     void UpdateSsaoTexSlot(int ssaoSlot);
     void UpdateKernelVals(int nVals, float *vals);
+    void UpdateCurSegment(int curSeg);
     unsigned int CompileShader(const char* vertShader, const char* fragShader);
     void Activate();
     void Destroy();
@@ -69,6 +71,7 @@ protected:
     int mLightLinearPos = -1;
     int mLightAmbientPos = -1;
     int mObjectColorPos = -1;
+    int mObjectColorAlphaPos = -1;
     int mTexSlotPos = -1;
     int mInvertedNormalsPos = -1;
     int mSsaoSamplesPos = -1;
@@ -77,7 +80,8 @@ protected:
     int mNormalPos = -1;
     int mSsaoPos = -1;
     int mNoisePos = -1;
-    int mSamplesLoc = -1;
+    int mSamplesPos = -1;
+    int mCurSegmentPos = -1;
 
     const char* vertShader = nullptr;
     const char* fragShader = nullptr;
@@ -99,6 +103,9 @@ extern const char* FragShaderSSAO;
 extern const char* FragShaderSSAOLighting;
 extern const char* FragShaderStdLighting;
 extern const char* FragShaderSSAOBlur;
+extern const char* VertShader3DLine;
+extern const char* FragShader3DLine;
+
 
 }  // namespace MillSim
 #endif  // !__shader_h__

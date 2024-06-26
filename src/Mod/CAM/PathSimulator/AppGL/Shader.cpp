@@ -81,6 +81,13 @@ void Shader::UpdateObjColor(vec3 objColor)
     }
 }
 
+void Shader::UpdateObjColorAlpha(vec4 objColor)
+{
+    if (mObjectColorAlphaPos >= 0) {
+        glUniform4fv(mObjectColorAlphaPos, 1, objColor);
+    }
+}
+
 void Shader::UpdateNormalState(bool isInverted)
 {
     if (mInvertedNormalsPos >= 0) {
@@ -132,7 +139,14 @@ void Shader::UpdateSsaoTexSlot(int ssaoSlot)
 
 void Shader::UpdateKernelVals(int nVals, float *vals)
 {
-    glUniform3fv(mSamplesLoc, nVals, vals);
+    glUniform3fv(mSamplesPos, nVals, vals);
+}
+
+void Shader::UpdateCurSegment(int curSeg)
+{
+    if (mCurSegmentPos >= 0) {
+        glUniform1i(mCurSegmentPos, curSeg);
+    }
 }
 
 
@@ -201,6 +215,7 @@ unsigned int Shader::CompileShader(const char* _vertShader, const char* _fragSha
     mLightLinearPos = glGetUniformLocation(shaderId, "lightLinear");
     mLightAmbientPos = glGetUniformLocation(shaderId, "lightAmbient");
     mObjectColorPos = glGetUniformLocation(shaderId, "objectColor");
+    mObjectColorAlphaPos = glGetUniformLocation(shaderId, "objectColorAlpha");
     mTexSlotPos = glGetUniformLocation(shaderId, "texSlot");
     mInvertedNormalsPos = glGetUniformLocation(shaderId, "invertedNormals");
     mSsaoSamplesPos = glGetUniformLocation(shaderId, "ssaoSamples");
@@ -209,7 +224,9 @@ unsigned int Shader::CompileShader(const char* _vertShader, const char* _fragSha
     mNormalPos = glGetUniformLocation(shaderId, "texNormal");
     mSsaoPos = glGetUniformLocation(shaderId, "texSsao");
     mNoisePos = glGetUniformLocation(shaderId, "texNoise");
-    mSamplesLoc = glGetUniformLocation(shaderId, "ssaoSamples");
+    mSamplesPos = glGetUniformLocation(shaderId, "ssaoSamples");
+    mCurSegmentPos = glGetUniformLocation(shaderId, "curSegment");
+
     Activate();
     return shaderId;
 }
@@ -588,4 +605,47 @@ const char* FragShaderSSAOBlur =
     "    FragColor = vec4(result / (4.0 * 4.0), 0, 0, 1);  \n"
     "}    \n";
 
+
+const char* VertShader3DLine =
+    "#version 330 core  \n"  // ----->   add long remark for a uniform auto formatting
+
+    "layout(location = 0) in vec3 aPosition;  \n"
+    "layout(location = 1) in int aIndex;  \n"
+    "flat out int Index;  \n"
+
+    "uniform mat4 view;  \n"
+    "uniform mat4 projection;  \n"
+
+    "void main(void)  \n"
+    "{  \n"
+    "    gl_Position = projection * view * vec4(aPosition, 1.0);  \n"
+    "    Index = aIndex;  \n"
+    "}  \n";
+
+const char* FragShader3DLine =
+    "#version 330\n"  // ----->   add long remark for a uniform auto formatting
+
+    "out vec4 FragColor;  \n"
+
+    "flat in int Index;  \n"
+    "uniform vec4 objectColorAlpha;  \n"
+    "uniform vec3 objectColor;  \n"
+    "uniform int curSegment;  \n"
+
+    "void main()  \n"
+    "{  \n"
+    "    if (Index > curSegment) FragColor = objectColorAlpha; \n"
+    "    else FragColor = vec4(objectColor, objectColorAlpha.a); \n"
+    "}  \n";
+
 }  // namespace MillSim
+
+#ifdef undef
+"    if (Index > curSegment) FragColor = objectColorAlpha; \n"
+    "    else FragColor = vec4(objectColor, objectColorAlpha.a); \n"
+    "    if (Index > curSegment) FragColor = vec4(r / 256.0, g / 256.0, b / 256.0, 1.0); \n"
+    "    float r = curSegment & 0xFF; \n"
+    "    float g = (curSegment >> 8) & 0xFF; \n"
+    "    float b = (curSegment >> 24) & 0xFF; \n"
+
+#endif  // undef
