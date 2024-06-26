@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>376</width>
-    <height>387</height>
+    <width>150</width>
+    <height>150</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,20 @@
     <widget class="QComboBox" name="jointType"/>
    </item>
    <item row="1" column="0" colspan="2">
-    <widget class="QListWidget" name="featureList"/>
+    <widget class="QListWidget" name="featureList">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>75</height>
+      </size>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </item>
    <item row="2" column="0" colspan="2">
     <layout class="QHBoxLayout" name="hLayoutDistance">
