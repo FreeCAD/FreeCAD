@@ -59,7 +59,7 @@ class IFC_UpdateIOS:
 
     def show_dialog(self, mode, version=None):
         """Shows a dialog to the user"""
-        
+
         from PySide import QtGui
         title = translate("BIM", "IfcOpenShell update")
         note = translate("BIM", "The update is installed in your FreeCAD's user directory and won't affect the rest of your system.")
@@ -82,14 +82,15 @@ class IFC_UpdateIOS:
         if reply == QtGui.QMessageBox.Ok:
             if mode in ["update", "install"]:
                 result = self.install()
-                text = translate("BIM", "IfcOpenShell update successfully installed.")
-                buttons = QtGui.QMessageBox.Ok
-                reply = QtGui.QMessageBox.information(None, title, text, buttons)
-    
-    
+                if result:
+                    text = translate("BIM", "IfcOpenShell update successfully installed.")
+                    buttons = QtGui.QMessageBox.Ok
+                    reply = QtGui.QMessageBox.information(None, title, text, buttons)
+
+
     def install(self):
         """Installs the given version"""
-        
+
         import addonmanager_utilities as utils
         from PySide import QtCore, QtGui
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
@@ -98,16 +99,22 @@ class IFC_UpdateIOS:
         result = self.run_pip(args)
         QtGui.QApplication.restoreOverrideCursor()
         return result
-    
-    
+
+
     def run_pip(self, args):
         """Runs a pip command"""
-        
+
         import addonmanager_utilities as utils
         import freecad.utils
         cmd = [freecad.utils.get_python_exe(), "-m", "pip"]
         cmd.extend(args)
-        return utils.run_interruptable_subprocess(cmd)
+        result = None
+        try:
+            result = utils.run_interruptable_subprocess(cmd)
+        except:
+            text = translate("BIM","Unable to run pip. Please ensure pip is installed on your system.")
+            FreeCAD.Console.PrintError(text + "\n")
+        return result
 
 
     def get_current_version(self):
@@ -123,28 +130,30 @@ class IFC_UpdateIOS:
             # this is a pip version
             vendor_path = utils.get_pip_target_directory()
             result = self.run_pip(["list", "--path", vendor_path])
-            result = result.stdout.split()
-            if "ifcopenshell" in result:
-                version = result[result.index("ifcopenshell")+1]
+            if result:
+                result = result.stdout.split()
+                if "ifcopenshell" in result:
+                    version = result[result.index("ifcopenshell")+1]
         return version
-            
-    
+
+
     def get_avail_version(self):
         """Retrieves an available ifcopenshell version"""
-        
+
         result = self.run_pip(["index", "versions", "ifcopenshell"])
-        result = result.stdout.split()
-        result = result[result.index("versions:")+1:]
-        result = [r.strip(",") for r in result]
-        return result[0]  # we return the biggest
-        
-    
+        if result:
+            result = result.stdout.split()
+            result = result[result.index("versions:")+1:]
+            result = [r.strip(",") for r in result]
+            return result[0]  # we return the biggest
+
+
     def compare_versions(self, v1, v2):
         """Compare two version strings in the form '0.7.0' """
 
         # code from https://www.geeksforgeeks.org/compare-two-version-numbers
-        arr1 = v1.split(".") 
-        arr2 = v2.split(".") 
+        arr1 = v1.split(".")
+        arr2 = v2.split(".")
         n = len(arr1)
         m = len(arr2)
         arr1 = [int(i) for i in arr1]
@@ -176,7 +185,7 @@ FreeCADGui.addCommand("IFC_UpdateIOS", IFC_UpdateIOS())
 # <function get_python_exe at 0x7efdebf5ede0>
 # >>> freecad.utils.get_python_exe()
 # '/usr/bin/python3'
-# ... 
+# ...
 # >>> run_pip(["index", "versions", "ifcopenshell"])
 # CompletedProcess(args=['/usr/bin/python3', '-m', 'pip', 'index', 'versions', 'ifcopenshell'], returncode=0, stdout='ifcopenshell (0.7.0.240423)\nAvailable versions: 0.7.0.240423, 0.7.0.240418, 0.7.0.240406\n', stderr='WARNING: pip index is currently an experimental command. It may be removed/changed in a future release without prior warning.\n')
 # pip install --disable-pip-version-check --target vendor_path ifcopenshell
