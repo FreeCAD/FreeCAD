@@ -1482,16 +1482,20 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.joint.Rotation = self.form.rotationSpinbox.property("rawValue")
 
     def onLimitLenMinChanged(self, quantity):
-        self.joint.LengthMin = self.form.limitLenMinSpinbox.property("rawValue")
+        if self.form.limitCheckbox1.isChecked():
+            self.joint.LengthMin = self.form.limitLenMinSpinbox.property("rawValue")
 
     def onLimitLenMaxChanged(self, quantity):
-        self.joint.LengthMax = self.form.limitLenMaxSpinbox.property("rawValue")
+        if self.form.limitCheckbox2.isChecked():
+            self.joint.LengthMax = self.form.limitLenMaxSpinbox.property("rawValue")
 
     def onLimitRotMinChanged(self, quantity):
-        self.joint.AngleMin = self.form.limitRotMinSpinbox.property("rawValue")
+        if self.form.limitCheckbox3.isChecked():
+            self.joint.AngleMin = self.form.limitRotMinSpinbox.property("rawValue")
 
     def onLimitRotMaxChanged(self, quantity):
-        self.joint.AngleMax = self.form.limitRotMaxSpinbox.property("rawValue")
+        if self.form.limitCheckbox4.isChecked():
+            self.joint.AngleMax = self.form.limitRotMaxSpinbox.property("rawValue")
 
     def onReverseClicked(self):
         self.joint.Proxy.flipOnePart(self.joint)
@@ -1587,6 +1591,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
                 self.form.limitLenMaxSpinbox.show()
                 self.form.limitLenMinSpinbox.setEnabled(self.joint.EnableLengthMin)
                 self.form.limitLenMaxSpinbox.setEnabled(self.joint.EnableLengthMax)
+                self.onLimitLenMinChanged(0)  # dummy value
+                self.onLimitLenMaxChanged(0)
             else:
                 self.form.limitCheckbox1.hide()
                 self.form.limitCheckbox2.hide()
@@ -1600,6 +1606,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
                 self.form.limitRotMaxSpinbox.show()
                 self.form.limitRotMinSpinbox.setEnabled(self.joint.EnableAngleMin)
                 self.form.limitRotMaxSpinbox.setEnabled(self.joint.EnableAngleMax)
+                self.onLimitRotMinChanged(0)
+                self.onLimitRotMaxChanged(0)
             else:
                 self.form.limitCheckbox3.hide()
                 self.form.limitCheckbox4.hide()
@@ -1721,6 +1729,23 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             simplified_names.append(sname)
         self.form.featureList.addItems(simplified_names)
 
+    def updateLimits(self):
+        needLengthLimits = self.jType in JointUsingLimitLength
+        needAngleLimits = self.jType in JointUsingLimitAngle
+        if needLengthLimits:
+            distance = UtilsAssembly.getJointDistance(self.joint)
+            if not self.form.limitCheckbox1.isChecked():
+                self.form.limitLenMinSpinbox.setProperty("rawValue", distance)
+            if not self.form.limitCheckbox2.isChecked():
+                self.form.limitLenMaxSpinbox.setProperty("rawValue", distance)
+
+        if needAngleLimits:
+            angle = UtilsAssembly.getJointXYAngle(self.joint) / math.pi * 180
+            if not self.form.limitCheckbox3.isChecked():
+                self.form.limitRotMinSpinbox.setProperty("rawValue", angle)
+            if not self.form.limitCheckbox4.isChecked():
+                self.form.limitRotMaxSpinbox.setProperty("rawValue", angle)
+
     def moveMouse(self, info):
         if len(self.current_selection) >= 2 or (
             len(self.current_selection) == 1
@@ -1730,6 +1755,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             )
         ):
             self.joint.ViewObject.Proxy.showPreviewJCS(False)
+            if len(self.current_selection) >= 2:
+                self.updateLimits()
             return
 
         cursor_pos = self.view.getCursorPos()
