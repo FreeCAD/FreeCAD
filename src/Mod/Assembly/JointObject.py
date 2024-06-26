@@ -1522,13 +1522,13 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.form.distanceLabel.show()
             self.form.distanceSpinbox.show()
             if jType == "Distance":
-                self.form.distanceLabel.setText("Distance")
+                self.form.distanceLabel.setText(translate("Assembly", "Distance"))
             elif jType == "Angle":
-                self.form.distanceLabel.setText("Angle")
+                self.form.distanceLabel.setText(translate("Assembly", "Angle"))
             elif jType == "Gears" or jType == "Belt":
-                self.form.distanceLabel.setText("Radius 1")
+                self.form.distanceLabel.setText(translate("Assembly", "Radius 1"))
             else:
-                self.form.distanceLabel.setText("Pitch radius")
+                self.form.distanceLabel.setText(translate("Assembly", "Pitch radius"))
 
             if jType == "Angle":
                 self.form.distanceSpinbox.setProperty("unit", "deg")
