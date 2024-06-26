@@ -363,7 +363,8 @@ public:
     /// the constraint that will replace the given one (which is to be deleted). NOTE: Currently
     /// assuming all constraints on the end points of the old curve have been transferred or
     /// destroyed
-    void deriveConstraintsForPieces(const int oldId,
+    /// Returns whether or not new constraint(s) was/were added.
+    bool deriveConstraintsForPieces(const int oldId,
                                     const std::vector<int> newIds,
                                     const Constraint* con,
                                     std::vector<Constraint*>& newConstraints);
