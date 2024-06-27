@@ -263,8 +263,7 @@ this according to your screen size or personal taste</string>
           <string>Customize how tree view is shown in the panel (restart required).
 
 'ComboView': combine tree view and property view into one panel.
-'TreeView and PropertyView': split tree view and property view into separate panel.
-'Both': keep all three panels, and you can have two sets of tree view and property view.</string>
+'TreeView and PropertyView': split tree view and property view into separate panel.</string>
          </property>
         </widget>
        </item>
