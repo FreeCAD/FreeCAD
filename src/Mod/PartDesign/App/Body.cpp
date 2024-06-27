@@ -189,9 +189,6 @@ bool Body::isSolidFeature(const App::DocumentObject *obj)
         return false;
     }
 
-    // if (obj == BaseFeature.getValue())
-        // return true;
-
     if (obj->isDerivedFrom<PartDesign::Feature>()) {
         if (PartDesign::Feature::isDatum(obj)) {
             // Datum objects are not solid

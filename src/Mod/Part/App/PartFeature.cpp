@@ -484,10 +484,11 @@ static std::vector<std::pair<long, Data::MappedName>> getElementSource(App::Docu
                 }
             }
             if (owner->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-                auto o =
-                static_cast<App::GeoFeature*>(owner)->getElementOwner(ret.back().second);
-                if (o)
-                    doc = o->getDocument();
+                auto ownerGeoFeature =
+                    static_cast<App::GeoFeature*>(owner)->getElementOwner(ret.back().second);
+                if (ownerGeoFeature) {
+                    doc = ownerGeoFeature->getDocument();
+                }
             }
             obj = doc->getObjectByID(tag < 0 ? -tag : tag);
             if (type) {
@@ -585,11 +586,12 @@ std::list<Data::HistoryItem> Feature::getElementHistory(App::DocumentObject* fea
                     break;
                 }
             }
-            if(feature->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-                auto owner =
-                static_cast<App::GeoFeature*>(feature)->getElementOwner(element);
-                if(owner)
-                    doc = owner->getDocument();
+            if (feature->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+                auto ownerGeoFeature =
+                    static_cast<App::GeoFeature*>(feature)->getElementOwner(element);
+                if (ownerGeoFeature) {
+                    doc = ownerGeoFeature->getDocument();
+                }
             }
             obj = doc->getObjectByID(std::abs(tag));
         }
