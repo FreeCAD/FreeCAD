@@ -209,6 +209,12 @@
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
         </property>
+        <property name="minimum">
+          <double>-180.0</double>
+        </property>
+        <property name="maximum">
+          <double>180.0</double>
+        </property>
        </widget>
       </item>
       <item row="3" column="0">
@@ -231,6 +237,12 @@
         </property>
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
+        </property>
+        <property name="minimum">
+          <double>-180.0</double>
+        </property>
+        <property name="maximum">
+          <double>180.0</double>
         </property>
        </widget>
       </item>
