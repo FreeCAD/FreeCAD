@@ -304,6 +304,9 @@ class _Stairs(ArchComponent.Component):
                     if isinstance(edge.Curve,(Part.LineSegment,Part.Line)):
                         # preparing for multi-edges landing / segment staircase
                         if obj.NumberOfSteps > 1:
+                            # if the edge has a delta Z the start point must have lowest Z:
+                            if edge.Vertexes[0].Point.z > edge.Vertexes[1].Point.z:
+                                edge = Part.LineSegment(edge.Vertexes[1].Point,edge.Vertexes[0].Point).toShape()
                             self.makeStraightStairsWithLanding(obj,edge)    # all cases use makeStraightStairsWithLanding()
 
                         # preparing for multi-edges landing / segment staircase

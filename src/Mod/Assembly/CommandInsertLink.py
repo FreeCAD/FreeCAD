@@ -151,7 +151,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         for doc in docList:
             # Create a new tree item for the document
             docItem = QtGui.QTreeWidgetItem()
-            docItem.setText(0, doc.Name + ".FCStd")
+            docItem.setText(0, doc.Label + ".FCStd")
             docItem.setIcon(0, QIcon.fromTheme("add", QIcon(":/icons/Document.svg")))
 
             if not any(
@@ -165,7 +165,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             def process_objects(objs, item):
                 onlyParts = self.form.CheckBox_ShowOnlyParts.isChecked()
                 for obj in objs:
-                    if obj.Name == self.assembly.Name:
+                    if obj == self.assembly:
                         continue  # Skip current assembly
 
                     if (
@@ -180,7 +180,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                                     (not onlyParts and child.isDerivedFrom("Part::Feature"))
                                     or child.isDerivedFrom("App::Part")
                                 )
-                                for child in obj.OutListRecursive
+                                for child in obj.ViewObject.claimChildrenRecursive()
                             ):
                                 continue  # Skip this object if no relevant children
 
@@ -201,9 +201,10 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                         if obj.isDerivedFrom("App::Part") or obj.isDerivedFrom(
                             "App::DocumentObjectGroup"
                         ):
-                            process_objects(obj.OutList, objItem)
+                            process_objects(obj.ViewObject.claimChildren(), objItem)
 
-            process_objects(doc.RootObjectsIgnoreLinks, docItem)
+            guiDoc = Gui.getDocument(doc.Name)
+            process_objects(guiDoc.TreeRootObjects, docItem)
             self.form.partList.expandAll()
 
     def onFilterChange(self):

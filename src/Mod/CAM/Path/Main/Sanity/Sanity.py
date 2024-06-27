@@ -37,6 +37,7 @@ import Path.Main.Sanity.ImageBuilder as ImageBuilder
 import Path.Main.Sanity.ReportGenerator as ReportGenerator
 import os
 import tempfile
+import Path.Dressup.Utils as PathDressup
 
 translate = FreeCAD.Qt.translate
 
@@ -63,7 +64,9 @@ class CAMSanity:
             raise ValueError(
                 translate(
                     "CAM_Sanity",
-                    "output location {} doesn't exist".format(os.path.dirname(output_file)),
+                    "output location {} doesn't exist".format(
+                        os.path.dirname(output_file)
+                    ),
                 )
             )
 
@@ -222,8 +225,12 @@ class CAMSanity:
             )
         else:
             if os.path.isfile(obj.LastPostProcessOutput):
-                data["filesize"] = str(os.path.getsize(obj.LastPostProcessOutput) / 1000)
-                data["linecount"] = str(sum(1 for line in open(obj.LastPostProcessOutput)))
+                data["filesize"] = str(
+                    os.path.getsize(obj.LastPostProcessOutput) / 1000
+                )
+                data["linecount"] = str(
+                    sum(1 for line in open(obj.LastPostProcessOutput))
+                )
             else:
                 data["filesize"] = str(0.0)
                 data["linecount"] = str(0)
@@ -307,6 +314,8 @@ class CAMSanity:
             "yLen": "",
             "zLen": "",
             "material": "",
+            "surfaceSpeedCarbide": "",
+            "surfaceSpeedHSS": "",
             "stockImage": "",
             "squawkData": [],
         }
@@ -323,11 +332,21 @@ class CAMSanity:
         ).UserString
 
         data["material"] = "Not Specified"
-        if hasattr(obj.Stock, "Material"):
-            if obj.Stock.Material is not None:
-                data["material"] = obj.Stock.Material.Material["Name"]
+        if hasattr(obj.Stock, "ShapeMaterial"):
+            if obj.Stock.ShapeMaterial is not None:
+                data["material"] = obj.Stock.ShapeMaterial.Name
 
-        if data["material"] == "Not Specified":
+            props = obj.Stock.ShapeMaterial.PhysicalProperties
+            if "SurfaceSpeedCarbide" in props:
+                data["surfaceSpeedCarbide"] = FreeCAD.Units.Quantity(
+                    props["SurfaceSpeedCarbide"]
+                ).UserString
+            if "SurfaceSpeedHSS" in props:
+                data["surfaceSpeedHSS"] = FreeCAD.Units.Quantity(
+                    props["SurfaceSpeedHSS"]
+                ).UserString
+
+        if data["material"] in ["Default", "Not Specified"]:
             data["squawkData"].append(
                 self.squawk(
                     "CAMSanity",
@@ -436,11 +455,12 @@ class CAMSanity:
 
             used = False
             for op in obj.Operations.Group:
-                if hasattr(op, "ToolController") and op.ToolController is TC:
+                base_op = PathDressup.baseOp(op)
+                if hasattr(base_op, "ToolController") and base_op.ToolController is TC:
                     used = True
                     tooldata.setdefault("ops", []).append(
                         {
-                            "Operation": op.Label,
+                            "Operation": base_op.Label,
                             "ToolController": TC.Label,
                             "Feed": str(TC.HorizFeed),
                             "Speed": str(TC.SpindleSpeed),

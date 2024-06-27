@@ -398,7 +398,7 @@ Base::Vector3d ViewProviderMeasureBase::getTextDirection(Base::Vector3d elementD
 Gui::View3DInventor* view = nullptr;
     try {
         view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
-    } catch (const Base::RuntimeError& e) {
+    } catch (const Base::RuntimeError&) {
         Base::Console().Log("ViewProviderMeasureBase::getTextDirection: Could not get active view\n");
     }
 
@@ -430,16 +430,19 @@ bool ViewProviderMeasureBase::isSubjectVisible()
     Gui::Document* guiDoc = nullptr;
     try {
         guiDoc = this->getDocument();
-    } catch (const Base::RuntimeError& e) {
+    } catch (const Base::RuntimeError&) {
         Base::Console().Log("ViewProviderMeasureBase::isSubjectVisible: Could not get document\n");
         return false;
     }
 
     // we need these things to proceed
-    if (!getMeasureObject() ||
-        getMeasureObject()->getSubject().empty() ||
-        !guiDoc ) {
+    if (!getMeasureObject() || !guiDoc ) {
         return false;
+    }
+
+    // Show the measurement if it doesn't track any subjects
+    if (getMeasureObject()->getSubject().empty()) {
+        return true;
     }
 
     for (auto & obj : getMeasureObject()->getSubject()) {
@@ -547,7 +550,7 @@ ViewProviderMeasure::ViewProviderMeasure()
     Gui::View3DInventor* view = nullptr;
     try {
         view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
-    } catch (const Base::RuntimeError& e) {
+    } catch (const Base::RuntimeError& ) {
         Base::Console().Log("ViewProviderMeasure::ViewProviderMeasure: Could not get active view\n");
     }
 
@@ -578,7 +581,7 @@ void ViewProviderMeasure::positionAnno(const Measure::MeasureBase* measureObject
     Gui::View3DInventor* view = nullptr;
     try {
         view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
-    } catch (const Base::RuntimeError& e) {
+    } catch (const Base::RuntimeError&) {
         Base::Console().Log("ViewProviderMeasure::positionAnno: Could not get active view\n");
     }
 

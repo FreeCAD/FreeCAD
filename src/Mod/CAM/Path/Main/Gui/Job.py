@@ -41,6 +41,10 @@ import PathScripts.PathUtils as PathUtils
 import json
 import math
 import traceback
+from PySide import QtWidgets
+
+import MatGui
+import Materials
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -344,6 +348,52 @@ class ViewProvider:
         action = QtGui.QAction(translate("CAM_Job", "Edit"), menu)
         action.triggered.connect(self.setEdit)
         menu.addAction(action)
+
+
+class MaterialDialog(QtWidgets.QDialog):
+    def __init__(self, parent=None):
+        super(MaterialDialog, self).__init__(parent)
+
+        self.setWindowTitle("Assign Material")
+
+        self.materialTree = FreeCADGui.UiLoader().createWidget(
+            "MatGui::MaterialTreeWidget"
+        )
+        self.materialTreeWidget = MatGui.MaterialTreeWidget(self.materialTree)
+
+        material_filter = Materials.MaterialFilter()
+        material_filter.Name = "Machining Materials"
+        material_filter.RequiredModels = [Materials.UUIDs().Machinability]
+        self.materialTreeWidget.setFilter(material_filter)
+        self.materialTreeWidget.selectFilter("Machining Materials")
+
+        # Create OK and Cancel buttons
+        self.okButton = QtWidgets.QPushButton("OK")
+        self.cancelButton = QtWidgets.QPushButton("Cancel")
+
+        # Connect buttons to their actions
+        self.okButton.clicked.connect(self.accept)
+        self.cancelButton.clicked.connect(self.reject)
+
+        # Layout setup
+        layout = QtWidgets.QVBoxLayout()
+        layout.addWidget(self.materialTree)
+
+        buttonLayout = QtWidgets.QHBoxLayout()
+        buttonLayout.addStretch()
+        buttonLayout.addWidget(self.okButton)
+        buttonLayout.addWidget(self.cancelButton)
+
+        layout.addLayout(buttonLayout)
+        self.setLayout(layout)
+        self.materialTree.onMaterial.connect(self.onMaterial)
+
+    def onMaterial(self, uuid):
+        try:
+            print("Selected '{0}'".format(uuid))
+            self.uuid = uuid
+        except Exception as e:
+            print(e)
 
 
 class StockEdit(object):
@@ -761,6 +811,19 @@ class TaskPanel:
             box.clear()  # clear the combobox
             for text, data in enumTups[prop]:  #  load enumerations
                 box.addItem(text, data)
+
+    def assignMaterial(self):
+        dialog = MaterialDialog()
+        result = dialog.exec_()
+
+        if result == QtWidgets.QDialog.Accepted:
+            FreeCAD.Console.PrintMessage("Material assigned\n")
+            # Add code to handle the material assignment
+
+            if dialog.uuid is not None:
+                material_manager = Materials.MaterialManager()
+                material = material_manager.getMaterial(dialog.uuid)
+                self.obj.Stock.ShapeMaterial = material
 
     def preCleanup(self):
         Path.Log.track()
@@ -1584,6 +1647,7 @@ class TaskPanel:
         self.toolControllerSelect()
 
         # Stock, Orientation and Alignment
+        self.form.btnMaterial.clicked.connect(self.assignMaterial)
         self.form.centerInStock.clicked.connect(self.alignCenterInStock)
         self.form.centerInStockXY.clicked.connect(self.alignCenterInStockXY)
 

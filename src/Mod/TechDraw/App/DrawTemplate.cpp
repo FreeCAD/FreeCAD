@@ -126,14 +126,18 @@ std::pair<int, int> DrawTemplate::getPageNumbers() const
     return std::pair<int, int>(pos, (int) pageNames.size());
 }
 
+//! get replacement values from document
 QString DrawTemplate::getAutofillValue(const QString &id) const
 {
+    auto doc = getDocument();
+    if (!doc) {
+        return QString();
+    }
     // author
     if (id.compare(QString::fromUtf8(Autofill::Author)) == 0) {
-        std::string value = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")
-                              ->GetGroup("Document")->GetASCII("prefAuthor");
-        if (!value.empty()) {
-            return QString::fromUtf8(value.c_str());
+        auto value = QString::fromUtf8(doc->CreatedBy.getValue());
+        if (!value.isEmpty()) {
+            return value;
         }
     }
     // date
@@ -143,10 +147,9 @@ QString DrawTemplate::getAutofillValue(const QString &id) const
     }
     // organization
     else if (id.compare(QString::fromUtf8(Autofill::Organization)) == 0) {
-        std::string value = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")
-                              ->GetGroup("Document")->GetASCII("prefCompany");
-        if (!value.empty()) {
-            return QString::fromUtf8(value.c_str());
+        auto value = QString::fromUtf8(doc->Company.getValue());
+        if (!value.isEmpty()) {
+            return value;
         }
     }
     // scale

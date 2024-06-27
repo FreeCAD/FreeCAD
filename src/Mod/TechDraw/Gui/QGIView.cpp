@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QGraphicsSceneHoverEvent>
 # include <QGraphicsSceneMouseEvent>
 # include <QPainter>
@@ -62,6 +63,7 @@
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderPage.h"
 #include "ZVALUE.h"
+#include "DrawGuiUtil.h"
 
 
 using namespace TechDrawGui;
@@ -177,7 +179,9 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         }
         else {
             // For general views we check if we need to snap to a position
-            snapPosition(newPos);
+            if (!(QApplication::keyboardModifiers() & Qt::AltModifier)) {
+                snapPosition(newPos);
+            }
         }
 
         // tell the feature that we have moved
@@ -194,10 +198,8 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             m_colCurrent = getSelectColor();
-//            m_selectState = 2;
         } else {
             m_colCurrent = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
-//            m_selectState = 0;
         }
         drawBorder();
     }
@@ -290,7 +292,6 @@ void QGIView::snapPosition(QPointF& mPos)
 
 void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().Message("QGIV::mousePressEvent() - %s\n", getViewName());
     Qt::KeyboardModifiers originalModifiers = event->modifiers();
     if (event->button()&Qt::LeftButton) {
         m_multiselectActivated = false;
@@ -298,10 +299,8 @@ void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
     if (event->button() == Qt::LeftButton && PreferencesGui::multiSelection()) {
         std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
-        if (selection.size() == 1
-            && selection.front().getObject() == getViewObject()
-            && selection.front().hasSubNames()) {
-
+        if (!DrawGuiUtil::getSubsForSelectedObject(selection, getViewObject()).empty()) {
+            // we have already selected geometry for this view
             m_multiselectActivated = true;
             event->setModifiers(originalModifiers | Qt::ControlModifier);
         }
@@ -319,7 +318,6 @@ void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().Message("QGIV::mouseReleaseEvent() - %s\n", getViewName());
     Qt::KeyboardModifiers originalModifiers = event->modifiers();
     if ((event->button()&Qt::LeftButton) && m_multiselectActivated) {
         if (PreferencesGui::multiSelection()) {

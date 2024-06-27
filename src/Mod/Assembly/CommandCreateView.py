@@ -210,6 +210,11 @@ class ViewProviderExplodedView:
 
         return True
 
+    def onDelete(self, vobj, subelements):
+        for obj in self.claimChildren():
+            obj.Document.removeObject(obj.Name)
+        return True
+
 
 ######### Exploded View Move #########
 ExplodedViewStepTypes = [

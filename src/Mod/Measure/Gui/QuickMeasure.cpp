@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 #include <cmath>
 #include <vector>
+#include <QTimer>
 #endif
 
 #include <App/Document.h>
@@ -50,38 +51,53 @@ QuickMeasure::QuickMeasure(QObject* parent)
     : QObject(parent)
     , measurement{new Measure::Measurement()}
 {
+    selectionTimer = new QTimer(this);
+    pendingProcessing = false;
+    connect(selectionTimer, &QTimer::timeout, this, &QuickMeasure::processSelection);
 }
 
 QuickMeasure::~QuickMeasure()
 {
+    delete selectionTimer;
     delete measurement;
 }
 
 void QuickMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    try {
-        tryMeasureSelection(msg);
-    }
-    catch (const Base::IndexError&) {
-        // ignore this exception because it can be caused by trying to access a non-existing
-        // sub-element e.g. when selecting a construction geometry in sketcher
-    }
-    catch (const Base::ValueError&) {
-        // ignore this exception because it can be caused by trying to access a non-existing
-        // sub-element e.g. when selecting a constraint in sketcher
-    }
-    catch (const Base::Exception& e) {
-        e.ReportException();
+    if (canMeasureSelection(msg)) {
+        if (!pendingProcessing) {
+            selectionTimer->start(100);
+        }
+        pendingProcessing = true;
     }
 }
 
-void QuickMeasure::tryMeasureSelection(const Gui::SelectionChanges& msg)
+void QuickMeasure::processSelection()
 {
-    if (canMeasureSelection(msg)) {
-        measurement->clear();
-        addSelectionToMeasurement();
-        printResult();
+    if (pendingProcessing) {
+        pendingProcessing = false;
+        try {
+            tryMeasureSelection();
+        }
+        catch (const Base::IndexError&) {
+            // ignore this exception because it can be caused by trying to access a non-existing
+            // sub-element e.g. when selecting a construction geometry in sketcher
+        }
+        catch (const Base::ValueError&) {
+            // ignore this exception because it can be caused by trying to access a non-existing
+            // sub-element e.g. when selecting a constraint in sketcher
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+        }
     }
+}
+
+void QuickMeasure::tryMeasureSelection()
+{
+    measurement->clear();
+    addSelectionToMeasurement();
+    printResult();
 }
 
 bool QuickMeasure::canMeasureSelection(const Gui::SelectionChanges& msg) const
@@ -97,9 +113,20 @@ bool QuickMeasure::canMeasureSelection(const Gui::SelectionChanges& msg) const
 
 void QuickMeasure::addSelectionToMeasurement()
 {
+    int count = 0;
+    int limit = 100;
+
     for (auto& selObj : Gui::Selection().getSelectionEx()) {
         App::DocumentObject* obj = selObj.getObject();
         const std::vector<std::string> subNames = selObj.getSubNames();
+
+        // Check that there's not too many selection
+        count += subNames.empty() ? 1 : subNames.size();
+        if (count > limit) {
+            measurement->clear();
+            return;
+        }
+
         if (subNames.empty()) {
             measurement->addReference3D(obj, "");
         }

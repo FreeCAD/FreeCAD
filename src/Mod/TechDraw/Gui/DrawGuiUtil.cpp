@@ -727,6 +727,17 @@ bool DrawGuiUtil::findObjectInSelection(const std::vector<Gui::SelectionObject>&
     return false;
 }
 
+std::vector<std::string>  DrawGuiUtil::getSubsForSelectedObject(const std::vector<Gui::SelectionObject>& selection,
+                                                                App::DocumentObject* selectedObj)
+{
+    for (auto& selObj : selection) {
+        if (selectedObj == selObj.getObject()) {
+            return selObj.getSubNames();
+        }
+    }
+    return {};
+}
+
 bool DrawGuiUtil::isStyleSheetDark(std::string curStyleSheet)
 {
     if (curStyleSheet.find("dark") != std::string::npos ||

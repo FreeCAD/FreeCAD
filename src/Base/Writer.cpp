@@ -320,6 +320,11 @@ void Writer::decInd()
     indBuf[indent] = '\0';
 }
 
+void Writer::putNextEntry(const char* file, const char* obj)
+{
+    ObjectName = obj ? obj : file;
+}
+
 // ----------------------------------------------------------------------------
 
 ZipWriter::ZipWriter(const char* FileName)
@@ -346,6 +351,13 @@ ZipWriter::ZipWriter(std::ostream& os)
     ZipStream.setf(ios::fixed, ios::floatfield);
 }
 
+void ZipWriter::putNextEntry(const char* file, const char* obj)
+{
+    Writer::putNextEntry(file, obj);
+
+    ZipStream.putNextEntry(file);
+}
+
 void ZipWriter::writeFiles()
 {
     // use a while loop because it is possible that while
@@ -353,7 +365,9 @@ void ZipWriter::writeFiles()
     size_t index = 0;
     while (index < FileList.size()) {
         FileEntry entry = FileList[index];
-        ZipStream.putNextEntry(entry.FileName);
+        putNextEntry(entry.FileName.c_str());
+        indent = 0;
+        indBuf[0] = 0;
         entry.Object->SaveDocFile(*this);
         index++;
     }
@@ -372,8 +386,10 @@ FileWriter::FileWriter(const char* DirName)
 
 FileWriter::~FileWriter() = default;
 
-void FileWriter::putNextEntry(const char* file)
+void FileWriter::putNextEntry(const char* file, const char* obj)
 {
+    Writer::putNextEntry(file, obj);
+
     std::string fileName = DirName + "/" + file;
     this->FileStream.open(fileName.c_str(), std::ios::out | std::ios::binary);
 }
@@ -402,8 +418,9 @@ void FileWriter::writeFiles()
                 fi.createDirectory();
             }
 
-            std::string fileName = DirName + "/" + entry.FileName;
-            this->FileStream.open(fileName.c_str(), std::ios::out | std::ios::binary);
+            putNextEntry(entry.FileName.c_str());
+            indent = 0;
+            indBuf[0] = 0;
             entry.Object->SaveDocFile(*this);
             this->FileStream.close();
         }

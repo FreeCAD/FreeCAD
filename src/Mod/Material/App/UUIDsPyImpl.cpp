@@ -82,6 +82,11 @@ Py::String UUIDsPy::getLinearElastic() const
     return Py::String(ModelUUIDs::ModelUUID_Mechanical_LinearElastic.toStdString());
 }
 
+Py::String UUIDsPy::getMachinability() const
+{
+    return Py::String(ModelUUIDs::ModelUUID_Machining_Machinability.toStdString());
+}
+
 Py::String UUIDsPy::getMooneyRivlin() const
 {
     return Py::String(ModelUUIDs::ModelUUID_Mechanical_MooneyRivlin.toStdString());

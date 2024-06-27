@@ -882,10 +882,26 @@ std::vector< App::DocumentObject* > ViewProvider::claimChildren() const
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
         std::vector< App::DocumentObject* > nvec = ext->extensionClaimChildren();
-        if (!nvec.empty())
+        if (!nvec.empty()){
             vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));
+        }
     }
     return vec;
+}
+
+std::vector< App::DocumentObject* > ViewProvider::claimChildrenRecursive() const
+{
+    std::vector<App::DocumentObject*> children = claimChildren();
+    for (auto* child : claimChildren()) {
+        auto* vp = Application::Instance->getViewProvider(child);
+        if (!vp) { continue; }
+
+        std::vector<App::DocumentObject*> nvec = vp->claimChildrenRecursive();
+        if (!nvec.empty()){
+            children.insert(std::end(children), std::begin(nvec), std::end(nvec));
+        }
+    }
+    return children;
 }
 
 std::vector< App::DocumentObject* > ViewProvider::claimChildren3D() const

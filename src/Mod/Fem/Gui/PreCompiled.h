@@ -50,6 +50,7 @@
 #include <vector>
 
 // boost
+#include <boost/algorithm/string.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/lexical_cast.hpp>
 
@@ -153,6 +154,7 @@
 #include <SMDSAbs_ElementType.hxx>
 #include <SMESHDS_Mesh.hxx>
 #include <SMESH_Mesh.hxx>
+#include <SMESH_MeshEditor.hxx>
 
 // VTK
 #include <vtkCellArray.h>

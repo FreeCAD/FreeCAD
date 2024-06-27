@@ -39,6 +39,7 @@
 
 #include "PropertiesDialog.h"
 #include "SpreadsheetView.h"
+#include "ViewProviderSpreadsheet.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -250,27 +251,10 @@ void CmdSpreadsheetExport::activated(int iMsg)
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
-            QString selectedFilter;
-            QString formatList = QObject::tr("CSV (*.csv *.CSV);;All (*)");
-            QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-                                                                QObject::tr("Export file"),
-                                                                QString(),
-                                                                formatList,
-                                                                &selectedFilter);
-            if (!fileName.isEmpty()) {
-                if (sheet) {
-                    char delim, quote, escape;
-                    std::string errMsg = "Export";
-                    bool isValid = sheet->getCharsFromPrefs(delim, quote, escape, errMsg);
-
-                    if (isValid) {
-                        sheet->exportToFile(fileName.toStdString(), delim, quote, escape);
-                    }
-                    else {
-                        Base::Console().Error(errMsg.c_str());
-                        return;
-                    }
-                }
+            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sheet);
+            auto* vps = dynamic_cast<ViewProviderSheet*>(vp);
+            if (vps) {
+                vps->exportAsFile();
             }
         }
     }

@@ -29,6 +29,8 @@
 
 #include <QStringList>
 #include <QTimer>
+#include <QToolBar>
+#include <QPointer>
 
 #include <FCGlobal.h>
 #include <Base/Parameter.h>
@@ -37,24 +39,11 @@ class QAction;
 class QLayout;
 class QMenu;
 class QMouseEvent;
-class QToolBar;
 
 namespace Gui {
 
-// Qt treats area as Flag so in theory toolbar could be in multiple areas at once.
-// We don't do that here so simple enum should suffice.
-enum class ToolBarArea {
-    NoToolBarArea,
-    LeftToolBarArea,
-    RightToolBarArea,
-    TopToolBarArea,
-    BottomToolBarArea,
-    LeftMenuToolBarArea,
-    RightMenuToolBarArea,
-    StatusBarToolBarArea,
-};
-
 class ToolBarAreaWidget;
+enum class ToolBarArea;
 
 class GuiExport ToolBarItem
 {

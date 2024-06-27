@@ -583,39 +583,59 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
     return qt_getCppType<QObject>(pyobject.ptr());
 }
 
+qsizetype PythonWrapper::tryEnum(PyObject* pyPtr)
+{
+    if (PyObject* number = PyNumber_Long(pyPtr)) {
+        Py::Long longObj(number, true);
+        return longObj.as_long();
+    }
+
+    // if PyNumber_Long failed then an exception is set
+    PyErr_Clear();
+
+    Py::Object object(pyPtr);
+    if (object.hasAttr(std::string("value"))) {
+        Py::Long longObj(object.getAttr(std::string("value")));
+        return longObj.as_long();
+    }
+
+    return 0;
+}
+
 qsizetype PythonWrapper::toEnum(PyObject* pyPtr)
 {
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    if (PyLong_Check(pyPtr)) {
-        return PyLong_AsLong(pyPtr);
+    try {
+        return tryEnum(pyPtr);
     }
-    return Shiboken::Enum::getValue(pyPtr);
-#else
-    return toEnum(Py::Object(pyPtr));
-#endif
+    catch (Py::Exception&) {
+        Base::PyException e;
+        e.ReportException();
+        return 0;
+    }
 }
 
 qsizetype PythonWrapper::toEnum(const Py::Object& pyobject)
 {
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     return toEnum(pyobject.ptr());
-#else
+}
+
+Py::Object PythonWrapper::tryToStandardButton(qsizetype value)
+{
+    std::stringstream cmd;
+    cmd << "from PySide import QtWidgets\n";
+    cmd << "btn = QtWidgets.QDialogButtonBox.StandardButton(" << value << ")";
+    return Py::asObject(Base::Interpreter().getValue(cmd.str().c_str(), "btn"));
+}
+
+Py::Object PythonWrapper::toStandardButton(qsizetype value)
+{
     try {
-        qsizetype ret {};
-        if (pyobject.hasAttr(std::string("value"))) {
-            ret = Py::Int(pyobject.getAttr(std::string("value")));
-        }
-        else {
-            ret = Py::Int(pyobject);
-        }
-        return ret;
+        return tryToStandardButton(value);
     }
-    catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
-        e.ReportException();
-        return 0;
+    catch (Py::Exception& e) {
+        e.clear();
+        return Py::Long(value);
     }
-#endif
 }
 
 QGraphicsItem* PythonWrapper::toQGraphicsItem(PyObject* pyPtr)

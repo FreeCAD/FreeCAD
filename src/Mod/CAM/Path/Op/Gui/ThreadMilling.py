@@ -28,12 +28,13 @@ import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Gui.CircularHoleBase as PathCircularHoleBaseGui
 import Path.Op.ThreadMilling as PathThreadMilling
 import PathGui
+import PathScripts.PathUtils as PathUtils
 import csv
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+from PySide import QtCore, QtGui
 
-from PySide import QtCore
 
 __title__ = "CAM Thread Milling Operation UI."
 __author__ = "sliptonic (Brad Collette)"
@@ -112,7 +113,16 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         obj.LeadInOut = self.form.leadInOut.checkState() == QtCore.Qt.Checked
         obj.TPI = self.form.threadTPI.value()
 
-        self.updateToolController(obj, self.form.toolController)
+        try:
+            self.updateToolController(obj, self.form.toolController)
+        except PathUtils.PathNoTCExistsException:
+            title = translate("CAM", "No valid toolcontroller")
+            message = translate(
+                "CAM",
+                "This operation requires a tool controller with a threadmilling tool",
+            )
+
+            self.show_error_message(title, message)
 
     def setFields(self, obj):
         """setFields(obj) ... update UI with obj properties' values"""

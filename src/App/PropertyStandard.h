@@ -1118,6 +1118,7 @@ public:
     {
         PropertyListsT<Material>::setValue(materials);
     }
+    void setValues(const std::vector<App::Material>& newValues = std::vector<App::Material>()) override;
     void setValue(const Material& mat);
     void setValue(int index, const Material& mat);
 

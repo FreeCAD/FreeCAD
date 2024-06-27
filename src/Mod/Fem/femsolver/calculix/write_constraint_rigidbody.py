@@ -73,6 +73,11 @@ def write_constraint(f, femobj, rb_obj, ccxwriter):
     f.write("{},{},{},{}\n".format(ref_node_idx, *rb_obj.ReferenceNode))
     f.write("{},{},{},{}\n".format(rot_node_idx, *rb_obj.ReferenceNode))
 
+    f.write("*NSET,NSET={}_RefNode\n".format(rb_obj.Name))
+    f.write("{},\n".format(ref_node_idx))
+    f.write("*NSET,NSET={}_RotNode\n".format(rb_obj.Name))
+    f.write("{},\n".format(rot_node_idx))
+
     kw_line = "*RIGID BODY, NSET={}, REF NODE={}, ROT NODE={}".format(rb_obj.Name, ref_node_idx, rot_node_idx)
 
     f.write(kw_line + "\n")

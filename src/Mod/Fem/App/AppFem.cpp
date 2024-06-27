@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2023 Peter McB                                          *
+ *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -52,6 +53,7 @@
 #include "FemMeshShapeNetgenObject.h"
 #include "FemMeshShapeObject.h"
 #include "FemResultObject.h"
+#include "FemSetElementNodesObject.h"
 #include "FemSetElementsObject.h"
 #include "FemSetFacesObject.h"
 #include "FemSetGeometryObject.h"
@@ -167,6 +169,7 @@ PyMOD_INIT_FUNC(Fem)
     Fem::FemResultObjectPython                ::init();
 
     Fem::FemSetObject                         ::init();
+    Fem::FemSetElementNodesObject             ::init();
     Fem::FemSetElementsObject                 ::init();
     Fem::FemSetFacesObject                    ::init();
     Fem::FemSetGeometryObject                 ::init();
