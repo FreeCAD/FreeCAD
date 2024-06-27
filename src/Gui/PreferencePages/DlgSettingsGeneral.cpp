@@ -546,8 +546,8 @@ void DlgSettingsGeneral::saveDockWindowVisibility()
 void DlgSettingsGeneral::loadDockWindowVisibility()
 {
     ui->treeMode->clear();
-    ui->treeMode->addItem(tr("Combo View"));
-    ui->treeMode->addItem(tr("TreeView and PropertyView"));
+    ui->treeMode->addItem(tr("Combined"));
+    ui->treeMode->addItem(tr("Independent"));
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
     bool propertyView = hGrp->GetGroup("PropertyView")->GetBool("Enabled", false);
