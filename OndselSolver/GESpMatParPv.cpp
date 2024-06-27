@@ -60,7 +60,7 @@ void GESpMatParPv::backSubstituteIntoDU()
 		sum = 0.0; // rhsZeroElement copy.
 		for (auto const& keyValue : *rowi) {
 			auto j = keyValue.first;
-			if (j > i) {
+			if ((int)j > i) {
 				duij = keyValue.second;
 				sum += answerX->at(j) * duij;
 			}

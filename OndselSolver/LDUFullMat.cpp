@@ -160,7 +160,7 @@ void LDUFullMat::backSubstituteIntoDU()
 	{
 		auto& rowi = matrixA->at(i);
 		double sum = answerX->at((size_t)n - 1) * rowi->at((size_t)n - 1);
-		for (int j = i + 1; j < n - 1; j++)
+		for (int j = i + 1; j < (int)n - 1; j++)
 		{
 			sum += answerX->at(j) * rowi->at(j);
 		}

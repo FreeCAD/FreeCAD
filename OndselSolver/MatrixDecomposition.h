@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "MatrixSolver.h"
@@ -19,9 +19,9 @@ namespace MbD {
         virtual void applyRowOrderOnRightHandSideB();
         virtual void forwardSubstituteIntoL();
         virtual void backSubstituteIntoU();
-        virtual FColDsptr basicSolvewithsaveOriginal(FMatDsptr aMatrix, FColDsptr aVector, bool saveOriginal);
+        FColDsptr basicSolvewithsaveOriginal(FMatDsptr aMatrix, FColDsptr aVector, bool saveOriginal) override;
         virtual void forwardSubstituteIntoLD();
-        virtual void postSolve();
+        void postSolve() override;
         virtual void preSolvesaveOriginal(FMatDsptr aMatrix, bool saveOriginal);
 
     };

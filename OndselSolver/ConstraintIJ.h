@@ -14,10 +14,10 @@
 namespace MbD {
     class EndFramec;
     using EndFrmsptr = std::shared_ptr<EndFramec>;
-    
+
     class ConstraintIJ : public Constraint
     {
-        //frmI frmJ aConstant 
+        //frmI frmJ aConstant
     public:
         ConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 
