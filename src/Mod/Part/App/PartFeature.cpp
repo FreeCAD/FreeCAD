@@ -387,10 +387,11 @@ App::DocumentObject* Feature::getSubObject(const char* subname,
         TopoShape ts(Shape.getShape());
         bool doTransform = mat != ts.getTransform();
         if (doTransform) {
-            ts.setShape(ts.getShape().Located(TopLoc_Location()));
+            ts.setShape(ts.getShape().Located(TopLoc_Location()), false);
         }
         if (subname && *subname && !ts.isNull()) {
-            ts = ts.getSubShape(subname);
+            // ts = ts.getSubShape(subname);    // TODO WAS THIS WRONG?
+            ts = ts.getSubTopoShape(subname,true);
         }
         if (doTransform && !ts.isNull()) {
             static int sCopy = -1;
@@ -483,13 +484,12 @@ static std::vector<std::pair<long, Data::MappedName>> getElementSource(App::Docu
                     break;
                 }
             }
-            // TODO: 02/24 Toponaming project:  It appears that getElementOwner is always nullptr.
-            //            if (owner->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            //                auto o =
-            //                static_cast<App::GeoFeature*>(owner)->getElementOwner(ret.back().second);
-            //                if (o)
-            //                    doc = o->getDocument();
-            //            }
+            if (owner->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+                auto o =
+                static_cast<App::GeoFeature*>(owner)->getElementOwner(ret.back().second);
+                if (o)
+                    doc = o->getDocument();
+            }
             obj = doc->getObjectByID(tag < 0 ? -tag : tag);
             if (type) {
                 for (auto& hist : history) {
@@ -586,13 +586,12 @@ std::list<Data::HistoryItem> Feature::getElementHistory(App::DocumentObject* fea
                     break;
                 }
             }
-            // TODO: 02/24 Toponaming project:  It appears that getElementOwner is always nullptr.
-            //            if(feature->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            //                auto owner =
-            //                static_cast<App::GeoFeature*>(feature)->getElementOwner(element);
-            //                if(owner)
-            //                    doc = owner->getDocument();
-            //            }
+            if(feature->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+                auto owner =
+                static_cast<App::GeoFeature*>(feature)->getElementOwner(element);
+                if(owner)
+                    doc = owner->getDocument();
+            }
             obj = doc->getObjectByID(std::abs(tag));
         }
         if (!recursive) {

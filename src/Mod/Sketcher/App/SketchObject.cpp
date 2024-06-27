@@ -85,6 +85,10 @@
 #include "SketchObjectPy.h"
 #include "SolverGeometryExtension.h"
 
+#include <BRepBuilderAPI_MakeVertex.hxx>
+#include <ExternalGeometryFacade.h>
+#include <Mod/Part/App/PartPyCXX.h>
+
 
 #undef DEBUG
 // #define DEBUG
@@ -265,7 +269,8 @@ void SketchObject::buildShape()
             Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(i-1, Sketcher::PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
-
+            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
+                                  Data::MappedName::fromRawData(name.c_str()), 0L);
             vertices.push_back(vertex);
             vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
         } else {
@@ -285,14 +290,14 @@ void SketchObject::buildShape()
     }
 
     // FIXME: Commented since ExternalGeometryFacade is not added
-    // for(i=2;i<ExternalGeo.getSize();++i) {
-    //     auto geo = ExternalGeo[i];
-    //     auto egf = ExternalGeometryFacade::getFacade(geo);
-    //     if(!egf->testFlag(ExternalGeometryExtension::Defining))
-    //         continue;
-    //     shapes.push_back(getEdge(geo, convertSubName(
-    //                     Data::IndexedName::fromConst("ExternalEdge", i-1), false).c_str()));
-    // }
+    for(i=2;i<ExternalGeo.size();++i) {
+        auto geo = ExternalGeo[i];
+        auto egf = ExternalGeometryFacade::getFacade(geo);
+        if(!egf->testFlag(ExternalGeometryExtension::Defining))
+            continue;
+        shapes.push_back(getEdge(geo, convertSubName(
+                        Data::IndexedName::fromConst("ExternalEdge", i-1), false).c_str()));
+    }
     if(shapes.empty() && vertices.empty()) {
         Shape.setValue(Part::TopoShape());
         return;
@@ -9418,6 +9423,127 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce, bool
         return false;
     }
     return true;
+}
+
+App::DocumentObject *SketchObject::getSubObject(
+        const char *subname, PyObject **pyObj,
+        Base::Matrix4D *pmat, bool transform, int depth) const
+{
+    while(subname && *subname=='.') ++subname; // skip leading .
+    std::string sub;
+    const char *mapped = Data::isMappedElement(subname);
+    if(!subname || !subname[0])
+        return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
+    const char *element = Data::findElementName(subname);
+    // if(element != subname) {
+    //     const char *dot = strchr(subname,'.');
+    //     if(!dot)
+    //         return 0;
+    //     std::string name(subname,dot-subname);
+    //     auto child = Exports.find(name.c_str());
+    //     if(!child)
+    //         return 0;
+    //     return child->getSubObject(dot+1,pyObj,pmat,true,depth+1);
+    // }
+
+    Data::IndexedName indexedName = checkSubName(subname);
+    int index = indexedName.getIndex();
+    const char * shapetype = indexedName.getType();
+    const Part::Geometry *geo = 0;
+    Part::TopoShape subshape;
+    Base::Vector3d point;
+
+    if (auto realType = convertInternalName(indexedName.getType())) {
+        if (realType[0] == '\0')
+            // subshape = InternalShape.getShape();
+                subshape = Shape.getShape();
+        else {
+            auto shapeType = Part::TopoShape::shapeType(realType, true);
+            if (shapeType != TopAbs_SHAPE)
+                // subshape = InternalShape.getShape().getSubTopoShape(shapeType, indexedName.getIndex(), true);
+                subshape = Shape.getShape().getSubTopoShape(shapeType, indexedName.getIndex(), true);
+        }
+        if (subshape.isNull())
+            return nullptr;
+    }
+    else if (!pyObj || !mapped) {
+        if (!pyObj
+                || (index > 0
+                    && !boost::algorithm::contains(subname, "edge")
+                    && !boost::algorithm::contains(subname, "vertex")))
+            return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
+    } else {
+        subshape = Shape.getShape().getSubTopoShape(subname, true);
+        if (!subshape.isNull())
+            return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
+    }
+
+    if (subshape.isNull()) {
+        if (boost::equals(shapetype,"Edge") ||
+            boost::equals(shapetype,"edge")) {
+            geo = getGeometry(index - 1);
+            if (!geo)
+                return nullptr;
+        } else if (boost::equals(shapetype,"ExternalEdge")) {
+            int GeoId = index - 1;
+            GeoId = -GeoId - 3;
+            geo = getGeometry(GeoId);
+            if(!geo)
+                return nullptr;
+        } else if (boost::equals(shapetype,"Vertex") ||
+                boost::equals(shapetype,"vertex")) {
+            int VtId = index- 1;
+            int GeoId;
+            PointPos PosId;
+            getGeoVertexIndex(VtId,GeoId,PosId);
+            if (PosId==PointPos::none)
+                return nullptr;
+            point = getPoint(GeoId,PosId);
+        }
+        else if (boost::equals(shapetype,"RootPoint"))
+            point = getPoint(Sketcher::GeoEnum::RtPnt,PointPos::start);
+        else if (boost::equals(shapetype,"H_Axis"))
+            geo = getGeometry(Sketcher::GeoEnum::HAxis);
+        else if (boost::equals(shapetype,"V_Axis"))
+            geo = getGeometry(Sketcher::GeoEnum::VAxis);
+        else if (boost::equals(shapetype,"Constraint")) {
+            int ConstrId = PropertyConstraintList::getIndexFromConstraintName(shapetype);
+            const std::vector< Constraint * > &vals = this->Constraints.getValues();
+            if (ConstrId < 0 || ConstrId >= int(vals.size()))
+                return nullptr;
+            if(pyObj)
+                *pyObj = vals[ConstrId]->getPyObject();
+            return const_cast<SketchObject*>(this);
+        } else
+            return nullptr;
+    }
+
+    if (pmat && transform)
+        *pmat *= Placement.getValue().toMatrix();
+
+    if (pyObj) {
+        Part::TopoShape shape;
+        std::string name = convertSubName(indexedName,false);
+        if (geo) {
+            shape = getEdge(geo,name.c_str());
+            if(pmat && !shape.isNull())
+                shape.transformShape(*pmat,false,true);
+        } else if (!subshape.isNull()) {
+            shape = subshape;
+            if (pmat)
+                shape.transformShape(*pmat,false,true);
+        } else {
+            if(pmat)
+                point = (*pmat)*point;
+            shape = BRepBuilderAPI_MakeVertex(gp_Pnt(point.x,point.y,point.z)).Vertex();
+            shape.setElementName(Data::IndexedName::fromConst("Vertex", 1),
+                                 Data::MappedName::fromRawData(name.c_str()), 0);
+        }
+        shape.Tag = getID();
+        *pyObj = Py::new_reference_to(Part::shape2pyshape(shape));
+    }
+
+    return const_cast<SketchObject*>(this);
 }
 
 void SketchObject::setExpression(const App::ObjectIdentifier& path,
