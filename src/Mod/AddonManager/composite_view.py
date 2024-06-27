@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022-2024 FreeCAD Project Association                   *
+# *   Copyright (c) 2022-2024 The FreeCAD Project Association AISBL         *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -68,9 +68,7 @@ class CompositeView(QtWidgets.QWidget):
         self.main_layout = QtWidgets.QHBoxLayout(self)
         self.splitter = QtWidgets.QSplitter(self)
         self.splitter.addWidget(self.package_list)
-        self.package_list.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         self.splitter.addWidget(self.package_details)
-        self.package_details.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setContentsMargins(0, 0, 0, 0)
         self.splitter.setSizePolicy(
