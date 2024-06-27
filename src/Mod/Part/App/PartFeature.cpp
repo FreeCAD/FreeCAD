@@ -390,7 +390,6 @@ App::DocumentObject* Feature::getSubObject(const char* subname,
             ts.setShape(ts.getShape().Located(TopLoc_Location()), false);
         }
         if (subname && *subname && !ts.isNull()) {
-            // ts = ts.getSubShape(subname);    // TODO WAS THIS WRONG?
             ts = ts.getSubTopoShape(subname,true);
         }
         if (doTransform && !ts.isNull()) {

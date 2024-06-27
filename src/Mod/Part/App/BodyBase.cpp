@@ -52,12 +52,6 @@ BodyBase* BodyBase::findBodyOf(const App::DocumentObject* f)
             if (body->hasObject(f))
                 return body;
         }
-        // for(;;) {
-        //     auto group = App::GeoFeatureGroupExtension::getGroupOfObject(f);
-        //     if(!group || group->isDerivedFrom(BodyBase::getClassTypeId()))
-        //         return static_cast<BodyBase*>(group);
-        //     f = group;
-        // }
     }
 
     return nullptr;

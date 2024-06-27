@@ -9435,16 +9435,6 @@ App::DocumentObject *SketchObject::getSubObject(
     if(!subname || !subname[0])
         return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
     const char *element = Data::findElementName(subname);
-    // if(element != subname) {
-    //     const char *dot = strchr(subname,'.');
-    //     if(!dot)
-    //         return 0;
-    //     std::string name(subname,dot-subname);
-    //     auto child = Exports.find(name.c_str());
-    //     if(!child)
-    //         return 0;
-    //     return child->getSubObject(dot+1,pyObj,pmat,true,depth+1);
-    // }
 
     Data::IndexedName indexedName = checkSubName(subname);
     int index = indexedName.getIndex();
@@ -9455,12 +9445,10 @@ App::DocumentObject *SketchObject::getSubObject(
 
     if (auto realType = convertInternalName(indexedName.getType())) {
         if (realType[0] == '\0')
-            // subshape = InternalShape.getShape();
                 subshape = Shape.getShape();
         else {
             auto shapeType = Part::TopoShape::shapeType(realType, true);
             if (shapeType != TopAbs_SHAPE)
-                // subshape = InternalShape.getShape().getSubTopoShape(shapeType, indexedName.getIndex(), true);
                 subshape = Shape.getShape().getSubTopoShape(shapeType, indexedName.getIndex(), true);
         }
         if (subshape.isNull())
