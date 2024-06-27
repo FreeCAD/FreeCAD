@@ -878,14 +878,21 @@ void DSHBSplineController::configureToolWidget()
         toolWidget->setParameterLabel(
             WParameter::First,
             QApplication::translate("ToolWidgetManager_p4", "Degree (+'U'/ -'J')"));
-        toolWidget->setParameter(WParameter::First, handler->SplineDegree);
         toolWidget->configureParameterUnit(WParameter::First, Base::Unit());
         toolWidget->configureParameterMin(WParameter::First, 1.0);  // NOLINT
-        // We set a reasonable max to avoid the spinbox from being very large
+        toolWidget->configureParameterMax(WParameter::First, Geom_BSplineCurve::MaxDegree());
         toolWidget->configureParameterDecimals(WParameter::First, 0);
     }
 
-    toolWidget->configureParameterMax(WParameter::First, Geom_BSplineCurve::MaxDegree());  // NOLINT
+    if (handler->constructionMethod() == ConstructionMethod::ControlPoints) {
+        toolWidget->setParameter(WParameter::First, handler->SplineDegree);
+        toolWidget->setParameterVisible(WParameter::First, true);
+    }
+    else {
+        // We still set the value in case user change of mode.
+        toolWidget->setParameterWithoutPassingFocus(WParameter::First, handler->SplineDegree);
+        toolWidget->setParameterVisible(WParameter::First, false);
+    }
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
     onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
@@ -1064,9 +1071,19 @@ void DSHBSplineController::doChangeDrawSketchHandlerMode()
 
 
 template<>
-bool DSHBSplineControllerBase::resetOnConstructionMethodeChanged()
+void DSHBSplineController::doConstructionMethodChanged()
 {
     handler->changeConstructionMethode();
+
+    syncConstructionMethodComboboxToHandler();
+    bool byCtrlPoints = handler->constructionMethod() == ConstructionMethod::ControlPoints;
+    toolWidget->setParameterVisible(WParameter::First, byCtrlPoints);
+}
+
+
+template<>
+bool DSHBSplineControllerBase::resetOnConstructionMethodeChanged()
+{
     return false;
 }
 
