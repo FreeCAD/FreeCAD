@@ -253,7 +253,7 @@ this according to your screen size or personal taste</string>
        <item row="2" column="0">
         <widget class="QLabel" name="treeModeLabel">
          <property name="text">
-          <string>Tree view mode:</string>
+          <string>Tree view and Property view mode:</string>
          </property>
         </widget>
        </item>
@@ -262,8 +262,8 @@ this according to your screen size or personal taste</string>
          <property name="toolTip">
           <string>Customize how tree view is shown in the panel (restart required).
 
-'ComboView': combine tree view and property view into one panel.
-'TreeView and PropertyView': split tree view and property view into separate panel.</string>
+'Combined': combine Tree view and Property view into one panel.
+'Independent': split Tree view and Property view into separate panels.</string>
          </property>
         </widget>
        </item>
