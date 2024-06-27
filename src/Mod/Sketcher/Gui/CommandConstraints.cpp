@@ -2183,7 +2183,6 @@ protected:
             specialConstraint = SpecialConstraint::LineOr2PointsDistance;
         }
 
-        bool arebothpointsorsegmentsfixed = isPointOrSegmentFixed(Obj, GeoId1) && isPointOrSegmentFixed(Obj, GeoId2);
         // Point-line case and point-circle/arc
         if (PosId1 != Sketcher::PointPos::none && PosId2 == Sketcher::PointPos::none) {
             Base::Vector3d pnt = Obj->getPoint(GeoId1, PosId1);
@@ -2296,15 +2295,7 @@ protected:
                                   (pnt2 - pnt1).Length());
         }
 
-        const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
-        if (arebothpointsorsegmentsfixed || GeoId1 <= Sketcher::GeoEnum::RefExt
-            || constraintCreationMode == Reference) {
-            // it is a constraint on a external line, make it non-driving
-            Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size() - 1, "False");
-        }
-
-        numberOfConstraintsCreated++;
-        moveConstraint(ConStr.size() - 1, onSketchPos);
+        finishDimensionCreation(GeoId1, GeoId2, onSketchPos);
     }
 
     void createDistanceXYConstrain(Sketcher::ConstraintType type, int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2, Base::Vector2d onSketchPos) {
@@ -2333,15 +2324,7 @@ protected:
                 GeoId1, static_cast<int>(PosId1), GeoId2, static_cast<int>(PosId2), ActLength);
         }
 
-        const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
-        if (areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) || constraintCreationMode == Reference) {
-            // it is a constraint on a external line, make it non-driving
-            Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)",
-                ConStr.size() - 1, "False");
-        }
-
-        numberOfConstraintsCreated++;
-        moveConstraint(ConStr.size() - 1, onSketchPos);
+        finishDimensionCreation(GeoId1, GeoId2, onSketchPos);
     }
 
     void createRadiusDiameterConstrain(int GeoId, Base::Vector2d onSketchPos, bool firstCstr) {
@@ -2385,15 +2368,7 @@ protected:
             }
         }
 
-        const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
-        bool fixed = isPointOrSegmentFixed(Obj, GeoId);
-        if (fixed || constraintCreationMode == Reference || GeoId <= Sketcher::GeoEnum::RefExt) {
-            Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size() - 1, "False");
-        }
-
-        moveConstraint(ConStr.size() - 1, onSketchPos);
-
-        numberOfConstraintsCreated ++;
+        finishDimensionCreation(GeoId, GeoEnum::GeoUndef, onSketchPos);
     }
 
     bool createCoincidenceConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2) {
@@ -2450,7 +2425,6 @@ protected:
             return;
         }
 
-
         if (ActAngle == 0.0) {
             //Here we are sure that GeoIds are lines. So 0.0 means that lines are parallel, we change to distance
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance constraint"));
@@ -2461,54 +2435,37 @@ protected:
         Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
             GeoId1, static_cast<int>(PosId1), GeoId2, static_cast<int>(PosId2), ActAngle);
 
-        const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
-        if (areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) || constraintCreationMode == Reference) {
-            // it is a constraint on a external line, make it non-driving
-
-            Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size() - 1, "False");
-        }
-        numberOfConstraintsCreated++;
-        moveConstraint(ConStr.size() - 1, onSketchPos);
+        finishDimensionCreation(GeoId1, GeoId2, onSketchPos);
     }
 
     void createArcLengthConstrain(int GeoId, Base::Vector2d onSketchPos) {
         const Part::Geometry* geom = Obj->getGeometry(GeoId);
-        if (isArcOfCircle(*geom)) {
-
-            const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geom);
-            double ActLength = arc->getAngle(false) * arc->getRadius();
-
-            Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Distance',%d,%f))",
-                GeoId, ActLength);
-
-            const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
-            if (isPointOrSegmentFixed(Obj, GeoId) || constraintCreationMode == Reference) {
-                // it is a constraint on a external line, make it non-driving
-                Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size() - 1, "False");
-            }
-            numberOfConstraintsCreated++;
-            moveConstraint(ConStr.size() - 1, onSketchPos);
+        if (!isArcOfCircle(*geom)) {
+            return;
         }
+
+        const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geom);
+        double ActLength = arc->getAngle(false) * arc->getRadius();
+
+        Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Distance',%d,%f))",
+            GeoId, ActLength);
+
+        finishDimensionCreation(GeoId, GeoEnum::GeoUndef, onSketchPos);
     }
 
     void createArcAngleConstrain(int GeoId, Base::Vector2d onSketchPos) {
         const Part::Geometry* geom = Obj->getGeometry(GeoId);
-        if (isArcOfCircle(*geom)) {
-
-            const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geom);
-            double angle = arc->getAngle(/*EmulateCCWXY=*/true);
-
-            Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Angle',%d,%f))",
-                GeoId, angle);
-
-            const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
-            if (isPointOrSegmentFixed(Obj, GeoId) || constraintCreationMode == Reference) {
-                // it is a constraint on a external line, make it non-driving
-                Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size() - 1, "False");
-            }
-            numberOfConstraintsCreated++;
-            moveConstraint(ConStr.size() - 1, onSketchPos);
+        if (!isArcOfCircle(*geom)) {
+            return;
         }
+
+        const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geom);
+        double angle = arc->getAngle(/*EmulateCCWXY=*/true);
+
+        Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Angle',%d,%f))",
+            GeoId, angle);
+
+        finishDimensionCreation(GeoId, GeoEnum::GeoUndef, onSketchPos);
     }
 
     void createVerticalConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2) {
@@ -2706,6 +2663,19 @@ protected:
         }
 
         return false;
+    }
+
+    void finishDimensionCreation(int GeoId1, int GeoId2, Base::Vector2d onSketchPos)
+    {
+        bool fixed = GeoId2 == GeoEnum::GeoUndef ? isPointOrSegmentFixed(Obj, GeoId1) : areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2);
+
+        int index = Obj->Constraints.getValues().size() - 1;
+        if (fixed || constraintCreationMode == Reference) {
+            Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", index, "False");
+        }
+
+        numberOfConstraintsCreated++;
+        moveConstraint(index, onSketchPos);
     }
 
     void restartCommand(const char* cstrName) {
