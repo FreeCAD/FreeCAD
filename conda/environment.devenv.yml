@@ -93,7 +93,7 @@ dependencies:
 - six
 - smesh
 - swig
-- vtk
+- vtk==9.2.6
 - xerces-c
 - yaml-cpp
 - zlib
