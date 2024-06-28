@@ -1785,7 +1785,7 @@ PROPERTY_SOURCE_TEMPLATE(Spreadsheet::SheetPython, Spreadsheet::Sheet)
 template<>
 const char* Spreadsheet::SheetPython::getViewProviderName() const
 {
-    return "SpreadsheetGui::ViewProviderSheet";
+    return "SpreadsheetGui::ViewProviderSheetPython";
 }
 template<>
 PyObject* Spreadsheet::SheetPython::getPyObject()
