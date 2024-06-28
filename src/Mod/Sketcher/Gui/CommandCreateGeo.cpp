@@ -244,9 +244,9 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateRectangle, "Sketcher_CreateRectangle
 void CmdSketcherCreateRectangle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(
-        getActiveGuiDocument(),
-        std::make_unique<DrawSketchHandlerRectangle>(ConstructionMethods::RectangleConstructionMethod::Diagonal));
+    ActivateHandler(getActiveGuiDocument(),
+                    std::make_unique<DrawSketchHandlerRectangle>(
+                        ConstructionMethods::RectangleConstructionMethod::Diagonal));
 }
 
 bool CmdSketcherCreateRectangle::isActive()
@@ -309,10 +309,10 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateOblong, "Sketcher_CreateOblong")
 void CmdSketcherCreateOblong::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(
-        getActiveGuiDocument(),
-        std::make_unique<DrawSketchHandlerRectangle>(ConstructionMethods::RectangleConstructionMethod::Diagonal,
-                                       true));
+    ActivateHandler(getActiveGuiDocument(),
+                    std::make_unique<DrawSketchHandlerRectangle>(
+                        ConstructionMethods::RectangleConstructionMethod::Diagonal,
+                        true));
 }
 
 bool CmdSketcherCreateOblong::isActive()
@@ -505,9 +505,9 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreate3PointArc, "Sketcher_Create3PointArc
 void CmdSketcherCreate3PointArc::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(
-        getActiveGuiDocument(),
-        std::make_unique<DrawSketchHandlerArc>(ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
+    ActivateHandler(getActiveGuiDocument(),
+                    std::make_unique<DrawSketchHandlerArc>(
+                        ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
 }
 
 bool CmdSketcherCreate3PointArc::isActive()
@@ -859,7 +859,9 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateBSpline, "Sketcher_CreateBSpline")
 void CmdSketcherCreateBSpline::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerBSpline>(ConstructionMethods::BSplineConstructionMethod::ControlPoints));
+    ActivateHandler(getActiveGuiDocument(),
+                    std::make_unique<DrawSketchHandlerBSpline>(
+                        ConstructionMethods::BSplineConstructionMethod::ControlPoints));
 }
 
 bool CmdSketcherCreateBSpline::isActive()
@@ -892,8 +894,10 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePeriodicBSpline, "Sketcher_Create_Pe
 void CmdSketcherCreatePeriodicBSpline::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerBSpline>(ConstructionMethods::BSplineConstructionMethod::ControlPoints,
-                                     true));
+    ActivateHandler(getActiveGuiDocument(),
+                    std::make_unique<DrawSketchHandlerBSpline>(
+                        ConstructionMethods::BSplineConstructionMethod::ControlPoints,
+                        true));
 }
 
 bool CmdSketcherCreatePeriodicBSpline::isActive()
@@ -925,7 +929,9 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateBSplineByInterpolation,
 void CmdSketcherCreateBSplineByInterpolation::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerBSpline>(ConstructionMethods::BSplineConstructionMethod::Knots));
+    ActivateHandler(getActiveGuiDocument(),
+                    std::make_unique<DrawSketchHandlerBSpline>(
+                        ConstructionMethods::BSplineConstructionMethod::Knots));
 }
 
 bool CmdSketcherCreateBSplineByInterpolation::isActive()
@@ -959,7 +965,10 @@ void CmdSketcherCreatePeriodicBSplineByInterpolation::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerBSpline>(ConstructionMethods::BSplineConstructionMethod::Knots, true));
+    ActivateHandler(getActiveGuiDocument(),
+                    std::make_unique<DrawSketchHandlerBSpline>(
+                        ConstructionMethods::BSplineConstructionMethod::Knots,
+                        true));
 }
 
 bool CmdSketcherCreatePeriodicBSplineByInterpolation::isActive()
@@ -993,18 +1002,26 @@ CmdSketcherCompCreateBSpline::CmdSketcherCompCreateBSpline()
 void CmdSketcherCompCreateBSpline::activated(int iMsg)
 {
     if (iMsg == 0) {
-        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerBSpline>(ConstructionMethods::BSplineConstructionMethod::ControlPoints));
+        ActivateHandler(getActiveGuiDocument(),
+                        std::make_unique<DrawSketchHandlerBSpline>(
+                            ConstructionMethods::BSplineConstructionMethod::ControlPoints));
     }
     else if (iMsg == 1) {
-        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerBSpline>(ConstructionMethods::BSplineConstructionMethod::ControlPoints,
+        ActivateHandler(getActiveGuiDocument(),
+                        std::make_unique<DrawSketchHandlerBSpline>(
+                            ConstructionMethods::BSplineConstructionMethod::ControlPoints,
                             true));
     }
     else if (iMsg == 2) {
-        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerBSpline>(ConstructionMethods::BSplineConstructionMethod::Knots));
+        ActivateHandler(getActiveGuiDocument(),
+                        std::make_unique<DrawSketchHandlerBSpline>(
+                            ConstructionMethods::BSplineConstructionMethod::Knots));
     }
     else if (iMsg == 3) {
-        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerBSpline>(ConstructionMethods::BSplineConstructionMethod::Knots,
-                                         true));
+        ActivateHandler(getActiveGuiDocument(),
+                        std::make_unique<DrawSketchHandlerBSpline>(
+                            ConstructionMethods::BSplineConstructionMethod::Knots,
+                            true));
     }
     else {
         return;
@@ -1218,9 +1235,9 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
 void CmdSketcherCreateFillet::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(
-        getActiveGuiDocument(),
-        std::make_unique<DrawSketchHandlerFillet>(ConstructionMethods::FilletConstructionMethod::Fillet));
+    ActivateHandler(getActiveGuiDocument(),
+                    std::make_unique<DrawSketchHandlerFillet>(
+                        ConstructionMethods::FilletConstructionMethod::Fillet));
 }
 
 bool CmdSketcherCreateFillet::isActive()
@@ -1249,9 +1266,9 @@ CmdSketcherCreateChamfer::CmdSketcherCreateChamfer()
 void CmdSketcherCreateChamfer::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(
-        getActiveGuiDocument(),
-        std::make_unique<DrawSketchHandlerFillet>(ConstructionMethods::FilletConstructionMethod::Chamfer));
+    ActivateHandler(getActiveGuiDocument(),
+                    std::make_unique<DrawSketchHandlerFillet>(
+                        ConstructionMethods::FilletConstructionMethod::Chamfer));
 }
 
 bool CmdSketcherCreateChamfer::isActive()
@@ -1797,7 +1814,8 @@ void CmdSketcherCreateRegularPolygon::activated(int iMsg)
     // Pop-up asking for values
     SketcherRegularPolygonDialog srpd;
     if (srpd.exec() == QDialog::Accepted) {
-        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerPolygon>(srpd.sides));
+        ActivateHandler(getActiveGuiDocument(),
+                        std::make_unique<DrawSketchHandlerPolygon>(srpd.sides));
     }
 }
 
@@ -1846,7 +1864,8 @@ void CmdSketcherCompCreateRegularPolygon::activated(int iMsg)
             // Pop-up asking for values
             SketcherRegularPolygonDialog srpd;
             if (srpd.exec() == QDialog::Accepted) {
-                ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerPolygon>(srpd.sides));
+                ActivateHandler(getActiveGuiDocument(),
+                                std::make_unique<DrawSketchHandlerPolygon>(srpd.sides));
             }
         } break;
         default:
