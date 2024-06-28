@@ -2124,7 +2124,18 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
         auto obj = item->object()->getObject();
         auto parentItem = item->getParentItem();
         if (parentItem) {
-            if (!parentItem->object()->canDragObjects() || !parentItem->object()->canDragObject(obj)) {
+            auto vpp = parentItem->object();
+            // We querry all the parents recursively.
+            bool allParentsOK = true;
+            while (parentItem) {
+                if (!parentItem->object()->canDragObjectToTarget(obj, nullptr)) {
+                    allParentsOK = false;
+                    break;
+                }
+                parentItem = parentItem->getParentItem();
+            }
+
+            if (!allParentsOK || !parentItem->object()->canDragObjects() || !parentItem->object()->canDragObject(obj)) {
                 TREE_ERR("'" << obj->getFullName() << "' cannot be dragged out of '" << parentItem->object()->getObject()->getFullName() << "'");
                 return false;
             }
@@ -2352,6 +2363,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         }
     }
 
+    App::DocumentObject* targetObj = targetItemObj->object()->getObject();
     std::ostringstream targetSubname;
     App::DocumentObject* targetParent = nullptr;
     targetItemObj->getSubName(targetSubname, targetParent);
@@ -2362,9 +2374,12 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         Selection().addSelection(targetParent->getDocument()->getName(), targetParent->getNameInDocument(), targetSubname.str().c_str());
     }
     else {
-        targetParent = targetItemObj->object()->getObject();
+        targetParent = targetObj;
         Selection().addSelection(targetParent->getDocument()->getName(), targetParent->getNameInDocument());
     }
+
+    // Open command
+    App::AutoTransaction committer("Drop object");
 
     bool syncPlacement = TreeParams::getSyncPlacement() && targetItemObj->isGroup();
     bool setSelection = true;
@@ -2399,16 +2414,32 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
 
         // check if items can be dragged
         if (da == Qt::MoveAction && item->myOwner == targetItemObj->myOwner && vp->canDragAndDropObject(obj)) {
-            // check if items can be dragged
             auto parentItem = item->getParentItem();
             if (!parentItem) {
                 info.dragging = true;
             }
-            else if (parentItem->object()->canDragObjects() && parentItem->object()->canDragObject(obj)) {
-                info.dragging = true;
+            else {
                 auto vpp = parentItem->object();
-                info.parent = vpp->getObject()->getNameInDocument();
-                info.parentDoc = vpp->getObject()->getDocument()->getName();
+                // We querry all the parents recursively.
+                bool allParentsOK = true;
+                while (parentItem) {
+                    Base::Console().Warning("parentItem %s\n", parentItem->getName());
+                    if (!parentItem->object()->canDragObjectToTarget(obj, targetObj)) {
+                        allParentsOK = false;
+                        break;
+                    }
+                    parentItem = parentItem->getParentItem();
+                }
+                if (allParentsOK) {
+                    info.dragging = true;
+                    info.parent = vpp->getObject()->getNameInDocument();
+                    info.parentDoc = vpp->getObject()->getDocument()->getName();
+                }
+                else {
+                    committer.close(true);
+                    TREE_TRACE("Cannot drag from " << parentItem->getName());
+                    return false;
+                }
             }
         }
 
@@ -2417,11 +2448,13 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         {
             if (event->possibleActions() & Qt::LinkAction) {
                 if (items.size() > 1) {
+                    committer.close(true);
                     TREE_TRACE("Cannot replace with more than one object");
                     return false;
                 }
                 auto ext = vp->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
                 if ((!ext || !ext->getLinkedObjectProperty()) && !targetItemObj->getParentItem()) {
+                    committer.close(true);
                     TREE_TRACE("Cannot replace without parent");
                     return false;
                 }
@@ -2430,11 +2463,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         }
     }
 
-    // Open command
-    App::AutoTransaction committer("Drop object");
     try {
-        App::DocumentObject* targetObj = targetItemObj->object()->getObject();
-
         std::set<App::DocumentObject*> inList;
         auto parentObj = targetObj;
         if (da == Qt::LinkAction && targetItemObj->getParentItem()) {
