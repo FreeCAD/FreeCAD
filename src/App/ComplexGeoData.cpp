@@ -457,7 +457,7 @@ void ComplexGeoData::Restore(Base::XMLReader& reader)
 
     const char* file = "";
     if (reader.hasAttribute("file")) {
-        reader.getAttribute("file");
+        file = reader.getAttribute("file");
     }
     if (*file != 0) {
         reader.addFile(file, this);

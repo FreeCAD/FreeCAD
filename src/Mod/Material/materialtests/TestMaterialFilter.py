@@ -108,20 +108,20 @@ class MaterialFilterTestCases(unittest.TestCase):
         self.assertEqual(len(self.MaterialManager.MaterialLibraries), 1)
 
         filtered = self.MaterialManager.filterMaterials(filter)
-        self.assertEquals(len(filtered), 4)
+        self.assertEqual(len(filtered), 4)
 
         filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
-        self.assertEquals(len(filtered), 5)
+        self.assertEqual(len(filtered), 5)
 
         # Create a basic rendering filter
         filter.Name = "Basic Appearance"
         filter.RequiredCompleteModels = [self.uuids.BasicRendering]
 
         filtered = self.MaterialManager.filterMaterials(filter)
-        self.assertEquals(len(filtered), 3)
+        self.assertEqual(len(filtered), 3)
 
         filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
-        self.assertEquals(len(filtered), 3)
+        self.assertEqual(len(filtered), 3)
 
         # Create an advanced rendering filter
         filter= Materials.MaterialFilter()
@@ -129,10 +129,10 @@ class MaterialFilterTestCases(unittest.TestCase):
         filter.RequiredCompleteModels = [self.uuids.AdvancedRendering]
 
         filtered = self.MaterialManager.filterMaterials(filter)
-        self.assertEquals(len(filtered), 0)
+        self.assertEqual(len(filtered), 0)
 
         filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
-        self.assertEquals(len(filtered), 0)
+        self.assertEqual(len(filtered), 0)
 
         # Create a Density filter
         filter= Materials.MaterialFilter()
@@ -140,10 +140,10 @@ class MaterialFilterTestCases(unittest.TestCase):
         filter.RequiredCompleteModels = [self.uuids.Density]
 
         filtered = self.MaterialManager.filterMaterials(filter)
-        self.assertEquals(len(filtered), 2)
+        self.assertEqual(len(filtered), 2)
 
         filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
-        self.assertEquals(len(filtered), 3)
+        self.assertEqual(len(filtered), 3)
 
         # Create a Hardness filter
         filter= Materials.MaterialFilter()
@@ -151,10 +151,10 @@ class MaterialFilterTestCases(unittest.TestCase):
         filter.RequiredCompleteModels = [self.uuids.Hardness]
 
         filtered = self.MaterialManager.filterMaterials(filter)
-        self.assertEquals(len(filtered), 0)
+        self.assertEqual(len(filtered), 0)
 
         filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
-        self.assertEquals(len(filtered), 0)
+        self.assertEqual(len(filtered), 0)
 
         # Create a Density and Basic Rendering filter
         filter= Materials.MaterialFilter()
@@ -162,10 +162,10 @@ class MaterialFilterTestCases(unittest.TestCase):
         filter.RequiredCompleteModels = [self.uuids.Density, self.uuids.BasicRendering]
 
         filtered = self.MaterialManager.filterMaterials(filter)
-        self.assertEquals(len(filtered), 1)
+        self.assertEqual(len(filtered), 1)
 
         filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
-        self.assertEquals(len(filtered), 1)
+        self.assertEqual(len(filtered), 1)
 
         # Create a Linear Elastic filter
         filter= Materials.MaterialFilter()
@@ -173,17 +173,17 @@ class MaterialFilterTestCases(unittest.TestCase):
         filter.RequiredCompleteModels = [self.uuids.LinearElastic]
 
         filtered = self.MaterialManager.filterMaterials(filter)
-        self.assertEquals(len(filtered), 0)
+        self.assertEqual(len(filtered), 0)
 
         filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
-        self.assertEquals(len(filtered), 0)
+        self.assertEqual(len(filtered), 0)
 
         filter= Materials.MaterialFilter()
         filter.Name = "Linear Elastic - incomplete"
         filter.RequiredModels = [self.uuids.LinearElastic]
 
         filtered = self.MaterialManager.filterMaterials(filter)
-        self.assertEquals(len(filtered), 2)
+        self.assertEqual(len(filtered), 2)
 
         filtered = self.MaterialManager.filterMaterials(filter, includeLegacy=True)
 

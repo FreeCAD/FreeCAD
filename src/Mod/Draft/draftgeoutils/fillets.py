@@ -91,11 +91,6 @@ def fillet(lEdges, r, chamfer=False):
 
         alpha = U1.getAngle(U2)
 
-        if chamfer:
-            # correcting r value so the size of the chamfer = r
-            beta = math.pi - alpha/2
-            r = (r/2)/math.cos(beta)
-
         # Edges have same direction
         if (round(alpha, precision()) == 0
                 or round(alpha - math.pi, precision()) == 0):

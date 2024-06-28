@@ -377,11 +377,13 @@ public:
     ~Data()
     {
         if (replace_stdout) {
+            Base::PyGILStateLocker lock;
             Py_DECREF(replace_stdout);
             replace_stdout = nullptr;
         }
 
         if (replace_stderr) {
+            Base::PyGILStateLocker lock;
             Py_DECREF(replace_stderr);
             replace_stderr = nullptr;
         }

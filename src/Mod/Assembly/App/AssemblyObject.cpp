@@ -800,7 +800,7 @@ AssemblyObject::getConnectedParts(App::DocumentObject* part,
 
 bool AssemblyObject::isPartGrounded(App::DocumentObject* obj)
 {
-    std::vector<App::DocumentObject*> groundedObjs = fixGroundedParts();
+    std::vector<App::DocumentObject*> groundedObjs = getGroundedParts();
 
     for (auto* groundedObj : groundedObjs) {
         if (groundedObj->getFullName() == obj->getFullName()) {

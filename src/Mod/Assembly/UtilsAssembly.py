@@ -180,7 +180,7 @@ def isBodySubObject(typeId):
 def getContainingPart(full_name, selected_object, activeAssemblyOrPart=None):
     # full_name is "Assembly.Assembly1.LinkOrPart1.LinkOrBox.Edge16" -> LinkOrPart1
     # or           "Assembly.Assembly1.LinkOrPart1.LinkOrBody.pad.Edge16" -> LinkOrPart1
-    # or           "Assembly.Assembly1.LinkOrPart1.LinkOrBody.Sketch.Edge1" -> LinkOrBody
+    # or           "Assembly.Assembly1.LinkOrPart1.LinkOrBody.Sketch.Edge1" -> LinkOrPart1
 
     if selected_object is None:
         App.Console.PrintError("getContainingPart() in UtilsAssembly.py selected_object is None")
@@ -213,6 +213,7 @@ def getContainingPart(full_name, selected_object, activeAssemblyOrPart=None):
                 if not activeAssemblyOrPart:
                     return obj
                 elif activeAssemblyOrPart in obj.OutListRecursive or obj == activeAssemblyOrPart:
+                    # If the user put the assembly inside a Part, then we ignore it.
                     continue
                 else:
                     return obj
@@ -222,7 +223,7 @@ def getContainingPart(full_name, selected_object, activeAssemblyOrPart=None):
             if linked_obj.TypeId == "PartDesign::Body" and isBodySubObject(selected_object.TypeId):
                 if selected_object in linked_obj.OutListRecursive:
                     return obj
-            if linked_obj.TypeId == "App::Part":
+            if linked_obj.TypeId in ["App::Part", "Assembly::AssemblyObject"]:
                 # linked_obj_doc = linked_obj.Document
                 # selected_obj_in_doc = doc.getObject(selected_object.Name)
                 if selected_object in linked_obj.OutListRecursive:

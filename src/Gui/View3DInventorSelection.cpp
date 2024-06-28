@@ -117,7 +117,8 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges &Reason)
 #ifdef FC_USE_TNP_FIX
     std::pair<std::string, std::string> element;
     App::GeoFeature::resolveElement(obj, Reason.pSubName, element);
-    if (!element.second.empty()) {         // If we have a shortened element name
+    if (Data::isMappedElement(subname)
+        && !element.second.empty()) {      // If we have a shortened element name
         subname = element.second.c_str();  // use if
     }
 #endif

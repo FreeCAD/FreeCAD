@@ -116,6 +116,7 @@ public:
     }
 
 
+    bool canDragObjectIn3d(App::DocumentObject* obj) const;
     bool getSelectedObjectsWithinAssembly(bool addPreselection = true, bool onlySolids = false);
     App::DocumentObject* getObjectFromSubNames(std::vector<std::string>& subNames);
     std::vector<std::string> parseSubNames(std::string& subNamesStr);

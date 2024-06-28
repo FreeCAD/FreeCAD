@@ -32,19 +32,16 @@
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <QAction>
-#include <QDockWidget>
 #include <QMenu>
-#include <QStackedWidget>
 #endif
 
 #include "App/Application.h"
 #include "Gui/Command.h"
 #include "Gui/Control.h"
 #include "Gui/Document.h"
-#include "Gui/MainWindow.h"
+#include "Gui/Selection.h"
 #include "Mod/Fem/App/FemConstraint.h"
 
-#include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraint.h"
 #include "ViewProviderFemConstraintPy.h"
 
@@ -60,9 +57,6 @@ ViewProviderFemConstraint::ViewProviderFemConstraint()
     , pExtraSymbol(nullptr)
     , pExtraTrans(nullptr)
     , ivFile(nullptr)
-    , wizardWidget(nullptr)
-    , wizardSubLayout(nullptr)
-    , constraintDialog(nullptr)
 {
     pShapeSep = new SoSeparator();
     pShapeSep->ref();
@@ -151,7 +145,7 @@ void ViewProviderFemConstraint::setDisplayMode(const char* ModeName)
     if (strcmp(ModeName, "Base") == 0) {
         setDisplayMaskMode("Base");
     }
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
+    ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
 std::vector<App::DocumentObject*> ViewProviderFemConstraint::claimChildren() const
@@ -164,7 +158,7 @@ void ViewProviderFemConstraint::setupContextMenu(QMenu* menu, QObject* receiver,
     QAction* act;
     act = menu->addAction(QObject::tr("Edit analysis feature"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    ViewProviderDocumentObject::setupContextMenu(menu,
+    ViewProviderGeometryObject::setupContextMenu(menu,
                                                  receiver,
                                                  member);  // clazy:exclude=skipped-base-method
 }
@@ -283,26 +277,12 @@ void ViewProviderFemConstraint::unsetEdit(int ModNum)
 {
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
-
-    if (wizardWidget && wizardSubLayout && constraintDialog) {
-        wizardWidget = nullptr;
-        wizardSubLayout = nullptr;
-        delete constraintDialog;
-        constraintDialog = nullptr;
-
-        // Notify the Shaft Wizard that we have finished editing
-        // See WizardShaft.py on why we do it this way
-        Gui::Command::runCommand(Gui::Command::Doc,
-                                 "Gui.runCommand('PartDesign_WizardShaftCallBack')");
+    if (ModNum == ViewProvider::Default) {
+        // when pressing ESC make sure to close the dialog
+        Gui::Control().closeDialog();
     }
     else {
-        if (ModNum == ViewProvider::Default) {
-            // when pressing ESC make sure to close the dialog
-            Gui::Control().closeDialog();
-        }
-        else {
-            ViewProviderGeometryObject::unsetEdit(ModNum);
-        }
+        ViewProviderGeometryObject::unsetEdit(ModNum);
     }
 }
 
@@ -313,65 +293,6 @@ PyObject* ViewProviderFemConstraint::getPyObject()
     }
     pyViewObject->IncRef();
     return pyViewObject;
-}
-
-
-QObject* ViewProviderFemConstraint::findChildByName(const QObject* parent, const QString& name)
-{
-    for (auto o : parent->children()) {
-        if (o->objectName() == name) {
-            return o;
-        }
-        if (!o->children().empty()) {
-            QObject* result = findChildByName(o, name);
-            if (result) {
-                return result;
-            }
-        }
-    }
-
-    return nullptr;
-}
-
-void ViewProviderFemConstraint::checkForWizard()
-{
-    wizardWidget = nullptr;
-    wizardSubLayout = nullptr;
-    Gui::MainWindow* mw = Gui::getMainWindow();
-    if (!mw) {
-        return;
-    }
-    QDockWidget* dw = mw->findChild<QDockWidget*>(QString::fromLatin1("Combo View"));
-    if (!dw) {
-        return;
-    }
-    QWidget* cw = dw->findChild<QWidget*>(QString::fromLatin1("Combo View"));
-    if (!cw) {
-        return;
-    }
-    QTabWidget* tw = cw->findChild<QTabWidget*>(QString::fromLatin1("combiTab"));
-    if (!tw) {
-        return;
-    }
-    QStackedWidget* sw =
-        tw->findChild<QStackedWidget*>(QString::fromLatin1("qt_tabwidget_stackedwidget"));
-    if (!sw) {
-        return;
-    }
-    QScrollArea* sa = sw->findChild<QScrollArea*>();
-    if (!sa) {
-        return;
-    }
-    QWidget* wd =
-        sa->widget();  // This is the reason why we cannot use findChildByName() right away!!!
-    if (!wd) {
-        return;
-    }
-    QObject* wiz = findChildByName(wd, QString::fromLatin1("ShaftWizard"));
-    if (wiz) {
-        wizardWidget = static_cast<QVBoxLayout*>(wiz);
-        wizardSubLayout = wiz->findChild<QVBoxLayout*>(QString::fromLatin1("ShaftWizardLayout"));
-    }
 }
 
 

@@ -95,6 +95,10 @@ class ObjectProbing(PathOp.ObjectOp):
     def opExecute(self, obj):
         """opExecute(obj) ... generate probe locations."""
         Path.Log.track()
+        if not self.isToolSupported(obj, self.tool):
+            Path.Log.warning("No suitable probe tool found")
+            return
+
         self.commandlist.append(Path.Command("(Begin Probing)"))
 
         stock = PathUtils.findParentJob(obj).Stock
@@ -132,6 +136,11 @@ class ObjectProbing(PathOp.ObjectOp):
     def opSetDefaultValues(self, obj, job):
         """opSetDefaultValues(obj, job) ... set default value for RetractHeight"""
 
+    def isToolSupported(self, obj, tool):
+        """Probe operation requires a probe tool"""
+        support = hasattr(tool, "ShapeName") and (tool.ShapeName == "probe")
+        Path.Log.track(tool.Label, support)
+        return support
 
 def SetupProperties():
     setup = ["Xoffset", "Yoffset", "PointCountX", "PointCountY", "OutputFileName"]

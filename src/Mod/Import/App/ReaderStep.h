@@ -26,6 +26,7 @@
 
 #include <Mod/Import/ImportGlobal.h>
 #include <Base/FileInfo.h>
+#include <Resource_FormatType.hxx>
 #include <TDocStd_Document.hxx>
 #include <StepData_StepModel.hxx>
 #include <Standard_Version.hxx>
@@ -37,14 +38,15 @@ class ImportExport ReaderStep
 {
 public:
     explicit ReaderStep(const Base::FileInfo& file);
-#if OCC_VERSION_HEX < 0x070800
+    void setCodePage(Resource_FormatType cp)
+    {
+        codePage = cp;
+    }
     void read(Handle(TDocStd_Document) hDoc);
-#else
-    void read(Handle(TDocStd_Document) hDoc, Resource_FormatType codePage);
-#endif
 
 private:
     Base::FileInfo file;
+    Resource_FormatType codePage {};
 };
 
 }  // namespace Import

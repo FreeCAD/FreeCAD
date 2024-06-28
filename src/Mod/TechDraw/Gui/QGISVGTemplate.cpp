@@ -168,7 +168,6 @@ void QGISVGTemplate::createClickHandles()
 
     //TODO: Find location of special fields (first/third angle) and make graphics items for them
 
-    double editClickBoxSize = Rez::guiX(PreferencesGui::templateClickBoxSize());
     QColor editClickBoxColor = PreferencesGui::templateClickBoxColor();
 
     auto textMap = svgTemplate->EditableTexts.getValues();
@@ -176,11 +175,17 @@ void QGISVGTemplate::createClickHandles()
     TechDraw::XMLQuery query(templateDocument);
 
     // XPath query to select all <text> nodes with "freecad:editable" attribute
+    // XPath query to select all <tspan> nodes whose <text> parent
+    // has "freecad:editable" attribute
     query.processItems(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
                                          "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-                                         "//text[@" FREECAD_ATTR_EDITABLE "]"),
-                       [&](QDomElement& textElement) -> bool {
+                                         "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
+                       [&](QDomElement& tspan) -> bool {
+        QString fontSizeString = tspan.attribute(QString::fromUtf8("font-size"));
+        QDomElement textElement = tspan.parentNode().toElement();
+        QString textAnchorString = textElement.attribute(QString::fromUtf8("text-anchor"));
         QString name = textElement.attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
+
         double x = Rez::guiX(
             textElement.attribute(QString::fromUtf8("x"), QString::fromUtf8("0.0")).toDouble());
         double y = Rez::guiX(
@@ -190,31 +195,40 @@ void QGISVGTemplate::createClickHandles()
                 "QGISVGTemplate::createClickHandles - no name for editable text at %f, %f\n", x, y);
             return true;
         }
-        std::string itemText = textMap[Base::Tools::toStdString(name)];
+        std::string editableNameString = textMap[Base::Tools::toStdString(name)];
 
         // default box size
-        double textHeight = editClickBoxSize;
-        double charWidth = textHeight * 0.6;
+        double textHeight{0};
         QString style = textElement.attribute(QString::fromUtf8("style"));
         if (!style.isEmpty()) {
-            QRegularExpression rxFontSize(QString::fromUtf8("font-size:([0-9]*\\.?[0-9]*)px;"));
-            QRegularExpression rxAnchor(QString::fromUtf8("text-anchor:(middle);"));
-            QRegularExpressionMatch match;
-
-            int pos{0};
-            pos = style.indexOf(rxFontSize, pos, &match);
-            if (pos != -1) {
-                textHeight = match.captured(1).toDouble() * 10.0;
-            }
-            charWidth = textHeight * 0.6;
-            pos = 0;
-            pos = style.indexOf(rxAnchor, pos, &match);
-            if (pos != -1) {
-                x = x - itemText.length() * charWidth / 2;
-            }
+            // get text attributes from style element
+            textHeight = getFontSizeFromStyle(style);
         }
-        double textLength = itemText.length() * charWidth;
+
+        if (textHeight == 0) {
+            textHeight = getFontSizeFromElement(fontSizeString);
+        }
+
+        if (textHeight == 0.0) {
+            textHeight =  Preferences::labelFontSizeMM() * 3.78;  // 3.78 = px/mm
+        }
+
+        QGraphicsTextItem textItemForLength;
+        QFont fontForLength(Preferences::labelFontQString());
+        fontForLength.setPixelSize(textHeight);
+        textItemForLength.setFont(fontForLength);
+        textItemForLength.setPlainText(Base::Tools::fromStdString(editableNameString));
+        auto brect = textItemForLength.boundingRect();
+        auto newLength = brect.width();
+
+        double charWidth = newLength / editableNameString.length();
+        if (textAnchorString == QString::fromUtf8("middle")) {
+            x = x - editableNameString.length() * charWidth / 2;
+        }
+
+        double textLength = editableNameString.length() * charWidth;
         textLength = std::max(charWidth, textLength);
+
         auto item(new TemplateTextField(this, svgTemplate, name.toStdString()));
 
         double pad = 1.0;
@@ -222,9 +236,9 @@ void QGISVGTemplate::createClickHandles()
         double bottom = top + textHeight + 2.0 * pad;
         double left = x - pad;
         item->setRectangle(QRectF(left, top,
-                      textLength + 2.0 * pad, textHeight + 2.0 * pad));
+                      newLength + 2.0 * pad, textHeight + 2.0 * pad));
         item->setLine(QPointF( left, bottom),
-                      QPointF(left + textLength + 2.0 * pad, bottom));
+                      QPointF(left + newLength + 2.0 * pad, bottom));
         item->setLineColor(editClickBoxColor);
 
         item->setZValue(ZVALUE::SVGTEMPLATE + 1);
@@ -234,5 +248,46 @@ void QGISVGTemplate::createClickHandles()
         return true;
     });
 }
+
+//! find the font-size hidden in a style element
+double QGISVGTemplate::getFontSizeFromStyle(QString style)
+{
+    if (style.isEmpty()) {
+        return 0.0;
+    }
+
+    // get text attributes from style element
+    QRegularExpression rxFontSize(QString::fromUtf8("font-size:([0-9]*.?[0-9]*)px;"));
+    QRegularExpressionMatch match;
+
+    int pos{0};
+    pos = style.indexOf(rxFontSize, 0, &match);
+    if (pos != -1) {
+        return Rez::guiX(match.captured(1).toDouble());
+    }
+
+    return 0.0;
+}
+
+//! find the font-size hidden in a style element
+double QGISVGTemplate::getFontSizeFromElement(QString element)
+{
+    if (element.isEmpty()) {
+        return 0.0;
+    }
+
+    //                                               font-size="3.95px"
+    QRegularExpression rxFontSize(QString::fromUtf8("([0-9]*.?[0-9]*)px"));
+    QRegularExpressionMatch match;
+
+    int pos{0};
+    pos = element.indexOf(rxFontSize, 0, &match);
+    if (pos != -1) {
+        return Rez::guiX(match.captured(1).toDouble());
+    }
+
+    return 0.0;
+}
+
 
 #include <Mod/TechDraw/Gui/moc_QGISVGTemplate.cpp>

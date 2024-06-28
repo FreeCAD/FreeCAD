@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QGraphicsSceneHoverEvent>
 # include <QGraphicsSceneMouseEvent>
 # include <QPainter>
@@ -178,7 +179,9 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         }
         else {
             // For general views we check if we need to snap to a position
-            snapPosition(newPos);
+            if (!(QApplication::keyboardModifiers() & Qt::AltModifier)) {
+                snapPosition(newPos);
+            }
         }
 
         // tell the feature that we have moved

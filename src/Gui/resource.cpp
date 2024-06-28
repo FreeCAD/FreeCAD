@@ -50,8 +50,12 @@
 #include "DlgToolbarsImp.h"
 #include "DlgActionsImp.h"
 #include "DlgKeyboardImp.h"
+
+#ifndef USE_3DCONNEXION_NAVLIB
 #include "DlgCustomizeSpaceball.h"
 #include "DlgCustomizeSpNavSettings.h"
+#endif
+
 #include "InputField.h"
 #include "QuantitySpinBox.h"
 #include "PrefWidgets.h"
@@ -93,9 +97,10 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new CustomPageProducer<DlgCustomKeyboardImp>;
     new CustomPageProducer<DlgCustomToolbarsImp>;
     new CustomPageProducer<DlgCustomActionsImp>;
+#ifndef USE_3DCONNEXION_NAVLIB
     new CustomPageProducer<DlgCustomizeSpNavSettings>;
     new CustomPageProducer<DlgCustomizeSpaceball>;
-
+#endif
     // ADD YOUR PREFERENCE WIDGETS HERE
     //
     //

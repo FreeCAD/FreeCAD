@@ -29,6 +29,7 @@
 #ifndef _PreComp_
 # include <cmath>
 
+# include <QApplication>
 # include <QGraphicsScene>
 # include <QGraphicsSceneMouseEvent>
 # include <QPaintDevice>
@@ -132,8 +133,10 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant& va
         }
     }
     else if (change == ItemPositionHasChanged && scene()) {
-        QPointF newPos = value.toPointF();    //position within parent!
-        snapPosition(newPos);
+        if (!(QApplication::keyboardModifiers() & Qt::AltModifier)) {
+            QPointF newPos = value.toPointF();    //position within parent!
+            snapPosition(newPos);
+        }
 
         setLabelCenter();
         m_dragState = Dragging;
