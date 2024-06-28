@@ -476,16 +476,15 @@ void SketcherGui::GetCirclesMinimalDistance(const Part::Geometry* geom1,
     }
 }
 
-void SketcherGui::ActivateHandler(Gui::Document* doc, DrawSketchHandler* handler)
+void SketcherGui::ActivateHandler(Gui::Document* doc, std::unique_ptr<DrawSketchHandler> handler)
 {
-    std::unique_ptr<DrawSketchHandler> ptr(handler);
     if (doc) {
         if (doc->getInEdit()
             && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             SketcherGui::ViewProviderSketch* vp =
                 static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
             vp->purgeHandler();
-            vp->activateHandler(ptr.release());
+            vp->activateHandler(std::move(handler));
         }
     }
 }

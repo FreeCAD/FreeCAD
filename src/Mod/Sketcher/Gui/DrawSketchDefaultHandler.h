@@ -41,8 +41,6 @@
 
 #include "Utils.h"
 
-namespace bp = boost::placeholders;
-
 namespace SketcherGui
 {
 
