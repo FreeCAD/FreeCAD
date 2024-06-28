@@ -4449,11 +4449,9 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketch
 
     // end knots can have a multiplicity of (degree + 1)
     if (bsp1->getDegree() < newMults.back()) {
+        newMults.back() = bsp1->getDegree();
         if (makeC1Continuous) {
-            newMults.back() = bsp1->getDegree()-1;
-        }
-        else {
-            newMults.back() = bsp1->getDegree();
+            newMults.back() -= 1;
         }
     }
 
@@ -4471,24 +4469,22 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketch
         THROWM(ValueError, "Failed to create joined curve.");
         return -1;
     }
-    else {
-        exposeInternalGeometry(newGeoId);
-        setConstruction(newGeoId, GeometryFacade::getConstruction(geo1));
 
-        // TODO: transfer constraints on the non-connected ends
-        auto otherPosId1 = (Sketcher::PointPos::start == posId1) ? Sketcher::PointPos::end
-                                                                 : Sketcher::PointPos::start;
-        auto otherPosId2 = (Sketcher::PointPos::start == posId2) ? Sketcher::PointPos::end
-                                                                 : Sketcher::PointPos::start;
+    exposeInternalGeometry(newGeoId);
+    setConstruction(newGeoId, GeometryFacade::getConstruction(geo1));
 
-        transferConstraints(geoId1, otherPosId1, newGeoId, PointPos::start, true);
-        transferConstraints(geoId2, otherPosId2, newGeoId, PointPos::end, true);
+    // TODO: transfer constraints on the non-connected ends
+    auto otherPosId1 = (Sketcher::PointPos::start == posId1) ? Sketcher::PointPos::end
+        : Sketcher::PointPos::start;
+    auto otherPosId2 = (Sketcher::PointPos::start == posId2) ? Sketcher::PointPos::end
+        : Sketcher::PointPos::start;
 
-        delGeometries({geoId1, geoId2});
-        return 0;
-    }
+    transferConstraints(geoId1, otherPosId1, newGeoId, PointPos::start, true);
+    transferConstraints(geoId2, otherPosId2, newGeoId, PointPos::end, true);
 
-    return -1;
+    delGeometries({geoId1, geoId2});
+
+    return 0;
 }
 
 bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* pObj,
