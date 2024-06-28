@@ -2028,7 +2028,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
                 if (da == Qt::MoveAction) {
                     // Check if item can be dragged from his parent
                     auto parentItem = item->getParentItem();
-                    if (parentItem && !(parentItem->object()->canDragObjects() && parentItem->object()->canDragObject(item->object()->getObject())))
+                    if (parentItem && !(parentItem->object()->canDragObjects() && parentItem->object()->canDragObject(obj)))
                     {
                         TREE_TRACE("Cannot drag object");
                         event->ignore();
@@ -2378,8 +2378,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         infos.emplace_back();
         auto& info = infos.back();
         auto item = v.first;
-        Gui::ViewProviderDocumentObject* vpc = item->object();
-        App::DocumentObject* obj = vpc->getObject();
+        App::DocumentObject* obj = item->object()->getObject();
 
         std::ostringstream str;
         App::DocumentObject* topParent = nullptr;
@@ -2399,17 +2398,13 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         info.subs.swap(v.second);
 
         // check if items can be dragged
-        if (da == Qt::MoveAction &&
-            item->myOwner == targetItemObj->myOwner &&
-            vp->canDragAndDropObject(item->object()->getObject()))
-        {
+        if (da == Qt::MoveAction && item->myOwner == targetItemObj->myOwner && vp->canDragAndDropObject(obj)) {
             // check if items can be dragged
             auto parentItem = item->getParentItem();
-            if (!parentItem)
+            if (!parentItem) {
                 info.dragging = true;
-            else if (parentItem->object()->canDragObjects()
-                && parentItem->object()->canDragObject(item->object()->getObject()))
-            {
+            }
+            else if (parentItem->object()->canDragObjects() && parentItem->object()->canDragObject(obj)) {
                 info.dragging = true;
                 auto vpp = parentItem->object();
                 info.parent = vpp->getObject()->getNameInDocument();
