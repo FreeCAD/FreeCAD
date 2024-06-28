@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
+ *   Copyright (c) 2013 Thomas Anderson <blobfish[at]gmx.com>              *
  *                                                                         *
  *   This file is part of FreeCAD.                                         *
  *                                                                         *
@@ -28,12 +29,57 @@
 #include <Mod/Measure/MeasureGlobal.h>
 #include "ViewProviderMeasureBase.h"
 
+#include <Inventor/engines/SoSubEngine.h>
+#include <Inventor/engines/SoEngine.h>
+#include <Inventor/fields/SoSFBool.h>
+#include <Inventor/fields/SoSFColor.h>
+#include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFMatrix.h>
+#include <Inventor/fields/SoSFRotation.h>
+#include <Inventor/fields/SoSFString.h>
+#include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/nodekits/SoSeparatorKit.h>
+
 
 class SoCoordinate3;
 class SoIndexedLineSet;
 
 namespace MeasureGui
 {
+
+class DimensionLinear: public SoSeparatorKit
+{
+    SO_KIT_HEADER(DimensionLinear);
+
+    SO_KIT_CATALOG_ENTRY_HEADER(transformation);
+    SO_KIT_CATALOG_ENTRY_HEADER(annotate);
+    SO_KIT_CATALOG_ENTRY_HEADER(leftArrow);
+    SO_KIT_CATALOG_ENTRY_HEADER(rightArrow);
+    SO_KIT_CATALOG_ENTRY_HEADER(line);
+    SO_KIT_CATALOG_ENTRY_HEADER(textSep);
+
+public:
+    DimensionLinear();
+    static void initClass();
+    SbBool affectsState() const override;
+    void setupDimension();
+
+    SoSFVec3f point1;
+    SoSFVec3f point2;
+    SoSFString text;
+    SoSFColor dColor;
+    SoSFBool showArrows;
+    SoSFFloat fontSize;
+
+protected:
+    SoSFRotation rotate;
+    SoSFFloat length;
+    SoSFVec3f origin;
+
+private:
+    ~DimensionLinear() override;
+};
+
 
 
 class MeasureGuiExport ViewProviderMeasureDistance : public MeasureGui::ViewProviderMeasureBase
