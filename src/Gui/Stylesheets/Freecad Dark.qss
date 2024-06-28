@@ -124,8 +124,8 @@ QWidget {
   border: 0px solid #020202;
   padding: 0px;
   color: White;
-  selection-background-color: transparent;
-  selection-color: White;
+  selection-background-color: @ThemeAccentColor1;
+  /* selection-color: White; */
 }
 
 QWidget:disabled {
@@ -2271,7 +2271,6 @@ QListView,
 QTableView,
 QColumnView {
   background-color: #252525;  /* background of a lot of stuff including spreadsheets.*/
-
   color: White;
   gridline-color: #020202;
   border-radius: 0px;
@@ -2282,6 +2281,9 @@ QListView  {
   background-color: #252525;  /* background of a lot of stuff including spreadsheets.*/
 }
 
+QTreeView{
+selection-background-color: transparent; /* fix for selection color being visible in preferences */
+}
 
 QTreeView:disabled,
 QListView:disabled,

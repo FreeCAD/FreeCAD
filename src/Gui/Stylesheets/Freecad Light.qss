@@ -124,8 +124,8 @@ QWidget {
   border: 0px solid #ababab;
   padding: 0px;
   /* color: black; */
-  selection-background-color: transparent;
-  selection-color: black;
+  selection-background-color: @ThemeAccentColor1;
+  /* selection-color: black; */
 }
 
 QWidget:disabled {
@@ -2286,6 +2286,10 @@ QColumnView {
 QTableView,
 QListView  {
   background-color: #ffffff;  /* background of a lot of stuff including spreadsheets.*/
+}
+
+QTreeView{
+  selection-background-color: transparent; /* fix for selection color being visible in preferences */
 }
 
 
