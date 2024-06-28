@@ -2118,6 +2118,10 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
     infos.reserve(items.size());
     bool syncPlacement = TreeParams::getSyncPlacement();
 
+    App::AutoTransaction committer(
+        da == Qt::LinkAction ? "Link object" :
+        da == Qt::CopyAction ? "Copy object" : "Move object");
+
     // check if items can be dragged
     for (auto& v : items) {
         auto item = v.first;
@@ -2127,15 +2131,17 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
             auto vpp = parentItem->object();
             // We querry all the parents recursively.
             bool allParentsOK = true;
-            while (parentItem) {
-                if (!parentItem->object()->canDragObjectToTarget(obj, nullptr)) {
+            auto parentItemRecursive = parentItem;
+            while (parentItemRecursive) {
+                if (!parentItemRecursive->object()->canDragObjectToTarget(obj, nullptr)) {
                     allParentsOK = false;
                     break;
                 }
-                parentItem = parentItem->getParentItem();
+                parentItemRecursive = parentItemRecursive->getParentItem();
             }
 
             if (!allParentsOK || !parentItem->object()->canDragObjects() || !parentItem->object()->canDragObject(obj)) {
+                committer.close(true);
                 TREE_ERR("'" << obj->getFullName() << "' cannot be dragged out of '" << parentItem->object()->getObject()->getFullName() << "'");
                 return false;
             }
@@ -2174,9 +2180,6 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
 
     // Open command
     auto manager = Application::Instance->macroManager();
-    App::AutoTransaction committer(
-        da == Qt::LinkAction ? "Link object" :
-        da == Qt::CopyAction ? "Copy object" : "Move object");
     try {
         std::vector<App::DocumentObject*> droppedObjs;
         for (auto& info : infos) {

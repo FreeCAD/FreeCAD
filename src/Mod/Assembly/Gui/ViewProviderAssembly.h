@@ -88,6 +88,8 @@ public:
     }
 
     bool canDragObject(App::DocumentObject*) const override;
+    bool canDragObjectToTarget(App::DocumentObject* obj,
+                               App::DocumentObject* target) const override;
 
     App::DocumentObject* getActivePart() const;
 
