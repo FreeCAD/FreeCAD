@@ -12,7 +12,7 @@ QFrame {
    padding-right: 5px;
  }
  Gui--OverlayTabWidget[transparent="true"] QWidget {
-  selection-background-color: transparent;
+  /* selection-background-color: transparent; */
  }
 
  Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
