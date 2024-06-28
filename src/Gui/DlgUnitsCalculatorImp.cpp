@@ -94,6 +94,7 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::ElectricCharge
           << Base::Unit::ElectricCurrent
           << Base::Unit::ElectricPotential
+          << Base::Unit::ElectricFlux
           << Base::Unit::Force
           << Base::Unit::Frequency
           << Base::Unit::HeatFlux

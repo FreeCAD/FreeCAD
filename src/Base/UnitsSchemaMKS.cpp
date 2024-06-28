@@ -311,6 +311,10 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, Q
             factor = 1e6;
         }
     }
+    else if (unit == Unit::ElectricFlux) {
+        unitString = QString::fromLatin1("A*s/m^2");
+        factor = 1e-6;
+    }
     else if (unit == Unit::ElectricCharge) {
         unitString = QString::fromLatin1("C");
         factor = 1.0;

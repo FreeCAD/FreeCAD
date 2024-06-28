@@ -43,6 +43,7 @@ TEST(Unit, TestTypeString)
     EXPECT_EQ(toString(Base::Unit::ElectricCharge), "ElectricCharge");
     EXPECT_EQ(toString(Base::Unit::ElectricCurrent), "ElectricCurrent");
     EXPECT_EQ(toString(Base::Unit::ElectricPotential), "ElectricPotential");
+    EXPECT_EQ(toString(Base::Unit::ElectricFlux), "ElectricFlux");
     EXPECT_EQ(toString(Base::Unit::Frequency), "Frequency");
     EXPECT_EQ(toString(Base::Unit::Force), "Force");
     EXPECT_EQ(toString(Base::Unit::HeatFlux), "HeatFlux");

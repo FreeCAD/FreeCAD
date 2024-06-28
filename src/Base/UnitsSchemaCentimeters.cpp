@@ -62,6 +62,10 @@ QString UnitsSchemaCentimeters::schemaTranslate(const Base::Quantity& quant,
         unitString = QString::fromLatin1("V");
         factor = 1000000;
     }
+    else if (unit == Unit::ElectricFlux) {
+        unitString = QString::fromLatin1("A*s/m^2");
+        factor = 1e-6;
+    }
     else if (unit == Unit::HeatFlux) {
         unitString = QString::fromLatin1("W/m^2");
         factor = 1.0;
