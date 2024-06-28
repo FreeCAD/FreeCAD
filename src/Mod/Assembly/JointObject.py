@@ -1301,9 +1301,14 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
             self.createJointObject()
             self.visibilityBackup = False
-            self.handleInitialSelection()
 
         self.adaptUi()
+
+        if self.creating:
+            # This has to be after adaptUi so that properties default values are adapted
+            # if needed. For instance for gears adaptUi will prevent radii from being 0
+            # before handleInitialSelection tries to solve.
+            self.handleInitialSelection()
 
         self.setJointsPickableState(False)
 
