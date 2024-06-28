@@ -322,6 +322,10 @@ UnitsSchemaInternal::schemaTranslate(const Quantity& quant, double& factor, QStr
             factor = 1e6;
         }
     }
+    else if (unit == Unit::ElectricFlux) {
+        unitString = QString::fromLatin1("A*s/m^2");
+        factor = 1e-6;
+    }
     else if (unit == Unit::Work) {
         if (UnitValue < 1.602176634e-10) {
             unitString = QString::fromLatin1("eV");
