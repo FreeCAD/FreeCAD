@@ -37,48 +37,6 @@
 
 using namespace FemGui;
 
-#if 0  // needed for Qt's lupdate utility
-    qApp->translate("Workbench", "FEM");
-    qApp->translate("Workbench", "&FEM");
-    //
-    qApp->translate("Workbench", "Model");
-    qApp->translate("Workbench", "M&odel");
-    qApp->translate("Workbench", "Materials");
-    qApp->translate("Workbench", "&Materials");
-    qApp->translate("Workbench", "Element Geometry");
-    qApp->translate("Workbench", "&Element Geometry");
-    qApp->translate("Workbench", "Electrostatic boundary conditions");
-    qApp->translate("Workbench", "&Electrostatic boundary conditions");
-    qApp->translate("Workbench", "Fluid boundary conditions");
-    qApp->translate("Workbench", "&Fluid boundary conditions");
-    qApp->translate("Workbench", "Electromagnetic boundary conditions");
-    qApp->translate("Workbench", "&Electromagnetic boundary conditions");
-    qApp->translate("Workbench", "Geometrical analysis features");
-    qApp->translate("Workbench", "&Geometrical analysis features");
-    qApp->translate("Workbench", "Mechanical boundary conditions and loads");
-    qApp->translate("Workbench", "&Mechanical boundary conditions and loads");
-    qApp->translate("Workbench", "Thermal boundary conditions and loads");
-    qApp->translate("Workbench", "&Thermal boundary conditions and loads");
-    qApp->translate("Workbench", "Analysis features without solver");
-    qApp->translate("Workbench", "&Analysis features without solver");
-    qApp->translate("Workbench", "Overwrite Constants");
-    qApp->translate("Workbench", "&Overwrite Constants");
-    //
-    qApp->translate("Workbench", "Mesh");
-    qApp->translate("Workbench", "M&esh");
-    //
-    qApp->translate("Workbench", "Solve");
-    qApp->translate("Workbench", "&Solve");
-    //
-    qApp->translate("Workbench", "Results");
-    qApp->translate("Workbench", "&Results");
-    qApp->translate("Workbench", "Filter functions");
-    qApp->translate("Workbench", "&Filter functions");
-    //
-    qApp->translate("Workbench", "Utilities");
-#endif
-
-
 /// @namespace FemGui @class Workbench
 TYPESYSTEM_SOURCE(FemGui::Workbench, Gui::StdWorkbench)
 
@@ -284,14 +242,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "FEM_ConstraintTemperature"
              << "FEM_ConstraintBodyHeatSource";
 
-    //    Gui::MenuItem* nosolver = new Gui::MenuItem;
-    //    nosolver->setCommand("&Analysis features without solver");
-    //    *nosolver
-    //        << "FEM_ConstraintFluidBoundary"
-    //        << "Separator"
-    //        << "FEM_ConstraintBearing"
-    //        << "FEM_ConstraintGear"
-    //        << "FEM_ConstraintPulley";
 
     Gui::MenuItem* constants = new Gui::MenuItem;
     constants->setCommand("&Overwrite Constants");
@@ -302,11 +252,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     model->setCommand("M&odel");
     *model << "FEM_Analysis"
            << "Separator" << material << elegeom << "Separator" << elec << fluid << geom << mech
-           << thermal
-           << "Separator"
-           //        << nosolver
-           //        << "Separator"
-           << constants;
+           << thermal << "Separator" << constants;
 
     Gui::MenuItem* mesh = new Gui::MenuItem;
     root->insertItem(item, mesh);
