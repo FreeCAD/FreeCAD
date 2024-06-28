@@ -1424,7 +1424,6 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
     if (sGeoIds.front() < 0 || sGeoIds.back() >= int(vals.size()))
         return -1;
 
-
     std::vector<Part::Geometry*> newVals(vals);
     for (auto it = sGeoIds.rbegin(); it != sGeoIds.rend(); ++it) {
         int GeoId = *it;
@@ -1433,14 +1432,12 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
         // Find coincident points to replace the points of the deleted geometry
         std::vector<int> GeoIdList;
         std::vector<PointPos> PosIdList;
-        for (PointPos PosId = PointPos::start; PosId != PointPos::mid;) {
+        for (auto& PosId : {PointPos::start, PointPos::end, PointPos::mid}) {
             getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
             if (GeoIdList.size() > 1) {
                 delConstraintOnPoint(GeoId, PosId, true /* only coincidence */);
                 transferConstraints(GeoIdList[0], PosIdList[0], GeoIdList[1], PosIdList[1]);
             }
-            // loop through [start, end, mid]
-            PosId = (PosId == PointPos::start) ? PointPos::end : PointPos::mid;
         }
     }
 
@@ -1451,23 +1448,22 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
     std::vector<Constraint*> filteredConstraints(0);
     for (auto itGeo = sGeoIds.rbegin(); itGeo != sGeoIds.rend(); ++itGeo) {
         int GeoId = *itGeo;
-        for (std::vector<Constraint*>::const_iterator it = constraints.begin();
-             it != constraints.end();
-             ++it) {
-
-            Constraint* copiedConstr(*it);
-            if ((*it)->First != GeoId && (*it)->Second != GeoId && (*it)->Third != GeoId) {
-                if (copiedConstr->First > GeoId)
-                    copiedConstr->First -= 1;
-                if (copiedConstr->Second > GeoId)
-                    copiedConstr->Second -= 1;
-                if (copiedConstr->Third > GeoId)
-                    copiedConstr->Third -= 1;
-                filteredConstraints.push_back(copiedConstr);
-            }
-            else {
+        for (const auto& constr : constraints) {
+            Constraint* copiedConstr(constr);
+            if ((constr)->First == GeoId ||
+                (constr)->Second == GeoId ||
+                (constr)->Third == GeoId) {
                 delete copiedConstr;
+                continue;
             }
+
+            if (copiedConstr->First > GeoId)
+                copiedConstr->First -= 1;
+            if (copiedConstr->Second > GeoId)
+                copiedConstr->Second -= 1;
+            if (copiedConstr->Third > GeoId)
+                copiedConstr->Third -= 1;
+            filteredConstraints.push_back(copiedConstr);
         }
 
         constraints = filteredConstraints;
