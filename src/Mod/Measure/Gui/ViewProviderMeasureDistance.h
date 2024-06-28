@@ -91,17 +91,25 @@ public:
     ViewProviderMeasureDistance();
     ~ViewProviderMeasureDistance() override;
 
+    App::PropertyBool ShowDelta;
+
     void redrawAnnotation() override;
     void positionAnno(const Measure::MeasureBase* measureObject) override;
 
 protected:
     Base::Vector3d getTextDirection(Base::Vector3d elementDirection, double tolerance = defaultTolerance) override;
+    void onChanged(const App::Property* prop) override;
 
 private:
-    SoCoordinate3    * pCoords;
-    SoIndexedLineSet * pLines;
+    SoCoordinate3* pCoords;
+    SoIndexedLineSet* pLines;
+    SoSwitch* pDeltaDimensionSwitch;
 
-    SoSFFloat         fieldDistance;
+    SoSFVec3f fieldPosition1;
+    SoSFVec3f fieldPosition2;
+
+    SoSFFloat fieldDistance;
+
 
     SbMatrix getMatrix();
 };
