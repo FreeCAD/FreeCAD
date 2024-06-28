@@ -587,7 +587,7 @@ def retranslateUi():
 indicator = IndicatorButton(statusBar)
 indicator.setFlat(True)
 indicator.adjustSize()
-indicator.setObjectName("NavigationIndicator")
+indicator.setObjectName(translate("NavigationIndicator", "Navigation indicator"))
 
 menu = QtGui.QMenu(indicator)
 indicator.setMenu(menu)
