@@ -55,6 +55,7 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsItemGroup
         /// Returns the field name that this TemplateTextField represents
         std::string fieldName() const { return fieldNameStr; }
 
+        void setAutofill(QString autofillString);
         void setRectangle(QRectF rect);
         void setLine(QPointF from, QPointF to);
         void setLineColor(QColor color);
@@ -62,6 +63,7 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsItemGroup
     protected:
         TechDraw::DrawTemplate *tmplte;
         std::string fieldNameStr;
+        QString m_autofillString;
 
         /// Need this to properly handle mouse release
         void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
