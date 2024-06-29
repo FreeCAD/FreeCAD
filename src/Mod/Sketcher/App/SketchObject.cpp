@@ -7753,7 +7753,6 @@ void SketchObject::validateExternalLinks()
         const std::string SubElement = SubElements[i];
 
         TopoDS_Shape refSubShape;
-        bool removeBadLink = false;
         try {
             if (Obj->isDerivedFrom<Part::Datum>()) {
                 const Part::Datum* datum = static_cast<const Part::Datum*>(Obj);
@@ -7767,38 +7766,36 @@ void SketchObject::validateExternalLinks()
                 const Part::TopoShape& refShape = refObj->Shape.getShape();
                 refSubShape = refShape.getSubShape(SubElement.c_str());
             }
+            continue; // no bad link needs to be removed
         }
         catch (Base::IndexError& indexError) {
-            removeBadLink = true;
             Base::Console().warning(
                 this->getFullLabel(), (indexError.getMessage() + "\n").c_str());
         }
         catch (Base::ValueError& valueError) {
-            removeBadLink = true;
             Base::Console().warning(
                 this->getFullLabel(), (valueError.getMessage() + "\n").c_str());
         }
         catch (Standard_Failure&) {
-            removeBadLink = true;
         }
-        if (removeBadLink) {
-            rebuild = true;
-            Objects.erase(Objects.begin() + i);
-            SubElements.erase(SubElements.begin() + i);
 
-            const std::vector<Constraint*>& constraints = Constraints.getValues();
-            std::vector<Constraint*> newConstraints(0);
-            int GeoId = GeoEnum::RefExt - i;
-            for (const auto& constr : constraints) {
-                auto newConstr = getConstraintAfterDeletingGeo(constr, GeoId);
-                if (newConstr) {
-                    newConstraints.push_back(newConstr.release());
-                }
+        rebuild = true;
+        Objects.erase(Objects.begin() + i);
+        SubElements.erase(SubElements.begin() + i);
+
+        const std::vector<Constraint*>& constraints = Constraints.getValues();
+        std::vector<Constraint*> newConstraints;
+        newConstraints.reserve(constraints.size());
+        int GeoId = GeoEnum::RefExt - i;
+        for (const auto& constr : constraints) {
+            auto newConstr = getConstraintAfterDeletingGeo(constr, GeoId);
+            if (newConstr) {
+                newConstraints.push_back(newConstr.release());
             }
-
-            Constraints.setValues(std::move(newConstraints));
-            i--;// we deleted an item, so the next one took its place
         }
+
+        Constraints.setValues(std::move(newConstraints));
+        i--;// we deleted an item, so the next one took its place
     }
 
     if (rebuild) {
