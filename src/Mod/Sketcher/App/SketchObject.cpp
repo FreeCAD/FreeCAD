@@ -259,7 +259,7 @@ void SketchObject::buildShape()
 
     std::vector<Part::TopoShape> shapes;
     std::vector<Part::TopoShape> vertices;
-    int i=0;
+    unsigned i=0;
     for(auto geo : getInternalGeometry()) {
         ++i;
         if(GeometryFacade::getConstruction(geo))
@@ -9434,7 +9434,6 @@ App::DocumentObject *SketchObject::getSubObject(
     const char *mapped = Data::isMappedElement(subname);
     if(!subname || !subname[0])
         return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
-    const char *element = Data::findElementName(subname);
 
     Data::IndexedName indexedName = checkSubName(subname);
     int index = indexedName.getIndex();
