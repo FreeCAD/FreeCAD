@@ -4333,7 +4333,6 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
     return Geometry.getSize() - 1;
 }
 
-
 std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& geoIdList,
     std::map<int, int>& geoIdMap,
     std::map<int, bool>& isStartEndInverted,
@@ -5257,7 +5256,6 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList, const Base::Vector3
 
     return Geometry.getSize() - 1;
 }
-
 
 int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
 {
@@ -7000,29 +6998,27 @@ int SketchObject::delExternal(int ExtGeoId)
     std::vector<Constraint*> newConstraints;
     std::vector<Constraint*> copiedConstraints;
     int GeoId = GeoEnum::RefExt - ExtGeoId;
-    for (auto cstr : constraints) {
-        if (cstr->First != GeoId && cstr->Second != GeoId && cstr->Third != GeoId) {
-            auto copiedConstr = cstr;
-            if (copiedConstr->First < GeoId && copiedConstr->First != GeoEnum::GeoUndef) {
-                if (cstr == copiedConstr)
-                    copiedConstr = cstr->clone();
-                copiedConstr->First += 1;
-            }
-            if (copiedConstr->Second < GeoId && copiedConstr->Second != GeoEnum::GeoUndef) {
-                if (cstr == copiedConstr)
-                    copiedConstr = cstr->clone();
-                copiedConstr->Second += 1;
-            }
-            if (copiedConstr->Third < GeoId && copiedConstr->Third != GeoEnum::GeoUndef) {
-                if (cstr == copiedConstr)
-                    copiedConstr = cstr->clone();
-                copiedConstr->Third += 1;
-            }
 
-            newConstraints.push_back(copiedConstr);
-            if (cstr != copiedConstr)
-                copiedConstraints.push_back(copiedConstr);
+    auto updateIdIfNeeded = [&GeoId](int& givenId) {
+        if (givenId < GeoId && givenId != GeoEnum::GeoUndef) {
+            givenId += 1;
+            return true;
         }
+        return false;
+    };
+
+    for (const auto& cstr : constraints) {
+        if (!(cstr->First != GeoId && cstr->Second != GeoId && cstr->Third != GeoId)) {
+            continue;
+        }
+
+        auto copiedConstr = cstr->clone();
+        bool someIdWasUpdated =
+            updateIdIfNeeded(copiedConstr->First) ||
+            updateIdIfNeeded(copiedConstr->Second) ||
+            updateIdIfNeeded(copiedConstr->Third);
+
+        newConstraints.push_back(copiedConstr);
     }
 
     ExternalGeometry.setValues(Objects, SubElements);
@@ -7033,7 +7029,7 @@ int SketchObject::delExternal(int ExtGeoId)
         Base::Console().Error("%s\n", e.what());
         // revert to original values
         ExternalGeometry.setValues(originalObjects, originalSubElements);
-        for (Constraint* it : copiedConstraints)
+        for (Constraint* it : newConstraints)
             delete it;
         return -1;
     }
