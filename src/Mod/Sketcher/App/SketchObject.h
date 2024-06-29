@@ -956,6 +956,7 @@ protected:
 
 public:
     // FIXME: These may not need to be public. Decide before merging.
+    // helper function to get constraint after deleting a geometry
     std::unique_ptr<Constraint> getConstraintAfterDeletingGeo(const Constraint* constr,
                                                               const int deletedGeoId) const;
 
