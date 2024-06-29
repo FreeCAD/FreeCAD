@@ -1734,19 +1734,11 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
     const std::vector<Constraint*>& constraints = this->Constraints.getValues();
     std::vector<Constraint*> newConstraints;
     newConstraints.reserve(constraints.size());
-    for (auto cstr : constraints) {
-        if (cstr->First == GeoId || cstr->Second == GeoId || cstr->Third == GeoId)
-            continue;
-        if (cstr->First > GeoId || cstr->Second > GeoId || cstr->Third > GeoId) {
-            cstr = cstr->clone();
-            if (cstr->First > GeoId)
-                cstr->First -= 1;
-            if (cstr->Second > GeoId)
-                cstr->Second -= 1;
-            if (cstr->Third > GeoId)
-                cstr->Third -= 1;
+    for (const auto& constr : constraints) {
+        auto newConstr = getConstraintAfterDeletingGeo(constr, GeoId);
+        if (newConstr) {
+            newConstraints.push_back(newConstr.release());
         }
-        newConstraints.push_back(cstr);
     }
 
     // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
@@ -1828,23 +1820,12 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
         constraints.push_back(ptr->clone());
     std::vector<Constraint*> filteredConstraints(0);
     for (auto itGeo = sGeoIds.rbegin(); itGeo != sGeoIds.rend(); ++itGeo) {
-        int GeoId = *itGeo;
+        const int& GeoId = *itGeo;
         for (const auto& constr : constraints) {
-            Constraint* copiedConstr(constr);
-            if ((constr)->First == GeoId ||
-                (constr)->Second == GeoId ||
-                (constr)->Third == GeoId) {
-                delete copiedConstr;
-                continue;
+            auto newConstr = getConstraintAfterDeletingGeo(constr, GeoId);
+            if (newConstr) {
+                filteredConstraints.push_back(newConstr.release());
             }
-
-            if (copiedConstr->First > GeoId)
-                copiedConstr->First -= 1;
-            if (copiedConstr->Second > GeoId)
-                copiedConstr->Second -= 1;
-            if (copiedConstr->Third > GeoId)
-                copiedConstr->Third -= 1;
-            filteredConstraints.push_back(copiedConstr);
         }
 
         constraints = filteredConstraints;
@@ -3375,6 +3356,42 @@ void SketchObject::addConstraint(Sketcher::ConstraintType constrType, int firstG
         constrType, firstGeoId, firstPos, secondGeoId, secondPos, thirdGeoId, thirdPos);
 
     this->addConstraint(std::move(newConstr));
+}
+
+std::unique_ptr<Constraint> SketchObject::getConstraintAfterDeletingGeo(const Constraint* constr,
+                                                                        const int deletedGeoId) const
+{
+    if (constr->First == deletedGeoId ||
+        constr->Second == deletedGeoId ||
+        constr->Third == deletedGeoId) {
+        return nullptr;
+    }
+
+    int step = 1;
+    std::function<bool (const int&)> needsUpdate = [&deletedGeoId](const int& givenId) -> bool {
+        return givenId > deletedGeoId;
+    };
+    if (deletedGeoId < 0) {
+        step = -1;
+        needsUpdate = [&deletedGeoId](const int& givenId) -> bool {
+            return givenId < deletedGeoId && givenId != GeoEnum::GeoUndef;
+        };
+    }
+
+    // TODO: While this is not incorrect, it recreates all constraints regardless of whether or not we need to.
+    auto newConstr = std::unique_ptr<Constraint>(constr->clone());
+
+    if (needsUpdate(newConstr->First)) {
+        newConstr->First -= step;
+    }
+    if (needsUpdate(newConstr->Second)) {
+        newConstr->Second -= step;
+    }
+    if (needsUpdate(newConstr->Third)) {
+        newConstr->Third -= step;
+    }
+
+    return newConstr;
 }
 
 bool SketchObject::seekTrimPoints(int GeoId, const Base::Vector3d& point, int& GeoId1,
@@ -7650,26 +7667,11 @@ int SketchObject::delExternal(int ExtGeoId)
     std::vector<Constraint*> copiedConstraints;
     int GeoId = GeoEnum::RefExt - ExtGeoId;
 
-    auto updateIdIfNeeded = [&GeoId](int& givenId) {
-        if (givenId < GeoId && givenId != GeoEnum::GeoUndef) {
-            givenId += 1;
-            return true;
+    for (const auto& constr : constraints) {
+        auto newConstr = getConstraintAfterDeletingGeo(constr, GeoId);
+        if (newConstr) {
+            newConstraints.push_back(newConstr.release());
         }
-        return false;
-    };
-
-    for (const auto& cstr : constraints) {
-        if (!(cstr->First != GeoId && cstr->Second != GeoId && cstr->Third != GeoId)) {
-            continue;
-        }
-
-        auto copiedConstr = cstr->clone();
-        bool someIdWasUpdated =
-            updateIdIfNeeded(copiedConstr->First) ||
-            updateIdIfNeeded(copiedConstr->Second) ||
-            updateIdIfNeeded(copiedConstr->Third);
-
-        newConstraints.push_back(copiedConstr);
     }
 
     ExternalGeometry.setValues(Objects, SubElements);
@@ -8247,22 +8249,14 @@ void SketchObject::validateExternalLinks()
         SubElements.erase(SubElements.begin() + i);
 
         const std::vector<Constraint*>& constraints = Constraints.getValues();
-        std::vector<Constraint*> newConstraints(0);
+        std::vector<Constraint*> newConstraints;
+        newConstraints.reserve(constraints.size());
         int GeoId = GeoEnum::RefExt - i;
         for (const auto& constr : constraints) {
-            if (!(constr->First != GeoId && constr->Second != GeoId && constr->Third != GeoId)) {
-                continue;
+            auto newConstr = getConstraintAfterDeletingGeo(constr, GeoId);
+            if (newConstr) {
+                newConstraints.push_back(newConstr.release());
             }
-
-            Constraint* copiedConstr = constr->clone();
-            if (copiedConstr->First < GeoId && copiedConstr->First != GeoEnum::GeoUndef)
-                copiedConstr->First += 1;
-            if (copiedConstr->Second < GeoId && copiedConstr->Second != GeoEnum::GeoUndef)
-                copiedConstr->Second += 1;
-            if (copiedConstr->Third < GeoId && copiedConstr->Third != GeoEnum::GeoUndef)
-                copiedConstr->Third += 1;
-
-            newConstraints.push_back(copiedConstr);
         }
 
         Constraints.setValues(std::move(newConstraints));

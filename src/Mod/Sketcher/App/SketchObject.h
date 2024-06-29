@@ -947,6 +947,10 @@ protected:
                      int thirdGeoId = GeoEnum::GeoUndef,
                      Sketcher::PointPos thirdPos = Sketcher::PointPos::none);
 
+    // helper function to get constraint after deleting a geometry
+    std::unique_ptr<Constraint> getConstraintAfterDeletingGeo(const Constraint* constraint,
+                                                              const int deletedGeoId) const;
+
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
     bool allowOtherBody;
