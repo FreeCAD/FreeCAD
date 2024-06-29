@@ -8224,12 +8224,12 @@ void SketchObject::validateExternalLinks()
                 refSubShape = refShape.getSubShape(SubElement.c_str());
             }
         }
-        catch ( Base::IndexError& indexError) {
+        catch (Base::IndexError& indexError) {
             removeBadLink = true;
             Base::Console().Warning(
                 this->getFullLabel(), (indexError.getMessage() + "\n").c_str());
         }
-        catch ( Base::ValueError& valueError ) {
+        catch (Base::ValueError& valueError) {
             removeBadLink = true;
             Base::Console().Warning(
                 this->getFullLabel(), (valueError.getMessage() + "\n").c_str());
@@ -8237,33 +8237,36 @@ void SketchObject::validateExternalLinks()
         catch (Standard_Failure&) {
             removeBadLink = true;
         }
-        if ( removeBadLink ) {
-            rebuild = true;
-            Objects.erase(Objects.begin() + i);
-            SubElements.erase(SubElements.begin() + i);
 
-            const std::vector<Constraint*>& constraints = Constraints.getValues();
-            std::vector<Constraint*> newConstraints(0);
-            int GeoId = GeoEnum::RefExt - i;
-            for (std::vector<Constraint*>::const_iterator it = constraints.begin();
-                 it != constraints.end();
-                 ++it) {
-                if ((*it)->First != GeoId && (*it)->Second != GeoId && (*it)->Third != GeoId) {
-                    Constraint* copiedConstr = (*it)->clone();
-                    if (copiedConstr->First < GeoId && copiedConstr->First != GeoEnum::GeoUndef)
-                        copiedConstr->First += 1;
-                    if (copiedConstr->Second < GeoId && copiedConstr->Second != GeoEnum::GeoUndef)
-                        copiedConstr->Second += 1;
-                    if (copiedConstr->Third < GeoId && copiedConstr->Third != GeoEnum::GeoUndef)
-                        copiedConstr->Third += 1;
+        if (!removeBadLink) {
+            continue;
+        }
 
-                    newConstraints.push_back(copiedConstr);
-                }
+        rebuild = true;
+        Objects.erase(Objects.begin() + i);
+        SubElements.erase(SubElements.begin() + i);
+
+        const std::vector<Constraint*>& constraints = Constraints.getValues();
+        std::vector<Constraint*> newConstraints(0);
+        int GeoId = GeoEnum::RefExt - i;
+        for (const auto& constr : constraints) {
+            if (!(constr->First != GeoId && constr->Second != GeoId && constr->Third != GeoId)) {
+                continue;
             }
 
-            Constraints.setValues(std::move(newConstraints));
-            i--;// we deleted an item, so the next one took its place
+            Constraint* copiedConstr = constr->clone();
+            if (copiedConstr->First < GeoId && copiedConstr->First != GeoEnum::GeoUndef)
+                copiedConstr->First += 1;
+            if (copiedConstr->Second < GeoId && copiedConstr->Second != GeoEnum::GeoUndef)
+                copiedConstr->Second += 1;
+            if (copiedConstr->Third < GeoId && copiedConstr->Third != GeoEnum::GeoUndef)
+                copiedConstr->Third += 1;
+
+            newConstraints.push_back(copiedConstr);
         }
+
+        Constraints.setValues(std::move(newConstraints));
+        i--;// we deleted an item, so the next one took its place
     }
 
     if (rebuild) {
