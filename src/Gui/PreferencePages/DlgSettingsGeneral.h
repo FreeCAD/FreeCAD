@@ -70,6 +70,7 @@ protected Q_SLOTS:
     void onManagePreferencePacksClicked();
     void onImportConfigClicked();
     void onThemeChanged(int index);
+    void onLinkActivated(const QString& link);
 
 public Q_SLOTS:
     void onUnitSystemIndexChanged(int index);
