@@ -672,6 +672,12 @@ public:
                              bool& yinv,
                              eReasonList* rsn = nullptr) const;
 
+    DocumentObject* getSubObject(const char* subname,
+                                 PyObject** pyObj = 0,
+                                 Base::Matrix4D* mat = 0,
+                                 bool transform = true,
+                                 int depth = 0) const override;
+
     Part::TopoShape getEdge(const Part::Geometry* geo, const char* name) const;
 
     Data::IndexedName checkSubName(const char* sub) const;

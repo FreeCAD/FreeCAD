@@ -616,12 +616,14 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
         pcShapeMaterial->specularColor.setNum(size);
         pcShapeMaterial->emissiveColor.setNum(size);
         pcShapeMaterial->shininess.setNum(size);
+        pcShapeMaterial->transparency.setNum(size);
 
         SbColor* dc = pcShapeMaterial->diffuseColor.startEditing();
         SbColor* ac = pcShapeMaterial->ambientColor.startEditing();
         SbColor* sc = pcShapeMaterial->specularColor.startEditing();
         SbColor* ec = pcShapeMaterial->emissiveColor.startEditing();
         float* sh = pcShapeMaterial->shininess.startEditing();
+        float* tr = pcShapeMaterial->transparency.startEditing();
 
         for (int i = 0; i < size; i++) {
             dc[i].setValue(materials[i].diffuseColor.r, materials[i].diffuseColor.g, materials[i].diffuseColor.b);
@@ -629,6 +631,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
             sc[i].setValue(materials[i].specularColor.r, materials[i].specularColor.g, materials[i].specularColor.b);
             ec[i].setValue(materials[i].emissiveColor.r, materials[i].emissiveColor.g, materials[i].emissiveColor.b);
             sh[i] = materials[i].shininess;
+            tr[i] = materials[i].transparency;
         }
 
         pcShapeMaterial->diffuseColor.finishEditing();
@@ -636,6 +639,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
         pcShapeMaterial->specularColor.finishEditing();
         pcShapeMaterial->emissiveColor.finishEditing();
         pcShapeMaterial->shininess.finishEditing();
+        pcShapeMaterial->transparency.finishEditing();
     }
     else if (size == 1) {
         pcFaceBind->value = SoMaterialBinding::OVERALL;
