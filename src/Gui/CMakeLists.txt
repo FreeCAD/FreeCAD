@@ -1012,6 +1012,7 @@ SET(Inventor_CPP_SRCS
     SoFCBackgroundGradient.cpp
     SoFCBoundingBox.cpp
     SoFCColorBar.cpp
+    SoFCColorBarNotifier.cpp
     SoFCColorGradient.cpp
     SoFCColorLegend.cpp
     SoFCDB.cpp
@@ -1042,6 +1043,7 @@ SET(Inventor_SRCS
     SoFCBackgroundGradient.h
     SoFCBoundingBox.h
     SoFCColorBar.h
+    SoFCColorBarNotifier.h
     SoFCColorGradient.h
     SoFCColorLegend.h
     SoFCDB.h
