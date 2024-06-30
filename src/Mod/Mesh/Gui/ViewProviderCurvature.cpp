@@ -53,6 +53,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SoFCColorBar.h>
+#include <Gui/SoFCColorBarNotifier.h>
 #include <Gui/SoFCSelection.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Widgets.h>
@@ -83,6 +84,7 @@ ViewProviderMeshCurvature::ViewProviderMeshCurvature()
     // simple color bar
     pcColorBar = new Gui::SoFCColorBar;
     pcColorBar->Attach(this);
+    Gui::SoFCColorBarNotifier::instance().attach(pcColorBar);
     pcColorBar->ref();
     pcColorBar->setRange(-0.5f, 0.5f, 3);
     pcLinkRoot = new SoGroup;
@@ -124,6 +126,7 @@ ViewProviderMeshCurvature::~ViewProviderMeshCurvature()
 {
     pcColorRoot->unref();
     pcColorMat->unref();
+    Gui::SoFCColorBarNotifier::instance().detach(pcColorBar);
     pcColorBar->Detach(this);
     pcColorBar->unref();
     pcLinkRoot->unref();
