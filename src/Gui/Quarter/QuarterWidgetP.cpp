@@ -106,9 +106,7 @@ QuarterWidgetP::~QuarterWidgetP()
 {
   QtGLWidget* glMaster = static_cast<QtGLWidget*>(this->master->viewport());
   removeFromCacheContext(this->cachecontext, glMaster);
-  if (this->contextmenu) {
-    delete this->contextmenu;
-  }
+  delete this->contextmenu;
 }
 
 SoCamera *

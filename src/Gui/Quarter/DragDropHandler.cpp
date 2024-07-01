@@ -1,22 +1,22 @@
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -54,7 +54,7 @@ namespace SIM { namespace Coin3D { namespace Quarter {
 
 class DragDropHandlerP {
 public:
-  DragDropHandlerP(DragDropHandler * master) {
+  explicit DragDropHandlerP(DragDropHandler * master) {
     this->master = master;
   }
   void dragEnterEvent(QDragEnterEvent * event);
@@ -93,7 +93,7 @@ DragDropHandler::~DragDropHandler()
 
 /*!
   Detects a QDragEnterEvent and if the event is the dropping of a
-  valid Inventor or VRML it opens the file, reads in the scenegraph
+  valid Inventor or VRML file it opens the file, reads in the scene graph
   and calls setSceneGraph on the QuarterWidget
  */
 bool
@@ -158,7 +158,7 @@ DragDropHandlerP::dropEvent(QDropEvent * event)
   if (!root)
       return;
 
-  // set new scenegraph
+  // set new scene graph
   this->quarterwidget->setSceneGraph(root);
   this->quarterwidget->viewport()->update();
 }

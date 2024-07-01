@@ -262,7 +262,7 @@ public:
 
 class SpaceNavigatorDevice : public Quarter::InputDevice {
 public:
-    SpaceNavigatorDevice() = default;
+    SpaceNavigatorDevice() : InputDevice(nullptr) {}
     ~SpaceNavigatorDevice() override = default;
     const SoEvent* translateEvent(QEvent* event) override {
 
