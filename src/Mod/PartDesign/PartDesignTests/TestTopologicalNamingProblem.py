@@ -1353,6 +1353,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Doc.recompute()
         volume1 = body.Shape.Volume
         fillet = self.Doc.addObject('PartDesign::Fillet', 'Fillet')
+        fillet.Refine = True
         fillet.Base = (box, ['Edge1',
                               'Edge5',
                               'Edge7',
@@ -1398,6 +1399,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body.addObject(doc.Sketch)
 
         pocket = self.Doc.addObject('PartDesign::Pocket', 'Pocket')
+        pocket.Refine = True
         pocket.Type = "Length"
         pocket.Length = 3
         pocket.Direction = App.Vector(-0.710000000,0.7100000000, 0.0000000000)
@@ -1477,6 +1479,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.addObject("Part::Box","Box")
         doc.ActiveObject.Label = "Cube"
         doc.addObject("Part::MultiFuse","Fusion")
+        doc.Fusion.Refine = False
         doc.Fusion.Shapes = [doc.Box, doc.Box001,]
         doc.recompute()
         self.assertEqual(doc.Fusion.Shape.ElementMapSize, 26)
@@ -1517,6 +1520,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.recompute()
 
         doc.addObject("Part::MultiFuse","Fusion")
+        doc.Fusion.Refine = False
         doc.Fusion.Shapes = [doc.Box, doc.Box001,]
 
         doc.recompute()
