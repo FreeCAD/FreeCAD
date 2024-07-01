@@ -81,7 +81,7 @@ class BIM_Views:
             size = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/General"
             ).GetInt("ToolbarIconSize", 24)
-            toolbar = QtGui.QToolBar()
+            toolbar = FreeCADGui.UiLoader().createWidget("Gui::ToolBar")
             toolbar.setIconSize(QtCore.QSize(size, size))
             dialog.horizontalLayout.addWidget(toolbar)
             for button in [

@@ -27,6 +27,7 @@
 
 #include "MainWindow.h"
 #include "ToolBarAreaWidget.h"
+#include "ToolBarManager.h"
 #include <Base/Tools.h>
 
 using namespace Gui;
@@ -51,6 +52,10 @@ void ToolBarAreaWidget::addWidget(QWidget* widget)
     // if widget already exist don't do anything
     if (_layout->indexOf(widget) >= 0) {
         return;
+    }
+
+    if (auto toolbar = qobject_cast<ToolBar*>(widget)) {
+        toolbar->updateCustomGripVisibility();
     }
 
     _layout->addWidget(widget);
@@ -80,6 +85,10 @@ void ToolBarAreaWidget::insertWidget(int index, QWidget* widget)
 
     _layout->insertWidget(index, widget);
 
+    if (auto toolbar = qobject_cast<ToolBar*>(widget)) {
+        toolbar->updateCustomGripVisibility();
+    }
+
     adjustParent();
     saveState();
 }
@@ -87,6 +96,10 @@ void ToolBarAreaWidget::insertWidget(int index, QWidget* widget)
 void ToolBarAreaWidget::removeWidget(QWidget* widget)
 {
     _layout->removeWidget(widget);
+
+    if (auto toolbar = qobject_cast<ToolBar*>(widget)) {
+        toolbar->updateCustomGripVisibility();
+    }
 
     QString name = widget->objectName();
     if (!name.isEmpty()) {

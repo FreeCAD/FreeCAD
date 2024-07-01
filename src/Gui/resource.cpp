@@ -59,6 +59,7 @@
 #include "InputField.h"
 #include "QuantitySpinBox.h"
 #include "PrefWidgets.h"
+#include "ToolBarManager.h"
 
 using namespace Gui;
 using namespace Gui::Dialog;
