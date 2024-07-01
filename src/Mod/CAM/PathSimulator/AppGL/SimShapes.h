@@ -75,6 +75,7 @@ public:
     void Render();
     void Render(mat4x4 modelMat, mat4x4 normallMat);
     void FreeResources();
+    void SetModelData(std::vector<Vertex>& vbuffer, std::vector<GLushort>& ibuffer);
     void RotateProfile(float* profPoints,
                        int nPoints,
                        float distance,

@@ -409,6 +409,11 @@ void Shape::GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int n
     numIndices = nIndices;
 }
 
+void MillSim::Shape::SetModelData(std::vector<Vertex>& vbuffer, std::vector<GLushort>& ibuffer)
+{
+    GenerateModel((float*)vbuffer.data(), ibuffer.data(), (int)vbuffer.size(), (int)ibuffer.size());
+}
+
 void Shape::Render()
 {
     glBindVertexArray(vao);

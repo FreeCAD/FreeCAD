@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
+ *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,59 +20,37 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CAMSimulator_CAMSim_H
-#define CAMSimulator_CAMSim_H
+#include "SolidObject.h"
+#include "Shader.h"
+#include <stdlib.h>
 
-#include <memory>
-#include <TopoDS_Shape.hxx>
+#define NUM_PROFILE_POINTS 4
+using namespace MillSim;
 
-#include <Mod/CAM/App/Command.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/CAM/PathGlobal.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/CAM/App/Command.h>
-
-#include "DlgCAMSimulator.h"
-
-using namespace Path;
-
-namespace CAMSimulator
+SolidObject::SolidObject()
 {
+    mat4x4_identity(mModelMat);
+    vec3_set(center, 0, 0, 0);
+}
 
-/** The representation of a CNC Toolpath Simulator */
-
-class CAMSimulatorExport CAMSim: public Base::BaseClass
+SolidObject::~SolidObject()
 {
-    // TYPESYSTEM_HEADER();
+    isValid = false;
+    shape.FreeResources();
+}
 
-public:
-    static Base::Type getClassTypeId(void);
-    virtual Base::Type getTypeId(void) const;
-    static void init(void);
-    static void* create(void);
+void SolidObject::render()
+{
+    if (!isValid) {
+        return;
+    }
+    // glCallList(mDisplayListId);
+    // UpdateObjColor(color);
+    shape.Render(mModelMat, mModelMat);  // model is not rotated hence both are identity matrix
+}
 
-private:
-    static Base::Type classTypeId;
-
-
-public:
-    CAMSim();
-    ~CAMSim();
-
-    void BeginSimulation(Part::TopoShape* stock, float resolution);
-    void resetSimulation();
-    void addTool(const std::vector<float> toolProfilePoints,
-                 int toolNumber,
-                 float diameter,
-                 float resolution);
-    void SetBaseShape(const TopoDS_Shape& stock, float resolution);
-    void AddCommand(Command* cmd);
-
-public:
-    std::unique_ptr<SimStock> m_stock;
-};
-
-}  // namespace CAMSimulator
-
-
-#endif  // CAMSimulator_CAMSim_H
+void SolidObject::GenerateSolid(std::vector<Vertex>& verts, std::vector<GLushort>& indices)
+{
+    shape.SetModelData(verts, indices);
+    isValid = true;
+}

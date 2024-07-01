@@ -24,6 +24,11 @@
 #include "CAMSim.h"
 #include "DlgCAMSimulator.h"
 #include <stdio.h>
+#include <BRepMesh_IncrementalMesh.hxx>
+#include <BRepTools.hxx>
+#include <Mod/Part/App/BRepMesh.h>
+#include <vector>
+
 
 
 using namespace Base;
@@ -63,6 +68,24 @@ void CAMSim::addTool(const std::vector<float> toolProfilePoints,
                      float resolution)
 {
     DlgCAMSimulator::GetInstance()->addTool(toolProfilePoints, toolNumber, diameter, resolution);
+}
+
+void CAMSimulator::CAMSim::SetBaseShape(const TopoDS_Shape& stock, float resolution)
+{
+    if (stock.IsNull()) {
+        return;
+    }
+    BRepTools::Clean(stock);
+    BRepMesh_IncrementalMesh aMesh(stock, resolution);
+
+    std::vector<Part::TopoShape::Domain> domains;
+    Part::TopoShape(stock).getDomains(domains);
+
+    std::vector<Base::Vector3d> points;
+    std::vector<Part::TopoShape::Facet> facets;
+    Part::BRepMesh mesh;
+    mesh.getFacesFromDomains(domains, points, facets);
+
 }
 
 void CAMSim::AddCommand(Command* cmd)
