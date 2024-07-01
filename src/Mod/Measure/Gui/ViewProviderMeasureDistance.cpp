@@ -451,15 +451,15 @@ void ViewProviderMeasureDistance::redrawAnnotation()
     // Set delta distance
     auto propDistanceX = static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceX"));
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(0))
-        ->text.setValue("Δx " + propDistanceX->getQuantityValue().getUserString().toUtf8());
+        ->text.setValue("Δx: " + propDistanceX->getQuantityValue().getUserString().toUtf8());
 
     auto propDistanceY = static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceY"));
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(1))
-        ->text.setValue("Δy " + propDistanceY->getQuantityValue().getUserString().toUtf8());
+        ->text.setValue("Δy: " + propDistanceY->getQuantityValue().getUserString().toUtf8());
 
     auto propDistanceZ = static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceZ"));
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))
-        ->text.setValue("Δz " + propDistanceZ->getQuantityValue().getUserString().toUtf8());
+        ->text.setValue("Δz: " + propDistanceZ->getQuantityValue().getUserString().toUtf8());
 
     // Set matrix
     SbMatrix matrix = getMatrix();
