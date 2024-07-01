@@ -2128,17 +2128,7 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
         auto obj = item->object()->getObject();
         auto parentItem = item->getParentItem();
         if (parentItem) {
-            auto vpp = parentItem->object();
-            // We querry all the parents recursively.
-            bool allParentsOK = true;
-            auto parentItemRecursive = parentItem;
-            while (parentItemRecursive) {
-                if (!parentItemRecursive->object()->canDragObjectToTarget(obj, nullptr)) {
-                    allParentsOK = false;
-                    break;
-                }
-                parentItemRecursive = parentItemRecursive->getParentItem();
-            }
+            bool allParentsOK = canDragFromParents(parentItem, obj, nullptr);
 
             if (!allParentsOK || !parentItem->object()->canDragObjects() || !parentItem->object()->canDragObject(obj)) {
                 committer.close(true);
@@ -2422,25 +2412,17 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
                 info.dragging = true;
             }
             else {
-                auto vpp = parentItem->object();
-                // We querry all the parents recursively.
-                bool allParentsOK = true;
-                while (parentItem) {
-                    Base::Console().Warning("parentItem %s\n", parentItem->getName());
-                    if (!parentItem->object()->canDragObjectToTarget(obj, targetObj)) {
-                        allParentsOK = false;
-                        break;
-                    }
-                    parentItem = parentItem->getParentItem();
-                }
+
+                bool allParentsOK = canDragFromParents(parentItem, obj, targetObj);
+
                 if (allParentsOK) {
+                    auto vpp = parentItem->object();
                     info.dragging = true;
                     info.parent = vpp->getObject()->getNameInDocument();
                     info.parentDoc = vpp->getObject()->getDocument()->getName();
                 }
                 else {
                     committer.close(true);
-                    TREE_TRACE("Cannot drag from " << parentItem->getName());
                     return false;
                 }
             }
@@ -2696,6 +2678,21 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         return false;
     }
     return touched;
+}
+
+bool TreeWidget::canDragFromParents(DocumentObjectItem* parentItem, App::DocumentObject* obj, App::DocumentObject* target)
+{
+    // We query all the parents recursively. (for cases like assembly/group/part)
+    bool allParentsOK = true;
+    while (parentItem) {
+        if (!parentItem->object()->canDragObjectToTarget(obj, target)) {
+            allParentsOK = false;
+            break;
+        }
+        parentItem = parentItem->getParentItem();
+    }
+
+    return allParentsOK;
 }
 
 void TreeWidget::dropEvent(QDropEvent* event)
