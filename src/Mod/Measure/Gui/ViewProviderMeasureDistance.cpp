@@ -95,6 +95,7 @@ MeasureGui::DimensionLinear::DimensionLinear()
     SO_NODE_ADD_FIELD(origin, (0.0, 0.0, 0.0));       // static
     SO_NODE_ADD_FIELD(text, ("test"));                // dimension text
     SO_NODE_ADD_FIELD(dColor, (1.0, 0.0, 0.0));       // dimension color.
+    SO_NODE_ADD_FIELD(backgroundColor, (1.0, 1.0, 1.0));
     SO_NODE_ADD_FIELD(showArrows, (false));           // display dimension arrows
     SO_NODE_ADD_FIELD(fontSize, (12.0));                // size of the dimension font
 }
@@ -216,9 +217,11 @@ void MeasureGui::DimensionLinear::setupDimension()
     fontNode->size.connectFrom(&fontSize);
     textSep->addChild(fontNode);
 
-    SoText2* textNode = new SoText2();
+    auto textNode = new SoFrameLabel();
     textNode->justification = SoText2::CENTER;
     textNode->string.connectFrom(&text);
+    textNode->textColor.connectFrom(&dColor);
+    textNode->backgroundColor.connectFrom(&backgroundColor);
     textSep->addChild(textNode);
 
     // this prevents the 2d text from screwing up the bounding box for a viewall
@@ -477,7 +480,13 @@ void ViewProviderMeasureDistance::onChanged(const App::Property* prop) {
         static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(0))->fontSize.setValue(FontSize.getValue());
         static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(1))->fontSize.setValue(FontSize.getValue());
         static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))->fontSize.setValue(FontSize.getValue());
+    } else if (prop == &TextBackgroundColor) {
+        auto bColor = TextBackgroundColor.getValue();
+        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(0))->backgroundColor.setValue(bColor.r, bColor.g, bColor.g);
+        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(1))->backgroundColor.setValue(bColor.r, bColor.g, bColor.g);
+        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))->backgroundColor.setValue(bColor.r, bColor.g, bColor.g);
     }
+    
 
     ViewProviderMeasureBase::onChanged(prop);
 }

@@ -68,6 +68,7 @@ public:
     SoSFVec3f point2;
     SoSFString text;
     SoSFColor dColor;
+    SoSFColor backgroundColor;
     SoSFBool showArrows;
     SoSFFloat fontSize;
 
