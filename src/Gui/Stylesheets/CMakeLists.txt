@@ -1,8 +1,8 @@
 
 SET(Stylesheets_Files
     "Behave-dark.qss"
-    "Dark theme.qss"
-	"Light theme.qss"
+    "Freecad Dark.qss"
+	"Freecad Light.qss"
 )
 
 SET(Overlay_Stylesheets_Files
