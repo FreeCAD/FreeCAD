@@ -1,7 +1,12 @@
+QFrame {
+  border: none;
+}
+
 QTabWidget::pane{
   background-color: rgba(0, 0, 0, 0.01);
   border: transparent;
 }
+
 QAbstractItemView {
   alternate-background-color: rgba(255, 255, 255, 0.13);
   color: #000000;
