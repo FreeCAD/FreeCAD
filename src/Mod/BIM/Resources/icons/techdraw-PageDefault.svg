@@ -43,17 +43,17 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:rights>
-          <cc:Agent>
-            <dc:title>FreeCAD LGPL2+</dc:title>
-          </cc:Agent>
-        </dc:rights>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
         <cc:license
            rdf:resource="http://creativecommons.org/licenses/by-sa/4.0/" />
       </cc:Work>
@@ -78,56 +78,44 @@
      id="layer4"
      style="display:inline"
      transform="translate(0,16)">
-    <path
+    <rect
+       style="fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect2987"
-       style="fill:#d3d7cf;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
-       transform="rotate(-90)"
-       d="M -38.999996,3 H 7 v 58.000004 h -45.999996 z" />
-    <path
+       width="45.999996"
+       height="58.000004"
+       x="-38.999996"
+       y="3"
+       transform="rotate(-90)" />
+    <rect
+       style="fill:url(#linearGradient3781-9);fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect2987-1"
-       style="fill:url(#linearGradient3781-9);stroke:#ffffff;stroke-width:2;stroke-linecap:round"
-       transform="rotate(-90)"
-       d="M -36.999996,5 H 5 v 54.000004 h -41.999996 z" />
-    <path
+       width="41.999996"
+       height="54.000004"
+       x="-36.999996"
+       y="5"
+       transform="rotate(-90)" />
+    <rect
+       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#555753;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
        id="rect3894"
-       style="display:inline;overflow:visible;fill:none;stroke:#555753;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;marker:none;enable-background:accumulate"
-       d="M 7,-3 H 57 V 35 H 7 Z" />
+       width="50"
+       height="38"
+       x="7"
+       y="-3" />
+    <rect
+       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#555753;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+       id="rect4664"
+       width="23.999994"
+       height="12.000004"
+       x="33"
+       y="23" />
     <path
-       style="fill:none;stroke:#888a85;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
-       d="m 13,13 v 6"
-       id="path3896" />
+       style="fill:none;stroke:#555753;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 37,27 h 15.398794 v 0"
+       id="path4666" />
     <path
-       style="fill:none;stroke:#888a85;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
-       d="M 25,13.000001 V 19"
-       id="path3898" />
-    <path
-       style="fill:none;stroke:#888a85;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
-       d="M 25,13.000001 31,13"
-       id="path3900" />
-    <path
-       style="fill:none;stroke:#888a85;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
-       d="M 19,1 H 31"
-       id="path3902" />
-  </g>
-  <g
-     id="g3"
-     style="display:inline">
-    <path
-       id="path3900-2-5"
-       d="M 19,35 V 47"
-       style="display:inline;fill:#2e3436;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:2;stroke-opacity:1" />
-    <path
-       id="rect1"
-       style="display:inline;fill:none;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
-       d="M 31,17 H 43 V 29 H 31 Z" />
-  </g>
-  <g
-     id="g5"
-     style="display:inline">
-    <path
-       id="rect1-6"
-       style="display:inline;fill:none;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
-       d="M 13,35 H 25 V 47 H 13 Z" />
+       style="fill:none;stroke:#555753;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 37,31 h 15.642526 v 0"
+       id="path4666-7" />
   </g>
   <g
      id="g5-0"
@@ -141,12 +129,4 @@
        style="fill:#8ae234;stroke:#17230b;stroke-width:1.99998;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
        d="m 44,36 h 4 v 8 h 8 v 4 h -8 v 8 h -4 v -8 h -8 v -4 h 8 z" />
   </g>
-  <path
-     id="path3900-2-6"
-     d="m 35,23 h 4"
-     style="display:inline;fill:#2e3436;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:2;stroke-opacity:1" />
-  <path
-     style="fill:none;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-     d="m 13,29 12,1e-6 1e-6,-6 h -6 L 19,17 h -6 z"
-     id="path3" />
 </svg>
