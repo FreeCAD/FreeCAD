@@ -264,8 +264,9 @@ void SketchObject::buildShape()
         ++i;
         if(GeometryFacade::getConstruction(geo))
             continue;
-        if (geo->isDerivedFrom(Part::GeomPoint::getClassTypeId())) {
+        if (geo->isDerivedFrom<Part::GeomPoint>())
 #ifdef FC_USE_TNP_FIX
+        {
             Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(i-1, Sketcher::PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
@@ -273,17 +274,19 @@ void SketchObject::buildShape()
                                   Data::MappedName::fromRawData(name.c_str()), 0L);
             vertices.push_back(vertex);
             vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
-        } else {
+        }
+        else {
             auto indexedName = Data::IndexedName::fromConst("Edge", i);
             shapes.push_back(getEdge(geo,convertSubName(indexedName, false).c_str()));
         }
 
 #else
+        {
             vertices.emplace_back(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(i-1, PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
-
-        } else
+        }
+        else
             shapes.push_back(getEdge(geo,convertSubName(
                         Data::IndexedName::fromConst("Edge", i), false).c_str()));
 #endif
@@ -2994,6 +2997,52 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         delConstraints(delete_list, false);
     };
 
+    // Pick the appropriate portion which should inherit the point-on-object constraint
+    // (or delete it altogether if it's not on any curve)
+    // Assume that GeoId1 is the pre-existing curve
+    // GeoId2 can be same as GeoId1 (for example for periodic B-spline)
+    auto chooseCurveForPointOnObject = [this](int GeoId1,
+                                              double curve1Start,
+                                              double curve1End,
+                                              int GeoId2,
+                                              double curve2Start,
+                                              double curve2End,
+                                              bool deleteIfOutside = true) {
+        const Part::GeomCurve* curve = static_cast<const Part::GeomCurve*>(this->getGeometry(GeoId1));
+        const std::vector<Constraint*>& constraints = this->Constraints.getValues();
+        std::vector<Constraint*> newConstraints(constraints);
+        int constrId = 0;
+        std::vector<int> delete_list;
+        bool changed = false;
+        for (const auto* constr : constraints) {
+            // There is a preexisting PointOnObject constraint, see where it belongs
+            if (constr->Type == Sketcher::PointOnObject && constr->Second == GeoId1) {
+                Base::Vector3d pp = getPoint(constr->First, constr->FirstPos);
+                double u;
+                curve->closestParameter(pp, u);
+                if ((curve2Start <= u) && (u <= curve2End)) {
+                    std::unique_ptr<Constraint> constrNew(newConstraints[constrId]->clone());
+                    constrNew->Second = GeoId2;
+                    Constraint* constrPtr = constrNew.release();
+                    newConstraints[constrId] = constrPtr;
+                    changed = true;
+                }
+                else if (deleteIfOutside && !((curve1Start <= u) && (u <= curve1End))) {
+                    // TODO: Not on any of the curves. Delete?
+                    delete_list.push_back(constrId);
+                    changed = true;
+                }
+
+            }
+            ++constrId;
+        }
+
+        if (changed) {
+            this->Constraints.setValues(std::move(newConstraints));
+            delConstraints(delete_list, false);
+        }
+    };
+
     // makes an equality constraint between GeoId1 and GeoId2
     auto constrainAsEqual = [this](int GeoId1, int GeoId2) {
         auto newConstr = std::make_unique<Sketcher::Constraint>();
@@ -3276,6 +3325,8 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             newVals.push_back(newVals[GeoId]->clone());
             int newGeoId = newVals.size() - 1;
 
+            chooseCurveForPointOnObject(GeoId, firstParam, point1Param, newGeoId, point2Param, lastParam, isBSpline);
+
             if (isDerivedFromTrimmedCurve) {
                 static_cast<Part::GeomTrimmedCurve*>(newVals[GeoId])
                     ->setRange(firstParam, point1Param);
@@ -3330,8 +3381,10 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                               Sketcher::PointPos::mid);
             }
 
-            if (isNonPeriodicBSpline)
+            if (isNonPeriodicBSpline) {
                 exposeInternalGeometry(GeoId);
+                exposeInternalGeometry(newGeoId);
+            }
 
             // if we do not have a recompute, the sketch must be solved to update the DoF of the
             // solver
@@ -3451,6 +3504,14 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         else if (isPeriodicBSpline) {
             auto bspline = std::unique_ptr<Part::GeomBSplineCurve>(
                 static_cast<Part::GeomBSplineCurve*>(geo->clone()));
+            // Delete any point-on-object constraints on trimmed portion.
+            // Such constraint can cause undesirable shape change.
+            chooseCurveForPointOnObject(GeoId,
+                                        bspline->getFirstParameter(),
+                                        std::min(point1Param, point2Param),
+                                        GeoId,
+                                        std::max(point1Param, point2Param),
+                                        bspline->getLastParameter());
             bspline->Trim(point2Param, point1Param);
             geoNew = std::move(bspline);
         }
