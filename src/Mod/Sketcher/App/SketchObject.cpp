@@ -2759,18 +2759,21 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bo
     getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
 
     // only coincident points between two (non-external) edges can be filleted
-    if (GeoIdList.size() == 2 && GeoIdList[0] >= 0 && GeoIdList[1] >= 0) {
-        const Part::Geometry* geo1 = getGeometry(GeoIdList[0]);
-        const Part::Geometry* geo2 = getGeometry(GeoIdList[1]);
-        if (geo1->is<Part::GeomLineSegment>()
-            && geo2->is<Part::GeomLineSegment>()) {
-            auto* lineSeg1 = static_cast<const Part::GeomLineSegment*>(geo1);
-            auto* lineSeg2 = static_cast<const Part::GeomLineSegment*>(geo2);
+    if (GeoIdList.size() != 2 || GeoIdList[0] < 0 || GeoIdList[1] < 0) {
+        return -1;
+    }
 
-            Base::Vector3d midPnt1 = (lineSeg1->getStartPoint() + lineSeg1->getEndPoint()) / 2;
-            Base::Vector3d midPnt2 = (lineSeg2->getStartPoint() + lineSeg2->getEndPoint()) / 2;
-            return fillet(GeoIdList[0], GeoIdList[1], midPnt1, midPnt2, radius, trim, createCorner, chamfer);
-        }
+    const Part::Geometry* geo1 = getGeometry(GeoIdList[0]);
+    const Part::Geometry* geo2 = getGeometry(GeoIdList[1]);
+
+    if (geo1->is<Part::GeomLineSegment>()
+        && geo2->is<Part::GeomLineSegment>()) {
+        auto* lineSeg1 = static_cast<const Part::GeomLineSegment*>(geo1);
+        auto* lineSeg2 = static_cast<const Part::GeomLineSegment*>(geo2);
+
+        Base::Vector3d midPnt1 = (lineSeg1->getStartPoint() + lineSeg1->getEndPoint()) / 2;
+        Base::Vector3d midPnt2 = (lineSeg2->getStartPoint() + lineSeg2->getEndPoint()) / 2;
+        return fillet(GeoIdList[0], GeoIdList[1], midPnt1, midPnt2, radius, trim, createCorner, chamfer);
     }
 
     return -1;
@@ -3693,17 +3696,17 @@ bool SketchObject::deriveConstraintsForPieces(const int oldId,
             break;
     }
 
-    if (transferToAll) {
-        for (auto& newId : newIds) {
-            Constraint* trans = con->copy();
-            trans->substituteIndex(oldId, newId);
-            newConstraints.push_back(trans);
-        }
-
-        return true;
+    if (!transferToAll) {
+        return false;
     }
 
-    return false;
+    for (auto& newId : newIds) {
+        Constraint* trans = con->copy();
+        trans->substituteIndex(oldId, newId);
+        newConstraints.push_back(trans);
+    }
+
+    return true;
 }
 
 int SketchObject::split(int GeoId, const Base::Vector3d& point)
@@ -4042,18 +4045,19 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
 bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject* pObj, bool& xinv,
                                        bool& yinv, eReasonList* rsn) const
 {
-    if (rsn) {
-        *rsn = rlAllowed;
-    }
+    auto setReason = [&rsn](eReasonList reasonFromList) {
+        if (rsn)
+            *rsn = reasonFromList;
+    };
+
+    setReason(rlAllowed);
 
     std::string sketchArchType ("Sketcher::SketchObjectPython");
 
     // Only applicable to sketches
     if (!pObj->is<Sketcher::SketchObject>()
         && sketchArchType != pObj->getTypeId().getName()) {
-        if (rsn) {
-            *rsn = rlNotASketch;
-        }
+        setReason(rlNotASketch);
         return false;
     }
 
@@ -4062,18 +4066,14 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
 
     // Sketches outside of the Document are NOT allowed
     if (this->getDocument() != pDoc) {
-        if (rsn) {
-            *rsn = rlOtherDoc;
-        }
+        setReason(rlOtherDoc);
         return false;
     }
 
     // circular reference prevention
     try {
         if (!(this->testIfLinkDAGCompatible(pObj))) {
-            if (rsn) {
-                *rsn = rlCircularReference;
-            }
+            setReason(rlCircularReference);
             return false;
         }
     }
@@ -4090,31 +4090,25 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
     Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
     App::Part* part_this = App::Part::getPartOfObject(this);
     App::Part* part_obj = App::Part::getPartOfObject(pObj);
-    if (part_this == part_obj) {// either in the same part, or in the root of document
-        if (body_this) {
-            if (body_this != body_obj) {
-                if (!this->allowOtherBody) {
-                    if (rsn)
-                        *rsn = rlOtherBody;
-                    return false;
-                }
-                // if the original sketch has external geometry AND it is not in this body prevent
-                // link
-                else if (psObj->getExternalGeometryCount() > 2) {
-                    if (rsn)
-                        *rsn = rlOtherBodyWithLinks;
-                    return false;
-                }
-            }
-        }
-    }
-    else {
+    if (part_this != part_obj) {
         // cross-part relation. Disallow, should be done via shapebinders only
-        if (rsn)
-            *rsn = rlOtherPart;
+        setReason(rlOtherPart);
         return false;
     }
 
+    // Hereafter assuming: either in the same part, or in the root of document
+    if (body_this && body_this != body_obj) {
+        if (!this->allowOtherBody) {
+            setReason(rlOtherBody);
+            return false;
+        }
+        // if the original sketch has external geometry AND it is not in this body prevent
+        // link
+        else if (psObj->getExternalGeometryCount() > 2) {
+            setReason(rlOtherBodyWithLinks);
+            return false;
+        }
+    }
 
     const Rotation& srot = psObj->Placement.getValue().getRotation();
     const Rotation& lrot = this->Placement.getValue().getRotation();
@@ -4139,8 +4133,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
 
     // the planes of the sketches must be parallel
     if (!allowUnaligned && fabs(fabs(dot) - 1) > Precision::Confusion()) {
-        if (rsn)
-            *rsn = rlNonParallel;
+        setReason(rlNonParallel);
         return false;
     }
 
@@ -4148,8 +4141,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
     if (!allowUnaligned
         && ((fabs(fabs(dotx) - 1) > Precision::Confusion())
             || (fabs(fabs(doty) - 1) > Precision::Confusion()))) {
-        if (rsn)
-            *rsn = rlAxesMisaligned;
+        setReason(rlAxesMisaligned);
         return false;
     }
 
@@ -4164,8 +4156,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
     if (!allowUnaligned && (fabs(fabs(alignment) - 1) > Precision::Confusion())
         && (psObj->Placement.getValue().getPosition()
             != this->Placement.getValue().getPosition())) {
-        if (rsn)
-            *rsn = rlOriginsMisaligned;
+        setReason(rlOriginsMisaligned);
         return false;
     }
 
@@ -5332,43 +5323,45 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
     std::vector<std::pair<size_t, Sketcher::ConstraintType>> changeConstraintIndices;
 
     for (size_t i = 0; i < constrvals.size(); i++) {
-        for (auto geoid : geoIdList) {
-            if (constrvals[i]->First == geoid || constrvals[i]->Second == geoid
-                || constrvals[i]->Third == geoid) {
-                switch (constrvals[i]->Type) {
-                    case Sketcher::Horizontal:
-                        if (constrvals[i]->FirstPos == Sketcher::PointPos::none
-                            && constrvals[i]->SecondPos == Sketcher::PointPos::none) {
-                            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
-                            nhoriz++;
-                        }
-                        break;
-                    case Sketcher::Vertical:
-                        if (constrvals[i]->FirstPos == Sketcher::PointPos::none
-                            && constrvals[i]->SecondPos == Sketcher::PointPos::none) {
-                            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
-                            nvert++;
-                        }
-                        break;
-                    case Sketcher::Symmetric:// only remove symmetric to axes
-                        if ((constrvals[i]->Third == GeoEnum::HAxis
-                             || constrvals[i]->Third == GeoEnum::VAxis)
-                            && constrvals[i]->ThirdPos == Sketcher::PointPos::none)
-                            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
-                        break;
-                    case Sketcher::PointOnObject:
-                        if ((constrvals[i]->Second == GeoEnum::HAxis
-                             || constrvals[i]->Second == GeoEnum::VAxis)
-                            && constrvals[i]->SecondPos == Sketcher::PointPos::none)
-                            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
-                        break;
-                    case Sketcher::DistanceX:
-                    case Sketcher::DistanceY:
-                        changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
-                        break;
-                    default:
-                        break;
+        for (const auto& geoid : geoIdList) {
+            if (constrvals[i]->First != geoid
+                && constrvals[i]->Second != geoid
+                && constrvals[i]->Third != geoid) {
+                continue;
+            }
+            switch (constrvals[i]->Type) {
+            case Sketcher::Horizontal:
+                if (constrvals[i]->FirstPos == Sketcher::PointPos::none
+                    && constrvals[i]->SecondPos == Sketcher::PointPos::none) {
+                    changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                    nhoriz++;
                 }
+                break;
+            case Sketcher::Vertical:
+                if (constrvals[i]->FirstPos == Sketcher::PointPos::none
+                    && constrvals[i]->SecondPos == Sketcher::PointPos::none) {
+                    changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                    nvert++;
+                }
+                break;
+            case Sketcher::Symmetric:// only remove symmetric to axes
+                if ((constrvals[i]->Third == GeoEnum::HAxis
+                     || constrvals[i]->Third == GeoEnum::VAxis)
+                    && constrvals[i]->ThirdPos == Sketcher::PointPos::none)
+                    changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                break;
+            case Sketcher::PointOnObject:
+                if ((constrvals[i]->Second == GeoEnum::HAxis
+                     || constrvals[i]->Second == GeoEnum::VAxis)
+                    && constrvals[i]->SecondPos == Sketcher::PointPos::none)
+                    changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                break;
+            case Sketcher::DistanceX:
+            case Sketcher::DistanceY:
+                changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -5384,55 +5377,54 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
 
     int cindex = 0;
     for (size_t i = 0; i < constrvals.size(); i++) {
-        if (i == changeConstraintIndices[cindex].first) {
-            if (changeConstraintIndices[cindex].second == Sketcher::Horizontal && nhoriz > 0) {
-                changed = true;
-                if (referenceHorizontal == GeoEnum::GeoUndef) {
-                    referenceHorizontal = constrvals[i]->First;
-                }
-                else {
-
-                    auto newConstr = new Constraint();
-
-                    newConstr->Type = Sketcher::Parallel;
-                    newConstr->First = referenceHorizontal;
-                    newConstr->Second = constrvals[i]->First;
-
-                    newconstrVals.push_back(newConstr);
-                }
-            }
-            else if (changeConstraintIndices[cindex].second == Sketcher::Vertical && nvert > 0) {
-                changed = true;
-                if (referenceVertical == GeoEnum::GeoUndef) {
-                    referenceVertical = constrvals[i]->First;
-                    ;
-                }
-                else {
-                    auto newConstr = new Constraint();
-
-                    newConstr->Type = Sketcher::Parallel;
-                    newConstr->First = referenceVertical;
-                    newConstr->Second = constrvals[i]->First;
-
-                    newconstrVals.push_back(newConstr);
-                }
-            }
-            else if (changeConstraintIndices[cindex].second == Sketcher::Symmetric
-                     || changeConstraintIndices[cindex].second == Sketcher::PointOnObject) {
-                changed = true;// We remove symmetric on axes
-            }
-            else if (changeConstraintIndices[cindex].second == Sketcher::DistanceX
-                     || changeConstraintIndices[cindex].second == Sketcher::DistanceY) {
-                changed = true;// We remove symmetric on axes
-                newconstrVals.push_back(constrvals[i]->clone());
-                newconstrVals.back()->Type = Sketcher::Distance;
-            }
-
-            cindex++;
-        }
-        else {
+        if (i != changeConstraintIndices[cindex].first) {
             newconstrVals.push_back(constrvals[i]);
+            continue;
         }
+
+        if (changeConstraintIndices[cindex].second == Sketcher::Horizontal && nhoriz > 0) {
+            changed = true;
+            if (referenceHorizontal == GeoEnum::GeoUndef) {
+                referenceHorizontal = constrvals[i]->First;
+            }
+            else {
+
+                auto newConstr = new Constraint();
+
+                newConstr->Type = Sketcher::Parallel;
+                newConstr->First = referenceHorizontal;
+                newConstr->Second = constrvals[i]->First;
+
+                newconstrVals.push_back(newConstr);
+            }
+        }
+        else if (changeConstraintIndices[cindex].second == Sketcher::Vertical && nvert > 0) {
+            changed = true;
+            if (referenceVertical == GeoEnum::GeoUndef) {
+                referenceVertical = constrvals[i]->First;
+            }
+            else {
+                auto newConstr = new Constraint();
+
+                newConstr->Type = Sketcher::Parallel;
+                newConstr->First = referenceVertical;
+                newConstr->Second = constrvals[i]->First;
+
+                newconstrVals.push_back(newConstr);
+            }
+        }
+        else if (changeConstraintIndices[cindex].second == Sketcher::Symmetric
+                 || changeConstraintIndices[cindex].second == Sketcher::PointOnObject) {
+            changed = true;// We remove symmetric on axes
+        }
+        else if (changeConstraintIndices[cindex].second == Sketcher::DistanceX
+                 || changeConstraintIndices[cindex].second == Sketcher::DistanceY) {
+            changed = true;// We remove symmetric on axes
+            newconstrVals.push_back(constrvals[i]->clone());
+            newconstrVals.back()->Type = Sketcher::Distance;
+        }
+
+        cindex++;
     }
 
     if (nhoriz > 0 && nvert > 0) {
