@@ -149,19 +149,20 @@ class IFC_UpdateIOS:
 
 
     def compare_versions(self, v1, v2):
-        """Compare two version strings in the form '0.7.0' """
+        """Compare two version strings in the form '0.7.0' or v0.7.0"""
 
         # code from https://www.geeksforgeeks.org/compare-two-version-numbers
-        arr1 = v1.split(".")
-        arr2 = v2.split(".")
+
+        arr1 = v1.replace("v","").split(".") 
+        arr2 = v2.replace("v","").split(".") 
         n = len(arr1)
         m = len(arr2)
         arr1 = [int(i) for i in arr1]
         arr2 = [int(i) for i in arr2]
-        if n>m:
+        if n > m:
           for i in range(m, n):
              arr2.append(0)
-        elif m>n:
+        elif m > n:
           for i in range(n, m):
              arr1.append(0)
         for i in range(len(arr1)):
