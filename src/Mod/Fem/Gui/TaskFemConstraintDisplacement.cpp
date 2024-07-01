@@ -34,6 +34,7 @@
 #include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintDisplacement.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "TaskFemConstraintDisplacement.h"
 #include "ui_TaskFemConstraintDisplacement.h"
@@ -625,21 +626,6 @@ TaskDlgFemConstraintDisplacement::TaskDlgFemConstraintDisplacement(
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintDisplacement::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Displacement boundary condition");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());  // OvG: Hide meshes and show parts
-    }
-}
-
 bool TaskDlgFemConstraintDisplacement::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
@@ -748,12 +734,6 @@ bool TaskDlgFemConstraintDisplacement::accept()
                                 name.c_str(),
                                 parameterDisplacement->get_useFlowSurfaceForce() ? "True"
                                                                                  : "False");
-
-        std::string scale = parameterDisplacement->getScale();  // OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());  // OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
@@ -761,15 +741,6 @@ bool TaskDlgFemConstraintDisplacement::accept()
     }
 
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintDisplacement::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintDisplacement.cpp"

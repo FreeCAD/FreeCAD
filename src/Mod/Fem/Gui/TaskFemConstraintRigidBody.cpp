@@ -32,6 +32,7 @@
 #include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintRigidBody.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "TaskFemConstraintRigidBody.h"
 #include "ui_TaskFemConstraintRigidBody.h"
@@ -652,21 +653,6 @@ TaskDlgFemConstraintRigidBody::TaskDlgFemConstraintRigidBody(
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintRigidBody::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint RigidBody");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());  // OvG: Hide meshes and show parts
-    }
-}
-
 bool TaskDlgFemConstraintRigidBody::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
@@ -757,26 +743,12 @@ bool TaskDlgFemConstraintRigidBody::accept()
                                 "App.ActiveDocument.%s.RotationalModeZ = \"%s\"",
                                 name.c_str(),
                                 rotModes[2].c_str());
-
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                parameters->getScale().c_str());
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintRigidBody::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintRigidBody.cpp"
