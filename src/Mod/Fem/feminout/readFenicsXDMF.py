@@ -48,5 +48,5 @@ def read_fenics_mesh_xdmf(xdmffilename):
         "Tria6Elem": {},
         "Quad4Elem": {},
         "Quad8Elem": {},
-        "Seg2Elem": {}
+        "Seg2Elem": {},
     }

@@ -40,42 +40,39 @@ from femtools import femutils
 from femtools import membertools
 
 
-class _TaskPanel(object):
+class _TaskPanel:
 
     def __init__(self, obj):
         self.obj = obj
 
         self.parameter_widget = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/BodyHeatSource.ui")
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/BodyHeatSource.ui"
+        )
 
         self.init_parameter_widget()
 
         QtCore.QObject.connect(
             self.parameter_widget.qsb_dissipation_rate,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.dissipation_rate_changed
+            self.dissipation_rate_changed,
         )
 
         QtCore.QObject.connect(
             self.parameter_widget.qsb_total_power,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.total_power_changed
+            self.total_power_changed,
         )
 
         QtCore.QObject.connect(
             self.parameter_widget.cb_mode,
             QtCore.SIGNAL("currentIndexChanged(int)"),
-            self.mode_changed
+            self.mode_changed,
         )
-
 
         # geometry selection widget
         # start with Solid in list!
         self.selection_widget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Solid", "Face"],
-            True,
-            False
+            obj.References, ["Solid", "Face"], True, False
         )
 
         # form made from param and selection widget
@@ -127,16 +124,17 @@ class _TaskPanel(object):
             else:
                 self._part.ViewObject.hide()
 
-
     def init_parameter_widget(self):
         self.dissipation_rate = self.obj.DissipationRate
         self.total_power = self.obj.TotalPower
-        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_dissipation_rate)\
-            .bind(self.obj, "DissipationRate")
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_dissipation_rate).bind(
+            self.obj, "DissipationRate"
+        )
         self.parameter_widget.qsb_dissipation_rate.setProperty("value", self.dissipation_rate)
 
-        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_total_power)\
-            .bind(self.obj, "TotalPower")
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_total_power).bind(
+            self.obj, "TotalPower"
+        )
         self.parameter_widget.qsb_total_power.setProperty("value", self.total_power)
 
         self.mode = self.obj.Mode

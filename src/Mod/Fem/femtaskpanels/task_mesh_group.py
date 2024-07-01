@@ -53,22 +53,19 @@ class _TaskPanel:
         QtCore.QObject.connect(
             self.parameterWidget.rb_name,
             QtCore.SIGNAL("toggled(bool)"),
-            self.choose_exportidentifier_name
+            self.choose_exportidentifier_name,
         )
         QtCore.QObject.connect(
             self.parameterWidget.rb_label,
             QtCore.SIGNAL("toggled(bool)"),
-            self.choose_exportidentifier_label
+            self.choose_exportidentifier_label,
         )
         self.init_parameter_widget()
 
         # geometry selection widget
         # start with Solid in list!
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Solid", "Face", "Edge", "Vertex"],
-            True,
-            False
+            obj.References, ["Solid", "Face", "Edge", "Vertex"], True, False
         )
 
         # form made from param and selection widget

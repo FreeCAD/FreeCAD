@@ -170,4 +170,3 @@ doc = FreeCAD.open(app_home + "data/examples/Fem2.FCStd")
 app_home = FreeCAD.ConfigGet("AppHomePath")
 doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/data/open/all_objects_de9b3fb438.FCStd')
 ```
-

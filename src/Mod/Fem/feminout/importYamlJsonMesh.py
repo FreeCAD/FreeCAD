@@ -42,10 +42,7 @@ has_yaml = True
 try:
     import yaml
 except ImportError:
-    Console.PrintMessage(
-        "No YAML available (import yaml failure), "
-        "yaml import/export won't work\n"
-    )
+    Console.PrintMessage("No YAML available (import yaml failure), yaml import/export won't work\n")
     has_yaml = False
 
 
@@ -55,11 +52,7 @@ except ImportError:
 # they are set in FEM modules Init.py
 
 
-
-
-def open(
-    filename
-):
+def open(filename):
     """called when freecad opens a file
     a FEM mesh object is created in a new document"""
 
@@ -67,10 +60,7 @@ def open(
     return insert(filename, docname)
 
 
-def insert(
-    filename,
-    docname
-):
+def insert(filename, docname):
     """called when freecad wants to import a file"
     a FEM mesh object is created in a existing document"""
 
@@ -87,9 +77,7 @@ def insert(
 def export(objectslist, fileString):
     "called when freecad exports a file"
     if len(objectslist) != 1:
-        Console.PrintError(
-            "This exporter can only "
-            "export one object.\n")
+        Console.PrintError("This exporter can only export one object.\n")
         return
     obj = objectslist[0]
     if not obj.isDerivedFrom("Fem::FemMeshObject"):
@@ -113,10 +101,9 @@ def export(objectslist, fileString):
 # writer:
 # - a method directly writes a FemMesh to the mesh file
 
+
 # ********* reader ***********************************************************
-def import_yaml_json_mesh(
-    fileString
-):
+def import_yaml_json_mesh(fileString):
     """
     read a FemMesh from a yaml/json mesh file
     insert a FreeCAD FEM Mesh object in the ActiveDocument
@@ -127,43 +114,34 @@ def import_yaml_json_mesh(
 
     femmesh = read(fileString)
     if femmesh:
-        mesh_object = FreeCAD.ActiveDocument.addObject(
-            "Fem::FemMeshObject",
-            mesh_name
-        )
+        mesh_object = FreeCAD.ActiveDocument.addObject("Fem::FemMeshObject", mesh_name)
         mesh_object.FemMesh = femmesh
 
     return mesh_object
 
 
-def read(
-    fileString
-):
-    """read a FemMesh from a yaml/json mesh file and return the FemMesh
-    """
+def read(fileString):
+    """read a FemMesh from a yaml/json mesh file and return the FemMesh"""
     # no document object is created, just the FemMesh is returned
 
     fileExtension = os.path.basename(os.path.splitext(fileString)[1])
 
     raw_mesh_data = {}
-    if fileExtension.lower() == ".meshjson" or\
-       fileExtension.lower() == ".json":
+    if fileExtension.lower() == ".meshjson" or fileExtension.lower() == ".json":
         fp = pyopen(fileString, "rt")
         raw_mesh_data = json.load(fp)
         fp.close()
     elif (
-            fileExtension.lower() == ".meshyaml"
-            or fileExtension.lower() == ".meshyml"
-            or fileExtension.lower() == ".yaml"
-            or fileExtension.lower() == ".yml"
+        fileExtension.lower() == ".meshyaml"
+        or fileExtension.lower() == ".meshyml"
+        or fileExtension.lower() == ".yaml"
+        or fileExtension.lower() == ".yml"
     ) and has_yaml:
         fp = pyopen(fileString, "rt")
         raw_mesh_data = yaml.load(fp, Loader=yaml.SafeLoader)
         fp.close()
     else:
-        Console.PrintError(
-            "Unknown extension, "
-            "please select other importer.\n")
+        Console.PrintError("Unknown extension, please select other importer.\n")
 
     Console.PrintMessage("Converting indices to integer numbers ...")
     mesh_data = convert_raw_data_to_mesh_data(raw_mesh_data)
@@ -172,9 +150,7 @@ def read(
     return importToolsFem.make_femmesh(mesh_data)
 
 
-def convert_raw_data_to_mesh_data(
-    raw_mesh_data
-):
+def convert_raw_data_to_mesh_data(raw_mesh_data):
     """
     Converts raw dictionary data from JSON or YAML file to proper dict
     for importToolsFem.make_femmesh(mesh_data). This is necessary since
@@ -183,19 +159,14 @@ def convert_raw_data_to_mesh_data(
     """
 
     mesh_data = {}
-    for (type_key, type_dict) in raw_mesh_data.items():
+    for type_key, type_dict in raw_mesh_data.items():
         if type_key.lower() != "groups":
-            mesh_data[type_key] = dict([
-                (int(k), v) for (k, v) in type_dict.items()
-            ])
+            mesh_data[type_key] = {int(k): v for (k, v) in type_dict.items()}
     return mesh_data
 
 
 # ********* writer ***********************************************************
-def write(
-    fileString,
-    fem_mesh
-):
+def write(fileString, fem_mesh):
     """directly write a FemMesh to a yaml/json mesh file
     fem_mesh: a FemMesh"""
 
@@ -203,8 +174,7 @@ def write(
 
     if fileString != "":
         fileName, fileExtension = os.path.splitext(fileString)
-        if fileExtension.lower() == ".json" \
-                or fileExtension.lower() == ".meshjson":
+        if fileExtension.lower() == ".json" or fileExtension.lower() == ".meshjson":
             fp = pyopen(fileString, "wt")
             json.dump(mesh_data, fp, indent=4)
             fp.close()

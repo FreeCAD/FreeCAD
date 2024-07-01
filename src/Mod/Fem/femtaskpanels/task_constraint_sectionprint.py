@@ -58,15 +58,12 @@ class _TaskPanel:
         QtCore.QObject.connect(
             self.parameterWidget.cb_variable,
             QtCore.SIGNAL("currentIndexChanged(int)"),
-            self.variable_changed
+            self.variable_changed,
         )
 
         # geometry selection widget
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Face"],
-            False,
-            False
+            obj.References, ["Face"], False, False
         )
 
         # form made from param and selection widget
@@ -80,8 +77,9 @@ class _TaskPanel:
             msgBox = QtGui.QMessageBox()
             msgBox.setIcon(QtGui.QMessageBox.Question)
             msgBox.setText(
-                "Constraint SectionPrint requires exactly one face\n\nfound references: {}"
-                .format(items)
+                "Constraint SectionPrint requires exactly one face\n\nfound references: {}".format(
+                    items
+                )
             )
             msgBox.setWindowTitle("FreeCAD FEM Constraint SectionPrint")
             retryButton = msgBox.addButton(QtGui.QMessageBox.Retry)
