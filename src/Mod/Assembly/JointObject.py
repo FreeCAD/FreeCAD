@@ -370,17 +370,53 @@ class Joint:
             )
             joint.Activated = True
 
-        if not hasattr(joint, "EnableLimits"):
+        if not hasattr(joint, "EnableLengthMin"):
             joint.addProperty(
                 "App::PropertyBool",
-                "EnableLimits",
+                "EnableLengthMin",
                 "Limits",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Is this joint using limits.",
+                    "Enable the minimum length limit of the joint.",
                 ),
             )
-            joint.EnableLimits = False
+            joint.EnableLengthMin = False
+
+        if not hasattr(joint, "EnableLengthMax"):
+            joint.addProperty(
+                "App::PropertyBool",
+                "EnableLengthMax",
+                "Limits",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Enable the maximum length limit of the joint.",
+                ),
+            )
+            joint.EnableLengthMax = False
+
+        if not hasattr(joint, "EnableAngleMin"):
+            joint.addProperty(
+                "App::PropertyBool",
+                "EnableAngleMin",
+                "Limits",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Enable the minimum angle limit of the joint.",
+                ),
+            )
+            joint.EnableAngleMin = False
+
+        if not hasattr(joint, "EnableAngleMax"):
+            joint.addProperty(
+                "App::PropertyBool",
+                "EnableAngleMax",
+                "Limits",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Enable the minimum length of the joint.",
+                ),
+            )
+            joint.EnableAngleMax = False
 
         if not hasattr(joint, "LengthMin"):
             joint.addProperty(
@@ -1187,14 +1223,6 @@ class MakeJointSelGate:
             # Only objects within the assembly.
             return False
 
-        if Gui.Selection.isSelected(obj, sub, Gui.Selection.ResolveMode.NoResolve):
-            # If it's to deselect then it's ok
-            return True
-
-        if len(self.taskbox.current_selection) >= 2:
-            # No more than 2 elements can be selected for basic joints.
-            return False
-
         full_obj_name = ".".join(objs_names)
         full_element_name = full_obj_name + "." + element_name
         selected_object = UtilsAssembly.getObject(full_element_name)
@@ -1209,15 +1237,6 @@ class MakeJointSelGate:
                 if not (linked.isDerivedFrom("Part::Feature") or linked.isDerivedFrom("App::Part")):
                     return False
             else:
-                return False
-
-        part_containing_selected_object = UtilsAssembly.getContainingPart(
-            full_element_name, selected_object, self.assembly
-        )
-
-        for selection_dict in self.taskbox.current_selection:
-            if selection_dict["part"] == part_containing_selected_object:
-                # Can't join a solid to itself. So the user need to select 2 different parts.
                 return False
 
         return True
@@ -1249,7 +1268,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             return
 
         if self.activeType == "Assembly":
-            self.assembly.ViewObject.EnableMovement = False
+            self.assembly.ViewObject.MoveOnlyPreselected = True
+            self.assembly.ViewObject.MoveInCommand = False
 
         self.form = Gui.PySideUic.loadUi(":/panels/TaskAssemblyCreateJoint.ui")
 
@@ -1268,7 +1288,11 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
         self.form.rotationSpinbox.valueChanged.connect(self.onRotationChanged)
         self.form.PushButtonReverse.clicked.connect(self.onReverseClicked)
-        self.form.LimitCheckbox.stateChanged.connect(self.adaptUi)
+
+        self.form.limitCheckbox1.stateChanged.connect(self.adaptUi)
+        self.form.limitCheckbox2.stateChanged.connect(self.adaptUi)
+        self.form.limitCheckbox3.stateChanged.connect(self.adaptUi)
+        self.form.limitCheckbox4.stateChanged.connect(self.adaptUi)
         self.form.limitLenMinSpinbox.valueChanged.connect(self.onLimitLenMinChanged)
         self.form.limitLenMaxSpinbox.valueChanged.connect(self.onLimitLenMaxChanged)
         self.form.limitRotMinSpinbox.valueChanged.connect(self.onLimitRotMinChanged)
@@ -1301,9 +1325,14 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
             self.createJointObject()
             self.visibilityBackup = False
-            self.handleInitialSelection()
 
         self.adaptUi()
+
+        if self.creating:
+            # This has to be after adaptUi so that properties default values are adapted
+            # if needed. For instance for gears adaptUi will prevent radii from being 0
+            # before handleInitialSelection tries to solve.
+            self.handleInitialSelection()
 
         self.setJointsPickableState(False)
 
@@ -1317,6 +1346,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.callbackKey = self.view.addEventCallback("SoKeyboardEvent", self.KeyboardEvent)
 
         self.form.featureList.installEventFilter(self)
+
+        self.addition_rejected = False
 
     def accept(self):
         if len(self.current_selection) != 2:
@@ -1349,7 +1380,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         if self.activeType == "Assembly":
             self.assembly.clearUndo()
-            self.assembly.ViewObject.EnableMovement = True
+            self.assembly.ViewObject.MoveOnlyPreselected = False
+            self.assembly.ViewObject.MoveInCommand = True
 
         Gui.Selection.removeSelectionGate()
         Gui.Selection.removeObserver(self)
@@ -1455,16 +1487,20 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.joint.Rotation = self.form.rotationSpinbox.property("rawValue")
 
     def onLimitLenMinChanged(self, quantity):
-        self.joint.LengthMin = self.form.limitLenMinSpinbox.property("rawValue")
+        if self.form.limitCheckbox1.isChecked():
+            self.joint.LengthMin = self.form.limitLenMinSpinbox.property("rawValue")
 
     def onLimitLenMaxChanged(self, quantity):
-        self.joint.LengthMax = self.form.limitLenMaxSpinbox.property("rawValue")
+        if self.form.limitCheckbox2.isChecked():
+            self.joint.LengthMax = self.form.limitLenMaxSpinbox.property("rawValue")
 
     def onLimitRotMinChanged(self, quantity):
-        self.joint.AngleMin = self.form.limitRotMinSpinbox.property("rawValue")
+        if self.form.limitCheckbox3.isChecked():
+            self.joint.AngleMin = self.form.limitRotMinSpinbox.property("rawValue")
 
     def onLimitRotMaxChanged(self, quantity):
-        self.joint.AngleMax = self.form.limitRotMaxSpinbox.property("rawValue")
+        if self.form.limitCheckbox4.isChecked():
+            self.joint.AngleMax = self.form.limitRotMaxSpinbox.property("rawValue")
 
     def onReverseClicked(self):
         self.joint.Proxy.flipOnePart(self.joint)
@@ -1482,13 +1518,13 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.form.distanceLabel.show()
             self.form.distanceSpinbox.show()
             if jType == "Distance":
-                self.form.distanceLabel.setText("Distance")
+                self.form.distanceLabel.setText(translate("Assembly", "Distance"))
             elif jType == "Angle":
-                self.form.distanceLabel.setText("Angle")
+                self.form.distanceLabel.setText(translate("Assembly", "Angle"))
             elif jType == "Gears" or jType == "Belt":
-                self.form.distanceLabel.setText("Radius 1")
+                self.form.distanceLabel.setText(translate("Assembly", "Radius 1"))
             else:
-                self.form.distanceLabel.setText("Pitch radius")
+                self.form.distanceLabel.setText(translate("Assembly", "Pitch radius"))
 
             if jType == "Angle":
                 self.form.distanceSpinbox.setProperty("unit", "deg")
@@ -1545,37 +1581,46 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         needLengthLimits = jType in JointUsingLimitLength
         needAngleLimits = jType in JointUsingLimitAngle
 
-        showLimits = False
         if needLengthLimits or needAngleLimits:
-            self.form.LimitCheckbox.show()
-            showLimits = True
-        else:
-            self.form.LimitCheckbox.hide()
+            self.form.groupBox_limits.show()
 
-        showLimits = showLimits and self.form.LimitCheckbox.isChecked()
-        self.joint.EnableLimits = showLimits
+            self.joint.EnableLengthMin = self.form.limitCheckbox1.isChecked()
+            self.joint.EnableLengthMax = self.form.limitCheckbox2.isChecked()
+            self.joint.EnableAngleMin = self.form.limitCheckbox3.isChecked()
+            self.joint.EnableAngleMax = self.form.limitCheckbox4.isChecked()
 
-        if needLengthLimits and showLimits:
-            self.form.limitLenMinSpinboxLabel.show()
-            self.form.limitLenMaxSpinboxLabel.show()
-            self.form.limitLenMinSpinbox.show()
-            self.form.limitLenMaxSpinbox.show()
-        else:
-            self.form.limitLenMinSpinboxLabel.hide()
-            self.form.limitLenMaxSpinboxLabel.hide()
-            self.form.limitLenMinSpinbox.hide()
-            self.form.limitLenMaxSpinbox.hide()
+            if needLengthLimits:
+                self.form.limitCheckbox1.show()
+                self.form.limitCheckbox2.show()
+                self.form.limitLenMinSpinbox.show()
+                self.form.limitLenMaxSpinbox.show()
+                self.form.limitLenMinSpinbox.setEnabled(self.joint.EnableLengthMin)
+                self.form.limitLenMaxSpinbox.setEnabled(self.joint.EnableLengthMax)
+                self.onLimitLenMinChanged(0)  # dummy value
+                self.onLimitLenMaxChanged(0)
+            else:
+                self.form.limitCheckbox1.hide()
+                self.form.limitCheckbox2.hide()
+                self.form.limitLenMinSpinbox.hide()
+                self.form.limitLenMaxSpinbox.hide()
 
-        if needAngleLimits and showLimits:
-            self.form.limitRotMinSpinboxLabel.show()
-            self.form.limitRotMaxSpinboxLabel.show()
-            self.form.limitRotMinSpinbox.show()
-            self.form.limitRotMaxSpinbox.show()
+            if needAngleLimits:
+                self.form.limitCheckbox3.show()
+                self.form.limitCheckbox4.show()
+                self.form.limitRotMinSpinbox.show()
+                self.form.limitRotMaxSpinbox.show()
+                self.form.limitRotMinSpinbox.setEnabled(self.joint.EnableAngleMin)
+                self.form.limitRotMaxSpinbox.setEnabled(self.joint.EnableAngleMax)
+                self.onLimitRotMinChanged(0)
+                self.onLimitRotMaxChanged(0)
+            else:
+                self.form.limitCheckbox3.hide()
+                self.form.limitCheckbox4.hide()
+                self.form.limitRotMinSpinbox.hide()
+                self.form.limitRotMaxSpinbox.hide()
+
         else:
-            self.form.limitRotMinSpinboxLabel.hide()
-            self.form.limitRotMaxSpinboxLabel.hide()
-            self.form.limitRotMinSpinbox.hide()
-            self.form.limitRotMaxSpinbox.hide()
+            self.form.groupBox_limits.hide()
 
     def updateTaskboxFromJoint(self):
         self.current_selection = []
@@ -1617,7 +1662,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.offsetSpinbox.setProperty("rawValue", self.joint.Offset.z)
         self.form.rotationSpinbox.setProperty("rawValue", self.joint.Rotation)
 
-        self.form.LimitCheckbox.setChecked(self.joint.EnableLimits)
+        self.form.limitCheckbox1.setChecked(self.joint.EnableLengthMin)
+        self.form.limitCheckbox2.setChecked(self.joint.EnableLengthMax)
+        self.form.limitCheckbox3.setChecked(self.joint.EnableAngleMin)
+        self.form.limitCheckbox4.setChecked(self.joint.EnableAngleMax)
         self.form.limitLenMinSpinbox.setProperty("rawValue", self.joint.LengthMin)
         self.form.limitLenMaxSpinbox.setProperty("rawValue", self.joint.LengthMax)
         self.form.limitRotMinSpinbox.setProperty("rawValue", self.joint.AngleMin)
@@ -1686,6 +1734,23 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             simplified_names.append(sname)
         self.form.featureList.addItems(simplified_names)
 
+    def updateLimits(self):
+        needLengthLimits = self.jType in JointUsingLimitLength
+        needAngleLimits = self.jType in JointUsingLimitAngle
+        if needLengthLimits:
+            distance = UtilsAssembly.getJointDistance(self.joint)
+            if not self.form.limitCheckbox1.isChecked():
+                self.form.limitLenMinSpinbox.setProperty("rawValue", distance)
+            if not self.form.limitCheckbox2.isChecked():
+                self.form.limitLenMaxSpinbox.setProperty("rawValue", distance)
+
+        if needAngleLimits:
+            angle = UtilsAssembly.getJointXYAngle(self.joint) / math.pi * 180
+            if not self.form.limitCheckbox3.isChecked():
+                self.form.limitRotMinSpinbox.setProperty("rawValue", angle)
+            if not self.form.limitCheckbox4.isChecked():
+                self.form.limitRotMaxSpinbox.setProperty("rawValue", angle)
+
     def moveMouse(self, info):
         if len(self.current_selection) >= 2 or (
             len(self.current_selection) == 1
@@ -1695,6 +1760,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             )
         ):
             self.joint.ViewObject.Proxy.showPreviewJCS(False)
+            if len(self.current_selection) >= 2:
+                self.updateLimits()
             return
 
         cursor_pos = self.view.getCursorPos()
@@ -1783,6 +1850,23 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         element_name = UtilsAssembly.getElementName(full_element_name)
         part_containing_selected_object = self.getContainingPart(full_element_name, selected_object)
 
+        # Check if the addition is acceptable (we are not doing this in selection gate to let user move objects)
+        acceptable = True
+        if len(self.current_selection) >= 2:
+            # No more than 2 elements can be selected for basic joints.
+            acceptable = False
+
+        for selection_dict in self.current_selection:
+            if selection_dict["part"] == part_containing_selected_object:
+                # Can't join a solid to itself. So the user need to select 2 different parts.
+                acceptable = False
+
+        if not acceptable:
+            self.addition_rejected = True
+            Gui.Selection.removeSelection(doc_name, obj_name, sub_name)
+            return
+
+        # Selection is acceptable so add it
         selection_dict = {
             "object": selected_object,
             "part": part_containing_selected_object,
@@ -1803,6 +1887,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.joint.ViewObject.Proxy.showPreviewJCS(False)
 
     def removeSelection(self, doc_name, obj_name, sub_name, mousePos=None):
+        if self.addition_rejected:
+            self.addition_rejected = False
+            return
+
         full_element_name = UtilsAssembly.getFullElementName(obj_name, sub_name)
         selected_object = UtilsAssembly.getObject(full_element_name)
         element_name = UtilsAssembly.getElementName(full_element_name)

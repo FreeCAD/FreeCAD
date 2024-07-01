@@ -117,7 +117,7 @@ def setStatusIcons(show=True):
             if statuswidget:
                 statuswidget.show()
             else:
-                statuswidget = QtGui.QToolBar()
+                statuswidget = FreeCADGui.UiLoader().createWidget("Gui::ToolBar")
                 statuswidget.setObjectName("BIMStatusWidget")
                 s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetInt("ToolbarIconSize", 24)
                 statuswidget.setIconSize(QtCore.QSize(s,s))

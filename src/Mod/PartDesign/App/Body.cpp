@@ -32,6 +32,7 @@
 #include "BodyPy.h"
 #include "FeatureBase.h"
 #include "FeatureSketchBased.h"
+#include "FeatureSolid.h"
 #include "FeatureTransformed.h"
 #include "ShapeBinder.h"
 
@@ -136,7 +137,6 @@ App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
     if (rvIt != features.rend()) { // the solid found in model list
         return *rvIt;
     }
-
     return nullptr;
 }
 
@@ -167,7 +167,6 @@ App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start)
     if (rvIt != features.end()) { // the solid found in model list
         return *rvIt;
     }
-
     return nullptr;
 }
 
@@ -375,6 +374,7 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
 
 App::DocumentObjectExecReturn *Body::execute()
 {
+    Part::BodyBase::execute();
     /*
     Base::Console().Error("Body '%s':\n", getNameInDocument());
     App::DocumentObject* tip = Tip.getValue();

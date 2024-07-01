@@ -21,6 +21,8 @@
 #                                                                           *
 # **************************************************************************/
 
+import math
+
 import FreeCAD as App
 import Part
 
@@ -1044,3 +1046,26 @@ def getAssemblyShapes(assembly):
         shapes.append(part.Shape)
 
     return shapes
+
+
+def getJointDistance(joint):
+    plc1 = getJcsGlobalPlc(joint.Placement1, joint.Object1, joint.Part1)
+    plc2 = getJcsGlobalPlc(joint.Placement2, joint.Object2, joint.Part2)
+
+    # Find the sign
+    sign = 1
+    plc3 = plc1.inverse() * plc2  # plc3 is plc2 relative to plc1
+    if plc3.Base.z < 0:
+        sign = -1
+
+    return sign * (plc1.Base - plc2.Base).Length
+
+
+def getJointXYAngle(joint):
+    plc1 = getJcsGlobalPlc(joint.Placement1, joint.Object1, joint.Part1)
+    plc2 = getJcsGlobalPlc(joint.Placement2, joint.Object2, joint.Part2)
+
+    plc3 = plc1.inverse() * plc2  # plc3 is plc2 relative to plc1
+    x_axis = plc3.Rotation.multVec(App.Vector(1, 0, 0))
+
+    return math.atan2(x_axis.y, x_axis.x)

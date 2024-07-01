@@ -45,7 +45,9 @@ class DialogInteractor(QtCore.QObject):
         self.execution_counter = 0
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.run)
-        self.timer.start(10)
+        self.timer.start(
+            1
+        )  # At 10 this occasionally left open dialogs; less than 1 produced failed tests
 
     def run(self):
         widget = QtWidgets.QApplication.activeModalWidget()

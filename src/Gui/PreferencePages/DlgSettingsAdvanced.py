@@ -34,10 +34,10 @@ sys.path.append(path.join(path.dirname(
     path.dirname(path.dirname(path.abspath(__file__)))), 'Gui'))
 import OverlayParams, TreeParams
 
-Title = 'UI'
+Title = 'Advanced'
 NameSpace = 'Gui'
-ClassName = 'DlgSettingsUI'
-ClassDoc = 'Preference dialog for various UI related settings'
+ClassName = 'DlgSettingsAdvanced'
+ClassDoc = 'Preference dialog for various advanced UI settings'
 UserInit = 'init();'
 
 _OverlayParams = { param.name : param for param in OverlayParams.Params }
@@ -45,25 +45,11 @@ _TreeParams = { param.name : param for param in TreeParams.Params }
 
 ParamGroup = (
     ('Tree view', [_TreeParams[name] for name in (
-        'ItemBackground',
         'ItemBackgroundPadding',
-        'ResizableColumn',
-        'VisibilityIcon',
-        'HideColumn',
-	'HideInternalNames',
-        'HideScrollBar',
-        'HideHeaderView',
-        'IconSize',
         'FontSize',
-        'ItemSpacing',
     )]),
 
     ('Overlay', [_OverlayParams[name] for name in (
-        'DockOverlayHideTabBar',
-        'DockOverlayHidePropertyViewScrollBar',
-        'DockOverlayAutoView',
-        'DockOverlayAutoMouseThrough',
-        'DockOverlayWheelPassThrough',
         'DockOverlayWheelDelay',
         'DockOverlayAlphaRadius',
         'DockOverlayCheckNaviCube',
@@ -77,7 +63,6 @@ ParamGroup = (
         'DockOverlayHintTopLength',
         'DockOverlayHintBottomOffset',
         'DockOverlayHintBottomLength',
-        'DockOverlayHintTabBar',
         'DockOverlayHintDelay',
         'DockOverlaySplitterHandleTimeout',
         'DockOverlayActivateOnHover',

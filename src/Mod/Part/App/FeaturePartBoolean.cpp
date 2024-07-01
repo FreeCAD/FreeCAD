@@ -124,7 +124,7 @@ App::DocumentObjectExecReturn* Boolean::execute()
                                                  ->GetGroup("Preferences")
                                                  ->GetGroup("Mod/Part/Boolean");
 
-        if (hGrp->GetBool("CheckModel", false)) {
+        if (hGrp->GetBool("CheckModel", true)) {
             BRepCheck_Analyzer aChecker(resShape);
             if (!aChecker.IsValid()) {
                 return new App::DocumentObjectExecReturn("Resulting shape is invalid");

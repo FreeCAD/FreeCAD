@@ -353,7 +353,7 @@ SET(Gui_UIC_SRCS
     PreferencePages/DlgSettingsPythonConsole.ui
     PreferencePages/DlgSettingsReportView.ui
     PreferencePages/DlgSettingsSelection.ui
-    PreferencePages/DlgSettingsTheme.ui
+    PreferencePages/DlgSettingsUI.ui
     PreferencePages/DlgSettingsViewColor.ui
     PreferencePages/DlgSettingsWorkbenches.ui
     DlgCheckableMessageBox.ui
@@ -610,10 +610,10 @@ SET(Dialog_Settings_CPP_SRCS
     PreferencePages/DlgSettingsPythonConsole.cpp
     PreferencePages/DlgSettingsReportView.cpp
     PreferencePages/DlgSettingsSelection.cpp
-    PreferencePages/DlgSettingsTheme.cpp
+    PreferencePages/DlgSettingsUI.cpp
     PreferencePages/DlgSettingsViewColor.cpp
     PreferencePages/DlgSettingsWorkbenchesImp.cpp
-    PreferencePages/DlgSettingsUI.cpp
+    PreferencePages/DlgSettingsAdvanced.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
     DlgOnlineHelpImp.h
@@ -632,10 +632,10 @@ SET(Dialog_Settings_HPP_SRCS
     PreferencePages/DlgSettingsPythonConsole.h
     PreferencePages/DlgSettingsReportView.h
     PreferencePages/DlgSettingsSelection.h
-    PreferencePages/DlgSettingsTheme.h
+    PreferencePages/DlgSettingsUI.h
     PreferencePages/DlgSettingsViewColor.h
     PreferencePages/DlgSettingsWorkbenchesImp.h
-    PreferencePages/DlgSettingsUI.h
+    PreferencePages/DlgSettingsAdvanced.h
 )
 SET(Dialog_Settings_SRCS
     ${Dialog_Settings_CPP_SRCS}
@@ -656,7 +656,7 @@ SET(Dialog_Settings_SRCS
     PreferencePages/DlgSettingsPythonConsole.ui
     PreferencePages/DlgSettingsReportView.ui
     PreferencePages/DlgSettingsSelection.ui
-    PreferencePages/DlgSettingsTheme.ui
+    PreferencePages/DlgSettingsUI.ui
     PreferencePages/DlgSettingsViewColor.ui
     PreferencePages/DlgSettingsWorkbenches.ui
 )
@@ -1012,6 +1012,7 @@ SET(Inventor_CPP_SRCS
     SoFCBackgroundGradient.cpp
     SoFCBoundingBox.cpp
     SoFCColorBar.cpp
+    SoFCColorBarNotifier.cpp
     SoFCColorGradient.cpp
     SoFCColorLegend.cpp
     SoFCDB.cpp
@@ -1042,6 +1043,7 @@ SET(Inventor_SRCS
     SoFCBackgroundGradient.h
     SoFCBoundingBox.h
     SoFCColorBar.h
+    SoFCColorBarNotifier.h
     SoFCColorGradient.h
     SoFCColorLegend.h
     SoFCDB.h

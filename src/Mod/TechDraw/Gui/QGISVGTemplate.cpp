@@ -230,6 +230,8 @@ void QGISVGTemplate::createClickHandles()
         textLength = std::max(charWidth, textLength);
 
         auto item(new TemplateTextField(this, svgTemplate, name.toStdString()));
+        auto autoValue = svgTemplate->getAutofillByEditableName(name);
+        item->setAutofill(autoValue);
 
         double pad = 1.0;
         double top = Rez::guiX(-svgTemplate->getHeight()) + y - textHeight - pad;

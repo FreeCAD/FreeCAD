@@ -121,6 +121,7 @@ protected:
     void setLabelValue(const Base::Quantity& value);
     void setLabelValue(const QString& value);
     void setLabelTranslation(const SbVec3f& position);
+    void updateIcon();
 
     SoPickStyle* getSoPickStyle();
     SoDrawStyle* getSoLineStylePrimary();

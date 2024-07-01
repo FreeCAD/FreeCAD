@@ -78,6 +78,7 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
         ui.setFieldName(fieldNameStr);
         ui.setFieldContent(tmplte->EditableTexts[fieldNameStr]);
+        ui.setAutofillContent(Base::Tools::toStdString(m_autofillString));
 
         if (ui.exec() == QDialog::Accepted) {
             QString qsClean = ui.getFieldContent();
@@ -99,6 +100,13 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         QGraphicsItemGroup::mouseReleaseEvent(event);
     }
 }
+
+//void setAutofill(std::string autofillString);
+void TemplateTextField::setAutofill(QString autofillString)
+{
+    m_autofillString = autofillString;
+}
+
 
 void TemplateTextField::setRectangle(QRectF rect)
 {

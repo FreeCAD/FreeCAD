@@ -201,8 +201,8 @@ class CommandAddonManager(QtCore.QObject):
         self.packages_with_updates = set()
 
         self.macro_repo_dir = None
-        self.number_of_progress_regions = None
-        self.current_progress_region = None
+        self.number_of_progress_regions = 0
+        self.current_progress_region = 0
 
         self.check_worker = None
         self.check_for_python_package_updates_worker = None
@@ -214,8 +214,8 @@ class CommandAddonManager(QtCore.QObject):
         self.get_basic_addon_stats_worker = None
         self.load_macro_metadata_worker = None
 
-        self.macro_cache = None
-        self.package_cache = None
+        self.macro_cache = []
+        self.package_cache = {}
         self.manage_python_packages_dialog = None
 
         # Set up the connection checker

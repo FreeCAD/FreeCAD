@@ -783,6 +783,7 @@ class CacheMacroCodeWorker(QtCore.QThread):
                     "AddonsInstaller",
                     "Out of {num_macros} macros, {num_failed} timed out while processing",
                 ).format(num_macros=num_macros, num_failed=num_failed)
+                + "\n"
             )
 
     def _process_queue(self, num_macros) -> bool:

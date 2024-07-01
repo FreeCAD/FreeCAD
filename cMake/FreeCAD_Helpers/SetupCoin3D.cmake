@@ -37,7 +37,7 @@ macro(SetupCoin3D)
         if (RETURN_CODE EQUAL 0)
             message(STATUS "Found Pivy ${PIVY_VERSION}")
         else ()
-            message(FATAL_ERROR "Failed to import Pivy using ${Python3_EXECUTABLE}")
+            message(ERROR "Failed to import Pivy using ${Python3_EXECUTABLE}")
         endif ()
     ENDIF ()
 

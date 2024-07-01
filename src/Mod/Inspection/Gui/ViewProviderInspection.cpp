@@ -52,6 +52,7 @@
 #include <Gui/Flag.h>
 #include <Gui/MainWindow.h>
 #include <Gui/SoFCColorBar.h>
+#include <Gui/SoFCColorBarNotifier.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Widgets.h>
 #include <Mod/Inspection/App/InspectionFeature.h>
@@ -95,6 +96,7 @@ ViewProviderInspection::ViewProviderInspection()
     // simple color bar
     pcColorBar = new Gui::SoFCColorBar;
     pcColorBar->Attach(this);
+    Gui::SoFCColorBarNotifier::instance().attach(pcColorBar);
     pcColorBar->ref();
     pcColorBar->setRange(-0.1f, 0.1f, 3);
     pcLinkRoot = new SoGroup;
@@ -113,6 +115,7 @@ ViewProviderInspection::~ViewProviderInspection()
     pcCoords->unref();
     pcMatBinding->unref();
     pcColorMat->unref();
+    Gui::SoFCColorBarNotifier::instance().detach(pcColorBar);
     pcColorBar->Detach(this);
     pcColorBar->unref();
     pcLinkRoot->unref();
