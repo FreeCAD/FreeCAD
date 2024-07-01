@@ -45,7 +45,7 @@ SET(Arch_SRCS
     ArchCurtainWall.py
     ArchSketchObject.py
     BimSelect.py
-    BimStatusBar.py
+    BimStatus.py
 )
 
 SET(importers_SRCS
