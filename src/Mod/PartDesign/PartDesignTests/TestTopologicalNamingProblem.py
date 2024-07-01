@@ -38,8 +38,8 @@ class TestTopologicalNamingProblem(unittest.TestCase):
     # pylint: disable=attribute-defined-outside-init
 
     def setUp(self):
-        """ Create a document for the test suite """
-        self.Doc = App.newDocument("PartDesignTestTNP")
+        """ Create a document for each test in the test suite """
+        self.Doc = App.newDocument("PartDesignTestTNP."+self._testMethodName)
 
     def testPadsOnBaseObject(self):
         """ Simple TNP test case
@@ -1929,5 +1929,12 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertGreaterEqual(self.Body.Shape.Volume, 20126)
 
     def tearDown(self):
-        """ Close our test document """
+        """ Clean up our test, optionally preserving the test document """
+        # This flag allows doing something like this:
+        #   App.KeepTestDoc = True
+        #   import TestApp
+        #   TestApp.Test("TestPartDesignApp.TestTopologicalNamingProblem.testPadChange_UpToFirst_to_Dimension")
+        # to leave the test document(s) around for further examination in an interactive setting.
+        if hasattr(App,"KeepTestDoc") and App.KeepTestDoc:
+            return
         App.closeDocument(self.Doc.Name)
