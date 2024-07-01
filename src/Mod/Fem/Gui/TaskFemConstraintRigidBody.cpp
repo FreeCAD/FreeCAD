@@ -618,11 +618,6 @@ std::vector<std::string> TaskFemConstraintRigidBody::getRotationalMode() const
     return rotModes;
 }
 
-bool TaskFemConstraintRigidBody::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintRigidBody::changeEvent(QEvent*)
 {}
 
