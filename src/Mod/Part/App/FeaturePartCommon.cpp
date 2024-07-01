@@ -147,7 +147,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute()
 
             Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                 .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
-            if (hGrp->GetBool("CheckModel", false)) {
+            if (hGrp->GetBool("CheckModel", true)) {
                  BRepCheck_Analyzer aChecker(resShape);
                  if (! aChecker.IsValid() ) {
                      return new App::DocumentObjectExecReturn("Resulting shape is invalid");
@@ -222,7 +222,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute()
                                              .GetGroup("BaseApp")
                                              ->GetGroup("Preferences")
                                              ->GetGroup("Mod/Part/Boolean");
-    if (hGrp->GetBool("CheckModel", false)) {
+    if (hGrp->GetBool("CheckModel", true)) {
         BRepCheck_Analyzer aChecker(res.getShape());
         if (!aChecker.IsValid()) {
             return new App::DocumentObjectExecReturn("Resulting shape is invalid");
