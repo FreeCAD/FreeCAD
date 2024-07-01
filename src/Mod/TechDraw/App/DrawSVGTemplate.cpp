@@ -86,7 +86,7 @@ void DrawSVGTemplate::onChanged(const App::Property* prop)
         replaceFileIncluded(Template.getValue());
         EditableTexts.setValues(getEditableTextsFromTemplate());
         QDomDocument templateDocument;
-        if (getTemplateDocument(Template.getValue(), templateDocument)) {
+        if (getTemplateDocument(PageResult.getValue(), templateDocument)) {
             extractTemplateAttributes(templateDocument);
         }
     }
@@ -251,7 +251,7 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
     std::map<std::string, std::string> editables;
 
     QDomDocument templateDocument;
-    if (!getTemplateDocument(Template.getValue(), templateDocument)) {
+    if (!getTemplateDocument(PageResult.getValue(), templateDocument)) {
         return editables;
     }
 
@@ -294,7 +294,7 @@ QString  DrawSVGTemplate::getAutofillByEditableName(QString nameToMatch)
     QString nameCapture{nameToMatch};
 
     QDomDocument templateDocument;
-    if (!getTemplateDocument(Template.getValue(), templateDocument)) {
+    if (!getTemplateDocument(PageResult.getValue(), templateDocument)) {
         return {};
     }
 

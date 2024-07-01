@@ -44,6 +44,7 @@ public:
     void setFieldName(std::string name);
     void setFieldLength(int length);
     void setFieldContent(std::string content);
+    void setAutofillContent(std::string content);
     QString getFieldContent();
     bool getAutofillState();
 
