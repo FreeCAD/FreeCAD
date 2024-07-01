@@ -140,8 +140,9 @@ class VPMeshGmsh:
                                             FemGui.setActiveAnalysis(o)
                                             FreeCAD.Console.PrintMessage(
                                                 "The analysis the Gmsh FEM mesh object "
-                                                "belongs to was found and activated: {}\n"
-                                                .format(o.Name)
+                                                "belongs to was found and activated: {}\n".format(
+                                                    o.Name
+                                                )
                                             )
                                             gui_doc.setEdit(vobj.Object.Name)
                                             break
@@ -168,8 +169,7 @@ class VPMeshGmsh:
                                     FemGui.setActiveAnalysis(o)
                                     FreeCAD.Console.PrintMessage(
                                         "The analysis the Gmsh FEM mesh object "
-                                        "belongs to was found and activated: {}\n"
-                                        .format(o.Name)
+                                        "belongs to was found and activated: {}\n".format(o.Name)
                                     )
                                     gui_doc.setEdit(vobj.Object.Name)
                                     break
@@ -184,6 +184,7 @@ class VPMeshGmsh:
                 gui_doc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
+
             message = "Active Task Dialog found! Please close this one before opening  a new one!"
             QMessageBox.critical(None, "Error in tree view", message)
             FreeCAD.Console.PrintError(message + "\n")
@@ -199,7 +200,7 @@ class VPMeshGmsh:
         reg_childs = self.Object.MeshRegionList
         gro_childs = self.Object.MeshGroupList
         bou_childs = self.Object.MeshBoundaryLayerList
-        return (reg_childs + gro_childs + bou_childs)
+        return reg_childs + gro_childs + bou_childs
 
     def onDelete(self, feature, subelements):
         children = self.claimChildren()
@@ -217,7 +218,7 @@ class VPMeshGmsh:
                 "Object dependencies",
                 message_text,
                 QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
-                QtGui.QMessageBox.No
+                QtGui.QMessageBox.No,
             )
             if reply == QtGui.QMessageBox.Yes:
                 return True

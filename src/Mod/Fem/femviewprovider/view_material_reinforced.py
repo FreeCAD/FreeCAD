@@ -30,17 +30,15 @@ __url__ = "https://www.freecad.org"
 #  \brief view provider for reinforced material object
 
 from femtaskpanels import task_material_reinforced
-from . import view_base_femmaterial
+from . import view_base_femconstraint
 
 
-class VPMaterialReinforced(view_base_femmaterial.VPBaseFemMaterial):
+class VPMaterialReinforced(view_base_femconstraint.VPBaseFemConstraint):
     """
     A View Provider for the MaterialReinforced object
     """
 
     def setEdit(self, vobj, mode=0):
-        super().setEdit(
-            vobj,
-            mode,
-            task_material_reinforced._TaskPanel
+        view_base_femconstraint.VPBaseFemConstraint.setEdit(
+            self, vobj, mode, task_material_reinforced._TaskPanel
         )

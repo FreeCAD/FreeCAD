@@ -44,12 +44,14 @@ def get_information():
         "constraints": ["fixed", "force", "displacement"],
         "solvers": ["ccxtools"],
         "material": "reinforced",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.rc_wall_2d import setup
@@ -62,6 +64,7 @@ https://forum.freecad.org/viewtopic.php?f=18&t=33106&start=80#p296469
 example from Harry's epic topic: Concrete branch ready for testing
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -104,7 +107,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # solver
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
-        solver_obj.WorkingDir = u""
+        solver_obj.WorkingDir = ""
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
@@ -163,6 +166,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # mesh
     from .meshes.mesh_rc_wall_2d_tria6 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:

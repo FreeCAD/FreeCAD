@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-#/***************************************************************************
+# /***************************************************************************
 # *   Copyright (c) 2024 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
@@ -58,12 +58,12 @@ def get_after_write_constraint():
 
 
 def write_meshdata_constraint(f, femobj, bodyheatsource_obj, ccxwriter):
-    f.write("*ELSET,ELSET={}\n".format(bodyheatsource_obj.Name))
+    f.write(f"*ELSET,ELSET={bodyheatsource_obj.Name}\n")
     if isinstance(femobj["FEMElements"], str):
         f.write("{}\n".format(femobj["FEMElements"]))
     else:
         for e in femobj["FEMElements"]:
-            f.write("{},\n".format(e))
+            f.write(f"{e},\n")
 
 
 def write_constraint(f, femobj, bodyheatsource_obj, ccxwriter):
@@ -75,7 +75,9 @@ def write_constraint(f, femobj, bodyheatsource_obj, ccxwriter):
     ref_sub_obj = ref[1][0]
     density = None
     for mat in ccxwriter.member.mats_linear:
-        mat_ref = [*itertools.chain(*[itertools.product([i[0]],i[1]) for i in mat["Object"].References])]
+        mat_ref = [
+            *itertools.chain(*[itertools.product([i[0]], i[1]) for i in mat["Object"].References])
+        ]
         if (ref_feat, ref_sub_obj) in mat_ref:
             density = FreeCAD.Units.Quantity(mat["Object"].Material["Density"])
             break
@@ -95,9 +97,5 @@ def write_constraint(f, femobj, bodyheatsource_obj, ccxwriter):
         heat = bodyheatsource_obj.TotalPower / FreeCAD.Units.Quantity(volume, "mm^3")
     # write to file
     f.write("*DFLUX\n")
-    f.write(
-        "{},BF,{:.13G}\n".format(
-            bodyheatsource_obj.Name, heat.getValueAs("t/(mm*s^3)").Value
-        )
-    )
+    f.write("{},BF,{:.13G}\n".format(bodyheatsource_obj.Name, heat.getValueAs("t/(mm*s^3)").Value))
     f.write("\n")

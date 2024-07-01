@@ -32,17 +32,15 @@ __url__ = "https://www.freecad.org"
 #  \brief view provider for element fluid 1D object
 
 from femtaskpanels import task_element_fluid1D
-from . import view_base_femelement
+from . import view_base_femconstraint
 
 
-class VPElementFluid1D(view_base_femelement.VPBaseFemElement):
+class VPElementFluid1D(view_base_femconstraint.VPBaseFemConstraint):
     """
     A View Provider for the ElementFluid1D object
     """
 
     def setEdit(self, vobj, mode=0):
-        super().setEdit(
-            vobj,
-            mode,
-            task_element_fluid1D._TaskPanel
+        view_base_femconstraint.VPBaseFemConstraint.setEdit(
+            self, vobj, mode, task_element_fluid1D._TaskPanel
         )

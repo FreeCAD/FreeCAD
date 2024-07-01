@@ -145,7 +145,9 @@ void ViewProviderSheet::exportAsFile()
                                                         &selectedFilter);
     if (!fileName.isEmpty()) {
         if (sheet) {
-            char delim, quote, escape;
+            char delim = '\0';
+            char quote = '\0';
+            char escape = '\0';
             std::string errMsg = "Export";
             bool isValid = sheet->getCharsFromPrefs(delim, quote, escape, errMsg);
 
@@ -154,7 +156,6 @@ void ViewProviderSheet::exportAsFile()
             }
             else {
                 Base::Console().Error(errMsg.c_str());
-                return;
             }
         }
     }

@@ -53,28 +53,25 @@ class _TaskPanel:
         QtCore.QObject.connect(
             self.parameterWidget.bl_number_of_layers,
             QtCore.SIGNAL("valueChanged(int)"),
-            self.bl_number_of_layers_changed
+            self.bl_number_of_layers_changed,
         )
         QtCore.QObject.connect(
             self.parameterWidget.bl_min_thickness,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.bl_min_thickness_changed
+            self.bl_min_thickness_changed,
         )
         # be careful of signal signature for QDoubleSpinbox
         QtCore.QObject.connect(
             self.parameterWidget.bl_growth_rate,
             QtCore.SIGNAL("valueChanged(double)"),
-            self.bl_growth_rate_changed
+            self.bl_growth_rate_changed,
         )
         self.init_parameter_widget()
 
         # geometry selection widget
         # start with Solid in list!
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Solid", "Face", "Edge", "Vertex"],
-            True,
-            False
+            obj.References, ["Solid", "Face", "Edge", "Vertex"], True, False
         )
 
         # form made from param and selection widget

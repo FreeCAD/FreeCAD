@@ -28,6 +28,7 @@
 #include <boost_signals2.hpp>
 
 #include <QStringList>
+#include <QPointer>
 #include <QTimer>
 #include <QToolBar>
 #include <QPointer>
@@ -88,6 +89,53 @@ private:
     QList<ToolBarItem*> _items;
 };
 
+class ToolBarGrip: public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit ToolBarGrip(QToolBar *);
+
+    void attach();
+    void detach();
+
+    bool isAttached() const;
+
+protected:
+    void paintEvent(QPaintEvent*);
+    void mouseMoveEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+
+    void updateSize();
+
+private:
+    QPointer<QAction> _action = nullptr;
+};
+
+/**
+ * QToolBar from Qt lacks few abilities like ability to float toolbar from code.
+ * This class allows us to provide custom behaviors for toolbars if needed.
+ */
+class GuiExport ToolBar: public QToolBar
+{
+    Q_OBJECT
+
+    friend class ToolBarGrip;
+
+public:
+    ToolBar();
+    explicit ToolBar(QWidget* parent);
+
+    virtual ~ToolBar() = default;
+
+    void undock();
+    void updateCustomGripVisibility();
+
+protected:
+    void setupConnections();
+};
+
 /**
  * The ToolBarManager class is responsible for the creation of toolbars and appending them
  * to the main window.
@@ -121,13 +169,12 @@ public:
 
     void setState(const QList<QString>& names, State state);
     void setState(const QString& name, State state);
-    
-    int toolBarIconSize(QWidget *widget=nullptr) const;
+
+    int toolBarIconSize(QWidget *widget = nullptr) const;
     void setupToolBarIconSize();
 
-    void populateUndockMenu(QMenu *menu, ToolBarAreaWidget *area = nullptr);
-
     ToolBarArea toolBarArea(QWidget* toolBar) const;
+    ToolBarAreaWidget* toolBarAreaWidget(QWidget* toolBar) const;
 
 protected:
     void setup(ToolBarItem*, QToolBar*) const;
@@ -145,8 +192,8 @@ protected:
     bool eventFilter(QObject *source, QEvent *ev) override;
 
     /** Returns a list of all currently existing toolbars. */
-    QList<QToolBar*> toolBars() const;
-    QToolBar* findToolBar(const QList<QToolBar*>&, const QString&) const;
+    QList<ToolBar*> toolBars() const;
+    ToolBar* findToolBar(const QList<ToolBar*>&, const QString&) const;
     QAction* findAction(const QList<QAction*>&, const QString&) const;
     ToolBarManager();
     ~ToolBarManager() override;
@@ -160,6 +207,8 @@ private:
     void setupSizeTimer();
     void setupResizeTimer();
     void setupMenuBarTimer();
+    void setupWidgetProducers();
+
     void addToMenu(QLayout* layout, QWidget* area, QMenu* menu);
     QLayout* findLayoutOfObject(QObject* source, QWidget* area) const;
     ToolBarAreaWidget* findToolBarAreaWidget() const;

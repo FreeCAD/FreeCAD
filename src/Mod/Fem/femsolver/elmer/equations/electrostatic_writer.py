@@ -63,10 +63,7 @@ class ESwriter:
             s["Constant Weights"] = equation.ConstantWeights
         s["Exec Solver"] = "Always"
         s["Optimize Bandwidth"] = True
-        if (
-            equation.CalculateCapacitanceMatrix is False
-            and (equation.PotentialDifference != 0.0)
-        ):
+        if equation.CalculateCapacitanceMatrix is False and (equation.PotentialDifference != 0.0):
             s["Potential Difference"] = equation.PotentialDifference
         s["Stabilize"] = equation.Stabilize
         return s
@@ -81,7 +78,7 @@ class ESwriter:
                 (
                     "File where capacitance matrix is being saved\n"
                     "Only used if 'CalculateCapacitanceMatrix' is true"
-                )
+                ),
             )
             equation.CapacitanceMatrixFilename = "cmatrix.dat"
         if not hasattr(equation, "ConstantWeights"):
@@ -89,7 +86,7 @@ class ESwriter:
                 "App::PropertyBool",
                 "ConstantWeights",
                 "Electrostatic",
-                "Use constant weighting for results"
+                "Use constant weighting for results",
             )
         if not hasattr(equation, "PotentialDifference"):
             equation.addProperty(
@@ -99,14 +96,13 @@ class ESwriter:
                 (
                     "Potential difference in Volt for which capacitance is\n"
                     "calculated if 'CalculateCapacitanceMatrix' is false"
-                )
+                ),
             )
             equation.PotentialDifference = 0.0
 
     def handleElectrostaticConstants(self):
         permittivity = self.write.convert(
-            self.write.constsdef["PermittivityOfVacuum"],
-            "T^4*I^2/(L^3*M)"
+            self.write.constsdef["PermittivityOfVacuum"], "T^4*I^2/(L^3*M)"
         )
         permittivity = round(permittivity, 20)  # to get rid of numerical artifacts
         self.write.constant("Permittivity Of Vacuum", permittivity)
@@ -114,16 +110,12 @@ class ESwriter:
     def handleElectrostaticMaterial(self, bodies):
         for obj in self.write.getMember("App::MaterialObject"):
             m = obj.Material
-            refs = (
-                obj.References[0][1]
-                if obj.References
-                else self.write.getAllBodies())
+            refs = obj.References[0][1] if obj.References else self.write.getAllBodies()
             for name in (n for n in refs if n in bodies):
                 self.write.material(name, "Name", m["Name"])
                 if "RelativePermittivity" in m:
                     self.write.material(
-                        name, "Relative Permittivity",
-                        float(m["RelativePermittivity"])
+                        name, "Relative Permittivity", float(m["RelativePermittivity"])
                     )
 
     def handleElectrostaticBndConditions(self):
@@ -143,7 +135,7 @@ class ESwriter:
                                     "App::PropertyElectricPotential",
                                     "Potential",
                                     "Parameter",
-                                    "Electric Potential"
+                                    "Electric Potential",
                                 )
                                 # scale to match SI units
                                 obj.Potential = savePotential * 1e6
@@ -159,5 +151,6 @@ class ESwriter:
                         if hasattr(obj, "CapacitanceBody"):
                             self.write.boundary(name, "Capacitance Body", obj.CapacitanceBody)
                 self.write.handled(obj)
+
 
 ##  @}

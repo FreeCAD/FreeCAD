@@ -34,6 +34,7 @@
 #include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintHeatflux.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "TaskFemConstraintHeatflux.h"
 #include "ui_TaskFemConstraintHeatflux.h"
@@ -504,21 +505,6 @@ TaskDlgFemConstraintHeatflux::TaskDlgFemConstraintHeatflux(
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintHeatflux::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Heat flux load");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());  // OvG: Hide meshes and show parts
-    }
-}
-
 bool TaskDlgFemConstraintHeatflux::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
@@ -531,23 +517,14 @@ bool TaskDlgFemConstraintHeatflux::accept()
                                 "App.ActiveDocument.%s.AmbientTemp = %f",
                                 name.c_str(),
                                 parameterHeatflux->getAmbientTemp());
-        /*Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.FaceTemp = %f",
-            name.c_str(), parameterHeatflux->getFaceTemp());*/
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.FilmCoef = %f",
                                 name.c_str(),
                                 parameterHeatflux->getFilmCoef());
-
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.Emissivity = %f",
                                 name.c_str(),
                                 parameterHeatflux->getEmissivity());
-
-        scale = parameterHeatflux->getScale();  // OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());  // OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
@@ -555,15 +532,6 @@ bool TaskDlgFemConstraintHeatflux::accept()
     }
 
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintHeatflux::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintHeatflux.cpp"

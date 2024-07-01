@@ -28,7 +28,6 @@
 #include <QKeyEvent>
 #include <QListWidget>
 #include <QMessageBox>
-#include <boost/lexical_cast.hpp>  // OvG conversion between string and int etc.
 #include <sstream>
 #endif
 
@@ -82,13 +81,11 @@ const std::string TaskFemConstraint::getReferences(const std::vector<std::string
     return result;
 }
 
-const std::string
-TaskFemConstraint::getScale() const  // OvG: Return pre-calculated scale for constraint display
+const std::string TaskFemConstraint::getScale() const
 {
-    std::string result;
     Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(ConstraintView->getObject());
-    result = boost::lexical_cast<std::string>(pcConstraint->Scale.getValue());
-    return result;
+
+    return std::to_string(pcConstraint->Scale.getValue());
 }
 
 void TaskFemConstraint::setSelection(QListWidgetItem* item)
@@ -195,12 +192,11 @@ bool TaskFemConstraint::KeyEvent(QEvent* e)
 
 void TaskDlgFemConstraint::open()
 {
-    ConstraintView->setVisible(true);
-    Gui::Command::runCommand(
-        Gui::Command::Doc,
-        ViewProviderFemConstraint::gethideMeshShowPartStr(
-            (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-            .c_str());  // OvG: Hide meshes and show parts
+    if (!Gui::Command::hasPendingCommand()) {
+        const char* typeName = ConstraintView->getObject()->getTypeId().getName();
+        Gui::Command::openCommand(typeName);
+        ConstraintView->setVisible(true);
+    }
 }
 
 bool TaskDlgFemConstraint::accept()
@@ -223,6 +219,11 @@ bool TaskDlgFemConstraint::accept()
             return false;
         }
 
+        std::string scale = parameter->getScale();
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.ActiveDocument.%s.Scale = %s",
+                                name.c_str(),
+                                scale.c_str());
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         if (!ConstraintView->getObject()->isValid()) {
             throw Base::RuntimeError(ConstraintView->getObject()->getStatusString());
@@ -243,9 +244,9 @@ bool TaskDlgFemConstraint::reject()
     // roll back the changes
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+    Gui::Command::updateActive();
 
     return true;
 }
-
 
 #include "moc_TaskFemConstraint.cpp"

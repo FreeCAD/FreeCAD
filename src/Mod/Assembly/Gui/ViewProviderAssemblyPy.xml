@@ -31,6 +31,18 @@
             </Documentation>
             <Parameter Name="EnableMoving" Type="Boolean" />
         </Attribute>
+        <Attribute Name="MoveOnlyPreselected">
+            <Documentation>
+                <UserDocu>If enabled, only the preselected object will move.</UserDocu>
+            </Documentation>
+            <Parameter Name="MoveOnlyPreselected" Type="Boolean" />
+        </Attribute>
+        <Attribute Name="MoveInCommand">
+            <Documentation>
+                <UserDocu>If enabled, each move will be wrapped in a command.</UserDocu>
+            </Documentation>
+            <Parameter Name="MoveInCommand" Type="Boolean" />
+        </Attribute>
         <Attribute Name="DraggerVisibility">
             <Documentation>
                 <UserDocu>Show or hide the assembly dragger.</UserDocu>

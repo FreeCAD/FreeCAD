@@ -75,9 +75,7 @@ class TaskDlgFemConstraintContact: public TaskDlgFemConstraint
 
 public:
     explicit TaskDlgFemConstraintContact(ViewProviderFemConstraintContact* ConstraintView);
-    void open() override;
     bool accept() override;
-    bool reject() override;
 };
 
 }  // namespace FemGui

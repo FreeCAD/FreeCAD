@@ -7,12 +7,39 @@
    id="svg2869"
    version="1.1"
    viewBox="0 0 64 64"
+   sodipodi:docname="Sketcher_CarbonCopy_alt.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview596"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="true"
+     inkscape:zoom="9.2476309"
+     inkscape:cx="34.441253"
+     inkscape:cy="40.226519"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g4">
+    <inkscape:grid
+       type="xygrid"
+       id="grid662" />
+  </sodipodi:namedview>
   <defs
      id="defs2871">
     <linearGradient
@@ -154,20 +181,13 @@
     <g
        id="g2"
        style="display:inline"
-       transform="translate(1.4397755,0.7949619)">
+       transform="translate(8.901146,-10.775569)">
       <rect
          y="21.999996"
          x="11.748552"
          height="30.251446"
          width="32.237858"
          id="rect3"
-         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#162c02;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
-      <ellipse
-         ry="16.015471"
-         rx="16.118929"
-         cy="20.220509"
-         cx="41.441296"
-         id="ellipse3"
          style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#162c02;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
       <rect
          y="21.999996"
@@ -176,67 +196,31 @@
          width="32.237858"
          id="rect3860-36-6"
          style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#4e9a06;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
-      <ellipse
-         ry="16.015471"
-         rx="16.118929"
-         cy="20.220509"
-         cx="41.441296"
-         id="path3862-7-7"
-         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#4e9a06;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
-      <path
-         id="rect3860-3-5"
-         d="m 11.748552,25.781427 v -3.781431 h 4.029733 m 8.059464,0 h 8.059464 m 8.059465,0 h 4.029732 v 3.781431 m 0,7.562861 v 7.562862 m 0,7.562861 v 3.781431 h -4.029732 m -8.059465,0 h -8.059464 m -8.059464,0 h -4.029733 v -3.781431 m 0,-7.562861 v -7.562862 m 0,-7.562861 v -3.781431"
-         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:8, 8;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
-      <path
-         id="path3862-6-3"
-         d="m 57.251553,17.085556 c 0.202491,1.013805 0.308672,2.062058 0.308672,3.134953 0,1.072899 -0.106182,2.121157 -0.308675,3.134966 m -2.419642,5.783233 c -1.179365,1.744699 -2.694989,3.246232 -4.454651,4.412974 m -5.800251,2.381438 c -1.014296,0.198699 -2.06276,0.302859 -3.13571,0.302859 -1.072955,0 -2.121424,-0.104161 -3.135724,-0.302861 m -5.800249,-2.381444 c -1.759661,-1.166743 -3.275284,-2.668278 -4.454648,-4.412977 m -2.419637,-5.783236 c -0.20249,-1.013805 -0.308671,-2.062058 -0.308671,-3.134952 0,-1.072899 0.106182,-2.121158 0.308674,-3.134967 m 2.419642,-5.783233 c 1.179365,-1.7446985 2.694989,-3.2462322 4.454652,-4.4129734 m 5.80025,-2.3814386 c 1.014296,-0.1986987 2.062761,-0.3028589 3.135711,-0.3028589 1.072954,0 2.121424,0.1041611 3.135724,0.3028615 m 5.800248,2.3814436 c 1.759662,1.1667426 3.275284,2.6682776 4.454648,4.4129768 m 2.419637,5.783236 c 0.202491,1.013805 0.308672,2.062058 0.308672,3.134953"
-         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
     </g>
     <g
        id="g4"
        transform="translate(-5e-7,2.1e-5)">
       <rect
-         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#151819;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:0;stroke:#091425;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
          id="rect4"
          width="32.237858"
          height="30.251444"
-         x="5.0000005"
-         y="28.748535" />
-      <ellipse
-         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#151819;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-         id="ellipse4"
-         cx="34.692764"
-         cy="26.969061"
-         rx="16.118929"
-         ry="16.015471" />
+         x="11.271877"
+         y="23.666153" />
       <rect
          style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#d3d7cf;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
          id="rect3860-36"
          width="32.237858"
          height="30.251444"
-         x="5.0000005"
-         y="28.748535" />
-      <ellipse
-         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#d3d7cf;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-         id="path3862-7"
-         cx="34.692764"
-         cy="26.969061"
-         rx="16.118929"
-         ry="16.015471" />
+         x="11.271877"
+         y="23.666153" />
       <rect
          style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
          id="rect3860-3"
          width="32.237858"
          height="30.251444"
-         x="5.0000005"
-         y="28.748535" />
-      <ellipse
-         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-         id="path3862-6"
-         cx="34.692764"
-         cy="26.969061"
-         rx="16.118929"
-         ry="16.015471" />
+         x="11.271877"
+         y="23.666153" />
     </g>
   </g>
 </svg>

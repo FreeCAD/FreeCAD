@@ -29,10 +29,10 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief element geometry 2D object
 
-from . import base_femelement
+from . import base_fempythonobject
 
 
-class ElementGeometry2D(base_femelement.BaseFemElement):
+class ElementGeometry2D(base_fempythonobject.BaseFemPythonObject):
     """
     The ElementGeometry2D object
     """
@@ -40,12 +40,20 @@ class ElementGeometry2D(base_femelement.BaseFemElement):
     Type = "Fem::ElementGeometry2D"
 
     def __init__(self, obj):
-        super(ElementGeometry2D, self).__init__(obj)
+        super().__init__(obj)
 
         obj.addProperty(
             "App::PropertyLength",
             "Thickness",
             "ShellThickness",
-            "set thickness of the shell elements"
+            "set thickness of the shell elements",
         )
         obj.setPropertyStatus("Thickness", "LockDynamic")
+
+        obj.addProperty(
+            "App::PropertyLinkSubList",
+            "References",
+            "ShellThickness",
+            "List of shell thickness shapes",
+        )
+        obj.setPropertyStatus("References", "LockDynamic")

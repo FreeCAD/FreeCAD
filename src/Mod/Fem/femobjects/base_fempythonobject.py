@@ -31,7 +31,7 @@ __url__ = "https://www.freecad.org"
 #  \brief base object for FEM Python Features
 
 
-class BaseFemPythonObject(object):
+class BaseFemPythonObject:
 
     BaseType = "Fem::BaseFemPythonObject"
 
@@ -55,6 +55,7 @@ class _PropHelper:
     Initialization keywords are the same used with PropertyContainer
     to add dynamics properties plus "value" for the initial value.
     """
+
     def __init__(self, **kwds):
         self.value = kwds.pop("value")
         self.info = kwds

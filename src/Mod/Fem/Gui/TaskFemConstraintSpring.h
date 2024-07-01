@@ -69,9 +69,7 @@ class TaskDlgFemConstraintSpring: public TaskDlgFemConstraint
 
 public:
     explicit TaskDlgFemConstraintSpring(ViewProviderFemConstraintSpring* ConstraintView);
-    void open() override;
     bool accept() override;
-    bool reject() override;
 };
 
 }  // namespace FemGui

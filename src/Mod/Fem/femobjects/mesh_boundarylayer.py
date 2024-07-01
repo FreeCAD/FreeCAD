@@ -29,10 +29,10 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief mesh boundary layer object
 
-from . import base_femmeshelement
+from . import base_fempythonobject
 
 
-class MeshBoundaryLayer(base_femmeshelement.BaseFemMeshElement):
+class MeshBoundaryLayer(base_fempythonobject.BaseFemPythonObject):
     """
     The MeshBoundaryLayer object
     """
@@ -40,13 +40,13 @@ class MeshBoundaryLayer(base_femmeshelement.BaseFemMeshElement):
     Type = "Fem::MeshBoundaryLayer"
 
     def __init__(self, obj):
-        super(MeshBoundaryLayer, self).__init__(obj)
+        super().__init__(obj)
 
         obj.addProperty(
             "App::PropertyInteger",
             "NumberOfLayers",
             "MeshBoundaryLayerProperties",
-            "set number of inflation layers for this boundary"
+            "set number of inflation layers for this boundary",
         )
         obj.setPropertyStatus("NumberOfLayers", "LockDynamic")
         obj.NumberOfLayers = 3
@@ -55,7 +55,7 @@ class MeshBoundaryLayer(base_femmeshelement.BaseFemMeshElement):
             "App::PropertyLength",
             "MinimumThickness",
             "MeshBoundaryLayerProperties",
-            "set minimum thickness,usually the first inflation layer"
+            "set minimum thickness,usually the first inflation layer",
         )
         obj.setPropertyStatus("MinimumThickness", "LockDynamic")
         # default to zero, user must specify a proper value for this property
@@ -64,7 +64,15 @@ class MeshBoundaryLayer(base_femmeshelement.BaseFemMeshElement):
             "App::PropertyFloat",
             "GrowthRate",
             "MeshBoundaryLayerProperties",
-            "set growth rate of inflation layers for smooth transition"
+            "set growth rate of inflation layers for smooth transition",
         )
         obj.setPropertyStatus("GrowthRate", "LockDynamic")
         obj.GrowthRate = 1.5
+
+        obj.addProperty(
+            "App::PropertyLinkSubList",
+            "References",
+            "MeshBoundaryLayerShapes",
+            "List of FEM mesh region shapes",
+        )
+        obj.setPropertyStatus("References", "LockDynamic")

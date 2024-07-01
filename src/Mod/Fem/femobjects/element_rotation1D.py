@@ -29,10 +29,10 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief element rotation 1D object
 
-from . import base_femelement
+from . import base_fempythonobject
 
 
-class ElementRotation1D(base_femelement.BaseFemElement):
+class ElementRotation1D(base_fempythonobject.BaseFemPythonObject):
     """
     The ElementRotation1D object
     """
@@ -40,12 +40,14 @@ class ElementRotation1D(base_femelement.BaseFemElement):
     Type = "Fem::ElementRotation1D"
 
     def __init__(self, obj):
-        super(ElementRotation1D, self).__init__(obj)
+        super().__init__(obj)
 
         obj.addProperty(
-            "App::PropertyAngle",
-            "Rotation",
-            "BeamRotation",
-            "Set the rotation of beam elements"
+            "App::PropertyAngle", "Rotation", "BeamRotation", "Set the rotation of beam elements"
         )
         obj.setPropertyStatus("Rotation", "LockDynamic")
+
+        obj.addProperty(
+            "App::PropertyLinkSubList", "References", "BeamRotation", "List of beam rotation shapes"
+        )
+        obj.setPropertyStatus("References", "LockDynamic")

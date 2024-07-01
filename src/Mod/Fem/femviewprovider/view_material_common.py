@@ -34,10 +34,10 @@ __url__ = "https://www.freecad.org"
 import FreeCAD
 
 from femtaskpanels import task_material_common
-from . import view_base_femmaterial
+from . import view_base_femconstraint
 
 
-class VPMaterialCommon(view_base_femmaterial.VPBaseFemMaterial):
+class VPMaterialCommon(view_base_femconstraint.VPBaseFemConstraint):
     """
     A View Provider for the MaterialCommon object
     """
@@ -55,8 +55,6 @@ class VPMaterialCommon(view_base_femmaterial.VPBaseFemMaterial):
             return ""
 
     def setEdit(self, vobj, mode=0):
-        super().setEdit(
-            vobj,
-            mode,
-            task_material_common._TaskPanel
+        view_base_femconstraint.VPBaseFemConstraint.setEdit(
+            self, vobj, mode, task_material_common._TaskPanel
         )

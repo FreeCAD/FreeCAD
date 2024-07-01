@@ -81,9 +81,7 @@ class TaskDlgFemConstraintHeatflux: public TaskDlgFemConstraint
 
 public:
     explicit TaskDlgFemConstraintHeatflux(ViewProviderFemConstraintHeatflux* ConstraintView);
-    void open() override;
     bool accept() override;
-    bool reject() override;
 };
 
 }  // namespace FemGui
