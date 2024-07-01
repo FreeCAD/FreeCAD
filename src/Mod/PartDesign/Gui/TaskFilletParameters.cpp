@@ -168,11 +168,6 @@ TaskFilletParameters::~TaskFilletParameters()
     }
 }
 
-bool TaskFilletParameters::event(QEvent *e)
-{
-    return TaskDressUpParameters::KeyEvent(e);
-}
-
 void TaskFilletParameters::changeEvent(QEvent *e)
 {
     TaskBox::changeEvent(e);
