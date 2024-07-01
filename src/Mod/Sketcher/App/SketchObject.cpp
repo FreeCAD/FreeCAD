@@ -2201,106 +2201,114 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
     int replaceGeoId = GeoEnum::GeoUndef;
     PointPos replacePosId = Sketcher::PointPos::none;
     if (!onlyCoincident) {
-        for (std::vector<Constraint*>::const_iterator it = vals.begin(); it != vals.end(); ++it) {
-            if ((*it)->Type == Sketcher::Coincident) {
-                if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                    replaceGeoId = (*it)->Second;
-                    replacePosId = (*it)->SecondPos;
-                    break;
-                }
-                else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
-                    replaceGeoId = (*it)->First;
-                    replacePosId = (*it)->FirstPos;
-                    break;
-                }
+        for (const auto& constr : vals) {
+            if (constr->Type != Sketcher::Coincident) {
+                continue;
+            }
+
+            if (constr->First == GeoId && constr->FirstPos == PosId) {
+                replaceGeoId = constr->Second;
+                replacePosId = constr->SecondPos;
+                break;
+            }
+            else if (constr->Second == GeoId && constr->SecondPos == PosId) {
+                replaceGeoId = constr->First;
+                replacePosId = constr->FirstPos;
+                break;
             }
         }
     }
 
     // remove or redirect any constraints associated with the given point
-    std::vector<Constraint*> newVals(0);
-    for (std::vector<Constraint*>::const_iterator it = vals.begin(); it != vals.end(); ++it) {
-        if ((*it)->Type == Sketcher::Coincident) {
-            if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
+    std::vector<Constraint*> newVals;
+    for (auto& constr : vals) {
+        if (constr->Type == Sketcher::Coincident) {
+            if (constr->First == GeoId && constr->FirstPos == PosId) {
                 // redirect this constraint
                 if (replaceGeoId != GeoEnum::GeoUndef
-                    && (replaceGeoId != (*it)->Second || replacePosId != (*it)->SecondPos)) {
-                    (*it)->First = replaceGeoId;
-                    (*it)->FirstPos = replacePosId;
+                    && (replaceGeoId != constr->Second || replacePosId != constr->SecondPos)) {
+                    constr->First = replaceGeoId;
+                    constr->FirstPos = replacePosId;
                 }
                 else
                     continue;// skip this constraint
             }
-            else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
+            else if (constr->Second == GeoId && constr->SecondPos == PosId) {
                 // redirect this constraint
                 if (replaceGeoId != GeoEnum::GeoUndef
-                    && (replaceGeoId != (*it)->First || replacePosId != (*it)->FirstPos)) {
-                    (*it)->Second = replaceGeoId;
-                    (*it)->SecondPos = replacePosId;
+                    && (replaceGeoId != constr->First || replacePosId != constr->FirstPos)) {
+                    constr->Second = replaceGeoId;
+                    constr->SecondPos = replacePosId;
                 }
                 else
                     continue;// skip this constraint
             }
         }
-        else if (!onlyCoincident) {
-            if ((*it)->Type == Sketcher::Distance || (*it)->Type == Sketcher::DistanceX
-                || (*it)->Type == Sketcher::DistanceY) {
-                if ((*it)->First == GeoId && (*it)->FirstPos == PointPos::none
-                    && (PosId == PointPos::start || PosId == PointPos::end)) {
-                    // remove the constraint even if it is not directly associated
-                    // with the given point
-                    continue;// skip this constraint
-                }
-                else if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                    if (replaceGeoId != GeoEnum::GeoUndef) {// redirect this constraint
-                        (*it)->First = replaceGeoId;
-                        (*it)->FirstPos = replacePosId;
-                    }
-                    else
-                        continue;// skip this constraint
-                }
-                else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
-                    if (replaceGeoId != GeoEnum::GeoUndef) {// redirect this constraint
-                        (*it)->Second = replaceGeoId;
-                        (*it)->SecondPos = replacePosId;
-                    }
-                    else
-                        continue;// skip this constraint
-                }
+        else if (onlyCoincident) {
+            newVals.push_back(constr);
+            continue;
+        }
+        else if (constr->Type == Sketcher::Distance
+                 || constr->Type == Sketcher::DistanceX
+                 || constr->Type == Sketcher::DistanceY) {
+            if (constr->First == GeoId && constr->FirstPos == PointPos::none
+                && (PosId == PointPos::start || PosId == PointPos::end)) {
+                // remove the constraint even if it is not directly associated
+                // with the given point
+                continue;// skip this constraint
             }
-            else if ((*it)->Type == Sketcher::PointOnObject) {
-                if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                    if (replaceGeoId != GeoEnum::GeoUndef) {// redirect this constraint
-                        (*it)->First = replaceGeoId;
-                        (*it)->FirstPos = replacePosId;
-                    }
-                    else
-                        continue;// skip this constraint
+            else if (constr->First == GeoId && constr->FirstPos == PosId) {
+                if (replaceGeoId != GeoEnum::GeoUndef) {// redirect this constraint
+                    constr->First = replaceGeoId;
+                    constr->FirstPos = replacePosId;
                 }
-            }
-            else if ((*it)->Type == Sketcher::Tangent || (*it)->Type == Sketcher::Perpendicular) {
-                if (((*it)->First == GeoId && (*it)->FirstPos == PosId)
-                    || ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) {
-                    // we could keep the tangency constraint by converting it
-                    // to a simple one but it is not really worth
+                else
                     continue;// skip this constraint
-                }
             }
-            else if ((*it)->Type == Sketcher::Symmetric) {
-                if (((*it)->First == GeoId && (*it)->FirstPos == PosId)
-                    || ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) {
-                    continue;// skip this constraint
+            else if (constr->Second == GeoId && constr->SecondPos == PosId) {
+                if (replaceGeoId != GeoEnum::GeoUndef) {// redirect this constraint
+                    constr->Second = replaceGeoId;
+                    constr->SecondPos = replacePosId;
                 }
-            }
-            else if ((*it)->Type == Sketcher::Vertical || (*it)->Type == Sketcher::Horizontal) {
-                if (((*it)->First == GeoId && (*it)->FirstPos == PosId)
-                    || ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) {
+                else
                     continue;// skip this constraint
-                }
             }
         }
-        newVals.push_back(*it);
+        else if (constr->Type == Sketcher::PointOnObject) {
+            if (constr->First == GeoId && constr->FirstPos == PosId) {
+                if (replaceGeoId != GeoEnum::GeoUndef) {// redirect this constraint
+                    constr->First = replaceGeoId;
+                    constr->FirstPos = replacePosId;
+                }
+                else
+                    continue;// skip this constraint
+            }
+        }
+        else if (constr->Type == Sketcher::Tangent
+                 || constr->Type == Sketcher::Perpendicular) {
+            if ((constr->First == GeoId && constr->FirstPos == PosId)
+                || (constr->Second == GeoId && constr->SecondPos == PosId)) {
+                // we could keep the tangency constraint by converting it
+                // to a simple one but it is not really worth
+                continue;// skip this constraint
+            }
+        }
+        else if (constr->Type == Sketcher::Symmetric) {
+            if ((constr->First == GeoId && constr->FirstPos == PosId)
+                || (constr->Second == GeoId && constr->SecondPos == PosId)) {
+                continue;// skip this constraint
+            }
+        }
+        else if (constr->Type == Sketcher::Vertical
+                 || constr->Type == Sketcher::Horizontal) {
+            if ((constr->First == GeoId && constr->FirstPos == PosId)
+                || (constr->Second == GeoId && constr->SecondPos == PosId)) {
+                continue;// skip this constraint
+            }
+        }
+        newVals.push_back(constr);
     }
+
     if (newVals.size() < vals.size()) {
         this->Constraints.setValues(std::move(newVals));
 
@@ -2576,18 +2584,21 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bo
     getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
 
     // only coincident points between two (non-external) edges can be filleted
-    if (GeoIdList.size() == 2 && GeoIdList[0] >= 0 && GeoIdList[1] >= 0) {
-        const Part::Geometry* geo1 = getGeometry(GeoIdList[0]);
-        const Part::Geometry* geo2 = getGeometry(GeoIdList[1]);
-        if (geo1->is<Part::GeomLineSegment>()
-            && geo2->is<Part::GeomLineSegment>()) {
-            auto* lineSeg1 = static_cast<const Part::GeomLineSegment*>(geo1);
-            auto* lineSeg2 = static_cast<const Part::GeomLineSegment*>(geo2);
+    if (GeoIdList.size() != 2 || GeoIdList[0] < 0 || GeoIdList[1] < 0) {
+        return -1;
+    }
 
-            Base::Vector3d midPnt1 = (lineSeg1->getStartPoint() + lineSeg1->getEndPoint()) / 2;
-            Base::Vector3d midPnt2 = (lineSeg2->getStartPoint() + lineSeg2->getEndPoint()) / 2;
-            return fillet(GeoIdList[0], GeoIdList[1], midPnt1, midPnt2, radius, trim, createCorner, chamfer);
-        }
+    const Part::Geometry* geo1 = getGeometry(GeoIdList[0]);
+    const Part::Geometry* geo2 = getGeometry(GeoIdList[1]);
+
+    if (geo1->is<Part::GeomLineSegment>()
+        && geo2->is<Part::GeomLineSegment>()) {
+        auto* lineSeg1 = static_cast<const Part::GeomLineSegment*>(geo1);
+        auto* lineSeg2 = static_cast<const Part::GeomLineSegment*>(geo2);
+
+        Base::Vector3d midPnt1 = (lineSeg1->getStartPoint() + lineSeg1->getEndPoint()) / 2;
+        Base::Vector3d midPnt2 = (lineSeg2->getStartPoint() + lineSeg2->getEndPoint()) / 2;
+        return fillet(GeoIdList[0], GeoIdList[1], midPnt1, midPnt2, radius, trim, createCorner, chamfer);
     }
 
     return -1;
@@ -4021,17 +4032,17 @@ bool SketchObject::deriveConstraintsForPieces(const int oldId,
         break;
     }
 
-    if (transferToAll) {
-        for (auto& newId : newIds) {
-            Constraint* trans = con->copy();
-            trans->substituteIndex(oldId, newId);
-            newConstraints.push_back(trans);
-        }
-
-        return true;
+    if (!transferToAll) {
+        return false;
     }
 
-    return false;
+    for (auto& newId : newIds) {
+        Constraint* trans = con->copy();
+        trans->substituteIndex(oldId, newId);
+        newConstraints.push_back(trans);
+    }
+
+    return true;
 }
 
 int SketchObject::split(int GeoId, const Base::Vector3d& point)
@@ -4540,13 +4551,16 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
 bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject* pObj, bool& xinv,
                                        bool& yinv, eReasonList* rsn) const
 {
-    if (rsn)
-        *rsn = rlAllowed;
+    auto setReason = [&rsn](eReasonList reasonFromList) {
+        if (rsn)
+            *rsn = reasonFromList;
+    };
+
+    setReason(rlAllowed);
 
     // Only applicable to sketches
     if (pObj->getTypeId() != Sketcher::SketchObject::getClassTypeId()) {
-        if (rsn)
-            *rsn = rlNotASketch;
+        setReason(rlNotASketch);
         return false;
     }
 
@@ -4554,16 +4568,14 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
 
     // Sketches outside of the Document are NOT allowed
     if (this->getDocument() != pDoc) {
-        if (rsn)
-            *rsn = rlOtherDoc;
+        setReason(rlOtherDoc);
         return false;
     }
 
     // circular reference prevention
     try {
         if (!(this->testIfLinkDAGCompatible(pObj))) {
-            if (rsn)
-                *rsn = rlCircularReference;
+            setReason(rlCircularReference);
             return false;
         }
     }
@@ -4581,31 +4593,25 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
     Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
     App::Part* part_this = App::Part::getPartOfObject(this);
     App::Part* part_obj = App::Part::getPartOfObject(pObj);
-    if (part_this == part_obj) {// either in the same part, or in the root of document
-        if (body_this) {
-            if (body_this != body_obj) {
-                if (!this->allowOtherBody) {
-                    if (rsn)
-                        *rsn = rlOtherBody;
-                    return false;
-                }
-                // if the original sketch has external geometry AND it is not in this body prevent
-                // link
-                else if (psObj->getExternalGeometryCount() > 2) {
-                    if (rsn)
-                        *rsn = rlOtherBodyWithLinks;
-                    return false;
-                }
-            }
-        }
-    }
-    else {
+    if (part_this != part_obj) {
         // cross-part relation. Disallow, should be done via shapebinders only
-        if (rsn)
-            *rsn = rlOtherPart;
+        setReason(rlOtherPart);
         return false;
     }
 
+    // Hereafter assuming: either in the same part, or in the root of document
+    if (body_this && body_this != body_obj) {
+        if (!this->allowOtherBody) {
+            setReason(rlOtherBody);
+            return false;
+        }
+        // if the original sketch has external geometry AND it is not in this body prevent
+        // link
+        else if (psObj->getExternalGeometryCount() > 2) {
+            setReason(rlOtherBodyWithLinks);
+            return false;
+        }
+    }
 
     const Rotation& srot = psObj->Placement.getValue().getRotation();
     const Rotation& lrot = this->Placement.getValue().getRotation();
@@ -4630,8 +4636,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
 
     // the planes of the sketches must be parallel
     if (!allowUnaligned && fabs(fabs(dot) - 1) > Precision::Confusion()) {
-        if (rsn)
-            *rsn = rlNonParallel;
+        setReason(rlNonParallel);
         return false;
     }
 
@@ -4639,8 +4644,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
     if (!allowUnaligned
         && ((fabs(fabs(dotx) - 1) > Precision::Confusion())
             || (fabs(fabs(doty) - 1) > Precision::Confusion()))) {
-        if (rsn)
-            *rsn = rlAxesMisaligned;
+        setReason(rlAxesMisaligned);
         return false;
     }
 
@@ -4655,8 +4659,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
     if (!allowUnaligned && (fabs(fabs(alignment) - 1) > Precision::Confusion())
         && (psObj->Placement.getValue().getPosition()
             != this->Placement.getValue().getPosition())) {
-        if (rsn)
-            *rsn = rlOriginsMisaligned;
+        setReason(rlOriginsMisaligned);
         return false;
     }
 
@@ -5833,43 +5836,45 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
     std::vector<std::pair<size_t, Sketcher::ConstraintType>> changeConstraintIndices;
 
     for (size_t i = 0; i < constrvals.size(); i++) {
-        for (auto geoid : geoIdList) {
-            if (constrvals[i]->First == geoid || constrvals[i]->Second == geoid
-                || constrvals[i]->Third == geoid) {
-                switch (constrvals[i]->Type) {
-                    case Sketcher::Horizontal:
-                        if (constrvals[i]->FirstPos == Sketcher::PointPos::none
-                            && constrvals[i]->SecondPos == Sketcher::PointPos::none) {
-                            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
-                            nhoriz++;
-                        }
-                        break;
-                    case Sketcher::Vertical:
-                        if (constrvals[i]->FirstPos == Sketcher::PointPos::none
-                            && constrvals[i]->SecondPos == Sketcher::PointPos::none) {
-                            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
-                            nvert++;
-                        }
-                        break;
-                    case Sketcher::Symmetric:// only remove symmetric to axes
-                        if ((constrvals[i]->Third == GeoEnum::HAxis
-                             || constrvals[i]->Third == GeoEnum::VAxis)
-                            && constrvals[i]->ThirdPos == Sketcher::PointPos::none)
-                            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
-                        break;
-                    case Sketcher::PointOnObject:
-                        if ((constrvals[i]->Second == GeoEnum::HAxis
-                             || constrvals[i]->Second == GeoEnum::VAxis)
-                            && constrvals[i]->SecondPos == Sketcher::PointPos::none)
-                            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
-                        break;
-                    case Sketcher::DistanceX:
-                    case Sketcher::DistanceY:
-                        changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
-                        break;
-                    default:
-                        break;
+        for (const auto& geoid : geoIdList) {
+            if (constrvals[i]->First != geoid
+                && constrvals[i]->Second != geoid
+                && constrvals[i]->Third != geoid) {
+                continue;
+            }
+            switch (constrvals[i]->Type) {
+            case Sketcher::Horizontal:
+                if (constrvals[i]->FirstPos == Sketcher::PointPos::none
+                    && constrvals[i]->SecondPos == Sketcher::PointPos::none) {
+                    changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                    nhoriz++;
                 }
+                break;
+            case Sketcher::Vertical:
+                if (constrvals[i]->FirstPos == Sketcher::PointPos::none
+                    && constrvals[i]->SecondPos == Sketcher::PointPos::none) {
+                    changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                    nvert++;
+                }
+                break;
+            case Sketcher::Symmetric:// only remove symmetric to axes
+                if ((constrvals[i]->Third == GeoEnum::HAxis
+                     || constrvals[i]->Third == GeoEnum::VAxis)
+                    && constrvals[i]->ThirdPos == Sketcher::PointPos::none)
+                    changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                break;
+            case Sketcher::PointOnObject:
+                if ((constrvals[i]->Second == GeoEnum::HAxis
+                     || constrvals[i]->Second == GeoEnum::VAxis)
+                    && constrvals[i]->SecondPos == Sketcher::PointPos::none)
+                    changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                break;
+            case Sketcher::DistanceX:
+            case Sketcher::DistanceY:
+                changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                break;
+            default:
+                break;
             }
         }
     }
@@ -5885,55 +5890,54 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
 
     int cindex = 0;
     for (size_t i = 0; i < constrvals.size(); i++) {
-        if (i == changeConstraintIndices[cindex].first) {
-            if (changeConstraintIndices[cindex].second == Sketcher::Horizontal && nhoriz > 0) {
-                changed = true;
-                if (referenceHorizontal == GeoEnum::GeoUndef) {
-                    referenceHorizontal = constrvals[i]->First;
-                }
-                else {
-
-                    auto newConstr = new Constraint();
-
-                    newConstr->Type = Sketcher::Parallel;
-                    newConstr->First = referenceHorizontal;
-                    newConstr->Second = constrvals[i]->First;
-
-                    newconstrVals.push_back(newConstr);
-                }
-            }
-            else if (changeConstraintIndices[cindex].second == Sketcher::Vertical && nvert > 0) {
-                changed = true;
-                if (referenceVertical == GeoEnum::GeoUndef) {
-                    referenceVertical = constrvals[i]->First;
-                    ;
-                }
-                else {
-                    auto newConstr = new Constraint();
-
-                    newConstr->Type = Sketcher::Parallel;
-                    newConstr->First = referenceVertical;
-                    newConstr->Second = constrvals[i]->First;
-
-                    newconstrVals.push_back(newConstr);
-                }
-            }
-            else if (changeConstraintIndices[cindex].second == Sketcher::Symmetric
-                     || changeConstraintIndices[cindex].second == Sketcher::PointOnObject) {
-                changed = true;// We remove symmetric on axes
-            }
-            else if (changeConstraintIndices[cindex].second == Sketcher::DistanceX
-                     || changeConstraintIndices[cindex].second == Sketcher::DistanceY) {
-                changed = true;// We remove symmetric on axes
-                newconstrVals.push_back(constrvals[i]->clone());
-                newconstrVals.back()->Type = Sketcher::Distance;
-            }
-
-            cindex++;
-        }
-        else {
+        if (i != changeConstraintIndices[cindex].first) {
             newconstrVals.push_back(constrvals[i]);
+            continue;
         }
+
+        if (changeConstraintIndices[cindex].second == Sketcher::Horizontal && nhoriz > 0) {
+            changed = true;
+            if (referenceHorizontal == GeoEnum::GeoUndef) {
+                referenceHorizontal = constrvals[i]->First;
+            }
+            else {
+
+                auto newConstr = new Constraint();
+
+                newConstr->Type = Sketcher::Parallel;
+                newConstr->First = referenceHorizontal;
+                newConstr->Second = constrvals[i]->First;
+
+                newconstrVals.push_back(newConstr);
+            }
+        }
+        else if (changeConstraintIndices[cindex].second == Sketcher::Vertical && nvert > 0) {
+            changed = true;
+            if (referenceVertical == GeoEnum::GeoUndef) {
+                referenceVertical = constrvals[i]->First;
+            }
+            else {
+                auto newConstr = new Constraint();
+
+                newConstr->Type = Sketcher::Parallel;
+                newConstr->First = referenceVertical;
+                newConstr->Second = constrvals[i]->First;
+
+                newconstrVals.push_back(newConstr);
+            }
+        }
+        else if (changeConstraintIndices[cindex].second == Sketcher::Symmetric
+                 || changeConstraintIndices[cindex].second == Sketcher::PointOnObject) {
+            changed = true;// We remove symmetric on axes
+        }
+        else if (changeConstraintIndices[cindex].second == Sketcher::DistanceX
+                 || changeConstraintIndices[cindex].second == Sketcher::DistanceY) {
+            changed = true;// We remove symmetric on axes
+            newconstrVals.push_back(constrvals[i]->clone());
+            newconstrVals.back()->Type = Sketcher::Distance;
+        }
+
+        cindex++;
     }
 
     if (nhoriz > 0 && nvert > 0) {
@@ -5969,25 +5973,26 @@ int SketchObject::exposeInternalGeometry(int GeoId)
 
         const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
-        for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin(); it != vals.end();
-             ++it) {
-            if ((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId) {
-                switch ((*it)->AlignmentType) {
-                    case Sketcher::EllipseMajorDiameter:
-                        major = true;
-                        break;
-                    case Sketcher::EllipseMinorDiameter:
-                        minor = true;
-                        break;
-                    case Sketcher::EllipseFocus1:
-                        focus1 = true;
-                        break;
-                    case Sketcher::EllipseFocus2:
-                        focus2 = true;
-                        break;
-                    default:
-                        return -1;
-                }
+        for (const auto& constr : vals) {
+            if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+                continue;
+            }
+
+            switch (constr->AlignmentType) {
+            case Sketcher::EllipseMajorDiameter:
+                major = true;
+                break;
+            case Sketcher::EllipseMinorDiameter:
+                minor = true;
+                break;
+            case Sketcher::EllipseFocus1:
+                focus1 = true;
+                break;
+            case Sketcher::EllipseFocus2:
+                focus2 = true;
+                break;
+            default:
+                return -1;
             }
         }
 
@@ -6118,22 +6123,23 @@ int SketchObject::exposeInternalGeometry(int GeoId)
 
         const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
-        for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin(); it != vals.end();
-             ++it) {
-            if ((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId) {
-                switch ((*it)->AlignmentType) {
-                    case Sketcher::HyperbolaMajor:
-                        major = true;
-                        break;
-                    case Sketcher::HyperbolaMinor:
-                        minor = true;
-                        break;
-                    case Sketcher::HyperbolaFocus:
-                        focus = true;
-                        break;
-                    default:
-                        return -1;
-                }
+        for (auto const& constr : vals) {
+            if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+                continue;
+            }
+
+            switch (constr->AlignmentType) {
+            case Sketcher::HyperbolaMajor:
+                major = true;
+                break;
+            case Sketcher::HyperbolaMinor:
+                minor = true;
+                break;
+            case Sketcher::HyperbolaFocus:
+                focus = true;
+                break;
+            default:
+                return -1;
             }
         }
 
@@ -6232,19 +6238,20 @@ int SketchObject::exposeInternalGeometry(int GeoId)
 
         const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
-        for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin(); it != vals.end();
-             ++it) {
-            if ((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId) {
-                switch ((*it)->AlignmentType) {
-                    case Sketcher::ParabolaFocus:
-                        focus = true;
-                        break;
-                    case Sketcher::ParabolaFocalAxis:
-                        focus_to_vertex = true;
-                        break;
-                    default:
-                        return -1;
-                }
+        for (auto const& constr : vals) {
+            if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+                continue;
+            }
+
+            switch (constr->AlignmentType) {
+            case Sketcher::ParabolaFocus:
+                focus = true;
+                break;
+            case Sketcher::ParabolaFocalAxis:
+                focus_to_vertex = true;
+                break;
+            default:
+                return -1;
             }
         }
 
@@ -6344,21 +6351,22 @@ int SketchObject::exposeInternalGeometry(int GeoId)
         const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
         // search for existing poles
-        for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin(); it != vals.end();
-             ++it) {
-            if ((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId) {
-                switch ((*it)->AlignmentType) {
-                    case Sketcher::BSplineControlPoint:
-                        controlpoints[(*it)->InternalAlignmentIndex] = true;
-                        controlpointgeoids[(*it)->InternalAlignmentIndex] = (*it)->First;
-                        break;
-                    case Sketcher::BSplineKnotPoint:
-                        knotpoints[(*it)->InternalAlignmentIndex] = true;
-                        knotgeoids[(*it)->InternalAlignmentIndex] = (*it)->First;
-                        break;
-                    default:
-                        return -1;
-                }
+        for (auto const& constr : vals) {
+            if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+                continue;
+            }
+
+            switch (constr->AlignmentType) {
+            case Sketcher::BSplineControlPoint:
+                controlpoints[constr->InternalAlignmentIndex] = true;
+                controlpointgeoids[constr->InternalAlignmentIndex] = constr->First;
+                break;
+            case Sketcher::BSplineKnotPoint:
+                knotpoints[constr->InternalAlignmentIndex] = true;
+                knotgeoids[constr->InternalAlignmentIndex] = constr->First;
+                break;
+            default:
+                return -1;
             }
         }
 
@@ -6391,54 +6399,56 @@ int SketchObject::exposeInternalGeometry(int GeoId)
              it != controlpointgeoids.end() && itb != controlpoints.end();
              ++it, ++itb, index++) {
 
-            if (!(*itb))// if controlpoint not existing
-            {
-                Part::GeomCircle* pc = new Part::GeomCircle();
-                pc->setCenter(poles[index]);
-                pc->setRadius(distance_p0_p1 / 6);
-
-                igeo.push_back(pc);
-
-                Sketcher::Constraint* newConstr = new Sketcher::Constraint();
-                newConstr->Type = Sketcher::InternalAlignment;
-                newConstr->AlignmentType = Sketcher::BSplineControlPoint;
-                newConstr->First = currentgeoid + incrgeo + 1;
-                newConstr->FirstPos = Sketcher::PointPos::mid;
-                newConstr->Second = GeoId;
-                newConstr->InternalAlignmentIndex = index;
-
-                icon.push_back(newConstr);
-
-                if (it != controlpointgeoids.begin()) {
-                    if (isfirstweightconstrained && weights[0] == weights[index]) {
-                        // if pole-weight newly created AND first weight is radius-constrained,
-                        // AND these weights are equal, constrain them to be equal
-                        Sketcher::Constraint* newConstr2 = new Sketcher::Constraint();
-                        newConstr2->Type = Sketcher::Equal;
-                        newConstr2->First = currentgeoid + incrgeo + 1;
-                        newConstr2->FirstPos = Sketcher::PointPos::none;
-                        newConstr2->Second = controlpointgeoids[0];
-                        newConstr2->SecondPos = Sketcher::PointPos::none;
-
-                        icon.push_back(newConstr2);
-                    }
-                }
-                else {
-                    controlpointgeoids[0] = currentgeoid + incrgeo + 1;
-                    if (weights[0] == 1.0) {
-                        // if the first weight is 1.0 it's probably going to be non-rational
-                        Sketcher::Constraint* newConstr3 = new Sketcher::Constraint();
-                        newConstr3->Type = Sketcher::Weight;
-                        newConstr3->First = controlpointgeoids[0];
-                        newConstr3->setValue(weights[0]);
-
-                        icon.push_back(newConstr3);
-
-                        isfirstweightconstrained = true;
-                    }
-                }
-                incrgeo++;
+            if (*itb) {
+                continue;
             }
+
+            // if controlpoint not existing
+            Part::GeomCircle* pc = new Part::GeomCircle();
+            pc->setCenter(poles[index]);
+            pc->setRadius(distance_p0_p1 / 6);
+
+            igeo.push_back(pc);
+
+            Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::InternalAlignment;
+            newConstr->AlignmentType = Sketcher::BSplineControlPoint;
+            newConstr->First = currentgeoid + incrgeo + 1;
+            newConstr->FirstPos = Sketcher::PointPos::mid;
+            newConstr->Second = GeoId;
+            newConstr->InternalAlignmentIndex = index;
+
+            icon.push_back(newConstr);
+
+            if (it != controlpointgeoids.begin()) {
+                if (isfirstweightconstrained && weights[0] == weights[index]) {
+                    // if pole-weight newly created AND first weight is radius-constrained,
+                    // AND these weights are equal, constrain them to be equal
+                    Sketcher::Constraint* newConstr2 = new Sketcher::Constraint();
+                    newConstr2->Type = Sketcher::Equal;
+                    newConstr2->First = currentgeoid + incrgeo + 1;
+                    newConstr2->FirstPos = Sketcher::PointPos::none;
+                    newConstr2->Second = controlpointgeoids[0];
+                    newConstr2->SecondPos = Sketcher::PointPos::none;
+
+                    icon.push_back(newConstr2);
+                }
+            }
+            else {
+                controlpointgeoids[0] = currentgeoid + incrgeo + 1;
+                if (weights[0] == 1.0) {
+                    // if the first weight is 1.0 it's probably going to be non-rational
+                    Sketcher::Constraint* newConstr3 = new Sketcher::Constraint();
+                    newConstr3->Type = Sketcher::Weight;
+                    newConstr3->First = controlpointgeoids[0];
+                    newConstr3->setValue(weights[0]);
+
+                    icon.push_back(newConstr3);
+
+                    isfirstweightconstrained = true;
+                }
+            }
+            incrgeo++;
         }
 
         index = 0;
@@ -6446,27 +6456,28 @@ int SketchObject::exposeInternalGeometry(int GeoId)
         for (it = knotgeoids.begin(), itb = knotpoints.begin();
              it != knotgeoids.end() && itb != knotpoints.end();
              ++it, ++itb, index++) {
-
-            if (!(*itb))// if knot point not existing
-            {
-                Part::GeomPoint* kp = new Part::GeomPoint();
-
-                kp->setPoint(bsp->pointAtParameter(knots[index]));
-
-                igeo.push_back(kp);
-
-                Sketcher::Constraint* newConstr = new Sketcher::Constraint();
-                newConstr->Type = Sketcher::InternalAlignment;
-                newConstr->AlignmentType = Sketcher::BSplineKnotPoint;
-                newConstr->First = currentgeoid + incrgeo + 1;
-                newConstr->FirstPos = Sketcher::PointPos::start;
-                newConstr->Second = GeoId;
-                newConstr->InternalAlignmentIndex = index;
-
-                icon.push_back(newConstr);
-
-                incrgeo++;
+            if (*itb) {
+                continue;
             }
+
+            // if knot point not existing
+            Part::GeomPoint* kp = new Part::GeomPoint();
+
+            kp->setPoint(bsp->pointAtParameter(knots[index]));
+
+            igeo.push_back(kp);
+
+            Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::InternalAlignment;
+            newConstr->AlignmentType = Sketcher::BSplineKnotPoint;
+            newConstr->First = currentgeoid + incrgeo + 1;
+            newConstr->FirstPos = Sketcher::PointPos::start;
+            newConstr->Second = GeoId;
+            newConstr->InternalAlignmentIndex = index;
+
+            icon.push_back(newConstr);
+
+            incrgeo++;
         }
 
         Q_UNUSED(isfirstweightconstrained);
@@ -6509,28 +6520,29 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 
         const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
-        for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin(); it != vals.end();
-             ++it) {
-            if ((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId) {
-                switch ((*it)->AlignmentType) {
-                    case Sketcher::EllipseMajorDiameter:
-                    case Sketcher::HyperbolaMajor:
-                        majorelementindex = (*it)->First;
-                        break;
-                    case Sketcher::EllipseMinorDiameter:
-                    case Sketcher::HyperbolaMinor:
-                        minorelementindex = (*it)->First;
-                        break;
-                    case Sketcher::EllipseFocus1:
-                    case Sketcher::HyperbolaFocus:
-                        focus1elementindex = (*it)->First;
-                        break;
-                    case Sketcher::EllipseFocus2:
-                        focus2elementindex = (*it)->First;
-                        break;
-                    default:
-                        return -1;
-                }
+        for (auto const& constr : vals) {
+            if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+                continue;
+            }
+
+            switch (constr->AlignmentType) {
+            case Sketcher::EllipseMajorDiameter:
+            case Sketcher::HyperbolaMajor:
+                majorelementindex = constr->First;
+                break;
+            case Sketcher::EllipseMinorDiameter:
+            case Sketcher::HyperbolaMinor:
+                minorelementindex = constr->First;
+                break;
+            case Sketcher::EllipseFocus1:
+            case Sketcher::HyperbolaFocus:
+                focus1elementindex = constr->First;
+                break;
+            case Sketcher::EllipseFocus2:
+                focus2elementindex = constr->First;
+                break;
+            default:
+                return -1;
             }
         }
 
@@ -6540,20 +6552,22 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
         int focus1constraints = 0;
         int focus2constraints = 0;
 
-        for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin(); it != vals.end();
-             ++it) {
-
-            if ((*it)->Second == majorelementindex || (*it)->First == majorelementindex
-                || (*it)->Third == majorelementindex)
+        for (const auto& constr : vals) {
+            if (constr->Second == majorelementindex
+                || constr->First == majorelementindex
+                || constr->Third == majorelementindex)
                 majorconstraints++;
-            else if ((*it)->Second == minorelementindex || (*it)->First == minorelementindex
-                     || (*it)->Third == minorelementindex)
+            else if (constr->Second == minorelementindex
+                     || constr->First == minorelementindex
+                     || constr->Third == minorelementindex)
                 minorconstraints++;
-            else if ((*it)->Second == focus1elementindex || (*it)->First == focus1elementindex
-                     || (*it)->Third == focus1elementindex)
+            else if (constr->Second == focus1elementindex
+                     || constr->First == focus1elementindex
+                     || constr->Third == focus1elementindex)
                 focus1constraints++;
-            else if ((*it)->Second == focus2elementindex || (*it)->First == focus2elementindex
-                     || (*it)->Third == focus2elementindex)
+            else if (constr->Second == focus2elementindex
+                     || constr->First == focus2elementindex
+                     || constr->Third == focus2elementindex)
                 focus2constraints++;
         }
 
@@ -6601,19 +6615,20 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 
         const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
-        for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin(); it != vals.end();
-             ++it) {
-            if ((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId) {
-                switch ((*it)->AlignmentType) {
-                    case Sketcher::ParabolaFocus:
-                        focus1elementindex = (*it)->First;
-                        break;
-                    case Sketcher::ParabolaFocalAxis:
-                        majorelementindex = (*it)->First;
-                        break;
-                    default:
-                        return -1;
-                }
+        for (auto const& constr : vals) {
+            if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+                continue;
+            }
+
+            switch (constr->AlignmentType) {
+            case Sketcher::ParabolaFocus:
+                focus1elementindex = constr->First;
+                break;
+            case Sketcher::ParabolaFocalAxis:
+                majorelementindex = constr->First;
+                break;
+            default:
+                return -1;
             }
         }
 
@@ -6625,10 +6640,12 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 
         for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin(); it != vals.end();
              ++it) {
-            if ((*it)->Second == majorelementindex || (*it)->First == majorelementindex
+            if ((*it)->Second == majorelementindex
+                || (*it)->First == majorelementindex
                 || (*it)->Third == majorelementindex)
                 majorconstraints++;
-            else if ((*it)->Second == focus1elementindex || (*it)->First == focus1elementindex
+            else if ((*it)->Second == focus1elementindex
+                     || (*it)->First == focus1elementindex
                      || (*it)->Third == focus1elementindex)
                 focus1constraints++;
         }
@@ -6694,19 +6711,20 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
         const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
         // search for existing poles
-        for (std::vector<Sketcher::Constraint*>::const_iterator jt = vals.begin(); jt != vals.end();
-             ++jt) {
-            if ((*jt)->Type == Sketcher::InternalAlignment && (*jt)->Second == GeoId) {
-                switch ((*jt)->AlignmentType) {
-                    case Sketcher::BSplineControlPoint:
-                        controlpointgeoids[(*jt)->InternalAlignmentIndex] = (*jt)->First;
-                        break;
-                    case Sketcher::BSplineKnotPoint:
-                        knotgeoids[(*jt)->InternalAlignmentIndex] = (*jt)->First;
-                        break;
-                    default:
-                        return -1;
-                }
+        for (auto const& constr : vals) {
+            if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+                continue;
+            }
+
+            switch (constr->AlignmentType) {
+            case Sketcher::BSplineControlPoint:
+                controlpointgeoids[constr->InternalAlignmentIndex] = constr->First;
+                break;
+            case Sketcher::BSplineKnotPoint:
+                knotgeoids[constr->InternalAlignmentIndex] = constr->First;
+                break;
+            default:
+                return -1;
             }
         }
 
@@ -6715,61 +6733,64 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
         for (it = controlpointgeoids.begin(), ita = cpassociatedconstraints.begin();
              it != controlpointgeoids.end() && ita != cpassociatedconstraints.end();
              ++it, ++ita) {
-            if ((*it) != -1) {
-                // look for a circle at geoid index
-                for (std::vector<Sketcher::Constraint*>::const_iterator itc = vals.begin();
-                     itc != vals.end();
-                     ++itc) {
+            if ((*it) == -1) {
+                continue;
+            }
 
-                    if ((*itc)->Type == Sketcher::Equal) {
-                        bool f = false, s = false;
-                        for (std::vector<int>::iterator its = controlpointgeoids.begin();
-                             its != controlpointgeoids.end();
-                             ++its) {
-                            if ((*itc)->First == *its) {
-                                f = true;
-                            }
-                            else if ((*itc)->Second == *its) {
-                                s = true;
-                            }
-
-                            if (f && s) {// the equality constraint is not interpole
-                                break;
-                            }
+            // look for a circle at geoid index
+            for (std::vector<Sketcher::Constraint*>::const_iterator itc = vals.begin();
+                 itc != vals.end();
+                 ++itc) {
+                if ((*itc)->Type == Sketcher::Equal) {
+                    bool f = false, s = false;
+                    for (std::vector<int>::iterator its = controlpointgeoids.begin();
+                         its != controlpointgeoids.end();
+                         ++its) {
+                        if ((*itc)->First == *its) {
+                            f = true;
+                        }
+                        else if ((*itc)->Second == *its) {
+                            s = true;
                         }
 
-                        // the equality constraint constraints a pole but it is not interpole
-                        if (f != s) {
-                            (*ita)++;
+                        if (f && s) {// the equality constraint is not interpole
+                            break;
                         }
                     }
-                    // We do not ignore weight constraints as we did with radius constraints,
-                    // because the radius magnitude no longer makes sense without the B-Spline.
-                }
 
-                if ((*ita) < 2) {// IA
-                    delgeometries.push_back((*it));
+                    // the equality constraint constraints a pole but it is not interpole
+                    if (f != s) {
+                        (*ita)++;
+                    }
                 }
+                // We do not ignore weight constraints as we did with radius constraints,
+                // because the radius magnitude no longer makes sense without the B-Spline.
+            }
+
+            if ((*ita) < 2) {// IA
+                delgeometries.push_back((*it));
             }
         }
 
         for (it = knotgeoids.begin(), ita = kassociatedconstraints.begin();
              it != knotgeoids.end() && ita != kassociatedconstraints.end();
              ++it, ++ita) {
-            if ((*it) != -1) {
-                // look for a point at geoid index
-                for (std::vector<Sketcher::Constraint*>::const_iterator itc = vals.begin();
-                     itc != vals.end();
-                     ++itc) {
-                    if ((*itc)->Second == (*it) || (*itc)->First == (*it)
-                        || (*itc)->Third == (*it)) {
-                        (*ita)++;
-                    }
-                }
+            if ((*it) == -1) {
+                continue;
+            }
 
-                if ((*ita) < 2) {// IA
-                    delgeometries.push_back((*it));
+            // look for a point at geoid index
+            for (std::vector<Sketcher::Constraint*>::const_iterator itc = vals.begin();
+                 itc != vals.end();
+                 ++itc) {
+                if ((*itc)->Second == (*it) || (*itc)->First == (*it)
+                    || (*itc)->Third == (*it)) {
+                    (*ita)++;
                 }
+            }
+
+            if ((*ita) < 2) {// IA
+                delgeometries.push_back((*it));
             }
         }
 
