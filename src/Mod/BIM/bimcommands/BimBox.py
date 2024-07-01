@@ -112,11 +112,7 @@ class BIM_Box:
     def PointCallback(self, point, snapinfo):
         if not point:
             # cancelled
-            if hasattr(FreeCAD, "DraftWorkingPlane"):
-                FreeCAD.DraftWorkingPlane.restore()
-            FreeCADGui.Snapper.setGrid()
-            for c in self.cubetracker:
-                c.off()
+            self._finish()
             return
 
         if len(self.points) == 0:
