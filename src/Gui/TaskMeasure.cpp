@@ -168,8 +168,6 @@ void TaskMeasure::update() {
     valueResult->setText(QString::asprintf("-"));
 
     // Get valid measure type
-    App::MeasureType *measureType(nullptr);
-
 
     std::string mode = explicitMode ? modeSwitch->currentText().toStdString() : "";
 
@@ -183,11 +181,12 @@ void TaskMeasure::update() {
 
     auto measureTypes = App::MeasureManager::getValidMeasureTypes(selection, mode);
     if (measureTypes.size() > 0) {
-        measureType = measureTypes.front();
+        _mMeasureType = measureTypes.front();
     }
     
 
-    if (!measureType) {
+
+    if (!_mMeasureType) {
 
         // Note: If there's no valid measure type we might just restart the selection,
         // however this requires enough coverage of measuretypes that we can access all of them
@@ -206,18 +205,18 @@ void TaskMeasure::update() {
     }
 
     // Update tool mode display
-    setModeSilent(measureType);
+    setModeSilent(_mMeasureType);
 
-    if (!_mMeasureObject || measureType->measureObject != _mMeasureObject->getTypeId().getName()) {
+    if (!_mMeasureObject || _mMeasureType->measureObject != _mMeasureObject->getTypeId().getName()) {
         // we don't already have a measureobject or it isn't the same type as the new one
         removeObject();
 
-        if (measureType->isPython) {
+        if (_mMeasureType->isPython) {
             Base::PyGILStateLocker lock;
-            auto pyMeasureClass = measureType->pythonClass;
-            
+            auto pyMeasureClass = _mMeasureType->pythonClass;
+
             // Create a MeasurePython instance
-            auto featurePython = doc->addObject("Measure::MeasurePython", measureType->label.c_str());
+            auto featurePython = doc->addObject("Measure::MeasurePython", _mMeasureType->label.c_str());
             setMeasureObject((Measure::MeasureBase*)featurePython);
 
             // Create an instance of the pyMeasureClass, the classe's initializer sets the object as proxy
@@ -228,7 +227,7 @@ void TaskMeasure::update() {
         else {
             // Create measure object
             setMeasureObject(
-                (Measure::MeasureBase*)doc->addObject(measureType->measureObject.c_str(), measureType->label.c_str())
+                (Measure::MeasureBase*)doc->addObject(_mMeasureType->measureObject.c_str(), _mMeasureType->label.c_str())
             );
         }
     }
@@ -274,6 +273,7 @@ void TaskMeasure::invoke() {
 
 bool TaskMeasure::apply(){
     ensureGroup(_mMeasureObject);
+    _mMeasureType = nullptr;
     _mMeasureObject = nullptr;
     reset();
 
@@ -294,6 +294,7 @@ bool TaskMeasure::reject(){
 
 void TaskMeasure::reset() {
     // Reset tool state
+    _mMeasureType = nullptr;
     this->clearSelection();
 
     // Should the explicit mode also be reset? 
