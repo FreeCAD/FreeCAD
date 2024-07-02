@@ -30,129 +30,73 @@ __title__ = "FEM GUI that migrates old scripted objects"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
+from importlib.util import spec_from_loader
+
 
 class FemMigrateGui:
 
-    def find_module(self, fullname, path):
+    def find_spec(self, fullname, path, target=None):
 
-        if fullname == "femguiobjects":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemConstraintBodyHeatSource":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemConstraintElectrostaticPotential":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemConstraintFlowVelocity":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemConstraintInitialFlowVelocity":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemConstraintSelfWeight":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemConstraintTie":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemElementFluid1D":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemElementGeometry1D":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemElementGeometry2D":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemElementRotation1D":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemMaterial":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemMaterialMechanicalNonlinear":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemMaterialReinforced":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemMeshBoundaryLayer":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemMeshGmsh":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemMeshGroup":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemMeshRegion":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemMeshResult":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemResultMechanical":
-            return self
-        if fullname == "femguiobjects._ViewProviderFemSolverCalculix":
-            return self
-
-        if fullname == "PyGui":
-            return self
-        if fullname == "PyGui._ViewProviderFemConstraintBodyHeatSource":
-            return self
-        if fullname == "PyGui._ViewProviderFemConstraintElectrostaticPotential":
-            return self
-        if fullname == "PyGui._ViewProviderFemConstraintFlowVelocity":
-            return self
-        if fullname == "PyGui._ViewProviderFemConstraintSelfWeight":
-            return self
-        if fullname == "PyGui._ViewProviderFemElementFluid1D":
-            return self
-        if fullname == "PyGui._ViewProviderFemElementGeometry1D":
-            return self
-        if fullname == "PyGui._ViewProviderFemElementGeometry2D":
-            return self
-        if fullname == "PyGui._ViewProviderFemElementRotation1D":
-            return self
-        if fullname == "PyGui._ViewProviderFemMaterial":
-            return self
-        if fullname == "PyGui._ViewProviderFemMaterialMechanicalNonlinear":
-            return self
-        if fullname == "PyGui._ViewProviderFemMeshBoundaryLayer":
-            return self
-        if fullname == "PyGui._ViewProviderFemMeshGmsh":
-            return self
-        if fullname == "PyGui._ViewProviderFemMeshGroup":
-            return self
-        if fullname == "PyGui._ViewProviderFemMeshRegion":
-            return self
-        if fullname == "PyGui._ViewProviderFemMeshResult":
-            return self
-        if fullname == "PyGui._ViewProviderFemResultMechanical":
-            return self
-        if fullname == "PyGui._ViewProviderFemSolverCalculix":
-            return self
-        if fullname == "PyGui._ViewProviderFemSolverZ88":
-            return self
-
-        if fullname == "PyGui._ViewProviderFemBeamSection":
-            return self
-        if fullname == "PyGui._ViewProviderFemFluidSection":
-            return self
-        if fullname == "PyGui._ViewProviderFemShellThickness":
-            return self
-
-        if fullname == "_ViewProviderFemBeamSection":
-            return self
-        if fullname == "_ViewProviderFemConstraintSelfWeight":
-            return self
-        if fullname == "_ViewProviderFemMaterial":
-            return self
-        if fullname == "_ViewProviderFemMaterialMechanicalNonlinear":
-            return self
-        if fullname == "_ViewProviderFemMeshGmsh":
-            return self
-        if fullname == "_ViewProviderFemMeshGroup":
-            return self
-        if fullname == "_ViewProviderFemMeshRegion":
-            return self
-        if fullname == "_ViewProviderFemResultMechanical":
-            return self
-        if fullname == "_ViewProviderFemShellThickness":
-            return self
-        if fullname == "_ViewProviderFemSolverCalculix":
-            return self
-        if fullname == "_ViewProviderFemSolverZ88":
-            return self
-
-        if fullname == "_ViewProviderFemMechanicalResult":
-            return self
-        if fullname == "ViewProviderFemResult":
-            return self
-        if fullname == "_ViewProviderMechanicalMaterial":
-            return self
+        if fullname in {
+            "femguiobjects",
+            "femguiobjects._ViewProviderFemConstraintBodyHeatSource",
+            "femguiobjects._ViewProviderFemConstraintElectrostaticPotential",
+            "femguiobjects._ViewProviderFemConstraintFlowVelocity",
+            "femguiobjects._ViewProviderFemConstraintInitialFlowVelocity",
+            "femguiobjects._ViewProviderFemConstraintSelfWeight",
+            "femguiobjects._ViewProviderFemConstraintTie",
+            "femguiobjects._ViewProviderFemElementFluid1D",
+            "femguiobjects._ViewProviderFemElementGeometry1D",
+            "femguiobjects._ViewProviderFemElementGeometry2D",
+            "femguiobjects._ViewProviderFemElementRotation1D",
+            "femguiobjects._ViewProviderFemMaterial",
+            "femguiobjects._ViewProviderFemMaterialMechanicalNonlinear",
+            "femguiobjects._ViewProviderFemMaterialReinforced",
+            "femguiobjects._ViewProviderFemMeshBoundaryLayer",
+            "femguiobjects._ViewProviderFemMeshGmsh",
+            "femguiobjects._ViewProviderFemMeshGroup",
+            "femguiobjects._ViewProviderFemMeshRegion",
+            "femguiobjects._ViewProviderFemMeshResult",
+            "femguiobjects._ViewProviderFemResultMechanical",
+            "femguiobjects._ViewProviderFemSolverCalculix",
+            "PyGui",
+            "PyGui._ViewProviderFemConstraintBodyHeatSource",
+            "PyGui._ViewProviderFemConstraintElectrostaticPotential",
+            "PyGui._ViewProviderFemConstraintFlowVelocity",
+            "PyGui._ViewProviderFemConstraintSelfWeight",
+            "PyGui._ViewProviderFemElementFluid1D",
+            "PyGui._ViewProviderFemElementGeometry1D",
+            "PyGui._ViewProviderFemElementGeometry2D",
+            "PyGui._ViewProviderFemElementRotation1D",
+            "PyGui._ViewProviderFemMaterial",
+            "PyGui._ViewProviderFemMaterialMechanicalNonlinear",
+            "PyGui._ViewProviderFemMeshBoundaryLayer",
+            "PyGui._ViewProviderFemMeshGmsh",
+            "PyGui._ViewProviderFemMeshGroup",
+            "PyGui._ViewProviderFemMeshRegion",
+            "PyGui._ViewProviderFemMeshResult",
+            "PyGui._ViewProviderFemResultMechanical",
+            "PyGui._ViewProviderFemSolverCalculix",
+            "PyGui._ViewProviderFemSolverZ88",
+            "PyGui._ViewProviderFemBeamSection",
+            "PyGui._ViewProviderFemFluidSection",
+            "PyGui._ViewProviderFemShellThickness",
+            "_ViewProviderFemBeamSection",
+            "_ViewProviderFemConstraintSelfWeight",
+            "_ViewProviderFemMaterial",
+            "_ViewProviderFemMaterialMechanicalNonlinear",
+            "_ViewProviderFemMeshGmsh",
+            "_ViewProviderFemMeshGroup",
+            "_ViewProviderFemMeshRegion",
+            "_ViewProviderFemResultMechanical",
+            "_ViewProviderFemShellThickness",
+            "_ViewProviderFemSolverCalculix",
+            "_ViewProviderFemSolverZ88",
+            "_ViewProviderFemMechanicalResult",
+            "ViewProviderFemResult",
+            "_ViewProviderMechanicalMaterial",
+        }:
+            return spec_from_loader(fullname, self)
 
         return None
 
