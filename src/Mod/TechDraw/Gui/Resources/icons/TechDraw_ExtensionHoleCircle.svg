@@ -91,20 +91,30 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <ellipse
-     style="display:inline;fill:none;stroke:#0b1521;stroke-width:1.5875;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:1.5875, 3.175;stroke-dashoffset:0"
-     id="path32"
-     cx="8.4814825"
-     cy="10.056869"
-     rx="5.1347332"
-     ry="5.162077" />
-  <ellipse
-     style="display:inline;fill:none;stroke:#729fcf;stroke-width:0.52916667;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:1.58750009, 3.17500019;stroke-dashoffset:0"
-     id="ellipse33"
-     cx="8.4814825"
-     cy="10.056869"
-     rx="5.1347332"
-     ry="5.162077" />
+  <g
+     id="g2">
+    <ellipse
+       style="display:inline;fill:none;stroke:#0b1521;stroke-width:2.11666669;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:2.11666679,2.11666679;stroke-dashoffset:3.59833355"
+       id="path32"
+       ry="5.162077"
+       rx="5.1347332"
+       cy="10.056869"
+       cx="8.4814825" />
+    <ellipse
+       style="display:inline;fill:none;stroke:#3465a4;stroke-width:1.05833334;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:1.0583334, 3.17500019;stroke-dashoffset:7.30250044"
+       id="ellipse2"
+       ry="5.162077"
+       rx="5.1347332"
+       cy="10.056869"
+       cx="8.4814825" />
+    <ellipse
+       style="display:inline;fill:none;stroke:#729fcf;stroke-width:0.52916667;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:0.5291667,3.70416689;stroke-dashoffset:6.77333374"
+       id="ellipse1"
+       ry="5.162077"
+       rx="5.1347332"
+       cy="10.056869"
+       cx="8.4814825" />
+  </g>
   <g
      id="layer2">
     <g

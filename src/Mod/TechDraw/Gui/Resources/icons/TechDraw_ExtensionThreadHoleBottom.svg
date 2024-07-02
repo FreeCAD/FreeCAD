@@ -58,14 +58,16 @@
        id="path8"
        transform="translate(0,280.06665)" />
     <path
-       style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#0b1521;stroke-width:1.5875;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#0b1521;stroke-width:2.11667;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path1408"
-       d="m -15.344516,-288.5449 a 6.8788018,6.8794208 0 0 1 4.285934,-6.36066 6.8788018,6.8794208 0 0 1 7.5090644,1.56023 6.8788018,6.8794208 0 0 1 1.3978265,7.54164 6.8788018,6.8794208 0 0 1 -6.4510219,4.14818"
-       transform="scale(-1)" />
+       d="m 15.079497,288.54459 a 6.6141274,6.6149632 0 0 1 -4.121025,6.11615 6.6141274,6.6149632 0 0 1 -7.2201395,-1.50025 6.6141274,6.6149632 0 0 1 -1.3440426,-7.25173 6.6141274,6.6149632 0 0 1 6.2028071,-3.98871" />
     <path
-       style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#729fcf;stroke-width:0.52916667;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#3465a4;stroke-width:1.05833334;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path2"
-       d="m -15.344516,-288.5449 a 6.8788018,6.8794208 0 0 1 4.285934,-6.36066 6.8788018,6.8794208 0 0 1 7.5090644,1.56023 6.8788018,6.8794208 0 0 1 1.3978265,7.54164 6.8788018,6.8794208 0 0 1 -6.4510219,4.14818"
-       transform="scale(-1)" />
+       d="m 15.079497,288.54459 a 6.6141274,6.6149632 0 0 1 -4.121025,6.11615 6.6141274,6.6149632 0 0 1 -7.2201395,-1.50025 6.6141274,6.6149632 0 0 1 -1.3440426,-7.25173 6.6141274,6.6149632 0 0 1 6.2028071,-3.98871" />
+    <path
+       style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#729fcf;stroke-width:0.529167;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path3"
+       d="m 14.815671,288.28001 a 6.6141274,6.6149632 0 0 1 -4.121025,6.11615 6.6141274,6.6149632 0 0 1 -7.2201392,-1.50025 6.6141274,6.6149632 0 0 1 -1.3440426,-7.25173 6.6141274,6.6149632 0 0 1 6.2028071,-3.98871" />
   </g>
 </svg>
