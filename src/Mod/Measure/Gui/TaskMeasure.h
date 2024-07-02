@@ -66,6 +66,7 @@ private:
 
     App::MeasureType* _mMeasureType = nullptr;
     Measure::MeasureBase *_mMeasureObject = nullptr;
+    Gui::ViewProviderDocumentObject* _mViewObject = nullptr;
 
     QLineEdit* valueResult{nullptr};
     QComboBox* modeSwitch{nullptr};
@@ -75,6 +76,10 @@ private:
     void setModeSilent(App::MeasureType* mode);
     App::MeasureType* getMeasureType();
     void enableAnnotateButton(bool state);
+    App::DocumentObject* createObject(const std::string& measureClass);
+    Gui::ViewProviderDocumentObject* createViewObject(App::DocumentObject* measureObj);
+    void saveObject();
+
 
     // List of measure types
     std::vector<App::DocumentObject> measureObjects;

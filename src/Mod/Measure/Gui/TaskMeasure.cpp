@@ -37,6 +37,8 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
+#include <Gui/Document.h>
+#include <Gui/ViewProviderDocumentObject.h>
 
 #include <QFormLayout>
 #include <QPushButton>
@@ -150,6 +152,59 @@ void TaskMeasure::setMeasureObject(Measure::MeasureBase* obj) {
 }
 
 
+App::DocumentObject* TaskMeasure::createObject(const std::string& measureClass) {
+    auto type = Base::Type::getTypeIfDerivedFrom(measureClass.c_str(),
+                                                 App::DocumentObject::getClassTypeId(),
+                                                 true);
+
+    if (type.isBad()) {
+        return nullptr;
+    }
+
+    auto measureObj = static_cast<App::DocumentObject*>(type.createInstance());
+    return measureObj;
+}
+
+
+Gui::ViewProviderDocumentObject* TaskMeasure::createViewObject(App::DocumentObject* measureObj) {
+    // Add view object
+    auto guiDoc = Gui::Application::Instance->activeDocument();
+    auto vpName = measureObj->getViewProviderName();
+    if ((vpName == nullptr) || (vpName[0] == '\0')) {
+        return nullptr;
+    }
+
+    auto vpType =
+        Base::Type::getTypeIfDerivedFrom(vpName,
+                                         Gui::ViewProviderDocumentObject::getClassTypeId(),
+                                         true);
+    if (vpType.isBad()) {
+        return nullptr;
+    }
+
+    auto vp = static_cast<Gui::ViewProviderDocumentObject*>(vpType.createInstance());
+
+    guiDoc->setAnnotationViewProvider(vp->getTypeId().getName(), vp);
+    vp->attach(measureObj);
+    vp->updateView();
+    vp->setActiveMode();
+
+    return vp;
+}
+
+
+void TaskMeasure::saveObject() {
+    if (_mViewObject) {
+        auto guiDoc = Gui::Application::Instance->activeDocument();
+        guiDoc->removeAnnotationViewProvider(_mViewObject->getTypeId().getName());
+        _mViewObject = nullptr;
+    }
+
+    App::Document* appDoc = App::GetApplication().getActiveDocument();
+    appDoc->addObject(_mMeasureObject, _mMeasureType->label.c_str());
+}
+
+
 void TaskMeasure::update() {
     App::Document *doc = App::GetApplication().getActiveDocument();
 
@@ -234,7 +289,7 @@ void TaskMeasure::update() {
         else {
             // Create measure object
             setMeasureObject(
-                (Measure::MeasureBase*)doc->addObject(_mMeasureType->measureObject.c_str(), _mMeasureType->label.c_str())
+                (Measure::MeasureBase*)createObject(_mMeasureType->measureObject)
             );
         }
     }
@@ -254,6 +309,7 @@ void TaskMeasure::update() {
     // Get result
     valueResult->setText(_mMeasureObject->getResultString());
 
+    _mViewObject = createViewObject(_mMeasureObject);
 }
 
 void TaskMeasure::close() {
@@ -285,7 +341,8 @@ void TaskMeasure::invoke() {
     update();
 }
 
-bool TaskMeasure::apply() {
+bool TaskMeasure::apply(){
+    saveObject();
     ensureGroup(_mMeasureObject);
     _mMeasureType = nullptr;
     _mMeasureObject = nullptr;
@@ -326,7 +383,14 @@ void TaskMeasure::removeObject() {
     if (_mMeasureObject->isRemoving() ) {
         return;
     }
-    _mMeasureObject->getDocument()->removeObject (_mMeasureObject->getNameInDocument());
+
+    if (_mViewObject) {
+        auto guiDoc = Gui::Application::Instance->activeDocument();
+        guiDoc->removeAnnotationViewProvider(_mViewObject->getTypeId().getName());
+        _mViewObject = nullptr;
+    }
+
+    delete _mMeasureObject;
     setMeasureObject(nullptr);
 }
 
@@ -345,7 +409,7 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
         && msg.Type != SelectionChanges::SetSelection && msg.Type != SelectionChanges::ClrSelection) {
 
         return;
-        }
+    }
 
     update();
 }
