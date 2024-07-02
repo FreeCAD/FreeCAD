@@ -84,7 +84,7 @@ void ConstraintBearing::onChanged(const App::Property* prop)
         TopoDS_Shape sh = Tools::getFeatureSubShape(feat, subRef.front().c_str(), true);
         double radius, height;
         Base::Vector3d base, axis;
-        if (!Tools::getCylinderParams(sh, base, axis, height, radius)) {
+        if (sh.IsNull() || !Tools::getCylinderParams(sh, base, axis, height, radius)) {
             return;
         }
         Radius.setValue(radius);
