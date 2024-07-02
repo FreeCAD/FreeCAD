@@ -178,6 +178,9 @@ public:
     /** deletes all external geometry */
     int delAllExternal();
 
+    template<typename returnType>
+    returnType performActionByGeomType(const Part::Geometry* geo);
+
     /** returns a pointer to a given Geometry index, possible indexes are:
      *  id>=0 for user defined geometries,
      *  id==-1 for the horizontal sketch axis,
@@ -310,6 +313,11 @@ public:
     /// retrieves the coordinates of a point
     static Base::Vector3d getPoint(const Part::Geometry* geo, PointPos PosId);
     Base::Vector3d getPoint(int GeoId, PointPos PosId) const;
+    template<class geomType>
+    static Base::Vector3d getPointForGeometry(const geomType* geo, PointPos PosId)
+    {
+        return Base::Vector3d();
+    }
 
     /// toggle geometry to draft line
     int toggleConstruction(int GeoId);
@@ -351,7 +359,21 @@ public:
     int trim(int geoId, const Base::Vector3d& point);
     /// extend a curve
     int extend(int geoId, double increment, PointPos endPoint);
+    /// Once smaller pieces have been created from a larger curve (by split or trim, say), derive
+    /// the constraint that will replace the given one (which is to be deleted). NOTE: Currently
+    /// assuming all constraints on the end points of the old curve have been transferred or
+    /// destroyed
+    /// Returns whether or not new constraint(s) was/were added.
+    bool deriveConstraintsForPieces(const int oldId,
+                                    const std::vector<int> newIds,
+                                    const Constraint* con,
+                                    std::vector<Constraint*>& newConstraints);
     /// split a curve
+    template<class geomType>
+    bool splitGeometryType(const geomType* geo, const Base::Vector3d& point)
+    {
+        return false;
+    }
     int split(int geoId, const Base::Vector3d& point);
     /*!
       \brief Join one or two curves at the given end points
@@ -392,6 +414,7 @@ public:
                 double perpscale = 1.0);
 
     int removeAxesAlignment(const std::vector<int>& geoIdList);
+    static bool hasInternalGeometry(const Part::Geometry* geo);
     /// Exposes all internal geometry of an object supporting internal geometry
     /*!
      * \return -1 on error
@@ -857,6 +880,10 @@ protected:
                      Sketcher::PointPos secondPos = Sketcher::PointPos::none,
                      int thirdGeoId = GeoEnum::GeoUndef,
                      Sketcher::PointPos thirdPos = Sketcher::PointPos::none);
+
+    // helper function to get constraint after deleting a geometry
+    std::unique_ptr<Constraint> getConstraintAfterDeletingGeo(const Constraint* constraint,
+                                                              const int deletedGeoId) const;
 
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
