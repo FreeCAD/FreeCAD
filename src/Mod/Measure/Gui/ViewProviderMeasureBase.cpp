@@ -84,6 +84,10 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
     ADD_PROPERTY_TYPE(FontSize, (Preferences::defaultFontSize()), agroup, App::Prop_None, "Size of measurement text");
 //NOLINTEND
 
+    pGlobalSeparator = new SoSeparator();
+    pGlobalSeparator->ref();
+    getRoot()->insertChild(pGlobalSeparator, 0);
+
     // setupAnnoSceneGraph() - sets up the annotation scene graph
     pLabel = new Gui::SoFrameLabel();
     pLabel->ref();
@@ -175,6 +179,7 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
 ViewProviderMeasureBase::~ViewProviderMeasureBase()
 {
     _mVisibilityChangedConnection.disconnect();
+    pGlobalSeparator->unref();
     pLabel->unref();
     pColor->unref();
     pDragger->unref();
