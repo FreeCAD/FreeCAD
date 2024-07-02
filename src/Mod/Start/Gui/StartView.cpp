@@ -45,6 +45,7 @@
 #include <App/DocumentObject.h>
 #include <App/Application.h>
 #include <Base/Interpreter.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <gsl/pointers>
@@ -388,7 +389,9 @@ void StartView::postStart(PostStartBehavior behavior) const
 void StartView::fileCardSelected(const QModelIndex& index)
 {
     auto file = index.data(static_cast<int>(Start::DisplayedFilesModelRoles::path)).toString();
-    auto command = std::string("FreeCAD.loadFile('") + file.toStdString() + "')";
+    std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(file.toStdString().c_str());
+    escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
+    auto command = std::string("FreeCAD.loadFile('") + escapedstr + "')";
     try {
         Base::Interpreter().runString(command.c_str());
         postStart(PostStartBehavior::doNotSwitchWorkbench);
