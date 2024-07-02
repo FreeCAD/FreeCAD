@@ -54,7 +54,7 @@ class StartGuiExport StartView: public Gui::MDIView
     TYPESYSTEM_HEADER_WITH_OVERRIDE();  // NOLINT
 
 public:
-    StartView(Gui::Document* pcDocument, QWidget* parent);
+    StartView(QWidget* parent);
 
     const char* getName() const override
     {
