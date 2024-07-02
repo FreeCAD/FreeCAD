@@ -35,10 +35,8 @@
 
 #include <array>
 
-#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/Parameter.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/modelRefine.h>
 
@@ -57,6 +55,7 @@ using namespace PartDesign;
 
 namespace PartDesign
 {
+extern bool getPDRefineModelParameter();
 
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::Feature)
 
@@ -79,10 +78,7 @@ Transformed::Transformed()
                       (App::PropertyType)(App::Prop_None),
                       "Refine shape (clean up redundant edges) after adding/subtracting");
 
-    //init Refine property
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
-    this->Refine.setValue(hGrp->GetBool("RefineModel", true));
+    this->Refine.setValue(getPDRefineModelParameter());
 }
 
 void Transformed::positionBySupport()
