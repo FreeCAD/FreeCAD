@@ -60,8 +60,8 @@ EditTableView::EditTableView(QWidget *parent)
 
 void EditTableView::keyPressEvent(QKeyEvent *event)
 {
-    if ((event->key() == Qt::Key_Delete
-        || event->key() == Qt::Key_Backspace)
+    if ((event->matches(QKeySequence::Delete)
+        || event->matches(QKeySequence::Backspace))
         && model()) {
         removeOne();
     } else {

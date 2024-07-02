@@ -120,7 +120,7 @@ bool QGIViewPart::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
         // which will be processed by QGVPage/QGVNavStyle keypress logic, but not forwarded to
         // Std_Delete
         QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
-        if (keyEvent->key() == Qt::Key_Delete)  {
+        if (keyEvent->matches(QKeySequence::Delete))  {
             bool success = removeSelectedCosmetic();
             if (success) {
                 updateView(true);
