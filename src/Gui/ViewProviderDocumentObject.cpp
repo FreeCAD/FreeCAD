@@ -401,9 +401,9 @@ Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
 {
     if(!pcObject)
         throw Base::RuntimeError("View provider detached");
-    App::Document* pAppDoc = pcObject->getDocument();
-    Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
-    return pGuiDoc->getActiveView();
+    
+    return Gui::Application::Instance->activeView();
+
 }
 
 Gui::MDIView* ViewProviderDocumentObject::getEditingView() const
