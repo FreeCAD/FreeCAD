@@ -25,8 +25,9 @@
 #ifndef _PreComp_
 #endif
 
-#include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
 #include <App/GroupExtension.h>
+#include <App/Part.h>
 #include "Application.h"
 #include "CommandT.h"
 #include "DockWindowManager.h"
@@ -116,6 +117,10 @@ void StdCmdRandomColor::activated(int iMsg)
         }
     };
 
+    auto allowToChangeColor = [](const App::DocumentObject* obj) {
+        return (obj->isDerivedFrom<App::Part>() || obj->isDerivedFrom<App::DocumentObjectGroup>());
+    };
+
     // get the complete selection
     std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
 
@@ -125,10 +130,12 @@ void StdCmdRandomColor::activated(int iMsg)
         setRandomColor(view);
 
         if (auto grp = it.pObject->getExtension<App::GroupExtension>()) {
-            std::vector<App::DocumentObject*> objs = grp->getObjects();
-            for (auto obj : objs) {
-                ViewProvider* view = Application::Instance->getViewProvider(obj);
-                setRandomColor(view);
+            if (allowToChangeColor(it.pObject)) {
+                std::vector<App::DocumentObject*> objs = grp->getObjects();
+                for (auto obj : objs) {
+                    ViewProvider* view = Application::Instance->getViewProvider(obj);
+                    setRandomColor(view);
+                }
             }
         }
     }
