@@ -34,6 +34,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
+#include <App/Link.h>
 #include <Base/Quantity.h>
 #include <Base/Placement.h>
 #include <Base/Interpreter.h>
@@ -104,6 +105,28 @@ public:
         }
 
         return _mGeometryHandlers[module];
+    }
+
+    static Part::MeasureInfoPtr getMeasureInfo(App::SubObjectT& subObjT) {
+
+        // Resolve App::Link
+        App::DocumentObject* sub = subObjT.getSubObject();
+        if (sub->isDerivedFrom<App::Link>()) {
+            auto link = static_cast<App::Link*>(sub);
+            sub = link->getLinkedObject(true);
+        }
+
+        // Get the Geometry handler based on the module
+        const char* className = sub->getTypeId().getName();
+        std::string mod = Base::Type::getModuleName(className);
+                
+        auto handler = getGeometryHandler(mod);
+        if (!handler) {
+            Base::Console().Log("MeasureBaseExtendable::getMeasureInfo: No geometry handler available for submitted element type");
+            return nullptr;
+        }
+
+        return handler(subObjT);
     }
 
     static void addGeometryHandlers(const std::vector<std::string>& modules, GeometryHandler callback){
