@@ -1114,17 +1114,17 @@ a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítések
   <context>
     <name>AddonsInstaller</name>
     <message>
-      <location filename="../../AddonManager.py" line="227"/>
+      <location filename="../../AddonManager.py" line="296"/>
       <source>Starting up...</source>
       <translation>Elkezd...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="263"/>
+      <location filename="../../AddonManager.py" line="332"/>
       <source>Loading addon information</source>
       <translation>Bővítményadatok betöltése</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="289"/>
+      <location filename="../../AddonManager.py" line="358"/>
       <source>Worker process {} is taking a long time to stop...</source>
       <translation>Hosszú időbe telik egy futó {} folyamat leállítása...</translation>
     </message>
@@ -1143,41 +1143,46 @@ a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítések
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="347"/>
+      <location filename="../../AddonManager.py" line="416"/>
       <source>Addon manager</source>
       <translation>Bővítmény kezelő</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="354"/>
+      <location filename="../../AddonManager.py" line="423"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation>A módosítások érvénybe léptetéséhez újra kell indítania a FreeCAD-et.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="360"/>
+      <location filename="../../AddonManager.py" line="429"/>
       <source>Restart now</source>
       <translation>Újraindítás most</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="361"/>
+      <location filename="../../AddonManager.py" line="430"/>
       <source>Restart later</source>
       <translation>Újraindítás később</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="427"/>
-      <location filename="../../AddonManager.py" line="880"/>
+      <location filename="../../AddonManager.py" line="496"/>
+      <location filename="../../AddonManager.py" line="897"/>
       <source>Refresh local cache</source>
       <translation>Gyorsítótár frissítése</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="557"/>
+      <location filename="../../AddonManager.py" line="626"/>
       <source>Updating cache...</source>
       <translation>Gyorsítótár frissítése...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="617"/>
-      <location filename="../../AddonManager.py" line="652"/>
+      <location filename="../../AddonManager.py" line="686"/>
+      <location filename="../../AddonManager.py" line="721"/>
       <source>Checking for updates...</source>
       <translation>Frissítés keresése...</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="936"/>
+      <source>Temporary installation of macro failed.</source>
+      <translation type="unfinished">Temporary installation of macro failed.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="95"/>
@@ -1211,30 +1216,25 @@ a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítések
       <translation>%n elérhető frissítés(ek) alkalmazása</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="809"/>
-      <location filename="../../AddonManager.py" line="835"/>
-      <location filename="../../AddonManager.py" line="934"/>
+      <location filename="../../AddonManager.py" line="826"/>
+      <location filename="../../AddonManager.py" line="852"/>
+      <location filename="../../AddonManager.py" line="951"/>
       <source>Cannot launch a new installer until the previous one has finished.</source>
       <translation>Az új telepítő csak az előző telepítő befejezése után indítható el.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="920"/>
-      <source>Execution of macro failed. See console for failure details.</source>
-      <translation>A makró végrehajtása sikertelen. A hiba részleteit lásd a konzolon.</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../package_list.py" line="379"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>Közreműködő</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="391"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
       <source>Author</source>
       <translation>Létrehozó</translation>
     </message>
@@ -1270,17 +1270,17 @@ a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítések
       <translation>Nem lehet importálni a QtNetwork-et - nincs telepítve a rendszerre. Előfordulhat, hogy a szolgáltatónak van egy csomagja ehhez a függőséghez (gyakran így nevezik "python3-pyside2.qtnetwork")</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="227"/>
+      <location filename="../../NetworkManager.py" line="228"/>
       <source>Failed to convert the specified proxy port &apos;{}&apos; to a port number</source>
       <translation>Nem sikerült a megadott &apos;{}&apos; proxy portot a port számra átalakítani</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="256"/>
+      <location filename="../../NetworkManager.py" line="257"/>
       <source>Parameter error: mutually exclusive proxy options set. Resetting to default.</source>
       <translation>Paraméter hiba: kölcsönösen kizáró proxy beállítások. Alapértelmezettre visszaállítás.</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="271"/>
+      <location filename="../../NetworkManager.py" line="272"/>
       <source>Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</source>
       <translation>Paraméterhiba: felhasználói proxy van megadva, de nincs megadva proxy. Alapértelmezettre visszaállítás.</translation>
     </message>
@@ -1290,7 +1290,7 @@ a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítések
       <translation>Bővítmény kezelő: Váratlan {} válasz a szervertől</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="527"/>
+      <location filename="../../NetworkManager.py" line="512"/>
       <source>Error with encrypted connection</source>
       <translation>Hiba a titkosított kapcsolat során</translation>
     </message>
@@ -1348,8 +1348,8 @@ a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítések
     <message>
       <location filename="../../package_list.py" line="450"/>
       <location filename="../../package_list.py" line="500"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="273"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <source>Installed</source>
       <translation>Telepítve</translation>
     </message>
@@ -1560,9 +1560,9 @@ a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítések
       <translation>Válasszon ki egy ikonfájlt ehhez a tartalmi elemhez</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="692"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} nem alkönyvtára ennek: {}</translation>
     </message>
@@ -1957,9 +1957,9 @@ a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítések
     <message>
       <location filename="../../package_list.py" line="454"/>
       <location filename="../../package_list.py" line="508"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="305"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="313"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <source>Update available</source>
       <translation>Frissítés elérhető</translation>
     </message>
@@ -2293,51 +2293,51 @@ a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítések
       <translation>A {num_macros} makrók közül {num_failed} a feldolgozás során letelt az idő</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="807"/>
+      <location filename="../../addonmanager_workers_startup.py" line="808"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>Bővítmény kezelő: egy munkafolyamat nem állt le ({name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="846"/>
+      <location filename="../../addonmanager_workers_startup.py" line="847"/>
       <source>Getting metadata from macro {}</source>
       <translation>Metaadatok kinyerése ebből a makróból: {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="860"/>
+      <location filename="../../addonmanager_workers_startup.py" line="861"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>Időkiesés a makró metaadatainak lekérése közben innen: {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="871"/>
+      <location filename="../../addonmanager_workers_startup.py" line="872"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>Nem sikerült leállítani a {} makró folyamatát!
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="892"/>
+      <location filename="../../addonmanager_workers_startup.py" line="893"/>
       <source>Retrieving macro description...</source>
       <translation>Makró leírásának lekérése...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="894"/>
+      <location filename="../../addonmanager_workers_startup.py" line="895"/>
       <source>Retrieving info from git</source>
       <translation>Információ beolvasása git-ből</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="897"/>
+      <location filename="../../addonmanager_workers_startup.py" line="898"/>
       <source>Retrieving info from wiki</source>
       <translation>Információ beolvasása wiki-ből</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="938"/>
+      <location filename="../../addonmanager_workers_startup.py" line="939"/>
       <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </source>
       <translation>Sikertelenül kapta meg a Bővítmény statisztikákat innen {} - csak az ábécé szerinti rendezés lesz pontos
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="970"/>
+      <location filename="../../addonmanager_workers_startup.py" line="971"/>
       <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
 </source>
       <translation>Sikertelenül kapta meg a Bővítmény pontszámot a &apos;{}&apos; - a pontszám szerinti rendezés sikertelen lesz
@@ -2464,12 +2464,12 @@ a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítések
   <context>
     <name>Std_AddonMgr</name>
     <message>
-      <location filename="../../AddonManager.py" line="164"/>
+      <location filename="../../AddonManager.py" line="233"/>
       <source>&amp;Addon manager</source>
       <translation>&amp;Bővítmény kezelő</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="168"/>
+      <location filename="../../AddonManager.py" line="237"/>
       <source>Manage external workbenches, macros, and preference packs</source>
       <translation>Külső munkafelületek, makrók és beállításcsomagok kezelése</translation>
     </message>
@@ -2506,7 +2506,7 @@ a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítések
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AddonManager.py" line="134"/>
+      <location filename="../../AddonManager.py" line="187"/>
       <source>Addon Manager</source>
       <translation>Bővítmény kezelő</translation>
     </message>

@@ -233,8 +233,8 @@
       <translation>Τοποθέτηση</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
+      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <source>Fit B-Spline</source>
       <translation>Προσαρμογή B-Spline</translation>
     </message>
@@ -607,7 +607,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="37"/>
       <source>Chord length</source>
-      <translation type="unfinished">Chord length</translation>
+      <translation>Μήκος Χορδής</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="42"/>

@@ -49,13 +49,13 @@
     <message>
       <location filename="../../Command.cpp" line="776"/>
       <source>&amp;Draft View</source>
-      <translation type="unfinished">&amp;Draft View</translation>
+      <translation>&amp;Преглед нацрта</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="778"/>
       <location filename="../../Command.cpp" line="780"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation type="unfinished">Inserts a Draft view of the selected object(s) in the active drawing</translation>
+      <translation>Умеће Преглед нацрта за иазбарани објекат(те) активног цртежа</translation>
     </message>
   </context>
   <context>
@@ -207,13 +207,13 @@
     <message>
       <location filename="../../Command.cpp" line="808"/>
       <source>&amp;Spreadsheet View</source>
-      <translation type="unfinished">&amp;Spreadsheet View</translation>
+      <translation>&amp;Поглед табела</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="809"/>
       <location filename="../../Command.cpp" line="811"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-      <translation type="unfinished">Inserts a view of a selected spreadsheet in the active drawing</translation>
+      <translation>Умеће изабрану табелу у активан цртеж</translation>
     </message>
   </context>
   <context>
@@ -336,8 +336,8 @@
       <location filename="../../DrawingView.cpp" line="595"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
-      <translation type="unfinished">The printer uses a different orientation than the drawing.
-Do you want to continue?</translation>
+      <translation>Штампач је подешен на другачији положај папира него што је цртеж.
+Желите ли да наставите?</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="605"/>
@@ -485,7 +485,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="636"/>
       <source>Spacing dx / dy</source>
-      <translation type="unfinished">Spacing dx / dy</translation>
+      <translation>Размак dx / dy</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="681"/>
@@ -505,7 +505,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="707"/>
       <source>View projection</source>
-      <translation type="unfinished">View projection</translation>
+      <translation>Пројекција погледа</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="718"/>
@@ -629,7 +629,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="94"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation type="unfinished">There is currently no active view to complete the operation</translation>
+      <translation>Тренутно нема активног погледа да би се операција завршила</translation>
     </message>
   </context>
   <context>

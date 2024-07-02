@@ -80,7 +80,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Πλέγμα</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -578,7 +578,7 @@ Select a different shape, please.</source>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>Ξετυλίξτε το πλέγμα</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -591,7 +591,7 @@ Select a different shape, please.</source>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation type="unfinished">Unwrap face</translation>
+      <translation>Ξετυλίξτε το πρόσωπο</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

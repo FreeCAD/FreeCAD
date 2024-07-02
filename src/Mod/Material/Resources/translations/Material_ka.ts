@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/materials-editor.ui" line="14"/>
       <source>Material Editor</source>
-      <translation type="unfinished">Material Editor</translation>
+      <translation>მასალების რედაქტორი</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
@@ -16,17 +16,17 @@
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
       <source>Opens the Product URL of this material in an external browser</source>
-      <translation type="unfinished">Opens the Product URL of this material in an external browser</translation>
+      <translation>გახსნის პროდუქტის URL-ს ამ მასალისთვის გარე ბრაუზერში</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="56"/>
       <source>Existing material cards</source>
-      <translation type="unfinished">Existing material cards</translation>
+      <translation>არსებული მასალის ბარათები</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="67"/>
       <source>Opens an existing material card</source>
-      <translation type="unfinished">Opens an existing material card</translation>
+      <translation>გახსნის არსებულ მასალის ბარათს</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="70"/>
@@ -36,22 +36,22 @@
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
       <source>Saves this material as a card</source>
-      <translation type="unfinished">Saves this material as a card</translation>
+      <translation>შეინახავს ამ მასალას ბარათის სახით</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>
       <source>Save as...</source>
-      <translation type="unfinished">Save as...</translation>
+      <translation>შენახვა, როგორც...</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="96"/>
       <source>Material parameter</source>
-      <translation type="unfinished">Material parameter</translation>
+      <translation>მასალის პარამეტრი</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="115"/>
       <source>Add / remove parameter</source>
-      <translation type="unfinished">Add / remove parameter</translation>
+      <translation>პარამეტრის დამატება/წაშლა</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="126"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../ui/materials-editor.ui" line="133"/>
       <source>Delete property</source>
-      <translation type="unfinished">Delete property</translation>
+      <translation>თვისების წაშლა</translation>
     </message>
   </context>
   <context>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../../MaterialEditor.py" line="310"/>
       <source>Product URL</source>
-      <translation type="unfinished">Product URL</translation>
+      <translation>პროდუქტის URL</translation>
     </message>
     <message>
       <location filename="../../MaterialEditor.py" line="398"/>
@@ -238,7 +238,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Gui/DlgSettingsMaterial.ui" line="295"/>
       <source>Material Editor</source>
-      <translation type="unfinished">Material Editor</translation>
+      <translation>მასალების რედაქტორი</translation>
     </message>
     <message>
       <location filename="../../Gui/DlgSettingsMaterial.ui" line="212"/>
@@ -478,24 +478,24 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Gui/MaterialsEditor.cpp" line="745"/>
       <location filename="../../Gui/MaterialsEditor.cpp" line="777"/>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="985"/>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1047"/>
+      <location filename="../../Gui/MaterialsEditor.cpp" line="1051"/>
+      <location filename="../../Gui/MaterialsEditor.cpp" line="1113"/>
       <source>Property</source>
       <translation>თვისება</translation>
     </message>
     <message>
       <location filename="../../Gui/MaterialsEditor.cpp" line="746"/>
       <location filename="../../Gui/MaterialsEditor.cpp" line="778"/>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="986"/>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1048"/>
+      <location filename="../../Gui/MaterialsEditor.cpp" line="1052"/>
+      <location filename="../../Gui/MaterialsEditor.cpp" line="1114"/>
       <source>Value</source>
       <translation>მნიშვნელობა</translation>
     </message>
     <message>
       <location filename="../../Gui/MaterialsEditor.cpp" line="747"/>
       <location filename="../../Gui/MaterialsEditor.cpp" line="779"/>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="987"/>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1049"/>
+      <location filename="../../Gui/MaterialsEditor.cpp" line="1053"/>
+      <location filename="../../Gui/MaterialsEditor.cpp" line="1115"/>
       <source>Type</source>
       <translation>ტიპი</translation>
     </message>
@@ -510,22 +510,22 @@ If unchecked, they will be sorted by their name.</translation>
       <translation type="unfinished">Recent</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1050"/>
+      <location filename="../../Gui/MaterialsEditor.cpp" line="1116"/>
       <source>Units</source>
       <translation>საზომი ერთეული</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1217"/>
+      <location filename="../../Gui/MaterialsEditor.cpp" line="1283"/>
       <source>Context menu</source>
       <translation type="unfinished">Context menu</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1219"/>
+      <location filename="../../Gui/MaterialsEditor.cpp" line="1285"/>
       <source>Inherit from</source>
       <translation type="unfinished">Inherit from</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1224"/>
+      <location filename="../../Gui/MaterialsEditor.cpp" line="1290"/>
       <source>Inherit new material</source>
       <translation type="unfinished">Inherit new material</translation>
     </message>
@@ -652,17 +652,17 @@ If unchecked, they will be sorted by their name.</translation>
       <translation type="unfinished">You must save the material before using it.</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1246"/>
+      <location filename="../../Gui/MaterialsEditor.cpp" line="1312"/>
       <source>Unsaved Material</source>
       <translation type="unfinished">Unsaved Material</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1247"/>
+      <location filename="../../Gui/MaterialsEditor.cpp" line="1313"/>
       <source>Do you want to save your changes to the material before closing?</source>
       <translation type="unfinished">Do you want to save your changes to the material before closing?</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1249"/>
+      <location filename="../../Gui/MaterialsEditor.cpp" line="1315"/>
       <source>If you don&apos;t save, your changes will be lost.</source>
       <translation type="unfinished">If you don&apos;t save, your changes will be lost.</translation>
     </message>
@@ -873,8 +873,8 @@ If unchecked, they will be sorted by their name.</translation>
     </message>
     <message>
       <location filename="../../Gui/DlgDisplayProperties.ui" line="372"/>
-      <source>Shape Appearance:</source>
-      <translation type="unfinished">Shape Appearance:</translation>
+      <source>Custom Appearance</source>
+      <translation>მორგებული გარეგნობა</translation>
     </message>
     <message>
       <location filename="../../Gui/DlgDisplayProperties.ui" line="382"/>
@@ -931,7 +931,7 @@ If unchecked, they will be sorted by their name.</translation>
       <translation type="unfinished">Display properties</translation>
     </message>
     <message>
-      <location filename="../../Gui/DlgMaterialImp.cpp" line="58"/>
+      <location filename="../../Gui/DlgMaterialImp.cpp" line="57"/>
       <source>Material</source>
       <translation>მასალა</translation>
     </message>
@@ -945,13 +945,13 @@ If unchecked, they will be sorted by their name.</translation>
     </message>
     <message>
       <location filename="../../Gui/MaterialTreeWidget.cpp" line="276"/>
-      <location filename="../../Gui/MaterialTreeWidget.cpp" line="497"/>
+      <location filename="../../Gui/MaterialTreeWidget.cpp" line="507"/>
       <source>Favorites</source>
       <translation type="unfinished">Favorites</translation>
     </message>
     <message>
       <location filename="../../Gui/MaterialTreeWidget.cpp" line="276"/>
-      <location filename="../../Gui/MaterialTreeWidget.cpp" line="504"/>
+      <location filename="../../Gui/MaterialTreeWidget.cpp" line="514"/>
       <source>Recent</source>
       <translation type="unfinished">Recent</translation>
     </message>
@@ -959,17 +959,17 @@ If unchecked, they will be sorted by their name.</translation>
   <context>
     <name>MatGui::DlgDisplayPropertiesImp</name>
     <message>
-      <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="215"/>
+      <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="214"/>
       <source>Basic Appearance</source>
       <translation type="unfinished">Basic Appearance</translation>
     </message>
     <message>
-      <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="220"/>
+      <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="219"/>
       <source>Texture Appearance</source>
       <translation type="unfinished">Texture Appearance</translation>
     </message>
     <message>
-      <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="225"/>
+      <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="224"/>
       <source>All Materials</source>
       <translation type="unfinished">All Materials</translation>
     </message>
@@ -1026,42 +1026,42 @@ If unchecked, they will be sorted by their name.</translation>
       <translation type="unfinished">Shape.TypeID / TypeID</translation>
     </message>
     <message>
-      <location filename="../../Gui/DlgInspectAppearance.ui" line="94"/>
+      <location filename="../../Gui/DlgInspectAppearance.ui" line="100"/>
       <source>Appearance</source>
       <translation>გარეგნობა</translation>
     </message>
     <message>
-      <location filename="../../Gui/DlgInspectAppearance.ui" line="101"/>
+      <location filename="../../Gui/DlgInspectAppearance.ui" line="107"/>
       <source>Tab 1</source>
       <translation>ჩანართი 1</translation>
     </message>
     <message>
-      <location filename="../../Gui/DlgInspectAppearance.ui" line="106"/>
+      <location filename="../../Gui/DlgInspectAppearance.ui" line="112"/>
       <source>Tab 2</source>
       <translation>ჩანართი 2</translation>
     </message>
     <message>
-      <location filename="../../Gui/DlgInspectAppearance.cpp" line="204"/>
+      <location filename="../../Gui/DlgInspectAppearance.cpp" line="202"/>
       <source>Diffuse Color</source>
       <translation type="unfinished">Diffuse Color</translation>
     </message>
     <message>
-      <location filename="../../Gui/DlgInspectAppearance.cpp" line="213"/>
+      <location filename="../../Gui/DlgInspectAppearance.cpp" line="211"/>
       <source>Ambient Color</source>
       <translation type="unfinished">Ambient Color</translation>
     </message>
     <message>
-      <location filename="../../Gui/DlgInspectAppearance.cpp" line="222"/>
+      <location filename="../../Gui/DlgInspectAppearance.cpp" line="220"/>
       <source>Emissive Color</source>
       <translation type="unfinished">Emissive Color</translation>
     </message>
     <message>
-      <location filename="../../Gui/DlgInspectAppearance.cpp" line="231"/>
+      <location filename="../../Gui/DlgInspectAppearance.cpp" line="229"/>
       <source>Specular Color</source>
       <translation type="unfinished">Specular Color</translation>
     </message>
     <message>
-      <location filename="../../Gui/DlgInspectAppearance.cpp" line="240"/>
+      <location filename="../../Gui/DlgInspectAppearance.cpp" line="238"/>
       <source>Shininess</source>
       <translation type="unfinished">Shininess</translation>
     </message>

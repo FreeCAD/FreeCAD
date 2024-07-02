@@ -4,121 +4,121 @@
   <context>
     <name>Attacher</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="314"/>
+      <location filename="../../AttacherTexts.cpp" line="320"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
       <translation>Dowolny</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="315"/>
+      <location filename="../../AttacherTexts.cpp" line="321"/>
       <source>Vertex</source>
       <comment>Attacher reference type</comment>
       <translation>Wierzchołek</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="316"/>
+      <location filename="../../AttacherTexts.cpp" line="322"/>
       <source>Edge</source>
       <comment>Attacher reference type</comment>
       <translation>Krawędź</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="317"/>
+      <location filename="../../AttacherTexts.cpp" line="323"/>
       <source>Face</source>
       <comment>Attacher reference type</comment>
       <translation>Ściana</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="319"/>
+      <location filename="../../AttacherTexts.cpp" line="325"/>
       <source>Line</source>
       <comment>Attacher reference type</comment>
       <translation>Linia</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="320"/>
+      <location filename="../../AttacherTexts.cpp" line="326"/>
       <source>Curve</source>
       <comment>Attacher reference type</comment>
       <translation>Krzywa</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="321"/>
+      <location filename="../../AttacherTexts.cpp" line="327"/>
       <source>Circle</source>
       <comment>Attacher reference type</comment>
       <translation>Okrąg</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="322"/>
+      <location filename="../../AttacherTexts.cpp" line="328"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
       <translation>Krzywa stożkowa</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="323"/>
+      <location filename="../../AttacherTexts.cpp" line="329"/>
       <source>Ellipse</source>
       <comment>Attacher reference type</comment>
       <translation>Elipsa</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="324"/>
+      <location filename="../../AttacherTexts.cpp" line="330"/>
       <source>Parabola</source>
       <comment>Attacher reference type</comment>
       <translation>Parabola</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="325"/>
+      <location filename="../../AttacherTexts.cpp" line="331"/>
       <source>Hyperbola</source>
       <comment>Attacher reference type</comment>
       <translation>Hiperbola</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="327"/>
+      <location filename="../../AttacherTexts.cpp" line="333"/>
       <source>Plane</source>
       <comment>Attacher reference type</comment>
       <translation>Płaszczyzna</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="328"/>
+      <location filename="../../AttacherTexts.cpp" line="334"/>
       <source>Sphere</source>
       <comment>Attacher reference type</comment>
       <translation>Sfera</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="329"/>
+      <location filename="../../AttacherTexts.cpp" line="335"/>
       <source>Revolve</source>
       <comment>Attacher reference type</comment>
       <translation>Obrót</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="330"/>
+      <location filename="../../AttacherTexts.cpp" line="336"/>
       <source>Cylinder</source>
       <comment>Attacher reference type</comment>
       <translation>Walec</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="331"/>
+      <location filename="../../AttacherTexts.cpp" line="337"/>
       <source>Torus</source>
       <comment>Attacher reference type</comment>
       <translation>Torus</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="332"/>
+      <location filename="../../AttacherTexts.cpp" line="338"/>
       <source>Cone</source>
       <comment>Attacher reference type</comment>
       <translation>Stożek</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="334"/>
+      <location filename="../../AttacherTexts.cpp" line="340"/>
       <source>Object</source>
       <comment>Attacher reference type</comment>
       <translation>Obiekt</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="335"/>
+      <location filename="../../AttacherTexts.cpp" line="341"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
       <translation>Bryła</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="336"/>
+      <location filename="../../AttacherTexts.cpp" line="342"/>
       <source>Wire</source>
       <comment>Attacher reference type</comment>
       <translation>Polilinia</translation>
@@ -127,133 +127,133 @@
   <context>
     <name>Attacher0D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="271"/>
+      <location filename="../../AttacherTexts.cpp" line="277"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Nieaktywny</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="272"/>
+      <location filename="../../AttacherTexts.cpp" line="278"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Mocowanie jest wyłączone. Punkt może być przeniesiony przez edycję właściwości umiejscowienia.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="274"/>
+      <location filename="../../AttacherTexts.cpp" line="280"/>
       <source>Object's origin</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Odniesienie położenia obiektów</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="275"/>
+      <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Punkt jest położony w Placement.Position obiektu. Działa na obiektach z umiejscowieniami i z krawędziami elipsy / paraboli / hiperboli.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="277"/>
+      <location filename="../../AttacherTexts.cpp" line="283"/>
       <source>Focus1</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Ostrość 1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="278"/>
+      <location filename="../../AttacherTexts.cpp" line="284"/>
       <source>Focus of ellipse, parabola, hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Ognisko elipsy, paraboli, hiperboli.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="280"/>
+      <location filename="../../AttacherTexts.cpp" line="286"/>
       <source>Focus2</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Ostrość 2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="281"/>
+      <location filename="../../AttacherTexts.cpp" line="287"/>
       <source>Second focus of ellipse and hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Drugie ognisko elipsy i hiperboli.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="283"/>
+      <location filename="../../AttacherTexts.cpp" line="289"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Na krawędzi</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="284"/>
+      <location filename="../../AttacherTexts.cpp" line="290"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Punkt jest umieszczany na krawędzi, a MapPathParameter kontroluje gdzie. Dodatkowo wierzchołek może być połączony w celu wykonania projekcji.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="286"/>
+      <location filename="../../AttacherTexts.cpp" line="292"/>
       <source>Center of curvature</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Środek krzywizny</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="287"/>
+      <location filename="../../AttacherTexts.cpp" line="293"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Wyśrodkuj koło ściśle styczne do krawędzi. Opcjonalnie łącznik wierzchołka definiuje gdzie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="289"/>
+      <location filename="../../AttacherTexts.cpp" line="295"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Środek ciężkości</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="290"/>
+      <location filename="../../AttacherTexts.cpp" line="296"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Środek masy wszystkich odniesień (przyjmuje się równe gęstości).</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="292"/>
+      <location filename="../../AttacherTexts.cpp" line="298"/>
       <source>Intersection</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Przecięcie</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="293"/>
+      <location filename="../../AttacherTexts.cpp" line="299"/>
       <source>Not implemented</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Nie wprowadzono</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="295"/>
+      <location filename="../../AttacherTexts.cpp" line="301"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Wierzchołek</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="296"/>
+      <location filename="../../AttacherTexts.cpp" line="302"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Umieść punkt odniesienia zbieżny z innym wierzchołkiem.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="298"/>
+      <location filename="../../AttacherTexts.cpp" line="304"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>W pobliżu punktu 1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="299"/>
+      <location filename="../../AttacherTexts.cpp" line="305"/>
       <source>Point on first reference that is closest to second reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Punkt pierwszej referencji, który jest najbliżej drugiej referencji.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="301"/>
+      <location filename="../../AttacherTexts.cpp" line="307"/>
       <source>Proximity point 2</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>W pobliżu punktu 2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="302"/>
+      <location filename="../../AttacherTexts.cpp" line="308"/>
       <source>Point on second reference that is closest to first reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Punkty drugiej referencji, które są najbliżej pierwszej referencji.</translation>
@@ -262,243 +262,243 @@
   <context>
     <name>Attacher1D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="202"/>
+      <location filename="../../AttacherTexts.cpp" line="208"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Nieaktywny</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="203"/>
+      <location filename="../../AttacherTexts.cpp" line="209"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Dołączanie jest wyłączone. Linia może zostać przesunięta poprzez edycję właściwości umiejscowienie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="205"/>
+      <location filename="../../AttacherTexts.cpp" line="211"/>
       <source>Object's X</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Oś X Obiektu</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="206"/>
       <location filename="../../AttacherTexts.cpp" line="212"/>
+      <location filename="../../AttacherTexts.cpp" line="218"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linia jest wyrównana wzdłuż lokalnej osi obiektu X. Pracuje na obiektach z umiejscowieniem oraz krawędzi elipsy, paraboli, hiperboli.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="208"/>
+      <location filename="../../AttacherTexts.cpp" line="214"/>
       <source>Object's Y</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Oś Y obiektu</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="209"/>
+      <location filename="../../AttacherTexts.cpp" line="215"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linia jest wyrównana wzdłuż lokalnej osi obiektu Y. Pracuje na obiektach z umiejscowieniem oraz krawędzi elipsy, paraboli, hiperboli.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="211"/>
+      <location filename="../../AttacherTexts.cpp" line="217"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Oś Z obiektu</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="214"/>
+      <location filename="../../AttacherTexts.cpp" line="220"/>
       <source>Axis of curvature</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Oś krzywizny</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="215"/>
+      <location filename="../../AttacherTexts.cpp" line="221"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linia, która jest osią koła ściśle stycznego do zagiętej krawędzi. Opcjonalnie wierzchołek definiuje gdzie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="217"/>
+      <location filename="../../AttacherTexts.cpp" line="223"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Linia kontrolna 1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="218"/>
+      <location filename="../../AttacherTexts.cpp" line="224"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linia kierunkowa dla elipsy, paraboli, hiperboli.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="220"/>
+      <location filename="../../AttacherTexts.cpp" line="226"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Linia kontrolna 2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="221"/>
+      <location filename="../../AttacherTexts.cpp" line="227"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Druga linia kierunkowa dla elipsy i hiperboli.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="223"/>
+      <location filename="../../AttacherTexts.cpp" line="229"/>
       <source>Asymptote1</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Asymptota 1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="224"/>
+      <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Asymptote of a hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Asymptota hiperboli.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="226"/>
+      <location filename="../../AttacherTexts.cpp" line="232"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Asymptota 2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="227"/>
+      <location filename="../../AttacherTexts.cpp" line="233"/>
       <source>Second asymptote of hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Druga asymptota hiperboli.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="229"/>
+      <location filename="../../AttacherTexts.cpp" line="235"/>
       <source>Tangent</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Stycznie</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="230"/>
+      <location filename="../../AttacherTexts.cpp" line="236"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linia styczna do krawędzi. Opcjonalnie wierzchołek określa gdzie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="232"/>
+      <location filename="../../AttacherTexts.cpp" line="238"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Normalna do krawędzi</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="233"/>
+      <location filename="../../AttacherTexts.cpp" line="239"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Wyrównaj do wektora N układu współrzędnych Freneta Serret z zaokrągloną krawędzią. Opcjonalnie łącze wierzchołka definiuje gdzie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="235"/>
+      <location filename="../../AttacherTexts.cpp" line="241"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Binormalna</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="236"/>
+      <location filename="../../AttacherTexts.cpp" line="242"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Wyrównaj do wektora B układu współrzędnych układu Freneta Serret z zaokrągloną krawędzią. Opcjonalnie łącze wierzchołka definiuje gdzie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="238"/>
+      <location filename="../../AttacherTexts.cpp" line="244"/>
       <source>Tangent to surface (U)</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Prostopadły do powierzchni (U)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="239"/>
-      <location filename="../../AttacherTexts.cpp" line="242"/>
+      <location filename="../../AttacherTexts.cpp" line="245"/>
+      <location filename="../../AttacherTexts.cpp" line="248"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Prostopadły do powierzchni, wzdłuż parametru U. Łącze wierzchołka definiuje gdzie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="241"/>
+      <location filename="../../AttacherTexts.cpp" line="247"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Prostopadły do powierzchni (V)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="244"/>
+      <location filename="../../AttacherTexts.cpp" line="250"/>
       <source>Through two points</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Przez dwa punkty</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="245"/>
+      <location filename="../../AttacherTexts.cpp" line="251"/>
       <source>Line that passes through two vertices.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linia, która przechodzi przez dwa wierzchołki.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="247"/>
+      <location filename="../../AttacherTexts.cpp" line="253"/>
       <source>Intersection</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Przecięcie</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="248"/>
+      <location filename="../../AttacherTexts.cpp" line="254"/>
       <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Przecięcie dwóch powierzchni.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="250"/>
+      <location filename="../../AttacherTexts.cpp" line="256"/>
       <source>Proximity line</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Linia zbliżeniowa</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="251"/>
+      <location filename="../../AttacherTexts.cpp" line="257"/>
       <source>Line that spans the shortest distance between shapes.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linia, która rozciąga najkrótszą odległość pomiędzy formami.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="253"/>
+      <location filename="../../AttacherTexts.cpp" line="259"/>
       <source>1st principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Pierwsza oś główna</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="254"/>
+      <location filename="../../AttacherTexts.cpp" line="260"/>
       <source>Line follows first principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linia stosuje się do pierwszej głównej osi inerti.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="256"/>
+      <location filename="../../AttacherTexts.cpp" line="262"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Druga oś główna</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="257"/>
+      <location filename="../../AttacherTexts.cpp" line="263"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linia przebiega zgodnie z drugą główną osią bezwładności.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="259"/>
+      <location filename="../../AttacherTexts.cpp" line="265"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Trzecia oś główna</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="260"/>
+      <location filename="../../AttacherTexts.cpp" line="266"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linia przebiega zgodnie z trzecią główną osią bezwładności.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="262"/>
+      <location filename="../../AttacherTexts.cpp" line="268"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Normalna do powierzchni</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="263"/>
+      <location filename="../../AttacherTexts.cpp" line="269"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linia prostopadła do powierzchni w punkcie wyznaczonym przez wierzchołek.</translation>
@@ -507,195 +507,212 @@
   <context>
     <name>Attacher2D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="127"/>
+      <location filename="../../AttacherTexts.cpp" line="130"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Nieaktywny</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="128"/>
+      <location filename="../../AttacherTexts.cpp" line="131"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Dołączanie jest wyłączone. Obiekt może zostać przesunięty poprzez edycję właściwości umiejscowienie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="130"/>
+      <location filename="../../AttacherTexts.cpp" line="133"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Przenieś odniesienie położenia</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="131"/>
+      <location filename="../../AttacherTexts.cpp" line="134"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Odniesienie położenia jest dopasowane do Wierzchołka. Orientacja jest kontrolowana przez właściwość Umieszczenie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="133"/>
+      <location filename="../../AttacherTexts.cpp" line="136"/>
       <source>Object's XY</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>XY obiektu</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="134"/>
+      <location filename="../../AttacherTexts.cpp" line="137"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Płaszczyzna jest wyrównana do lokalnej płaszczyzny XY połączonego obiektu.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="136"/>
+      <location filename="../../AttacherTexts.cpp" line="139"/>
       <source>Object's XZ</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>XZ obiektu</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="137"/>
+      <location filename="../../AttacherTexts.cpp" line="140"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Płaszczyzna jest wyrównana do lokalnej płaszczyzny XZ połączonego obiektu.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="139"/>
+      <location filename="../../AttacherTexts.cpp" line="142"/>
       <source>Object's YZ</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>YZ obiektu</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="140"/>
+      <location filename="../../AttacherTexts.cpp" line="143"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Płaszczyzna jest wyrównana do lokalnej płaszczyzny YZ połączonego obiektu.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="142"/>
+      <location filename="../../AttacherTexts.cpp" line="145"/>
+      <source>XY parallel to plane</source>
+      <comment>AttachmentPlane mode caption</comment>
+      <translation>XY równolegle do płaszczyzny</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="146"/>
+      <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</source>
+      <comment>AttachmentPlane mode tooltip</comment>
+      <translation>Płaszczyzna X' Y' jest równoległa do płaszczyzny (obiekt XY) i przechodzi przez wierzchołek</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="148"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Płaszczyzna ściany</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="143"/>
+      <location filename="../../AttacherTexts.cpp" line="149"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Płaszczyzna jest wyrównana do zbieżności z płaską ścianą.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="145"/>
+      <location filename="../../AttacherTexts.cpp" line="151"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Prostopadle do powierzchni</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="146"/>
+      <location filename="../../AttacherTexts.cpp" line="152"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Płaszczyzna staje się styczna do powierzchni w wierzchołku.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="148"/>
+      <location filename="../../AttacherTexts.cpp" line="154"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Normalna do krawędzi</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="149"/>
+      <location filename="../../AttacherTexts.cpp" line="155"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Płaszczyzna jest tworzona jako styczna do krawędzi. Opcjonalne połączenie wierzchołków określa, gdzie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="151"/>
+      <location filename="../../AttacherTexts.cpp" line="157"/>
       <source>Frenet NB</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>NB układu Freneta</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="152"/>
-      <location filename="../../AttacherTexts.cpp" line="155"/>
       <location filename="../../AttacherTexts.cpp" line="158"/>
+      <location filename="../../AttacherTexts.cpp" line="161"/>
+      <location filename="../../AttacherTexts.cpp" line="164"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Wyrównaj do układu współrzędnych Freneta Serret zaokrąglonej krawędzi. Opcjonalnie łącze wierzchołka definiuje gdzie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="154"/>
+      <location filename="../../AttacherTexts.cpp" line="160"/>
       <source>Frenet TN</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>TN układu Freneta</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="157"/>
+      <location filename="../../AttacherTexts.cpp" line="163"/>
       <source>Frenet TB</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>TB układu Freneta</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="160"/>
+      <location filename="../../AttacherTexts.cpp" line="166"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Współosiowo</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="161"/>
+      <location filename="../../AttacherTexts.cpp" line="167"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Wyrównaj do płaszczyzny koła ściśle stycznego do krawędzi. Pochodzenie jest wyrównane do punktu krzywizny. Opcjonalnie łącze wierzchołka definiuje gdzie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="163"/>
+      <location filename="../../AttacherTexts.cpp" line="169"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Przekrój przez obrót wokół osi</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="164"/>
+      <location filename="../../AttacherTexts.cpp" line="170"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Płaszczyzna jest prostopadła do krawędzi, a oś Y jest połączona z osią koła ściśle stycznego Opcjonalne łącze wierzchołka określa gdzie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="166"/>
+      <location filename="../../AttacherTexts.cpp" line="172"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Płaszczyzna wyznaczona przez 3 punkty</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="167"/>
+      <location filename="../../AttacherTexts.cpp" line="173"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Wyrównaj płaszczyznę tak, aby przechodziła przez trzy wierzchołki.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="169"/>
+      <location filename="../../AttacherTexts.cpp" line="175"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Normalna do 3 punktów</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="170"/>
+      <location filename="../../AttacherTexts.cpp" line="176"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Płaszczyzna będzie przechodzić przez pierwsze dwa wierzchołki i będzie prostopadła do płaszczyzny, która przechodzi przez trzy wierzchołki.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="172"/>
+      <location filename="../../AttacherTexts.cpp" line="178"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Składany</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="173"/>
+      <location filename="../../AttacherTexts.cpp" line="179"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Tryb specjalny dla składania wielościanów. Wybierz 4 krawędzie w porządku: Składana krawędź, zagięcie linii, inne zagięcie linii, inna składana krawędź. Płaszczyzna będzie wyrównana do składania pierwszej krawędzi.</translation>
+      <translation>Tryb specjalny dla składania wielościanów. Wybierz cztery krawędzie w porządku: 
+składana krawędź, 
+zagięcie linii, 
+kolejne zagięcie linii, 
+kolejna składana krawędź. 
+Płaszczyzna będzie wyrównana do składania pierwszej krawędzi.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="175"/>
+      <location filename="../../AttacherTexts.cpp" line="181"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Bezwładność 2-3</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="176"/>
+      <location filename="../../AttacherTexts.cpp" line="182"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Płaszczyzna zbudowana na drugiej i trzeciej głównej osi bezwładności (przechodzi przez środek masy).</translation>
@@ -765,268 +782,285 @@
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="67"/>
+      <source>XY parallel to plane</source>
+      <comment>Attachment3D mode caption</comment>
+      <translation>XY równolegle do płaszczyzny</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="68"/>
+      <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</source>
+      <comment>Attachment3D mode tooltip</comment>
+      <translation>Płaszczyzna X' Y' jest równoległa do płaszczyzny (obiekt XY) i przechodzi przez wierzchołek.</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="70"/>
       <source>XY on plane</source>
       <comment>Attachment3D mode caption</comment>
       <translation>XY na płaszczyźnie</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="68"/>
+      <location filename="../../AttacherTexts.cpp" line="71"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Płaszczyzna X' Y' jest wyrównana do zbieżnej płaszczyzny planarnej.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="70"/>
+      <location filename="../../AttacherTexts.cpp" line="73"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
       <translation>XY prostopadłe do powierzchni</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="71"/>
+      <location filename="../../AttacherTexts.cpp" line="74"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Płaszczyzna X' Y' jest wykonana prostopadle do powierzchni przy wierzchołku.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="73"/>
+      <location filename="../../AttacherTexts.cpp" line="76"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Z stycznie do krawędzi</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="74"/>
+      <location filename="../../AttacherTexts.cpp" line="77"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Oś Z jest wyrównana by być prostopadła do krawędzi. Opcjonalnie łącze wierzchołka definiuje gdzie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="76"/>
+      <location filename="../../AttacherTexts.cpp" line="79"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
       <translation>NBT układu Freneta</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="77"/>
       <location filename="../../AttacherTexts.cpp" line="80"/>
       <location filename="../../AttacherTexts.cpp" line="83"/>
+      <location filename="../../AttacherTexts.cpp" line="86"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Wyrównaj do układu współrzędnych Freneta Serret zaokrąglonej krawędzi. Opcjonalnie łącze wierzchołka definiuje gdzie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="79"/>
+      <location filename="../../AttacherTexts.cpp" line="82"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
       <translation>TNB układu Freneta</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="82"/>
+      <location filename="../../AttacherTexts.cpp" line="85"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
       <translation>TBN układu Freneta</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="85"/>
+      <location filename="../../AttacherTexts.cpp" line="88"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Współosiowo</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="86"/>
+      <location filename="../../AttacherTexts.cpp" line="89"/>
       <source>Align XY plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Wyrównaj płaszczyznę XY do koła ściśle stycznego do krawędzi. Opcjonalnie łącze wierzchołka definiuje gdzie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="88"/>
+      <location filename="../../AttacherTexts.cpp" line="91"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Przekrój przez obrót wokół osi</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="89"/>
+      <location filename="../../AttacherTexts.cpp" line="92"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Wyrównaj oś Y do osi koła ściśle stycznego do krawędzi. Opcjonalnie łącze wierzchołka definiuje gdzie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="91"/>
+      <location filename="../../AttacherTexts.cpp" line="94"/>
       <source>XY plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Płaszczyzna XY wyznaczona przez 3 punkty</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="92"/>
+      <location filename="../../AttacherTexts.cpp" line="95"/>
       <source>Align XY plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Wyrównaj płaszczyznę XY by przechodziła przez trzy wierzchołki.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="94"/>
+      <location filename="../../AttacherTexts.cpp" line="97"/>
       <source>XZ plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Płaszczyzna XZ przez 3 punkty</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="95"/>
+      <location filename="../../AttacherTexts.cpp" line="98"/>
       <source>Align XZ plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Wyrównaj płaszczyznę XZ do przejścia przez 3 punkty; Oś X będzie przechodzić przez dwa pierwsze punkty.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="97"/>
+      <location filename="../../AttacherTexts.cpp" line="100"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Składany</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="98"/>
+      <location filename="../../AttacherTexts.cpp" line="101"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Tryb specjalny dla składania wielościanów. Wybierz 4 krawędzie w porządku: Składana krawędź, zagięcie linii, inne zagięcie linii, inna składana krawędź. Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translation>
+      <translation>Tryb specjalny dla składania wielościanów. Wybierz cztery krawędzie w porządku: 
+składana krawędź, 
+zagięcie linii, 
+kolejne zagięcie linii, 
+kolejne składana krawędź. 
+Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="100"/>
+      <location filename="../../AttacherTexts.cpp" line="103"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Bezwładność CS</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="101"/>
+      <location filename="../../AttacherTexts.cpp" line="104"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Bezwładnościowy układ współrzędnych, zbudowany na głównych osiach bezwładności i środku ciężkości.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="103"/>
+      <location filename="../../AttacherTexts.cpp" line="106"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Wyrównanie O-Z-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="104"/>
+      <location filename="../../AttacherTexts.cpp" line="107"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Dopasuj odniesienie położenia do pierwszego wierzchołka. Wyrównaj osie Z' i X' w kierunku wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="106"/>
+      <location filename="../../AttacherTexts.cpp" line="109"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Wyrównanie O-Z-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="107"/>
+      <location filename="../../AttacherTexts.cpp" line="110"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Dopasuj odniesienie położenia do pierwszego wierzchołka. Wyrównaj osie Z' i Y' w kierunku wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="109"/>
-      <location filename="../../AttacherTexts.cpp" line="184"/>
+      <location filename="../../AttacherTexts.cpp" line="112"/>
+      <location filename="../../AttacherTexts.cpp" line="190"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Wyrównanie O-X-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="110"/>
+      <location filename="../../AttacherTexts.cpp" line="113"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Dopasuj odniesienie położenia do pierwszego wierzchołka. Wyrównaj osie X' i Y' w kierunku wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="112"/>
+      <location filename="../../AttacherTexts.cpp" line="115"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Wyrównanie O-X-Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="113"/>
+      <location filename="../../AttacherTexts.cpp" line="116"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Dopasuj odniesienie położenia do pierwszego wierzchołka. Wyrównaj osie X' i Z' w kierunku wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="115"/>
+      <location filename="../../AttacherTexts.cpp" line="118"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Wyrównanie O-Y-Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="116"/>
+      <location filename="../../AttacherTexts.cpp" line="119"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Dopasuj odniesienie położenia do pierwszego wierzchołka. Wyrównaj osie Y' i Z' w kierunku wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="118"/>
-      <location filename="../../AttacherTexts.cpp" line="193"/>
+      <location filename="../../AttacherTexts.cpp" line="121"/>
+      <location filename="../../AttacherTexts.cpp" line="199"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Wyrównanie O-Y-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="119"/>
+      <location filename="../../AttacherTexts.cpp" line="122"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Dopasuj odniesienie położenia do pierwszego wierzchołka. Wyrównaj osie Y' i X' w kierunku wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="178"/>
+      <location filename="../../AttacherTexts.cpp" line="184"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Wyrównanie O-N-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="179"/>
+      <location filename="../../AttacherTexts.cpp" line="185"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Dopasuj odniesienie położenia do pierwszego wierzchołka. Wyrównaj wektor normalny i oś poziomą płaszczyzny do wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="181"/>
+      <location filename="../../AttacherTexts.cpp" line="187"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Wyrównanie O-N-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="182"/>
+      <location filename="../../AttacherTexts.cpp" line="188"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Dopasuj odniesienie położenia do pierwszego wierzchołka. Wyrównaj wektor normalny i pionową oś płaszczyzny do wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="185"/>
+      <location filename="../../AttacherTexts.cpp" line="191"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Dopasuj odniesienie połączenia do pierwszego wierzchołka. Wyrównaj osie płaszczyzny poziomej i pionowej w kierunku wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="187"/>
+      <location filename="../../AttacherTexts.cpp" line="193"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Wyrównanie O-X-N</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="188"/>
+      <location filename="../../AttacherTexts.cpp" line="194"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Dopasuj odniesienie połączenia do pierwszego wierzchołka. Wyrównaj oś płaszczyzny poziomej i wektor normalny do wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="190"/>
+      <location filename="../../AttacherTexts.cpp" line="196"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Wyrównanie O-Y-N</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="191"/>
+      <location filename="../../AttacherTexts.cpp" line="197"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Dopasuj odniesienie połączenia do pierwszego wierzchołka. Wyrównaj pionową płaszczyznę osi i wektory normalne do linii wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="194"/>
+      <location filename="../../AttacherTexts.cpp" line="200"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Dopasuj odniesienie połączenia do pierwszego wierzchołka. Wyrównaj pionową i poziomą płaszczyznę osi linii wierzchołka/wzdłuż linii.</translation>
@@ -1525,7 +1559,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="326"/>
       <source>Create a non-parametric copy of the selected shape element</source>
-      <translation>Utwórz nieparametryczną kopię wybranego kształtu</translation>
+      <translation>Tworzy nieparametryczną kopię wybranego kształtu</translation>
     </message>
   </context>
   <context>
@@ -2093,7 +2127,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../Command.cpp" line="334"/>
       <source>Part Cut</source>
-      <translation>Częściowe cięcie</translation>
+      <translation>Wytnij środowiska Część</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="410"/>
@@ -2113,7 +2147,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../Command.cpp" line="921"/>
       <source>Section</source>
-      <translation>Przecięcie</translation>
+      <translation>Przekrój</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="973"/>
@@ -2186,7 +2220,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
       <translation>Edytuj dołączenie</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceColors.cpp" line="421"/>
+      <location filename="../../TaskFaceAppearances.cpp" line="456"/>
       <source>Change face colors</source>
       <translation>Zmień kolory ściany</translation>
     </message>
@@ -2421,7 +2455,7 @@ Uwaga: Położenie jest wyrażone w przestrzeni lokalnej dołączanego obiektu.<
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="56"/>
       <source>Section</source>
-      <translation>Przekrój</translation>
+      <translation>Przecięcie</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="76"/>
@@ -2514,11 +2548,6 @@ Uwaga: Położenie jest wyrażone w przestrzeni lokalnej dołączanego obiektu.<
   <context>
     <name>PartGui::DlgExportHeaderStep</name>
     <message>
-      <location filename="../../DlgExportHeaderStep.ui" line="14"/>
-      <source>STEP</source>
-      <translation>STEP</translation>
-    </message>
-    <message>
       <location filename="../../DlgExportHeaderStep.ui" line="20"/>
       <source>If not empty, field contents will be used in the STEP file header.</source>
       <translation>Jeśli pole nie jest puste, jego zawartość zostanie użyta w nagłówku pliku STEP.</translation>
@@ -2546,11 +2575,6 @@ Uwaga: Położenie jest wyrażone w przestrzeni lokalnej dołączanego obiektu.<
   </context>
   <context>
     <name>PartGui::DlgExportStep</name>
-    <message>
-      <location filename="../../DlgExportStep.ui" line="14"/>
-      <source>STEP</source>
-      <translation>STEP</translation>
-    </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="20"/>
       <source>Export</source>
@@ -3130,20 +3154,7 @@ Zaznacz najpierw jedną lub więcej krawędzi.</translation>
     </message>
   </context>
   <context>
-    <name>PartGui::DlgImportExportStep</name>
-    <message>
-      <location filename="../../DlgSettingsGeneral.cpp" line="173"/>
-      <source>STEP</source>
-      <translation>STEP</translation>
-    </message>
-  </context>
-  <context>
     <name>PartGui::DlgImportStep</name>
-    <message>
-      <location filename="../../DlgImportStep.ui" line="14"/>
-      <source>STEP</source>
-      <translation>STEP</translation>
-    </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="20"/>
       <source>Import</source>
@@ -3218,32 +3229,37 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
       <translation>Ignoruj nazwy instancji</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="141"/>
+      <location filename="../../DlgImportStep.ui" line="150"/>
+      <source>CodePage</source>
+      <translation>Strona kodowa</translation>
+    </message>
+    <message>
+      <location filename="../../DlgImportStep.ui" line="177"/>
       <source>Mode</source>
       <translation>Tryb</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="161"/>
+      <location filename="../../DlgImportStep.ui" line="197"/>
       <source>Single document</source>
       <translation>Pojedynczy dokument</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="166"/>
+      <location filename="../../DlgImportStep.ui" line="202"/>
       <source>Assembly per document</source>
       <translation>Złożenie na dokument</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="171"/>
+      <location filename="../../DlgImportStep.ui" line="207"/>
       <source>Assembly per document in sub-directory</source>
       <translation>Złożenie dla każdego dokumentu w osobnym podkatalogu</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="176"/>
+      <location filename="../../DlgImportStep.ui" line="212"/>
       <source>Object per document</source>
       <translation>Obiekt na dokument</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="181"/>
+      <location filename="../../DlgImportStep.ui" line="217"/>
       <source>Object per document in sub-directory</source>
       <translation>Dokument jako obiekt w indywidualnym katalogu podrzędnym</translation>
     </message>
@@ -3390,11 +3406,6 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
   </context>
   <context>
     <name>PartGui::DlgPartImportStepImp</name>
-    <message>
-      <location filename="../../DlgPartImportStepImp.cpp" line="67"/>
-      <source>STEP</source>
-      <translation>STEP</translation>
-    </message>
     <message>
       <location filename="../../DlgPartImportStepImp.cpp" line="68"/>
       <source>All Files</source>
@@ -4050,39 +4061,39 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
       <translation>Automatycznie sprawdź model po wykonaniu operacji logicznej</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="39"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="42"/>
       <source>Automatically refine model after boolean operation</source>
       <translation>Automatycznie udoskonal model po wykonaniu operacji logicznej</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="52"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
       <source>Automatically refine model after sketch-based operation</source>
       <translation>Automatycznie udoskonal model po wykonaniu operacji opartej na szkicu</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="74"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
       <source>Object naming</source>
       <translation>Nazewnictwo obiektów</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="89"/>
       <source>Add name of base object</source>
       <translation>Dodaj nazwę obiektu podstawowego</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="99"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
       <source>Experimental</source>
       <translation>Eksperymentalne</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="117"/>
       <source>These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</source>
-      <translation type="unfinished">These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</translation>
+      <translation>Ustawienia te są eksperymentalne i mogą skutkować zmniejszoną stabilnością, większą liczbą problemów i nieznanym zachowaniem.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="118"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="127"/>
       <source>Allow multiple solids in Part Design Body by default (experimental)</source>
-      <translation type="unfinished">Allow multiple solids in Part Design Body by default (experimental)</translation>
+      <translation>Zezwalaj domyślnie na wiele brył w środowisku Projekt Części (eksperymentalne)</translation>
     </message>
   </context>
   <context>
@@ -4642,7 +4653,7 @@ only created cuts will be visible</source>
       <location filename="../../TaskShapeBuilder.cpp" line="423"/>
       <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Wrong selection</source>
-      <translation>Niewłaściwy wybór</translation>
+      <translation>Nieprawidłowy wybór</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="231"/>
@@ -4755,7 +4766,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="339"/>
       <source>Wrong selection</source>
-      <translation>Nieprawidłowy wybór</translation>
+      <translation>Niewłaściwy wybór</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="339"/>
@@ -5260,46 +5271,6 @@ Pojedyncze kontrole operacji logicznych:</translation>
     </message>
   </context>
   <context>
-    <name>PartGui::TaskFaceColors</name>
-    <message>
-      <location filename="../../TaskFaceColors.ui" line="14"/>
-      <source>Set color per face</source>
-      <translation>Ustaw kolor ściany</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFaceColors.ui" line="20"/>
-      <source>Click on the faces in the 3D view to select them</source>
-      <translation>Aby zaznaczyć ściany w oknie widoku 3D, kliknij na nie</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFaceColors.ui" line="39"/>
-      <source>Faces:</source>
-      <translation>Ściany:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFaceColors.ui" line="87"/>
-      <source>Resets color for all faces of the part</source>
-      <translation>Resetuje kolor wszystkich ścian części</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFaceColors.ui" line="90"/>
-      <source>Set to default</source>
-      <translation>Ustaw na domyślne</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFaceColors.ui" line="97"/>
-      <source>When checked, the you can select multiple faces
-by dragging a selection rectangle in the 3D view</source>
-      <translation>Gdy opcja jest zaznaczona, można wybrać wiele ścian.
-przez przeciągnięcie prostokąta zaznaczenia w oknie widoku 3D</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFaceColors.ui" line="101"/>
-      <source>Box selection</source>
-      <translation>Zaznacz obszarem</translation>
-    </message>
-  </context>
-  <context>
     <name>PartGui::TaskLoft</name>
     <message>
       <location filename="../../TaskLoft.ui" line="14"/>
@@ -5543,26 +5514,26 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProvider.cpp" line="49"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
+      <location filename="../../ViewProvider.cpp" line="49"/>
       <source>Edit %1</source>
       <translation>Edytuj %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="231"/>
+      <location filename="../../AppPartGui.cpp" line="238"/>
       <source>Part and Part Design workbench</source>
       <translation>Środowisko pracy Część i Projekt Części</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="232"/>
-      <location filename="../../AppPartGui.cpp" line="233"/>
-      <location filename="../../AppPartGui.cpp" line="234"/>
+      <location filename="../../AppPartGui.cpp" line="239"/>
+      <location filename="../../AppPartGui.cpp" line="240"/>
+      <location filename="../../AppPartGui.cpp" line="241"/>
       <source>Part/Part Design</source>
       <translation>Część / Projekt Części</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="235"/>
-      <location filename="../../AppPartGui.cpp" line="236"/>
+      <location filename="../../AppPartGui.cpp" line="242"/>
+      <location filename="../../AppPartGui.cpp" line="243"/>
       <source>Import-Export</source>
       <translation>Import-Eksport</translation>
     </message>
@@ -5634,27 +5605,27 @@ Do you want to continue?</source>
       <translation>Nie wybrano odniesienia</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
       <translation>Powierzchnia</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
       <translation>Krawędź</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
       <translation>Wierzchołek</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
       <source>Compound</source>
-      <translation>Złożenie</translation>
+      <translation>Kształt złożony</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
@@ -5927,11 +5898,6 @@ Do you want to continue?</source>
       <translation>Nieprawidłowy</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="886"/>
-      <source>Set colors...</source>
-      <translation>Ustaw kolory ...</translation>
-    </message>
-    <message>
       <location filename="../../ViewProviderMirror.cpp" line="84"/>
       <source>Edit mirror plane</source>
       <translation>Edycja płaszczyzny odbicia lustrzanego</translation>
@@ -5986,6 +5952,11 @@ Do you want to continue?</source>
       <source>Edit projection</source>
       <translation>Edycja rzutu</translation>
     </message>
+    <message>
+      <location filename="../../ViewProviderExt.cpp" line="878"/>
+      <source>Set appearance per face...</source>
+      <translation>Ustaw wygląd dla każdej ściany ...</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -6037,7 +6008,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Compound</source>
-      <translation>Kształt złożony</translation>
+      <translation>Złożenie</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -6726,7 +6697,8 @@ Oznacza to, że nakładające się na siebie objętości kształtów zostaną us
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="75"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
-      <translation>Kształt musi być polilinią, krawędzią lub złożeniem. Wybrano coś innego.</translation>
+      <translation>Kształt musi być polilinią, krawędzią lub złożeniem. 
+Wybrano coś innego.</translation>
     </message>
   </context>
   <context>
@@ -6773,12 +6745,12 @@ Polilinie mogą znajdować się na różnych płaszczyznach.</translation>
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="388"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="459"/>
       <source>Part Extrude facemaker</source>
-      <translation>Wyciągnięcie Części z twórcy ścian</translation>
+      <translation>Wyciągnięcie w kreatorze ścian środowiska Część</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="393"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="464"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Umożliwia stworzenie ścian z otworami, nie umożliwia zagnieżdżania.</translation>
     </message>
@@ -6789,6 +6761,64 @@ Polilinie mogą znajdować się na różnych płaszczyznach.</translation>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
       <source>Wire is not closed.</source>
       <translation>Polilinia nie jest zamknięta.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::TaskFaceAppearances</name>
+    <message>
+      <location filename="../../TaskFaceAppearances.ui" line="14"/>
+      <source>Set appearance per face</source>
+      <translation>Ustaw wygląd dla każdej ściany</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFaceAppearances.ui" line="20"/>
+      <source>Click on the faces in the 3D view to select them</source>
+      <translation>Aby zaznaczyć ściany w oknie widoku 3D, kliknij na nie</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFaceAppearances.ui" line="41"/>
+      <source>Faces:</source>
+      <translation>Ściany:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFaceAppearances.ui" line="66"/>
+      <source>...</source>
+      <translation>...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFaceAppearances.ui" line="73"/>
+      <source>Custom Appearance</source>
+      <translation>Wygląd niestandardowy</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFaceAppearances.ui" line="87"/>
+      <source>Resets color for all faces of the part</source>
+      <translation>Resetuje kolor wszystkich ścian części</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFaceAppearances.ui" line="90"/>
+      <source>Set to default</source>
+      <translation>Ustaw na domyślne</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFaceAppearances.ui" line="97"/>
+      <source>When checked, the you can select multiple faces
+by dragging a selection rectangle in the 3D view</source>
+      <translation>Gdy opcja jest zaznaczona, można wybrać wiele ścian.
+przez przeciągnięcie prostokąta zaznaczenia w oknie widoku 3D</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFaceAppearances.ui" line="101"/>
+      <source>Box selection</source>
+      <translation>Zaznacz obszarem</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::TaskImportStep</name>
+    <message>
+      <location filename="../../DlgImportStep.cpp" line="149"/>
+      <source>Don't show this dialog again</source>
+      <translation>Nie pokazuj ponownie tego okna</translation>
     </message>
   </context>
 </TS>

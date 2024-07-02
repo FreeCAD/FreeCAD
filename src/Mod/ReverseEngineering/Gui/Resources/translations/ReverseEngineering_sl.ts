@@ -233,8 +233,8 @@
       <translation>Postavitev</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
+      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <source>Fit B-Spline</source>
       <translation>Prilegaj B-zlepek</translation>
     </message>

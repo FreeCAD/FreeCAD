@@ -233,8 +233,8 @@
       <translation>Position</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
+      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <source>Fit B-Spline</source>
       <translation>Ajuster la B-spline</translation>
     </message>
@@ -487,7 +487,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="88"/>
       <source>&lt; faces than</source>
-      <translation>des faces &lt; à</translation>
+      <translation>nombre de faces &lt; à</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>

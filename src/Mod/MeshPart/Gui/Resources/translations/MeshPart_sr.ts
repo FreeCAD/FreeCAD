@@ -227,7 +227,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
-      <translation>Жица</translation>
+      <translation>Жичани рам</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>

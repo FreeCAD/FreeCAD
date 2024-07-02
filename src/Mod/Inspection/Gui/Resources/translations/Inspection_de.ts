@@ -94,38 +94,38 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="482"/>
+      <location filename="../../ViewProviderInspection.cpp" line="485"/>
       <source>Remove annotations</source>
       <translation>Anmerkungen entfernen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="483"/>
+      <location filename="../../ViewProviderInspection.cpp" line="486"/>
       <source>Do you want to remove all annotations?</source>
       <translation>Möchtest du alle Anmerkungen entfernen?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="541"/>
+      <location filename="../../ViewProviderInspection.cpp" line="544"/>
       <source>Annotation</source>
       <translation>Anmerkung</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="544"/>
+      <location filename="../../ViewProviderInspection.cpp" line="547"/>
       <source>Leave info mode</source>
       <translation>Info-Modus verlassen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="675"/>
+      <location filename="../../ViewProviderInspection.cpp" line="678"/>
       <source>Distance: &gt; %1</source>
       <translation>Entfernung: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="679"/>
+      <location filename="../../ViewProviderInspection.cpp" line="682"/>
       <source>Distance: &lt; %1</source>
       <translation>Entfernung: &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="699"/>
-      <location filename="../../ViewProviderInspection.cpp" line="716"/>
+      <location filename="../../ViewProviderInspection.cpp" line="702"/>
+      <location filename="../../ViewProviderInspection.cpp" line="719"/>
       <source>Distance: %1</source>
       <translation>Entfernung: %1</translation>
     </message>

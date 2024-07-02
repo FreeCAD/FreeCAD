@@ -1428,7 +1428,7 @@ If not checked, it depends on the option "Enable backlight color"
 will be used or black.</source>
       <translation>Доња страна површине ће бити приказана на исти начин као горња страна.
 Ако није означено, зависи од опције „Омогући боју позадинског осветљења“
-(Подешавања -&gt; Приказ -&gt; 3Д приказ). Или ће се користити боја позадинског
+(Подешавања -&gt; Приказ -&gt; 3Д приказ). Или ће се користити боја позадинског 
 осветљења или црна боја.</translation>
     </message>
     <message>
@@ -1558,7 +1558,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="99"/>
       <source>Adaptive</source>
-      <translation>Прилагодљив</translation>
+      <translation type="unfinished">Adaptive</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="101"/>
@@ -2183,17 +2183,17 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="405"/>
       <source>X3D Extensible 3D</source>
-      <translation>X3Д Extensible 3Д</translation>
+      <translation>X3D Extensible 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="406"/>
       <source>Compressed X3D</source>
-      <translation>Compressed X3Д</translation>
+      <translation>Compressed X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="407"/>
       <source>WebGL/X3D</source>
-      <translation>WebGL/X3Д</translation>
+      <translation>WebGL/X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="409"/>
@@ -2223,7 +2223,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="414"/>
       <source>3D Manufacturing Format</source>
-      <translation>3Д Manufacturing Format</translation>
+      <translation>3D Manufacturing Format</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="424"/>

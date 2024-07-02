@@ -94,8 +94,8 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <location filename="../../dlgPreferencesHelp.ui" line="211"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
+      <translation>დოკუმენტაცია FreeCAD-ის ფანჯრის შიგნით, მოხსნად დიალოგში გაიხსნება,
+რაც საშუალებას გაძლევთ, ის ღია გქონდეთ, როცა 3D ხედში მუშაობთ. ამას PySide-ის QtWebengineWidgets კომპონენტი სჭირდება</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="246"/>
@@ -112,7 +112,7 @@ Markdown version above.</source>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="189"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</source>
-      <translation type="unfinished">The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</translation>
+      <translation>დოკუმენტაცია FreeCAD-ის ინტერფეისის ახალ ჩანართში გაიხსნება. ამას PySide-ის QtWebengineWidgets კომპონენტი სჭირდება</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="215"/>
@@ -145,7 +145,7 @@ Markdown version above.</source>
     <message>
       <location filename="../../Help.py" line="80"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
-      <translation type="unfinished">PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</translation>
+      <translation>PySide QtWebEngineWidgets მოდული ხელმისაწვდომი არაა. დახმარების რენდერი სისტემური ბრაუზერით ხდება</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="84"/>
