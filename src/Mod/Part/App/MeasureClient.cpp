@@ -91,11 +91,12 @@ static float getRadius(TopoDS_Shape& edge){
 
 TopoDS_Shape getLocatedShape(const App::SubObjectT& subject)
 {
-    App::DocumentObject* obj = subject.getObject();
+    App::DocumentObject* obj = subject.getSubObjectList().back();
     if (!obj) {
         return {};
     }
-    Part::TopoShape shape = Part::Feature::getTopoShape(obj);
+
+    Part::TopoShape shape = Part::Feature::getTopoShape(obj, subject.getElementName());
     if (shape.isNull()) {
         return {};
     }
@@ -314,7 +315,7 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
 
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
-        Base::Console().Message("MeasureLengthHandler did not retrieve shape for %s, %s\n",
+        Base::Console().Message("MeasureAreaHandler did not retrieve shape for %s, %s\n",
                                 subject.getObjectName(), subject.getElementName());
         return std::make_shared<MeasureAreaInfo>(false, 0.0, Base::Matrix4D());
     }
