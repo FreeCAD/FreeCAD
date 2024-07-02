@@ -4,17 +4,17 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="960"/>
+      <location filename="../../Command.cpp" line="944"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="961"/>
+      <location filename="../../Command.cpp" line="945"/>
       <source>Create spreadsheet</source>
       <translation>Ustvari preglednico</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="962"/>
+      <location filename="../../Command.cpp" line="946"/>
       <source>Create a new spreadsheet</source>
       <translation>Ustvari novo preglednico</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="526"/>
+      <location filename="../../Command.cpp" line="510"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="511"/>
       <source>Align bottom</source>
       <translation>Poravnaj na dno</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="528"/>
+      <location filename="../../Command.cpp" line="512"/>
       <source>Bottom-align contents of selected cells</source>
       <translation>Poravnaj vsebino izbranih polj na dno</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="355"/>
+      <location filename="../../Command.cpp" line="339"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="356"/>
+      <location filename="../../Command.cpp" line="340"/>
       <source>Align center</source>
       <translation>Poravnaj na sredino</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="357"/>
+      <location filename="../../Command.cpp" line="341"/>
       <source>Center-align contents of selected cells</source>
       <translation>Poravnaj vsebino izbranih polj na sredino</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="298"/>
+      <location filename="../../Command.cpp" line="282"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="299"/>
+      <location filename="../../Command.cpp" line="283"/>
       <source>Align left</source>
       <translation>Poravnaj levo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="300"/>
+      <location filename="../../Command.cpp" line="284"/>
       <source>Left-align contents of selected cells</source>
       <translation>Poravnaj vsebino izbranih polj levo</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="412"/>
+      <location filename="../../Command.cpp" line="396"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="413"/>
+      <location filename="../../Command.cpp" line="397"/>
       <source>Align right</source>
       <translation>Poravnaj desno</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="414"/>
+      <location filename="../../Command.cpp" line="398"/>
       <source>Right-align contents of selected cells</source>
       <translation>Poravnaj vsebino izbranih polj desno</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="469"/>
+      <location filename="../../Command.cpp" line="453"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="470"/>
+      <location filename="../../Command.cpp" line="454"/>
       <source>Align top</source>
       <translation>Poravnaj na vrh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="471"/>
+      <location filename="../../Command.cpp" line="455"/>
       <source>Top-align contents of selected cells</source>
       <translation>Poravnaj vsebino izbranih polj na vrh</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="583"/>
+      <location filename="../../Command.cpp" line="567"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="584"/>
+      <location filename="../../Command.cpp" line="568"/>
       <source>Vertically center-align</source>
       <translation>Sredinso poravnaj po navpičnici</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="585"/>
+      <location filename="../../Command.cpp" line="569"/>
       <source>Vertically center-align contents of selected cells</source>
       <translation>Poravnaj po navpičnici vsebino izbranih polj na sredino</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../Command.cpp" line="236"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../Command.cpp" line="237"/>
       <source>Export spreadsheet</source>
       <translation>Izvozi preglednico</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
+      <location filename="../../Command.cpp" line="238"/>
       <source>Export spreadsheet to CSV file</source>
       <translation>Izvozi preglednico v datoteko CSV</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdSpreadsheetImport</name>
     <message>
-      <location filename="../../Command.cpp" line="182"/>
+      <location filename="../../Command.cpp" line="183"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="183"/>
+      <location filename="../../Command.cpp" line="184"/>
       <source>Import spreadsheet</source>
       <translation>Uvozi preglednico</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="184"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Import CSV file into spreadsheet</source>
       <translation>Uvozi datoteko CSV v preglednico</translation>
     </message>
@@ -166,17 +166,17 @@
   <context>
     <name>CmdSpreadsheetMergeCells</name>
     <message>
-      <location filename="../../Command.cpp" line="59"/>
+      <location filename="../../Command.cpp" line="60"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="60"/>
+      <location filename="../../Command.cpp" line="61"/>
       <source>Merge cells</source>
       <translation>Združi polja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="61"/>
+      <location filename="../../Command.cpp" line="62"/>
       <source>Merge selected cells</source>
       <translation>Združi izbrana polja</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="889"/>
+      <location filename="../../Command.cpp" line="873"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="890"/>
+      <location filename="../../Command.cpp" line="874"/>
       <source>Set alias</source>
       <translation>Nastavi vzdevek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="891"/>
+      <location filename="../../Command.cpp" line="875"/>
       <source>Set alias for selected cell</source>
       <translation>Nastavi izbranemu polju vzdevek</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdSpreadsheetSplitCell</name>
     <message>
-      <location filename="../../Command.cpp" line="120"/>
+      <location filename="../../Command.cpp" line="121"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="121"/>
+      <location filename="../../Command.cpp" line="122"/>
       <source>Split cell</source>
       <translation>Razcepi polja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="122"/>
+      <location filename="../../Command.cpp" line="123"/>
       <source>Split previously merged cells</source>
       <translation>Razcepi predhodno združena polja</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="640"/>
+      <location filename="../../Command.cpp" line="624"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="641"/>
+      <location filename="../../Command.cpp" line="625"/>
       <source>Bold text</source>
       <translation>Krepko besedilo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="642"/>
+      <location filename="../../Command.cpp" line="626"/>
       <source>Set text in selected cells bold</source>
       <translation>Nastavi besedilo v izbranih poljih na krepko</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="723"/>
+      <location filename="../../Command.cpp" line="707"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="724"/>
+      <location filename="../../Command.cpp" line="708"/>
       <source>Italic text</source>
       <translation>Ležeče besedilo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="725"/>
+      <location filename="../../Command.cpp" line="709"/>
       <source>Set text in selected cells italic</source>
       <translation>Nastavi besedilo v izbranih poljih na ležeče</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="806"/>
+      <location filename="../../Command.cpp" line="790"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="807"/>
+      <location filename="../../Command.cpp" line="791"/>
       <source>Underline text</source>
       <translation>Podčrtaj besedilo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="808"/>
+      <location filename="../../Command.cpp" line="792"/>
       <source>Underline text in selected cells</source>
       <translation>Podčrtano besedilo v izbranih poljih</translation>
     </message>
@@ -282,62 +282,62 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="81"/>
+      <location filename="../../Command.cpp" line="82"/>
       <source>Merge cells</source>
       <translation>Združi polja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="142"/>
+      <location filename="../../Command.cpp" line="143"/>
       <source>Split cell</source>
       <translation>Razcepi polja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="321"/>
+      <location filename="../../Command.cpp" line="305"/>
       <source>Left-align cell</source>
       <translation>Levo poravnavanje polja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="378"/>
+      <location filename="../../Command.cpp" line="362"/>
       <source>Center cell</source>
       <translation>Sredinjenje polja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="419"/>
       <source>Right-align cell</source>
       <translation>Desno poravnavanje polja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="492"/>
+      <location filename="../../Command.cpp" line="476"/>
       <source>Top-align cell</source>
       <translation>Gornje poravnavanje polja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="549"/>
+      <location filename="../../Command.cpp" line="533"/>
       <source>Bottom-align cell</source>
       <translation>Spodnje poravnavanje polja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="606"/>
+      <location filename="../../Command.cpp" line="590"/>
       <source>Vertically center cells</source>
       <translation>Sredinjenje polj po navpičnici</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="680"/>
+      <location filename="../../Command.cpp" line="664"/>
       <source>Set bold text</source>
       <translation>Nastavi na krepko besedilo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="763"/>
+      <location filename="../../Command.cpp" line="747"/>
       <source>Set italic text</source>
       <translation>Nastavi na ležeče besedilo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="846"/>
+      <location filename="../../Command.cpp" line="830"/>
       <source>Set underline text</source>
       <translation>Nastavi na podčrtano besedilo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="973"/>
+      <location filename="../../Command.cpp" line="957"/>
       <source>Create Spreadsheet</source>
       <translation>Ustvari preglednico</translation>
     </message>
@@ -678,23 +678,23 @@ nastavitve oblikovanja. Če še ne obstaja, bo lastnost ustvarjena.</translation
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
-      <location filename="../../Command.cpp" line="254"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="140"/>
+      <location filename="../../Command.cpp" line="195"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="196"/>
+      <location filename="../../Command.cpp" line="197"/>
       <source>Import file</source>
       <translation>Uvozi datoteko</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="256"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="142"/>
       <source>Export file</source>
       <translation>Izvozi datoteko</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="167"/>
       <source>Show spreadsheet</source>
       <translation>Prikaži preglednico</translation>
     </message>

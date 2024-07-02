@@ -6,7 +6,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
       <source>Standard (mm, kg, s, °)</source>
-      <translation>標準單位(mm, kg, s, °)</translation>
+      <translation>標準（mm、kg、s、°）</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
@@ -16,22 +16,22 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="73"/>
       <source>US customary (in, lb)</source>
-      <translation>美制單位(in, lb)</translation>
+      <translation>美制（in、lb）</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="75"/>
       <source>Imperial decimal (in, lb)</source>
-      <translation>英制(in, lb)</translation>
+      <translation>英制（in、lb）</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="77"/>
       <source>Building Euro (cm, m², m³)</source>
-      <translation type="unfinished">Building Euro (cm, m², m³)</translation>
+      <translation>歐洲建築（cm、m²、m³）</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="79"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation type="unfinished">Building US (ft-in, sqft, cft)</translation>
+      <translation>美國建築（ft-in、sqft、cft）</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="81"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>
       <source>Imperial for Civil Eng (ft, ft/s)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, ft/s)</translation>
+      <translation>英制土木工程（ft、ft/s）</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="85"/>
@@ -51,12 +51,12 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="87"/>
       <source>Meter decimal (m, m², m³)</source>
-      <translation type="unfinished">Meter decimal (m, m², m³)</translation>
+      <translation>米十進制（m、m²、m³）</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="89"/>
       <source>Unknown schema</source>
-      <translation type="unfinished">Unknown schema</translation>
+      <translation>未知的制式</translation>
     </message>
   </context>
 </TS>

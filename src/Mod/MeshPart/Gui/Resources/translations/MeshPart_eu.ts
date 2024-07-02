@@ -581,7 +581,7 @@ Hautatu beste forma bat.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>Desestali amarauna</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>

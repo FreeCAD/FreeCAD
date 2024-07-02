@@ -31,7 +31,7 @@ the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="112"/>
       <source>    Translation suffix:</source>
-      <translation>    Suffixe de traduction :</translation>
+      <translation>     Suffixe de traduction :</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="123"/>
@@ -93,8 +93,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <location filename="../../dlgPreferencesHelp.ui" line="211"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
+      <translation>La documentation s'ouvrira dans une boîte de dialogue ancrée dans la fenêtre FreeCAD, ce qui vous permettra de la garder ouverte tout en travaillant dans la vue 3D. Cela nécessite le composant QtWebengineWidgets de PySide.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="246"/>

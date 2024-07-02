@@ -102,8 +102,8 @@ personalizada y puede parecer más agradable que la opción de wiki. El módulo 
       <location filename="../../dlgPreferencesHelp.ui" line="211"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
+      <translation>La documentación se abrirá en un diálogo acoplable dentro de la ventana de FreeCAD,
+que le permite mantenerla abierta mientras trabaja en la vista 3D. Esto requiere el componente QtWebengineWidgets de PySide</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="246"/>

@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="537"/>
       <source>Wire from mesh boundary...</source>
-      <translation>Жица од ивица мреже...</translation>
+      <translation>Жичани рам од ивица мреже...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="538"/>
       <source>Create wire from mesh boundaries</source>
-      <translation>Направи жицу од ивица мреже</translation>
+      <translation>Направи жичани рам од ивица мреже</translation>
     </message>
   </context>
   <context>
@@ -233,8 +233,8 @@
       <translation>Положај</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
+      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <source>Fit B-Spline</source>
       <translation>Уклопи Б-Сплајн</translation>
     </message>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="218"/>
       <source>User-defined u/v directions</source>
-      <translation>Кириснички дефинисани u/v смерови</translation>
+      <translation>Кориснички дефинисани u/v смерови</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>

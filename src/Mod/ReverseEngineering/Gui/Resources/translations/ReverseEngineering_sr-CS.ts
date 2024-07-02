@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="537"/>
       <source>Wire from mesh boundary...</source>
-      <translation>Žica od ivica mreže...</translation>
+      <translation>Žičani ram od ivica mreže...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="538"/>
       <source>Create wire from mesh boundaries</source>
-      <translation>Napravi žicu od ivica mreže</translation>
+      <translation>Napravi žičani ram od ivica mreže</translation>
     </message>
   </context>
   <context>
@@ -233,8 +233,8 @@
       <translation>Položaj</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
+      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <source>Fit B-Spline</source>
       <translation>Uklopi B-Splajn</translation>
     </message>
