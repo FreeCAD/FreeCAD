@@ -30,6 +30,7 @@
 #endif
 
 #include <App/Application.h>
+#include <Base/Exception.h>
 #include <Base/Parameter.h>
 
 #include "FeaturePartBoolean.h"
@@ -38,6 +39,33 @@
 
 
 using namespace Part;
+
+namespace Part
+{
+void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/Part/Boolean");
+
+    if (hGrp->GetBool("CheckModel", true)) {
+        BRepCheck_Analyzer aChecker(shape);
+        if (!aChecker.IsValid()) {
+            throw Base::RuntimeError("Resulting shape is invalid");
+        }
+    }
+}
+
+bool getRefineModelParameter()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    return hGrp->GetBool("RefineModel", false);
+}
+
+}
 
 PROPERTY_SOURCE_ABSTRACT(Part::Boolean, Part::Feature)
 
@@ -51,11 +79,7 @@ Boolean::Boolean()
     History.setSize(0);
 
     ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
-
-    //init Refine property
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
-    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
+    this->Refine.setValue(getRefineModelParameter());
 }
 
 short Boolean::mustExecute() const
@@ -118,18 +142,8 @@ App::DocumentObjectExecReturn* Boolean::execute()
         if (resShape.IsNull()) {
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         }
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                                 .GetUserParameter()
-                                                 .GetGroup("BaseApp")
-                                                 ->GetGroup("Preferences")
-                                                 ->GetGroup("Mod/Part/Boolean");
 
-        if (hGrp->GetBool("CheckModel", true)) {
-            BRepCheck_Analyzer aChecker(resShape);
-            if (!aChecker.IsValid()) {
-                return new App::DocumentObjectExecReturn("Resulting shape is invalid");
-            }
-        }
+        throwIfInvalidIfCheckModel(resShape);
 #ifndef FC_USE_TNP_FIX
         std::vector<ShapeHistory> history;
         history.push_back(buildHistory(*mkBool, TopAbs_FACE, resShape, BaseShape));
@@ -161,6 +175,9 @@ App::DocumentObjectExecReturn* Boolean::execute()
         this->Shape.setValue(res);
         return Part::Feature::execute();
 #endif
+    }
+    catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn(
