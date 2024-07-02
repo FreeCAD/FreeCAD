@@ -1187,7 +1187,7 @@ protected:
 
 void CmdSketcherConstraint::activated(int /*iMsg*/)
 {
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(this));
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
     getSelection().clearSelection();
 }
 
@@ -2751,7 +2751,7 @@ void CmdSketcherDimension::activated(int iMsg)
         SubNames = selection[0].getSubNames();
     }
 
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerDimension(SubNames));
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerDimension>(SubNames));
 }
 
 void CmdSketcherDimension::updateAction(int mode)
@@ -2857,7 +2857,7 @@ void horVerActivated(CmdSketcherConstraint* cmd, std::string type)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
-            ActivateHandler(cmd->getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(cmd));
+            ActivateHandler(cmd->getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(cmd));
             Gui::Command::getSelection().clearSelection();
         }
         else {
@@ -3266,7 +3266,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(this));
+            ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
             getSelection().clearSelection();
         }
         else {
@@ -3551,7 +3551,7 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(this));
+            ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
             getSelection().clearSelection();
         }
         else {
@@ -3877,7 +3877,7 @@ void CmdSketcherConstrainCoincidentUnified::onActivated(CoincicenceType type)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(this));
+            ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
             getSelection().clearSelection();
         }
         else {
@@ -4376,7 +4376,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(this));
+            ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
 
             getSelection().clearSelection();
         }
@@ -5024,7 +5024,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(this));
+            ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
             getSelection().clearSelection();
         }
         else {
@@ -5327,7 +5327,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(this));
+            ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
             getSelection().clearSelection();
         }
         else {
@@ -5625,7 +5625,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(this));
+            ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
             getSelection().clearSelection();
         }
         else {
@@ -5798,7 +5798,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(this));
+            ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
             getSelection().clearSelection();
         }
         else {
@@ -6631,7 +6631,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(this));
+            ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
             getSelection().clearSelection();
         }
         else {
@@ -7420,7 +7420,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(this));
+            ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
             getSelection().clearSelection();
         }
         else {
@@ -7783,7 +7783,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(this));
+            ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
             getSelection().clearSelection();
         }
         else {
@@ -8102,7 +8102,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(this));
+            ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
             getSelection().clearSelection();
         }
         else {
@@ -8645,7 +8645,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(this));
+            ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
             getSelection().clearSelection();
         }
         else {
@@ -9086,7 +9086,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(this));
+            ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
             getSelection().clearSelection();
         }
         else {
@@ -9341,7 +9341,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
         bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
 
         if (constraintMode) {
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(this));
+            ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
             getSelection().clearSelection();
         }
         else {

@@ -37,10 +37,6 @@
 #include "DrawSketchControllableHandler.h"
 #include "GeometryCreationMode.h"
 #include "Utils.h"
-#include "ViewProviderSketch.h"
-
-#include "GeometryCreationMode.h"
-#include "Utils.h"
 
 #include "CircleEllipseConstructionMethod.h"
 

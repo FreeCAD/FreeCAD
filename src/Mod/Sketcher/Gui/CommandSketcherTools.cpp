@@ -1107,7 +1107,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
     std::vector<int> listOfGeoIds = getListOfSelectedGeoIds(true);
 
     if (!listOfGeoIds.empty()) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerSymmetry(listOfGeoIds));
+        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerSymmetry>(listOfGeoIds));
     }
     getSelection().clearSelection();
 }
@@ -1440,7 +1440,7 @@ void SketcherCopy::activate(SketcherCopy::Op op)
 */
 
     ActivateHandler(getActiveGuiDocument(),
-                    new DrawSketchHandlerCopy(geoIdList, LastGeoId, LastPointPos, geoids, op));
+                    std::make_unique<DrawSketchHandlerCopy>(geoIdList, LastGeoId, LastPointPos, geoids, op));
 }
 
 
@@ -2031,7 +2031,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
 
     if (slad.exec() == QDialog::Accepted) {
         ActivateHandler(getActiveGuiDocument(),
-                        new DrawSketchHandlerRectangularArray(geoIdList,
+                        std::make_unique<DrawSketchHandlerRectangularArray>(geoIdList,
                                                               LastGeoId,
                                                               LastPointPos,
                                                               geoids,
@@ -2363,7 +2363,7 @@ void CmdSketcherOffset::activated(int iMsg)
     }
 
     if (listOfGeoIds.size() != 0) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerOffset(listOfGeoIds));
+        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerOffset>(listOfGeoIds));
     }
     else {
         getSelection().clearSelection();
@@ -2402,7 +2402,7 @@ void CmdSketcherRotate::activated(int iMsg)
     std::vector<int> listOfGeoIds = getListOfSelectedGeoIds(true);
 
     if (!listOfGeoIds.empty()) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRotate(listOfGeoIds));
+        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerRotate>(listOfGeoIds));
     }
     getSelection().clearSelection();
 }
@@ -2436,7 +2436,7 @@ void CmdSketcherScale::activated(int iMsg)
     std::vector<int> listOfGeoIds = getListOfSelectedGeoIds(true);
 
     if (!listOfGeoIds.empty()) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerScale(listOfGeoIds));
+        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerScale>(listOfGeoIds));
     }
     getSelection().clearSelection();
 }
@@ -2470,7 +2470,7 @@ void CmdSketcherTranslate::activated(int iMsg)
     std::vector<int> listOfGeoIds = getListOfSelectedGeoIds(true);
 
     if (!listOfGeoIds.empty()) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerTranslate(listOfGeoIds));
+        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerTranslate>(listOfGeoIds));
     }
     getSelection().clearSelection();
 }

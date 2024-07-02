@@ -529,7 +529,7 @@ public:
     /** @name handler control */
     //@{
     /// sets an DrawSketchHandler in control
-    void activateHandler(DrawSketchHandler* newHandler);
+    void activateHandler(std::unique_ptr<DrawSketchHandler> newHandler);
     /// removes the active handler
     void purgeHandler();
     //@}
