@@ -177,16 +177,20 @@
     </g>
   </g>
   <g
-     id="g6-6"
+     id="g6-8"
      transform="translate(0.528267,2.2307492)"
      style="display:inline">
     <path
-       id="path5-8"
+       id="path5-6"
        d="m 31.471733,2.7692508 v 6.75 m 0,4.5000002 v 13.5 m 0,4.5 v 13.5 m 0,4.5 v 6.75"
-       style="display:inline;fill:none;fill-rule:evenodd;stroke:#0b1521;stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:5.4;stroke-opacity:1" />
+       style="display:inline;fill:none;fill-rule:evenodd;stroke:#0b1521;stroke-width:8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:5.4;stroke-opacity:1" />
     <path
-       id="path1"
+       id="path1-4"
        d="m 31.471733,2.7692508 v 6.75 m 0,4.5000002 v 13.5 m 0,4.5 v 13.5 m 0,4.5 v 6.75"
+       style="display:inline;fill:none;fill-rule:evenodd;stroke:#3465a4;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:5.4;stroke-opacity:1" />
+    <path
+       id="path7"
+       d="m 30.471733,2.7692508 v 6.75 m 0,4.5000002 v 13.5 m 0,4.5 v 13.5 m 0,4.5 v 6.75"
        style="display:inline;fill:none;fill-rule:evenodd;stroke:#729fcf;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:5.4;stroke-opacity:1" />
   </g>
 </svg>
