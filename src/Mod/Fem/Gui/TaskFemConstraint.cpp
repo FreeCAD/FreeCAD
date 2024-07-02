@@ -63,8 +63,27 @@ TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint* ConstraintView,
     selectionMode = selref;
 }
 
+bool TaskFemConstraint::event(QEvent* event)
+{
+    if (event && event->type() == QEvent::ShortcutOverride) {
+        auto kevent = static_cast<QKeyEvent*>(event);
+        if (deleteAction && kevent->matches(QKeySequence::Delete)) {
+            kevent->accept();
+        }
+    }
+    return TaskBox::event(event);
+}
+
 void TaskFemConstraint::keyPressEvent(QKeyEvent* ke)
 {
+    // if we have a Del key, trigger the deleteAction
+    if (ke->matches(QKeySequence::Delete)) {
+        if (deleteAction && deleteAction->isEnabled()) {
+            ke->accept();
+            deleteAction->trigger();
+        }
+    }
+
     TaskBox::keyPressEvent(ke);
 }
 
@@ -155,32 +174,6 @@ void TaskFemConstraint::createDeleteAction(QListWidget* parentList)
 #endif
     parentList->addAction(deleteAction);
     parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
-}
-
-bool TaskFemConstraint::KeyEvent(QEvent* e)
-{
-    // in case another instance takes key events, accept the overridden key even
-    if (e && e->type() == QEvent::ShortcutOverride) {
-        QKeyEvent* kevent = static_cast<QKeyEvent*>(e);
-        if (kevent->modifiers() == Qt::NoModifier) {
-            if (deleteAction && kevent->key() == Qt::Key_Delete) {
-                kevent->accept();
-                return true;
-            }
-        }
-    }
-    // if we have a Del key, trigger the deleteAction
-    else if (e && e->type() == QEvent::KeyPress) {
-        QKeyEvent* kevent = static_cast<QKeyEvent*>(e);
-        if (kevent->key() == Qt::Key_Delete) {
-            if (deleteAction && deleteAction->isEnabled()) {
-                deleteAction->trigger();
-            }
-            return true;
-        }
-    }
-
-    return TaskFemConstraint::event(e);
 }
 
 //**************************************************************************

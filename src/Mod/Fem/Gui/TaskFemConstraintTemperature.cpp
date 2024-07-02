@@ -319,11 +319,6 @@ std::string TaskFemConstraintTemperature::get_constraint_type() const
     return ui->cb_constr_type->currentText().toStdString();
 }
 
-bool TaskFemConstraintTemperature::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintTemperature::changeEvent(QEvent*)
 {
     //    TaskBox::changeEvent(e);

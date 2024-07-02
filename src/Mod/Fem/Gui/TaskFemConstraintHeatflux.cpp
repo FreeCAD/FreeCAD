@@ -458,11 +458,6 @@ std::string TaskFemConstraintHeatflux::get_constraint_type() const
     return type;
 }
 
-bool TaskFemConstraintHeatflux::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintHeatflux::changeEvent(QEvent* e)
 {
     TaskBox::changeEvent(e);
