@@ -88,6 +88,12 @@ public:
         , resetSeekSecond(false) {};
     ~DrawSketchHandlerBSpline() override = default;
 
+    void activated() override
+    {
+        DrawSketchHandlerBSplineBase::activated();
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch bSpline"));
+    }
+
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
@@ -453,7 +459,6 @@ private:
             ? Sketcher::PointPos::mid
             : Sketcher::PointPos::start;
         if (state() == SelectMode::SeekFirst) {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch bSpline"));
             // insert point for pole/knot, defer internal alignment constraining.
             if (!addPos()) {
                 return false;
@@ -546,6 +551,7 @@ private:
     {
         Gui::Command::abortCommand();
         tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch bSpline"));
 
         SplineDegree = 3;
         geoIds.clear();
