@@ -472,16 +472,17 @@ template<>
 void DSHRotateController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        toolWidget->setCheckboxLabel(
-            WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_offset", "Clone constraints"));
+        toolWidget->setCheckboxLabel(WCheckbox::FirstBox,
+                                     QApplication::translate("TaskSketcherTool_c1_offset",
+                                                             "Replace dimensions by equalities"));
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
             QString::fromLatin1("<p>")
-                + QApplication::translate("TaskSketcherTool_c1_offset",
-                                          "This concerns the datum constraints (e.g. distance)."
-                                          "If you activate Clone, the tool will copy the datum."
-                                          "Else it will try to replace them with equalities.")
+                + QApplication::translate(
+                    "TaskSketcherTool_c1_offset",
+                    "This concerns the dimensions constraints (e.g. distance). "
+                    "If you activate this, the tool will copy the dimensions. "
+                    "Else it will try to replace them with equalities.")
                 + QString::fromLatin1("</p>"));
     }
 
