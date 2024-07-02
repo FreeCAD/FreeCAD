@@ -58,6 +58,13 @@ void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape)
     }
 }
 
+bool getRefineModelParameter()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    return hGrp->GetBool("RefineModel", false);
+}
+
 }
 
 PROPERTY_SOURCE_ABSTRACT(Part::Boolean, Part::Feature)
@@ -73,10 +80,7 @@ Boolean::Boolean()
 
     ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
 
-    //init Refine property
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
-    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
+    this->Refine.setValue(getRefineModelParameter());
 }
 
 short Boolean::mustExecute() const

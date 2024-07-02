@@ -30,9 +30,6 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-#include <App/Application.h>
-#include <Base/Parameter.h>
-
 #include "FeaturePartCommon.h"
 #include "TopoShapeOpCode.h"
 #include "modelRefine.h"
@@ -43,6 +40,7 @@ using namespace Part;
 namespace Part
 {
     extern void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape);
+    extern bool getRefineModelParameter();
 }
 
 PROPERTY_SOURCE(Part::Common, Part::Boolean)
@@ -76,10 +74,7 @@ MultiCommon::MultiCommon()
 
     ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
 
-    //init Refine property
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
-    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
+    this->Refine.setValue(getRefineModelParameter());
 }
 
 short MultiCommon::mustExecute() const
