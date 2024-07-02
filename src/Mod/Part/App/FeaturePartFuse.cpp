@@ -43,6 +43,11 @@ FC_LOG_LEVEL_INIT("Part",true,true);
 
 using namespace Part;
 
+namespace Part
+{
+    extern void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape);
+}
+
 PROPERTY_SOURCE(Part::Fuse, Part::Boolean)
 
 
@@ -151,17 +156,8 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
                 throw Base::RuntimeError("Resulting shape is null");
             }
 
-            Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                                     .GetUserParameter()
-                                                     .GetGroup("BaseApp")
-                                                     ->GetGroup("Preferences")
-                                                     ->GetGroup("Mod/Part/Boolean");
-            if (hGrp->GetBool("CheckModel", true)) {
-                BRepCheck_Analyzer aChecker(res.getShape());
-                if (!aChecker.IsValid()) {
-                    return new App::DocumentObjectExecReturn("Resulting shape is invalid");
-                }
-            }
+            throwIfInvalidIfCheckModel(res.getShape());
+
             if (this->Refine.getValue()) {
                 try {
                     TopoDS_Shape oldShape = res.getShape();

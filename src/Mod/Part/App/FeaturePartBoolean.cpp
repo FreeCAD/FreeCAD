@@ -30,6 +30,7 @@
 #endif
 
 #include <App/Application.h>
+#include <Base/Exception.h>
 #include <Base/Parameter.h>
 
 #include "FeaturePartBoolean.h"
@@ -38,6 +39,26 @@
 
 
 using namespace Part;
+
+namespace Part
+{
+void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/Part/Boolean");
+
+    if (hGrp->GetBool("CheckModel", true)) {
+        BRepCheck_Analyzer aChecker(shape);
+        if (!aChecker.IsValid()) {
+            throw Base::RuntimeError("Resulting shape is invalid");
+        }
+    }
+}
+
+}
 
 PROPERTY_SOURCE_ABSTRACT(Part::Boolean, Part::Feature)
 
@@ -118,18 +139,9 @@ App::DocumentObjectExecReturn* Boolean::execute()
         if (resShape.IsNull()) {
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         }
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                                 .GetUserParameter()
-                                                 .GetGroup("BaseApp")
-                                                 ->GetGroup("Preferences")
-                                                 ->GetGroup("Mod/Part/Boolean");
 
-        if (hGrp->GetBool("CheckModel", true)) {
-            BRepCheck_Analyzer aChecker(resShape);
-            if (!aChecker.IsValid()) {
-                return new App::DocumentObjectExecReturn("Resulting shape is invalid");
-            }
-        }
+        throwIfInvalidIfCheckModel(resShape);
+
         TopoShape res(0);
         res.makeElementShape(*mkBool, shapes, opCode());
         if (this->Refine.getValue()) {
@@ -138,6 +150,9 @@ App::DocumentObjectExecReturn* Boolean::execute()
         this->Shape.setValue(res);
         copyMaterial(base);
         return Part::Feature::execute();
+    }
+    catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn(
