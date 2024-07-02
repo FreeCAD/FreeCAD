@@ -1383,6 +1383,9 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.joint.Visibility = self.visibilityBackup
         return True
 
+    def autoClosedOnTransactionChange(self):
+        self.reject()
+
     def deactivate(self):
         global activeTask
         activeTask = None
