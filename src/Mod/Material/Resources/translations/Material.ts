@@ -476,24 +476,24 @@ If unchecked, they will be sorted by their name.</source>
     <message>
         <location filename="../../Gui/MaterialsEditor.cpp" line="745"/>
         <location filename="../../Gui/MaterialsEditor.cpp" line="777"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="985"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1047"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1051"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1113"/>
         <source>Property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Gui/MaterialsEditor.cpp" line="746"/>
         <location filename="../../Gui/MaterialsEditor.cpp" line="778"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="986"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1048"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1052"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1114"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Gui/MaterialsEditor.cpp" line="747"/>
         <location filename="../../Gui/MaterialsEditor.cpp" line="779"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="987"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1049"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1053"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1115"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -508,22 +508,22 @@ If unchecked, they will be sorted by their name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1050"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1116"/>
         <source>Units</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1217"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1283"/>
         <source>Context menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1219"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1285"/>
         <source>Inherit from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1224"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1290"/>
         <source>Inherit new material</source>
         <translation type="unfinished"></translation>
     </message>
@@ -650,17 +650,17 @@ If unchecked, they will be sorted by their name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1246"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1312"/>
         <source>Unsaved Material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1247"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1313"/>
         <source>Do you want to save your changes to the material before closing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1249"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1315"/>
         <source>If you don&apos;t save, your changes will be lost.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -871,7 +871,7 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
         <location filename="../../Gui/DlgDisplayProperties.ui" line="372"/>
-        <source>Shape Appearance:</source>
+        <source>Custom Appearance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -929,7 +929,7 @@ If unchecked, they will be sorted by their name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/DlgMaterialImp.cpp" line="58"/>
+        <location filename="../../Gui/DlgMaterialImp.cpp" line="57"/>
         <source>Material</source>
         <translation type="unfinished"></translation>
     </message>
@@ -943,13 +943,13 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
         <location filename="../../Gui/MaterialTreeWidget.cpp" line="276"/>
-        <location filename="../../Gui/MaterialTreeWidget.cpp" line="497"/>
+        <location filename="../../Gui/MaterialTreeWidget.cpp" line="507"/>
         <source>Favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Gui/MaterialTreeWidget.cpp" line="276"/>
-        <location filename="../../Gui/MaterialTreeWidget.cpp" line="504"/>
+        <location filename="../../Gui/MaterialTreeWidget.cpp" line="514"/>
         <source>Recent</source>
         <translation type="unfinished"></translation>
     </message>
@@ -957,17 +957,17 @@ If unchecked, they will be sorted by their name.</source>
 <context>
     <name>MatGui::DlgDisplayPropertiesImp</name>
     <message>
-        <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="215"/>
+        <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="214"/>
         <source>Basic Appearance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="220"/>
+        <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="219"/>
         <source>Texture Appearance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="225"/>
+        <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="224"/>
         <source>All Materials</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1024,42 +1024,42 @@ If unchecked, they will be sorted by their name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/DlgInspectAppearance.ui" line="94"/>
+        <location filename="../../Gui/DlgInspectAppearance.ui" line="100"/>
         <source>Appearance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/DlgInspectAppearance.ui" line="101"/>
+        <location filename="../../Gui/DlgInspectAppearance.ui" line="107"/>
         <source>Tab 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/DlgInspectAppearance.ui" line="106"/>
+        <location filename="../../Gui/DlgInspectAppearance.ui" line="112"/>
         <source>Tab 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/DlgInspectAppearance.cpp" line="204"/>
+        <location filename="../../Gui/DlgInspectAppearance.cpp" line="202"/>
         <source>Diffuse Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/DlgInspectAppearance.cpp" line="213"/>
+        <location filename="../../Gui/DlgInspectAppearance.cpp" line="211"/>
         <source>Ambient Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/DlgInspectAppearance.cpp" line="222"/>
+        <location filename="../../Gui/DlgInspectAppearance.cpp" line="220"/>
         <source>Emissive Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/DlgInspectAppearance.cpp" line="231"/>
+        <location filename="../../Gui/DlgInspectAppearance.cpp" line="229"/>
         <source>Specular Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/DlgInspectAppearance.cpp" line="240"/>
+        <location filename="../../Gui/DlgInspectAppearance.cpp" line="238"/>
         <source>Shininess</source>
         <translation type="unfinished"></translation>
     </message>
