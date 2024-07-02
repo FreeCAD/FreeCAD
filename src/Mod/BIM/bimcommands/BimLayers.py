@@ -73,7 +73,7 @@ class BIM_Layers:
         self.assignList = {}
 
         # create the dialog
-        self.dialog = FreeCADGui.PySideUic.loadUi(":/ui/dialogLayers.ui")
+        self.dialog = FreeCADGui.PySideUic.loadUi(":/ui/dialogLayersIFC.ui")
 
         # store the ifc icon
         self.ifcicon = QtGui.QIcon(":/icons/IFC.svg")
@@ -166,6 +166,10 @@ class BIM_Layers:
                     changed = True
                 if self.model.item(row, 1).icon().isNull():
                     obj = Draft.make_layer(self.model.item(row, 1).text())
+                    # By default BIM layers should not swallow their children otherwise
+                    # they will disappear from the tree root
+                    obj.ViewObject.addProperty("App::PropertyBool", "HideChildren", "Layer")
+                    obj.ViewObject.HideChildren = True
                 else:
                     from nativeifc import ifc_tools
                     import FreeCADGui
@@ -510,7 +514,7 @@ class BIM_Layers:
                             self.assignList.setdefault(target.Name, [])
                             for i in selected:
                                 if i not in self.assignList[target.Name]:
-                                    self.ssignList[target.Name].append(i)
+                                    self.assignList[target.Name].append(i)
 
 
 if FreeCAD.GuiUp:
