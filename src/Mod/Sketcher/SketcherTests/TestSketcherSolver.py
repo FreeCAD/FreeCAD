@@ -493,6 +493,7 @@ class TestSketcherSolver(unittest.TestCase):
         body.addObject(sketch1)
         self.Doc.recompute()
         hole = self.Doc.addObject("PartDesign::Hole", "Hole")
+        hole.Refine = True
         body.addObject(hole)
         hole.Profile = sketch1
         hole.Diameter = 0.250000
