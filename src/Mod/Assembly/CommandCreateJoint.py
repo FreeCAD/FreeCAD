@@ -59,7 +59,10 @@ def activateJoint(index):
         JointObject.activeTask.reject()
 
     panel = TaskAssemblyCreateJoint(index)
-    Gui.Control.showDialog(panel)
+    dialog = Gui.Control.showDialog(panel)
+    if dialog is not None:
+        dialog.setAutoCloseOnTransactionChange(True)
+        dialog.setDocumentName(App.ActiveDocument.Name)
 
 
 class CommandCreateJointFixed:
