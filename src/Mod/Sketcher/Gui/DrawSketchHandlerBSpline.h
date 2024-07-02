@@ -528,9 +528,15 @@ private:
         // We must see if we need to create a B-spline before cancelling everything
 
         if (state() == SelectMode::SeekSecond) {
-            // create B-spline from existing poles/knots
-            setState(SelectMode::End);
-            finish();
+            if (geoIds.size() > 1) {
+                // create B-spline from existing poles/knots
+                setState(SelectMode::End);
+                finish();
+            }
+            else {
+                // We don't want to finish() as that'll create auto-constraints
+                handleContinuousMode();
+            }
         }
         else {
             DrawSketchHandler::quit();
