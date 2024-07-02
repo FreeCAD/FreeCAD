@@ -64,6 +64,7 @@ public:
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
+    App::MeasureType* _mMeasureType = nullptr;
     Measure::MeasureBase *_mMeasureObject = nullptr;
 
     QLineEdit* valueResult{nullptr};
