@@ -27,6 +27,8 @@
 #include <cfloat>
 #endif
 
+#include <boost/range/adaptor/reversed.hpp>
+
 #include <App/Application.h>
 #include <Base/Tools.h>
 #include <Base/Tools2D.h>
@@ -1385,7 +1387,7 @@ public:
         , selEllipseAndCo({})
         , selSplineAndCo({})
         , initialSelection(std::move(SubNames))
-        , numberOfConstraintsCreated(0)
+        , cstrIndexes({})
     {
     }
     ~DrawSketchHandlerDimension() override
@@ -1468,10 +1470,6 @@ public:
             }
             makeAppropriateConstraint(previousOnSketchPos);
         }
-        else if (key == SoKeyboardEvent::Z && (QApplication::keyboardModifiers() & Qt::ControlModifier)) {
-            // User trying to cancel with Ctrl-Z
-            sketchgui->purgeHandler();
-        }
         else {
             DrawSketchHandler::registerPressedKey(pressed, key);
         }
@@ -1479,7 +1477,11 @@ public:
 
     void mouseMove(Base::Vector2d onSketchPos) override
     {
-        const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
+        if (hasBeenAborted()) {
+            resetTool();
+            return;
+        }
+
         previousOnSketchPos = onSketchPos;
 
         //Change distance constraint based on position of mouse.
@@ -1487,19 +1489,20 @@ public:
             updateDistanceType(onSketchPos);
 
         //Move constraints
-        if (numberOfConstraintsCreated > 0) {
+        if (cstrIndexes.size() > 0) {
             bool oneMoved = false;
-            for (int i = 0; i < numberOfConstraintsCreated; i++) {
-                if (ConStr[ConStr.size() - 1 - i]->isDimensional()) {
+            const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
+            for (int index : cstrIndexes) {
+                if (ConStr[index]->isDimensional()) {
                     Base::Vector2d pointWhereToMove = onSketchPos;
 
                     if (specialConstraint == SpecialConstraint::Block) {
-                        if (i == 0)
-                            pointWhereToMove.x = Obj->getPoint(selPoints[0].GeoId, selPoints[0].PosId).x;
-                        else
+                        if (index == ConStr.size() - 1)
                             pointWhereToMove.y = Obj->getPoint(selPoints[0].GeoId, selPoints[0].PosId).y;
+                        else
+                            pointWhereToMove.x = Obj->getPoint(selPoints[0].GeoId, selPoints[0].PosId).x;
                     }
-                    moveConstraint(ConStr.size() - 1 - i, pointWhereToMove);
+                    moveConstraint(index, pointWhereToMove);
                     oneMoved = true;
                 }
             }
@@ -1620,7 +1623,7 @@ protected:
 
     std::vector<std::string> initialSelection;
 
-    int numberOfConstraintsCreated;
+    std::vector<int> cstrIndexes;
 
     Sketcher::SketchObject* Obj;
 
@@ -1671,16 +1674,21 @@ protected:
 
     void finalizeCommand()
     {
+        if (hasBeenAborted()) {
+            resetTool();
+            return;
+        }
+
         // Ask for the value of datum constraints
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
         bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
         const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
 
         bool commandHandledInEditDatum = false;
-        for (int i = numberOfConstraintsCreated - 1; i >= 0; i--) {
-            if (show && ConStr[ConStr.size() - 1 - i]->isDimensional() && ConStr[ConStr.size() - 1 - i]->isDriving) {
+        for (int index : cstrIndexes | boost::adaptors::reversed) {
+            if (show && ConStr[index]->isDimensional() && ConStr[index]->isDriving) {
                 commandHandledInEditDatum = true;
-                EditDatumDialog editDatumDialog(sketchgui, ConStr.size() - 1 - i);
+                EditDatumDialog editDatumDialog(sketchgui, index);
                 editDatumDialog.exec();
                 if (!editDatumDialog.isSuccess()) {
                     break;
@@ -1694,12 +1702,7 @@ protected:
         // This code enables the continuous creation mode.
         bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
         if (continuousMode) {
-            Gui::Selection().clearSelection();
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
-            numberOfConstraintsCreated = 0;
-            specialConstraint = SpecialConstraint::None;
-            previousOnSketchPos = Base::Vector2d(0.f, 0.f);
-            clearRefVectors();
+            resetTool();
         }
         else {
             sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
@@ -2383,7 +2386,7 @@ protected:
             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Coincident', %d, %d, %d, %d)) ",
                 GeoId1, static_cast<int>(PosId1), GeoId2, static_cast<int>(PosId2));
 
-            numberOfConstraintsCreated++;
+            addConstraintIndex();
             return true;
         }
         return false;
@@ -2413,7 +2416,7 @@ protected:
 
         Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
             GeoId1, GeoId2);
-        numberOfConstraintsCreated++;
+        addConstraintIndex();
     }
 
     void createAngleConstrain(int GeoId1, int GeoId2, Base::Vector2d onSketchPos) {
@@ -2479,7 +2482,7 @@ protected:
             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%d,%d,%d,%d)) "
                 , GeoId1, static_cast<int>(PosId1), GeoId2, static_cast<int>(PosId2));
         }
-        numberOfConstraintsCreated++;
+        addConstraintIndex();
         tryAutoRecompute(Obj);
     }
     void createHorizontalConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2) {
@@ -2493,14 +2496,14 @@ protected:
             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%d,%d,%d,%d)) "
                 , GeoId1, static_cast<int>(PosId1), GeoId2, static_cast<int>(PosId2));
         }
-        numberOfConstraintsCreated++;
+        addConstraintIndex();
         tryAutoRecompute(Obj);
     }
 
     void createBlockConstrain(int GeoId) {
         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Block',%d)) ", GeoId);
 
-        numberOfConstraintsCreated++;
+        addConstraintIndex();
         tryAutoRecompute(Obj);
     }
 
@@ -2545,7 +2548,7 @@ protected:
                 Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d)) ",
                     GeoId1, static_cast<int>(PosId1), GeoId2, static_cast<int>(PosId2), GeoId3);
 
-                numberOfConstraintsCreated++;
+                addConstraintIndex();
                 tryAutoRecompute(Obj);
             }
         }
@@ -2569,7 +2572,7 @@ protected:
             Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d)) ",
                 GeoId1, static_cast<int>(PosId1), GeoId2, static_cast<int>(PosId2), GeoId3, static_cast<int>(PosId3));
 
-            numberOfConstraintsCreated++;
+            addConstraintIndex();
             tryAutoRecompute(Obj);
         }
     }
@@ -2674,8 +2677,25 @@ protected:
             Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", index, "False");
         }
 
-        numberOfConstraintsCreated++;
+        addConstraintIndex();
         moveConstraint(index, onSketchPos);
+    }
+
+    void addConstraintIndex()
+    {
+        cstrIndexes.push_back(Obj->Constraints.getValues().size() - 1);
+    }
+
+    bool hasBeenAborted()
+    {
+        // User can abort the command with Undo (ctrl-Z)
+        if (cstrIndexes.size() > 0) {
+            if (cstrIndexes.back() != Obj->Constraints.getValues().size() - 1 ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     void restartCommand(const char* cstrName) {
@@ -2685,7 +2705,17 @@ protected:
         sketchgui->draw(false, false); // Redraw
         Gui::Command::openCommand(cstrName);
 
-        numberOfConstraintsCreated = 0;
+        cstrIndexes.clear();
+    }
+
+    void resetTool()
+    {
+        Gui::Selection().clearSelection();
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
+        cstrIndexes.clear();
+        specialConstraint = SpecialConstraint::None;
+        previousOnSketchPos = Base::Vector2d(0.f, 0.f);
+        clearRefVectors();
     }
 };
 
