@@ -181,6 +181,11 @@ private:
     void adjustMinimumSizeHint();
     void saveCurrentWidth();
     void tryRestoreWidth();
+    void slotActiveDocument(const App::Document&);
+    void slotDeletedDocument(const App::Document&);
+    void slotUndoDocument(const App::Document&);
+    void slotRedoDocument(const App::Document&);
+    void transactionChangeOnDocument(const App::Document&);
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
@@ -194,11 +199,6 @@ protected:
     void showDialog(TaskDialog *dlg);
     // removes the running dialog after accept() or reject() from the TaskView
     void removeDialog();
-
-    void slotActiveDocument(const App::Document&);
-    void slotDeletedDocument();
-    void slotUndoDocument(const App::Document&);
-    void slotRedoDocument(const App::Document&);
 
     std::vector<TaskWatcher*> ActiveWatcher;
 

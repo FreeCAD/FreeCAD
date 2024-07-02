@@ -120,7 +120,7 @@ Py::Object ControlPy::showDialog(const Py::Tuple& args)
         throw Py::RuntimeError("Active task dialog found");
     auto dlg = new TaskDialogPython(Py::Object(arg0));
     Gui::Control().showDialog(dlg);
-    return Py::None();
+    return (Py::asObject(new TaskDialogPy(dlg)));
 }
 
 Py::Object ControlPy::activeDialog(const Py::Tuple& args)
@@ -335,8 +335,14 @@ void TaskDialogPy::init_type()
                        "active transaction");
     add_varargs_method("isAutoCloseOnTransactionChange",&TaskDialogPy::isAutoCloseOnTransactionChange,
                        "Checks if the task dialog will be closed when the active transaction has changed -> bool");
+    add_varargs_method("setAutoCloseOnDeletedDocument",&TaskDialogPy::setAutoCloseOnDeletedDocument,
+                       "Defines whether a task dialog must be closed if the document is deleted");
+    add_varargs_method("isAutoCloseOnDeletedDocument",&TaskDialogPy::isAutoCloseOnDeletedDocument,
+                       "Checks if the task dialog will be closed if the document is deleted -> bool");
     add_varargs_method("getDocumentName",&TaskDialogPy::getDocumentName,
                        "Get the name of the document the task dialog is attached to -> str");
+    add_varargs_method("setDocumentName",&TaskDialogPy::setDocumentName,
+                       "Set the name of the document the task dialog is attached to");
     add_varargs_method("isAllowedAlterDocument",&TaskDialogPy::isAllowedAlterDocument,
                        "Indicates whether this task dialog allows other commands to modify\n"
                        "the document while it is open -> bool");
@@ -442,11 +448,34 @@ Py::Object TaskDialogPy::isAutoCloseOnTransactionChange(const Py::Tuple& args)
     return Py::Boolean(dialog->isAutoCloseOnTransactionChange());
 }
 
+Py::Object TaskDialogPy::setAutoCloseOnDeletedDocument(const Py::Tuple& args)
+{
+    Py::Boolean value(args[0]);
+    dialog->setAutoCloseOnDeletedDocument(static_cast<bool>(value));
+    return Py::None();
+}
+
+Py::Object TaskDialogPy::isAutoCloseOnDeletedDocument(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::Boolean(dialog->isAutoCloseOnDeletedDocument());
+}
+
 Py::Object TaskDialogPy::getDocumentName(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     return Py::String(dialog->getDocumentName());
+}
+
+Py::Object TaskDialogPy::setDocumentName(const Py::Tuple& args)
+{
+    const char* name {""};
+    if (!PyArg_ParseTuple(args.ptr(), "s", &name))
+        throw Py::Exception();
+    dialog->setDocumentName(name);
+    return Py::None();
 }
 
 Py::Object TaskDialogPy::isAllowedAlterDocument(const Py::Tuple& args)
@@ -845,3 +874,34 @@ bool TaskDialogPython::needsFullSpace() const
     return TaskDialog::needsFullSpace();
 }
 
+void TaskDialogPython::autoClosedOnTransactionChange()
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (dlg.hasAttr(std::string("autoClosedOnTransactionChange"))) {
+            Py::Callable method(dlg.getAttr(std::string("autoClosedOnTransactionChange")));
+            Py::Tuple args;
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void TaskDialogPython::autoClosedOnDeletedDocument()
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (dlg.hasAttr(std::string("autoClosedOnDeletedDocument"))) {
+            Py::Callable method(dlg.getAttr(std::string("autoClosedOnDeletedDocument")));
+            Py::Tuple args;
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
