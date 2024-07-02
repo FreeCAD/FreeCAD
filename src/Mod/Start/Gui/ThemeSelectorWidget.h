@@ -56,6 +56,7 @@ private:
     void retranslateUi();
     void setupUi();
     void setupButtons(QBoxLayout* layout);
+    void onLinkActivated(const QString& link);
 
     QLabel* _titleLabel;
     QLabel* _descriptionLabel;
