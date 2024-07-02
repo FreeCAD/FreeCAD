@@ -58,7 +58,6 @@ private:
 // https://github.com/FreeCAD/FreeCAD/issues/11965
 TEST_F(ExpressionParserTest, functionPARSEQUANT)
 {
-
     EXPECT_ANY_THROW(App::ExpressionParser::parse(this_obj(), "parsequant()")) << "should not parse empty";
 
     EXPECT_NO_THROW(App::ExpressionParser::parse(this_obj(), "parsequant(1 mm)")) << "should parse simple quantity";
@@ -68,6 +67,11 @@ TEST_F(ExpressionParserTest, functionPARSEQUANT)
     EXPECT_ANY_THROW(parse_quantity_text_as_quantity("parsequant(1 mm)")) << "should not treat parsequant-function as quantity";
     EXPECT_EQ(parse_quantity_text_as_quantity("1 mm"), parse_quantity_text_as_quantity("1 mm")) << "equality sanity check";
     EXPECT_NE(parse_quantity_text_as_quantity("1 mm"), parse_quantity_text_as_quantity("2 mm")) << "inequality sanity check";
+
+    EXPECT_NO_THROW(App::ExpressionParser::parse(this_obj(), "1 mm*kg")) << "should parse a simple compound unit";
+    EXPECT_NO_THROW(App::ExpressionParser::parse(this_obj(), "1 m^2*kg/(s^3*A)")) << "should parse a complex compound unit, i.e. V in SI units";
+    EXPECT_EQ(parse_quantity_text_as_quantity("1 m^2*kg/(s^3*A)"), parse_quantity_text_as_quantity("1 V")) << "Compound unit equality test";
+    EXPECT_EQ(parse_quantity_text_as_quantity("1/mm*kg"), parse_quantity_text_as_quantity("1/(mm*kg)")) << "Inverse unit parsing";
 
     std::array<std::pair<const char*,const char*>, 12> expression_vs_quantity_list = {{
         // length
