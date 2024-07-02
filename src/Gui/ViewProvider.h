@@ -282,6 +282,8 @@ public:
     virtual bool canDragObjects() const;
     /** Check whether the object can be removed from the view provider by drag and drop */
     virtual bool canDragObject(App::DocumentObject*) const;
+    /** Check whether the object can be removed from the view provider by drag and drop to a determined target*/
+    virtual bool canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const;
     /** Remove a child from the view provider by drag and drop */
     virtual void dragObject(App::DocumentObject*);
     /** Check whether objects can be added to the view provider by drag and drop or drop only */
