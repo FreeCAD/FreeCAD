@@ -30,10 +30,6 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-
 #include "FeaturePartFuse.h"
 #include "TopoShape.h"
 #include "modelRefine.h"
@@ -46,6 +42,7 @@ using namespace Part;
 namespace Part
 {
     extern void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape);
+    extern bool getRefineModelParameter();
 }
 
 PROPERTY_SOURCE(Part::Fuse, Part::Boolean)
@@ -79,11 +76,7 @@ MultiFuse::MultiFuse()
 
     ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
 
-    //init Refine property
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
-    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
-
+    this->Refine.setValue(getRefineModelParameter());
 }
 
 short MultiFuse::mustExecute() const
