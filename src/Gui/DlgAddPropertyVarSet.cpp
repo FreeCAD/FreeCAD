@@ -101,6 +101,18 @@ void DlgAddPropertyVarSet::initializeGroup()
     comboBoxGroup.setEditText(QString::fromStdString(groupNamesSorted[0]));
 }
 
+void DlgAddPropertyVarSet::getSupportedTypes(std::vector<Base::Type>& types)
+{
+    std::vector<Base::Type> proptypes;
+    Base::Type::getAllDerivedFrom(Base::Type::fromName("App::Property"), proptypes);
+    std::copy_if(proptypes.begin(), proptypes.end(), std::back_inserter(types), [](const Base::Type& type) {
+        return type.canInstantiate();
+    });
+    std::sort(types.begin(), types.end(), [](Base::Type a, Base::Type b) {
+        return strcmp(a.getName(), b.getName()) < 0;
+    });
+}
+
 void DlgAddPropertyVarSet::initializeTypes()
 {
     auto paramGroup = App::GetApplication().GetParameterGroupByPath(
@@ -112,8 +124,7 @@ void DlgAddPropertyVarSet::initializeTypes()
     }
 
     std::vector<Base::Type> types;
-    Base::Type::getAllDerivedFrom(Base::Type::fromName("App::Property"),types);
-    std::sort(types.begin(), types.end(), [](Base::Type a, Base::Type b) { return strcmp(a.getName(), b.getName()) < 0; });
+    getSupportedTypes(types);
 
     for(const auto& type : types) {
         ui->comboBoxType->addItem(QString::fromLatin1(type.getName()));
@@ -183,7 +194,6 @@ void DlgAddPropertyVarSet::clearEditors()
     removeEditor();
     setOkEnabled(false);
     namePropertyToAdd.clear();
-    editor = nullptr;
 }
 
 void DlgAddPropertyVarSet::removeEditor()
@@ -191,6 +201,7 @@ void DlgAddPropertyVarSet::removeEditor()
     if (editor) {
         layout()->removeWidget(editor.get());
         QWidget::setTabOrder(ui->comboBoxType, ui->checkBoxAdd);
+        editor = nullptr;
 
         // FC_ERR("remove editor");
         // printFocusChain(ui->comboBoxType);
@@ -228,9 +239,9 @@ void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem,
     // printFocusChain(editor.get());
 }
 
-bool DlgAddPropertyVarSet::isSupportedType(std::string& type)
+bool DlgAddPropertyVarSet::isTypeWithEditor(const std::string& type)
 {
-    return unsupportedTypes.find(type) == unsupportedTypes.end();
+    return typesWithoutEditor.find(type) == typesWithoutEditor.end();
 }
 
 void DlgAddPropertyVarSet::createProperty(std::string& name, std::string& group)
@@ -260,7 +271,7 @@ void DlgAddPropertyVarSet::createProperty(std::string& name, std::string& group)
     // editors that we can reuse
     removeEditor();
     propertyItem.reset(createPropertyItem(prop));
-    if (propertyItem && isSupportedType(type)) {
+    if (propertyItem && isTypeWithEditor(type)) {
         propertyItem->setPropertyData({prop});
         propertyItem->bind(*objectIdentifier);
              addEditor(propertyItem.get(), type);
