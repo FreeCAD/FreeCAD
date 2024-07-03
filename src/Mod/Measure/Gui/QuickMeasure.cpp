@@ -36,6 +36,7 @@
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
@@ -118,6 +119,13 @@ void QuickMeasure::addSelectionToMeasurement()
 
     for (auto& selObj : Gui::Selection().getSelectionEx()) {
         App::DocumentObject* obj = selObj.getObject();
+
+        std::string vpType = obj->getViewProviderName();
+        auto* vp = Gui::Application::Instance->getViewProvider(obj);
+        if (vpType == "SketcherGui::ViewProviderSketch" && vp->isEditing()) {
+            continue;
+        }
+
         const std::vector<std::string> subNames = selObj.getSubNames();
 
         // Check that there's not too many selection
