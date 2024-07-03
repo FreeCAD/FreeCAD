@@ -176,21 +176,21 @@
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="139"/>
-      <source>Freecad Classic</source>
+      <source>Classic</source>
       <comment>Visual theme name</comment>
-      <translation>Freecad Klassisk</translation>
+      <translation>Klassisk</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="140"/>
-      <source>Freecad Light</source>
+      <source>Light</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Freecad Light</translation>
+      <translation type="unfinished">Light</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="141"/>
-      <source>Freecad Dark</source>
+      <source>Dark</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Freecad Dark</translation>
+      <translation type="unfinished">Dark</translation>
     </message>
   </context>
 </TS>
