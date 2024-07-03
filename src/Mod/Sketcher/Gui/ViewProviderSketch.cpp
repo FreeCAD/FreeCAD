@@ -737,7 +737,9 @@ void ViewProviderSketch::preselectAtPoint(Base::Vector2d point)
 
         std::unique_ptr<SoPickedPoint> Point(this->getPointOnRay(screencoords, viewer));
 
-        detectAndShowPreselection(Point.get(), screencoords);
+        if (detectAndShowPreselection(Point.get(), screencoords) && sketchHandler) {
+            sketchHandler->applyCursor();
+        }
     }
 }
 
@@ -1076,7 +1078,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         }
                         setPreselectPoint(drag.DragPoint);
                         drag.DragPoint = Drag::InvalidPoint;
-                        // updateColor();
                     }
                     resetPositionText();
                     Mode = STATUS_NONE;
@@ -1149,7 +1150,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         }
                         preselection.PreselectCurve = drag.DragCurve;
                         drag.DragCurve = Drag::InvalidCurve;
-                        // updateColor();
                     }
                     resetPositionText();
                     Mode = STATUS_NONE;
@@ -1493,7 +1493,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
         case STATUS_NONE:
             if (preselectChanged) {
                 editCoinManager->drawConstraintIcons();
-                this->updateColor();
+                updateColor();
                 return true;
             }
             return false;
@@ -1702,7 +1702,8 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
             sketchHandler->mouseMove(Base::Vector2d(x, y));
             if (preselectChanged) {
                 editCoinManager->drawConstraintIcons();
-                this->updateColor();
+                sketchHandler->applyCursor();
+                updateColor();
             }
             return true;
         case STATUS_SKETCH_StartRubberBand: {
@@ -2080,7 +2081,7 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                 selection.SelCurvSet.clear();
                 selection.SelConstraintSet.clear();
                 editCoinManager->drawConstraintIcons();
-                this->updateColor();
+                updateColor();
             }
         }
         else if (msg.Type == Gui::SelectionChanges::AddSelection) {
@@ -2092,38 +2093,32 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                     if (shapetype.size() > 4 && shapetype.substr(0, 4) == "Edge") {
                         int GeoId = std::atoi(&shapetype[4]) - 1;
                         selection.SelCurvSet.insert(GeoId);
-                        this->updateColor();
                     }
                     else if (shapetype.size() > 12 && shapetype.substr(0, 12) == "ExternalEdge") {
                         int GeoId = std::atoi(&shapetype[12]) - 1;
                         GeoId = -GeoId - 3;
                         selection.SelCurvSet.insert(GeoId);
-                        this->updateColor();
                     }
                     else if (shapetype.size() > 6 && shapetype.substr(0, 6) == "Vertex") {
                         int VtId = std::atoi(&shapetype[6]) - 1;
                         addSelectPoint(VtId);
-                        this->updateColor();
                     }
                     else if (shapetype == "RootPoint") {
                         addSelectPoint(Selection::RootPoint);
-                        this->updateColor();
                     }
                     else if (shapetype == "H_Axis") {
                         selection.SelCurvSet.insert(Selection::HorizontalAxis);
-                        this->updateColor();
                     }
                     else if (shapetype == "V_Axis") {
                         selection.SelCurvSet.insert(Selection::VerticalAxis);
-                        this->updateColor();
                     }
                     else if (shapetype.size() > 10 && shapetype.substr(0, 10) == "Constraint") {
                         int ConstrId =
                             Sketcher::PropertyConstraintList::getIndexFromConstraintName(shapetype);
                         selection.SelConstraintSet.insert(ConstrId);
                         editCoinManager->drawConstraintIcons();
-                        this->updateColor();
                     }
+                    updateColor();
                 }
             }
         }
@@ -2139,31 +2134,25 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                         if (shapetype.size() > 4 && shapetype.substr(0, 4) == "Edge") {
                             int GeoId = std::atoi(&shapetype[4]) - 1;
                             selection.SelCurvSet.erase(GeoId);
-                            this->updateColor();
                         }
                         else if (shapetype.size() > 12
                                  && shapetype.substr(0, 12) == "ExternalEdge") {
                             int GeoId = std::atoi(&shapetype[12]) - 1;
                             GeoId = -GeoId - 3;
                             selection.SelCurvSet.erase(GeoId);
-                            this->updateColor();
                         }
                         else if (shapetype.size() > 6 && shapetype.substr(0, 6) == "Vertex") {
                             int VtId = std::atoi(&shapetype[6]) - 1;
                             removeSelectPoint(VtId);
-                            this->updateColor();
                         }
                         else if (shapetype == "RootPoint") {
                             removeSelectPoint(Sketcher::GeoEnum::RtPnt);
-                            this->updateColor();
                         }
                         else if (shapetype == "H_Axis") {
                             selection.SelCurvSet.erase(Sketcher::GeoEnum::HAxis);
-                            this->updateColor();
                         }
                         else if (shapetype == "V_Axis") {
                             selection.SelCurvSet.erase(Sketcher::GeoEnum::VAxis);
-                            this->updateColor();
                         }
                         else if (shapetype.size() > 10 && shapetype.substr(0, 10) == "Constraint") {
                             int ConstrId =
@@ -2171,8 +2160,8 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                                     shapetype);
                             selection.SelConstraintSet.erase(ConstrId);
                             editCoinManager->drawConstraintIcons();
-                            this->updateColor();
                         }
+                        updateColor();
                     }
                 }
             }
@@ -2204,37 +2193,22 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                         int GeoId = std::atoi(&shapetype[4]) - 1;
                         resetPreselectPoint();
                         preselection.PreselectCurve = GeoId;
-
-                        if (sketchHandler)
-                            sketchHandler->applyCursor();
-                        this->updateColor();
                     }
                     else if (shapetype.size() > 12 && shapetype.substr(0, 12) == "ExternalEdge") {
                         int GeoId = std::atoi(&shapetype[12]) - 1;
                         GeoId = -GeoId - 3;
                         resetPreselectPoint();
                         preselection.PreselectCurve = GeoId;
-
-                        if (sketchHandler)
-                            sketchHandler->applyCursor();
-                        this->updateColor();
                     }
                     else if (shapetype.size() > 6 && shapetype.substr(0, 6) == "Vertex") {
                         int PtIndex = std::atoi(&shapetype[6]) - 1;
                         setPreselectPoint(PtIndex);
-
-                        if (sketchHandler)
-                            sketchHandler->applyCursor();
-                        this->updateColor();
                     }
                 }
             }
         }
         else if (msg.Type == Gui::SelectionChanges::RmvPreselect) {
             resetPreselectPoint();
-            if (sketchHandler)
-                sketchHandler->applyCursor();
-            this->updateColor();
         }
     }
 }
@@ -2260,8 +2234,6 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point, const S
             if (accepted) {
                 setPreselectPoint(result.PointIndex);
 
-                if (sketchHandler)
-                    sketchHandler->applyCursor();
                 return true;
             }
         }
@@ -2283,8 +2255,6 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point, const S
                 resetPreselectPoint();
                 preselection.PreselectCurve = result.GeoIndex;
 
-                if (sketchHandler)
-                    sketchHandler->applyCursor();
                 return true;
             }
         }
@@ -2318,8 +2288,6 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point, const S
                 preselection.PreselectCross =
                     static_cast<Preselection::Axes>(static_cast<int>(result.Cross));
 
-                if (sketchHandler)
-                    sketchHandler->applyCursor();
                 return true;
             }
         }
@@ -2345,8 +2313,6 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point, const S
                 resetPreselectPoint();
                 preselection.PreselectConstraintSet = result.ConstrIndices;
 
-                if (sketchHandler)
-                    sketchHandler->applyCursor();
                 return true;// Preselection changed
             }
         }
@@ -2360,8 +2326,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point, const S
             // we have just left a preselection
             resetPreselectPoint();
             preselection.blockedPreselection = false;
-            if (sketchHandler)
-                sketchHandler->applyCursor();
+
             return true;
         }
         Gui::Selection().setPreselectCoord(
@@ -2372,8 +2337,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point, const S
              || preselection.blockedPreselection) {
         resetPreselectPoint();
         preselection.blockedPreselection = false;
-        if (sketchHandler)
-            sketchHandler->applyCursor();
+
         return true;
     }
 
