@@ -1000,7 +1000,11 @@ def deaggregate(obj, parent):
     element = get_ifc_element(obj)
     if not element:
         return
-    api_run("aggregate.unassign_object", ifcfile, product=element)
+    try:
+        api_run("aggregate.unassign_object", ifcfile, products=[element])
+    except:
+        # older version of ifcopenshell
+        api_run("aggregate.unassign_object", ifcfile, product=element)
     parent.Proxy.removeObject(parent, obj)
 
 
@@ -1166,21 +1170,43 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
             )
         elif parent_element.Decomposes:
             container = parent_element.Decomposes[0].RelatingObject
+            try:
+                uprel = api_run(
+                    "aggregate.assign_object",
+                    ifcfile,
+                    products=[element],
+                    relating_object=container,
+                )
+            except:
+                # older version of ifcopenshell
+                uprel = api_run(
+                    "aggregate.assign_object",
+                    ifcfile,
+                    product=element,
+                    relating_object=container,
+                )
+    # case 3: element aggregated inside other element
+    else:
+        try:
+            api_run("aggregate.unassign_object", ifcfile, products=[element])
+        except:
+            # older version of ifcopenshell
+            api_run("aggregate.unassign_object", ifcfile, product=element)
+        try:
+            uprel = api_run(
+                "aggregate.assign_object",
+                ifcfile,
+                products=[element],
+                relating_object=parent_element,
+            )
+        except:
+            # older version of ifcopenshell
             uprel = api_run(
                 "aggregate.assign_object",
                 ifcfile,
                 product=element,
-                relating_object=container,
+                relating_object=parent_element,
             )
-    # case 3: element aggregated inside other element
-    else:
-        api_run("aggregate.unassign_object", ifcfile, product=element)
-        uprel = api_run(
-            "aggregate.assign_object",
-            ifcfile,
-            product=element,
-            relating_object=parent_element,
-        )
     if hasattr(parent.Proxy, "addObject"):
         parent.Proxy.addObject(parent, obj)
     return uprel
