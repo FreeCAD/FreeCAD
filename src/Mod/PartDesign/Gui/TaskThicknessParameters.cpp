@@ -54,7 +54,7 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
     ui->setupUi(proxy);
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    auto pcThickness = dynamic_cast<PartDesign::Thickness*>(DressUpView->getObject());
     double a = pcThickness->Value.getValue();
 
     ui->Value->setMinimum(0.0);
@@ -103,23 +103,22 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
     connect(ui->listWidgetReferences, &QListWidget::itemDoubleClicked,
         this, &TaskThicknessParameters::doubleClicked);
 
-    int mode = pcThickness->Mode.getValue();
+    int mode = static_cast<int>(pcThickness->Mode.getValue());
     ui->modeComboBox->setCurrentIndex(mode);
 
-    int join = pcThickness->Join.getValue();
+    int join = static_cast<int>(pcThickness->Join.getValue());
     ui->joinComboBox->setCurrentIndex(join);
 
-    if (strings.size() == 0)
+    if (strings.empty()) {
         setSelectionMode(refSel);
-    else
+    }
+    else {
         hideOnError();
+    }
 }
 
 void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    // executed when the user selected something in the CAD object
-    // adds/deletes the selection accordingly
-
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (selectionMode == refSel) {
             referenceSelected(msg, ui->listWidgetReferences);
@@ -141,7 +140,7 @@ void TaskThicknessParameters::onRefDeleted()
 void TaskThicknessParameters::onValueChanged(double angle)
 {
     setButtons(none);
-    PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    auto pcThickness = dynamic_cast<PartDesign::Thickness*>(DressUpView->getObject());
     setupTransaction();
     pcThickness->Value.setValue(angle);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
@@ -152,7 +151,7 @@ void TaskThicknessParameters::onValueChanged(double angle)
 void TaskThicknessParameters::onJoinTypeChanged(int join) {
 
     setButtons(none);
-    PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    auto pcThickness = dynamic_cast<PartDesign::Thickness*>(DressUpView->getObject());
     setupTransaction();
     pcThickness->Join.setValue(join);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
@@ -163,7 +162,7 @@ void TaskThicknessParameters::onJoinTypeChanged(int join) {
 void TaskThicknessParameters::onModeChanged(int mode) {
 
     setButtons(none);
-    PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    auto pcThickness = dynamic_cast<PartDesign::Thickness*>(DressUpView->getObject());
     setupTransaction();
     pcThickness->Mode.setValue(mode);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
@@ -178,7 +177,7 @@ double TaskThicknessParameters::getValue() const
 
 void TaskThicknessParameters::onReversedChanged(const bool on) {
     setButtons(none);
-    PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    auto pcThickness = dynamic_cast<PartDesign::Thickness*>(DressUpView->getObject());
     setupTransaction();
     pcThickness->Reversed.setValue(on);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
@@ -191,9 +190,10 @@ bool TaskThicknessParameters::getReversed() const
     return ui->checkReverse->isChecked();
 }
 
-void TaskThicknessParameters::onIntersectionChanged(const bool on) {
+void TaskThicknessParameters::onIntersectionChanged(const bool on)
+{
     setButtons(none);
-    PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    auto pcThickness = dynamic_cast<PartDesign::Thickness*>(DressUpView->getObject());
     pcThickness->Intersection.setValue(on);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
     // hide the thickness if there was a computation error
@@ -243,8 +243,9 @@ void TaskThicknessParameters::changeEvent(QEvent *e)
 void TaskThicknessParameters::apply()
 {
     //Alert user if he created an empty feature
-    if (ui->listWidgetReferences->count() == 0)
+    if (ui->listWidgetReferences->count() == 0) {
         Base::Console().Warning(tr("Empty thickness created !\n").toStdString().c_str());
+    }
 }
 
 //**************************************************************************
@@ -262,32 +263,16 @@ TaskDlgThicknessParameters::TaskDlgThicknessParameters(ViewProviderThickness *Dr
 
 TaskDlgThicknessParameters::~TaskDlgThicknessParameters() = default;
 
-//==== calls from the TaskView ===============================================================
-
-
-//void TaskDlgThicknessParameters::open()
-//{
-//    // a transaction is already open at creation time of the draft
-//    if (!Gui::Command::hasPendingCommand()) {
-//        QString msg = QObject::tr("Edit draft");
-//        Gui::Command::openCommand((const char*)msg.toUtf8());
-//    }
-//}
-//
-//void TaskDlgThicknessParameters::clicked(int)
-//{
-//
-//}
-
 bool TaskDlgThicknessParameters::accept()
 {
     auto obj = vp->getObject();
-    if (!obj->isError())
+    if (!obj->isError()) {
         parameter->showObject();
+    }
 
     parameter->apply();
 
-    TaskThicknessParameters* draftparameter = static_cast<TaskThicknessParameters*>(parameter);
+    auto draftparameter = dynamic_cast<TaskThicknessParameters*>(parameter);
 
     FCMD_OBJ_CMD(obj,"Value = " << draftparameter->getValue());
     FCMD_OBJ_CMD(obj,"Reversed = " << draftparameter->getReversed());
