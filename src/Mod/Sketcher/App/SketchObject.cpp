@@ -8891,6 +8891,7 @@ void SketchObject::onChanged(const App::Property* prop)
             if (ExternalGeometry.getSize() == 0) {
                 delConstraintsToExternal();
             }
+            rebuildExternalGeometry();
         }
     }
 
