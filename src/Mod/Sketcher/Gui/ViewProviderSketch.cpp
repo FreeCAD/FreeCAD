@@ -1197,6 +1197,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     Mode = STATUS_NONE;
                     return true;
                 case STATUS_SKETCH_UseHandler: {
+                    sketchHandler->applyCursor();
                     return sketchHandler->releaseButton(Base::Vector2d(x, y));
                 }
                 case STATUS_NONE:
