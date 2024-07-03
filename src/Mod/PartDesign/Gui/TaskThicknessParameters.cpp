@@ -58,7 +58,6 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
     double a = pcThickness->Value.getValue();
 
     ui->Value->setMinimum(0.0);
-    ui->Value->setMaximum(89.99);
     ui->Value->setValue(a);
     ui->Value->selectAll();
     QMetaObject::invokeMethod(ui->Value, "setFocus", Qt::QueuedConnection);
