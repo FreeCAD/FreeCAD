@@ -34,14 +34,15 @@ namespace PartDesign
 class Thickness;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class TaskThicknessParameters : public TaskDressUpParameters
+class TaskThicknessParameters: public TaskDressUpParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskThicknessParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
+    explicit TaskThicknessParameters(ViewProviderDressUp* DressUpView, QWidget* parent = nullptr);
     ~TaskThicknessParameters() override;
 
     void apply() override;
@@ -49,8 +50,8 @@ public:
     double getValue() const;
     bool getReversed() const;
     bool getIntersection() const;
-    int  getMode() const;
-    int  getJoinType() const;
+    int getMode() const;
+    int getJoinType() const;
 
 private Q_SLOTS:
     void onValueChanged(double angle);
@@ -62,8 +63,8 @@ private Q_SLOTS:
 
 protected:
     void setButtons(const selectionModes mode) override;
-    bool event(QEvent *e) override;
-    void changeEvent(QEvent *e) override;
+    bool event(QEvent* e) override;
+    void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
@@ -78,12 +79,12 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgThicknessParameters : public TaskDlgDressUpParameters
+class TaskDlgThicknessParameters: public TaskDlgDressUpParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgThicknessParameters(ViewProviderThickness *ThicknessView);
+    explicit TaskDlgThicknessParameters(ViewProviderThickness* ThicknessView);
     ~TaskDlgThicknessParameters() override;
 
 public:
@@ -91,6 +92,6 @@ public:
     bool accept() override;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H
