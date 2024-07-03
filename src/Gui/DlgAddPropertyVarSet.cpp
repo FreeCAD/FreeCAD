@@ -222,11 +222,14 @@ static PropertyEditor::PropertyItem *createPropertyItem(App::Property *prop)
     return item;
 }
 
-void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem, std::string& /*type*/)
+void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem, std::string& type)
 {
     editor.reset(propertyItem->createEditor(this, [this]() {
         this->valueChanged();
     }));
+    if (type == "App::PropertyFont") {
+        propertyItem->setEditorData(editor.get(), QVariant());
+    }
     editor->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     editor->setObjectName(QString::fromUtf8("editor"));
     auto formLayout = qobject_cast<QFormLayout*>(layout());
@@ -274,7 +277,7 @@ void DlgAddPropertyVarSet::createProperty(std::string& name, std::string& group)
     if (propertyItem && isTypeWithEditor(type)) {
         propertyItem->setPropertyData({prop});
         propertyItem->bind(*objectIdentifier);
-             addEditor(propertyItem.get(), type);
+        addEditor(propertyItem.get(), type);
     }
 
     setOkEnabled(true);
