@@ -49,11 +49,20 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
     : TaskDressUpParameters(DressUpView, false, true, parent)
     , ui(new Ui_TaskThicknessParameters)
 {
+    addContainerWidget();
+    initControls();
+}
+
+void TaskThicknessParameters::addContainerWidget()
+{
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
     this->groupLayout()->addWidget(proxy);
+}
 
+void TaskThicknessParameters::initControls()
+{
     auto pcThickness = dynamic_cast<PartDesign::Thickness*>(DressUpView->getObject());
     double a = pcThickness->Value.getValue();
 
@@ -77,6 +86,24 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
         ui->listWidgetReferences->addItem(QString::fromStdString(string));
     }
 
+    setupConnections();
+
+    int mode = static_cast<int>(pcThickness->Mode.getValue());
+    ui->modeComboBox->setCurrentIndex(mode);
+
+    int join = static_cast<int>(pcThickness->Join.getValue());
+    ui->joinComboBox->setCurrentIndex(join);
+
+    if (strings.empty()) {
+        setSelectionMode(refSel);
+    }
+    else {
+        hideOnError();
+    }
+}
+
+void TaskThicknessParameters::setupConnections()
+{
     QMetaObject::connectSlotsByName(this);
 
     connect(ui->Value, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
@@ -102,19 +129,6 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
         this, &TaskThicknessParameters::setSelection);
     connect(ui->listWidgetReferences, &QListWidget::itemDoubleClicked,
         this, &TaskThicknessParameters::doubleClicked);
-
-    int mode = static_cast<int>(pcThickness->Mode.getValue());
-    ui->modeComboBox->setCurrentIndex(mode);
-
-    int join = static_cast<int>(pcThickness->Join.getValue());
-    ui->joinComboBox->setCurrentIndex(join);
-
-    if (strings.empty()) {
-        setSelectionMode(refSel);
-    }
-    else {
-        hideOnError();
-    }
 }
 
 void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -137,37 +151,39 @@ void TaskThicknessParameters::onRefDeleted()
     TaskDressUpParameters::deleteRef(ui->listWidgetReferences);
 }
 
-void TaskThicknessParameters::onValueChanged(double angle)
+PartDesign::Thickness* TaskThicknessParameters::onBeforeChange()
 {
     setButtons(none);
-    auto pcThickness = dynamic_cast<PartDesign::Thickness*>(DressUpView->getObject());
     setupTransaction();
-    pcThickness->Value.setValue(angle);
-    pcThickness->getDocument()->recomputeFeature(pcThickness);
+    return dynamic_cast<PartDesign::Thickness*>(DressUpView->getObject());
+}
+
+void TaskThicknessParameters::onAfterChange(PartDesign::Thickness* obj)
+{
+    obj->recomputeFeature();
     // hide the thickness if there was a computation error
     hideOnError();
+}
+
+void TaskThicknessParameters::onValueChanged(double angle)
+{
+    PartDesign::Thickness* thickness = onBeforeChange();
+    thickness->Value.setValue(angle);
+    onAfterChange(thickness);
 }
 
 void TaskThicknessParameters::onJoinTypeChanged(int join) {
 
-    setButtons(none);
-    auto pcThickness = dynamic_cast<PartDesign::Thickness*>(DressUpView->getObject());
-    setupTransaction();
-    pcThickness->Join.setValue(join);
-    pcThickness->getDocument()->recomputeFeature(pcThickness);
-    // hide the thickness if there was a computation error
-    hideOnError();
+    PartDesign::Thickness* thickness = onBeforeChange();
+    thickness->Join.setValue(join);
+    onAfterChange(thickness);
 }
 
 void TaskThicknessParameters::onModeChanged(int mode) {
 
-    setButtons(none);
-    auto pcThickness = dynamic_cast<PartDesign::Thickness*>(DressUpView->getObject());
-    setupTransaction();
-    pcThickness->Mode.setValue(mode);
-    pcThickness->getDocument()->recomputeFeature(pcThickness);
-    // hide the thickness if there was a computation error
-    hideOnError();
+    PartDesign::Thickness* thickness = onBeforeChange();
+    thickness->Mode.setValue(mode);
+    onAfterChange(thickness);
 }
 
 double TaskThicknessParameters::getValue() const
@@ -175,14 +191,10 @@ double TaskThicknessParameters::getValue() const
     return ui->Value->value().getValue();
 }
 
-void TaskThicknessParameters::onReversedChanged(const bool on) {
-    setButtons(none);
-    auto pcThickness = dynamic_cast<PartDesign::Thickness*>(DressUpView->getObject());
-    setupTransaction();
-    pcThickness->Reversed.setValue(on);
-    pcThickness->getDocument()->recomputeFeature(pcThickness);
-    // hide the thickness if there was a computation error
-    hideOnError();
+void TaskThicknessParameters::onReversedChanged(bool on) {
+    PartDesign::Thickness* thickness = onBeforeChange();
+    thickness->Reversed.setValue(on);
+    onAfterChange(thickness);
 }
 
 bool TaskThicknessParameters::getReversed() const
@@ -190,14 +202,11 @@ bool TaskThicknessParameters::getReversed() const
     return ui->checkReverse->isChecked();
 }
 
-void TaskThicknessParameters::onIntersectionChanged(const bool on)
+void TaskThicknessParameters::onIntersectionChanged(bool on)
 {
-    setButtons(none);
-    auto pcThickness = dynamic_cast<PartDesign::Thickness*>(DressUpView->getObject());
-    pcThickness->Intersection.setValue(on);
-    pcThickness->getDocument()->recomputeFeature(pcThickness);
-    // hide the thickness if there was a computation error
-    hideOnError();
+    PartDesign::Thickness* thickness = onBeforeChange();
+    thickness->Intersection.setValue(on);
+    onAfterChange(thickness);
 }
 
 bool TaskThicknessParameters::getIntersection() const

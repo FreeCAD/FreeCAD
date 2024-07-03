@@ -29,6 +29,11 @@
 
 class Ui_TaskThicknessParameters;
 
+namespace PartDesign
+{
+class Thickness;
+}
+
 namespace PartDesignGui {
 
 class TaskThicknessParameters : public TaskDressUpParameters
@@ -51,8 +56,8 @@ private Q_SLOTS:
     void onValueChanged(double angle);
     void onModeChanged(int mode);
     void onJoinTypeChanged(int join);
-    void onReversedChanged(bool reversed);
-    void onIntersectionChanged(bool intersection);
+    void onReversedChanged(bool on);
+    void onIntersectionChanged(bool on);
     void onRefDeleted() override;
 
 protected:
@@ -60,6 +65,13 @@ protected:
     bool event(QEvent *e) override;
     void changeEvent(QEvent *e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+
+private:
+    void addContainerWidget();
+    void initControls();
+    void setupConnections();
+    PartDesign::Thickness* onBeforeChange();
+    void onAfterChange(PartDesign::Thickness* obj);
 
 private:
     std::unique_ptr<Ui_TaskThicknessParameters> ui;
