@@ -26,6 +26,8 @@
 #include <QMessageBox>
 #endif
 
+#include <App/Application.h>
+#include <Base/Parameter.h>
 #include "DlgSettingsNotificationArea.h"
 #include "ui_DlgSettingsNotificationArea.h"
 
@@ -41,7 +43,9 @@ DlgSettingsNotificationArea::DlgSettingsNotificationArea(QWidget* parent)
     ui->setupUi(this);
 
     adaptUiToAreaEnabledState(ui->NotificationAreaEnabled->isChecked());
-    connect(ui->NotificationAreaEnabled, &QCheckBox::stateChanged, [this](int state) {
+
+    connect(ui->NotificationAreaEnabled, &QGroupBox::toggled, [this](int state) {
+
         bool enabled = state == Qt::CheckState::Checked;
         this->adaptUiToAreaEnabledState(enabled);
 
@@ -55,8 +59,17 @@ DlgSettingsNotificationArea::~DlgSettingsNotificationArea() = default;
 
 void DlgSettingsNotificationArea::saveSettings()
 {
-    ui->NotificationAreaEnabled->onSave();
-    ui->NonIntrusiveNotificationsEnabled->onSave();
+    // must be done as very first because we create a new instance of NavigatorStyle
+    // where we set some attributes afterwards
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/NotificationArea");
+
+    bool isNotificationAreaEnabled = ui->NotificationAreaEnabled->isChecked();
+    hGrp->SetBool("NotificationAreaEnabled", isNotificationAreaEnabled);
+    
+    bool isNonIntrusiveNotificationsEnabled = ui->NotificationAreaEnabled->isChecked();
+    hGrp->SetBool("NonIntrusiveNotificationsEnabled", isNonIntrusiveNotificationsEnabled);
+
     ui->maxDuration->onSave();
     ui->minDuration->onSave();
     ui->maxNotifications->onSave();
@@ -71,8 +84,15 @@ void DlgSettingsNotificationArea::saveSettings()
 
 void DlgSettingsNotificationArea::loadSettings()
 {
-    ui->NotificationAreaEnabled->onRestore();
-    ui->NonIntrusiveNotificationsEnabled->onRestore();
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/NotificationArea");
+
+    bool isNotificationAreaEnabled = hGrp->GetBool("NotificationAreaEnabled", true);
+    ui->NotificationAreaEnabled->setChecked(isNotificationAreaEnabled);
+
+    bool isNonIntrusiveNotificationsEnabled = hGrp->GetBool("NonIntrusiveNotificationsEnabled", true);
+    ui->NonIntrusiveNotificationsEnabled->setChecked(isNonIntrusiveNotificationsEnabled);
+
     ui->maxDuration->onRestore();
     ui->minDuration->onRestore();
     ui->maxNotifications->onRestore();
