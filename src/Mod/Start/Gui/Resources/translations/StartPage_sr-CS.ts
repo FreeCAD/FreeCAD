@@ -48,7 +48,7 @@
       <location filename="../../Manipulator.cpp" line="47"/>
       <location filename="../../Manipulator.cpp" line="48"/>
       <source>Start</source>
-      <translation>Početna</translation>
+      <translation>Start</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
@@ -136,7 +136,7 @@
     <message>
       <location filename="../../StartView.cpp" line="440"/>
       <source>Don't show this Start page again (start with blank screen)</source>
-      <translation>Ne prikazuj ponovo ovu početnu stranicu (počni sa praznim ekranom)</translation>
+      <translation>Ne prikazuj ponovo ovu početnu stranu (počni sa praznim ekranom)</translation>
     </message>
   </context>
   <context>
@@ -144,7 +144,7 @@
     <message>
       <location filename="../../StartView.cpp" line="428"/>
       <source>Start</source>
-      <translation>Početna</translation>
+      <translation>Start</translation>
     </message>
   </context>
   <context>
@@ -156,13 +156,13 @@
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
-      <source>Light</source>
-      <translation>Svetla</translation>
+      <source>Dark theme</source>
+      <translation>Tamna tema</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
-      <source>Dark</source>
-      <translation>Tamna</translation>
+      <source>Light theme</source>
+      <translation>Svetla tema</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="137"/>
@@ -176,21 +176,21 @@
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="139"/>
-      <source>Classic</source>
+      <source>Dark theme</source>
       <comment>Visual theme name</comment>
-      <translation>Klasična</translation>
+      <translation>Tamna tema</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="140"/>
-      <source>Light</source>
+      <source>Light theme</source>
       <comment>Visual theme name</comment>
-      <translation>Svetla</translation>
+      <translation>Svetla tema</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="141"/>
-      <source>Dark</source>
+      <source>Classic</source>
       <comment>Visual theme name</comment>
-      <translation>Tamna</translation>
+      <translation>Klasična</translation>
     </message>
   </context>
 </TS>

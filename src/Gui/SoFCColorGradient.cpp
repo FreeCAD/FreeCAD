@@ -53,8 +53,6 @@ constexpr const float yMin = -4.0F;
 constexpr const float yMax = 4.0F;
 constexpr const float spaceX = 0.1F;
 constexpr const float spaceY = 0.05F;
-constexpr const int defaultNumLabels = 13;
-constexpr const unsigned long defaultColor = 0xffffffff;
 constexpr const float defaultMin = -0.5F;
 constexpr const float defaultMax = 0.5F;
 constexpr const float upperLimit = 10000.0F;
@@ -105,6 +103,22 @@ const char* SoFCColorGradient::getColorBarName() const
     return QT_TRANSLATE_NOOP("QObject", "Color Gradient");
 }
 
+void SoFCColorGradient::applyFormat(const SoLabelTextFormat& fmt)
+{
+    auto textColor = App::Color(fmt.textColor);
+
+    for (int j = 0; j < labels->getNumChildren(); j++) {
+        if (labels->getChild(j)->getTypeId() == SoBaseColor::getClassTypeId()) {
+            auto baseColor = static_cast<SoBaseColor*>(labels->getChild(j));  // NOLINT
+            baseColor->rgb.setValue(textColor.r, textColor.g, textColor.b);
+        }
+        else if (labels->getChild(j)->getTypeId() == SoFont::getClassTypeId()) {
+            auto font = static_cast<SoFont*>(labels->getChild(j));  // NOLINT
+            font->size.setValue(static_cast<float>(fmt.textSize));
+        }
+    }
+}
+
 void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
 {
     coinRemoveAllChildren(labels);
@@ -116,16 +130,14 @@ void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
         float fStep = (maxPt[1] - minPt[1]) / ((float)num - 1);
         auto trans = new SoTransform;
 
-        ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
-        auto LabelTextSize = hGrp->GetInt("CbLabelTextSize", defaultNumLabels);
-        auto LabelTextColor =
-            App::Color((uint32_t)hGrp->GetUnsigned("CbLabelColor", defaultColor));
+        SoLabelTextFormat fmt = getFormat();
+        auto textColor = App::Color(fmt.textColor);
         auto textFont = new SoFont;
         auto color = new SoBaseColor;
         textFont->name.setValue("Helvetica,Arial,Times New Roman");
-        textFont->size.setValue(static_cast<float>(LabelTextSize));
+        textFont->size.setValue(static_cast<float>(fmt.textSize));
         trans->translation.setValue(maxPt[0] + spaceX, maxPt[1] - spaceY + fStep, 0.0F);
-        color->rgb.setValue(LabelTextColor.r, LabelTextColor.g, LabelTextColor.b);
+        color->rgb.setValue(textColor.r, textColor.g, textColor.b);
         labels->addChild(trans);
         labels->addChild(color);
         labels->addChild(textFont);

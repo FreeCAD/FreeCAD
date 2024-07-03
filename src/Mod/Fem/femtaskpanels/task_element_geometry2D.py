@@ -53,16 +53,13 @@ class _TaskPanel:
         QtCore.QObject.connect(
             self.parameterWidget.if_thickness,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.thickness_changed
+            self.thickness_changed,
         )
         self.init_parameter_widget()
 
         # geometry selection widget
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Face"],
-            False,
-            True
+            obj.References, ["Face"], False, True
         )
 
         # form made from param and selection widget

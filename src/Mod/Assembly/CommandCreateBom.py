@@ -34,8 +34,7 @@ if App.GuiUp:
 
 import UtilsAssembly
 import Preferences
-
-# translate = App.Qt.translate
+from functools import partial
 
 __title__ = "Assembly Command Create Bill of Materials"
 __author__ = "Ondsel"
@@ -44,11 +43,11 @@ __url__ = "https://www.freecad.org"
 translate = App.Qt.translate
 
 TranslatedColumnNames = [
-    translate("Assembly", "Index"),
-    translate("Assembly", "Name"),
+    translate("Assembly", "Index (auto)"),
+    translate("Assembly", "Name (auto)"),
     translate("Assembly", "Description"),
-    translate("Assembly", "File Name"),
-    translate("Assembly", "Quantity"),
+    translate("Assembly", "File Name (auto)"),
+    translate("Assembly", "Quantity (auto)"),
 ]
 
 ColumnNames = [
@@ -67,22 +66,22 @@ class CommandCreateBom:
     def GetResources(self):
         return {
             "Pixmap": "Assembly_BillOfMaterials",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_BillOfMaterials", "Create Bill of Materials"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateBom", "Create Bill of Materials"),
             "Accel": "O",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
-                "Assembly_CreateView",
+                "Assembly_CreateBom",
                 "Create a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.",
             )
             + "</p><p>"
             + QT_TRANSLATE_NOOP(
-                "Assembly_CreateView",
+                "Assembly_CreateBom",
                 "The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the bom. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.",
             )
             + "</p><p>"
             + QT_TRANSLATE_NOOP(
-                "Assembly_CreateView",
-                "The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwriten.",
+                "Assembly_CreateBom",
+                "The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.",
             )
             + "</p>",
             "CmdType": "ForEdit",
@@ -115,22 +114,22 @@ class TaskAssemblyCreateBom(QtCore.QObject):
 
         self.form.columnList.installEventFilter(self)
 
-        self.form.btnAddColumn.clicked.connect(self.addColumn)
+        self.form.btnAddColumn.clicked.connect(self.showAddColumnMenu)
         self.form.btnExport.clicked.connect(self.export)
+
+        self.form.helpButton.clicked.connect(self.showHelpDialog)
 
         pref = Preferences.preferences()
 
         if bomObj:
             App.setActiveTransaction("Edit Bill Of Materials")
 
-            names = []
-            for i in range(len(bomObj.columnsNames)):
-                text = bomObj.columnsNames[i]
-                if text in ColumnNames:
-                    index = ColumnNames.index(text)
-                    text = TranslatedColumnNames[index]
-                names.append(text)
-            self.form.columnList.addItems(names)
+            for name in bomObj.columnsNames:
+                if name in ColumnNames:
+                    index = ColumnNames.index(name)
+                    name = TranslatedColumnNames[index]
+
+                self.addColItem(name)
 
             self.bomObj = bomObj
             self.form.CheckBox_onlyParts.setChecked(bomObj.onlyParts)
@@ -139,7 +138,10 @@ class TaskAssemblyCreateBom(QtCore.QObject):
 
         else:
             App.setActiveTransaction("Create Bill Of Materials")
-            self.form.columnList.addItems(TranslatedColumnNames)
+
+            # Add the columns
+            for name in TranslatedColumnNames:
+                self.addColItem(name)
 
             self.createBomObject()
             self.form.CheckBox_onlyParts.setChecked(pref.GetBool("BOMOnlyParts", False))
@@ -199,14 +201,66 @@ class TaskAssemblyCreateBom(QtCore.QObject):
                 counter += 1
             new_name = f"{new_name}_{counter}"
 
-        new_item = QtWidgets.QListWidgetItem(new_name)
-        new_item.setFlags(new_item.flags() | QtCore.Qt.ItemIsEditable)
-        self.form.columnList.addItem(new_item)
+        item = self.addColItem(new_name)
 
         # Ensure the new item is selected and starts editing
-        self.form.columnList.setCurrentItem(new_item)
-        self.form.columnList.editItem(new_item)
+        self.form.columnList.setCurrentItem(item)
+        self.form.columnList.editItem(item)
         self.updateColumnList()
+
+    def addColItem(self, name):
+        item = QtWidgets.QListWidgetItem(name)
+
+        isCustomCol = self.isCustomColumn(name)
+
+        if isCustomCol:
+            item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
+        else:
+            font = item.font()
+            font.setBold(True)
+            item.setFont(font)
+
+        self.form.columnList.addItem(item)
+        return item
+
+    def showAddColumnMenu(self):
+        menu = QtWidgets.QMenu()
+        # Get the current columns in the list
+        current_columns = [
+            self.form.columnList.item(i).text() for i in range(self.form.columnList.count())
+        ]
+
+        # Add actions for columns that are not currently in the list
+        noneAdded = True
+        for name in TranslatedColumnNames:
+            if name not in current_columns:
+                action = QtWidgets.QAction(f"Add '{name}' column", self)
+                action.triggered.connect(partial(self.addColItem, name))
+                menu.addAction(action)
+                noneAdded = False
+
+        if noneAdded:
+            self.addColumn()
+            return
+
+        # Add the action for adding a custom column
+        action = QtWidgets.QAction("Add custom column", self)
+        action.triggered.connect(self.addColumn)
+        menu.addAction(action)
+
+        # Show the menu below the button
+        menu.exec_(
+            self.form.btnAddColumn.mapToGlobal(QtCore.QPoint(0, self.form.btnAddColumn.height()))
+        )
+
+    def isCustomColumn(self, name):
+        isCustomCol = True
+        if name in TranslatedColumnNames:
+            # Description column is currently not auto generated so it's a custom column
+            index = TranslatedColumnNames.index(name)
+            if ColumnNames[index] != "Description":
+                isCustomCol = False
+        return isCustomCol
 
     def onItemsReordered(self, parent, start, end, destination, row):
         self.updateColumnList()
@@ -248,7 +302,19 @@ class TaskAssemblyCreateBom(QtCore.QObject):
             )
             item.setText(old_text)
         else:
+            isCustomCol = self.isCustomColumn(new_text)
+
+            if not isCustomCol:
+                font = item.font()
+                font.setBold(True)
+                item.setFont(font)
+                # Use a single-shot timer to defer changing the flags (else FC crashes)
+                QtCore.QTimer.singleShot(0, lambda: self.makeItemNonEditable(item))
+
             self.updateColumnList()
+
+    def makeItemNonEditable(self, item):
+        item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
 
     def isNameDuplicate(self, name):
         for i in range(self.form.columnList.count()):
@@ -288,6 +354,71 @@ class TaskAssemblyCreateBom(QtCore.QObject):
                     return True  # Consume the event
 
         return super().eventFilter(watched, event)
+
+    def showHelpDialog(self):
+        help_dialog = QtWidgets.QDialog(self.form)
+        help_dialog.setWindowFlags(QtCore.Qt.Popup)
+        help_dialog.setWindowModality(QtCore.Qt.NonModal)
+        help_dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+
+        layout = QtWidgets.QVBoxLayout()
+        layout.setContentsMargins(10, 10, 10, 10)
+
+        options_title = QtWidgets.QLabel("<b>" + translate("Assembly", "Options:") + "</b>")
+        options_text = QtWidgets.QLabel(
+            " - "
+            + translate(
+                "Assembly",
+                "Sub-assemblies children : If checked, Sub assemblies children will be added to the bill of materials.",
+            )
+            + "\n"
+            " - "
+            + translate(
+                "Assembly",
+                "Parts children : If checked, Parts children will be added to the bill of materials.",
+            )
+            + "\n"
+            " - "
+            + translate(
+                "Assembly",
+                "Only parts : If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.",
+            )
+            + "\n"
+        )
+        columns_title = QtWidgets.QLabel("<b>" + translate("Assembly", "Columns:") + "</b>")
+        columns_text = QtWidgets.QLabel(
+            " - "
+            + translate(
+                "Assembly",
+                "Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.",
+            )
+            + "\n"
+            " - "
+            + translate(
+                "Assembly",
+                "Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).",
+            )
+            + "\n"
+            "\n"
+            + translate(
+                "Assembly",
+                "Any column (custom or not) can be deleted by pressing Del.",
+            )
+            + "\n"
+        )
+
+        options_text.setWordWrap(True)
+        columns_text.setWordWrap(True)
+
+        layout.addWidget(options_title)
+        layout.addWidget(options_text)
+        layout.addWidget(columns_title)
+        layout.addWidget(columns_text)
+
+        help_dialog.setLayout(layout)
+        help_dialog.setFixedWidth(500)
+
+        help_dialog.show()
 
 
 if App.GuiUp:

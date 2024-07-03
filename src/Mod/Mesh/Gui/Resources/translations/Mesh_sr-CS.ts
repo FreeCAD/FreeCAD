@@ -1558,7 +1558,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="99"/>
       <source>Adaptive</source>
-      <translation>Prilagodljiv</translation>
+      <translation type="unfinished">Adaptive</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="101"/>

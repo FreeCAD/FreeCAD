@@ -51,12 +51,14 @@ def get_information():
         "constraints": ["fixed", "initial temperature", "temperature"],
         "solvers": ["ccxtools", "elmer"],
         "material": "multimaterial",
-        "equations": ["thermomechanical"]
+        "equations": ["thermomechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.thermomech_bimetall import setup
@@ -73,6 +75,7 @@ this file has 7.15 mm max deflection
 
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -105,7 +108,7 @@ def setup(doc=None, solvertype="ccxtools"):
     doc.recompute()
 
     # all geom boolean fragment
-    geom_obj = SplitFeatures.makeBooleanFragments(name='BooleanFragments')
+    geom_obj = SplitFeatures.makeBooleanFragments(name="BooleanFragments")
     geom_obj.Objects = [bottom_box_obj, top_box_obj]
     if FreeCAD.GuiUp:
         bottom_box_obj.ViewObject.hide()
@@ -122,7 +125,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # solver
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
-        solver_obj.WorkingDir = u""
+        solver_obj.WorkingDir = ""
     elif solvertype == "elmer":
         solver_obj = analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))[0]
         solver_obj.SteadyStateMinIterations = 1
@@ -189,25 +192,20 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # constraint temperature
     con_temp = ObjectsFem.makeConstraintTemperature(doc, "ConstraintTemperatureHot")
-    con_temp.References = [
-        (geom_obj, "Face5"),
-        (geom_obj, "Face11")
-    ]
+    con_temp.References = [(geom_obj, "Face5"), (geom_obj, "Face11")]
     con_temp.Temperature = 373.0
     con_temp.CFlux = 0.0
     analysis.addObject(con_temp)
 
     con_temp = ObjectsFem.makeConstraintTemperature(doc, "ConstraintTemperatureNormal")
-    con_temp.References = [
-        (geom_obj, "Face1"),
-        (geom_obj, "Face7")
-    ]
+    con_temp.References = [(geom_obj, "Face1"), (geom_obj, "Face7")]
     con_temp.Temperature = 273.0
     con_temp.CFlux = 0.0
     analysis.addObject(con_temp)
 
     # mesh
     from .meshes.mesh_thermomech_bimetall_tetra10 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:

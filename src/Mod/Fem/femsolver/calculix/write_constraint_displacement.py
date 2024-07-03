@@ -29,7 +29,7 @@ import FreeCAD
 
 
 def get_analysis_types():
-    return "all"    # write for all analysis types
+    return "all"  # write for all analysis types
 
 
 def get_sets_name():
@@ -57,9 +57,9 @@ def get_after_write_constraint():
 
 
 def write_meshdata_constraint(f, femobj, disp_obj, ccxwriter):
-    f.write("*NSET,NSET={}\n".format(disp_obj.Name))
+    f.write(f"*NSET,NSET={disp_obj.Name}\n")
     for n in femobj["Nodes"]:
-        f.write("{},\n".format(n))
+        f.write(f"{n},\n")
 
 
 def write_constraint(f, femobj, disp_obj, ccxwriter):
@@ -68,7 +68,7 @@ def write_constraint(f, femobj, disp_obj, ccxwriter):
 
     f.write("*BOUNDARY\n")
     if disp_obj.xFix:
-        f.write("{},1\n".format(disp_obj.Name))
+        f.write(f"{disp_obj.Name},1\n")
     elif not disp_obj.xFree:
         f.write(
             "{},1,1,{}\n".format(
@@ -76,7 +76,7 @@ def write_constraint(f, femobj, disp_obj, ccxwriter):
             )
         )
     if disp_obj.yFix:
-        f.write("{},2\n".format(disp_obj.Name))
+        f.write(f"{disp_obj.Name},2\n")
     elif not disp_obj.yFree:
         f.write(
             "{},2,2,{}\n".format(
@@ -84,7 +84,7 @@ def write_constraint(f, femobj, disp_obj, ccxwriter):
             )
         )
     if disp_obj.zFix:
-        f.write("{},3\n".format(disp_obj.Name))
+        f.write(f"{disp_obj.Name},3\n")
     elif not disp_obj.zFree:
         f.write(
             "{},3,3,{}\n".format(
@@ -94,7 +94,7 @@ def write_constraint(f, femobj, disp_obj, ccxwriter):
 
     if ccxwriter.member.geos_beamsection or ccxwriter.member.geos_shellthickness:
         if disp_obj.rotxFix:
-            f.write("{},4\n".format(disp_obj.Name))
+            f.write(f"{disp_obj.Name},4\n")
         elif not disp_obj.rotxFree:
             f.write(
                 "{},4,4,{}\n".format(
@@ -102,7 +102,7 @@ def write_constraint(f, femobj, disp_obj, ccxwriter):
                 )
             )
         if disp_obj.rotyFix:
-            f.write("{},5\n".format(disp_obj.Name))
+            f.write(f"{disp_obj.Name},5\n")
         elif not disp_obj.rotyFree:
             f.write(
                 "{},5,5,{}\n".format(
@@ -110,7 +110,7 @@ def write_constraint(f, femobj, disp_obj, ccxwriter):
                 )
             )
         if disp_obj.rotzFix:
-            f.write("{},6\n".format(disp_obj.Name))
+            f.write(f"{disp_obj.Name},6\n")
         elif not disp_obj.rotzFree:
             f.write(
                 "{},6,6,{}\n".format(

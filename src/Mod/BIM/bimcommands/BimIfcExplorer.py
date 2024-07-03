@@ -106,7 +106,7 @@ class BIM_IfcExplorer:
         self.dialog.setObjectName("IfcExplorer")
         self.dialog.setWindowTitle(translate("BIM", "Ifc Explorer"))
         self.dialog.resize(720, 540)
-        toolbar = QtGui.QToolBar()
+        toolbar = FreeCADGui.UiLoader().createWidget("Gui::ToolBar")
 
         layout = QtGui.QVBoxLayout(self.dialog)
         layout.addWidget(toolbar)
@@ -167,7 +167,8 @@ class BIM_IfcExplorer:
 
         # open a file and show the dialog
         self.open()
-        self.dialog.show()
+        if self.filename:
+            self.dialog.show()
 
     def open(self):
         "opens a file"
@@ -175,7 +176,7 @@ class BIM_IfcExplorer:
         import ifcopenshell
         from PySide import QtCore, QtGui
 
-        self.filename = None
+        self.filename = ""
         lastfolder = FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/BIM"
         ).GetString("lastIfcExplorerFolder", "")
@@ -185,14 +186,15 @@ class BIM_IfcExplorer:
             lastfolder,
             translate("BIM", "IFC files (*.ifc)"),
         )
-        if filename:
+        if filename and filename[0]:
             self.filename = filename[0]
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").SetString(
                 "lastIfcExplorerFolder", os.path.dirname(self.filename)
             )
-
-        if not os.path.exists(self.filename):
-            FreeCAD.Console.PrintError(translate("BIM", "File not found") + "\n")
+            if not os.path.exists(self.filename):
+                FreeCAD.Console.PrintError(translate("BIM", "File not found") + "\n")
+                return
+        else:
             return
 
         # set window title
@@ -224,9 +226,9 @@ class BIM_IfcExplorer:
         "close the dialog"
 
         if FreeCAD.ActiveDocument:
-            if self.mesh:
+            if getattr(self, "mesh", None):
                 FreeCAD.ActiveDocument.removeObject(self.mesh.Name)
-            if self.currentmesh:
+            if getattr(self, "currentmesh", None):
                 FreeCAD.ActiveDocument.removeObject(self.currentmesh.Name)
 
     def back(self):

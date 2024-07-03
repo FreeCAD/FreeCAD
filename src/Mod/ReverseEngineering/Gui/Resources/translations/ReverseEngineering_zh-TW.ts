@@ -233,8 +233,8 @@
       <translation>佈置</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
+      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <source>Fit B-Spline</source>
       <translation type="unfinished">Fit B-Spline</translation>
     </message>

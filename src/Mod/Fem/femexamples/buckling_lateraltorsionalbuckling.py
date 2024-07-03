@@ -39,12 +39,14 @@ def get_information():
         "constraints": ["displacement", "force"],
         "solvers": ["ccxtools"],
         "material": "solid",
-        "equations": ["buckling"]
+        "equations": ["buckling"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.buckling_lateraltorsionalbuckling import setup
@@ -65,6 +67,7 @@ flange load for a buckling factor of 1.00:
 43280000 Nmm / 278.6 mm = 155348 N
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -108,7 +111,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # solver
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
-        solver_obj.WorkingDir = u""
+        solver_obj.WorkingDir = ""
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
@@ -125,10 +128,10 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(solver_obj)
 
     # shell thicknesses
-    thickness_flanges = ObjectsFem.makeElementGeometry2D(doc, 10.7, 'Thickness_Flanges')
+    thickness_flanges = ObjectsFem.makeElementGeometry2D(doc, 10.7, "Thickness_Flanges")
     thickness_flanges.References = [(geom_obj, ("Face1", "Face2", "Face3", "Face4"))]
     analysis.addObject(thickness_flanges)
-    thickness_web = ObjectsFem.makeElementGeometry2D(doc, 7.1, 'Thickness_Web')
+    thickness_web = ObjectsFem.makeElementGeometry2D(doc, 7.1, "Thickness_Web")
     thickness_web.References = [(geom_obj, "Face5")]
     analysis.addObject(thickness_web)
 
@@ -173,6 +176,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # mesh
     from .meshes.mesh_buckling_ibeam_tria6 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:

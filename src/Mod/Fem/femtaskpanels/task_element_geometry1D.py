@@ -54,32 +54,32 @@ class _TaskPanel:
         QtCore.QObject.connect(
             self.parameterWidget.cb_crosssectiontype,
             QtCore.SIGNAL("activated(int)"),
-            self.sectiontype_changed
+            self.sectiontype_changed,
         )
         QtCore.QObject.connect(
             self.parameterWidget.if_rec_height,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.rec_height_changed
+            self.rec_height_changed,
         )
         QtCore.QObject.connect(
             self.parameterWidget.if_rec_width,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.rec_width_changed
+            self.rec_width_changed,
         )
         QtCore.QObject.connect(
             self.parameterWidget.if_circ_diameter,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.circ_diameter_changed
+            self.circ_diameter_changed,
         )
         QtCore.QObject.connect(
             self.parameterWidget.if_pipe_diameter,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.pipe_diameter_changed
+            self.pipe_diameter_changed,
         )
         QtCore.QObject.connect(
             self.parameterWidget.if_pipe_thickness,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.pipe_thickness_changed
+            self.pipe_thickness_changed,
         )
 
         self.parameterWidget.cb_crosssectiontype.addItems(
@@ -90,10 +90,7 @@ class _TaskPanel:
 
         # geometry selection widget
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Edge"],
-            False,
-            True
+            obj.References, ["Edge"], False, True
         )
 
         # form made from param and selection widget
@@ -133,9 +130,7 @@ class _TaskPanel:
 
     def updateParameterWidget(self):
         "fills the widgets"
-        index_crosssectiontype = self.parameterWidget.cb_crosssectiontype.findText(
-            self.SectionType
-        )
+        index_crosssectiontype = self.parameterWidget.cb_crosssectiontype.findText(self.SectionType)
         self.parameterWidget.cb_crosssectiontype.setCurrentIndex(index_crosssectiontype)
         self.parameterWidget.if_rec_height.setText(self.RectHeight.UserString)
         self.parameterWidget.if_rec_width.setText(self.RectWidth.UserString)

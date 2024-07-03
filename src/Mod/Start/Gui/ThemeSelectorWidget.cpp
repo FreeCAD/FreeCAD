@@ -33,7 +33,7 @@
 #include "ThemeSelectorWidget.h"
 #include <gsl/pointers>
 #include <App/Application.h>
-#include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/PreferencePackManager.h>
 
 using namespace StartGui;
@@ -101,10 +101,29 @@ void ThemeSelectorWidget::setupUi()
     _titleLabel = gsl::owner<QLabel*>(new QLabel);
     _descriptionLabel = gsl::owner<QLabel*>(new QLabel);
     outerLayout->addWidget(_titleLabel);
-    outerLayout->addWidget(_descriptionLabel);
     outerLayout->addLayout(buttonLayout);
+    outerLayout->addWidget(_descriptionLabel);
     setupButtons(buttonLayout);
     retranslateUi();
+    connect(_descriptionLabel, &QLabel::linkActivated, this, &ThemeSelectorWidget::onLinkActivated);
+}
+
+void ThemeSelectorWidget::onLinkActivated(const QString& link)
+{
+    auto const addonManagerLink = QStringLiteral("freecad:Std_AddonMgr");
+
+    if (link != addonManagerLink) {
+        return;
+    }
+
+    // Set the user preferences to include only preference packs.
+    // This is a quick and dirty way to open Addon Manager with only themes.
+    auto pref =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Addons");
+    pref->SetInt("PackageTypeSelection", 3);  // 3 stands for Preference Packs
+    pref->SetInt("StatusSelection", 0);       // 0 stands for any installation status
+
+    Gui::Application::Instance->commandManager().runCommandByName("Std_AddonMgr");
 }
 
 void ThemeSelectorWidget::themeChanged(Theme newTheme)
@@ -135,7 +154,8 @@ bool ThemeSelectorWidget::eventFilter(QObject* object, QEvent* event)
 void ThemeSelectorWidget::retranslateUi()
 {
     _titleLabel->setText(QLatin1String("<h2>") + tr("Theme") + QLatin1String("</h2>"));
-    _descriptionLabel->setText(tr("More themes are available online using the Addon Manager"));
+    _descriptionLabel->setText(tr("Looking for more themes? You can obtain them using "
+                                  "<a href=\"freecad:Std_AddonMgr\">Addon Manager</a>."));
     _buttons[static_cast<int>(Theme::Dark)]->setText(tr("Freecad Dark", "Visual theme name"));
     _buttons[static_cast<int>(Theme::Light)]->setText(tr("Freecad Light", "Visual theme name"));
     _buttons[static_cast<int>(Theme::Classic)]->setText(tr("Freecad Classic", "Visual theme name"));

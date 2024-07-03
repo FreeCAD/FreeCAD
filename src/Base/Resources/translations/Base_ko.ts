@@ -16,12 +16,12 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="73"/>
       <source>US customary (in, lb)</source>
-      <translation type="unfinished">US customary (in, lb)</translation>
+      <translation>미국 단위계(in, lb)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="75"/>
       <source>Imperial decimal (in, lb)</source>
-      <translation type="unfinished">Imperial decimal (in, lb)</translation>
+      <translation>영국 단위계(in/lb)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="77"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="87"/>
       <source>Meter decimal (m, m², m³)</source>
-      <translation type="unfinished">Meter decimal (m, m², m³)</translation>
+      <translation>미터계 (m, m², m³)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="89"/>

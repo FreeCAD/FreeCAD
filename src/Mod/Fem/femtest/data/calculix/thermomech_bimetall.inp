@@ -7119,13 +7119,13 @@ RF
 
 *OUTPUT, FREQUENCY=1
 ***********************************************************
-*END STEP 
+*END STEP
 
 ***********************************************************
 ** CalculiX Input file
 **   written by    --> FreeCAD 0.20.1
 **   written on    --> Wed Aug 10 04:21:49 2022
-**   file name     --> 
+**   file name     --> thermomech_bimetall.FCStd
 **   analysis name --> Analysis
 **
 **

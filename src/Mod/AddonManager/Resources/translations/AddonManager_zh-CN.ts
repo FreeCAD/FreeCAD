@@ -1113,17 +1113,17 @@ installed addons will be checked for available updates</source>
   <context>
     <name>AddonsInstaller</name>
     <message>
-      <location filename="../../AddonManager.py" line="227"/>
+      <location filename="../../AddonManager.py" line="296"/>
       <source>Starting up...</source>
       <translation>正在启动…</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="263"/>
+      <location filename="../../AddonManager.py" line="332"/>
       <source>Loading addon information</source>
       <translation>正在加载插件信息</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="289"/>
+      <location filename="../../AddonManager.py" line="358"/>
       <source>Worker process {} is taking a long time to stop...</source>
       <translation>工作进程 {} 需要很长时间才能停止...</translation>
     </message>
@@ -1142,41 +1142,46 @@ installed addons will be checked for available updates</source>
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="347"/>
+      <location filename="../../AddonManager.py" line="416"/>
       <source>Addon manager</source>
       <translation>附加组件管理器</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="354"/>
+      <location filename="../../AddonManager.py" line="423"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation>您必须容器 FreeCAD 才能应用这些更改</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="360"/>
+      <location filename="../../AddonManager.py" line="429"/>
       <source>Restart now</source>
       <translation>立即重启</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="361"/>
+      <location filename="../../AddonManager.py" line="430"/>
       <source>Restart later</source>
       <translation>稍后重启</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="427"/>
-      <location filename="../../AddonManager.py" line="880"/>
+      <location filename="../../AddonManager.py" line="496"/>
+      <location filename="../../AddonManager.py" line="897"/>
       <source>Refresh local cache</source>
       <translation>刷新本地缓存</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="557"/>
+      <location filename="../../AddonManager.py" line="626"/>
       <source>Updating cache...</source>
       <translation>正在更新缓存…</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="617"/>
-      <location filename="../../AddonManager.py" line="652"/>
+      <location filename="../../AddonManager.py" line="686"/>
+      <location filename="../../AddonManager.py" line="721"/>
       <source>Checking for updates...</source>
       <translation>正在检查更新…</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="936"/>
+      <source>Temporary installation of macro failed.</source>
+      <translation type="unfinished">Temporary installation of macro failed.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="95"/>
@@ -1210,30 +1215,25 @@ installed addons will be checked for available updates</source>
       <translation>应用 %n 可用的更新(s)</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="809"/>
-      <location filename="../../AddonManager.py" line="835"/>
-      <location filename="../../AddonManager.py" line="934"/>
+      <location filename="../../AddonManager.py" line="826"/>
+      <location filename="../../AddonManager.py" line="852"/>
+      <location filename="../../AddonManager.py" line="951"/>
       <source>Cannot launch a new installer until the previous one has finished.</source>
       <translation>在前一个安装程序完成之前，无法启动新安装程序。</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="920"/>
-      <source>Execution of macro failed. See console for failure details.</source>
-      <translation>执行宏失败。请查看控制台以了解故障详细信息。</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../package_list.py" line="379"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>维护者</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="391"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
       <source>Author</source>
       <translation>作者</translation>
     </message>
@@ -1269,17 +1269,17 @@ installed addons will be checked for available updates</source>
       <translation>无法导入 QtNetwork -- 它似乎未安装在您的系统上。 您的提供商可能有此依赖关系的软件包(通常称为 &quot;python3-pyside2.qtnetwork&quot;)</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="227"/>
+      <location filename="../../NetworkManager.py" line="228"/>
       <source>Failed to convert the specified proxy port &apos;{}&apos; to a port number</source>
       <translation>将指定的代理端口 &apos;{}&apos; 转换为端口号失败</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="256"/>
+      <location filename="../../NetworkManager.py" line="257"/>
       <source>Parameter error: mutually exclusive proxy options set. Resetting to default.</source>
       <translation>参数错误：设置了相互排斥的代理选项。重置为默认值。</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="271"/>
+      <location filename="../../NetworkManager.py" line="272"/>
       <source>Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</source>
       <translation>参数错误：用户代理已说明，但没有提供代理。重置为默认值。</translation>
     </message>
@@ -1289,7 +1289,7 @@ installed addons will be checked for available updates</source>
       <translation>附加组件管理器：服务器发生了未知响应： {}</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="527"/>
+      <location filename="../../NetworkManager.py" line="512"/>
       <source>Error with encrypted connection</source>
       <translation>加密连接错误</translation>
     </message>
@@ -1347,8 +1347,8 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../package_list.py" line="450"/>
       <location filename="../../package_list.py" line="500"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="273"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <source>Installed</source>
       <translation>已安装</translation>
     </message>
@@ -1559,9 +1559,9 @@ installed addons will be checked for available updates</source>
       <translation>为此内容项选择图标文件</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="692"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} 不是 {} 的子目录</translation>
     </message>
@@ -1699,7 +1699,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="370"/>
       <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was:</source>
-      <translation type="unfinished">Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was:</translation>
+      <translation>无法执行pip命令，你可能还没有安装pip. 请确保您的系统安装了pip并再试一次. 无法执行的命令是:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="374"/>
@@ -1711,48 +1711,48 @@ installed addons will be checked for available updates</source>
       <location filename="../../addonmanager_installer_gui.py" line="391"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="96"/>
       <source>Package installation failed</source>
-      <translation type="unfinished">Package installation failed</translation>
+      <translation>软件包安装失败</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="395"/>
       <source>See Report View for detailed failure log.</source>
-      <translation type="unfinished">See Report View for detailed failure log.</translation>
+      <translation>查看报告视图以获取详细记录</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="436"/>
       <source>Installing Addon</source>
-      <translation type="unfinished">Installing Addon</translation>
+      <translation>正在安装附加项目</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="437"/>
       <source>Installing FreeCAD Addon &apos;{}&apos;</source>
-      <translation type="unfinished">Installing FreeCAD Addon &apos;{}&apos;</translation>
+      <translation>正在安装FreeCAD附加项目&apos;{}&apos;</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="451"/>
       <source>Cancelling</source>
-      <translation type="unfinished">Cancelling</translation>
+      <translation>正在取消</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="452"/>
       <source>Cancelling installation of &apos;{}&apos;</source>
-      <translation type="unfinished">Cancelling installation of &apos;{}&apos;</translation>
+      <translation>正在取消 &apos;{}&apos; 的安装</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="478"/>
       <source>{} was installed successfully</source>
-      <translation type="unfinished">{} was installed successfully</translation>
+      <translation>{} 已成功安装</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="490"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="64"/>
       <source>Installation Failed</source>
-      <translation type="unfinished">Installation Failed</translation>
+      <translation>安装失败</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="491"/>
       <source>Failed to install {}</source>
-      <translation type="unfinished">Failed to install {}</translation>
+      <translation>无法安装{}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="608"/>
@@ -1764,7 +1764,7 @@ installed addons will be checked for available updates</source>
       <location filename="../../addonmanager_installer_gui.py" line="734"/>
       <location filename="../../install_to_toolbar.py" line="253"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
-      <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
+      <translation>使用 FreeCAD 插件管理器安装的宏</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="736"/>
@@ -1776,12 +1776,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_workers_utility.py" line="76"/>
       <source>Unable to read data from GitHub: check your internet connection and proxy settings and try again.</source>
-      <translation type="unfinished">Unable to read data from GitHub: check your internet connection and proxy settings and try again.</translation>
+      <translation>无法从 GitHub 获取数据：请检查您的互联网连接和代理设置，然后重试。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="192"/>
       <source>XML failure while reading metadata from file {}</source>
-      <translation type="unfinished">XML failure while reading metadata from file {}</translation>
+      <translation>从文件 {} 读取元数据时XML 失败</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="199"/>
@@ -1791,7 +1791,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_devmode.py" line="241"/>
       <source>WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</source>
-      <translation type="unfinished">WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</translation>
+      <translation>警告：package.xml 元数据中指定的路径与当前签出分支不匹配。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="263"/>
@@ -1821,43 +1821,43 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_devmode.py" line="433"/>
       <source>Select the folder containing your Addon</source>
-      <translation type="unfinished">Select the folder containing your Addon</translation>
+      <translation>选择包含附加组件的文件夹</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="562"/>
       <source>No Vermin, cancelling operation.</source>
       <comment>NOTE: Vermin is a Python package and proper noun - do not translate</comment>
-      <translation type="unfinished">No Vermin, cancelling operation.</translation>
+      <translation>无Vermin，取消操作。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="567"/>
       <source>Scanning Addon for Python version compatibility</source>
-      <translation type="unfinished">Scanning Addon for Python version compatibility</translation>
+      <translation>检查附加组件与Python的版本兼容性中</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="594"/>
       <source>Minimum Python Version Detected</source>
-      <translation type="unfinished">Minimum Python Version Detected</translation>
+      <translation>检测到最低Python版本要求</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="598"/>
       <source>Vermin auto-detected a required version of Python 3.{}</source>
-      <translation type="unfinished">Vermin auto-detected a required version of Python 3.{}</translation>
+      <translation>Vermin 检测到需要 Python 3.{} 的版本</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="610"/>
       <source>Install Vermin?</source>
-      <translation type="unfinished">Install Vermin?</translation>
+      <translation>安装Vermin吗？</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="614"/>
       <source>Auto-detecting the required version of Python for this Addon requires Vermin (https://pypi.org/project/vermin/). OK to install?</source>
-      <translation type="unfinished">Auto-detecting the required version of Python for this Addon requires Vermin (https://pypi.org/project/vermin/). OK to install?</translation>
+      <translation>自动检测此附加组件所需的 Python 版本需要 Vermin (https://pypi.org/project/vermin/)。要安装吗？</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="620"/>
       <source>Attempting to install Vermin from PyPi</source>
-      <translation type="unfinished">Attempting to install Vermin from PyPi</translation>
+      <translation>正在尝试从 PyPi 安装 Vermin</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="645"/>
@@ -1869,28 +1869,28 @@ installed addons will be checked for available updates</source>
       <location filename="../../addonmanager_devmode.py" line="650"/>
       <source>Failed to install Vermin -- check Report View for details.</source>
       <comment>&apos;Vermin&apos; is the name of a Python package, do not translate</comment>
-      <translation type="unfinished">Failed to install Vermin -- check Report View for details.</translation>
+      <translation>安装 Vermin 失败 -- 请查看报告视图以获取详细信息。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="665"/>
       <source>Failed to import vermin after installation -- cannot scan Addon.</source>
       <comment>&apos;vermin&apos; is the name of a Python package, do not translate</comment>
-      <translation type="unfinished">Failed to import vermin after installation -- cannot scan Addon.</translation>
+      <translation>安装后无法导入vermin - 无法扫描附加项目。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="678"/>
       <source>Select an icon file for this package</source>
-      <translation type="unfinished">Select an icon file for this package</translation>
+      <translation>选择此软件包的ico图标文件</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_search.py" line="87"/>
       <source>Filter is valid</source>
-      <translation type="unfinished">Filter is valid</translation>
+      <translation>筛选器有效</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_search.py" line="93"/>
       <source>Filter regular expression is invalid</source>
-      <translation type="unfinished">Filter regular expression is invalid</translation>
+      <translation>过滤正则表达式无效</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_search.py" line="104"/>
@@ -1900,17 +1900,17 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../package_list.py" line="189"/>
       <source>Click for details about package {}</source>
-      <translation type="unfinished">Click for details about package {}</translation>
+      <translation>点击获取软件包 {} 的详细信息</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="195"/>
       <source>Click for details about workbench {}</source>
-      <translation type="unfinished">Click for details about workbench {}</translation>
+      <translation>点击查看工作台的详细信息 {}</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="197"/>
       <source>Click for details about macro {}</source>
-      <translation type="unfinished">Click for details about macro {}</translation>
+      <translation>点击查看宏的详细信息 {}</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="384"/>
@@ -1925,40 +1925,40 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../package_list.py" line="412"/>
       <source>{} ★ on GitHub</source>
-      <translation type="unfinished">{} ★ on GitHub</translation>
+      <translation>{} Github上的★数</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="414"/>
       <source>No ★, or not on GitHub</source>
-      <translation type="unfinished">No ★, or not on GitHub</translation>
+      <translation>没有★，或者不在Github上</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="419"/>
       <source>Created </source>
-      <translation type="unfinished">Created </translation>
+      <translation>创造日期 </translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="427"/>
       <source>Updated </source>
-      <translation type="unfinished">Updated </translation>
+      <translation>更新日期 </translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="430"/>
       <source>Score: </source>
-      <translation type="unfinished">Score: </translation>
+      <translation>评分: </translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="452"/>
       <location filename="../../package_list.py" line="504"/>
       <source>Up-to-date</source>
-      <translation type="unfinished">Up-to-date</translation>
+      <translation>已是最新</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="454"/>
       <location filename="../../package_list.py" line="508"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="305"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="313"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <source>Update available</source>
       <translation>有可用的更新</translation>
     </message>
@@ -1972,7 +1972,7 @@ installed addons will be checked for available updates</source>
       <location filename="../../package_list.py" line="459"/>
       <location filename="../../package_list.py" line="517"/>
       <source>DISABLED</source>
-      <translation type="unfinished">DISABLED</translation>
+      <translation>禁用</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="474"/>
@@ -1997,12 +1997,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="106"/>
       <source>Filter by...</source>
-      <translation type="unfinished">Filter by...</translation>
+      <translation>筛选条件...</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="108"/>
       <source>Addon Type</source>
-      <translation type="unfinished">Addon Type</translation>
+      <translation>附加组件类型</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="111"/>
@@ -2023,7 +2023,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="126"/>
       <source>Installation Status</source>
-      <translation type="unfinished">Installation Status</translation>
+      <translation>安装状态</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="132"/>
@@ -2038,60 +2038,60 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../change_branch.py" line="87"/>
       <source>DANGER: Developer feature</source>
-      <translation type="unfinished">DANGER: Developer feature</translation>
+      <translation>警告: 开发者功能</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="94"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
-      <translation type="unfinished">DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</translation>
+      <translation>警告：切换分支操作应由开发者或测试者完成，可能导致软件故障、找不到复原教程、不稳定、崩溃和/或宇宙毁灭。您确定要继续吗？</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="103"/>
       <source>There are local changes</source>
-      <translation type="unfinished">There are local changes</translation>
+      <translation>局部内容有更改</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="108"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
-      <translation type="unfinished">WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</translation>
+      <translation>警告：此仓库有未承诺的本地更改。您确定要更改分支 (与您联系变化) 吗？</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="207"/>
       <source>Local</source>
       <comment>Table header for local git ref name</comment>
-      <translation type="unfinished">Local</translation>
+      <translation>本地</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="213"/>
       <source>Remote tracking</source>
       <comment>Table header for git remote tracking branch name</comment>
-      <translation type="unfinished">Remote tracking</translation>
+      <translation>远程跟踪</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="219"/>
       <source>Last Updated</source>
       <comment>Table header for git update date</comment>
-      <translation type="unfinished">Last Updated</translation>
+      <translation>最后更新</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="131"/>
       <source>Installation of Python package {} failed</source>
-      <translation type="unfinished">Installation of Python package {} failed</translation>
+      <translation>安装Python软件包 {} 失败</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="157"/>
       <source>Installation of optional package failed</source>
-      <translation type="unfinished">Installation of optional package failed</translation>
+      <translation>可选软件包安装失败</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="185"/>
       <source>Installing required dependency {}</source>
-      <translation type="unfinished">Installing required dependency {}</translation>
+      <translation>正在安装需要的依赖关系{}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="195"/>
       <source>Installation of Addon {} failed</source>
-      <translation type="unfinished">Installation of Addon {} failed</translation>
+      <translation>插件 {} 安装失败</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="165"/>
@@ -2106,7 +2106,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="205"/>
       <source>Any dependency information in this file will be ignored</source>
-      <translation type="unfinished">Any dependency information in this file will be ignored</translation>
+      <translation>此文件中的任何依赖信息将被忽略</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="212"/>
@@ -2222,7 +2222,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="269"/>
       <source>Git is disabled, skipping git macros</source>
-      <translation type="unfinished">Git is disabled, skipping git macros</translation>
+      <translation>Git 已禁用，跳过git 宏模式</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="317"/>
@@ -2292,51 +2292,51 @@ installed addons will be checked for available updates</source>
       <translation type="unfinished">Out of {num_macros} macros, {num_failed} timed out while processing</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="807"/>
+      <location filename="../../addonmanager_workers_startup.py" line="808"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation type="unfinished">Addon Manager: a worker process failed to halt ({name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="846"/>
+      <location filename="../../addonmanager_workers_startup.py" line="847"/>
       <source>Getting metadata from macro {}</source>
       <translation type="unfinished">Getting metadata from macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="860"/>
+      <location filename="../../addonmanager_workers_startup.py" line="861"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation type="unfinished">Timeout while fetching metadata for macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="871"/>
+      <location filename="../../addonmanager_workers_startup.py" line="872"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation type="unfinished">Failed to kill process for macro {}!
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="892"/>
+      <location filename="../../addonmanager_workers_startup.py" line="893"/>
       <source>Retrieving macro description...</source>
       <translation type="unfinished">Retrieving macro description...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="894"/>
+      <location filename="../../addonmanager_workers_startup.py" line="895"/>
       <source>Retrieving info from git</source>
-      <translation type="unfinished">Retrieving info from git</translation>
+      <translation>从 git 搜索信息</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="897"/>
+      <location filename="../../addonmanager_workers_startup.py" line="898"/>
       <source>Retrieving info from wiki</source>
-      <translation type="unfinished">Retrieving info from wiki</translation>
+      <translation>从维基搜索信息</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="938"/>
+      <location filename="../../addonmanager_workers_startup.py" line="939"/>
       <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </source>
       <translation type="unfinished">Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="970"/>
+      <location filename="../../addonmanager_workers_startup.py" line="971"/>
       <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
 </source>
       <translation type="unfinished">Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
@@ -2439,7 +2439,7 @@ installed addons will be checked for available updates</source>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="158"/>
       <source>Last Updated</source>
       <comment>Sort order</comment>
-      <translation type="unfinished">Last Updated</translation>
+      <translation>最后更新</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_view_control_bar.py" line="161"/>
@@ -2463,12 +2463,12 @@ installed addons will be checked for available updates</source>
   <context>
     <name>Std_AddonMgr</name>
     <message>
-      <location filename="../../AddonManager.py" line="164"/>
+      <location filename="../../AddonManager.py" line="233"/>
       <source>&amp;Addon manager</source>
       <translation>附加组件管理器 (&amp;A)</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="168"/>
+      <location filename="../../AddonManager.py" line="237"/>
       <source>Manage external workbenches, macros, and preference packs</source>
       <translation type="unfinished">Manage external workbenches, macros, and preference packs</translation>
     </message>
@@ -2505,7 +2505,7 @@ installed addons will be checked for available updates</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AddonManager.py" line="134"/>
+      <location filename="../../AddonManager.py" line="187"/>
       <source>Addon Manager</source>
       <translation>插件管理器</translation>
     </message>

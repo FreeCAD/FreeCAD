@@ -180,17 +180,17 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="107"/>
+      <location filename="../../../InitGui.py" line="108"/>
       <source>Assembly</source>
       <translation>Sestava</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="108"/>
+      <location filename="../../../InitGui.py" line="109"/>
       <source>Assembly Joints</source>
       <translation>Montážní spoje</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="111"/>
+      <location filename="../../../InitGui.py" line="112"/>
       <source>&amp;Assembly</source>
       <translation>&amp;Sestava</translation>
     </message>
@@ -198,230 +198,324 @@
   <context>
     <name>Assembly</name>
     <message>
-      <location filename="../../../JointObject.py" line="48"/>
+      <location filename="../../../JointObject.py" line="46"/>
       <source>Fixed</source>
       <translation>Pevné</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="49"/>
+      <location filename="../../../JointObject.py" line="47"/>
       <source>Revolute</source>
       <translation>Otáčení</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="50"/>
+      <location filename="../../../JointObject.py" line="48"/>
       <source>Cylindrical</source>
       <translation>Válcový</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="51"/>
+      <location filename="../../../JointObject.py" line="49"/>
       <source>Slider</source>
       <translation>Posuvný jezdec</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="52"/>
+      <location filename="../../../JointObject.py" line="50"/>
       <source>Ball</source>
       <translation>Koule</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="53"/>
+      <location filename="../../../JointObject.py" line="51"/>
+      <location filename="../../../JointObject.py" line="1530"/>
       <source>Distance</source>
       <translation>Vzdálenost</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="54"/>
+      <location filename="../../../JointObject.py" line="52"/>
       <source>Parallel</source>
       <translation>Rovnoběžně</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="55"/>
+      <location filename="../../../JointObject.py" line="53"/>
       <source>Perpendicular</source>
       <translation>Kolmý</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="56"/>
+      <location filename="../../../JointObject.py" line="54"/>
+      <location filename="../../../JointObject.py" line="1532"/>
       <source>Angle</source>
       <translation>Úhel</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="57"/>
+      <location filename="../../../JointObject.py" line="55"/>
       <source>RackPinion</source>
       <translation>HřebenPastorek</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="58"/>
+      <location filename="../../../JointObject.py" line="56"/>
       <source>Screw</source>
       <translation>Šroub</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="59"/>
+      <location filename="../../../JointObject.py" line="57"/>
       <source>Gears</source>
       <translation>Ozubená kola</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="60"/>
+      <location filename="../../../JointObject.py" line="58"/>
       <source>Belt</source>
       <translation>Řemen</translation>
     </message>
     <message>
-      <location filename="../../../Preferences.py" line="47"/>
+      <location filename="../../../JointObject.py" line="1365"/>
+      <source>You need to select 2 elements from 2 separate parts.</source>
+      <translation type="unfinished">You need to select 2 elements from 2 separate parts.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1534"/>
+      <source>Radius 1</source>
+      <translation type="unfinished">Radius 1</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1536"/>
+      <source>Pitch radius</source>
+      <translation type="unfinished">Pitch radius</translation>
+    </message>
+    <message>
+      <location filename="../../../Preferences.py" line="49"/>
       <source>Ask</source>
       <translation>Zeptejte se</translation>
     </message>
     <message>
-      <location filename="../../../Preferences.py" line="48"/>
+      <location filename="../../../Preferences.py" line="50"/>
       <source>Always</source>
       <translation>Vždy</translation>
     </message>
     <message>
-      <location filename="../../../Preferences.py" line="49"/>
+      <location filename="../../../Preferences.py" line="51"/>
       <source>Never</source>
       <translation>Nikdy</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="46"/>
+      <source>Index (auto)</source>
+      <translation type="unfinished">Index (auto)</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="47"/>
+      <source>Name (auto)</source>
+      <translation type="unfinished">Name (auto)</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="48"/>
+      <source>Description</source>
+      <translation>Popis</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="49"/>
+      <source>File Name (auto)</source>
+      <translation type="unfinished">File Name (auto)</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="50"/>
+      <source>Quantity (auto)</source>
+      <translation type="unfinished">Quantity (auto)</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="197"/>
+      <source>Default</source>
+      <translation>Výchozí</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="293"/>
+      <source>Duplicate Name</source>
+      <translation type="unfinished">Duplicate Name</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="294"/>
+      <source>This name is already used. Please choose a different name.</source>
+      <translation type="unfinished">This name is already used. Please choose a different name.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="367"/>
+      <source>Options:</source>
+      <translation type="unfinished">Options:</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="374"/>
+      <source>Sub-assemblies children : If checked, Sub assemblies children will be added to the bill of materials.</source>
+      <translation type="unfinished">Sub-assemblies children : If checked, Sub assemblies children will be added to the bill of materials.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="380"/>
+      <source>Parts children : If checked, Parts children will be added to the bill of materials.</source>
+      <translation type="unfinished">Parts children : If checked, Parts children will be added to the bill of materials.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="386"/>
+      <source>Only parts : If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</source>
+      <translation type="unfinished">Only parts : If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="388"/>
+      <source>Columns:</source>
+      <translation>Sloupce:</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="395"/>
+      <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
+      <translation type="unfinished">Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="401"/>
+      <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).</source>
+      <translation type="unfinished">Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="407"/>
+      <source>Any column (custom or not) can be deleted by pressing Del.</source>
+      <translation type="unfinished">Any column (custom or not) can be deleted by pressing Del.</translation>
     </message>
   </context>
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../JointObject.py" line="184"/>
+      <location filename="../../../JointObject.py" line="192"/>
       <source>The type of the joint</source>
       <translation>Druh kloubu</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="203"/>
+      <location filename="../../../JointObject.py" line="213"/>
+      <location filename="../../../JointObject.py" line="449"/>
       <source>The first object of the joint</source>
       <translation>Prvním předmětem společného</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="211"/>
+      <location filename="../../../JointObject.py" line="221"/>
       <source>The first part of the joint</source>
       <translation>První část společného</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="219"/>
-      <source>The selected element of the first object</source>
-      <translation>Vybraný prvek prvního objektu</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="227"/>
-      <source>The selected vertex of the first object</source>
-      <translation>Zvolený vrchol prvního objektu</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="238"/>
+      <location filename="../../../JointObject.py" line="232"/>
       <source>This is the local coordinate system within object1 that will be used for the joint.</source>
       <translation>Jedná se o lokální souřadnicový systém v rámci objektu1, který bude použit pro spojení.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="249"/>
+      <location filename="../../../JointObject.py" line="243"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Tím se zabrání přepočítávání umístění1 a umožní se vlastní umístění.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="258"/>
+      <location filename="../../../JointObject.py" line="252"/>
+      <location filename="../../../JointObject.py" line="468"/>
       <source>The second object of the joint</source>
       <translation>Druhý předmět společného</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="266"/>
+      <location filename="../../../JointObject.py" line="260"/>
       <source>The second part of the joint</source>
       <translation>Druhá část společného</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="274"/>
-      <source>The selected element of the second object</source>
-      <translation>Vybraný prvek druhého objektu</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="282"/>
-      <source>The selected vertex of the second object</source>
-      <translation>Vybraný vrchol druhého objektu</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="293"/>
+      <location filename="../../../JointObject.py" line="271"/>
       <source>This is the local coordinate system within object2 that will be used for the joint.</source>
       <translation>Jedná se o lokální souřadnicový systém v rámci objektu2, který bude použit pro spojení.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="304"/>
+      <location filename="../../../JointObject.py" line="282"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Tím se zabrání přepočítávání umístění2 a umožní se vlastní umístění.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="315"/>
+      <location filename="../../../JointObject.py" line="294"/>
       <source>This is the distance of the joint. It is used only by the distance joint and by RackPinion (pitch radius), Screw and Gears and Belt(radius1)</source>
       <translation>Toto je vzdálenost spoje. Používá ji pouze spoj distanční, hřebenu a pastorku (poloměr rozteče), šroubový, ozubených kol a řemenu (poloměr1)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="326"/>
+      <location filename="../../../JointObject.py" line="305"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Toto je druhá vzdálenost spoje. Používá ji pouze spoje ozubených kol pro uložení druhého poloměru.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="337"/>
+      <location filename="../../../JointObject.py" line="316"/>
       <source>This is the rotation of the joint.</source>
       <translation>Jedná se o otáčení kloubu.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="348"/>
+      <location filename="../../../JointObject.py" line="327"/>
       <source>This is the offset vector of the joint.</source>
       <translation>Jedná se o vektor posunu spoje.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="359"/>
+      <location filename="../../../JointObject.py" line="338"/>
       <source>This indicates if the joint is active.</source>
       <translation>Ukazuje, zda je spoj aktivní.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="371"/>
-      <source>Is this joint using limits.</source>
-      <translation>Používá tento spoj omezení.</translation>
+      <location filename="../../../JointObject.py" line="350"/>
+      <source>Enable the minimum length limit of the joint.</source>
+      <translation type="unfinished">Enable the minimum length limit of the joint.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="383"/>
+      <location filename="../../../JointObject.py" line="362"/>
+      <source>Enable the maximum length limit of the joint.</source>
+      <translation type="unfinished">Enable the maximum length limit of the joint.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="374"/>
+      <source>Enable the minimum angle limit of the joint.</source>
+      <translation type="unfinished">Enable the minimum angle limit of the joint.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="386"/>
+      <source>Enable the minimum length of the joint.</source>
+      <translation type="unfinished">Enable the minimum length of the joint.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="398"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>Toto je minimální mez délky mezi oběma souřadnicovými systémy (podél jejich osy Z).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="394"/>
+      <location filename="../../../JointObject.py" line="409"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>Toto je maximální mez délky mezi oběma souřadnicovými systémy (podél jejich osy Z).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="405"/>
+      <location filename="../../../JointObject.py" line="420"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>Toto je minimální mez úhlu mezi oběma souřadnicovými systémy (mezi jejich osami X).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="416"/>
+      <location filename="../../../JointObject.py" line="431"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>Toto je maximální mez úhlu mezi oběma souřadnicovými systémy (mezi jejich osami X).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="959"/>
+      <location filename="../../../JointObject.py" line="1021"/>
       <source>The object to ground</source>
       <translation>Objekt k uzemnění</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="971"/>
+      <location filename="../../../JointObject.py" line="1033"/>
       <source>This is where the part is grounded.</source>
       <translation>Zde je součást uzemněna.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="230"/>
+      <location filename="../../../CommandCreateView.py" line="235"/>
       <source>The object moved by the move</source>
       <translation>Objekt přesunut tahem</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="237"/>
+      <location filename="../../../CommandCreateView.py" line="242"/>
       <source>The containing parts of objects moved by the move</source>
       <translation>Díly obsažené v objektech přesunuty tahem</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="247"/>
+      <location filename="../../../CommandCreateView.py" line="252"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Toto je pohyb tahu. Konečné umístění je výsledkem počáteční polohy * tohoto umístění.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="254"/>
+      <location filename="../../../CommandCreateView.py" line="259"/>
       <source>The type of the move</source>
       <translation>Typ tahu</translation>
     </message>
@@ -434,62 +528,62 @@
       <translation>Tvorba spoje</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="28"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="41"/>
       <source>Distance</source>
       <translation>Vzdálenost</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="52"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="65"/>
       <source>Radius 2</source>
       <translation>Poloměr 2</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="76"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="89"/>
       <source>Offset</source>
       <translation>Odsazení</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="100"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="113"/>
       <source>Rotation</source>
       <translation>Rotace</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="128"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="141"/>
       <source>Reverse the direction of the joint.</source>
       <translation>Obrátit směr spoje.</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="131"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="144"/>
       <source>Reverse</source>
       <translation>Obrátit</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="142"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="155"/>
       <source>Limits</source>
       <translation>Omezení</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="152"/>
-      <source>Length min</source>
-      <translation>Min. délka</translation>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="161"/>
+      <source>Min length</source>
+      <translation type="unfinished">Min length</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="172"/>
-      <source>Length max</source>
-      <translation>Max. délka</translation>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="184"/>
+      <source>Max length</source>
+      <translation type="unfinished">Max length</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="192"/>
-      <source>Angle min</source>
-      <translation>Min. úhel</translation>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="207"/>
+      <source>Min angle</source>
+      <translation type="unfinished">Min angle</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="212"/>
-      <source>Angle max</source>
-      <translation>Max. úhel</translation>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="236"/>
+      <source>Max angle</source>
+      <translation type="unfinished">Max angle</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="232"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="268"/>
       <source>Reverse rotation</source>
       <translation>Obrátit rotaci</translation>
     </message>
@@ -546,11 +640,23 @@
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>
+      <source>Log the dragging steps of the solver. Useful if you want to report a bug.
+The files are named "runPreDrag.asmt" and "dragging.log" and are located in the default directory of std::ofstream (on Windows it's the desktop)</source>
+      <translation type="unfinished">Log the dragging steps of the solver. Useful if you want to report a bug.
+The files are named "runPreDrag.asmt" and "dragging.log" and are located in the default directory of std::ofstream (on Windows it's the desktop)</translation>
+    </message>
+    <message>
+      <location filename="../preferences/Assembly.ui" line="43"/>
+      <source>Log dragging steps</source>
+      <translation type="unfinished">Log dragging steps</translation>
+    </message>
+    <message>
+      <location filename="../preferences/Assembly.ui" line="59"/>
       <source>Ground first part:</source>
       <translation>První část:</translation>
     </message>
     <message>
-      <location filename="../preferences/Assembly.ui" line="46"/>
+      <location filename="../preferences/Assembly.ui" line="66"/>
       <source>When you insert the first part in the assembly, you can choose to ground the part automatically.</source>
       <translation>Při vkládání prvního dílu do sestavy můžete zvolit automatické uzemnění dílu.</translation>
     </message>
@@ -558,22 +664,22 @@
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="148"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="150"/>
       <source>Delete associated joints</source>
       <translation>Odstranění přidružených spojů</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="160"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="162"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Objekt je přiřazen k jednomu nebo více spojům.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="162"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="164"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Chcete objekt přesunout a odstranit související spoje?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="762"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="780"/>
       <source>Move part</source>
       <translation>Přesunout část</translation>
     </message>
@@ -713,18 +819,73 @@ Stiskněte ESC pro zrušení.</translation>
       <source>Explode radially</source>
       <translation>Rozložit radiálně</translation>
     </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateBom.ui" line="14"/>
+      <source>Create Bill Of Materials</source>
+      <translation type="unfinished">Create Bill Of Materials</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateBom.ui" line="20"/>
+      <source>If checked, Sub assemblies children will be added to the bill of materials.</source>
+      <translation type="unfinished">If checked, Sub assemblies children will be added to the bill of materials.</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateBom.ui" line="23"/>
+      <source>Sub-assemblies children</source>
+      <translation type="unfinished">Sub-assemblies children</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateBom.ui" line="39"/>
+      <source>If checked, Parts children will be added to the bill of materials.</source>
+      <translation type="unfinished">If checked, Parts children will be added to the bill of materials.</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateBom.ui" line="42"/>
+      <source>Parts children</source>
+      <translation type="unfinished">Parts children</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateBom.ui" line="58"/>
+      <source>If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</source>
+      <translation type="unfinished">If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateBom.ui" line="61"/>
+      <source>Only parts</source>
+      <translation type="unfinished">Only parts</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateBom.ui" line="77"/>
+      <source>Columns</source>
+      <translation>Sloupy</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateBom.ui" line="86"/>
+      <source>Add column</source>
+      <translation>Přidat sloupec</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateBom.ui" line="96"/>
+      <source>Export</source>
+      <translation>Export</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateBom.ui" line="109"/>
+      <source>Help</source>
+      <translation>Nápověda</translation>
+    </message>
   </context>
   <context>
     <name>Assembly_CreateJointParallel</name>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="249"/>
       <source>Create Parallel Joint</source>
-      <translation type="unfinished">Create Parallel Joint</translation>
+      <translation>Vytvořit rovnoběžný spoj</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="256"/>
       <source>Create an Parallel Joint: Make the Z axis of selected coordinate systems parallel.</source>
-      <translation type="unfinished">Create an Parallel Joint: Make the Z axis of selected coordinate systems parallel.</translation>
+      <translation>Vytvoří rovnoběžný spoj: Udělá osy Z vybraných souřadnicových systémů rovnoběžnými.</translation>
     </message>
   </context>
   <context>
@@ -732,12 +893,12 @@ Stiskněte ESC pro zrušení.</translation>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="277"/>
       <source>Create Perpendicular Joint</source>
-      <translation type="unfinished">Create Perpendicular Joint</translation>
+      <translation>Vytvořit kolmý spoj</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="284"/>
       <source>Create an Perpendicular Joint: Make the Z axis of selected coordinate systems perpendicular.</source>
-      <translation type="unfinished">Create an Perpendicular Joint: Make the Z axis of selected coordinate systems perpendicular.</translation>
+      <translation>Vytvoří kolmý spoj: Udělá osy Z vybraných souřadnicových systémů kolmými.</translation>
     </message>
   </context>
   <context>
@@ -745,12 +906,35 @@ Stiskněte ESC pro zrušení.</translation>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="303"/>
       <source>Create Angle Joint</source>
-      <translation type="unfinished">Create Angle Joint</translation>
+      <translation>Vytvořit úhlový spoj</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="310"/>
       <source>Create an Angle Joint: Fix the angle between the Z axis of selected coordinate systems.</source>
-      <translation type="unfinished">Create an Angle Joint: Fix the angle between the Z axis of selected coordinate systems.</translation>
+      <translation>Vytvoří úhlový spoj: Upevní úhel mezi osami Z vybraných souřadnicových systémů.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateBom</name>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="69"/>
+      <source>Create Bill of Materials</source>
+      <translation type="unfinished">Create Bill of Materials</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="76"/>
+      <source>Create a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.</source>
+      <translation type="unfinished">Create a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="81"/>
+      <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the bom. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
+      <translation type="unfinished">The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the bom. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateBom.py" line="86"/>
+      <source>The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.</source>
+      <translation type="unfinished">The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.</translation>
     </message>
   </context>
 </TS>

@@ -63,6 +63,7 @@ def setup_boxanalysisbase(doc=None, solvertype="ccxtools"):
 
     # mesh
     from .meshes.mesh_boxanalysis_tetra10 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:

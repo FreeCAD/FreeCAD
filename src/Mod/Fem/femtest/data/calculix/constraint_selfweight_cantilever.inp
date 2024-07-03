@@ -2189,13 +2189,13 @@ RF
 
 *OUTPUT, FREQUENCY=1
 ***********************************************************
-*END STEP 
+*END STEP
 
 ***********************************************************
 ** CalculiX Input file
 **   written by    --> FreeCAD 0.19.21963 +19 (Git)
 **   written on    --> Tue Jul 14 12:48:52 2020
-**   file name     --> 
+**   file name     --> constraint_selfweight_cantilever.FCStd
 **   analysis name --> Analysis
 **
 **

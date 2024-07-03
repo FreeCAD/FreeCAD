@@ -54,21 +54,16 @@ class _TaskPanel:
         QtCore.QObject.connect(
             self.parameterWidget.spb_tolerance,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.tolerance_changed
+            self.tolerance_changed,
         )
         QtCore.QObject.connect(
-            self.parameterWidget.ckb_adjust,
-            QtCore.SIGNAL("toggled(bool)"),
-            self.adjust_changed
+            self.parameterWidget.ckb_adjust, QtCore.SIGNAL("toggled(bool)"), self.adjust_changed
         )
         self.init_parameter_widget()
 
         # geometry selection widget
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Face"],
-            False,
-            False
+            obj.References, ["Face"], False, False
         )
 
         # form made from param and selection widget
@@ -78,16 +73,14 @@ class _TaskPanel:
         # check values
         items = len(self.selectionWidget.references)
         FreeCAD.Console.PrintMessage(
-            "Task panel: found references: {}\n{}\n"
-            .format(items, self.selectionWidget.references)
+            f"Task panel: found references: {items}\n{self.selectionWidget.references}\n"
         )
 
         if items != 2:
             msgBox = QtGui.QMessageBox()
             msgBox.setIcon(QtGui.QMessageBox.Question)
             msgBox.setText(
-                "Constraint Tie requires exactly two faces\n\nfound references: {}"
-                .format(items)
+                f"Constraint Tie requires exactly two faces\n\nfound references: {items}"
             )
             msgBox.setWindowTitle("FreeCAD FEM Constraint Tie")
             retryButton = msgBox.addButton(QtGui.QMessageBox.Retry)
@@ -117,8 +110,7 @@ class _TaskPanel:
     def init_parameter_widget(self):
         self.tolerance = self.obj.Tolerance
         self.adjust = self.obj.Adjust
-        FreeCADGui.ExpressionBinding(self.parameterWidget.spb_tolerance)\
-            .bind(self.obj, "Tolerance")
+        FreeCADGui.ExpressionBinding(self.parameterWidget.spb_tolerance).bind(self.obj, "Tolerance")
         self.parameterWidget.spb_tolerance.setProperty("value", self.tolerance)
         self.parameterWidget.ckb_adjust.setChecked(self.adjust)
 

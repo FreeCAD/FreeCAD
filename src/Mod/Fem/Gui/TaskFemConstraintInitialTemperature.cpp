@@ -92,20 +92,6 @@ TaskDlgFemConstraintInitialTemperature::TaskDlgFemConstraintInitialTemperature(
 }
 
 //==== calls from the TaskView ===============================================================
-void TaskDlgFemConstraintInitialTemperature::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint initial temperature");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());  // OvG: Hide meshes and show parts
-    }
-}
 
 bool TaskDlgFemConstraintInitialTemperature::accept()
 {
@@ -118,19 +104,6 @@ bool TaskDlgFemConstraintInitialTemperature::accept()
                                 "App.ActiveDocument.%s.initialTemperature = \"%s\"",
                                 name.c_str(),
                                 parameterTemperature->get_temperature().c_str());
-
-        std::string scale = parameterTemperature->getScale();  // OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());  // OvG: implement modified scale
-    }
-    catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
-        return false;
-    }
-
-    try {
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         if (!ConstraintView->getObject()->isValid()) {
             throw Base::RuntimeError(ConstraintView->getObject()->getStatusString());
@@ -142,15 +115,6 @@ bool TaskDlgFemConstraintInitialTemperature::accept()
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
-
-    return true;
-}
-
-bool TaskDlgFemConstraintInitialTemperature::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
 
     return true;
 }

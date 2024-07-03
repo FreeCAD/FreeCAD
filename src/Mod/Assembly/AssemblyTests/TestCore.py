@@ -149,29 +149,29 @@ class TestCore(unittest.TestCase):
         box.Placement = App.Placement(App.Vector(10, 20, 30), App.Rotation(15, 25, 35))
 
         # Step 0 : box with placement. No element selected
-        plc = joint.Proxy.findPlacement(joint, box.Name, box, "", "")
+        plc = joint.Proxy.findPlacement(joint, box, box, "", "")
         targetPlc = App.Placement(App.Vector(), App.Rotation())
         self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 0".format(operation))
 
         # Step 1 : box with placement. Face + Vertex
-        plc = joint.Proxy.findPlacement(joint, box.Name, box, "Face6", "Vertex7")
+        plc = joint.Proxy.findPlacement(joint, box, box, "Face6", "Vertex7")
         targetPlc = App.Placement(App.Vector(L, W, H), App.Rotation())
         self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 1".format(operation))
 
         # Step 2 : box with placement. Edge + Vertex
-        plc = joint.Proxy.findPlacement(joint, box.Name, box, "Edge8", "Vertex8")
+        plc = joint.Proxy.findPlacement(joint, box, box, "Edge8", "Vertex8")
         targetPlc = App.Placement(App.Vector(L, W, 0), App.Rotation(0, -90, 270))
         self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 2".format(operation))
 
         # Step 3 : box with placement. Vertex
-        plc = joint.Proxy.findPlacement(joint, box.Name, box, "Vertex3", "Vertex3")
+        plc = joint.Proxy.findPlacement(joint, box, box, "Vertex3", "Vertex3")
         targetPlc = App.Placement(App.Vector(0, W, H), App.Rotation())
         _msg("  plc '{}'".format(plc))
         _msg("  targetPlc '{}'".format(targetPlc))
         self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 3".format(operation))
 
         # Step 4 : box with placement. Face
-        plc = joint.Proxy.findPlacement(joint, box.Name, box, "Face2", "Face2")
+        plc = joint.Proxy.findPlacement(joint, box, box, "Face2", "Face2")
         targetPlc = App.Placement(App.Vector(L, W / 2, H / 2), App.Rotation(0, -90, 180))
         _msg("  plc '{}'".format(plc))
         _msg("  targetPlc '{}'".format(targetPlc))

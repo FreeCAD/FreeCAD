@@ -78,6 +78,7 @@ public:
   const char* getColorBarName() const override;
 
 protected:
+  void applyFormat(const SoLabelTextFormat& fmt) override;
   /**
    * Sets the current viewer size this color gradient is embedded into, to recalculate its new position.
    */

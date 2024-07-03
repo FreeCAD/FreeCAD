@@ -1116,17 +1116,17 @@ installed addons will be checked for available updates</translation>
   <context>
     <name>AddonsInstaller</name>
     <message>
-      <location filename="../../AddonManager.py" line="227"/>
+      <location filename="../../AddonManager.py" line="296"/>
       <source>Starting up...</source>
       <translation>Pokreče se...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="263"/>
+      <location filename="../../AddonManager.py" line="332"/>
       <source>Loading addon information</source>
       <translation>Učitavanje informacija o dodatku</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="289"/>
+      <location filename="../../AddonManager.py" line="358"/>
       <source>Worker process {} is taking a long time to stop...</source>
       <translation>Radni proces {} se dugo zaustavlja...</translation>
     </message>
@@ -1145,41 +1145,46 @@ installed addons will be checked for available updates</translation>
 </translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="347"/>
+      <location filename="../../AddonManager.py" line="416"/>
       <source>Addon manager</source>
       <translation>Upravitelj dodataka</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="354"/>
+      <location filename="../../AddonManager.py" line="423"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation>Za primjenu promjene, ponovo pokreni FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="360"/>
+      <location filename="../../AddonManager.py" line="429"/>
       <source>Restart now</source>
       <translation>Ponovno pokreni sada</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="361"/>
+      <location filename="../../AddonManager.py" line="430"/>
       <source>Restart later</source>
       <translation>Ponovno pokreni kasnije</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="427"/>
-      <location filename="../../AddonManager.py" line="880"/>
+      <location filename="../../AddonManager.py" line="496"/>
+      <location filename="../../AddonManager.py" line="897"/>
       <source>Refresh local cache</source>
       <translation>Osvježite lokalnu predmemoriju</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="557"/>
+      <location filename="../../AddonManager.py" line="626"/>
       <source>Updating cache...</source>
       <translation>Ažuriram međuspremnik…</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="617"/>
-      <location filename="../../AddonManager.py" line="652"/>
+      <location filename="../../AddonManager.py" line="686"/>
+      <location filename="../../AddonManager.py" line="721"/>
       <source>Checking for updates...</source>
       <translation>Provjeri ima li ažuriranja...</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="936"/>
+      <source>Temporary installation of macro failed.</source>
+      <translation type="unfinished">Temporary installation of macro failed.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="95"/>
@@ -1213,30 +1218,25 @@ installed addons will be checked for available updates</translation>
       <translation>Primjeni %n dostupno(a) ažuriranja</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="809"/>
-      <location filename="../../AddonManager.py" line="835"/>
-      <location filename="../../AddonManager.py" line="934"/>
+      <location filename="../../AddonManager.py" line="826"/>
+      <location filename="../../AddonManager.py" line="852"/>
+      <location filename="../../AddonManager.py" line="951"/>
       <source>Cannot launch a new installer until the previous one has finished.</source>
       <translation>Ne može se pokrenuti novi program za instaliranje dok se prethodni ne završi.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="920"/>
-      <source>Execution of macro failed. See console for failure details.</source>
-      <translation>Izvršavanje makro naredbe nije uspjelo. Pogledaj konzolu za detalje o greškama.</translation>
-    </message>
-    <message>
-      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../package_list.py" line="379"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>Održavatelj</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="391"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
       <source>Author</source>
       <translation>Autor</translation>
     </message>
@@ -1272,17 +1272,17 @@ installed addons will be checked for available updates</translation>
       <translation>Nije moguće uvesti QtNetwork -- izgleda da nije instaliran na tvom operativnom sustavu. Tvoj davatelj usluga možda ima paket za ovu zavisnost (često se na primjer naziva, &quot;python3-pyside2.qtnetwork&quot;)</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="227"/>
+      <location filename="../../NetworkManager.py" line="228"/>
       <source>Failed to convert the specified proxy port &apos;{}&apos; to a port number</source>
       <translation>Konvertiranje navedenog proksi porta &apos;{}&apos; nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="256"/>
+      <location filename="../../NetworkManager.py" line="257"/>
       <source>Parameter error: mutually exclusive proxy options set. Resetting to default.</source>
       <translation>Greška u parametru: postavljene su međusobno isključive proksi opcije. Vraćanje na zadane vrijednosti.</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="271"/>
+      <location filename="../../NetworkManager.py" line="272"/>
       <source>Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</source>
       <translation>Greška u parametru: korisnički proksi je označen, ali nije moguće. Vraćanje na zadane vrijednosti.</translation>
     </message>
@@ -1292,7 +1292,7 @@ installed addons will be checked for available updates</translation>
       <translation>Upravitelj dodataka: Neočekivani {} odgovor s poslužitelja</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="527"/>
+      <location filename="../../NetworkManager.py" line="512"/>
       <source>Error with encrypted connection</source>
       <translation>Pogreška s šifriranom vezom</translation>
     </message>
@@ -1350,8 +1350,8 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../package_list.py" line="450"/>
       <location filename="../../package_list.py" line="500"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="273"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="136"/>
       <source>Installed</source>
       <translation>Instalirano</translation>
     </message>
@@ -1561,9 +1561,9 @@ installed addons will be checked for available updates</translation>
       <translation>Izaberi datoteku ikone za ovu stavku sadržaja</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="692"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} nije poddirektorij {}</translation>
     </message>
@@ -1960,9 +1960,9 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../package_list.py" line="454"/>
       <location filename="../../package_list.py" line="508"/>
-      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="305"/>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="313"/>
+      <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <source>Update available</source>
       <translation>Dostupno ažuriranje</translation>
     </message>
@@ -2295,49 +2295,49 @@ installed addons will be checked for available updates</translation>
       <translation>Za {num_macros} makro naredbu je prekoračen je vremenski limit, {num_failed} tokom obrade</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="807"/>
+      <location filename="../../addonmanager_workers_startup.py" line="808"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>Upravitelj dodataka: radni proces nije uspio da se zaustavi {name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="846"/>
+      <location filename="../../addonmanager_workers_startup.py" line="847"/>
       <source>Getting metadata from macro {}</source>
       <translation>Preuzimanje metapodataka iz makro naredbe {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="860"/>
+      <location filename="../../addonmanager_workers_startup.py" line="861"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>Isteklo je vrijeme za preuzimanje metapodataka za makro naredbu {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="871"/>
+      <location filename="../../addonmanager_workers_startup.py" line="872"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>Zaustavljanje procesa za makro naredbu {} nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="892"/>
+      <location filename="../../addonmanager_workers_startup.py" line="893"/>
       <source>Retrieving macro description...</source>
       <translation>Dohvaćanje opisa makro naredbe...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="894"/>
+      <location filename="../../addonmanager_workers_startup.py" line="895"/>
       <source>Retrieving info from git</source>
       <translation>Dohvaćanje informacije od git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="897"/>
+      <location filename="../../addonmanager_workers_startup.py" line="898"/>
       <source>Retrieving info from wiki</source>
       <translation>Dohvaćanje informacije od wiki-a</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="938"/>
+      <location filename="../../addonmanager_workers_startup.py" line="939"/>
       <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </source>
       <translation>Nije uspjelo dohvatiti statistike dodataka iz {} -- samo će abecedno sortiranje biti točno</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="970"/>
+      <location filename="../../addonmanager_workers_startup.py" line="971"/>
       <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
 </source>
       <translation>Nije uspjelo dohvatiti bodove dodataka iz &apos;{}&apos;  --  sortiranje  po bodovima neće biti uspješno.</translation>
@@ -2463,12 +2463,12 @@ installed addons will be checked for available updates</translation>
   <context>
     <name>Std_AddonMgr</name>
     <message>
-      <location filename="../../AddonManager.py" line="164"/>
+      <location filename="../../AddonManager.py" line="233"/>
       <source>&amp;Addon manager</source>
       <translation>Upr&amp;avitelj dodataka</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="168"/>
+      <location filename="../../AddonManager.py" line="237"/>
       <source>Manage external workbenches, macros, and preference packs</source>
       <translation>Upravljajte vanjskim radnim stolovima, makronaredbama i paketima postavki</translation>
     </message>
@@ -2505,7 +2505,7 @@ installed addons will be checked for available updates</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AddonManager.py" line="134"/>
+      <location filename="../../AddonManager.py" line="187"/>
       <source>Addon Manager</source>
       <translation>Upravitelj dodataka</translation>
     </message>

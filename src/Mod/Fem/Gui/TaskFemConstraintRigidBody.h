@@ -81,9 +81,7 @@ class TaskDlgFemConstraintRigidBody: public TaskDlgFemConstraint
 
 public:
     explicit TaskDlgFemConstraintRigidBody(ViewProviderFemConstraintRigidBody* ConstraintView);
-    void open() override;
     bool accept() override;
-    bool reject() override;
 };
 
 }  // namespace FemGui

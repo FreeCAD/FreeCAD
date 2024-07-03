@@ -503,7 +503,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 50)
 
-    def testPartDesignElementMapSketch(self):
+    def testPartDesignElementPadSketch(self):
         # Arrange
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
@@ -1420,7 +1420,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         edges = [name for name in reverseMap.keys() if name.startswith("Edge")]
         vertexes = [name for name in reverseMap.keys() if name.startswith("Vertex")]
         self.assertEqual(len(body.Shape.childShapes()), 1)
-        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 62)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 64)
         self.assertEqual(len(reverseMap),62)
         self.assertEqual(len(faces),12)
         self.assertEqual(len(edges),30)

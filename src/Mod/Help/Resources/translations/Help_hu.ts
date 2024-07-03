@@ -98,8 +98,8 @@ egyéni stílustáblával alakítható ki, és szebben nézhet ki, mint a wiki o
       <location filename="../../dlgPreferencesHelp.ui" line="211"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
+      <translation>A dokumentáció egy dokkolható párbeszédpanelben nyílik meg a FreeCAD ablakon belül,
+amely lehetővé teszi, hogy a 3D nézetben történő munka közben is nyitva tartsa. Ehhez a PySide QtWebengineWidgets komponensre van szükség</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="246"/>

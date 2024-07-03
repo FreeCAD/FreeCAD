@@ -39,12 +39,14 @@ def get_information():
         "constraints": ["displacement", "force"],
         "solvers": ["ccxtools"],
         "material": "solid",
-        "equations": ["buckling"]
+        "equations": ["buckling"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.buckling_platebuckling import setup
@@ -55,6 +57,7 @@ See forum topic post:
 https://forum.freecad.org/viewtopic.php?f=18&t=20217&start=110#p509935
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -82,7 +85,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # solver
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
-        solver_obj.WorkingDir = u""
+        solver_obj.WorkingDir = ""
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
@@ -100,7 +103,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(solver_obj)
 
     # shell thickness
-    thickness_obj = ObjectsFem.makeElementGeometry2D(doc, 50, 'Thickness')
+    thickness_obj = ObjectsFem.makeElementGeometry2D(doc, 50, "Thickness")
     analysis.addObject(thickness_obj)
 
     # material
@@ -146,6 +149,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # mesh
     from .meshes.mesh_buckling_plate_tria6 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:

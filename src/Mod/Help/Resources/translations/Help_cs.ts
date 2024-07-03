@@ -102,8 +102,9 @@ modul pro Python by měl být nainstalován pro optimální výsledky.</translat
       <location filename="../../dlgPreferencesHelp.ui" line="211"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
+      <translation>Dokumentace se otevře v dokovatelném dialogovém okně FreeCADu,
+které vám umožní ponechat ji otevřenou při práci ve 3D pohledu.
+To vyžaduje komponentu PySide QtWebengineWidgets.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="246"/>

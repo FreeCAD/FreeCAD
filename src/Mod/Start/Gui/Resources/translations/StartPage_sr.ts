@@ -48,7 +48,7 @@
       <location filename="../../Manipulator.cpp" line="47"/>
       <location filename="../../Manipulator.cpp" line="48"/>
       <source>Start</source>
-      <translation>Почетна</translation>
+      <translation>Старт</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../StartView.cpp" line="187"/>
       <source>Assembly</source>
-      <translation>Скупштина</translation>
+      <translation>Склоп</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="188"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../StartView.cpp" line="191"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation>Направи 2D цртеж у окружења Цртање</translation>
+      <translation>Направи 2D цртеж у окружењу Цртање</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="193"/>
@@ -136,7 +136,7 @@
     <message>
       <location filename="../../StartView.cpp" line="440"/>
       <source>Don't show this Start page again (start with blank screen)</source>
-      <translation>Не приказуј поново ову почетну страницу (почни са празним екраном)</translation>
+      <translation>Не приказуј поново ову почетну страну (почни са празним екраном)</translation>
     </message>
   </context>
   <context>
@@ -144,7 +144,7 @@
     <message>
       <location filename="../../StartView.cpp" line="428"/>
       <source>Start</source>
-      <translation>Почетна</translation>
+      <translation>Старт</translation>
     </message>
   </context>
   <context>
@@ -156,13 +156,13 @@
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
-      <source>Light</source>
-      <translation>Светла</translation>
+      <source>Dark theme</source>
+      <translation>Тамна тема</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
-      <source>Dark</source>
-      <translation>Тамна</translation>
+      <source>Light theme</source>
+      <translation>Светла тема</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="137"/>
@@ -176,21 +176,21 @@
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="139"/>
-      <source>Classic</source>
+      <source>Dark theme</source>
       <comment>Visual theme name</comment>
-      <translation>Класична</translation>
+      <translation>Тамна тема</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="140"/>
-      <source>Light</source>
+      <source>Light theme</source>
       <comment>Visual theme name</comment>
-      <translation>Светла</translation>
+      <translation>Светла тема</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="141"/>
-      <source>Dark</source>
+      <source>Classic</source>
       <comment>Visual theme name</comment>
-      <translation>Тамна</translation>
+      <translation>Класична</translation>
     </message>
   </context>
 </TS>

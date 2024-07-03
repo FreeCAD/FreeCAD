@@ -95,8 +95,8 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <location filename="../../dlgPreferencesHelp.ui" line="211"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
+      <translation>ドキュメントをFreeCADウィンドウ内のドッキング可能なダイアログで開きます。
+3Dビューを操作している時にも開いたままにできます。PySide QtWebengineWidgetsコンポーネントが必要です。</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="246"/>

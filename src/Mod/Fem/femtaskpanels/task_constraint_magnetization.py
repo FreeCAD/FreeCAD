@@ -38,22 +38,20 @@ from femtools import femutils
 from femtools import membertools
 
 
-class _TaskPanel(object):
+class _TaskPanel:
 
     def __init__(self, obj):
         self._obj = obj
 
         self._paramWidget = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/Magnetization.ui")
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/Magnetization.ui"
+        )
         self._initParamWidget()
 
         # geometry selection widget
         # magnetization is always a body force for 3D, therefore only allow solid
         self._selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Solid", "Face"],
-            True,
-            False
+            obj.References, ["Solid", "Face"], True, False
         )
 
         # form made from param and selection widget
@@ -104,86 +102,80 @@ class _TaskPanel(object):
                 self._part.ViewObject.hide()
 
     def _initParamWidget(self):
-        self._paramWidget.realXQSB.setProperty(
-            'value', self._obj.Magnetization_re_1)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.realXQSB).bind(self._obj, "Magnetization_re_1")
-        self._paramWidget.realYQSB.setProperty(
-            'value', self._obj.Magnetization_re_2)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.realYQSB).bind(self._obj, "Magnetization_re_2")
-        self._paramWidget.realZQSB.setProperty(
-            'value', self._obj.Magnetization_re_3)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.realZQSB).bind(self._obj, "Magnetization_re_3")
-        self._paramWidget.imagXQSB.setProperty(
-            'value', self._obj.Magnetization_im_1)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.imagXQSB).bind(self._obj, "Magnetization_im_1")
-        self._paramWidget.imagYQSB.setProperty(
-            'value', self._obj.Magnetization_im_2)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.imagYQSB).bind(self._obj, "Magnetization_im_2")
-        self._paramWidget.imagZQSB.setProperty(
-            'value', self._obj.Magnetization_im_3)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.imagZQSB).bind(self._obj, "Magnetization_im_3")
+        self._paramWidget.realXQSB.setProperty("value", self._obj.Magnetization_re_1)
+        FreeCADGui.ExpressionBinding(self._paramWidget.realXQSB).bind(
+            self._obj, "Magnetization_re_1"
+        )
+        self._paramWidget.realYQSB.setProperty("value", self._obj.Magnetization_re_2)
+        FreeCADGui.ExpressionBinding(self._paramWidget.realYQSB).bind(
+            self._obj, "Magnetization_re_2"
+        )
+        self._paramWidget.realZQSB.setProperty("value", self._obj.Magnetization_re_3)
+        FreeCADGui.ExpressionBinding(self._paramWidget.realZQSB).bind(
+            self._obj, "Magnetization_re_3"
+        )
+        self._paramWidget.imagXQSB.setProperty("value", self._obj.Magnetization_im_1)
+        FreeCADGui.ExpressionBinding(self._paramWidget.imagXQSB).bind(
+            self._obj, "Magnetization_im_1"
+        )
+        self._paramWidget.imagYQSB.setProperty("value", self._obj.Magnetization_im_2)
+        FreeCADGui.ExpressionBinding(self._paramWidget.imagYQSB).bind(
+            self._obj, "Magnetization_im_2"
+        )
+        self._paramWidget.imagZQSB.setProperty("value", self._obj.Magnetization_im_3)
+        FreeCADGui.ExpressionBinding(self._paramWidget.imagZQSB).bind(
+            self._obj, "Magnetization_im_3"
+        )
 
-        self._paramWidget.reXunspecBox.setChecked(
-            self._obj.Magnetization_re_1_Disabled)
-        self._paramWidget.reYunspecBox.setChecked(
-            self._obj.Magnetization_re_2_Disabled)
-        self._paramWidget.reZunspecBox.setChecked(
-            self._obj.Magnetization_re_3_Disabled)
-        self._paramWidget.imXunspecBox.setChecked(
-            self._obj.Magnetization_im_1_Disabled)
-        self._paramWidget.imYunspecBox.setChecked(
-            self._obj.Magnetization_im_2_Disabled)
-        self._paramWidget.imZunspecBox.setChecked(
-            self._obj.Magnetization_im_3_Disabled)
+        self._paramWidget.reXunspecBox.setChecked(self._obj.Magnetization_re_1_Disabled)
+        self._paramWidget.reYunspecBox.setChecked(self._obj.Magnetization_re_2_Disabled)
+        self._paramWidget.reZunspecBox.setChecked(self._obj.Magnetization_re_3_Disabled)
+        self._paramWidget.imXunspecBox.setChecked(self._obj.Magnetization_im_1_Disabled)
+        self._paramWidget.imYunspecBox.setChecked(self._obj.Magnetization_im_2_Disabled)
+        self._paramWidget.imZunspecBox.setChecked(self._obj.Magnetization_im_3_Disabled)
 
     def _applyMagnetizationChanges(self, enabledBox, magnetizationQSB):
         enabled = enabledBox.isChecked()
         magnetization = None
         try:
-            magnetization = magnetizationQSB.property('value')
+            magnetization = magnetizationQSB.property("value")
         except ValueError:
             FreeCAD.Console.PrintMessage(
                 "Wrong input. Not recognised input: '{}' "
                 "Magnetization has not been set.\n".format(magnetizationQSB.text())
             )
-            magnetization = '0.0 A/m'
+            magnetization = "0.0 A/m"
         return enabled, magnetization
 
     def _applyWidgetChanges(self):
         # apply the magnetizations and their enabled state
-        self._obj.Magnetization_re_1_Disabled, self._obj.Magnetization_re_1 = \
+        self._obj.Magnetization_re_1_Disabled, self._obj.Magnetization_re_1 = (
             self._applyMagnetizationChanges(
-                self._paramWidget.reXunspecBox,
-                self._paramWidget.realXQSB
+                self._paramWidget.reXunspecBox, self._paramWidget.realXQSB
             )
-        self._obj.Magnetization_re_2_Disabled, self._obj.Magnetization_re_2 = \
+        )
+        self._obj.Magnetization_re_2_Disabled, self._obj.Magnetization_re_2 = (
             self._applyMagnetizationChanges(
-                self._paramWidget.reYunspecBox,
-                self._paramWidget.realYQSB
+                self._paramWidget.reYunspecBox, self._paramWidget.realYQSB
             )
-        self._obj.Magnetization_re_3_Disabled, self._obj.Magnetization_re_3 = \
+        )
+        self._obj.Magnetization_re_3_Disabled, self._obj.Magnetization_re_3 = (
             self._applyMagnetizationChanges(
-                self._paramWidget.reZunspecBox,
-                self._paramWidget.realZQSB
+                self._paramWidget.reZunspecBox, self._paramWidget.realZQSB
             )
-        self._obj.Magnetization_im_1_Disabled, self._obj.Magnetization_im_1 = \
+        )
+        self._obj.Magnetization_im_1_Disabled, self._obj.Magnetization_im_1 = (
             self._applyMagnetizationChanges(
-                self._paramWidget.imXunspecBox,
-                self._paramWidget.imagXQSB
+                self._paramWidget.imXunspecBox, self._paramWidget.imagXQSB
             )
-        self._obj.Magnetization_im_2_Disabled, self._obj.Magnetization_im_2 = \
+        )
+        self._obj.Magnetization_im_2_Disabled, self._obj.Magnetization_im_2 = (
             self._applyMagnetizationChanges(
-                self._paramWidget.imYunspecBox,
-                self._paramWidget.imagYQSB
+                self._paramWidget.imYunspecBox, self._paramWidget.imagYQSB
             )
-        self._obj.Magnetization_im_3_Disabled, self._obj.Magnetization_im_3 = \
+        )
+        self._obj.Magnetization_im_3_Disabled, self._obj.Magnetization_im_3 = (
             self._applyMagnetizationChanges(
-                self._paramWidget.imZunspecBox,
-                self._paramWidget.imagZQSB
+                self._paramWidget.imZunspecBox, self._paramWidget.imagZQSB
             )
+        )

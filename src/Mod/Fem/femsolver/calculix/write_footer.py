@@ -34,20 +34,14 @@ def write_footer(f, ccxwriter):
 
     f.write("\n{}\n".format(59 * "*"))
     f.write("** CalculiX Input file\n")
-    f.write("**   written by    --> FreeCAD {}.{}.{}\n".format(
-        ccxwriter.fc_ver[0],
-        ccxwriter.fc_ver[1],
-        ccxwriter.fc_ver[2]
-    ))
-    f.write("**   written on    --> {}\n".format(
-        time.ctime()
-    ))
-    f.write("**   file name     --> {}\n".format(
-        os.path.basename(ccxwriter.document.FileName)
-    ))
-    f.write("**   analysis name --> {}\n".format(
-        ccxwriter.analysis.Name
-    ))
+    f.write(
+        "**   written by    --> FreeCAD {}.{}.{}\n".format(
+            ccxwriter.fc_ver[0], ccxwriter.fc_ver[1], ccxwriter.fc_ver[2]
+        )
+    )
+    f.write(f"**   written on    --> {time.ctime()}\n")
+    f.write(f"**   file name     --> {os.path.basename(ccxwriter.document.FileName)}\n")
+    f.write(f"**   analysis name --> {ccxwriter.analysis.Name}\n")
     f.write("**\n")
     f.write("**\n")
     f.write(ccxwriter.units_information)

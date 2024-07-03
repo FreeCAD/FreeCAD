@@ -151,7 +151,7 @@ class DeformationWriter:
                 gravity = self.write.convert(obj.GravityAcceleration.toStr(), "L/T^2")
                 if self.write.getBodyMaterial(name) is None:
                     raise general_writer.WriteError(
-                        "The body {} is not referenced in any material.\n\n".format(name)
+                        f"The body {name} is not referenced in any material.\n\n"
                     )
                 m = self.write.getBodyMaterial(name).Material
 
@@ -193,17 +193,13 @@ class DeformationWriter:
         # get the material data for all bodies
         for obj in self.write.getMember("App::MaterialObject"):
             m = obj.Material
-            refs = (
-                obj.References[0][1]
-                if obj.References
-                else self.write.getAllBodies()
-            )
+            refs = obj.References[0][1] if obj.References else self.write.getAllBodies()
             for name in (n for n in refs if n in bodies):
                 # don't evaluate fluid material
                 if self.write.isBodyMaterialFluid(name):
                     break
                 if "YoungsModulus" not in m:
-                    Console.PrintMessage("m: {}\n".format(m))
+                    Console.PrintMessage(f"m: {m}\n")
                     # it is no fluid but also no solid
                     # -> user set no material reference at all
                     # that now material is known
@@ -213,22 +209,14 @@ class DeformationWriter:
                     )
                 self.write.material(name, "Name", m["Name"])
                 if density_needed is True:
-                    self.write.material(
-                        name, "Density",
-                        self.write.getDensity(m)
-                    )
-                self.write.material(
-                    name, "Youngs Modulus",
-                    self._getYoungsModulus(m)
-                )
-                self.write.material(
-                    name, "Poisson ratio",
-                    float(m["PoissonRatio"])
-                )
+                    self.write.material(name, "Density", self.write.getDensity(m))
+                self.write.material(name, "Youngs Modulus", self._getYoungsModulus(m))
+                self.write.material(name, "Poisson ratio", float(m["PoissonRatio"]))
                 if tempObj:
                     self.write.material(
-                        name, "Heat expansion Coefficient",
-                        self.write.convert(m["ThermalExpansionCoefficient"], "O^-1")
+                        name,
+                        "Heat expansion Coefficient",
+                        self.write.convert(m["ThermalExpansionCoefficient"], "O^-1"),
                     )
 
     def _getYoungsModulus(self, m):
@@ -236,5 +224,6 @@ class DeformationWriter:
         if self.write.getMeshDimension() == 2:
             youngsModulus *= 1e3
         return youngsModulus
+
 
 ##  @}

@@ -168,7 +168,7 @@ class BIMWorkbench(Workbench):
         self.modify_3d = [
             "Draft_OrthoArray",
             "Draft_PathArray",
-            "Draft_CircularArray",
+            "Draft_PolarArray",
             "Draft_PointArray",
             "Arch_CutPlane",
             "Draft_Mirror",
@@ -217,6 +217,7 @@ class BIMWorkbench(Workbench):
             "Arch_Survey",
             "BIM_Diff",
             "BIM_IfcExplorer",
+            "Arch_IfcSpreadsheet",
             "BIM_ImagePlane",
             "BIM_Unclone",
             "BIM_Rewire",
@@ -474,7 +475,7 @@ class BIMWorkbench(Workbench):
 
         import WorkingPlane
         from DraftGui import todo
-        import BimStatusBar
+        import BimStatus
         from nativeifc import ifc_observer
         from draftutils import grid_observer
 
@@ -489,7 +490,7 @@ class BIMWorkbench(Workbench):
 
         if PARAMS.GetBool("FirstTime", True) and (not hasattr(FreeCAD, "TestEnvironment")):
             todo.delay(FreeCADGui.runCommand, "BIM_Welcome")
-        todo.delay(BimStatusBar.setStatusIcons, True)
+        todo.delay(BimStatus.setStatusIcons, True)
         FreeCADGui.Control.clearTaskWatcher()
 
         class BimWatcher:
@@ -552,7 +553,7 @@ class BIMWorkbench(Workbench):
     def Deactivated(self):
 
         from DraftGui import todo
-        import BimStatusBar
+        import BimStatus
         from bimcommands import BimViews
         import WorkingPlane
         from nativeifc import ifc_observer
@@ -572,7 +573,7 @@ class BIMWorkbench(Workbench):
         grid_observer._view_observer_setup()
 
         # print("Deactivating status icon")
-        todo.delay(BimStatusBar.setStatusIcons, False)
+        todo.delay(BimStatus.setStatusIcons, False)
         FreeCADGui.Control.clearTaskWatcher()
 
         # store views widget state and vertical size

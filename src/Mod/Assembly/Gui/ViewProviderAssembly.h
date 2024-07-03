@@ -114,6 +114,22 @@ public:
     {
         return enableMovement;
     }
+    virtual void setMoveOnlyPreselected(bool enable = true)
+    {
+        moveOnlyPreselected = enable;
+    }
+    virtual bool getMoveOnlyPreselected() const
+    {
+        return moveOnlyPreselected;
+    }
+    virtual void setMoveInCommand(bool enable = true)
+    {
+        moveInCommand = enable;
+    }
+    virtual bool getMoveInCommand() const
+    {
+        return moveInCommand;
+    }
 
 
     bool canDragObjectIn3d(App::DocumentObject* obj) const;
@@ -150,6 +166,8 @@ public:
     bool canStartDragging;
     bool partMoving;
     bool enableMovement;
+    bool moveOnlyPreselected;
+    bool moveInCommand;
     bool jointVisibilityBackup;
     bool ctrlPressed;
     int numberOfSel;
