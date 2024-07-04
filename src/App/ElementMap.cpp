@@ -542,6 +542,10 @@ void ElementMap::addPostfix(const QByteArray& postfix, std::map<QByteArray, int>
 MappedName ElementMap::setElementName(const IndexedName& element, const MappedName& name,
                                       long masterTag, const ElementIDRefs* sid, bool overwrite)
 {
+    if (element.isNull()) {
+        FC_THROWM(Base::RuntimeError,// NOLINT
+                  "element name is null" << element);
+    }
     if (!element) {
         throw Base::ValueError("Invalid input");
     }
