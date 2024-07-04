@@ -96,7 +96,7 @@ public:
     void setFilter(const std::shared_ptr<Materials::MaterialFilter>& filter);
     void setFilter(
         const std::shared_ptr<std::list<std::shared_ptr<Materials::MaterialFilter>>>& filterList);
-    void setActiveFilter(const QString &name);
+    void setActiveFilter(const QString& name);
 
     void setExpanded(bool open);
     bool getExpanded()
@@ -178,6 +178,14 @@ private Q_SLOTS:
     void onFilter(const QString& text);
 
 private:
+    // UI minimum sizes
+    static const int minimumWidth = 250;
+    static const int minimumTreeWidth = 250;
+    static const int minimumTreeHeight = 500;
+
+    static const int defaultFavorites = 0;
+    static const int defaultRecents = 5;
+
     void setup();
 
     QLineEdit* m_material;
@@ -254,7 +262,8 @@ protected:
         const Base::Reference<ParameterGrp>& param);
     void setFilterVisible(bool open);
     void fillFilterCombo();
-    bool hasMultipleFilters() const {
+    bool hasMultipleFilters() const
+    {
         return (_filterList && _filterList->size() > 1);
     }
 };

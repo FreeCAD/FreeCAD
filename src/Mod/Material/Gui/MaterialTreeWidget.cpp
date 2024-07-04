@@ -59,8 +59,9 @@ MaterialTreeWidget::MaterialTreeWidget(const std::shared_ptr<Materials::Material
                                        QWidget* parent)
     : QWidget(parent)
     , m_expanded(false)
-    , m_treeSizeHint(250, 500)
+    , m_treeSizeHint(minimumTreeWidth, minimumTreeHeight)
     , _filter(filter)
+    , _recentMax(defaultRecents)
 {
     setup();
 }
@@ -70,9 +71,10 @@ MaterialTreeWidget::MaterialTreeWidget(
     QWidget* parent)
     : QWidget(parent)
     , m_expanded(false)
-    , m_treeSizeHint(250, 500)
+    , m_treeSizeHint(minimumTreeWidth, minimumTreeHeight)
     , _filter(std::make_shared<Materials::MaterialFilter>())
     , _filterList(filterList)
+    , _recentMax(defaultRecents)
 {
     setup();
 }
@@ -80,8 +82,9 @@ MaterialTreeWidget::MaterialTreeWidget(
 MaterialTreeWidget::MaterialTreeWidget(QWidget* parent)
     : QWidget(parent)
     , m_expanded(false)
-    , m_treeSizeHint(250, 500)
+    , m_treeSizeHint(minimumTreeWidth, minimumTreeHeight)
     , _filter(std::make_shared<Materials::MaterialFilter>())
+    , _recentMax(defaultRecents)
 {
     setup();
 }
@@ -110,7 +113,7 @@ QSize MaterialTreeWidget::sizeHint() const
     if (!m_expanded) {
         // When not expanded, the size height is the same as m_material
         QSize size = m_material->sizeHint();
-        size.setWidth(250);
+        size.setWidth(minimumWidth);
         return size;
     }
     return QWidget::sizeHint();
@@ -397,7 +400,7 @@ void MaterialTreeWidget::setActiveFilter(const QString& name)
 
                 // Save the library/folder expansion state
                 saveMaterialTree();
-                
+
                 updateMaterialTree();
                 return;
             }
@@ -440,7 +443,7 @@ void MaterialTreeWidget::getRecents()
 
     auto param = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material/Recent");
-    _recentMax = static_cast<int>(param->GetInt("RecentMax", 5));
+    _recentMax = static_cast<int>(param->GetInt("RecentMax", defaultRecents));
     auto count = param->GetInt("Recent", 0);
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QString::fromLatin1("MRU%1").arg(i);
