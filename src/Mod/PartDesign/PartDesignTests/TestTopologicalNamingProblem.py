@@ -1467,13 +1467,14 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         pad.Length = 1
         # Act
         self.Doc.recompute()
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if pad.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         map = pad.Shape.ElementMap
         # Assert
+        self.assertGreater(pad.Shape.ElementMapSize,0)
         for tnpName in map.keys():
-            element1 = body.Shape.getElement(tnpName)
-            element2 = body.Shape.getElement(map[tnpName])
+            element1 = pad.Shape.getElement(tnpName)
+            element2 = pad.Shape.getElement(map[tnpName])
             self.assertTrue(element1.isSame(element2))
 
     def testFileSaveRestore(self):

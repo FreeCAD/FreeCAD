@@ -817,7 +817,7 @@ infos contains additional info on the solutions. It is a list of tuples:
 Returns a SubElement
 getElement(elementName, [silent = False]) -> Face | Edge | Vertex
 elementName:  SubElement name - i.e. 'Edge1', 'Face3' etc. 
-              Accepts TNP names as well
+              Accepts TNP mitigation mapped names as well
 silent:  True to suppress the exception throw if the shape isn't found.
         </UserDocu>
       </Documentation>
