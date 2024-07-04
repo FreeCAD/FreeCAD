@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport
-      Father="Curve2dPy"
-      Name="Conic2dPy"
-      PythonName="Part.Geom2d.Conic2d"
-      Twin="Geom2dConic"
-      TwinPointer="Geom2dConic"
-      Include="Mod/Part/App/Geometry2d.h"
-      Namespace="Part"
-      FatherInclude="Mod/Part/App/Geom2d/Curve2dPy.h"
-      FatherNamespace="Part"
-      Constructor="true">
-    <Documentation>
-      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-      <UserDocu>Describes an abstract conic in 2d space</UserDocu>
-    </Documentation>
-    <Attribute Name="Location" ReadOnly="false">
-      <Documentation>
-        <UserDocu>Location of the conic.</UserDocu>
-      </Documentation>
-      <Parameter Name="Location" Type="Object"/>
-    </Attribute>
-    <Attribute Name="Eccentricity" ReadOnly="true">
+    <PythonExport
+        Father="Curve2dPy"
+        Name="Conic2dPy"
+        PythonName="Part.Geom2d.Conic2d"
+        Twin="Geom2dConic"
+        TwinPointer="Geom2dConic"
+        Include="Mod/Part/App/Geometry2d.h"
+        Namespace="Part"
+        FatherInclude="Mod/Part/App/Geom2d/Curve2dPy.h"
+        FatherNamespace="Part"
+        Constructor="true">
         <Documentation>
-            <UserDocu>
-            returns the eccentricity value of the conic e.
-            e = 0 for a circle
-            0 &lt; e &lt; 1 for an ellipse  (e = 0 if MajorRadius = MinorRadius)
-            e > 1 for a hyperbola
-            e = 1 for a parabola
-            </UserDocu>
+            <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+            <UserDocu>Describes an abstract conic in 2d space</UserDocu>
         </Documentation>
-        <Parameter Name="Eccentricity" Type="Float"/>
-    </Attribute>
-    <Attribute Name="XAxis" ReadOnly="false">
-      <Documentation>
-        <UserDocu>The X axis direction of the circle</UserDocu>
-      </Documentation>
-      <Parameter Name="XAxis" Type="Object"/>
-    </Attribute>
-    <Attribute Name="YAxis" ReadOnly="false">
-      <Documentation>
-        <UserDocu>The Y axis direction of the circle</UserDocu>
-      </Documentation>
-      <Parameter Name="YAxis" Type="Object"/>
-    </Attribute>
-  </PythonExport>
+        <Attribute Name="Location" ReadOnly="false">
+            <Documentation>
+                <UserDocu>Location of the conic.</UserDocu>
+            </Documentation>
+            <Parameter Name="Location" Type="Object"/>
+        </Attribute>
+        <Attribute Name="Eccentricity" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                returns the eccentricity value of the conic e.
+                    e = 0 for a circle
+                    0 &lt; e &lt; 1 for an ellipse  (e = 0 if MajorRadius = MinorRadius)
+                    e > 1 for a hyperbola
+                    e = 1 for a parabola
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="Eccentricity" Type="Float"/>
+        </Attribute>
+        <Attribute Name="XAxis" ReadOnly="false">
+            <Documentation>
+                <UserDocu>The X axis direction of the circle</UserDocu>
+            </Documentation>
+            <Parameter Name="XAxis" Type="Object"/>
+        </Attribute>
+        <Attribute Name="YAxis" ReadOnly="false">
+            <Documentation>
+                <UserDocu>The Y axis direction of the circle</UserDocu>
+            </Documentation>
+            <Parameter Name="YAxis" Type="Object"/>
+        </Attribute>
+    </PythonExport>
 </GenerateModel>
