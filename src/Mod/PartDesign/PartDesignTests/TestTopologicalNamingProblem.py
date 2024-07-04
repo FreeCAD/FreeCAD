@@ -1455,6 +1455,27 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         else:
             self.assertEqual(App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames[0][-8:],",F.Face2")
 
+    def testGetElementFunctionality(self):
+        # Arrange
+        body = self.Doc.addObject('PartDesign::Body', 'Body')
+        padSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        body.addObject(padSketch)
+        body.addObject(pad)
+        TestSketcherApp.CreateRectangleSketch(padSketch, (0, 0), (1, 1))
+        pad.Profile = padSketch
+        pad.Length = 1
+        # Act
+        self.Doc.recompute()
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+            return
+        map = pad.Shape.ElementMap
+        # Assert
+        for tnpName in map.keys():
+            element1 = body.Shape.getElement(tnpName)
+            element2 = body.Shape.getElement(map[tnpName])
+            self.assertTrue(element1.isSame(element2))
+
     def testFileSaveRestore(self):
         # Arrange
         self.Body = self.Doc.addObject('PartDesign::Body', 'Body')

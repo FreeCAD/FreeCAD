@@ -2602,35 +2602,18 @@ PyObject* TopoShapePy::removeSplitter(PyObject *args)
 PyObject* TopoShapePy::getElement(PyObject *args)
 {
     char* input;
-    if (!PyArg_ParseTuple(args, "s", &input))
+    PyObject* silent = Py_False;
+    if (!PyArg_ParseTuple(args, "s|O", &input, &silent)) {
         return nullptr;
-
-    boost::regex ex("^(Face|Edge|Vertex)[1-9][0-9]*$");
-
+    }
     try {
-        if (boost::regex_match(input, ex)) {
-            std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
-                (getTopoShapePtr()->getSubElementByName(input)));
-            TopoDS_Shape shape = s->Shape;
-            switch (shape.ShapeType()) {
-                case TopAbs_FACE:
-                    return new TopoShapeFacePy(new TopoShape(shape));
-                case TopAbs_EDGE:
-                    return new TopoShapeEdgePy(new TopoShape(shape));
-                case TopAbs_VERTEX:
-                    return new TopoShapeVertexPy(new TopoShape(shape));
-                default:
-                    break;
-            }
+        PyObject* res = getTopoShapePtr()->getPySubShape(input, PyObject_IsTrue(silent));
+        if (!res) {
+            Py_Return;
         }
-
-        PyErr_SetString(PyExc_ValueError, "Invalid subelement name");
-        return nullptr;
+        return res;
     }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return nullptr;
-    }
+    PY_CATCH_OCC
 }
 
 PyObject* TopoShapePy::countElement(PyObject *args)
