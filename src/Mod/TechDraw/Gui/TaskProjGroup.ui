@@ -256,7 +256,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normalon>:/icons/view-front.svg</normalon>
+          <normalon>:/icons/TechDraw_ProjFront.svg</normalon>
          </iconset>
         </property>
         <property name="iconSize">
@@ -264,6 +264,15 @@
           <width>24</width>
           <height>24</height>
          </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -306,6 +315,12 @@
           <width>24</width>
           <height>24</height>
          </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -608,7 +623,7 @@ using the given X/Y Spacing</string>
          </spacer>
         </item>
         <item row="0" column="2">
-         <widget class="Gui::QuantitySpinBox" name="sbXSpacing" native="true">
+         <widget class="Gui::QuantitySpinBox" name="sbXSpacing">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -624,13 +639,13 @@ using the given X/Y Spacing</string>
           <property name="toolTip">
            <string>Horizontal space between border of projections</string>
           </property>
-          <property name="keyboardTracking" stdset="0">
+          <property name="keyboardTracking">
            <bool>false</bool>
           </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
           </property>
-          <property name="minimum" stdset="0">
+          <property name="minimum">
            <double>0.000000000000000</double>
           </property>
          </widget>
@@ -655,7 +670,7 @@ using the given X/Y Spacing</string>
          </widget>
         </item>
         <item row="1" column="2">
-         <widget class="Gui::QuantitySpinBox" name="sbYSpacing" native="true">
+         <widget class="Gui::QuantitySpinBox" name="sbYSpacing">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -671,13 +686,13 @@ using the given X/Y Spacing</string>
           <property name="toolTip">
            <string>Vertical space between border of projections</string>
           </property>
-          <property name="keyboardTracking" stdset="0">
+          <property name="keyboardTracking">
            <bool>false</bool>
           </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
           </property>
-          <property name="minimum" stdset="0">
+          <property name="minimum">
            <double>0.000000000000000</double>
           </property>
          </widget>
