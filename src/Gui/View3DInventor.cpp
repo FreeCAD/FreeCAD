@@ -97,26 +97,11 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     setAcceptDrops(true);
 
     //anti-aliasing settings
-    bool smoothing = false;
-    bool glformat = false;
-    int samples = View3DInventorViewer::getNumSamples();
-    QtGLFormat f;
+    QtGLFormat format;
+    if (const int samples = View3DInventorViewer::getNumSamples(); samples != 0)
+        format.setSamples(samples);
 
-    if (samples > 1) {
-        glformat = true;
-        f.setSamples(samples);
-    }
-    else if (samples > 0) {
-        smoothing = true;
-    }
-
-    if (glformat)
-        _viewer = new View3DInventorViewer(f, this, sharewidget);
-    else
-        _viewer = new View3DInventorViewer(this, sharewidget);
-
-    if (smoothing)
-        _viewer->getSoRenderManager()->getGLRenderAction()->setSmoothing(true);
+    _viewer = new View3DInventorViewer(format, this, sharewidget);
 
     // create the inventor widget and set the defaults
     _viewer->setDocument(this->_pcDocument);
