@@ -255,9 +255,7 @@ def _needs_further_action(hunk_line: str) -> bool:
     return True
 
 
-def _add_bad_block(
-    diff_block: List[str], should_parse_further: bool, bad_lines: List[str]
-) -> None:
+def _add_bad_block(diff_block: List[str], should_parse_further: bool, bad_lines: List[str]) -> None:
     """Adds a `diff_block` to `bad_lines` if the `diff_block` is considered bad
 
     `diff_block` is considered bad if it either has unequal number of 'minus' and 'plus' lines, or
@@ -283,9 +281,7 @@ def _add_bad_block(
     #
     # islice(...) -> ("+f", "+s")
     # zip(...) -> zip( ("-f", "-s", "+f", "+s"), ("+f", "+s") ) -> (("-f", "+f"), ("-s", "+s"))
-    are_equal = starmap(
-        _are_floats_equal, zip(_diff_block, _diff_block[len(_diff_block) // 2 :])
-    )
+    are_equal = starmap(_are_floats_equal, zip(_diff_block, _diff_block[len(_diff_block) // 2 :]))
     if not (should_parse_further and all(are_equal)):
         bad_lines.extend(diff_block)
 
