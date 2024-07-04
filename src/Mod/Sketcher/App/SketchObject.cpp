@@ -8848,8 +8848,9 @@ void SketchObject::onChanged(const App::Property* prop)
                         }
                         else {
                             Base::Console().Error(
-                                "SketchObject::onChanged(): Unmanaged change of Geometry Property "
-                                "results in invalid constraint indices\n");
+                                this->getFullLabel() + " SketchObject::onChanged ",
+                                QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Geometry Property "
+                                "results in invalid constraint indices") "\n");
                         }
                     }
                 }
@@ -8876,8 +8877,9 @@ void SketchObject::onChanged(const App::Property* prop)
                         }
                         else {
                             Base::Console().Error(
-                                "SketchObject::onChanged(): Unmanaged change of Constraint "
-                                "Property results in invalid constraint indices\n");
+                                this->getFullLabel() + " SketchObject::onChanged ",
+                                QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Constraint "
+                                "Property results in invalid constraint indices") "\n");
                         }
                     }
                 }
