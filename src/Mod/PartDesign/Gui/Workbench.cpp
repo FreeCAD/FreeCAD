@@ -572,7 +572,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Separator"
           << "Part_CheckGeometry"
           << "Separator"
-          << "PartDesign_Migrate"
+          // << "PartDesign_Migrate"
           << "PartDesign_Sprocket";
 
     // For 0.13 a couple of python packages like numpy, matplotlib and others
