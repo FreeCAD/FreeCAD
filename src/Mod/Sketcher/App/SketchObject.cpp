@@ -270,6 +270,9 @@ void SketchObject::buildShape()
             Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
             int idx = getVertexIndexGeoPos(i-1, Sketcher::PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
+            if (!vertex.hasElementMap()) {
+                vertex.resetElementMap(std::make_shared<Data::ElementMap>());
+            }
             vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
                                   Data::MappedName::fromRawData(name.c_str()), 0L);
             vertices.push_back(vertex);
