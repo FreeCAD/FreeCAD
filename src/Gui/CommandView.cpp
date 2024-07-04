@@ -1928,7 +1928,7 @@ StdViewScreenShot::StdViewScreenShot()
     sToolTipText= QT_TR_NOOP("Creates a screenshot of the active view");
     sWhatsThis  = "Std_ViewScreenShot";
     sStatusTip  = QT_TR_NOOP("Creates a screenshot of the active view");
-    sPixmap     = "camera-photo";
+    sPixmap     = "Std_ViewScreenShot";
     eType       = Alter3DView;
 }
 
