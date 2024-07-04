@@ -30,9 +30,10 @@
 
 #include <Mod/Measure/App/MeasureBase.h>
 
-#include "TaskView/TaskDialog.h"
-#include "TaskView/TaskView.h"
-#include "Selection.h"
+
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Gui/Selection.h>
 
 namespace Gui {
 

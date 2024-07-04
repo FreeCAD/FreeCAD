@@ -51,6 +51,8 @@ SET(MeasureGui_SRCS
     QuickMeasurePyImp.cpp
     QuickMeasure.cpp
     QuickMeasure.h
+    TaskMeasure.cpp
+    TaskMeasure.h
     ViewProviderMeasureBase.cpp
     ViewProviderMeasureBase.h
     ViewProviderMeasureAngle.cpp
