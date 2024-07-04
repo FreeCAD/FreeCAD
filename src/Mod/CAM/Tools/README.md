@@ -5,35 +5,35 @@ It also includes all additional parameters and their values.
 
 Storing a tool as a JSON file sounds great but eliminates the option of an accurate thumbnail. On the other hand,
 storing each tool as a `*.fcstd` file requires more space and does not allow for generating tools. If one has an
-extensive tool aresenal they might want to script the generation of tools which is easily done for a `*.json` file but
+extensive tool arsenal they might want to script the generation of tools which is easily done for a `*.json` file but
 practically impossible for `*.fcstd` files.
 
-When a tool is instantiated in a job the PDN body is created from the shape and the attributes and constraints are set
+When a tool is instantiated in a job the PartDesign body is created from the shape, and the attributes and constraints are set
 according to the values from the JSON file. All additional parameters are created as properties on the object. This
 provides the correct shape and dimensions which can be used to generate a point cloud or mesh for advanced
 algorithms (and potentially simulation).
 
 # Tool Libraries
 
-Due to each tool being stored in its own file and the storage/organization of those files being quite flexible the
+Due to each tool being stored in its own file and the storage/organization of those files being quite flexible, the
 importance of a tool library for organisational purposes is quite diminished. The user is free to organise their tools
 in whichever directory hierarchy they see fit and can also name them as best fits their use and organisation. A
 _tool library_ is nevertheless a great representation for a physical grouping of tools, such as in an automatic tool
 changer.
 
-A tool library is a (JSON) file with a mapping of tool id to the path of the tool file. As a consequence each tool
-can be in multiple libraries and doesn't have an `id` of it's own. The `id` is a property of the library.
+A tool library is a (JSON) file with a mapping of tool ID to the path of the tool file. As a consequence each tool
+can be in multiple libraries and doesn't have an `ID` of it's own. The `ID` is a property of the library.
 
-If a tool from a tool library (or an entire tool library) is added to a job it retains its `id` from the library as a
-property. Adding a tool bit directly rsults in the tool getting the next free id assigned.
+If a tool from a tool library (or an entire tool library) is added to a job it retains its `ID` from the library as a
+property. Adding a tool bit directly results in the tool getting the next free ID assigned.
 
 # Tool Controllers
 
 They largely stay the same as they are today. As an additional feature it should be possible to _copy_ a TC, which
 allows for easy feed/speed changes for the same tool.
 
-Above requirement highlights one change though, that the `id` should be a property of the Bit, and not of the TC.
-There are two requirements that are currently mapped to a single `id`. There needs to be an identification of which
+Above requirement highlights one change though, that the `ID` should be a property of the Bit, and not of the TC.
+There are two requirements that are currently mapped to a single `ID`. There needs to be an identification of which
 TC is being used by a certain op, and which tool number to use for a `M6` command.
 
 # Paths and Extensibility
@@ -46,7 +46,7 @@ The following directory structure is used for supplied (shipped with FreeCAD) to
     + Shape
 ```
 
-Strictly speaking a user is free to store their tools wherever they want and however they want. By default the file
+Strictly speaking, a user is free to store their tools wherever they want and however they want. By default the file
 dialog will open the corresponding directory (depending on context), or whichever directory the user opened last.
 
 Above directory structure with the most common default tools shipped with FreeCAD should be installed analogous to
@@ -64,13 +64,13 @@ TechDraw's templates.
 
 ## How to create a new tool bit Shape
 
-The shape file for a tool bit is expected to contain a PD body which represents the tool as a 3d solid. The PD body
+The shape file for a tool bit is expected to contain a PartDesign body which represents the tool as a 3D solid. The PartDesign body
 should be parametric based on a PropertyBag object so that, when the properties of the PropertyBag are changed the
 solid is updated to the correct representation.
 
 1. Create a new FreeCAD document
 1. Open the `PartDesign` workbench, create a body and give the body a label you want to show up in the bit selection.
-1. Open the Path workbench and (with the PD body selected) create a PropertyBag,
+1. Open the Path workbench and (with the PartDesign body selected) create a PropertyBag,
    menu 'Path' -> 'Utils' -> 'Property Bag'
    * this creates a PropertyBag object inside the Body (assuming it was selected)
    * add properties to which define the tool bit's shape and put those into the group 'Shape'
