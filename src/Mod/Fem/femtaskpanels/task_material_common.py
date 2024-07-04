@@ -276,7 +276,9 @@ class _TaskPanel:
                             # now check if we have a number value in a unit
                             if item[1].split() and not self.isfloat(item[1].split()[0]):
                                 break
-                            if item[1].split() and float(item[1].split()[0]) == float(a_mat_item[1].split()[0]):
+                            if item[1].split() and float(item[1].split()[0]) == float(
+                                a_mat_item[1].split()[0]
+                            ):
                                 unmatched_item = False
                             elif not item[1].split():
                                 # handle the case where item[1] is an empty string
