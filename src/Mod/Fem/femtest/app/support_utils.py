@@ -228,6 +228,7 @@ def _are_floats_equal(
 
 def _needs_further_action(hunk_line: str) -> bool:
     """Parses the hunk line to determine, whether the further investigation of the block is needed
+    to be considered bad
 
     The hunk line has 4 formats:
         when the hunk consists of only one line:
@@ -242,16 +243,16 @@ def _needs_further_action(hunk_line: str) -> bool:
 
     If there are multiple lines, the line counts should be equal.
     If they are not equal, no need for further hunk inspection on whether
-    some of the lines differ in floats
+    some of the lines differ in floats -> the hunk is bad
 
     :param hunk_line: str, line with 'diff' info about the block
-    :return: bool, True if the block needs further investigation, False otherwise
+    :return: bool, True if the block needs further investigation to be considered bad, False otherwise
     """
     line = hunk_line[4:~2]
     if line.find(",") != -1:
         table = str.maketrans(dict(zip("+-,", "   ")))
-        line = line.translate(table)
-        return not (len(line) == 4 and line[2] == line[4])
+        line = line.translate(table).split()
+        return len(line) == 4 and line[1] == line[3]
     return True
 
 
