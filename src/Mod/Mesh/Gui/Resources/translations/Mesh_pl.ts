@@ -2083,7 +2083,7 @@ do gładszego wyglądu.
       <location filename="../../Command.cpp" line="303"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation>OpenSCAD nie został odnaleziony w Twoim systemie.
+      <translation>OpenSCAD nie został odnaleziony w Twoim systemie. 
 Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation>
     </message>
   </context>

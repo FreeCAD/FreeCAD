@@ -3030,7 +3030,7 @@ klik igen for at afslutte valget</translation>
       <translation>Lav tykkelse indad</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>Oprettede en tom tykkelse!

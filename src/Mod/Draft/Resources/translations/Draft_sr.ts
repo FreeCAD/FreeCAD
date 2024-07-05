@@ -67,7 +67,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="57"/>
       <source>Isolate</source>
-      <translation type="unfinished">Isolate</translation>
+      <translation>Изолуј</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="77"/>
@@ -303,7 +303,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
       <source>Dimension details</source>
-      <translation type="unfinished">Dimension details</translation>
+      <translation>Појединости кота</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
@@ -1814,7 +1814,7 @@ or cm, leave blank to use the current unit defined in FreeCAD.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="476"/>
       <source>Dimension details</source>
-      <translation type="unfinished">Dimension details</translation>
+      <translation>Појединости кота</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="495"/>
@@ -3903,39 +3903,39 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="223"/>
       <source>No style name specified</source>
-      <translation type="unfinished">No style name specified</translation>
+      <translation>Није наведено име стила</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="227"/>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="280"/>
       <source>Style exists</source>
-      <translation type="unfinished">Style exists</translation>
+      <translation>Стил већ постоји</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="228"/>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="281"/>
       <source>This style name already exists</source>
-      <translation type="unfinished">This style name already exists</translation>
+      <translation>Ово име стила већ постоји</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="256"/>
       <source>Style in use</source>
-      <translation type="unfinished">Style in use</translation>
+      <translation>Стил је у употреби</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="257"/>
       <source>This style is used by some objects in this document. Are you sure?</source>
-      <translation type="unfinished">This style is used by some objects in this document. Are you sure?</translation>
+      <translation>Овај стил користе неки други објекти у овом документу. Јеси ли сигуран?</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="271"/>
       <source>Rename style</source>
-      <translation type="unfinished">Rename style</translation>
+      <translation>Преименуј стил</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="272"/>
       <source>New name:</source>
-      <translation type="unfinished">New name:</translation>
+      <translation>Ново име:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="293"/>
@@ -4150,7 +4150,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="219"/>
       <source>Offset angle</source>
-      <translation type="unfinished">Offset angle</translation>
+      <translation>Угао одмака</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="479"/>
@@ -6648,7 +6648,7 @@ It works best when choosing a point on a straight segment and not a corner verte
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="76"/>
       <source>Trimex</source>
-      <translation type="unfinished">Trimex</translation>
+      <translation>Тримекс</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="82"/>
@@ -7815,7 +7815,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/wpproxy.py" line="42"/>
       <source>The placement of this object</source>
-      <translation type="unfinished">The placement of this object</translation>
+      <translation>Положај овог објекта</translation>
     </message>
     <message>
       <location filename="../../draftobjects/point.py" line="45"/>

@@ -3030,7 +3030,7 @@ kliknite ponovno za završetak odabira</translation>
       <translation>Napravi ljusku sa debljinom prema unutra</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>Napravljena je prazna tipska debljina !</translation>

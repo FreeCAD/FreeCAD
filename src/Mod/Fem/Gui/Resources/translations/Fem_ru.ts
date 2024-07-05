@@ -1069,7 +1069,7 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Указанный исполняемый
+      <translation>Указанный исполняемый 
 '%1'
  не существует!
 Укажите другой файл, пожалуйста.</translation>
@@ -1171,7 +1171,7 @@ will be merged to make the volume boundaries invisible.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Указанный исполняемый
+      <translation>Указанный исполняемый 
 '%1'
  не существует!
 Укажите другой файл, пожалуйста.</translation>
@@ -1435,7 +1435,7 @@ adding an analysis container</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Указанный исполняемый
+      <translation>Указанный исполняемый 
 '%1'
  не существует!
 Укажите другой файл, пожалуйста.</translation>
@@ -1545,7 +1545,7 @@ exported from FreeCAD.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Указанный исполняемый
+      <translation>Указанный исполняемый 
 '%1'
  не существует!
 Укажите другой файл, пожалуйста.</translation>
@@ -1656,7 +1656,7 @@ that "MAXKOI" needs to be increased.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Указанный исполняемый файл z88r
+      <translation>Указанный исполняемый файл z88r 
 '%1'
  не существует!
 Укажите другой файл, пожалуйста.</translation>
@@ -3370,7 +3370,7 @@ Note: if a face was selected this will be the value
           in normal face direction
           settings for y and z will be ignored</source>
       <translation>Действительная часть x-компоненты комплексного потенциала
-Примечание: если была выбрана грань, то это будет значение
+Примечание: если была выбрана грань, то это будет значение 
 в направлении перпендикулярном грани
 параметры для y и z будут проигнорированы</translation>
     </message>
@@ -3381,7 +3381,7 @@ Note: if a face was selected this will be the value
           in normal face direction
           settings for y and z will be ignored</source>
       <translation>Мнимая часть x-компоненты комплексного потенциала
-Примечание: если была выбрана грань, то это будет значение
+Примечание: если была выбрана грань, то это будет значение 
 в направлении перпендикулярном грани
 параметры для y и z будут проигнорированы</translation>
     </message>
@@ -3390,7 +3390,7 @@ Note: if a face was selected this will be the value
       <source>Real part of potential y-component
 Note: for 2D only setting for x is possible,
           setting for y will be ignored</source>
-      <translation>Действительная часть y-компоненты комплексного потенциала
+      <translation>Действительная часть y-компоненты комплексного потенциала 
 Примечание: для 2D возможна настройка только для x,
 настройка для y будет проигнорирована</translation>
     </message>
@@ -3399,7 +3399,7 @@ Note: for 2D only setting for x is possible,
       <source>Imaginary part of potential y-component
 Note: for 2D only setting for x is possible,
           setting for y will be ignored</source>
-      <translation>Мнимая часть y-компоненты комплексного потенциала
+      <translation>Мнимая часть y-компоненты комплексного потенциала 
 Примечание: для 2D возможна настройка только для x,
 настройка для y будет проигнорирована</translation>
     </message>

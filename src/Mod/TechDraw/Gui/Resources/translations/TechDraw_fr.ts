@@ -2316,7 +2316,7 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1085"/>
       <source>Add Diameter dimension</source>
-      <translation type="unfinished">Add Diameter dimension</translation>
+      <translation>Ajouter une cote de diamètre</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1180"/>
@@ -3416,7 +3416,7 @@ En l'absence de sélection, un navigateur de fichiers vous permet de sélectionn
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2523"/>
       <source>Selection contains both 2d and 3d geometry</source>
-      <translation type="unfinished">Selection contains both 2d and 3d geometry</translation>
+      <translation>La sélection contient à la fois des géométries 2D et 3D.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2548"/>
@@ -4863,22 +4863,22 @@ Si elle n'est pas cochée, seuls les marques de changement, les flèches et les 
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="510"/>
       <source>Broken View Break Type</source>
-      <translation type="unfinished">Broken View Break Type</translation>
+      <translation>Type de rupture de la vue interrompue</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="527"/>
       <source>No Break Lines</source>
-      <translation type="unfinished">No Break Lines</translation>
+      <translation>Aucune ligne d'interruption</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="532"/>
       <source>ZigZag Lines</source>
-      <translation type="unfinished">ZigZag Lines</translation>
+      <translation>Lignes en zigzag</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="537"/>
       <source>Simple Lines</source>
-      <translation type="unfinished">Simple Lines</translation>
+      <translation>Lignes simples</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="556"/>
@@ -5063,12 +5063,12 @@ un dessin comme guide de coupe 1:1.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="877"/>
       <source>Break Line Style</source>
-      <translation type="unfinished">Break Line Style</translation>
+      <translation>Style de la ligne d'interruption</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="884"/>
       <source>Style of line to be used in BrokenView.</source>
-      <translation type="unfinished">Style of line to be used in BrokenView.</translation>
+      <translation>Style des lignes à utiliser dans la vue interrompue.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="908"/>
@@ -8644,7 +8644,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../DlgTemplateField.ui" line="55"/>
       <source>Autofill</source>
-      <translation>Remplissage Automatique</translation>
+      <translation>Remplissage automatique</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="65"/>
@@ -9109,7 +9109,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="237"/>
       <source>Repair Dimension</source>
-      <translation>Réparer une dimension</translation>
+      <translation>Réparer une cote</translation>
     </message>
   </context>
   <context>

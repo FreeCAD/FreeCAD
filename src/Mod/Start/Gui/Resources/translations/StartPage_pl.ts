@@ -59,82 +59,82 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="178"/>
+      <location filename="../../StartView.cpp" line="179"/>
       <source>Empty file</source>
       <translation>Pusty plik</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="179"/>
+      <location filename="../../StartView.cpp" line="180"/>
       <source>Create a new empty FreeCAD file</source>
       <translation>Utwórz pusty plik FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="181"/>
+      <location filename="../../StartView.cpp" line="182"/>
       <source>Open File</source>
       <translation>Otwórz plik</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="182"/>
+      <location filename="../../StartView.cpp" line="183"/>
       <source>Open an existing CAD file or 3D model</source>
       <translation>Otwórz plik CAD lub model 3D</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="184"/>
+      <location filename="../../StartView.cpp" line="185"/>
       <source>Parametric Part</source>
       <translation>Część parametryczna</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="185"/>
+      <location filename="../../StartView.cpp" line="186"/>
       <source>Create a part with the Part Design workbench</source>
       <translation>Utwórz część w środowisku pracy Projekt Części</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="187"/>
+      <location filename="../../StartView.cpp" line="188"/>
       <source>Assembly</source>
       <translation>Złożenie</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="188"/>
+      <location filename="../../StartView.cpp" line="189"/>
       <source>Create an assembly project</source>
       <translation>Utwórz projekt złożenia</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="190"/>
+      <location filename="../../StartView.cpp" line="191"/>
       <source>2D Draft</source>
       <translation>Rysunek roboczy 2D</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="191"/>
+      <location filename="../../StartView.cpp" line="192"/>
       <source>Create a 2D Draft with the Draft workbench</source>
       <translation>Utwórz rysunek 2D w środowisku Rysunek Roboczy</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="193"/>
+      <location filename="../../StartView.cpp" line="194"/>
       <source>BIM/Architecture</source>
       <translation>BIM / Architektura</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="194"/>
+      <location filename="../../StartView.cpp" line="195"/>
       <source>Create an architectural project</source>
       <translation>Utwórz projekt architektoniczny</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="434"/>
+      <location filename="../../StartView.cpp" line="437"/>
       <source>New File</source>
       <translation>Nowy plik</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="435"/>
+      <location filename="../../StartView.cpp" line="438"/>
       <source>Examples</source>
       <translation>Przykłady</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="436"/>
+      <location filename="../../StartView.cpp" line="439"/>
       <source>Recent Files</source>
       <translation>Ostatnio używane pliki</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="440"/>
+      <location filename="../../StartView.cpp" line="443"/>
       <source>Don't show this Start page again (start with blank screen)</source>
       <translation>Nie pokazuj ponownie tej strony startowej (uruchom z pustym ekranem)</translation>
     </message>
@@ -142,7 +142,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="428"/>
+      <location filename="../../StartView.cpp" line="431"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>
@@ -165,29 +165,29 @@
       <translation>Jasny motyw</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="137"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="156"/>
       <source>Theme</source>
       <translation>Motyw</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="138"/>
-      <source>More themes are available online using the Addon Manager</source>
-      <translation>Więcej motywów jest dostępnych online przez Menedżera Dodatków</translation>
+      <location filename="../../ThemeSelectorWidget.cpp" line="157"/>
+      <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
+      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="139"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="159"/>
       <source>Dark theme</source>
       <comment>Visual theme name</comment>
       <translation>Ciemny motyw</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="140"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="160"/>
       <source>Light theme</source>
       <comment>Visual theme name</comment>
       <translation>Jasny motyw</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="141"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="161"/>
       <source>Classic</source>
       <comment>Visual theme name</comment>
       <translation>Klasyczny</translation>

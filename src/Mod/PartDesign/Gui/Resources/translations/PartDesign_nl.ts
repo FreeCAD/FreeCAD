@@ -28,12 +28,12 @@ Afhankelijke eigenschappen worden dan berekend.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="83"/>
       <source>The axial distance between two turns.</source>
-      <translation type="unfinished">The axial distance between two turns.</translation>
+      <translation>De axiale afstand tussen twee rotaties.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="85"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
-      <translation type="unfinished">The height of the helix' path, not accounting for the extent of the profile.</translation>
+      <translation>De hoogte van het pad van de helix, zonder rekening te houden met de omvang van het profiel.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="87"/>
@@ -45,28 +45,24 @@ Afhankelijke eigenschappen worden dan berekend.</translation>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, nevatige shrink.</source>
-      <translation type="unfinished">The angle of the cone that forms a hull around the helix.
-Non-zero values turn the helix into a conical spiral.
-Positive values make the radius grow, nevatige shrink.</translation>
+      <translation>De hoek van de kegel die een romp rond de helix vormt. Waardes niet gelijk aan nul maken van de romp een conische spiraal. Positieve waardes maken de radius groter, negatieve waardes kleiner.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="95"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
-      <translation type="unfinished">The growth of the helix' radius per turn.
-Non-zero values turn the helix into a conical spiral.</translation>
+      <translation>Het groter worden van de straal van de helix per draai. Waardes niet gelijk aan nul maken van de helix een conische spiraal.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="98"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
-      <translation type="unfinished">Sets the turning direction to left handed,
-i.e. counter-clockwise when moving along its axis.</translation>
+      <translation>Verandert de draairichting naar linksom. D.w.z. tegen de klok in langs de as.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="101"/>
       <source>Determines whether the helix points in the opposite direction of the axis.</source>
-      <translation type="unfinished">Determines whether the helix points in the opposite direction of the axis.</translation>
+      <translation>Bepaalt of de helix in de tegenovergestelde richting van de as wijst.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="103"/>
@@ -3028,7 +3024,7 @@ klik nogmaals om de selectie te beëindigen</translation>
       <translation>Maak dikte naar binnen gericht</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>Lege dikte gemaakt!

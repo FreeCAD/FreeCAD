@@ -3706,7 +3706,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftguitools/gui_join.py" line="91"/>
       <source>Only Draft Lines and Wires can be joined</source>
-      <translation type="unfinished">Only Draft Lines and Wires can be joined</translation>
+      <translation>Только эскизные линии и ломаные могут быть соединены</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="101"/>
@@ -4937,7 +4937,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>Edges are not connected or radius is too large.</source>
-      <translation type="unfinished">Edges are not connected or radius is too large.</translation>
+      <translation>Грани не соединены или радиус слишком большой.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="124"/>
@@ -5564,7 +5564,7 @@ of existing objects in all opened documents?</source>
     <message>
       <location filename="../../draftobjects/layer.py" line="75"/>
       <source>changed 'Group' property type</source>
-      <translation type="unfinished">changed 'Group' property type</translation>
+      <translation>изменен тип свойства «Группа»</translation>
     </message>
     <message>
       <location filename="../../draftobjects/layer.py" line="99"/>
@@ -7739,7 +7739,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="97"/>
       <source>For Cutlines and Cutfaces modes, this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, this leaves the faces at the cut location</translation>
+      <translation>Для режимов Линии обрезки и Грани обрезки, это оставляет грани в месте разрезания</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="103"/>

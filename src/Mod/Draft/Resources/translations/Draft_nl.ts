@@ -273,7 +273,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="334"/>
       <source>Dot</source>
-      <translation>punt</translation>
+      <translation>Punt</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="339"/>
@@ -1736,7 +1736,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="269"/>
       <source>Dot</source>
-      <translation>punt</translation>
+      <translation>Punt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="274"/>
