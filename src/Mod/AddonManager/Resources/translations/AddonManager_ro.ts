@@ -6,17 +6,17 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="14"/>
       <source>Custom repository</source>
-      <translation type="unfinished">Custom repository</translation>
+      <translation>Depozit de cod</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="20"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>URL repozitoriu</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
       <source>Branch</source>
-      <translation type="unfinished">Branch</translation>
+      <translation>Ramură</translation>
     </message>
   </context>
   <context>
@@ -203,7 +203,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>URL repozitoriu</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
@@ -2347,7 +2347,7 @@ installed addons will be checked for available updates</translation>
       <location filename="../../AddonManagerOptions.py" line="262"/>
       <source>Repository URL</source>
       <comment>Preferences header for custom repositories</comment>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>URL repozitoriu</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.py" line="268"/>

@@ -874,7 +874,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Gui/DlgDisplayProperties.ui" line="372"/>
       <source>Custom Appearance</source>
-      <translation type="unfinished">Custom Appearance</translation>
+      <translation>Benutzerdefinierte Darstellung</translation>
     </message>
     <message>
       <location filename="../../Gui/DlgDisplayProperties.ui" line="382"/>

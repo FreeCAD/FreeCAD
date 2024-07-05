@@ -3030,7 +3030,7 @@ clica altre cop per finalitzar la selecció</translation>
       <translation>Fer gruix interior</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>S'ha creat un gruix buit!

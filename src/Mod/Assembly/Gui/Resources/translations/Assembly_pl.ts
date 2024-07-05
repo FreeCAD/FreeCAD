@@ -11,8 +11,8 @@
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="53"/>
       <source>Create an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</source>
-      <translation>Tworzy obiekt złożenia w bieżącym dokumencie
-lub w bieżącym aktywnym złożeniu (jeśli istnieje).
+      <translation>Tworzy obiekt złożenia w bieżącym dokumencie 
+lub w bieżącym aktywnym złożeniu (jeśli istnieje). 
 Limit jednego głównego złożenia na plik.</translation>
     </message>
   </context>
@@ -26,15 +26,15 @@ Limit jednego głównego złożenia na plik.</translation>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
       <source>1 - If an assembly is active : Create a joint permanently locking two parts together, preventing any movement or rotation.</source>
-      <translation>1 - Jeśli złożenie jest aktywne:
-stwórz połączenie trwale blokujące dwie części,
+      <translation>1 - Jeśli złożenie jest aktywne: 
+stwórz połączenie trwale blokujące dwie części, 
 zapobiegając wszelkim ruchom lub obrotom.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="89"/>
       <source>2 - If a part is active : Position sub parts by matching selected coordinate systems. The second part selected will move.</source>
-      <translation>2 - Jeśli część jest aktywna:
-Definiuje pozycję części podrzędnej poprzez dopasowanie wybranych układów współrzędnych.
+      <translation>2 - Jeśli część jest aktywna: 
+Definiuje pozycję części podrzędnej poprzez dopasowanie wybranych układów współrzędnych. 
 Druga część zostanie dopasowana.</translation>
     </message>
   </context>
@@ -48,7 +48,7 @@ Druga część zostanie dopasowana.</translation>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="118"/>
       <source>Create a Revolute Joint: Allows rotation around a single axis between selected parts.</source>
-      <translation>Utwórz połączenie z możliwością obrotu:
+      <translation>Utwórz połączenie z możliwością obrotu: 
 Pozwala na obrót wokół pojedynczej osi pomiędzy wybranymi częściami.</translation>
     </message>
   </context>
@@ -62,7 +62,7 @@ Pozwala na obrót wokół pojedynczej osi pomiędzy wybranymi częściami.</tran
     <message>
       <location filename="../../../CommandCreateJoint.py" line="146"/>
       <source>Create a Cylindrical Joint: Enables rotation along one axis while permitting movement along the same axis between assembled parts.</source>
-      <translation>Tworzy łącze linearne: Umożliwia obrót wzdłuż jednej osi,
+      <translation>Tworzy łącze linearne: Umożliwia obrót wzdłuż jednej osi, 
 umożliwiając poruszanie się wzdłuż tej samej osi między częściami złożenia.</translation>
     </message>
   </context>
@@ -76,7 +76,7 @@ umożliwiając poruszanie się wzdłuż tej samej osi między częściami złoż
     <message>
       <location filename="../../../CommandCreateJoint.py" line="172"/>
       <source>Create a Slider Joint: Allows linear movement along a single axis but restricts rotation between selected parts.</source>
-      <translation>Tworzy łącze przesuwne: Pozwala na ruch liniowy wzdłuż pojedynczej osi,
+      <translation>Tworzy łącze przesuwne: Pozwala na ruch liniowy wzdłuż pojedynczej osi, 
 ale ogranicza rotację pomiędzy wybranymi częściami.</translation>
     </message>
   </context>
@@ -90,8 +90,8 @@ ale ogranicza rotację pomiędzy wybranymi częściami.</translation>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="198"/>
       <source>Create a Ball Joint: Connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact.</source>
-      <translation>Tworzy przegub kulowy: Łączy części w punkcie,
-umożliwiając nieograniczony ruch,
+      <translation>Tworzy przegub kulowy: Łączy części w punkcie, 
+umożliwiając nieograniczony ruch, 
 o ile punkty połączenia pozostają w kontakcie.</translation>
     </message>
   </context>
@@ -105,7 +105,7 @@ o ile punkty połączenia pozostają w kontakcie.</translation>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="224"/>
       <source>Create a Distance Joint: Fix the distance between the selected objects.</source>
-      <translation>Tworzy łącze odległości:
+      <translation>Tworzy łącze odległości: 
 Ustal odległość między wybranymi obiektami.</translation>
     </message>
     <message>
@@ -126,8 +126,8 @@ Odległość 0 między płaszczyznami sprawi, że będą one współpłaszczyzno
     <message>
       <location filename="../../../CommandCreateJoint.py" line="503"/>
       <source>Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
-      <translation>Zakotwienie części trwale blokuje jej pozycję w złożeniu,
-uniemożliwiając jakikolwiek ruch lub obrót.
+      <translation>Zakotwienie części trwale blokuje jej pozycję w złożeniu, 
+uniemożliwiając jakikolwiek ruch lub obrót. 
 Przed rozpoczęciem montażu należy zakotwić co najmniej jedną część.</translation>
     </message>
   </context>
@@ -154,7 +154,7 @@ Przed rozpoczęciem montażu należy zakotwić co najmniej jedną część.</tra
     <message>
       <location filename="../../../CommandInsertLink.py" line="60"/>
       <source>Insert a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;</source>
-      <translation>Wstawia komponentu do aktywnego złożenia.
+      <translation>Wstawia komponentu do aktywnego złożenia. 
 Spowoduje to utworzenie dynamicznych łączy do części, brył, prymitywów i złożeń.
 Aby wstawić komponenty zewnętrzne, upewnij się, że plik jest otwarty w bieżącej sesji</translation>
     </message>
@@ -290,12 +290,12 @@ Aby wstawić komponenty zewnętrzne, upewnij się, że plik jest otwarty w bież
     <message>
       <location filename="../../../JointObject.py" line="1534"/>
       <source>Radius 1</source>
-      <translation type="unfinished">Radius 1</translation>
+      <translation>Promień 1</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1536"/>
       <source>Pitch radius</source>
-      <translation type="unfinished">Pitch radius</translation>
+      <translation>Promień nachylenia</translation>
     </message>
     <message>
       <location filename="../../../Preferences.py" line="49"/>
@@ -315,12 +315,12 @@ Aby wstawić komponenty zewnętrzne, upewnij się, że plik jest otwarty w bież
     <message>
       <location filename="../../../CommandCreateBom.py" line="46"/>
       <source>Index (auto)</source>
-      <translation type="unfinished">Index (auto)</translation>
+      <translation>Indeks (automatycznie)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="47"/>
       <source>Name (auto)</source>
-      <translation type="unfinished">Name (auto)</translation>
+      <translation>Nazwa (automatycznie)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="48"/>
@@ -330,12 +330,12 @@ Aby wstawić komponenty zewnętrzne, upewnij się, że plik jest otwarty w bież
     <message>
       <location filename="../../../CommandCreateBom.py" line="49"/>
       <source>File Name (auto)</source>
-      <translation type="unfinished">File Name (auto)</translation>
+      <translation>Nazwa pliku (automatycznie)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="50"/>
       <source>Quantity (auto)</source>
-      <translation type="unfinished">Quantity (auto)</translation>
+      <translation>Ilość (automatycznie)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="197"/>
@@ -350,28 +350,28 @@ Aby wstawić komponenty zewnętrzne, upewnij się, że plik jest otwarty w bież
     <message>
       <location filename="../../../CommandCreateBom.py" line="294"/>
       <source>This name is already used. Please choose a different name.</source>
-      <translation>Ta nazwa jest już używana.
+      <translation>Ta nazwa jest już używana. 
 Proszę wybrać inną.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="367"/>
       <source>Options:</source>
-      <translation type="unfinished">Options:</translation>
+      <translation>Opcje:</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="374"/>
       <source>Sub-assemblies children : If checked, Sub assemblies children will be added to the bill of materials.</source>
-      <translation type="unfinished">Sub-assemblies children : If checked, Sub assemblies children will be added to the bill of materials.</translation>
+      <translation>Elementy podrzędne złożeń: Jeśli opcja jest zaznaczona, elementy podrzędne złożeń zostaną dodane do listy materiałów.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="380"/>
       <source>Parts children : If checked, Parts children will be added to the bill of materials.</source>
-      <translation type="unfinished">Parts children : If checked, Parts children will be added to the bill of materials.</translation>
+      <translation>Elementy podrzędne: Jeśli opcja jest zaznaczona, elementy podrzędne zostaną dodane do listy materiałów.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="386"/>
       <source>Only parts : If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</source>
-      <translation type="unfinished">Only parts : If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</translation>
+      <translation>Tylko części: Jeśli opcja jest zaznaczona, do zestawienia materiałów będą dodawane tylko kontenery środowiska Część i podzespoły. Obiekty takie jak Zawartość środowiska Projekt Części, elementy złączne lub elementy pierwotne środowiska pracy Części będą ignorowane.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="388"/>
@@ -381,17 +381,21 @@ Proszę wybrać inną.</translation>
     <message>
       <location filename="../../../CommandCreateBom.py" line="395"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
-      <translation type="unfinished">Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</translation>
+      <translation>Kolumny automatycznie: (Indeks, Ilość, Nazwa...) są wypełniane automatycznie. 
+Wszelkie wprowadzone modyfikacje zostaną zastąpione. Nie można zmienić nazwy tych kolumn.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="401"/>
       <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).</source>
-      <translation type="unfinished">Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).</translation>
+      <translation>Kolumny niestandardowe:
+ "Opis" i inne kolumny niestandardowe dodane przez kliknięcie przycisku "Dodaj kolumnę" nie zostaną nadpisane. 
+Nazwy tych kolumn można zmienić, klikając dwukrotnie lub naciskając klawisz F2 (zmiana nazwy kolumny spowoduje utratę jej danych).</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="407"/>
       <source>Any column (custom or not) can be deleted by pressing Del.</source>
-      <translation type="unfinished">Any column (custom or not) can be deleted by pressing Del.</translation>
+      <translation>Każdą kolumnę (niestandardową lub nie) można usunąć,
+ naciskając klawisz Del.</translation>
     </message>
   </context>
   <context>
@@ -476,22 +480,22 @@ Jest on używany tylko przez połączenie zębate do przechowywania drugiego pro
     <message>
       <location filename="../../../JointObject.py" line="350"/>
       <source>Enable the minimum length limit of the joint.</source>
-      <translation type="unfinished">Enable the minimum length limit of the joint.</translation>
+      <translation>Włącz limit minimalnej długości połączenia.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="362"/>
       <source>Enable the maximum length limit of the joint.</source>
-      <translation type="unfinished">Enable the maximum length limit of the joint.</translation>
+      <translation>Włącz limit maksymalnej długości połączenia.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="374"/>
       <source>Enable the minimum angle limit of the joint.</source>
-      <translation type="unfinished">Enable the minimum angle limit of the joint.</translation>
+      <translation>Włącz limit minimalny kąta połączenia.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="386"/>
       <source>Enable the minimum length of the joint.</source>
-      <translation type="unfinished">Enable the minimum length of the joint.</translation>
+      <translation>Włącz minimalną długość połączenia.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="398"/>
@@ -589,22 +593,22 @@ Jest on używany tylko przez połączenie zębate do przechowywania drugiego pro
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="161"/>
       <source>Min length</source>
-      <translation type="unfinished">Min length</translation>
+      <translation>Minimalna długość</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="184"/>
       <source>Max length</source>
-      <translation type="unfinished">Max length</translation>
+      <translation>Maksymalna długość</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="207"/>
       <source>Min angle</source>
-      <translation type="unfinished">Min angle</translation>
+      <translation>Minimalny kąt</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="236"/>
       <source>Max angle</source>
-      <translation type="unfinished">Max angle</translation>
+      <translation>Maksymalny kąt</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="268"/>
@@ -760,8 +764,8 @@ Pliki noszą nazwy "runPreDrag.asmt" i "dragging.log" i znajdują się w domyśl
     <message>
       <location filename="../../../CommandCreateJoint.py" line="400"/>
       <source>Create a Gears Joint: Links two rotating gears together. They will have inverse rotation direction.</source>
-      <translation>Utwórz połączenie kół zębatych:
-Łączy ze sobą dwa obracające się koła zębate.
+      <translation>Utwórz połączenie kół zębatych: 
+Łączy ze sobą dwa obracające się koła zębate. 
 Będą one miały odwrotny kierunek obrotu.</translation>
     </message>
   </context>
@@ -775,7 +779,7 @@ Będą one miały odwrotny kierunek obrotu.</translation>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="431"/>
       <source>Create a Belt Joint: Links two rotating objects together. They will have the same rotation direction.</source>
-      <translation>Utwórz połączenie pasowe:
+      <translation>Utwórz połączenie pasowe: 
 Łączy ze sobą dwa obracające się obiekty.
 Będą one miały ten sam kierunek obrotu.</translation>
     </message>
@@ -856,27 +860,27 @@ Naciśnij ESC, aby anulować.</translation>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="20"/>
       <source>If checked, Sub assemblies children will be added to the bill of materials.</source>
-      <translation type="unfinished">If checked, Sub assemblies children will be added to the bill of materials.</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, elementy podrzędne złożeń zostaną dodane do listy materiałów.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="23"/>
       <source>Sub-assemblies children</source>
-      <translation type="unfinished">Sub-assemblies children</translation>
+      <translation>Elementy podrzędne złożeń zagnieżdżonych</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="39"/>
       <source>If checked, Parts children will be added to the bill of materials.</source>
-      <translation type="unfinished">If checked, Parts children will be added to the bill of materials.</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, do listy materiałów zostaną dodane elementy podrzędne obiektów środowiska Część.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="42"/>
       <source>Parts children</source>
-      <translation type="unfinished">Parts children</translation>
+      <translation>Elementy podrzędne obiektów środowiska Część</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="58"/>
       <source>If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</source>
-      <translation type="unfinished">If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</translation>
+      <translation>W przypadku zaznaczenia tej opcji do zestawienia materiałów dodawane będą tylko kontenery części i ich elementy podrzędne. Obiekty, takie jak Zawartość środowiska Projekt Części, elementy złączne lub elementy pierwotne środowiska Część zostaną zignorowane.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="61"/>
@@ -953,21 +957,21 @@ Naciśnij ESC, aby anulować.</translation>
     <message>
       <location filename="../../../CommandCreateBom.py" line="76"/>
       <source>Create a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.</source>
-      <translation>Tworzy zestawienie materiałów bieżącego złożenia.
-Jeśli zespół jest aktywny, będzie to lista materiałowa tego zespołu.
+      <translation>Tworzy zestawienie materiałów bieżącego złożenia. 
+Jeśli zespół jest aktywny, będzie to lista materiałowa tego zespołu. 
 W przeciwnym razie będzie to zestawienie całego dokumentu.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="81"/>
       <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the bom. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
-      <translation>Obiekt zestawienia jest obiektem dokumentu, który przechowuje ustawienia zestawienia.
-Jest to również obiekt arkusza kalkulacyjnego, dzięki czemu można łatwo wizualizować listę materiałową.
+      <translation>Obiekt zestawienia jest obiektem dokumentu, który przechowuje ustawienia zestawienia. 
+Jest to również obiekt arkusza kalkulacyjnego, dzięki czemu można łatwo wizualizować listę materiałową. 
 Jeśli obiekt zestawienia nie ma być zapisany jako obiekt dokumentu, można go po prostu wyeksportować i anulować zadanie.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="86"/>
       <source>The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.</source>
-      <translation type="unfinished">The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.</translation>
+      <translation>Kolumny "Indeks", "Nazwa", "Nazwa pliku" i "Ilość" są generowane automatycznie po ponownym obliczeniu. Kolumny " Opis " i niestandardowe nie są nadpisywane.</translation>
     </message>
   </context>
 </TS>

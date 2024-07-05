@@ -3029,7 +3029,7 @@ click again to end selection</translation>
       <translation>Δημιουργία πάχους προς τα μέσα</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation type="unfinished">Empty thickness created !

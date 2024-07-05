@@ -3028,7 +3028,7 @@ click again to end selection</source>
       <translation>Наращивать стены внутрь тела</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>Создана пустая толщина!

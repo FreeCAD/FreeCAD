@@ -3029,7 +3029,7 @@ haga clic de nuevo para finalizar la selección</translation>
       <translation>Hacer el grosor hacia el interior</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>¡Espesor vacío creado!

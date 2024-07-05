@@ -2221,8 +2221,8 @@ instead of the size they have in the DXF document</source>
       <location filename="../ui/preferences-dxf.ui" line="497"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
-      <translation>Wenn Polylinien eine definierte Breite haben, werden sie
-als geschlossene Drähte mit der korrekter Breite dargestellt</translation>
+      <translation>Wenn Linienzüge eine festgelegte Breite haben, werden sie
+als geschlossene Kantenzüge mit der korrekten Breite dargestellt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="501"/>
@@ -3670,7 +3670,7 @@ Um FreeCAD zu erlauben, diese Bibliotheken herunterzuladen, wählen Sie "Ja".</t
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="363"/>
       <source>Polyline</source>
-      <translation>Polylinie</translation>
+      <translation>Linienzug</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="225"/>
@@ -4939,7 +4939,7 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>Edges are not connected or radius is too large.</source>
-      <translation type="unfinished">Edges are not connected or radius is too large.</translation>
+      <translation>Kanten sind nicht verbunden oder der Radius ist zu groß.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="124"/>
@@ -5566,7 +5566,7 @@ of existing objects in all opened documents?</source>
     <message>
       <location filename="../../draftobjects/layer.py" line="75"/>
       <source>changed 'Group' property type</source>
-      <translation type="unfinished">changed 'Group' property type</translation>
+      <translation>geänderter 'Gruppen'-Eigenschaftstyp</translation>
     </message>
     <message>
       <location filename="../../draftobjects/layer.py" line="99"/>
@@ -6036,7 +6036,7 @@ STRG zum Fangen, SHIFT zum Festlegen.</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="306"/>
       <source>Polyline</source>
-      <translation>Polylinie</translation>
+      <translation>Linienzug</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="309"/>
@@ -7757,12 +7757,12 @@ Diese Eigenschaft ist schreibgeschützt, da die Zahl von den Punkten im 'Punkt O
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="97"/>
       <source>For Cutlines and Cutfaces modes, this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, this leaves the faces at the cut location</translation>
+      <translation>Bei Schnittlinien- und Schnittflächenmodi, verbleiben die Flächen an der Schnittposition</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="103"/>
       <source>Length of line segments if tessellating Ellipses or B-splines into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines into line segments</translation>
+      <translation>Länge der Linienabschnitte, wenn Ellipsen oder B-Splines in Linienabschnitte umgewandelt werden</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="109"/>

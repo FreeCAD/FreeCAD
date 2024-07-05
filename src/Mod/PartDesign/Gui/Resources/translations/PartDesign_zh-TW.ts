@@ -1023,7 +1023,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Modeling tools</source>
-      <translation type="unfinished">Modeling tools</translation>
+      <translation>建模工具</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
@@ -3021,7 +3021,7 @@ click again to end selection</source>
       <translation>壁厚朝內</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>空厚度被創建！

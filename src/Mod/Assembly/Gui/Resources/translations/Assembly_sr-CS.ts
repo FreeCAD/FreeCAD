@@ -63,12 +63,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="165"/>
       <source>Create Slider Joint</source>
-      <translation>Napravi translatorni spoj</translation>
+      <translation>Napravi translacioni spoj</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="172"/>
       <source>Create a Slider Joint: Allows linear movement along a single axis but restricts rotation between selected parts.</source>
-      <translation>Napravi translatorni spoj (Kinematski par V klase) između izabranih delova: Dozvoljava jednu translaciju.</translation>
+      <translation>Napravi translacioni spoj (Kinematski par V klase) između izabranih delova: Dozvoljava jednu translaciju.</translation>
     </message>
   </context>
   <context>
@@ -200,7 +200,7 @@
     <message>
       <location filename="../../../JointObject.py" line="46"/>
       <source>Fixed</source>
-      <translation>Učvršćen</translation>
+      <translation>Fiksni</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="47"/>
@@ -215,7 +215,7 @@
     <message>
       <location filename="../../../JointObject.py" line="49"/>
       <source>Slider</source>
-      <translation>Translacija</translation>
+      <translation>Translacioni</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="50"/>
@@ -231,18 +231,18 @@
     <message>
       <location filename="../../../JointObject.py" line="52"/>
       <source>Parallel</source>
-      <translation>Paralelno</translation>
+      <translation>Paralelni</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="53"/>
       <source>Perpendicular</source>
-      <translation>Upravnost</translation>
+      <translation>Upravni</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
       <location filename="../../../JointObject.py" line="1532"/>
       <source>Angle</source>
-      <translation>Ugao</translation>
+      <translation>Ugaoni</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
@@ -252,17 +252,17 @@
     <message>
       <location filename="../../../JointObject.py" line="56"/>
       <source>Screw</source>
-      <translation>Zavrtanj</translation>
+      <translation>Navojni</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="57"/>
       <source>Gears</source>
-      <translation>Zupčanik</translation>
+      <translation>Zupčasti</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="58"/>
       <source>Belt</source>
-      <translation>Remen</translation>
+      <translation>Remeni</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1365"/>
@@ -272,12 +272,12 @@
     <message>
       <location filename="../../../JointObject.py" line="1534"/>
       <source>Radius 1</source>
-      <translation type="unfinished">Radius 1</translation>
+      <translation>Poluprečnik 1</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1536"/>
       <source>Pitch radius</source>
-      <translation type="unfinished">Pitch radius</translation>
+      <translation>Podeoni poluprečnik</translation>
     </message>
     <message>
       <location filename="../../../Preferences.py" line="49"/>
@@ -297,12 +297,12 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="46"/>
       <source>Index (auto)</source>
-      <translation type="unfinished">Index (auto)</translation>
+      <translation>Redni broj (auto)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="47"/>
       <source>Name (auto)</source>
-      <translation type="unfinished">Name (auto)</translation>
+      <translation>Ime (auto)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="48"/>
@@ -312,12 +312,12 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="49"/>
       <source>File Name (auto)</source>
-      <translation type="unfinished">File Name (auto)</translation>
+      <translation>Ime datoteke (auto)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="50"/>
       <source>Quantity (auto)</source>
-      <translation type="unfinished">Quantity (auto)</translation>
+      <translation>Količina (auto)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="197"/>
@@ -337,7 +337,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="367"/>
       <source>Options:</source>
-      <translation type="unfinished">Options:</translation>
+      <translation>Opcije:</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="374"/>
@@ -352,7 +352,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="386"/>
       <source>Only parts : If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</source>
-      <translation type="unfinished">Only parts : If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</translation>
+      <translation>Samo kontejneri Deo: Ako je označeno, u sastavnici će se pojaviti samo kontejneri Deo i podsklopovi. Komponente kao što su kontejneri Telo, komponente iz gvožđare ili objekti iz okruženja Delovi biće ignorisani.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="388"/>
@@ -530,7 +530,7 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="41"/>
       <source>Distance</source>
-      <translation>Rastojanje</translation>
+      <translation>Ravanski</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="65"/>
@@ -565,22 +565,22 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="161"/>
       <source>Min length</source>
-      <translation type="unfinished">Min length</translation>
+      <translation>Min. dužina</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="184"/>
       <source>Max length</source>
-      <translation type="unfinished">Max length</translation>
+      <translation>Maks. dužina</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="207"/>
       <source>Min angle</source>
-      <translation type="unfinished">Min angle</translation>
+      <translation>Min. ugao</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="236"/>
       <source>Max angle</source>
-      <translation type="unfinished">Max angle</translation>
+      <translation>Maks. ugao</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="268"/>

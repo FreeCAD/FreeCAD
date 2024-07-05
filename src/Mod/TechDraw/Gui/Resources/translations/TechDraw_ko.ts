@@ -9246,7 +9246,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Arch</source>
-      <translation type="unfinished">Arch</translation>
+      <translation>건축 작업대</translation>
     </message>
   </context>
   <context>

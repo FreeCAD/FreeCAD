@@ -16,17 +16,17 @@
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
       <source>Opens the Product URL of this material in an external browser</source>
-      <translation type="unfinished">Opens the Product URL of this material in an external browser</translation>
+      <translation>Abre a URL do Produto deste material em um navegador externo</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="56"/>
       <source>Existing material cards</source>
-      <translation type="unfinished">Existing material cards</translation>
+      <translation>Cartões de material existentes</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="67"/>
       <source>Opens an existing material card</source>
-      <translation type="unfinished">Opens an existing material card</translation>
+      <translation>Abre um cartão de material existente</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="70"/>
@@ -36,22 +36,22 @@
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
       <source>Saves this material as a card</source>
-      <translation type="unfinished">Saves this material as a card</translation>
+      <translation>Salva este material como um cartão</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>
       <source>Save as...</source>
-      <translation type="unfinished">Save as...</translation>
+      <translation>Salvar como...</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="96"/>
       <source>Material parameter</source>
-      <translation type="unfinished">Material parameter</translation>
+      <translation>Parâmetro de material</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="115"/>
       <source>Add / remove parameter</source>
-      <translation type="unfinished">Add / remove parameter</translation>
+      <translation>Adicionar / remover parâmetro</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="126"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../ui/materials-editor.ui" line="133"/>
       <source>Delete property</source>
-      <translation type="unfinished">Delete property</translation>
+      <translation>Excluir propriedade</translation>
     </message>
   </context>
   <context>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../../MaterialEditor.py" line="310"/>
       <source>Product URL</source>
-      <translation type="unfinished">Product URL</translation>
+      <translation>URL do Produto</translation>
     </message>
     <message>
       <location filename="../../MaterialEditor.py" line="398"/>

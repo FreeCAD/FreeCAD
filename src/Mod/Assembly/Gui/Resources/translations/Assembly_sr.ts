@@ -63,12 +63,12 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="165"/>
       <source>Create Slider Joint</source>
-      <translation>Направи транслаторни спој</translation>
+      <translation>Направи транслациони спој</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="172"/>
       <source>Create a Slider Joint: Allows linear movement along a single axis but restricts rotation between selected parts.</source>
-      <translation>Направи транслаторни спој (Кинематски пар V класе) између изабраних делова: Дозвољава једну транслацију.</translation>
+      <translation>Направи транслациони спој (Кинематски пар V класе) између изабраних делова: Дозвољава једну транслацију.</translation>
     </message>
   </context>
   <context>
@@ -200,7 +200,7 @@
     <message>
       <location filename="../../../JointObject.py" line="46"/>
       <source>Fixed</source>
-      <translation>Учвршћен</translation>
+      <translation>Фиксни</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="47"/>
@@ -231,18 +231,18 @@
     <message>
       <location filename="../../../JointObject.py" line="52"/>
       <source>Parallel</source>
-      <translation>Паралелно</translation>
+      <translation>Паралелни</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="53"/>
       <source>Perpendicular</source>
-      <translation>Усправан</translation>
+      <translation>Управни</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
       <location filename="../../../JointObject.py" line="1532"/>
       <source>Angle</source>
-      <translation>Угао</translation>
+      <translation>Угаони</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
@@ -252,17 +252,17 @@
     <message>
       <location filename="../../../JointObject.py" line="56"/>
       <source>Screw</source>
-      <translation>Завртањ</translation>
+      <translation>Навојни</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="57"/>
       <source>Gears</source>
-      <translation>Зупчаник</translation>
+      <translation>Зупчасти</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="58"/>
       <source>Belt</source>
-      <translation>Ремен</translation>
+      <translation>Ремени</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1365"/>
@@ -530,7 +530,7 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="41"/>
       <source>Distance</source>
-      <translation>Растојање</translation>
+      <translation>Равански</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="65"/>

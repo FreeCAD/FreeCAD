@@ -59,82 +59,82 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="178"/>
+      <location filename="../../StartView.cpp" line="179"/>
       <source>Empty file</source>
       <translation>Prázdný soubor</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="179"/>
+      <location filename="../../StartView.cpp" line="180"/>
       <source>Create a new empty FreeCAD file</source>
       <translation>Vytvořit prázdný soubor FreeCADu</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="181"/>
+      <location filename="../../StartView.cpp" line="182"/>
       <source>Open File</source>
       <translation>Otevřít soubor</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="182"/>
+      <location filename="../../StartView.cpp" line="183"/>
       <source>Open an existing CAD file or 3D model</source>
       <translation>Otevřít existující CAD soubor nebo 3D model</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="184"/>
+      <location filename="../../StartView.cpp" line="185"/>
       <source>Parametric Part</source>
       <translation>Parametrický díl</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="185"/>
+      <location filename="../../StartView.cpp" line="186"/>
       <source>Create a part with the Part Design workbench</source>
       <translation>Vytvořit díl v prostředí návrhu dílu</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="187"/>
+      <location filename="../../StartView.cpp" line="188"/>
       <source>Assembly</source>
       <translation>Sestava</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="188"/>
+      <location filename="../../StartView.cpp" line="189"/>
       <source>Create an assembly project</source>
       <translation>Vytvořit projekt sestavy</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="190"/>
+      <location filename="../../StartView.cpp" line="191"/>
       <source>2D Draft</source>
       <translation>2D návrh</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="191"/>
+      <location filename="../../StartView.cpp" line="192"/>
       <source>Create a 2D Draft with the Draft workbench</source>
       <translation>Vytvořit 2D návrh v prostředí návrhu</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="193"/>
+      <location filename="../../StartView.cpp" line="194"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Architektura</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="194"/>
+      <location filename="../../StartView.cpp" line="195"/>
       <source>Create an architectural project</source>
       <translation>Vytvořit projekt architektury</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="434"/>
+      <location filename="../../StartView.cpp" line="437"/>
       <source>New File</source>
       <translation>Nový soubor</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="435"/>
+      <location filename="../../StartView.cpp" line="438"/>
       <source>Examples</source>
       <translation>Příklady</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="436"/>
+      <location filename="../../StartView.cpp" line="439"/>
       <source>Recent Files</source>
       <translation>Nedávné soubory</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="440"/>
+      <location filename="../../StartView.cpp" line="443"/>
       <source>Don't show this Start page again (start with blank screen)</source>
       <translation>Nezobrazovat příště tuto úvodní stránku (začít s prázdnou obrazovkou)</translation>
     </message>
@@ -142,7 +142,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="428"/>
+      <location filename="../../StartView.cpp" line="431"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>
@@ -165,29 +165,29 @@
       <translation type="unfinished">Light theme</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="137"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="156"/>
       <source>Theme</source>
       <translation>Motiv</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="138"/>
-      <source>More themes are available online using the Addon Manager</source>
-      <translation>Více motivů je k dispozici online ve správci doplňků.</translation>
+      <location filename="../../ThemeSelectorWidget.cpp" line="157"/>
+      <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
+      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="139"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="159"/>
       <source>Dark theme</source>
       <comment>Visual theme name</comment>
       <translation type="unfinished">Dark theme</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="140"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="160"/>
       <source>Light theme</source>
       <comment>Visual theme name</comment>
       <translation type="unfinished">Light theme</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="141"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="161"/>
       <source>Classic</source>
       <comment>Visual theme name</comment>
       <translation>Klasický</translation>

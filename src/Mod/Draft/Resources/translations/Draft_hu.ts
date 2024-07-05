@@ -3715,7 +3715,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="91"/>
       <source>Only Draft Lines and Wires can be joined</source>
-      <translation type="unfinished">Only Draft Lines and Wires can be joined</translation>
+      <translation>Csak a tervrajz vonalak és a vezetékek csatlakoztathatók</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="101"/>
@@ -4946,7 +4946,7 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>Edges are not connected or radius is too large.</source>
-      <translation type="unfinished">Edges are not connected or radius is too large.</translation>
+      <translation>Az élek nincsenek összekötve, vagy a sugár túl nagy.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="124"/>
@@ -5572,7 +5572,7 @@ of existing objects in all opened documents?</source>
     <message>
       <location filename="../../draftobjects/layer.py" line="75"/>
       <source>changed 'Group' property type</source>
-      <translation type="unfinished">changed 'Group' property type</translation>
+      <translation>megváltoztatta a 'Csoport' tulajdonság típusát</translation>
     </message>
     <message>
       <location filename="../../draftobjects/layer.py" line="99"/>
@@ -7756,12 +7756,12 @@ Ez a tulajdonság csak olvasható, mert a szám a 'Pont tárgy' pontjaitól füg
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="97"/>
       <source>For Cutlines and Cutfaces modes, this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, this leaves the faces at the cut location</translation>
+      <translation>A Vonalvágás és Felületvágás módhoz, ez a felületeket a vágási helynél meghagyja</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="103"/>
       <source>Length of line segments if tessellating Ellipses or B-splines into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines into line segments</translation>
+      <translation>Vonalszakaszok hosszai, ha mozaikos ellipsziseket vagy B-görbéket a vonalszakaszokba</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="109"/>

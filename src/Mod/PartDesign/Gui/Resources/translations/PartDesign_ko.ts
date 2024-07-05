@@ -3024,7 +3024,7 @@ click again to end selection</source>
       <translation>안쪽으로 두께 생성</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>두께가 생성되지 않았습니다!</translation>

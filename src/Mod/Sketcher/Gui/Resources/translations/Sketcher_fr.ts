@@ -2124,7 +2124,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../DrawSketchHandlerBSpline.h" line="456"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="686"/>
       <source>Add sketch bSpline</source>
-      <translation>Ajouter l'esquisse bSpline</translation>
+      <translation>Ajouter une esquisse B-spline</translation>
     </message>
   </context>
   <context>
@@ -3219,7 +3219,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="447"/>
       <source>BSpline parameters</source>
-      <translation>Paramètres BSpline</translation>
+      <translation>Paramètres de la B-spline</translation>
     </message>
   </context>
   <context>
@@ -4028,7 +4028,7 @@ Cela nécessite de re-rentrer en mode édition pour que cela prenne effet.</tran
     <message>
       <location filename="../../SketcherSettings.ui" line="146"/>
       <source>Disables the shaded view when entering the sketch edit mode.</source>
-      <translation>Désactive la vue ombragée lorsque vous entrez dans le mode d'édition de l'esquisse.</translation>
+      <translation>Désactiver la vue ombrée lorsqu'on bascule dans le mode d'édition de l'esquisse.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="149"/>
@@ -4461,9 +4461,9 @@ Seuls les objets derrière le plan de l'esquisse sont visibles.</translation>
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation>%1 arcs inversés ont été trouvés dans la géométrie externe. Leurs extrémités sont mises en évidence dans la vue 3D.
+      <translation>%1 arcs inversés ont été trouvés dans la géométrie externe. Leurs extrémités sont mises en évidence dans la vue 3D. 
 
-%2 contraintes sont appliquées aux extrémités. Ces contraintes sont affichées dans la vue rapport (menu Affichage → Panneaux → Vue rapport).
+%2 contraintes sont appliquées aux extrémités. Ces contraintes sont affichées dans la vue rapport (menu Affichage → Panneaux → Vue rapport). 
 
 Cliquez sur le bouton "Permuter les extrémité des contraintes" pour réaffecter ces extrémités. Ne faites ceci qu'une seule fois pour les esquisses créés avec une version de FreeCAD antérieure à 0.15</translation>
     </message>
@@ -4472,7 +4472,7 @@ Cliquez sur le bouton "Permuter les extrémité des contraintes" pour réaffecte
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation>%1 arcs inversés ont été trouvés dans la géométrie externe. Leurs extrémités sont mises en évidence dans la vue 3D.
+      <translation>%1 arcs inversés ont été trouvés dans la géométrie externe. Leurs extrémités sont mises en évidence dans la vue 3D. 
 
 Toutefois, aucune contrainte liée aux extrémités n'a été trouvée.</translation>
     </message>
@@ -6096,7 +6096,7 @@ L'espacement de la grille est modifié s'il devient inférieur à ce nombre de p
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="670"/>
       <source>Error adding B-Spline pole/knot</source>
-      <translation>Erreur lors de l'ajout du nœud B-Spline</translation>
+      <translation>Erreur lors de l'ajout d'un pôle/nœud de la B-Spline</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="187"/>
@@ -6724,7 +6724,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2390"/>
       <source>Rotate / Polar transform</source>
-      <translation>Rotation / Transformation polaire</translation>
+      <translation>Rotation/transformation polaire</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2391"/>
@@ -7015,7 +7015,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="880"/>
       <source>Degree (+'U'/ -'J')</source>
-      <translation>Degré (+'U'/ -'J')</translation>
+      <translation>Degré (+ U / - J)</translation>
     </message>
   </context>
   <context>
@@ -7098,7 +7098,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2458"/>
       <source>Move / Array transform</source>
-      <translation>Déplacer / Transformation du tableau</translation>
+      <translation>Déplacer/transformation du réseau</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2459"/>
@@ -7331,7 +7331,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="837"/>
       <source>Press F to undo last point.</source>
-      <translation>Appuyez sur F pour annuler le dernier point.</translation>
+      <translation>Appuyer sur F pour annuler le dernier point.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="845"/>
@@ -7341,7 +7341,7 @@ Cliquez avec le bouton droit ou appuyez sur Échap pour annuler.</translation>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="848"/>
       <source>Create a periodic bspline.</source>
-      <translation>Créer une bspline périodique.</translation>
+      <translation>Créer une B-spline périodique</translation>
     </message>
   </context>
 </TS>
