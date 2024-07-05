@@ -183,10 +183,10 @@ class _TaskPanel:
         else:
             self._paramWidget.neumannBC_RB.click()
 
-        self._paramWidget.electricfluxQSB.setProperty(
-            'value', self._obj.ElectricFlux)
-        FreeCADGui.ExpressionBinding(
-            self._paramWidget.electricfluxQSB).bind(self._obj, "ElectricFlux")
+        self._paramWidget.electricfluxQSB.setProperty("value", self._obj.ElectricFlux)
+        FreeCADGui.ExpressionBinding(self._paramWidget.electricfluxQSB).bind(
+            self._obj, "ElectricFlux"
+        )
 
     def _applyPotentialChanges(self, enabledBox, potentialQSB):
         enabled = enabledBox.isChecked()
@@ -245,10 +245,10 @@ class _TaskPanel:
         self._obj.Diriclet = self._paramWidget.diricletBC_RB.isChecked()
 
         try:
-            self._obj.ElectricFlux = self._paramWidget.electricfluxQSB.property('value')
+            self._obj.ElectricFlux = self._paramWidget.electricfluxQSB.property("value")
         except ValueError:
             FreeCAD.Console.PrintMessage(
                 "Wrong input. Not recognised input: '{}' "
                 "ElectricFlux has not been set.\n".format(self._paramWidget.electricfluxQSB.text())
             )
-            self._obj.ElectricFlux = '0.0 s*A/(mm^2)'
+            self._obj.ElectricFlux = "0.0 s*A/(mm^2)"

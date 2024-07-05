@@ -136,13 +136,17 @@ class ESwriter:
                                         "App::PropertyElectricPotential",
                                         "Potential",
                                         "Parameter",
-                                        "Electric Potential"
+                                        "Electric Potential",
                                     )
                                     # scale to match SI units
                                     obj.Potential = savePotential * 1e6
                                 potential = float(obj.Potential.getValueAs("V"))
                                 self.write.boundary(name, "Potential", potential)
-                    elif hasattr(obj, "Diriclet") and obj.Diriclet == False and hasattr(obj, "ElectricFlux"):
+                    elif (
+                        hasattr(obj, "Diriclet")
+                        and obj.Diriclet == False
+                        and hasattr(obj, "ElectricFlux")
+                    ):
                         flux = float(obj.ElectricFlux.getValueAs("A*s/m^2"))
                         self.write.boundary(name, "Electric Flux", flux)
                     if obj.PotentialConstant:
