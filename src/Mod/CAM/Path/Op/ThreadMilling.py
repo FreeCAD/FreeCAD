@@ -37,10 +37,10 @@ __doc__ = "CAM thread milling operation."
 # math.sqrt(3)/2 ... 60deg triangle height
 SQRT_3_DIVIDED_BY_2 = 0.8660254037844386
 
-if False:
-    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-    Path.Log.trackModule(Path.Log.thisModule())
-else:
+# Uncomment here for debugging mode:
+#    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+#    Path.Log.trackModule(Path.Log.thisModule())
+# Uncomment here for non-debugging mode:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
