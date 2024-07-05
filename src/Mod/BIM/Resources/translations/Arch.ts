@@ -8599,36 +8599,36 @@ Building creation aborted.</source>
 <context>
     <name>BIM</name>
     <message>
-        <location filename="../../BimStatusBar.py" line="44"/>
-        <location filename="../../BimStatusBar.py" line="54"/>
+        <location filename="../../BimStatus.py" line="44"/>
+        <location filename="../../BimStatus.py" line="54"/>
         <source>Custom...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BimStatusBar.py" line="51"/>
-        <location filename="../../BimStatusBar.py" line="61"/>
+        <location filename="../../BimStatus.py" line="51"/>
+        <location filename="../../BimStatus.py" line="61"/>
         <location filename="../../bimcommands/BimNudge.py" line="74"/>
         <location filename="../../bimcommands/BimNudge.py" line="153"/>
         <source>Auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BimStatusBar.py" line="137"/>
+        <location filename="../../BimStatus.py" line="137"/>
         <source>Toggle report panels on/off (Ctrl+0)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BimStatusBar.py" line="156"/>
+        <location filename="../../BimStatus.py" line="156"/>
         <source>Toggle BIM views panel on/off (Ctrl+9)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BimStatusBar.py" line="174"/>
+        <location filename="../../BimStatus.py" line="174"/>
         <source>Toggle 3D view background between simple and gradient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BimStatusBar.py" line="201"/>
+        <location filename="../../BimStatus.py" line="201"/>
         <source>The value of the nudge movement (rotation is always 45°).CTRL+arrows to move
 CTRL+, to rotate leftCTRL+. to rotate right
 CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch between auto and manual mode</source>
@@ -8853,12 +8853,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../bimcommands/BimIfcExplorer.py" line="184"/>
+        <location filename="../../bimcommands/BimIfcExplorer.py" line="185"/>
         <source>Select an IFC file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../bimcommands/BimIfcExplorer.py" line="186"/>
+        <location filename="../../bimcommands/BimIfcExplorer.py" line="187"/>
         <source>IFC files (*.ifc)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8868,12 +8868,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../bimcommands/BimIfcExplorer.py" line="200"/>
+        <location filename="../../bimcommands/BimIfcExplorer.py" line="202"/>
         <source>IFC Explorer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../bimcommands/BimIfcExplorer.py" line="478"/>
+        <location filename="../../bimcommands/BimIfcExplorer.py" line="480"/>
         <source>Error in entity</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9672,8 +9672,13 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../nativeifc/ifc_openshell.py" line="86"/>
+        <location filename="../../nativeifc/ifc_openshell.py" line="87"/>
         <source>IfcOpenShell update successfully installed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../nativeifc/ifc_openshell.py" line="116"/>
+        <source>Unable to run pip. Please ensure pip is installed on your system.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
