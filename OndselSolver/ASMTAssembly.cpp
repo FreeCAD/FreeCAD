@@ -1092,7 +1092,7 @@ void MbD::ASMTAssembly::preMbDrun(std::shared_ptr<System> mbdSys)
     std::static_pointer_cast<Part>(mbdObject)->asFixed();
 }
 
-void MbD::ASMTAssembly::preMbDrunDragStep(std::shared_ptr<System> mbdSys, std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts)
+void MbD::ASMTAssembly::preMbDrunDragStep(std::shared_ptr<System> mbdSys, std::shared_ptr<std::vector<std::shared_ptr<Part>>> /*dragParts*/)
 {
     for (auto& part : *parts) {
         part->preMbDrunDragStep(mbdSys, mbdUnits);
@@ -1371,7 +1371,7 @@ void MbD::ASMTAssembly::runDragStep(
                 auto qEO2 = cqEO2->at(j);
                 std::shared_ptr<EulerParameters<double>> qEOmid;
                 auto cosHalfTheta = qEO1->dot(qEO2);
-                if (abs(cosHalfTheta) >= 1.0) {
+                if (std::abs(cosHalfTheta) >= 1.0) {
                     qEOmid = qEO1->copy();
                 }
                 else {

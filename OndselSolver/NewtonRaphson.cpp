@@ -108,7 +108,7 @@ bool NewtonRaphson::isConvergedToNumericalLimit()
 	auto tooLargeTol = 1.0e-2;
 	constexpr auto smallEnoughTol = std::numeric_limits<double>::epsilon();
 	auto nDecade = log10(tooLargeTol / smallEnoughTol);
-	auto nDivergenceMax = 3;
+	size_t nDivergenceMax = 3;
 	auto dxNormIterNo = dxNorms->at(iterNo);
 	if (iterNo > 0) {
 		auto dxNormIterNoOld = dxNorms->at(iterNo);
@@ -119,7 +119,9 @@ bool NewtonRaphson::isConvergedToNumericalLimit()
 			stillConverging = true;
 		}
 		else {
-			if (!farTooLargeError) nDivergence++;
+			if (!farTooLargeError) {
+				nDivergence++;
+			}
 			stillConverging = nDivergence < nDivergenceMax;
 		}
 		return !(farTooLargeError || (worthIterating && stillConverging));

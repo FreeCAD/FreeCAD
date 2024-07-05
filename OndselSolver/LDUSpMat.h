@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "MatrixLDU.h"
@@ -14,8 +14,9 @@
 namespace MbD {
     class LDUSpMat : public MatrixLDU
     {
-        //matrixL matrixD matrixU markowitzPivotRowCount markowitzPivotColCount privateIndicesOfNonZerosInPivotRow rowPositionsOfNonZerosInPivotColumn 
+        //matrixL matrixD matrixU markowitzPivotRowCount markowitzPivotColCount privateIndicesOfNonZerosInPivotRow rowPositionsOfNonZerosInPivotColumn
     public:
+        using MatrixSolver::basicSolvewithsaveOriginal;
         FColDsptr basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) override;
         void decomposesaveOriginal(FMatDsptr fullMat, bool saveOriginal);
         void decomposesaveOriginal(SpMatDsptr spMat, bool saveOriginal);

@@ -58,7 +58,7 @@ void PosKineNewtonRaphson::assignEquationNumbers()
 	//	uHolder->iu(varNo);
 	//	varNo += 1;
 	//}
-	auto eqnNo = 0;
+	size_t eqnNo = 0;
 	for (auto& con : *constraints) {
 		con->iG = eqnNo;
 		eqnNo += 1;

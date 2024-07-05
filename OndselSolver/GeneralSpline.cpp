@@ -105,7 +105,7 @@ void MbD::GeneralSpline::computeDerivatives()
 	}
 	else {
 		//"Zero out higher derivatives at node n and node 1 to get the p end equations."
-		auto count = 0;
+		unsigned int count = 0;
 		auto npass = 0;
 		while (count < p) {
 			matrix->atijput(np - count, np - npass, 1.0);
@@ -149,7 +149,7 @@ double MbD::GeneralSpline::derivativeAt(size_t n, double xxx)
 	calcIndexAndDeltaFor(xxx);
 	auto& derivsi = derivs->at(index);
 	double sum = 0.0;
-	for (int j = (int)degree; j >= n + 1; j--)	//Use int because of decrement
+	for (int j = (int)degree; j >= (int) n + 1; j--)	//Use int because of decrement
 	{
 		sum = (sum + derivsi->at((size_t)j - 1)) * delta / (j - n);
 	}

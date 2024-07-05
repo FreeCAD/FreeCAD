@@ -125,7 +125,7 @@ void GESpMatFullPv::backSubstituteIntoDU()
 		for (auto const& keyValue : *rowi) {
 			auto jj = keyValue.first;
 			auto j = positionsOfOriginalCols->at(jj);
-			if (j > i) {
+			if ((int) j > i) {
 				duij = keyValue.second;
 				sum += answerX->at(jj) * duij;
 			}
