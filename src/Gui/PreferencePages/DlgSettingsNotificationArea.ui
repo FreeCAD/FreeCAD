@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="NotificationAreaEnabled">
      <property name="toolTip">
-      <string>If checked, show the notification area in the status bar: a button with the current notification count, which can expand the detailed notification list. Optionally, with additional pop-up notifications.</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, show the notification area in the status bar: a button with the current notification count, which can expand the detailed notification list. Optionally, with additional pop-up notifications.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="title">
       <string>Enable notification area</string>
@@ -63,7 +63,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
          <item row="0" column="1">
           <widget class="Gui::PrefSpinBox" name="maxDuration">
            <property name="toolTip">
-            <string>Maximum amount of time the notification will be shown (unless mouse buttons are clicked). It also controls when user notifications will be removed if the &quot;Auto-remove user notifications&quot; setting is checked.</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum amount of time the notification will be shown (unless mouse buttons are clicked). It also controls when user notifications will be removed if the &amp;quot;Auto-remove user notifications&amp;quot; setting is checked.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="suffix">
             <string> s</string>
@@ -88,7 +88,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
          <item row="1" column="1">
           <widget class="Gui::PrefSpinBox" name="minDuration">
            <property name="toolTip">
-            <string>Minimum amount of time the notification will be shown (unless the notification bubble is dismissed by clicking on it).</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum amount of time the notification will be shown (unless the notification bubble is dismissed by clicking on it).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="suffix">
             <string> s</string>
@@ -205,6 +205,9 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
       </item>
       <item row="0" column="0">
        <widget class="QGroupBox" name="GroupBoxSubscriptions">
+        <property name="toolTip">
+         <string>Additional notification sources to show in the notification area.</string>
+        </property>
         <property name="title">
          <string>Additional data sources</string>
         </property>
@@ -252,6 +255,9 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
       </item>
       <item row="1" column="0">
        <widget class="QGroupBox" name="groupBox_2">
+        <property name="toolTip">
+         <string>Controls the amount of notifications to show in the list.</string>
+        </property>
         <property name="title">
          <string>Notifications list</string>
         </property>
