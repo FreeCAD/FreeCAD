@@ -31,7 +31,7 @@ import sys
 import tempfile
 import unittest
 from itertools import starmap
-from typing import Union, List, Iterator
+from typing import Union, List, Iterator, Optional
 
 import FreeCAD
 
@@ -214,8 +214,8 @@ def _are_floats_equal(
 ) -> bool:
     """Check if floats in lists are equal with some tolerance
 
-    :param orig_floats: list of floats - left operands of comparison
-    :param floats_to_compare: list of floats - right operands of comparison
+    :param orig_floats: left operands of comparison
+    :param floats_to_compare: right operands of comparison
     :return: True if both lists are equal with some tolerance element-wise, else False
     """
     if any(floats is None for floats in (orig_floats, floats_to_compare)):
@@ -226,9 +226,10 @@ def _are_floats_equal(
     )
 
 
-def _needs_further_action(hunk_line: str) -> bool:
-    """Parses the hunk line to determine, whether the further investigation of the block is needed
-    to be considered bad
+def _can_block_be_good(hunk_line: str) -> bool:
+    """Parses the hunk line to determine, whether the block can be good
+
+    The block is good if it has an equal number of 'minus' and 'plus' lines
 
     The hunk line has 4 formats:
         when the hunk consists of only one line:
@@ -241,35 +242,31 @@ def _needs_further_action(hunk_line: str) -> bool:
         and:
             @@ -line_number,count +line_number @@
 
-    If there are multiple lines, the line counts should be equal.
-    If they are not equal, no need for further hunk inspection on whether
-    some of the lines differ in floats -> the hunk is bad
-
-    :param hunk_line: str, line with 'diff' info about the block
-    :return: bool, True if the block needs further investigation to be considered bad, False otherwise
+    :param hunk_line: line with 'diff' info about the block
+    :return: True if the block can turn out to be good, False otherwise
     """
     line = hunk_line[4:~2]
     if line.find(",") != -1:
-        table = str.maketrans(dict(zip("+-,", "   ")))
+        table = str.maketrans({"+": " ", ",": " "})
         line = line.translate(table).split()
         return len(line) == 4 and line[1] == line[3]
     return True
 
 
-def _add_bad_block(diff_block: List[str], should_parse_further: bool, bad_lines: List[str]) -> None:
-    """Adds a `diff_block` to `bad_lines` if the `diff_block` is considered bad
+def _get_bad_block_if_any(diff_block: List[str], *, can_block_be_good: bool) -> Optional[List[str]]:
+    """Returns a `diff_block` if the block is considered bad, empty list otherwise
 
     `diff_block` is considered bad if it either has unequal number of 'minus' and 'plus' lines, or
     not all the lines' floats are equal
 
     :param diff_block: the block of differences
-    :param should_parse_further: whether the block's lines should be further compared
+    :param can_block_be_good: whether the block's lines should be further compared
         on the lines' floats equality
-    :param bad_lines: storage for bad lines
-    :return: None
+    :return: `diff_block` if it is bad, empty list otherwise
     """
-    # if `diff_block` is empty, empty list will be added to `bad_lines`,
-    # but adding empty list doesn't change `bad_lines`
+    if not can_block_be_good:
+        return diff_block
+
     _diff_block = list(map(_try_converting_to_float, diff_block[1:]))
     # if there are multiple lines in the diff_block
     # all the 'minus' lines will be first, then the 'plus' ones
@@ -280,29 +277,27 @@ def _add_bad_block(diff_block: List[str], should_parse_further: bool, bad_lines:
     # +first_line
     # +second_line
     #
-    # islice(...) -> ("+f", "+s")
     # zip(...) -> zip( ("-f", "-s", "+f", "+s"), ("+f", "+s") ) -> (("-f", "+f"), ("-s", "+s"))
     are_equal = starmap(_are_floats_equal, zip(_diff_block, _diff_block[len(_diff_block) // 2 :]))
-    if not (should_parse_further and all(are_equal)):
-        bad_lines.extend(diff_block)
+    if not all(are_equal):
+        return diff_block
+    return []
 
 
-def parse_diff(diff_lines: Iterator[str]) -> List[str]:
-    """Parses lines from `unified_diff`
-
-    Tries to split a line and convert its contents to float, to
-    compare float numbers with some tolerance
+def _parse_diff(diff_lines: Iterator[str]) -> List[str]:
+    """Parses lines from `unified_diff` to differentiate real inconsistencies between files
+    from differences caused by floats' rounding
 
     Recognizes blocks of changes, that start with `@@` and end either at EOF or
-    at the beginning of another block. If at least one line in the block is bad,
-    the block is considered bad and all its lines are added as bad lines.
-    All lines, which didn't pass the element-wise check, are bad lines.
+    at the beginning of another block.
+    A block is bad if it either has an unequal number of 'minus' and 'plus' lines, or
+    any of its lines is bad. A line is bad if an element-wise float comparison wasn't successful.
     :param diff_lines: lines produced by `unified_diff`
     :return: list of bad lines with respect to their block of change
     """
     bad_lines = []
     diff_block = []
-    should_parse_further = None
+    can_block_be_good = False
     while True:
         try:
             line = next(diff_lines)
@@ -311,14 +306,16 @@ def parse_diff(diff_lines: Iterator[str]) -> List[str]:
                 next(diff_lines)
                 continue
             if line.startswith("@@"):
-                _add_bad_block(diff_block, should_parse_further, bad_lines)
-                should_parse_further = _needs_further_action(line)
+                bad_lines.extend(
+                    _get_bad_block_if_any(diff_block, can_block_be_good=can_block_be_good)
+                )
+                can_block_be_good = _can_block_be_good(line)
                 diff_block = []
             diff_block.append(line)
         except StopIteration:
             break
     # do not forget to check the last diff_block
-    _add_bad_block(diff_block, should_parse_further, bad_lines)
+    bad_lines.extend(_get_bad_block_if_any(diff_block, can_block_be_good=can_block_be_good))
     return bad_lines
 
 
@@ -358,7 +355,7 @@ def compare_inp_files(file_name1, file_name2):
 
     diff_lines = difflib.unified_diff(lf1, lf2, n=0)
 
-    bad_lines = parse_diff(diff_lines)
+    bad_lines = _parse_diff(diff_lines)
     if bad_lines:
         return f"Comparing {file_name1} to {file_name2} failed!\n{''.join(bad_lines)}"
 
