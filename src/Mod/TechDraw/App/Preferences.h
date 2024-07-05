@@ -137,6 +137,7 @@ public:
     static bool useExactMatchOnDims();
 
     static bool useCameraDirection();
+    static bool alwaysShowLabel();
 };
 
 

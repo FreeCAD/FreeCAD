@@ -78,6 +78,7 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
     ui->cbMultiSelection->onSave();
 
     ui->cb_useCameraDirection->onSave();
+    ui->cb_alwaysShowLabel->onSave();
 }
 
 void DlgPrefsTechDrawGeneralImp::loadSettings()
@@ -122,6 +123,7 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
     ui->cbMultiSelection->onRestore();
 
     ui->cb_useCameraDirection->onRestore();
+    ui->cb_alwaysShowLabel->onRestore();
 }
 
 /**

@@ -1034,6 +1034,27 @@ for ProjectionGroups</string>
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="cb_alwaysShowLabel">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>If checked, view labels will be displayed even when frames are suppressed.</string>
+          </property>
+          <property name="text">
+           <string>Always Show Label</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AlwaysShowLabel</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
