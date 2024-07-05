@@ -208,7 +208,7 @@
             <Documentation>
                 <UserDocu>recomputeCells(from, to=None)
 
-                    Manually recompute cells in the given range with the given order 
+                    Manually recompute cells in the given range with the given order
                     without following dependency order.
                 </UserDocu>
             </Documentation>
@@ -218,7 +218,7 @@
             <Documentation>
                 <UserDocu>getUsedCells()
 
-                    Get a list of the names of all cells that are marked as used. 
+                    Get a list of the names of all cells that are marked as used.
                     These cells may or may not have a non-empty string content.
                 </UserDocu>
             </Documentation>
@@ -237,9 +237,9 @@
             <Documentation>
                 <UserDocu>getUsedRange()
 
-                    Get the total range of the used cells in a sheet, 
-                    as a pair of strings representing the lowest row and column that are used, 
-                    and the highest row and column that are used (inclusive). 
+                    Get the total range of the used cells in a sheet,
+                    as a pair of strings representing the lowest row and column that are used,
+                    and the highest row and column that are used (inclusive).
                     Note that the actual first and last cell of the block are not necessarily used.
                 </UserDocu>
             </Documentation>
@@ -249,9 +249,9 @@
             <Documentation>
                 <UserDocu>getNonEmptyRange()
 
-                    Get the total range of the used cells in a sheet, 
-                    as a pair of cell addresses representing the lowest row and column that contain data, 
-                    and the highest row and column that contain data (inclusive). 
+                    Get the total range of the used cells in a sheet,
+                    as a pair of cell addresses representing the lowest row and column that contain data,
+                    and the highest row and column that contain data (inclusive).
                     Note that the actual first and last cell of the block do not necessarily contain anything.
                 </UserDocu>
             </Documentation>
