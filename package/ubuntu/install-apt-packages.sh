@@ -15,7 +15,6 @@ packages=(
   libboost-graph-dev
   libboost-iostreams-dev
   libboost-program-options-dev
-  libboost-python-dev
   libboost-regex-dev
   libboost-serialization-dev
   libboost-thread-dev
@@ -52,6 +51,7 @@ packages=(
   python3-packaging
   python3-pivy
   python3-ply
+  python3-pybind11
   python3-pyside2.qtcore
   python3-pyside2.qtgui
   python3-pyside2.qtnetwork
