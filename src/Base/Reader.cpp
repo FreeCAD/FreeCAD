@@ -38,6 +38,7 @@
 #include "Persistence.h"
 #include "Sequencer.h"
 #include "Stream.h"
+#include "Tools.h"
 #include "XMLTools.h"
 
 #ifdef _MSC_VER
@@ -448,6 +449,13 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream& zipstream) const
                 // failure.
                 Base::Console().Error("Reading failed from embedded file: %s\n",
                                       entry->toString().c_str());
+                if (jt->FileName == "StringHasher.Table.txt") {
+                    Base::Console().Error(QT_TRANSLATE_NOOP(
+                        "Notifications",
+                        "\nIt is recommended that the user right-click the root of "
+                        "the document and select Mark to recompute.\n"
+                        "The user should then click the Refresh button in the main toolbar.\n"));
+                }
             }
             // Go to the next registered file name
             it = jt + 1;
