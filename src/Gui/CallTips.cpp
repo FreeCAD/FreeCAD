@@ -340,24 +340,51 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
     return tips;
 }
 
+bool shibokenMayCrash(void)
+{
+    // Shiboken 6.4.0 to 6.8.0 crash if we try to read their object
+    // atttributes without a current stack frame.
+    // FreeCAD issue: https://github.com/FreeCAD/FreeCAD/issues/14101
+    // Qt issue: https://bugreports.qt.io/browse/PYSIDE-2796
+
+    Py::Module shiboken("shiboken6");
+    Py::Tuple version(shiboken.getAttr("__version_info__"));
+    int major = Py::Long(version.getItem(0));
+    int minor = Py::Long(version.getItem(1));
+    int patch = Py::Long(version.getItem(2));
+    bool brokenVersion = (major == 6 && minor >= 4 && minor < 8);
+    bool fixedVersion = (major == 6 && minor == 7 && patch > 2);
+    return brokenVersion && !fixedVersion;
+}
+
+Py::Object CallTipsList::getAttrWorkaround(Py::Object& obj, Py::String& name) const
+{
+    QString typestr(QLatin1String(Py_TYPE(obj.ptr())->tp_name));
+    bool hasWorkingGetAttr =
+        !(typestr == QLatin1String("Shiboken.ObjectType") && shibokenMayCrash());
+
+    if (hasWorkingGetAttr) {
+        return obj.getAttr(name.as_string());
+    }
+
+    Py::Dict evalDict;
+    evalDict.setItem("obj", obj);
+    evalDict.setItem("attr", name);
+
+    Py::Object bouncer(Py_CompileString("getattr(obj, attr)", "<CallTipsList>", Py_eval_input));
+    Py::Object attr(PyEval_EvalCode(bouncer.ptr(), evalDict.ptr(), evalDict.ptr()));
+
+    return attr;
+}
+
 void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<QString, CallTip>& tips) const
 {
     for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
         try {
             Py::String attrname(*it);
-            std::string name = attrname.as_string();
+            std::string name(attrname.as_string());
 
-            // If 'name' is an invalid attribute then PyCXX raises an exception
-            // for Py2 but silently accepts it for Py3.
-            //
-            // FIXME: Add methods of extension to the current instance and not its type object
-            // https://forum.freecad.org/viewtopic.php?f=22&t=18105
-            // https://forum.freecad.org/viewtopic.php?f=3&t=20009&p=154447#p154447
-            // https://forum.freecad.org/viewtopic.php?f=10&t=12534&p=155290#p155290
-            //
-            // https://forum.freecad.org/viewtopic.php?f=39&t=33874&p=286759#p286759
-            // https://forum.freecad.org/viewtopic.php?f=39&t=33874&start=30#p286772
-            Py::Object attr = obj.getAttr(name);
+            Py::Object attr = getAttrWorkaround(obj, attrname);
             if (!attr.ptr()) {
                 Base::Console().Log("Python attribute '%s' returns null!\n", name.c_str());
                 continue;
