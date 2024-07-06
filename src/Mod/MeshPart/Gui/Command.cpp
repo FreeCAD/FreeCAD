@@ -230,7 +230,8 @@ void CmdMeshPartSection::activated(int)
     for (auto it : docObj) {
         const Mesh::MeshObject* mesh = static_cast<Mesh::Feature*>(it)->Mesh.getValuePtr();
         std::vector<Mesh::MeshObject::TPolylines> polylines;
-        mesh->crossSections(sections, polylines);
+        const float minSectionLength = 1e-7F;
+        mesh->crossSections(sections, polylines, minSectionLength);
 
         for (const auto& it2 : polylines) {
             for (const auto& it3 : it2) {

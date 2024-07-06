@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-#/***************************************************************************
+# /***************************************************************************
 # *   Copyright (c) 2024 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
@@ -34,6 +34,7 @@ from . import base_fempythonobject
 
 _PropHelper = base_fempythonobject._PropHelper
 
+
 class BaseFemMeshElement(base_fempythonobject.BaseFemPythonObject):
 
     BaseType = "Fem::BaseFemMeshElement"
@@ -44,16 +45,16 @@ class BaseFemMeshElement(base_fempythonobject.BaseFemPythonObject):
         for prop in self._get_properties():
             prop.add_to_object(obj)
 
-
     def _get_properties(self):
         prop = []
 
-        prop.append(_PropHelper(
-            type  = "App::PropertyLinkSubList",
-            name  = "References",
-            group = "Mesh Element",
-            doc   = "List of reference shapes",
-            value = []
+        prop.append(
+            _PropHelper(
+                type="App::PropertyLinkSubList",
+                name="References",
+                group="Mesh Element",
+                doc="List of reference shapes",
+                value=[],
             )
         )
 

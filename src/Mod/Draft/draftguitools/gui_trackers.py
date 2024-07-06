@@ -288,7 +288,7 @@ class rectangleTracker(Tracker):
             self.v = v
         else:
             norm = self._get_wp().axis
-            self.v = self.u.cross(norm)
+            self.v = norm.cross(self.u)
 
     def p1(self, point=None):
         """Set or get the base point of the rectangle."""

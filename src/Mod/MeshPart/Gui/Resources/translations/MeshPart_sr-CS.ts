@@ -185,7 +185,7 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="364"/>
       <source>Close wire</source>
-      <translation>Zatvori žicu</translation>
+      <translation>Zatvori žičani ram</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="366"/>
@@ -227,7 +227,7 @@ Ova komanda radi samo sa objektom koji je mreža, a ne sa običnom stranicom ili
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
-      <translation>Žica</translation>
+      <translation>Žičani ram</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>

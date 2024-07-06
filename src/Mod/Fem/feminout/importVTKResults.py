@@ -42,19 +42,13 @@ from builtins import open as pyopen
 # ********* generic FreeCAD import and export methods *********
 
 
-
-def open(
-    filename
-):
+def open(filename):
     "called when freecad opens a file"
     docname = os.path.splitext(os.path.basename(filename))[0]
     insert(filename, docname)
 
 
-def insert(
-    filename,
-    docname
-):
+def insert(filename, docname):
     "called when freecad wants to import a file"
     try:
         doc = FreeCAD.getDocument(docname)
@@ -64,15 +58,10 @@ def insert(
     importVtk(filename)
 
 
-def export(
-    objectslist,
-    filename
-):
+def export(objectslist, filename):
     "called when freecad exports an object to vtk"
     if len(objectslist) > 1:  # the case of no selected obj is caught by FreeCAD already
-        Console.PrintError(
-            "This exporter can only export one object at once\n"
-        )
+        Console.PrintError("This exporter can only export one object at once\n")
         return
 
     obj = objectslist[0]
@@ -80,29 +69,19 @@ def export(
         obj.writeVTK(filename)
         return
     elif obj.isDerivedFrom("Fem::FemMeshObject"):
-        Console.PrintError(
-            "Use export to FEM mesh formats to export a FEM mesh object to vtk!\n"
-        )
+        Console.PrintError("Use export to FEM mesh formats to export a FEM mesh object to vtk!\n")
         return
     elif obj.isDerivedFrom("Fem::FemResultObject"):
         Fem.writeResult(filename, obj)
     else:
-        Console.PrintError(
-            "Selected object is not supported by export to VTK.\n"
-        )
+        Console.PrintError("Selected object is not supported by export to VTK.\n")
         return
 
 
 # ********* module specific methods *********
-def importVtk(
-    filename,
-    object_name=None,
-    object_type=None
-):
+def importVtk(filename, object_name=None, object_type=None):
     if not object_type:
-        vtkinout_prefs = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk"
-        )
+        vtkinout_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk")
         object_type = vtkinout_prefs.GetInt("ImportObject", 0)
     if not object_name:
         object_name = os.path.splitext(os.path.basename(filename))[0]
@@ -116,16 +95,10 @@ def importVtk(
         # FreeCAD result object
         importVtkFCResult(filename, object_name)
     else:
-        Console.PrintError(
-            "Error, wrong parameter in VTK import pref: {}\n"
-            .format(object_type)
-        )
+        Console.PrintError(f"Error, wrong parameter in VTK import pref: {object_type}\n")
 
 
-def importVtkVtkResult(
-    filename,
-    resultname
-):
+def importVtkVtkResult(filename, resultname):
     vtk_result_obj = FreeCAD.ActiveDocument.addObject("Fem::FemPostPipeline", resultname)
     vtk_result_obj.read(filename)
     # set display mode to "Surface" like for any other new pipeline to assure the user sees
@@ -136,10 +109,7 @@ def importVtkVtkResult(
     return vtk_result_obj
 
 
-def importVtkFemMesh(
-    filename,
-    meshname
-):
+def importVtkFemMesh(filename, meshname):
     meshobj = FreeCAD.ActiveDocument.addObject("Fem::FemMeshObject", meshname)
     meshobj.FemMesh = Fem.read(filename)
     meshobj.touch()
@@ -147,16 +117,12 @@ def importVtkFemMesh(
     return meshobj
 
 
-def importVtkFCResult(
-    filename,
-    resultname,
-    analysis=None,
-    result_name_prefix=None
-):
+def importVtkFCResult(filename, resultname, analysis=None, result_name_prefix=None):
     # only fields from vtk are imported if they exactly named as the FreeCAD result properties
     # See _getFreeCADMechResultProperties() in FemVTKTools.cpp for the supported names
 
     import ObjectsFem
+
     if result_name_prefix is None:
         result_name_prefix = ""
     if analysis:
@@ -170,6 +136,7 @@ def importVtkFCResult(
     # add missing DisplacementLengths (They should have been added by Fem.readResult)
     if not result_obj.DisplacementLengths:
         import femresult.resulttools as restools
+
         result_obj = restools.add_disp_apps(result_obj)  # DisplacementLengths
 
     """ seems unused at the moment

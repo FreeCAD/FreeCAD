@@ -13,7 +13,7 @@ that reference the same configurable object</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="451"/>
+      <location filename="../../Application.cpp" line="456"/>
       <source>Unnamed</source>
       <translation>名称未設定</translation>
     </message>
@@ -21,32 +21,32 @@ that reference the same configurable object</source>
   <context>
     <name>App::Origin</name>
     <message>
-      <location filename="../../Origin.cpp" line="140"/>
+      <location filename="../../Origin.cpp" line="142"/>
       <source>X-axis</source>
       <translation>X軸</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="141"/>
+      <location filename="../../Origin.cpp" line="143"/>
       <source>Y-axis</source>
       <translation>Y軸</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="142"/>
+      <location filename="../../Origin.cpp" line="144"/>
       <source>Z-axis</source>
       <translation>Z軸</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="143"/>
+      <location filename="../../Origin.cpp" line="145"/>
       <source>XY-plane</source>
       <translation>XY平面</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="144"/>
+      <location filename="../../Origin.cpp" line="146"/>
       <source>XZ-plane</source>
       <translation>XZ 平面</translation>
     </message>
     <message>
-      <location filename="../../Origin.cpp" line="145"/>
+      <location filename="../../Origin.cpp" line="147"/>
       <source>YZ-plane</source>
       <translation>YZ 平面</translation>
     </message>

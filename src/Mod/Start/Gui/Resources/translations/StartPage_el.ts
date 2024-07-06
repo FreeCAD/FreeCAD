@@ -6,7 +6,7 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="101"/>
       <source>Done</source>
-      <translation>Έγινε</translation>
+      <translation>Ολοκληρώθηκε</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="103"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../../StartView.cpp" line="184"/>
       <source>Parametric Part</source>
-      <translation type="unfinished">Parametric Part</translation>
+      <translation>Παραμετρικό Μέρος</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="185"/>
@@ -156,13 +156,13 @@
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
-      <source>Light</source>
-      <translation>Φωτεινό</translation>
+      <source>Dark theme</source>
+      <translation>Σκούρο θέμα</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
-      <source>Dark</source>
-      <translation>Σκοτεινό</translation>
+      <source>Light theme</source>
+      <translation>Ανοιχτόχρωμο θέμα</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="137"/>
@@ -176,21 +176,21 @@
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="139"/>
-      <source>Classic</source>
+      <source>Dark theme</source>
       <comment>Visual theme name</comment>
-      <translation>Κλασικό</translation>
+      <translation>Σκούρο θέμα</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="140"/>
-      <source>Light</source>
+      <source>Light theme</source>
       <comment>Visual theme name</comment>
-      <translation>Φωτεινό</translation>
+      <translation>Ανοιχτόχρωμο θέμα</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="141"/>
-      <source>Dark</source>
+      <source>Classic</source>
       <comment>Visual theme name</comment>
-      <translation>Σκοτεινό</translation>
+      <translation>Κλασικό</translation>
     </message>
   </context>
 </TS>

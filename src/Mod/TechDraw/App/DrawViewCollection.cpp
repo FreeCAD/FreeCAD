@@ -213,9 +213,11 @@ void DrawViewCollection::unsetupObject()
     std::string docName = getDocument()->getName();
 
     for (auto* view : Views.getValues()) {
-        std::string viewName = view->getNameInDocument();
-        Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-                                          docName.c_str(), viewName.c_str());
+        if (view->isAttachedToDocument()) {
+            std::string viewName = view->getNameInDocument();
+            Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                              docName.c_str(), viewName.c_str());
+        }
     }
 
     std::vector<App::DocumentObject*> emptyViews;

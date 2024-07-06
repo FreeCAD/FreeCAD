@@ -11,17 +11,17 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="103"/>
       <source>Welcome to %1</source>
-      <translation type="unfinished">Welcome to %1</translation>
+      <translation>კეთილი იყოს თქვენი მობრძანება %1-ში</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="106"/>
       <source>To get started, set your basic configuration options below.</source>
-      <translation type="unfinished">To get started, set your basic configuration options below.</translation>
+      <translation>დასაწყებად, დააყენეთ თქვენი ძირითადი პარამეტრები ქვემოთ.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="107"/>
       <source>These options (and many more) can be changed later in Preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in Preferences.</translation>
+      <translation>ეს პარამეტრები (და ბევრი სხვა) მოგვიანებითაც, მორგების ფანჯარაში შეგიძლიათ, შეცვალოთ.</translation>
     </message>
   </context>
   <context>
@@ -29,17 +29,17 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
       <source>Language</source>
-      <translation type="unfinished">Language</translation>
+      <translation>ენა</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
       <source>Unit System</source>
-      <translation type="unfinished">Unit System</translation>
+      <translation>ერთეულების სისტემა</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="226"/>
       <source>Navigation Style</source>
-      <translation type="unfinished">Navigation Style</translation>
+      <translation>ნავიგაციის სტილი</translation>
     </message>
   </context>
   <context>
@@ -53,7 +53,7 @@
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
       <source>Displays the Start in an MDI view</source>
-      <translation type="unfinished">Displays the Start in an MDI view</translation>
+      <translation>აჩვენებს დასაწყისს MDI ხედში</translation>
     </message>
   </context>
   <context>
@@ -61,82 +61,82 @@
     <message>
       <location filename="../../StartView.cpp" line="178"/>
       <source>Empty file</source>
-      <translation type="unfinished">Empty file</translation>
+      <translation>ცარიელი ფაილი</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="179"/>
       <source>Create a new empty FreeCAD file</source>
-      <translation type="unfinished">Create a new empty FreeCAD file</translation>
+      <translation>ცარიელი FreeCAD-ის ფაილის შექმნა</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="181"/>
       <source>Open File</source>
-      <translation type="unfinished">Open File</translation>
+      <translation>ფაილის გახსნა</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="182"/>
       <source>Open an existing CAD file or 3D model</source>
-      <translation type="unfinished">Open an existing CAD file or 3D model</translation>
+      <translation>არსებული CAD ფაილის ან 3D მოდელის გახსნა</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="184"/>
       <source>Parametric Part</source>
-      <translation type="unfinished">Parametric Part</translation>
+      <translation>პარამეტრული ნაწილი</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="185"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation type="unfinished">Create a part with the Part Design workbench</translation>
+      <translation>ნაწილის შექმნა ნაწილის დიზაინის სამუშაო მაგიდით</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="187"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>აწყობა</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="188"/>
       <source>Create an assembly project</source>
-      <translation type="unfinished">Create an assembly project</translation>
+      <translation>აწყობის პროექტის შექმნა</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="190"/>
       <source>2D Draft</source>
-      <translation type="unfinished">2D Draft</translation>
+      <translation>2D მონახაზი</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="191"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation type="unfinished">Create a 2D Draft with the Draft workbench</translation>
+      <translation>2D ნახაზის შექმნა Draft სამუშაო მაგიდით</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="193"/>
       <source>BIM/Architecture</source>
-      <translation type="unfinished">BIM/Architecture</translation>
+      <translation>BIM/არქიტექტურა</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="194"/>
       <source>Create an architectural project</source>
-      <translation type="unfinished">Create an architectural project</translation>
+      <translation>არქიტექტურული პროექტის შექმნა</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="434"/>
       <source>New File</source>
-      <translation type="unfinished">New File</translation>
+      <translation>ახალი ფაილი</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="435"/>
       <source>Examples</source>
-      <translation type="unfinished">Examples</translation>
+      <translation>მაგალითები</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="436"/>
       <source>Recent Files</source>
-      <translation type="unfinished">Recent Files</translation>
+      <translation>ბოლო ფაილები</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="440"/>
       <source>Don't show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Don't show this Start page again (start with blank screen)</translation>
+      <translation>აღარ მაჩვენო საწყისი გვერდი (დაწყება ცარიელი ეკრანით)</translation>
     </message>
   </context>
   <context>
@@ -156,13 +156,13 @@
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
-      <source>Light</source>
-      <translation type="unfinished">Light</translation>
+      <source>Dark theme</source>
+      <translation>მუქი თემა</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
-      <source>Dark</source>
-      <translation type="unfinished">Dark</translation>
+      <source>Light theme</source>
+      <translation>ღია თემა</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="137"/>
@@ -172,25 +172,25 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="138"/>
       <source>More themes are available online using the Addon Manager</source>
-      <translation type="unfinished">More themes are available online using the Addon Manager</translation>
+      <translation>მეტი თემა ხელმისაწვდომია ინტერნეტში, დამატებების მმართველის გამოყენებით</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="139"/>
-      <source>Classic</source>
+      <source>Dark theme</source>
       <comment>Visual theme name</comment>
-      <translation>კლასიკური</translation>
+      <translation>მუქი თემა</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="140"/>
-      <source>Light</source>
+      <source>Light theme</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Light</translation>
+      <translation>ღია თემა</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="141"/>
-      <source>Dark</source>
+      <source>Classic</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Dark</translation>
+      <translation>კლასიკური</translation>
     </message>
   </context>
 </TS>

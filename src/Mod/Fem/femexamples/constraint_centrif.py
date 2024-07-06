@@ -44,12 +44,14 @@ def get_information():
         "constraints": ["centrif", "fixed"],
         "solvers": ["ccxtools"],
         "material": "multimaterial",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.constraint_centrif import setup
@@ -62,6 +64,7 @@ https://forum.freecad.org/viewtopic.php?f=18&t=57770
 constraint centrif, concerning CENTRIF label from ccx's *DLOAD card
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -129,7 +132,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # solver
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
-        solver_obj.WorkingDir = u""
+        solver_obj.WorkingDir = ""
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
@@ -178,6 +181,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # mesh
     from .meshes.mesh_constraint_centrif_tetra10 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:

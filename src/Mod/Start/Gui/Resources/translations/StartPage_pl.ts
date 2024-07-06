@@ -86,7 +86,7 @@
     <message>
       <location filename="../../StartView.cpp" line="185"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation>Utwórz część za pomocą środowiska pracy Projekt Części</translation>
+      <translation>Utwórz część w środowisku pracy Projekt Części</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="187"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../StartView.cpp" line="188"/>
       <source>Create an assembly project</source>
-      <translation>Utwórz projekt środowiska pracy Złożenie</translation>
+      <translation>Utwórz projekt złożenia</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="190"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../StartView.cpp" line="191"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation>Utwórz rysunek 2D za pomocą środowiska Rysunek Roboczy</translation>
+      <translation>Utwórz rysunek 2D w środowisku Rysunek Roboczy</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="193"/>
@@ -156,13 +156,13 @@
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
-      <source>Light</source>
-      <translation>Jasny</translation>
+      <source>Dark theme</source>
+      <translation>Ciemny motyw</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
-      <source>Dark</source>
-      <translation>Ciemny</translation>
+      <source>Light theme</source>
+      <translation>Jasny motyw</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="137"/>
@@ -176,21 +176,21 @@
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="139"/>
-      <source>Classic</source>
+      <source>Dark theme</source>
       <comment>Visual theme name</comment>
-      <translation>Klasyczny</translation>
+      <translation>Ciemny motyw</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="140"/>
-      <source>Light</source>
+      <source>Light theme</source>
       <comment>Visual theme name</comment>
-      <translation>Jasny</translation>
+      <translation>Jasny motyw</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="141"/>
-      <source>Dark</source>
+      <source>Classic</source>
       <comment>Visual theme name</comment>
-      <translation>Ciemny</translation>
+      <translation>Klasyczny</translation>
     </message>
   </context>
 </TS>

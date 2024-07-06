@@ -589,13 +589,13 @@ RF
 
 *OUTPUT, FREQUENCY=1
 ***********************************************************
-*END STEP 
+*END STEP
 
 ***********************************************************
 ** CalculiX Input file
 **   written by    --> FreeCAD 0.21.0
 **   written on    --> Tue Mar 28 06:53:21 2023
-**   file name     --> 
+**   file name     --> box_static.FCStd
 **   analysis name --> Analysis
 **
 **

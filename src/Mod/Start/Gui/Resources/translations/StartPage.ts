@@ -156,12 +156,12 @@
     </message>
     <message>
         <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
-        <source>Light</source>
+        <source>Dark theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
-        <source>Dark</source>
+        <source>Light theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -176,19 +176,19 @@
     </message>
     <message>
         <location filename="../../ThemeSelectorWidget.cpp" line="139"/>
-        <source>Classic</source>
+        <source>Dark theme</source>
         <comment>Visual theme name</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../ThemeSelectorWidget.cpp" line="140"/>
-        <source>Light</source>
+        <source>Light theme</source>
         <comment>Visual theme name</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../ThemeSelectorWidget.cpp" line="141"/>
-        <source>Dark</source>
+        <source>Classic</source>
         <comment>Visual theme name</comment>
         <translation type="unfinished"></translation>
     </message>

@@ -16,7 +16,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="95"/>
       <source>Rotate</source>
-      <translation>Rotiraj</translation>
+      <translation>Okreni</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="96"/>

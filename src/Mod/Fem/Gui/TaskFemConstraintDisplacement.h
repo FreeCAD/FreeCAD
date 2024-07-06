@@ -113,9 +113,7 @@ class TaskDlgFemConstraintDisplacement: public TaskDlgFemConstraint
 public:
     explicit TaskDlgFemConstraintDisplacement(
         ViewProviderFemConstraintDisplacement* ConstraintView);
-    void open() override;
     bool accept() override;
-    bool reject() override;
 };
 
 }  // namespace FemGui

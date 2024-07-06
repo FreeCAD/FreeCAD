@@ -27,6 +27,7 @@ __url__ = "https://www.freecad.org"
 
 import FreeCAD
 
+
 def get_analysis_types():
     return ["buckling", "static", "thermomech"]
 
@@ -60,12 +61,12 @@ def write_meshdata_constraint(f, femobj, prs_obj, ccxwriter):
         f.write("** " + ref_shape[0] + "\n")
         for face, fno in ref_shape[1]:
             if fno > 0:  # solid mesh face
-                f.write("{},P{},{}\n".format(face, fno, press_rev))
+                f.write(f"{face},P{fno},{press_rev}\n")
             # on shell mesh face: fno == 0
             # normal of element face == face normal
             elif fno == 0:
-                f.write("{},P,{}\n".format(face, press_rev))
+                f.write(f"{face},P,{press_rev}\n")
             # on shell mesh face: fno == -1
             # normal of element face opposite direction face normal
             elif fno == -1:
-                f.write("{},P,{}\n".format(face, -1 * press_rev))
+                f.write(f"{face},P,{-1 * press_rev}\n")
