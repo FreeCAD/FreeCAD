@@ -59,12 +59,15 @@ public:
 
     std::vector<PreferencePackManager::TemplateFile> selectedTemplates() const;
     std::string preferencePackName() const;
+    std::string preferencePackDirectory() const;
 
 protected Q_SLOTS:
 
     void onItemChanged(QTreeWidgetItem* item, int column);
 
     void onLineEditTextEdited(const QString &text);
+
+    void onBrowseButtonClicked();
 
     void accept() override;
 
@@ -74,6 +77,7 @@ private:
     std::vector<PreferencePackManager::TemplateFile> _templates;
     QRegularExpressionValidator _nameValidator;
     std::vector<std::string> _existingPackNames;
+    QString _cfgFileDirectory;
 };
 
 } // namespace Dialog
