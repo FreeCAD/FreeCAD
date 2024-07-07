@@ -1449,11 +1449,18 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Act
         App.Gui.Selection.addSelection("", extrude.Name, "Face2")
         # Assert
-        self.assertEqual(len(App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames),1)
+        self.assertEqual(
+            len(App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames), 1
+        )
         if extrude.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
-            self.assertEqual(App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames[0],"Face2")
+            self.assertEqual(
+                App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames[0], "Face2"
+            )
         else:
-            self.assertEqual(App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames[0][-8:],",F.Face2")
+            self.assertEqual(
+                App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames[0][-8:],
+                ",F.Face2",
+            )
 
     def testFileSaveRestore(self):
         # Arrange
@@ -1498,11 +1505,19 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.recompute()
 
         # assert
-        self.assertEqual(doc.Body.OutList[1].Shape.ElementMapSize, 26) # subobjects ( subshapebinder here ) should have elementmap
-        self.assertEqual(doc.Body.Shape.ElementMapSize, 0)  # TODO:  This is Sus, although LS3 passes.  Might be because
+        self.assertEqual(
+            doc.Body.OutList[1].Shape.ElementMapSize, 26
+        )  # subobjects ( subshapebinder here ) should have elementmap
+        self.assertEqual(
+            doc.Body.Shape.ElementMapSize, 0
+        )  # TODO:  This is Sus, although LS3 passes.  Might be because
         # SubShapeBinder is different in LS3.
-        self.assertEqual(doc.Body001.BaseFeature.Shape.ElementMapSize, 26) # base feature lookup should have element map
-        self.assertEqual(doc.Body001.Shape.ElementMapSize, 26)  # Body Shape should have element map
+        self.assertEqual(
+            doc.Body001.BaseFeature.Shape.ElementMapSize, 26
+        )  # base feature lookup should have element map
+        self.assertEqual(
+            doc.Body001.Shape.ElementMapSize, 26
+        )  # Body Shape should have element map
 
 
     def testBaseFeatureAttachmentSupport(self):
@@ -1513,7 +1528,10 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.recompute()
         doc.addObject("Part::Box","Box")
         doc.ActiveObject.Label = "Cube"
-        doc.Box001.Placement=App.Placement(App.Vector(5.00,5.00,5.00),App.Rotation(App.Vector(0.00,0.00,1.00),0.00))
+        doc.Box001.Placement = App.Placement(
+            App.Vector(5.00, 5.00, 5.00),
+            App.Rotation(App.Vector(0.00, 0.00, 1.00), 0.00),
+        )
         doc.recompute()
 
         doc.addObject("Part::MultiFuse","Fusion")
@@ -1534,11 +1552,27 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Sketch.MapMode = 'FlatFace'
         doc.recompute()
         geoList = []
-        geoList.append(Part.LineSegment(App.Vector(12.0, 13.0, 0.000000),App.Vector(12.0, 11.0, 0.000000)))
-        geoList.append(Part.LineSegment(App.Vector(12.0, 11, 0.000000),App.Vector(14.0, 11.0, 0.000000)))
-        geoList.append(Part.LineSegment(App.Vector(14.0, 11, 0.000000),App.Vector(14.0, 13.0, 0.000000)))
-        geoList.append(Part.LineSegment(App.Vector(14.0, 13.0, 0.000000),App.Vector(12, 13.0, 0.000000)))
-        doc.Sketch.addGeometry(geoList,False)
+        geoList.append(
+            Part.LineSegment(
+                App.Vector(12.0, 13.0, 0.000000), App.Vector(12.0, 11.0, 0.000000)
+            )
+        )
+        geoList.append(
+            Part.LineSegment(
+                App.Vector(12.0, 11, 0.000000), App.Vector(14.0, 11.0, 0.000000)
+            )
+        )
+        geoList.append(
+            Part.LineSegment(
+                App.Vector(14.0, 11, 0.000000), App.Vector(14.0, 13.0, 0.000000)
+            )
+        )
+        geoList.append(
+            Part.LineSegment(
+                App.Vector(14.0, 13.0, 0.000000), App.Vector(12, 13.0, 0.000000)
+            )
+        )
+        doc.Sketch.addGeometry(geoList, False)
         del geoList
         constraintList = []
         constraintList.append(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
@@ -1580,16 +1614,23 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.recompute()
 
         # Act
-        doc.Box001.Width='3.00 mm'
-        doc.Box001.Placement=App.Placement(App.Vector(5.00,5.00,5.00),App.Rotation(App.Vector(0.00,0.00,1.00),0.00))
+        doc.Box001.Width = "3.00 mm"
+        doc.Box001.Placement = App.Placement(
+            App.Vector(5.00, 5.00, 5.00),
+            App.Rotation(App.Vector(0.00, 0.00, 1.00), 0.00),
+        )
         doc.recompute()
         # Assert
-        self.assertEqual(len(doc.Body.Shape.Faces),17)  # Check that the object seems right.
-        self.assertEqual(len(doc.Body.Shape.Edges),42)
-        self.assertEqual(len(doc.Body.Shape.Vertexes),28)
-        self.assertEqual(len(doc.Body.Shape.Shells),1)
-        self.assertEqual(len(doc.Body.Shape.Solids),1)
-        self.assertEqual(doc.Sketch.AttachmentSupport[0][1][0], 'Face9')    # Attachment autochanged from Face8.
+        self.assertEqual(
+            len(doc.Body.Shape.Faces), 17
+        )  # Check that the object seems right.
+        self.assertEqual(len(doc.Body.Shape.Edges), 42)
+        self.assertEqual(len(doc.Body.Shape.Vertexes), 28)
+        self.assertEqual(len(doc.Body.Shape.Shells), 1)
+        self.assertEqual(len(doc.Body.Shape.Solids), 1)
+        self.assertEqual(
+            doc.Sketch.AttachmentSupport[0][1][0], "Face9"
+        )  # Attachment autochanged from Face8.
         # potentially check the .BoundBox ( calc seems off on this, Not applying sketch position to Pad object )
 
     def create_t_sketch(self):
@@ -2045,6 +2086,19 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         :H976:9,E;:L#8;PSM;:H976:9,F;:H-977,F.Face11 is only temporary and can be ignored."""
         self.assertTrue(self.Sketch002.AttachmentSupport[0][1][0] == "Face11")
         self.assertGreaterEqual(self.Body.Shape.Volume, 20126)
+
+    def testPointatOrigin(self):
+        # Arrange
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+        # Make first offset cube Pad
+        self.PadSketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (-42.5, -42.5), (85, 85))
+        self.PadSketch.addGeometry(Part.Point(App.Vector(0.000000, 0.000000, 0)))
+        self.PadSketch.toggleConstruction(4)
+        self.PadSketch.addConstraint(Sketcher.Constraint("Coincident", 4, 1, -1, 1))
+        self.Doc.recompute()
+        self.assertTrue(self.PadSketch.isValid())
 
     def tearDown(self):
         """ Close our test document """
