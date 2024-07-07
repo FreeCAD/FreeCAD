@@ -1614,16 +1614,23 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.recompute()
 
         # Act
-        doc.Box001.Width='3.00 mm'
-        doc.Box001.Placement=App.Placement(App.Vector(5.00,5.00,5.00),App.Rotation(App.Vector(0.00,0.00,1.00),0.00))
+        doc.Box001.Width = "3.00 mm"
+        doc.Box001.Placement = App.Placement(
+            App.Vector(5.00, 5.00, 5.00),
+            App.Rotation(App.Vector(0.00, 0.00, 1.00), 0.00),
+        )
         doc.recompute()
         # Assert
-        self.assertEqual(len(doc.Body.Shape.Faces),17)  # Check that the object seems right.
-        self.assertEqual(len(doc.Body.Shape.Edges),42)
-        self.assertEqual(len(doc.Body.Shape.Vertexes),28)
-        self.assertEqual(len(doc.Body.Shape.Shells),1)
-        self.assertEqual(len(doc.Body.Shape.Solids),1)
-        self.assertEqual(doc.Sketch.AttachmentSupport[0][1][0], 'Face9')    # Attachment autochanged from Face8.
+        self.assertEqual(
+            len(doc.Body.Shape.Faces), 17
+        )  # Check that the object seems right.
+        self.assertEqual(len(doc.Body.Shape.Edges), 42)
+        self.assertEqual(len(doc.Body.Shape.Vertexes), 28)
+        self.assertEqual(len(doc.Body.Shape.Shells), 1)
+        self.assertEqual(len(doc.Body.Shape.Solids), 1)
+        self.assertEqual(
+            doc.Sketch.AttachmentSupport[0][1][0], "Face9"
+        )  # Attachment autochanged from Face8.
         # potentially check the .BoundBox ( calc seems off on this, Not applying sketch position to Pad object )
 
     def create_t_sketch(self):
