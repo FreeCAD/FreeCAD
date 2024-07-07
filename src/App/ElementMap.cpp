@@ -495,6 +495,10 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
 MappedName ElementMap::addName(MappedName& name, const IndexedName& idx, const ElementIDRefs& sids,
                                bool overwrite, IndexedName* existing)
 {
+    if (sids.size() < 1) {
+        FC_THROWM(Base::RuntimeError, "ElementMap::addName ElementIDRefs is empty");// NOLINT
+        return {};
+    }
     if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         if (name.find("#") >= 0 && name.findTagInElementName() < 0) {
             FC_ERR("missing tag postfix " << name);// NOLINT
@@ -542,9 +546,6 @@ void ElementMap::addPostfix(const QByteArray& postfix, std::map<QByteArray, int>
 MappedName ElementMap::setElementName(const IndexedName& element, const MappedName& name,
                                       long masterTag, const ElementIDRefs* sid, bool overwrite)
 {
-    if (element.isNull()) {
-        FC_THROWM(Base::RuntimeError, "Element is Null");// NOLINT
-    }
     if (!element) {
         throw Base::ValueError("Invalid input");
     }
