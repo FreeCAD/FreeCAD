@@ -2094,9 +2094,9 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.PadSketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
         self.Body.addObject(self.PadSketch)
         TestSketcherApp.CreateRectangleSketch(self.PadSketch, (-42.5, -42.5), (85, 85))
-        self.PadSketch.addGeometry(Part.Point(App.Vector(0.000000,0.000000,0)))
-        self.PadSketch.toggleConstruction(0)
-        self.PadSketch.addConstraint(Sketcher.Constraint('Coincident',0,1,-1,1))
+        self.PadSketch.addGeometry(Part.Point(App.Vector(0.000000, 0.000000, 0)))
+        self.PadSketch.toggleConstruction(4)
+        self.PadSketch.addConstraint(Sketcher.Constraint("Coincident", 4, 1, -1, 1))
         self.Doc.recompute()
         self.assertTrue(self.PadSketch.isValid())
 
