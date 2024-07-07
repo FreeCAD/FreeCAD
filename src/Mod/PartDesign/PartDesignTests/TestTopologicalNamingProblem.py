@@ -2046,6 +2046,19 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertTrue(self.Sketch002.AttachmentSupport[0][1][0] == "Face11")
         self.assertGreaterEqual(self.Body.Shape.Volume, 20126)
 
+    def testPointatOrigin(self):
+        # Arrange
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+        # Make first offset cube Pad
+        self.PadSketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (-42.5, -42.5), (85, 85))
+        self.PadSketch.addGeometry(Part.Point(App.Vector(0.000000,0.000000,0)))
+        self.PadSketch.toggleConstruction(0)
+        self.PadSketch.addConstraint(Sketcher.Constraint('Coincident',0,1,-1,1))
+        self.Doc.recompute()
+        self.assertTrue(self.PadSketch.isValid())
+
     def tearDown(self):
         """ Close our test document """
         App.closeDocument(self.Doc.Name)
