@@ -88,7 +88,7 @@ def load_materials(obj):
 
 
 def get_material(obj):
-    """Returns a material attched to this object"""
+    """Returns a material attached to this object"""
 
     element = ifc_tools.get_ifc_element(obj)
     if not element:

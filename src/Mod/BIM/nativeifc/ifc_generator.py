@@ -39,7 +39,7 @@ from pivy import coin
 def generate_geometry(obj, cached=False):
     """Sets the geometry of the given object from a corresponding IFC element.
     This is the main function called by the execute method of FreeCAD document objects
-    It is only meant to be called form there, as it is always the responsability of the
+    It is only meant to be called form there, as it is always the responsibility of the
     NativeIFC document object to know when it needs to regenerate its geometry.
 
     The generate_geometry will call either generate_shape or generate_coin, depending

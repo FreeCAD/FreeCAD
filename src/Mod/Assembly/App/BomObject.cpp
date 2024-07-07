@@ -281,7 +281,7 @@ std::string Assembly::BomObject::getText(size_t row, size_t col)
     if (cell) {
         cell->getStringContent(cellName);
 
-        // getStringContent is addind a ' before the string for whatever reason.
+        // getStringContent is adding a ' before the string for whatever reason.
         if (!cellName.empty() && cellName.front() == '\'') {
             cellName.erase(0, 1);  // Remove the first character if it's a '
         }
