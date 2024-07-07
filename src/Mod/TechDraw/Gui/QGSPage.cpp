@@ -126,9 +126,7 @@ void QGSPage::mousePressEvent(QGraphicsSceneMouseEvent * event)
         itemUnderMouse->type() == QGISVGTemplateType ||
         itemUnderMouse->type() == MysteryType) {
         // click without item clears selection
-        for (auto& item : selectedItems()) {
-            item->setSelected(false);
-        }
+        Gui::Selection().clearSelection();
         QGraphicsScene::mousePressEvent(event);
         return;
     }
@@ -149,6 +147,8 @@ void QGSPage::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 
     QGraphicsScene::mouseReleaseEvent(event);
 
+    // what does this do?  the event has already been propagated so this will have
+    // no effect?
     event->setModifiers(originalModifiers);
 }
 

@@ -427,7 +427,6 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
     if (prop == &Visibility ||
         prop == &Selectable ||
         prop == &DisplayModeBody ||
-        prop == &ShapeAppearance ||
         prop == &PointColorArray ||
         prop == &LineColorArray) {
         return;

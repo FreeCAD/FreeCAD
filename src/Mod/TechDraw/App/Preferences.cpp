@@ -589,3 +589,13 @@ int Preferences::BreakType()
 }
 
 
+bool Preferences::useCameraDirection()
+{
+    return getPreferenceGroup("General")->GetBool("UseCameraDirection", false);
+}
+
+
+bool Preferences::alwaysShowLabel()
+{
+    return getPreferenceGroup("General")->GetBool("AlwaysShowLabel", false);
+}
