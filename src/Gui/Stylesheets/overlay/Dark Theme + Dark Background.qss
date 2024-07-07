@@ -11,9 +11,11 @@ QFrame {
    border: transparent;
    padding-right: 5px;
  }
- Gui--OverlayTabWidget[transparent="true"] QWidget {
-  /* selection-background-color: transparent; */
- }
+
+ Gui--OverlayTitleBar,
+ Gui--OverlaySplitterHandle {
+   background-color: #252525;
+  }
 
  Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
   color: #ffffff;
@@ -115,36 +117,36 @@ Gui--OverlayToolButton:checked:hover {
   border: 0.5px solid #f5f5f5;
 }
 
- Gui--OverlayToolButton[objectName="OBTN Transparent"] {
-   image: url(qss:images_classic/transparent_lightgray.png);
+ Gui--OverlayToolButton[objectName="OBTN Transparent"]:!hover {
+   image: url(qss:images_classic/transparent-lightgray.png);
  }
 
  Gui--OverlayToolButton[objectName="OBTN Transparent"]:hover {
-   image: url(qss:images_classic/transparent_white.png);
+   image: url(qss:images_classic/transparent-white.png);
  }
 
- Gui--OverlayToolButton[objectName="OBTN Overlay"] {
-   image: url(qss:images_classic/overlay_lightgray.png);
+ Gui--OverlayToolButton[objectName="OBTN Overlay"]:!hover  {
+   image: url(qss:images_classic/overlay-lightgray.png);
  }
 
  Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
-   image: url(qss:images_classic/overlay_white.png);
+   image: url(qss:images_classic/overlay-white.png);
  }
 
- Gui--OverlayToolButton[objectName="OBTN AutoMode"] {
-   image: url(qss:images_classic/mode_lightgray.png);
+ Gui--OverlayToolButton[objectName="OBTN AutoMode"]:!hover  {
+   image: url(qss:images_classic/mode-lightgray.png);
  }
 
  Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
-   image: url(qss:images_classic/mode_white.png);
+   image: url(qss:images_classic/mode-white.png);
  }
 
  Gui--OverlaySplitterHandle Gui--OverlayToolButton,
- Gui--OverlayToolButton[objectName="OBTN Float"] {
-   image: url(qss:images_classic/float_lightgray.png);
+ Gui--OverlayToolButton[objectName="OBTN Float"]:!hover  {
+   image: url(qss:images_classic/float-lightgray.png);
  }
 
  Gui--OverlaySplitterHandle Gui--OverlayToolButton:hover,
  Gui--OverlayToolButton[objectName="OBTN Float"]:hover {
-   image: url(qss:images_classic/float_white.png);
+   image: url(qss:images_classic/float-white.png);
  }

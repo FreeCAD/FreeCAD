@@ -2,76 +2,72 @@ QFrame {
   border: none;
 }
  QTabWidget::pane{
-  background-color: rgba(0, 0, 0, 0.273);
+   background-color: rgba(0, 0, 0, 0.01);
    border: transparent;
  }
  QAbstractItemView {
-   alternate-background-color: rgba(0, 0, 0, 0.273);
+   alternate-background-color: rgba(0, 0, 0, 0.119);
    color: White;
    border: transparent;
    padding-right: 5px;
  }
 
- QTreeView {
-  background-color: rgba(0, 0, 0, 0.55);
-  border: 0px solid #696968;
-  /* alternate-background-color: rgba(255, 0, 0, 0.611); */
-  color: #fdfdfd;
-  gridline-color: #696968;
-  border-radius: 0px;
-}
+ Gui--OverlayTitleBar,
+ Gui--OverlaySplitterHandle {
+   background-color: #252525;
+  }
 
- QTreeView::item {
-  color: #ffffff;
-}
+ Gui--OverlayTabWidget[transparent="true"] QWidget {
+  selection-background-color: transparent;
+ }
 
  Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
   color: #ffffff;
 }
 
 Gui--OverlayTabWidget[transparent="true"] QTreeView::item {
-  color: #000000;
+  color: #ffffff;
 }
 
  Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected {
-  color: #000000;
-  background-color: #799fff;
+  color: #ffffff;
+  background-color: #181d2a;
 }
 
 Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
-  color: #000000;
-  background-color: #799fff;
+  color: #ffffff;
+  background-color: #181d2a;
 }
 
  Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected:focus {
-  color: #000000;
-  background-color: #799fff;
+  color: #ffffff;
+  background-color: #181d2a;
 }
 
-/* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
-To customize for each overlay docking site, use the following selector
+ /* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
+ To customize for each overlay docking site, use the following selector
 
-Gui--OverlayTabWidget#OverlayLeft {}
-*/
+ Gui--OverlayTabWidget#OverlayLeft {}
+ */
 
-Gui--OverlayTabWidget {
-  qproperty-effectColor: rgba(225, 225, 225, 220);
-  qproperty-effectBlurRadius: 5;
-  qproperty-effectOffsetX: 0;
-  qproperty-effectOffsetY: 0;
-  qproperty-effectWidth: 1;
-  qproperty-effectHeight: 1;
-  qproperty-enableEffect: 1;
-}
- Gui--OverlayTabWidget#OverlayBottom {
-  qproperty-effectColor: rgba(225, 225, 225, 220);
-  qproperty-effectBlurRadius: 5;
-  qproperty-effectOffsetX: 0.0;
-  qproperty-effectOffsetY: 0.0;
-  qproperty-effectWidth: 1;
-  qproperty-effectHeight: 1;
-  qproperty-enableEffect: 1;
-}
+ Gui--OverlayTabWidget {
+   qproperty-effectColor: rgba(25, 25, 25, 220);
+   qproperty-effectBlurRadius: 5;
+   qproperty-effectOffsetX: 0;
+   qproperty-effectOffsetY: 0;
+   qproperty-effectWidth: 1;
+   qproperty-effectHeight: 1;
+   qproperty-enableEffect: 1;
+ }
+  Gui--OverlayTabWidget#OverlayBottom {
+   qproperty-effectColor: rgba(100, 100, 100, 220);
+   qproperty-effectBlurRadius: 5;
+   qproperty-effectOffsetX: 0.0;
+   qproperty-effectOffsetY: 0.0;
+   qproperty-effectWidth: 1;
+   qproperty-effectHeight: 1;
+   qproperty-enableEffect: 1;
+ }
 
  Gui--OverlayTabWidget::pane {
    background-color: transparent;
@@ -125,7 +121,7 @@ Gui--OverlayToolButton:checked:hover {
   border: 0.5px solid #f5f5f5;
 }
 
- Gui--OverlayToolButton[objectName="OBTN Transparent"] {
+ Gui--OverlayToolButton[objectName="OBTN Transparent"]:!hover {
    image: url(qss:images_classic/transparent_lightgray.png);
  }
 
@@ -133,7 +129,7 @@ Gui--OverlayToolButton:checked:hover {
    image: url(qss:images_classic/transparent_white.png);
  }
 
- Gui--OverlayToolButton[objectName="OBTN Overlay"] {
+ Gui--OverlayToolButton[objectName="OBTN Overlay"]:!hover  {
    image: url(qss:images_classic/overlay_lightgray.png);
  }
 
@@ -141,48 +137,20 @@ Gui--OverlayToolButton:checked:hover {
    image: url(qss:images_classic/overlay_white.png);
  }
 
- Gui--OverlayToolButton[objectName="OBTN AutoMode"] {
-   image: url(qss:images_classic/mode_lightgray.png);
+ Gui--OverlayToolButton[objectName="OBTN AutoMode"]:!hover  {
+   image: url(qss:images_classic/mode-lightgray.png);
  }
 
  Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
-   image: url(qss:images_classic/mode_white.png);
+   image: url(qss:images_classic/mode-white.png);
  }
 
  Gui--OverlaySplitterHandle Gui--OverlayToolButton,
- Gui--OverlayToolButton[objectName="OBTN Float"] {
+ Gui--OverlayToolButton[objectName="OBTN Float"]:!hover  {
    image: url(qss:images_classic/float_lightgray.png);
  }
 
  Gui--OverlaySplitterHandle Gui--OverlayToolButton:hover,
  Gui--OverlayToolButton[objectName="OBTN Float"]:hover {
-   image: url(qss:images_classic/float_white.png);
+   image: url(qss:images_classic/float-white.png);
  }
-
- QTreeView::branch:open:has-children:has-siblings  {
-  margin-left: 6px;
-  margin-right: 6px;
-  border-image: none;
-  image: url(qss:images_classic/Arrow-down-black.png);
-}
-
- QTreeView::branch:open:has-children:!has-siblings  {
-  margin-left: 6px;
-  margin-right: 6px;
-  border-image: none;
-  image: url(qss:images_classic/Arrow-down-black.png);
-}
-
-QTreeView::branch:closed:has-children:has-siblings  {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  border-image: none;
-  image: url(qss:images_classic/Arrow-right-black.png) 0;
-}
-
-QTreeView::branch:has-children:!has-siblings:closed  {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  border-image: none;
-  image: url(qss:images_classic/Arrow-right-black.png) 0;
-}

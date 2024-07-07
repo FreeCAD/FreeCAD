@@ -14,6 +14,11 @@ QAbstractItemView {
   padding-right: 5px;
 }
 
+Gui--OverlayTitleBar,
+Gui--OverlaySplitterHandle {
+  background-color: #f0f0f0;
+ }
+
 
 /* Overwrites Properties panel to use white text. */
 QTreeView {
@@ -27,6 +32,10 @@ QTreeView {
 
 QTreeView::item {
   color: #000000;
+}
+
+QTreeView:disabled  {
+  color: #696968;
 }
 
 Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
