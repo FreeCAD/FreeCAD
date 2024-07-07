@@ -444,7 +444,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("BSpline parameters"));
+        return QString(QObject::tr("B-spline parameters"));
     }
 
     bool canGoToNextMode() override
@@ -453,7 +453,7 @@ private:
             ? Sketcher::PointPos::mid
             : Sketcher::PointPos::start;
         if (state() == SelectMode::SeekFirst) {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch bSpline"));
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch B-spline"));
             // insert point for pole/knot, defer internal alignment constraining.
             if (!addPos()) {
                 return false;
@@ -667,7 +667,7 @@ private:
         catch (const Base::Exception&) {
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
-                             QT_TRANSLATE_NOOP("Notifications", "Error adding B-Spline pole/knot"));
+                             QT_TRANSLATE_NOOP("Notifications", "Error adding B-spline pole/knot"));
 
             Gui::Command::abortCommand();
 
@@ -683,7 +683,7 @@ private:
         // Restart the command
         Gui::Command::abortCommand();
         tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch bSpline"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch B-spline"));
 
         // Add the necessary alignment geometries and constraints
         for (size_t i = 0; i < geoIds.size(); ++i) {

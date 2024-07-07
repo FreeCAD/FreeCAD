@@ -1580,8 +1580,8 @@ void execRadius(Gui::Command* cmd)
     if (geometryRefs2d == isBSplineCircle || geometryRefs3d == isBSplineCircle) {
         QMessageBox::StandardButton result = QMessageBox::warning(
             Gui::getMainWindow(),
-            QObject::tr("BSpline Curve Warning"),
-            QObject::tr("Selected edge is a BSpline.  Radius will be approximate. Continue?"),
+            QObject::tr("B-spline Curve Warning"),
+            QObject::tr("Selected edge is a B-spline.  Radius will be approximate. Continue?"),
             QMessageBox::Ok | QMessageBox::Cancel,
             QMessageBox::Cancel);
         if (result != QMessageBox::Ok) {
@@ -1591,8 +1591,8 @@ void execRadius(Gui::Command* cmd)
     if (geometryRefs2d == isBSpline || geometryRefs3d == isBSpline) {
         QMessageBox::critical(
             Gui::getMainWindow(),
-            QObject::tr("BSpline Curve Error"),
-            QObject::tr("Selected edge is a BSpline and a radius can not be calculated."));
+            QObject::tr("B-spline Curve Error"),
+            QObject::tr("Selected edge is a B-spline and a radius can not be calculated."));
         return;
     }
 
@@ -1702,8 +1702,8 @@ void execDiameter(Gui::Command* cmd)
     if (geometryRefs2d == isBSplineCircle || geometryRefs3d == isBSplineCircle) {
         QMessageBox::StandardButton result = QMessageBox::warning(
             Gui::getMainWindow(),
-            QObject::tr("BSpline Curve Warning"),
-            QObject::tr("Selected edge is a BSpline.  Diameter will be approximate. Continue?"),
+            QObject::tr("B-spline Curve Warning"),
+            QObject::tr("Selected edge is a B-spline.  Diameter will be approximate. Continue?"),
             QMessageBox::Ok | QMessageBox::Cancel,
             QMessageBox::Cancel);
         if (result != QMessageBox::Ok) {
@@ -1713,8 +1713,8 @@ void execDiameter(Gui::Command* cmd)
     if (geometryRefs2d == isBSpline || geometryRefs3d == isBSpline) {
         QMessageBox::critical(
             Gui::getMainWindow(),
-            QObject::tr("BSpline Curve Error"),
-            QObject::tr("Selected edge is a BSpline and a diameter can not be calculated."));
+            QObject::tr("B-spline Curve Error"),
+            QObject::tr("Selected edge is a B-spline and a diameter can not be calculated."));
         return;
     }
 
@@ -2200,7 +2200,7 @@ CmdTechDrawAreaDimension::CmdTechDrawAreaDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Area Dimension");
+    sMenuText = QT_TR_NOOP("Insert Area Annotation");
     sToolTipText = sMenuText;
     sWhatsThis = "TechDraw_AreaDimension";
     sStatusTip = sToolTipText;
@@ -2254,7 +2254,7 @@ void execArea(Gui::Command* cmd)
     if (geometryRefs2d == TechDraw::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make 2d angle dimension from selection"));
+                             QObject::tr("Can not make 2D angle dimension from selection"));
         return;
     }
 
@@ -2269,7 +2269,7 @@ void execArea(Gui::Command* cmd)
         if (geometryRefs3d == TechDraw::isInvalid) {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make 3d angle dimension from selection"));
+                                 QObject::tr("Can not make 3D angle dimension from selection"));
             return;
         }
     }

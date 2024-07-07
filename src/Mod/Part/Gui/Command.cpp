@@ -386,7 +386,7 @@ void CmdPartCommon::activated(int iMsg)
     }
     if (numShapes < 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between."));
+            QObject::tr("Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between."));
         return;
     }
 
@@ -462,7 +462,7 @@ void CmdPartFuse::activated(int iMsg)
     }
     if (numShapes < 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused."));
+            QObject::tr("Please select two shapes or more. Or, select one compound containing two or more shapes to be fused."));
         return;
     }
 
@@ -944,7 +944,7 @@ CmdPartImport::CmdPartImport()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Import CAD...");
+    sMenuText     = QT_TR_NOOP("Import CAD file...");
     sToolTipText  = QT_TR_NOOP("Imports a CAD file");
     sWhatsThis    = "Part_Import";
     sStatusTip    = sToolTipText;
@@ -1007,7 +1007,7 @@ CmdPartExport::CmdPartExport()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Export CAD...");
+    sMenuText     = QT_TR_NOOP("Export CAD file...");
     sToolTipText  = QT_TR_NOOP("Exports to a CAD file");
     sWhatsThis    = "Part_Export";
     sStatusTip    = sToolTipText;

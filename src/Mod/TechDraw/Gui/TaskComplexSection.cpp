@@ -650,7 +650,7 @@ void TaskComplexSection::updateComplexSection()
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit SectionView"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Section View"));
     if (m_section) {
         QString qTemp = ui->leSymbol->text();
         std::string temp = Base::Tools::toStdString(qTemp);

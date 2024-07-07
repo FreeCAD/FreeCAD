@@ -305,7 +305,7 @@ private:
         {QT_TR_NOOP("Arc of ellipse"), 1},
         {QT_TR_NOOP("Arc of hyperbola"), 1},
         {QT_TR_NOOP("Arc of parabola"), 1},
-        {QT_TR_NOOP("B-Spline"), 1}};
+        {QT_TR_NOOP("B-spline"), 1}};
 };
 }// namespace SketcherGui
 
@@ -1853,12 +1853,12 @@ void TaskSketcherElements::slotElementsChanged()
                                                      : QString::fromLatin1("")))
                                       : (QString::fromLatin1("%1-").arg(i) + tr("Parabolic Arc")))
                 : type == Part::GeomBSplineCurve::getClassTypeId()
-                ? (isNamingBoxChecked ? (tr("BSpline") + IdInformation())
+                ? (isNamingBoxChecked ? (tr("B-spline") + IdInformation())
                            + (construction
                                   ? (QString::fromLatin1("-") + tr("Construction"))
                                   : (internalAligned ? (QString::fromLatin1("-") + tr("Internal"))
                                                      : QString::fromLatin1("")))
-                                      : (QString::fromLatin1("%1-").arg(i) + tr("BSpline")))
+                                      : (QString::fromLatin1("%1-").arg(i) + tr("B-spline")))
                 : (isNamingBoxChecked ? (tr("Other") + IdInformation())
                            + (construction
                                   ? (QString::fromLatin1("-") + tr("Construction"))
@@ -1965,8 +1965,8 @@ void TaskSketcherElements::slotElementsChanged()
                            ? (tr("Parabolic Arc") + linkname)
                            : (QString::fromLatin1("%1-").arg(i - 2) + tr("Parabolic Arc")))
                     : type == Part::GeomBSplineCurve::getClassTypeId()
-                    ? (isNamingBoxChecked ? (tr("BSpline") + linkname)
-                                          : (QString::fromLatin1("%1-").arg(i - 2) + tr("BSpline")))
+                    ? (isNamingBoxChecked ? (tr("B-spline") + linkname)
+                                          : (QString::fromLatin1("%1-").arg(i - 2) + tr("B-spline")))
                     : (isNamingBoxChecked ? (tr("Other") + linkname)
                                           : (QString::fromLatin1("%1-").arg(i - 2) + tr("Other"))),
                 sketchView);

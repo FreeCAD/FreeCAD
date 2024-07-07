@@ -179,12 +179,12 @@ if you start getting crashes when you set multiple cores.</string>
           </property>
           <item>
            <property name="text">
-            <string>Parametric Arch objects</string>
+            <string>Parametric BIM objects</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Non-parametric Arch objects</string>
+            <string>Non-parametric BIM objects</string>
            </property>
           </item>
           <item>
@@ -228,7 +228,7 @@ if you start getting crashes when you set multiple cores.</string>
           </property>
           <item>
            <property name="text">
-            <string>Non-parametric Arch objects</string>
+            <string>Non-parametric BIM objects</string>
            </property>
           </item>
           <item>

@@ -411,12 +411,12 @@ for ProjectionGroups</string>
           </property>
           <item>
            <property name="text">
-            <string>First</string>
+            <string>First-angle</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Third</string>
+            <string>Third-angle</string>
            </property>
           </item>
           <item>
@@ -728,7 +728,7 @@ for ProjectionGroups</string>
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Alternate directory to search for Svg symbol files.</string>
+           <string>Alternate directory to search for SVG symbol files.</string>
           </property>
           <property name="mode">
            <enum>Gui::FileChooser::Directory</enum>

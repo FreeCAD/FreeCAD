@@ -3283,7 +3283,7 @@ void ViewProviderSketch::UpdateSolverInformation()
     }
     else if (dofs > 0) {
         signalSetUp(QString::fromUtf8("under_constrained"),
-                    tr("Under constrained:") + QLatin1String(" "),
+                    tr("Under-constrained:") + QLatin1String(" "),
                     QString::fromUtf8("#dofs"),
                     tr("%n DoF(s)", "", dofs));
     }
