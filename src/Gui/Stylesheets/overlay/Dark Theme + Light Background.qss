@@ -2,18 +2,28 @@ QFrame {
   border: none;
 }
  QTabWidget::pane{
-  background-color: rgba(255, 255, 255, 0.01);
+  background-color: rgba(0, 0, 0, 0.273);
    border: transparent;
  }
  QAbstractItemView {
-   alternate-background-color: rgba(0, 0, 0, 0.119);
+   alternate-background-color: rgba(0, 0, 0, 0.273);
    color: White;
    border: transparent;
    padding-right: 5px;
  }
- Gui--OverlayTabWidget[transparent="true"] QWidget {
-  /* selection-background-color: transparent; */
- }
+
+ QTreeView {
+  background-color: rgba(0, 0, 0, 0.55);
+  border: 0px solid #696968;
+  /* alternate-background-color: rgba(255, 0, 0, 0.611); */
+  color: #fdfdfd;
+  gridline-color: #696968;
+  border-radius: 0px;
+}
+
+ QTreeView::item {
+  color: #ffffff;
+}
 
  Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
   color: #ffffff;
@@ -24,18 +34,18 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item {
 }
 
  Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected {
-  color: #ffffff;
-  background-color: #181d2a;
+  color: #000000;
+  background-color: #799fff;
 }
 
 Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
-  color: #ffffff;
-  background-color: #181d2a;
+  color: #000000;
+  background-color: #799fff;
 }
 
  Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected:focus {
-  color: #ffffff;
-  background-color: #181d2a;
+  color: #000000;
+  background-color: #799fff;
 }
 
 /* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
@@ -161,4 +171,18 @@ Gui--OverlayToolButton:checked:hover {
   margin-right: 6px;
   border-image: none;
   image: url(qss:images_classic/Arrow-down-black.png);
+}
+
+QTreeView::branch:closed:has-children:has-siblings  {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-image: none;
+  image: url(qss:images_classic/Arrow-right-black.png) 0;
+}
+
+QTreeView::branch:has-children:!has-siblings:closed  {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-image: none;
+  image: url(qss:images_classic/Arrow-right-black.png) 0;
 }

@@ -14,8 +14,19 @@ QAbstractItemView {
   padding-right: 5px;
 }
 
-Gui--OverlayTabWidget[transparent="true"] QWidget {
-  /* selection-background-color: transparent; */
+
+/* Overwrites Properties panel to use white text. */
+QTreeView {
+  background-color: rgba(70, 70, 70, 0.539);
+  border: 0px solid #696968;
+  /* alternate-background-color: rgba(255, 0, 0, 0.611); */
+  color: #fdfdfd;
+  gridline-color: #696968;
+  border-radius: 0px;
+}
+
+QTreeView::item {
+  color: #000000;
 }
 
 Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
@@ -41,11 +52,25 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
   background-color: #c7def5;
 }
 
-/* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
-To customize for each overlay docking site, use the following selector
 
-Gui--OverlayTabWidget#OverlayLeft {}
-*/
+Gui--OverlayTabWidget[transparent="true"] QTreeView::item:hover {
+  color: #000000;
+  background-color: #c7def5;
+}
+
+ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:active {
+  color: #ffffff;
+}
+
+Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected:active {
+  color: #000000;
+  background-color: #c7def5;
+}
+
+
+Gui--OverlayTabWidget[transparent="true"] QTreeView::item:disabled {
+  color: #9a9a9a;
+}
 
 Gui--OverlayTabWidget {
   qproperty-effectColor: rgba(25, 25, 25, 220);
@@ -56,6 +81,7 @@ Gui--OverlayTabWidget {
   qproperty-effectHeight: 1;
   qproperty-enableEffect: 1;
 }
+
  Gui--OverlayTabWidget#OverlayBottom {
   qproperty-effectColor: rgba(225, 225, 225, 220);
   qproperty-effectBlurRadius: 5;
@@ -163,3 +189,17 @@ Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
   image: url(qss:images_classic/Arrow-down-white.png) 0;
 }
 
+
+QTreeView::branch:closed:has-children:has-siblings  {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-image: none;
+  image: url(qss:images_classic/Arrow-right-white.png) 0;
+}
+
+QTreeView::branch:has-children:!has-siblings:closed  {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-image: none;
+  image: url(qss:images_classic/Arrow-right-white.png) 0;
+}
