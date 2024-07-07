@@ -543,8 +543,7 @@ MappedName ElementMap::setElementName(const IndexedName& element, const MappedNa
                                       long masterTag, const ElementIDRefs* sid, bool overwrite)
 {
     if (element.isNull()) {
-        FC_THROWM(Base::RuntimeError,// NOLINT
-                  "element name is null" << element);
+        FC_THROWM(Base::RuntimeError, "Element is Null");// NOLINT
     }
     if (!element) {
         throw Base::ValueError("Invalid input");
