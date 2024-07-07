@@ -15,7 +15,7 @@
         <Author Licence="LGPL" Name="David Friedli" EMail="david@friedli-be.ch" />
         <UserDocu>MeasureManager class.
 
-The MeasureManager handles measure types and geometry handler accross FreeCAD.</UserDocu>
+The MeasureManager handles measure types and geometry handler across FreeCAD.</UserDocu>
         <DeveloperDocu>MeasureManager</DeveloperDocu>
     </Documentation>
         <Methode Name="addMeasureType" Static="true">

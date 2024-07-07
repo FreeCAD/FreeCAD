@@ -64,7 +64,7 @@ std::vector<App::DocumentObject*> MeasureBase::getSubject() const {
 
     Py::Object proxy = getProxyObject();
 
-    // Pass the feture object to the proxy
+    // Pass the feature object to the proxy
     Py::Tuple args(1);
     args.setItem(0, Py::Object(const_cast<MeasureBase*>(this)->getPyObject()));
     
@@ -99,7 +99,7 @@ void MeasureBase::parseSelection(const App::MeasureSelection& selection) {
 
     Py::Tuple args(2);
 
-    // Pass the feture object to the proxy
+    // Pass the feature object to the proxy
     args.setItem(0, Py::Object(const_cast<MeasureBase*>(this)->getPyObject()));
     args.setItem(1, selectionPy);
 
@@ -149,7 +149,7 @@ QString MeasureBase::getResultString() {
  
     if (!proxy.isNone()) {
 
-        // Pass the feture object to the proxy
+        // Pass the feature object to the proxy
         Py::Tuple args(1);
         args.setItem(0, Py::Object(const_cast<MeasureBase*>(this)->getPyObject()));
 
