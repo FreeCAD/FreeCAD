@@ -775,7 +775,7 @@ void MDIViewPage::sceneSelectionChanged()
     else {
         for (auto& sel : treeSel) {
             // unselect the stored items
-            removeSelFromTreeSel(sceneSel, sel);
+            removeUnselectedTreeSelection(sceneSel, sel);
         }
 
         for (auto* item : sceneSel) {
@@ -820,7 +820,6 @@ void MDIViewPage::setTreeToSceneSelect()
             }
             else if (dynamic_cast<QGIDatumLabel*>(scene) || dynamic_cast<QGMText*>(scene)) {
                 if (!obj_name) {//can happen during undo/redo if Dim is selected???
-                    //Base::Console().Log("INFO - MDIVP::sceneSelectionChanged - dimObj name is null!\n");
                     continue;
                 }
 
@@ -912,19 +911,43 @@ void MDIViewPage::addSceneItemToTreeSel(QGraphicsItem* sn, [[maybe_unused]]std::
     }
 }
 
-// remove core selection if scene is not selected anymore
-void MDIViewPage::removeSelFromTreeSel(QList<QGraphicsItem*> sceneSel, Gui::SelectionObject& sel)
+// remove tree selection if it is no longer selected in the scene
+void MDIViewPage::removeUnselectedTreeSelection(QList<QGraphicsItem*> sceneSelectedItems,
+                                                Gui::SelectionObject& treeSelection)
 {
-    std::string selDocName = sel.getDocName();
-    App::DocumentObject* selObj = sel.getObject();
+    std::string selDocName = treeSelection.getDocName();
+    App::DocumentObject* selObj = treeSelection.getObject();
 
-    for (auto& sub : sel.getSubNames()) {
-        bool found = false;
-        for (auto& sn : sceneSel) {
-            auto* itemView = dynamic_cast<QGIView*>(sn);
+    // If the selected item is not a geometry item (vertex/edge/face) then the
+    // loop on subnames below will not handle the item and it will not be removed.
+    if (treeSelection.getSubNames().empty()) {
+        bool matchFound{false};
+        for (auto& sceneItem : sceneSelectedItems) {
+            auto* itemView = dynamic_cast<QGIView*>(sceneItem);
             if (!itemView) {
-                auto* parent = dynamic_cast<QGIView*>(sn->parentItem());
+                continue;
+            }
+            auto itemFeature = itemView->getViewObject();
+            auto itemDocName = itemFeature->getDocument()->getName();
+            if (selDocName == itemDocName && selObj == itemFeature) {
+                matchFound = true;
+                break;
+            }
+        }
+        if (!matchFound) {
+            Gui::Selection().rmvSelection(treeSelection.getDocName(), treeSelection.getObject()->getNameInDocument());
+        }
+        return;
+    }
+
+    for (auto& sub : treeSelection.getSubNames()) {
+        bool found = false;
+        for (auto& sceneItem : sceneSelectedItems) {
+            auto* itemView = dynamic_cast<QGIView*>(sceneItem);
+            if (!itemView) {
+                auto* parent = dynamic_cast<QGIView*>(sceneItem->parentItem());
                 if (!parent) {
+                    // neither sceneItem or its parent are Views
                     continue;
                 }
                 TechDraw::DrawView* viewObj = parent->getViewObject();
@@ -936,11 +959,11 @@ void MDIViewPage::removeSelFromTreeSel(QList<QGraphicsItem*> sceneSel, Gui::Sele
                 const char* obj_name = viewObj->getNameInDocument();
                 std::string sub_name;
 
-                if (dynamic_cast<QGIEdge*>(sn) || dynamic_cast<QGIVertex*>(sn) || dynamic_cast<QGIFace*>(sn)) {
-                    sub_name = getSceneSubName(sn);
+                if (dynamic_cast<QGIEdge*>(sceneItem) || dynamic_cast<QGIVertex*>(sceneItem) || dynamic_cast<QGIFace*>(sceneItem)) {
+                    sub_name = getSceneSubName(sceneItem);
                 }
 
-                else if (dynamic_cast<QGIDatumLabel*>(sn) || dynamic_cast<QGMText*>(sn)) {
+                else if (dynamic_cast<QGIDatumLabel*>(sceneItem) || dynamic_cast<QGMText*>(sceneItem)) {
                     if (!obj_name) {//can happen during undo/redo if Dim is selected???
                         continue;
                     }
@@ -967,7 +990,7 @@ void MDIViewPage::removeSelFromTreeSel(QList<QGraphicsItem*> sceneSel, Gui::Sele
             }
         }
         if (!found) {
-            Gui::Selection().rmvSelection(sel.getDocName(), sel.getObject()->getNameInDocument(), sub.c_str());
+            Gui::Selection().rmvSelection(treeSelection.getDocName(), treeSelection.getObject()->getNameInDocument());
         }
     }
 }
