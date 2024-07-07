@@ -323,11 +323,10 @@ GraphicsScene::GraphicsScene()
     QWidget *controls = createDialog(tr("Controls"));
 
     QCheckBox *wireframe = new QCheckBox(tr("Render as wireframe"));
-    //connect(wireframe, SIGNAL(toggled(bool)), this, SLOT(enableWireframe(bool)));
+
     controls->layout()->addWidget(wireframe);
 
     QCheckBox *normals = new QCheckBox(tr("Display normals vectors"));
-    //connect(normals, SIGNAL(toggled(bool)), this, SLOT(enableNormals(bool)));
     controls->layout()->addWidget(normals);
 
     QPushButton *colorButton = new QPushButton(tr("Choose model color"));
@@ -445,7 +444,6 @@ GraphicsScene::setNavigationModeFile(const QUrl & url)
         return;
     }
     else {
-        //qDebug() << url.scheme() << "is not recognized";
         return;
     }
 
@@ -576,19 +574,10 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
         return;
     }
 
-#if 0
-    glViewport(0, 0, width(), height());
-/**/
-    glClearColor(m_backgroundColor.redF(), m_backgroundColor.greenF(), m_backgroundColor.blueF(), 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-#endif
-
-
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     const int delta = m_time.elapsed() - m_lastTime;
     m_lastTime += delta;
 #endif
-
 
     sorendermanager->render(true/*PRIVATE(this)->clearwindow*/,
                             false/*PRIVATE(this)->clearzbuffer*/);
@@ -664,12 +653,6 @@ GraphicsView3D::GraphicsView3D(Gui::Document* doc, QWidget* parent)
   : Gui::MDIView(doc, parent), m_scene(new GraphicsScene()), m_view(new GraphicsView)
 {
     m_view->installEventFilter(m_scene->getEventFilter());
-#if 0
-    QtGLFormat f;
-    f.setSampleBuffers(true);
-    f.setSamples(8);
-    m_view->setViewport(new QGLWidget(f));
-#endif
     m_view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     m_view->setScene(m_scene);
     m_scene->setNavigationModeFile(QUrl(QString::fromLatin1("coin:///scxml/navigation/examiner.xml")));
