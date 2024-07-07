@@ -36,10 +36,10 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Engrave operation page controller and command implementation."
 
-if False:
-    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-    Path.Log.trackModule(Path.Log.thisModule())
-else:
+# Uncomment here for debugging mode:
+#    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+#    Path.Log.trackModule(Path.Log.thisModule())
+# Uncomment here for non-debugging mode:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
