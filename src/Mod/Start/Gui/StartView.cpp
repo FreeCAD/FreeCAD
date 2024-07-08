@@ -239,7 +239,7 @@ QString StartView::fileCardStyle() const
         return color;
     };
 
-    QColor background(221, 221, 221);  // NOLINT
+    QColor background(92, 149, 108);  // NOLINT changed to green to prevent issues with theme switching original was: 221, 221, 221
     background = getUserColor(background, "FileCardBackgroundColor");
 
     QColor hovered(98, 160, 234);  // NOLINT
