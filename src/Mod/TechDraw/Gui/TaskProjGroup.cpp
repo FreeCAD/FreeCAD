@@ -55,6 +55,7 @@
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "DrawGuiUtil.h"
 #include "TaskProjGroup.h"
@@ -119,8 +120,8 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawView* featView, bool mode) :
     connect(ui->butDownRotate,  &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
     connect(ui->butLeftRotate,  &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
     connect(ui->butCCWRotate,   &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
-    connect(ui->butFront,   &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
-    connect(ui->butCam,   &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
+    connect(ui->butFront,       &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
+    connect(ui->butCam,         &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
 
     connect(ui->lePrimary,   &QPushButton::clicked, this, &TaskProjGroup::customDirectionClicked);
 
@@ -155,6 +156,11 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawView* featView, bool mode) :
     m_mdi = dvp->getMDIViewPage();
 
     setUiPrimary();
+    if (Preferences::useCameraDirection()) {
+        ui->butCam->setChecked(true);
+    } else {
+        ui->butFront->setChecked(true);
+    }
     saveGroupState();
 }
 

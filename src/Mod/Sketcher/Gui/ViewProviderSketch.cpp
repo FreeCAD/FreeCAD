@@ -620,12 +620,12 @@ void ViewProviderSketch::forceUpdateData()
 
 /***************************** handler management ************************************/
 
-void ViewProviderSketch::activateHandler(DrawSketchHandler* newHandler)
+void ViewProviderSketch::activateHandler(std::unique_ptr<DrawSketchHandler> newHandler)
 {
     assert(editCoinManager);
     assert(!sketchHandler);
 
-    sketchHandler = std::unique_ptr<DrawSketchHandler>(newHandler);
+    sketchHandler = std::move(newHandler);
     Mode = STATUS_SKETCH_UseHandler;
     sketchHandler->activate(this);
 

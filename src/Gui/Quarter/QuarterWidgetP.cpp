@@ -106,9 +106,7 @@ QuarterWidgetP::~QuarterWidgetP()
 {
   QtGLWidget* glMaster = static_cast<QtGLWidget*>(this->master->viewport());
   removeFromCacheContext(this->cachecontext, glMaster);
-  if (this->contextmenu) {
-    delete this->contextmenu;
-  }
+  delete this->contextmenu;
 }
 
 SoCamera *
@@ -169,13 +167,22 @@ QuarterWidgetP::removeFromCacheContext(QuarterWidgetP_cachecontext * context, co
 
     for (int i = 0; i < cachecontext_list->getLength(); i++) {
       if ((*cachecontext_list)[i] == context) {
-        // set the context while calling destructingContext() (might trigger OpenGL calls)
-        const_cast<QtGLWidget*> (widget)->makeCurrent();
-        // fetch the cc_glglue context instance as a workaround for a bug fixed in Coin r12818
-        (void) cc_glglue_instance(context->id);
+        QtGLContext* glcontext = widget->context();
+        if (glcontext) {
+          // set the context while calling destructingContext() (might trigger OpenGL calls)
+          if (glcontext->isValid()) {
+            const_cast<QtGLWidget*> (widget)->makeCurrent();
+          }
+          // fetch the cc_glglue context instance as a workaround for a bug fixed in Coin r12818
+          (void) cc_glglue_instance(context->id);
+        }
         cachecontext_list->removeFast(i);
         SoContextHandler::destructingContext(context->id);
-        const_cast<QtGLWidget*> (widget)->doneCurrent();
+        if (glcontext) {
+          if (glcontext->isValid()) {
+            const_cast<QtGLWidget*> (widget)->doneCurrent();
+          }
+        }
         delete context;
         return;
       }

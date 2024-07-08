@@ -207,6 +207,27 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             process_objects(guiDoc.TreeRootObjects, docItem)
             self.form.partList.expandAll()
 
+        self.adjustTreeWidgetSize()
+
+    def adjustTreeWidgetSize(self):
+        # Adjust the height of the part list based on item count
+        item_count = 1
+
+        def count_items(item):
+            nonlocal item_count
+            item_count += 1
+            for i in range(item.childCount()):
+                count_items(item.child(i))
+
+        for i in range(self.form.partList.topLevelItemCount()):
+            count_items(self.form.partList.topLevelItem(i))
+
+        item_height = self.form.partList.sizeHintForRow(0)
+        total_height = item_count * item_height
+        max_height = 500
+
+        self.form.partList.setMinimumHeight(min(total_height, max_height))
+
     def onFilterChange(self):
         filter_str = self.form.filterPartList.text().strip().lower()
 
