@@ -123,10 +123,9 @@ private:
                     center = onSketchPos;
                 }
 
-                if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstraints[0]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[0],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekSecond: {
                 if (constructionMethod() == ConstructionMethod::Diagonal) {
@@ -212,10 +211,9 @@ private:
                 catch (const Base::ValueError&) {
                 }  // equal points while hovering raise an objection that can be safely ignored
 
-                if (seekAutoConstraint(sugConstraints[1], onSketchPos, Base::Vector2d(0.0, 0.0))) {
-                    renderSuggestConstraintsCursor(sugConstraints[1]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[1],
+                                            onSketchPos,
+                                            Base::Vector2d(0.0, 0.0));
             } break;
             case SelectMode::SeekThird: {
                 if (constructionMethod() == ConstructionMethod::Diagonal
@@ -298,12 +296,10 @@ private:
                 }  // equal points while hovering raise an objection that can be safely ignored
 
                 if ((constructionMethod() == ConstructionMethod::ThreePoints
-                     || constructionMethod() == ConstructionMethod::CenterAnd3Points)
-                    && seekAutoConstraint(sugConstraints[2],
-                                          onSketchPos,
-                                          Base::Vector2d(0.0, 0.0))) {
-                    renderSuggestConstraintsCursor(sugConstraints[2]);
-                    return;
+                     || constructionMethod() == ConstructionMethod::CenterAnd3Points)) {
+                    seekAndRenderAutoConstraint(sugConstraints[2],
+                                                onSketchPos,
+                                                Base::Vector2d(0.0, 0.0));
                 }
             } break;
             case SelectMode::SeekFourth: {
