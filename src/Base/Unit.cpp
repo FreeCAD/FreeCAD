@@ -22,9 +22,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <algorithm>
+#include <array>
 #include <cmath>
 #include <limits>
 #include <sstream>
+#include <utility>
 #endif
 
 #include "Unit.h"
@@ -584,173 +587,73 @@ QString Unit::getString() const
 
 QString Unit::getTypeString() const
 {
-    if (*this == Unit::Acceleration) {
-        return QString::fromLatin1("Acceleration");
-    }
-    if (*this == Unit::AmountOfSubstance) {
-        return QString::fromLatin1("AmountOfSubstance");
-    }
-    if (*this == Unit::Angle) {
-        return QString::fromLatin1("Angle");
-    }
-    if (*this == Unit::AngleOfFriction) {
-        return QString::fromLatin1("AngleOfFriction");
-    }
-    if (*this == Unit::Area) {
-        return QString::fromLatin1("Area");
-    }
-    if (*this == Unit::CurrentDensity) {
-        return QString::fromLatin1("CurrentDensity");
-    }
-    if (*this == Unit::Density) {
-        return QString::fromLatin1("Density");
-    }
-    if (*this == Unit::DissipationRate) {
-        return QString::fromLatin1("DissipationRate");
-    }
-    if (*this == Unit::DynamicViscosity) {
-        return QString::fromLatin1("DynamicViscosity");
-    }
-    if (*this == Unit::ElectricalCapacitance) {
-        return QString::fromLatin1("ElectricalCapacitance");
-    }
-    if (*this == Unit::ElectricalConductance) {
-        return QString::fromLatin1("ElectricalConductance");
-    }
-    if (*this == Unit::ElectricalConductivity) {
-        return QString::fromLatin1("ElectricalConductivity");
-    }
-    if (*this == Unit::ElectricalInductance) {
-        return QString::fromLatin1("ElectricalInductance");
-    }
-    if (*this == Unit::ElectricalResistance) {
-        return QString::fromLatin1("ElectricalResistance");
-    }
-    if (*this == Unit::ElectricCharge) {
-        return QString::fromLatin1("ElectricCharge");
-    }
-    if (*this == Unit::ElectricCurrent) {
-        return QString::fromLatin1("ElectricCurrent");
-    }
-    if (*this == Unit::ElectricPotential) {
-        return QString::fromLatin1("ElectricPotential");
-    }
-    if (*this == Unit::ElectromagneticPotential) {
-        return QString::fromLatin1("ElectromagneticPotential");
-    }
-    if (*this == Unit::Frequency) {
-        return QString::fromLatin1("Frequency");
-    }
-    if (*this == Unit::Force) {
-        return QString::fromLatin1("Force");
-    }
-    if (*this == Unit::HeatFlux) {
-        return QString::fromLatin1("HeatFlux");
-    }
-    if (*this == Unit::InverseArea) {
-        return QString::fromLatin1("InverseArea");
-    }
-    if (*this == Unit::InverseLength) {
-        return QString::fromLatin1("InverseLength");
-    }
-    if (*this == Unit::InverseVolume) {
-        return QString::fromLatin1("InverseVolume");
-    }
-    if (*this == Unit::KinematicViscosity) {
-        return QString::fromLatin1("KinematicViscosity");
-    }
-    if (*this == Unit::Length) {
-        return QString::fromLatin1("Length");
-    }
-    if (*this == Unit::LuminousIntensity) {
-        return QString::fromLatin1("LuminousIntensity");
-    }
-    if (*this == Unit::MagneticFieldStrength) {
-        return QString::fromLatin1("MagneticFieldStrength");
-    }
-    if (*this == Unit::MagneticFlux) {
-        return QString::fromLatin1("MagneticFlux");
-    }
-    if (*this == Unit::MagneticFluxDensity) {
-        return QString::fromLatin1("MagneticFluxDensity");
-    }
-    if (*this == Unit::Magnetization) {
-        return QString::fromLatin1("Magnetization");
-    }
-    if (*this == Unit::Mass) {
-        return QString::fromLatin1("Mass");
-    }
-    if (*this == Unit::Pressure) {
-        return QString::fromLatin1("Pressure");
-    }
-    if (*this == Unit::Power) {
-        return QString::fromLatin1("Power");
-    }
-    if (*this == Unit::ShearModulus) {
-        return QString::fromLatin1("ShearModulus");
-    }
-    if (*this == Unit::SpecificEnergy) {
-        return QString::fromLatin1("SpecificEnergy");
-    }
-    if (*this == Unit::SpecificHeat) {
-        return QString::fromLatin1("SpecificHeat");
-    }
-    if (*this == Unit::Stiffness) {
-        return QString::fromLatin1("Stiffness");
-    }
-    if (*this == Unit::StiffnessDensity) {
-        return QString::fromLatin1("StiffnessDensity");
-    }
-    if (*this == Unit::Stress) {
-        return QString::fromLatin1("Stress");
-    }
-    if (*this == Unit::Temperature) {
-        return QString::fromLatin1("Temperature");
-    }
-    if (*this == Unit::ThermalConductivity) {
-        return QString::fromLatin1("ThermalConductivity");
-    }
-    if (*this == Unit::ThermalExpansionCoefficient) {
-        return QString::fromLatin1("ThermalExpansionCoefficient");
-    }
-    if (*this == Unit::ThermalTransferCoefficient) {
-        return QString::fromLatin1("ThermalTransferCoefficient");
-    }
-    if (*this == Unit::TimeSpan) {
-        return QString::fromLatin1("TimeSpan");
-    }
-    if (*this == Unit::UltimateTensileStrength) {
-        return QString::fromLatin1("UltimateTensileStrength");
-    }
-    if (*this == Unit::VacuumPermittivity) {
-        return QString::fromLatin1("VacuumPermittivity");
-    }
-    if (*this == Unit::Velocity) {
-        return QString::fromLatin1("Velocity");
-    }
-    if (*this == Unit::Volume) {
-        return QString::fromLatin1("Volume");
-    }
-    if (*this == Unit::VolumeFlowRate) {
-        return QString::fromLatin1("VolumeFlowRate");
-    }
-    if (*this == Unit::VolumetricThermalExpansionCoefficient) {
-        return QString::fromLatin1("VolumetricThermalExpansionCoefficient");
-    }
-    if (*this == Unit::Work) {
-        return QString::fromLatin1("Work");
-    }
-    if (*this == Unit::YieldStrength) {
-        return QString::fromLatin1("YieldStrength");
-    }
-    if (*this == Unit::YoungsModulus) {
-        return QString::fromLatin1("YoungsModulus");
-    }
-    if (*this == Unit::Moment) {
-        return QString::fromLatin1("Moment");
-    }
+    static std::array<std::pair<Unit, std::string>, 55> unitSpecs {{
+        { Unit::Acceleration, "Acceleration" },
+        { Unit::AmountOfSubstance, "AmountOfSubstance" },
+        { Unit::Angle, "Angle" },
+        { Unit::AngleOfFriction, "AngleOfFriction" },
+        { Unit::Area, "Area" },
+        { Unit::CurrentDensity, "CurrentDensity" },
+        { Unit::Density, "Density" },
+        { Unit::DissipationRate, "DissipationRate" },
+        { Unit::DynamicViscosity, "DynamicViscosity" },
+        { Unit::ElectricalCapacitance, "ElectricalCapacitance" },
+        { Unit::ElectricalConductance, "ElectricalConductance" },
+        { Unit::ElectricalConductivity, "ElectricalConductivity" },
+        { Unit::ElectricalInductance, "ElectricalInductance" },
+        { Unit::ElectricalResistance, "ElectricalResistance" },
+        { Unit::ElectricCharge, "ElectricCharge" },
+        { Unit::ElectricCurrent, "ElectricCurrent" },
+        { Unit::ElectricPotential, "ElectricPotential" },
+        { Unit::ElectromagneticPotential, "ElectromagneticPotential" },
+        { Unit::Frequency, "Frequency" },
+        { Unit::Force, "Force" },
+        { Unit::HeatFlux, "HeatFlux" },
+        { Unit::InverseArea, "InverseArea" },
+        { Unit::InverseLength, "InverseLength" },
+        { Unit::InverseVolume, "InverseVolume" },
+        { Unit::KinematicViscosity, "KinematicViscosity" },
+        { Unit::Length, "Length" },
+        { Unit::LuminousIntensity, "LuminousIntensity" },
+        { Unit::MagneticFieldStrength, "MagneticFieldStrength" },
+        { Unit::MagneticFlux, "MagneticFlux" },
+        { Unit::MagneticFluxDensity, "MagneticFluxDensity" },
+        { Unit::Magnetization, "Magnetization" },
+        { Unit::Mass, "Mass" },
+        { Unit::Pressure, "Pressure" },
+        { Unit::Power, "Power" },
+        { Unit::ShearModulus, "ShearModulus" },
+        { Unit::SpecificEnergy, "SpecificEnergy" },
+        { Unit::SpecificHeat, "SpecificHeat" },
+        { Unit::Stiffness, "Stiffness" },
+        { Unit::StiffnessDensity, "StiffnessDensity" },
+        { Unit::Stress, "Stress" },
+        { Unit::Temperature, "Temperature" },
+        { Unit::ThermalConductivity, "ThermalConductivity" },
+        { Unit::ThermalExpansionCoefficient, "ThermalExpansionCoefficient" },
+        { Unit::ThermalTransferCoefficient, "ThermalTransferCoefficient" },
+        { Unit::TimeSpan, "TimeSpan" },
+        { Unit::UltimateTensileStrength, "UltimateTensileStrength" },
+        { Unit::VacuumPermittivity, "VacuumPermittivity" },
+        { Unit::Velocity, "Velocity" },
+        { Unit::Volume, "Volume" },
+        { Unit::VolumeFlowRate, "VolumeFlowRate" },
+        { Unit::VolumetricThermalExpansionCoefficient, "VolumetricThermalExpansionCoefficient" },
+        { Unit::Work, "Work" },
+        { Unit::YieldStrength, "YieldStrength" },
+        { Unit::YoungsModulus, "YoungsModulus" },
+        { Unit::Moment, "Moment" },
+    }};
 
-    return {};
+    const auto spec =
+        std::find_if(unitSpecs.begin(), unitSpecs.end(), [&](const auto& pair) {
+            return pair.first == *this;
+        });
+
+    if (spec == std::end(unitSpecs))
+        return QString();
+
+    return QString::fromStdString(spec->second);
 }
 
 // SI base units
