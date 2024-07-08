@@ -168,6 +168,10 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                     if obj == self.assembly:
                         continue  # Skip current assembly
 
+                    if obj in self.assembly.InListRecursive:
+                        continue  # Prevent dependency loop.
+                        # For instance if asm1/asm2 with asm2 active, we don't want to have asm1 in the list
+
                     if (
                         obj.isDerivedFrom("Part::Feature")
                         or obj.isDerivedFrom("App::Part")
