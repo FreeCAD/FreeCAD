@@ -55,3 +55,4 @@ TEST_F(ElementNamingUtilsTest, findElementName)
     EXPECT_STREQ(name3, "Edge3");
     EXPECT_STREQ(name4, "Edge4");
 }
+// NOLINTEND(readability-magic-numbers)
