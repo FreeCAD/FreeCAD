@@ -583,7 +583,8 @@ if HAVE_QTNETWORK:
                 timeout_ms = default_timeout
                 if hasattr(reply, "request"):
                     request = reply.request()
-                    timeout_ms = request.transferTimeout()
+                    if hasattr(request, "transferTimeout"):
+                        timeout_ms = request.transferTimeout()
                 new_url = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute)
                 self.__launch_request(index, self.__create_get_request(new_url, timeout_ms))
                 return  # The task is not done, so get out of this method now
