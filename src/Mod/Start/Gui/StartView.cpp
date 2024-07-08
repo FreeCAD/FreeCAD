@@ -100,8 +100,8 @@ gsl::owner<QPushButton*> createNewButton(const NewButton& newButton)
 
 }  // namespace
 
-StartView::StartView(Gui::Document* pcDocument, QWidget* parent)
-    : Gui::MDIView(pcDocument, parent)
+StartView::StartView(QWidget* parent)
+    : Gui::MDIView(nullptr, parent)
     , _contents(new QScrollArea(parent))
     , _newFileLabel {nullptr}
     , _examplesLabel {nullptr}

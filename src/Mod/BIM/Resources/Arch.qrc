@@ -179,7 +179,7 @@
         <file>ui/dialogIfcPropertiesRedux.ui</file>
         <file>ui/dialogIfcQuantities.ui</file>
         <file>ui/dialogImport.ui</file>
-        <file>ui/dialogLayers.ui</file>
+        <file>ui/dialogLayersIFC.ui</file>
         <file>ui/dialogLibrary.ui</file>
         <file>ui/dialogListWidget.ui</file>
         <file>ui/dialogMaterialChooser.ui</file>
