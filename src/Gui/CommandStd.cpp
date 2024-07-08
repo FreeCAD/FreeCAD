@@ -775,10 +775,10 @@ StdCmdUnitsCalculator::StdCmdUnitsCalculator()
   : Command("Std_UnitsCalculator")
 {
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("&Units calculator...");
-    sToolTipText  = QT_TR_NOOP("Start the units calculator");
+    sMenuText     = QT_TR_NOOP("&Units converter...");
+    sToolTipText  = QT_TR_NOOP("Start the units converter");
     sWhatsThis    = "Std_UnitsCalculator";
-    sStatusTip    = QT_TR_NOOP("Start the units calculator");
+    sStatusTip    = QT_TR_NOOP("Start the units converter");
     sPixmap       = "accessories-calculator";
     eType         = 0;
 }

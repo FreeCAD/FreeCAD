@@ -356,7 +356,7 @@ void CmdTechDrawView::activated(int iMsg)
         else if (DrawGuiUtil::isArchSection(obj)) {
             std::string FeatName = getUniqueObjectName("ArchView");
             std::string SourceName = obj->getNameInDocument();
-            openCommand(QT_TRANSLATE_NOOP("Command", "Create ArchView"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Create BIM View"));
             doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewArch', '%s')",
                 FeatName.c_str());
             doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewArch', 'ArchView', '%s')",
@@ -834,8 +834,8 @@ CmdTechDrawComplexSection::CmdTechDrawComplexSection() : Command("TechDraw_Compl
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Complex Section");
-    sToolTipText = QT_TR_NOOP("Insert a Complex Section");
+    sMenuText = QT_TR_NOOP("Insert Complex Section View");
+    sToolTipText = QT_TR_NOOP("Insert a Complex Section View");
     sWhatsThis = "TechDraw_ComplexSection";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ComplexSection";
@@ -1601,8 +1601,8 @@ CmdTechDrawArchView::CmdTechDrawArchView() : Command("TechDraw_ArchView")
 {
     // setting the Gui eye-candy
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Arch Workbench Object");
-    sToolTipText = QT_TR_NOOP("Insert a View of a Section Plane from Arch Workbench");
+    sMenuText = QT_TR_NOOP("Insert BIM Workbench Object");
+    sToolTipText = QT_TR_NOOP("Insert a View of a Section Plane from BIM Workbench");
     sWhatsThis = "TechDraw_NewArch";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ArchView";
@@ -1629,13 +1629,13 @@ void CmdTechDrawArchView::activated(int iMsg)
     }
     if (archCount > 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Please select only 1 Arch Section."));
+                             QObject::tr("Please select only 1 BIM Section."));
         return;
     }
 
     if (!archObject) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("No Arch Sections in selection."));
+                             QObject::tr("No BIM Sections in selection."));
         return;
     }
 
@@ -1819,7 +1819,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     }
 
     std::string PageName = page->getNameInDocument();
-    openCommand(QT_TRANSLATE_NOOP("Command", "Save page to dxf"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Save page to DXF"));
     doCommand(Doc, "import TechDraw");
     fileName = Base::Tools::escapeEncodeFilename(fileName);
     doCommand(Doc, "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\")", PageName.c_str(),

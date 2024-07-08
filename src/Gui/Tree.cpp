@@ -3271,7 +3271,7 @@ void TreeWidget::setupText()
     this->toggleVisibilityInTreeAction->setText(tr("Toggle visibility in tree view"));
     this->toggleVisibilityInTreeAction->setStatusTip(tr("Toggles the visibility of selected items in the tree view"));
 
-    this->createGroupAction->setText(tr("Create group..."));
+    this->createGroupAction->setText(tr("Create group"));
     this->createGroupAction->setStatusTip(tr("Create a group"));
 
     this->relabelObjectAction->setText(tr("Rename"));

@@ -232,7 +232,7 @@ void ViewProviderPage::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     Gui::ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
     QAction* act = menu->addAction(QObject::tr("Show drawing"), receiver, member);
     act->setData(QVariant((int)_SHOWDRAWING));
-    QAction* act2 = menu->addAction(QObject::tr("Toggle KeepUpdated"), receiver, member);
+    QAction* act2 = menu->addAction(QObject::tr("Toggle Keep Updated"), receiver, member);
     act2->setData(QVariant((int)_TOGGLEUPDATE));
 }
 

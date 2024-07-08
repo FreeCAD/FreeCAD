@@ -148,7 +148,7 @@ class AddonInstallerGUI(QtCore.QObject):
                 "<p>"
                 + translate(
                     "AddonsInstaller",
-                    "This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:",
+                    "This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:",
                 )
                 + "</p><ul>"
             )
@@ -243,7 +243,7 @@ class AddonInstallerGUI(QtCore.QObject):
                 translate("AddonsInstaller", "Incompatible Python version"),
                 translate(
                     "AddonsInstaller",
-                    "This Addon (or one if its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.",
+                    "This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.",
                 ).format(
                     missing.python_min_version["major"],
                     missing.python_min_version["minor"],

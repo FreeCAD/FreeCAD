@@ -648,7 +648,7 @@
                </column>
                <column>
                 <property name="text">
-                 <string>Head Loss[mm]</string>
+                 <string>Head Loss [mm]</string>
                 </property>
                </column>
                <item row="0" column="0">

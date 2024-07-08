@@ -88,7 +88,7 @@ class PathUtilsUserInput(object):
                         mylist = [j.Label for j in jobs]
 
                     jobname, result = QtGui.QInputDialog.getItem(
-                        None, translate("Path", "Choose a Path Job"), None, mylist
+                        None, translate("Path", "Choose a CAM Job"), None, mylist
                     )
 
                     if result is False:

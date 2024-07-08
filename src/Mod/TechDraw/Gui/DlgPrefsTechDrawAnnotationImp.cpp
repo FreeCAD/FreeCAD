@@ -238,7 +238,7 @@ void DlgPrefsTechDrawAnnotationImp::onLineGroupChanged(int index)
     }
     ui->pcbLineGroup->setToolTip(
         QObject::tr("%1 defines these line widths:\n thin: %2\n graphic: %3\n"
-                    "thick: %4")
+                    " thick: %4")
             .arg(QString::fromStdString(lgNames.at(0).substr(1)),
                  QString::fromStdString(lgNames.at(1)),
                  QString::fromStdString(lgNames.at(2)),

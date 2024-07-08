@@ -160,7 +160,7 @@
             <item>
              <widget class="QCheckBox" name="checkBox">
               <property name="toolTip">
-               <string>If locked, any new object created in FreeCAd will automatically become an IFC object and part of this project</string>
+               <string>If locked, any new object created in FreeCAD will automatically become an IFC object and part of this project</string>
               </property>
               <property name="text">
                <string>Locked</string>

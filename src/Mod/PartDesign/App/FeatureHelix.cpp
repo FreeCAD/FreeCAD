@@ -125,7 +125,7 @@ App::DocumentObjectExecReturn* Helix::execute()
     HelixMode mode = static_cast<HelixMode>(Mode.getValue());
     if (mode == HelixMode::pitch_height_angle) {
         if (Pitch.getValue() < Precision::Confusion())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Pitch too small"));
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Pitch too small!"));
         if (Height.getValue() < Precision::Confusion())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: height too small!"));
         Turns.setValue(Height.getValue() / Pitch.getValue());
