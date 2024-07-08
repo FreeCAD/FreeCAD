@@ -2763,8 +2763,6 @@ Start page
 QWidget#thumbnailWidget {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #f0f0f0, stop:1 #fdfdfd);
   border-radius: 8px;
-  margin-bottom: 3px;
-  margin-right: 7px;
   border: 1px solid #ababab;
 }
 

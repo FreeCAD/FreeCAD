@@ -791,39 +791,6 @@ QScrollBar::sub-line:vertical:hover, QScrollBar::sub-line:vertical:on {
   subcontrol-origin: margin;
 }
 
-/* QScrollBar::up-arrow:horizontal, QScrollBar::down-arrow:horizontal {
-  background: none;
-  border: 1px solid #8800ff;
-} */
-
-/* QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
-  background: none;
-  border: 1px solid #00ff6a;
-} */
-
-/* QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
-  background: none;
-  border: 1px solid #00ff95; */
-  /* border: 1px solid #020202; */
-/* } */
-
-/* QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
-  background: none;
-  border: 1px solid #0400ff;*/
-  /* border: 1px solid #020202; */
-/*} */
-
-/* QScrollBar::add-line {
-  border: 1px solid #ff0000;
-  background: none;
-}
-
-QScrollBar::sub-line {
-  border: 1px solid #00ff44;
-  background: none;
-} */
-
-
 
 /* QTextEdit --------------------------------------------------------------
 
@@ -2757,8 +2724,6 @@ Start page
 QWidget#thumbnailWidget {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:1 #252525);
   border-radius: 8px;
-  margin-bottom: 3px;
-  margin-right: 7px;
   border: 1px solid #020202;
 }
 
