@@ -1492,12 +1492,13 @@ public:
         if (cstrIndexes.size() > 0) {
             bool oneMoved = false;
             const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
+            int lastConstrIndex = static_cast<int>(ConStr.size()) - 1;
             for (int index : cstrIndexes) {
                 if (ConStr[index]->isDimensional()) {
                     Base::Vector2d pointWhereToMove = onSketchPos;
 
                     if (specialConstraint == SpecialConstraint::Block) {
-                        if (index == ConStr.size() - 1)
+                        if (index == lastConstrIndex)
                             pointWhereToMove.y = Obj->getPoint(selPoints[0].GeoId, selPoints[0].PosId).y;
                         else
                             pointWhereToMove.x = Obj->getPoint(selPoints[0].GeoId, selPoints[0].PosId).x;
@@ -2689,8 +2690,9 @@ protected:
     bool hasBeenAborted()
     {
         // User can abort the command with Undo (ctrl-Z)
-        if (cstrIndexes.size() > 0) {
-            if (cstrIndexes.back() != Obj->Constraints.getValues().size() - 1 ) {
+        if (!cstrIndexes.empty()) {
+            int lastConstrIndex = Obj->Constraints.getSize() - 1;
+            if (cstrIndexes.back() != lastConstrIndex) {
                 return true;
             }
         }
