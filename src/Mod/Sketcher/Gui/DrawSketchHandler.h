@@ -172,6 +172,12 @@ public:
                            const Base::Vector2d& Pos,
                            const Base::Vector2d& Dir,
                            AutoConstraint::TargetType type = AutoConstraint::VERTEX);
+
+    int seekAndRenderAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,
+                                    const Base::Vector2d& Pos,
+                                    const Base::Vector2d& Dir,
+                                    AutoConstraint::TargetType type = AutoConstraint::VERTEX);
+
     // createowncommand indicates whether a separate command shall be create and committed (for
     // example for undo purposes) or not is not it is the responsibility of the developer to create
     // and commit the command appropriately.

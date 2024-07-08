@@ -93,23 +93,17 @@ private:
                 if (constructionMethod() == ConstructionMethod::Center) {
                     centerPoint = onSketchPos;
 
-                    if (seekAutoConstraint(sugConstraints[0],
-                                           onSketchPos,
-                                           Base::Vector2d(0.f, 0.f))) {
-                        renderSuggestConstraintsCursor(sugConstraints[0]);
-                        return;
-                    }
+                    seekAndRenderAutoConstraint(sugConstraints[0],
+                                                onSketchPos,
+                                                Base::Vector2d(0.f, 0.f));
                 }
                 else {
                     apoapsis = onSketchPos;
 
-                    if (seekAutoConstraint(sugConstraints[0],
-                                           onSketchPos,
-                                           Base::Vector2d(0.f, 0.f),
-                                           AutoConstraint::CURVE)) {
-                        renderSuggestConstraintsCursor(sugConstraints[0]);
-                        return;
-                    }
+                    seekAndRenderAutoConstraint(sugConstraints[0],
+                                                onSketchPos,
+                                                Base::Vector2d(0.f, 0.f),
+                                                AutoConstraint::CURVE);
                 }
             } break;
             case SelectMode::SeekSecond: {
@@ -126,13 +120,10 @@ private:
                     toolWidgetManager.drawPositionAtCursor(onSketchPos);
                 }
 
-                if (seekAutoConstraint(sugConstraints[1],
-                                       onSketchPos,
-                                       Base::Vector2d(0.f, 0.f),
-                                       AutoConstraint::CURVE)) {
-                    renderSuggestConstraintsCursor(sugConstraints[1]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[1],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f),
+                                            AutoConstraint::CURVE);
             } break;
             case SelectMode::SeekThird: {
                 calculateThroughPointMinorAxisParameters(onSketchPos);
@@ -148,13 +139,10 @@ private:
                     toolWidgetManager.drawPositionAtCursor(onSketchPos);
                 }
 
-                if (seekAutoConstraint(sugConstraints[2],
-                                       onSketchPos,
-                                       Base::Vector2d(0.f, 0.f),
-                                       AutoConstraint::CURVE)) {
-                    renderSuggestConstraintsCursor(sugConstraints[2]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[2],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f),
+                                            AutoConstraint::CURVE);
             } break;
             default:
                 break;
