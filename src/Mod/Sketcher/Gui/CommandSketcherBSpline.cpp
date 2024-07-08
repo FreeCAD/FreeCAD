@@ -58,7 +58,7 @@ void ActivateBSplineHandler(Gui::Document* doc, DrawSketchHandler* handler)
             SketcherGui::ViewProviderSketch* vp =
                 static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
             vp->purgeHandler();
-            vp->activateHandler(ptr.release());
+            vp->activateHandler(std::move(ptr));
         }
     }
 }
