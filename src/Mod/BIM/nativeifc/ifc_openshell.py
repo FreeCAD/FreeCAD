@@ -47,14 +47,20 @@ class IFC_UpdateIOS:
 
         version = self.get_current_version()
         avail = self.get_avail_version()
-        if version:
-            comp = self.compare_versions(avail, version)
-            if comp > 0:
-                self.show_dialog("update", avail)
+        if avail:
+            if version:
+                comp = self.compare_versions(avail, version)
+                if comp > 0:
+                    self.show_dialog("update", avail)
+                else:
+                    self.show_dialog("uptodate")
             else:
-                self.show_dialog("uptodate")
+                self.show_dialog("install", avail)
         else:
-            self.show_dialog("install", avail)
+            if version:
+                self.show_dialog("uptodate")
+            else:
+                self.show_dialog("failed")
 
 
     def show_dialog(self, mode, version=None):
@@ -78,6 +84,9 @@ class IFC_UpdateIOS:
             text += translate("BIM", "Would you like to install the most recent version?")
             text += " (" + version + ") " + note
             buttons = QtGui.QMessageBox.Cancel | QtGui.QMessageBox.Ok
+        elif mode == "failed":
+            text = translate("BIM", "IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.")
+            buttons = QtGui.QMessageBox.Ok
         reply = QtGui.QMessageBox.information(None, title, text, buttons)
         if reply == QtGui.QMessageBox.Ok:
             if mode in ["update", "install"]:
@@ -142,10 +151,12 @@ class IFC_UpdateIOS:
 
         result = self.run_pip(["index", "versions", "ifcopenshell"])
         if result:
-            result = result.stdout.split()
-            result = result[result.index("versions:")+1:]
-            result = [r.strip(",") for r in result]
-            return result[0]  # we return the biggest
+            if result.stdout and "versions" in result.stdout:
+                result = result.stdout.split()
+                result = result[result.index("versions:")+1:]
+                result = [r.strip(",") for r in result]
+                return result[0]  # we return the biggest
+        return None
 
 
     def compare_versions(self, v1, v2):
