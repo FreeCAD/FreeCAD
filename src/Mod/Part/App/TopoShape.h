@@ -1438,6 +1438,8 @@ public:
                                                          const char* marker = nullptr,
                                                          std::string* postfix = nullptr) const;
 
+    long isElementGenerated(const Data::MappedName &name, int depth=1) const;
+
     /** @name sub shape cached functions
      *
      * Mapped element names introduces some overhead when getting sub shapes
