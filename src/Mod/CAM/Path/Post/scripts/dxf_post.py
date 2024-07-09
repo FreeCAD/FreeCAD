@@ -51,12 +51,11 @@ now = datetime.datetime.now()
 # # These globals set common customization preferences
 OUTPUT_HEADER = True
 
-if False:
-    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-    Path.Log.trackModule(Path.Log.thisModule())
-else:
+# Uncomment here for debugging mode:
+#    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+#    Path.Log.trackModule(Path.Log.thisModule())
+# Uncomment here for non-debugging mode:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
-Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 

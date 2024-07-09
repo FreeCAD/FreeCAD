@@ -29,9 +29,12 @@ import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
 import math
 
-if False:
-    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-    Path.Log.trackModule(Path.Log.thisModule())
+# Uncomment here for debugging mode:
+#    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+#    Path.Log.trackModule(Path.Log.thisModule())
+# Uncomment here for non-debugging mode:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
 
 PI = math.pi
 
