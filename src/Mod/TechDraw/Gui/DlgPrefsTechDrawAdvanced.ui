@@ -296,7 +296,7 @@ Each unit is approx. 0.1 mm wide</string>
           </property>
           <property name="toolTip">
            <string>Limit of 64x64 pixel SVG tiles used to hatch a single face.
-For large scalings you might get an error about to many SVG tiles.
+For large scalings you might get an error about too many SVG tiles.
 Then you need to increase the tile limit.</string>
           </property>
           <property name="alignment">
