@@ -620,6 +620,20 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                     }
                     if (recomputeCopy && !copied->recomputeFeature(true))
                         copyerror = 2;
+                    if (!copyerror) {
+                        for (auto prop : props) {
+                            if (!App::LinkBaseExtension::isCopyOnChangeProperty(this, *prop))
+                                continue;
+                            auto p = copied->getPropertyByName(prop->getName());
+                            if (p && p->getContainer() == copied
+                                && p->getTypeId() == prop->getTypeId()
+                                && !p->isSame(*prop))
+                            {
+                                std::unique_ptr<App::Property> pcopy(p->Copy());
+                                prop->Paste(*pcopy);
+                            }
+                        }
+                    }
                 }
                 obj = copied;
                 _CopiedLink.setValue(copied, l.getSubValues(false));
