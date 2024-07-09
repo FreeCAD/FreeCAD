@@ -908,7 +908,7 @@ void ViewProviderAssembly::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 bool ViewProviderAssembly::onDelete(const std::vector<std::string>& subNames)
 {
-    // Delete the assembly goups when assembly is deleted
+    // Delete the assembly groups when assembly is deleted
     for (auto obj : getObject()->getOutList()) {
         if (obj->getTypeId() == Assembly::JointGroup::getClassTypeId()
             || obj->getTypeId() == Assembly::ViewGroup::getClassTypeId()

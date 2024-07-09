@@ -99,8 +99,8 @@ oder &apos;Pandoc&apos; installiert sein.</translation>
       <location filename="../../dlgPreferencesHelp.ui" line="211"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
+      <translation>Die Dokumentation wird in einem andockbaren Dialog innerhalb des FreeCAD-Fensters geöffnet,
+dadurch kann der Dialog geöffnet bleiben, während man in der 3D-Ansicht weiterarbeitet. Dies erfordert die PySide-Komponente QtWebengineWidgets</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="246"/>

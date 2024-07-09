@@ -3713,7 +3713,7 @@ StdCmdDockOverlayToggleTransparent::StdCmdDockOverlayToggleTransparent()
   :Command("Std_DockOverlayToggleTransparent")
 {
     sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("Toggle transparent");
+    sMenuText     = QT_TR_NOOP("Toggle transparent mode");
     sToolTipText  = QT_TR_NOOP("Toggle transparent mode for the docked window under cursor.\n"
                                "This makes the docked window stay transparent at all times.");
     sWhatsThis    = "Std_DockOverlayToggleTransparent";

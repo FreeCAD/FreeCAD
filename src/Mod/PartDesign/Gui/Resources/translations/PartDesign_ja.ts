@@ -3028,7 +3028,7 @@ click again to end selection</source>
       <translation>内側に向かって厚みを作成</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>空の厚みが作成されました!

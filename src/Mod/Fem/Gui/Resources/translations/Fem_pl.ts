@@ -5870,7 +5870,7 @@ sprężystość (naprężenia)</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="131"/>
       <source>To add references: select them in the 3D view and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view and click "Add".</translation>
+      <translation>Aby dodać odniesienia: zaznacz je w oknie widoku 3D i kliknij przycisk "Dodaj”.</translation>
     </message>
   </context>
   <context>

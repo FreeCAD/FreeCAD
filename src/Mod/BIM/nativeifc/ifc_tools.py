@@ -139,7 +139,7 @@ def convert_document(document, filename=None, shapemode=0, strategy=0, silent=Fa
 
 
 def setup_project(proj, filename, shapemode, silent):
-    """Setups a project (common operations between signle doc/not single doc modes)
+    """Sets up a project (common operations between single doc/not single doc modes)
     Returns the ifcfile object, the project ifc entity, and full (True/False)"""
 
     full = False
@@ -1189,7 +1189,7 @@ def get_elem_attribs(ifcentity):
     # This function can become pure IFC
 
     # usually info_ifcentity = ifcentity.get_info() would de the trick
-    # the above could raise an unhandled excption on corrupted ifc files
+    # the above could raise an unhandled exception on corrupted ifc files
     # in IfcOpenShell
     # see https://github.com/IfcOpenShell/IfcOpenShell/issues/2811
     # thus workaround

@@ -3029,7 +3029,7 @@ sakatu berriro hautapena amaitzeko</translation>
       <translation>Sortu lodiera barrurantz</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>Hutsik dagoen lodiera sortu da

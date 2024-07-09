@@ -743,7 +743,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
 
         elif (preferences['MERGE_MODE_ARCH'] == 1 and archobj) or (preferences['MERGE_MODE_STRUCT'] == 0 and not archobj):
 
-            # non-parametric Arch objects (just Arch components with a shape)
+            # non-parametric BIM objects (just Arch components with a shape)
 
             if ptype in ["IfcSite","IfcBuilding","IfcBuildingStorey"]:
                 for freecadtype,ifctypes in typesmap.items():

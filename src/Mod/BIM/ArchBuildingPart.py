@@ -229,7 +229,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         if not "Shape" in pl:
             obj.addProperty("Part::PropertyPartShape","Shape","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The shape of this object"))
         if not "SavedInventor" in pl:
-            obj.addProperty("App::PropertyFileIncluded","SavedInventor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","This property stores an inventor representation for this object"))
+            obj.addProperty("App::PropertyFileIncluded","SavedInventor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","This property stores an OpenInventor representation for this object"))
             obj.setEditorMode("SavedInventor",2)
         if not "OnlySolids" in pl:
             obj.addProperty("App::PropertyBool","OnlySolids","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, only solids will be collected by this object when referenced from other files"))
@@ -489,9 +489,9 @@ class ViewProviderBuildingPart:
 
         # inventor saving
         if not "SaveInventor" in pl:
-            vobj.addProperty("App::PropertyBool","SaveInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode."))
+            vobj.addProperty("App::PropertyBool","SaveInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode."))
         if not "SavedInventor" in pl:
-            vobj.addProperty("App::PropertyFileIncluded","SavedInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","A slot to save the inventor representation of this object, if enabled"))
+            vobj.addProperty("App::PropertyFileIncluded","SavedInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","A slot to save the OpenInventor representation of this object, if enabled"))
             vobj.setEditorMode("SavedInventor",2)
 
         # children properties

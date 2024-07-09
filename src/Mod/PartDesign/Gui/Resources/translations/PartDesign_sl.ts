@@ -3030,7 +3030,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <translation>Naredi debelino navznoter</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>Ustvarjeno brez debeline!

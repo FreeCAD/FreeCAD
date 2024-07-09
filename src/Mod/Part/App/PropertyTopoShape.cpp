@@ -298,21 +298,13 @@ void PropertyPartShape::Save (Base::Writer &writer) const
     writer.Stream() << " ElementMap=\"" << version << '"';
 
     bool binary = writer.getMode("BinaryBrep");
-    bool toXML = writer.getFileVersion()>1 && writer.isForceXML()>=(binary?3:2);
+    bool toXML = writer.isForceXML();
     if(!toXML) {
         writer.Stream() << " file=\""
                         << writer.addFile(getFileName(binary?".bin":".brp").c_str(), this)
                         << "\"/>\n";
-    } else if(binary) {
-        writer.Stream() << " binary=\"1\">\n";
-        TopoShape shape;
-        shape.setShape(_Shape.getShape());
-        shape.exportBinary(writer.beginCharStream());
-        writer.endCharStream() <<  writer.ind() << "</Part>\n";
     } else {
-        writer.Stream() << " brep=\"1\">\n";
-        _Shape.exportBrep(writer.beginCharStream()<<'\n');
-        writer.endCharStream() << '\n' << writer.ind() << "</Part>\n";
+        writer.Stream() << "/>\n";
     }
 
     if(_SaveHasher) {

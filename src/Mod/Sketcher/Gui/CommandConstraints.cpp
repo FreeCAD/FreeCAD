@@ -1492,12 +1492,13 @@ public:
         if (cstrIndexes.size() > 0) {
             bool oneMoved = false;
             const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
+            int lastConstrIndex = static_cast<int>(ConStr.size()) - 1;
             for (int index : cstrIndexes) {
                 if (ConStr[index]->isDimensional()) {
                     Base::Vector2d pointWhereToMove = onSketchPos;
 
                     if (specialConstraint == SpecialConstraint::Block) {
-                        if (index == ConStr.size() - 1)
+                        if (index == lastConstrIndex)
                             pointWhereToMove.y = Obj->getPoint(selPoints[0].GeoId, selPoints[0].PosId).y;
                         else
                             pointWhereToMove.x = Obj->getPoint(selPoints[0].GeoId, selPoints[0].PosId).x;
@@ -2689,8 +2690,9 @@ protected:
     bool hasBeenAborted()
     {
         // User can abort the command with Undo (ctrl-Z)
-        if (cstrIndexes.size() > 0) {
-            if (cstrIndexes.back() != Obj->Constraints.getValues().size() - 1 ) {
+        if (!cstrIndexes.empty()) {
+            int lastConstrIndex = Obj->Constraints.getSize() - 1;
+            if (cstrIndexes.back() != lastConstrIndex) {
                 return true;
             }
         }
@@ -3966,12 +3968,7 @@ void CmdSketcherConstrainCoincidentUnified::activatedPointOnObject(SketchObject*
         abortCommand();
         Gui::TranslatedUserWarning(obj,
             QObject::tr("Wrong selection"),
-            QObject::tr("None of the selected points were constrained "
-                "onto the respective curves, "
-                "because they are parts "
-                "of the same element, "
-                "because they are both external geometry, "
-                "or because the edge is not eligible."));
+            QObject::tr("None of the selected points were constrained onto the respective curves, because they are part of the same element, they are both external geometry, or the edge is not eligible."));
     }
     return;
 }
@@ -6590,7 +6587,7 @@ bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject*
 
             Gui::Command::openCommand(
                 QT_TRANSLATE_NOOP("Command",
-                                  "Swap PointOnObject+tangency with point to curve tangency"));
+                                  "Swap point on object and tangency with point to curve tangency"));
 
             doEndpointToEdgeTangency(Obj, (*it)->First, (*it)->FirstPos, (*it)->Second);
 
@@ -7514,7 +7511,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
         Gui::TranslatedUserWarning(
             Obj,
             QObject::tr("Wrong selection"),
-            QObject::tr("Select either only one or more B-Spline poles or only one or more arcs or "
+            QObject::tr("Select either only one or more B-spline poles or only one or more arcs or "
                         "circles from the sketch, but not mixed."));
         return;
     }
@@ -8191,7 +8188,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
         Gui::TranslatedUserWarning(
             Obj,
             QObject::tr("Wrong selection"),
-            QObject::tr("Select either only one or more B-Spline poles or only one or more arcs or "
+            QObject::tr("Select either only one or more B-spline poles or only one or more arcs or "
                         "circles from the sketch, but not mixed."));
         return;
     }
@@ -8558,9 +8555,9 @@ void CmdSketcherCompConstrainRadDia::languageChange()
     QAction* arc1 = a[0];
     arc1->setText(QApplication::translate("CmdSketcherCompConstrainRadDia", "Constrain radius"));
     arc1->setToolTip(QApplication::translate("Sketcher_ConstrainRadius",
-                                             "Fix the radius of a circle or an arc"));
+                                             "Fix the radius of an arc or a circle"));
     arc1->setStatusTip(QApplication::translate("Sketcher_ConstrainRadius",
-                                               "Fix the radius of a circle or an arc"));
+                                               "Fix the radius of an arc or a circle"));
     QAction* arc2 = a[1];
     arc2->setText(QApplication::translate("CmdSketcherCompConstrainRadDia", "Constrain diameter"));
     arc2->setToolTip(QApplication::translate("Sketcher_ConstrainDiameter",
@@ -8571,9 +8568,9 @@ void CmdSketcherCompConstrainRadDia::languageChange()
     arc3->setText(QApplication::translate("CmdSketcherCompConstrainRadDia",
                                           "Constrain auto radius/diameter"));
     arc3->setToolTip(QApplication::translate("Sketcher_ConstrainRadiam",
-                                             "Fix the radius/diameter of a circle or an arc"));
+                                             "Fix the radius/diameter of an arc or a circle"));
     arc3->setStatusTip(QApplication::translate("Sketcher_ConstrainRadiam",
-                                               "Fix the radius/diameter of a circle or an arc"));
+                                               "Fix the radius/diameter of an arc or a circle"));
 }
 
 bool CmdSketcherCompConstrainRadDia::isActive()
@@ -9682,7 +9679,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
                                       "and an edge representing a boundary. "
                                       "The first selected point corresponds "
                                       "to index n1, second to n2, "
-                                      "and datum value sets the ratio n2/n1.",
+                                      "and the value sets the ratio n2/n1.",
                                       "Constraint_SnellsLaw");
 
         const char dmbg[] = "Constraint_SnellsLaw";
@@ -10111,7 +10108,7 @@ void CmdSketcherToggleActiveConstraint::activated(int iMsg)
         }
 
         // undo command open
-        openCommand(QT_TRANSLATE_NOOP("Command", "Activate/Deactivate constraint"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Activate/Deactivate constraints"));
 
         int successful = SubNames.size();
 

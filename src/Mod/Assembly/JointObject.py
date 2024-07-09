@@ -290,7 +290,7 @@ class Joint:
                 "Joint",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the distance of the joint. It is used only by the distance joint and by RackPinion (pitch radius), Screw and Gears and Belt(radius1)",
+                    "This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)",
                 ),
             )
 

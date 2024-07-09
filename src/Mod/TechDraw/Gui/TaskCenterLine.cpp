@@ -403,7 +403,7 @@ int TaskCenterLine::checkPathologicalVertices(int inMode)
 //******************************************************************************
 void TaskCenterLine::createCenterLine()
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create CenterLine"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Centerline"));
 
     // check for illogical parameters
     if (m_type == CenterLine::EDGE) {

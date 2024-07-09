@@ -424,7 +424,7 @@ M2
         )
 
     def test200(self):
-        """Test A, B, & C axis output for values below -360 degress
+        """Test A, B, & C axis output for values below -360 degrees
         """
         self.compare_sixth_line(
             "G1 X10 Y20 Z30 A-440 B-450 C-460",

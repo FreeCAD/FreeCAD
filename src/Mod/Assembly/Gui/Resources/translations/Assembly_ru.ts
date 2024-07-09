@@ -267,12 +267,12 @@
     <message>
       <location filename="../../../JointObject.py" line="1365"/>
       <source>You need to select 2 elements from 2 separate parts.</source>
-      <translation type="unfinished">You need to select 2 elements from 2 separate parts.</translation>
+      <translation>Необходимо выбрать 2 элемента от 2 отдельных деталей.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1534"/>
       <source>Radius 1</source>
-      <translation type="unfinished">Radius 1</translation>
+      <translation>Радиус 1</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1536"/>

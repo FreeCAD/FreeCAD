@@ -3219,7 +3219,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="150"/>
       <source>CodePage</source>
-      <translation type="unfinished">CodePage</translation>
+      <translation>Codeseite</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="177"/>
@@ -6763,7 +6763,7 @@ Ein 'Verbundfilter' kann verwendet werden, um die restlichen Stücke zu extrahie
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="73"/>
       <source>Custom Appearance</source>
-      <translation type="unfinished">Custom Appearance</translation>
+      <translation>Benutzerdefinierte Darstellung</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="87"/>

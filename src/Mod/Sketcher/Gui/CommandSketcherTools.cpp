@@ -887,7 +887,7 @@ CmdSketcherSelectElementsWithDoFs::CmdSketcherSelectElementsWithDoFs()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Select unconstrained DoF");
+    sMenuText = QT_TR_NOOP("Select under-constrained elements");
     sToolTipText = QT_TR_NOOP("Select geometrical elements where the solver still detects "
                               "unconstrained degrees of freedom.");
     sWhatsThis = "Sketcher_SelectElementsWithDoFs";
@@ -2369,7 +2369,7 @@ void CmdSketcherOffset::activated(int iMsg)
         getSelection().clearSelection();
         Gui::NotifyUserError(Obj,
             QT_TRANSLATE_NOOP("Notifications", "Invalid selection"),
-            QT_TRANSLATE_NOOP("Notifications", "Selection has no valid geometries. BSplines, Points are not supported yet."));
+            QT_TRANSLATE_NOOP("Notifications", "Selection has no valid geometries. B-splines and points are not supported yet."));
     }
 }
 

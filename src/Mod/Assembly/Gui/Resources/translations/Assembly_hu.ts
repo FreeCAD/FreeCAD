@@ -274,12 +274,12 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
     <message>
       <location filename="../../../JointObject.py" line="1534"/>
       <source>Radius 1</source>
-      <translation type="unfinished">Radius 1</translation>
+      <translation>Sugár 1</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1536"/>
       <source>Pitch radius</source>
-      <translation type="unfinished">Pitch radius</translation>
+      <translation>Sugár lejtése</translation>
     </message>
     <message>
       <location filename="../../../Preferences.py" line="49"/>
@@ -299,12 +299,12 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
     <message>
       <location filename="../../../CommandCreateBom.py" line="46"/>
       <source>Index (auto)</source>
-      <translation type="unfinished">Index (auto)</translation>
+      <translation>Index (automatikus)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="47"/>
       <source>Name (auto)</source>
-      <translation type="unfinished">Name (auto)</translation>
+      <translation>Név (automatikus)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="48"/>
@@ -314,12 +314,12 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
     <message>
       <location filename="../../../CommandCreateBom.py" line="49"/>
       <source>File Name (auto)</source>
-      <translation type="unfinished">File Name (auto)</translation>
+      <translation>Fájlnév (automatikus)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="50"/>
       <source>Quantity (auto)</source>
-      <translation type="unfinished">Quantity (auto)</translation>
+      <translation>Mennyiség (automatikus)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="197"/>
@@ -339,7 +339,7 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
     <message>
       <location filename="../../../CommandCreateBom.py" line="367"/>
       <source>Options:</source>
-      <translation type="unfinished">Options:</translation>
+      <translation>Beállítások:</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="374"/>

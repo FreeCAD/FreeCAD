@@ -1181,7 +1181,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManager.py" line="936"/>
       <source>Temporary installation of macro failed.</source>
-      <translation type="unfinished">Temporary installation of macro failed.</translation>
+      <translation>巨集的暫存安裝失敗。</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="95"/>

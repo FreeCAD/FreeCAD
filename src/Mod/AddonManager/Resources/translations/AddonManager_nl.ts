@@ -1651,7 +1651,7 @@ installed addons will be checked for available updates</translation>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="199"/>
       <source>Press OK to install anyway.</source>
-      <translation type="unfinished">Press OK to install anyway.</translation>
+      <translation>Druk op OK om toch te installeren.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="243"/>
@@ -2060,7 +2060,7 @@ installed addons will be checked for available updates</translation>
       <location filename="../../change_branch.py" line="207"/>
       <source>Local</source>
       <comment>Table header for local git ref name</comment>
-      <translation type="unfinished">Local</translation>
+      <translation>Lokaal</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="213"/>

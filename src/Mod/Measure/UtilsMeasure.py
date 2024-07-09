@@ -26,12 +26,12 @@ class MeasureBasePython(ABC):
 
     @abstractclassmethod
     def isValidSelection(cls, selection):
-        """Returns True if the given selection is valid for this measurment"""
+        """Returns True if the given selection is valid for this measurement"""
         pass
 
     @abstractclassmethod
     def isPrioritySelection(cls, selection):
-        """Returns True if creation of this measurment should be priorized over other measurements for the given selection"""
+        """Returns True if creation of this measurement should be priorized over other measurements for the given selection"""
         pass
 
     @abstractclassmethod
