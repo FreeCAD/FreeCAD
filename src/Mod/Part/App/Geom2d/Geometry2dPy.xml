@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport
-      Father="PyObjectBase"
-      Name="Geometry2dPy"
-      PythonName="Part.Geom2d.Geometry2d"
-      Twin="Geometry2d"
-      TwinPointer="Geometry2d"
-      Include="Mod/Part/App/Geometry2d.h"
-      Namespace="Part"
-      FatherInclude="Base/PyObjectBase.h"
-      FatherNamespace="Base"
-      Constructor="true"
-      Delete="true">
-    <Documentation>
-      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-      <UserDocu>The abstract class Geometry for 2D space is the root class of all geometric objects.
-It describes the common behavior of these objects when:
-- applying geometric transformations to objects, and
-- constructing objects by geometric transformation (including copying).</UserDocu>
-    </Documentation>
-    <Methode Name="mirror">
-      <Documentation>
-        <UserDocu>Performs the symmetrical transformation of this geometric object</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="rotate">
-      <Documentation>
-        <UserDocu>Rotates this geometric object at angle Ang (in radians) around a point</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="scale">
-      <Documentation>
-        <UserDocu>Applies a scaling transformation on this geometric object with a center and scaling factor</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="transform">
-      <Documentation>
-        <UserDocu>Applies a transformation to this geometric object</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="translate">
-      <Documentation>
-        <UserDocu>Translates this geometric object</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="copy" Const="true">
-      <Documentation>
-        <UserDocu>Create a copy of this geometry</UserDocu>
-      </Documentation>
-    </Methode>
-  </PythonExport>
+    <PythonExport
+        Father="PyObjectBase"
+        Name="Geometry2dPy"
+        PythonName="Part.Geom2d.Geometry2d"
+        Twin="Geometry2d"
+        TwinPointer="Geometry2d"
+        Include="Mod/Part/App/Geometry2d.h"
+        Namespace="Part"
+        FatherInclude="Base/PyObjectBase.h"
+        FatherNamespace="Base"
+        Constructor="true"
+        Delete="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+            <UserDocu>The abstract class Geometry for 2D space is the root class of all geometric objects.
+                It describes the common behavior of these objects when:
+                - applying geometric transformations to objects, and
+                - constructing objects by geometric transformation (including copying).</UserDocu>
+        </Documentation>
+        <Methode Name="mirror">
+            <Documentation>
+            <UserDocu>Performs the symmetrical transformation of this geometric object.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="rotate">
+            <Documentation>
+            <UserDocu>Rotates this geometric object at angle Ang (in radians) around a point.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="scale">
+            <Documentation>
+            <UserDocu>Applies a scaling transformation on this geometric object with a center and scaling factor.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="transform">
+            <Documentation>
+            <UserDocu>Applies a transformation to this geometric object.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="translate">
+            <Documentation>
+            <UserDocu>Translates this geometric object.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="copy" Const="true">
+            <Documentation>
+            <UserDocu>Create a copy of this geometry.</UserDocu>
+            </Documentation>
+        </Methode>
+    </PythonExport>
 </GenerateModel>

@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport
-      Father="ArcOfConic2dPy"
-      Name="ArcOfCircle2dPy"
-      PythonName="Part.Geom2d.ArcOfCircle2d"
-      Twin="Geom2dArcOfCircle"
-      TwinPointer="Geom2dArcOfCircle"
-      Include="Mod/Part/App/Geometry2d.h"
-      Namespace="Part"
-      FatherInclude="Mod/Part/App/Geom2d/ArcOfConic2dPy.h"
-      FatherNamespace="Part"
-      Constructor="true">
-    <Documentation>
-      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
-      <UserDocu>Describes a portion of a circle</UserDocu>
-    </Documentation>
-    <Attribute Name="Radius" ReadOnly="false">
-      <Documentation>
-        <UserDocu>The radius of the circle.</UserDocu>
-      </Documentation>
-      <Parameter Name="Radius" Type="Float"/>
-    </Attribute>
-    <Attribute Name="Circle" ReadOnly="true">
-      <Documentation>
-        <UserDocu>The internal circle representation</UserDocu>
-      </Documentation>
-      <Parameter Name="Circle" Type="Object"/>
-    </Attribute>
-  </PythonExport>
+    <PythonExport
+        Father="ArcOfConic2dPy"
+        Name="ArcOfCircle2dPy"
+        PythonName="Part.Geom2d.ArcOfCircle2d"
+        Twin="Geom2dArcOfCircle"
+        TwinPointer="Geom2dArcOfCircle"
+        Include="Mod/Part/App/Geometry2d.h"
+        Namespace="Part"
+        FatherInclude="Mod/Part/App/Geom2d/ArcOfConic2dPy.h"
+        FatherNamespace="Part"
+        Constructor="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
+                <UserDocu>Describes a portion of a circle</UserDocu>
+        </Documentation>
+        <Attribute Name="Radius" ReadOnly="false">
+            <Documentation>
+                <UserDocu>The radius of the circle.</UserDocu>
+            </Documentation>
+            <Parameter Name="Radius" Type="Float"/>
+        </Attribute>
+        <Attribute Name="Circle" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The internal circle representation</UserDocu>
+            </Documentation>
+            <Parameter Name="Circle" Type="Object"/>
+        </Attribute>
+    </PythonExport>
 </GenerateModel>
