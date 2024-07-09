@@ -5756,6 +5756,32 @@ bool TopoShape::isSame(const Data::ComplexGeoData& _other) const
     const auto& other = static_cast<const TopoShape&>(_other);
     return Tag == other.Tag && Hasher == other.Hasher && _Shape.IsEqual(other._Shape);
 }
+
+long TopoShape::isElementGenerated(const Data::MappedName& _name, int depth) const
+{
+    long res = 0;
+    long tag = 0;
+    traceElement(_name, [&](const Data::MappedName& name, int offset, long tag2, long) {
+        (void)offset;
+        if (tag2 < 0) {
+            tag2 = -tag2;
+        }
+        if (tag && tag2 != tag) {
+            if (--depth < 1) {
+                return true;
+            }
+        }
+        tag = tag2;
+        if (depth == 1 && name.startsWith(genPostfix(), offset)) {
+            res = tag;
+            return true;
+        }
+        return false;
+    });
+
+    return res;
+}
+
 void TopoShape::cacheRelatedElements(const Data::MappedName& name,
                                      HistoryTraceType sameType,
                                      const QVector<Data::MappedElement>& names) const
