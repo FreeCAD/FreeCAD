@@ -187,13 +187,14 @@ class ifc_vp_object:
         tree = mw.findChild(QtGui.QDockWidget, "Model")
         model = tree.findChild(QtGui.QWidget, "Model")
         splitter = model.findChild(QtGui.QSplitter)
-        tree = splitter.children()[1].children()[0]
-        it = tree.findItems(obj.Label, QtCore.Qt.MatchRecursive, 0)
-        if it:
-            it[0].setExpanded(True)
-            for i in range(it[0].childCount()):
-                it[0].child(i).setExpanded(True)
-
+        if splitter and len(splitter.children()) > 1:
+            if splitter.children()[1].children():
+                tree = splitter.children()[1].children()[0]
+                it = tree.findItems(obj.Label, QtCore.Qt.MatchRecursive, 0)
+                if it:
+                    it[0].setExpanded(True)
+                    for i in range(it[0].childCount()):
+                        it[0].child(i).setExpanded(True)
         return nc
 
     def collapseChildren(self):
