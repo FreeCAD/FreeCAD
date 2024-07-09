@@ -62,6 +62,13 @@ macro(CopyLibpackDirectories)
         install(DIRECTORY ${FREECAD_LIBPACK_DIR}/resources DESTINATION ${CMAKE_INSTALL_PREFIX})
         install(DIRECTORY ${FREECAD_LIBPACK_DIR}/bin DESTINATION ${CMAKE_INSTALL_PREFIX})
         install(DIRECTORY ${FREECAD_LIBPACK_DIR}/lib DESTINATION ${CMAKE_INSTALL_PREFIX} FILES_MATCHING PATTERN "*.dll")
+        if(FREECAD_LIBPACK_VERSION VERSION_GREATER_EQUAL "3.0.0")
+            # Trailing slashes make sure that cMake extracts the files from the directory, rather than taking the
+            # directory with it
+            install(DIRECTORY ${FREECAD_LIBPACK_DIR}/lib/ DESTINATION ${CMAKE_INSTALL_PREFIX}/bin FILES_MATCHING PATTERN "*.dll")
+            install(DIRECTORY ${FREECAD_LIBPACK_DIR}/bin/Lib/site-packages/shiboken6/ DESTINATION ${CMAKE_INSTALL_PREFIX}/bin FILES_MATCHING PATTERN "shiboken*.dll")
+            install(DIRECTORY ${FREECAD_LIBPACK_DIR}/bin/Lib/site-packages/PySide6/ DESTINATION ${CMAKE_INSTALL_PREFIX}/bin FILES_MATCHING PATTERN "pyside6*.dll")
+        endif()
         message(STATUS "Created install commands for INSTALL target.\n")
     endif()
 endmacro()
