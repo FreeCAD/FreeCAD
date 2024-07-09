@@ -26,6 +26,7 @@
 from nativeifc import ifc_tools
 import ifcopenshell
 from ifcopenshell import util
+from ifcopenshell.util import element
 
 
 def load_layers(obj):

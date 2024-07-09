@@ -30,6 +30,7 @@ import FreeCAD
 from FreeCAD import Base
 import Part
 import ifcopenshell
+from ifcopenshell.util import element
 from nativeifc import ifc_tools
 import multiprocessing
 import FreeCADGui
