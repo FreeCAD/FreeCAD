@@ -160,7 +160,7 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 
 %S ... Sequence Number
 
-The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
+The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
 &quot;/home/cnc/%d.g-code&quot;
 See the file save policy below on how to deal with name conflicts.</string>
       </property>
