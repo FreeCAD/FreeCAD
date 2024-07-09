@@ -36,6 +36,7 @@ import ifcopenshell
 from ifcopenshell import geom
 from ifcopenshell import api
 from ifcopenshell import template
+from ifcopenshell.util import element
 from ifcopenshell.util import attribute
 from ifcopenshell.util import schema
 from ifcopenshell.util import placement
