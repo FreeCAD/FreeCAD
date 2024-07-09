@@ -199,7 +199,7 @@
      <property name="title">
       <string>Tree view</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout" columnstretch="2,1">
+     <layout class="QGridLayout" name="gridLayout1" columnstretch="2,1">
       <item row="5" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="hideInternalNamesCheckBox">
         <property name="toolTip">

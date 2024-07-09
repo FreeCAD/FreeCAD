@@ -23,7 +23,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout1">
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="maxSizeLabel">
        <property name="text">
         <string>Max. Size:</string>
        </property>
