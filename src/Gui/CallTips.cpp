@@ -343,7 +343,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 bool shibokenMayCrash(void)
 {
     // Shiboken 6.4.0 to 6.8.0 crash if we try to read their object
-    // atttributes without a current stack frame.
+    // attributes without a current stack frame.
     // FreeCAD issue: https://github.com/FreeCAD/FreeCAD/issues/14101
     // Qt issue: https://bugreports.qt.io/browse/PYSIDE-2796
 
@@ -367,12 +367,13 @@ Py::Object CallTipsList::getAttrWorkaround(Py::Object& obj, Py::String& name) co
         return obj.getAttr(name.as_string());
     }
 
-    Py::Dict evalDict;
-    evalDict.setItem("obj", obj);
-    evalDict.setItem("attr", name);
+    Py::Dict globals;
+    Py::Dict locals;
+    locals.setItem("obj", obj);
+    locals.setItem("attr", name);
 
     Py::Object bouncer(Py_CompileString("getattr(obj, attr)", "<CallTipsList>", Py_eval_input));
-    Py::Object attr(PyEval_EvalCode(bouncer.ptr(), evalDict.ptr(), evalDict.ptr()));
+    Py::Object attr(PyEval_EvalCode(bouncer.ptr(), globals.ptr(), locals.ptr()));
 
     return attr;
 }
