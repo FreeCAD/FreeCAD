@@ -24,6 +24,7 @@
 
 #include "DlgCAMSimulator.h"
 #include "MillSimulation.h"
+#include <Mod/Part/App/BRepMesh.h>
 #include <QDateTime>
 #include <QSurfaceFormat>
 #include <QPoint>
@@ -130,19 +131,66 @@ void DlgCAMSimulator::hideEvent(QHideEvent* ev)
     mInstance = nullptr;
 }
 
-void DlgCAMSimulator::startSimulation(const SimStock* stock, float quality)
+void DlgCAMSimulator::GetMeshData(const Part::TopoShape& tshape,
+                                  float resolution,
+                                  std::vector<Vertex>& verts,
+                                  std::vector<GLushort>& indices)
 {
-    mStock = *stock;
+    std::vector<int> normalCount;
+    int nVerts = 0;
+    for (auto& s : tshape.getSubTopoShapes(TopAbs_FACE)) {
+        std::vector<Base::Vector3d> points;
+        std::vector<Data::ComplexGeoData::Facet> facets;
+        s.getFaces(points, facets, resolution);
+
+        std::vector<Base::Vector3d> normals(points.size());
+        std::vector<int> normalCount(points.size());
+
+        // copy triangle indices and calculate normals
+        for (auto f : facets) {
+            indices.push_back(f.I1 + nVerts);
+            indices.push_back(f.I2 + nVerts);
+            indices.push_back(f.I3 + nVerts);
+
+            // calculate normal
+            Base::Vector3d vAB = points[f.I2] - points[f.I1];
+            Base::Vector3d vAC = points[f.I3] - points[f.I1];
+            Base::Vector3d vNorm = vAB.Cross(vAC).Normalize();
+
+            normals[f.I1] += vNorm;
+            normals[f.I2] += vNorm;
+            normals[f.I3] += vNorm;
+
+            normalCount[f.I1]++;
+            normalCount[f.I2]++;
+            normalCount[f.I3]++;
+        }
+
+        // copy points and set normals
+        for (int i = 0; i < points.size(); i++) {
+            Base::Vector3d& point = points[i];
+            Base::Vector3d& normal = normals[i];
+            int count = normalCount[i];
+            normal /= count;
+            verts.push_back(Vertex(point.x, point.y, point.z, normal.x, normal.y, normal.z));
+        }
+
+        nVerts = verts.size();
+    }
+}
+
+void DlgCAMSimulator::startSimulation(const Part::TopoShape& stock, float quality)
+{
     mQuality = quality;
     mNeedsInitialize = true;
     show();
+    checkInitialization();
+    SetStockShape(stock, 1);
     setAnimating(true);
 }
 
 void DlgCAMSimulator::initialize()
 {
-    mMillSimulator
-        ->SetBoxStock(mStock.mPx, mStock.mPy, mStock.mPz, mStock.mLx, mStock.mLy, mStock.mLz);
     mMillSimulator->InitSimulation(mQuality);
 
     const qreal retinaScale = devicePixelRatio();
@@ -239,6 +287,22 @@ DlgCAMSimulator* DlgCAMSimulator::GetInstance()
         mInstance->setModality(Qt::ApplicationModal);
     }
     return mInstance;
+}
+
+void DlgCAMSimulator::SetStockShape(const Part::TopoShape& tshape, float resolution)
+{
+    std::vector<Vertex> verts;
+    std::vector<GLushort> indices;
+    GetMeshData(tshape, resolution, verts, indices);
+    mMillSimulator->SetArbitraryStock(verts, indices);
+}
+
+void DlgCAMSimulator::SetBaseShape(const Part::TopoShape& tshape, float resolution)
+{
+    std::vector<Vertex> verts;
+    std::vector<GLushort> indices;
+    GetMeshData(tshape, resolution, verts, indices);
+    mMillSimulator->SetBaseObject(verts, indices);
 }
 
 DlgCAMSimulator* DlgCAMSimulator::mInstance = nullptr;

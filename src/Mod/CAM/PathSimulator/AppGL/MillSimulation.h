@@ -33,8 +33,13 @@
 #include "SimDisplay.h"
 #include "GuiDisplay.h"
 #include "MillPathLine.h"
+#include "SolidObject.h"
 #include <sstream>
 #include <vector>
+
+#define VIEWITEM_SIMULATION   1
+#define VIEWITEM_BASE_SHAPE   2
+#define VIEWITEM_MAX          4
 
 namespace MillSim
 {
@@ -55,6 +60,9 @@ public:
         return GetTool(toolid) != nullptr;
     }
     void RenderSimulation();
+    void RenderTool();
+    void RenderPath();
+    void RenderBaseShape();
     void Render();
     void ProcessSim(unsigned int time_ms);
     void HandleKeyPress(int key);
@@ -63,6 +71,8 @@ public:
     bool AddGcodeLine(const char* line);
     void SetSimulationStage(float stage);
     void SetBoxStock(float x, float y, float z, float l, float w, float h);
+    void SetArbitraryStock(std::vector<Vertex>& verts, std::vector<GLushort>& indices);
+    void SetBaseObject(std::vector<Vertex>& verts, std::vector<GLushort>& indices);
     void MouseDrag(int buttons, int dx, int dy);
     void MouseMove(int px, int py);
     void MouseScroll(float dy);
@@ -100,6 +110,7 @@ protected:
     MillMotion mDestMotion = {eNop, -1, 0, 0, 0, 0, 0, 0};
 
     StockObject mStockObject;
+    SolidObject mBaseShape;
 
     vec3 bgndColor = {0.1f, 0.2f, 0.3f};
     vec3 stockColor = {0.7f, 0.75f, 0.9f};
@@ -115,6 +126,7 @@ protected:
     int mDebug1 = 0;
     int mDebug2 = 12;
     int mSimSpeed = 1;
+    int mViewItems = VIEWITEM_SIMULATION;
 
     int mLastMouseX = 0, mLastMouseY = 0;
     int mMouseButtonState = 0;

@@ -59,13 +59,13 @@ public:
     CAMSim();
     ~CAMSim();
 
-    void BeginSimulation(Part::TopoShape* stock, float resolution);
+    void BeginSimulation(const Part::TopoShape& stock, float resolution);
     void resetSimulation();
     void addTool(const std::vector<float> toolProfilePoints,
                  int toolNumber,
                  float diameter,
                  float resolution);
-    void SetBaseShape(const TopoDS_Shape& stock, float resolution);
+    void SetBaseShape(const Part::TopoShape& stock, float resolution);
     void AddCommand(Command* cmd);
 
 public:

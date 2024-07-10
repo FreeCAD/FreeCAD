@@ -125,7 +125,7 @@ void Shape::RotateProfile(float* profPoints,
         }
     }
 
-    GenerateModel((float *)vbuffer.data(), ibuffer.data(), numVerts, numIndices);
+    SetModelData(vbuffer, ibuffer);
 }
 
 void Shape::CalculateExtrudeBufferSizes(int nProfilePoints,
@@ -245,7 +245,7 @@ void Shape::ExtrudeProfileRadial(float* profPoints,
         }
     }
 
-    GenerateModel((float *)vbuffer.data(), ibuffer.data(), numVerts, numIndices);
+    SetModelData(vbuffer, ibuffer);
 }
 
 void Shape::ExtrudeProfileLinear(float* profPoints,
@@ -316,7 +316,7 @@ void Shape::ExtrudeProfileLinear(float* profPoints,
         }
     }
 
-    GenerateModel((float *)vbuffer.data(), ibuffer.data(), numVerts, numIndices);
+    SetModelData(vbuffer, ibuffer);
 }
 
 void Shape::GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int nIndices)

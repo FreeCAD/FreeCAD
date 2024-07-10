@@ -314,24 +314,44 @@ void MillSimulation::RenderSimulation()
 
     glEnable(GL_CULL_FACE);
 
-    if (mPathStep >= 0) {
-        vec3 toolPos;
-        MotionPosToVec(toolPos, &mDestMotion);
-        MillSim::MillPathSegment* p = MillPathSegments.at(mPathStep);
-        p->GetHeadPosition(toolPos);
-        mat4x4 tmat;
-        mat4x4_translate(tmat, toolPos[0], toolPos[1], toolPos[2]);
-        // mat4x4_translate(tmat, toolPos.x, toolPos.y, toolPos.z);
-        simDisplay.StartGeometryPass(toolColor, false);
-        p->endmill->toolShape.Render(tmat, identityMat);
+
+}
+
+void MillSimulation::RenderTool()
+{
+    if (mPathStep < 0) {
+        return;
     }
 
-    if (guiDisplay.IsChecked(eGuiItemPath)) {
-        simDisplay.SetupLinePathPass(mPathStep, false);
-        millPathLine.Render();
-        simDisplay.SetupLinePathPass(mPathStep, true);
-        millPathLine.Render();
+    vec3 toolPos;
+    MotionPosToVec(toolPos, &mDestMotion);
+    MillSim::MillPathSegment* p = MillPathSegments.at(mPathStep);
+    p->GetHeadPosition(toolPos);
+    mat4x4 tmat;
+    mat4x4_translate(tmat, toolPos[0], toolPos[1], toolPos[2]);
+    // mat4x4_translate(tmat, toolPos.x, toolPos.y, toolPos.z);
+    simDisplay.StartGeometryPass(toolColor, false);
+    p->endmill->toolShape.Render(tmat, identityMat);
+}
+
+void MillSimulation::RenderPath()
+{
+    if (!guiDisplay.IsChecked(eGuiItemPath)) {
+        return;
     }
+    simDisplay.SetupLinePathPass(mPathStep, false);
+    millPathLine.Render();
+    simDisplay.SetupLinePathPass(mPathStep, true);
+    millPathLine.Render();
+}
+
+void MillSimulation::RenderBaseShape()
+{
+    if ((mViewItems & VIEWITEM_BASE_SHAPE) == 0) {
+        return;
+    }
+    simDisplay.StartGeometryPass(toolColor, false);
+    mBaseShape.render();
 }
 
 void MillSimulation::Render()
@@ -344,6 +364,9 @@ void MillSimulation::Render()
     // render the simulation offscreen in an FBO
     if (simDisplay.updateDisplay) {
         RenderSimulation();
+        RenderTool();
+        RenderBaseShape();
+        RenderPath();
         simDisplay.updateDisplay = false;
     }
 
@@ -455,6 +478,16 @@ void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
             simDisplay.applySSAO = checked;
             simDisplay.updateDisplay = true;
             break;
+
+        case eGuiItemView:
+            mViewItems++;
+            if (mViewItems >= VIEWITEM_MAX) {
+                mViewItems = VIEWITEM_SIMULATION;
+            }
+            simDisplay.updateDisplay = true;
+            break;
+
+
     }
     guiDisplay.UpdatePlayState(mSimPlaying);
 }
@@ -478,6 +511,17 @@ void MillSimulation::SetBoxStock(float x, float y, float z, float l, float w, fl
 {
     mStockObject.GenerateBoxStock(x, y, z, l, w, h);
     simDisplay.ScaleViewToStock(&mStockObject);
+}
+
+void MillSimulation::SetArbitraryStock(std::vector<Vertex>& verts, std::vector<GLushort>& indices)
+{
+    mStockObject.GenerateSolid(verts, indices);
+    simDisplay.ScaleViewToStock(&mStockObject);
+}
+
+void MillSimulation::SetBaseObject(std::vector<Vertex>& verts, std::vector<GLushort>& indices)
+{
+    mBaseShape.GenerateSolid(verts, indices);
 }
 
 void MillSimulation::MouseDrag(int buttons, int dx, int dy)

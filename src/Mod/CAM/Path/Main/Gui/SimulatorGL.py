@@ -262,6 +262,10 @@ class CAMSimulation:
                 listItem.setCheckState(QtCore.Qt.CheckState.Checked)
                 self.operations.append(op)
                 form.listOperations.addItem(listItem)
+        if len(j.Model.OutList) > 0:
+            self.baseShape = j.Model.OutList[0].Shape
+        else:
+            self.baseShape = None
 
     def onAccuracyBarChange(self):
         form = self.taskForm.form
@@ -294,6 +298,8 @@ class CAMSimulation:
             for cmd in opCommands:
                 self.millSim.AddCommand(cmd)
         self.millSim.BeginSimulation(self.stock, self.quality)
+        if self.baseShape is not None:
+            self.millSim.SetBaseShape(self.baseShape, 1)
 
     def cancel(self):
         #self.EndSimulation()

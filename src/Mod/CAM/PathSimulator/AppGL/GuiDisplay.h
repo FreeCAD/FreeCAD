@@ -46,6 +46,7 @@ enum eGuiItems
     eGuiItemChar4Img,
     eGuiItemPath,
     eGuiItemAmbientOclusion,
+    eGuiItemView,
     eGuiItemMax
 };
 

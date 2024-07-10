@@ -34,7 +34,7 @@ class SolidObject
 public:
     SolidObject();
     virtual ~SolidObject();
-
+    void SetPosition(vec3 position);
 
     /// Calls the display list.
     virtual void render();
@@ -45,7 +45,7 @@ public:
     vec3 position = {};
     bool isValid = false;
 
-private:
+protected:
     mat4x4 mModelMat;
 };
 }  // namespace MillSim

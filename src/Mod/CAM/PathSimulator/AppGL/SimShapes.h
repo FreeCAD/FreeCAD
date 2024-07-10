@@ -54,6 +54,18 @@ typedef unsigned int uint;
 
 struct Vertex
 {
+    Vertex()
+        : Vertex(0, 0, 0)
+    {}
+    Vertex(float _x, float _y, float _z, float _nx = 0, float _ny = 0, float _nz = 0)
+    {
+        x = _x;
+        y = _y;
+        z = _z;
+        nx = _nx;
+        ny = _ny;
+        nz = _nz;
+    }
     float x, y, z;
     float nx, ny, nz;
 };

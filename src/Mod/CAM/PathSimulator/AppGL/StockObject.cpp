@@ -29,25 +29,6 @@ using namespace MillSim;
 
 StockObject::StockObject()
 {
-    mat4x4_identity(mModelMat);
-    vec3_set(center, 0, 0, 0);
-}
-
-StockObject::~StockObject()
-{
-    shape.FreeResources();
-}
-
-void StockObject::render()
-{
-    // glCallList(mDisplayListId);
-    // UpdateObjColor(color);
-    shape.Render(mModelMat, mModelMat);  // model is not rotated hence both are identity matrix
-}
-
-void StockObject::SetPosition(vec3 position)
-{
-    mat4x4_translate(mModelMat, position[0], position[1], position[2]);
 }
 
 void StockObject::GenerateBoxStock(float x, float y, float z, float l, float w, float h)

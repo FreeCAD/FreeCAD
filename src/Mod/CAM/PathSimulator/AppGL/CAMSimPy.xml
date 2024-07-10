@@ -51,7 +51,7 @@
     <Methode Name="SetBaseShape" Keyword='true'>
       <Documentation>
         <UserDocu>
-          SetBaseShape(shape):
+          SetBaseShape(shape, resolution):
 
           Set the shape of the base object of the job
         </UserDocu>

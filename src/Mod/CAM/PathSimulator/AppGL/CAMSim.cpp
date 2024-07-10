@@ -44,17 +44,9 @@ CAMSim::CAMSim()
 CAMSim::~CAMSim()
 {}
 
-void CAMSim::BeginSimulation(Part::TopoShape* stock, float quality)
+void CAMSim::BeginSimulation(const Part::TopoShape& stock, float quality)
 {
-    Base::BoundBox3d bbox = stock->getBoundBox();
-    SimStock stk = {(float)bbox.MinX,
-                    (float)bbox.MinY,
-                    (float)bbox.MinZ,
-                    (float)bbox.LengthX(),
-                    (float)bbox.LengthY(),
-                    (float)bbox.LengthZ(),
-                    quality};
-    DlgCAMSimulator::GetInstance()->startSimulation(&stk, quality);
+    DlgCAMSimulator::GetInstance()->startSimulation(stock, quality);
 }
 
 void CAMSimulator::CAMSim::resetSimulation()
@@ -70,22 +62,25 @@ void CAMSim::addTool(const std::vector<float> toolProfilePoints,
     DlgCAMSimulator::GetInstance()->addTool(toolProfilePoints, toolNumber, diameter, resolution);
 }
 
-void CAMSimulator::CAMSim::SetBaseShape(const TopoDS_Shape& stock, float resolution)
+void CAMSimulator::CAMSim::SetBaseShape(const Part::TopoShape& bshape, float resolution)
 {
-    if (stock.IsNull()) {
+    if (bshape.isNull()) {
         return;
     }
-    BRepTools::Clean(stock);
-    BRepMesh_IncrementalMesh aMesh(stock, resolution);
 
-    std::vector<Part::TopoShape::Domain> domains;
-    Part::TopoShape(stock).getDomains(domains);
+    DlgCAMSimulator::GetInstance()->SetBaseShape(bshape, resolution);
 
-    std::vector<Base::Vector3d> points;
-    std::vector<Part::TopoShape::Facet> facets;
-    Part::BRepMesh mesh;
-    mesh.getFacesFromDomains(domains, points, facets);
+    //BRepMesh_IncrementalMesh aMesh(bshape, resolution);
 
+    //std::vector<Part::TopoShape::Domain> domains;
+    //Part::TopoShape(bshape).getDomains(domains);
+
+    //std::vector<Base::Vector3d> points;
+    //std::vector<Part::TopoShape::Facet> facets;
+    //Part::BRepMesh mesh;
+    //mesh.getFacesFromDomains(domains, points, facets);
+    //Part::TopoShape::Facet& facet = facets[0];
+    
 }
 
 void CAMSim::AddCommand(Command* cmd)

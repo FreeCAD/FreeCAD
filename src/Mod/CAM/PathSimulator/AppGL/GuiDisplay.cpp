@@ -43,6 +43,7 @@ GuiItem guiItems[] = {
     {eGuiItemChar4Img,        0, 0, 210, 550, 0, true, 0},
     {eGuiItemPath,            0, 0, 670, 550, 'L', false, GUIITEM_CHECKABLE},
     {eGuiItemAmbientOclusion, 0, 0, 710, 550, 'A', false, GUIITEM_CHECKABLE},
+    {eGuiItemView,            0, 0, 590, 550, 'V', false},
 };
 
 #define NUM_GUI_ITEMS (sizeof(guiItems) / sizeof(GuiItem))
@@ -60,7 +61,8 @@ std::vector<std::string> guiFileNames = {"Slider.png",
                                          "1.png",
                                          "4.png",
                                          "Path.png",
-                                         "AmbientOclusion.png"};
+                                         "AmbientOclusion.png",
+                                         "View.png"};
 
 bool GuiDisplay::GenerateGlItem(GuiItem* guiItem)
 {

@@ -73,7 +73,7 @@ PyObject* CAMSimPy::BeginSimulation(PyObject* args, PyObject* kwds)
         return nullptr;
     }
     CAMSim* sim = getCAMSimPtr();
-    Part::TopoShape* stock = static_cast<Part::TopoShapePy*>(pObjStock)->getTopoShapePtr();
+    const Part::TopoShape& stock = *static_cast<Part::TopoShapePy*>(pObjStock)->getTopoShapePtr();
     sim->BeginSimulation(stock, resolution);
     Py_IncRef(Py_None);
     return Py_None;
@@ -108,7 +108,7 @@ PyObject* CAMSimPy::AddTool(PyObject* args, PyObject* kwds)
 
 PyObject* CAMSimPy::SetBaseShape(PyObject* args, PyObject* kwds)
 {
-    static const std::array<const char*, 3> kwlist {"stock", "resolution", nullptr};
+    static const std::array<const char*, 3> kwlist {"shape", "resolution", nullptr};
     PyObject* pObjBaseShape;
     float resolution;
     if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds,"O!f",
@@ -119,9 +119,9 @@ PyObject* CAMSimPy::SetBaseShape(PyObject* args, PyObject* kwds)
         return nullptr;
     }
     CAMSim* sim = getCAMSimPtr();
-    const TopoDS_Shape& toolShape =
+    const Part::TopoShape& baseShape =
         static_cast<Part::TopoShapePy*>(pObjBaseShape)->getTopoShapePtr()->getShape();
-    sim->SetBaseShape(toolShape, resolution);
+    sim->SetBaseShape(baseShape, resolution);
 
     Py_IncRef(Py_None);
     return Py_None;
