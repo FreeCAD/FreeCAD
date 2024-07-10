@@ -791,7 +791,6 @@ QScrollBar::sub-line:vertical:hover, QScrollBar::sub-line:vertical:on {
   subcontrol-origin: margin;
 }
 
-
 /* QTextEdit --------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-specific-widgets
@@ -1019,7 +1018,15 @@ QLabel {
   border: 0px solid #020202;
   padding: 2px;
   margin: 0px;
-  color: White;
+  color: #ffffff;
+}
+
+QLabel#FileCardStartPage {
+  background-color: transparent;
+  border: 0px solid #020202;
+  padding: 2px;
+  margin: 0px;
+  color: #ff0000;
 }
 
 QLabel:disabled {
@@ -1332,7 +1339,7 @@ QToolButton::menu-arrow {
   image: url(qss:images_classic/Arrow-down-lightgray.png);
   width: 1.3ex;
   height: 1.3ex;
-  background: transparent;
+  /* background: transparent; */
 }
 QToolButton::menu-arrow:open {
   image: url(qss:images_classic/Arrow-Down-white.png);
@@ -1882,6 +1889,28 @@ QTabBar, QDockWidget QTabBar {
   /* left: 5px; move to the right by 5px - removed for fix */
 }
 
+QTabBar[style="icon-only"]::tab:top {
+  min-width: 16px;
+  padding-right: -1px;
+}
+
+QTabBar[style="icon-only"]::tab:bottom {
+  min-width: 16px;
+  padding-right: -1px;
+}
+
+QTabBar[style="icon-only"]::tab:left {
+  min-height: 16px;
+  padding: 0px;
+}
+
+QTabBar[style="icon-only"]::tab:right {
+  min-height: 16px;
+  padding: 0px;
+}
+
+
+
 QTabBar::close-button, QDockWidget QTabBar::close-button {
   border: 0;
   margin: 3px;
@@ -2086,7 +2115,7 @@ QDockWidget::close-button {
   icon-size: 10px;
   border: none;
   background: transparent;
-  background-image: transparent;
+  background-image: none;
   border: 0;
   margin: 0;
   padding: 0;
@@ -2105,7 +2134,7 @@ QDockWidget::float-button {
   icon-size: 12px;
   border: none;
   background: transparent;
-  background-image: transparent;
+  background-image: none;
   border: 0;
   margin: 0;
   padding: 0;
@@ -2741,3 +2770,11 @@ QWidget#thumbnailWidget[state="pressed"] {
  #WbTabBar #WbTabBarMore {
   padding-right: 12px;
  }
+
+/**
+ * Special resetting minimum button size
+ */
+
+ #StartView QPushButton {
+  min-width: -1;
+}

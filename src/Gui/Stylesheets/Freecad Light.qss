@@ -1859,6 +1859,25 @@ QTabBar, QDockWidget QTabBar {
   background-color: #f0f0f0;
   /* left: 5px; move to the right by 5px - removed for fix */
 }
+QTabBar[style="icon-only"]::tab:top {
+  min-width: 16px;
+  padding-right: -1px;
+}
+
+QTabBar[style="icon-only"]::tab:bottom {
+  min-width: 16px;
+  padding-right: -1px;
+}
+
+QTabBar[style="icon-only"]::tab:left {
+  min-height: 16px;
+  padding: -1px;
+}
+
+QTabBar[style="icon-only"]::tab:right {
+  min-height: 16px;
+  padding: -1px;
+}
 
 QTabBar::close-button, QDockWidget QTabBar::close-button {
   border: 0;
@@ -2117,7 +2136,7 @@ QDockWidget::close-button {
   icon-size: 10px;
   border: none;
   background: transparent;
-  background-image: transparent;
+  background-image: none;
   border: 0;
   margin: 0;
   padding: 0;
@@ -2136,7 +2155,7 @@ QDockWidget::float-button {
   icon-size: 12px;
   border: none;
   background: transparent;
-  background-image: transparent;
+  background-image: none;
   border: 0;
   margin: 0;
   padding: 0;
@@ -2780,3 +2799,11 @@ QWidget#thumbnailWidget[state="pressed"] {
  #WbTabBar #WbTabBarMore {
   padding-right: 12px;
  }
+
+ /**
+ * Special resetting minimum button size
+ */
+
+ #StartView QPushButton {
+  min-width: -1;
+}
