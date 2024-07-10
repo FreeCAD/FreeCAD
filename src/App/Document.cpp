@@ -83,6 +83,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <QCoreApplication>
 
 #include <App/DocumentPy.h>
+#include <Base/Interpreter.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
@@ -793,6 +794,7 @@ Document::Document(const char* documentName)
     // Remark: We force the document Python object to own the DocumentPy instance, thus we don't
     // have to care about ref counting any more.
     d = new DocumentP;
+    Base::PyGILStateLocker lock;
     d->DocumentPythonObject = Py::Object(new DocumentPy(this), true);
 
 #ifdef FC_LOGUPDATECHAIN

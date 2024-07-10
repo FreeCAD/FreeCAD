@@ -220,6 +220,7 @@ Document::Document(App::Document* pcDocument,Application * app)
     // pointer to the python class
     // NOTE: As this Python object doesn't get returned to the interpreter we
     // mustn't increment it (Werner Jan-12-2006)
+    Base::PyGILStateLocker lock;
     _pcDocPy = new Gui::DocumentPy(this);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
