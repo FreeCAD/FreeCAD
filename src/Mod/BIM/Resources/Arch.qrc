@@ -4,7 +4,14 @@
         <file>icons/IFC/IfcBuilding.svg</file>
         <file>icons/IFC/IfcBuildingStorey.svg</file>
         <file>icons/IFC/IfcColumn.svg</file>
+        <file>icons/IFC/IfcCovering.svg</file>
         <file>icons/IFC/IfcDoor.svg</file>
+        <file>icons/IFC/IfcFooting.svg</file>
+        <file>icons/IFC/IfcMember.svg</file>
+        <file>icons/IFC/IfcPile.svg</file>
+        <file>icons/IFC/IfcPlate.svg</file>
+        <file>icons/IFC/IfcRailing.svg</file>
+        <file>icons/IFC/IfcRamp.svg</file>
         <file>icons/IFC/IfcRoof.svg</file>
         <file>icons/IFC/IfcSite.svg</file>
         <file>icons/IFC/IfcSlab.svg</file>
