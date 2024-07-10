@@ -1198,7 +1198,7 @@ public:
     { return "Gui::PropertyEditor::PropertyLinkItem"; }
 };
 
-/** The general Link Property that are hidden from dependency checking
+/** The PropertyXLinkSub that is hidden from dependency checking
  */
 class AppExport PropertyXLinkSubHidden : public PropertyXLinkSub
 {
