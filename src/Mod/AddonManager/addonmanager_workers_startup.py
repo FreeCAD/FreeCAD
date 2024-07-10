@@ -45,6 +45,7 @@ from AddonStats import AddonStats
 import NetworkManager
 from addonmanager_git import initialize_git, GitFailed
 from addonmanager_metadata import MetadataReader, get_branch_from_metadata
+import addonmanager_freecad_interface as fci
 
 translate = FreeCAD.Qt.translate
 
