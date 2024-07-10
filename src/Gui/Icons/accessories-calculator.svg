@@ -13,28 +13,6 @@
   <defs
      id="defs3">
     <linearGradient
-       id="linearGradient6">
-      <stop
-         style="stop-color:#729fcf;stop-opacity:1;"
-         offset="0"
-         id="stop6" />
-      <stop
-         style="stop-color:#204a87;stop-opacity:1;"
-         offset="1"
-         id="stop7" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient4">
-      <stop
-         style="stop-color:#eeeeec;stop-opacity:1;"
-         offset="0"
-         id="stop4" />
-      <stop
-         style="stop-color:#888a85;stop-opacity:1;"
-         offset="1"
-         id="stop5" />
-    </linearGradient>
-    <linearGradient
        id="linearGradient13">
       <stop
          style="stop-color:#4e9a06;stop-opacity:1;"
@@ -46,90 +24,6 @@
          id="stop14" />
     </linearGradient>
     <linearGradient
-       id="linearGradient5048">
-      <stop
-         style="stop-color:black;stop-opacity:0;"
-         offset="0"
-         id="stop5050" />
-      <stop
-         id="stop5056"
-         offset="0.5"
-         style="stop-color:black;stop-opacity:1;" />
-      <stop
-         style="stop-color:black;stop-opacity:0;"
-         offset="1"
-         id="stop5052" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient30695">
-      <stop
-         style="stop-color:#b8babc;stop-opacity:1.0000000;"
-         offset="0.0000000"
-         id="stop30697" />
-      <stop
-         id="stop30703"
-         offset="0.37383178"
-         style="stop-color:#5d6062;stop-opacity:1.0000000;" />
-      <stop
-         style="stop-color:#585b5d;stop-opacity:1.0000000;"
-         offset="1.0000000"
-         id="stop30699" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient30685">
-      <stop
-         style="stop-color:#8d8d8d;stop-opacity:1;"
-         offset="0"
-         id="stop30687" />
-      <stop
-         style="stop-color:#747474;stop-opacity:1.0000000;"
-         offset="1.0000000"
-         id="stop30689" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient30649">
-      <stop
-         style="stop-color:#858585;stop-opacity:1.0000000;"
-         offset="0.0000000"
-         id="stop30651" />
-      <stop
-         style="stop-color:#5f5f5f;stop-opacity:1.0000000;"
-         offset="1.0000000"
-         id="stop30653" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient30518">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop30520" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.78698224;"
-         offset="1.0000000"
-         id="stop30522" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient30505">
-      <stop
-         style="stop-color:#000000;stop-opacity:1;"
-         offset="0"
-         id="stop30507" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop30509" />
-    </linearGradient>
-    <radialGradient
-       xlink:href="#linearGradient30505"
-       id="radialGradient30511"
-       cx="25.375"
-       cy="43.375"
-       fx="25.375"
-       fy="43.375"
-       r="17.125"
-       gradientTransform="matrix(1,0,0,0.343066,0,28.49453)"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
        xlink:href="#linearGradient13"
        id="linearGradient14"
        x1="14.194713"
@@ -138,22 +32,6 @@
        y2="14.959513"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(0.94136107,0,0,0.80047803,1.6398337,2.9844794)" />
-    <linearGradient
-       xlink:href="#linearGradient4"
-       id="linearGradient5"
-       x1="13.925462"
-       y1="28.767968"
-       x2="23.993155"
-       y2="28.767968"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       xlink:href="#linearGradient6"
-       id="linearGradient7"
-       x1="14.345589"
-       y1="45.668344"
-       x2="23.573026"
-       y2="45.668344"
-       gradientUnits="userSpaceOnUse" />
   </defs>
   <metadata
      id="metadata4">
@@ -165,7 +43,7 @@
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
         <dc:creator>
           <cc:Agent>
-            <dc:title>Jakub Steiner</dc:title>
+            <dc:title>Turan Furkan Topak</dc:title>
           </cc:Agent>
         </dc:creator>
         <dc:contributor>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    version="1.1"
    id="svg3057"
    height="64px"
-   width="64px">
+   width="64px"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <title
      id="title861">Std_SelectVisibleObjects</title>
   <defs
@@ -46,70 +46,6 @@
          id="stop3818"
          offset="1"
          style="stop-color:#d3d7cf;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3878">
-      <stop
-         id="stop3880"
-         offset="0"
-         style="stop-color:#000000;stop-opacity:0.58823532;" />
-      <stop
-         id="stop3882"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:0.58823532;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3870">
-      <stop
-         id="stop3872"
-         offset="0"
-         style="stop-color:#000000;stop-opacity:0.19607843;" />
-      <stop
-         id="stop3874"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:1;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3858">
-      <stop
-         id="stop3868"
-         offset="0"
-         style="stop-color:#000000;stop-opacity:0.19607843;" />
-      <stop
-         id="stop3862"
-         offset="1"
-         style="stop-color:#000000;stop-opacity:1;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3839">
-      <stop
-         id="stop3841"
-         offset="0"
-         style="stop-color:#01d6d6;stop-opacity:1;" />
-      <stop
-         id="stop3843"
-         offset="1"
-         style="stop-color:#01d6d6;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       gradientTransform="matrix(0.83341111,0,0,0.86929423,6.5373399,6.8175926)"
-       gradientUnits="userSpaceOnUse"
-       y2="64.894638"
-       x2="64.94799"
-       y1="0.43078607"
-       x1="0.1544303"
-       id="linearGradient3844-0"
-       xlink:href="#linearGradient3838-3" />
-    <linearGradient
-       id="linearGradient3838-3">
-      <stop
-         id="stop3840-1"
-         offset="0"
-         style="stop-color:#ffffff;stop-opacity:1" />
-      <stop
-         id="stop3842-2"
-         offset="1"
-         style="stop-color:#dde0dd;stop-opacity:0.09302326" />
     </linearGradient>
     <radialGradient
        gradientUnits="userSpaceOnUse"
