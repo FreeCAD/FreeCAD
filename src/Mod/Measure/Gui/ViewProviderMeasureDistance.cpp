@@ -413,7 +413,7 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
     pDeltaDimensionSwitch->addChild(dimDeltaY);
     pDeltaDimensionSwitch->addChild(dimDeltaZ);
 
-    // This should alredy be touched in ViewProviderMeasureBase
+    // This should already be touched in ViewProviderMeasureBase
     FontSize.touch();
 }
 
