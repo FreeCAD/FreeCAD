@@ -223,7 +223,8 @@ void TaskMeasure::update() {
             // Create an instance of the pyMeasureClass, the classe's initializer sets the object as proxy
             Py::Tuple args(1);
             args.setItem(0, Py::asObject(featurePython->getPyObject()));
-            PyObject_CallObject(pyMeasureClass, args.ptr());
+            PyObject* result = PyObject_CallObject(pyMeasureClass, args.ptr());
+            Py_XDECREF(result);
         }
         else {
             // Create measure object
