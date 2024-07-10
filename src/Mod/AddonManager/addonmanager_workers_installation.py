@@ -26,14 +26,9 @@
 
 # pylint: disable=c-extension-no-member,too-few-public-methods,too-many-instance-attributes
 
-import io
+import json
 import os
-import queue
-import shutil
-import subprocess
-import time
-import zipfile
-from typing import Dict, List
+from typing import Dict
 from enum import Enum, auto
 
 from PySide import QtCore
@@ -43,6 +38,7 @@ import addonmanager_utilities as utils
 from addonmanager_metadata import MetadataReader
 from Addon import Addon
 import NetworkManager
+import addonmanager_freecad_interface as fci
 
 translate = FreeCAD.Qt.translate
 
@@ -79,15 +75,20 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         self.store = os.path.join(FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata")
         FreeCAD.Console.PrintLog(f"Storing Addon Manager cache data in {self.store}\n")
         self.updated_repos = set()
+        self.remote_cache_data = {}
 
     def run(self):
         """Not usually called directly: instead, create an instance and call its
         start() function to spawn a new thread."""
 
+        self.update_from_remote_cache()
+
         current_thread = QtCore.QThread.currentThread()
 
         for repo in self.repos:
-            if not repo.macro and repo.url and utils.recognized_git_location(repo):
+            if repo.name in self.remote_cache_data:
+                self.update_addon_from_remote_cache_data(repo)
+            elif not repo.macro and repo.url and utils.recognized_git_location(repo):
                 # package.xml
                 index = NetworkManager.AM_NETWORK_MANAGER.submit_unmonitored_get(
                     utils.construct_git_url(repo, "package.xml")
@@ -132,6 +133,34 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         for repo in self.updated_repos:
             self.package_updated.emit(repo)
 
+    def update_from_remote_cache(self) -> None:
+        """Pull the data on the official repos from a remote cache site (usually
+        https://freecad.org/addons/addon_cache.json)"""
+        data_source = fci.Preferences().get("AddonsCacheURL")
+        try:
+            fetch_result = NetworkManager.AM_NETWORK_MANAGER.blocking_get(data_source, 5000)
+            if fetch_result:
+                self.remote_cache_data = json.loads(fetch_result.data())
+            else:
+                fci.Console.PrintWarning(
+                    f"Failed to read from {data_source}. Continuing without remote cache...\n"
+                )
+        except RuntimeError:
+            # If the remote cache can't be fetched, we continue anyway
+            pass
+
+    def update_addon_from_remote_cache_data(self, addon: Addon):
+        """Given a repo that exists in the remote cache, load in its metadata."""
+        fci.Console.PrintLog(f"Used remote cache data for {addon.name} metadata\n")
+        if "package.xml" in self.remote_cache_data[addon.name]:
+            self.process_package_xml(addon, self.remote_cache_data[addon.name]["package.xml"])
+        if "requirements.txt" in self.remote_cache_data[addon.name]:
+            self.process_requirements_txt(
+                addon, self.remote_cache_data[addon.name]["requirements.txt"]
+            )
+        if "metadata.txt" in self.remote_cache_data[addon.name]:
+            self.process_metadata_txt(addon, self.remote_cache_data[addon.name]["metadata.txt"])
+
     def download_completed(self, index: int, code: int, data: QtCore.QByteArray) -> None:
         """Callback for handling a completed metadata file download."""
         if index in self.requests:
@@ -156,8 +185,9 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         if not os.path.exists(package_cache_directory):
             os.makedirs(package_cache_directory)
         new_xml_file = os.path.join(package_cache_directory, "package.xml")
-        with open(new_xml_file, "wb") as f:
-            f.write(data.data())
+        with open(new_xml_file, "w", encoding="utf-8") as f:
+            string_data = self._ensure_string(data, repo.name, "package.xml")
+            f.write(string_data)
         metadata = MetadataReader.from_file(new_xml_file)
         repo.set_metadata(metadata)
         FreeCAD.Console.PrintLog(f"Downloaded package.xml for {repo.name}\n")
@@ -173,6 +203,14 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         index = NetworkManager.AM_NETWORK_MANAGER.submit_unmonitored_get(icon_url)
         self.requests[index] = (repo, UpdateMetadataCacheWorker.RequestType.ICON)
         self.total_requests += 1
+
+    def _ensure_string(self, arbitrary_data, addon_name, file_name) -> str:
+        if isinstance(arbitrary_data, str):
+            return arbitrary_data
+        elif isinstance(arbitrary_data, QtCore.QByteArray):
+            return self._decode_data(arbitrary_data.data(), addon_name, file_name)
+        else:
+            return self._decode_data(arbitrary_data, addon_name, file_name)
 
     def _decode_data(self, byte_data, addon_name, file_name) -> str:
         """UTF-8 decode data, and print an error message if that fails"""
@@ -212,7 +250,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
             translate("AddonsInstaller", "Downloaded metadata.txt for {}").format(repo.display_name)
         )
 
-        f = self._decode_data(data.data(), repo.name, "metadata.txt")
+        f = self._ensure_string(data, repo.name, "metadata.txt")
         lines = f.splitlines()
         for line in lines:
             if line.startswith("workbenches="):
@@ -255,7 +293,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
             ).format(repo.display_name)
         )
 
-        f = self._decode_data(data.data(), repo.name, "requirements.txt")
+        f = self._ensure_string(data, repo.name, "requirements.txt")
         lines = f.splitlines()
         for line in lines:
             break_chars = " <>=~!+#"
