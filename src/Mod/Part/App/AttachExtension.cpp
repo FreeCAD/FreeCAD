@@ -305,6 +305,7 @@ bool AttachExtension::positionBySupport()
         throw Base::RuntimeError(
             "AttachExtension: can't positionBySupport, because no AttachEngine is set.");
     }
+    updateAttacherVals();
     Base::Placement plaOriginal = getPlacement().getValue();
     try {
         if (_props.attacher->mapMode == mmDeactivated) {
@@ -397,6 +398,24 @@ App::DocumentObjectExecReturn* AttachExtension::extensionExecute()
 void AttachExtension::extensionOnChanged(const App::Property* prop)
 {
     if (!getExtendedObject()->isRestoring()) {
+        // If we change anything that affects our position, update it immediately so you can see it
+        // interactively.
+        if ((prop == &AttachmentSupport
+             || prop == &MapMode
+             || prop == &MapPathParameter
+             || prop == &MapReversed
+             || prop == &AttachmentOffset)){
+            try{
+                positionBySupport();
+            } catch (Base::Exception &e) {
+                getExtendedObject()->setStatus(App::Error, true);
+                Base::Console().Error("PositionBySupport: %s\n",e.what());
+                //set error message - how?
+            } catch (Standard_Failure &e){
+                getExtendedObject()->setStatus(App::Error, true);
+                Base::Console().Error("PositionBySupport: %s\n",e.GetMessageString());
+            }
+        }
         if (prop == &AttacherEngine) {
             AttacherType.setValue(enumToClass(AttacherEngine.getValueAsString()));
         }
