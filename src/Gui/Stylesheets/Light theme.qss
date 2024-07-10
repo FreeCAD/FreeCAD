@@ -1123,6 +1123,11 @@ QPushButton {
   min-width: 80px;
 }
 
+#CreateNewRow > QPushButton {
+  /* Reset min width to default */
+  min-width: -1;
+}
+
 QPushButton:disabled {
   background-color: #d8d8d8;
   color: #adadad;
