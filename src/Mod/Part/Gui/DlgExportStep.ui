@@ -69,7 +69,7 @@
       <item row="3" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxExportHiddenObj">
         <property name="toolTip">
-         <string>Uncheck this to skip invisible object when exporting, which is useful for CADs that do not support invisibility STEP styling.</string>
+         <string>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</string>
         </property>
         <property name="text">
          <string>Export invisible objects</string>
@@ -86,7 +86,7 @@
        <widget class="Gui::PrefCheckBox" name="checkBoxKeepPlacement">
         <property name="toolTip">
          <string>Check this option to keep the placement information when exporting
-a single object. Please note that when import back the STEP file, the
+a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</string>
         </property>

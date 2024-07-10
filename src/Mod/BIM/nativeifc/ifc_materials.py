@@ -27,6 +27,7 @@ import FreeCAD
 from nativeifc import ifc_tools
 import ifcopenshell
 from ifcopenshell import util
+from ifcopenshell.util import element
 
 
 def create_material(element, parent, recursive=False):

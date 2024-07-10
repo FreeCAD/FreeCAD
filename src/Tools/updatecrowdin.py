@@ -92,7 +92,7 @@ LEGACY_NAMING_MAP = {"Draft.ts": "draft.ts"}
 # Locations that require QM file generation (predominantly Python workbenches)
 GENERATE_QM = {
     "AddonManager",
-    "BIM",
+    "Arch",
     "Cloud",
     "Draft",
     "Inspection",
@@ -110,7 +110,7 @@ locations = [
         "../Mod/AddonManager/Resources/AddonManager.qrc",
     ],
     ["App", "../App/Resources/translations", "../App/Resources/App.qrc"],
-    ["BIM", "../Mod/Arch/Resources/translations", "../Mod/Arch/Resources/Arch.qrc"],
+    ["Arch", "../Mod/BIM/Resources/translations", "../Mod/BIM/Resources/Arch.qrc"],
     [
         "Assembly",
         "../Mod/Assembly/Gui/Resources/translations",
@@ -452,6 +452,7 @@ def doFile(tsfilepath, targetpath, lncode, qrcpath):
         return
     shutil.copyfile(tsfilepath, newpath)
     if basename in GENERATE_QM:
+        # print("generating qm files for",newpath,"...")
         try:
             subprocess.run(
                 [
