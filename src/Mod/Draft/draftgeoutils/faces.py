@@ -138,13 +138,46 @@ def bind(w1, w2, per_segment=False):
             and len(w1.Edges) > 1
             and len(w1.Edges) == len(w2.Edges)):
         faces = []
+        facesList = []
         for (edge1, edge2) in zip(w1.Edges, w2.Edges):
-            face = create_face(edge1, edge2)
-            if face is None:
-                return None
-            faces.append(face)
+            from draftgeoutils.intersections import findIntersection
+            # Find potential intersection due to ArchWall Align in opposite
+            # direction (or Edge's Orientation in opposite direction,
+            # or a combinantion of the above)
+            #              v
+            # w1 ----------+
+            #              |
+            # w2 ----------+---------- w1
+            #              |
+            #              +---------- w2
+            # TODO Maybe those edge pair should not be generated in offsetWire().
+            #      Or should have broken into separate wires then.
+            #if DraftGeomUtils.findIntersection(edge1, edge2, dts=False):		# This code fails at some case https://forum.freecad.org/viewtopic.php?p=769210#p769210
+            nearestPts = findIntersection(edge1, edge2, dts=True)			# Works with dts : https://wiki.freecad.org/TopoShape_API : Returns: float<min dist>,list<nearest pts>,list<nearest subshapes & parameters>
+            if nearestPts:
+                facesList.append(faces)  # Break into separate list
+                faces = []  # Reset original faces variable
+                continue  # Skip the edges pair which 'intersect'
+            else:
+                face = create_face(edge1, edge2)
+                if face is None:
+                    return None
+                faces.append(face)
+        if facesList:
+            facesList.append(faces)  # Break into separate list
         # return concatenate(faces[0].fuse(faces[1:])) # Also works.
-        return faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+        facesCompound = []  # = None
+        if facesList:
+            for faces in facesList:
+                if len(faces) > 1 :
+                    facesFused = faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+                    facesCompound.append(facesFused)
+                else:
+                    facesCompound.append(faces[0])  # Only 1 face
+            return Part.Compound(facesCompound)
+        else:
+            return faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+
     elif w1.isClosed() and w2.isClosed():
         d1 = w1.BoundBox.DiagonalLength
         d2 = w2.BoundBox.DiagonalLength
