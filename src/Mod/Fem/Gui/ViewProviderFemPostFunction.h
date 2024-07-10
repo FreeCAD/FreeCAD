@@ -300,9 +300,6 @@ protected:
     void draggerUpdate(SoDragger* mat) override;
     void updateData(const App::Property*) override;
     void onChanged(const App::Property*) override;
-
-private:
-    bool m_detectscale;
 };
 
 
