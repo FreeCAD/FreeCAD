@@ -157,11 +157,7 @@ void MillSimulation::AddTool(const std::vector<float>& toolProfile, int toolid, 
 
 void MillSimulation::GlsimStart()
 {
-    glClearColor(0, 0, 0, 0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     glDisable(GL_BLEND);
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
     glEnable(GL_STENCIL_TEST);
     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 }
@@ -267,6 +263,10 @@ void MillSimulation::CalcSegmentPositions()
 
 void MillSimulation::RenderSimulation()
 {
+    if ((mViewItems & VIEWITEM_SIMULATION) == 0) {
+        return;
+    }
+
     simDisplay.StartDepthPass();
 
     GlsimStart();
@@ -311,10 +311,6 @@ void MillSimulation::RenderSimulation()
     }
 
     GlsimEnd();
-
-    glEnable(GL_CULL_FACE);
-
-
 }
 
 void MillSimulation::RenderTool()
@@ -343,6 +339,7 @@ void MillSimulation::RenderPath()
     millPathLine.Render();
     simDisplay.SetupLinePathPass(mPathStep, true);
     millPathLine.Render();
+    glDepthMask(GL_TRUE);
 }
 
 void MillSimulation::RenderBaseShape()
@@ -350,7 +347,9 @@ void MillSimulation::RenderBaseShape()
     if ((mViewItems & VIEWITEM_BASE_SHAPE) == 0) {
         return;
     }
-    simDisplay.StartGeometryPass(toolColor, false);
+    simDisplay.StartDepthPass();
+
+    simDisplay.StartCloserGeometryPass(baseShapeColor);
     mBaseShape.render();
 }
 
@@ -363,6 +362,7 @@ void MillSimulation::Render()
 
     // render the simulation offscreen in an FBO
     if (simDisplay.updateDisplay) {
+        simDisplay.PrepareFrameBuffer();
         RenderSimulation();
         RenderTool();
         RenderBaseShape();

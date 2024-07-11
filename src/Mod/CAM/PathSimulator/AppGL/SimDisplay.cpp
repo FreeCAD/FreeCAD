@@ -51,6 +51,7 @@ void SimDisplay::InitShaders()
 
     // geometric shader - generate texture with all geometric info for further processing
     shaderGeom.CompileShader(VertShaderGeom, FragShaderGeom);
+    shaderGeomCloser.CompileShader(VertShaderGeom, FragShaderGeom);
 
     // ligthing shader - apply standard ligting based on geometric buffers
     shaderLighting.CompileShader(VertShader2DFbo, FragShaderStdLighting);
@@ -303,12 +304,21 @@ void SimDisplay::PrepareDisplay(vec3 objCenter)
     mat4x4_translate_in_place(mMatLookAt, -objCenter[0], -objCenter[1], -objCenter[2]);
 }
 
+void SimDisplay::PrepareFrameBuffer()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
+    glClearColor(0, 0, 0, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+}
+
 void SimDisplay::StartDepthPass()
 {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glDepthMask(GL_TRUE);
-    glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
     shaderFlat.Activate();
     shaderFlat.UpdateViewMat(mMatLookAt);
 }
@@ -320,6 +330,21 @@ void SimDisplay::StartGeometryPass(vec3 objColor, bool invertNormals)
     shaderGeom.UpdateNormalState(invertNormals);
     shaderGeom.UpdateViewMat(mMatLookAt);
     shaderGeom.UpdateObjColor(objColor);
+    glEnable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
+}
+
+// A 'closer' geometry pass is similar to std geometry pass, but render the objects
+// slightly closer to the camera. This mitigates overlapping faces artifacts.
+void SimDisplay::StartCloserGeometryPass(vec3 objColor)
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
+    shaderGeomCloser.Activate();
+    shaderGeomCloser.UpdateNormalState(false);
+    shaderGeomCloser.UpdateViewMat(mMatLookAt);
+    shaderGeomCloser.UpdateObjColor(objColor);
+    glEnable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
 }
 
 void SimDisplay::RenderLightObject()
@@ -426,7 +451,7 @@ void SimDisplay::RenderResultSSAO()
 
 void SimDisplay::SetupLinePathPass(int curSegment, bool isHidden)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
+    //glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_FALSE);
     glDepthFunc(isHidden ? GL_GREATER : GL_LESS);
@@ -512,6 +537,10 @@ void SimDisplay::UpdateProjection()
     shaderLinePath.Activate();
     shaderLinePath.UpdateProjectionMat(projmat);
     shaderLinePath.UpdateObjColor(pathLineColorPassed);
+    
+    projmat[2][2] *= 0.99999;
+    shaderGeomCloser.Activate();
+    shaderGeomCloser.UpdateProjectionMat(projmat);
 }
 
 

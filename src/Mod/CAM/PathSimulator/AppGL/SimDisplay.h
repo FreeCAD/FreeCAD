@@ -45,8 +45,10 @@ public:
     void InitGL();
     void CleanGL();
     void PrepareDisplay(vec3 objCenter);
+    void PrepareFrameBuffer();
     void StartDepthPass();
     void StartGeometryPass(vec3 objColor, bool invertNormals);
+    void StartCloserGeometryPass(vec3 objColor);
     void RenderLightObject();
     void ScaleViewToStock(StockObject* obj);
     void RenderResult();
@@ -84,6 +86,7 @@ protected:
     // shaders
     Shader shader3D, shaderInv3D, shaderFlat, shaderSimFbo;
     Shader shaderGeom, shaderSSAO, shaderLighting, shaderSSAOLighting, shaderSSAOBlur;
+    Shader shaderGeomCloser;
     Shader shaderLinePath;
     vec3 lightColor = {0.8f, 0.9f, 1.0f};
     vec3 lightPos = {20.0f, 20.0f, 10.0f};
