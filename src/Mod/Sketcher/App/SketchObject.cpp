@@ -9738,7 +9738,7 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
     return shape;
 }
 
-Data::IndexedName SketchObject::checkSubName(const char *sub) const{
+Data::IndexedName SketchObject::checkSubName(const char *subname) const{
     static std::vector<const char *> types = {
         "Edge",
         "Vertex",
@@ -9749,84 +9749,49 @@ Data::IndexedName SketchObject::checkSubName(const char *sub) const{
         "H_Axis",
         "V_Axis",
         "Constraint",
+
+        // other feature from LS3 not related to TNP
         "InternalEdge",
         "InternalFace",
         "InternalVertex",
     };
 
-    if(!sub) return Data::IndexedName();
-    const char *subname = Data::isMappedElement(sub);
-    if(!subname)  {
-        Data::IndexedName res(sub, types, true);
-        if (boost::equals(res.getType(), "edge"))
-            return Data::IndexedName("Edge", res.getIndex());
-        else if (boost::starts_with(res.getType(), "vertex"))
-            return Data::IndexedName("Vertex", res.getIndex());
-        return res;
-    }
-    if(!subname[0]) {
-        FC_ERR("invalid subname " << sub);
-        return Data::IndexedName();
-    }
-    bio::stream<bio::array_source> iss(subname+1, std::strlen(subname+1));
-    int id = -1;
-    bool valid = false;
-    switch(subname[0]) {
-    case 'g':
-    case 'e':
-        if(iss>>id)
-            valid = true;
-        break;
-    default: {
-        // for RootPoint,H_Axis,V_Axis
-        const char *dot = strchr(subname,'.');
-        if(dot)
-            subname = dot+1;
-        return Data::IndexedName(subname, types, false);
-    }}
-    if(!valid) {
-        FC_ERR("invalid subname " << sub);
-        // return sub;
-        return Data::IndexedName();
+    if(!subname) return Data::IndexedName();
+    const char *mappedSubname = Data::isMappedElement(subname);
+
+    // if not a mapped name parse the indexed name directly, uppercasing "edge" and "vertex"
+    if(!mappedSubname)  {
+        Data::IndexedName result(subname, types, true);
+        if (boost::equals(result.getType(), "edge"))
+            return Data::IndexedName("Edge", result.getIndex());
+        if (boost::equals(result.getType(), "vertex"))
+            return Data::IndexedName("Vertex", result.getIndex());
+        return result;
     }
 
-#ifdef FUTURE_TNP_CODE_FROM_LS3
-    int geoId;
-    const Part::Geometry *geo = 0;
-    switch(subname[0]) {
-    case 'g': {
-        auto it = geoMap.find(id);
-        if(it!=geoMap.end()) {
-            geoId = it->second;
-            geo = getGeometry(geoId);
-        }
+    bio::stream<bio::array_source> iss(mappedSubname+1, std::strlen(mappedSubname+1));
+    int id = -1;
+    switch(mappedSubname[0]) {
+    case '\0': // check length != 0
+        FC_ERR("invalid subname " << subname);
         break;
-    } case 'e': {
-        auto it = externalGeoMap.find(id);
-        if(it!=externalGeoMap.end()) {
-            geoId = -it->second - 1;
-            geo  = getGeometry(geoId);
-        }
+
+    case 'g': // = geometry
+    case 'e': // = external geometry
+        if(!(iss>>id))
+            FC_ERR("invalid subname " << subname);
         break;
+
+    // for RootPoint, H_Axis, V_Axis
+    default: {
+        const char *dot = strchr(mappedSubname,'.');
+        if(dot)
+            mappedSubname = dot+1;
+        return Data::IndexedName(mappedSubname, types, false);
     }}
-    if(geo && GeometryFacade::getId(geo) == id) {
-        char sep;
-        int posId = static_cast<int>(PointPos::none);
-        if((iss >> sep >> posId) && sep=='v') {
-            int idx = getVertexIndexGeoPos(geoId, static_cast<PointPos>(posId));
-            if(idx < 0) {
-                FC_ERR("invalid subname " << sub);
-                // return sub;
-                return Data::IndexedName();
-            }
-            return Data::IndexedName::fromConst("Vertex", idx+1);
-        }else if(geoId>=0)
-            return Data::IndexedName::fromConst("Edge", geoId+1);
-        else
-            return Data::IndexedName::fromConst("ExternalEdge", -geoId-2);
-    }
-    FC_ERR("cannot find subname " << sub);
-#endif
+
+    // TNP July '24: omitted code related to external and internal sketcher stuff implemented in LS3
+
     return Data::IndexedName();
 }
 
