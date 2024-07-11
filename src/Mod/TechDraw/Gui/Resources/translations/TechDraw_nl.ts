@@ -7482,7 +7482,7 @@ Je kan meer punten kiezen om lijnsegmenten te krijgen.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="305"/>
       <source>Dot</source>
-      <translation>punt</translation>
+      <translation>Punt</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="314"/>
@@ -8081,7 +8081,7 @@ met behulp van de gegeven X/Y afstand</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="220"/>
       <source>Dot</source>
-      <translation>punt</translation>
+      <translation>Punt</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="225"/>
@@ -9063,7 +9063,7 @@ met behulp van de gegeven X/Y afstand</translation>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="35"/>
       <source>Dot</source>
-      <translation>punt</translation>
+      <translation>Punt</translation>
     </message>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="36"/>

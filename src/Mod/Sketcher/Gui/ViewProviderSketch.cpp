@@ -620,12 +620,12 @@ void ViewProviderSketch::forceUpdateData()
 
 /***************************** handler management ************************************/
 
-void ViewProviderSketch::activateHandler(DrawSketchHandler* newHandler)
+void ViewProviderSketch::activateHandler(std::unique_ptr<DrawSketchHandler> newHandler)
 {
     assert(editCoinManager);
     assert(!sketchHandler);
 
-    sketchHandler = std::unique_ptr<DrawSketchHandler>(newHandler);
+    sketchHandler = std::move(newHandler);
     Mode = STATUS_SKETCH_UseHandler;
     sketchHandler->activate(this);
 
@@ -3283,7 +3283,7 @@ void ViewProviderSketch::UpdateSolverInformation()
     }
     else if (dofs > 0) {
         signalSetUp(QString::fromUtf8("under_constrained"),
-                    tr("Under constrained:") + QLatin1String(" "),
+                    tr("Under-constrained:") + QLatin1String(" "),
                     QString::fromUtf8("#dofs"),
                     tr("%n DoF(s)", "", dofs));
     }

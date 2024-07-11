@@ -5850,7 +5850,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="131"/>
       <source>To add references: select them in the 3D view and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view and click "Add".</translation>
+      <translation>Pour ajouter des références : sélectionner les dans la vue 3D et cliquer sur "Ajouter".</translation>
     </message>
   </context>
   <context>

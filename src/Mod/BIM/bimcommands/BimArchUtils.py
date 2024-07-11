@@ -209,8 +209,8 @@ class Arch_RemoveShape:
     "the Arch RemoveShape command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_RemoveShape',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_RemoveShape","Remove Shape from Arch"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_RemoveShape","Removes cubic shapes from Arch components")}
+                'MenuText': QT_TRANSLATE_NOOP("Arch_RemoveShape","Remove Shape from BIM"),
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_RemoveShape","Removes cubic shapes from BIM components")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -283,12 +283,12 @@ class Arch_Survey:
 
 
 class Arch_ToggleIfcBrepFlag:
-    "the Toggle IFC Brep flag command definition"
+    "the Toggle IFC B-rep flag command definition"
 
     def GetResources(self):
         return {'Pixmap'  : 'Arch_ToggleIfcBrepFlag',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Toggle IFC Brep flag"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Force an object to be exported as Brep or not")}
+                'MenuText': QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Toggle IFC B-rep flag"),
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Force an object to be exported as B-rep or not")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -458,7 +458,7 @@ class Arch_MergeWalls:
                         ostr += ",FreeCAD.ActiveDocument." + o.Name
                         ok = True
                 if ok:
-                    FreeCAD.ActiveDocument.openTransaction(translate("Arch","Merge Wall"))
+                    FreeCAD.ActiveDocument.openTransaction(translate("Arch","Merge Walls"))
                     FreeCADGui.addModule("Arch")
                     FreeCADGui.doCommand("Arch.joinWalls(["+ostr+"],delete=True)")
                     FreeCAD.ActiveDocument.commitTransaction()

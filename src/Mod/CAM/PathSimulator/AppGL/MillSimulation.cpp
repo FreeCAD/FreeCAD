@@ -591,7 +591,7 @@ void MillSimulation::MousePress(int button, bool isPressed, int px, int py)
 bool MillSimulation::LoadGCodeFile(const char* fileName)
 {
     if (mCodeParser.Parse(fileName)) {
-        std::cout << "GCode file loaded successfuly" << std::endl;
+            std::cout << "GCode file loaded successfully" << std::endl;
         return true;
     }
     return false;

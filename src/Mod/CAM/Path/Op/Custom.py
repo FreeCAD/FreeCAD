@@ -185,7 +185,7 @@ class ObjectCustom(PathOp.ObjectOp):
                         self.commandlist.append(newcommand)
                     except ValueError:
                         Path.Log.warning(
-                            translate("PathCustom", "Invalid Gcode line: %s") % l
+                            translate("PathCustom", "Invalid G-code line: %s") % l
                         )
                         continue
 

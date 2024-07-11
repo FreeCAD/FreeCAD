@@ -4,7 +4,7 @@ list(PREPEND CMAKE_PREFIX_PATH "${FREECAD_LIBPACK_DIR}")
 set (Python3_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/python.exe)
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
-# Make sure we are using the static versions of Boost here: the LibPack includes both
+# Make sure we are using the shared versions of Boost here: the LibPack includes both
 set(Boost_USE_STATIC_LIBS OFF)
 find_package(Boost COMPONENTS filesystem program_options regex system thread date_time REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
 

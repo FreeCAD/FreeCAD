@@ -493,7 +493,7 @@ protected:
     };
     // This is a combination of ui options:
     //    "Group layers into blocks" (groupLayers) checkbox which means MergeShapes,
-    //    "simple part shapes" (dxfCreatePart) radio button which means SingleShapes
+    //    "Simple part shapes" (dxfCreatePart) radio button which means SingleShapes
     //    "Draft objects" (dxfCreateDraft) radio button which means DraftObjects
     //    We do not support (dxfCreateSketch).
     //    (joingeometry) is described as being slow so I think the implication is that it only joins

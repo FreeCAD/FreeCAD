@@ -3030,7 +3030,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <translation>Stwórz grubość do wewnątrz</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>Utworzono pustą grubość !

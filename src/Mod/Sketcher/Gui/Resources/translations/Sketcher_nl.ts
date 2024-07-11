@@ -6210,7 +6210,7 @@ De rasterafstand verandert als deze kleiner wordt dan dit aantal pixels.</transl
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="1121"/>
       <source>Invalid Value</source>
-      <translation type="unfinished">Invalid Value</translation>
+      <translation>Ongeldige waarde</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="1122"/>
@@ -7218,17 +7218,17 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="279"/>
       <source>Point, length, angle</source>
-      <translation type="unfinished">Point, length, angle</translation>
+      <translation>Punt, lengte, hoek</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="280"/>
       <source>Point, width, height</source>
-      <translation type="unfinished">Point, width, height</translation>
+      <translation>Punt, breedte, hoogte</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="281"/>
       <source>2 points</source>
-      <translation type="unfinished">2 points</translation>
+      <translation>2 punten</translation>
     </message>
   </context>
   <context>
@@ -7331,12 +7331,12 @@ Afhankelijk van uw keuzes zijn er mogelijk meerdere beperkingen beschikbaar. U k
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="837"/>
       <source>Press F to undo last point.</source>
-      <translation type="unfinished">Press F to undo last point.</translation>
+      <translation>Druk op F om het laatste punt ongedaan te maken.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="845"/>
       <source>Periodic (R)</source>
-      <translation type="unfinished">Periodic (R)</translation>
+      <translation>Periodiek (R)</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="848"/>

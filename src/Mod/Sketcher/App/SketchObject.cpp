@@ -6613,7 +6613,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         THROWMT(Base::ValueError,
-                QT_TRANSLATE_NOOP("Exceptions", "BSpline Geometry Index (GeoID) is out of bounds."))
+                QT_TRANSLATE_NOOP("Exceptions", "B-spline Geometry Index (GeoID) is out of bounds."))
 
     if (multiplicityincr == 0)// no change in multiplicity
         THROWMT(
@@ -6625,7 +6625,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     if (geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
         THROWMT(Base::TypeError,
                 QT_TRANSLATE_NOOP("Exceptions",
-                                  "The Geometry Index (GeoId) provided is not a B-spline curve."))
+                                  "The Geometry Index (GeoId) provided is not a B-spline."))
 
     const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
 
@@ -6797,7 +6797,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         THROWMT(
             Base::ValueError,
-            QT_TRANSLATE_NOOP("Exceptions", "BSpline Geometry Index (GeoID) is out of bounds."));
+            QT_TRANSLATE_NOOP("Exceptions", "B-spline Geometry Index (GeoID) is out of bounds."));
 
     if (multiplicity == 0)
         THROWMT(Base::ValueError,
@@ -6808,7 +6808,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
     if (geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
         THROWMT(Base::TypeError,
                 QT_TRANSLATE_NOOP("Exceptions",
-                                  "The Geometry Index (GeoId) provided is not a B-spline curve."));
+                                  "The Geometry Index (GeoId) provided is not a B-spline."));
 
     const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
 
@@ -6825,7 +6825,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
     if (param > lastParam || param < firstParam)
         THROWMT(Base::ValueError,
                 QT_TRANSLATE_NOOP("Exceptions",
-                                  "Knot cannot be inserted outside the BSpline parameter range."));
+                                  "Knot cannot be inserted outside the B-spline parameter range."));
 
     std::unique_ptr<Part::GeomBSplineCurve> bspline;
 

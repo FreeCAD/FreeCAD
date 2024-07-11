@@ -3030,7 +3030,7 @@ klikni ponovo da bi završio izbor</translation>
       <translation>Napravi tankozidno telo ka unutra</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>Napravljen je prazan tipski oblik Debljina !

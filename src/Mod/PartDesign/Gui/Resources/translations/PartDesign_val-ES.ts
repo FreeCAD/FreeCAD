@@ -3030,7 +3030,7 @@ click again to end selection</translation>
       <translation>Fes el gruix cap a l'interior</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation type="unfinished">Empty thickness created !

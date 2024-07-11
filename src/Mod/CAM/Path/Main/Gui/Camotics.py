@@ -81,7 +81,7 @@ class CAMoticsUI:
             self.form,
             translate("Path", "Save Project As"),
             "",
-            translate("Path", "Camotics Project (*.camotics)"),
+            translate("Path", "CAMotics Project (*.camotics)"),
         )[0]
         if filename:
             if not filename.endswith(".camotics"):
@@ -311,9 +311,9 @@ class CommandCamoticsSimulate:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Camotics",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_Camotics", "Camotics"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Camotics", "CAMotics"),
             "Accel": "P, C",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Camotics", "Simulate using Camotics"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Camotics", "Simulate using CAMotics"),
             "CmdType": "ForEdit",
         }
 

@@ -96,7 +96,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Leave blank to use default gmsh binary file</string>
+           <string>Leave blank to use default Gmsh binary file</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>gmshBinaryPath</cstring>

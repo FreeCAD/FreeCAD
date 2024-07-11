@@ -266,7 +266,7 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
 
     d->filletType = type;
     if (d->filletType == DlgFilletEdges::CHAMFER) {
-        ui->parameterName->setTitle(tr("Chamfer Parameter"));
+        ui->parameterName->setTitle(tr("Chamfer Parameters"));
         ui->labelfillet->setText(tr("Chamfer type"));
         ui->labelRadius->setText(tr("Length:"));
         ui->filletType->setItemText(0, tr("Equal distance"));

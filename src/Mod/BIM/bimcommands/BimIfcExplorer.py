@@ -104,7 +104,7 @@ class BIM_IfcExplorer:
         # create the dialog
         self.dialog = QtGui.QDialog()
         self.dialog.setObjectName("IfcExplorer")
-        self.dialog.setWindowTitle(translate("BIM", "Ifc Explorer"))
+        self.dialog.setWindowTitle(translate("BIM", "IFC Explorer"))
         self.dialog.resize(720, 540)
         toolbar = FreeCADGui.UiLoader().createWidget("Gui::ToolBar")
 

@@ -1887,12 +1887,12 @@ ungültiger Randbedingungen, degenerierter Geometrien, usw. überprüfen.</trans
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="457"/>
       <source>Add line to sketch wire</source>
-      <translation>Linie zum Kantenzug hinzufügen</translation>
+      <translation>Linie zum Skizzen-Linienzug hinzufügen</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="485"/>
       <source>Add arc to sketch wire</source>
-      <translation>Bogen zum Kantenzug hinzufügen</translation>
+      <translation>Bogen zum Skizzen-Linienzug hinzufügen</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="240"/>
@@ -3223,7 +3223,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="447"/>
       <source>BSpline parameters</source>
-      <translation type="unfinished">BSpline parameters</translation>
+      <translation>BSpline Parameter</translation>
     </message>
   </context>
   <context>
@@ -4032,12 +4032,12 @@ Erfordert das erneute aktivieren des Bearbeitungsmodus.</translation>
     <message>
       <location filename="../../SketcherSettings.ui" line="146"/>
       <source>Disables the shaded view when entering the sketch edit mode.</source>
-      <translation type="unfinished">Disables the shaded view when entering the sketch edit mode.</translation>
+      <translation>Deaktiviert die schattierte Ansicht beim Betreten des Skizzenbearbeitungsmodus.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="149"/>
       <source>Disable shading in edit mode</source>
-      <translation type="unfinished">Disable shading in edit mode</translation>
+      <translation>Schattierung im Bearbeitungsmodus deaktivieren</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="165"/>
@@ -4167,12 +4167,12 @@ Diese Einstellung ist nur für die Werkzeugleiste. Unabhängig von der Auswahl s
     <message>
       <location filename="../../SketcherSettings.cpp" line="225"/>
       <source>Dimensions only</source>
-      <translation type="unfinished">Dimensions only</translation>
+      <translation>Nur Bemaßungen</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="226"/>
       <source>Position and dimensions</source>
-      <translation type="unfinished">Position and dimensions</translation>
+      <translation>Position und Bemaßungen</translation>
     </message>
   </context>
   <context>
@@ -5233,12 +5233,12 @@ Dies erfolgt durch Analyse der Skizzengeometrien und Randbedingungen.</translati
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="839"/>
       <source>By control points</source>
-      <translation type="unfinished">By control points</translation>
+      <translation>Durch Kontrollpunkte</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="840"/>
       <source>By knots</source>
-      <translation type="unfinished">By knots</translation>
+      <translation>Durch Knoten</translation>
     </message>
   </context>
   <context>
@@ -6093,12 +6093,12 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="600"/>
       <source>Error deleting last pole/knot</source>
-      <translation type="unfinished">Error deleting last pole/knot</translation>
+      <translation>Fehler beim Löschen des letzten Pole/Knoten</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="670"/>
       <source>Error adding B-Spline pole/knot</source>
-      <translation type="unfinished">Error adding B-Spline pole/knot</translation>
+      <translation>Fehler beim Hinzufügen von B-Spline Pol/Knoten</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="187"/>
@@ -6725,7 +6725,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2390"/>
       <source>Rotate / Polar transform</source>
-      <translation type="unfinished">Rotate / Polar transform</translation>
+      <translation>Drehen / Polartransformation</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2391"/>
@@ -7097,7 +7097,7 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2458"/>
       <source>Move / Array transform</source>
-      <translation type="unfinished">Move / Array transform</translation>
+      <translation>Bewegen / Array-Transformation</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2459"/>
@@ -7330,17 +7330,17 @@ Ein Linksklick auf einen leeren Bereich, bestätigt die aktuell vorausgewählte 
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="837"/>
       <source>Press F to undo last point.</source>
-      <translation type="unfinished">Press F to undo last point.</translation>
+      <translation>Drücken Sie F um den letzten Punkt rückgängig zu machen.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="845"/>
       <source>Periodic (R)</source>
-      <translation type="unfinished">Periodic (R)</translation>
+      <translation>Periodisch (R)</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="848"/>
       <source>Create a periodic bspline.</source>
-      <translation type="unfinished">Create a periodic bspline.</translation>
+      <translation>Geschlossenen B-Spline erstellen.</translation>
     </message>
   </context>
 </TS>

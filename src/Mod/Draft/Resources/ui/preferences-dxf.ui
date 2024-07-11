@@ -55,7 +55,7 @@
 Note: C++ importer is faster, but is not as featureful yet</string>
      </property>
      <property name="text">
-      <string>Use legacy python importer</string>
+      <string>Use legacy Python importer</string>
      </property>
      <property name="checked">
       <bool>false</bool>
@@ -75,7 +75,7 @@ Note: C++ importer is faster, but is not as featureful yet</string>
 Note: C++ exporter is faster, but is not as featureful yet</string>
      </property>
      <property name="text">
-      <string>Use legacy python exporter</string>
+      <string>Use legacy Python exporter</string>
      </property>
      <property name="prefEntry" stdset="0">
       <cstring>dxfUseLegacyExporter</cstring>
@@ -164,7 +164,7 @@ from the Addon Manager.</string>
            <string>If unchecked, texts and mtexts won't be imported</string>
           </property>
           <property name="text">
-           <string>texts and dimensions</string>
+           <string>Texts and dimensions</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>dxftext</cstring>
@@ -196,7 +196,7 @@ from the Addon Manager.</string>
            <string>If checked, paper space objects will be imported too</string>
           </property>
           <property name="text">
-           <string>layouts</string>
+           <string>Layouts</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>dxflayout</cstring>
@@ -245,7 +245,7 @@ from the Addon Manager.</string>
            <string>Only standard Part objects will be created (fastest)</string>
           </property>
           <property name="text">
-           <string>simple Part shapes</string>
+           <string>Simple Part shapes</string>
           </property>
           <property name="checked">
            <bool>true</bool>

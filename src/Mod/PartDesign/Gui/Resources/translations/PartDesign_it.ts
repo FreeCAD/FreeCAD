@@ -1753,7 +1753,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="950"/>
       <source>Click on a shape in the model</source>
-      <translation type="unfinished">Click on a shape in the model</translation>
+      <translation>Fare clic su una forma nel modello</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1154"/>
@@ -2056,7 +2056,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="49"/>
       <source>Counterdrill</source>
-      <translation>Profondità foro</translation>
+      <translation>Foro svasato profondo</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="53"/>
@@ -2307,7 +2307,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="75"/>
       <source>Up to shape</source>
-      <translation type="unfinished">Up to shape</translation>
+      <translation>Fino alla forma</translation>
     </message>
   </context>
   <context>
@@ -2346,8 +2346,8 @@ fare nuovamente clic per terminare la selezione</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="170"/>
       <source>Click button to enter selection mode,
          click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-         click again to end selection</translation>
+      <translation>Fare clic sul pulsante per entrare in modalità selezione,
+         fare nuovamente clic per terminare la selezione</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="174"/>
@@ -2734,7 +2734,7 @@ misurata lungo la direzione specificata</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="76"/>
       <source>Up to shape</source>
-      <translation type="unfinished">Up to shape</translation>
+      <translation>Fino alla forma</translation>
     </message>
   </context>
   <context>
@@ -3030,7 +3030,7 @@ fare nuovamente clic per terminare la selezione</translation>
       <translation>Crea lo spessore verso l'interno</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>Spessore vuoto creato !

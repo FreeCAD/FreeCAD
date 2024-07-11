@@ -454,7 +454,7 @@ public:
                 try {
                     // open the transaction
                     Gui::Command::openCommand(
-                        QT_TRANSLATE_NOOP("Command", "Add line to sketch wire"));
+                        QT_TRANSLATE_NOOP("Command", "Add line to sketch polyline"));
                     Gui::cmdAppObjectArgs(
                         sketchgui->getObject(),
                         "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
@@ -482,7 +482,7 @@ public:
 
                 try {
                     Gui::Command::openCommand(
-                        QT_TRANSLATE_NOOP("Command", "Add arc to sketch wire"));
+                        QT_TRANSLATE_NOOP("Command", "Add arc to sketch polyline"));
                     Gui::cmdAppObjectArgs(
                         sketchgui->getObject(),
                         "addGeometry(Part.ArcOfCircle"

@@ -1749,7 +1749,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="950"/>
       <source>Click on a shape in the model</source>
-      <translation>Cliquer sur une face du modèle</translation>
+      <translation>Cliquer sur une forme dans le modèle</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1154"/>
@@ -2302,7 +2302,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="75"/>
       <source>Up to shape</source>
-      <translation>vers la forme</translation>
+      <translation>Jusqu'à la forme</translation>
     </message>
   </context>
   <context>
@@ -2330,7 +2330,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="130"/>
       <source>Select shape</source>
-      <translation>Sélectionner la forme</translation>
+      <translation>Sélectionner une forme</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="148"/>
@@ -2341,8 +2341,8 @@ click again to end selection</source>
       <location filename="../../TaskPadPocketParameters.ui" line="170"/>
       <source>Click button to enter selection mode,
          click again to end selection</source>
-      <translation>Cliquez sur le bouton pour passer en mode sélection,
-         cliquez à nouveau pour terminer la sélection</translation>
+      <translation>Cliquer sur le bouton pour passer en mode sélection,
+cliquer à nouveau pour terminer la sélection.</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="174"/>
@@ -2727,7 +2727,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="76"/>
       <source>Up to shape</source>
-      <translation>vers la forme</translation>
+      <translation>Jusqu'à la forme</translation>
     </message>
   </context>
   <context>
@@ -3022,7 +3022,7 @@ click again to end selection</source>
       <translation>Générer un évidement vers l'intérieur</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>Création d'un évidement vide !</translation>
@@ -3108,7 +3108,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="48"/>
       <source>Transform tool shapes</source>
-      <translation>Transformer la forme des outils</translation>
+      <translation>Transformer les formes des outils</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="78"/>
@@ -4205,12 +4205,12 @@ Notez que le calcul peut prendre un certain temps.</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="470"/>
       <source>Update thread view</source>
-      <translation>Mettre à jour la vue de l'ensemble</translation>
+      <translation>Mettre à jour la vue du filetage</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="486"/>
       <source>Custom Clearance</source>
-      <translation>Apparence personnalisée</translation>
+      <translation>Jeu personnalisé</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="499"/>
@@ -4901,7 +4901,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="598"/>
       <source>Extrude: Can only offset one face</source>
-      <translation>Extrusion : Ne peut décaler qu'une seule face</translation>
+      <translation>Extrusion : ne peut décaler qu'une seule face</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="140"/>

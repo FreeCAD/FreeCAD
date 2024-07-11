@@ -350,9 +350,9 @@ StdCmdToggleToolBarLock::StdCmdToggleToolBarLock()
 {
     sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Lock toolbars");
-    sToolTipText  = QT_TR_NOOP("Locks toolbar so they are no longer moveable");
+    sToolTipText  = QT_TR_NOOP("Lock toolbars so they are no longer moveable");
     sWhatsThis    = "Std_ToggleToolBarLock";
-    sStatusTip    = QT_TR_NOOP("Locks toolbar so they are no longer moveable");
+    sStatusTip    = QT_TR_NOOP("Lock toolbars so they are no longer moveable");
     eType         = 0;
 }
 

@@ -39,6 +39,7 @@ from nativeifc import ifc_psets
 from nativeifc import ifc_objects
 from nativeifc import ifc_generator
 import ifcopenshell
+from ifcopenshell.util import element
 import difflib
 
 IFCOPENHOUSE_IFC4 = (

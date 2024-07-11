@@ -290,12 +290,12 @@ Aby wstawić komponenty zewnętrzne, upewnij się, że plik jest otwarty w bież
     <message>
       <location filename="../../../JointObject.py" line="1534"/>
       <source>Radius 1</source>
-      <translation type="unfinished">Radius 1</translation>
+      <translation>Promień 1</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1536"/>
       <source>Pitch radius</source>
-      <translation type="unfinished">Pitch radius</translation>
+      <translation>Promień nachylenia</translation>
     </message>
     <message>
       <location filename="../../../Preferences.py" line="49"/>
@@ -315,12 +315,12 @@ Aby wstawić komponenty zewnętrzne, upewnij się, że plik jest otwarty w bież
     <message>
       <location filename="../../../CommandCreateBom.py" line="46"/>
       <source>Index (auto)</source>
-      <translation type="unfinished">Index (auto)</translation>
+      <translation>Indeks (automatycznie)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="47"/>
       <source>Name (auto)</source>
-      <translation type="unfinished">Name (auto)</translation>
+      <translation>Nazwa (automatycznie)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="48"/>
@@ -330,12 +330,12 @@ Aby wstawić komponenty zewnętrzne, upewnij się, że plik jest otwarty w bież
     <message>
       <location filename="../../../CommandCreateBom.py" line="49"/>
       <source>File Name (auto)</source>
-      <translation type="unfinished">File Name (auto)</translation>
+      <translation>Nazwa pliku (automatycznie)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="50"/>
       <source>Quantity (auto)</source>
-      <translation type="unfinished">Quantity (auto)</translation>
+      <translation>Ilość (automatycznie)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="197"/>
@@ -356,22 +356,22 @@ Proszę wybrać inną.</translation>
     <message>
       <location filename="../../../CommandCreateBom.py" line="367"/>
       <source>Options:</source>
-      <translation type="unfinished">Options:</translation>
+      <translation>Opcje:</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="374"/>
       <source>Sub-assemblies children : If checked, Sub assemblies children will be added to the bill of materials.</source>
-      <translation type="unfinished">Sub-assemblies children : If checked, Sub assemblies children will be added to the bill of materials.</translation>
+      <translation>Elementy podrzędne złożeń: Jeśli opcja jest zaznaczona, elementy podrzędne złożeń zostaną dodane do listy materiałów.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="380"/>
       <source>Parts children : If checked, Parts children will be added to the bill of materials.</source>
-      <translation type="unfinished">Parts children : If checked, Parts children will be added to the bill of materials.</translation>
+      <translation>Elementy podrzędne: Jeśli opcja jest zaznaczona, elementy podrzędne zostaną dodane do listy materiałów.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="386"/>
       <source>Only parts : If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</source>
-      <translation type="unfinished">Only parts : If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</translation>
+      <translation>Tylko części: Jeśli opcja jest zaznaczona, do zestawienia materiałów będą dodawane tylko kontenery środowiska Część i podzespoły. Obiekty takie jak Zawartość środowiska Projekt Części, elementy złączne lub elementy pierwotne środowiska pracy Części będą ignorowane.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="388"/>
@@ -381,17 +381,21 @@ Proszę wybrać inną.</translation>
     <message>
       <location filename="../../../CommandCreateBom.py" line="395"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
-      <translation type="unfinished">Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</translation>
+      <translation>Kolumny automatycznie: (Indeks, Ilość, Nazwa...) są wypełniane automatycznie.
+Wszelkie wprowadzone modyfikacje zostaną zastąpione. Nie można zmienić nazwy tych kolumn.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="401"/>
       <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).</source>
-      <translation type="unfinished">Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).</translation>
+      <translation>Kolumny niestandardowe:
+ "Opis" i inne kolumny niestandardowe dodane przez kliknięcie przycisku "Dodaj kolumnę" nie zostaną nadpisane.
+Nazwy tych kolumn można zmienić, klikając dwukrotnie lub naciskając klawisz F2 (zmiana nazwy kolumny spowoduje utratę jej danych).</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="407"/>
       <source>Any column (custom or not) can be deleted by pressing Del.</source>
-      <translation type="unfinished">Any column (custom or not) can be deleted by pressing Del.</translation>
+      <translation>Każdą kolumnę (niestandardową lub nie) można usunąć,
+ naciskając klawisz Del.</translation>
     </message>
   </context>
   <context>
@@ -476,22 +480,22 @@ Jest on używany tylko przez połączenie zębate do przechowywania drugiego pro
     <message>
       <location filename="../../../JointObject.py" line="350"/>
       <source>Enable the minimum length limit of the joint.</source>
-      <translation type="unfinished">Enable the minimum length limit of the joint.</translation>
+      <translation>Włącz limit minimalnej długości połączenia.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="362"/>
       <source>Enable the maximum length limit of the joint.</source>
-      <translation type="unfinished">Enable the maximum length limit of the joint.</translation>
+      <translation>Włącz limit maksymalnej długości połączenia.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="374"/>
       <source>Enable the minimum angle limit of the joint.</source>
-      <translation type="unfinished">Enable the minimum angle limit of the joint.</translation>
+      <translation>Włącz limit minimalny kąta połączenia.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="386"/>
       <source>Enable the minimum length of the joint.</source>
-      <translation type="unfinished">Enable the minimum length of the joint.</translation>
+      <translation>Włącz minimalną długość połączenia.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="398"/>
@@ -589,22 +593,22 @@ Jest on używany tylko przez połączenie zębate do przechowywania drugiego pro
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="161"/>
       <source>Min length</source>
-      <translation type="unfinished">Min length</translation>
+      <translation>Minimalna długość</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="184"/>
       <source>Max length</source>
-      <translation type="unfinished">Max length</translation>
+      <translation>Maksymalna długość</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="207"/>
       <source>Min angle</source>
-      <translation type="unfinished">Min angle</translation>
+      <translation>Minimalny kąt</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="236"/>
       <source>Max angle</source>
-      <translation type="unfinished">Max angle</translation>
+      <translation>Maksymalny kąt</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="268"/>
@@ -856,27 +860,27 @@ Naciśnij ESC, aby anulować.</translation>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="20"/>
       <source>If checked, Sub assemblies children will be added to the bill of materials.</source>
-      <translation type="unfinished">If checked, Sub assemblies children will be added to the bill of materials.</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, elementy podrzędne złożeń zostaną dodane do listy materiałów.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="23"/>
       <source>Sub-assemblies children</source>
-      <translation type="unfinished">Sub-assemblies children</translation>
+      <translation>Elementy podrzędne złożeń zagnieżdżonych</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="39"/>
       <source>If checked, Parts children will be added to the bill of materials.</source>
-      <translation type="unfinished">If checked, Parts children will be added to the bill of materials.</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, do listy materiałów zostaną dodane elementy podrzędne obiektów środowiska Część.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="42"/>
       <source>Parts children</source>
-      <translation type="unfinished">Parts children</translation>
+      <translation>Elementy podrzędne obiektów środowiska Część</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="58"/>
       <source>If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</source>
-      <translation type="unfinished">If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</translation>
+      <translation>W przypadku zaznaczenia tej opcji do zestawienia materiałów dodawane będą tylko kontenery części i ich elementy podrzędne. Obiekty, takie jak Zawartość środowiska Projekt Części, elementy złączne lub elementy pierwotne środowiska Część zostaną zignorowane.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="61"/>
@@ -967,7 +971,7 @@ Jeśli obiekt zestawienia nie ma być zapisany jako obiekt dokumentu, można go 
     <message>
       <location filename="../../../CommandCreateBom.py" line="86"/>
       <source>The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.</source>
-      <translation type="unfinished">The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.</translation>
+      <translation>Kolumny "Indeks", "Nazwa", "Nazwa pliku" i "Ilość" są generowane automatycznie po ponownym obliczeniu. Kolumny " Opis " i niestandardowe nie są nadpisywane.</translation>
     </message>
   </context>
 </TS>

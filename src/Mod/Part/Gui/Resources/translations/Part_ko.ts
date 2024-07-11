@@ -6339,7 +6339,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
       <source>Vertices</source>
-      <translation type="unfinished">Vertices</translation>
+      <translation>꼭지점들</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="41"/>

@@ -3029,7 +3029,7 @@ click again to end selection</source>
       <translation>厚度方向向里</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation type="unfinished">Empty thickness created !

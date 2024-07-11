@@ -187,13 +187,14 @@ class ifc_vp_object:
         tree = mw.findChild(QtGui.QDockWidget, "Model")
         model = tree.findChild(QtGui.QWidget, "Model")
         splitter = model.findChild(QtGui.QSplitter)
-        tree = splitter.children()[1].children()[0]
-        it = tree.findItems(obj.Label, QtCore.Qt.MatchRecursive, 0)
-        if it:
-            it[0].setExpanded(True)
-            for i in range(it[0].childCount()):
-                it[0].child(i).setExpanded(True)
-
+        if splitter and len(splitter.children()) > 1:
+            if splitter.children()[1].children():
+                tree = splitter.children()[1].children()[0]
+                it = tree.findItems(obj.Label, QtCore.Qt.MatchRecursive, 0)
+                if it:
+                    it[0].setExpanded(True)
+                    for i in range(it[0].childCount()):
+                        it[0].child(i).setExpanded(True)
         return nc
 
     def collapseChildren(self):
@@ -314,12 +315,20 @@ class ifc_vp_object:
     def dropObject(self, vobj, incoming_object):
         """Add an object to the view provider by d&d"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from PySide import QtCore  # lazy import
+        self.incoming_object = incoming_object
+        # delay the action to prevent the object to be deleted
+        # before the end of the drop
+        QtCore.QTimer.singleShot(100, self.onDrop)
 
-        parent = vobj.Object
-        ifc_tools.aggregate(incoming_object, parent)
-        if self.hasChildren(parent):
-            self.expandChildren(parent)
+    def onDrop(self):
+        """Delayed action to be taken when dropping an object"""
+
+        from nativeifc import ifc_tools  # lazy import
+        ifc_tools.aggregate(self.incoming_object, self.Object)
+        if self.hasChildren(self.Object):
+            self.expandChildren(self.Object)
+        del self.incoming_object
 
     def activate(self):
         """Marks this container as active"""

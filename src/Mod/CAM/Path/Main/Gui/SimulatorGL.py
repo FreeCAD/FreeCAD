@@ -152,7 +152,7 @@ class CAMSimulation:
         while edge is not None:
             sideEdgeList.remove(edge)
             if type(edge.Curve) is Part.Circle:
-                # if edge is curved, aproximate it with lines based on resolution
+                # if edge is curved, approximate it with lines based on resolution
                 nsegments = int(edge.Length / resolution) + 1
                 step = (p2 - p1) / nsegments
                 location = p1 + step

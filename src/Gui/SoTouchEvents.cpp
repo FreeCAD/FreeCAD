@@ -164,6 +164,7 @@ SbBool SoGestureSwipeEvent::isSoGestureSwipeEvent(const SoEvent *ev) const
 //----------------------------GesturesDevice-------------------------------
 
 GesturesDevice::GesturesDevice(QWidget* widget)
+  : InputDevice(nullptr)
 {
     if (SoGestureEvent::getClassTypeId().isBad()){
         SoGestureEvent::initClass();

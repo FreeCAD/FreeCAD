@@ -301,7 +301,7 @@
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>Select a single FEM Mesh, please.</source>
-      <translation type="unfinished">Select a single FEM Mesh, please.</translation>
+      <translation>Ein einzelnes FEM-Netz auswählen.</translation>
     </message>
   </context>
   <context>
@@ -692,12 +692,12 @@
     <message>
       <location filename="../../Command.cpp" line="1352"/>
       <source>Edit Elements set</source>
-      <translation type="unfinished">Edit Elements set</translation>
+      <translation>Elementset bearbeiten</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1363"/>
       <source>Create Elements set</source>
-      <translation type="unfinished">Create Elements set</translation>
+      <translation>Elementset erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1850"/>
@@ -3457,12 +3457,12 @@ Hinweis: Für 2D ist nur für x möglich,
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="45"/>
       <source>Total Power:</source>
-      <translation type="unfinished">Total Power:</translation>
+      <translation>Gesamtleistung:</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="86"/>
       <source>Dissipation Rate:</source>
-      <translation type="unfinished">Dissipation Rate:</translation>
+      <translation>Dissipationsrate:</translation>
     </message>
   </context>
   <context>
@@ -4747,7 +4747,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="110"/>
       <source>System Rotation</source>
-      <translation type="unfinished">System Rotation</translation>
+      <translation>Systemdrehung</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="116"/>
@@ -5867,7 +5867,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="131"/>
       <source>To add references: select them in the 3D view and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view and click "Add".</translation>
+      <translation>Um Referenzen hinzuzufügen: In der 3D-Ansicht auswählen und "Hinzufügen" klicken.</translation>
     </message>
   </context>
   <context>
@@ -6565,7 +6565,7 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="35"/>
       <source>Erase Elements by Polygon</source>
-      <translation type="unfinished">Erase Elements by Polygon</translation>
+      <translation>Elemente durch Polygonauswahl löschen</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="49"/>
@@ -6575,7 +6575,7 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="56"/>
       <source>Delete New Meshes</source>
-      <translation type="unfinished">Delete New Meshes</translation>
+      <translation>Neue Netze löschen</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="70"/>
@@ -6585,7 +6585,7 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="77"/>
       <source>Copy Result Mesh</source>
-      <translation type="unfinished">Copy Result Mesh</translation>
+      <translation>Ergebnis-Netz kopieren</translation>
     </message>
   </context>
   <context>
@@ -6602,18 +6602,18 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="232"/>
       <source>Can't copy ResultMesh to ResultMesh</source>
-      <translation type="unfinished">Can't copy ResultMesh to ResultMesh</translation>
+      <translation>Kann Ergebnis-Netz nicht in Ergebnis-Netz kopieren</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="242"/>
       <source>Mesh must be a Results mesh</source>
-      <translation type="unfinished">Mesh must be a Results mesh</translation>
+      <translation>Netz muss ein Ergebnis-Netz sein</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="564"/>
       <source>No Data To Restore
 </source>
-      <translation type="unfinished">No Data To Restore
+      <translation>Keine Daten zum Wiederherstellen
 </translation>
     </message>
     <message>
@@ -6639,7 +6639,7 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Creates a FEM mesh elements set</source>
-      <translation type="unfinished">Creates a FEM mesh elements set</translation>
+      <translation>Erzeugt einen Satz an FEM-Netzelementen</translation>
     </message>
   </context>
   <context>
@@ -6647,7 +6647,7 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="441"/>
       <source>Elements set</source>
-      <translation type="unfinished">Elements set</translation>
+      <translation>Elementset</translation>
     </message>
   </context>
   <context>
@@ -6660,13 +6660,13 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     <message>
       <location filename="../../Command.cpp" line="1282"/>
       <source>Element set by poly</source>
-      <translation type="unfinished">Element set by poly</translation>
+      <translation>Elementset durch das Polygon definiert</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1283"/>
       <location filename="../../Command.cpp" line="1285"/>
       <source>Create Element set by Poly</source>
-      <translation type="unfinished">Create Element set by Poly</translation>
+      <translation>Elementset durch Polygon erstellen</translation>
     </message>
   </context>
 </TS>

@@ -783,7 +783,7 @@ class ObjectSurface(PathOp.ObjectOp):
         JOB = PathUtils.findParentJob(obj)
         self.JOB = JOB
         if JOB is None:
-            Path.Log.error(translate("PathSurface", "No JOB"))
+            Path.Log.error(translate("PathSurface", "No job"))
             return
         self.stockZMin = JOB.Stock.Shape.BoundBox.ZMin
 

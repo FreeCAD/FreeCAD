@@ -3032,7 +3032,7 @@ faceți clic din nou pentru a încheia selecția</translation>
       <translation>Faceți grosimea spre interior</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>S-a creat grosimea goala !</translation>

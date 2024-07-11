@@ -164,7 +164,7 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
     <message>
       <location filename="../../developer_mode.ui" line="104"/>
       <source>Bugtracker URL</source>
-      <translation type="unfinished">Bugtracker URL</translation>
+      <translation>URL do tracker de bugs</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="113"/>
@@ -271,7 +271,7 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
       <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
-      <translation type="unfinished">HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</translation>
+      <translation>DICA: Tags comuns incluem &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="17"/>
@@ -281,7 +281,7 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
     <message>
       <location filename="../../first_run.ui" line="23"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation type="unfinished">The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</translation>
+      <translation>As extensões que podem ser instaladas aqui não são, oficialmente, parte do FreeCAD e não foram revisados pelo time FreeCAD. Verifique o que você esta instalando!</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="46"/>
@@ -339,17 +339,17 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="42"/>
       <source>Package name, if &quot;Other...&quot;</source>
-      <translation type="unfinished">Package name, if &quot;Other...&quot;</translation>
+      <translation>Nome do pacote, se for &quot;Outro...&quot;</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="54"/>
       <source>NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</source>
-      <translation type="unfinished">NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</translation>
+      <translation>NOTA: Se &quot;Outro...&quot; for selecionado, o pacote não está no arquivo ALLOWED_PYTHON_PACKAGES.txt, e não será instalado automaticamente pelo gerenciador de extensões. Crie um PR em &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; para pedir a inclusão de um novo pacote.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="69"/>
       <source>If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</source>
-      <translation type="unfinished">If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</translation>
+      <translation>Se esta for uma dependência opcional, o gerenciador de extensões oferecerá para instalá-la (se for possível), mas não irá bloquear a instalação se o usuário escolher não instalar o pacote.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
@@ -369,7 +369,7 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
       <location filename="../../expanded_view.py" line="125"/>
       <location filename="../../expanded_view.ui" line="101"/>
       <source>&lt;h1&gt;Package Name&lt;/h1&gt;</source>
-      <translation type="unfinished">&lt;h1&gt;Package Name&lt;/h1&gt;</translation>
+      <translation>&lt;h1&gt;Nome do pacote&lt;/h1&gt;</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="126"/>
@@ -381,7 +381,7 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
       <location filename="../../expanded_view.py" line="127"/>
       <location filename="../../expanded_view.ui" line="121"/>
       <source>(tags)</source>
-      <translation type="unfinished">(tags)</translation>
+      <translation>(etiquetas)</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="130"/>
@@ -403,7 +403,7 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
     <message>
       <location filename="../../expanded_view.ui" line="128"/>
       <source>labelSort</source>
-      <translation type="unfinished">labelSort</translation>
+      <translation>labelSort</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="193"/>
@@ -459,7 +459,7 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
       <source>Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</source>
-      <translation type="unfinished">Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</translation>
+      <translation>Versões futuras do gerenciador de extensões permitirão que desenvolvedores definam um branch ou tag específico para uso com uma versão específica do FreeCAD (ex. definindo uma tag específica como a última versão da sua extensão que suporte o FreeCAD v0.19, etc.)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
@@ -469,7 +469,7 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
-      <translation type="unfinished">Best-available branch, tag, or commit</translation>
+      <translation>Branch, tag ou commit mais apropriado</translation>
     </message>
   </context>
   <context>
@@ -506,7 +506,7 @@ Você quer que o Addon Manager os instale automaticamente? Escolha &quot;Ignorar
     <message>
       <location filename="../../AddonManagerOptions.ui" line="14"/>
       <source>Addon manager options</source>
-      <translation type="unfinished">Addon manager options</translation>
+      <translation>Opções de gerenciamento de extensões</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="20"/>
@@ -603,17 +603,17 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="323"/>
       <source>Score source URL</source>
-      <translation type="unfinished">Score source URL</translation>
+      <translation>URL da fonte da pontuação</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="342"/>
       <source>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</source>
-      <translation type="unfinished">The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</translation>
+      <translation>A URL para os dados de pontuação das extensões (veja a página wiki do gerenciador de extensões para formatação e detalhes de hospedagem).</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="353"/>
       <source>Path to git executable (optional):</source>
-      <translation type="unfinished">Path to git executable (optional):</translation>
+      <translation>Executável Git (opcional):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="372"/>
@@ -638,12 +638,12 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="425"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
-      <translation type="unfinished">Activate Addon Manager options intended for developers of new Addons.</translation>
+      <translation>Ativar opções de gerenciador de extensões destinadas aos desenvolvedores.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="428"/>
       <source>Addon developer mode</source>
-      <translation type="unfinished">Addon developer mode</translation>
+      <translation>Modo de desenvolvedor</translation>
     </message>
   </context>
   <context>
@@ -815,7 +815,7 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="132"/>
       <source>Class that defines &quot;Icon&quot; data member</source>
-      <translation type="unfinished">Class that defines &quot;Icon&quot; data member</translation>
+      <translation>Classe que define o dado &quot;Ícone&quot;</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="145"/>
@@ -840,7 +840,7 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="206"/>
       <source>Tags...</source>
-      <translation type="unfinished">Tags...</translation>
+      <translation>Etiquetas...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="213"/>
@@ -855,12 +855,12 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="258"/>
       <source>Other Metadata</source>
-      <translation type="unfinished">Other Metadata</translation>
+      <translation>Outros metadados</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="264"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;.</source>
-      <translation type="unfinished">Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;.</translation>
+      <translation>Exibido na lista de extensões do gerenciador. Não deve incluir a palavra &quot;FreeCAD&quot;.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="278"/>
@@ -890,7 +890,7 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>
       <source>Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</source>
-      <translation type="unfinished">Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</translation>
+      <translation>Qualquer campo deixado em branco herdará os metadados da extensão acima, por tanto tecnicamente todos são opcionais. Para extensões com vários itens de conteúdo, cada item deve fornecer um único nome e descrição.</translation>
     </message>
   </context>
   <context>
@@ -949,7 +949,7 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="32"/>
       <source>Copyright year:</source>
-      <translation type="unfinished">Copyright year:</translation>
+      <translation>Ano do direito autoral:</translation>
     </message>
   </context>
   <context>
@@ -962,7 +962,7 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../developer_mode_people.ui" line="20"/>
       <source>A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</source>
-      <translation type="unfinished">A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</translation>
+      <translation>Um mantenedor é alguém com acesso de commit atual neste projeto. Um autor é qualquer pessoa para quem você deseja dar créditos.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>
@@ -977,7 +977,7 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../developer_mode_people.ui" line="46"/>
       <source>Email is required for maintainers, and optional for authors.</source>
-      <translation type="unfinished">Email is required for maintainers, and optional for authors.</translation>
+      <translation>E-mail é obrigatório para os mantenedores, e opcional para os autores.</translation>
     </message>
   </context>
   <context>
@@ -1000,17 +1000,17 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../proxy_authentication.ui" line="42"/>
       <source>Placeholder for proxy address</source>
-      <translation type="unfinished">Placeholder for proxy address</translation>
+      <translation>Espaço reservado para o endereço de proxy</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="49"/>
       <source>Realm:</source>
-      <translation type="unfinished">Realm:</translation>
+      <translation>Realm:</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="56"/>
       <source>Placeholder for proxy realm</source>
-      <translation type="unfinished">Placeholder for proxy realm</translation>
+      <translation>Espaço reservado para o realm de proxy</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="67"/>
@@ -1069,12 +1069,12 @@ será verificado se há atualizações disponíveis</translation>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="412"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="429"/>
       <source>Select Toolbar</source>
-      <translation type="unfinished">Select Toolbar</translation>
+      <translation>Selecionar Barra de Ferramentas</translation>
     </message>
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="26"/>
       <source>Select a toolbar to add this macro to:</source>
-      <translation type="unfinished">Select a toolbar to add this macro to:</translation>
+      <translation>Selecionar uma barra de ferramentas para adicionar a esse macro:</translation>
     </message>
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="36"/>
@@ -1132,7 +1132,7 @@ será verificado se há atualizações disponíveis</translation>
       <location filename="../../addonmanager_cache.py" line="95"/>
       <source>Previous cache process was interrupted, restarting...
 </source>
-      <translation type="unfinished">Previous cache process was interrupted, restarting...
+      <translation>Processamento do cache anterior foi interrompido, reiniciando...
 </translation>
     </message>
     <message>
@@ -1182,7 +1182,7 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../AddonManager.py" line="936"/>
       <source>Temporary installation of macro failed.</source>
-      <translation type="unfinished">Temporary installation of macro failed.</translation>
+      <translation>Falha na instalação temporária do macro.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="95"/>
@@ -1272,22 +1272,22 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../NetworkManager.py" line="228"/>
       <source>Failed to convert the specified proxy port &apos;{}&apos; to a port number</source>
-      <translation type="unfinished">Failed to convert the specified proxy port &apos;{}&apos; to a port number</translation>
+      <translation>Falha ao converter a porta especificada &apos;{}&apos; do proxy para um número de porta</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="257"/>
       <source>Parameter error: mutually exclusive proxy options set. Resetting to default.</source>
-      <translation type="unfinished">Parameter error: mutually exclusive proxy options set. Resetting to default.</translation>
+      <translation>Erro de parâmetro: opções de proxy mutualmente exclusivas definidas. Redefinindo ao padrão.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="272"/>
       <source>Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</source>
-      <translation type="unfinished">Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</translation>
+      <translation>Erro de parâmetro: proxy de usuário indicado, mas nenhum proxy foi fornecido. Redefinindo para o padrão.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="421"/>
       <source>Addon Manager: Unexpected {} response from server</source>
-      <translation type="unfinished">Addon Manager: Unexpected {} response from server</translation>
+      <translation>Gerente de Addons: Resposta inesperada {} do servidor</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="512"/>
@@ -1356,12 +1356,12 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="294"/>
       <source>Currently on branch {}, name changed to {}</source>
-      <translation type="unfinished">Currently on branch {}, name changed to {}</translation>
+      <translation>Atualmente na branch {}, nome alterado para {}</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="285"/>
       <source>Git tag &apos;{}&apos; checked out, no updates possible</source>
-      <translation type="unfinished">Git tag &apos;{}&apos; checked out, no updates possible</translation>
+      <translation>Tag do Git &apos;{}&apos; verificada, nenhuma atualização possivel</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="278"/>
@@ -1376,7 +1376,7 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="186"/>
       <source>Changed to branch &apos;{}&apos; -- please restart to use Addon.</source>
-      <translation type="unfinished">Changed to branch &apos;{}&apos; -- please restart to use Addon.</translation>
+      <translation>Alterado para a ramificação &apos;{}&apos; - por favor reinicie para usar o Addon.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="197"/>
@@ -1391,7 +1391,7 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="302"/>
       <source>Currently on branch {}, update available to version {}</source>
-      <translation type="unfinished">Currently on branch {}, update available to version {}</translation>
+      <translation>Atualmente na ramificação {}, atualização disponível para a versão {}</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="308"/>
@@ -1421,7 +1421,7 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="334"/>
       <source>WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</source>
-      <translation type="unfinished">WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</translation>
+      <translation>AVISO: Este addon está instalado, mas desabilitado. Use o botão &apos;ativar&apos; para reativá-lo.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="177"/>
@@ -1431,19 +1431,19 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="173"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be disabled next time you restart FreeCAD.</translation>
+      <translation>Este addon vai ser desabilitado na próxima vez que você reiniciar o FreeCad.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="477"/>
       <location filename="../../addonmanager_package_details_controller.py" line="245"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
-      <translation type="unfinished">Success</translation>
+      <translation>Sucesso</translation>
     </message>
     <message>
       <location filename="../../addonmanager_package_details_controller.py" line="249"/>
       <source>Branch change succeeded, please restart to use the new version.</source>
-      <translation type="unfinished">Branch change succeeded, please restart to use the new version.</translation>
+      <translation>Mudança de ramificação bem-sucedida, por favor reinicie para utilizar a nova versão.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="111"/>
@@ -1469,7 +1469,7 @@ será verificado se há atualizações disponíveis</translation>
       <location filename="../../addonmanager_package_details_controller.py" line="125"/>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="110"/>
       <source>Check for update</source>
-      <translation type="unfinished">Check for update</translation>
+      <translation>Verificar atualizações</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="116"/>
@@ -1479,22 +1479,22 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="117"/>
       <source>Change branch...</source>
-      <translation type="unfinished">Change branch...</translation>
+      <translation>Mudar ramificação...</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="118"/>
       <source>Return to package list</source>
-      <translation type="unfinished">Return to package list</translation>
+      <translation>Retornar à lista de pacotes</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="70"/>
       <source>Checking connection</source>
-      <translation type="unfinished">Checking connection</translation>
+      <translation>Verificando conexão</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="71"/>
       <source>Checking for connection to GitHub...</source>
-      <translation type="unfinished">Checking for connection to GitHub...</translation>
+      <translation>Verificando a conexão com o GitHub...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="94"/>
@@ -1504,7 +1504,7 @@ será verificado se há atualizações disponíveis</translation>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="100"/>
       <source>Missing dependency</source>
-      <translation type="unfinished">Missing dependency</translation>
+      <translation>Dependência ausente</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="105"/>
@@ -1515,22 +1515,22 @@ será verificado se há atualizações disponíveis</translation>
       <location filename="../../addonmanager_devmode_license_selector.py" line="114"/>
       <source>Other...</source>
       <comment>For providing a license other than one listed</comment>
-      <translation type="unfinished">Other...</translation>
+      <translation>Outro...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="204"/>
       <source>Select the corresponding license file in your Addon</source>
-      <translation type="unfinished">Select the corresponding license file in your Addon</translation>
+      <translation>Selecione o arquivo de licença correspondente no seu Addon</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="237"/>
       <source>Location for new license file</source>
-      <translation type="unfinished">Location for new license file</translation>
+      <translation>Local para o novo arquivo de licença</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer.py" line="355"/>
       <source>Received {} response code from server</source>
-      <translation type="unfinished">Received {} response code from server</translation>
+      <translation>Código de resposta {} recebido do servidor</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer.py" line="517"/>
@@ -1616,7 +1616,7 @@ será verificado se há atualizações disponíveis</translation>
       <location filename="../../addonmanager_devmode_add_content.py" line="559"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="570"/>
       <source>Other...</source>
-      <translation type="unfinished">Other...</translation>
+      <translation>Outro...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="153"/>
