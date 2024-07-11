@@ -3933,7 +3933,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../SketchRectangularArrayDialog.ui" line="93"/>
       <source>If selected, each element in the array is constrained
 with respect to the others using construction lines</source>
-      <translation>თუ ჩარტულია, მასივის თითოეული ელემენტი შეიზღუდება სხვა 
+      <translation>თუ ჩარტულია, მასივის თითოეული ელემენტი შეიზღუდება სხვა
 ელემენტებთან შედარებით, მშენებლობის ხაზების გამოეყენებით</translation>
     </message>
     <message>
@@ -3989,7 +3989,7 @@ reflected on copies</source>
       <location filename="../../SketcherSettings.ui" line="26"/>
       <source>Sketcher dialog will have additional section
 'Advanced solver control' to adjust solver settings</source>
-      <translation>ესკიზის ფანჯარას ამომხსნელის მოსარგებად ექნება 
+      <translation>ესკიზის ფანჯარას ამომხსნელის მოსარგებად ექნება
 დამატებითი სექცია 'ამომხსნელის დამატებითი პარამეტრები'</translation>
     </message>
     <message>

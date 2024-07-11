@@ -2844,7 +2844,7 @@ Las combinaciones posibles son: dos curvas; extremo y curva; dos extremos; dos c
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>tangent constraint</comment>
-      <translation>Hay varias maneras de que esta restricción se pueda aplicar. 
+      <translation>Hay varias maneras de que esta restricción se pueda aplicar.
 
 Combinaciones aceptadas: dos curvas; un extremo y una curva; dos extremos; dos curvas y un punto.</translation>
     </message>
@@ -4479,7 +4479,7 @@ Haz clic en el botón "Intercambiar los extremos en las restricciones" para reas
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation>Se encontraron %1 arcos de geometría externa invertida. Sus extremos están cercados en la vista 3d. 
+      <translation>Se encontraron %1 arcos de geometría externa invertida. Sus extremos están cercados en la vista 3d.
 
 Sin embargo, no se encontraron restricciones a los extremos.</translation>
     </message>
