@@ -57,6 +57,7 @@ Multisample::Multisample()
     context.makeCurrent(&offscreen);
 }
 
+// NOLINTNEXTLINE(readability-convert-member-functions-to-static)
 bool Multisample::testSamples(int num) const
 {
     // This is always true
