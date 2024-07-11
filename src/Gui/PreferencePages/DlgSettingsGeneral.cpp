@@ -425,15 +425,41 @@ void DlgSettingsGeneral::loadThemes()
 {
     ui->themesCombobox->clear();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
 
     QString currentTheme = QString::fromLatin1(hGrp->GetASCII("Theme", "").c_str());
 
     Application::Instance->prefPackManager()->rescan();
     auto packs = Application::Instance->prefPackManager()->preferencePacks();
+    QString currentStyleSheet = QString::fromLatin1(hGrp->GetASCII("StyleSheet", "").c_str());
+    QFileInfo fi(currentStyleSheet);
+    currentStyleSheet = fi.baseName();
+    QString themeClassic = QString::fromStdString("classic");  // handle the upcoming name change
+    QString similarTheme;
+    QString packName;
     for (const auto& pack : packs) {
         if (pack.second.metadata().type() == "Theme") {
+            packName = QString::fromStdString(pack.first);
+            if (packName.contains(themeClassic, Qt::CaseInsensitive)) {
+                themeClassic = QString::fromStdString(pack.first);
+            }
+            if (packName.contains(currentStyleSheet, Qt::CaseInsensitive)) {
+                similarTheme = QString::fromStdString(pack.first);
+            }
             ui->themesCombobox->addItem(QString::fromStdString(pack.first));
+        }
+    }
+
+    if (currentTheme.isEmpty()) {
+        if (!currentStyleSheet.isEmpty()
+            && !similarTheme.isEmpty()) {  // a user upgrading from 0.21 or earlier
+            hGrp->SetASCII("Theme", similarTheme.toStdString());
+            currentTheme = QString::fromLatin1(hGrp->GetASCII("Theme", "").c_str());
+        }
+        else {  // a brand new user
+            hGrp->SetASCII("Theme", themeClassic.toStdString());
+            currentTheme = QString::fromLatin1(hGrp->GetASCII("Theme", "").c_str());
         }
     }
 
