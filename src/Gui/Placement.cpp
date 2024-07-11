@@ -46,6 +46,11 @@
 #include "Placement.h"
 #include "ui_Placement.h"
 
+#include <Gui/MainWindow.h>
+#include <Gui/View3DInventor.h>
+#include <Inventor/SbVec3f.h>
+#include <Gui/SpaceballEvent.h>
+#include <Base/DualQuaternion.h>
 
 using namespace Gui::Dialog;
 namespace sp = std::placeholders;
@@ -314,10 +319,12 @@ Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
     setupSignalMapper();
     setupDocument();
     setupRotationMethod();
+    setupEventFilter();
 }
 
 Placement::~Placement()
 {
+    if (qApp!=NULL) qApp->removeEventFilter(this);
     connectAct.disconnect();
     delete ui;
 }
@@ -411,6 +418,12 @@ void Placement::setupRotationMethod()
     ui->stackedWidget->setCurrentIndex(index);
 }
 
+
+void Placement::setupEventFilter()
+{
+    if (qApp!=NULL) qApp->installEventFilter(this);
+}
+
 void Placement::showDefaultButtons(bool ok)
 {
     ui->oKButton->setVisible(ok);
@@ -423,6 +436,83 @@ void Placement::showDefaultButtons(bool ok)
     else {
         ui->buttonBoxLayout->removeItem(ui->buttonBoxSpacer);
     }
+}
+
+bool Placement::eventFilter(QObject*, QEvent* ev) {
+    //handle spacenav daemon motion events in placement window
+    if (//event->type() == Spaceball::ButtonEvent::ButtonEventType ||
+        ev->type() == Spaceball::MotionEvent::MotionEventType){
+                Spaceball::MotionEvent *motionEvent = dynamic_cast<Spaceball::MotionEvent*>(ev);
+                if (!motionEvent) {
+                    Base::Console().Log("invalid spaceball motion event in bool Placement::eventFilter(QObject*, QEvent* ev)\n");
+                    return false;
+                    }
+                motionEvent->setHandled(true);
+
+                static double translationConstant(.001f);
+                double xTrans = static_cast<double>(motionEvent->translationX())*translationConstant;
+                double yTrans = static_cast<double>(motionEvent->translationY())*translationConstant;
+                double zTrans = static_cast<double>(motionEvent->translationZ())*translationConstant;
+
+                static double rotationConstant(.001f);
+                double dY=static_cast<double>(motionEvent->rotationZ()) * rotationConstant;
+                double dP=static_cast<double>(motionEvent->rotationY()) * rotationConstant;
+                double dR=static_cast<double>(motionEvent->rotationX()) * rotationConstant;
+
+                if(xTrans == 0 && yTrans == 0 && zTrans == 0 && dY ==0 && dP ==0 && dR ==0 ) return false;
+                signalMapper->blockSignals(true);
+//                printf("\nSpaceball Placement Event\t(x,y,z)=(%f,%f,%f)\t(Rx,Ry,Rz)=(%f,%f,%f);\n",xTrans,yTrans,zTrans,dR,dP,dY  );
+
+                Base::Vector3d dTrans(xTrans,yTrans,zTrans);
+                Base::Vector3d rotationCenter=this->getCenterData();
+                Base::Placement old_placement(getPositionData(),getRotationData());
+                // Code below allows for seamles rotation around axes without blocking on roll, pitch, yaw range ends.
+                Base::Matrix4D new_placement_mat;
+                new_placement_mat = old_placement.toMatrix();
+                new_placement_mat.move(-rotationCenter);
+                if(dY!=0) new_placement_mat.rotZ(Base::toRadians(dY));
+                if(dP!=0) new_placement_mat.rotY(Base::toRadians(dP));
+                if(dR!=0) new_placement_mat.rotX(Base::toRadians(dR));
+                new_placement_mat.move(rotationCenter);
+                new_placement_mat.move(dTrans);
+                Base::Placement new_placement(new_placement_mat);
+                new_placement.setPosition(old_placement.getPosition()+dTrans);
+                //setPlacementData(new_placement);//Does not work properly because of problems with euler angles. Angle values need to be adjusted below to fit into proper range.
+
+                ui->xPos->setValue(new_placement.getPosition().x);
+                ui->yPos->setValue(new_placement.getPosition().y);
+                ui->zPos->setValue(new_placement.getPosition().z);
+
+                Base::Vector3d new_dir_vect;
+                double angle;
+                new_placement.getRotation().getValue(new_dir_vect,angle);
+
+                // bug seen in freecad-0.21.2+dfsg1 (from debian source package) and in github master 20240708
+                // If there are issues with precision when rotating (360 deg rotation arround axis does not return to the same orientation) increase decimal places in Preferences (stored values in Gui::QuantitySpinBox are rounded and result in precision loss after multiple iterations of rotation)
+                // bug presence may be tested by uncomenting printf with "eventFilter-C" and "eventFilter-D" they will return different (RotXYZ) values when bug is present (D line will have visibly rounded values).
+                //printf("eventFilter-C\t(x,y,z)=(%f,%f,%f)\t(RotXYZ)=(%f,%f,%f)\t(RotAngle)=(%f)\n",new_placement.getPosition().x,new_placement.getPosition().y,new_placement.getPosition().z,new_dir_vect.x, new_dir_vect.y, new_dir_vect.z, Base::toDegrees<double>(angle));
+
+                ui->xAxis->setValue(new_dir_vect.x);
+                ui->yAxis->setValue(new_dir_vect.y);
+                ui->zAxis->setValue(new_dir_vect.z);
+                ui->angle->setValue(Base::toDegrees<double>(angle));
+                //printf("eventFilter-D\t(x,y,z)=(%f,%f,%f)\t(RotXYZ)=(%f,%f,%f)\t(RotAngle)=(%f)\n\n",ui->xPos->value().getValue(),ui->yPos->value().getValue(),ui->zPos->value().getValue(),ui->xAxis->value().getValue(),ui->yAxis->value().getValue(),ui->zAxis->value().getValue(),ui->angle->value().getValue());
+
+                // Euler angles (XY'Z'')
+                double Y,P,R;
+                new_placement.getRotation().getYawPitchRoll(Y,P,R);
+                if(R>180) R-=360; else if(R<-180) R+=360;
+                if(P>90) P-=180; else if(P<-90) R+=180;
+                if(Y>180) Y-=360; else if(Y<-180) Y+=360;
+                ui->yawAngle->setValue(Y);
+                ui->pitchAngle->setValue(P);
+                ui->rollAngle->setValue(R);
+
+                signalMapper->blockSignals(false);
+                onPlacementChanged(0);
+                return true;
+                };
+    return false;
 }
 
 void Placement::open()
