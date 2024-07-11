@@ -119,13 +119,9 @@
             "type": "FILEPATH",
             "value": "${sourceDir}/.conda/freecad/include"
           },
-          "CMAKE_INSTALL_LIBDIR": {
-            "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/lib"
-          },
           "CMAKE_INSTALL_PREFIX": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad"
+            "value": "${sourceDir}/conda/pkg/linux/AppDir"
           },
           "CMAKE_LIBRARY_PATH":{
             "type": "FILEPATH",
@@ -155,13 +151,9 @@
             "type": "FILEPATH",
             "value": "${sourceDir}/.conda/freecad/include"
           },
-          "CMAKE_INSTALL_LIBDIR": {
-            "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad/lib"
-          },
           "CMAKE_INSTALL_PREFIX": {
             "type": "FILEPATH",
-            "value": "${sourceDir}/.conda/freecad"
+            "value": "${sourceDir}/conda/pkg/osx/FreeCAD.app/Contents/Resources"
           },
           "CMAKE_LIBRARY_PATH":{
             "type": "FILEPATH",
