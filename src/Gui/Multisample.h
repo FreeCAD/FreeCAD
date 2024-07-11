@@ -58,6 +58,8 @@ public:
     std::vector<std::pair<QString, AntiAliasing>> supported() const;
     static int toSamples(AntiAliasing msaa);
     static AntiAliasing toAntiAliasing(int samples);
+    static AntiAliasing readMSAAFromSettings();
+    static void writeMSAAToSettings(AntiAliasing msaa);
 
 private:
     QSurfaceFormat format;

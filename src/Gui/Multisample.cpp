@@ -28,6 +28,8 @@
 #endif
 
 #include "Multisample.h"
+#include <App/Application.h>
+#include <Base/Parameter.h>
 
 using namespace Gui;
 
@@ -102,4 +104,18 @@ AntiAliasing Multisample::toAntiAliasing(int samples)
         return std::get<idEnum>(*it);
     }
     return AntiAliasing::None;
+}
+
+AntiAliasing Multisample::readMSAAFromSettings()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+    return AntiAliasing(hGrp->GetInt("AntiAliasing", int(Gui::AntiAliasing::None)));
+}
+
+void Multisample::writeMSAAToSettings(AntiAliasing msaa)
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+    hGrp->SetInt("AntiAliasing", long(msaa));
 }
