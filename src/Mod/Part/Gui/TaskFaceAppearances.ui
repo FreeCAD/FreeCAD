@@ -70,7 +70,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="labelCustomAppearance">
           <property name="text">
-           <string>Custom Appearance</string>
+           <string>Custom appearance:</string>
           </property>
          </widget>
         </item>
